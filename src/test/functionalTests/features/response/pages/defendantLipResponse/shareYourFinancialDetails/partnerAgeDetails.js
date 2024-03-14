@@ -1,26 +1,34 @@
 const I = actor();
 const config = require('../../../../../../config');
+const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   yesButton: 'input[id="partnerAge"]',
   noButton: 'input[id="partnerAge-2"]',
 };
-const buttons = {
-  continue: 'button.govuk-button',
+
+const content = {
+  heading: {
+    en: 'Is your partner aged 18 or over?',
+    cy: 'A yw eich partner yn 18 oed neu\'n hŷn?',
+  },
 };
 
 class PartnerAgeDetails {
 
   async clickYesButton() {
-    await I.waitForText('Is your partner aged 18 or over?', config.WaitForText);
+    const { language } = sharedData; 
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
-    await I.click(buttons.continue);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 
   async clickNoButton() {
-    await I.waitForText('Is your partner aged 18 or over?', config.WaitForText);
+    const { language } = sharedData; 
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
-    await I.click(buttons.continue);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 module.exports = PartnerAgeDetails;

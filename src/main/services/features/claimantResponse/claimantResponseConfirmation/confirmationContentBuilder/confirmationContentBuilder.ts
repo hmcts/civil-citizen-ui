@@ -9,9 +9,12 @@ import {
 } from 'services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/ccjConfirmationBuilder';
 import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementContentBuilder';
 import {getSendFinancialDetails} from './financialDetailsBuilder';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CaseState} from 'common/form/models/claimDetails';
+import {YesNo} from 'form/models/yesNo';
 import { getClaimSettleNextSteps } from './claimSettleConfirmationBuilder';
+import {
+  getMediationCarmNextSteps,
+} from 'services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/mediationConfirmationContentBuilder';
 
 export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
@@ -35,7 +38,7 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
   return getClaimantResponseStatus(claim, claimantResponseStatusTitle, lang);
 }
 
-export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummarySection[] {
+export function buildNextStepsSection(claim: Claim, lang: string, carmApplicable: boolean): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   const RCDisputeNotContinueNextSteps = getRCDisputeNotContinueNextSteps(claim, lang);
   const PAPayImmediatelyAcceptedNextSteps = getPAPayImmediatelyAcceptedNextSteps(claim, lang);
@@ -43,10 +46,15 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
   const SignSettlementAgreementNextSteps = getSignSettlementAgreementNextSteps(claim, lang);
   const RejectedResponseNoMediationNextSteps = getRejectedResponseNoMediationNextSteps(lang);
   const RejectedResponseYesMediationNextSteps = getRejectedResponseYesMediationNextSteps(lang);
+  const RejectedResponseCarmMediationNextSteps = getMediationCarmNextSteps(lang);
   const rejectedRepaymentPlaneNextSteps = getCCJNextStepsForRejectedRepaymentPlan(claim, lang);
   const rejectedAndJudgeDecideRepaymentPlan = getCCJNextStepsForJudgeDecideRepaymentPlan(claim, lang);
   const sendFinancialDetails = getSendFinancialDetails(claim, lang);
   const acceptedResponseToSettle = getClaimSettleNextSteps(claim, lang);
+
+  if (carmApplicable && claim.hasClaimantNotSettled()) {
+    return RejectedResponseCarmMediationNextSteps;
+  }
 
   if (claim.isBusiness() &&
     (claim.isFAPaymentOptionInstallments() ||
@@ -137,9 +145,7 @@ function isFullDefenceWithIntentionToProceed(claim: Claim): boolean {
 }
 
 function isClaimantRejectPaymentPlan(claim: Claim): boolean {
-  return (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.IMMEDIATELY
-    || claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.BY_SET_DATE
-    || claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.INSTALMENTS);
+  return claim.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
 }
 
 function hasCCJRequested(claimantResponse: ClaimantResponse): boolean {

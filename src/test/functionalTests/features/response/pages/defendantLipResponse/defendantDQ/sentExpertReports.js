@@ -9,7 +9,7 @@ const fields ={
 class SentExpertReports {
 
   async SentExpertReports() {
-    await I.waitForText('Have you already sent expert reports to other parties?', config.WaitForText);
+    await I.waitForContent('Have you already sent expert reports to other parties?', config.WaitForText);
     await I.click(fields.noButton);
     await I.click('Save and continue');
   }

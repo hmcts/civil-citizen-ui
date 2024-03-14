@@ -1,5 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
+const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields ={
   yesButton: 'input[id="option"]',
@@ -7,24 +9,36 @@ const fields ={
   amountYouOwe: 'input[id="amountYouOwe"]',
   reason: 'textarea[id="reason"]',
 };
-const buttons = {
-  continue: 'button.govuk-button',
+
+const content = {
+  heading: {
+    en: 'Are you behind on tax payments?',
+    cy: 'A ydych yn hwyr yn gwneud taliadau treth?',
+  },
 };
 
+const inputs = {
+  reason: {
+    en: 'Last year pending',
+    cy: 'Yn aros o\'r llynedd',
+  },
+};
 class SelfEmploymentTaxDetails {
 
   async clickYesButton() {
-    await I.waitForText('Are you behind on tax payments?', config.WaitForText);
+    const { language } = sharedData; 
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.amountYouOwe, '2000');
-    await I.fillField(fields.reason, 'Last year pending');
-    await I.click(buttons.continue);
+    await I.fillField(fields.reason, inputs.reason[language]);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 
   async clickNoButton() {
-    await I.waitForText('Are you behind on tax payments?', config.WaitForText);
+    const { language } = sharedData; 
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
-    await I.click(buttons.continue);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 

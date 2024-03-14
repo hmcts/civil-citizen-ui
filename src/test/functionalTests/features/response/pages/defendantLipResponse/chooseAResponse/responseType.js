@@ -1,5 +1,6 @@
 const I = actor();
 const config = require('../../../../../../config');
+const sharedData = require('../../../../../sharedData');
 
 const fields = {
   responseAdmitAll: 'input[id="responseType"]',
@@ -12,10 +13,17 @@ const buttons = {
   saveAndContinue: '#main-content button.govuk-button',
 };
 
-class RespondTypePage {
+const content = {
+  heading: {
+    en: 'How do you respond to the claim?',
+    cy: 'Sut ydych chi\'n ymateb i\'r hawliad?',
+  },
+};
+
+class ResponseTypePage {
   async enterResponseToClaim(claimRef, responseType){
     await I.amOnPage('/case/'+claimRef+'/response/response-type');
-    await I.waitForText('How do you respond to the claim?', config.WaitForText);
+    await I.waitForContent(content.heading[sharedData.language], config.WaitForText);
     switch (responseType){
       case 'full-admission':{
         await I.click(fields.responseAdmitAll);
@@ -39,7 +47,7 @@ class RespondTypePage {
 
   async enterResponseToClaimError(claimRef, responseType){
     await I.amOnPage('/case/'+claimRef+'/response/response-type');
-    await I.waitForText('How do you respond to the claim?', config.WaitForText);
+    await I.waitForContent('How do you respond to the claim?', config.WaitForText);
     await I.click('Save and continue');
     await I.see('There was a problem');
     await I.see('Choose your response');
@@ -65,4 +73,4 @@ class RespondTypePage {
   }
 }
 
-module.exports = RespondTypePage;
+module.exports = ResponseTypePage;

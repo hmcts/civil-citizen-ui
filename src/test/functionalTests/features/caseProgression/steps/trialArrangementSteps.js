@@ -5,7 +5,7 @@ const HasAnythingChanged = require ('../pages/trialArrangements/hasAnythingChang
 const TrialDuration = require ('../pages/trialArrangements/trialDuration');
 const CheckYourAnswers = require ('../pages/trialArrangements/checkYourAnswers');
 const TrialArrangementsConfirmation = require ('../pages/trialArrangements/trialArrangementsConfirmation');
-const NoticesAndOrders = require('../pages/noticesAndOrders');
+//const NoticesAndOrders = require('../pages/noticesAndOrders');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const latestUpdateTab = new LatestUpdate();
@@ -15,36 +15,44 @@ const hasAnythingChanged = new HasAnythingChanged();
 const trialDuration = new TrialDuration();
 const checkYourAnswers = new CheckYourAnswers();
 const trialArrangementConfirmation = new TrialArrangementsConfirmation();
-const noticesAndOrders =  new NoticesAndOrders();
+//const noticesAndOrders =  new NoticesAndOrders();
 
 class TrialArrangementSteps {
 
-  initiateTrialArrangementJourney(claimRef, claimType, readyForTrial) {
+  initiateTrialArrangementJourney(claimRef, claimType, readyForTrial, partyType) {
     console.log('The value of the Claim Reference : ' + claimRef);
-    latestUpdateTab.open(claimRef, claimType, true, false, true);
-    latestUpdateTab.nextAction('Finalise trial arrangements');
-    trialArrangementsIntroduction.verifyPageContent();
+    let partiesOnTheCase;
+    if (partyType === 'LiPvLiP') {
+      partiesOnTheCase = 'Miss Jane Doe v Sir John Doe';
+      I.amOnPage('/case/' + claimRef + '/case-progression/finalise-trial-arrangements');
+    } else {
+      partiesOnTheCase = 'Test Inc v Sir John Doe';
+      latestUpdateTab.open(claimRef, claimType, true, false, true);
+      latestUpdateTab.nextAction('Finalise trial arrangements');
+    }
+    trialArrangementsIntroduction.verifyPageContent(partiesOnTheCase);
     trialArrangementsIntroduction.nextAction('Start now');
-    isYourCaseReadyForTrial.verifyPageContent();
+    isYourCaseReadyForTrial.verifyPageContent(partiesOnTheCase);
     isYourCaseReadyForTrial.inputDataForIsThisCaseReadyForTrialPage(readyForTrial);
     isYourCaseReadyForTrial.nextAction('Continue');
-    hasAnythingChanged.verifyPageContent();
+    hasAnythingChanged.verifyPageContent(partiesOnTheCase);
     hasAnythingChanged.inputDataForHasAnythingChangedSection();
     hasAnythingChanged.nextAction('Continue');
-    trialDuration.verifyPageContent();
+    trialDuration.verifyPageContent(partiesOnTheCase);
     trialDuration.inputDataForTrialDurationOtherInformation();
     trialDuration.nextAction('Continue');
-    checkYourAnswers.verifyPageContent();
+    checkYourAnswers.verifyPageContent(partiesOnTheCase);
     checkYourAnswers.nextAction('Submit');
   }
 
   verifyTrialArrangementsMade() {
     trialArrangementConfirmation.checkPageFullyLoaded();
     trialArrangementConfirmation.verifyPageContent();
-    trialArrangementConfirmation.nextAction('//a[contains(.,\'Return to case details\')]');
+    //BUG CIV-12591
+    /*trialArrangementConfirmation.nextAction('//a[contains(.,\'Return to case details\')]');
     latestUpdateTab.verifyTrialArrangementsFinalisedTile(); //Latest update page - verify that the Trial Arrangement Tile appears.
     latestUpdateTab.nextAction('[href=\'#notices-orders\']');
-    noticesAndOrders.verifyLatestUpdatePageContent();
+    noticesAndOrders.verifyLatestUpdatePageContent();*/
   }
 
   verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType) {

@@ -1,5 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
+const sharedData = require('../../../../../sharedData');
+const cButtons = require('../../../../common/cButtons');
 
 const fields = {
   ownHome: 'input[id="residenceType"]',
@@ -8,14 +10,19 @@ const fields = {
   councilHouse: 'input[id="residenceType-4"]',
   other: 'input[id="residenceType-5"]',
 };
-const buttons = {
-  continue: 'button.govuk-button',
+
+const content = {
+  heading: {
+    en: 'Where do you live?',
+    cy: 'Ble ydych chi\'n byw?',
+  },
 };
 
 class ResidenceDetails {
 
   async selectResidenceType(residenceType) {
-    await I.waitForText('Where do you live?', config.WaitForText);
+    const { language } = sharedData; 
+    await I.waitForContent(content.heading[language], config.WaitForText);
     switch (residenceType){
       case 'ownHome':{
         await I.click(fields.ownHome);
@@ -42,7 +49,7 @@ class ResidenceDetails {
         break;
       }
     }
-    await I.click(buttons.continue);
+    await I.click(cButtons.saveAndContinue[language]);
   }
 }
 
