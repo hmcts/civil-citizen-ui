@@ -16,7 +16,7 @@ class RequestMoreTime {
   }
 
   async verifyResponsePageContent() {
-    await I.waitForText('Request more time to respond', config.WaitForText);
+    await I.waitForContent('Request more time to respond', config.WaitForText);
   }
 
   async requestMoreTimeToRespond(claimRef) {

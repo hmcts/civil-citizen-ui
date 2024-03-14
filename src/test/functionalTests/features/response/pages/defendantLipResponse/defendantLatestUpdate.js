@@ -11,11 +11,11 @@ class DefendantLatestUpdate {
 
   async openSummaryPage(claimRef) {
     await I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    await I.waitForText('More time requested', config.WaitForText);
+    await I.waitForContent('More time requested', config.WaitForText);
   }
 
   async verifyDefendantUpdatePageContent() {
-    await I.waitForText('You haven\'t responded to this claim', config.WaitForText);
+    await I.waitForContent('You haven\'t responded to this claim', config.WaitForText);
     await I.see('Claim number: ');
     await I.see('You need to respond before');
     //exact days to be updated based on logic
