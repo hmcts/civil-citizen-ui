@@ -43,14 +43,14 @@ const buttons = {
 class BankAccountsDetails {
   async enterBankAccountDetails() {
     const { language } = sharedData; 
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.selectOption(fields.accounts1, dropdownOptions.accounts1[language]);
     await I.selectOption(fields.jointAccount1, dropdownOptions.jointAccount1[language]);
     await I.fillField(fields.account1Balance, '2000');
   }
 
   async enterBankAccountDetailsError() {
-    await I.waitForText('List your bank and savings accounts', config.WaitForText);
+    await I.waitForContent('List your bank and savings accounts', config.WaitForText);
     await I.selectOption(fields.accounts1, 'Current account');
     await I.see('Select a type of account');
     await I.see('Enter a valid number');
