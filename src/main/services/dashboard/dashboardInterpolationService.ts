@@ -5,7 +5,7 @@ import {
   DASHBOARD_NOTIFICATION_REDIRECT,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
   RESPONSE_TASK_LIST_URL,
-    CASE_DOCUMENT_VIEW_URL,
+  CASE_DOCUMENT_VIEW_URL,
 } from 'routes/urls';
 import config from 'config';
 import { getTotalAmountWithInterestAndFees } from 'modules/claimDetailsService';
