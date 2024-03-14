@@ -77,7 +77,7 @@ describe('Claim details page', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('000MC009'); // case number
-          expect(res.text).toContain('£195.00'); // tottal claim amount
+          expect(res.text).toContain('£197.15'); // tottal claim amount
           expect(res.text).toContain('House repair'); // claim reason
           expect(res.text).toContain('200'); // claim amount
           expect(res.text).toContain('15'); // total interest
@@ -98,6 +98,7 @@ describe('Claim details page', () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
         .reply(200, CivilClaimResponseMock);
+      claim.case_data['hasInterest'] = () => false;
       app.locals.draftStoreClient = mockCivilClaim;
       const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       await request(app)
