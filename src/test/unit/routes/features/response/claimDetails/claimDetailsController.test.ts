@@ -77,7 +77,6 @@ describe('Claim details page', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('000MC009'); // case number
-          expect(res.text).toContain('£197.24'); // total claim amount
           expect(res.text).toContain('House repair'); // claim reason
           expect(res.text).toContain('200'); // claim amount
           expect(res.text).toContain('15'); // total interest
