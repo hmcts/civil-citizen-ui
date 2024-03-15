@@ -4,8 +4,9 @@ import {
   CCJ_DEFENDANT_DOB_URL,
   CLAIM_FEE_BREAKUP,
   DASHBOARD_NOTIFICATION_REDIRECT,
-  DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
   RESPONSE_TASK_LIST_URL,
+  CCJ_PAID_AMOUNT_URL,
+  DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
   CASE_DOCUMENT_VIEW_URL,
 } from 'routes/urls';
 import config from 'config';
@@ -47,6 +48,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{CLAIM_FEE_URL}', CLAIM_FEE_BREAKUP.replace(':id', claimId));
   valuesMap.set('{REQUEST_CCJ_URL}', CCJ_DEFENDANT_DOB_URL.replace(':id', claimId));
   valuesMap.set('{RESPONSE_TASK_LIST_URL}', RESPONSE_TASK_LIST_URL.replace(':id', claimId));
+  valuesMap.set('{COUNTY_COURT_JUDGEMENT_URL}', CCJ_PAID_AMOUNT_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_REPAYMENT_PLAN}', DEFENDANT_SIGN_SETTLEMENT_AGREEMENT.replace(':id', claimId));
   valuesMap.set('{daysLeftToRespond}', daysLeftToRespond);
   valuesMap.set('{enforceJudgementUrl}', enforceJudgementUrl);
