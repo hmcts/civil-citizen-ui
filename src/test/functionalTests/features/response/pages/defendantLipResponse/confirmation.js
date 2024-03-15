@@ -3,7 +3,7 @@ const config = require('../../../../../config');
 
 class ConfirmationPage {
   async verifyConfirmationPage(claimType) {
-    I.waitForText('What happens next', config.WaitForText);
+    I.waitForContent('What happens next', config.WaitForText);
     switch (claimType) {
       case 'RejectsAndLessThanClaimAmount': {
         I.see('You told us you\'ve paid the £500 you believe you owe. ' +
