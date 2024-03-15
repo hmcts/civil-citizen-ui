@@ -10,6 +10,8 @@ import {
 import {t} from 'i18next';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import { Session } from 'express-session';
+import { AppSession } from 'common/models/AppRequest';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -50,11 +52,11 @@ describe('Respond to Claim - Pin Controller', () => {
         .reply(200, mockFullClaim);
 
       app.locals.draftStoreClient = mockCivilClaim;
-      app.request.cookies = { firstContact: { claimReference: '000MC000' } };
+      app.request.session = { firstContact: { claimReference: '000MC000' } } as unknown as Session;
       await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '000033331111' }).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(FIRST_CONTACT_CLAIM_SUMMARY_URL);
-        expect(app.request.cookies.firstContact.claimReference).toBe('000MC000');
+        expect(((app.request.session) as AppSession).firstContact.claimReference).toBe('000MC000');
       });
     });
 
@@ -76,7 +78,7 @@ describe('Respond to Claim - Pin Controller', () => {
         .reply(401, {});
 
       app.locals.draftStoreClient = mockCivilClaim;
-      app.request.cookies = { firstContact: { claimReference: '000MC000' } };
+      app.request.session = { firstContact: { claimReference: '000MC000' } } as unknown as Session;
       await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '1234' }).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(FIRST_CONTACT_ACCESS_DENIED_URL);
@@ -89,7 +91,7 @@ describe('Respond to Claim - Pin Controller', () => {
         .reply(400, {});
 
       app.locals.draftStoreClient = mockCivilClaim;
-      app.request.cookies = { firstContact: { claimReference: '111MC111' } };
+      app.request.session = { firstContact: { claimReference: '111MC111' } } as unknown as Session;
       await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '1111' }).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('ERRORS.ENTER_VALID_SECURITY_CODE'));
@@ -102,7 +104,7 @@ describe('Respond to Claim - Pin Controller', () => {
         .reply(500, {});
 
       app.locals.draftStoreClient = mockRedisFailure;
-      app.request.cookies = { firstContact: { claimReference: 'error' } };
+      app.request.session = { firstContact: { claimReference: 'error' } } as unknown as Session;
       await request(app)
         .post(FIRST_CONTACT_PIN_URL)
         .send({ pin: 'error' })

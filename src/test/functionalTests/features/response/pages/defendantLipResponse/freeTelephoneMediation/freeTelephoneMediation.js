@@ -21,13 +21,13 @@ class FreeTelephoneMediation {
   async selectMediation(claimRef) {
     const { language } = sharedData; 
     await I.amOnPage('/case/'+claimRef+'/mediation/free-telephone-mediation');
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(cButtons.continue[language]);
   }
 
   async selectNoMediation(claimRef){
     await I.amOnPage('/case/'+claimRef+'/mediation/free-telephone-mediation');
-    await I.waitForText('Free telephone mediation', config.WaitForText);
+    await I.waitForContent('Free telephone mediation', config.WaitForText);
     await I.click('I do not agree to free mediation');
     await I.see('The claim will continue and you may have to go to a hearing.');
     await I.see('Advantages of free mediation');

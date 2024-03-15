@@ -120,7 +120,7 @@ describe("Defendant's response summary service", () => {
     expect(defendantsResponseContent[8].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_EVIDENCE');
     expect(defendantsResponseContent[9].data?.head[0].text).toEqual('COMMON.EVIDENCE_SUMMARY.ROW_TYPE');
     expect(defendantsResponseContent[9].data?.head[1].text).toEqual('COMMON.DESCRIPTION');
-    expect(defendantsResponseContent[9].data?.tableRows[0][0].text).toEqual('Contracts and agreements');
+    expect(defendantsResponseContent[9].data?.tableRows[0][0].text).toEqual('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_CONTRACTS_AND_AGREEMENTS');
     expect(defendantsResponseContent[9].data?.tableRows[0][1].text).toEqual('I have a signed contract showing that you broke the contract agreement.');
     expect(defendantsResponseContent[10].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_EVIDENCE');
     expect(defendantsResponseContent[11].data?.text).toEqual('evidence comments');
@@ -159,7 +159,7 @@ describe("Defendant's response summary service", () => {
       expect(defendantsResponseContent[9].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_EVIDENCE');
       expect(defendantsResponseContent[10].data?.head[0].text).toEqual('COMMON.EVIDENCE_SUMMARY.ROW_TYPE');
       expect(defendantsResponseContent[10].data?.head[1].text).toEqual('COMMON.DESCRIPTION');
-      expect(defendantsResponseContent[10].data?.tableRows[0][0].text).toEqual('Contracts and agreements');
+      expect(defendantsResponseContent[10].data?.tableRows[0][0].text).toEqual('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_CONTRACTS_AND_AGREEMENTS');
       expect(defendantsResponseContent[10].data?.tableRows[0][1].text).toEqual('I have a signed contract showing that you broke the contract agreement.');
       expect(defendantsResponseContent[11].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_EVIDENCE');
       expect(defendantsResponseContent[12].data?.text).toEqual('evidence comments');
@@ -186,7 +186,7 @@ describe("Defendant's response summary service", () => {
       expect(defendantsResponseContent[9].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_EVIDENCE');
       expect(defendantsResponseContent[10].data?.head[0].text).toEqual('COMMON.EVIDENCE_SUMMARY.ROW_TYPE');
       expect(defendantsResponseContent[10].data?.head[1].text).toEqual('COMMON.DESCRIPTION');
-      expect(defendantsResponseContent[10].data?.tableRows[0][0].text).toEqual('Contracts and agreements');
+      expect(defendantsResponseContent[10].data?.tableRows[0][0].text).toEqual('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_CONTRACTS_AND_AGREEMENTS');
       expect(defendantsResponseContent[10].data?.tableRows[0][1].text).toEqual('I have a signed contract showing that you broke the contract agreement.');
       expect(defendantsResponseContent[11].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_EVIDENCE');
       expect(defendantsResponseContent[12].data?.text).toEqual('evidence comments');
@@ -213,7 +213,7 @@ describe("Defendant's response summary service", () => {
       expect(defendantsResponseContent[9].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_EVIDENCE');
       expect(defendantsResponseContent[10].data?.head[0].text).toEqual('COMMON.EVIDENCE_SUMMARY.ROW_TYPE');
       expect(defendantsResponseContent[10].data?.head[1].text).toEqual('COMMON.DESCRIPTION');
-      expect(defendantsResponseContent[10].data?.tableRows[0][0].text).toEqual('Contracts and agreements');
+      expect(defendantsResponseContent[10].data?.tableRows[0][0].text).toEqual('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_CONTRACTS_AND_AGREEMENTS');
       expect(defendantsResponseContent[10].data?.tableRows[0][1].text).toEqual('I have a signed contract showing that you broke the contract agreement.');
       expect(defendantsResponseContent[11].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_EVIDENCE');
       expect(defendantsResponseContent[12].data?.text).toEqual('evidence comments');
@@ -267,7 +267,7 @@ describe("Defendant's response summary service", () => {
     expect(defendantsResponseContent[11].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_EVIDENCE');
     expect(defendantsResponseContent[12].data?.head[0].text).toEqual('COMMON.EVIDENCE_SUMMARY.ROW_TYPE');
     expect(defendantsResponseContent[12].data?.head[1].text).toEqual('COMMON.DESCRIPTION');
-    expect(defendantsResponseContent[12].data?.tableRows[0][0].text).toEqual('Contracts and agreements');
+    expect(defendantsResponseContent[12].data?.tableRows[0][0].text).toEqual('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_CONTRACTS_AND_AGREEMENTS');
     expect(defendantsResponseContent[12].data?.tableRows[0][1].text).toEqual('I have a signed contract showing that you broke the contract agreement.');
     expect(defendantsResponseContent[13].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_EVIDENCE');
     expect(defendantsResponseContent[14].data?.text).toEqual('evidence comments');
@@ -303,7 +303,7 @@ describe("Defendant's response summary service", () => {
     expect(defendantsResponseContent[11].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.THEIR_EVIDENCE');
     expect(defendantsResponseContent[12].data?.head[0].text).toEqual('COMMON.EVIDENCE_SUMMARY.ROW_TYPE');
     expect(defendantsResponseContent[12].data?.head[1].text).toEqual('COMMON.DESCRIPTION');
-    expect(defendantsResponseContent[12].data?.tableRows[0][0].text).toEqual('Contracts and agreements');
+    expect(defendantsResponseContent[12].data?.tableRows[0][0].text).toEqual('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_CONTRACTS_AND_AGREEMENTS');
     expect(defendantsResponseContent[12].data?.tableRows[0][1].text).toEqual('I have a signed contract showing that you broke the contract agreement.');
     expect(defendantsResponseContent[13].data?.text).toEqual('PAGES.REVIEW_DEFENDANTS_RESPONSE.WHY_THEY_DISAGREE_EVIDENCE');
     expect(defendantsResponseContent[14].data?.text).toEqual('evidence comments');
