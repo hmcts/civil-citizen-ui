@@ -1,11 +1,11 @@
 const ClaimantUpdate = require('../pages/claimantLiPResponse/claimantUpdate');
-const DefaultJudgment = require('../pages/claimantLiPResponse/defaultJudjment');
+const Judgment = require('../pages/claimantLiPResponse/judgment');
 const ViewDefendantResponse = require('../pages/claimantLiPResponse/viewDefendantResponse');
 const YourResponse = require('../pages/claimantLiPResponse/yourResponse');
 const CheckYourAnswers = require('../pages/claimantLiPResponse/checkYourAnswers');
 
 const claimantUpdate = new ClaimantUpdate();
-const defaultJudgment = new DefaultJudgment();
+const judgment = new Judgment();
 const viewDefendantResponse = new ViewDefendantResponse();
 const yourResponse = new YourResponse();
 const checkYourAnswers = new CheckYourAnswers();
@@ -48,7 +48,11 @@ class ClaimantResponseSteps {
   }
 
   async verifyDefaultJudgment(claimRef) {
-    await defaultJudgment.raiseDefaultJudgment(claimRef);
+    await judgment.raiseDefaultJudgment(claimRef);
+  }
+
+  async verifyJudgmentByAdmission(claimRef) {
+    await judgment.raiseJudgmentByAdmissions(claimRef);
   }
 }
 

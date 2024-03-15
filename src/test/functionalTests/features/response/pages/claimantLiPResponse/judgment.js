@@ -8,10 +8,18 @@ const fields = {
   signed: 'input[id="signed"]',
 };
 
-class DefaultJudjment {
+class Judgment {
   async raiseDefaultJudgment(claimRef) {
     await this.defendantDoB(claimRef);
     await this.hasDefendantPaid();
+    await this.judgmentAmount();
+    await this.paymentOptions();
+    await this.checkYourAnswers();
+    await this.confirmationPage();
+  }
+
+  async raiseJudgmentByAdmissions(claimRef) {
+    await this.hasDefendantPaid('JudgmentByAdmissions', claimRef);
     await this.judgmentAmount();
     await this.paymentOptions();
     await this.checkYourAnswers();
@@ -25,7 +33,11 @@ class DefaultJudjment {
     await I.click('Save and continue');
   }
 
-  async hasDefendantPaid(){
+  async hasDefendantPaid(judgmentByAdmissions, claimRef){
+    if(judgmentByAdmissions === 'JudgmentByAdmissions')
+    {
+      await I.amOnPage('/case/' + claimRef + '/ccj/paid-amount');
+    }
     await I.waitForText('Has the defendant paid some of the amount owed?', 60);
     await I.click(fields.yes);
     await I.waitForText('Amount already paid', 60);
@@ -85,4 +97,4 @@ class DefaultJudjment {
   }
 }
 
-module.exports = DefaultJudjment;
+module.exports = Judgment;
