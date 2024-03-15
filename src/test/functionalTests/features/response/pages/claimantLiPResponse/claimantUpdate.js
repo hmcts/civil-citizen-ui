@@ -3,9 +3,21 @@ const config = require('../../../../../config');
 
 class ClaimantUpdate {
   async respondToClaim(claimRef) {
-    await I.amOnPage('/dashboard/' + claimRef + '/claimant');
-    await I.waitForContent('About claim', config.WaitForText);
-    await I.click('Respond to claim');
+    I.amOnPage('/dashboard/' + claimRef + '/claimant');
+    I.waitForContent('About claim', config.WaitForText);
+    I.click('Respond to claim');
+  }
+
+  async startUploadDocs(claimRef) {
+    I.amOnPage('/case/' + claimRef + '/mediation/start-upload-documents');
+    let url = await I.grabCurrentUrl();
+    //Check if PCQ page appears
+    if(url.includes('dashboard')){
+      I.amOnPage('/case/' + claimRef + '/mediation/start-upload-documents');
+    }
+    I.waitForContent('Upload your documents', config.WaitForText);
+    I.see('Deadlines for uploading documents');
+    I.click('Start now');
   }
 }
 

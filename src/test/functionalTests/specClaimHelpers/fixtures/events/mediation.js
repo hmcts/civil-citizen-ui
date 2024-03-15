@@ -16,13 +16,16 @@ module.exports = {
       },
     };
   },
-  
-  mediationUnSuccessfulPayload: () => {
-    return {
-      event: 'MEDIATION_UNSUCCESSFUL',
-      caseData: {
-        unsuccessfulMediationReason: 'PARTY_WITHDRAWS',
-      },
-    };  
+
+  mediationUnSuccessfulPayload: (carmEnabled = false) => {
+    if (carmEnabled) {
+      return {
+        mediationUnsuccessfulReasonsMultiSelect: ['PARTY_WITHDRAWS', 'APPOINTMENT_NOT_ASSIGNED', 'NOT_CONTACTABLE_CLAIMANT_TWO']
+      };
+    } else {
+      return {
+        unsuccessfulMediationReason: 'PARTY_WITHDRAWS'
+      };
+    }
   },
 };

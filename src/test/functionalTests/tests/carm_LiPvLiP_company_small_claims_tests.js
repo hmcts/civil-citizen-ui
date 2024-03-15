@@ -2,6 +2,7 @@ const config = require('./../../config');
 const LoginSteps = require('./../features/home/steps/login');
 const ResponseSteps = require('./../features/response/steps/lipDefendantResponseSteps');
 const ClaimantResponseSteps = require('./../features/response/steps/lipClaimantResponseSteps');
+const UploadDocSteps = require('./../features/response/steps/uploadDocSteps');
 
 const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
@@ -61,7 +62,7 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
   }
 }).tag('@123');
 
-Scenario('LiP Claimant Response with Reject all claim', async () => {
+Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef);
@@ -79,6 +80,22 @@ Scenario('LiP Claimant Response with Reject all claim', async () => {
     await ResponseSteps.clickSaveButton();
     await ResponseSteps.clickSaveButton();
     await ClaimantResponseSteps.verifyEditedEmailDetails();
+    // Take Mediation Unsuccessful
+    await api.mediationUnsuccessful(config.caseWorker, true);
+  }
+}).tag('@123');
+
+Scenario('LiP claimant uploads mediation documents', async ({api}) => {
+  if (['preview', 'demo'  ].includes(config.runningEnv)) {
+    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await ClaimantResponseSteps.StartUploadDocs(claimRef);
+    await UploadDocSteps.VerifyAndSelectDocuments('Both');
+    await UploadDocSteps.VerifyUploadDocumentsPage()
+    await UploadDocSteps.UploadDocuments('Your statement');
+    await UploadDocSteps.UploadDocuments('Documents referred to in the statement');
+    await UploadDocSteps.ClickContinue();
+    await UploadDocSteps.CheckAndSendMediationDocs();
+    await UploadDocSteps.VerifyConfirmationPage();
   }
 }).tag('@123');
 

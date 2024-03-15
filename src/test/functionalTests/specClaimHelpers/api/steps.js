@@ -33,6 +33,8 @@ const {submitEvent} = require('./apiRequest');
 const idamHelper = require('./idamHelper');
 const createLipClaim = require('../fixtures/events/createLiPClaim.js');
 const createLiPClaimForCompany = require('../fixtures/events/createLiPClaimForCompany.js');
+const mediationUnsuccessful = require('../fixtures/events/mediation.js');
+
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
@@ -380,10 +382,10 @@ module.exports = {
     console.log('End of mediationSuccessful()');
   },
 
-  mediationUnsuccessful: async (user) => {
-    const mediationUnsuccessfulPayload = mediation.mediationUnSuccessfulPayload();
-    eventName = mediationUnsuccessfulPayload['event'];
-    caseData = mediationUnsuccessfulPayload['caseData'];
+  mediationUnsuccessful: async (user, carmEnabled = false) => {
+    eventName = 'MEDIATION_UNSUCCESSFUL';
+
+    caseData = {...caseData, ...mediationUnsuccessful.mediationUnSuccessfulPayload(carmEnabled)};
     await apiRequest.setupTokens(user);
     await assertSubmittedSpecEvent(config.claimState.JUDICIAL_REFERRAL);
     console.log('End of mediationUnsuccessful()');
