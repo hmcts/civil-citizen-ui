@@ -8,7 +8,7 @@ import {
   CASE_DOCUMENT_VIEW_URL,
   CCJ_PAID_AMOUNT_URL,
   DATE_PAID_URL,
-  CASE_DOCUMENT_DOWNLOAD_URL
+  CASE_DOCUMENT_DOWNLOAD_URL,
 } from 'routes/urls';
 import config from 'config';
 import { getTotalAmountWithInterestAndFees } from 'modules/claimDetailsService';
