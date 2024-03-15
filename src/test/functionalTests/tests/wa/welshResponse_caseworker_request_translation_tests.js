@@ -3,6 +3,7 @@ const ResponseSteps = require('../../features/response/steps/lipDefendantRespons
 const LoginSteps = require('../../features/home/steps/login');
 const DashboardSteps = require('../../features/dashboard/steps/dashboard');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
+const uploadTranslatedDocumentsSteps = require('../../features/wa/steps/uploadTranslatedDocumentsSteps');
 
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
@@ -44,4 +45,5 @@ Scenario('Welsh Response with PartAdmit Then Caseworker Request Translation - Se
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+  await uploadTranslatedDocumentsSteps.runWAApiTest(api, claimRef);
 }).tag('@regression-cui-r1');

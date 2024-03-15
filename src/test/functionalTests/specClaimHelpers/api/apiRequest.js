@@ -191,17 +191,18 @@ module.exports = {
         .then(jsonResponse => {
           let availableTaskDetails = jsonResponse['tasks'];
           availableTaskDetails.forEach((taskInfo) => {
-            if (taskInfo['type'] == taskId) {
-              console.log('Found taskInfo with id ...', taskId);
-              console.log('Task details are ...', taskInfo);
-              taskDetails = taskInfo;
-            }
-          });
-          if (!taskDetails) {
-            throw new Error(`Ongoing task retrieval process for case id: ${caseNumber}`);
-          } else {
-            return taskDetails;
-          }
+            console.log(availableTaskDetails)
+          //   if (taskInfo['type'] == taskId) {
+          //     console.log('Found taskInfo with id ...', taskId);
+          //     console.log('Task details are ...', taskInfo);
+          //     taskDetails = taskInfo;
+          //   }
+          // });
+          // if (!taskDetails) {
+          //   throw new Error(`Ongoing task retrieval process for case id: ${caseNumber}`);
+          // } else {
+          //   return taskDetails;
+          // }
         });
     }, TASK_MAX_RETRIES, TASK_RETRY_TIMEOUT_MS);
   },
