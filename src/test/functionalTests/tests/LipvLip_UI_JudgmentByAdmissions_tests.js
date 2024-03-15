@@ -10,11 +10,11 @@ let claimRef;
 
 Feature('Create Lip v Lip claim -  Judgment by Admissions');
 
-Scenario('Create LipvLip claim and defendant responded FullAdmit and PayImmediately and Claimant raise Judgment by Admissions @test', async ({api}) => {
+Scenario('Create LipvLip claim and defendant responded FullAdmit and PayImmediately and Claimant raise Judgment by Admissions', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    claimRef = await api.createLiPClaim(config.claimantEmailsVerificationCitizenUser, claimType);
+    claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     // During Defendant response itself, update the payment deadline to past date
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayImmediateWithIndividual);
     await api.waitForFinishedBusinessProcess();
