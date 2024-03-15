@@ -13,17 +13,17 @@ class CheckYourAnswers {
     I.click(nextAction);
   }
 
-  verifyPageContent() {
+  verifyPageContent(partiesOnTheCase) {
     this.checkPageFullyLoaded();
-    this.verifyHeadingDetails();
+    this.verifyHeadingDetails(partiesOnTheCase);
     this.verifyCheckYourAnswersContent();
     contactUs.verifyContactUs();
   }
 
-  verifyHeadingDetails() {
+  verifyHeadingDetails(partiesOnTheCase) {
     I.see('Check your answers', 'h1');
     //I.see('Case reference');
-    I.see('Test Inc v Sir John Doe');
+    I.see(partiesOnTheCase);
   }
 
   verifyCheckYourAnswersContent(readyForTrial) {
