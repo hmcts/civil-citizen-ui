@@ -79,6 +79,51 @@ class ResponseToDefence {
     I.click(paths.buttons.continue);
   }
 
+  async verifyDefResponseForPartAdmitImmediatePayment(claimAmount) {
+    I.waitForContent('Why they don’t owe the amount claimed?', 60);
+    I.see('Contracts and agreements');
+    I.see(`Sir John Doe admits they owe you £${claimAmount}`);
+    I.see(`They’ve offered to pay you £${claimAmount} immediately. This is the total amount you’ll be paid, including the claim fee and interest if applicable.`);
+    I.click(paths.buttons.continue);
+  }
+
+  async acceptOrRejectTheAmountDefendantAdmittedAndSettle(claimAmount, acceptOrReject) {
+    I.waitForContent(`Do you want to settle the claim for the £${claimAmount} the defendant admitted?`);
+    I.see('You can agree to their repayment plan or suggest your own');
+    if (acceptOrReject == 'accept') {
+      I.click(paths.options.yes);
+    } else {
+      I.click(paths.options.no);
+    }
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async acceptOrRejectTheAmountCYA(acceptOrReject) {
+    I.waitForContent('Do you accept or reject the defendant\'s admission?');
+    if (acceptOrReject == 'accept') {
+      I.see('I accept this amount');
+    } else { 
+      I.see('I reject this amount');
+      I.checkOption('#directionsQuestionnaireSigned');
+    }
+    I.click(paths.buttons.submit_response);
+  }
+
+  async verifyAcceptOrRejectConfirmationScreen(acceptOrReject = 'accept', admittedAmount = '200.00') {
+    I.waitForContent('What happens next');
+    if (acceptOrReject == 'accept') {
+      I.see('You\'ve accepted their response');
+      I.see(`The defendant said they\'ll pay you £${admittedAmount} immediately.`);
+      I.see('They must make sure you have the money by');
+      I.see('Any cheques or transfers should be clear in your account.');
+      I.see('You need to tell us if you\'ve settled the claim, for example because the defendant has paid you.');
+      I.see('Go to your account');
+    } else { 
+      I.see('You\'ve rejected their response');
+      I.see('We\'ll review the case. We\'ll contact you to tell you what to do next.');
+    }
+  }
+
   async verifyDefendantsResponseForPartAdmit(claimReference) {
     I.waitForContent('Why they can’t pay the full amount now?', 60);
     I.see('The defendant’s response','h1');
@@ -157,7 +202,7 @@ class ResponseToDefence {
   }
 
   async verifyHowTheyWantToPay(claimReference) {
-    I.waitForContent('Test reason',60);
+    I.waitForContent('Test reason', 60);
     I.see('How they want to pay?', 'h1');
     I.see('They’ve offered to pay you £500 by');
     I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
