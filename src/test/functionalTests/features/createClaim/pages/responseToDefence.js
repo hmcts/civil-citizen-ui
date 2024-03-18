@@ -102,7 +102,7 @@ class ResponseToDefence {
     I.waitForContent('Do you accept or reject the defendant\'s admission?');
     if (acceptOrReject == 'accept') {
       I.see('I accept this amount');
-    } else { 
+    } else {
       I.see('I reject this amount');
       I.checkOption('#directionsQuestionnaireSigned');
     }
@@ -118,7 +118,7 @@ class ResponseToDefence {
       I.see('Any cheques or transfers should be clear in your account.');
       I.see('You need to tell us if you\'ve settled the claim, for example because the defendant has paid you.');
       I.see('Go to your account');
-    } else { 
+    } else {
       I.see('You\'ve rejected their response');
       I.see('We\'ll review the case. We\'ll contact you to tell you what to do next.');
     }
@@ -251,6 +251,28 @@ class ResponseToDefence {
     I.click(paths.buttons.save_and_continue);
   }
 
+  verifySignTheSettlementAgreementForFullAdmit() {
+    I.waitForText('I confirm I’ve read and accept the terms of the agreement.', 60);
+    I.see('Terms of the agreement', 'h1');
+    I.see('The agreement');
+    I.see('Sir John Doe will pay £1500, no later than');
+    I.see('Completion date');
+
+    I.see('This agreement settles the claim made by Miss Jane Doe against Sir John Doe.');
+    I.see('This includes all money owed in the claim, for example court fees, expenses or interest.');
+    I.see('Neither party can make any further claims relating to this case, other than to enforce it.');
+    I.see('Either party can view and download this agreement from their Money Claims account.');
+    I.see('Both parties should keep a copy of this agreement.');
+    I.see('If the agreement is broken','h2');
+    I.see('The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.');
+    I.see('Sign the agreement','h2');
+    I.see('Make sure this agreement includes everything you’ve agreed with Sir John Doe before signing.');
+    I.see('You won’t be able to change this later.');
+    I.uncheckOption(paths.options.confirm_and_sign);
+    I.checkOption(paths.options.confirm_and_sign);
+    I.click(paths.buttons.save_and_continue);
+  }
+
   verifyHowToFormaliseARepayment(formaliseType) {
     I.waitForContent('which may make it more difficult for them to borrow money to repay you.', 60);
     I.see('Choose how to formalise repayment', 'h1');
@@ -311,6 +333,17 @@ class ResponseToDefence {
     I.click(paths.buttons.continue);
   }
 
+  verifyCheckYourAnswersForFullAdmitSettlementAgreement() {
+    I.waitForText('Sign a settlement agreement',60);
+    I.see('Check your answers', 'h1');
+    I.see('Your response','h2');
+    I.see('Do you accept the defendant repayment plan?');
+    I.see('I accept this repayment plan');
+    I.see('How do you wish to proceed?','h2');
+    I.see('How do you want to formalise the repayment plan');
+    I.click(paths.buttons.submit_response);
+  }
+
   verifyCheckYourAnswersForPartAdmitSettlementAgreement() {
     I.waitForContent('Sign a settlement agreement',60);
     I.see('Check your answers', 'h1');
@@ -333,6 +366,12 @@ class ResponseToDefence {
     I.see('How do you wish to proceed?','h2');
     I.see('How do you want to formalise the repayment plan');
     I.click(paths.buttons.submit_response);
+  }
+
+  verifyConfirmationScreenForFullAdmitSettlementAgreement(claimNumber) {
+    I.waitForText('You\'ve signed a settlement agreement', 60,'h1');
+    I.see('Your claim number:');
+    I.see(`${claimNumber}`);
   }
 
   verifyConfirmationScreenForPartAdmitSettlementAgreement(claimNumber) {

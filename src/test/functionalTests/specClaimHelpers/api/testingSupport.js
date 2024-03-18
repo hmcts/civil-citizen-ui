@@ -2,6 +2,7 @@ const config = require('../../../config');
 const idamHelper = require('./idamHelper');
 const restHelper = require('./restHelper');
 const {retry} = require('./retryHelper');
+const totp = require('totp-generator');
 
 let incidentMessage;
 
@@ -129,6 +130,26 @@ module.exports = {
         }
       },
       );
+  },
+
+  updateCaseData: async (caseId, caseData, user = config.applicantSolicitorUser) => {
+    const authToken = await idamHelper.accessToken(user);
+    const s2sAuth = await restHelper.retriedRequest(
+      `${config.url.authProviderApi}/lease`,
+      {'Content-Type': 'application/json'},
+      {
+        microservice: config.s2s.microservice,
+        oneTimePassword: totp(config.s2s.secret),
+      })
+      .then(response => response.text());
+
+    await restHelper.retriedRequest(
+      `${config.url.civilService}/testing-support/case/${caseId}`,
+      {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+        'ServiceAuthorization': s2sAuth,
+      }, caseData, 'PUT');
   },
 
   checkToggleEnabled: async (toggle) => {
