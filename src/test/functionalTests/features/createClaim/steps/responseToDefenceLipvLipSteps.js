@@ -8,6 +8,7 @@ const paths = {
     accept_or_reject: '//a[.=\'Accept or reject the £500.00\']',
     accept_or_reject_their_response: '//a[.=\'Accept or reject their response\']',
     accept_or_reject_the_payment_plan: '//a[contains(.,\'Accept or reject their repayment plan\')]',
+    accept_or_reject_the_plan: '//a[contains(.,\'Accept or reject\')]',
     how_to_formalise_repayment: '//a[.=\'Choose how to formalise repayment\']',
     sign_a_settlements_agreement: '//a[.=\'Sign a settlement agreement\']',
     request_a_CCJ: '//a[.=\'Request a County Court Judgment\']',
@@ -21,6 +22,36 @@ const paths = {
 };
 
 class ResponseToDefenceLipVLipSteps {
+
+  async claimantAcceptForDefRespPartAdmitImmediatePayment(caseReference, admittedAmount) {
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefResponseForPartAdmitImmediatePayment(admittedAmount);
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.accept_or_reject_the_plan);
+    await responseToDefence.acceptOrRejectTheAmountDefendantAdmittedAndSettle(admittedAmount, 'accept');
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.check_and_submit_your_response);
+    await responseToDefence.acceptOrRejectTheAmountCYA('accept');
+    await responseToDefence.verifyAcceptOrRejectConfirmationScreen('accept', '200.00');
+  }
+
+  async claimantRejectForDefRespPartAdmitImmediatePayment(caseReference, admittedAmount) {
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefResponseForPartAdmitImmediatePayment(admittedAmount);
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.accept_or_reject_the_plan);
+    await responseToDefence.acceptOrRejectTheAmountDefendantAdmittedAndSettle(admittedAmount, 'reject');
+    await this.verifyDashboardLoaded();
+    await this.verifyDQForFastTrack();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.check_and_submit_your_response);
+    await responseToDefence.acceptOrRejectTheAmountCYA('reject');
+    await responseToDefence.verifyAcceptOrRejectConfirmationScreen('reject');
+  }
 
   async ResponseToDefenceStepsAsAnAcceptanceOfSettlementAndRepayment(caseReference, claimNumber)
   {

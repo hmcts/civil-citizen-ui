@@ -261,7 +261,7 @@ module.exports = {
         'specDefenceAdmittedRequired': 'No',
         'respondToAdmittedClaimOwingAmountPounds': '200',
         'respondToAdmittedClaimOwingAmount': '20000',
-        'detailsOfWhyDoesYouDisputeTheClaim': 'disagree with the claim amount - not interested The total amount claimed is £1500. This includes the claim fee and any interest.',
+        'detailsOfWhyDoesYouDisputeTheClaim': 'Test reason',
         'specClaimResponseTimelineList': 'MANUAL',
         'specResponseTimelineOfEvents': [
           {
