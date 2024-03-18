@@ -13,19 +13,19 @@ class TrialArrangementsIntroduction {
     I.click(nextAction);
   }
 
-  verifyPageContent() {
+  verifyPageContent(partiesOnTheCase) {
     this.checkPageFullyLoaded();
-    this.verifyHeadingDetails();
+    this.verifyHeadingDetails(partiesOnTheCase);
     this.verifyIsTheCaseReadyForTrialSectionContent();
     this.verifyTrialAdjustmentsAndDurationSectionContent();
     this.verifyOtherSectionContent();
     contactUs.verifyContactUs();
   }
 
-  verifyHeadingDetails() {
+  verifyHeadingDetails(partiesOnTheCase) {
     I.see('Finalise your trial arrangements', 'h1');
-    //I.see('Case reference');
-    I.see('Test Inc v Sir John Doe');
+    // I.see('Case reference');
+    I.see(partiesOnTheCase);
     I.see('You have until');
     I.see('to provide this information.');
     I.see('You should finalise your trial arrangements to ensure the court has the necessary information for the trial'); +

@@ -7,7 +7,7 @@ const buttons = {
 
 class YouHavePaidLess {
   async verifyPaidLessPage() {
-    await I.waitForText('You\'ve paid less than the total claim amount', config.WaitForText);
+    await I.waitForContent('You\'ve paid less than the total claim amount', config.WaitForText);
     await I.click(buttons.continue);
   }
 }
