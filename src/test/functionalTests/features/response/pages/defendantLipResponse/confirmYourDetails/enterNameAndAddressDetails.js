@@ -47,7 +47,7 @@ class NameAndAddressDetailsPage {
 
   async enterCompanyContactDetails () {
     await I.click('Confirm your details');
-    await I.waitForText('Confirm your details', config.WaitForText);
+    await I.waitForContent('Confirm your details', config.WaitForText);
     await I.click('Save and continue');
     await I.seeElement(fields.personError);
     await I.fillField(fields.contactPerson, 'Test Company');

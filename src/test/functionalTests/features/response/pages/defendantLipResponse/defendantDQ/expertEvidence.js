@@ -9,7 +9,7 @@ const fields ={
 class ExpertEvidence {
 
   async SelectOptionForExpertEvidence() {
-    await I.waitForText('Do you want to use expert evidence?', config.WaitForText);
+    await I.waitForContent('Do you want to use expert evidence?', config.WaitForText);
     await I.click(fields.yesButton);
     await I.click('Save and continue');
   }
