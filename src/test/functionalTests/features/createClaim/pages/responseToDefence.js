@@ -232,7 +232,7 @@ class ResponseToDefence {
   }
 
   verifyAboutTheRepaymentPlan() {
-    I.waitForContent('No - I\'ll suggest my own',60);
+    I.waitForContent('No - I\'ll suggest my own', 60);
     I.see('How they want to pay?', 'h1');
     I.see('Mrs Jane Doe has offered to pay you in full by');
     I.see('Do you accept the repayment plan?');

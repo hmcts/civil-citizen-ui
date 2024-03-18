@@ -7,7 +7,8 @@ const paths = {
     view_defendants_response: '//a[.="View the defendant\'s response"]',
     accept_or_reject: '//a[.=\'Accept or reject the £500.00\']',
     accept_or_reject_their_response: '//a[.=\'Accept or reject their response\']',
-    accept_or_reject_the_payment_plan: '//a[contains(.,\'Accept or reject\')]',
+    accept_or_reject_the_payment_plan: '//a[contains(.,\'Accept or reject their repayment plan\')]',
+    accept_or_reject_the_plan: '//a[contains(.,\'Accept or reject\')]',
     how_to_formalise_repayment: '//a[.=\'Choose how to formalise repayment\']',
     sign_a_settlements_agreement: '//a[.=\'Sign a settlement agreement\']',
     request_a_CCJ: '//a[.=\'Request a County Court Judgment\']',
@@ -28,7 +29,7 @@ class ResponseToDefenceLipVLipSteps {
     I.click(paths.links.view_defendants_response);
     await responseToDefence.verifyDefResponseForPartAdmitImmediatePayment(admittedAmount);
     await this.verifyDashboardLoaded();
-    I.click(paths.links.accept_or_reject_the_payment_plan);
+    I.click(paths.links.accept_or_reject_the_plan);
     await responseToDefence.acceptOrRejectTheAmountDefendantAdmittedAndSettle(admittedAmount, 'accept');
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
@@ -42,7 +43,7 @@ class ResponseToDefenceLipVLipSteps {
     I.click(paths.links.view_defendants_response);
     await responseToDefence.verifyDefResponseForPartAdmitImmediatePayment(admittedAmount);
     await this.verifyDashboardLoaded();
-    I.click(paths.links.accept_or_reject_the_payment_plan);
+    I.click(paths.links.accept_or_reject_the_plan);
     await responseToDefence.acceptOrRejectTheAmountDefendantAdmittedAndSettle(admittedAmount, 'reject');
     await this.verifyDashboardLoaded();
     await this.verifyDQForFastTrack();
