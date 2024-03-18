@@ -53,7 +53,7 @@ class ViewYourOptionsBeforeDeadline {
   async selectYouOptions(claimRef, deadlineOption) {
     const { language } = sharedData; 
     await I.amOnPage('/case/'+claimRef+'/response/understanding-your-options');
-    await I.waitForText(content.heading1[language],config.WaitForText);
+    await I.waitForContent(content.heading1[language],config.WaitForText);
     await I.see(content.subheading1[language],'h3');
     await I.click(buttons.continue);
     await I.see(content.heading2[language]);
@@ -75,7 +75,7 @@ class ViewYourOptionsBeforeDeadline {
         await I.click('Save and continue');
         await I.see('New response deadline','h1');
         await I.click('Continue');
-        break;
+        return;
       }
       case 'requestRefused':{
         await I.click(fields.requestRefused);
@@ -93,7 +93,7 @@ class ViewYourOptionsBeforeDeadline {
 
   async selectYouOptionsError(claimRef, deadlineOption) {
     await I.amOnPage('/case/'+claimRef+'/response/understanding-your-options');
-    await I.waitForText('Requesting extra time',config.WaitForText);
+    await I.waitForContent('Requesting extra time',config.WaitForText);
     await I.see('How much extra time can you request?','h3');
     await I.click(buttons.continue);
     await I.see('Response deadline');
@@ -106,7 +106,7 @@ class ViewYourOptionsBeforeDeadline {
       case 'yesIWantMoretime':{
         await I.click(fields.yesIWantMoretime);
         await I.click(buttons.saveAndContinue);
-        await I.waitForText('Request more time to respond',config.WaitForText);
+        await I.waitForContent('Request more time to respond',config.WaitForText);
         await I.see('How much additional time are you asking for?');
         await I.click(buttons.saveAndContinue);
         await I.see('There was a problem');

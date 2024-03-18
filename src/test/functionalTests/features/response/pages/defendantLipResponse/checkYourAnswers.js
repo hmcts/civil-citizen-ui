@@ -42,7 +42,7 @@ class CheckYourAnswersPage {
       await I.amOnPage('/case/'+claimRef+'/response/task-list');
       await I.click(links.checkAndSubmit[language]);
     }
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.waitForElement(fields.cyaSigned);
     await I.checkOption(fields.cyaSigned);
     if(claimType == 'FastTrack'){
@@ -58,7 +58,7 @@ class CheckYourAnswersPage {
 
     await I.click(cButtons.submit[language]);
     await I.amOnPage('/case/'+claimRef+'/response/confirmation');
-    await I.waitForText(content.confirmationHeading[language],config.WaitForText);
+    await I.waitForContent(content.confirmationHeading[language],config.WaitForText);
     await I.see(content.confirmationSubheading[language]);
   }
 
@@ -70,7 +70,7 @@ class CheckYourAnswersPage {
       I.amOnPage('/case/'+claimRef+'/response/task-list');
       I.click('Check and submit your response');
     }
-    I.waitForText('Check your answers', config.WaitForText);
+    I.waitForContent('Check your answers', config.WaitForText);
     I.waitForElement(fields.cyaSigned);
 
     I.see('Availability for mediation');
@@ -83,14 +83,14 @@ class CheckYourAnswersPage {
 
   async verifyEditedEmailDetails() {
     I.click('Check and submit your response');
-    I.waitForText('Check your answers', config.WaitForText);
+    I.waitForContent('Check your answers', config.WaitForText);
     I.waitForElement(fields.cyaSigned);
     I.see('test@gmail.com');
   }
 
   async fillStatementOfTruthAndSubmit() {
     const { language } = sharedData;
-    I.waitForText('Check your answers', config.WaitForText);
+    I.waitForContent('Check your answers', config.WaitForText);
     I.waitForElement(fields.cyaSigned);
     I.fillField(fields.signedName, 'TestTest');
     I.fillField(fields.signedRole, 'Test');
@@ -99,7 +99,7 @@ class CheckYourAnswersPage {
     I.checkOption(fields.directionsQuestionnaireSigned);
     if (['preview', 'demo'  ].includes(config.runningEnv)) {
       I.click(cButtons.submit[language]);
-      I.waitForText(content.confirmationHeading[language],config.WaitForText);
+      I.waitForContent(content.confirmationHeading[language],config.WaitForText);
       I.see(content.confirmationSubheading[language]);
     }
   }
@@ -110,7 +110,7 @@ class CheckYourAnswersPage {
 
   async clickEmailChangeLink() {
     await I.click('a[href*="email-confirmation"]');
-    await I.waitForText('Can the mediation team use', config.WaitForText);
+    await I.waitForContent('Can the mediation team use', config.WaitForText);
   }
 }
 
