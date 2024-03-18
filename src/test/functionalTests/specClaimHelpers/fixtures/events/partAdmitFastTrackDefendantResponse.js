@@ -350,7 +350,7 @@ module.exports = {
         'specDefenceAdmittedRequired': 'No',
         'respondToAdmittedClaimOwingAmountPounds': '3456',
         'respondToAdmittedClaimOwingAmount': '345600',
-        'detailsOfWhyDoesYouDisputeTheClaim': 'disagree with the claim amount?\r\n',
+        'detailsOfWhyDoesYouDisputeTheClaim': 'Test reason - disagree with the claim amount?\r\n',
         'specClaimResponseTimelineList': 'MANUAL',
         'specResponseTimelineOfEvents': [
           
