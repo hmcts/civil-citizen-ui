@@ -100,7 +100,7 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifyConfirmationScreenForRejection(claimNumber);
   }
 
-  async ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDate(caseReference, claimNumber)
+  async ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDateCCJ(caseReference, claimNumber)
   {
     await responseToDefence.open(caseReference);
     await responseToDefence.verifyDashboard();
@@ -119,6 +119,27 @@ class ResponseToDefenceLipVLipSteps {
     I.click(paths.links.check_and_submit_your_response);
     responseToDefence.verifyCheckYourAnswersForFullAdmitCCJ();
     responseToDefence.verifyConfirmationScreenForFullAdmitCCJ(claimNumber);
+  }
+
+  async ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDateSSA(caseReference, claimNumber)
+  {
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefendantsResponseFullAdmitPayBySetDate();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.accept_or_reject_the_payment_plan);
+    await responseToDefence.verifyRepaymentPlanForFullAdmitPayBySetDate();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.how_to_formalise_repayment);
+    await responseToDefence.verifyHowToFormaliseARepayment('SSA');
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.sign_a_settlements_agreement);
+    await responseToDefence.verifySignTheSettlementAgreementForFullAdmit();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.check_and_submit_your_response);
+    responseToDefence.verifyCheckYourAnswersForFullAdmitSettlementAgreement();
+    responseToDefence.verifyConfirmationScreenForFullAdmitSettlementAgreement(claimNumber);
   }
 
   async ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceDisputeAll(caseReference, claimNumber)
