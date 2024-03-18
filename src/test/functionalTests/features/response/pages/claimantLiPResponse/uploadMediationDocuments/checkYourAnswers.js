@@ -5,7 +5,6 @@ const fields = {
   docSigned: 'input#signed',
 };
 
-
 class CheckYourAnswersPage {
   async checkAndSendMediationDocs() {
     I.waitForContent('Check your answers', config.WaitForText);

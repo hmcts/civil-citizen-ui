@@ -38,14 +38,14 @@ class UploadDocuments {
       I.fillField(fields.statementMonth, '09');
       I.fillField(fields.statementYear, '2010');
       I.attachFile(fields.statementFile, file);
-      I.click(fields.statementUploadButton)
+      I.click(fields.statementUploadButton);
     } else if (docType === 'Documents referred to in the statement') {
       I.fillField(fields.yourDoc, 'LIP test doc');
       I.fillField(fields.docDay, '08');
       I.fillField(fields.docMonth, '09');
       I.fillField(fields.docYear, '2011');
       I.attachFile(fields.docFile, file);
-      I.click(fields.docUploadButton)
+      I.click(fields.docUploadButton);
     }
   }
 

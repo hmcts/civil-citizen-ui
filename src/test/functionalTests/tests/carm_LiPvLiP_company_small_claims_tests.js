@@ -85,12 +85,12 @@ Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
   }
 }).tag('@123');
 
-Scenario('LiP claimant uploads mediation documents', async ({api}) => {
+Scenario('LiP claimant uploads mediation documents', async () => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ClaimantResponseSteps.StartUploadDocs(claimRef);
     await UploadDocSteps.VerifyAndSelectDocuments('Both');
-    await UploadDocSteps.VerifyUploadDocumentsPage()
+    await UploadDocSteps.VerifyUploadDocumentsPage();
     await UploadDocSteps.UploadDocuments('Your statement');
     await UploadDocSteps.UploadDocuments('Documents referred to in the statement');
     await UploadDocSteps.ClickContinue();

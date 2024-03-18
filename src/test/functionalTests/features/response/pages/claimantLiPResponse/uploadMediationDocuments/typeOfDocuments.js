@@ -3,7 +3,7 @@ const config = require('../../../../../../config');
 
 const fields = {
   yourStatement: 'input[value="YOUR_STATEMENT"]',
-  docReferred: 'input[value="DOCUMENTS_REFERRED_TO_IN_STATEMENT"]'
+  docReferred: 'input[value="DOCUMENTS_REFERRED_TO_IN_STATEMENT"]',
 };
 
 class TypeOfDocuments {

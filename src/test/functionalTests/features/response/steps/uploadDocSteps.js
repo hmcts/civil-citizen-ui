@@ -9,7 +9,6 @@ const cya = new CheckYourAnswers();
 const confirmation = new Confirmation();
 const TEST_FILE_PATH = 'features/caseProgression/data/TestPDF.pdf';
 
-
 class UploadMediationDocSteps {
   async VerifyAndSelectDocuments(docType) {
     await typeOfDocuments.verifyAndSelectDocuments(docType);
