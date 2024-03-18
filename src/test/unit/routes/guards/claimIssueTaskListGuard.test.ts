@@ -9,7 +9,6 @@ import {
 import config from 'config';
 import nock from 'nock';
 import {t} from 'i18next';
-import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
@@ -53,8 +52,6 @@ describe('Claim Issue TaskList Guard', () => {
     //Given
     mockGetCaseData.mockImplementation(async () => new Claim());
     app.request.cookies = {eligibilityCompleted: true};
-    jest.spyOn(CivilServiceClient.prototype, 'createDashboard').mockReturnValue(null);
-
     //When
     const res = await request(app).get(CLAIMANT_TASK_LIST_URL).send();
     //Then

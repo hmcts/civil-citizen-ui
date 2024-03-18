@@ -10,14 +10,9 @@ import {
 } from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
-import config from 'config';
-import {CivilServiceClient} from 'client/civilServiceClient';
 
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
-
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -26,7 +21,6 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (as
     const caseData: Claim = await getCaseDataFromStore(userId, true);
     if (!caseData?.isDraftClaim()) {
       await createDraftClaimInStoreWithExpiryTime(userId);
-      await civilServiceClient.createDashboard(req);
     }
     const taskLists = getTaskLists(caseData, userId, lang);
     const {completed, total} = calculateTotalAndCompleted(taskLists);

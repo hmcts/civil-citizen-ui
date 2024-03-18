@@ -55,10 +55,6 @@ services:
   govPay:
     url: 'https://card.payments.service.gov.uk'
   carmDate: '01 May 2024'
-  enforceJudgment:
-    url: 'https://www.gov.uk/make-court-claim-for-money/enforce-a-judgment'
-  civilMoneyClaims:
-    telephone: '0300 123 7050'
 health:
   timeout: 5000
   deadline: 15000

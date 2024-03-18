@@ -81,7 +81,6 @@ import { CCDClaimantMediationLip } from './claimantResponse/ccdClaimantResponse'
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import { FeeType } from 'common/form/models/helpWithFees/feeType';
-import {PaymentDetails} from 'models/PaymentDetails';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 
 export class CivilClaimResponse {
@@ -278,11 +277,9 @@ export interface CCDClaim extends ClaimUpdate {
   liftBreathing?: CCDBreathingSpaceStartInfo;
   hearingFee?: HearingFee;
   hearingDueDate?: Date;
-  hearingFeeHelpWithFees?:CCDHelpWithFees;
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
   claimantBilingualLanguagePreference?:CCDLanguage;
   hearingHelpFeesReferenceNumber?: string;
-  hearingFeePaymentDetails?: PaymentDetails;
   mediationUploadDocuments?: UploadDocuments;
   applicant1LiPResponse?: CCDClaimantLiPResponse;
   applicant1LiPResponseCarm?: CcdMediationCarm;

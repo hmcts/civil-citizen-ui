@@ -4608,9 +4608,9 @@ __metadata:
     express-async-errors: ^3.1.1
     express-nunjucks: ^3.0.0
     express-session: ^1.17.3
-    follow-redirects: 1.15.6
+    follow-redirects: 1.15.4
     glob: ^10.0.0
-    govuk-frontend: 4.8.0
+    govuk-frontend: 4.7.0
     helmet: ^7.0.0
     html-webpack-plugin: ^5.5.0
     html_codesniffer: ^2.5.1
@@ -6888,13 +6888,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:1.15.6":
-  version: 1.15.6
-  resolution: "follow-redirects@npm:1.15.6"
+"follow-redirects@npm:1.15.4":
+  version: 1.15.4
+  resolution: "follow-redirects@npm:1.15.4"
   peerDependenciesMeta:
     debug:
       optional: true
-  checksum: a62c378dfc8c00f60b9c80cab158ba54e99ba0239a5dd7c81245e5a5b39d10f0c35e249c3379eae719ff0285fff88c365dd446fab19dee771f1d76252df1bbf5
+  checksum: e178d1deff8b23d5d24ec3f7a94cde6e47d74d0dc649c35fc9857041267c12ec5d44650a0c5597ef83056ada9ea6ca0c30e7c4f97dbf07d035086be9e6a5b7b6
   languageName: node
   linkType: hard
 
@@ -7439,10 +7439,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:4.8.0":
-  version: 4.8.0
-  resolution: "govuk-frontend@npm:4.8.0"
-  checksum: e255f924f399319e109347ec4993e0441fc5847a6a73ba44a465b1599c7d03e85c29212743b081ccd60e19224c6301143c77540b8e4bfe615fcb3e162b8663f4
+"govuk-frontend@npm:4.7.0":
+  version: 4.7.0
+  resolution: "govuk-frontend@npm:4.7.0"
+  checksum: 0e246dd2c724e51fd14dd40fc31c66627df7d07ebe89e1a19b1e7da7e7a5eb86bc6560229e18a13e40651e6c953a67422d54e77e240d82efff7b2cbefaa8b88d
   languageName: node
   linkType: hard
 

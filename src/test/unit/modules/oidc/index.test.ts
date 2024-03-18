@@ -10,13 +10,11 @@ import {
   SIGN_OUT_URL, UNAUTHORISED_URL,
 } from 'routes/urls';
 
-import {getOidcResponse, getSessionIssueTime, getUserDetails, OidcResponse} from '../../../../main/app/auth/user/oidc';
+import {getUserDetails} from '../../../../main/app/auth/user/oidc';
 
 jest.mock('../../../../main/modules/draft-store');
 
 const mockGetUserDetails = getUserDetails as jest.Mock;
-const mockGetOidcResponse = getOidcResponse as jest.Mock;
-const mockGetSessionIssueTime = getSessionIssueTime as jest.Mock;
 
 const citizenRoleToken: string = config.get('citizenRoleToken');
 const idamServiceUrl: string = config.get('services.idam.authorizationURL');
@@ -67,9 +65,7 @@ describe('OIDC middleware', () => {
       expect(app.locals.assignClaimURL).toBe(ASSIGN_CLAIM_URL);
     });
     it('should redirect to assign claim url when claim id is set', async () => {
-      mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
-      mockGetUserDetails.mockReturnValue(userDetails);
-      mockGetSessionIssueTime.mockReturnValue(1234);
+      mockGetUserDetails.mockImplementation(async () => userDetails);
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
@@ -78,9 +74,7 @@ describe('OIDC middleware', () => {
       expect(app.locals.assignClaimURL).toBeUndefined();
     });
     it('should redirect to dashboard when user is logged in and claim is not set', async () => {
-      mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
-      mockGetUserDetails.mockReturnValue(userDetails);
-      mockGetSessionIssueTime.mockReturnValue(1234);
+      mockGetUserDetails.mockImplementation(async () => userDetails);
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
@@ -90,9 +84,7 @@ describe('OIDC middleware', () => {
     });
     it('should redirect to unauthorised when user is logged in but has no citizen role', async ()=> {
       userDetails.roles = [];
-      mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
-      mockGetUserDetails.mockReturnValue(userDetails);
-      mockGetSessionIssueTime.mockReturnValue(1234);
+      mockGetUserDetails.mockImplementation(async () => userDetails);
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
@@ -109,9 +101,7 @@ describe('OIDC middleware', () => {
     });
     it('should redirect to dashboard when query is string and user has citizen role', async () => {
       userDetails.roles = ['citizen'];
-      mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
-      mockGetUserDetails.mockReturnValue(userDetails);
-      mockGetSessionIssueTime.mockReturnValue(1234);
+      mockGetUserDetails.mockImplementation(async () => userDetails);
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
@@ -130,9 +120,7 @@ describe('OIDC middleware', () => {
       expect(app.locals.claimIssueTasklist).toBe(true);
     });
     it('should redirect to claim issue task-list url when claimIssueTasklist is true', async () => {
-      mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
-      mockGetUserDetails.mockReturnValue(userDetails);
-      mockGetSessionIssueTime.mockReturnValue(1234);
+      mockGetUserDetails.mockImplementation(async () => userDetails);
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
@@ -141,9 +129,7 @@ describe('OIDC middleware', () => {
       expect(app.locals.claimIssueTasklist).toBeUndefined();
     });
     it('should redirect to dashboard when user is logged in and claimIssueTasklist is not set', async () => {
-      mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
-      mockGetUserDetails.mockReturnValue(userDetails);
-      mockGetSessionIssueTime.mockReturnValue(1234);
+      mockGetUserDetails.mockImplementation(async () => userDetails);
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
