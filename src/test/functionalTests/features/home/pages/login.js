@@ -8,7 +8,7 @@ const fields = {
 
 const buttons = {
   submit: 'input.button',
-  hmctsSignIn: 'input[type="submit"]',
+  hmctsSignIn: 'Sign in',
   acceptCookies: 'button[id="cookie-accept-submit"]',
   hideMessage: 'button[name="hide-accepted"]',
 };
@@ -24,11 +24,12 @@ class LoginPage {
   }
 
   async login(email, password) {
-    await I.waitForText('Email address', config.WaitForText);
+    await I.waitForContent('Email address', config.WaitForText);
     await I.waitForVisible(fields.username);
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);
-    await I.click(buttons.submit);
+    await I.click(buttons.hmctsSignIn);
+    await I.wait(3);
     await I.seeInCurrentUrl('/dashboard');
   }
 }

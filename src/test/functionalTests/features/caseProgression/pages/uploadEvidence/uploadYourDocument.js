@@ -242,25 +242,29 @@ class UploadYourDocument {
     I.selectOption('questionsForExperts[0][otherPartyName]', 'Test Inc');
     I.fillField('questionsForExperts[0][questionDocumentName]', 'Questions for Expert Docuent Nae 1');
     I.attachFile('questionsForExperts[0][fileUpload]', 'features/caseProgression/data/TestJPEG.jpeg');
+    I.selectOption('questionsForExperts[0][otherPartyName]', 'Sir John Doe');
     I.click('div:nth-of-type(9) #add-another-expert-list');
     I.fillField('questionsForExperts[1][expertName]', 'Questions for Expert 2');
     I.selectOption('questionsForExperts[1][otherPartyName]', 'Test Inc');
     I.fillField('questionsForExperts[1][questionDocumentName]', 'Questions for Expert Docuent Nae 2');
     I.attachFile('questionsForExperts[1][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
+    I.selectOption('questionsForExperts[1][otherPartyName]', 'Sir John Doe');
 
     //Answers to Questions By Other Party - Subsection
     I.fillField('answersForExperts[0][expertName]', 'Answers for Expert 1');
     I.selectOption('answersForExperts[0][otherPartyName]', 'Test Inc');
     I.fillField('answersForExperts[0][otherPartyQuestionsDocumentName]', 'Answers for Expert Docuent Nae 1');
     I.attachFile('answersForExperts[0][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
+    I.selectOption('answersForExperts[0][otherPartyName]', 'Sir John Doe');
     I.click('div:nth-of-type(10) #add-another-expert-list');
     I.fillField('answersForExperts[1][expertName]', 'Answers for Expert 2');
     I.selectOption('answersForExperts[1][otherPartyName]', 'Test Inc');
     I.fillField('answersForExperts[1][otherPartyQuestionsDocumentName]', 'Answers for Expert Docuent Nae 2');
     I.attachFile('answersForExperts[1][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
+    I.selectOption('answersForExperts[1][otherPartyName]', 'Sir John Doe');
 
-    //Trial Docuents - Section
-    //Case Suary
+    //Trial Documents - Section
+    //Case Summary
     I.attachFile('trialCaseSummary[0][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
     I.click('div:nth-of-type(11) #add-another-trial-list');
     I.attachFile('trialCaseSummary[1][fileUpload]', 'features/caseProgression/data/TestTXT.txt');

@@ -23,7 +23,7 @@ class ShareYouFinancialDetailsIntro {
   async open(claimRef) {
     const { language } = sharedData; 
     await I.amOnPage('/case/' + claimRef + '/response/statement-of-means/intro');
-    await I.waitForText(content.descriptionText1[language], config.WaitForText);
+    await I.waitForContent(content.descriptionText1[language], config.WaitForText);
     await I.see(content.descriptionText2[language]);
     await I.see(content.descriptionText3[language]);
   }

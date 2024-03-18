@@ -119,7 +119,7 @@ class CreateClaimSteps {
   }
 
   async verifyDashboardLoaded() {
-    I.waitForText('Submit', 3);
+    I.waitForContent('Submit', 3);
     I.see('Application complete', 'h2');
   }
 
