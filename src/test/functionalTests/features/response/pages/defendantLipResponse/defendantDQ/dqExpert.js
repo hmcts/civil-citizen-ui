@@ -17,7 +17,7 @@ const content = {
 class DqExpert {
 
   async chooseExpert() {
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    await I.waitForContent(content.heading[sharedData.language], config.WaitForText);
     await I.click(fields.continueWithExpert);
   }
 }

@@ -19,22 +19,29 @@ const trialArrangementConfirmation = new TrialArrangementsConfirmation();
 
 class TrialArrangementSteps {
 
-  initiateTrialArrangementJourney(claimRef, claimType, readyForTrial) {
+  initiateTrialArrangementJourney(claimRef, claimType, readyForTrial, partyType) {
     console.log('The value of the Claim Reference : ' + claimRef);
-    latestUpdateTab.open(claimRef, claimType, true, false, true);
-    latestUpdateTab.nextAction('Finalise trial arrangements');
-    trialArrangementsIntroduction.verifyPageContent();
+    let partiesOnTheCase;
+    if (partyType === 'LiPvLiP') {
+      partiesOnTheCase = 'Miss Jane Doe v Sir John Doe';
+      I.amOnPage('/case/' + claimRef + '/case-progression/finalise-trial-arrangements');
+    } else {
+      partiesOnTheCase = 'Test Inc v Sir John Doe';
+      latestUpdateTab.open(claimRef, claimType, true, false, true);
+      latestUpdateTab.nextAction('Finalise trial arrangements');
+    }
+    trialArrangementsIntroduction.verifyPageContent(partiesOnTheCase);
     trialArrangementsIntroduction.nextAction('Start now');
-    isYourCaseReadyForTrial.verifyPageContent();
+    isYourCaseReadyForTrial.verifyPageContent(partiesOnTheCase);
     isYourCaseReadyForTrial.inputDataForIsThisCaseReadyForTrialPage(readyForTrial);
     isYourCaseReadyForTrial.nextAction('Continue');
-    hasAnythingChanged.verifyPageContent();
+    hasAnythingChanged.verifyPageContent(partiesOnTheCase);
     hasAnythingChanged.inputDataForHasAnythingChangedSection();
     hasAnythingChanged.nextAction('Continue');
-    trialDuration.verifyPageContent();
+    trialDuration.verifyPageContent(partiesOnTheCase);
     trialDuration.inputDataForTrialDurationOtherInformation();
     trialDuration.nextAction('Continue');
-    checkYourAnswers.verifyPageContent();
+    checkYourAnswers.verifyPageContent(partiesOnTheCase);
     checkYourAnswers.nextAction('Submit');
   }
 
