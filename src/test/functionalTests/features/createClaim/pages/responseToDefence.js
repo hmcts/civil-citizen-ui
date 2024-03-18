@@ -113,7 +113,7 @@ class ResponseToDefence {
     I.waitForContent('What happens next');
     if (acceptOrReject == 'accept') {
       I.see('You\'ve accepted their response');
-      I.see(`The defendant said they\'ll pay you £${admittedAmount} immediately.`);
+      I.see(`The defendant said they'll pay you £${admittedAmount} immediately.`);
       I.see('They must make sure you have the money by');
       I.see('Any cheques or transfers should be clear in your account.');
       I.see('You need to tell us if you\'ve settled the claim, for example because the defendant has paid you.');
