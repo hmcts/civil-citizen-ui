@@ -8,27 +8,21 @@ import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftS
 import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {Claim} from 'models/claim';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import config from 'config';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimFeePaymentConfirmationService');
 
 const success = 'Success';
 const paymentCancelledByUser = 'Payment was cancelled by the user';
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<string> => {
   try {
     const redisClaimId = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const paymentInfo = claim.claimDetails?.claimFeePayment;
-    const paymentStatus = await getFeePaymentStatus(paymentInfo?.paymentReference, FeeType.CLAIMISSUED, req);
+    const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo?.paymentReference, FeeType.CLAIMISSUED, req);
 
     if(paymentStatus.status === success) {
-      claim.issueDate = new Date();
-      await civilServiceClient.submitClaimAfterPayment(claimId, claim, req);
       return PAY_CLAIM_FEE_SUCCESSFUL_URL;
     }
 

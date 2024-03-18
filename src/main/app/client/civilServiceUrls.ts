@@ -1,7 +1,6 @@
 
 export const CIVIL_SERVICE_CASES_URL = '/cases/';
 export const CIVIL_SERVICE_FEES_URL = '/fees';
-export const CIVIL_SERVICE_DASHBOARD_URL = '/dashboard';
 export const CIVIL_SERVICE_ASSIGNMENT_URL = '/assignment';
 export const CIVIL_SERVICE_CLAIM_AMOUNT_URL = `${CIVIL_SERVICE_FEES_URL}/claim`;
 export const CIVIL_SERVICE_HEARING_URL = `${CIVIL_SERVICE_FEES_URL}/hearing`;
@@ -20,9 +19,4 @@ export const CIVIL_SERVICE_USER_CASE_ROLE = `${CIVIL_SERVICE_CASES_URL}:claimId/
 export const CIVIL_SERVICE_COURT_DECISION =  `${CIVIL_SERVICE_CASES_URL}:claimId/courtDecision`;
 export const CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL = `${CIVIL_SERVICE_ASSIGNMENT_URL}/reference/:caseReference/ocmc`;
 export const CIVIL_SERVICE_FEES_PAYMENT_URL= `${CIVIL_SERVICE_FEES_URL}/:feeType/case/:claimId/payment`;
-export const CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL= `${CIVIL_SERVICE_FEES_URL}/:feeType/payment/:paymentReference/status`;
-export const CIVIL_SERVICE_DASHBOARD_TASKLIST_URL= `${CIVIL_SERVICE_DASHBOARD_URL}/taskList/:ccd-case-identifier/role/:role-type`;
-export const CIVIL_SERVICE_NOTIFICATION_LIST_URL= `${CIVIL_SERVICE_DASHBOARD_URL}/notifications/:ccd-case-identifier/role/:role-type`;
-export const CIVIL_SERVICE_BASE_DASHBOARD_URL = '/dashboard';
-export const CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL = `${CIVIL_SERVICE_BASE_DASHBOARD_URL}/scenarios/:scenarioRef/:redisKey`;
-export const CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL = `${CIVIL_SERVICE_BASE_DASHBOARD_URL}/notifications/:notificationId`;
+export const CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL= `${CIVIL_SERVICE_FEES_URL}/:feeType/case/:claimId/payment/:paymentReference/status`;
