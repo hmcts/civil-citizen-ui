@@ -40,7 +40,7 @@ class WhyDoYouDisagreeTheClaimAmount {
     }else{
       await I.amOnPage('/case/'+claimRef+'/response/full-rejection/why-do-you-disagree');
     }
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.see(content.hintText1[language]);
     await I.see(content.hintText2[language]);
     await I.fillField(fields.text, inputs.whyYouDisagree[language]);
@@ -53,7 +53,7 @@ class WhyDoYouDisagreeTheClaimAmount {
     }else{
       await I.amOnPage('/case/'+claimRef+'/response/full-rejection/why-do-you-disagree');
     }
-    await I.waitForText('Why do you disagree with the claim amount?', config.WaitForText);
+    await I.waitForContent('Why do you disagree with the claim amount?', config.WaitForText);
     await I.see('The total amount claimed is £');
     await I.see('This includes the claim fee and any interest.');
     await I.click(buttons.saveAndContinue);
