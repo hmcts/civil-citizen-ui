@@ -21,6 +21,9 @@ import {
   CIVIL_SERVICE_USER_CASE_ROLE,
   CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
+  CIVIL_SERVICE_DASHBOARD_TASKLIST_URL,
+  CIVIL_SERVICE_NOTIFICATION_LIST_URL,
+  CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL, CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -43,6 +46,13 @@ import {CCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedP
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
 import {ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
+import {Dashboard} from 'models/dashboard/dashboard';
+import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
+import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
+import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -414,6 +424,87 @@ export class CivilServiceClient {
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
       logger.error('Error when getting fee payment status');
+      throw err;
+    }
+  }
+
+  async retrieveNotification(claimId: string,role: string,  req: AppRequest): Promise<DashboardNotificationList>  {
+    const config = this.getConfig(req);
+    const response = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
+    let dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
+
+    dashboardNotificationItems = dashboardNotificationItems.filter((notification) => {
+
+      const session = req?.session;
+      const actionUser = notification?.notificationAction?.createdBy;
+      const sessionUser = session.user?.givenName + ' ' + session.user?.familyName;
+      const sessionStart = new Date(session.issuedAt * 1000);
+      const actionPerformed = notification?.notificationAction?.actionPerformed;
+      const actionPerformedTime = new Date(notification?.notificationAction?.createdAt);
+      const timeToLive = notification.timeToLive;
+
+      return !(actionUser === sessionUser && actionPerformed === 'Click'
+            && (timeToLive === 'Click'
+                || (timeToLive === 'Session'
+                  && sessionStart > actionPerformedTime
+                )
+            )
+      );
+
+    });
+
+    return new DashboardNotificationList(dashboardNotificationItems);
+  }
+
+  async retrieveDashboard(claimId: string,role: string,  req: AppRequest): Promise<Dashboard>  {
+    const config = this.getConfig(req);
+    const response = await this.client.get(CIVIL_SERVICE_DASHBOARD_TASKLIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
+    const taskList = plainToInstance(CivilServiceDashboardTask, response.data as CivilServiceDashboardTask[]);
+
+    const groupedTasks = taskList.reduce((group, task) => {
+      const key = `${task.categoryEn}-${task.categoryCy}`;
+      const dashboardTask = new DashboardTask(
+        task.id,
+        task.taskNameEn,
+        task.taskNameCy,
+        task.currentStatusEn.toString(),
+        task.currentStatusCy,
+        TaskStatusColor[task.currentStatusEn],
+        task.hintTextEn,
+        task.hintTextCy,
+      );
+
+      if (!group[key]) {
+        group[key] = new DashboardTaskList(task.categoryEn, task.categoryCy);
+      }
+      group[key].tasks.push(dashboardTask);
+
+      return group;
+    }, {} as Record<string, DashboardTaskList>);
+
+    const groupedTasksList= Object.values(groupedTasks) as DashboardTaskList[];
+
+    return new Dashboard(groupedTasksList);
+  }
+
+  async createDashboard(req: AppRequest): Promise<void> {
+    const config = this.getConfig(req);
+    try {
+      const redisKey = req?.session?.user?.id;
+      const scenarioRef = 'Scenario.AAA7.ClaimIssue.ClaimSubmit.Required';
+      await this.client.post(CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL.replace(':scenarioRef', scenarioRef).replace(':redisKey', redisKey), {params: new Map()},config);
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+
+  async recordClick(id: string, req: AppRequest): Promise<void> {
+    const config = this.getConfig(req);
+    try {
+      await this.client.put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', id), null, config);
+    } catch (err: unknown) {
+      logger.error(err);
       throw err;
     }
   }
