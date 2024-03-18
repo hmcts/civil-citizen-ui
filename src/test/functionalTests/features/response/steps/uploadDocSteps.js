@@ -10,8 +10,16 @@ const confirmation = new Confirmation();
 const TEST_FILE_PATH = 'features/caseProgression/data/TestPDF.pdf';
 
 class UploadMediationDocSteps {
-  async VerifyAndSelectDocuments(docType) {
-    await typeOfDocuments.verifyAndSelectDocuments(docType);
+  async VerifyDocuments() {
+    await typeOfDocuments.verifyDocuments();
+  }
+
+  async SelectDocuments(docType) {
+    await typeOfDocuments.selectDocuments(docType);
+  }
+
+  async UnSelectDocuments(docType) {
+    await typeOfDocuments.unSelectDocuments(docType);
   }
 
   async VerifyUploadDocumentsPage() {
@@ -25,8 +33,12 @@ class UploadMediationDocSteps {
     await uploadDocuments.clickContinue();
   }
 
-  async CheckAndSendMediationDocs() {
-    await cya.checkAndSendMediationDocs();
+  async ClickBackButton() {
+    await uploadDocuments.clickBackButton();
+  }
+
+  async CheckAndSendMediationDocs(type) {
+    await cya.checkAndSendMediationDocs(type);
   }
 
   async VerifyConfirmationPage() {

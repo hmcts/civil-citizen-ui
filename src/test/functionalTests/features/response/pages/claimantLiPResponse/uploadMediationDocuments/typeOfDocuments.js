@@ -7,20 +7,29 @@ const fields = {
 };
 
 class TypeOfDocuments {
-  async verifyAndSelectDocuments(docType) {
+
+  async verifyDocuments() {
     I.waitForContent('Mediation non-attendance', config.WaitForText);
     I.see('Select the types of documents that apply to your case.');
     I.click('Continue');
     I.waitForContent('You must select at least one type of document');
+  }
+  async selectDocuments(docType) {
+    I.waitForContent('Mediation non-attendance', config.WaitForText);
     if (docType === 'Your statement') {
-      I.click(fields.yourStatement);
+      I.checkOption(fields.yourStatement);
     } else if (docType === 'Documents referred to in the statement') {
-      I.click(fields.docReferred);
-    } else {
-      I.click(fields.yourStatement);
-      I.click(fields.docReferred);
+      I.checkOption(fields.docReferred);
     }
-    I.click('Continue');
+  }
+
+  async unSelectDocuments(docType) {
+    I.waitForContent('Mediation non-attendance', config.WaitForText);
+    if (docType === 'Your statement') {
+      I.uncheckOption(fields.yourStatement);
+    } else if (docType === 'Documents referred to in the statement') {
+      I.uncheckOption(fields.docReferred);
+    }
   }
 }
 

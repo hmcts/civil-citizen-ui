@@ -10,7 +10,7 @@ const fields = {
   statementYear: 'div[id*="documentsForYourStatement"] input[id*="dateYear"]',
   statementFile: 'input[id="documentsForYourStatement[0][fileUpload]"]',
   statementUploadButton: 'button[value="documentsForYourStatement[0][uploadButton]"]',
-  yourDoc: 'input[id="documentsForYourStatement[0][fileUpload]"]',
+  yourDoc: 'input[id*="typeOfDocument"]',
   docDay: 'div[id*="documentsForDocumentsReferred"] input[id*="dateDay"]',
   docMonth: 'div[id*="documentsForDocumentsReferred"] input[id*="dateMonth"]',
   docYear: 'div[id*="documentsForDocumentsReferred"] input[id*="dateYear"]',
@@ -51,6 +51,12 @@ class UploadDocuments {
 
   async clickContinue() {
     I.click(cButtons.continue[sharedData.language]);
+    I.wait(2);
+  }
+
+  async clickBackButton() {
+    I.click('Back');
+    I.wait(2);
   }
 }
 
