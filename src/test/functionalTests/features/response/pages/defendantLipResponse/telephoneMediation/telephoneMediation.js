@@ -9,7 +9,7 @@ class TelephoneMediation {
 
   async selectMediation() {
     await I.click(fields.telephoneMediationLink);
-    await I.waitForText('Telephone mediation', config.WaitForText);
+    await I.waitForContent('Telephone mediation', config.WaitForText);
     await I.see('What happens at mediation?');
     await I.see('What happens if you do not attend your mediation appointment?');
     await I.see('After the phone call');

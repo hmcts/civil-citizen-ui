@@ -360,14 +360,13 @@ export class CivilServiceClient {
     }
   }
 
-  async assignDefendantToClaim(claimId:string, req:AppRequest): Promise<void> {
-    try{
-      await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId),{}, // nosonar
-        {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}}); // nosonar
-    } catch (err: unknown) {
-      logger.error('Error when assigning defendant to claim');
-      throw err;
-    }
+  async assignDefendantToClaim(claimId: string, req: AppRequest): Promise<void> {
+    await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId), {}, // nosonar
+      { headers: { 'Authorization': `Bearer ${req.session?.user?.accessToken}` } })
+      .catch((err) => {
+        logger.error('Error when assigning defendant to claim');
+        throw err;
+      }); // nosonar
   }
 
   async getAgreedDeadlineResponseDate(claimId: string, req: AppRequest): Promise<Date> {
@@ -418,10 +417,11 @@ export class CivilServiceClient {
     }
   }
 
-  async getFeePaymentStatus(paymentReference: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
+  async getFeePaymentStatus(claimId: string, paymentReference: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
     const config = this.getConfig(req);
     try {
-      const response = await this.client.get(CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':feeType', feeType).replace(':paymentReference', paymentReference), config);
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':claimId', claimId).replace(':feeType', feeType).replace(':paymentReference', paymentReference), config);
+
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
       logger.error('Error when getting fee payment status');
@@ -432,7 +432,27 @@ export class CivilServiceClient {
   async retrieveNotification(claimId: string,role: string,  req: AppRequest): Promise<DashboardNotificationList>  {
     const config = this.getConfig(req);
     const response = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
-    const dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
+    let dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
+
+    dashboardNotificationItems = dashboardNotificationItems.filter((notification) => {
+
+      const session = req?.session;
+      const actionUser = notification?.notificationAction?.createdBy;
+      const sessionUser = session.user?.givenName + ' ' + session.user?.familyName;
+      const sessionStart = new Date(session.issuedAt * 1000);
+      const actionPerformed = notification?.notificationAction?.actionPerformed;
+      const actionPerformedTime = new Date(notification?.notificationAction?.createdAt);
+      const timeToLive = notification.timeToLive;
+
+      return !(actionUser === sessionUser && actionPerformed === 'Click'
+            && (timeToLive === 'Click'
+                || (timeToLive === 'Session'
+                  && sessionStart > actionPerformedTime
+                )
+            )
+      );
+
+    });
 
     return new DashboardNotificationList(dashboardNotificationItems);
   }

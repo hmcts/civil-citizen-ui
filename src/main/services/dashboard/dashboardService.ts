@@ -15,10 +15,10 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
   if (dashboard) {
     dashboard.items.forEach((taskList) => {
       taskList.tasks.forEach((task) => {
-        task.taskNameEn = replaceDashboardPlaceholders(task.taskNameEn, claim);
-        task.taskNameCy = replaceDashboardPlaceholders(task.taskNameCy, claim);
-        task.hintTextEn = replaceDashboardPlaceholders(task.hintTextEn, claim);
-        task.hintTextCy = replaceDashboardPlaceholders(task.hintTextCy, claim);
+        task.taskNameEn = replaceDashboardPlaceholders(task.taskNameEn, claim, claimId);
+        task.taskNameCy = replaceDashboardPlaceholders(task.taskNameCy, claim, claimId);
+        task.hintTextEn = replaceDashboardPlaceholders(task.hintTextEn, claim, claimId);
+        task.hintTextCy = replaceDashboardPlaceholders(task.hintTextCy, claim, claimId);
       });
     });
     return dashboard;
@@ -31,8 +31,8 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
   if (dashboardNotifications) {
     dashboardNotifications.items.forEach((notification) => {
-      notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim);
-      notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim);
+      notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification.id);
+      notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification.id);
     });
     return dashboardNotifications;
   } else {

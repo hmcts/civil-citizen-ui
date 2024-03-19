@@ -12,8 +12,8 @@ export const getFeePaymentRedirectInformation = async (claimId: string, feeType:
 
 };
 
-export const getFeePaymentStatus = async (paymentReference: string, feeType: string, req: AppRequest): Promise<PaymentInformation> => {
+export const getFeePaymentStatus = async (claimId: string, paymentReference: string, feeType: string, req: AppRequest): Promise<PaymentInformation> => {
 
-  return await civilServiceClient.getFeePaymentStatus(paymentReference, feeType, req);
+  return await civilServiceClient.getFeePaymentStatus(claimId, paymentReference, feeType, req);
 
 };

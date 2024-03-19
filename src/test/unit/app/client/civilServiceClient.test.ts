@@ -37,6 +37,32 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');
 const appReq = <AppRequest>req;
 appReq.params = {id: '12345'};
+appReq.session = {
+  user: {
+    accessToken: '54321',
+    id: '1',
+    email: 'test@user.com',
+    givenName: 'Test',
+    familyName: 'User',
+    roles: undefined,
+  },
+  id: 'id',
+  cookie: undefined,
+  regenerate: undefined,
+  reload: undefined,
+  resetMaxAge: undefined,
+  save: undefined,
+  touch: undefined,
+  destroy: undefined,
+  lang: undefined,
+  previousUrl: undefined,
+  claimId: '12345',
+  taskLists: undefined,
+  assignClaimURL: undefined,
+  claimIssueTasklist: false,
+  firstContact: undefined,
+  issuedAt: 150,
+};
 const ccdClaim : CCDClaim = {
   legacyCaseReference : '000MC003',
   applicant1 : {
@@ -719,7 +745,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
-      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference, FeeType.HEARING, appReq);
+      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getFeePaymentStatus('1', mockHearingFeePaymentRedirectInfo.paymentReference, FeeType.HEARING, appReq);
 
       //Then
       expect(paymentInformationResponse).toEqual(mockHearingFeePaymentRedirectInfo);
@@ -734,7 +760,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //Then
-      await expect(civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference,  FeeType.HEARING , appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.getFeePaymentStatus('1', mockHearingFeePaymentRedirectInfo.paymentReference,  FeeType.HEARING , appReq)).rejects.toThrow('error');
     });
   });
 
@@ -746,6 +772,8 @@ describe('Civil Service Client', () => {
         'titleCy': 'title_cy',
         'descriptionEn': 'description_en',
         'descriptionCy': 'description_cy',
+        'notificationAction': undefined,
+        'timeToLive': undefined,
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -753,6 +781,130 @@ describe('Civil Service Client', () => {
         'titleCy': 'title_cy_2',
         'descriptionEn': 'description_en_2',
         'descriptionCy': 'description_cy_2',
+        'timeToLive': 'undefined',
+        'notificationAction': {
+          'id': 1,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User',
+          'createdAt': new Date(100000),
+        },
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'Click',
+        'notificationAction': {
+          'id': 2,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User',
+          'createdAt': new Date(100000),
+        },
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'Session',
+        'notificationAction': {
+          'id': 3,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User',
+          'createdAt': new Date(100000),
+        },
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'Session',
+        'notificationAction': {
+          'id': 4,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User',
+          'createdAt': new Date(200000),
+        },
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'Session',
+        'notificationAction': {
+          'id': 5,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User 2',
+          'createdAt': new Date(100000),
+        },
+      },
+    ];
+    const mockNotificationInfoExpected = [
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+        'titleEn': 'title_en',
+        'titleCy': 'title_cy',
+        'descriptionEn': 'description_en',
+        'descriptionCy': 'description_cy',
+        'notificationAction': undefined,
+        'timeToLive': undefined,
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'undefined',
+        'notificationAction': {
+          'id': 1,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User',
+          'createdAt': new Date(100000),
+        },
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'Session',
+        'notificationAction': {
+          'id': 4,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User',
+          'createdAt': new Date(200000),
+        },
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'Session',
+        'notificationAction': {
+          'id': 5,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User 2',
+          'createdAt': new Date(100000),
+        },
       },
     ];
     const mockExpectedDashboardInfo=
@@ -874,7 +1026,7 @@ describe('Civil Service Client', () => {
       const notificationResponse = await civilServiceClient.retrieveNotification('123','claimant', appReq);
 
       //Then
-      expect(notificationResponse.items).toEqual(mockNotificationInfo);
+      expect(notificationResponse.items).toEqual(mockNotificationInfoExpected);
     });
 
     it('should get dashboard Task List', async () => {

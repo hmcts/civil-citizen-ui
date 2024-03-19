@@ -32,10 +32,10 @@ class MediationCanWeUse {
 
   async selectOptionForMediation() {
     const { language } = sharedData;
-    await I.waitForText(content.heading2[language], config.WaitForText);
+    await I.waitForContent(content.heading2[language], config.WaitForText);
     await I.see(content.descriptionText2[language]);
     await I.click(fields.yesButton);
-    // await I.waitForText(content.heading1[language], config.WaitForText);
+    // await I.waitForContent(content.heading1[language], config.WaitForText);
     // await I.see(content.descriptionText1[language]);
     // await I.fillField(fields.phoneNumberID, '02088908876');
     await I.click(cButtons.saveAndContinue[language]);
