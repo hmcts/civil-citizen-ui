@@ -19,14 +19,14 @@ class DisabilityDetails {
 
   async clickYesButton() {
     const { language } = sharedData;
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.click(cButtons.saveAndContinue[language]);
   }
 
   async clickNoButton() {
     const { language } = sharedData;
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
     await I.click(cButtons.saveAndContinue[language]);
   }
