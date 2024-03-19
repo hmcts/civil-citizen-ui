@@ -23,7 +23,7 @@ import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionTy
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CCDRepaymentPlanFrequency} from 'models/ccdResponse/ccdRepaymentPlan';
-import {CitizenDate} from "form/models/claim/claimant/citizenDate";
+import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
 
 describe('Translate claimant response to ccd version', () => {
   let claim: Claim = new Claim();
