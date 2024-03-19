@@ -80,6 +80,7 @@ import {AdditionalLipPartyDetails} from './additionalLipPartyDetails';
 import {BusinessProcess} from 'models/businessProcess';
 import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
+import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -450,7 +451,7 @@ export class Claim {
     return this.systemGeneratedCaseDocuments?.length > 0;
   }
 
-  getDocumentDetails(documentType: DocumentType): CaseDocument {
+  getDocumentDetails(documentType: DocumentType, claimantOrDefendant?: DirectionQuestionnaireType): CaseDocument {
     if (documentType === DocumentType.HEARING_FORM && this.hasCaseProgressionHearingDocuments()) {
       const hearingNotice = this.caseProgressionHearing.hearingDocuments.find(document => {
         return document.value.documentType === documentType;
@@ -462,6 +463,9 @@ export class Claim {
 
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
+        if (documentType == DocumentType.DIRECTIONS_QUESTIONNAIRE) {
+          return document.value.documentType === documentType && document.value.documentName.startsWith(claimantOrDefendant);
+        }
         return document?.value.documentType === documentType;
       });
       return filteredDocumentDetailsByType?.value;
