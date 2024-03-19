@@ -10,6 +10,7 @@ const createSDOReqPayload = require('../fixtures/events/createSDO.js');
 const createAnAssistedOrder = require('../fixtures/events/createAnAssistedOrder');
 const createATrialArrangement = require('../fixtures/events/createATrialArrangement');
 const evidenceUpload = require('../fixtures/events/evidenceUpload');
+const testingSupport = require('./testingSupport');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -152,6 +153,14 @@ module.exports = {
     await apiRequest.startEventForCitizen(eventName, caseId, payload);
     await waitForFinishedBusinessProcess(caseId);
     console.log('End of performCitizenResponse()');
+  },
+
+  amendRespondent1ResponseDeadline: async (user) => {
+    await apiRequest.setupTokens(user);
+    let respondent1deadline ={};
+    respondent1deadline = {'respondent1ResponseDeadline':'2024-01-10T15:59:50'};
+    await testingSupport.updateCaseData(caseId, respondent1deadline);
+    console.log('ResponseDeadline updated');
   },
 
   createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, partyType) => {
