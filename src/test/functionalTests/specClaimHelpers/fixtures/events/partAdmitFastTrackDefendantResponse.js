@@ -73,8 +73,8 @@ module.exports = {
           {
             'id': '0',
             'value': {
-              'evidenceType': 'LETTERS_EMAILS_AND_OTHER_CORRESPONDENCE',
-              'lettersEmailsAndOtherCorrespondenceEvidence': ', a letter from the other party.',
+              'evidenceType': 'CONTRACTS_AND_AGREEMENTS',
+              'contractAndAgreementsEvidence': ' signed contract.',
             },
           },
         ],
@@ -356,7 +356,13 @@ module.exports = {
 
         ],
         'specResponselistYourEvidenceList': [
-
+          {
+            'id': '0',
+            'value': {
+              'evidenceType': 'CONTRACTS_AND_AGREEMENTS',
+              'contractAndAgreementsEvidence': ' signed contract.',
+            },
+          },
         ],
         'respondent1BankAccountList': [
           {

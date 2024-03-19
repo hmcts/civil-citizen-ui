@@ -1,7 +1,7 @@
 const config = require('../../config');
 const {createAccount} = require('../specClaimHelpers/api/idamHelper');
-// eslint-disable-next-line no-unused-vars
-const yesIWantMoretime = 'yesIWantMoretime';
+//const LoginSteps = require('../features/home/steps/login');
+//const ResponseToDefenceLipVsLipSteps = require('../features/createClaim/steps/responseToDefenceLipvLipSteps');
 
 let claimRef, claimType;
 
@@ -15,6 +15,11 @@ Scenario('Response with PartAdmit-PayBySetDate Small claims @citizenUI @partAdmi
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentOnSpecificDateWithIndividual);
     await api.waitForFinishedBusinessProcess();
+    //Claimant Response - accept the part admit - settle the claim
+    //CIV-13233
+    /*await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitImmediatePayment(claimRef, '456');
+    await api.waitForFinishedBusinessProcess();*/
   }
 }).tag('@regression-r2');
 
@@ -26,5 +31,9 @@ Scenario('Response with PartAdmit-PayBySetDate Fast Track @citizenUI @partAdmit 
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentOnSpecificDateWithIndividual);
     await api.waitForFinishedBusinessProcess();
+    //Claimant Response - reject the part admit - move case to judicial referral
+    /*await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await ResponseToDefenceLipVsLipSteps.claimantRejectForDefRespPartAdmitImmediatePayment(claimRef, '569');
+    await api.waitForFinishedBusinessProcess();*/
   }
 }).tag('@regression-r2');

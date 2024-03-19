@@ -7,7 +7,7 @@ const ResponseToDefenceLipVsLipSteps = require('../features/createClaim/steps/re
 const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
 
 const claimType = 'SmallClaims';
-// eslint-disable-next-line no-unused-vars
+
 let claimRef;
 let caseData;
 let claimNumber;

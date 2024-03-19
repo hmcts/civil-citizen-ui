@@ -13,8 +13,9 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
     selectedHWF = false;
     claimInterestFlag = false;
     StandardInterest = false;
-    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    //await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    //await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterUserCredentials('civilmoneyclaimsdemo@gmail.com', config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
     caseRef = await steps.checkAndSubmit(selectedHWF);
     await api.setCaseId(caseRef);

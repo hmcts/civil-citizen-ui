@@ -79,8 +79,10 @@ class ResponseToDefence {
     I.click(paths.buttons.continue);
   }
 
+  //456
   async verifyDefResponseForPartAdmitImmediatePayment(claimAmount) {
     I.waitForContent('Why they don’t owe the amount claimed?', 60);
+    I.wait(360);
     I.see('Contracts and agreements');
     I.see(`Sir John Doe admits they owe you £${claimAmount}`);
     I.see(`They’ve offered to pay you £${claimAmount} immediately. This is the total amount you’ll be paid, including the claim fee and interest if applicable.`);

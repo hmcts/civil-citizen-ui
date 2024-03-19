@@ -2,8 +2,6 @@ const config = require('../../config');
 const {createAccount} = require('../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../features/home/steps/login');
 const ResponseToDefenceLipVsLipSteps = require('../features/createClaim/steps/responseToDefenceLipvLipSteps');
-// eslint-disable-next-line no-unused-vars
-const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType;
 let caseData;
