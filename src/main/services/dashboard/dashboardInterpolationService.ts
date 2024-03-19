@@ -6,7 +6,7 @@ import {
   RESPONSE_TASK_LIST_URL,
   CCJ_PAID_AMOUNT_URL,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
-  CASE_DOCUMENT_VIEW_URL,
+  CASE_DOCUMENT_VIEW_URL, CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import config from 'config';
 import { getTotalAmountWithInterestAndFees } from 'modules/claimDetailsService';
@@ -48,6 +48,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{RESPONSE_TASK_LIST_URL}', RESPONSE_TASK_LIST_URL.replace(':id', claimId));
   valuesMap.set('{COUNTY_COURT_JUDGEMENT_URL}', CCJ_PAID_AMOUNT_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_REPAYMENT_PLAN}', DEFENDANT_SIGN_SETTLEMENT_AGREEMENT.replace(':id', claimId));
+  valuesMap.set('{CLAIMANT_RESPONSE_TASK_LIST}', CLAIMANT_RESPONSE_TASK_LIST_URL.replace(':id', claimId));
   valuesMap.set('{daysLeftToRespond}', daysLeftToRespond);
   valuesMap.set('{enforceJudgementUrl}', enforceJudgementUrl);
   valuesMap.set('{civilMoneyClaimsTelephone}', civilMoneyClaimsTelephone);
