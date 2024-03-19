@@ -46,7 +46,7 @@ describe('Fee Payment Service Service', () => {
     it('should return Payment status information', async () => {
       jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus').mockResolvedValueOnce(mockHearingFeePaymentSatatusInfo);
       //when
-      const actualPaymentStatusInformation = await getFeePaymentStatus(mockHearingFeePaymentSatatusInfo.paymentReference, FeeType.HEARING, mockedAppRequest);
+      const actualPaymentStatusInformation = await getFeePaymentStatus('1', mockHearingFeePaymentSatatusInfo.paymentReference, FeeType.HEARING, mockedAppRequest);
 
       //Then
       expect(actualPaymentStatusInformation).toBe(mockHearingFeePaymentSatatusInfo);
@@ -55,7 +55,7 @@ describe('Fee Payment Service Service', () => {
     it('should return 500 error page for any service error', async () => {
       jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
       //Then
-      await expect(getFeePaymentStatus(mockHearingFeePaymentSatatusInfo.paymentReference, FeeType.HEARING, mockedAppRequest)).rejects.toBe(
+      await expect(getFeePaymentStatus('1', mockHearingFeePaymentSatatusInfo.paymentReference, FeeType.HEARING, mockedAppRequest)).rejects.toBe(
         TestMessages.SOMETHING_WENT_WRONG,
       );
     });
