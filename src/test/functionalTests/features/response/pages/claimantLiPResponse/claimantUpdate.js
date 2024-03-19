@@ -11,7 +11,7 @@ class ClaimantUpdate {
   async startUploadDocs(claimRef) {
     I.amOnPage('/case/' + claimRef + '/mediation/start-upload-documents');
     let url = await I.grabCurrentUrl();
-    //Check if PCQ page appears
+    //Check if dashboard page appears
     if(url.includes('dashboard')){
       I.amOnPage('/case/' + claimRef + '/mediation/start-upload-documents');
     }
