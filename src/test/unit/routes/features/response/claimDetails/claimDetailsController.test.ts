@@ -72,7 +72,8 @@ describe('Claim details page', () => {
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const totalClaimAmount = currencyFormat(getTotalAmountWithInterestAndFees(Object.assign(new Claim(), CivilClaimResponseMock.case_data)));
+      const totalClaimAmount = currencyFormat(getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
+        CivilClaimResponseMock.case_data)));
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
