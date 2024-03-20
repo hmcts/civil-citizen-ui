@@ -10,7 +10,7 @@ class AssignCasePinInPost {
 
   async open(claimNumber, securityCode) {
     await I.amOnPage('/first-contact/claim-reference/');
-    await I.waitForText('Enter your claim number', config.WaitForText);
+    await I.waitForContent('Enter your claim number', config.WaitForText);
     await I.see('Enter the claim number from the email or letter we sent you.');
     await I.fillField(fields.claimNumber, claimNumber);
     await I.click('Save and continue');
@@ -26,7 +26,7 @@ class AssignCasePinInPost {
 
   async verifyClaimSummaryPageContent(claimNumber) {
     await I.seeInCurrentUrl('first-contact/claim-summary');
-    await I.waitForText('Claim details', config.WaitForText);
+    await I.waitForContent('Claim details', config.WaitForText);
     await I.see('Claim number:');
     await I.see(claimNumber);
     await I.see('Claim amount');
