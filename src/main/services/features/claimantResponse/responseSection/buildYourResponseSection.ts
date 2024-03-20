@@ -20,10 +20,10 @@ import {
   RESPONSEFREQUENCY,
   RESPONSFORCYAFORCHOOSEHOWTOPROCEED,
 } from 'models/claimantResponse/checkAnswers';
-import {getEmptyStringIfUndefined, getEmptyStringIfUndefinedForNumber} from 'common/utils/checkYourAnswer/formatAnswer';
+import {getEmptyStringIfUndefinedForNumber} from 'common/utils/checkYourAnswer/formatAnswer';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
-import {DateTime} from 'luxon';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string, lng : string) : SummaryRow =>{
   const intentionToProceedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL);
@@ -85,7 +85,7 @@ export const buildPartAdmitPayInstallmentsSummaryRows = (claim: Claim, claimId: 
     changeLabel(lng)));
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.DATE_FOR_FIRST_INSTALMENT', {lng}),
-    getEmptyStringIfUndefined(DateTime.fromJSDate(new Date(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.firstRepaymentDate)).setLocale('en-gb').toLocaleString(DateTime.DATE_FULL)),
+    formatDateToFullDate(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.firstRepaymentDate, lng),
     partAdmitAcceptedHref,
     changeLabel(lng)));
   return summaryRows;
@@ -96,7 +96,7 @@ export const buildPartAdmitPaySetDateSummaryRows = (claim: Claim, claimId: strin
   const summaryRows: SummaryRow [] = [];
   const date = claim.claimantResponse.suggestedPaymentIntention.paymentDate as unknown as PaymentDate;
 
-  const paymentDate = getEmptyStringIfUndefined(DateTime.fromJSDate(new Date(date.date)).setLocale('en-gb').toLocaleString(DateTime.DATE_FULL));
+  const paymentDate = formatDateToFullDate(date.date, lng);
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_DEFENDANT_TO_PAY', {lng}),
     t('PAGES.CHECK_YOUR_ANSWER.IN_FULL', {lng, paymentDate}),
