@@ -12,7 +12,6 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
 import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {translateClaimantResponseToCCD} from 'services/translation/claimantResponse/claimantResponseCCDTranslation';
 
 const claimantResponsePropertyName = 'datePaid';
 const datePaidViewPath = 'features/claimantResponse/paidInFull/date-paid';
@@ -46,8 +45,8 @@ datePaidViewController.post(DATE_PAID_URL, (async (req: Request,res: Response,ne
       const redisKey = generateRedisKey(req as unknown as AppRequest);
       await saveClaimantResponse(redisKey, form.model, claimantResponsePropertyName);
       const claim = await getCaseDataFromStore(redisKey);
-      const ccdResponse = translateClaimantResponseToCCD(claim);
-      await civilServiceClient.submitClaimSettled(claimId, ccdResponse, <AppRequest>req);
+      const ccdTranslatedClaimSettledDate = { 'applicant1ClaimSettledDate': claim?.claimantResponse?.datePaid?.date};
+      await civilServiceClient.submitClaimSettled(claimId, ccdTranslatedClaimSettledDate , <AppRequest>req);
       await deleteDraftClaimFromStore(redisKey);
       res.redirect(constructResponseUrlWithIdParams(claimId, DATE_PAID_CONFIRMATION_URL));
     }

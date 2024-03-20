@@ -23,7 +23,6 @@ import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionTy
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CCDRepaymentPlanFrequency} from 'models/ccdResponse/ccdRepaymentPlan';
-import {CitizenDate} from "form/models/claim/claimant/citizenDate";
 
 describe('Translate claimant response to ccd version', () => {
   let claim: Claim = new Claim();
@@ -456,18 +455,6 @@ describe('Translate claimant response to ccd version', () => {
 
     //Then
     expect(ccdClaim.applicant1DQHearingSupport).toEqual({ supportRequirements: 'No' });
-  });
-
-  it('should translate claim settle date', () => {
-    //Given
-    const claim = new Claim();
-    claim.claimantResponse = new ClaimantResponse();
-    claim.claimantResponse.datePaid = new CitizenDate('19', '03', '2024');
-    const mockClaimSettledDate = new Date('2024-03-19T00:00:00.000Z');
-    //when
-    const ccdClaim = translateClaimantResponseToCCD(claim);
-    //then
-    expect(ccdClaim.applicant1LiPResponse.applicant1ClaimSettledDate).toEqual(mockClaimSettledDate);
   });
 });
 

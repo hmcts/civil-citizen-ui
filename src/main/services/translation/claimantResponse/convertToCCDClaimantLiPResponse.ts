@@ -23,7 +23,6 @@ export interface CCDClaimantLiPResponse {
   claimantResponseOnCourtDecision?: CourtProposedDateOptions | CourtProposedPlanOptions,
   claimantCourtDecision?: RepaymentDecisionType,
   applicant1RejectedRepaymentReason?: string,
-  applicant1ClaimSettledDate?: Date,
 }
 
 const toChoosesHowToProceed = {
@@ -40,6 +39,5 @@ export const toCCDClaimantLiPResponse = (claimantResponse: ClaimantResponse): CC
     claimantResponseOnCourtDecision: claimantResponse?.courtProposedDate?.decision ? claimantResponse?.courtProposedDate?.decision : claimantResponse?.courtProposedPlan?.decision,
     claimantCourtDecision: claimantResponse?.courtDecision ? claimantResponse?.courtDecision : undefined,
     applicant1RejectedRepaymentReason: claimantResponse?.rejectionReason?.text,
-    applicant1ClaimSettledDate: claimantResponse?.datePaid?.date,
   };
 };
