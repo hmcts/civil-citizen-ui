@@ -17,6 +17,7 @@ import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {CaseRole} from 'form/models/caseRoles';
+import {getTotalAmountWithInterestAndFees} from "modules/claimDetailsService";
 
 jest.mock('../../../../../../main/modules/oidc');
 const nock = require('nock');
