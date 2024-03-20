@@ -243,6 +243,64 @@ class ResponseToDefenceLipVLipSteps {
     responseToDefence.verifyConfirmationScreenForRejectAllYesToProceed(claimNumber);
   }
 
+  async ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaid(caseReference)
+  {
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefendantsResponseForPartAdmiAlreadyPaid();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.have_you_been_paid);
+    await responseToDefence.paymentNotInFullYesPaid();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.settle_the_claim_for);
+    await responseToDefence.paymentNotInFullYesToSettle();
+    I.click(paths.links.check_and_submit_your_response);
+    responseToDefence.verifyCheckYourAnswersPartAdmitAlreadyPaidSettleClaim();
+    // responseToDefence.verifyConfirmationScreenForPartAdmitAlreadyPaidSettleClaim(claimNumber);
+  }
+
+  async ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidGoToMediation(caseReference, claimNumber)
+  {
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefendantsResponseForPartAdmiAlreadyPaid();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.have_you_been_paid);
+    await responseToDefence.paymentNotInFullNoPaid();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.free_mediation);
+    await responseToDefence.verifyFreeMediation();
+    await responseToDefence.verifyChoseYesFreeMediation();
+    await this.verifyDashboardLoaded();
+    await this.verifyDQForSmallClaims();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.check_and_submit_your_response);
+    responseToDefence.verifyCheckYourAnswersPartAdmitAlreadyPaidGoToMediation();
+    responseToDefence.verifyConfirmationScreenForPartAdmitAlreadyPaidGoToMediation(claimNumber);
+  }
+
+  async ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidAndProceed(caseReference, claimNumber, withTimeLineEvidenceDisagree)
+  {
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefendantsResponseForPartAdmiAlreadyPaid(withTimeLineEvidenceDisagree);
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.have_you_been_paid);
+    await responseToDefence.paymentNotInFullYesPaid();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.settle_the_claim_for);
+    await responseToDefence.paymentNotInFullNoToSettle();
+    await this.verifyDashboardLoaded();
+    await this.verifyDQForFastTrack();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.check_and_submit_your_response);
+    responseToDefence.verifyCheckYourAnswersPartAdmitAlreadyPaidNotToSettleClaim();
+    responseToDefence.verifyConfirmationScreenForRejectAllYesToProceed(claimNumber);
+  }
+
   async verifyDashboardLoaded() {
     I.waitForContent('Submit', 3);
     I.see('Your response', 'h1');

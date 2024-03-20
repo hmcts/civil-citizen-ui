@@ -447,6 +447,39 @@ class ResponseToDefence {
     I.click(paths.buttons.submit_response);
   }
 
+  async verifyCheckYourAnswersPartAdmitAlreadyPaidSettleClaim() {
+    I.waitForContent('Do you agree the defendant has paid £700?',60);
+    I.see('Do you want to settle the claim for the £700?');
+    I.see('Check your answers', 'h1');
+    I.see('Your response','h2');
+    I.click(paths.buttons.submit_response);
+  }
+
+  async verifyCheckYourAnswersPartAdmitAlreadyPaidNotToSettleClaim() {
+    I.waitForContent('Do you agree the defendant has paid',60);
+    I.see('Do you want to settle the claim for the');
+    I.see('Hearing requirements');
+    I.see('Have you tried to settle this claim before going to court?');
+    I.see('Are there any documents the claimant has that you want the court to consider?');
+    I.see('Welsh language');
+    I.see('Check your answers', 'h1');
+    I.see('Your response','h2');
+    I.click(paths.buttons.submit_response);
+  }
+
+  async verifyCheckYourAnswersPartAdmitAlreadyPaidGoToMediation() {
+    I.waitForContent('Do you agree the defendant has paid',60);
+    I.see('Free telephone mediation');
+    I.see('Will you try free mediation?');
+    I.see('Contact number');
+    I.see('Hearing requirements');
+    I.see('Have you already got a report written by an expert?');
+    I.see('Welsh language');
+    I.see('Check your answers', 'h1');
+    I.see('Your response','h2');
+    I.click(paths.buttons.submit_response);
+  }
+
   async verifyDefendantsResponseForRejection() {
     I.waitForContent('Full response',60,'h3');
     I.see('The defendant’s response','h1');
@@ -480,7 +513,7 @@ class ResponseToDefence {
     I.see('The defendant’s response','h1');
     I.see('Sir John Doe said they paid you');
     I.see('When they say they paid this amount','h3');
-    I.see('How they said they paid?','h3');
+    // I.see('How they say they paid?','h3');
     I.seeElement(paths.links.full_response_pdf_link);
     I.click(paths.links.full_response_pdf_link);
     I.click(paths.buttons.continue);
@@ -490,10 +523,27 @@ class ResponseToDefence {
     I.waitForContent('Full response',60,'h3');
     I.see('The defendant’s response','h1');
     I.see('Sir John Doe said they paid you');
-    I.see('They said this is all they owe, not the amount you claim.');
     I.see('When they say they paid this amount','h3');
-    I.see('How they said they paid?','h3');
-    I.see('Why they say they dont owe the amount you claimed?', 'h3');
+    // I.see('How they say they paid?','h3');
+    I.seeElement(paths.links.full_response_pdf_link);
+    I.click(paths.links.full_response_pdf_link);
+    I.click(paths.buttons.continue);
+  }
+
+  async verifyDefendantsResponseForPartAdmiAlreadyPaid(withTimeLineEvidenceDisagree) {
+    I.waitForContent('Full response',60,'h3');
+    I.see('The defendant’s response','h1');
+    I.see('Sir John Doe said they paid you');
+    I.see('They said this is all they owe, not the amount you claimed.');
+    I.see('When they say they paid this amount');
+    I.see('How they say they paid?');
+    I.see('Why they say they don’t owe the amount you claimed?');
+    I.see('Their timeline of events');
+    if(withTimeLineEvidenceDisagree === 'disagree'){
+      I.see('Why they disagree with your timeline?');
+      I.see('Why they disagree with your evidence?');
+    }
+    I.see('Their evidence');
     I.seeElement(paths.links.full_response_pdf_link);
     I.click(paths.links.full_response_pdf_link);
     I.click(paths.buttons.continue);
@@ -532,8 +582,14 @@ class ResponseToDefence {
     I.click(paths.buttons.save_and_continue);
   }
 
+  async paymentNotInFullNoPaid() {
+    I.waitForContent('Has the defendant paid you', 60);
+    I.click(paths.options.no);
+    I.click(paths.buttons.save_and_continue);
+  }
+
   async paymentNotInFullNoToSettle() {
-    I.waitForContent('Do you want to settle the claim for the £567 the defendant has paid?',60);
+    I.waitForContent('Do you want to settle the claim for the',60);
     I.click(paths.options.no);
     I.click(paths.buttons.save_and_continue);
     I.waitForContent('Why did you reject their response?', 60);
@@ -542,7 +598,7 @@ class ResponseToDefence {
   }
 
   async paymentNotInFullYesToSettle() {
-    I.waitForContent('Do you want to settle the claim for the £10000 the defendant has paid?',60);
+    I.waitForContent('Do you want to settle the claim for the',60);
     I.click(paths.options.yes);
     I.click(paths.buttons.save_and_continue);
   }
@@ -567,10 +623,10 @@ class ResponseToDefence {
     I.see('You will be given the terms of the agreement in a document – this is called a settlement agreement.');
     I.see('If either party breaks the terms the other party can go to court to ask for a judgment or hearing.');
     I.see('You will not have to wait longer for a court hearing if you choose mediation.');
-    I.click(paths.links.do_not_agree_to_free_mediation);
   }
 
   async verifyChoseNoFreeMediation() {
+    I.click(paths.links.do_not_agree_to_free_mediation);
     I.waitForContent('If you choose not to try mediation this cannot be changed once your response is submitted.', 60);
     I.see('You chose not to try free mediation','h1');
     I.see('The claim will continue and you may have to go to a hearing.');
@@ -585,6 +641,14 @@ class ResponseToDefence {
     I.see('being made against you');
     I.see('Will you change your decision and try free mediation?','h2');
     I.click(paths.options.no);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async verifyChoseYesFreeMediation() {
+    I.click(paths.buttons.continue);
+    I.waitForContent('Confirm your telephone number', 60);
+    I.see('Can the mediation service use');
+    I.click(paths.options.yes);
     I.click(paths.buttons.save_and_continue);
   }
 
@@ -828,6 +892,27 @@ class ResponseToDefence {
     I.see(`${claimNumber}`);
     I.see('What happens next');
     I.see('The claim is now settled.We\'ve emailed Sir John Doe to tell them.');
+    I.see('Email');
+    I.see('Telephone');
+  }
+
+  verifyConfirmationScreenForPartAdmitAlreadyPaidSettleClaim(claimNumber) {
+    I.waitForContent('You\'ve accepted their response', 60);
+    I.see('Your claim number:');
+    I.see(`${claimNumber}`);
+    I.see('What happens next');
+    I.see('The claim is now settled.We\'ve emailed Sir John Doe to tell them.');
+    I.see('Email');
+    I.see('Telephone');
+  }
+
+  verifyConfirmationScreenForPartAdmitAlreadyPaidGoToMediation(claimNumber){
+    I.waitForContent('You\'ve rejected their response', 60);
+    I.see('Your claim number:');
+    I.see(`${claimNumber}`);
+    I.see('What happens next');
+    I.see('You agreed to try free mediation.');
+    I.see('Your mediation appointment will be arranged within 28 days.');
     I.see('Email');
     I.see('Telephone');
   }

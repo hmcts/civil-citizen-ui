@@ -21,6 +21,7 @@ Scenario('Response with RejectAll-AlreadyPaid-InFull Small claims and Claimant s
     claimNumber = await caseData.legacyCaseReference;
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllAlreadyPaidInFullWithIndividual);
     await api.waitForFinishedBusinessProcess();
+    // Claimant Intent Defendant response page has typo: https://tools.hmcts.net/jira/browse/CIV-13248
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceAlreadyPaidInFull(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
@@ -37,6 +38,7 @@ Scenario('Response with RejectAll-AlreadyPaid-InFull Fast Track and Claimant pro
     claimNumber = await caseData.legacyCaseReference;
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllAlreadyPaidInFullWithIndividual);
     await api.waitForFinishedBusinessProcess();
+    // Claimant Intent Defendant response page has typo: https://tools.hmcts.net/jira/browse/CIV-13248
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnRejectionOfFullDefenceAlreadyPaidInFull(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
