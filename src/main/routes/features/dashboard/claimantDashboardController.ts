@@ -5,9 +5,13 @@ import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {ClaimantOrDefendant} from 'models/partyType';
+import config from 'config';
+import { CivilServiceClient } from 'client/civilServiceClient';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -22,9 +26,9 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       claim = await getClaimById(userId, req);
       dashboardId = userId;
     } else {
-      claim = await getClaimById(claimId, req, true);
+      claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
       caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
-      dashboardId = claimId;
+      dashboardId = claimId;  
     }
 
     const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req);
