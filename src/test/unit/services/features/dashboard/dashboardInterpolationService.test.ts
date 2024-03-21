@@ -101,7 +101,7 @@ describe('dashboardInterpolationService', () => {
     const textToReplaceUrl = '{VIEW_SETTLEMENT_AGREEMENT}';
 
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
-    const textExpectedDynamic = '/case/1710172392502478/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
+    const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
 
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
   });
