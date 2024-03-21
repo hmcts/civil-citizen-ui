@@ -15,6 +15,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericYesNoCarmIeNeuNa} from 'form/models/genericYesNoCarmIeNeuNa';
 
 const emailMediationConfirmationViewPath = 'features/common/yes-no-common-page';
 const mediationUnavailabilityNextThreeMonthsConfirmationController = Router();
@@ -32,7 +33,7 @@ mediationUnavailabilityNextThreeMonthsConfirmationController.get(MEDIATION_NEXT_
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const mediation = await getMediationCarm(redisKey);
-    const form = new GenericForm(new GenericYesNo(mediation.hasUnavailabilityNextThreeMonths?.option));
+    const form = new GenericForm(new GenericYesNoCarmIeNeuNa(mediation.hasUnavailabilityNextThreeMonths?.option));
     renderView(form, res, req);
   } catch (error) {
     next(error);
@@ -42,7 +43,7 @@ mediationUnavailabilityNextThreeMonthsConfirmationController.get(MEDIATION_NEXT_
 mediationUnavailabilityNextThreeMonthsConfirmationController.post(MEDIATION_NEXT_3_MONTHS_URL, (async (req, res, next: NextFunction) => {
   try {
     const optionSelected = req.body.option;
-    const form = new GenericForm(new GenericYesNo(optionSelected));
+    const form = new GenericForm(new GenericYesNoCarmIeNeuNa(optionSelected));
     await form.validate();
     if (form.hasErrors()) {
       renderView(form, res, req);
