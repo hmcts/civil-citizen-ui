@@ -9,7 +9,7 @@ const fields ={
 class SharedExpert {
 
   async SelectOptionForSharedExpert() {
-    await I.waitForText('Do you want to share an expert with the other party?', config.WaitForText);
+    await I.waitForContent('Do you want to share an expert with the other party?', config.WaitForText);
     await I.click(fields.yesButton);
     await I.click('Save and continue');
   }

@@ -22,7 +22,7 @@ class DependantDetails {
 
   async clickYesButton() {
     const { language } = sharedData;
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.under11, '1');
     await I.fillField(fields.between11and15, '1');
@@ -32,7 +32,7 @@ class DependantDetails {
 
   async clickNoButton() {
     const { language } = sharedData;
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
     await I.click(cButtons.saveAndContinue[language]);
   }

@@ -13,9 +13,9 @@ class WhatTypeOfDocumentsDoYouWantToUpload {
     I.click(nextAction);
   }
 
-  verifyPageContent(caseType) {
+  verifyPageContent(caseType, partiesOnTheCase) {
     this.checkPageFullyLoaded();
-    this.verifyHeadingDetails();
+    this.verifyHeadingDetails(partiesOnTheCase);
     if (caseType === 'FastTrack') {
       this.verifyDisclosureSectionContent();
       this.verifyWitnessEvidenceSectionContent();
@@ -74,10 +74,10 @@ class WhatTypeOfDocumentsDoYouWantToUpload {
 
   }
 
-  verifyHeadingDetails() {
+  verifyHeadingDetails(partiesOnTheCase) {
     I.see('What types of documents do you want to upload?', 'h1');
     I.see('Case reference');
-    I.see('Test Inc v Sir John Doe');
+    I.see(partiesOnTheCase);
     I.see('Select the types of documents that apply to your case. You may not need to upload documents for every category.');
   }
 
