@@ -745,7 +745,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
-      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference, FeeType.HEARING, appReq);
+      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getFeePaymentStatus('1', mockHearingFeePaymentRedirectInfo.paymentReference, FeeType.HEARING, appReq);
 
       //Then
       expect(paymentInformationResponse).toEqual(mockHearingFeePaymentRedirectInfo);
@@ -760,7 +760,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //Then
-      await expect(civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference,  FeeType.HEARING , appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.getFeePaymentStatus('1', mockHearingFeePaymentRedirectInfo.paymentReference,  FeeType.HEARING , appReq)).rejects.toThrow('error');
     });
   });
 
