@@ -28,11 +28,11 @@ const renderView = (form: GenericForm<GenericYesNoCarmEmailConfirmation>, res: R
 };
 
 const getPartyEmail = async (redisKey: string, isClaimantResponse: boolean): Promise<string> => {
-  //const claim = await getCaseDataFromStore(redisKey);
+  const claim = await getCaseDataFromStore(redisKey);
   if (isClaimantResponse) {
-    return 'email@email.com';
+    return claim.applicant1.emailAddress.emailAddress;
   }
-  return 'email@email.com';
+  return claim.respondent1.emailAddress.emailAddress;
 };
 
 emailMediationConfirmationController.get(MEDIATION_EMAIL_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
