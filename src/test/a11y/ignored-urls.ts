@@ -47,4 +47,5 @@ export const IGNORED_URLS = [
   //TODO: remove this once finished CIV-11619
   urls.MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND,
   urls.TESTING_SUPPORT_URL,
+  urls.DASHBOARD_CLAIMANT_URL,
 ];
