@@ -279,6 +279,7 @@ import mediationDocumentUploadCheckAnswerController
   from 'routes/features/mediation/uploadDocuments/checkAnswersController';
 import mediationConfirmationController from 'routes/features/mediation/uploadDocuments/confirmationController';
 import notificationRedirectController from 'routes/features/dashboard/notificationRedirectController';
+import claimantClaimSummaryController from 'routes/features/dashboard/claimantClaimSummaryController';
 
 export default [
   homeController,
@@ -346,6 +347,7 @@ export default [
   howMuchHaveYouPaidFRController,
   claimSummaryController,
   claimantDashboardController,
+  claimantClaimSummaryController,
   paymentDatePAController,
   expertGuidanceController,
   partialAdmissionPaymentOptionController,
