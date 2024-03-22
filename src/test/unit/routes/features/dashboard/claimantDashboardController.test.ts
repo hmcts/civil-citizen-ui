@@ -61,13 +61,13 @@ describe('claimant Dashboard Controller', () => {
       claim.applicant1Represented = YesNoUpperCamelCase.NO;
       claim.caseProgressionHearing = new CaseProgressionHearing( null, null, null, null, null, null, new PaymentDetails('123', 'cu123', PaymentStatus.SUCCESS) );
       claim.caseProgression = new CaseProgression();
-      const data = Object.assign(claim, civilClaimResponseMock.case_data);
 
+      const data = Object.assign(claim, civilClaimResponseMock.case_data);
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(data);
-
-
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
+    
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Mr. Jan Clark v Version 1');
@@ -86,14 +86,11 @@ describe('claimant Dashboard Controller', () => {
       claim.totalClaimAmount=500;
       claim.caseRole = CaseRole.CLAIMANT;
       claim.caseProgression = new CaseProgression();
-
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
-
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(data);
-
-
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Mr. Jan Clark v Version 1');
@@ -115,11 +112,34 @@ describe('claimant Dashboard Controller', () => {
       claim.caseProgression = new CaseProgression();
 
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
-
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(data);
-  
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
+
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Mr. Jan Clark v Version 1');
+      });
+    });
+    it('should return defendant dashboard page with defendant and small claims', async () => {
+
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.INDIVIDUAL;
+      claim.respondent1.partyDetails = new PartyDetails({
+        individualTitle:'Mr',
+        individualFirstName:'Jon',
+        individualLastName:'Doe',
+      });
+      claim.totalClaimAmount=500;
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.caseProgression = new CaseProgression();
+
+      const data = Object.assign(claim, civilClaimResponseMock.case_data);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(data);
       jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
 
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
