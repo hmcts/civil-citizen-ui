@@ -5,7 +5,7 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../features/home/steps/login');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
-const { payClaimFee, hwfSubmission, waitForDefendantToRespond } = require('../../specClaimHelpers/dashboardNotificationConstants');
+const { payClaimFee, hwfSubmission } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115, claimantPartyType = 'Org';
 
