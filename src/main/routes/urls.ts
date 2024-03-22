@@ -1,5 +1,5 @@
 const BASE_CASE_URL = '/case/:id';
-export const TEST_ASSIGN_URL = 'case/:id/test/assign'
+export const TEST_ASSIGN_URL = 'case/:id/test/assign';
 export const BASE_CLAIM_URL = '/claim';
 export const BASE_ELIGIBILITY_URL = '/eligibility';
 export const BASE_FIRST_CONTACT_URL = '/first-contact';
