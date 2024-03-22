@@ -152,6 +152,10 @@ module.exports = {
       }, caseData, 'PUT');
   },
 
+  isDashboardServiceToggleEnabled: async () => {
+    return this.checkToggleEnabled('dashboard-service');
+  },
+
   checkToggleEnabled: async (toggle) => {
     const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
 

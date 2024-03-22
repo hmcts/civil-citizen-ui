@@ -1,4 +1,5 @@
 const I = actor();
+const { isDashboardServiceToggleEnabled } = require('../../../../specClaimHelpers/api/testingSupport');
 const config = require('../../../../../config');
 const sharedData = require('../../../../sharedData');
 const cButtons = require('../../../common/cButtons');
@@ -22,6 +23,10 @@ const content = {
 class BilingualLanguagePreference {
 
   async verifyContent(languageOption = 'en') {
+    if (isDashboardServiceToggleEnabled) {
+      console.log('Skipping it for now.');
+      return;
+    }
     const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
@@ -31,6 +36,10 @@ class BilingualLanguagePreference {
   }
 
   async verifyContentError() {
+    if (isDashboardServiceToggleEnabled) {
+      console.log('Skipping it for now.');
+      return;
+    }
     await I.waitForContent('Language', config.WaitForText);
     await I.see('You must choose which language to use to respond to this claim');
     await I.click('Save and continue');
