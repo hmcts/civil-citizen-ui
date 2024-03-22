@@ -5,7 +5,7 @@ import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
   isCUIReleaseTwoEnabled,
-  isCaseProgressionV1Enable,
+  isCaseProgressionV1Enable, isDashboardServiceEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
@@ -35,10 +35,11 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
   try {
 
     const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
+    const isDashboardService = await isDashboardServiceEnabled();
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    if (isReleaseTwoEnabled) {
+    if (isReleaseTwoEnabled && isDashboardService) {
       const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest);
       const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest);
