@@ -11,11 +11,11 @@ class DefendantLatestUpdate {
 
   async openSummaryPage(claimRef) {
     await I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    await I.waitForText('More time requested', config.WaitForText);
+    await I.waitForContent('More time requested', config.WaitForText);
   }
 
   async verifyDefendantUpdatePageContent() {
-    await I.waitForText('You haven\'t responded to this claim', config.WaitForText);
+    await I.waitForContent('You haven\'t responded to this claim', config.WaitForText);
     await I.see('Claim number: ');
     await I.see('You need to respond before');
     //exact days to be updated based on logic
@@ -24,6 +24,11 @@ class DefendantLatestUpdate {
     await I.see('Claimant name:');
     await I.see('Claim amount');
     await I.see('Claim details:');
+  }
+
+  async openSSAPage(claimRef) {
+    await I.amOnPage('/case/' + claimRef + '/settlement-agreement/sign-settlement-agreement');
+    await I.waitForText('Respond to the settlement agreement', config.WaitForText);
   }
 }
 

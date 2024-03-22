@@ -12,7 +12,7 @@ const buttons = {
 
 class RejectAllOfClaim {
   async selectRejectAllReason(reason) {
-    await I.waitForText('Why do you believe you don’t owe', config.WaitForText);
+    await I.waitForContent('Why do you believe you don’t owe', config.WaitForText);
     switch (reason) {
       case 'alreadyPaid':{
         await I.click(fields.alreadyPaid);

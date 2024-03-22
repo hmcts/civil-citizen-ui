@@ -31,7 +31,7 @@ class WelshLanguage {
 
   async selectLanguageOption() {
     const { language } = sharedData; 
-    await I.waitForText(content.heading[language], config.WaitForText);
+    await I.waitForContent(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
     await I.see(content.speakLanguageQuestion[language]);
     await I.click(fields.speakLanguage);

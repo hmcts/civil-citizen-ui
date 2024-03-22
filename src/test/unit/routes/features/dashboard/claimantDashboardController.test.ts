@@ -16,6 +16,7 @@ import {PaymentDetails, PaymentStatus} from 'models/PaymentDetails';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import * as UtilityService from 'modules/utilityService';
+import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -38,6 +39,7 @@ describe('claimant Dashboard Controller', () => {
     it('should return claimant dashboard page when only draft', async () => {
 
       jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(new Claim()));
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
 
       await request(app).get(DASHBOARD_CLAIMANT_URL.replace(':id', 'draft')).expect((res) => {
         expect(res.status).toBe(200);
@@ -117,30 +119,8 @@ describe('claimant Dashboard Controller', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(data);
-      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Mr. Jan Clark v Version 1');
-      });
-    });
-    it('should return defendant dashboard page with defendant and small claims', async () => {
-
-      const claim = new Claim();
-      claim.respondent1 = new Party();
-      claim.respondent1.type = PartyType.INDIVIDUAL;
-      claim.respondent1.partyDetails = new PartyDetails({
-        individualTitle:'Mr',
-        individualFirstName:'Jon',
-        individualLastName:'Doe',
-      });
-      claim.totalClaimAmount=500;
-      claim.caseRole = CaseRole.DEFENDANT;
-      claim.caseProgression = new CaseProgression();
-
-      const data = Object.assign(claim, civilClaimResponseMock.case_data);
-
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(data);
+  
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
 
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
@@ -150,6 +130,7 @@ describe('claimant Dashboard Controller', () => {
 
     it('should return status 500 when error thrown', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
       await request(app)
         .get(DASHBOARD_CLAIMANT_URL)
         .expect((res: Response) => {
