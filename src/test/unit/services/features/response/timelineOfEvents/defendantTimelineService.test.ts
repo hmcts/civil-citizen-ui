@@ -2,8 +2,8 @@ import {Claim} from '../../../../../../main/common/models/claim';
 import {PartialAdmission} from '../../../../../../main/common/models/partialAdmission';
 import {DefendantTimeline} from '../../../../../../main/common/form/models/timeLineOfEvents/defendantTimeline';
 import {
-  getPartialAdmitTimeline,
-  savePartialAdmitTimeline,
+  getDefendantTimeline,
+  saveDefendantTimeline,
 } from '../../../../../../main/services/features/response/timelineOfEvents/defendantTimelineService';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -21,7 +21,7 @@ describe('defendantTimelineService', () => {
       partialAdmission.timeline = new DefendantTimeline([new TimelineRow(17, 11, 2021, 'description')], 'comment');
       claim.partialAdmission = partialAdmission;
       //When
-      const model = getPartialAdmitTimeline(claim);
+      const model = getDefendantTimeline(claim);
       //Then
       expect(model.rows.length).toBe(4);
       expect(model.rows[0].date).toEqual(partialAdmission.timeline.rows[0].date);
@@ -32,7 +32,7 @@ describe('defendantTimelineService', () => {
       //Given
       const claim = new Claim();
       //When
-      const model = getPartialAdmitTimeline(claim);
+      const model = getDefendantTimeline(claim);
       //Then
       expect(model.rows.length).toBe(4);
       expect(model.rows[0].date).toBeUndefined();
@@ -49,7 +49,7 @@ describe('defendantTimelineService', () => {
       });
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await savePartialAdmitTimeline('123', DefendantTimeline.buildPopulatedForm([new TimelineRow(12, 2, 2020, 'description')], 'comment'));
+      await saveDefendantTimeline('123', DefendantTimeline.buildPopulatedForm([new TimelineRow(12, 2, 2020, 'description')], 'comment'));
       //Then
       expect(spySave).toBeCalled();
     });
@@ -60,7 +60,7 @@ describe('defendantTimelineService', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(savePartialAdmitTimeline('123', DefendantTimeline.buildPopulatedForm([new TimelineRow(12, 2, 2020, 'description')], 'comment')))
+      await expect(saveDefendantTimeline('123', DefendantTimeline.buildPopulatedForm([new TimelineRow(12, 2, 2020, 'description')], 'comment')))
         .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });

@@ -2,25 +2,35 @@ import {DefendantTimeline} from '../../../../common/form/models/timeLineOfEvents
 import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {PartialAdmission} from '../../../../common/models/partialAdmission';
 import {Claim} from '../../../../common/models/claim';
+import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('defendantTimelineService');
 
-const getPartialAdmitTimeline = (claim: Claim): DefendantTimeline => {
-  if (claim.partialAdmission?.timeline) {
+const getDefendantTimeline = (claim: Claim): DefendantTimeline => {
+  if (claim.rejectAllOfClaim?.timeline) {
+    return DefendantTimeline.buildPopulatedForm(claim.rejectAllOfClaim.timeline.rows, claim.rejectAllOfClaim.timeline.comment);
+  } else if (claim.partialAdmission?.timeline) {
     return DefendantTimeline.buildPopulatedForm(claim.partialAdmission.timeline.rows, claim.partialAdmission.timeline.comment);
   }
   return DefendantTimeline.buildEmptyForm();
 };
 
-const savePartialAdmitTimeline = async (claimId: string, timeline: DefendantTimeline) => {
+const saveDefendantTimeline = async (claimId: string, timeline: DefendantTimeline) => {
   try {
     const claim = await getCaseDataFromStore(claimId);
-    if (!claim.partialAdmission) {
-      claim.partialAdmission = new PartialAdmission();
-    }
     timeline.filterOutEmptyRows();
-    claim.partialAdmission.timeline = timeline;
+    if (claim.isFullDefence()) {
+      if (!claim.rejectAllOfClaim) {
+        claim.rejectAllOfClaim = new RejectAllOfClaim();
+      }
+      claim.rejectAllOfClaim.timeline = timeline;
+    } else {
+      if (!claim.partialAdmission) {
+        claim.partialAdmission = new PartialAdmission();
+      }
+      claim.partialAdmission.timeline = timeline;
+    }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -29,6 +39,6 @@ const savePartialAdmitTimeline = async (claimId: string, timeline: DefendantTime
 };
 
 export {
-  getPartialAdmitTimeline,
-  savePartialAdmitTimeline,
+  getDefendantTimeline,
+  saveDefendantTimeline,
 };

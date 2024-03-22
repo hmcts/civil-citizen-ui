@@ -40,7 +40,9 @@ const getResponseStatement = (name: string, text: string, amount?: number) => {
 };
 
 export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] => {
-  const theirTOERows = claim.partialAdmission?.timeline?.rows;
+  const theirTOERows = claim.isPartialAdmission()
+    ? claim.partialAdmission?.timeline?.rows
+    : claim.rejectAllOfClaim?.timeline?.rows;
   if (!theirTOERows?.length) {
     return [];
   }
