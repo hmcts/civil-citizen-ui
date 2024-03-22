@@ -73,7 +73,7 @@ export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] =
 export const getDisagreementStatementWithTimeline = (claim: Claim, lng: string): ClaimSummarySection[] => {
   const comment = claim.partialAdmission?.timeline?.comment
     ? claim.partialAdmission?.timeline?.comment
-    : claim.rejectAllOfClaim?.timeline?.comment
+    : claim.rejectAllOfClaim?.timeline?.comment;
   if (!comment) {
     return [];
   }
