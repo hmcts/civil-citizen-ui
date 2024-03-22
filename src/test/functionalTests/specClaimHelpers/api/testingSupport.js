@@ -153,7 +153,8 @@ module.exports = {
   },
 
   isDashboardServiceToggleEnabled: async () => {
-    return this.checkToggleEnabled('dashboard-service');
+    let toggleValue =  await this.checkToggleEnabled('dashboard-service');
+    return toggleValue;
   },
 
   checkToggleEnabled: async (toggle) => {
@@ -168,6 +169,7 @@ module.exports = {
       .then(async response =>  {
         if (response.status === 200) {
           const json = await response.json();
+          console.log('Toggle..', toggle, '...and value is..', json.toggleEnabled);
           return json.toggleEnabled;
         } else {
           throw new Error(`Error when checking toggle occurred with status : ${response.status}`);

@@ -23,6 +23,7 @@ const content = {
 class BilingualLanguagePreference {
 
   async verifyContent(languageOption = 'en') {
+    //Fix is in CIV-13273
     if (isDashboardServiceToggleEnabled) {
       console.log('Skipping it for now.');
       return;

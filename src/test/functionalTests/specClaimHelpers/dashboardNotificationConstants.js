@@ -14,6 +14,7 @@ module.exports = {
     };
   },
 
+  //Date calculation should be based on CIV-13128 fix
   waitForDefendantToRespond: async () => {
     return {
       title: 'Wait for defendant to respond',
