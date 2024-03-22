@@ -113,8 +113,6 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
       const notification = payClaimFee(claimFee);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
       await I.click(notification.nextSteps);
-    } else {
-      await steps.clickPayClaimFee();
     }
   }
 });
