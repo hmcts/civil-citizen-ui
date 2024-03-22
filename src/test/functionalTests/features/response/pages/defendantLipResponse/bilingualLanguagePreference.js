@@ -23,8 +23,9 @@ const content = {
 class BilingualLanguagePreference {
 
   async verifyContent(languageOption = 'en') {
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     //Fix is in CIV-13273
-    if (isDashboardServiceToggleEnabled) {
+    if (isDashboardServiceEnabled) {
       console.log('Skipping it for now.');
       return;
     }
@@ -37,7 +38,8 @@ class BilingualLanguagePreference {
   }
 
   async verifyContentError() {
-    if (isDashboardServiceToggleEnabled) {
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+    if (isDashboardServiceEnabled) {
       console.log('Skipping it for now.');
       return;
     }

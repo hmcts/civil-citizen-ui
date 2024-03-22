@@ -18,6 +18,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - no interest - n
     StandardInterest = false;
     const defaultClaimFee = 455;
     const defaultClaimAmount = 9000;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
@@ -27,7 +28,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - no interest - n
     await api.waitForFinishedBusinessProcess();
     caseData = await api.retrieveCaseData(config.adminUser, caseRef);
     legacyCaseReference = await caseData.legacyCaseReference;
-    if (isDashboardServiceToggleEnabled) {
+    if (isDashboardServiceEnabled) {
       const notification = payClaimFee(defaultClaimFee);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
       await I.click(notification.nextSteps);
@@ -36,7 +37,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - no interest - n
     }
     await steps.verifyAndPayClaimFee(defaultClaimAmount, defaultClaimFee);
     await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceToggleEnabled) {
+    if (isDashboardServiceEnabled) {
       const notification = await waitForDefendantToRespond();
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
     }
@@ -48,6 +49,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - with standard i
     selectedHWF = false;
     claimInterestFlag = true;
     StandardInterest = true;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
@@ -58,7 +60,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - with standard i
     legacyCaseReference = await caseData.legacyCaseReference;
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceToggleEnabled) {
+    if (isDashboardServiceEnabled) {
       const notification = payClaimFee(claimFee);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
       await I.click(notification.nextSteps);
@@ -67,7 +69,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - with standard i
     }
     await steps.verifyAndPayClaimFee(claimAmount, claimFee);
     await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceToggleEnabled) {
+    if (isDashboardServiceEnabled) {
       const notification = waitForDefendantToRespond(caseData.respondent1.partyName, await caseData.respondent1ResponseDeadline);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
       await I.click(notification.nextSteps);
@@ -80,6 +82,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - with variable i
     selectedHWF = false;
     claimInterestFlag = true;
     StandardInterest = false;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
@@ -90,7 +93,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - with variable i
     legacyCaseReference = await caseData.legacyCaseReference;
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceToggleEnabled) {
+    if (isDashboardServiceEnabled) {
       const notification = payClaimFee(claimFee);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
       await I.click(notification.nextSteps);
@@ -107,6 +110,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - with variable i
     selectedHWF = true;
     claimInterestFlag = true;
     StandardInterest = false;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
@@ -117,7 +121,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - with variable i
     legacyCaseReference = await caseData.legacyCaseReference;
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceToggleEnabled) {
+    if (isDashboardServiceEnabled) {
       const notification = hwfSubmission();
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
     }

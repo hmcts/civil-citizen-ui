@@ -18,6 +18,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
     StandardInterest = false;
     const defaultClaimFee = 455;
     const defaultClaimAmount = 9000;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
@@ -26,7 +27,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
     legacyCaseReference = await caseData.legacyCaseReference;
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceToggleEnabled) {
+    if (isDashboardServiceEnabled) {
       const notification = payClaimFee(defaultClaimFee);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
       await I.click(notification.nextSteps);
@@ -43,6 +44,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with standar
     selectedHWF = false;
     claimInterestFlag = true;
     StandardInterest = true;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
@@ -52,7 +54,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with standar
     legacyCaseReference = await caseData.legacyCaseReference;
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceToggleEnabled) {
+    if (isDashboardServiceEnabled) {
       const notification = payClaimFee(claimFee);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
       await I.click(notification.nextSteps);
@@ -69,6 +71,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
     selectedHWF = false;
     claimInterestFlag = true;
     StandardInterest = false;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
@@ -78,7 +81,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
     legacyCaseReference = await caseData.legacyCaseReference;
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceToggleEnabled) {
+    if (isDashboardServiceEnabled) {
       const notification = payClaimFee(claimFee);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
       await I.click(notification.nextSteps);
@@ -96,6 +99,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
     selectedHWF = true;
     claimInterestFlag = true;
     StandardInterest = false;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
@@ -105,7 +109,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
     legacyCaseReference = await caseData.legacyCaseReference;
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceToggleEnabled) {
+    if (isDashboardServiceEnabled) {
       const notification = payClaimFee(claimFee);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
       await I.click(notification.nextSteps);

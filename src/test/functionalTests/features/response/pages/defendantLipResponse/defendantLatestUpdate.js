@@ -1,7 +1,7 @@
 const I = actor();
 const config = require('../../../../../config');
 
-const { isDashboardServiceToggleEnabled } = require('../../../../specClaimHelpers/api/testingSupport');
+const testingSupport = require('../../../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../../../specClaimHelpers/e2e/dashboardHelper');
 const { respondToClaim } = require('../../../../specClaimHelpers/dashboardNotificationConstants');
 
@@ -9,7 +9,8 @@ class DefendantLatestUpdate {
 
   async open(claimRef) {
     await I.amOnPage('/dashboard/' + claimRef + '/defendant');
-    if (isDashboardServiceToggleEnabled) {
+    const isDashboardServiceEnabled = await testingSupport.isDashboardServiceToggleEnabled();
+    if (isDashboardServiceEnabled) {
       const notification = await respondToClaim();
       await verifyNotificationTitleAndContent('', notification.title, notification.content);
       await I.click(notification.nextSteps);

@@ -18,6 +18,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf
     StandardInterest = false;
     const defaultClaimFee = 455;
     const defaultClaimAmount = 9000;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
@@ -28,7 +29,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf
     legacyCaseReference = await caseData.legacyCaseReference;
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceToggleEnabled) {
+    if (isDashboardServiceEnabled) {
       const notification = payClaimFee(defaultClaimFee);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
       await I.click(notification.nextSteps);
@@ -45,6 +46,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - with standard intere
     selectedHWF = false;
     claimInterestFlag = true;
     StandardInterest = true;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
@@ -56,7 +58,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - with standard intere
     legacyCaseReference = await caseData.legacyCaseReference;
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceToggleEnabled) {
+    if (isDashboardServiceEnabled) {
       const notification = payClaimFee(claimFee);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
       await I.click(notification.nextSteps);
@@ -73,6 +75,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable intere
     selectedHWF = false;
     claimInterestFlag = true;
     StandardInterest = false;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
@@ -84,7 +87,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable intere
     legacyCaseReference = await caseData.legacyCaseReference;
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceToggleEnabled) {
+    if (isDashboardServiceEnabled) {
       const notification = payClaimFee(claimFee);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
       await I.click(notification.nextSteps);
@@ -101,6 +104,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable intere
     selectedHWF = true;
     claimInterestFlag = true;
     StandardInterest = false;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
@@ -112,7 +116,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable intere
     legacyCaseReference = await caseData.legacyCaseReference;
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceToggleEnabled) {
+    if (isDashboardServiceEnabled) {
       const notification = hwfSubmission();
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
     }
