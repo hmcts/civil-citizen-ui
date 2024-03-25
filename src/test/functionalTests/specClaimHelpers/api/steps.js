@@ -419,18 +419,6 @@ module.exports = {
     await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
     await addUserCaseMapping(caseId, config.defendantCitizenUser);
   },
-
-  retrieveTaskDetails: async (user, caseNumber, taskId) => {
-    return apiRequest.fetchTaskDetails(user, caseNumber, taskId);
-  },
-
-  assignTaskToUser: async (user, taskId) => {
-    return apiRequest.taskActionByUser(user, taskId, 'claim');
-  },
-
-  completeTaskByUser: async (user, taskId) => {
-    return apiRequest.taskActionByUser(user, taskId, 'complete');
-  },
 };
 
 // Functions

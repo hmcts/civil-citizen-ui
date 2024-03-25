@@ -1,13 +1,18 @@
 const config = require('../../config');
-const CaseProgressionSteps = require('../features/caseProgression/steps/caseProgressionSteps');
-const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
-const LoginSteps = require('../features/home/steps/login');
+const CaseProgressionSteps = require('../citizenFeatures/caseProgression/steps/caseProgressionSteps');
+const DateUtilsComponent = require('../citizenFeatures/caseProgression/util/DateUtilsComponent');
+const LoginSteps = require('./../commonFeatures/home/steps/login');
 const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
 let claimRef;
 
-Feature('Case progression journey - Verify Documents tab - Uploaded Evidence by LR - Fast Track ');
+const obj = {
+  api: 'string',
+  name2: 'string2'
+}
+
+Feature('Case progression journey - Verify Documents tab - Uploaded Evidence by LR');
 
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
@@ -21,7 +26,7 @@ Before(async ({api}) => {
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fourWeeksFromToday));
     await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
     await api.waitForFinishedBusinessProcess();
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
 

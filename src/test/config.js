@@ -108,8 +108,12 @@ module.exports = {
     email: 'hmcts.civil+organisation.1.superuser@gmail.com',
     type: 'systemupdate',
   },
+  waTaskTypes: {
+    defendantWelshRequest: 'defendantWelshRequest'
+  },
   TestOutputDir: process.env.E2E_OUTPUT_DIR || 'test-results/functional',
   runningEnv: process.env.ENVIRONMENT,
+  runWAApiTest: process.env.RUN_WA_API_TEST == 'true' || false,
   claimantSolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'B04IXE4' : 'Q1KOKP2',
   defendant1SolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'DAWY9LJ' : '79ZRSOU',
   defendant2SolicitorOrgId: process.env.ENVIRONMENT =='demo' ? 'LCVTI1I' : 'H2156A0',

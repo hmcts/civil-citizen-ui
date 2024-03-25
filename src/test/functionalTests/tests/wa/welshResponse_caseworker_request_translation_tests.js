@@ -1,9 +1,11 @@
 const config = require('../../../config');
-const ResponseSteps = require('../../features/response/steps/lipDefendantResponseSteps');
-const LoginSteps = require('../../features/home/steps/login');
-const DashboardSteps = require('../../features/dashboard/steps/dashboard');
+const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
+const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const uploadTranslatedDocumentsSteps = require('../../features/wa/steps/uploadTranslatedDocumentsSteps');
+const UploadTranslatedDocumentsSteps = require('../../caseworkerFeatures/uploadTranslatedDocuments/steps/uploadTranslatedDocumentsSteps');
+const CaseworkerDashboardSteps = require('../../caseworkerFeatures/caseworkerDashboard/steps/caseworkerDashboardSteps');
+const defendantWelshRequestTaskDetails = require('../../specClaimHelpers/fixtures/waTaskDetails/defendantWelshRequestTaskDetails'); 
 
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
@@ -14,9 +16,9 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Welsh Response with PartAdmit - Small Claims');
+Feature('Welsh Response with PartAdmit - Small Claims @kiyron');
 
-Before(async ({api}) => {
+Scenario('Create spec LR v LIP and assign to defendant LIP', async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
@@ -25,11 +27,11 @@ Before(async ({api}) => {
   securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
-  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Welsh Response with PartAdmit Then Caseworker Request Translation - SetDate @citizenUI @partAdmit @nightly', async () => {
+Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit @nightly', async ({api}) => {
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef, 'cy');
   await ResponseSteps.EnterPersonalDetails(claimRef, false);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -45,5 +47,20 @@ Scenario('Welsh Response with PartAdmit Then Caseworker Request Translation - Se
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-  await uploadTranslatedDocumentsSteps.runWAApiTest(api, claimRef);
+}).tag('@regression-cui-r1');
+
+Scenario('Caseworker Uploads Translated Documents', async ({wa}) => {
+  await LoginSteps.EnterCaseworkerCredentials(config.caseWorker.email, config.caseWorker.password);
+  await CaseworkerDashboardSteps.NavigateToCaseDetails(claimRef);
+  const taskSteps = async () => {
+    await UploadTranslatedDocumentsSteps.UploadTranslatedDocuments(claimRef);
+    await UploadTranslatedDocumentsSteps.CheckAndSubmit();
+    await UploadTranslatedDocumentsSteps.VerifySuccessBanner(claimRef);
+  };
+  await wa.runWATask(config.caseWorker, 
+                claimRef, 
+                config.waTaskTypes.defendantWelshRequest, 
+                defendantWelshRequestTaskDetails,
+                taskSteps,
+              );
 }).tag('@regression-cui-r1');

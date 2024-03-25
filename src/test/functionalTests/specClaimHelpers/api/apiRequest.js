@@ -2,6 +2,7 @@ const config = require('../../../config');
 
 const idamHelper = require('./idamHelper');
 const restHelper = require('./restHelper.js');
+const {retry} = require('./retryHelper');
 const totp = require('totp-generator');
 
 const TASK_MAX_RETRIES = 20;
@@ -137,7 +138,7 @@ module.exports = {
     return response || {};
   },
 
-  taskActionByUser: async function (user, taskId, url, expectedStatus = 204) {
+  taskActionByUser: async function (user, taskId, action, expectedStatus = 204) {
     const userToken = await idamHelper.accessToken(user);
     const s2sToken = await restHelper.retriedRequest(
       `${config.url.authProviderApi}/lease`,
@@ -149,7 +150,7 @@ module.exports = {
       .then(response => response.text());
 
     return retry(() => {
-      return restHelper.request(`${config.url.waTaskMgmtApi}/task/${taskId}/${url}`,
+      return restHelper.request(`${config.url.waTaskMgmtApi}/task/${taskId}/${action}`,
         {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${userToken}`,
@@ -158,7 +159,7 @@ module.exports = {
     }, 2, TASK_RETRY_TIMEOUT_MS);
   },
 
-  fetchTaskDetails: async (user, caseNumber, taskId, expectedStatus = 200) => {
+  fetchTaskDetails: async (user, caseNumber, taskType, expectedStatus = 200) => {
     let taskDetails;
     const userToken = await idamHelper.accessToken(user);
     const s2sToken = await restHelper.retriedRequest(
@@ -190,22 +191,20 @@ module.exports = {
         .then(async response => await response.json())
         .then(jsonResponse => {
           let availableTaskDetails = jsonResponse['tasks'];
+          console.log(availableTaskDetails)
           availableTaskDetails.forEach((taskInfo) => {
-            console.log(availableTaskDetails)
-          //   if (taskInfo['type'] == taskId) {
-          //     console.log('Found taskInfo with id ...', taskId);
-          //     console.log('Task details are ...', taskInfo);
-          //     taskDetails = taskInfo;
-          //   }
-          // });
-          // if (!taskDetails) {
-          //   throw new Error(`Ongoing task retrieval process for case id: ${caseNumber}`);
-          // } else {
-          //   return taskDetails;
-          // }
+            if (taskInfo['type'] == taskType) {
+              console.log('Found taskInfo with type ...', taskType);
+              console.log('Task details are ...', taskInfo);
+              taskDetails = taskInfo;
+            }
+          });
+          if (!taskDetails) {
+            throw new Error(`Ongoing task retrieval process for case id: ${caseNumber}`);
+          } else {
+            return taskDetails;
+          }
         });
     }, TASK_MAX_RETRIES, TASK_RETRY_TIMEOUT_MS);
-  },
-
-
+  }, 
 };
