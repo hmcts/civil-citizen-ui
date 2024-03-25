@@ -5,8 +5,8 @@ import {Claim} from 'models/claim';
 
 export const toCCDResponseTimelineOfEvents = (claim: Claim): CCDTimeLineOfEvents [] => {
   const events: DefendantTimeline = claim.isFullDefence()
-    ? claim.rejectAllOfClaim.timeline
-    : claim.partialAdmission.timeline;
+    ? claim.rejectAllOfClaim?.timeline
+    : claim.partialAdmission?.timeline;
   const ccdEvents: CCDTimeLineOfEvents[] = [];
 
   const timelineRows: TimelineRow [] = events?.rows;
