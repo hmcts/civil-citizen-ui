@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {DASHBOARD_CLAIMANT_URL} from '../../../../../main/routes/urls';
+import {OLD_DASHBOARD_CLAIMANT_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'common/models/partyType';
 import {PartyDetails} from 'common/form/models/partyDetails';
@@ -36,17 +36,31 @@ describe('claimant Dashboard Controller', () => {
   });
 
   describe('on GET', () => {
-    it('should return claimant dashboard page when only draft', async () => {
-
+    it('should return claimant dashboard page when only draft and isDashboardServiceEnabled', async () => {
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.INDIVIDUAL;
+      claim.respondent1.partyDetails = new PartyDetails({
+        individualTitle:'Mr',
+        individualFirstName:'Jon',
+        individualLastName:'Doe',
+      });
+      claim.totalClaimAmount=12000;
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.applicant1Represented = YesNoUpperCamelCase.NO;
+      claim.caseProgressionHearing = new CaseProgressionHearing( null, null, null, null, null, null, new PaymentDetails('123', 'cu123', PaymentStatus.SUCCESS) );
+      claim.caseProgression = new CaseProgression();
       jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(new Claim()));
       jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
-
-      await request(app).get(DASHBOARD_CLAIMANT_URL.replace(':id', 'draft')).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).not.toContain('Mr. Jan Clark v Version 1');
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+      await request(app).get(OLD_DASHBOARD_CLAIMANT_URL.replace(':id', 'draft')).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).not.toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
       });
     });
-    it('should return claimant dashboard page with claimant and fast Track', async () => {
+    it('should return claimant dashboard page with claimant and fast Track and isDashboardServiceEnabled', async () => {
 
       const claim = new Claim();
       claim.respondent1 = new Party();
@@ -67,12 +81,12 @@ describe('claimant Dashboard Controller', () => {
         .mockResolvedValueOnce(claim);
       jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Mr. Jan Clark v Version 1');
+      await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
       });
     });
-    it('should return defendant dashboard page with claimant and small claims', async () => {
+    it('should return defendant dashboard page with claimant and small claims and isDashboardServiceEnabled', async () => {
 
       const claim = new Claim();
       claim.respondent1 = new Party();
@@ -91,12 +105,12 @@ describe('claimant Dashboard Controller', () => {
         .mockResolvedValueOnce(claim);
       jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Mr. Jan Clark v Version 1');
+      await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
       });
     });
-    it('should return defendant dashboard page with defendant and fast track', async () => {
+    it('should return defendant dashboard page with defendant and fast track and isDashboardServiceEnabled', async () => {
 
       const claim = new Claim();
       claim.respondent1 = new Party();
@@ -117,12 +131,12 @@ describe('claimant Dashboard Controller', () => {
       jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
 
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Mr. Jan Clark v Version 1');
+      await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
       });
     });
-    it('should return defendant dashboard page with defendant and small claims', async () => {
+    it('should return defendant dashboard page with defendant and small claims and isDashboardServiceEnabled', async () => {
 
       const claim = new Claim();
       claim.respondent1 = new Party();
@@ -142,17 +156,27 @@ describe('claimant Dashboard Controller', () => {
       jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
 
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Mr. Jan Clark v Version 1');
+      await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
       });
     });
 
-    it('should return status 500 when error thrown', async () => {
+    it('should return status 500 when error thrown and isDashboardServiceEnabled', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
       await request(app)
-        .get(DASHBOARD_CLAIMANT_URL)
+        .get(OLD_DASHBOARD_CLAIMANT_URL)
+        .expect((res: Response) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+    it('should return status 500 when error thrown', async () => {
+      app.locals.draftStoreClient = mockRedisFailure;
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(false);
+      await request(app)
+        .get(OLD_DASHBOARD_CLAIMANT_URL)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
