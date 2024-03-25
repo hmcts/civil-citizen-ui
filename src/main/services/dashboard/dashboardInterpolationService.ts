@@ -3,7 +3,7 @@ import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {
   CLAIM_FEE_BREAKUP,
   DASHBOARD_NOTIFICATION_REDIRECT,
-  RESPONSE_TASK_LIST_URL,
+  BILINGUAL_LANGUAGE_PREFERENCE_URL,
   CCJ_PAID_AMOUNT_URL,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
   CASE_DOCUMENT_VIEW_URL,
@@ -49,7 +49,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{DRAFT_CLAIM_TASK_LIST}', '/claim/task-list');
   valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getClaimantDQDocumentId(claim)));
   valuesMap.set('{CLAIM_FEE_URL}', CLAIM_FEE_BREAKUP.replace(':id', claimId));
-  valuesMap.set('{RESPONSE_TASK_LIST_URL}', RESPONSE_TASK_LIST_URL.replace(':id', claimId));
+  valuesMap.set('{RESPONSE_TASK_LIST_URL}', BILINGUAL_LANGUAGE_PREFERENCE_URL.replace(':id', claimId));
   valuesMap.set('{COUNTY_COURT_JUDGEMENT_URL}', CCJ_PAID_AMOUNT_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_REPAYMENT_PLAN}', DEFENDANT_SIGN_SETTLEMENT_AGREEMENT.replace(':id', claimId));
   valuesMap.set('{daysLeftToRespond}', daysLeftToRespond);
