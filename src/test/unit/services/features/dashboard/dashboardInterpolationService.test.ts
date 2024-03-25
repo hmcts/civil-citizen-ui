@@ -81,6 +81,17 @@ describe('dashboardInterpolationService', () => {
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
   });
 
+  it('should replace placeholders with redirect url for claimant response', () => {
+    const claim: Claim = new Claim();
+    claim.id = '1710172392502478';
+    const textToReplaceUrl = '{CLAIMANT_RESPONSE_TASK_LIST}';
+
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
+    const textExpectedDynamic = '/case/1710172392502478/claimant-response/task-list';
+
+    expect(textReplacedDynamic).toEqual(textExpectedDynamic);
+  });
+
   it('should replace placeholders with document size for claimant dq', () => {
     const claim: Claim = new Claim();
     claim.id = '1710172392502478';
