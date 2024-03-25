@@ -8,10 +8,11 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('defendantTimelineService');
 
 const getDefendantTimeline = (claim: Claim): DefendantTimeline => {
-  if (claim.rejectAllOfClaim?.timeline) {
-    return DefendantTimeline.buildPopulatedForm(claim.rejectAllOfClaim.timeline.rows, claim.rejectAllOfClaim.timeline.comment);
-  } else if (claim.partialAdmission?.timeline) {
-    return DefendantTimeline.buildPopulatedForm(claim.partialAdmission.timeline.rows, claim.partialAdmission.timeline.comment);
+  const timeline: DefendantTimeline = claim.isPartialAdmission()
+    ? claim.partialAdmission?.timeline
+    : claim.rejectAllOfClaim?.timeline;
+  if (timeline) {
+    return DefendantTimeline.buildPopulatedForm(timeline.rows, timeline.comment);
   }
   return DefendantTimeline.buildEmptyForm();
 };
@@ -20,16 +21,16 @@ const saveDefendantTimeline = async (claimId: string, timeline: DefendantTimelin
   try {
     const claim = await getCaseDataFromStore(claimId);
     timeline.filterOutEmptyRows();
-    if (claim.isFullDefence()) {
-      if (!claim.rejectAllOfClaim) {
-        claim.rejectAllOfClaim = new RejectAllOfClaim();
-      }
-      claim.rejectAllOfClaim.timeline = timeline;
-    } else {
+    if (claim.isPartialAdmission()) {
       if (!claim.partialAdmission) {
         claim.partialAdmission = new PartialAdmission();
       }
       claim.partialAdmission.timeline = timeline;
+    } else {
+      if (!claim.rejectAllOfClaim) {
+        claim.rejectAllOfClaim = new RejectAllOfClaim();
+      }
+      claim.rejectAllOfClaim.timeline = timeline;
     }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
