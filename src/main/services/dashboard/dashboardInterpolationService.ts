@@ -1,13 +1,15 @@
 import {Claim} from 'models/claim';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {
+  CCJ_DEFENDANT_DOB_URL,
   CLAIM_FEE_BREAKUP,
   DASHBOARD_NOTIFICATION_REDIRECT,
-  RESPONSE_TASK_LIST_URL,
+  BILINGUAL_LANGUAGE_PREFERENCE_URL,
   CCJ_PAID_AMOUNT_URL,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
   CASE_DOCUMENT_VIEW_URL,
-  MEDIATION_SERVICE_EXTERNAL,
+  MEDIATION_SERVICE_EXTERNAL, CLAIMANT_RESPONSE_TASK_LIST_URL,
+  DATE_PAID_URL,
 } from 'routes/urls';
 import config from 'config';
 import { getTotalAmountWithInterestAndFees } from 'modules/claimDetailsService';
@@ -46,16 +48,20 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{VIEW_JUDGEMENT}', '#');
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
   valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getClaimantDQDocumentId(claim)));
+  valuesMap.set('{VIEW_SETTLEMENT_AGREEMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSettlementAgreementDocumentId(claim)));
   valuesMap.set('{DRAFT_CLAIM_TASK_LIST}', '/claim/task-list');
   valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getClaimantDQDocumentId(claim)));
   valuesMap.set('{CLAIM_FEE_URL}', CLAIM_FEE_BREAKUP.replace(':id', claimId));
-  valuesMap.set('{RESPONSE_TASK_LIST_URL}', RESPONSE_TASK_LIST_URL.replace(':id', claimId));
+  valuesMap.set('{RESPONSE_TASK_LIST_URL}', BILINGUAL_LANGUAGE_PREFERENCE_URL.replace(':id', claimId));
+  valuesMap.set('{REQUEST_CCJ_URL}', CCJ_DEFENDANT_DOB_URL.replace(':id', claimId));
   valuesMap.set('{COUNTY_COURT_JUDGEMENT_URL}', CCJ_PAID_AMOUNT_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_REPAYMENT_PLAN}', DEFENDANT_SIGN_SETTLEMENT_AGREEMENT.replace(':id', claimId));
+  valuesMap.set('{CLAIMANT_RESPONSE_TASK_LIST}', CLAIMANT_RESPONSE_TASK_LIST_URL.replace(':id', claimId));
   valuesMap.set('{daysLeftToRespond}', daysLeftToRespond);
   valuesMap.set('{enforceJudgementUrl}', enforceJudgementUrl);
   valuesMap.set('{civilMoneyClaimsTelephone}', civilMoneyClaimsTelephone);
   valuesMap.set('{fullAdmitPayImmediatelyPaymentAmount}', getTotalAmountWithInterestAndFees(claim).toString());
+  valuesMap.set('{TELL_US_IT_IS_SETTLED}', DATE_PAID_URL.replace(':id', claimId));
   valuesMap.set('{MEDIATION}', MEDIATION_SERVICE_EXTERNAL);
 
   if (claimantRequirements) {
@@ -77,3 +83,8 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
 function getClaimantDQDocumentId(claim:Claim) : string {
   return getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
 }
+
+function getSettlementAgreementDocumentId(claim:Claim) : string {
+  return getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT, 'claimant');
+}
+
