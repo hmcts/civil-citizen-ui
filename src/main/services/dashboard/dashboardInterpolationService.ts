@@ -8,6 +8,7 @@ import {
   CCJ_PAID_AMOUNT_URL,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
   CASE_DOCUMENT_VIEW_URL,
+  DATE_PAID_URL,
   MEDIATION_SERVICE_EXTERNAL,
 } from 'routes/urls';
 import config from 'config';
@@ -47,6 +48,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{VIEW_JUDGEMENT}', '#');
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
   valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getClaimantDQDocumentId(claim)));
+  valuesMap.set('{VIEW_SETTLEMENT_AGREEMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSettlementAgreementDocumentId(claim)));
   valuesMap.set('{DRAFT_CLAIM_TASK_LIST}', '/claim/task-list');
   valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getClaimantDQDocumentId(claim)));
   valuesMap.set('{CLAIM_FEE_URL}', CLAIM_FEE_BREAKUP.replace(':id', claimId));
@@ -58,6 +60,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{enforceJudgementUrl}', enforceJudgementUrl);
   valuesMap.set('{civilMoneyClaimsTelephone}', civilMoneyClaimsTelephone);
   valuesMap.set('{fullAdmitPayImmediatelyPaymentAmount}', getTotalAmountWithInterestAndFees(claim).toString());
+  valuesMap.set('{TELL_US_IT_IS_SETTLED}', DATE_PAID_URL.replace(':id', claimId));
   valuesMap.set('{MEDIATION}', MEDIATION_SERVICE_EXTERNAL);
 
   if (claimantRequirements) {
@@ -79,3 +82,8 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
 function getClaimantDQDocumentId(claim:Claim) : string {
   return getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
 }
+
+function getSettlementAgreementDocumentId(claim:Claim) : string {
+  return getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT, 'claimant');
+}
+
