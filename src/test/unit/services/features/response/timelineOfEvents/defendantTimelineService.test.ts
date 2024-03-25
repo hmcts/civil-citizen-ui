@@ -20,6 +20,8 @@ describe('defendantTimelineService', () => {
     it('should return defendant timeline from partial admission when it exists', () => {
       //Given
       const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
       const partialAdmission = new PartialAdmission();
       partialAdmission.timeline = new DefendantTimeline([new TimelineRow(17, 11, 2021, 'description')], 'comment');
       claim.partialAdmission = partialAdmission;
