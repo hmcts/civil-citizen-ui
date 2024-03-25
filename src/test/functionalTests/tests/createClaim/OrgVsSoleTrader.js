@@ -6,6 +6,7 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
 const { payClaimFee, hwfSubmission } = require('../../specClaimHelpers/dashboardNotificationConstants');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
 
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115, claimantPartyType = 'Org';
 
