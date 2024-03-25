@@ -296,8 +296,8 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.REQUEST_JUDGEMENT_ADMISSION_SPEC, claimId, updatedClaim, req);
   }
 
-  async submitClaimSettled(claimId: string, req: AppRequest):  Promise<Claim> {
-    return this.submitEvent(CaseEvent.LIP_CLAIM_SETTLED,  claimId, {}, req);
+  async submitClaimSettled(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.LIP_CLAIM_SETTLED,  claimId, updatedClaim, req);
   }
 
   async submitBreathingSpaceEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
