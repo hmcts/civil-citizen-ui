@@ -1,14 +1,19 @@
 import {toCCDResponseTimelineOfEvents} from 'services/translation/response/convertToCCDResponseTimelineOfEvents';
 import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
 import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
+import {Claim} from 'models/claim';
+import {PartialAdmission} from 'models/partialAdmission';
 
 describe('convert to response timeline of events', () => {
 
   it('returning proper value for converted timeline events', () => {
     // Given
+    const claim: Claim = new Claim();
+    claim.partialAdmission = new PartialAdmission();
     const events: DefendantTimeline = new DefendantTimeline([new TimelineRow(5, 11, 2022, 'Event 1')]);
+    claim.partialAdmission.timeline = events;
     // When
-    const result = toCCDResponseTimelineOfEvents(events);
+    const result = toCCDResponseTimelineOfEvents(claim);
 
     // Then
     expect(result.length).toEqual(1);
