@@ -39,7 +39,7 @@ class DefendantLatestUpdate {
 
   async openSSAPage(claimRef) {
     await I.amOnPage('/case/' + claimRef + '/settlement-agreement/sign-settlement-agreement');
-    await I.waitForText('Respond to the settlement agreement', config.WaitForText);
+    await I.waitForContent('Respond to the settlement agreement', config.WaitForText);
   }
 }
 
