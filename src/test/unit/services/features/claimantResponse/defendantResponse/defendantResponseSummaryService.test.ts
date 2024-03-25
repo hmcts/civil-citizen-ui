@@ -103,6 +103,7 @@ describe("Defendant's response summary service", () => {
       'defence': {'text': 'disagree statement'},
     };
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+    claim.rejectAllOfClaim.timeline = claim.partialAdmission.timeline;
     // When
     const defendantsResponseContent = getDefendantsResponseContent(claim, lang);
     // Then
@@ -282,7 +283,8 @@ describe("Defendant's response summary service", () => {
       'howMuchHaveYouPaid': howMuchHaveYouPaid,
 
     };
-    claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+    claim.respondent1.responseType = ResponseType.FULL_DEFENCE
+    claim.rejectAllOfClaim.timeline = claim.partialAdmission.timeline;
 
     // When
     const defendantsResponseContent = getDefendantsResponseContent(claim, lang);
