@@ -305,7 +305,7 @@ class ResponseToDefence {
   }
 
   verifySignTheSettlementAgreementForFullAdmit(option) {
-    I.waitForText('I confirm I’ve read and accept the terms of the agreement.', 60);
+    I.waitForContent('I confirm I’ve read and accept the terms of the agreement.', 60);
     I.see('Terms of the agreement', 'h1');
     I.see('The agreement');
     if(option === 'bySetDate'){
@@ -392,7 +392,7 @@ class ResponseToDefence {
   }
 
   verifyCheckYourAnswersForFullAdmitSettlementAgreement() {
-    I.waitForText('Sign a settlement agreement',60);
+    I.waitForContent('Sign a settlement agreement',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
     I.see('Do you accept the defendant repayment plan?');
@@ -403,7 +403,7 @@ class ResponseToDefence {
   }
 
   verifyCheckYourAnswersForFullAdmitRejectPlanSettlementAgreement() {
-    I.waitForText('Sign a settlement agreement',60);
+    I.waitForContent('Sign a settlement agreement',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
     I.see('Do you accept the defendant repayment plan?');
@@ -444,13 +444,13 @@ class ResponseToDefence {
   }
 
   verifyConfirmationScreenForFullAdmitSettlementAgreement(claimNumber) {
-    I.waitForText('You\'ve signed a settlement agreement', 60,'h1');
+    I.waitForContent('You\'ve signed a settlement agreement', 60,'h1');
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
   }
 
   verifyConfirmationScreenForFullAdmitRejectPlanSettlementAgreement(claimNumber){
-    I.waitForText('You\'ve signed a settlement agreement', 60,'h1');
+    I.waitForContent('You\'ve signed a settlement agreement', 60,'h1');
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
     I.see('What happens next');
