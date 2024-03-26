@@ -57,7 +57,7 @@ const getAcceptSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
       {
         type: ClaimSummaryType.PARAGRAPH,
         data: {
-          text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.PAY_BY', {paymentDate: formatDateToFullDate(getPaymentDate(claim)), lng: lang}),
+          text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.PAY_BY', {paymentDate: formatDateToFullDate(getPaymentDate(claim), lang), lng: lang}),
         },
       },
     );
