@@ -16,7 +16,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Welsh Response with PartAdmit - Small Claims');
+Feature('Welsh Response with PartAdmit - Small Claims').tag('@regression-cui-r1');
 
 Scenario('Create spec LR v LIP and assign to defendant LIP', async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -47,7 +47,7 @@ Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit @nightly
   await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-}).tag('@regression-cui-r1');
+});
 
 Scenario('Caseworker Uploads Translated Documents', async ({wa}) => {
   await LoginSteps.EnterCaseworkerCredentials(config.caseWorker.email, config.caseWorker.password);
@@ -63,4 +63,4 @@ Scenario('Caseworker Uploads Translated Documents', async ({wa}) => {
     defendantWelshRequestTaskDetails,
     taskSteps,
   );
-}).tag('@regression-cui-r1');
+});
