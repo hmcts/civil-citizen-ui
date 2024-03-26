@@ -1,7 +1,7 @@
 const config = require('../../../config');
 const ResponseSteps = require('../../features/response/steps/lipDefendantResponseSteps');
 const LoginSteps = require('../../features/home/steps/login');
-const CitizenDashboardSteps = require('../../features/dashboard/steps/dashboard');
+const DashboardSteps = require('../../features/dashboard/steps/dashboard');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const UploadTranslatedDocumentsSteps = require('../../features/uploadTranslatedDocuments/steps/uploadTranslatedDocumentsSteps');
 const CaseworkerDashboardSteps = require('../../features/caseworkerDashboard/steps/caseworkerDashboardSteps');
@@ -30,8 +30,8 @@ Scenario('Create spec LR v LIP and assign to defendant LIP', async ({api}) => {
 });
 
 Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit @nightly', async () => {
-  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
+  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef, 'cy');
   await ResponseSteps.EnterPersonalDetails(claimRef, false);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
