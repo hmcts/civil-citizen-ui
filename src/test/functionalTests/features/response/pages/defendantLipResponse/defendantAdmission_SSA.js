@@ -13,7 +13,7 @@ const buttons = {
 class DefendantAdmissionSSA {
 
   async verifyContent() {
-    await I.waitForText('Respond to the settlement agreement', config.WaitForText);
+    await I.waitForContent('Respond to the settlement agreement', config.WaitForText);
     await I.see('Sir John Doe will pay £1500 no later than 1 October 2025.');
     await I.see('The agreement');
     await I.see('Completion date');
@@ -35,10 +35,10 @@ class DefendantAdmissionSSA {
   async chooseOptionToSign(option){
     if(option === 'yes'){
       await I.click(fields.yes);
-      await I.waitForText('The claim will be put on hold and the claimant can\'t request a CCJ against you.');
+      await I.waitForContent('The claim will be put on hold and the claimant can\'t request a CCJ against you.');
     }else{
       await I.click(fields.no);
-      await I.waitForText('The claimant can request a CCJ against you to enforce the repayment plan shown in the agreement.');
+      await I.waitForContent('The claimant can request a CCJ against you to enforce the repayment plan shown in the agreement.');
       await I.see('You can ask a judge to change the plan based on your financial details.');
       await I.see('The court has reviewed the plan and believes you can afford it, so a judge may not change it.');
     }
@@ -47,7 +47,7 @@ class DefendantAdmissionSSA {
 
   async verifyConfirmationPage(option){
     if(option === 'yes'){
-      await I.waitForText('Make sure you get receipts for any payments.');
+      await I.waitForContent('Make sure you get receipts for any payments.');
       await I.see('You\'ve both signed a settlement agreement');
       await I.see('Download settlement agreement (PDF)');
       await I.see('The agreement says you\'ll repay by');
@@ -58,7 +58,7 @@ class DefendantAdmissionSSA {
       await I.see('Email');
       await I.see('Telephone');
     }else{
-      await I.waitForText('We\'ll email you when the claimant responds.');
+      await I.waitForContent('We\'ll email you when the claimant responds.');
       await I.see('You\'ve rejected the settlement agreement');
       await I.see('What happens next');
       await I.see('The claimant can request a County Court Judgment (CCJ) against you.');
