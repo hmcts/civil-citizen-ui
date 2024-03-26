@@ -18,19 +18,30 @@ class LoginPage {
     await I.amOnPage('/');
   }
 
+  async openManageCase() {
+    await I.amOnPage(config.url.manageCase);
+  }
+
   async acceptCookies() {
     await I.click(buttons.acceptCookies);
     await I.click(buttons.hideMessage);
   }
 
-  async login(email, password) {
-    await I.waitForContent('Email address', config.WaitForText);
+  async #login(email, password, endpoint) {
+    await I.waitForText('Email address', config.WaitForText);
     await I.waitForVisible(fields.username);
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);
-    await I.click(buttons.hmctsSignIn);
-    await I.wait(3);
-    await I.seeInCurrentUrl('/dashboard');
+    await I.click(buttons.submit);
+    await I.seeInCurrentUrl(endpoint);
+  }
+
+  async login(email, password) {
+    await this.#login(email, password, '/dashboard');
+  }
+
+  async caseworkerLogin(email, password) {
+    await this.#login(email, password, '/work/my-work/list');
   }
 }
 
