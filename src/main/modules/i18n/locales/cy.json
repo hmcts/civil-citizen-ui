@@ -1163,7 +1163,7 @@
         "CCJ_REQUESTED": "Gofynnwyd am ddyfarniad Llys Sirol",
         "CCJ_NEXT_STEP_MSG1": "Rydych wedi gofyn am Ddyfarniad Llys Sirol yn erbyn y diffynnydd.",
         "CCJ_NEXT_STEP_MSG2": "Pan fyddwn wedi prosesu eich cais, byddwn yn postio copi o’r dyfarniad atoch chi ac at {{ defendantName }}.",
-        "CCJ_NEXT_STEP_MSG3": "You've rejected the defendant's repayment plan and a County Court Judgment has been requested against them.",
+        "CCJ_NEXT_STEP_MSG3": "Rydych wedi gwrthod cynllun ad-dalu’r diffynnydd a gwnaethpwyd gais am Ddyfarniad Llys Sirol yn eu herbyn.",
         "CCJ_NEXT_STEP_MSG4": "You've requested a County Court Judgment against {{ defendantName }}.",
         "CCJ_NEXT_STEP_MSG5": "A judge will decide what {{ defendantName }} can afford to pay, based on their financial details.",
         "CCJ_NEXT_STEP_MSG6": "We'll contact both you and {{ defendantName }} to tell you what to do next."
@@ -1579,19 +1579,19 @@
       "TITLE": "Ymateb i'r cytundeb setlo"
     },
     "DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION": {
-      "ACCEPTED_SETTLEMENT_AGREEMENT_TITLE": "You've both signed a settlement agreement",
-      "CAN_REQUEST_CCJ": "The claimant can request a County Court Judgment (CCJ) against you. The CCJ would order you to repay the money in line with the terms of the agreement.",
-      "CANT_REQUEST_CCJ": "The claimant can't request a County Court Judgment against you unless you break the terms.",
-      "CONTACT_CLAIMANT": "Contact {{ claimantName }}",
-      "COURT_REVIEWED_PLAN": "The court has reviewed the plan and believes you can afford it, so a judge may not change it.",
-      "DOWNLOAD_SETTLEMENT_AGREEMENT_LINK_TEXT": "Download settlement agreement (PDF)",
-      "EMAIL_YOU": "We'll email you when the claimant responds.",
-      "GET_RECEIPTS": "Make sure you get receipts for any payments.",
+      "ACCEPTED_SETTLEMENT_AGREEMENT_TITLE": "Rydych eich dau wedi llofnodi’r cytundeb setlo",
+      "CAN_REQUEST_CCJ": "Gall yr hawlydd wneud cais am Ddyfarniad Llys Sirol (CCJ) yn eich erbyn. Byddai’r CCJ yn gorchymyn i chi ad-dalu’r arian yn unol â thelerau’r cytundeb.",
+      "CANT_REQUEST_CCJ": "Ni all yr hawlydd wneud cais am Ddyfarniad Llys Sirol yn eich erbyn oni bai eich bod yn torri’r telerau.",
+      "CONTACT_CLAIMANT": "Cysylltwch â {{ claimantName }}",
+      "COURT_REVIEWED_PLAN": "Mae'r llys wedi adolygu'r cynllun ac yn credu y gallwch ei fforddio, felly efallai na fydd barnwr yn ei newid.",
+      "DOWNLOAD_SETTLEMENT_AGREEMENT_LINK_TEXT": "Lawrlwytho’r cytundeb setlo (PDF)",
+      "EMAIL_YOU": "Byddwn yn anfon e-bost atoch chi pan fydd yr hawlydd yn ymateb.",
+      "GET_RECEIPTS": "Gwnewch yn siŵr eich bod yn cael derbynebau am unrhyw daliadau.",
       "PAGE_TITLE": "Respond to the settlement agreement confirmation",
-      "PAY_BY": "The agreement says you'll repay by {{ paymentDate }}.",
-      "REJECTED_SETTLEMENT_AGREEMENT_TITLE": "You've rejected the settlement agreement",
-      "REQUEST_CCJ": "If they request a CCJ, you can ask a judge to consider changing the repayment plan, based on your financial details.",
-      "THEIR_PAYMENT_DETAILS": "if you need their payment details.",
+      "PAY_BY": "Mae’r cytundeb yn dweud y byddwch yn ad-dalu erbyn {{ paymentDate }}.",
+      "REJECTED_SETTLEMENT_AGREEMENT_TITLE": "Rydych wedi gwrthod y cytundeb setlo.",
+      "REQUEST_CCJ": "Os byddant yn gwneud cais am CCJ, gallwch ofyn i farnwr ystyried newid y cynllun ad-dalu, yn seiliedig ar eich manylion ariannol.",
+      "THEIR_PAYMENT_DETAILS": "os oes arnoch angen eu manylion talu.",
       "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
     },
     "DEFENDANT_TIMELINE": {
@@ -1921,6 +1921,7 @@
       "ENTER_NUMBER": "Rhowch y rhif help i dalu ffioedd",
       "PAGE_TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
       "REFERENCE_NUMBER": "Cyfeirnod Help i Dalu Ffioedd",
+      "REFERENCE_NUMBER_NONE": "Dim",
       "TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
       "ONLY_ONE": "Dim ond os gwnaethoch gais am help i dalu ffioedd y bydd gennych gyfeirnod help i dalu ffioedd."
     },
