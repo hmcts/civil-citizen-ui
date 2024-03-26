@@ -1,7 +1,6 @@
 import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
-import validator from 'validator';
-import isInt = validator.isInt;
 import {toNumber} from 'lodash';
+import {isInt} from 'validator';
 
 /**
  * Validates that the input value is a valid month
