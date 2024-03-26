@@ -41,6 +41,9 @@ static Map<String, Object> secret(String secretName, String envVariable) {
 }
 
 def secrets = [
+  's2s-${env}': [
+    secret('microservicekey-xui-webapp', 'XUI_S2S_SECRET'),
+  ],
   'civil-${env}': [
     secret('microservicekey-civil-service', 'S2S_SECRET'),
     secret('citizen-ui-test-username', 'CITIZEN_USERNAME'),

@@ -14,6 +14,13 @@ class LoginSteps  {
     //await this.AcceptCookies(); -- skip as it is flaky
     await LoginPage.login(username, password);
   }
+
+  async EnterCaseworkerCredentials(username, password) {
+    await I.wait(10);
+    await LoginPage.openManageCase();
+    //await this.AcceptCookies(); -- skip as it is flaky
+    await LoginPage.caseworkerLogin(username, password);
+  }
 }
 
 module.exports =  new LoginSteps();

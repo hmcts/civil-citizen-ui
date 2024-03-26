@@ -12,14 +12,13 @@ exports.config = {
     await unAssignAllUsers();
     await deleteAllIdamTestUsers();
   },
-
   tests: '../functionalTests/tests/**/*.js',
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
     Playwright: {
       url: testConfig.TestUrl,
+      show: true,
       browser: 'chromium',
-      show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
       waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
       windowSize: '1280x960',
       timeout: 30000,
@@ -31,7 +30,7 @@ exports.config = {
           dir:'failed-videos',
         },
       },
-      waitForNavigation: 'networkidle',
+      waitForNavigation:'load',
       bypassCSP: true,
       ignoreHTTPSErrors: true,
       retries: 3,
@@ -55,6 +54,7 @@ exports.config = {
   },
   include: {
     api: './specClaimHelpers/api/steps.js',
+    wa: './specClaimHelpers/api/stepsWA.js',
   },
   plugins: {
     autoDelay: {
