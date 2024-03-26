@@ -1,10 +1,10 @@
 const config = require('../../config');
 
-const LoginSteps = require('../features/home/steps/login');
-const DashboardSteps = require('../features/dashboard/steps/dashboard');
+const LoginSteps = require('../commonFeatures/home/steps/login');
+const DashboardSteps = require('../citizenFeatures/dashboard/steps/dashboard');
 const {createAccount} = require('../specClaimHelpers/api/idamHelper');
-const ResponseToDefenceLipVsLipSteps = require('../features/createClaim/steps/responseToDefenceLipvLipSteps');
-const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
+const ResponseToDefenceLipVsLipSteps = require('../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
+const ResponseSteps = require('../citizenFeatures/response/steps/lipDefendantResponseSteps');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars

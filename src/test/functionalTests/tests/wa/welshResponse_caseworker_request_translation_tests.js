@@ -16,7 +16,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Welsh Response with PartAdmit - Small Claims @kiyron');
+Feature('Welsh Response with PartAdmit - Small Claims');
 
 Scenario('Create spec LR v LIP and assign to defendant LIP', async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
