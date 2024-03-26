@@ -49,7 +49,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayBySetDateWithIndividual);
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await ResponseToDefenceLipVsLipSteps.SSA(claimRef, claimNumber);
+    await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDateSSA(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
     await ResponseSteps.SignOut();
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
