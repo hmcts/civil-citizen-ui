@@ -37,9 +37,9 @@ const validateTaskDetails = (createdTaskDetails, expectedTaskDetails) => {
     for (let taskDMN of Object.keys(taskFieldsToBeValidated)) {
       console.log(`asserting dmn info: ${taskDMN} has valid data`);
       taskFieldsToBeValidated[taskDMN].forEach(
-      fieldsToBeValidated  => {
-        assert.deepEqual(createdTaskDetails[fieldsToBeValidated], expectedTaskDetails[fieldsToBeValidated]);
-      });
+        fieldsToBeValidated  => {
+          assert.deepEqual(createdTaskDetails[fieldsToBeValidated], expectedTaskDetails[fieldsToBeValidated]);
+        });
     }
   }
 };

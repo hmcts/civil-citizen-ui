@@ -7,10 +7,10 @@ const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 const claimType = 'FastTrack';
 let claimRef;
 
-const obj = {
-  api: 'string',
-  name2: 'string2',
-};
+// const obj = {
+//   api: 'string',
+//   name2: 'string2',
+// };
 
 Feature('Case progression journey - Verify Documents tab - Uploaded Evidence by LR');
 
