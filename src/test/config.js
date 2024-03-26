@@ -98,6 +98,11 @@ module.exports = {
     email: 'civil-system-update@mailnesia.com',
     type: 'systemupdate',
   },
+  systemUpdate2: {
+    password: defaultPassword,
+    email: 'hmcts.civil+organisation.1.superuser@gmail.com',
+    type: 'systemupdate',
+  },
   TestOutputDir: process.env.E2E_OUTPUT_DIR || 'test-results/functional',
   runningEnv: process.env.ENVIRONMENT,
   claimantSolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'B04IXE4' : 'Q1KOKP2',
