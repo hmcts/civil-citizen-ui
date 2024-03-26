@@ -1,7 +1,7 @@
 const config = require('../../config');
-const CaseProgressionSteps = require('../features/caseProgression/steps/caseProgressionSteps');
-const LoginSteps = require('../features/home/steps/login');
-const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
+const CaseProgressionSteps = require('../citizenFeatures/caseProgression/steps/caseProgressionSteps');
+const LoginSteps = require('../commonFeatures/home/steps/login');
+const DateUtilsComponent = require('../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
