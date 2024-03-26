@@ -3,8 +3,8 @@ const I = actor();
 const {testFilePath} = require('../../../sharedData');
 
 const fields = {
-    documentType1: 'select[id="translatedDocuments_0_documentType"]',
-    document1: 'input[id="translatedDocuments_0_file"]',
+  documentType1: 'select[id="translatedDocuments_0_documentType"]',
+  document1: 'input[id="translatedDocuments_0_file"]',
 };
 
 class UploadTranslatedDocuments {
