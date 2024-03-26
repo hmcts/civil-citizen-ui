@@ -29,7 +29,7 @@ Scenario('Create spec LR v LIP and assign to defendant LIP', async ({api}) => {
   console.log('Security code', securityCode);
 });
 
-Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit @nightly', async ({api}) => {
+Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit @nightly', async () => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef, 'cy');
@@ -57,10 +57,11 @@ Scenario('Caseworker Uploads Translated Documents', async ({wa}) => {
     await UploadTranslatedDocumentsSteps.CheckAndSubmit();
     await UploadTranslatedDocumentsSteps.VerifySuccessBanner(claimRef);
   };
-  await wa.runWATask(config.caseWorker, 
-                claimRef, 
-                config.waTaskTypes.defendantWelshRequest, 
-                defendantWelshRequestTaskDetails,
-                taskSteps,
-              );
+  await wa.runWATask(
+    config.caseWorker, 
+    claimRef, 
+    config.waTaskTypes.defendantWelshRequest, 
+    defendantWelshRequestTaskDetails,
+    taskSteps,
+  );
 }).tag('@regression-cui-r1');

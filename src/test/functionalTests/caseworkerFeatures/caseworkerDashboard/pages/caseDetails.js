@@ -2,8 +2,8 @@ const config = require('../../../../config');
 const I = actor();
 
 const fields = {
-    successBanner: 'div[class="hmcts-banner hmcts-banner--success"]'
-}
+  successBanner: 'div[class="hmcts-banner hmcts-banner--success"]',
+};
 
 class CaseDetails {
   async goToCaseDetails(claimRef) {

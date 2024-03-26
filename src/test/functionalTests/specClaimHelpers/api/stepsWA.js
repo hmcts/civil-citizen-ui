@@ -21,15 +21,15 @@ const taskFieldsToBeValidated = {
     'work_type_id',
     'work_type_label',
     'description',
-    'role_category'
+    'role_category',
   ],
   taskPermissionFields: [
-    'permissions'
+    'permissions',
   ],
   taskPriorityFields: [
     'minor_priority',
-    'major_priority'
-  ]
+    'major_priority',
+  ],
 };
 
 const validateTaskDetails = (createdTaskDetails, expectedTaskDetails) => {
@@ -42,7 +42,7 @@ const validateTaskDetails = (createdTaskDetails, expectedTaskDetails) => {
       });
     }
   }
-}
+};
 
 module.exports = {
   runWATask: async (user, claimRef, taskType, validTaskDetails, taskSteps = async () => {}) => {
@@ -58,5 +58,5 @@ module.exports = {
     if(config.runWAApiTest) {
       await apiRequest.taskActionByUser(user, taskId, 'complete');
     }
-  }
-}
+  },
+};

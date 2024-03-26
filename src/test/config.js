@@ -36,7 +36,7 @@ module.exports = {
   },
   s2sForXUI: {
     microservice: 'xui_webapp',
-    secret: process.env.XUI_S2S_SECRET || 'AABBCCDDEEFFGGHH'
+    secret: process.env.XUI_S2S_SECRET || 'AABBCCDDEEFFGGHH',
   },
   applicantSolicitorUser: {
     password: defaultPassword,
@@ -109,7 +109,7 @@ module.exports = {
     type: 'systemupdate',
   },
   waTaskTypes: {
-    defendantWelshRequest: 'defendantWelshRequest'
+    defendantWelshRequest: 'defendantWelshRequest',
   },
   TestOutputDir: process.env.E2E_OUTPUT_DIR || 'test-results/functional',
   runningEnv: process.env.ENVIRONMENT,

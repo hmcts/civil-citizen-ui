@@ -37,7 +37,7 @@ class LoginPage {
   }
 
   async citizenLogin(email, password) {
-    await this.#login(email, password, '/dashboard')
+    await this.#login(email, password, '/dashboard');
   }
 
   async caseWorkerLogin(email, password) {
