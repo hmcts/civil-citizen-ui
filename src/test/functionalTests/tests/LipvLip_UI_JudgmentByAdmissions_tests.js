@@ -18,7 +18,7 @@ Scenario('Create LipvLip claim and defendant responded FullAdmit and PayImmediat
     // During Defendant response itself, update the payment deadline to past date
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayImmediateWithIndividual);
     await api.waitForFinishedBusinessProcess();
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ClaimantResponseSteps.verifyJudgmentByAdmission(claimRef);
     await api.waitForFinishedBusinessProcess();
   }

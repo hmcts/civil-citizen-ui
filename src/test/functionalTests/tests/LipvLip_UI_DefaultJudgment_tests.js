@@ -16,7 +16,7 @@ Scenario('Create LipvLip claim and defendant not responded by deadline and Claim
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     await api.amendRespondent1ResponseDeadline(config.systemUpdate2);
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ClaimantResponseSteps.verifyDefaultJudgment(claimRef);
     await api.waitForFinishedBusinessProcess();
   }
