@@ -145,7 +145,7 @@ module.exports = {
       {'Content-Type': 'application/json'},
       {
         microservice: config.s2sForXUI.microservice,
-        oneTimePassword: totp(config.s2sForXUI.secret)
+        oneTimePassword: totp(config.s2sForXUI.secret),
       })
       .then(response => response.text());
 
@@ -154,7 +154,7 @@ module.exports = {
         {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${userToken}`,
-          'ServiceAuthorization': `Bearer ${s2sToken}`
+          'ServiceAuthorization': `Bearer ${s2sToken}`,
         }, '', 'POST', expectedStatus);
     }, 2, TASK_RETRY_TIMEOUT_MS);
   },
@@ -167,7 +167,7 @@ module.exports = {
       {'Content-Type': 'application/json'},
       {
         microservice: config.s2sForXUI.microservice,
-        oneTimePassword: totp(config.s2sForXUI.secret)
+        oneTimePassword: totp(config.s2sForXUI.secret),
       })
       .then(response => response.text());
 
@@ -175,23 +175,21 @@ module.exports = {
       'search_parameters': [
         {'key': 'caseId', 'operator': 'IN', 'values': [caseNumber]},
         {'key': 'jurisdiction', 'operator': 'IN', 'values': ['CIVIL']},
-        {'key': 'state', 'operator': 'IN', 'values': ['assigned', 'unassigned']}
+        {'key': 'state', 'operator': 'IN', 'values': ['assigned', 'unassigned']},
       ],
-      'sorting_parameters': [{'sort_by': 'dueDate', 'sort_order': 'asc'}]
+      'sorting_parameters': [{'sort_by': 'dueDate', 'sort_order': 'asc'}],
     };
-
 
     return retry(() => {
       return restHelper.request(`${config.url.waTaskMgmtApi}/task`,
         {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${userToken}`,
-          'ServiceAuthorization': `Bearer ${s2sToken}`
+          'ServiceAuthorization': `Bearer ${s2sToken}`,
         }, inputData, 'POST', expectedStatus)
         .then(async response => await response.json())
         .then(jsonResponse => {
           let availableTaskDetails = jsonResponse['tasks'];
-          console.log(availableTaskDetails)
           availableTaskDetails.forEach((taskInfo) => {
             if (taskInfo['type'] == taskType) {
               console.log('Found taskInfo with type ...', taskType);

@@ -1,4 +1,4 @@
-const CaseDetails = require('../pages/caseDetails')
+const CaseDetails = require('../pages/caseDetails');
 
 class CaseworkerCitizenDashboardSteps {
   async NavigateToCaseDetails(claimRef) {
@@ -6,4 +6,4 @@ class CaseworkerCitizenDashboardSteps {
   }
 }
 
-module.exports = new CaseworkerCitizenDashboardSteps()
+module.exports = new CaseworkerCitizenDashboardSteps();

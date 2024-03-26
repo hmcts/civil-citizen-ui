@@ -8,24 +8,24 @@ const fields = {
 };
 
 class UploadTranslatedDocuments {
-    async startEvent(claimRef) {
-        await I.amOnPage(config.url.manageCase + '/cases/case-details/' + claimRef + '/trigger/UPLOAD_TRANSLATED_DOCUMENT/UPLOAD_TRANSLATED_DOCUMENTUploadTranslatedDocument');  
-    }
+  async startEvent(claimRef) {
+    await I.amOnPage(config.url.manageCase + '/cases/case-details/' + claimRef + '/trigger/UPLOAD_TRANSLATED_DOCUMENT/UPLOAD_TRANSLATED_DOCUMENTUploadTranslatedDocument');  
+  }
 
-    async verifyContent() {
-        await I.waitForText('Upload translated document', null, 'h1');
-        await I.see('Translated Document');
-    }
+  async verifyContent() {
+    await I.waitForText('Upload translated document', null, 'h1');
+    await I.see('Translated Document');
+  }
 
-    async uploadTranslatedDocument() {
-        await I.click('Add new');
-        await I.see('Document Type');
-        await I.see('Document');
-        await I.selectOption(fields.documentType1, 'Defendant Response');
-        await I.attachFile(fields.document1, testFilePath);
-        await I.waitForInvisible(locate('.error-message').withText('Uploading...'));
-        await I.click('Continue');
-    }
+  async uploadTranslatedDocument() {
+    await I.click('Add new');
+    await I.see('Document Type');
+    await I.see('Document');
+    await I.selectOption(fields.documentType1, 'Defendant Response');
+    await I.attachFile(fields.document1, testFilePath);
+    await I.waitForInvisible(locate('.error-message').withText('Uploading...'));
+    await I.click('Continue');
+  }
 }
 
 module.exports = new UploadTranslatedDocuments();
