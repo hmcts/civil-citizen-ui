@@ -144,12 +144,12 @@ class UploadYourDocument {
     I.fillField('documentsForDisclosure[1][dateInputFields][dateDay]', '02');
     I.fillField('documentsForDisclosure[1][dateInputFields][dateMonth]', '02');
     I.fillField('documentsForDisclosure[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('documentsForDisclosure[1][fileUpload]', 'features/caseProgression/data/TestDOC.doc');
+    I.attachFile('documentsForDisclosure[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestDOC.doc');
 
     //Disclosure list - Subsection
-    I.attachFile('disclosureList[0][fileUpload]', 'features/caseProgression/data/TestDOCX.docx');
+    I.attachFile('disclosureList[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestDOCX.docx');
     I.click('[method=\'post\'] > .govuk-grid-column-two-thirds > div:nth-of-type(2) #add-another-disclosure-list');
-    I.attachFile('disclosureList[1][fileUpload]', 'features/caseProgression/data/TestPDF.pdf');
+    I.attachFile('disclosureList[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestPDF.pdf');
 
     //Witness Section
     //Witness Statement - Subsection
@@ -157,39 +157,39 @@ class UploadYourDocument {
     I.fillField('witnessStatement[0][dateInputFields][dateDay]', '03');
     I.fillField('witnessStatement[0][dateInputFields][dateMonth]', '02');
     I.fillField('witnessStatement[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('witnessStatement[0][fileUpload]', 'features/caseProgression/data/TestXLS.xls');
+    I.attachFile('witnessStatement[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestXLS.xls');
     I.click('[method=\'post\'] div:nth-of-type(3) #add-another-witness-list');
     I.fillField('witnessStatement[1][witnessName]', 'Witness Statement - Witness Nae 2');
     I.fillField('witnessStatement[1][dateInputFields][dateDay]', '04');
     I.fillField('witnessStatement[1][dateInputFields][dateMonth]', '02');
     I.fillField('witnessStatement[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('witnessStatement[1][fileUpload]', 'features/caseProgression/data/TestXLSX.xlsx');
+    I.attachFile('witnessStatement[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestXLSX.xlsx');
 
     //Witness Summary - Subsection
     I.fillField('witnessSummary[0][witnessName]', 'Witness Summary - Witness Nae 1');
     I.fillField('witnessSummary[0][dateInputFields][dateDay]', '05');
     I.fillField('witnessSummary[0][dateInputFields][dateMonth]', '02');
     I.fillField('witnessSummary[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('witnessSummary[0][fileUpload]', 'features/caseProgression/data/TestPPT.ppt');
+    I.attachFile('witnessSummary[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestPPT.ppt');
     I.click('[method=\'post\'] div:nth-of-type(4) #add-another-witness-list');
     I.fillField('witnessSummary[1][witnessName]', 'Witness Summary - Witness Nae 2');
     I.fillField('witnessSummary[1][dateInputFields][dateDay]', '06');
     I.fillField('witnessSummary[1][dateInputFields][dateMonth]', '02');
     I.fillField('witnessSummary[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('witnessSummary[1][fileUpload]', 'features/caseProgression/data/TestPNG.png');
+    I.attachFile('witnessSummary[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestPNG.png');
 
     //Notice of Intention - Subsection
     I.fillField('noticeOfIntention[0][witnessName]', 'Notice of intention witness nae 1');
     I.fillField('noticeOfIntention[0][dateInputFields][dateDay]', '07');
     I.fillField('noticeOfIntention[0][dateInputFields][dateMonth]', '02');
     I.fillField('noticeOfIntention[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('noticeOfIntention[0][fileUpload]', 'features/caseProgression/data/TestRTF.rtf');
+    I.attachFile('noticeOfIntention[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestRTF.rtf');
     I.click('[method=\'post\'] div:nth-of-type(5) #add-another-witness-list');
     I.fillField('noticeOfIntention[1][witnessName]', 'Notice of intention witness nae 2');
     I.fillField('noticeOfIntention[1][dateInputFields][dateDay]', '08');
     I.fillField('noticeOfIntention[1][dateInputFields][dateMonth]', '02');
     I.fillField('noticeOfIntention[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('noticeOfIntention[1][fileUpload]', 'features/caseProgression/data/TestTIF.tif');
+    I.attachFile('noticeOfIntention[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestTIF.tif');
 
     //Docuents Referred to in the stateent - Subsection
     I.fillField('documentsReferred[0][witnessName]', 'Docuents referred witness nae 1');
@@ -197,14 +197,14 @@ class UploadYourDocument {
     I.fillField('documentsReferred[0][dateInputFields][dateDay]', '09');
     I.fillField('documentsReferred[0][dateInputFields][dateMonth]', '02');
     I.fillField('documentsReferred[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('documentsReferred[0][fileUpload]', 'features/caseProgression/data/TestTIFF.tiff');
+    I.attachFile('documentsReferred[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestTIFF.tiff');
     I.click('div:nth-of-type(6) #add-another-witness-list');
     I.fillField('documentsReferred[1][witnessName]', 'Docuents referred witness nae 2');
     I.fillField('documentsReferred[1][typeOfDocument]', 'Docuents referred Type of Docuent 2');
     I.fillField('documentsReferred[1][dateInputFields][dateDay]', '10');
     I.fillField('documentsReferred[1][dateInputFields][dateMonth]', '02');
     I.fillField('documentsReferred[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('documentsReferred[1][fileUpload]', 'features/caseProgression/data/TestDOCX.docx');
+    I.attachFile('documentsReferred[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestDOCX.docx');
 
     //Evidences Section
     //Expert's report - Subsection
@@ -213,7 +213,7 @@ class UploadYourDocument {
     I.fillField('expertReport[0][dateInputFields][dateDay]', '11');
     I.fillField('expertReport[0][dateInputFields][dateMonth]', '02');
     I.fillField('expertReport[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('expertReport[0][fileUpload]', 'features/caseProgression/data/TestCSV.csv');
+    I.attachFile('expertReport[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestCSV.csv');
     I.click('div:nth-of-type(7) #add-another-expert-list');
     I.fillField('expertReport[1][expertName]', 'Expert Report - Expert Nae 2');
     I.fillField('expertReport[1][fieldOfExpertise]', 'Expert Report - Field of Expertise 2');
@@ -228,20 +228,20 @@ class UploadYourDocument {
     I.fillField('expertStatement[0][dateInputFields][dateDay]', '13');
     I.fillField('expertStatement[0][dateInputFields][dateMonth]', '02');
     I.fillField('expertStatement[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('expertStatement[0][fileUpload]', 'features/caseProgression/data/TestPNG.png');
+    I.attachFile('expertStatement[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestPNG.png');
     I.click('div:nth-of-type(8) #add-another-expert-list');
     I.fillField('expertStatement[1][expertName]', 'Expert Stateent - Expert Nae 2');
     I.fillField('expertStatement[1][fieldOfExpertise]', 'Expert Stateent - Field Of Expertise 2');
     I.fillField('expertStatement[1][dateInputFields][dateDay]', '14');
     I.fillField('expertStatement[1][dateInputFields][dateMonth]', '02');
     I.fillField('expertStatement[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('expertStatement[1][fileUpload]', 'features/caseProgression/data/TestJPG.jpg');
+    I.attachFile('expertStatement[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestJPG.jpg');
 
     //Questions For Other Party - Subsection
     I.fillField('questionsForExperts[0][expertName]', 'Questions for Expert 1');
     I.selectOption('questionsForExperts[0][otherPartyName]', 'Test Inc');
     I.fillField('questionsForExperts[0][questionDocumentName]', 'Questions for Expert Docuent Nae 1');
-    I.attachFile('questionsForExperts[0][fileUpload]', 'features/caseProgression/data/TestJPEG.jpeg');
+    I.attachFile('questionsForExperts[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestJPEG.jpeg');
     I.selectOption('questionsForExperts[0][otherPartyName]', 'Sir John Doe');
     I.click('div:nth-of-type(9) #add-another-expert-list');
     I.fillField('questionsForExperts[1][expertName]', 'Questions for Expert 2');
@@ -312,20 +312,20 @@ class UploadYourDocument {
     I.fillField('witnessStatement[1][dateInputFields][dateDay]', '02');
     I.fillField('witnessStatement[1][dateInputFields][dateMonth]', '02');
     I.fillField('witnessStatement[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('witnessStatement[1][fileUpload]', 'features/caseProgression/data/TestCSV.csv');
+    I.attachFile('witnessStatement[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestCSV.csv');
 
     //Witness Summary - Subsection
     I.fillField('witnessSummary[0][witnessName]', 'Witness Summary - Witness Nae 1');
     I.fillField('witnessSummary[0][dateInputFields][dateDay]', '03');
     I.fillField('witnessSummary[0][dateInputFields][dateMonth]', '02');
     I.fillField('witnessSummary[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('witnessSummary[0][fileUpload]', 'features/caseProgression/data/TestDOC.doc');
+    I.attachFile('witnessSummary[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestDOC.doc');
     I.click('[method=\'post\'] > .govuk-grid-column-two-thirds > div:nth-of-type(2) #add-another-witness-list');
     I.fillField('witnessSummary[1][witnessName]', 'Witness Summary - Witness Nae 2');
     I.fillField('witnessSummary[1][dateInputFields][dateDay]', '04');
     I.fillField('witnessSummary[1][dateInputFields][dateMonth]', '02');
     I.fillField('witnessSummary[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('witnessSummary[1][fileUpload]', 'features/caseProgression/data/TestDOCX.docx');
+    I.attachFile('witnessSummary[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestDOCX.docx');
 
     //Docuents Referred to in the stateent - Subsection
     I.fillField('documentsReferred[0][witnessName]', 'Docuents referred witness nae 1');
@@ -333,14 +333,14 @@ class UploadYourDocument {
     I.fillField('documentsReferred[0][dateInputFields][dateDay]', '05');
     I.fillField('documentsReferred[0][dateInputFields][dateMonth]', '02');
     I.fillField('documentsReferred[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('documentsReferred[0][fileUpload]', 'features/caseProgression/data/TestJPEG.jpeg');
+    I.attachFile('documentsReferred[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestJPEG.jpeg');
     I.click('[method=\'post\'] div:nth-of-type(3) #add-another-witness-list');
     I.fillField('documentsReferred[1][witnessName]', 'Docuents referred witness nae 2');
     I.fillField('documentsReferred[1][typeOfDocument]', 'Docuents referred Type of Docuent 2');
     I.fillField('documentsReferred[1][dateInputFields][dateDay]', '06');
     I.fillField('documentsReferred[1][dateInputFields][dateMonth]', '02');
     I.fillField('documentsReferred[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('documentsReferred[1][fileUpload]', 'features/caseProgression/data/TestJPG.jpg');
+    I.attachFile('documentsReferred[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestJPG.jpg');
 
     //Evidences Section
     //Expert's report - Subsection
@@ -349,14 +349,14 @@ class UploadYourDocument {
     I.fillField('expertReport[0][dateInputFields][dateDay]', '07');
     I.fillField('expertReport[0][dateInputFields][dateMonth]', '02');
     I.fillField('expertReport[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('expertReport[0][fileUpload]', 'features/caseProgression/data/TestPDF.pdf');
+    I.attachFile('expertReport[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestPDF.pdf');
     I.click('[method=\'post\'] div:nth-of-type(4) #add-another-expert-list');
     I.fillField('expertReport[1][expertName]', 'Expert Report - Expert Nae 2');
     I.fillField('expertReport[1][fieldOfExpertise]', 'Expert Report - Field of Expertise 2');
     I.fillField('expertReport[1][dateInputFields][dateDay]', '08');
     I.fillField('expertReport[1][dateInputFields][dateMonth]', '02');
     I.fillField('expertReport[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('expertReport[1][fileUpload]', 'features/caseProgression/data/TestPNG.png');
+    I.attachFile('expertReport[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestPNG.png');
 
     //Joint Stateent of Experts - Subsection
     I.fillField('expertStatement[0][expertName]', 'Expert Stateent - Expert Nae 1');
@@ -364,14 +364,14 @@ class UploadYourDocument {
     I.fillField('expertStatement[0][dateInputFields][dateDay]', '09');
     I.fillField('expertStatement[0][dateInputFields][dateMonth]', '02');
     I.fillField('expertStatement[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('expertStatement[0][fileUpload]', 'features/caseProgression/data/TestPPT.ppt');
+    I.attachFile('expertStatement[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestPPT.ppt');
     I.click('[method=\'post\'] div:nth-of-type(5) #add-another-expert-list');
     I.fillField('expertStatement[1][expertName]', 'Expert Stateent - Expert Nae 2');
     I.fillField('expertStatement[1][fieldOfExpertise]', 'Expert Stateent - Field Of Expertise 2');
     I.fillField('expertStatement[1][dateInputFields][dateDay]', '10');
     I.fillField('expertStatement[1][dateInputFields][dateMonth]', '02');
     I.fillField('expertStatement[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('expertStatement[1][fileUpload]', 'features/caseProgression/data/TestRTF.rtf');
+    I.attachFile('expertStatement[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestRTF.rtf');
 
     //Hearing Docuents Section
     //Docuentary Evidence For Trial - Subsection
@@ -379,18 +379,18 @@ class UploadYourDocument {
     I.fillField('trialDocumentary[0][dateInputFields][dateDay]', '11');
     I.fillField('trialDocumentary[0][dateInputFields][dateMonth]', '02');
     I.fillField('trialDocumentary[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('trialDocumentary[0][fileUpload]','features/caseProgression/data/TestTIF.tif');
+    I.attachFile('trialDocumentary[0][fileUpload]','citizenFeatures/caseProgression/data/TestTIF.tif');
     I.click('div:nth-of-type(6) #add-another-trial-list');
     I.fillField('trialDocumentary[1][typeOfDocument]', 'Documentary evidence for the hearing - Type of Document 2');
     I.fillField('trialDocumentary[1][dateInputFields][dateDay]', '12');
     I.fillField('trialDocumentary[1][dateInputFields][dateMonth]', '02');
     I.fillField('trialDocumentary[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('trialDocumentary[1][fileUpload]','features/caseProgression/data/TestTIFF.tiff');
+    I.attachFile('trialDocumentary[1][fileUpload]','citizenFeatures/caseProgression/data/TestTIFF.tiff');
 
     //Trial Authorities - Subsection
-    I.attachFile('trialAuthorities[0][fileUpload]', 'features/caseProgression/data/TestXLS.xls');
+    I.attachFile('trialAuthorities[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestXLS.xls');
     I.click('div:nth-of-type(7) #add-another-trial-list');
-    I.attachFile('trialAuthorities[1][fileUpload]', 'features/caseProgression/data/TestXLSX.xlsx');
+    I.attachFile('trialAuthorities[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestXLSX.xlsx');
   }
 }
 
