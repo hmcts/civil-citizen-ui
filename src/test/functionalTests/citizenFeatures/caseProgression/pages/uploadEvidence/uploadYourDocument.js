@@ -220,7 +220,7 @@ class UploadYourDocument {
     I.fillField('expertReport[1][dateInputFields][dateDay]', '12');
     I.fillField('expertReport[1][dateInputFields][dateMonth]', '02');
     I.fillField('expertReport[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('expertReport[1][fileUpload]', 'features/caseProgression/data/TestBMP.bmp');
+    I.attachFile('expertReport[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestBMP.bmp');
 
     //Joint Stateent of Experts - Subsection
     I.fillField('expertStatement[0][expertName]', 'Expert Stateent - Expert Nae 1');
@@ -306,7 +306,7 @@ class UploadYourDocument {
     I.fillField('witnessStatement[0][dateInputFields][dateDay]', '01');
     I.fillField('witnessStatement[0][dateInputFields][dateMonth]', '02');
     I.fillField('witnessStatement[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('witnessStatement[0][fileUpload]', 'features/caseProgression/data/TestBMP.bmp');
+    I.attachFile('witnessStatement[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestBMP.bmp');
     I.click('[method=\'post\'] > .govuk-grid-column-two-thirds > div:nth-of-type(1) #add-another-witness-list');
     I.fillField('witnessStatement[1][witnessName]', 'Witness Statement - Witness Nae 2');
     I.fillField('witnessStatement[1][dateInputFields][dateDay]', '02');
