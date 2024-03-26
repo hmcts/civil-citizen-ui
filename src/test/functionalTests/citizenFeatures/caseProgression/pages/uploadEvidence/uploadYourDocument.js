@@ -138,7 +138,7 @@ class UploadYourDocument {
     I.fillField('documentsForDisclosure[0][dateInputFields][dateDay]', '01');
     I.fillField('documentsForDisclosure[0][dateInputFields][dateMonth]', '02');
     I.fillField('documentsForDisclosure[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('documentsForDisclosure[0][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
+    I.attachFile('documentsForDisclosure[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
     I.click('[method=\'post\'] > .govuk-grid-column-two-thirds > div:nth-of-type(1) #add-another-disclosure-list');
     I.fillField('documentsForDisclosure[1][typeOfDocument]', 'Test Data Entry for Document Disclosure 2');
     I.fillField('documentsForDisclosure[1][dateInputFields][dateDay]', '02');
@@ -247,55 +247,55 @@ class UploadYourDocument {
     I.fillField('questionsForExperts[1][expertName]', 'Questions for Expert 2');
     I.selectOption('questionsForExperts[1][otherPartyName]', 'Test Inc');
     I.fillField('questionsForExperts[1][questionDocumentName]', 'Questions for Expert Docuent Nae 2');
-    I.attachFile('questionsForExperts[1][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
+    I.attachFile('questionsForExperts[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
     I.selectOption('questionsForExperts[1][otherPartyName]', 'Sir John Doe');
 
     //Answers to Questions By Other Party - Subsection
     I.fillField('answersForExperts[0][expertName]', 'Answers for Expert 1');
     I.selectOption('answersForExperts[0][otherPartyName]', 'Test Inc');
     I.fillField('answersForExperts[0][otherPartyQuestionsDocumentName]', 'Answers for Expert Docuent Nae 1');
-    I.attachFile('answersForExperts[0][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
+    I.attachFile('answersForExperts[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
     I.selectOption('answersForExperts[0][otherPartyName]', 'Sir John Doe');
     I.click('div:nth-of-type(10) #add-another-expert-list');
     I.fillField('answersForExperts[1][expertName]', 'Answers for Expert 2');
     I.selectOption('answersForExperts[1][otherPartyName]', 'Test Inc');
     I.fillField('answersForExperts[1][otherPartyQuestionsDocumentName]', 'Answers for Expert Docuent Nae 2');
-    I.attachFile('answersForExperts[1][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
+    I.attachFile('answersForExperts[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
     I.selectOption('answersForExperts[1][otherPartyName]', 'Sir John Doe');
 
     //Trial Documents - Section
     //Case Summary
-    I.attachFile('trialCaseSummary[0][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
+    I.attachFile('trialCaseSummary[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
     I.click('div:nth-of-type(11) #add-another-trial-list');
-    I.attachFile('trialCaseSummary[1][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
+    I.attachFile('trialCaseSummary[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
 
     //Skeleton
-    I.attachFile('trialSkeletonArgument[0][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
+    I.attachFile('trialSkeletonArgument[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
     I.click('div:nth-of-type(12) #add-another-trial-list');
-    I.attachFile('trialSkeletonArgument[1][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
+    I.attachFile('trialSkeletonArgument[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
 
     //Trial Authorities
-    I.attachFile('trialAuthorities[0][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
+    I.attachFile('trialAuthorities[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
     I.click('div:nth-of-type(13) #add-another-trial-list');
-    I.attachFile('trialAuthorities[1][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
+    I.attachFile('trialAuthorities[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
 
     //Costs
-    I.attachFile('trialCosts[0][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
+    I.attachFile('trialCosts[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
     I.click('div:nth-of-type(14) #add-another-trial-list');
-    I.attachFile('trialCosts[1][fileUpload]', 'features/caseProgression/data/TestTXT.txt');
+    I.attachFile('trialCosts[1][fileUpload]', 'citizenFeatures/caseProgression/data/TestTXT.txt');
 
     //Docuentary Evidence For Trial
     I.fillField('trialDocumentary[0][typeOfDocument]', 'Documentary evidence for trial - Type of Document 1');
     I.fillField('trialDocumentary[0][dateInputFields][dateDay]', '15');
     I.fillField('trialDocumentary[0][dateInputFields][dateMonth]', '02');
     I.fillField('trialDocumentary[0][dateInputFields][dateYear]', '2023');
-    I.attachFile('trialDocumentary[0][fileUpload]','features/caseProgression/data/TestTXT.txt');
+    I.attachFile('trialDocumentary[0][fileUpload]','citizenFeatures/caseProgression/data/TestTXT.txt');
     I.click('div:nth-of-type(15) #add-another-trial-list');
     I.fillField('trialDocumentary[1][typeOfDocument]', 'Documentary evidence for trial - Type of Document 2');
     I.fillField('trialDocumentary[1][dateInputFields][dateDay]', '15');
     I.fillField('trialDocumentary[1][dateInputFields][dateMonth]', '02');
     I.fillField('trialDocumentary[1][dateInputFields][dateYear]', '2023');
-    I.attachFile('trialDocumentary[1][fileUpload]','features/caseProgression/data/TestTXT.txt');
+    I.attachFile('trialDocumentary[1][fileUpload]','citizenFeatures/caseProgression/data/TestTXT.txt');
   }
 
   inputDataForSmallClaimsSections() {
