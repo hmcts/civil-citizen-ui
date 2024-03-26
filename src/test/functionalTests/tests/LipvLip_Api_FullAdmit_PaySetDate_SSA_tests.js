@@ -1,7 +1,7 @@
 const config = require('../../config');
 
 const LoginSteps = require('../commonFeatures/home/steps/login');
-const DashboardSteps = require('../citizenFeatures/dashboard/steps/dashboard');
+const CitizenDashboardSteps = require('../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../specClaimHelpers/api/idamHelper');
 const ResponseToDefenceLipVsLipSteps = require('../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 const ResponseSteps = require('../citizenFeatures/response/steps/lipDefendantResponseSteps');
@@ -22,7 +22,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+    await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.SignOut();
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayBySetDateWithIndividual);
     await api.waitForFinishedBusinessProcess();
@@ -31,7 +31,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     await api.waitForFinishedBusinessProcess();
     await ResponseSteps.SignOut();
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+    await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.DefendantAdmissionSSA(claimRef, 'yes');
   }
 }).tag('@regression-r2');
@@ -44,7 +44,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+    await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.SignOut();
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayBySetDateWithIndividual);
     await api.waitForFinishedBusinessProcess();
@@ -53,7 +53,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     await api.waitForFinishedBusinessProcess();
     await ResponseSteps.SignOut();
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+    await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.DefendantAdmissionSSA(claimRef, 'no');
   }
 }).tag('@regression-r2');
