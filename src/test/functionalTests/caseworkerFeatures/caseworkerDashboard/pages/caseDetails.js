@@ -8,11 +8,11 @@ const fields = {
 class CaseDetails {
   async goToCaseDetails(claimRef) {
     await I.amOnPage(config.url.manageCase + '/cases/case-details/' + claimRef);
-    await I.waitForText('Summary', config.WaitForText);
+    await I.waitForContent('Summary', config.WaitForText);
   }
 
   async verifySuccessBanner(message) {
-    I.waitForText('Summary');
+    I.waitForContent('Summary');
     I.seeElement(fields.successBanner);
     I.see(message);
   }

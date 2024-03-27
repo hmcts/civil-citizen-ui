@@ -28,7 +28,7 @@ class LoginPage {
   }
 
   async #login(email, password, endpoint) {
-    await I.waitForText('Email address', config.WaitForText);
+    await I.waitForContent('Email address', config.WaitForText);
     await I.waitForVisible(fields.username);
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);
