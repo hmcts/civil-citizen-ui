@@ -8,7 +8,7 @@ def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
 def camundaBranch = "team2b"
-def dmnBranch = "master"
+def dmnBranch = "team2b"
 def waStandaloneBranch = "master"
 def ccdBranch = "team2b"
 AppPipelineConfig pipelineConf
