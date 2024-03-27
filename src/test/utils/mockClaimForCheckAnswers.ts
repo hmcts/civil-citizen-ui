@@ -71,6 +71,7 @@ import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialA
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {MediationCarm} from 'models/mediation/mediationCarm';
+import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -1396,6 +1397,16 @@ export const getClaimWithClaimantTrialArrangements = (): Claim => {
   claimantTrialArrangements.hasAnythingChanged = hasAnythingChanged;
   caseProgression.claimantTrialArrangements = claimantTrialArrangements;
   claim.caseProgression = caseProgression;
+  return claim;
+};
+
+export const claimWithHwFDetails = (): Claim => {
+  const claim = new Claim();
+  claim.claimDetails = new ClaimDetails();
+  const helpWithFee = new HelpWithFees();
+  helpWithFee.referenceNumber = 'HWF-2AB-DC3';
+  helpWithFee.option = YesNo.YES;
+  claim.claimDetails.helpWithFees = helpWithFee;
   return claim;
 };
 

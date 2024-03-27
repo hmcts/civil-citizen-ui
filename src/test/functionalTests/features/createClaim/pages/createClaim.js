@@ -483,7 +483,7 @@ class CreateClaim {
 
     if (claimInterestFlag === true) {
       I.see('Claim Interest');
-      I.see('yes');
+      I.see('Yes');
 
       I.see('How do you want to claim interest?');
       I.see('Same rate for the whole period');
@@ -493,7 +493,9 @@ class CreateClaim {
 
       I.see('When are you claiming interest from?');
       I.see('The date you submit the claim');
-
+    } else{
+      I.see('Claim Interest');
+      I.see('No');
     }
 
     I.see('Claim Details');
@@ -628,7 +630,7 @@ class CreateClaim {
       I.click(paths.options.yes);
       this.clickNextAction(paths.buttons.save_and_continue);
       I.waitForContent('How do you want to claim interest', 60);
-      if (standardInterest == true) { 
+      if (standardInterest == true) {
         I.click(paths.options.same_rate_for_the_whole_period);
         this.clickNextAction(paths.buttons.save_and_continue);
         I.waitForContent('You can claim 8% per year unless you know that a different rate applies', 60);
