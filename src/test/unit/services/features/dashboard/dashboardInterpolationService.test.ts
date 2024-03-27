@@ -103,7 +103,6 @@ describe('dashboardInterpolationService', () => {
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
   });
 
-
   it('should replace placeholders with redirect url for claimant response', () => {
     const claim: Claim = new Claim();
     claim.id = '1710172392502478';
