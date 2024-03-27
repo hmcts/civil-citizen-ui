@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import { civilClaimResponseMock, mockRedisFailure } from '../../../../utils/mockDraftStore';
 import {DASHBOARD_CLAIMANT_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'common/models/partyType';
@@ -62,11 +62,12 @@ describe('claimant Dashboard Controller', () => {
       claim.caseProgressionHearing = new CaseProgressionHearing( null, null, null, null, null, null, new PaymentDetails('123', 'cu123', PaymentStatus.SUCCESS) );
       claim.caseProgression = new CaseProgression();
 
+      const data = Object.assign(claim, civilClaimResponseMock.case_data);
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
+        .mockResolvedValueOnce(data);
       jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
-      app.locals.draftStoreClient = mockCivilClaim;
+    
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Mr. Jan Clark v Version 1');
@@ -85,12 +86,11 @@ describe('claimant Dashboard Controller', () => {
       claim.totalClaimAmount=500;
       claim.caseRole = CaseRole.CLAIMANT;
       claim.caseProgression = new CaseProgression();
-
+      const data = Object.assign(claim, civilClaimResponseMock.case_data);
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
+        .mockResolvedValueOnce(data);
       jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Mr. Jan Clark v Version 1');
@@ -111,12 +111,12 @@ describe('claimant Dashboard Controller', () => {
       claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
       claim.caseProgression = new CaseProgression();
 
+      const data = Object.assign(claim, civilClaimResponseMock.case_data);
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
+        .mockResolvedValueOnce(data);
       jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
 
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Mr. Jan Clark v Version 1');
@@ -136,12 +136,12 @@ describe('claimant Dashboard Controller', () => {
       claim.caseRole = CaseRole.DEFENDANT;
       claim.caseProgression = new CaseProgression();
 
+      const data = Object.assign(claim, civilClaimResponseMock.case_data);
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
+        .mockResolvedValueOnce(data);
       jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
 
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Mr. Jan Clark v Version 1');
