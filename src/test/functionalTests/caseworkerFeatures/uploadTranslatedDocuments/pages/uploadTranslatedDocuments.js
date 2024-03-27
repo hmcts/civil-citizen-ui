@@ -13,7 +13,7 @@ class UploadTranslatedDocuments {
   }
 
   async verifyContent() {
-    await I.waitForContent('Upload translated document', null, 'h1');
+    await I.waitForContent('Upload translated document');
     await I.see('Translated Document');
   }
 
