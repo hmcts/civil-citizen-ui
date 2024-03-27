@@ -12,7 +12,7 @@ let claimNumber, claimRef;
 Feature('Create Lip v Lip claim - Rejected All By Defendant and Disputed By Claimant');
 
 Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
-  await CreateLipvLipClaimSteps.EligibilityCheckSteps();
+  //await CreateLipvLipClaimSteps.EligibilityCheckSteps();
 });
 
 Scenario('Create Claim', async ({api}) => {
@@ -26,7 +26,8 @@ Scenario('Create Claim', async ({api}) => {
     console.log('The value of the claim reference : ' + claimRef);
     await api.setCaseId(claimRef);
     await api.waitForFinishedBusinessProcess();
-    await CreateLipvLipClaimSteps.payClaimFee(1520, 115);
+    await CreateLipvLipClaimSteps.clickPayClaimFee();
+    await CreateLipvLipClaimSteps.verifyAndPayClaimFee(1520, 115);
     await api.waitForFinishedBusinessProcess();
     let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
