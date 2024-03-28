@@ -40,7 +40,9 @@ const getResponseStatement = (name: string, text: string, amount?: number) => {
 };
 
 export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] => {
-  const theirTOERows = claim.partialAdmission?.timeline?.rows;
+  const theirTOERows = claim.isPartialAdmission()
+    ? claim.partialAdmission?.timeline?.rows
+    : claim.rejectAllOfClaim?.timeline?.rows;
   if (!theirTOERows?.length) {
     return [];
   }
@@ -69,7 +71,10 @@ export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] =
 };
 
 export const getDisagreementStatementWithTimeline = (claim: Claim, lng: string): ClaimSummarySection[] => {
-  if (!claim.partialAdmission?.timeline?.comment) {
+  const comment = claim.isPartialAdmission()
+    ? claim.partialAdmission?.timeline?.comment
+    : claim.rejectAllOfClaim?.timeline?.comment;
+  if (!comment) {
     return [];
   }
   return [
@@ -82,7 +87,7 @@ export const getDisagreementStatementWithTimeline = (claim: Claim, lng: string):
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: claim.partialAdmission?.timeline?.comment,
+        text: comment,
       },
     },
   ];

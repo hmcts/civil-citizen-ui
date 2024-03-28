@@ -444,6 +444,8 @@ describe('translate response to ccd version', () => {
 
   it('should translate timeline of events', ()=>{
     //Given
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
     claim.statementOfMeans = new StatementOfMeans();
     claim.statementOfMeans.explanation = undefined;
     claim.partialAdmission = new PartialAdmission();
