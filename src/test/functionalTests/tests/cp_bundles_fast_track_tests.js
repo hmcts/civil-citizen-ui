@@ -1,7 +1,7 @@
 const config = require('../../config');
-const CaseProgressionSteps = require('../features/caseProgression/steps/caseProgressionSteps');
-const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
-const LoginSteps = require('../features/home/steps/login');
+const CaseProgressionSteps = require('../citizenFeatures/caseProgression/steps/caseProgressionSteps');
+const DateUtilsComponent = require('../citizenFeatures/caseProgression/util/DateUtilsComponent');
+const LoginSteps = require('./../commonFeatures/home/steps/login');
 const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
@@ -14,7 +14,7 @@ Before(async ({api}) => {
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     const twoWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(2);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'FAST_CLAIM');
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef,'fastTrack');

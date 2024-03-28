@@ -1,8 +1,8 @@
-const steps  =  require('../../features/createClaim/steps/createLipvLipClaimSteps');
+const steps  =  require('../../citizenFeatures/createClaim/steps/createLipvLipClaimSteps');
 const config = require('../../../config');
 
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const LoginSteps = require('../../features/home/steps/login');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
 const { payClaimFee } = require('../../specClaimHelpers/dashboardNotificationConstants');
@@ -20,7 +20,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
     const defaultClaimAmount = 9000;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
     caseRef = await steps.checkAndSubmit(selectedHWF);
     caseData = await api.retrieveCaseData(config.adminUser, caseRef);
@@ -46,7 +46,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with standar
     StandardInterest = true;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
     await steps.updateClaimAmount(claimAmount, claimInterestFlag, StandardInterest, selectedHWF);
     caseRef = await steps.checkAndSubmit(selectedHWF);
@@ -73,7 +73,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
     StandardInterest = false;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
     await steps.updateClaimAmount(claimAmount, claimInterestFlag, StandardInterest, selectedHWF);
     caseRef = await steps.checkAndSubmit(selectedHWF);
@@ -101,7 +101,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
     StandardInterest = false;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
     await steps.updateClaimAmount(claimAmount, claimInterestFlag, StandardInterest, selectedHWF);
     caseRef = await steps.checkAndSubmit(selectedHWF);

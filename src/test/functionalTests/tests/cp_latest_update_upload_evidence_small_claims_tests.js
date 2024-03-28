@@ -1,6 +1,6 @@
 const config = require('../../config');
-const CaseProgressionSteps = require('../features/caseProgression/steps/caseProgressionSteps');
-const LoginSteps = require('../features/home/steps/login');
+const CaseProgressionSteps = require('../citizenFeatures/caseProgression/steps/caseProgressionSteps');
+const LoginSteps = require('./../commonFeatures/home/steps/login');
 const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
@@ -17,7 +17,7 @@ Before(async ({api}) => {
     await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'JUDICIAL_REFERRAL', 'SMALL_CLAIM');
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'smallClaimsTrack');
     await api.waitForFinishedBusinessProcess();
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
 

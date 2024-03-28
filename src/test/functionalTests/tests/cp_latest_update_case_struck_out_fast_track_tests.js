@@ -1,6 +1,6 @@
 const config = require('../../config');
-const CaseProgressionSteps = require('../features/caseProgression/steps/caseProgressionSteps');
-const LoginSteps = require('../features/home/steps/login');
+const CaseProgressionSteps = require('../citizenFeatures/caseProgression/steps/caseProgressionSteps');
+const LoginSteps = require('./../commonFeatures/home/steps/login');
 const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
@@ -18,7 +18,7 @@ Before(async ({api}) => {
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef);
     await api.performCaseHearingFeeUnpaid(config.hearingCenterAdminWithRegionId1, claimRef);
     await api.waitForFinishedBusinessProcess();
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   }
 });
 

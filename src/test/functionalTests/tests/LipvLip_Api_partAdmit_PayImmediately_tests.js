@@ -1,7 +1,7 @@
 const config = require('../../config');
 const {createAccount} = require('../specClaimHelpers/api/idamHelper');
-const LoginSteps = require('../features/home/steps/login');
-const ResponseToDefenceLipVsLipSteps = require('../features/createClaim/steps/responseToDefenceLipvLipSteps');
+const LoginSteps = require('../commonFeatures/home/steps/login');
+const ResponseToDefenceLipVsLipSteps = require('../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 
@@ -18,7 +18,7 @@ Scenario('Response with PartAdmit-PayImmediately Small claims @citizenUI @partAd
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediatelyWithIndividual);
     await api.waitForFinishedBusinessProcess();
     //Claimant Response - accept the part admit - settle the claim
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitImmediatePayment(claimRef, '200');
     await api.waitForFinishedBusinessProcess();
   }
@@ -33,7 +33,7 @@ Scenario('Response with PartAdmit-PayImmediately Fast Track @citizenUI @partAdmi
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediatelyWithIndividual);
     await api.waitForFinishedBusinessProcess();
     //Claimant Response - reject the part admit - move case to judicial referral
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.claimantRejectForDefRespPartAdmitImmediatePayment(claimRef, '569');
     await api.waitForFinishedBusinessProcess();
   }

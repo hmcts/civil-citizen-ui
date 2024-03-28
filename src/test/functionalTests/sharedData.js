@@ -1,5 +1,6 @@
 class SharedData {
   #language = 'en';
+  #testFilePath = './specClaimHelpers/fixtures/examplePDF.pdf';
 
   set language(language) {
     if(['en', 'cy'].includes(language) === false) {
@@ -10,6 +11,10 @@ class SharedData {
 
   get language()  {
     return this.#language;
+  }
+
+  get testFilePath()  {
+    return this.#testFilePath;
   }
 }
 

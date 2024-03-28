@@ -1,6 +1,6 @@
 const config = require('../../config');
-const LoginSteps = require('../features/home/steps/login');
-const DashboardSteps = require('../features/dashboard/steps/dashboard');
+const LoginSteps = require('./../commonFeatures/home/steps/login');
+const CitizenDashboardSteps = require('../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../specClaimHelpers/api/idamHelper');
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
@@ -17,8 +17,8 @@ Scenario('Response with PartAdmit-PayByInstallments SmallClaims @citizenUI @part
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual);
     await api.waitForFinishedBusinessProcess();
   }
@@ -32,8 +32,8 @@ Scenario('Response with PartAdmit-PayByInstallments Fast Track @citizenUI @partA
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual);
     await api.waitForFinishedBusinessProcess();
   }

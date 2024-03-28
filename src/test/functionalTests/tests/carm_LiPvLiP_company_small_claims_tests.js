@@ -1,7 +1,7 @@
 const config = require('./../../config');
-const LoginSteps = require('./../features/home/steps/login');
-const ResponseSteps = require('./../features/response/steps/lipDefendantResponseSteps');
-const ClaimantResponseSteps = require('./../features/response/steps/lipClaimantResponseSteps');
+const LoginSteps = require('./../commonFeatures/home/steps/login');
+const ResponseSteps = require('./../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const ClaimantResponseSteps = require('./../citizenFeatures/response/steps/lipClaimantResponseSteps');
 
 const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
@@ -33,7 +33,7 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
     securityCode = caseData.respondent1PinToPostLRspec.accessCode;
     console.log('claim number', claimNumber);
     console.log('Security code', securityCode);
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await ResponseSteps.RespondToClaim(claimRef);
     await ResponseSteps.EnterCompDetails(carmEnabled);
     await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -63,7 +63,7 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
 
 Scenario('LiP Claimant Response with Reject all claim', async () => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef);
     await ClaimantResponseSteps.verifyDefendantResponse();
     await ClaimantResponseSteps.isDefendantPaid('No');

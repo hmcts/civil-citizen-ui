@@ -1,8 +1,8 @@
-const steps  =  require('../../features/createClaim/steps/createLipvLipClaimSteps');
+const steps  =  require('../../citizenFeatures/createClaim/steps/createLipvLipClaimSteps');
 const config = require('../../../config');
 
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const LoginSteps = require('../../features/home/steps/login');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
 const { payClaimFee, hwfSubmission } = require('../../specClaimHelpers/dashboardNotificationConstants');
@@ -20,7 +20,7 @@ Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf', a
     const defaultClaimAmount = 9000;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
     await steps.addCompanyClaimant();
     await steps.addOrgDefendant();
@@ -48,7 +48,7 @@ Scenario('Create Claim -  Company vs Org - Fast track - with standard interest -
     StandardInterest = true;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
     await steps.addCompanyClaimant();
     await steps.addOrgDefendant();
@@ -77,7 +77,7 @@ Scenario('Create Claim -  Company vs Org - Fast track - with variable interest -
     StandardInterest = false;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
     await steps.addCompanyClaimant();
     await steps.addOrgDefendant();
@@ -106,7 +106,7 @@ Scenario('Create Claim -  Company vs Org - Fast track - with variable interest -
     StandardInterest = false;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
     await steps.addCompanyClaimant();
     await steps.addOrgDefendant();
