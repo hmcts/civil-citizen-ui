@@ -38,7 +38,7 @@ export async function isPcqShutterOn(): Promise<boolean> {
 }
 
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
-  return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
+  return true;
 }
 
 export async function isCARMEnabled(): Promise<boolean> {

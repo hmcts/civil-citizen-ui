@@ -130,7 +130,7 @@ export const getDoYouAgreeDefendantPaid = (claim: Claim, claimId: string, lng: s
 
 export const getDoYouWantToSettlePaid = ( claim : Claim, claimId: string, lng: string): SummaryRow => {
 
-  const claimantOption = claim.isFullDefence() ?
+  const claimantOption = claim.isFullDefence() && claim.hasPaidInFull() ?
     claim.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option : claim.claimantResponse?.hasPartPaymentBeenAccepted?.option;
 
   const option = claimantOption === YesNo.YES
