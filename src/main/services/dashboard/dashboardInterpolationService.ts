@@ -8,8 +8,12 @@ import {
   CCJ_PAID_AMOUNT_URL,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
   CASE_DOCUMENT_VIEW_URL,
-  MEDIATION_SERVICE_EXTERNAL, CLAIMANT_RESPONSE_TASK_LIST_URL,
+  CCJ_REPAYMENT_PLAN_DEFENDANT_URL,
+  CITIZEN_CONTACT_THEM_URL,
+  MEDIATION_SERVICE_EXTERNAL,
+  CLAIMANT_RESPONSE_TASK_LIST_URL,
   DATE_PAID_URL,
+  CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL,
 } from 'routes/urls';
 import config from 'config';
 import { getTotalAmountWithInterestAndFees } from 'modules/claimDetailsService';
@@ -34,6 +38,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   const valuesMap: Map<string, string> = new Map<string, string>();
   const daysLeftToRespond = claim?.respondent1ResponseDeadline ? getNumberOfDaysBetweenTwoDays(new Date(), claim.respondent1ResponseDeadline).toString() : '';
   const enforceJudgementUrl = config.get<string>('services.enforceJudgment.url');
+  const applyForCertificate = config.get<string>('services.applyForCertificate.url');
   const civilMoneyClaimsTelephone = config.get<string>('services.civilMoneyClaims.telephone');
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
 
@@ -58,7 +63,11 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{COUNTY_COURT_JUDGEMENT_URL}', CCJ_PAID_AMOUNT_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_REPAYMENT_PLAN}', DEFENDANT_SIGN_SETTLEMENT_AGREEMENT.replace(':id', claimId));
   valuesMap.set('{CLAIMANT_RESPONSE_TASK_LIST}', CLAIMANT_RESPONSE_TASK_LIST_URL.replace(':id', claimId));
+  valuesMap.set('{VIEW_AND_RESPOND}', CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL.replace(':id', claimId));
   valuesMap.set('{daysLeftToRespond}', daysLeftToRespond);
+  valuesMap.set('{CCJ_REPAYMENT_PLAN_DEFENDANT_URL}', CCJ_REPAYMENT_PLAN_DEFENDANT_URL.replace(':id', claimId));
+  valuesMap.set('{CITIZEN_CONTACT_THEM_URL}', CITIZEN_CONTACT_THEM_URL.replace(':id', claimId));
+  valuesMap.set('{APPLY_FOR_CERTIFICATE}', applyForCertificate);
   valuesMap.set('{enforceJudgementUrl}', enforceJudgementUrl);
   valuesMap.set('{civilMoneyClaimsTelephone}', civilMoneyClaimsTelephone);
   valuesMap.set('{fullAdmitPayImmediatelyPaymentAmount}', getTotalAmountWithInterestAndFees(claim).toString());
