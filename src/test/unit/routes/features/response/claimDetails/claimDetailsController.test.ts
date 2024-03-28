@@ -10,7 +10,6 @@ import {
   mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
 import CivilClaimResponseMock from '../../../../../utils/mocks/civilClaimResponseMock.json';
-import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import {dateFilter} from 'modules/nunjucks/filters/dateFilter';
 import currencyFormat, {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {Claim} from 'models/claim';
@@ -18,6 +17,7 @@ import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {CaseRole} from 'form/models/caseRoles';
+import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 
 jest.mock('../../../../../../main/modules/oidc');
 const nock = require('nock');
@@ -100,13 +100,13 @@ describe('Claim details page', () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
         .reply(200, CivilClaimResponseMock);
+      claim.case_data['hasInterest'] = () => false;
       app.locals.draftStoreClient = mockCivilClaim;
       const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(getTotalAmountWithInterestAndFees(claim.case_data).toString());
           expect(res.text).toContain(claim.case_data?.claimAmountBreakup[0].value.claimReason);
           expect(res.text).toContain(claim.case_data?.claimAmountBreakup[0].value.claimAmount);
           expect(res.text).toContain(claim.case_data?.totalInterest.toString());

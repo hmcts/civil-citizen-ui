@@ -1420,9 +1420,34 @@
       "DEFENDANT_TITLE": "Hawliadau a wnaed yn eich erbyn",
       "DRAFT_CLAIM_NEXT_STEPS": "Parhau gyda'r hawliad",
       "DRAFT_CLAIM_NUMBER": "Hawliad drafft",
+      "HEARINGS": {
+        "ADD_TRIAL": "Add the trial arrangements",
+        "PAY_FEE": "Pay the hearing fee",
+        "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
+        "TITLE": "Hearings",
+        "UPLOAD_DOCUMENTS": "Upload hearing documents",
+        "VIEW_BUNDLE": "View the bundle",
+        "VIEW_DOCUMENTS": "View documents",
+        "VIEW_HEARINGS": "View hearings"
+      },
       "MAKE_A_NEW_CLAIM": "Gwneud hawliad newydd am arian",
       "NEXT": "Nesaf",
       "NEXT_STEPS": "Y camau nesaf",
+      "NOTIFICATIONS": {
+        "HEARINGS": {
+          "PAY_FEE": "of £{{ feeAmount }} by {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
+          "TEXT_BEFORE": "You must ",
+          "TEXT": "pay the hearing fee "
+        },
+        "HELP_WITH_FEES": {
+          "TITLE": "We're reviewing your help with fees application",
+          "HEARING_CONTENT": "You've applied for help with the hearing fee. You'll receive an update in 5 to 10 working days."
+        }
+      },
+      "ORDERS_NOTICE": {
+        "TITLE": "Orders and notices from the court",
+        "VIEW": "View orders and notices"
+      },
       "PAGE_TITLE": "Hawliadau a wnaed gennych neu yn eich erbyn",
       "PREVIOUS": "Blaenorol",
       "STATUS_CLAIMANT": {
@@ -2022,7 +2047,10 @@
               "PAYMENT_FOR": "Payment for",
               "TOTAL_AMOUNT": "Total amount"
             }
-          }
+          },
+          "PAID_NOTIFICATION_TITLE": "Hearing fee has been paid",
+          "PAID_NOTIFICATION_SUBTITLE": "The hearing fee has been paid in full.",
+          "PAID_TASK": "Pay the hearing fee"
         },
         "TRIAL_HEARING_CONTENT": {
           "YOUR_TRIAL_TITLE": "Mae treial wedi'i drefnu ar gyfer eich achos",
@@ -2142,6 +2170,7 @@
       "YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL": "Mae angen i chi anfon manylion ariannol eich cwmni at yr hawlydd os nad ydych eisoes wedi gwneud hynny.",
       "YOU_SAID_YOU_WILL_PAY": "Rydych wedi dweud y byddwch yn talu {{ amount }} i {{ claimantName }} cyn 4pm ar {{ paymentDate }}",
       "YOUR_RESPONSE_TO_THE_CLAIM": "Eich ymateb i'r hawliad",
+      "WAIT_DEFENDANT_TO_RESPOND": "Wait for the defendant to respond",
       "WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE": "Aros i'r llys adolygu'r achos.",
       "WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND": "Byddwn yn cysylltu â chi pan fydd yn ymateb.",
       "WE_HAVE_EMAILED": "Rydyn ni wedi e-bostio {{claimantName}} yn dweud pryd a sut gwnaethoch chi ddweud eich bod wedi talu'r hawliad.",
@@ -2888,7 +2917,12 @@
       "HEADER": "Ymateb i hawliad ariannol",
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "Ar ôl i chi gwblhau'r holl gamau byddwch yn mynd ymlaen i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno.",
       "COMPLETE": "Cyflawn",
-      "INCOMPLETE": "Anghyflawn"
+      "DONE": "Done",
+      "INCOMPLETE": "Anghyflawn",
+      "IN_PROGRESS": "In progress",
+      "READY_TO_VIEW": "Ready to view",
+      "NOT_AVAILABLE_YET": "Not available yet",
+      "ACTION_NEEDED": "Action needed"
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "A yw eich hawliad am flaendal tenantiaeth?"

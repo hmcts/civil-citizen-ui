@@ -43,6 +43,7 @@ import {ClaimantResponse} from 'models/claimantResponse';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {Mediation} from 'models/mediation/mediation';
 import {CompanyTelephoneNumber} from 'form/models/mediation/companyTelephoneNumber';
+import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -985,6 +986,15 @@ describe('Documents', () => {
       const result = claim.getDocumentDetails(DocumentType.SEALED_CLAIM);
       //Then
       expect(result).toBe(mockClaim.systemGeneratedCaseDocuments[0].value);
+    });
+
+    it('should return document details for directions questionnaire ', () => {
+      //Given
+      const claim = mockClaim;
+      //When
+      const result = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
+      //Then
+      expect(result).toBe(mockClaim.systemGeneratedCaseDocuments[3].value);
     });
   });
 

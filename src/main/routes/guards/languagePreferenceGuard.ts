@@ -7,7 +7,7 @@ import {AppRequest} from 'common/models/AppRequest';
 export const languagePreferenceGuard = (req: Request, res: Response, next: NextFunction) => {
   (async () => {
     try {
-      const caseData = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+      const caseData = await getCaseDataFromStore(generateRedisKey(<AppRequest>req), true);
       if (caseData.claimBilingualLanguagePreference) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
       } else {

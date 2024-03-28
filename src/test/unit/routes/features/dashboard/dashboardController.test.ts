@@ -4,6 +4,7 @@ import Module from 'module';
 import {DASHBOARD_URL} from '../../../../../main/routes/urls';
 import {CIVIL_SERVICE_CASES_URL} from '../../../../../main/app/client/civilServiceUrls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {OidcResponse} from '../../../../../main/app/auth/user/oidc';
 const nock = require('nock');
 
 const session = require('supertest-session');
@@ -15,6 +16,9 @@ jest.mock('../../../../../main/services/dashboard/draftClaimService');
 jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
+  getSessionIssueTime: jest.fn(() => 123),
+  getOidcResponse: jest.fn(async () => { return { id_token: '1',
+    access_token: '1'} as OidcResponse;}),
 }));
 
 export const USER_DETAILS = {

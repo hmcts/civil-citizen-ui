@@ -1,0 +1,17 @@
+{% from "./task.njk" import taskComponent %}
+
+{% macro taskListComponent(dashboardTaskList, t) %}
+  {% for taskList in dashboardTaskList %}
+    <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
+      <h2 class="app-task-list__section">
+        <span class="app-task-list__section-number">
+          {{ t(taskList.title) }}
+      </h2>
+      <ol class="app-task-list app-task-list__items">
+        {% for task in taskList.tasks %}
+          {{ taskComponent(task, t) }}
+        {% endfor %}
+      </ol>
+    </div>
+  {% endfor %}
+{% endmacro %}

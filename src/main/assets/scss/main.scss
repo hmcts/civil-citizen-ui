@@ -166,6 +166,10 @@
   @include top-bordered('blue', 10px, 0, 5px 0 0 0);
 }
 
+.border-small-top {
+  @include top-bordered('blue', 5px, 0 0 25px 0, 0);
+}
+
 .warning-text-container {
   align-items: center;
   display: flex;
