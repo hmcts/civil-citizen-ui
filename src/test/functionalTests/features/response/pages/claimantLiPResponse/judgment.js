@@ -28,7 +28,7 @@ class Judgment {
 
   async defendantDoB(claimRef){
     await I.amOnPage('/case/' + claimRef + '/ccj/date-of-birth');
-    await I.waitForText('Do you know the defendant\'s date of birth?', 60);
+    await I.waitForContent('Do you know the defendant\'s date of birth?', 60);
     await I.click(fields.no);
     await I.click('Save and continue');
   }
@@ -38,15 +38,15 @@ class Judgment {
     {
       await I.amOnPage('/case/' + claimRef + '/ccj/paid-amount');
     }
-    await I.waitForText('Has the defendant paid some of the amount owed?', 60);
+    await I.waitForContent('Has the defendant paid some of the amount owed?', 60);
     await I.click(fields.yes);
-    await I.waitForText('Amount already paid', 60);
+    await I.waitForContent('Amount already paid', 60);
     await I.fillField(fields.amount, '100');
     await I.click('Save and continue');
   }
 
   async judgmentAmount(){
-    await I.waitForText('Judgment amount', 60);
+    await I.waitForContent('Judgment amount', 60);
     await I.see('The judgment will order the defendant to pay');
     await I.see('including your claim fee and any interest, as shown in this table:');
     await I.see('Amount');
@@ -59,14 +59,14 @@ class Judgment {
   }
 
   async paymentOptions(){
-    await I.waitForText('Payment Options', 60);
+    await I.waitForContent('Payment Options', 60);
     await I.see('I would like the defendant to pay:');
     await I.click(fields.payImmediately);
     await I.click('Save and continue');
   }
 
   async checkYourAnswers(){
-    await I.waitForText('Check your answers', 60);
+    await I.waitForContent('Check your answers', 60);
     await I.see('Their details (defendant)');
     await I.see('Full name');
     await I.see('Address');
@@ -86,7 +86,7 @@ class Judgment {
   }
 
   async confirmationPage(){
-    await I.waitForText('County Court Judgment requested', 60);
+    await I.waitForContent('County Court Judgment requested', 60);
     await I.see('We’ll process your request and send a copy of the judgment to you and to Sir John Doe.');
     await I.see('We aim to process this request as soon as possible.');
     await I.see('Please do not call the Court & Tribunal Service Centre (CTSC) about the progress of your request.');
