@@ -252,7 +252,7 @@ class ResponseToDefence {
   }
 
   verifySignTheSettlementAgreementForFullAdmit() {
-    I.waitForText('I confirm I’ve read and accept the terms of the agreement.', 60);
+    I.waitForContent('I confirm I’ve read and accept the terms of the agreement.', 60);
     I.see('Terms of the agreement', 'h1');
     I.see('The agreement');
     I.see('Sir John Doe will pay £1500, no later than');
@@ -334,7 +334,7 @@ class ResponseToDefence {
   }
 
   verifyCheckYourAnswersForFullAdmitSettlementAgreement() {
-    I.waitForText('Sign a settlement agreement',60);
+    I.waitForContent('Sign a settlement agreement',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
     I.see('Do you accept the defendant repayment plan?');
@@ -369,7 +369,7 @@ class ResponseToDefence {
   }
 
   verifyConfirmationScreenForFullAdmitSettlementAgreement(claimNumber) {
-    I.waitForText('You\'ve signed a settlement agreement', 60,'h1');
+    I.waitForContent('You\'ve signed a settlement agreement', 60);
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
   }

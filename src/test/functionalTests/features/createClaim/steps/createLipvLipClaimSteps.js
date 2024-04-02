@@ -109,13 +109,15 @@ class CreateClaimSteps {
     return caseReference;
   }
 
-  async payClaimFee(claimAmount, claimFee) {
+  async clickPayClaimFee() {
     await I.click(paths.links.pay_claim_fee);
+  }
+
+  async verifyAndPayClaimFee(claimAmount, claimFee) {
     await createClaim.verifyAndInputPayYourClaimFee(claimAmount, claimFee);
     await createClaim.verifyAndInputCardDetails();
     await createClaim.verifyConfirmYourPayment();
     await createClaim.verifyYourPaymentWasSuccessfull();
-    await createClaim.signOut();
   }
 
   async verifyDashboardLoaded() {
