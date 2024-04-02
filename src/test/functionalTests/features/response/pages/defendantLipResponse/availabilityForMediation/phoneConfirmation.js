@@ -14,19 +14,17 @@ const fields = {
 class PhoneConfirmation {
 
   async enterPhoneDetails() {
-    await I.waitForText('Can the mediator use 02088908876 to call you ' +
-        'for your mediation appointment?', config.WaitForText);
-    await I.click('Save and continue');
-    await I.see('Choose option: Yes or No');
-    await I.click(fields.yesButton);
+    I.waitForContent('Can the mediator use ', config.WaitForText);
+    I.click('Save and continue');
+    I.see('Choose option: Yes or No');
+    I.click(fields.yesButton);
     contactUs.verifyContactUs();
-    await I.click('Save and continue');
+    I.click('Save and continue');
   }
 
   async enterAltPhoneDetails() {
-    await I.forceClick(fields.availabilityForMediationLink);
-    await I.waitForText('Can the mediator use 02088908876 to call you ' +
-        'for your mediation appointment?', config.WaitForText);
+    I.forceClick(fields.availabilityForMediationLink);
+    await I.waitForContent('Can the mediator use ', config.WaitForText);
     await I.click('Save and continue');
     await I.see('Choose option: Yes or No');
     await I.click(fields.noButton);

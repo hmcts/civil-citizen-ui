@@ -1,9 +1,7 @@
 import {Claim} from '../../main/common/models/claim';
 import {ResponseType} from '../../main/common/form/models/responseType';
 import {PaymentOptionType} from '../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import {
-  TransactionSchedule,
-} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {TransactionSchedule} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {PartyType} from '../../main/common/models/partyType';
 import {DebtItems} from '../../main/common/form/models/statementOfMeans/debts/debtItems';
 import {Debts} from '../../main/common/form/models/statementOfMeans/debts/debts';
@@ -73,6 +71,7 @@ import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialA
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {MediationCarm} from 'models/mediation/mediationCarm';
+import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -297,7 +296,17 @@ export const createCCJClaimWithClaimResponseDetailsForPayBySetDate = (): Claim =
   claim.claimantResponse.ccjRequest.paidAmount.option = YesNo.YES;
   claim.claimantResponse.ccjRequest.paidAmount.totalAmount = 1000;
   claim.claimantResponse.ccjRequest.paidAmount.amount = 200;
+  claim.claimantResponse.hasPartAdmittedBeenAccepted = new GenericYesNo('No');
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
+  claim.partialAdmission.howMuchDoYouOwe.amount = 1000;
+  claim.claimInterest = YesNo.NO;
   claim.totalClaimAmount = 1000;
+  claim.claimFee = {
+    code: 'test',
+    version: 1,
+    calculatedAmountInPence : 0,
+  };
   return claim;
 };
 
@@ -1388,6 +1397,16 @@ export const getClaimWithClaimantTrialArrangements = (): Claim => {
   claimantTrialArrangements.hasAnythingChanged = hasAnythingChanged;
   caseProgression.claimantTrialArrangements = claimantTrialArrangements;
   claim.caseProgression = caseProgression;
+  return claim;
+};
+
+export const claimWithHwFDetails = (): Claim => {
+  const claim = new Claim();
+  claim.claimDetails = new ClaimDetails();
+  const helpWithFee = new HelpWithFees();
+  helpWithFee.referenceNumber = 'HWF-2AB-DC3';
+  helpWithFee.option = YesNo.YES;
+  claim.claimDetails.helpWithFees = helpWithFee;
   return claim;
 };
 

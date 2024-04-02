@@ -23,7 +23,7 @@ const content = {
 class ResponseTypePage {
   async enterResponseToClaim(claimRef, responseType){
     await I.amOnPage('/case/'+claimRef+'/response/response-type');
-    await I.waitForText(content.heading[sharedData.language], config.WaitForText);
+    await I.waitForContent(content.heading[sharedData.language], config.WaitForText);
     switch (responseType){
       case 'full-admission':{
         await I.click(fields.responseAdmitAll);
@@ -47,7 +47,7 @@ class ResponseTypePage {
 
   async enterResponseToClaimError(claimRef, responseType){
     await I.amOnPage('/case/'+claimRef+'/response/response-type');
-    await I.waitForText('How do you respond to the claim?', config.WaitForText);
+    await I.waitForContent('How do you respond to the claim?', config.WaitForText);
     await I.click('Save and continue');
     await I.see('There was a problem');
     await I.see('Choose your response');

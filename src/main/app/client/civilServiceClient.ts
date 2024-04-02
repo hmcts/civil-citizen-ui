@@ -350,14 +350,13 @@ export class CivilServiceClient {
     }
   }
 
-  async assignDefendantToClaim(claimId:string, req:AppRequest): Promise<void> {
-    try{
-      await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId),{}, // nosonar
-        {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}}); // nosonar
-    } catch (err: unknown) {
-      logger.error('Error when assigning defendant to claim');
-      throw err;
-    }
+  async assignDefendantToClaim(claimId: string, req: AppRequest): Promise<void> {
+    await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId), {}, // nosonar
+      { headers: { 'Authorization': `Bearer ${req.session?.user?.accessToken}` } })
+      .catch((err) => {
+        logger.error('Error when assigning defendant to claim');
+        throw err;
+      }); // nosonar
   }
 
   async getAgreedDeadlineResponseDate(claimId: string, req: AppRequest): Promise<Date> {
@@ -408,10 +407,11 @@ export class CivilServiceClient {
     }
   }
 
-  async getFeePaymentStatus(paymentReference: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
+  async getFeePaymentStatus(claimId: string, paymentReference: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
     const config = this.getConfig(req);
     try {
-      const response = await this.client.get(CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':feeType', feeType).replace(':paymentReference', paymentReference), config);
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':claimId', claimId).replace(':feeType', feeType).replace(':paymentReference', paymentReference), config);
+
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
       logger.error('Error when getting fee payment status');

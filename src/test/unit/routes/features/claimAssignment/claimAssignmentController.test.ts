@@ -4,7 +4,9 @@ import config from 'config';
 import {ASSIGN_CLAIM_URL, DASHBOARD_URL} from 'routes/urls';
 import {app} from '../../../../../main/app';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {CivilServiceClient} from 'client/civilServiceClient';
+import { CivilServiceClient } from 'client/civilServiceClient';
+import { Claim } from 'common/models/claim';
+import { Session } from 'express-session';
 
 jest.mock('../../../../../main/modules/oidc');
 
@@ -43,8 +45,19 @@ describe('claim assignment controller', ()=>{
       const error = new Error('Test error');
       jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockRejectedValueOnce(error);
-
-      await request(app).get(ASSIGN_CLAIM_URL+'?id=123')
+      app.request.session = { firstContact: { 'claimId': 123 } } as unknown as Session;
+      await request(app).get('/assignclaim')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.get('location')).toBe(DASHBOARD_URL);
+        });
+    });
+    it('on success  should redirect to dashboard', async () => {
+     
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce({} as Claim);
+      app.request.session = { firstContact: { 'claimId': 123 } } as unknown as Session;
+      await request(app).get('/assignclaim')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(DASHBOARD_URL);

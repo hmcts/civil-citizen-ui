@@ -31,7 +31,7 @@ module.exports = {
   },
   s2s: {
     microservice: 'civil_service',
-    secret: process.env.S2S_SECRET || '4W4QUXOYX623JW64',
+    secret: process.env.S2S_SECRET || 'AABBCCDDEEFFGGHH',
   },
   applicantSolicitorUser: {
     password: defaultPassword,
@@ -98,6 +98,11 @@ module.exports = {
     email: 'civil-system-update@mailnesia.com',
     type: 'systemupdate',
   },
+  systemUpdate2: {
+    password: defaultPassword,
+    email: 'hmcts.civil+organisation.1.superuser@gmail.com',
+    type: 'systemupdate',
+  },
   TestOutputDir: process.env.E2E_OUTPUT_DIR || 'test-results/functional',
   runningEnv: process.env.ENVIRONMENT,
   claimantSolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'B04IXE4' : 'Q1KOKP2',
@@ -116,6 +121,16 @@ module.exports = {
     rejectAll: 'REJECT_ALL',
     rejectAllAlreadyPaid: 'REJECT_ALL_ALREADY_PAID',
     rejectAllDisputeAll: 'REJECT_ALL_DISPUTE_ALL',
+    rejectAllDisputeAllWithIndividual: 'REJECT_ALL_DISPUTE_ALL_INDIVIDUAL',
+    rejectAllAlreadyPaidNotFullWithIndividual: 'REJECT_ALL_ALREADY_PAID_NOT_FULL_INDIVIDUAL',
+    rejectAllAlreadyPaidInFullWithIndividual: 'REJECT_ALL_ALREADY_PAID_IN_FULL_INDIVIDUAL',
+    admitAllPayImmediateWithIndividual: 'FULLADMIT_PAY_IMMEDIATELY_INDIVIDUAL',
+    admitAllPayBySetDateWithIndividual: 'FULLADMIT_PAY_BY_SET_DATE_INDIVIDUAL',
+    admitAllPayByInstallmentWithIndividual: 'FULLADMIT_PAY_BY_INSTALMENTS_INDIVIDUAL',
+    partAdmitAmountPaidWithIndividual: 'PART_ADMIT_ALREADY_PAID_INDIVIDUAL',
+    partAdmitHaventPaidPartiallyWantsToPayImmediatelyWithIndividual: 'PART_ADMIT_PAY_IMMEDIATELY_INDIVIDUAL',
+    partAdmitWithPartPaymentOnSpecificDateWithIndividual: 'PART_ADMIT_PAY_BY_SET_DATE_INDIVIDUAL',
+    partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual: 'PART_ADMIT_PAY_BY_INSTALLMENTS_INDIVIDUAL',
   },
   sdoSelectionType: {
     judgementSumSelectedYesAssignToSmallClaimsYes: 'JUDGEMENT_SUM_YES_SMALL_CLAIMS_YES',

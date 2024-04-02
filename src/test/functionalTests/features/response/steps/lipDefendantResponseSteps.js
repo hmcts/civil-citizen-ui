@@ -74,6 +74,7 @@ const SharedExpert = require('../pages/defendantLipResponse/defendantDQ/sharedEx
 const ExpertDetails = require('../pages/defendantLipResponse/defendantDQ/expertDetails');
 const AssignCaseToLip = require('../pages/defendantLipResponse/assignCasePinInPost');
 const ConfirmYourDetails = require('../pages/defendantLipResponse/defendantDQ/confirmYourDetails');
+const DefendantAdmissionSSA = require('../pages/defendantLipResponse/defendantAdmission_SSA');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -152,6 +153,7 @@ const sentExpertReports = new SentExpertReports();
 const sharedExpert = new SharedExpert();
 const expertDetails = new ExpertDetails();
 const assignCaseToLip = new AssignCaseToLip();
+const defendantAdmissionSSA = new DefendantAdmissionSSA();
 class ResponseSteps {
   async AssignCaseToLip(claimNumber, securityCode){
     await assignCaseToLip.open(claimNumber, securityCode);
@@ -174,13 +176,17 @@ class ResponseSteps {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterNameAndAddressDetails(claimRef);
     await dateOfBirthDetailsPage.enterDateOfBirth(claimRef);
-    await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+    if (!carmEnabled) {
+      await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+    }
   }
 
   async EnterCompDetails(carmEnabled) {
     await taskListPage.verifyResponsePageContent();
     await nameAndAddressDetailsPage.enterCompanyContactDetails();
-    await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+    if (!carmEnabled) {
+      await contactNumberDetailsPage.enterContactNumber(carmEnabled);
+    }
   }
 
   async EnterPersonalDetailsError(claimRef) {
@@ -511,7 +517,6 @@ class ResponseSteps {
 
   async EnterTelephoneMediationDetails() {
     await telephoneMediation.selectMediation();
-    await taskListPage.verifyResponsePageContent();
   }
 
   async ConfirmEmailDetails() {
@@ -540,7 +545,6 @@ class ResponseSteps {
   async EnterUnavailableDates() {
     await nextThreeMonthsDate.enterNextThreeMonthsDate();
     await availabilityDates.enterUnavailableDates(true);
-    await taskListPage.verifyResponsePageContent();
   }
 
   async ConfirmContactPerson() {
@@ -664,6 +668,13 @@ class ResponseSteps {
 
   async EnterExpertDetails(){
     await expertDetails.EnterExpertDetails();
+  }
+
+  async DefendantAdmissionSSA(claimRef, option){
+    await defendantLatestUpdate.openSSAPage(claimRef);
+    await defendantAdmissionSSA.verifyContent();
+    await defendantAdmissionSSA.chooseOptionToSign(option);
+    await defendantAdmissionSSA.verifyConfirmationPage(option);
   }
 }
 
