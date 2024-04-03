@@ -2,7 +2,6 @@ const steps  =  require('../../citizenFeatures/createClaim/steps/createLipvLipCl
 const config = require('../../../config');
 
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const LoginSteps = require('../../commonFeatures/home/steps/login');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
 const { payClaimFee, hwfSubmission, waitForDefendantToRespond } = require('../../specClaimHelpers/dashboardNotificationConstants');

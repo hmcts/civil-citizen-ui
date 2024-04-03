@@ -190,7 +190,6 @@ module.exports = {
         .then(async response => await response.json())
         .then(jsonResponse => {
           let availableTaskDetails = jsonResponse['tasks'];
-          console.log(availableTaskDetails)
           availableTaskDetails.forEach((taskInfo) => {
             if (taskInfo['type'] == taskType) {
               console.log('Found taskInfo with type ...', taskType);
