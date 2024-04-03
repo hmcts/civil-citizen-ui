@@ -28,10 +28,13 @@ uploadResponse=$(curl --insecure --silent -w "\n%{http_code}" --show-error -X PO
   ${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}/import \
   -H "Authorization: Bearer ${userToken}" \
   -H "ServiceAuthorization: Bearer ${serviceToken}" \
-  -F "file=@${filepath};filename=${uploadFilename}")
+  -F "file=@${filepath};filename=${uploadFilename}" || echo 'bypass-if-error')
 
 upload_http_code=$(echo "$uploadResponse" | tail -n1)
 upload_response_content=$(echo "$uploadResponse" | sed '$d')
+
+  echo "trying audit retries"
+
 
 if [ "$ENVIRONMENT" == "preview" ] && [ "$upload_http_code" != "201" ]; then
   echo "Bypassing audit check as on preview - will wait 45s and then verify the version has changed"
