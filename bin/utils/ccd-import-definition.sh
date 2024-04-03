@@ -24,7 +24,7 @@ if [[ "${ENVIRONMENT}" == "preview" ]]; then
   echo "Current version is ${version}"
 fi
 
-uploadResponse=$(curl --insecure --silent -w "\n%{http_code}" --show-error -X POST \
+uploadResponse=$(curl --insecure --silent -w "\n%{http_code}" --show-error --max-time 60 -X POST \
   ${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}/import \
   -H "Authorization: Bearer ${userToken}" \
   -H "ServiceAuthorization: Bearer ${serviceToken}" \
