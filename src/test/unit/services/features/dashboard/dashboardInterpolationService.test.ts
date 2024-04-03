@@ -2,6 +2,8 @@ import {replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpol
 import {Claim} from 'models/claim';
 import {addDaysToDate} from 'common/utils/dateUtils';
 import {DocumentType} from 'common/models/document/documentType';
+import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import {Document} from 'models/document/document';
 
 describe('dashboardInterpolationService', () => {
   const textToReplaceDynamic = 'You have {daysLeftToRespond} days left.';
@@ -81,6 +83,26 @@ describe('dashboardInterpolationService', () => {
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
   });
 
+  it('should replace placeholders with redirect url for mediation document', () => {
+    const claim: Claim = new Claim();
+    claim.id = '1710172392502478';
+    claim.mediationAgreement = <MediationAgreement>{
+      name: 'test',
+      document: <Document>{
+        document_url: 'http://dm-store:8080/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c',
+        document_filename: 'MEDIATION_AGREEMENT.pdf',
+        document_binary_url: 'http://dm-store:8080/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c/binary',
+      },
+      documentType: DocumentType.MEDIATION_AGREEMENT,
+    };
+    const textToReplaceUrl = '{MEDIATION_SUCCESSFUL_URL}';
+
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
+    const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
+
+    expect(textReplacedDynamic).toEqual(textExpectedDynamic);
+  });
+
   it('should replace placeholders with redirect url for claimant response', () => {
     const claim: Claim = new Claim();
     claim.id = '1710172392502478';
@@ -88,6 +110,31 @@ describe('dashboardInterpolationService', () => {
 
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
     const textExpectedDynamic = '/case/1710172392502478/claimant-response/task-list';
+
+    expect(textReplacedDynamic).toEqual(textExpectedDynamic);
+  });
+
+  it('should replace placeholders with redirect url for settlement agreement', () => {
+    const claim: Claim = new Claim();
+    claim.id = '1710172392502478';
+    claim.systemGeneratedCaseDocuments = [{
+      id: '123', value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c/binary',
+          document_filename: 'settlement_agreement_form_000MC094.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/14fb2e52-c47d-414c-8ccd-919479f4b52c/binary',
+        },
+        documentName: 'settlement_agreement_form_000MC005.pdf',
+        documentSize: 65663,
+        documentType: DocumentType.SETTLEMENT_AGREEMENT,
+        createdDatetime: new Date('2024-03-11T10:57:18'),
+      },
+    }];
+    const textToReplaceUrl = '{VIEW_SETTLEMENT_AGREEMENT}';
+
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id);
+    const textExpectedDynamic = '/case/1710172392502478/view-documents/14fb2e52-c47d-414c-8ccd-919479f4b52c';
 
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
   });
