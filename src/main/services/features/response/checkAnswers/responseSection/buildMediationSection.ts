@@ -88,7 +88,7 @@ export const buildMediationSection = (claim: Claim, claimId: string, lang: strin
   if (hasUnavailabilityOption === YesNo.YES) {
     const hasUnavailableDatesMediation = isClaimantResponse ? getListOfUnavailableDate(claim.claimantResponse.mediationCarm.unavailableDatesForMediation, getLng(lang)) : getListOfUnavailableDate(claim.mediationCarm.unavailableDatesForMediation, getLng(lang));
     mediationSection.summaryList.rows.push(summaryRow(
-      t('COMMON.UNAVAILABLE_DATES', {lang}),
+      t('COMMON.UNAVAILABLE_DATES', {lng: getLng(lang)}),
       ` ${[...hasUnavailableDatesMediation].join('<br>')}`,
       constructResponseUrlWithIdParams(claimId, MEDIATION_UNAVAILABLE_SELECT_DATES_URL),
       changeLabel(lang),
