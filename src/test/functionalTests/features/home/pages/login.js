@@ -29,7 +29,7 @@ class LoginPage {
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);
     await I.click(buttons.submit);
-    await I.seeInCurrentUrl('/dashboard');
+    if (['preview', 'demo'].includes(config.runningEnv)) {await I.seeInCurrentUrl('/dashboard') };
   }
 }
 

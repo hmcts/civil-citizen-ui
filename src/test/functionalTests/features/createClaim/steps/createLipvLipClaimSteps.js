@@ -1,9 +1,15 @@
 const I = actor();
 const EligibilityCheck = require('../pages/eligibilityCheck');
+const EligibilityCheckOCMC = require('../pages/eligibilityCheckOCMC');
 const CreateClaim = require('../pages/createClaim');
+const CreateClaimOCMC = require('../pages/createClaimOCMC');
+
 
 const eligibilityCheck = new EligibilityCheck();
+const eligibilityCheckOCMC = new EligibilityCheckOCMC();
 const createClaim = new CreateClaim();
+const createClaimOCMC = new CreateClaimOCMC();
+
 
 const paths = {
   links: {
@@ -58,6 +64,65 @@ class CreateClaimSteps {
     await eligibilityCheck.eligibilityClaimantAge();
     await eligibilityCheck.eligibilityApplyForHWF();
     await eligibilityCheck.eligibilityHWFReference();
+  }
+  async EligibilityCheckStepsForClaimCreationOCMC() {
+    await eligibilityCheckOCMC.open();
+    await eligibilityCheckOCMC.eligibilityClaimValue();
+    await eligibilityCheckOCMC.eligibilitySingleDefendant();
+    await eligibilityCheckOCMC.eligibilityDefendantAddress();
+    await eligibilityCheckOCMC.eligibilityClaimType();
+    await eligibilityCheckOCMC.eligibilityClaimantAddress();
+    await eligibilityCheckOCMC.eligibilityTenancyDeposit();
+    await eligibilityCheckOCMC.eligibilityGovtDept();
+    await eligibilityCheckOCMC.eligibilityDefendantAge();
+    await eligibilityCheckOCMC.eligibilityClaimantAge();
+  }
+
+  async CreateClaimCreationOCMC(claimInterestFlag) {
+    I.click("Resolving this dispute");
+    await createClaimOCMC.verifyTryToResolveTheDispute();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.confirming_your_claim);
+    await createClaimOCMC.verifyCompletingYourClaim();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.your_details);
+    await createClaimOCMC.verifyAboutYouAndThisClaimForClaimant();
+    await createClaimOCMC.verifyEnterYourDetails();
+    await createClaimOCMC.inputEnterYourDetails(true);
+    await createClaimOCMC.verifyDateOfBirth();
+    await createClaimOCMC.inputDateOfBirth();
+    await createClaimOCMC.verifyAndInputPhoneNumber();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.their_details);
+    await createClaimOCMC.verifyAboutYouAndThisClaimForDefendant();
+    await createClaimOCMC.verifyEnterDefendantsDetails();
+    await createClaimOCMC.inputEnterYourDetails(false);
+    await createClaimOCMC.verifyTheirEmailAddress();
+    await createClaimOCMC.verifyTheirPhoneNumber();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.claim_amount);
+    await createClaimOCMC.verifyClaimAmount();
+    await createClaimOCMC.inputClaimAmount();
+    await createClaimOCMC.verifyAndInputDoYouWantToClaimInterest(claimInterestFlag);
+    if (claimInterestFlag === true) {
+      await createClaimOCMC.verifyAndInputHowDoYouWantToClaimInterest();
+      await createClaimOCMC.verifyAndInputWhatAnnualRateOfInterestDoYouWantToClaim();
+      await createClaimOCMC.verifyAndInputWhenWillYouClaimInterestFrom();
+    }
+    await createClaimOCMC.verifyAndInputHelpWithFees();
+    await createClaimOCMC.verifyClaimAmountSummary(claimInterestFlag);
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.claim_details);
+    await createClaimOCMC.verifyAndInputClaimDetails();
+    await createClaimOCMC.inputClaimDetailsTimeline();
+    await createClaimOCMC.inputEvidenceList();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.check_and_submit_your_claim);
+    await createClaimOCMC.rerouteFromEqualityAndDiversity(paths.links.check_and_submit_your_claim);
+    await createClaimOCMC.verifyCheckYourAnswers(claimInterestFlag);
+    const caseReference = await createClaim.verifyClaimSubmitted();
+    console.log('The created Case Reference : ', caseReference);
+    return caseReference;
   }
 
   async CreateClaimCreation(claimInterestFlag) {
