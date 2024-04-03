@@ -22,7 +22,7 @@ upload_http_code=$(echo "$uploadResponse" | tail -n1)
 upload_response_content=$(echo "$uploadResponse" | sed '$d')
 
 if [[ "${upload_http_code}" == '504' ]]; then
-  for try in {1..10}
+  for try in {1..20}
   do
     sleep 5
     echo "Checking status of ${filename} (${uploadFilename}) upload (Try ${try})"
