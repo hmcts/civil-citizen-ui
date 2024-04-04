@@ -1,7 +1,6 @@
 const config = require('../../config');
-
-const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
-const LoginSteps = require('../features/home/steps/login');
+const ResponseSteps = require('../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const LoginSteps = require('./../commonFeatures/home/steps/login');
 const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const iHaveAlreadyAgreedMoretime = 'iHaveAlreadyAgreedMoretime';
@@ -28,7 +27,7 @@ Before(async ({api}) => {
   securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
-  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
 Scenario('Testing error messages @nightly', async () => {
@@ -74,5 +73,4 @@ Scenario('Personal detail error screen @nightly', async () => {
 
 //todo:financial screens
 Scenario('Share your financial details screens @nightly', async () => {
-
 });

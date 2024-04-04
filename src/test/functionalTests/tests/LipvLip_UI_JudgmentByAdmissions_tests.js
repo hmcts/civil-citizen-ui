@@ -1,8 +1,8 @@
 const config = require('../../config');
 
-const LoginSteps = require('../features/home/steps/login');
+const LoginSteps = require('../commonFeatures/home/steps/login');
 const {createAccount} = require('../specClaimHelpers/api/idamHelper');
-const ClaimantResponseSteps = require('../features/response/steps/lipClaimantResponseSteps');
+const ClaimantResponseSteps = require('../citizenFeatures/response/steps/lipClaimantResponseSteps');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
@@ -18,7 +18,7 @@ Scenario('Create LipvLip claim and defendant responded FullAdmit and PayImmediat
     // During Defendant response itself, update the payment deadline to past date
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayImmediateWithIndividual);
     await api.waitForFinishedBusinessProcess();
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ClaimantResponseSteps.verifyJudgmentByAdmission(claimRef);
     await api.waitForFinishedBusinessProcess();
   }
