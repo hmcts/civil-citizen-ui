@@ -39,7 +39,7 @@ describe('Total amount', () => {
         .get('/fees/hearing/undefined')
         .reply(200, '100');
       nock('http://localhost:4000')
-        .get('/fees/claim/undefined')
+        .get('/fees/claim/NaN')
         .reply(200, {'calculatedAmountInPence': '50'});
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       const spySave = jest.spyOn(claimFeeService, 'saveClaimFee');
@@ -54,7 +54,10 @@ describe('Total amount', () => {
 
     it('should return http 500 when has error in the claim amount fee get method', async () => {
       nock('http://localhost:4000')
-        .get('/fees/claim/undefined')
+        .get('/fees/hearing/undefined')
+        .reply(200, '100');
+      nock('http://localhost:4000')
+        .get('/fees/claim/NaN')
         .reply(500, mockCivilClaimUndefined);
       const res = await request(app)
         .get(CLAIM_TOTAL_URL);

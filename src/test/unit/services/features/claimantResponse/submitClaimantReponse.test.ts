@@ -81,6 +81,11 @@ describe('Submit claimant response to ccd', () => {
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.paymentIntention = new PaymentIntention();
       claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+      claim.claimFee = {
+        code: 'FEE0204',
+        version: 4,
+        calculatedAmountInPence: 7000,
+      };
       nock(citizenBaseUrl)
         .post('/cases/1/citizen/undefined/event')
         .reply(200, {});
@@ -105,6 +110,11 @@ describe('Submit claimant response to ccd', () => {
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.paymentIntention = new PaymentIntention();
       claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+      claim.claimFee = {
+        code: 'FEE0204',
+        version: 4,
+        calculatedAmountInPence: 7000,
+      };
       nock(citizenBaseUrl)
         .post('/cases/1/citizen/undefined/event')
         .reply(200, {});
@@ -130,6 +140,11 @@ describe('Submit claimant response to ccd', () => {
       claim.fullAdmission = new PartialAdmission();
       claim.fullAdmission.paymentIntention = new PaymentIntention();
       claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+      claim.claimFee = {
+        code: 'FEE0204',
+        version: 4,
+        calculatedAmountInPence: 7000,
+      };
       nock(citizenBaseUrl)
         .post('/cases/1/citizen/undefined/event')
         .reply(200, {});
@@ -155,6 +170,11 @@ describe('Submit claimant response to ccd', () => {
       claim.fullAdmission = new PartialAdmission();
       claim.fullAdmission.paymentIntention = new PaymentIntention();
       claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+      claim.claimFee = {
+        code: 'FEE0204',
+        version: 4,
+        calculatedAmountInPence: 7000,
+      };
       nock(citizenBaseUrl)
         .post('/cases/1/citizen/undefined/event')
         .reply(200, {});
