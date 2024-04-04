@@ -8,8 +8,8 @@ token=$(az keyvault secret show --vault-name infra-vault-nonprod --name hmcts-gi
  --query value -o tsv)
 
 latestAssetId=$(curl -H "Authorization: token ${token}" \
-  https://api.github.com/repos/hmcts/${repoName}/releases/jq-1.7 \
-  | docker run --rm --interactive stedolan/jq ".assets[] | select(.name==\"${assetName}\") | .id")
+  https://api.github.com/repos/hmcts/${repoName}/releases/latest \
+  | docker run --rm --interactive mikefarah/yq ".assets[] | select(.name==\"${assetName}\") | .id")
 
 curl -L \
   -H "Accept: application/octet-stream" \
