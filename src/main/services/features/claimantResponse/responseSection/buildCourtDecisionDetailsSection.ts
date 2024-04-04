@@ -39,6 +39,13 @@ const buildSummaryCourtDecisionBySetDate = (claim: Claim, isClaimantPlanAccepted
   ];
 };
 
+const buildSummaryCourtDecisionImmediately = (claim: Claim, lng: string) => {
+  const fullName = claim.getDefendantFullName();
+  return [
+    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_REPAYMENT_PLAN', { lng }), t('PAGES.CHECK_YOUR_ANSWER.WILL_PAY_IMMEDIATELY', { lng, fullName })),
+  ];
+};
+
 const buildSummaryCourtDecisionStatement = (claimantResponse: ClaimantResponse, lng: string) => {
   if (claimantResponse.isCourtDecisionInFavourOfClaimant) {
     return summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_DECISION_ROW', { lng }), t('PAGES.CHECK_YOUR_ANSWER.COURT_ACCEPTED_YOUR_REPAYMENT_PLAN', { lng }));
@@ -57,15 +64,18 @@ export const buildSummaryForCourtDecisionDetails = (claim: Claim, lng: string): 
     || (claimantResponse.isCourtDecisionInFavourOfClaimant && claimantResponse.isClaimantSuggestedPayByInstalments);
   const isPayBySetDate = (claimantResponse.isCourtDecisionInFavourOfDefendant && (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate()))
     || (claimantResponse.isCourtDecisionInFavourOfClaimant && claimantResponse.isClaimantSuggestedPayByDate);
+  const isPayImmediately = claimantResponse.isCourtDecisionInFavourOfClaimant && claimantResponse.isClaimantSuggestedPayImmediately;
   if (isPayByInstallment) {
     courtDecision.summaryList.rows.push(buildSummaryCourtDecisionStatement(claimantResponse, lng));
     courtDecision.summaryList.rows.push(...buildSummaryCourtDecisionByInstallments(claim, claimantResponse.isCourtDecisionInFavourOfClaimant, lng));
   }
-
   if (isPayBySetDate) {
     courtDecision.summaryList.rows.push(buildSummaryCourtDecisionStatement(claimantResponse, lng));
     courtDecision.summaryList.rows.push(...buildSummaryCourtDecisionBySetDate(claim, claimantResponse.isCourtDecisionInFavourOfClaimant, lng));
   }
-
+  if (isPayImmediately) {
+    courtDecision.summaryList.rows.push(buildSummaryCourtDecisionStatement(claimantResponse, lng));
+    courtDecision.summaryList.rows.push(...buildSummaryCourtDecisionImmediately(claim, lng));
+  }
   if (claimantResponse.isCourtDecisionInFavourOfClaimant || claimantResponse.isCourtDecisionInFavourOfDefendant) return courtDecision;
 };
