@@ -15,6 +15,7 @@ import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
 import {CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {CCDRejectAllOfClaimType} from 'models/ccdResponse/ccdRejectAllOfClaimType';
+import {InterestStartDate} from 'form/models/interest/interestStartDate';
 
 const phoneCCD = '123456789';
 const title = 'Mr';
@@ -127,6 +128,9 @@ describe('translateCCDCaseDataToCUIModel', () => {
       differentRate: undefined,
       reason: undefined,
     });
+    expect(output.interest.interestStartDate).toEqual(
+      new InterestStartDate('1','1','2023','ss'),
+    );
   });
 
   it('should translate full defence fields to CUI model', () => {
