@@ -10,7 +10,7 @@ import {
   getPaymentAmount,
   getPaymentAmountClaimantPlan,
   getPaymentDate,
-  getRepaymentFrequency, getRepaymentFrequencyForClaimantPlan
+  getRepaymentFrequency, getRepaymentFrequencyForClaimantPlan,
 } from 'common/utils/repaymentUtils';
 import { t } from 'i18next';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
