@@ -1,16 +1,32 @@
 const {listElement, buildAddress} = require('../../api/dataHelper');
 const config = require('../../../../config');
 
-const respondent1 = {
+const respondent1 = 
+{
   type: 'COMPANY',
   companyName: 'Def Test Org',
   primaryAddress: buildAddress('respondent'),
 };
-const respondent1WithPartyName = {
+
+// {
+//   type: 'ORGANISATION',
+//   OrganisationName: 'Def Test Org',
+//   primaryAddress: buildAddress('respondent'),
+// };
+
+const respondent1WithPartyName = 
+{
   ...respondent1,
   partyName: 'Def Test Org',
   partyTypeDisplayValue: 'Company',
 };
+
+// {
+//   ...respondent1,
+//   partyName: 'Def Test Org',
+//   partyTypeDisplayValue: 'Organisation',
+// };
+
 const applicant1 = {
   type: 'COMPANY',
   companyName: 'Test Inc',
