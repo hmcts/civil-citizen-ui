@@ -56,7 +56,7 @@ describe('Notification Redirect Controller - Get', () => {
       //then
       .expect((res: Response) => {
         expect(res.status).toBe(302);
-        expect(res.text).toBe('Found. Redirecting to #');
+        expect(res.text).toBe('Found. Redirecting to /#');
       });
 
   });
