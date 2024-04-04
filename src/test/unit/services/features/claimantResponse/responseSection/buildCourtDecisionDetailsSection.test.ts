@@ -224,7 +224,7 @@ describe('Check Answers Page :Court Decision Section', () => {
         paymentAmount: 100,
         firstRepaymentDate: new Date(),
         repaymentFrequency: 'monthly',
-      }
+      };
       claim.claimantResponse.courtDecision =
         RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
       claim.respondent1 = { responseType: ResponseType.FULL_ADMISSION };
