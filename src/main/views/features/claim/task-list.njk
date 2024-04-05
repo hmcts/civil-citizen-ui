@@ -6,15 +6,16 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-width-container govuk-!-padding-top-0">
-    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
-      <div class="govuk-grid-row govuk-!-margin-top-0">
-        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+  <div class="govuk-width-container">
+    {{ back(backLinkUrl, t) }}
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
             <h1 class="govuk-fieldset__heading govuk-!-margin-bottom-7">{{ t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE') }}</h1>
           </legend>
         </div>
-        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+        <div class="govuk-grid-column-two-thirds">
           <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ title }}</h2>
           <p class="govuk-body govuk-!-margin-bottom-2">{{ description }}</p>
           <p class="govuk-body govuk-!-margin-bottom-7">{{ t('PAGES.CLAIM_TASK_LIST.AFTER_COMPLETE') }}</p>

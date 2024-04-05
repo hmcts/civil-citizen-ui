@@ -1,5 +1,5 @@
 import {Router, Response, NextFunction, RequestHandler} from 'express';
-import {CLAIMANT_TASK_LIST_URL} from '../../urls';
+import {CLAIMANT_TASK_LIST_URL, MEDIATION_TYPE_OF_DOCUMENTS} from '../../urls';
 import {AppRequest} from 'models/AppRequest';
 import {getTaskLists} from 'services/features/claim/taskListService';
 import {calculateTotalAndCompleted} from 'services/features/common/taskListService';
@@ -10,6 +10,7 @@ import {
 } from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
@@ -26,7 +27,10 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (as
     const {completed, total} = calculateTotalAndCompleted(taskLists);
     const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total});
     const title = completed < total ? t('PAGES.CLAIM_TASK_LIST.APPLICATION_COMPLETE') : t('PAGES.CLAIM_TASK_LIST.APPLICATION_INCOMPLETE');
-    res.render(taskListViewPath, {taskLists, title, description});
+    res.render(
+      taskListViewPath, 
+      {taskLists, title, description, backLinkUrl: constructResponseUrlWithIdParams('123', MEDIATION_TYPE_OF_DOCUMENTS)}, 
+    );
   } catch (error) {
     next(error);
   }
