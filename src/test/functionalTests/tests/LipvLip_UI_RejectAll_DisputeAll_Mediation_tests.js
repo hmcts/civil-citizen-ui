@@ -46,7 +46,7 @@ Scenario('Assign case to defendant', async ({api}) => {
 Scenario('Defendant responds with Rejected All', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+    await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.RespondToClaim(claimRef);
