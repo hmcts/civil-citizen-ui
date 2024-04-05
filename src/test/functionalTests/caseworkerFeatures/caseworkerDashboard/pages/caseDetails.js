@@ -8,7 +8,7 @@ const fields = {
 class CaseDetails {
   async goToCaseDetails(claimRef) {
     await I.amOnPage(config.url.manageCase + '/cases/case-details/' + claimRef);
-    await I.waitForText('Summary', config.WaitForText);
+    await I.waitForText('Summary');
   }
 
   async verifySuccessBanner(message) {

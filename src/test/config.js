@@ -4,9 +4,9 @@ const PropertiesVolume = require('./secretsConfig');
 const defaultPassword = process.env.CITIZEN_PASSWORD || 'Password12!';
 const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD || 'Password12!';
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD || 'Hmcts1234';
-const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
+// const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
 // const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui-pr-3427.preview.platform.hmcts.net';
-// const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui.aat.platform.hmcts.net';
+const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui.aat.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : false;
 
 if (!process.env.TEST_PASSWORD) {
