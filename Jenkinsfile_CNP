@@ -113,7 +113,8 @@ withPipeline(type, product, component) {
   }
 
   before('smoketest:preview') {
-    sh """
+    retry(3) {
+      sh """
           eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
           ./bin/add-roles.sh
           ./bin/pull-latest-camunda-files.sh ${camundaBranch}
@@ -122,7 +123,8 @@ withPipeline(type, product, component) {
           ./bin/pull-latest-ccd-files.sh ${ccdBranch}
           ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${ccdBranch}
         """
-    setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
+      setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
+    }
   }
 
 
