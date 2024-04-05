@@ -278,6 +278,8 @@ import mediationUploadDocumentsController from 'routes/features/mediation/upload
 import mediationDocumentUploadCheckAnswerController
   from 'routes/features/mediation/uploadDocuments/checkAnswersController';
 import mediationConfirmationController from 'routes/features/mediation/uploadDocuments/confirmationController';
+import viewMediationSettlementAgreementDocument
+  from 'routes/features/document/mediation/viewSettlementAgreementDocumentController';
 
 export default [
   homeController,
@@ -523,4 +525,5 @@ export default [
   mediationUploadDocumentsController,
   mediationDocumentUploadCheckAnswerController,
   mediationConfirmationController,
+  viewMediationSettlementAgreementDocument,
 ];
