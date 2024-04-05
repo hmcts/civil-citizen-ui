@@ -2,13 +2,9 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {checkIfClaimFeeHasChanged} from 'services/features/claim/amount/checkClaimFee';
 import {mockClaim} from '../../../../../utils/mockClaim';
 import *  as claimFeesService from '../../../../../../main/services/features/claim/amount/claimFeesService';
-import * as requestModels from 'models/AppRequest';
 
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/features/claim/amount/claimFeesService');
-
-declare const appRequest: requestModels.AppRequest;
-const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 describe('Check claim fee is changed service', () => {
   it('Should return status true if claim fee is changed ', async () => {
     //Given
@@ -17,11 +13,10 @@ describe('Check claim fee is changed service', () => {
       code: '123',
       version: 1,
     };
-    const claim = mockClaim;
     jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValueOnce(mockClaimFee);
     const spySave = jest.spyOn(claimFeesService, 'saveClaimFee');
     //When
-    const isClaimFeeChanged = await checkIfClaimFeeHasChanged('11111', claim, mockedAppRequest);
+    const isClaimFeeChanged = await checkIfClaimFeeHasChanged('11111', mockClaim, undefined);
     //Then
     expect(isClaimFeeChanged).toEqual(true);
     expect(spySave).toHaveBeenCalled();
@@ -37,7 +32,7 @@ describe('Check claim fee is changed service', () => {
     jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValueOnce(mockClaimFee);
     const spySave = jest.spyOn(claimFeesService, 'saveClaimFee');
     //When
-    const isClaimFeeChanged = await checkIfClaimFeeHasChanged('11111', mockClaim, mockedAppRequest);
+    const isClaimFeeChanged = await checkIfClaimFeeHasChanged('11111', mockClaim, undefined);
     //Then
     expect(isClaimFeeChanged).toEqual(false);
     expect(spySave).toHaveBeenCalled();
