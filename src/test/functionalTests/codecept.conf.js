@@ -30,7 +30,7 @@ exports.config = {
           dir:'failed-videos',
         },
       },
-      waitForNavigation:'load',
+      waitForNavigation:'networkidle',
       bypassCSP: true,
       ignoreHTTPSErrors: true,
       retries: 3,

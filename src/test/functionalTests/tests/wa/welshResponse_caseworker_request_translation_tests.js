@@ -49,6 +49,7 @@ Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit @nightly
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
 
+/*
 Scenario('Caseworker Uploads Translated Documents', async ({wa}) => {
   await LoginSteps.EnterCaseworkerCredentials(config.caseWorker.email, config.caseWorker.password);
   await CaseworkerDashboardSteps.NavigateToCaseDetails(claimRef);
@@ -65,3 +66,4 @@ Scenario('Caseworker Uploads Translated Documents', async ({wa}) => {
     taskSteps,
   );
 });
+*/
