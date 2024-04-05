@@ -3,11 +3,16 @@
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../dashboard/item-content.njk" import itemContent %}
-{% from "moj/components/task-list/macro.njk" import mojTaskList %}
-
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/hint/macro.njk" import govukHint %}
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
+
+{% set itemContent %}
+<p class="govuk-body">{{ t('file') }}</p>
+{{govukHint({text: t('fileHint')})}}
+{% endset %}
 
 {% block content %}
 <div class="govuk-width-container">
@@ -16,42 +21,21 @@
       <div class="govuk-grid-column-two-thirds">
         <div class="govuk-!-margin-bottom-8">
         {{ csrfProtection(csrf) }}
+          {{ govukTable({
+                          caption: "Dates and amounts",
+                          captionClasses: "govuk-table__caption--m",
+                          rows: [
+                            [
+                              {
+                                html: itemContent
+                              },
+                              {
+                                text: "file.pdf"
+                              }
+                            ]
+                          ]
+                        }) }}
 
-          {{ mojTaskList({
-            sections: [
-              {
-                heading: {
-                  text: 'Section 1'
-                },
-                items: [{
-                  text: 'Item 1.1',
-                  href: '#',
-                  complete: true
-                }, {
-                  text: 'Item 1.2',
-                  href: '#'
-                }, {
-                  text: 'Item 1.3',
-                  href: '#'
-                }]
-              },
-              {
-                heading: {
-                  text: 'Section 2'
-                },
-                items: [{
-                  text: 'Item 2.1',
-                  href: '#'
-                }, {
-                  text: 'Item 2.2',
-                  href: '#'
-                }, {
-                  text: 'Item 2.3',
-                  href: '#'
-                }]
-              }
-            ]
-          }) }}
         {{ contactUsForHelp(t) }}
         </div>
       </div>
