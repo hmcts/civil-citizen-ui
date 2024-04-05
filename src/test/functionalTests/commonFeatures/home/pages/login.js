@@ -32,6 +32,9 @@ class LoginPage {
     await I.waitForVisible(fields.username);
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);
+    await I.click(buttons.hmctsSignIn);
+    await I.wait(3);
+    await I.seeInCurrentUrl('/dashboard');
     await I.click(buttons.submit);
     await I.seeInCurrentUrl(endpoint);
   }
