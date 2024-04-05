@@ -40,6 +40,13 @@ Scenario('Create Claim', async ({api}) => {
 Scenario('Assign case to defendant', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await api.assignToLipDefendant(claimRef);
+  }
+}).tag('@regression-r2');
+
+Scenario('Defendant responds with Rejected All', async ({api}) => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.RespondToClaim(claimRef);
@@ -55,6 +62,12 @@ Scenario('Assign case to defendant', async ({api}) => {
     await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
     await ResponseSteps.SignOut();
     await api.waitForFinishedBusinessProcess();
+  }
+}).retry(1).tag('@regression-r2');
+
+Scenario('Claimant responds as Disputed By Claimant', async ({api}) => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
