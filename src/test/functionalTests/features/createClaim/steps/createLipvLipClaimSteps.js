@@ -76,50 +76,39 @@ class CreateClaimSteps {
     await eligibilityCheckOCMC.eligibilityGovtDept();
     await eligibilityCheckOCMC.eligibilityDefendantAge();
     await eligibilityCheckOCMC.eligibilityClaimantAge();
+    await eligibilityCheckOCMC.eligibilityHWFReference();
   }
 
   async CreateClaimCreationOCMC(claimInterestFlag) {
-    I.click("Resolving this dispute");
+    I.click('Resolving this dispute');
     await createClaimOCMC.verifyTryToResolveTheDispute();
-    await this.verifyDashboardLoaded();
-    I.click(paths.links.confirming_your_claim);
+    I.click('Completing your claim');
     await createClaimOCMC.verifyCompletingYourClaim();
-    await this.verifyDashboardLoaded();
-    I.click(paths.links.your_details);
+    I.click('Your details');
     await createClaimOCMC.verifyAboutYouAndThisClaimForClaimant();
     await createClaimOCMC.verifyEnterYourDetails();
     await createClaimOCMC.inputEnterYourDetails(true);
     await createClaimOCMC.verifyDateOfBirth();
     await createClaimOCMC.inputDateOfBirth();
     await createClaimOCMC.verifyAndInputPhoneNumber();
-    await this.verifyDashboardLoaded();
-    I.click(paths.links.their_details);
+    I.click('Their details');
     await createClaimOCMC.verifyAboutYouAndThisClaimForDefendant();
     await createClaimOCMC.verifyEnterDefendantsDetails();
     await createClaimOCMC.inputEnterYourDetails(false);
     await createClaimOCMC.verifyTheirEmailAddress();
     await createClaimOCMC.verifyTheirPhoneNumber();
-    await this.verifyDashboardLoaded();
-    I.click(paths.links.claim_amount);
+    I.click('Claim amount');
     await createClaimOCMC.verifyClaimAmount();
     await createClaimOCMC.inputClaimAmount();
-    await createClaimOCMC.verifyAndInputDoYouWantToClaimInterest(claimInterestFlag);
-    if (claimInterestFlag === true) {
-      await createClaimOCMC.verifyAndInputHowDoYouWantToClaimInterest();
-      await createClaimOCMC.verifyAndInputWhatAnnualRateOfInterestDoYouWantToClaim();
-      await createClaimOCMC.verifyAndInputWhenWillYouClaimInterestFrom();
-    }
+    await createClaimOCMC.verifyAndInputDoYouWantToClaimInterest();
     await createClaimOCMC.verifyAndInputHelpWithFees();
-    await createClaimOCMC.verifyClaimAmountSummary(claimInterestFlag);
-    await this.verifyDashboardLoaded();
-    I.click(paths.links.claim_details);
+    await createClaimOCMC.verifyClaimAmountSummary();
+    I.click('Claim details');
     await createClaimOCMC.verifyAndInputClaimDetails();
     await createClaimOCMC.inputClaimDetailsTimeline();
     await createClaimOCMC.inputEvidenceList();
-    await this.verifyDashboardLoaded();
-    I.click(paths.links.check_and_submit_your_claim);
-    await createClaimOCMC.rerouteFromEqualityAndDiversity(paths.links.check_and_submit_your_claim);
-    await createClaimOCMC.verifyCheckYourAnswers(claimInterestFlag);
+    I.click('Check and submit your claim');
+    await createClaimOCMC.verifyCheckYourAnswers();
     const caseReference = await createClaim.verifyClaimSubmitted();
     console.log('The created Case Reference : ', caseReference);
     return caseReference;
