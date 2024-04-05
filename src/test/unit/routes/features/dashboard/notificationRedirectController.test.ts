@@ -51,12 +51,12 @@ describe('Notification Redirect Controller - Get', () => {
     await request(app)
       .get(DASHBOARD_NOTIFICATION_REDIRECT
         .replace(':id', '123')
-        .replace(':locationName', 'VIEW_DOCUMENT_DRAFT')
+        .replace(':locationName', 'VIEW_BUNDLE')
         .replace(':notificationId', '321'))
       //then
       .expect((res: Response) => {
         expect(res.status).toBe(302);
-        expect(res.text).toBe('Found. Redirecting to /case/123/view-documents/456');
+        expect(res.text).toBe('Found. Redirecting to /#');
       });
 
   });
