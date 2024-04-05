@@ -1,3 +1,7 @@
+spring:
+  transaction:
+    default-timeout: 180
+
 nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
