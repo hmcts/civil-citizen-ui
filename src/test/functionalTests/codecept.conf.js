@@ -17,7 +17,7 @@ exports.config = {
   helpers: {
     Playwright: {
       url: testConfig.TestUrl,
-      show: true,
+      show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
       browser: 'chromium',
       waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
       windowSize: '1280x960',
@@ -30,7 +30,7 @@ exports.config = {
           dir:'failed-videos',
         },
       },
-      waitForNavigation:'networkidle',
+      waitForNavigation: 'networkidle',
       bypassCSP: true,
       ignoreHTTPSErrors: true,
       retries: 3,
