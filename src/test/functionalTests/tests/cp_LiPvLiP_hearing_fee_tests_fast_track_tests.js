@@ -1,7 +1,7 @@
 const config = require('../../config');
-const LoginSteps = require('../features/home/steps/login');
-const HearingFeeSteps = require('../features/caseProgression/steps/hearingFeeSteps');
-const DateUtilsComponent = require('../features/caseProgression/util/DateUtilsComponent');
+const LoginSteps = require('./../commonFeatures/home/steps/login');
+const HearingFeeSteps = require('../citizenFeatures/caseProgression/steps/hearingFeeSteps');
+const DateUtilsComponent = require('../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
@@ -23,7 +23,7 @@ Before(async ({api}) => {
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
     await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId1, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(fiveWeeksFromToday));
     await api.waitForFinishedBusinessProcess();
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   }
 });
 
