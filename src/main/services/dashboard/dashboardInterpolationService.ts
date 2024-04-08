@@ -23,6 +23,7 @@ import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directi
 import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
+import { t } from 'i18next';
 
 export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim, claimId: string, notificationId?: string): string => {
 
@@ -41,6 +42,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   const enforceJudgementUrl = config.get<string>('services.enforceJudgment.url');
   const applyForCertificate = config.get<string>('services.applyForCertificate.url');
   const civilMoneyClaimsTelephone = config.get<string>('services.civilMoneyClaims.telephone');
+  const cmcCourtEmailId = config.get<string>('services.civilMoneyClaims.courtEmailId');
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
 
   valuesMap.set('{VIEW_CLAIM_URL}', '#');
@@ -58,7 +60,6 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{VIEW_HEARING_NOTICE}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM)));
   valuesMap.set('{VIEW_SETTLEMENT_AGREEMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSettlementAgreementDocumentId(claim)));
   valuesMap.set('{DRAFT_CLAIM_TASK_LIST}', '/claim/task-list');
-  valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getClaimantDQDocumentId(claim)));
   valuesMap.set('{CLAIM_FEE_URL}', CLAIM_FEE_BREAKUP.replace(':id', claimId));
   valuesMap.set('{RESPONSE_TASK_LIST_URL}', BILINGUAL_LANGUAGE_PREFERENCE_URL.replace(':id', claimId));
   valuesMap.set('{REQUEST_CCJ_URL}', CCJ_DEFENDANT_DOB_URL.replace(':id', claimId));
@@ -72,6 +73,8 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{APPLY_FOR_CERTIFICATE}', applyForCertificate);
   valuesMap.set('{enforceJudgementUrl}', enforceJudgementUrl);
   valuesMap.set('{civilMoneyClaimsTelephone}', civilMoneyClaimsTelephone);
+  valuesMap.set('{cmcCourtEmailId}', cmcCourtEmailId);
+  valuesMap.set('{cmcCourtAddress}', getSendFinancialDetailsAddress());
   valuesMap.set('{fullAdmitPayImmediatelyPaymentAmount}', getTotalAmountWithInterestAndFees(claim).toString());
   valuesMap.set('{TELL_US_IT_IS_SETTLED}', DATE_PAID_URL.replace(':id', claimId));
   valuesMap.set('{DOWNLOAD_SETTLEMENT_AGREEMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT)));
@@ -102,3 +105,9 @@ function getSettlementAgreementDocumentId(claim:Claim) : string {
   return getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT, 'claimant');
 }
 
+function getSendFinancialDetailsAddress() : string {
+  return `<p class='govuk-body'>${t('COMMON.POSTAL_ADDRESS.BUILDING')}<br>
+    ${t('COMMON.POSTAL_ADDRESS.PO_BOX')}<br>
+    ${t('COMMON.POSTAL_ADDRESS.CITY')}<br>
+    ${t('COMMON.POSTAL_ADDRESS.POSTCODE')}</p>`;
+}
