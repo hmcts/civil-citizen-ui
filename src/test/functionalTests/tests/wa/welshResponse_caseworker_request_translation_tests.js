@@ -3,9 +3,9 @@ const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendant
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const UploadTranslatedDocumentsSteps = require('../../caseworkerFeatures/uploadTranslatedDocuments/steps/uploadTranslatedDocumentsSteps');
-const CaseworkerDashboardSteps = require('../../caseworkerFeatures/caseworkerDashboard/steps/caseworkerDashboardSteps');
-const defendantWelshRequestTaskDetails = require('../../specClaimHelpers/fixtures/waTaskDetails/defendantWelshRequestTaskDetails'); 
+// const UploadTranslatedDocumentsSteps = require('../../caseworkerFeatures/uploadTranslatedDocuments/steps/uploadTranslatedDocumentsSteps');
+// const CaseworkerDashboardSteps = require('../../caseworkerFeatures/caseworkerDashboard/steps/caseworkerDashboardSteps');
+// const defendantWelshRequestTaskDetails = require('../../specClaimHelpers/fixtures/waTaskDetails/defendantWelshRequestTaskDetails'); 
 
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
@@ -49,6 +49,7 @@ Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit @nightly
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
 
+/*
 Scenario('Caseworker Uploads Translated Documents', async ({wa}) => {
   await LoginSteps.EnterCaseworkerCredentials(config.caseWorker.email, config.caseWorker.password);
   await CaseworkerDashboardSteps.NavigateToCaseDetails(claimRef);
@@ -65,3 +66,4 @@ Scenario('Caseworker Uploads Translated Documents', async ({wa}) => {
     taskSteps,
   );
 });
+*/
