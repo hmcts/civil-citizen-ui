@@ -3,6 +3,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
+import {FileSectionBuilder} from 'models/commons/fileSectionBuilder';
 
 const viewMediationSettlementAgreementDocument = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -10,8 +11,14 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 const viewDocuments = 'features/common/viewDocuments';
 
 const renderView = (res: Response): void => {
+  const element = new FileSectionBuilder()
+    .addRow('test', 'test')
+    .addRow('test', 'test')
+    .addRow('test', 'test')
+    .build();
   res.render(viewDocuments, {
-
+    items: element,
+    pageTitle: 'pageTitle',
   });
 };
 

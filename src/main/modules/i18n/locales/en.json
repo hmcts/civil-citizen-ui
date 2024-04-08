@@ -1,5 +1,6 @@
 {
   "COMMON": {
+    "UPLOAD_DATE": "Uploaded [ {{ uploadDate }} ]",
     "UPLOAD_FILE": "Upload file",
     "VIEW_DOCUMENTS": "View documents",
     "DOCUMENTS_UPLOADED": "Documents uploaded",
