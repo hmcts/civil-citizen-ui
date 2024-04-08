@@ -8,24 +8,12 @@ const respondent1 =
   primaryAddress: buildAddress('respondent'),
 };
 
-// {
-//   type: 'ORGANISATION',
-//   OrganisationName: 'Def Test Org',
-//   primaryAddress: buildAddress('respondent'),
-// };
-
 const respondent1WithPartyName = 
 {
   ...respondent1,
   partyName: 'Def Test Org',
   partyTypeDisplayValue: 'Company',
 };
-
-// {
-//   ...respondent1,
-//   partyName: 'Def Test Org',
-//   partyTypeDisplayValue: 'Organisation',
-// };
 
 const applicant1 = {
   type: 'COMPANY',
