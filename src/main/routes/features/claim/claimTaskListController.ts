@@ -27,9 +27,14 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (as
     const {completed, total} = calculateTotalAndCompleted(taskLists);
     const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total});
     const title = completed < total ? t('PAGES.CLAIM_TASK_LIST.APPLICATION_COMPLETE') : t('PAGES.CLAIM_TASK_LIST.APPLICATION_INCOMPLETE');
+    
+    const breadcrumbUrlA = '#A';
+    const breadcrumbUrlB = '#B';
+    const breadcrumbUrlC = '#C';
+
     res.render(
       taskListViewPath, 
-      {taskLists, title, description, backLinkUrl: constructResponseUrlWithIdParams('123', MEDIATION_TYPE_OF_DOCUMENTS)}, 
+      {taskLists, title, description, breadcrumbUrlA, breadcrumbUrlB, breadcrumbUrlC, backLinkUrl: constructResponseUrlWithIdParams('123', MEDIATION_TYPE_OF_DOCUMENTS)}, 
     );
   } catch (error) {
     next(error);
