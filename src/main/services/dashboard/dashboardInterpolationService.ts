@@ -89,6 +89,11 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_DOCUMENT_DRAFT')
       .replace(':notificationId', notificationId));
+
+    valuesMap.set('{VIEW_HEARING_NOTICE_CLICK}', DASHBOARD_NOTIFICATION_REDIRECT
+      .replace(':id', claimId)
+      .replace(':locationName', 'VIEW_HEARING_NOTICE')
+      .replace(':notificationId', notificationId));
   }
 
   return valuesMap;

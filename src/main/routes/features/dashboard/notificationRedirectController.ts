@@ -6,6 +6,7 @@ import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
+import {getHearingDocumentsCaseDocumentIdByType} from "models/caseProgression/caseProgressionHearing";
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -33,10 +34,12 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
     //TODO: Example case for draft claim - remove once a real view document is added.
     case 'VIEW_DOCUMENT_DRAFT':
       documentBinary = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM);
-      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentBinary);
+      break;
+    case 'VIEW_HEARING_NOTICE':
+      documentBinary = getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM);
       break;
   }
-
+  redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentBinary);
   return redirectUrl;
 }
 export default notificationRedirectController;
