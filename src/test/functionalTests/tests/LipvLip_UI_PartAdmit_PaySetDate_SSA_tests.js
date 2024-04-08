@@ -41,6 +41,11 @@ Scenario('Create Claim by claimant', async ({api}) => {
 Scenario('Assign case to defendant', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await api.assignToLipDefendant(claimRef);
+  }
+}).tag('@regression-r2');
+
+Scenario('Defendant responds with part admit', async ({api}) => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.RespondToClaim(claimRef);
@@ -60,6 +65,11 @@ Scenario('Assign case to defendant', async ({api}) => {
     await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
     await ResponseSteps.SignOut();
     await api.waitForFinishedBusinessProcess();
+  }
+}).retry(1).tag('@regression-r2');
+
+Scenario('Claimant responds as Accepted Repayment Plan By Claimant', async ({api}) => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfSettlementAndRepayment(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
