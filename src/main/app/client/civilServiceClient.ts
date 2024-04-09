@@ -86,6 +86,7 @@ export class CivilServiceClient {
     const submitterId = req.session?.user?.id;
     const currentPage = req.query?.claimantPage ?? 1;
     try {
+      logger.info('Submitter id: ' + submitterId);
       const response = await this.client.get('/cases/claimant/' + submitterId + '?page=' + currentPage, config);
       const dashboardClaimantItemList = plainToInstance(DashboardClaimantItem, response.data.claims as object[]);
       return { claims: dashboardClaimantItemList, totalPages: response.data.totalPages };
