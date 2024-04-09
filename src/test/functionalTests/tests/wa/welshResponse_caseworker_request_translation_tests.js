@@ -16,7 +16,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Welsh Response with PartAdmit - Small Claims').tag('@regression-cui-r1');
+Feature('Welsh Response with PartAdmit - Small Claims @nightly').tag('@regression-cui-r1');
 
 Scenario('Create spec LR v LIP and assign to defendant LIP', async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -29,7 +29,7 @@ Scenario('Create spec LR v LIP and assign to defendant LIP', async ({api}) => {
   console.log('Security code', securityCode);
 });
 
-Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit @nightly', async () => {
+Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit', async () => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef, 'cy');
