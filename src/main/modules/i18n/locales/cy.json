@@ -1,5 +1,7 @@
 {
   "COMMON": {
+    "HOME": "Home",
+    "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Upload file",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
     "DOCUMENTS_UPLOADED": "Documents uploaded",
