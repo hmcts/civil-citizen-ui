@@ -1,5 +1,5 @@
-import {MediationAgreementDocuments} from 'models/mediation/documents/mediationAgreementDocuments';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {MediationAgreementDocuments} from 'models/mediation/document/mediationAgreementDocuments';
 
 export class DocumentLinkInformation{
   url: string;
