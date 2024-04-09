@@ -1,0 +1,32 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "../../macro/create-table-documents.njk" import addFileInformation, addFileLink, createDocumentsTable %}
+{% from "../../macro/divider.njk" import divider %}
+{% from "../../macro/page-information.njk" import pageInformation %}
+
+{% set rows = [] %}
+{% for item in documentsSection.documents %}
+{% set rows = (rows.push([
+    {
+        html: addFileInformation(item.fileName, item.uploadDate)
+    },
+    {
+        html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+    }]), rows) %}
+{% endfor %}
+
+{% block nestedContent %}
+
+{{ pageInformation(t,pageCaption, pageTitle, claimId, claimAmount)}}
+{{ divider() }}
+
+{{ createDocumentsTable(t(documentsSection.title), rows) }}
+
+{{ govukButton({
+    text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW'),
+    href: dashboardUrl
+}) }}
+{% endblock %}
+
+

@@ -1,6 +1,7 @@
 {
-
   "COMMON": {
+    "HOME": "Home",
+    "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Upload file",
     "VIEW_DOCUMENTS": "View documents",
     "DOCUMENTS_UPLOADED": "Documents uploaded",
@@ -21,6 +22,7 @@
     "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "CLAIM_AMOUNT": "Claim amount",
+    "CLAIM_AMOUNT_WITH_VALUE": "Claim amount: £{{claimAmount}}",
     "CLAIM_NUMBER": "Claim number",
     "CONFIRM_YOUR_DETAILS": "Confirm your details",
     "DASHBOARD": "Dashboard",
@@ -371,6 +373,10 @@
     }
   },
   "PAGES": {
+    "VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT": {
+      "PAGE_TITLE": "View mediation settlement agreement",
+      "DOCUMENT_TABLE_TITLE": "Mediation Settlement Agreement"
+    },
     "MEDIATION": {
       "CONFIRMATION_PAGE": {
         "PAGE_TITLE": "Mediation upload documents confirmation",

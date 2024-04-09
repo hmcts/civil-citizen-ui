@@ -145,7 +145,8 @@ export class CivilServiceClient {
       }
       const caseDetails: CivilClaimResponse = response.data;
 
-      caseDetails.case_data.caseRole = await this.getUserCaseRoles(claimId, req);
+      //const role = await this.getUserCaseRoles(claimId, req);
+      //caseDetails.case_data.caseRole = role;
       return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
       logger.error('Error when retrieving claim details');
