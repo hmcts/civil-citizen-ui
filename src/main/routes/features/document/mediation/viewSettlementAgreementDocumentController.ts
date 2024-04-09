@@ -39,7 +39,7 @@ const renderView = (res: Response, claimId: string, claimAmount: string, isClaim
     pageCaption: 'COMMON.MEDIATION',
     pageTitle: 'PAGES.VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.PAGE_TITLE',
     claimId: caseNumberPrettify(claimId),
-    claimAmount: claimAmount,
+    claimAmount: claimAmount,//Todo check why claimAmount is empty
     dashboardUrl: constructResponseUrlWithIdParams(claimId, isClaimant ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
   });
 };
