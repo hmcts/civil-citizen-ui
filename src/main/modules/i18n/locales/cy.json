@@ -373,6 +373,10 @@
     }
   },
   "PAGES": {
+    "VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT": {
+      "PAGE_TITLE": "View mediation settlement agreement",
+      "DOCUMENT_TABLE_TITLE": "Mediation Settlement Agreement"
+    },
     "MEDIATION": {
       "CONFIRMATION_PAGE": {
         "PAGE_TITLE": "Mediation upload documents confirmation",

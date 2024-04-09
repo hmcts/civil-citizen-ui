@@ -1,30 +1,33 @@
 import {MediationAgreementDocuments} from 'models/mediation/documents/mediationAgreementDocuments';
-import {getLng} from 'common/utils/languageToggleUtils';
-import dayjs from 'dayjs';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+
+export class DocumentLinkInformation{
+  url: string;
+  text: string;
+}
+export class DocumentInformation {
+  fileName: string;
+  uploadDate: string;
+  linkInformation: DocumentLinkInformation;
+
+}
 
 export class ViewDocumentsSection {
   title: string;
-  documents: MediationAgreementDocuments[];
+  documents: DocumentInformation[];
 
-  constructor(viewDocumentsTitle: string, mediationAgreementDocuments: MediationAgreementDocuments[]) {
+  constructor(viewDocumentsTitle: string, mediationAgreementDocuments: MediationAgreementDocuments[], lang: string) {
     this.title = viewDocumentsTitle;
-    this.documents = mediationAgreementDocuments;
+    this.documents = mediationAgreementDocuments.map((docs) => {
+      return {
+        fileName: docs.value.documentName,
+        uploadDate: formatDateToFullDate(docs.value.createdDatetime, lang),
+        linkInformation: {
+          url: docs.value.documentLink.document_url,
+          text: docs.value.documentLink.document_filename,
+        },
+      } as DocumentInformation;
+    });
   }
 
-  mapperDocumentsToView(lang: string){
-    const mapDocuments =  this.documents.map((items) => {
-      return {
-        fileName: items.value.documentType,
-        uploadDate: dayjs(items.value.createdDatetime).locale(getLng(lang)).format('DD MMMM YYYY'),
-        linkInformation: {
-          url: items.value.documentLink.document_url,
-          text: items.value.documentLink.document_filename,
-        },
-      };
-    });
-    return {
-      title: this.title,
-      documents: mapDocuments,
-    };
-  }
 }

@@ -1,9 +1,7 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
-{% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
-{% from "./fileLink.njk" import fileLink, fileInformation %}
-{% from "./createRows.njk" import createRows %}
+{% from "../../macro/create-table-documents.njk" import addFileInformation, addFileLink, createDocumentsTable %}
 {% from "../../macro/divider.njk" import divider %}
 {% from "../../macro/page-information.njk" import pageInformation %}
 
@@ -11,10 +9,10 @@
 {% for item in documentsSection.documents %}
 {% set rows = (rows.push([
     {
-        html: fileInformation(item.fileName, item.uploadDate)
+        html: addFileInformation(item.fileName, item.uploadDate)
     },
     {
-        html: fileLink(item.linkInformation.url, item.linkInformation.text)
+        html: addFileLink(item.linkInformation.url, item.linkInformation.text)
     }]), rows) %}
 {% endfor %}
 
@@ -23,16 +21,11 @@
 {{ pageInformation(t,pageCaption, pageTitle, claimId, claimAmount)}}
 {{ divider() }}
 
-{{ govukTable({
-    caption: documentsSection.title,
-    captionClasses: "govuk-table__caption--m",
-    classes: 'tableWrap',
-    rows: rows
-}) }}
+{{ createDocumentsTable(t(documentsSection.title), rows) }}
 
 {{ govukButton({
-    text: t('Close and return to case overview'),
-    href: documentsTabUrl
+    text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW'),
+    href: dashboardUrl
 }) }}
 {% endblock %}
 
