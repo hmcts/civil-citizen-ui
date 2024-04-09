@@ -1427,9 +1427,34 @@
       "DEFENDANT_TITLE": "Claims made against you",
       "DRAFT_CLAIM_NEXT_STEPS": "Continue with claim",
       "DRAFT_CLAIM_NUMBER": "Draft claim",
+      "HEARINGS": {
+        "ADD_TRIAL": "Add the trial arrangements",
+        "PAY_FEE": "Pay the hearing fee",
+        "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
+        "TITLE": "Hearings",
+        "UPLOAD_DOCUMENTS": "Upload hearing documents",
+        "VIEW_BUNDLE": "View the bundle",
+        "VIEW_DOCUMENTS": "View documents",
+        "VIEW_HEARINGS": "View hearings"
+      },
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
       "NEXT": "Next",
       "NEXT_STEPS": "Next steps",
+      "NOTIFICATIONS": {
+        "HEARINGS": {
+          "PAY_FEE": "of £{{ feeAmount }} by {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
+          "TEXT_BEFORE": "You must ",
+          "TEXT": "pay the hearing fee "
+        },
+        "HELP_WITH_FEES": {
+          "TITLE": "We're reviewing your help with fees application",
+          "HEARING_CONTENT": "You've applied for help with the hearing fee. You'll receive an update in 5 to 10 working days."
+        }
+      },
+      "ORDERS_NOTICE": {
+        "TITLE": "Orders and notices from the court",
+        "VIEW": "View orders and notices"
+      },
       "PAGE_TITLE": "Claims made by or against you",
       "PREVIOUS": "Previous",
       "STATUS_CLAIMANT": {
@@ -2029,7 +2054,10 @@
               "PAYMENT_FOR": "Payment for",
               "TOTAL_AMOUNT": "Total amount"
             }
-          }
+          },
+          "PAID_NOTIFICATION_TITLE": "Hearing fee has been paid",
+          "PAID_NOTIFICATION_SUBTITLE": "The hearing fee has been paid in full.",
+          "PAID_TASK": "Pay the hearing fee"
         },
         "TRIAL_HEARING_CONTENT": {
           "YOUR_TRIAL_TITLE": "A trial has been scheduled for your case",
@@ -2149,6 +2177,7 @@
       "YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL": "You need to send them your company’s financial details if you haven’t already.",
       "YOU_SAID_YOU_WILL_PAY": "You said you’ll pay {{ claimantName }} {{ amount }} before 4pm on {{ paymentDate }}",
       "YOUR_RESPONSE_TO_THE_CLAIM": "Your response to the claim",
+      "WAIT_DEFENDANT_TO_RESPOND": "Wait for the defendant to respond",
       "WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE": "Wait for the court to review the case.",
       "WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND": "We’ll contact you when they respond.",
       "WE_HAVE_EMAILED": "We’ve emailed {{ claimantName }} telling them when and how you said you paid the claim.",
@@ -2895,7 +2924,12 @@
       "HEADER": "Respond to a money claim",
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
       "COMPLETE": "Complete",
-      "INCOMPLETE": "Incomplete"
+      "DONE": "Done",
+      "INCOMPLETE": "Incomplete",
+      "IN_PROGRESS": "In progress",
+      "READY_TO_VIEW": "Ready to view",
+      "NOT_AVAILABLE_YET": "Not available yet",
+      "ACTION_NEEDED": "Action needed"
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "Is your claim for a tenancy deposit?"
