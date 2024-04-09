@@ -6,20 +6,20 @@
 {% from "./createRows.njk" import createRows %}
 
 {% set rows = [] %}
-{% for item in items %}
+{% for item in documentsSection.documents %}
 {% set rows = (rows.push([
     {
-        html: fileInformation(item.fileName, item.fileUploadDate)
+        html: fileInformation(item.fileName, item.uploadDate)
     },
     {
-        html: fileLink(item.fileUploadDateInformation.url, item.fileUploadDateInformation.text)
+        html: fileLink(item.linkInformation.url, item.linkInformation.text)
     }]), rows) %}
 {% endfor %}
 
 {% block nestedContent %}
 
 {{ govukTable({
-    caption: 'tableTitle',
+    caption: documentsSection.title,
     captionClasses: "govuk-table__caption--m",
     classes: 'tableWrap',
     rows: rows
