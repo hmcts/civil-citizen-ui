@@ -1,0 +1,27 @@
+{% from "./external-link.njk" import externalLink %}
+
+{% macro supportLinks(t, showContanctCourtLink, showTellUsEndedLink, showGetDebtRespiteLink) %}
+
+  {% if showContanctCourtLink or showTellUsEndedLink or showGetDebtRespiteLink %}
+    <p class="govuk-heading-s">{{ t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO') }}</p>
+  {% endif %}
+  {% if showContanctCourtLink %}
+    <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', externalURLs.applicationNoticeUrl, true) }}</p>
+  {% endif %}
+  {% if showTellUsEndedLink %}
+    {# TODO: check this link #}
+    <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_ENDED', '/paid-in-full/date-paid', false) }}</p>
+  {% endif %}
+  {% if showGetDebtRespiteLink %}
+    <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', externalURLs.getDebtRespiteUrl, true) }}</p>
+  {% endif %}
+
+  <p class="govuk-heading-s">{{ t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT') }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES', externalURLs.feesHelpUrl, true) }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.FIND_MEDIATION', externalURLs.findOutMediationUrl, true) }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.WHAT_EXPECT_HEARING', externalURLs.whatToExpectUrl, true) }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF', externalURLs.representYourselfUrl, true) }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE', externalURLs.findLegalAdviceUrl, true) }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT', externalURLs.findCourtTribunalUrl, true) }}</p>
+
+{% endmacro %}

@@ -43,7 +43,20 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
       const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest);
       const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest);
-      res.render(claimSummaryRedesignViewPath, {claim, claimId, dashboardTaskList, dashboardNotifications});
+      const showContanctCourtLink = true;
+      const showTellUsEndedLink = false;
+      const showGetDebtRespiteLink = false;
+      res.render(claimSummaryRedesignViewPath, 
+        {
+          claim, 
+          claimId, 
+          dashboardTaskList, 
+          dashboardNotifications,
+          showContanctCourtLink,
+          showTellUsEndedLink,
+          showGetDebtRespiteLink,
+        }
+      );
     } else {
       // RELEASE 1
       if (claim && !claim.isEmpty()) {

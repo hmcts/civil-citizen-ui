@@ -7,13 +7,13 @@
 {% from "../../macro/notifications.njk" import notifications %}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 {% from "../../macro/external-link.njk" import externalLink %}
+{% from "../../macro/support-links.njk" import supportLinks %}
+
 {% import "external-urls.njk" as externalURLs %}
 
 {% block content %}
 
-  {% set showgetDebtRespite = claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT or
-        claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION
-  %}
+
 
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
@@ -72,28 +72,9 @@
         {# TODO: Right side #}
         <div class="govuk-grid-column-one-third">
           <div class="border-small-top"></div>
-          <p class="govuk-heading-s">{{ t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO') }}</p>
-          {% if claim.ccdState == CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT %}
-            <p class="govuk-body">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', externalURLs.applicationNoticeUrl, true) }}</p>
-          {% endif %}
-          {% if showTellUsEnded %}
-            {# TODO: check this link #}
-            <p class="govuk-body">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_ENDED', '/paid-in-full/date-paid', false) }}</p>
-          {% endif %}
-          {% if showGetDebtRespiteLink %}
-            <p class="govuk-body">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', externalURLs.getDebtRespiteUrl, true) }}</p>
-          {% endif %}
-
-          <p class="govuk-heading-s">{{ t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT') }}</p>
-          <p class="govuk-body">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES', externalURLs.feesHelpUrl, true) }}</p>
-          <p class="govuk-body">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.FIND_MEDIATION', externalURLs.findOutMediationUrl, true) }}</p>
-          <p class="govuk-body">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.WHAT_EXPECT_HEARING', externalURLs.whatToExpectUrl, true) }}</p>
-          <p class="govuk-body">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF', externalURLs.representYourselfUrl, true) }}</p>
-          <p class="govuk-body">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE', externalURLs.findLegalAdviceUrl, true) }}</p>
-          <p class="govuk-body">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT', externalURLs.findCourtTribunalUrl, true) }}</p>
-
-          <div>
-          {{ contactUsForHelp(t) }}
+          {{ supportLinks(t, showContanctCourtLink, showTellUsEndedLink, showGetDebtRespiteLink) }}
+          <div class="govuk-!-padding-top-8">
+            {{ contactUsForHelp(t) }}
           </div>
         </div>
       </div>

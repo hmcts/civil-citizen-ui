@@ -1,6 +1,6 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {DASHBOARD_CLAIMANT_URL,OLD_DASHBOARD_CLAIMANT_URL} from '../../urls';
-import {getDashboardForm} from 'services/dashboard/dashboardService';
+import {getDashboardForm, getNotifications} from 'services/dashboard/dashboardService';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
@@ -9,8 +9,6 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isDashboardServiceEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import { CivilServiceClient } from 'client/civilServiceClient';
-import { DashboardNotificationList } from 'common/models/dashboard/dashboardNotificationList';
-import { DashboardNotification } from 'common/models/dashboard/dashboardNotification';
 import { CaseState } from 'common/form/models/claimDetails';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
@@ -38,11 +36,10 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
         dashboardId = claimId;  
       }
-      // const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req);
-      const dashboardNotifications = new DashboardNotificationList([new DashboardNotification('123', 'Test', 'Test', 'Test', 'Test', 'Test', null)])
+      const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req);
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req);
 
-
+      const showContanctCourtLink = claim.isDefendantNotResponded();
 
       const showTellUsEndedLink = claim.ccdState !== CaseState.PENDING_CASE_ISSUED &&
         claim.ccdState !== CaseState.CASE_ISSUED &&
@@ -51,14 +48,13 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
 
       const showGetDebtRespiteLink = claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
         claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION;
-
-
         
       res.render(claimantDashboardViewPath, {
         claim: claim, 
         claimId, 
         dashboardTaskList: dashboard, 
-        dashboardNotifications, 
+        dashboardNotifications,
+        showContanctCourtLink,
         showTellUsEndedLink,
         showGetDebtRespiteLink,
         lng
