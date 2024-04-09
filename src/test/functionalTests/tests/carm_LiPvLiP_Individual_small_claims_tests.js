@@ -1,8 +1,8 @@
 const config = require('./../../config');
-const LoginSteps = require('./../features/home/steps/login');
-const ResponseSteps = require('./../features/response/steps/lipDefendantResponseSteps');
+const LoginSteps = require('./../commonFeatures/home/steps/login');
+const ResponseSteps = require('./../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
-const ClaimantResponseSteps = require('../features/response/steps/lipClaimantResponseSteps');
+const ClaimantResponseSteps = require('../citizenFeatures/response/steps/lipClaimantResponseSteps');
 
 const claimType = 'SmallClaims';
 const partAdmit = 'partial-admission';
@@ -32,7 +32,7 @@ Scenario('LiP Defendant response with Part admit', async ({api}) => {
     securityCode = caseData.respondent1PinToPostLRspec.accessCode;
     console.log('claim number', claimNumber);
     console.log('Security code', securityCode);
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await ResponseSteps.RespondToClaim(claimRef);
     await ResponseSteps.EnterPersonalDetails(claimRef, carmEnabled);
     await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -55,7 +55,7 @@ Scenario('LiP Defendant response with Part admit', async ({api}) => {
 
 Scenario('LiP Claimant response with Part admit', async () => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef);
     await ClaimantResponseSteps.verifyDefendantResponse();
     await ClaimantResponseSteps.acceptOrRejectDefendantResponse('No');
