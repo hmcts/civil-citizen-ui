@@ -1,7 +1,7 @@
 {
   "COMMON": {
     "HOME": "Home",
-    "UPLOAD_DATE": "Uploaded [ {{ uploadDate }} ]",
+    "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Upload file",
     "VIEW_DOCUMENTS": "View documents",
     "DOCUMENTS_UPLOADED": "Documents uploaded",
@@ -374,7 +374,7 @@
   },
   "PAGES": {
     "VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT": {
-      "PAGE_TITLE": "View Settlement Agreement"
+      "PAGE_TITLE": "View mediation settlement agreement"
     },
     "MEDIATION": {
       "CONFIRMATION_PAGE": {

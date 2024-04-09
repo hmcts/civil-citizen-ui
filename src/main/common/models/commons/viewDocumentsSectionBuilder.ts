@@ -1,4 +1,6 @@
 import {MediationAgreementDocuments} from 'models/mediation/documents/mediationAgreementDocuments';
+import {getLng} from 'common/utils/languageToggleUtils';
+import dayjs from 'dayjs';
 
 export class ViewDocumentsSection {
   title: string;
@@ -9,14 +11,14 @@ export class ViewDocumentsSection {
     this.documents = mediationAgreementDocuments;
   }
 
-  mapperDocumentsToView(){
+  mapperDocumentsToView(lang: string){
     const mapDocuments =  this.documents.map((items) => {
       return {
-        uploadDate: items.value.createdDatetime,
-        fileName: items.value.documentName,
+        fileName: items.value.documentType,
+        uploadDate: dayjs(items.value.createdDatetime).locale(getLng(lang)).format('DD MMMM YYYY'),
         linkInformation: {
-          url: 'url',
-          text: 'text',
+          url: items.value.documentLink.document_url,
+          text: items.value.documentLink.document_filename,
         },
       };
     });
