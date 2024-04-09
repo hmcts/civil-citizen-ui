@@ -1,5 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {DASHBOARD_CLAIMANT_URL,OLD_DASHBOARD_CLAIMANT_URL} from '../../urls';
+import {DASHBOARD_CLAIMANT_URL,DATE_PAID_URL,OLD_DASHBOARD_CLAIMANT_URL} from '../../urls';
 import {getDashboardForm, getNotifications} from 'services/dashboard/dashboardService';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
@@ -38,22 +38,21 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       }
       const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req);
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req);
-
+      const datePaidUrl = constructResponseUrlWithIdParams(claimId, DATE_PAID_URL);
       const showContanctCourtLink = claim.isDefendantNotResponded();
-
       const showTellUsEndedLink = claim.ccdState !== CaseState.PENDING_CASE_ISSUED &&
         claim.ccdState !== CaseState.CASE_ISSUED &&
         claim.ccdState !== CaseState.AWAITING_CASE_DETAILS_NOTIFICATION &&
         claim.ccdState !== CaseState.All_FINAL_ORDERS_ISSUED;
-
       const showGetDebtRespiteLink = claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
         claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION;
         
       res.render(claimantDashboardViewPath, {
-        claim: claim, 
-        claimId, 
-        dashboardTaskList: dashboard, 
+        claim: claim,
+        claimId,
+        dashboardTaskList: dashboard,
         dashboardNotifications,
+        datePaidUrl,
         showContanctCourtLink,
         showTellUsEndedLink,
         showGetDebtRespiteLink,

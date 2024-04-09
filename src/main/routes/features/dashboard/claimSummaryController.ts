@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 import config from 'config';
 import {AppRequest} from 'models/AppRequest';
-import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL, DATE_PAID_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
   isCUIReleaseTwoEnabled,
@@ -24,6 +24,7 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getDashboardForm, getNotifications} from 'services/dashboard/dashboardService';
 import {getClaimWithExtendedPaymentDeadline} from 'services/features/response/submitConfirmation/submitConfirmationService';
 import {ClaimantOrDefendant} from 'models/partyType';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
 
@@ -43,15 +44,17 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
       const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest);
       const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest);
+      const datePaidUrl = constructResponseUrlWithIdParams(claimId, DATE_PAID_URL);
       const showContanctCourtLink = true;
       const showTellUsEndedLink = false;
       const showGetDebtRespiteLink = false;
       res.render(claimSummaryRedesignViewPath, 
         {
-          claim, 
-          claimId, 
-          dashboardTaskList, 
+          claim,
+          claimId,
+          dashboardTaskList,
           dashboardNotifications,
+          datePaidUrl,
           showContanctCourtLink,
           showTellUsEndedLink,
           showGetDebtRespiteLink,
