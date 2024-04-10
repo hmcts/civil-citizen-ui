@@ -43,7 +43,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   const civilMoneyClaimsTelephone = config.get<string>('services.civilMoneyClaims.telephone');
   const cmcCourtEmailId = config.get<string>('services.civilMoneyClaims.courtEmailId');
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
-  const tellUsSettledQueryParam = '?link=notification'
+  const tellUsSettledQueryParam = '?link=notification';
 
   valuesMap.set('{VIEW_CLAIM_URL}', '#');
   valuesMap.set('{VIEW_INFO_ABOUT_CLAIMANT}', '#');
@@ -80,7 +80,6 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{MEDIATION}', MEDIATION_SERVICE_EXTERNAL);
   valuesMap.set('{MEDIATION_SUCCESSFUL_URL}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(claim?.mediationAgreement?.document?.document_binary_url)));
   valuesMap.set('{DOWNLOAD_DEFENDANT_RESPONSE}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)));
-
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
