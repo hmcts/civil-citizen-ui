@@ -5,7 +5,7 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
-const { payClaimFee } = require('../../specClaimHelpers/dashboardNotificationConstants');
+const { payClaimFee, hwfSubmission, updateHWFNum, hwfPartRemission, hwfMoreInfoRequired, hwfFullRemission } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115;
 
@@ -94,7 +94,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
   }
 });
 
-Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - with hwf', async ({I, api}) => {
+Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - with hwf', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     selectedHWF = true;
     claimInterestFlag = true;
@@ -110,9 +110,28 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
     await api.setCaseId(caseRef);
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
-      const notification = payClaimFee(claimFee);
+      const notification = hwfSubmission();
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
-      await I.click(notification.nextSteps);
+    }
+    await api.submitHwfEventForUser(config.hwfEvents.updateHWFNumber);
+    if (isDashboardServiceEnabled) {
+      const notification = updateHWFNum();
+      await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
+    }
+    await api.submitHwfEventForUser(config.hwfEvents.partRemission);
+    if (isDashboardServiceEnabled) {
+      const notification = hwfPartRemission();
+      await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
+    }
+    await api.submitHwfEventForUser(config.hwfEvents.moreInfoHWF);
+    if (isDashboardServiceEnabled) {
+      const notification = hwfMoreInfoRequired();
+      await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
+    }
+    await api.submitHwfEventForUser(config.hwfEvents.fullRemission);
+    if (isDashboardServiceEnabled) {
+      const notification = hwfFullRemission();
+      await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
     }
   }
 });

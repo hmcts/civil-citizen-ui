@@ -37,11 +37,10 @@ module.exports = {
     };
   },
 
-  hwfFullRemission: () => {
+  hwfFullRemission: (feeAmount) => {
     return {
       title: 'Your help with fees application has been reviewed',
-      content: 'The full {Type of fee} fee of {Amount} will be covered. You do not need to make a payment.',
-      content2: 'You do not need to make a payment.',
+      content: `The full claim fee of £${feeAmount} will be covered. You do not need to make a payment.`,
     };
   },
 
@@ -79,7 +78,7 @@ module.exports = {
     };
   },
 
-  updateHWFNo: () => {
+  updateHWFNum: () => {
     return {
       title: 'Your help with fees application has been updated',
       content: 'You’ve applied for help with the {Type of fee} fee. You’ll receive an update from us within 5 to 10 working days.',

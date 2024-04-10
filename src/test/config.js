@@ -98,6 +98,11 @@ module.exports = {
     password: defaultPassword,
     type: 'caseworker',
   },
+  ctscAdmin: {
+    email: 'ctsc_admin@justice.gov.uk',
+    password: defaultPassword,
+    type: 'CTSC_ADMIN',
+  },
   systemUpdate: {
     password: defaultPasswordSystemUser,
     email: 'civil-system-update@mailnesia.com',
@@ -119,6 +124,13 @@ module.exports = {
   defendant2SolicitorOrgId: process.env.ENVIRONMENT =='demo' ? 'LCVTI1I' : 'H2156A0',
   defendantSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
   claimantLRSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
+  hwfEvents: {
+    updateHWFNumber: 'UPDATE_HELP_WITH_FEE_NUMBER',
+    partRemission: 'PARTIAL_REMISSION_HWF_GRANTED',
+    fullRemission: 'FULL_REMISSION_HWF',
+    invalidHWFRef: 'INVALID_HWF_REFERENCE',
+    moreInfoHWF: 'MORE_INFORMATION_HWF',
+  },
   defenceType: {
     admitAllPayImmediate: 'ADMIT_ALL_PAU_IMMEDIATE',
     admitAllPayBySetDate: 'ADMIT_ALL_PAY_BY_SET_DATE',
