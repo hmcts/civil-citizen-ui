@@ -14,6 +14,7 @@ import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNoCarmEmailConfirmation} from 'form/models/genericYesNoCarmEmailConfirmation';
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 const emailMediationConfirmationViewPath = 'features/common/yes-no-common-page';
 const emailMediationConfirmationController = Router();
@@ -23,11 +24,7 @@ const renderView = (form: GenericForm<GenericYesNoCarmEmailConfirmation>, res: R
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const pageTitle = `${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TITLE`;
   const pageText = t(`${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TEXT`, { lng: lang, partyEmail: partyEmail });
-  const variation = {
-    yes: 'COMMON.VARIATION_4.YES',
-    no: 'COMMON.VARIATION_4.NO',
-  };
-  res.render(emailMediationConfirmationViewPath, { form, pageTitle, pageText, variation });
+  res.render(emailMediationConfirmationViewPath, { form, pageTitle, pageText });
 };
 
 const getPartyEmail = async (redisKey: string, isClaimantResponse: boolean): Promise<string> => {
@@ -45,7 +42,7 @@ emailMediationConfirmationController.get(MEDIATION_EMAIL_CONFIRMATION_URL, (asyn
     const isClaimantResponse = claim.isClaimantIntentionPending();
     const partyEmail = await getPartyEmail(redisKey, isClaimantResponse);
     const mediation = await getMediationCarm(redisKey);
-    const form = new GenericForm(new GenericYesNoCarmEmailConfirmation(mediation.isMediationEmailCorrect?.option));
+    const form = new GenericForm(new GenericYesNo(mediation.isMediationEmailCorrect?.option));
     renderView(form, res,req, partyEmail);
   } catch (error) {
     next(error);
