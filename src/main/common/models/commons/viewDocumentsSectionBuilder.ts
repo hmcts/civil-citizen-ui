@@ -1,11 +1,14 @@
 import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {MediationAgreementDocuments} from 'models/mediation/document/mediationAgreementDocuments';
+import {MediationAgreement} from 'models/mediation/mediationAgreement';
+import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
+import {documentIdExtractor} from 'common/utils/stringUtils';
 
-export class DocumentLinkInformation{
+export interface DocumentLinkInformation{
   url: string;
   text: string;
 }
-export class DocumentInformation {
+
+export interface DocumentInformation {
   fileName: string;
   uploadDate: string;
   linkInformation: DocumentLinkInformation;
@@ -16,18 +19,17 @@ export class ViewDocumentsSection {
   title: string;
   documents: DocumentInformation[];
 
-  constructor(viewDocumentsTitle: string, mediationAgreementDocuments: MediationAgreementDocuments[], lang: string) {
+  constructor(viewDocumentsTitle: string, mediationAgreement: MediationAgreement, mediationSettlementAgreedAt: Date, claimId: string,  lang: string) {
     this.title = viewDocumentsTitle;
-    this.documents = mediationAgreementDocuments.map((docs) => {
-      return {
-        fileName: docs.value.documentName,
-        uploadDate: formatDateToFullDate(docs.value.createdDatetime, lang),
+    this.documents = Array.of(
+      {
+        fileName: mediationAgreement.name,
+        uploadDate: formatDateToFullDate(mediationSettlementAgreedAt, lang),
         linkInformation: {
-          url: docs.value.documentLink.document_url,
-          text: docs.value.documentLink.document_filename,
+          url: CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(mediationAgreement.document.document_binary_url)),
+          text: mediationAgreement.document.document_filename,
         },
-      } as DocumentInformation;
-    });
+      } as DocumentInformation);
   }
 
 }
