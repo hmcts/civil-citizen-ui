@@ -15,6 +15,8 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {PaymentDetails, PaymentStatus} from 'models/PaymentDetails';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
+import {CaseState} from 'common/form/models/claimDetails';
+import {t} from 'i18next';
 import * as UtilityService from 'modules/utilityService';
 import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
@@ -145,6 +147,54 @@ describe('claimant Dashboard Controller', () => {
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Mr. Jan Clark v Version 1');
+      });
+    });
+
+    it('should show support links for claimant', async () => {
+
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
+
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
+        expect(res.text).toContain('Tell us you&#39;ve ended the claim');
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_MEDIATION'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.WHAT_EXPECT_HEARING'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'));
+      });
+    });
+
+    it('should show support links for claimant whit links hidden', async () => {
+
+      const claim = new Claim();
+      claim.ccdState = CaseState.CASE_ISSUED;
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
+
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
+        expect(res.text).not.toContain('Tell us you&#39;ve ended the claim');
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_MEDIATION'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.WHAT_EXPECT_HEARING'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'));
       });
     });
 
