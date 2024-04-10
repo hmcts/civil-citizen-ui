@@ -1,8 +1,7 @@
 const config = require('../../config');
-
-const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
-const LoginSteps = require('../features/home/steps/login');
-const DashboardSteps = require('../features/dashboard/steps/dashboard');
+const ResponseSteps = require('../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const LoginSteps = require('./../commonFeatures/home/steps/login');
+const CitizenDashboardSteps = require('../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../specClaimHelpers/api/idamHelper');
 
 const admitAll = 'full-admission';
@@ -26,8 +25,8 @@ Before(async ({api}) => {
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
   await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
-  await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
 Scenario('Response with AdmitAll and Repayment plan @citizenUI @admitAll @nightly', async ({api}) => {
