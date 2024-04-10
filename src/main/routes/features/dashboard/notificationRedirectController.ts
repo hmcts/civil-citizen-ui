@@ -30,7 +30,6 @@ notificationRedirectController.get(DASHBOARD_NOTIFICATION_REDIRECT, (async funct
 async function getDashboardNotificationRedirectUrl(locationName: string, claimId: string, req: AppRequest) : Promise<string> {
 
   let redirectUrl;
-  let documentBinary;
   const claim = await getClaimById(claimId, req);
 
   switch(locationName) {
@@ -38,8 +37,9 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       redirectUrl = '/#';
       break;
     case 'VIEW_HEARING_NOTICE':
-      documentBinary = getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM);
-      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentBinary);
+      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
+        ':documentId', getHearingDocumentsCaseDocumentIdByType(
+          claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM));
       break;
     case 'APPLY_HELP_WITH_FEES_START':
       redirectUrl = APPLY_HELP_WITH_FEES_START.replace(':id', claimId);
