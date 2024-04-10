@@ -22,7 +22,7 @@
     "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "CLAIM_AMOUNT": "Claim amount",
-    "CLAIM_AMOUNT_WITH_VALUE": "Claim amount: £{{claimAmount}}",
+    "CLAIM_AMOUNT_WITH_VALUE": "Claim amount: {{claimAmount}}",
     "CLAIM_NUMBER": "Claim number",
     "CONFIRM_YOUR_DETAILS": "Confirm your details",
     "DASHBOARD": "Dashboard",

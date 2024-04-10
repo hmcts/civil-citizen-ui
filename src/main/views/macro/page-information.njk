@@ -2,5 +2,5 @@
     <span class="govuk-caption-l">{{ t(pageCaption)}}</span>
     <h1 class="govuk-heading-l">{{t(pageTitle)}}</h1>
     <p class="govuk-body-l govuk-!-margin-bottom-0">{{  t('COMMON.CASE_REFERENCE', {claimId: claimId}) }}</p>
-    <p class="govuk-body-l">{{  t('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: claimAmount}) }}</p>
+    <p class="govuk-body-l">{{  t('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: claimAmount | currencyFormat(claimAmount)}) }}</p>
 {% endmacro %}

@@ -3,17 +3,22 @@ import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, VIEW_MEDIATION_SETTLEMENT
 import {ViewDocumentsSection} from 'models/commons/viewDocumentsSectionBuilder';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
+
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const viewMediationSettlementAgreementDocument = Router();
 const viewDocuments = 'features/common/viewDocuments';
 
-const renderView = (res: Response, claimId: string, claimAmount: string, isClaimant: boolean, claim: Claim, lang: string): void => {
+const renderView = (res: Response, claimId: string, claimAmount: number, isClaimant: boolean, claim: Claim, lang: string): void => {
 
   const documentsSection = new ViewDocumentsSection(
     'PAGES.VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.DOCUMENT_TABLE_TITLE',
-    claim.mediationAgreement, new Date('2022-09-09'),
+    claim.mediationAgreement, claim.mediationSettlementAgreedAt,
     claimId,
     lang);
 
@@ -31,9 +36,8 @@ viewMediationSettlementAgreementDocument.get(VIEW_MEDIATION_SETTLEMENT_AGREEMENT
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    //const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    const claim = await getClaimById(claimId, req);
-    renderView(res, claimId, claim.formattedTotalClaimAmount(), claim.isClaimant(), claim, lang);
+    const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    renderView(res, claimId, claim.totalClaimAmount, claim.isClaimant(), claim, lang);
   } catch (error) {
     next(error);
   }
