@@ -1,12 +1,15 @@
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {RequestHandler, Router} from 'express';
-import {CASE_DOCUMENT_VIEW_URL, DASHBOARD_NOTIFICATION_REDIRECT} from 'routes/urls';
+import {APPLY_HELP_WITH_FEES_START, CASE_DOCUMENT_VIEW_URL, DASHBOARD_NOTIFICATION_REDIRECT} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
-import {getHearingDocumentsCaseDocumentIdByType} from "models/caseProgression/caseProgressionHearing";
+import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
+import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -34,12 +37,18 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
     //TODO: Example case for draft claim - remove once a real view document is added.
     case 'VIEW_DOCUMENT_DRAFT':
       documentBinary = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM);
+      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentBinary);
       break;
     case 'VIEW_HEARING_NOTICE':
       documentBinary = getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM);
       break;
+    case 'APPLY_HELP_WITH_FEES_START':
+      redirectUrl = APPLY_HELP_WITH_FEES_START.replace(':id', claimId);
+      break;
+    case 'PAY_HEARING_FEE_URL':
+      redirectUrl = getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), req);
+      break;
   }
-  redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentBinary);
   return redirectUrl;
 }
 export default notificationRedirectController;

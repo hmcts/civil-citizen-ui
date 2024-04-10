@@ -52,6 +52,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{VIEW_HEARINGS}', '#');
   valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', '#');
   valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', '#');
+  valuesMap.set('{PAY_HEARING_FEE}', '#');
   valuesMap.set('{VIEW_BUNDLE}', '#');
   valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', '#');
   valuesMap.set('{VIEW_JUDGEMENT}', '#');
@@ -96,6 +97,16 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
     valuesMap.set('{VIEW_HEARING_NOTICE_CLICK}', DASHBOARD_NOTIFICATION_REDIRECT
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_HEARING_NOTICE')
+      .replace(':notificationId', notificationId));
+
+    valuesMap.set('{APPLY_HELP_WITH_FEES_START_REDIRECT}', DASHBOARD_NOTIFICATION_REDIRECT
+      .replace(':id', claimId)
+      .replace(':locationName', 'APPLY_HELP_WITH_FEES_START')
+      .replace(':notificationId', notificationId));
+
+    valuesMap.set('{PAY_HEARING_FEE_URL_REDIRECT}', DASHBOARD_NOTIFICATION_REDIRECT
+      .replace(':id', claimId)
+      .replace(':locationName', 'PAY_HEARING_FEE_URL')
       .replace(':notificationId', notificationId));
   }
 
