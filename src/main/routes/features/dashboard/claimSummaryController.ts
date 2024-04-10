@@ -58,7 +58,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
           showContanctCourtLink,
           showTellUsEndedLink,
           showGetDebtRespiteLink,
-        }
+        },
       );
     } else {
       // RELEASE 1

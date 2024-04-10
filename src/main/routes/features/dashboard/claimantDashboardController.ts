@@ -56,7 +56,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         showContanctCourtLink,
         showTellUsEndedLink,
         showGetDebtRespiteLink,
-        lng
+        lng,
       });
 
     } else {
