@@ -59,6 +59,9 @@ services:
     url: 'https://www.gov.uk/make-court-claim-for-money/enforce-a-judgment'
   civilMoneyClaims:
     telephone: '0300 123 7050'
+    courtEmailId: 'ocmcnton@justice.gov.uk'
+  applyForCertificate:
+    url: 'https://www.gov.uk/government/publications/form-n443-application-for-a-certificate-of-satisfaction-or-cancellation'
 health:
   timeout: 5000
   deadline: 15000
