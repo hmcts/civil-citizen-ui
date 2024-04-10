@@ -28,6 +28,9 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
     case 'VIEW_BUNDLE':
       redirectUrl = '/#';
       break;
+    case 'VIEW_ORDERS_AND_NOTICES':
+      redirectUrl = '/#';
+      break;
   }
 
   return redirectUrl;

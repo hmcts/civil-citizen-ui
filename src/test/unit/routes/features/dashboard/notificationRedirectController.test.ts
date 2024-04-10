@@ -51,7 +51,7 @@ describe('Notification Redirect Controller - Get', () => {
     await request(app)
       .get(DASHBOARD_NOTIFICATION_REDIRECT
         .replace(':id', '123')
-        .replace(':locationName', 'VIEW_BUNDLE')
+        .replace(':locationName', 'VIEW_ORDERS_AND_NOTICES')
         .replace(':notificationId', '321'))
       //then
       .expect((res: Response) => {
