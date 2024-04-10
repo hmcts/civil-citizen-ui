@@ -4,8 +4,8 @@ import {RequestHandler, Router} from 'express';
 import {CASE_DOCUMENT_VIEW_URL, DASHBOARD_NOTIFICATION_REDIRECT} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {DocumentType} from 'models/document/documentType';
-import {getHearingDocumentsCaseDocumentIdByType} from "models/caseProgression/caseProgressionHearing";
-import {getClaimById} from "modules/utilityService";
+import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
+import {getClaimById} from 'modules/utilityService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -27,14 +27,15 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
 
   let redirectUrl;
   const claim = await getClaimById(claimId, req);
-  
+
   switch(locationName) {
     case 'VIEW_ORDERS_AND_NOTICES':
       redirectUrl = '/#';
       break;
     case 'VIEW_HEARING_NOTICE':
-      const documentBinary = getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM);
-      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentBinary);
+      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
+        ':documentId', getHearingDocumentsCaseDocumentIdByType(
+          claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM));
       break;
   }
 
