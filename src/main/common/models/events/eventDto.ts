@@ -24,4 +24,10 @@ export interface ClaimUpdate {
   applicant1RequestedPaymentDateForDefendantSpec? : CCDClaimantPayBySetDate;
   applicant1AcceptAdmitAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1ClaimSettledDate?: Date;
+  applicant1ClaimSettledLink?: ClaimSettledLink;
+}
+
+export enum ClaimSettledLink {
+  NOTIFICATION = 'NOTIFICATION',
+  OTHER = 'OTHER',
 }
