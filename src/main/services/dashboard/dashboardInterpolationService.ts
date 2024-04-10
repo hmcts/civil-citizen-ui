@@ -92,6 +92,10 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_DOCUMENT_DRAFT')
       .replace(':notificationId', notificationId));
+    valuesMap.set('{VIEW_FINAL_ORDER}', DASHBOARD_NOTIFICATION_REDIRECT
+      .replace(':id', claimId)
+      .replace(':locationName', 'VIEW_FINAL_ORDER')
+      .replace(':notificationId', notificationId));
   }
 
   return valuesMap;

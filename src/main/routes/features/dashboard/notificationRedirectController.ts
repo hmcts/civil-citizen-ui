@@ -6,6 +6,7 @@ import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
+import {getHearingDocumentsCaseDocumentIdByType} from "models/caseProgression/caseProgressionHearing";
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -34,6 +35,10 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
     case 'VIEW_DOCUMENT_DRAFT':
       documentBinary = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM);
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentBinary);
+      break;
+    case 'VIEW_FINAL_ORDER':
+      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId',
+        getHearingDocumentsCaseDocumentIdByType(claim.caseProgression.finalOrderDocumentCollection, DocumentType.JUDGE_FINAL_ORDER));
       break;
   }
 
