@@ -5,6 +5,7 @@ import {
   CASE_DOCUMENT_VIEW_URL,
   CCJ_DEFENDANT_DOB_URL,
   CCJ_PAID_AMOUNT_URL,
+  CCJ_REPAYMENT_PLAN_CLAIMANT_URL,
   CCJ_REPAYMENT_PLAN_DEFENDANT_URL,
   CITIZEN_CONTACT_THEM_URL,
   CLAIM_FEE_BREAKUP,
@@ -80,6 +81,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{DOWNLOAD_SETTLEMENT_AGREEMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT)));
   valuesMap.set('{MEDIATION}', MEDIATION_SERVICE_EXTERNAL);
   valuesMap.set('{MEDIATION_SUCCESSFUL_URL}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(claim?.mediationAgreement?.document?.document_binary_url)));
+  valuesMap.set('{VIEW_CCJ_REPAYMENT_PLAN_CLAIMANT}', CCJ_REPAYMENT_PLAN_CLAIMANT_URL.replace(':id', claimId));
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
