@@ -1,9 +1,9 @@
-const CreateLipvLipClaimSteps  =  require('../features/createClaim/steps/createLipvLipClaimSteps');
+const CreateLipvLipClaimSteps  =  require('../citizenFeatures/createClaim/steps/createLipvLipClaimSteps');
 const config = require('../../config');
-const LoginSteps = require('../features/home/steps/login');
-const DashboardSteps = require('../features/dashboard/steps/dashboard');
-const ResponseSteps = require('../features/response/steps/lipDefendantResponseSteps');
-const ResponseToDefenceLipVsLipSteps  =  require('../features/createClaim/steps/responseToDefenceLipvLipSteps');
+const LoginSteps = require('./../commonFeatures/home/steps/login');
+const CitizenDashboardSteps = require('../citizenFeatures/citizenDashboard/steps/citizenDashboard');
+const ResponseSteps = require('../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const ResponseToDefenceLipVsLipSteps  =  require('../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 const partAdmit = 'partial-admission';
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
@@ -20,7 +20,7 @@ Scenario('Create Claim by claimant', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await CreateLipvLipClaimSteps.EligibilityCheckStepsForClaimCreation();
     claimRef = await CreateLipvLipClaimSteps.CreateClaimCreation(true);
     claimRef = claimRef.replace(/-/g, '');
@@ -46,8 +46,8 @@ Scenario('Assign case to defendant', async ({api}) => {
 
 Scenario('Defendant responds with part admit', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await DashboardSteps.VerifyClaimOnDashboard(claimNumber);
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.RespondToClaim(claimRef);
     await ResponseSteps.EnterPersonalDetails(claimRef);
     await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -70,7 +70,7 @@ Scenario('Defendant responds with part admit', async ({api}) => {
 
 Scenario('Claimant responds as Accepted Repayment Plan By Claimant', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfSettlementAndRepayment(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
   }
