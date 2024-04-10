@@ -6,7 +6,7 @@ import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
-import {getHearingDocumentsCaseDocumentIdByType} from "models/caseProgression/caseProgressionHearing";
+import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
