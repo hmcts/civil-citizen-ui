@@ -55,7 +55,8 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', '#');
   valuesMap.set('{VIEW_JUDGEMENT}', '#');
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
-  valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getClaimantDQDocumentId(claim)));
+  valuesMap.set('{VIEW_DEFENDANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getDQDocumentId(claim,DirectionQuestionnaireType.DEFENDANT)));
+  valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getDQDocumentId(claim,DirectionQuestionnaireType.CLAIMANT)));
   valuesMap.set('{VIEW_SETTLEMENT_AGREEMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSettlementAgreementDocumentId(claim)));
   valuesMap.set('{DRAFT_CLAIM_TASK_LIST}', '/claim/task-list');
   valuesMap.set('{CLAIM_FEE_URL}', CLAIM_FEE_BREAKUP.replace(':id', claimId));
@@ -78,6 +79,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{DOWNLOAD_SETTLEMENT_AGREEMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT)));
   valuesMap.set('{MEDIATION}', MEDIATION_SERVICE_EXTERNAL);
   valuesMap.set('{MEDIATION_SUCCESSFUL_URL}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(claim?.mediationAgreement?.document?.document_binary_url)));
+  valuesMap.set('{HEARING_DUE_DATE}', claim.bundleStitchingDeadline);
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
@@ -95,8 +97,8 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   return valuesMap;
 };
 
-function getClaimantDQDocumentId(claim:Claim) : string {
-  return getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
+function getDQDocumentId(claim:Claim, claimType:DirectionQuestionnaireType) : string {
+  return getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, claimType);
 }
 
 function getSettlementAgreementDocumentId(claim:Claim) : string {
