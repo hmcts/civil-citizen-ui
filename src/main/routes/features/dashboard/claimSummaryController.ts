@@ -101,7 +101,7 @@ async function getTabs(claimId: string, claim: Claim, lang: string, respondentPa
   if(caseProgressionEnabled && bundleAvailable) {
     const bundleTabLabel = TabLabel.BUNDLES;
     const bundleTabId = TabId.BUNDLES;
-    const bundleTabContent = getBundlesContent(claim, lang);
+    const bundleTabContent = getBundlesContent(claimId, claim, lang);
 
     tabItems.push(new TabItem(bundleTabLabel, bundleTabId, bundleTabContent));
   }
