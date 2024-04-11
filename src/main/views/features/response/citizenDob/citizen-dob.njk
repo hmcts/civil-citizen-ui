@@ -24,7 +24,9 @@
         {% set title = t('PAGES.CITIZEN_DOB.TITLE') %}
       {% endif %}
       {% set errors = form.getErrors() %}
-      {% set maxDate = maxDateForAge18.toJSON() | addDaysTranslated(1, t) %}
+      {% if maxDateForAge18 %}
+        {% set maxDate = maxDateForAge18.toJSON() | addDaysTranslated(1, t) %}
+      {% endif %}
       {% if form.hasErrors() %}
         {{ errorSummary(errors,t,[{keyError:'ERRORS.VALID_ENTER_A_DATE_BEFORE',keyToReplace:'{{ maxDate }}',valueToReplace:maxDate}]) }}
       {% endif %}
