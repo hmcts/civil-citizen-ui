@@ -8,7 +8,7 @@ import {Document} from 'models/document/document';
 describe('dashboardInterpolationService', () => {
   const textToReplaceDynamic = 'You have {daysLeftToRespond} days left.';
   const textToReplaceUrl = '{VIEW_CLAIM_URL}';
-  const textToReplaceRedirect = '{VIEW_DOCUMENT_DRAFT}';
+  const textToReplaceRedirect = '{VIEW_ORDERS_AND_NOTICES_REDIRECT}';
 
   it('should replace placeholders with values when found', () => {
 
@@ -34,7 +34,7 @@ describe('dashboardInterpolationService', () => {
     claim.respondent1ResponseDeadline = addDaysToDate(currentDate, 28);
 
     const textReplacedRedirect = replaceDashboardPlaceholders(textToReplaceRedirect, claim, '123','456');
-    const textExpectedRedirect = '/notification/456/redirect/VIEW_DOCUMENT_DRAFT/123';
+    const textExpectedRedirect = '/notification/456/redirect/VIEW_ORDERS_AND_NOTICES/123';
 
     expect(textReplacedRedirect).toEqual(textExpectedRedirect);
   });
