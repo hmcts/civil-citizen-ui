@@ -9,11 +9,11 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getAddress, getSolicitorName} from 'services/features/response/contactThem/contactThemService';
 import {getClaimById} from 'modules/utilityService';
 import {t} from 'i18next';
-import {isCUIReleaseTwoEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isCUIReleaseTwoEnabled, isDashboardServiceEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 
-const citizenContactThemViewPathR1 = 'features/dashboard/contact-them';
-const citizenContactThemViewPathR2 = 'features/dashboard/contact-them-new';
+const citizenContactThemViewPathOld = 'features/dashboard/contact-them';
+const citizenContactThemViewPathNew = 'features/dashboard/contact-them-new';
 const contactThemController = Router();
 
 async function renderView(res: Response, claim: Claim, claimId: string, claimantDetailsUrl: string, claimDetailsUrl: string, lng: string) {
@@ -27,7 +27,8 @@ async function renderView(res: Response, claim: Claim, claimId: string, claimant
 
   const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
   const showInR1= !isReleaseTwoEnabled;
-  const citizenContactThemViewPath = isReleaseTwoEnabled ? citizenContactThemViewPathR2 : citizenContactThemViewPathR1;
+  const isDashboardEnabled = await isDashboardServiceEnabled();
+  const citizenContactThemViewPath = isDashboardEnabled ? citizenContactThemViewPathNew : citizenContactThemViewPathOld;
   res.render(citizenContactThemViewPath, {
     claim,
     claimantDetailsUrl,

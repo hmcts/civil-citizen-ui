@@ -8,30 +8,31 @@
 
 {% set phone = party.partyPhone %}
 {% set email = party.emailAddress %}
-{% set contactPerson = party.partyDetails.contactPerson %}
 <div class="govuk-grid-row govuk-!-margin-top-0">
   <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
     <h2 class="govuk-heading-m govuk-!-margin-bottom-6">{{ t(otherPartyName) }}</h2>
     <div>
       {% if address %}
+        <p class="govuk-body govuk-!-margin-bottom-6">
         {% if solicitorName %}
-          <p class="govuk-body govuk-!-margin-bottom-0">{{ solicitorName }}</p>
+          {{ solicitorName }}<br>
         {% endif %}
         {% if address.addressLine1 %}
-          <p class="govuk-body govuk-!-margin-bottom-0">{{ address.addressLine1 }}</p>
+          {{ address.addressLine1 }}<br>
         {% endif %}
         {% if address.addressLine2 %}
-          <p class="govuk-body govuk-!-margin-bottom-0">{{ address.addressLine2 }}</p>
+          {{ address.addressLine2 }}<br>
         {% endif %}
         {% if address.addressLine3 %}
-          <p class="govuk-body govuk-!-margin-bottom-0">{{ address.addressLine3 }}</p>
+          {{ address.addressLine3 }}<br>
         {% endif %}
         {% if address.city %}
-          <p class="govuk-body govuk-!-margin-bottom-0">{{ address.city }}</p>
+          {{ address.city }}<br>
         {% endif %}
         {% if address.postCode %}
-          <p class="govuk-body govuk-!-margin-bottom-6">{{ address.postCode }}</p>
+          {{ address.postCode }}<br>
         {% endif %}
+        </p>
       {% endif %}
     </div>
     <div>
