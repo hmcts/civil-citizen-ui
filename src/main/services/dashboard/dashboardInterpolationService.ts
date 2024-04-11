@@ -54,12 +54,8 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{VIEW_INFO_ABOUT_DEFENDANT}', '#');
   valuesMap.set('{VIEW_HEARINGS}', '#');
   valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', '#');
-<<<<<<< HEAD
   valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId));
-=======
-  valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', '#');
   valuesMap.set('{PAY_HEARING_FEE}', PAY_HEARING_FEE_URL.replace(':id', claimId));
->>>>>>> origin/feature/Dashboard_dev
   valuesMap.set('{VIEW_BUNDLE}', '#');
   valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', '#');
   valuesMap.set('{VIEW_JUDGEMENT}', '#');
