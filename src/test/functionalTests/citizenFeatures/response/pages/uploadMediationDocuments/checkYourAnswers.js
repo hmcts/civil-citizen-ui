@@ -1,5 +1,5 @@
 const I = actor();
-const config = require('../../../../../../config');
+const config = require('../../../../../config');
 
 const fields = {
   docSigned: 'input#signed',

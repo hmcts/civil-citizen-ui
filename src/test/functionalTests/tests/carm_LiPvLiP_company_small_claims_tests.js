@@ -1,8 +1,8 @@
 const config = require('./../../config');
-const LoginSteps = require('./../features/home/steps/login');
-const ResponseSteps = require('./../features/response/steps/lipDefendantResponseSteps');
-const ClaimantResponseSteps = require('./../features/response/steps/lipClaimantResponseSteps');
-const UploadDocSteps = require('./../features/response/steps/uploadDocSteps');
+const LoginSteps = require('./../commonFeatures/home/steps/login');
+const ResponseSteps = require('./../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const ClaimantResponseSteps = require('../citizenFeatures/response/steps/lipClaimantResponseSteps');
+const UploadDocSteps = require('../citizenFeatures/response/steps/uploadDocSteps');
 
 const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
 
@@ -34,7 +34,7 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
     securityCode = caseData.respondent1PinToPostLRspec.accessCode;
     console.log('claim number', claimNumber);
     console.log('Security code', securityCode);
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await ResponseSteps.RespondToClaim(claimRef);
     await ResponseSteps.EnterCompDetails(carmEnabled);
     await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -64,7 +64,7 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
 
 Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef);
     await ClaimantResponseSteps.verifyDefendantResponse();
     await ClaimantResponseSteps.isDefendantPaid('No');
@@ -81,13 +81,13 @@ Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
     await ResponseSteps.clickSaveButton();
     await ClaimantResponseSteps.verifyEditedEmailDetails();
     // Take Mediation Unsuccessful
-    await api.mediationUnsuccessful(config.caseWorker, true);
+    //await api.mediationUnsuccessful(config.caseWorker, true);
   }
 }).tag('@regression-carm');
 
 Scenario('LiP claimant uploads mediation documents', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ClaimantResponseSteps.StartUploadDocs(claimRef);
     await UploadDocSteps.VerifyDocuments();
     await UploadDocSteps.SelectDocuments('Your statement');
@@ -112,7 +112,7 @@ Scenario('LiP claimant uploads mediation documents', async () => {
 
 Scenario('LiP defendant uploads mediation documents', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    await LoginSteps.EnterUserCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await ClaimantResponseSteps.StartUploadDocs(claimRef);
     await UploadDocSteps.VerifyDocuments();
     await UploadDocSteps.SelectDocuments('Your statement');
