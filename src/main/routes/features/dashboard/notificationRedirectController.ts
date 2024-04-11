@@ -2,7 +2,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {RequestHandler, Router} from 'express';
 
-import {APPLY_HELP_WITH_FEES_START, CASE_DOCUMENT_VIEW_URL, DASHBOARD_NOTIFICATION_REDIRECT} from 'routes/urls';
+import {CASE_DOCUMENT_VIEW_URL, DASHBOARD_NOTIFICATION_REDIRECT} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {DocumentType} from 'models/document/documentType';
 import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
@@ -40,9 +40,6 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
         ':documentId', getHearingDocumentsCaseDocumentIdByType(
           claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM));
-      break;
-    case 'APPLY_HELP_WITH_FEES_START':
-      redirectUrl = APPLY_HELP_WITH_FEES_START.replace(':id', claimId);
       break;
     case 'PAY_HEARING_FEE_URL':
       redirectUrl = getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), req);

@@ -62,30 +62,6 @@ describe('Notification Redirect Controller - Get', () => {
 
   });
 
-  it('Redirect to help with fees start page', async () => {
-    //given
-    const claim: Claim = new Claim();
-    claim.id = '123';
-
-    nock(civilServiceUrl)
-      .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
-      .reply(200, {});
-
-    jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(claim));
-
-    //when
-    await request(app)
-      .get(DASHBOARD_NOTIFICATION_REDIRECT
-        .replace(':id', '123')
-        .replace(':locationName', 'APPLY_HELP_WITH_FEES_START')
-        .replace(':notificationId', '321'))
-      //then
-      .expect((res: Response) => {
-        expect(res.status).toBe(302);
-        expect(res.text).toBe('Found. Redirecting to /case/123/apply-help-with-fees/start');
-      });
-  });
-
   it('Redirect to gov payment page', async () => {
     //given
     const claim: Claim = new Claim();
