@@ -1,0 +1,54 @@
+{% extends "../../claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/page-information.njk" import pageInformation %}
+
+{% block nestedContent %}
+
+{{ pageInformation(t,pageCaption, pageTitle, claimId, claimAmount)}}
+
+{% set phone = party.partyPhone %}
+{% set email = party.emailAddress %}
+{% set contactPerson = party.partyDetails.contactPerson %}
+<div class="govuk-grid-row govuk-!-margin-top-0">
+  <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-6">{{ t(otherPartyName) }}</h2>
+    <div>
+      {% if address %}
+        {% if solicitorName %}
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ solicitorName }}</p>
+        {% endif %}
+        {% if address.addressLine1 %}
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ address.addressLine1 }}</p>
+        {% endif %}
+        {% if address.addressLine2 %}
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ address.addressLine2 }}</p>
+        {% endif %}
+        {% if address.addressLine3 %}
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ address.addressLine3 }}</p>
+        {% endif %}
+        {% if address.city %}
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ address.city }}</p>
+        {% endif %}
+        {% if address.postCode %}
+          <p class="govuk-body govuk-!-margin-bottom-6">{{ address.postCode }}</p>
+        {% endif %}
+      {% endif %}
+    </div>
+    <div>
+      {% if phone %}
+        <div class="govuk-body govuk-!-margin-bottom-5">{{ t('PAGES.CONTACT_THEM.PHONE') +': ' }}{{ phone.phone }}</div>
+      {% endif %}
+      {% if email.emailAddress %}
+        <div class="govuk-body govuk-!-margin-bottom-6">{{ t('COMMON.EMAIL') +': ' }}<a href='mailto:{{ email.emailAddress }}'>{{ email.emailAddress }}</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<br>
+
+{{ govukButton({
+    text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW'),
+    href: dashboardUrl
+}) }}
+{% endblock %}

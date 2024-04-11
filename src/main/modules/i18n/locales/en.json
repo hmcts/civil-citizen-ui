@@ -1315,7 +1315,10 @@
       "DEFENDANT": "Defendant",
       "CONTACT": "Contact ",
       "PAGE_TITLE": "Contact claimant",
-      "PHONE": "Phone"
+      "PAGE_TITLE_CLAIMANT": "View information about the claimant",
+      "PAGE_TITLE_DEFENDANT": "View information about the defendant",
+      "PHONE": "Phone",
+      "THE_CLAIM": "The claim"
     },
     "COOKIES": {
       "ADDITIONAL_COOKIES": "Government services may set additional cookies and, if so, will have their own cookie policy and banner.",

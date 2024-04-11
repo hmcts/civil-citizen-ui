@@ -1,25 +1,33 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CITIZEN_CONTACT_THEM_URL, CLAIM_DETAILS_URL} from '../../urls';
+import {
+  CITIZEN_CONTACT_THEM_URL,
+  CLAIM_DETAILS_URL,
+  DASHBOARD_URL,
+} from '../../urls';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getAddress, getSolicitorName} from 'services/features/response/contactThem/contactThemService';
 import {getClaimById} from 'modules/utilityService';
 import {t} from 'i18next';
 import {isCUIReleaseTwoEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
 
-const citizenContactThemViewPath = 'features/dashboard/contact-them';
+const citizenContactThemViewPathR1 = 'features/dashboard/contact-them';
+const citizenContactThemViewPathR2 = 'features/dashboard/contact-them-new';
 const contactThemController = Router();
 
-async function renderView(res: Response, claim: Claim, claimantDetailsUrl: string, claimDetailsUrl: string, lng: string) {
+async function renderView(res: Response, claim: Claim, claimId: string, claimantDetailsUrl: string, claimDetailsUrl: string, lng: string) {
 
   const party = claim?.isClaimant() ? claim?.respondent1 : claim?.applicant1;
   const otherPartyName = claim?.isClaimant() ? claim?.getDefendantFullName() : claim?.getClaimantFullName();
   const otherParty = claim?.isClaimant() ? t('PAGES.CONTACT_THEM.DEFENDANT', {lng}) : t('PAGES.CONTACT_THEM.CLAIMANT', {lng});
+  const pageTitle = claim?.isClaimant() ? 'PAGES.CONTACT_THEM.PAGE_TITLE_DEFENDANT' : 'PAGES.CONTACT_THEM.PAGE_TITLE_CLAIMANT';
 
   const address = getAddress(party);
 
   const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
   const showInR1= !isReleaseTwoEnabled;
+  const citizenContactThemViewPath = isReleaseTwoEnabled ? citizenContactThemViewPathR2 : citizenContactThemViewPathR1;
   res.render(citizenContactThemViewPath, {
     claim,
     claimantDetailsUrl,
@@ -30,6 +38,11 @@ async function renderView(res: Response, claim: Claim, claimantDetailsUrl: strin
     otherParty,
     party,
     showInR1,
+    pageCaption: 'PAGES.CONTACT_THEM.THE_CLAIM',
+    pageTitle,
+    claimAmount: claim.totalClaimAmount,
+    claimId: caseNumberPrettify(claimId),
+    dashboardUrl: DASHBOARD_URL,
   });
 }
 
@@ -41,7 +54,7 @@ contactThemController.get(
       const claim: Claim = await getClaimById(claimId, req, true);
       const claimantDetailsUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_CONTACT_THEM_URL);
       const claimDetailsUrl = constructResponseUrlWithIdParams(claimId, CLAIM_DETAILS_URL);
-      renderView(res, claim, claimantDetailsUrl, claimDetailsUrl, lang);
+      renderView(res, claim, claimId, claimantDetailsUrl, claimDetailsUrl, lang);
     } catch (error) {
       next(error);
     }
