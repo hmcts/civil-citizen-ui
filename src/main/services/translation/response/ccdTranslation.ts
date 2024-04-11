@@ -40,6 +40,7 @@ import {toCCDFastClaimHearing} from 'services/translation/response/convertToCCDF
 import {toCCDExpert} from 'services/translation/response/convertToCCDExpert';
 import {toCCDResponseLiPFinancialDetails} from 'services/translation/response/convertToCCDResponseLiPFinancialDetails';
 import {toCCDMediationCarm} from 'services/translation/response/convertToCCDMediationCarm';
+import {toCCDDQHearingSupport} from 'services/translation/response/convertToCCDHearingSupport';
 
 export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: boolean): CCDResponse => {
   const paymentIntention = claim.getPaymentIntention();
@@ -94,6 +95,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1DQHearingSmallClaim: claim.isSmallClaimsTrackDQ ? toCCDSmallClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
     respondent1DQHearingFastClaim: claim.isFastTrackClaim ? toCCDFastClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
     respondent1DQExperts: toCCDExpert(claim),
+    respondent1DQHearingSupport: toCCDDQHearingSupport(claim.directionQuestionnaire?.hearing?.supportRequiredList),
     responseClaimExpertSpecRequired: toCCDYesNo(claim.directionQuestionnaire?.experts?.permissionForExpert?.option),
   };
 };
