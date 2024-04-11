@@ -40,7 +40,7 @@ async function renderView(res: Response, claim: Claim, claimId: string, claimant
     otherParty,
     party,
     showInR1,
-    pageCaption: 'PAGES.CONTACT_THEM.THE_CLAIM',
+    pageCaption: claim?.isClaimant() ? 'PAGES.CONTACT_THEM.THE_RESPONSE' : 'PAGES.CONTACT_THEM.THE_CLAIM',
     pageTitle,
     claimId: caseNumberPrettify(claimId),
     claimAmount: claim.totalClaimAmount,
