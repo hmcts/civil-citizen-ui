@@ -118,7 +118,7 @@ function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediatio
       }
       break;
     default:
-      return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY';
+      return 'ERRORS.ENTER_DATE_YOU_ARE_UNAVAILABILITY_CARM';
   }
 }
 
@@ -131,7 +131,7 @@ function generateErrorMessageForMaxDate(args: ValidationArgs<UnavailableDatePeri
 
 function generateErrorMessageForIsDate(args: ValidationArgs<UnavailableDatePeriodMediation>): string {
   if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-    return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY';
+    return 'ERRORS.ENTER_DATE_YOU_ARE_UNAVAILABILITY_CARM';
   }
   if (args.object.type === UnavailableDateType.LONGER_PERIOD && (args.object.until || args.object.endDay || args.object.endMonth || args.object.endYear)) {
     return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY_FROM';

@@ -21,7 +21,7 @@ bundlesController.get(BUNDLES_URL, (async (req:Request, res:Response, next: Next
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
 
-    const redirectUrl = claim.isClaimant()
+    const dashboardUrl = claim.isClaimant()
       ? DASHBOARD_CLAIMANT_URL.replace(':id', claimId)
       : DEFENDANT_SUMMARY_URL.replace(':id', claimId);
 
@@ -33,7 +33,7 @@ bundlesController.get(BUNDLES_URL, (async (req:Request, res:Response, next: Next
         pageTitle: 'PAGES.DASHBOARD.HEARINGS.VIEW_BUNDLE',
         claimId: caseNumberPrettify(claimId),
         claimAmount: claim.totalClaimAmount,
-        redirectUrl,
+        redirectUrl: dashboardUrl,
       },
     );
   } catch (error) {

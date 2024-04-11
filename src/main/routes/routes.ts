@@ -281,6 +281,8 @@ import mediationConfirmationController from 'routes/features/mediation/uploadDoc
 import notificationRedirectController from 'routes/features/dashboard/notificationRedirectController';
 import claimantClaimSummaryController from 'routes/features/dashboard/claimantClaimSummaryController';
 import bundlesController from 'routes/features/caseProgression/bundlesController';
+import viewMediationSettlementAgreementDocument
+  from 'routes/features/document/mediation/viewSettlementAgreementDocumentController';
 
 export default [
   homeController,
@@ -529,4 +531,5 @@ export default [
   mediationConfirmationController,
   notificationRedirectController,
   bundlesController,
+  viewMediationSettlementAgreementDocument,
 ];
