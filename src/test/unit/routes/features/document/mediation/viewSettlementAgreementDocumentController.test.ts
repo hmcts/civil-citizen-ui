@@ -49,7 +49,7 @@ describe('view mediation settlement agreement document controller', () => {
       //Given
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, MEDIATION_AGREEMENT_MOCK);
+        .reply(200, MEDIATION_AGREEMENT_MOCK());
       //then
       await request(app)
         .get(VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.replace(':id', claimId))
