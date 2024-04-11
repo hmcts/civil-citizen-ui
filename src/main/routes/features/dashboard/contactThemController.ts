@@ -40,8 +40,8 @@ async function renderView(res: Response, claim: Claim, claimId: string, claimant
     showInR1,
     pageCaption: 'PAGES.CONTACT_THEM.THE_CLAIM',
     pageTitle,
-    claimAmount: claim.totalClaimAmount,
     claimId: caseNumberPrettify(claimId),
+    claimAmount: claim.totalClaimAmount,
     dashboardUrl: DASHBOARD_URL,
   });
 }
