@@ -1,7 +1,7 @@
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {RequestHandler, Router} from 'express';
-import {DASHBOARD_NOTIFICATION_REDIRECT} from 'routes/urls';
+import {BUNDLES_URL, DASHBOARD_NOTIFICATION_REDIRECT} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -26,7 +26,7 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
 
   switch(locationName) {
     case 'VIEW_BUNDLE':
-      redirectUrl = '/#';
+      redirectUrl = BUNDLES_URL.replace(':id', claimId);
       break;
     case 'VIEW_ORDERS_AND_NOTICES':
       redirectUrl = '/#';
