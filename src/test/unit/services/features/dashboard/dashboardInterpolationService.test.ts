@@ -175,4 +175,27 @@ describe('dashboardInterpolationService', () => {
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
+
+  it('should replace placeholders for apply help with fees', () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    const textToReplaceUrl = '{APPLY_HELP_WITH_FEES_START}';
+
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, '1234');
+    const sizeExpected = '/case/123/apply-help-with-fees/start';
+
+    expect(textReplacedDynamic).toEqual(sizeExpected);
+  });
+
+  it('should replace placeholders for pay hearing fee', () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    const textToReplaceUrl = '{PAY_HEARING_FEE_URL_REDIRECT}';
+
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, '1234');
+    const sizeExpected = '/notification/1234/redirect/PAY_HEARING_FEE_URL/123';
+
+    expect(textReplacedDynamic).toEqual(sizeExpected);
+  });
+
 });
