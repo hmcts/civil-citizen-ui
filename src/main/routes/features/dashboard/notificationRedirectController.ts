@@ -1,7 +1,6 @@
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {RequestHandler, Router} from 'express';
-
 import {CASE_DOCUMENT_VIEW_URL, DASHBOARD_NOTIFICATION_REDIRECT} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {DocumentType} from 'models/document/documentType';
@@ -9,6 +8,7 @@ import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/ca
 import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
+
 import {getClaimById} from 'modules/utilityService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
