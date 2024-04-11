@@ -33,7 +33,7 @@ bundlesController.get(BUNDLES_URL, (async (req:Request, res:Response, next: Next
         pageTitle: 'PAGES.DASHBOARD.HEARINGS.VIEW_BUNDLE',
         claimId: caseNumberPrettify(claimId),
         claimAmount: claim.totalClaimAmount,
-        redirectUrl: dashboardUrl,
+        dashboardUrl: dashboardUrl,
       },
     );
   } catch (error) {
