@@ -1,14 +1,14 @@
-import {IsDate, Max, Min, Validate, ValidateIf} from 'class-validator';
+import {IsDate, Max, MaxDate, Min, Validate, ValidateIf} from 'class-validator';
 import {OptionalDateNotInFutureValidator} from '../../../validators/optionalDateNotInFutureValidator';
 import {OptionalDateFourDigitValidator} from '../../../validators/optionalDateFourDigitValidator';
 import {DateConverter} from '../../../../utils/dateConverter';
-import {Over18Validator} from 'common/form/validators/over18Validator';
+import {getDOBforAgeFromCurrentTime} from 'common/utils/dateUtils';
 
 export class CitizenDate {
   @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 999))
   @IsDate({message: 'ERRORS.VALID_DATE'})
   @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.CORRECT_DATE_NOT_IN_FUTURE'})
-  @Validate(Over18Validator)
+  @MaxDate(getDOBforAgeFromCurrentTime(18), {message: 'ERRORS.VALID_ENTER_A_DATE_BEFORE'})
     date?: Date;
 
   @Min((new Date().getFullYear() - 150), {message: 'ERRORS.VALID_YEAR'})

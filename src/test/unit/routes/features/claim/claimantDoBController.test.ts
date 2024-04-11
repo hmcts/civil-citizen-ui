@@ -6,6 +6,11 @@ import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from 'routes/urls';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
+import {
+  addDaysToDate, 
+  formatDateToFullDate, 
+  getDOBforAgeFromCurrentTime,
+} from 'common/utils/dateUtils';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -58,11 +63,12 @@ describe('Claimant Date of Birth Controller', () => {
     it('should show validation error for claimant under 18', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const today = new Date();
+      const maxDate = formatDateToFullDate(addDaysToDate(getDOBforAgeFromCurrentTime(18), 1), 'en');
       await request(app).post(CLAIMANT_DOB_URL)
         .send({ day:today.getDate(), month:today.getMonth(), year: today.getFullYear() - 16 })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_OVER_18_YEARS_OLD'));
+          expect(res.text).toContain(t('ERRORS.VALID_ENTER_A_DATE_BEFORE', { maxDate }));
         });
     });
 
