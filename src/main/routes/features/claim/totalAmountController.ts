@@ -22,8 +22,6 @@ totalAmountController.get(CLAIM_TOTAL_URL, (async (req: AppRequest, res: Respons
   try {
     const userId = req.session?.user?.id;
     const claim = await getCaseDataFromStore(userId);
-    const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount, req);
-    const claimFee = convertToPoundsFilter(claimFeeData?.calculatedAmountInPence.toString());
     const hearingResponse = await civilServiceClient.getHearingAmount(claim.totalClaimAmount, req);
     const hearingAmount = convertToPoundsFilter(hearingResponse.calculatedAmountInPence);
     let interestToDate = 0;
@@ -31,6 +29,9 @@ totalAmountController.get(CLAIM_TOTAL_URL, (async (req: AppRequest, res: Respons
     if (claim.hasInterest()) {
       interestToDate = calculateInterestToDate(claim);
     }
+
+    const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req);
+    const claimFee = convertToPoundsFilter(claimFeeData?.calculatedAmountInPence.toString());
 
     const form = {
       claimAmount: claim.totalClaimAmount?.toFixed(2),

@@ -6,6 +6,7 @@ import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftS
 import {translateClaimantResponseToCCD} from 'services/translation/claimantResponse/claimantResponseCCDTranslation';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('submitClaimantResponse');
@@ -19,7 +20,7 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
     let ccdResponse = translateClaimantResponseToCCD(claim);
     const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
     if (claimantResponse.isCCJRequested && hasRespondTypeWithCCJRequest(claim)) {
-      const claimFee = await civilServiceClient.getClaimAmountFee(claim?.totalClaimAmount, req);
+      const claimFee = claim.helpWithFees?.helpWithFeesReferenceNumber ? Number(claim.claimIssuedHwfDetails.outstandingFeeInPounds) : convertToPoundsFilter(claim.claimFee.calculatedAmountInPence);
       const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD(claim, claimFee);
       ccdResponse = {...ccdResponse, ...ccdResponseForRequestDefaultJudgement};
     }

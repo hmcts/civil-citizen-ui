@@ -10,7 +10,7 @@ import * as requestModels from '../../../../../main/common/models/AppRequest';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {submitClaimantResponse} from 'services/features/claimantResponse/submitClaimantResponse';
-import {YesNo} from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
 import {Party} from 'models/party';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -81,6 +81,11 @@ describe('Submit claimant response to ccd', () => {
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.paymentIntention = new PaymentIntention();
       claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+      claim.claimFee = {
+        code: 'FEE0204',
+        version: 4,
+        calculatedAmountInPence: 7000,
+      };
       nock(citizenBaseUrl)
         .post('/cases/1/citizen/undefined/event')
         .reply(200, {});
@@ -105,6 +110,11 @@ describe('Submit claimant response to ccd', () => {
       claim.partialAdmission = new PartialAdmission();
       claim.partialAdmission.paymentIntention = new PaymentIntention();
       claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+      claim.claimFee = {
+        code: 'FEE0204',
+        version: 4,
+        calculatedAmountInPence: 7000,
+      };
       nock(citizenBaseUrl)
         .post('/cases/1/citizen/undefined/event')
         .reply(200, {});
@@ -130,6 +140,11 @@ describe('Submit claimant response to ccd', () => {
       claim.fullAdmission = new PartialAdmission();
       claim.fullAdmission.paymentIntention = new PaymentIntention();
       claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+      claim.claimFee = {
+        code: 'FEE0204',
+        version: 4,
+        calculatedAmountInPence: 7000,
+      };
       nock(citizenBaseUrl)
         .post('/cases/1/citizen/undefined/event')
         .reply(200, {});
@@ -155,6 +170,111 @@ describe('Submit claimant response to ccd', () => {
       claim.fullAdmission = new PartialAdmission();
       claim.fullAdmission.paymentIntention = new PaymentIntention();
       claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+      claim.claimFee = {
+        code: 'FEE0204',
+        version: 4,
+        calculatedAmountInPence: 7000,
+      };
+      nock(citizenBaseUrl)
+        .post('/cases/1/citizen/undefined/event')
+        .reply(200, {});
+      mockGetCaseData.mockImplementation(async () => {
+        return claim;
+      });
+      const spyOnTranslation = jest.spyOn(ccdTranslationService, 'translateClaimantResponseToCCD');
+      const spyOnCCJTranslation = jest.spyOn(ccdCCJTranslationService, 'translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD');
+      //When
+      await submitClaimantResponse(mockedAppRequest);
+      //Then
+      expect(spyOnTranslation).toHaveBeenCalled();
+      expect(spyOnCCJTranslation).toHaveBeenCalled();
+      if (!nock.isDone()) {
+        nock.cleanAll();
+        fail('did not submit event to civil service');
+      }
+    });
+
+    it('should submit claimant response with ccj data successfully for help with fees is undefined', async () => {
+      //Given
+      claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+      claim.partialAdmission = null;
+      claim.fullAdmission = new PartialAdmission();
+      claim.fullAdmission.paymentIntention = new PaymentIntention();
+      claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+      claim.helpWithFees = undefined;
+      claim.claimFee = {
+        code: 'FEE0204',
+        version: 4,
+        calculatedAmountInPence: 7000,
+      };
+      nock(citizenBaseUrl)
+        .post('/cases/1/citizen/undefined/event')
+        .reply(200, {});
+      mockGetCaseData.mockImplementation(async () => {
+        return claim;
+      });
+      const spyOnTranslation = jest.spyOn(ccdTranslationService, 'translateClaimantResponseToCCD');
+      const spyOnCCJTranslation = jest.spyOn(ccdCCJTranslationService, 'translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD');
+      //When
+      await submitClaimantResponse(mockedAppRequest);
+      //Then
+      expect(spyOnTranslation).toHaveBeenCalled();
+      expect(spyOnCCJTranslation).toHaveBeenCalled();
+      if (!nock.isDone()) {
+        nock.cleanAll();
+        fail('did not submit event to civil service');
+      }
+    });
+
+    it('should submit claimant response with ccj data successfully for help with fees option is No', async () => {
+      //Given
+      claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+      claim.partialAdmission = null;
+      claim.fullAdmission = new PartialAdmission();
+      claim.fullAdmission.paymentIntention = new PaymentIntention();
+      claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+      claim.helpWithFees = {
+        helpWithFee: YesNoUpperCamelCase.NO,
+        helpWithFeesReferenceNumber: undefined,
+      };
+      claim.claimFee = {
+        code: 'FEE0204',
+        version: 4,
+        calculatedAmountInPence: 7000,
+      };
+      nock(citizenBaseUrl)
+        .post('/cases/1/citizen/undefined/event')
+        .reply(200, {});
+      mockGetCaseData.mockImplementation(async () => {
+        return claim;
+      });
+      const spyOnTranslation = jest.spyOn(ccdTranslationService, 'translateClaimantResponseToCCD');
+      const spyOnCCJTranslation = jest.spyOn(ccdCCJTranslationService, 'translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD');
+      //When
+      await submitClaimantResponse(mockedAppRequest);
+      //Then
+      expect(spyOnTranslation).toHaveBeenCalled();
+      expect(spyOnCCJTranslation).toHaveBeenCalled();
+      if (!nock.isDone()) {
+        nock.cleanAll();
+        fail('did not submit event to civil service');
+      }
+    });
+
+    it('should submit claimant response with ccj data successfully for help with fees option is Yes', async () => {
+      //Given
+      claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
+      claim.partialAdmission = null;
+      claim.fullAdmission = new PartialAdmission();
+      claim.fullAdmission.paymentIntention = new PaymentIntention();
+      claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+      claim.helpWithFees = {
+        helpWithFee: YesNoUpperCamelCase.YES,
+        helpWithFeesReferenceNumber: '11223344',
+      };
+      claim.claimIssuedHwfDetails = {
+        outstandingFeeInPounds: '70',
+      };
       nock(citizenBaseUrl)
         .post('/cases/1/citizen/undefined/event')
         .reply(200, {});
