@@ -21,12 +21,9 @@ bundlesController.get(BUNDLES_URL, (async (req:Request, res:Response, next: Next
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
 
-    let redirectUrl;
-    if (claim.isClaimant()) {
-      redirectUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
-    } else {
-      redirectUrl = DEFENDANT_SUMMARY_URL.replace(':id', claimId);
-    }
+    const redirectUrl = claim.isClaimant()
+      ? DASHBOARD_CLAIMANT_URL.replace(':id', claimId)
+      : DEFENDANT_SUMMARY_URL.replace(':id', claimId);
 
     const bundleSections = getBundlesContent(claimId, claim, lang);
 
