@@ -22,7 +22,7 @@
     "CHOOSE": "Dewiswch",
     "CIVIL_MONEY_CLAIMS": "Hawliadau am Arian yn y Llys Sifil",
     "CLAIM_AMOUNT": "Swm yr hawliad",
-    "CLAIM_AMOUNT_WITH_VALUE": "Claim amount: {{claimAmount}}",
+    "CLAIM_AMOUNT_WITH_VALUE": "Swm yr hawliad: {{claimAmount}}",
     "CLAIM_NUMBER": "Rhif hawlio",
     "CONFIRM_YOUR_DETAILS": "Cadarnhau eich manylion",
     "DASHBOARD": "Dangosfwrdd",
