@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const testConfig = require('../config.js');
 const {unAssignAllUsers} = require('./specClaimHelpers/api/caseRoleAssignmentHelper');
 const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
