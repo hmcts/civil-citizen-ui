@@ -1,7 +1,8 @@
-const TypeOfDocuments = require('../pages/claimantLiPResponse/uploadMediationDocuments/typeOfDocuments');
-const UploadDocuments = require('../pages/claimantLiPResponse/uploadMediationDocuments/uploadDocuments');
-const CheckYourAnswers = require('../pages/claimantLiPResponse/uploadMediationDocuments/checkYourAnswers');
-const Confirmation = require('../pages/claimantLiPResponse/uploadMediationDocuments/confirmation');
+
+const TypeOfDocuments = require('../../../citizenFeatures/response/pages/uploadMediationDocuments/typeOfDocuments');
+const UploadDocuments = require('../../../citizenFeatures/response/pages/uploadMediationDocuments/uploadDocuments');
+const CheckYourAnswers = require('../../../citizenFeatures/response/pages/uploadMediationDocuments/checkYourAnswers');
+const Confirmation = require('../../../citizenFeatures/response/pages/uploadMediationDocuments/confirmation');
 
 const typeOfDocuments = new TypeOfDocuments();
 const uploadDocuments = new UploadDocuments();

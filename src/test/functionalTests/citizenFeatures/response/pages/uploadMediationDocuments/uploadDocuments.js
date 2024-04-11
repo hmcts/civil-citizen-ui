@@ -1,7 +1,7 @@
 const I = actor();
-const config = require('../../../../../../config');
-const cButtons = require('../../../../common/cButtons');
-const sharedData = require('../../../../../sharedData');
+const config = require('../../../../../config');
+const cButtons = require('../../../../commonComponents/cButtons');
+const sharedData = require('../../../../sharedData');
 
 const fields = {
   yourName: 'input[id*="yourName"]',
