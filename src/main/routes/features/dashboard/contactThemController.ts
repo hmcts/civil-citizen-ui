@@ -2,7 +2,8 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {
   CITIZEN_CONTACT_THEM_URL,
   CLAIM_DETAILS_URL,
-  DASHBOARD_URL,
+  DASHBOARD_CLAIMANT_URL,
+  DEFENDANT_SUMMARY_URL,
 } from '../../urls';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -43,7 +44,7 @@ async function renderView(res: Response, claim: Claim, claimId: string, claimant
     pageTitle,
     claimId: caseNumberPrettify(claimId),
     claimAmount: claim.totalClaimAmount,
-    dashboardUrl: DASHBOARD_URL,
+    dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
   });
 }
 
