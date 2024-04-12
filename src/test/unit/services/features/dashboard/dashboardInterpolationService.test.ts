@@ -4,7 +4,6 @@ import {addDaysToDate} from 'common/utils/dateUtils';
 import {DocumentType} from 'common/models/document/documentType';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {Document} from 'models/document/document';
-import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 
 describe('dashboardInterpolationService', () => {
   const textToReplaceDynamic = 'You have {daysLeftToRespond} days left.';
@@ -16,8 +15,6 @@ describe('dashboardInterpolationService', () => {
     const claim: Claim = new Claim();
     const currentDate = new Date();
     claim.respondent1ResponseDeadline = addDaysToDate(currentDate, 28);
-    claim.caseProgressionHearing = new CaseProgressionHearing();
-    claim.caseProgressionHearing.hearingDate = currentDate;
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceDynamic, claim, '123');
     const textExpectedDynamic = 'You have 28 days left.';
 
