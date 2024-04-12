@@ -9,7 +9,7 @@ import {toCUIClaimBilingualLangPreference} from 'services/translation/convertToC
 import {toCUIRejectAllOfClaim} from 'services/translation/convertToCUI/convertToCUIRejectAllOfClaim';
 import {toCUIDQs} from 'services/translation/convertToCUI/convertToCUIDQs';
 import {toCUIFullAdmission} from 'services/translation/convertToCUI/convertToCUIFullAdmission';
-import {toCUIPartialAdmission} from './convertToCUIPartialAdmission';
+import {toCUIPartialAdmission, toCUIRepaymentPlanFrequency} from './convertToCUIPartialAdmission';
 import {toCUICaseProgressionHearing} from 'services/translation/convertToCUI/convertToCaseProgressionHearing';
 import {DocumentType} from 'models/document/documentType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
@@ -31,6 +31,7 @@ import {CourtProposedPlan, CourtProposedPlanOptions} from 'form/models/claimantR
 import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
 import {toCUIClaimantMediation} from 'services/translation/convertToCUI/convertToCUIClaimantMediation';
+import {RepaymentPlan} from 'models/repaymentPlan';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaimObj);
@@ -83,6 +84,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.interest = claim?.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim);
   claim.claimantResponse.suggestedPaymentIntention.paymentOption = toCUIClaimantPaymentOption(ccdClaim.applicant1RepaymentOptionForDefendantSpec);
   claim.claimantResponse.suggestedPaymentIntention.paymentDate = translateCCDPaymentDateToCUIccd(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec?.paymentSetDate);
+  claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = translateCCDRepaymentPlanToCUIRepaymentPlan(ccdClaim);
   claim.claimantResponse.courtProposedPlan = new CourtProposedPlan();
   claim.claimantResponse.courtProposedDate = new CourtProposedDate();
   claim.claimantResponse.courtProposedPlan.decision = CourtProposedPlanOptions[ccdClaim.applicant1LiPResponse?.claimantResponseOnCourtDecision as CourtProposedPlanOptions];
@@ -136,4 +138,13 @@ function translateFullDefence(ccdClaim: CCDClaim, claimantResponse: ClaimantResp
 
 function translateCCDPaymentDateToCUIccd(paymentDate: string): Date {
   return (paymentDate) ? new Date(paymentDate) : undefined;
+}
+
+function translateCCDRepaymentPlanToCUIRepaymentPlan(ccdClaim: CCDClaim): RepaymentPlan {
+  const repaymentPlan =  {
+    paymentAmount: (ccdClaim?.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec) ? ccdClaim?.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec : undefined,
+    firstRepaymentDate: (ccdClaim?.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec) ? new Date(ccdClaim?.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec) : undefined,
+    repaymentFrequency: ccdClaim?.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec ? toCUIRepaymentPlanFrequency(ccdClaim?.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec) : undefined,
+  }
+  return repaymentPlan;
 }

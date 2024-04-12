@@ -23,6 +23,9 @@ import {RepaymentPlan} from 'common/models/repaymentPlan';
 import {YesNo} from 'form/models/yesNo';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CIVIL_SERVICE_SUBMIT_EVENT} from 'client/civilServiceUrls';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {ClaimantResponse} from "models/claimantResponse";
+import {RepaymentDecisionType} from "models/claimantResponse/RepaymentDecisionType";
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -68,7 +71,12 @@ describe('Respond To Settlement Agreement', () => {
     const date = new Date(Date.now());
     it('should return respond to settlement agreement page', async () => {
       const mockClaim = getMockClaim();
-      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
+      const claim = Object.assign(new Claim(), mockClaim);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockReturnValue(
+          new Promise((resolve) => resolve(claim)),
+        );
 
       await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
         expect(res.status).toBe(200);
@@ -86,7 +94,37 @@ describe('Respond To Settlement Agreement', () => {
       mockClaim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now());
       mockClaim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
       mockClaim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(200, 1000);
-      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
+      //(getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
+      const claim = Object.assign(new Claim(), mockClaim);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockReturnValue(
+          new Promise((resolve) => resolve(claim)),
+        );
+
+      await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.TITLE'));
+        expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.THE_AGREEMENT.PAY_BY_SET_DATE',
+          {defendant: '', amount: '200', paymentDate: formatDateToFullDate(date)},
+        ));
+      });
+    });
+ 
+    it('IN_FAVOUR_OF_CLAIMANT - should return respond to settlement agreement page with claimant suggested repayment plan', async () => {
+      const mockClaim = getMockClaim();
+      mockClaim.claimantResponse = new ClaimantResponse();
+      mockClaim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+      mockClaim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+      mockClaim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+      mockClaim.claimantResponse.suggestedPaymentIntention.paymentDate = date;
+
+      const claim = Object.assign(new Claim(), mockClaim);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockReturnValue(
+          new Promise((resolve) => resolve(claim)),
+        );
 
       await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
         expect(res.status).toBe(200);
@@ -97,7 +135,35 @@ describe('Respond To Settlement Agreement', () => {
       });
     });
 
+    it('IN_FAVOUR_OF_CLAIMANT - should return respond to settlement agreement page with claimant suggested repayment plan', async () => {
+      const mockClaim = getMockClaim();
+      mockClaim.claimantResponse = new ClaimantResponse();
+      mockClaim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+      mockClaim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+      mockClaim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+      mockClaim.claimantResponse.suggestedPaymentIntention.repaymentPlan = { paymentAmount: 50, repaymentFrequency: TransactionSchedule.WEEK, firstRepaymentDate: date };
+
+      const claim = Object.assign(new Claim(), mockClaim);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockReturnValue(
+          new Promise((resolve) => resolve(claim)),
+        );
+
+      await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.TITLE'));
+        expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.THE_AGREEMENT.REPAYMENT_PLAN',
+          {defendant: '', amount: '200', paymentAmount: '50', frequency: 'week', firstRepaymentDate: formatDateToFullDate(date)},
+        ));
+      });
+    });
+
     it('should return status 500 when error thrown', async () => {
+      const error = new Error('Something went wrong');
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockRejectedValueOnce(error);
       await request(app)
         .get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT)
         .expect((res) => {
