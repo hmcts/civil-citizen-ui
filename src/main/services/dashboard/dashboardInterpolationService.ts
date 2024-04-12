@@ -13,9 +13,8 @@ import {
   CLAIMANT_RESPONSE_TASK_LIST_URL,
   DASHBOARD_NOTIFICATION_REDIRECT,
   DATE_PAID_URL,
-  CP_UPLOAD_DOCUMENTS_URL,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
-  MEDIATION_SERVICE_EXTERNAL,
+  MEDIATION_SERVICE_EXTERNAL, UPLOAD_YOUR_DOCUMENTS_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -52,7 +51,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{VIEW_RESPONSE_TO_CLAIM}', '#');
   valuesMap.set('{VIEW_INFO_ABOUT_DEFENDANT}', '#');
   valuesMap.set('{VIEW_HEARINGS}', '#');
-  valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+  valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', claimId));
   valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', '#');
   valuesMap.set('{VIEW_BUNDLE}', '#');
   valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', '#');
