@@ -10,7 +10,7 @@ import {
   CLAIM_FEE_BREAKUP,
   CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
-  DASHBOARD_NOTIFICATION_REDIRECT,
+  DASHBOARD_NOTIFICATION_REDIRECT, DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT,
   DATE_PAID_URL,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
   MEDIATION_SERVICE_EXTERNAL,
@@ -24,10 +24,11 @@ import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
 import { t } from 'i18next';
+import {DashboardNotification} from "models/dashboard/dashboardNotification";
 
-export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim, claimId: string, notificationId?: string): string => {
+export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim, claimId: string, notification?: DashboardNotification): string => {
 
-  const valuesMap = setDashboardValues(claim, claimId, notificationId);
+  const valuesMap = setDashboardValues(claim, claimId, notification);
   valuesMap.forEach((value: string, key: string) => {
     textToReplace = textToReplace?.replace(key, value);
   });
@@ -35,7 +36,7 @@ export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim
   return textToReplace;
 };
 
-const setDashboardValues = (claim: Claim, claimId: string, notificationId?: string): Map<string, string> => {
+const setDashboardValues = (claim: Claim, claimId: string, notification?: DashboardNotification): Map<string, string> => {
 
   const valuesMap: Map<string, string> = new Map<string, string>();
   const daysLeftToRespond = claim?.respondent1ResponseDeadline ? getNumberOfDaysBetweenTwoDays(new Date(), claim.respondent1ResponseDeadline).toString() : '';
@@ -44,6 +45,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   const civilMoneyClaimsTelephone = config.get<string>('services.civilMoneyClaims.telephone');
   const cmcCourtEmailId = config.get<string>('services.civilMoneyClaims.courtEmailId');
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
+  const notificationId = notification?.id;
 
   valuesMap.set('{VIEW_CLAIM_URL}', '#');
   valuesMap.set('{VIEW_INFO_ABOUT_CLAIMANT}', '#');
@@ -88,14 +90,17 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   //Rest of the code example in: src/main/routes/features/dashboard/notificationRedirectController.ts
   if(notificationId){
     //TODO: Example case for draft claim - can be removed once a real view document is added.
+
     valuesMap.set('{VIEW_ORDERS_AND_NOTICES_REDIRECT}', DASHBOARD_NOTIFICATION_REDIRECT
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_ORDERS_AND_NOTICES')
       .replace(':notificationId', notificationId));
-    valuesMap.set('{VIEW_FINAL_ORDER}', DASHBOARD_NOTIFICATION_REDIRECT
+    const documentId = getDocumentIdFromParams(notification);
+    valuesMap.set('{VIEW_FINAL_ORDER}', DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_FINAL_ORDER')
-      .replace(':notificationId', notificationId));
+      .replace(':notificationId', notificationId)
+      .replace(':documentId', documentIdExtractor(documentId)));
   }
 
   return valuesMap;
@@ -114,4 +119,26 @@ function getSendFinancialDetailsAddress() : string {
     ${t('COMMON.POSTAL_ADDRESS.PO_BOX')}<br>
     ${t('COMMON.POSTAL_ADDRESS.CITY')}<br>
     ${t('COMMON.POSTAL_ADDRESS.POSTCODE')}</p>`;
+}
+
+function getDocumentIdFromParams (notification: DashboardNotification): string {
+  if (notification?.params) {
+    const paramMap: Map<string, Object> = objectToMap(notification.params);
+    if (paramMap.get('orderDocument')) {
+      return paramMap.get('orderDocument').toString();
+    }
+  }
+  return '';
+}
+
+function objectToMap(obj: any): Map<string, any> {
+  const map = new Map<string, any>();
+
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      map.set(key, obj[key]);
+    }
+  }
+
+  return map;
 }

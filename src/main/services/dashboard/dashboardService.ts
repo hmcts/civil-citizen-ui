@@ -31,8 +31,8 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
   if (dashboardNotifications) {
     dashboardNotifications.items.forEach((notification) => {
-      notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification.id);
-      notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification.id);
+      notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification);
+      notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification);
     });
     return dashboardNotifications;
   } else {
