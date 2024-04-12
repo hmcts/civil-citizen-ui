@@ -4,16 +4,23 @@ import {addDaysToDate} from 'common/utils/dateUtils';
 import {DocumentType} from 'common/models/document/documentType';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {Document} from 'models/document/document';
+import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 
 describe('dashboardInterpolationService', () => {
   const textToReplaceDynamic = 'You have {daysLeftToRespond} days left.';
   const textToReplaceUrl = '{VIEW_CLAIM_URL}';
   const textToReplaceRedirect = '{VIEW_ORDERS_AND_NOTICES_REDIRECT}';
+  let claim: Claim ;
+  const currentDate = new Date();
+
+  beforeEach(() => {
+    claim = new Claim();
+    claim.caseProgressionHearing =  new CaseProgressionHearing();
+    claim.caseProgressionHearing.hearingDate = currentDate;
+  });
 
   it('should replace placeholders with values when found', () => {
 
-    const claim: Claim = new Claim();
-    const currentDate = new Date();
     claim.respondent1ResponseDeadline = addDaysToDate(currentDate, 28);
 
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceDynamic, claim, '123');
@@ -28,9 +35,6 @@ describe('dashboardInterpolationService', () => {
 
   it('should replace placeholders with redirect when notificationId is present', () => {
 
-    const claim: Claim = new Claim();
-    claim.id = '123';
-    const currentDate = new Date();
     claim.respondent1ResponseDeadline = addDaysToDate(currentDate, 28);
 
     const textReplacedRedirect = replaceDashboardPlaceholders(textToReplaceRedirect, claim, '123','456');
@@ -40,7 +44,6 @@ describe('dashboardInterpolationService', () => {
   });
 
   it('should replace dynamic text with nothing when claim is empty', () => {
-    const claim: Claim = new Claim();
 
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceDynamic, claim, '123');
     const textExpectedDynamic = 'You have  days left.';
@@ -49,7 +52,6 @@ describe('dashboardInterpolationService', () => {
   });
 
   it('should replace dynamic text with nothing when claim is undefined', () => {
-    const claim: Claim = new Claim();
 
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceDynamic, claim, '123');
     const textExpectedDynamic = 'You have  days left.';
@@ -59,7 +61,6 @@ describe('dashboardInterpolationService', () => {
   });
 
   it('should replace placeholders with redirect url for claimant dq', () => {
-    const claim: Claim = new Claim();
     claim.id = '1710172392502478';
     claim.systemGeneratedCaseDocuments = [{
       id: '123', value: {
@@ -84,7 +85,6 @@ describe('dashboardInterpolationService', () => {
   });
 
   it('should replace placeholders with redirect url for mediation document', () => {
-    const claim: Claim = new Claim();
     claim.id = '1710172392502478';
     claim.mediationAgreement = <MediationAgreement>{
       name: 'test',
@@ -104,7 +104,6 @@ describe('dashboardInterpolationService', () => {
   });
 
   it('should replace placeholders with redirect url for claimant response', () => {
-    const claim: Claim = new Claim();
     claim.id = '1710172392502478';
     const textToReplaceUrl = '{CLAIMANT_RESPONSE_TASK_LIST}';
 
@@ -115,7 +114,6 @@ describe('dashboardInterpolationService', () => {
   });
 
   it('should replace placeholders with redirect url for settlement agreement', () => {
-    const claim: Claim = new Claim();
     claim.id = '1710172392502478';
     claim.systemGeneratedCaseDocuments = [{
       id: '123', value: {
@@ -140,7 +138,6 @@ describe('dashboardInterpolationService', () => {
   });
 
   it('should replace placeholders with document size for claimant dq', () => {
-    const claim: Claim = new Claim();
     claim.id = '1710172392502478';
     claim.systemGeneratedCaseDocuments = [{
       id: '123', value: {
@@ -165,7 +162,6 @@ describe('dashboardInterpolationService', () => {
   });
 
   it('should not replace placeholders with document size when no claimant dq', () => {
-    const claim: Claim = new Claim();
     claim.id = '1710172392502478';
     claim.systemGeneratedCaseDocuments = [];
     const textToReplaceUrl = '{VIEW_CLAIMANT_HEARING_REQS_SIZE}';
@@ -177,7 +173,7 @@ describe('dashboardInterpolationService', () => {
   });
 
   it('should replace placeholders for apply help with fees', () => {
-    const claim: Claim = new Claim();
+
     claim.id = '123';
     const textToReplaceUrl = '{APPLY_HELP_WITH_FEES_START}';
 
@@ -188,7 +184,7 @@ describe('dashboardInterpolationService', () => {
   });
 
   it('should replace placeholders for pay hearing fee', () => {
-    const claim: Claim = new Claim();
+
     claim.id = '123';
     const textToReplaceUrl = '{PAY_HEARING_FEE_URL_REDIRECT}';
 
