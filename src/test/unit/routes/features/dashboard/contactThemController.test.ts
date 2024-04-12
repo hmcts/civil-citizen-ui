@@ -11,6 +11,7 @@ import {
 } from 'modules/utilityService';
 import {Claim} from 'common/models/claim';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
+import {isDashboardServiceEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -18,6 +19,7 @@ jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
 }));
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 describe('Claimant details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -31,15 +33,34 @@ describe('Claimant details', () => {
     }));
   });
   describe('on GET', () => {
-    it('should return contact claimant details from claim', async () => {
+    it('should return contact claimant details from claim with dashboard service disabled', async () => {
       const caseData = Object.assign(new Claim(), claim.case_data);
       (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
+      (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(false);
       await request(app)
         .get(CITIZEN_CONTACT_THEM_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('claimant');
           expect(res.text).toContain('Address');
+          expect(res.text).toContain('Phone:');
+          expect(res.text).toContain('Contact us for help');
+          expect(res.text).toContain(claim.case_data.respondent1.partyDetails.partyName);
+          expect(res.text).toContain(claim.case_data.respondent1.partyDetails.primaryAddress.addressLine1);
+          expect(res.text).toContain(claim.case_data.respondent1.partyDetails.primaryAddress.addressLine2);
+          expect(res.text).toContain(claim.case_data.respondent1.partyDetails.primaryAddress.addressLine3);
+          expect(res.text).toContain(claim.case_data.respondent1.partyDetails.primaryAddress.postCode);
+        });
+    });
+    it('should return contact claimant details from claim with dashboard service enabled', async () => {
+      const caseData = Object.assign(new Claim(), claim.case_data);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
+      (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(true);
+      await request(app)
+        .get(CITIZEN_CONTACT_THEM_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('View information about the defendant');
           expect(res.text).toContain('Phone:');
           expect(res.text).toContain('Contact us for help');
           expect(res.text).toContain(claim.case_data.respondent1.partyDetails.partyName);
