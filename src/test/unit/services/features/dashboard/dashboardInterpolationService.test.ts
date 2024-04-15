@@ -4,6 +4,7 @@ import {addDaysToDate} from 'common/utils/dateUtils';
 import {DocumentType} from 'common/models/document/documentType';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {Document} from 'models/document/document';
+import {DashboardNotification} from "models/dashboard/dashboardNotification";
 
 describe('dashboardInterpolationService', () => {
   const textToReplaceDynamic = 'You have {daysLeftToRespond} days left.';
@@ -32,8 +33,9 @@ describe('dashboardInterpolationService', () => {
     claim.id = '123';
     const currentDate = new Date();
     claim.respondent1ResponseDeadline = addDaysToDate(currentDate, 28);
+    const dashboardNotification = new DashboardNotification('456', '', '', '', '', '', undefined, undefined);
 
-    const textReplacedRedirect = replaceDashboardPlaceholders(textToReplaceRedirect, claim, '123','456');
+    const textReplacedRedirect = replaceDashboardPlaceholders(textToReplaceRedirect, claim, '123',dashboardNotification);
     const textExpectedRedirect = '/notification/456/redirect/VIEW_ORDERS_AND_NOTICES/123';
 
     expect(textReplacedRedirect).toEqual(textExpectedRedirect);
@@ -180,8 +182,8 @@ describe('dashboardInterpolationService', () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     const textToReplaceUrl = '{APPLY_HELP_WITH_FEES_START}';
-
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, '1234');
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined);
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const sizeExpected = '/case/123/apply-help-with-fees/start';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
@@ -191,8 +193,9 @@ describe('dashboardInterpolationService', () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     const textToReplaceUrl = '{PAY_HEARING_FEE_URL_REDIRECT}';
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined);
 
-    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, '1234');
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
     const sizeExpected = '/notification/1234/redirect/PAY_HEARING_FEE_URL/123';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
