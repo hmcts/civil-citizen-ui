@@ -827,7 +827,7 @@ class ResponseToDefence {
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
     I.see('What happens next');
-    I.see('The claim is now settled.We\'ve emailed Sir John Doe to tell them.');
+    I.see('The claim is now settled. We\'ve emailed Sir John Doe to tell them.');
     I.see('Email');
     I.see('Telephone');
   }
