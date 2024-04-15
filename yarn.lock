@@ -3469,7 +3469,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^8.12.0":
+"ajv@npm:>=6.12.3":
   version: 8.12.0
   resolution: "ajv@npm:8.12.0"
   dependencies:
