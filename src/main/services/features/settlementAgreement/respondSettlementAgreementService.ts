@@ -10,8 +10,8 @@ import {
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'common/models/claim';
 import {t} from 'i18next';
-import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
-import {PaymentDate} from "form/models/admission/fullAdmission/paymentOption/paymentDate";
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 
 export const getRespondSettlementAgreementText = (claim: Claim, req: Request): object => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;

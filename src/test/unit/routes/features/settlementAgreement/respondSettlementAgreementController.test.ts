@@ -24,8 +24,8 @@ import {YesNo} from 'form/models/yesNo';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {CIVIL_SERVICE_SUBMIT_EVENT} from 'client/civilServiceUrls';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {ClaimantResponse} from "models/claimantResponse";
-import {RepaymentDecisionType} from "models/claimantResponse/RepaymentDecisionType";
+import {ClaimantResponse} from 'models/claimantResponse';
+import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');

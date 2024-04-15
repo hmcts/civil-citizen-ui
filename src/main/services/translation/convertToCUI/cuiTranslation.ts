@@ -145,6 +145,6 @@ function translateCCDRepaymentPlanToCUIRepaymentPlan(ccdClaim: CCDClaim): Repaym
     paymentAmount: (ccdClaim?.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec) ? ccdClaim?.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec : undefined,
     firstRepaymentDate: (ccdClaim?.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec) ? new Date(ccdClaim?.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec) : undefined,
     repaymentFrequency: ccdClaim?.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec ? toCUIRepaymentPlanFrequency(ccdClaim?.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec) : undefined,
-  }
+  };
   return repaymentPlan;
 }
