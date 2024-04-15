@@ -63,7 +63,8 @@
     <div class="govuk-form-group">
       {{ govukButton({
         text: t("PAGES.REGULAR_INCOME.BUTTON_ADD_SOURCE"),
-        classes: "govuk-button--secondary append-row"
+        classes: "govuk-button--secondary append-row",
+        type: "button"
       }) }}
     </div>
   {% endset -%}
@@ -187,7 +188,8 @@
                </span>
               </p>
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+                type: "submit"
               }) }}
               {{ contactUsForHelp(t) }}
             </div>
