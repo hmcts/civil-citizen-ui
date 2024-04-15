@@ -278,6 +278,7 @@ import mediationUploadDocumentsController from 'routes/features/mediation/upload
 import mediationDocumentUploadCheckAnswerController
   from 'routes/features/mediation/uploadDocuments/checkAnswersController';
 import mediationConfirmationController from 'routes/features/mediation/uploadDocuments/confirmationController';
+import delayedFlightController from './features/directionsQuestionnaire/delayedFlight/delayedFlightController';
 
 export default [
   homeController,
@@ -523,4 +524,5 @@ export default [
   mediationUploadDocumentsController,
   mediationDocumentUploadCheckAnswerController,
   mediationConfirmationController,
+  delayedFlightController,
 ];

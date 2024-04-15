@@ -1,0 +1,151 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.DELAYED_FLIGHT.TITLE') }}
+{% endblock %}
+
+{# {% set otherAirlineHtml %}
+  {{ govukInput({
+    id: "otherAirline",
+    name: "otherAirline",
+    value: form.model.otherAirline,
+    classes: "govuk-!-width-one-half",
+    label: {
+      text: t('PAGES.DELAYED_FLIGHT.NAME_OF_AIRLINE')
+    },
+    errorMessage: {
+      html: t(form.errorFor('otherAirline'))
+    } if form.errorFor('otherAirline')
+  }) }}
+{% endset %} #}
+
+{% set yesHtml %}
+
+  <h1 class="govuk-heading-s">{{ t('PAGES.DELAYED_FLIGHT.FLIGHT_DETAILS') }}</h1>
+
+  {{ govukSelect({
+    id: "airline",
+    name: "airline",
+    classes: "govuk-!-width-full",
+    label: {
+      text: t('PAGES.DELAYED_FLIGHT.AIRLINE')
+    },
+    items: airlines,
+    errorMessage: {
+      text: t(form.errorFor("airline"))
+    } if form.hasFieldError("airline"),
+    formGroup: {
+      afterInput: otherAirlineHtml
+    }
+  }) }}
+
+  {% if form.model.airline == 'Other Airways' %}
+    {{ govukInput({
+      id: "otherAirline",
+      name: "otherAirline",
+      value: form.model.otherAirline,
+      classes: "govuk-!-width-one-half",
+      label: {
+        text: t('PAGES.DELAYED_FLIGHT.NAME_OF_AIRLINE')
+      },
+      errorMessage: {
+        html: t(form.errorFor('otherAirline'))
+      } if form.errorFor('otherAirline')
+    }) }}
+  {% endif %}
+
+  {{ govukInput({
+    id: "flightNumber",
+    name: "flightNumber",
+    value: form.model.flightNumber,
+    classes: "govuk-!-width-one-half",
+    label: {
+      text: t('PAGES.DELAYED_FLIGHT.FLIGHT_NUMBER')
+    },
+    errorMessage: {
+      html: t(form.errorFor('flightNumber'))
+    } if form.errorFor('flightNumber')
+  }) }}
+
+  <h1 class="govuk-heading-s">{{ t('PAGES.DELAYED_FLIGHT.SCHEDULED_DATE') }}</h1>
+
+  {{ govukDateInput({
+    id: "date",
+    type: "number",
+    inputmode: "numeric",
+    name: "date",
+    hint: {
+      text: t('COMMON.DATE_EXAMPLE', {
+        date: today.getDate() + ' ' + (today.getMonth() + 1) + ' ' + (today.getFullYear() - 18)
+      })
+    },
+    items: [
+      {
+        classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
+        id: "day",
+        label: t('COMMON.DAY'),
+        name: "day",
+        value: form.model.day,
+        max: 31
+      },
+      {
+        classes:"govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
+        id: "month",
+        label: t('COMMON.MONTH'),
+        name: "month",
+        value: form.model.month,
+        max: 12
+      },
+      {
+        classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
+        id: "year",
+        label: t('COMMON.YEAR'),
+        name: "year",
+        value: form.model.year,
+        max: 9999
+      }
+    ]
+  }) }}
+
+{% endset %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if form.hasErrors() %}
+        <div class="govuk-grid-row">
+          {{ errorSummary(form.getErrors(), t) }}
+        </div>
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">
+            <span class="govuk-caption-l">{{ t('PAGES.DELAYED_FLIGHT.CREATE_CLAIM') }}</span>
+            {{ t('PAGES.DELAYED_FLIGHT.TITLE') }}
+          </h1>
+          <h1 class="govuk-heading-m">{{ t('PAGES.DELAYED_FLIGHT.CLAIMING_FOR_DELAYED') }}</h1>
+          <p class="govuk-body">{{ t('PAGES.DELAYED_FLIGHT.AIRLINE_NOT_LISTED') }}</p>
+          <form method="post" novalidate autocomplete="off">
+            {{ csrfProtection(csrf) }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios', yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO', yesHtml: yesHtml}) }}
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

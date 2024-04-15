@@ -9,6 +9,7 @@ import {
   getNumberOfUnavailableDays,
 } from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 import {ConfirmYourDetailsEvidence} from 'form/models/confirmYourDetailsEvidence';
+import {DelayedFlight} from './delayedFlight';
 
 const UNAVAILABLE_DAYS_LIMIT = 30;
 
@@ -20,6 +21,7 @@ export class DirectionQuestionnaire {
   welshLanguageRequirements?: WelshLanguageRequirements;
   witnesses?: Witnesses;
   confirmYourDetailsEvidence?: ConfirmYourDetailsEvidence;
+  delayedFlight?: DelayedFlight;
 
   constructor(
     defendantYourselfEvidence?: GenericYesNo,
@@ -29,6 +31,7 @@ export class DirectionQuestionnaire {
     welshLanguageRequirements?: WelshLanguageRequirements,
     witnesses?: Witnesses,
     confirmYourDetailsEvidence?: ConfirmYourDetailsEvidence,
+    delayedFlight?: DelayedFlight,
   ) {
     this.defendantYourselfEvidence = defendantYourselfEvidence;
     this.hearing = hearing;
@@ -37,6 +40,7 @@ export class DirectionQuestionnaire {
     this.welshLanguageRequirements = welshLanguageRequirements;
     this.witnesses = witnesses;
     this.confirmYourDetailsEvidence = confirmYourDetailsEvidence;
+    this.delayedFlight = delayedFlight;
   }
 
   get expertReportDetailsAvailable(): boolean {
