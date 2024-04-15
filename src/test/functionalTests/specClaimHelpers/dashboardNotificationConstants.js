@@ -1,3 +1,4 @@
+//https://tools.hmcts.net/confluence/display/CRef/Hook+Logic+-+Notifications
 module.exports = {
   draftClaim: async () => {
     return {
@@ -32,8 +33,8 @@ module.exports = {
 
   hwfSubmission:() => {
     return {
-      title: 'We’re reviewing your help with fees application',
-      content: 'You’ve applied for help with the claim fee. You’ll receive an update in 5 to 10 working days.',
+      title: 'We\'re reviewing your help with fees application',
+      content: 'You\'ve applied for help with the claim fee. You\'ll receive an update in 5 to 10 working days.',
     };
   },
 
@@ -46,42 +47,41 @@ module.exports = {
 
   invalidHwfNumber: () => {
     return {
-      title: 'You’ve provided an invalid help with fees reference number',
-      content: 'You’ve applied for help with the <Type of fee> fee, but the reference number is invalid.',
-      content2: 'You’ve been sent an email with instructions on what to do next. If you’ve already read the email and taken action, disregard this message.',
+      title: 'You\'ve provided an invalid help with fees reference number',
+      content: 'You\'ve applied for help with the claim fee, but the reference number is invalid.',
+      content2: 'You\'ve been sent an email with instructions on what to do next. If you\'ve already read the email and taken action, disregard this message.',
       content3: 'You can pay by phone by calling 0300 123 7050.',
     };
   },
 
   hwfMoreInfoRequired: () => {
     return {
-      title: 'You’ve provided an invalid help with fees reference number',
-      content: 'You’ve applied for help with the <Type of fee> fee, but the reference number is invalid.',
-      content2: 'You’ve been sent an email with instructions on what to do next. If you’ve already read the email and taken action, disregard this message.',
-      content3: 'You can pay by phone by calling 0300 123 7050.',
+      title: 'Your help with fees application needs more information',
+      content: ['We need more information on your application for help with the claim fee.', 
+        'You\'ve been sent an email with further details. If you\'ve already read the email and taken action, disregard this message.',
+        'You can pay by phone by calling 0300 123 7050.'],
     };
   },
 
   hwfPartRemission: () => {
     return {
       title: 'Your help with fees application has been reviewed',
-      content: 'You’ll get help with the <Type of fee> fee. You’ll receive <Amount> towards it.',
-      content2: 'You’ll need to pay the full fee of <Amount> by <Deadline date>. You can pay by phone by calling 0300 123 7050.',
+      content: ['You\'ll get help with the claim fee. You\'ll receive £23 towards it.', 'You must still pay the remaining fee of £92. You can pay by phone by calling 0300 123 7050.'],
     };
   },
 
   hwfNoRemission: () => {
     return {
       title: 'Your help with fees application has been rejected',
-      content: 'We’ve rejected your application for help with the <Type of fee> fee. See the email for further details.',
-      content2: 'You’ll need to pay the full fee of <Amount> by <Deadline date>. You can pay by phone by calling 0300 123 7050.',
+      content: 'We\'ve rejected your application for help with the claim fee. See the email for further details.',
+      content2: 'You\'ll need to pay the full fee of <Amount> by <Deadline date>. You can pay by phone by calling 0300 123 7050.',
     };
   },
 
   updateHWFNum: () => {
     return {
       title: 'Your help with fees application has been updated',
-      content: 'You’ve applied for help with the {Type of fee} fee. You’ll receive an update from us within 5 to 10 working days.',
+      content: 'You\'ve applied for help with the claim fee. You\'ll receive an update from us within 5 to 10 working days.',
     };
   },
 };
