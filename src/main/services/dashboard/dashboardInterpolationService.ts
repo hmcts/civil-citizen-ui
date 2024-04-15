@@ -27,7 +27,7 @@ import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
 import { t } from 'i18next';
-import {DashboardNotification} from "models/dashboard/dashboardNotification";
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 
 export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim, claimId: string, notification?: DashboardNotification): string => {
 
