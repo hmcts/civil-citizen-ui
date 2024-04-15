@@ -17,14 +17,14 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
     }
     const isValidFormat = ukPostCodePattern.test(normalised);
     if (!isValidFormat) {
-      return false
+      return false;
     }
-    const scotlandPrefixes: string[] = ['KW', 'IV', 'HS', 'PH', 'AB', 'DD', 'KY', 'FK', 'EH', 'G', 'KA', 'ML', 'PA', 'TD', 'DG', 'ZE']
-    let scotRegexp = new RegExp(this.START_CODE_REGEX);
-    let matches = scotRegexp.exec(normalised);
+    const scotlandPrefixes: string[] = ['KW', 'IV', 'HS', 'PH', 'AB', 'DD', 'KY', 'FK', 'EH', 'G', 'KA', 'ML', 'PA', 'TD', 'DG', 'ZE'];
+    const scotRegexp = new RegExp(this.START_CODE_REGEX);
+    const matches = scotRegexp.exec(normalised);
     const isScotlandPostcode: boolean = scotlandPrefixes.includes(matches[1]);
-    const isNIPostcode: boolean = normalised.startsWith('BT')
-    return !isScotlandPostcode && !isNIPostcode
+    const isNIPostcode: boolean = normalised.startsWith('BT');
+    return !isScotlandPostcode && !isNIPostcode;
   }
 
   defaultMessage() {
