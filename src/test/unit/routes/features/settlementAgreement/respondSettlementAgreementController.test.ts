@@ -94,7 +94,7 @@ describe('Respond To Settlement Agreement', () => {
       mockClaim.partialAdmission.paymentIntention.paymentDate = new Date(Date.now());
       mockClaim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
       mockClaim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(200, 1000);
-      //(getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
+
       const claim = Object.assign(new Claim(), mockClaim);
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
