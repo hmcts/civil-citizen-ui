@@ -6,12 +6,12 @@ const generateErrorMessage = (messageName: string): string => {
 };
 
 const withMessage = (buildErrorFn: (messageName: string) => string) => {
-  return (args: ValidationArgs<GenericYesNoCarmContactPersonConfirmation>): string => {
+  return (args: ValidationArgs<GenericYesNoCarmIeNeuNa>): string => {
     return buildErrorFn(args.object.messageName);
   };
 };
 
-export class GenericYesNoCarmContactPersonConfirmation {
+export class GenericYesNoCarmIeNeuNa {
   messageName?: string;
 
   @IsDefined({message: withMessage(generateErrorMessage)})
