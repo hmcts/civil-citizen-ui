@@ -152,7 +152,7 @@ function objectToMap(obj: any): Map<string, any> {
   const map = new Map<string, any>();
 
   for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(key, obj)) {
+    if (key in obj) {
       map.set(key, obj[key]);
     }
   }
