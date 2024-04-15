@@ -1113,7 +1113,7 @@
         "TELL_US_SETTLEMENT": "Mae angen i chi ddweud wrthym os ydych wedi setlo’r hawliad, er enghraifft oherwydd bod y diffynnydd wedi eich talu."
       },
       "ACCEPTED_DEFENDANT_RESPONSE_TO_SETTLE": {
-        "CLAIM_SETTLE": "The claim is now settled.We've emailed {{ defendantName }} to tell them."
+        "CLAIM_SETTLE": "The claim is now settled. We've emailed {{ defendantName }} to tell them."
       },
       "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "Ni wnaethoch fwrw ymlaen â'r hawliad",
