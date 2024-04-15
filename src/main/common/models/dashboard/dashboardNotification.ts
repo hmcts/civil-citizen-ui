@@ -11,8 +11,8 @@ export class DashboardNotification {
   params: Map<string, object>;
 
   constructor(id: string, titleEn: string, titleCy:string, descriptionEn: string,
-              descriptionCy: string, timeToLive: string,
-              notificationAction: DashboardNotificationAction, params: Map<string, object>) {
+    descriptionCy: string, timeToLive: string,
+    notificationAction: DashboardNotificationAction, params: Map<string, object>) {
     this.id = id;
     this.titleEn = titleEn;
     this.titleCy = titleCy;

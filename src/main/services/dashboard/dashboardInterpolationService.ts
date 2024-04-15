@@ -140,7 +140,7 @@ function getSendFinancialDetailsAddress() : string {
 
 function getDocumentIdFromParams (notification: DashboardNotification): string {
   if (notification?.params) {
-    const paramMap: Map<string, Object> = objectToMap(notification.params);
+    const paramMap: Map<string, object> = objectToMap(notification.params);
     if (paramMap.get('orderDocument')) {
       return paramMap.get('orderDocument').toString();
     }
@@ -152,7 +152,7 @@ function objectToMap(obj: any): Map<string, any> {
   const map = new Map<string, any>();
 
   for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(key, obj)) {
       map.set(key, obj[key]);
     }
   }
