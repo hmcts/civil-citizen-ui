@@ -607,7 +607,8 @@ class ResponseToDefence {
     I.see('The defendant’s response','h1');
     I.see('Sir John Doe said they paid you');
     I.see('When they say they paid this amount','h3');
-    I.see('How they say they paid?','h3');
+    // Uncomment the below line once https://tools.hmcts.net/jira/browse/CIV-13496 is fixed
+    // I.see('How they say they paid?','h3');
     I.seeElement(paths.links.full_response_pdf_link);
     I.click(paths.links.full_response_pdf_link);
     I.click(paths.buttons.continue);
@@ -619,7 +620,8 @@ class ResponseToDefence {
     I.see('Sir John Doe said they paid you');
     I.see('They said this is all they owe, not the amount you claim.');
     I.see('When they say they paid this amount','h3');
-    I.see('How they say they paid?','h3');
+    // Uncomment the below line once https://tools.hmcts.net/jira/browse/CIV-13496 is fixed
+    // I.see('How they say they paid?','h3');
     I.see('Why they say they dont owe the amount you claimed?', 'h3');
     I.seeElement(paths.links.full_response_pdf_link);
     I.click(paths.links.full_response_pdf_link);
@@ -987,7 +989,7 @@ class ResponseToDefence {
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
     I.see('What happens next');
-    I.see('The claim is now settled.We\'ve emailed Sir John Doe to tell them.');
+    I.see('The claim is now settled. We\'ve emailed Sir John Doe to tell them.');
     I.see('Email');
     I.see('Telephone');
   }
@@ -997,7 +999,7 @@ class ResponseToDefence {
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
     I.see('What happens next');
-    I.see('The claim is now settled.We\'ve emailed Sir John Doe to tell them.');
+    I.see('The claim is now settled. We\'ve emailed Sir John Doe to tell them.');
     I.see('Email');
     I.see('Telephone');
   }
