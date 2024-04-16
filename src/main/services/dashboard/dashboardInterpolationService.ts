@@ -97,6 +97,10 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   //Rest of the code example in: src/main/routes/features/dashboard/notificationRedirectController.ts
   if(notificationId){
     //TODO: Example case for draft claim - can be removed once a real view document is added.
+    valuesMap.set('{VIEW_BUNDLE_REDIRECT}', DASHBOARD_NOTIFICATION_REDIRECT
+      .replace(':id', claimId)
+      .replace(':locationName', 'VIEW_BUNDLE')
+      .replace(':notificationId', notificationId));            
     valuesMap.set('{VIEW_ORDERS_AND_NOTICES_REDIRECT}', DASHBOARD_NOTIFICATION_REDIRECT
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_ORDERS_AND_NOTICES')
