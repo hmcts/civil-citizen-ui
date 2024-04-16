@@ -6,7 +6,7 @@ import {StatementOfMeans} from './statementOfMeans';
 import {PartyType} from './partyType';
 import {FullAdmission} from './fullAdmission';
 import {PartialAdmission} from './partialAdmission';
-import {DefendantEvidence} from './evidence/evidence';
+import {ClaimantEvidence, DefendantEvidence} from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
@@ -164,11 +164,13 @@ export class Claim {
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
-  
+  claimantEvidence: ClaimantEvidence;
+
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
     claim.claimDetails = toCUIClaimDetails(ccdClaim);
     claim.evidence = toCUIEvidence(ccdClaim?.specResponselistYourEvidenceList);
+    claim.claimantEvidence = toCUIEvidence(ccdClaim?.speclistYourEvidenceList);
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);

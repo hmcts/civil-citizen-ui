@@ -15,7 +15,7 @@ export const getInterestDetails = (claim: Claim) => {
   const interestToDate = getInterestToDate(claim);
   const numberOfDays = getNumberOfDaysBetweenTwoDays(interestFromDate, interestToDate);
   const rate = getInterestRate(claim);
-  const interest = claim?.totalInterest;
+  const interest = calculateInterestToDate(claim);
 
   return {interestFromDate, interestToDate, numberOfDays, interest, rate};
 };
@@ -28,14 +28,17 @@ function getInterestToDate(claim: Claim) {
   return interestToDate;
 }
 
-export function getInterestDateOrIssueDate(claim: Claim) {
+export function getInterestDateOrIssueDate(claim: Claim) : Date | string {
   let interestFromDate = claim?.issueDate;
   if (claim.isInterestFromClaimSubmitDate()) {
     interestFromDate = claim.submittedDate;
   } else if (claim.isInterestFromASpecificDate()) {
     interestFromDate = claim.interest?.interestStartDate.date;
   }
-  return interestFromDate;
+
+  if(interestFromDate) { return new Date(interestFromDate).toISOString(); }
+  
+  return undefined;
 }
 
 export function getInterestRate(claim: Claim): number {

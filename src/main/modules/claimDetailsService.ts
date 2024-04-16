@@ -8,6 +8,7 @@ export const getTotalAmountWithInterestAndFees = (claim: Claim) => {
   if (claim.hasInterest()) {
     interestToDate = calculateInterestToDate(claim);
   }
+    
   return (claim.totalClaimAmount || 0) + interestToDate + (convertToPoundsFilter(claim?.claimFee?.calculatedAmountInPence) || 0);
 };
 
