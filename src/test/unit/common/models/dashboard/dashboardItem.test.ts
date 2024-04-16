@@ -275,5 +275,15 @@ describe('Dashboard Items', ()=> {
       // Then
       expect(result).toBe(expectedTranslation);
     });
+
+    it('should return translated status for claim WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status ='WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD');
+    });
   });
 });
