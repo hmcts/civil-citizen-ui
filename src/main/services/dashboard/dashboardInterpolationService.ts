@@ -1,6 +1,7 @@
 import {Claim} from 'models/claim';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {
+  APPLY_HELP_WITH_FEES_START,
   BILINGUAL_LANGUAGE_PREFERENCE_URL,
   CASE_DOCUMENT_VIEW_URL,
   CCJ_DEFENDANT_DOB_URL,
@@ -13,8 +14,9 @@ import {
   CLAIMANT_RESPONSE_TASK_LIST_URL,
   DASHBOARD_NOTIFICATION_REDIRECT,
   DATE_PAID_URL,
+  CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
-  MEDIATION_SERVICE_EXTERNAL,
+  MEDIATION_SERVICE_EXTERNAL, PAY_HEARING_FEE_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -52,13 +54,15 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{VIEW_INFO_ABOUT_DEFENDANT}', '#');
   valuesMap.set('{VIEW_HEARINGS}', '#');
   valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', '#');
-  valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', '#');
+  valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId));
+  valuesMap.set('{PAY_HEARING_FEE}', PAY_HEARING_FEE_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_BUNDLE}', BUNDLES_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', '#');
   valuesMap.set('{VIEW_JUDGEMENT}', '#');
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
-  valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getClaimantDQDocumentId(claim)));
   valuesMap.set('{VIEW_HEARING_NOTICE}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM)));
+  valuesMap.set('{VIEW_DEFENDANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getDQDocumentId(claim,DirectionQuestionnaireType.DEFENDANT)));
+  valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getDQDocumentId(claim,DirectionQuestionnaireType.CLAIMANT)));
   valuesMap.set('{VIEW_SETTLEMENT_AGREEMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSettlementAgreementDocumentId(claim)));
   valuesMap.set('{DRAFT_CLAIM_TASK_LIST}', '/claim/task-list');
   valuesMap.set('{CLAIM_FEE_URL}', CLAIM_FEE_BREAKUP.replace(':id', claimId));
@@ -81,6 +85,8 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{DOWNLOAD_SETTLEMENT_AGREEMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT)));
   valuesMap.set('{MEDIATION}', MEDIATION_SERVICE_EXTERNAL);
   valuesMap.set('{MEDIATION_SUCCESSFUL_URL}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(claim?.mediationAgreement?.document?.document_binary_url)));
+  valuesMap.set('{HEARING_DUE_DATE}', claim?.caseProgressionHearing?.hearingDate? claim.bundleStitchingDeadline: '');
+  valuesMap.set('{APPLY_HELP_WITH_FEES_START}', APPLY_HELP_WITH_FEES_START.replace(':id', claimId));
   valuesMap.set('{VIEW_CCJ_REPAYMENT_PLAN_CLAIMANT}', CCJ_REPAYMENT_PLAN_CLAIMANT_URL.replace(':id', claimId));
 
   if (claimantRequirements) {
@@ -98,13 +104,23 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_ORDERS_AND_NOTICES')
       .replace(':notificationId', notificationId));
+
+    valuesMap.set('{VIEW_HEARING_NOTICE_CLICK}', DASHBOARD_NOTIFICATION_REDIRECT
+      .replace(':id', claimId)
+      .replace(':locationName', 'VIEW_HEARING_NOTICE')
+      .replace(':notificationId', notificationId));
+
+    valuesMap.set('{PAY_HEARING_FEE_URL_REDIRECT}', DASHBOARD_NOTIFICATION_REDIRECT
+      .replace(':id', claimId)
+      .replace(':locationName', 'PAY_HEARING_FEE_URL')
+      .replace(':notificationId', notificationId));
   }
 
   return valuesMap;
 };
 
-function getClaimantDQDocumentId(claim:Claim) : string {
-  return getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
+function getDQDocumentId(claim:Claim, claimType:DirectionQuestionnaireType) : string {
+  return getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, claimType);
 }
 
 function getSettlementAgreementDocumentId(claim:Claim) : string {

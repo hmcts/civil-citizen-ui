@@ -1,8 +1,15 @@
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {RequestHandler, Router} from 'express';
-import {BUNDLES_URL, DASHBOARD_NOTIFICATION_REDIRECT} from 'routes/urls';
+import {BUNDLES_URL, CASE_DOCUMENT_VIEW_URL, DASHBOARD_NOTIFICATION_REDIRECT} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
+import {DocumentType} from 'models/document/documentType';
+import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
+import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
+
+import {getClaimById} from 'modules/utilityService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -23,6 +30,7 @@ notificationRedirectController.get(DASHBOARD_NOTIFICATION_REDIRECT, (async funct
 async function getDashboardNotificationRedirectUrl(locationName: string, claimId: string, req: AppRequest) : Promise<string> {
 
   let redirectUrl;
+  const claim = await getClaimById(claimId, req);
 
   switch(locationName) {
     case 'VIEW_BUNDLE':
@@ -31,8 +39,15 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
     case 'VIEW_ORDERS_AND_NOTICES':
       redirectUrl = '/#';
       break;
+    case 'VIEW_HEARING_NOTICE':
+      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
+        ':documentId', getHearingDocumentsCaseDocumentIdByType(
+          claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM));
+      break;
+    case 'PAY_HEARING_FEE_URL':
+      redirectUrl = getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), req);
+      break;
   }
-
   return redirectUrl;
 }
 export default notificationRedirectController;
