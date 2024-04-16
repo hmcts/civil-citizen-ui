@@ -1,7 +1,7 @@
-const config = require('../../config');
-const CaseProgressionSteps = require('../citizenFeatures/caseProgression/steps/caseProgressionSteps');
-const LoginSteps = require('./../commonFeatures/home/steps/login');
-const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
+const config = require('../../../config');
+const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
+const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
 let claimRef;

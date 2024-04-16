@@ -1,12 +1,12 @@
-const CreateLipvLipClaimSteps  =  require('../citizenFeatures/createClaim/steps/createLipvLipClaimSteps');
-const config = require('../../config');
-const LoginSteps = require('./../commonFeatures/home/steps/login');
-const CitizenDashboardSteps = require('../citizenFeatures/citizenDashboard/steps/citizenDashboard');
-const ResponseSteps = require('../citizenFeatures/response/steps/lipDefendantResponseSteps');
-const ResponseToDefenceLipVsLipSteps  =  require('../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
+const CreateLipvLipClaimSteps  =  require('../../citizenFeatures/createClaim/steps/createLipvLipClaimSteps');
+const config = require('../../../config');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
+const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
+const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const ResponseToDefenceLipVsLipSteps  =  require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 const dontWantMoreTime = 'dontWantMoreTime';
 const rejectAll = 'rejectAll';
-const {createAccount} = require('../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 let claimNumber, claimRef;
 
 Feature('Create Lip v Lip claim - Rejected All By Defendant and Disputed By Claimant');

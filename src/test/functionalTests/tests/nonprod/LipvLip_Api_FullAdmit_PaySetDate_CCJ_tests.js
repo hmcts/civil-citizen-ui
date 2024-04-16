@@ -1,9 +1,9 @@
-const config = require('../../config');
-const LoginSteps = require('./../commonFeatures/home/steps/login');
-const CitizenDashboardSteps = require('../citizenFeatures/citizenDashboard/steps/citizenDashboard');
-const {createAccount} = require('../specClaimHelpers/api/idamHelper');
-const ResponseToDefenceLipVsLipSteps = require('../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
-const ResponseSteps = require('../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const config = require('../../../config');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
+const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
+const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
+const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
+const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars

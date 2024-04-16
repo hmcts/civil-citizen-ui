@@ -1,7 +1,7 @@
-const config = require('../../config');
-const LoginSteps = require('./../commonFeatures/home/steps/login');
-const CitizenDashboardSteps = require('../citizenFeatures/citizenDashboard/steps/citizenDashboard');
-const {createAccount} = require('../specClaimHelpers/api/idamHelper');
+const config = require('../../../config');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
+const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
+const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 

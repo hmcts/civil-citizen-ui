@@ -1,8 +1,8 @@
-const config = require('../../config');
-const ResponseSteps = require('../citizenFeatures/response/steps/lipDefendantResponseSteps');
-const CitizenDashboardSteps = require('../citizenFeatures/citizenDashboard/steps/citizenDashboard');
-const LoginSteps = require('./../commonFeatures/home/steps/login');
-const {createAccount} = require('../specClaimHelpers/api/idamHelper');
+const config = require('../../../config');
+const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
+const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
 

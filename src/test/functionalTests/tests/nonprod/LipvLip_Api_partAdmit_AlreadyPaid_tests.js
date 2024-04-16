@@ -1,5 +1,5 @@
-const config = require('../../config');
-const {createAccount} = require('../specClaimHelpers/api/idamHelper');
+const config = require('../../../config');
+const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 

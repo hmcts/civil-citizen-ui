@@ -1,9 +1,9 @@
-const config = require('../../config');
+const config = require('../../../config');
 
-const ResponseSteps = require('../citizenFeatures/response/steps/lipDefendantResponseSteps');
-const LoginSteps = require('./../commonFeatures/home/steps/login');
-const CitizenDashboardSteps = require('../citizenFeatures/citizenDashboard/steps/citizenDashboard');
-const {createAccount} = require('../specClaimHelpers/api/idamHelper');
+const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
+const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
+const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 
 const admitAll = 'full-admission';
 const bySetDate = 'bySetDate';

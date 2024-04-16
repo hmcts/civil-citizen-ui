@@ -1,6 +1,6 @@
-const config = require('../../config');
-const LoginSteps = require('./../commonFeatures/home/steps/login');
-const {createAccount, deleteAccount} = require('./../specClaimHelpers/api/idamHelper');
+const config = require('../../../config');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
+const {createAccount, deleteAccount} = require('../../specClaimHelpers/api/idamHelper');
 
 Feature('Smoke Test');
 

@@ -1,7 +1,7 @@
-const config = require('../../config');
-const ResponseSteps = require('../citizenFeatures/response/steps/lipDefendantResponseSteps');
-const LoginSteps = require('./../commonFeatures/home/steps/login');
-const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
+const config = require('../../../config');
+const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
+const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 
 const iHaveAlreadyAgreedMoretime = 'iHaveAlreadyAgreedMoretime';
 const yesIWantMoretime = 'yesIWantMoretime';
