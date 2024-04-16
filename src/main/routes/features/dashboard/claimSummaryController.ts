@@ -86,8 +86,7 @@ const getSupportLinks = () => {
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO');
   const iWantToLinks = [
     { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'), url: applicationNoticeUrl },
-  ]
-
+  ];
   const helpSupportTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT');
   const helpSupportLinks = [
     { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'), url: feesHelpUrl },
@@ -96,7 +95,8 @@ const getSupportLinks = () => {
     { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF'), url: representYourselfUrl },
     { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE'), url: findLegalAdviceUrl },
     { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'), url: findCourtTribunalUrl },
-  ]
+  ];
+
   return [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] as const;
 };
 

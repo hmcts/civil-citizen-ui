@@ -88,13 +88,13 @@ const getSupportLinks = (claim: Claim, claimId: string) => {
   const iWantToLinks = [];
 
   if (claim.isDefendantNotResponded()) {
-    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'), url: applicationNoticeUrl })
+    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'), url: applicationNoticeUrl });
   }
   if (showTellUsEndedLink) {
-    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_ENDED'), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) })
+    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_ENDED'), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
   }
   if (showGetDebtRespiteLink) {
-    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'), url: getDebtRespiteUrl })
+    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'), url: getDebtRespiteUrl });
   }
 
   const helpSupportTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT');
@@ -105,7 +105,8 @@ const getSupportLinks = (claim: Claim, claimId: string) => {
     { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF'), url: representYourselfUrl },
     { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE'), url: findLegalAdviceUrl },
     { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'), url: findCourtTribunalUrl },
-  ]
+  ];
+  
   return [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] as const;
 };
 
