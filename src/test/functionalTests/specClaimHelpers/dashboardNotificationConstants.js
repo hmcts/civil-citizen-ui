@@ -100,4 +100,37 @@ module.exports = {
       nextSteps: 'View your response'
     };
   },
+
+  defendantResponseFullAdmitPayBySetDate: (amount, deadline) => {
+    return {
+      title: 'Response to the claim',
+      content: `You have offered to pay £${amount} by ${deadline}. The court will contact you when they respond.`,
+      nextSteps: 'View your response'
+    };
+  },
+
+  defendantResponseFullAdmitPayBySetDate: (amount, deadline) => {
+    return {
+      title: 'Response to the claim',
+      content: `You have offered to pay £${amount} by ${deadline}. The court will contact you when they respond.`,
+      nextSteps: 'View your response'
+    };
+  },
+
+  claimantNotificationOfDefendantResponse: (amount, deadline) => {
+    return {
+      title: 'Response to the claim',
+      content: `The defendant has offered to pay £${amount} by ${deadline}`,
+      nextSteps: 'View and respond'
+    };
+  },
+
+  claimantNotificationCCJRequested: () => {
+    return {
+      title: 'You requested a County Court Judgment against Sir John Doe',
+      content: ['You accepted the repayment plan.', 'When we\'ve processed the request, we\'ll post a copy of the judgment to you.'],
+      nextSteps: 'Tell us it\'s paid',
+      nextSteps2: 'repayment plan.'
+    };
+  },
 }

@@ -4,29 +4,46 @@ const CitizenDashboardSteps = require('../citizenFeatures/citizenDashboard/steps
 const {createAccount} = require('../specClaimHelpers/api/idamHelper');
 const ResponseToDefenceLipVsLipSteps = require('../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 const ResponseSteps = require('../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const { isDashboardServiceToggleEnabled } = require('../specClaimHelpers/api/testingSupport');
+const { verifyNotificationTitleAndContent } = require('../specClaimHelpers/e2e/dashboardHelper');
+const { defendantResponseFullAdmitPayBySetDate, claimantNotificationOfDefendantResponse, claimantNotificationCCJRequested } = require('../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
-let claimRef;
-let caseData;
-let claimNumber;
+let caseData, claimNumber, claimRef, claimAmount = 1500, date= "1 October 2025";
 
 Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise CCJ By Claimant');
 
-Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date - @api', async ({api}) => {
+Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date - @api', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
-    await ResponseSteps.SignOut();
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayBySetDateWithIndividual);
     await api.waitForFinishedBusinessProcess();
+    if (isDashboardServiceEnabled) {
+      const notification = defendantResponseFullAdmitPayBySetDate(claimAmount,date);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
+    await ResponseSteps.SignOut();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    if (isDashboardServiceEnabled) {
+      const notification = claimantNotificationOfDefendantResponse(claimAmount,date);
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDateCCJ(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
+    if (isDashboardServiceEnabled) {
+      const notification = claimantNotificationCCJRequested();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    }
   }
 }).tag('@regression-r2');
