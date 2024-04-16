@@ -1,7 +1,8 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {DASHBOARD_CLAIMANT_URL,DATE_PAID_URL,OLD_DASHBOARD_CLAIMANT_URL} from '../../urls';
+import {DASHBOARD_CLAIMANT_URL, DATE_PAID_URL, OLD_DASHBOARD_CLAIMANT_URL} from '../../urls';
 import {getDashboardForm, getNotifications} from 'services/dashboard/dashboardService';
 import {Claim} from 'models/claim';
+import {CaseState} from 'common/form/models/claimDetails';
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {ClaimantOrDefendant} from 'models/partyType';
@@ -9,7 +10,6 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isDashboardServiceEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import { CivilServiceClient } from 'client/civilServiceClient';
-import { CaseState } from 'common/form/models/claimDetails';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();

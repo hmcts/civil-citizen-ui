@@ -24,7 +24,7 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getDashboardForm, getNotifications} from 'services/dashboard/dashboardService';
 import {getClaimWithExtendedPaymentDeadline} from 'services/features/response/submitConfirmation/submitConfirmationService';
 import {ClaimantOrDefendant} from 'models/partyType';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
 
