@@ -4,7 +4,7 @@ import {addDaysToDate} from 'common/utils/dateUtils';
 import {DocumentType} from 'common/models/document/documentType';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {Document} from 'models/document/document';
-import {DashboardNotification} from "models/dashboard/dashboardNotification";
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 
 describe('dashboardInterpolationService', () => {
   const textToReplaceDynamic = 'You have {daysLeftToRespond} days left.';
