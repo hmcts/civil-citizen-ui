@@ -1,6 +1,6 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from '../../../../common/form/models/genericForm';
-import {CLAIM_DEFENDANT_PARTY_TYPE_URL, DQ_DELAYED_FLIGHT_URL} from '../../../urls';
+import {CLAIM_DEFENDANT_PARTY_TYPE_URL, DELAYED_FLIGHT_URL} from '../../../urls';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
 import {
   getDirectionQuestionnaire,
@@ -14,7 +14,7 @@ import { Airlines } from './airlinesList';
 const delayedFlightController = Router();
 const delayedFlightPath = 'features/directionsQuestionnaire/delayed-flight';
 
-delayedFlightController.get(DQ_DELAYED_FLIGHT_URL, (async (req: Request, res: Response, next: NextFunction) => {
+delayedFlightController.get(DELAYED_FLIGHT_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const delayedFlight = directionQuestionnaire.delayedFlight ? directionQuestionnaire.delayedFlight : new DelayedFlight();
@@ -25,7 +25,7 @@ delayedFlightController.get(DQ_DELAYED_FLIGHT_URL, (async (req: Request, res: Re
   }
 }) as RequestHandler);
 
-delayedFlightController.post(DQ_DELAYED_FLIGHT_URL, (async (req: Request, res: Response, next: NextFunction) => {
+delayedFlightController.post(DELAYED_FLIGHT_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     console.log('BODY: ', req.body);
 
@@ -37,12 +37,12 @@ delayedFlightController.post(DQ_DELAYED_FLIGHT_URL, (async (req: Request, res: R
 
     form.validateSync();
     if (form.hasErrors()) {
-      res.render(delayedFlightPath, {form});
+      res.render(delayedFlightPath, {form, today: new Date(), airlines: Airlines});
     } else {
       // TODO: set court
       const claimId = req.params.id;
       const claim = await getCaseDataFromStore(claimId);
-      claim.directionQuestionnaire.delayedFlight = new DelayedFlight(day, month, year);
+      claim.directionQuestionnaire.delayedFlight = new DelayedFlight(option, airline, flightNumber, year, month, day);
       // await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), form.model, 'dqPropertyName', 'delayedFlight');
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIM_DEFENDANT_PARTY_TYPE_URL));
     }
@@ -52,7 +52,7 @@ delayedFlightController.post(DQ_DELAYED_FLIGHT_URL, (async (req: Request, res: R
 }) as RequestHandler);
 
 
-// delayedFlightController.post(DQ_DELAYED_FLIGHT_URL,
+// delayedFlightController.post(DELAYED_FLIGHT_URL,
 //   async (req: Request, res: Response, next: NextFunction) => {
 //     try {
 //       const form: GenericForm<DelayedFlight> = new GenericForm(new DelayedFlight(req.body.option, getOtherWitnessDetailsForm(req)));

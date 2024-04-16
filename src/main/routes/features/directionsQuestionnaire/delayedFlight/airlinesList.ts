@@ -98,5 +98,5 @@ export const Airlines = [
   { value: "Vistara", text: "Vistara", court: "Wandsworth" },
   { value: "Tunisair", text: "Tunisair", court: "Wandsworth" },
   { value: "Delta", text: "Delta", court: "Wandsworth" },
-  { value: "Other Airways", text: "Other Airways", court: null },
+  { value: "Other", text: "Other", court: null },
 ];

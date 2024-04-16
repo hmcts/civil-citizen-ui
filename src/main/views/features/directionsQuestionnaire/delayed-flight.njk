@@ -13,7 +13,7 @@
   {{ setPageTitle(t, 'PAGES.DELAYED_FLIGHT.TITLE') }}
 {% endblock %}
 
-{# {% set otherAirlineHtml %}
+{% set otherAirlineHtml %}
   {{ govukInput({
     id: "otherAirline",
     name: "otherAirline",
@@ -26,7 +26,7 @@
       html: t(form.errorFor('otherAirline'))
     } if form.errorFor('otherAirline')
   }) }}
-{% endset %} #}
+{% endset %}
 
 {% set yesHtml %}
 
@@ -40,28 +40,15 @@
       text: t('PAGES.DELAYED_FLIGHT.AIRLINE')
     },
     items: airlines,
+    formGroup: {
+      afterInput: { 
+        html: otherAirlineHtml
+      }
+    },
     errorMessage: {
       text: t(form.errorFor("airline"))
-    } if form.hasFieldError("airline"),
-    formGroup: {
-      afterInput: otherAirlineHtml
-    }
+    } if form.hasFieldError("airline")
   }) }}
-
-  {% if form.model.airline == 'Other Airways' %}
-    {{ govukInput({
-      id: "otherAirline",
-      name: "otherAirline",
-      value: form.model.otherAirline,
-      classes: "govuk-!-width-one-half",
-      label: {
-        text: t('PAGES.DELAYED_FLIGHT.NAME_OF_AIRLINE')
-      },
-      errorMessage: {
-        html: t(form.errorFor('otherAirline'))
-      } if form.errorFor('otherAirline')
-    }) }}
-  {% endif %}
 
   {{ govukInput({
     id: "flightNumber",

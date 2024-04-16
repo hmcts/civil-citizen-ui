@@ -1,4 +1,4 @@
-import {IsDate, IsDefined, Max, Min, Validate, ValidateIf, ValidateNested} from 'class-validator';
+import {IsDate, IsDefined, IsNotEmpty, Max, Min, Validate, ValidateIf} from 'class-validator';
 import {YesNo} from '../../form/models/yesNo';
 import {OptionalDateNotInFutureValidator} from 'common/form/validators/optionalDateNotInFutureValidator';
 import {OptionalDateFourDigitValidator} from 'common/form/validators/optionalDateFourDigitValidator';
@@ -9,11 +9,11 @@ export class DelayedFlight {
     option?: YesNo;
 
   @ValidateIf(o => o.option === YesNo.YES)
-  @ValidateNested()
+  @IsNotEmpty({message: 'ERRORS.DELAYED_FLIGHT.AIRLINE_REQUIRED'})
     airline?: string;
 
   @ValidateIf(o => o.option === YesNo.YES)
-  @ValidateNested()
+  @IsNotEmpty({message: 'ERRORS.DELAYED_FLIGHT.AIRLINE_REQUIRED'})
     flightNumber?: string;
 
   @ValidateIf(o => o.option === YesNo.YES)
