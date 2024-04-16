@@ -81,6 +81,7 @@ Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
     await ResponseSteps.clickSaveButton();
     await ResponseSteps.clickSaveButton();
     await ClaimantResponseSteps.verifyEditedEmailDetails();
+    await api.waitForFinishedBusinessProcess();
     // Take Mediation Unsuccessful
     await api.mediationUnsuccessful(config.caseWorker, true);
   }
