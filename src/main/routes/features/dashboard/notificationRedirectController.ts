@@ -33,6 +33,9 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
   const claim = await getClaimById(claimId, req);
 
   switch(locationName) {
+    case 'VIEW_BUNDLE':
+      redirectUrl = '/#';
+      break;
     case 'VIEW_ORDERS_AND_NOTICES':
       redirectUrl = '/#';
       break;
