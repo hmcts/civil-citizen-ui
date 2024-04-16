@@ -289,3 +289,4 @@ export const MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND = `${MEDIATION_URL}/check
 export const MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION = `${MEDIATION_URL}/confirmation`;
 export const DASHBOARD_NOTIFICATION_REDIRECT = '/notification/:notificationId/redirect/:locationName/:id';
 export const MEDIATION_SERVICE_EXTERNAL = 'https://www.gov.uk/guidance/small-claims-mediation-service';
+export const VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT = `${MEDIATION_URL}/view-mediation-settlement-agreement-document`;
