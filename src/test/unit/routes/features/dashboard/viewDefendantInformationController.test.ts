@@ -47,4 +47,4 @@ describe('View Defendant Information', () => {
         expect(res.text).toContain(claim.case_data.respondent1.partyDetails.primaryAddress.postCode);
       });
   });
-})
+});

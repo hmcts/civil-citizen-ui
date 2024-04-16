@@ -12,7 +12,6 @@ import { Claim } from 'common/models/claim';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 import { VIEW_CLAIMANT_INFO } from 'routes/urls';
 
-
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('modules/utilityService', () => ({
@@ -48,4 +47,4 @@ describe('View Defendant Information', () => {
         expect(res.text).toContain(claim.case_data.applicant1.partyDetails.primaryAddress.postCode);
       });
   });
-})
+});
