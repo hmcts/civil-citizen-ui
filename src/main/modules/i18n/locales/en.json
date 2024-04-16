@@ -1432,6 +1432,7 @@
         "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Wait for the defendant to pay you.",
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
         "CLAIM_ENDED": "You stopped this claim.",
+        "CLAIM_FEE_NOT_PAID": "Pay the claim fee.",
         "CLAIM_SUBMIT_HWF": "We're checking your Help with Fees Application.",
         "CLAIMANT_REJECTED_PAYMENT_PLAN": "You need to send the defendant’s financial details to the court.",
         "CLAIMANT_REQUESTED_CCJ": "You requested a County Court Judgment against {{defendantName}}.",
@@ -1452,7 +1453,8 @@
         "NOT_ADMITTED_CLAIMANT": "Respond to the defendant.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post.",
-        "WAITING_COURT_REVIEW": "Wait for the court to review the case."
+        "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
+        "WAITING_TRANSLATED_DOCUMENTS": "The documents are being translated."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
