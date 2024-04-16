@@ -85,10 +85,18 @@ module.exports = {
     };
   },
 
-  defendantResponseFullAdmitPayImmediately: (fullAmount, deadline) => {
+  defendantResponseFullAdmitPayImmediately: (amount, deadline) => {
     return {
       title: 'Response to the claim',
-      content: `You have offered to pay £${fullAmount} by ${deadline}. The payment must clear the account by then, if not the claimant can request a county court judgment.`,
+      content: `You have offered to pay £${amount} by ${deadline}. The payment must clear the account by then, if not the claimant can request a county court judgment.`,
+      nextSteps: 'View your response'
+    };
+  },
+
+  defendantResponseFullAdmitPayInstalments: (amount, instalmentAmount, date) => {
+    return {
+      title: 'Response to the claim',
+      content: [`You have offered to pay £${amount} in instalments of £${instalmentAmount} every month starting ${date}.`, 'The court will contact you when they respond.'],
       nextSteps: 'View your response'
     };
   },
