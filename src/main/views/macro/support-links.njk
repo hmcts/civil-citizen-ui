@@ -1,30 +1,11 @@
 {% from "./external-link.njk" import externalLink %}
 {% import "external-urls.njk" as externalURLs %}
 
-{% macro supportLinks(t, showContanctCourtLink, showTellUsEndedLink, showGetDebtRespiteLink, datePaidUrl) %}
+{% macro supportLinks(t, title, links) %}
 
-  <div>
-    {% if showContanctCourtLink or showTellUsEndedLink or showGetDebtRespiteLink %}
-      <p class="govuk-heading-m govuk-!-margin-bottom-2">{{ t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO') }}</p>
-    {% endif %}
-    {% if showContanctCourtLink %}
-      <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', externalURLs.applicationNoticeUrl, false) }}</p>
-    {% endif %}
-    {% if showTellUsEndedLink %}
-      <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_ENDED', datePaidUrl, false) }}</p>
-    {% endif %}
-    {% if showGetDebtRespiteLink %}
-      <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', externalURLs.getDebtRespiteUrl, false) }}</p>
-    {% endif %}
-  </div>
-  <div class="govuk-!-margin-top-8">
-    <p class="govuk-heading-m govuk-!-margin-bottom-2">{{ t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT') }}</p>
-    <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES', externalURLs.feesHelpUrl, false) }}</p>
-    <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.FIND_MEDIATION', externalURLs.findOutMediationUrl, false) }}</p>
-    <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.WHAT_EXPECT_HEARING', externalURLs.whatToExpectUrl, false) }}</p>
-    <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF', externalURLs.representYourselfUrl, false) }}</p>
-    <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE', externalURLs.findLegalAdviceUrl, false) }}</p>
-    <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, 'PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT', externalURLs.findCourtTribunalUrl, false) }}</p>
-  </div>
+  <p class="govuk-heading-m govuk-!-margin-bottom-2">{{ title }}</p>
+  {% for link in links %}
+    <p class="govuk-body govuk-!-margin-bottom-1">{{ externalLink(t, link.text, link.url, false) }}</p>
+  {% endfor %}
 
 {% endmacro %}

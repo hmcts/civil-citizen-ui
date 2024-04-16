@@ -8,3 +8,16 @@ export const tenancyServiceUrl = 'https://www.gov.uk/tenancy-deposit-protection/
 export const feesHelpUrl = 'https://www.gov.uk/get-help-with-court-fees';
 export const smartSurveyUrl = 'https://www.smartsurvey.co.uk/s/CMC_Feedback/?pageurl=/eligibility';
 export const essentialCookiesUrl = 'https://hmcts-access.service.gov.uk/cookies';
+export const countyCourtJudgmentsUri = 'https://www.gov.uk/county-court-judgments-ccj-for-debt';
+export const courtFeesUri = 'https://www.gov.uk/make-court-claim-for-money/court-fees';
+export const countyCourtBusinessCentreUri = 'https://www.find-court-tribunal.service.gov.uk/courts/county-court-business-centre-ccbc';
+export const enforceJudgementUrl = 'https://www.gov.uk/make-court-claim-for-money/enforce-a-judgment';
+export const claimCreationSmartSurveyUrl = 'https://www.smartsurvey.co.uk/s/CMC_ExitSurvey_Claimant/?pageUrl=/claim/claimId/confirmation';
+export const callChargesUrl = 'https://www.gov.uk/call-charges';
+export const applicationNoticeUrl = 'https://www.gov.uk/government/publications/form-n244-application-notice';
+export const getDebtRespiteUrl = 'https://manage-users-debt-respite-breathing-space.service.gov.uk';
+export const findOutMediationUrl = 'https://www.gov.uk/guidance/a-guide-to-civil-mediation';
+export const whatToExpectUrl = 'https://www.gov.uk/guidance/what-to-expect-coming-to-a-court-or-tribunal';
+export const representYourselfUrl = 'https://www.gov.uk/represent-yourself-in-court';
+export const findLegalAdviceUrl = 'https://www.gov.uk/find-legal-advice';
+export const findCourtTribunalUrl = 'https://www.gov.uk/find-court-tribunal';

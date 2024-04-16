@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 import config from 'config';
 import {AppRequest} from 'models/AppRequest';
-import {CASE_DOCUMENT_DOWNLOAD_URL, DATE_PAID_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
   isCUIReleaseTwoEnabled,
@@ -24,7 +24,16 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getDashboardForm, getNotifications} from 'services/dashboard/dashboardService';
 import {getClaimWithExtendedPaymentDeadline} from 'services/features/response/submitConfirmation/submitConfirmationService';
 import {ClaimantOrDefendant} from 'models/partyType';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {t} from 'i18next';
+import { 
+  applicationNoticeUrl, 
+  feesHelpUrl, 
+  findCourtTribunalUrl, 
+  findLegalAdviceUrl, 
+  findOutMediationUrl, 
+  representYourselfUrl, 
+  whatToExpectUrl,
+} from '../../../../test/utils/externalURLs';
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
 
@@ -44,20 +53,18 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
       const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest);
       const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest);
-      const datePaidUrl = constructResponseUrlWithIdParams(claimId, DATE_PAID_URL);
-      const showContanctCourtLink = true;
-      const showTellUsEndedLink = false;
-      const showGetDebtRespiteLink = false;
+      const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks();
+
       res.render(claimSummaryRedesignViewPath, 
         {
           claim,
           claimId,
           dashboardTaskList,
           dashboardNotifications,
-          datePaidUrl,
-          showContanctCourtLink,
-          showTellUsEndedLink,
-          showGetDebtRespiteLink,
+          iWantToTitle,
+          iWantToLinks,
+          helpSupportTitle,
+          helpSupportLinks,
         },
       );
     } else {
@@ -74,6 +81,24 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
     next(error);
   }
 }) as RequestHandler);
+
+const getSupportLinks = () => {
+  const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO');
+  const iWantToLinks = [
+    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'), url: applicationNoticeUrl },
+  ]
+
+  const helpSupportTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT');
+  const helpSupportLinks = [
+    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'), url: feesHelpUrl },
+    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_MEDIATION'), url: findOutMediationUrl },
+    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.WHAT_EXPECT_HEARING'), url: whatToExpectUrl },
+    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF'), url: representYourselfUrl },
+    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE'), url: findLegalAdviceUrl },
+    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'), url: findCourtTribunalUrl },
+  ]
+  return [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] as const;
+};
 
 async function getTabs(claimId: string, claim: Claim, lang: string, respondentPaymentDeadline?: Date): Promise<TabItem[]>
 {

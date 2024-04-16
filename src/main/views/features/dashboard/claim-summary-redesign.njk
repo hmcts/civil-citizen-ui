@@ -65,7 +65,14 @@
 
         <div class="govuk-grid-column-one-third">
           <div class="border-small-top"></div>
-          {{ supportLinks(t, showContanctCourtLink, showTellUsEndedLink, showGetDebtRespiteLink, datePaidUrl) }}
+          {% if iWantToLinks.length %}
+            <div class="govuk-!-margin-bottom-8">
+              {{ supportLinks(t, iWantToTitle, iWantToLinks) }}
+            </div>
+          {% endif %}
+          {% if helpSupportLinks.length %}
+            {{ supportLinks(t, helpSupportTitle, helpSupportLinks) }}
+          {% endif %}
           <div class="govuk-!-padding-top-8">
             {{ contactUsForHelp(t) }}
           </div>
