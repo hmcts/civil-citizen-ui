@@ -1,9 +1,9 @@
-const config = require('./../../config');
-const LoginSteps = require('./../commonFeatures/home/steps/login');
-const ResponseSteps = require('./../citizenFeatures/response/steps/lipDefendantResponseSteps');
-const ClaimantResponseSteps = require('./../citizenFeatures/response/steps/lipClaimantResponseSteps');
+const config = require('../../../config');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
+const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const ClaimantResponseSteps = require('../../citizenFeatures/response/steps/lipClaimantResponseSteps');
 
-const {createAccount} = require('./../specClaimHelpers/api/idamHelper');
+const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
 const rejectAll = 'rejectAll';

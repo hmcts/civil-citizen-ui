@@ -1,8 +1,8 @@
-const config = require('../../../config');
-const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
-const LoginSteps = require('../../commonFeatures/home/steps/login');
-const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
-const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
+const config = require('../../../../config');
+const ResponseSteps = require('../../../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const LoginSteps = require('../../../commonFeatures/home/steps/login');
+const CitizenDashboardSteps = require('../../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
+const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 // const UploadTranslatedDocumentsSteps = require('../../caseworkerFeatures/uploadTranslatedDocuments/steps/uploadTranslatedDocumentsSteps');
 // const CaseworkerDashboardSteps = require('../../caseworkerFeatures/caseworkerDashboard/steps/caseworkerDashboardSteps');
 // const defendantWelshRequestTaskDetails = require('../../specClaimHelpers/fixtures/waTaskDetails/defendantWelshRequestTaskDetails'); 

@@ -1,5 +1,5 @@
 const config = require('../../../config');
-const LoginSteps = require('./../commonFeatures/home/steps/login');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
 const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const TrialArrangementSteps = require('../../citizenFeatures/caseProgression/steps/trialArrangementSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
