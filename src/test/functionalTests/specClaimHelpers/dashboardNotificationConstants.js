@@ -10,8 +10,8 @@ module.exports = {
   payClaimFee: (feeAmount) => {
     return {
       title: 'You need to pay your claim fee',
-      content: `Your claim has not yet been issued, in order to proceed you must pay the claim fee of £${feeAmount}. Pay the claim fee.`, 
-      nextSteps: 'Pay the claim fee',   
+      content: `Your claim has not yet been issued, in order to proceed you must pay the claim fee of £${feeAmount}. Pay the claim fee.`,
+      nextSteps: 'Pay the claim fee',
     };
   },
 
@@ -23,11 +23,11 @@ module.exports = {
     };
   },
 
-  respondToClaim: async () => {
+  respondToClaim: () => {
     return {
       title: 'You haven´t responded to the claim',
       content: 'days remaining. Respond to the claim.',
-      nextSteps: 'Respond to the claim',   
+      nextSteps: 'Respond to the claim',
     };
   },
 
@@ -57,7 +57,7 @@ module.exports = {
   hwfMoreInfoRequired: () => {
     return {
       title: 'Your help with fees application needs more information',
-      content: ['We need more information on your application for help with the claim fee.', 
+      content: ['We need more information on your application for help with the claim fee.',
         'You\'ve been sent an email with further details. If you\'ve already read the email and taken action, disregard this message.',
         'You can pay by phone by calling 0300 123 7050.'],
     };
@@ -84,4 +84,12 @@ module.exports = {
       content: 'You\'ve applied for help with the claim fee. You\'ll receive an update from us within 5 to 10 working days.',
     };
   },
-};
+
+  defendantResponseFullAdmitPayImmediately: (fullAmount, deadline) => {
+    return {
+      title: 'Response to the claim',
+      content: `You have offered to pay £${fullAmount} by ${deadline}. The payment must clear the account by then, if not the claimant can request a county court judgment.`,
+      nextSteps: 'View your response'
+    };
+  },
+}
