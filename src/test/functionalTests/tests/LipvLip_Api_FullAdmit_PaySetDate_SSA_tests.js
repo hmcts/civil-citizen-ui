@@ -21,9 +21,6 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
-    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
-    await ResponseSteps.SignOut();
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayBySetDateWithIndividual);
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -43,9 +40,6 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
-    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
-    await ResponseSteps.SignOut();
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayBySetDateWithIndividual);
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

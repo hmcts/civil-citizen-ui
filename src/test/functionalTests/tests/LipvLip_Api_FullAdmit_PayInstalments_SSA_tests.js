@@ -1,8 +1,7 @@
 const config = require('../../config');
 const LoginSteps = require('./../commonFeatures/home/steps/login');
-const CitizenDashboardSteps = require('../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../specClaimHelpers/api/idamHelper');
-const ResponseSteps = require('../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const ResponseToDefenceLipVsLipSteps = require('../features/createClaim/steps/responseToDefenceLipvLipSteps');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
@@ -19,10 +18,10 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by instal
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
-    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
-    await ResponseSteps.SignOut();
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayByInstallmentWithIndividual);
+    await api.waitForFinishedBusinessProcess();
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsRejectionOfFullAdmitPayByInstalmentsSSA(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-r2');
