@@ -9,6 +9,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isDashboardServiceEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import { CivilServiceClient } from 'client/civilServiceClient';
+import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -33,10 +34,11 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       } else {
         claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
         caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
-        dashboardId = claimId;  
+        dashboardId = claimId;
       }
+      const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req);
-      const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req);
+      const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, carmEnabled);
       res.render(claimantDashboardViewPath, {claim:claim, claimId, dashboardTaskList:dashboard, dashboardNotifications, lng});
     } else {
       res.redirect(constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL));

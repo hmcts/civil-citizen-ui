@@ -6,11 +6,14 @@ import {Claim} from 'models/claim';
 import {replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest): Promise<Dashboard> => {
+const CARM_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Mediation', 'Mediation', []));
+
+export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, carmEnabled = false): Promise<Dashboard> => {
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
     dashboard.items.forEach((taskList) => {
@@ -21,7 +24,11 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
         task.hintTextCy = replaceDashboardPlaceholders(task.hintTextCy, claim, claimId);
       });
     });
-    return dashboard;
+    //remove carm sections
+    if (!carmEnabled){
+      dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
+    }
+    return dashboard ;
   } else {
     throw new Error('Dashboard not found...');
   }
