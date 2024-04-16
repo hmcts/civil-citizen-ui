@@ -24,6 +24,7 @@ export class CitizenDate {
     day: number;
 
   constructor(day?: string, month?: string, year?: string) {
+    console.log('CONSTRUCTOR CitizenDate: ', DateConverter.convertToDate(year, month, day));
     this.date = DateConverter.convertToDate(year, month, day);
     this.year = Number(year);
     this.month = Number(month);
