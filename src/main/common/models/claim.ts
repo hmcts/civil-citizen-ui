@@ -163,7 +163,8 @@ export class Claim {
   claimIssuedHwfDetails?: CCDHelpWithFeesDetails;
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
-
+  mediationSettlementAgreedAt?: Date;
+  
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
     claim.claimDetails = toCUIClaimDetails(ccdClaim);
