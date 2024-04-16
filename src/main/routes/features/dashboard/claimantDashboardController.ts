@@ -40,10 +40,16 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req);
       const datePaidUrl = constructResponseUrlWithIdParams(claimId, DATE_PAID_URL);
       const showContanctCourtLink = claim.isDefendantNotResponded();
-      const showTellUsEndedLink = claim.ccdState !== CaseState.PENDING_CASE_ISSUED &&
-        claim.ccdState !== CaseState.CASE_ISSUED &&
-        claim.ccdState !== CaseState.AWAITING_CASE_DETAILS_NOTIFICATION &&
-        claim.ccdState !== CaseState.All_FINAL_ORDERS_ISSUED;
+
+      const showTellUsEndedLink = claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
+        claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
+        claim.ccdState === CaseState.IN_MEDIATION ||
+        claim.ccdState === CaseState.JUDICIAL_REFERRAL ||
+        claim.ccdState === CaseState.CASE_PROGRESSION ||
+        claim.ccdState === CaseState.HEARING_READINESS ||
+        claim.ccdState === CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING ||
+        claim.ccdState === CaseState.DECISION_OUTCOME;
+
       const showGetDebtRespiteLink = claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
         claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION;
         
