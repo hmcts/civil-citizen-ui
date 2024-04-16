@@ -48,4 +48,6 @@ export const IGNORED_URLS = [
   urls.MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND,
   urls.TESTING_SUPPORT_URL,
   urls.DASHBOARD_CLAIMANT_URL,
+  // WCAG2AA.Principle1.Guideline1_3.1_3_1.H39.3.LayoutTable - govUK has caption on tables
+  urls.VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT,
 ];
