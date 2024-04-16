@@ -4,7 +4,7 @@ import {
   DocumentLinkInformation,
   DocumentsViewComponent,
 } from 'form/models/documents/DocumentsViewComponent';
-import {CASE_DOCUMENT_DOWNLOAD_URL, CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
+import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
@@ -30,7 +30,7 @@ export const mapperDefendantResponseToDocumentView = (documentTitle: string, fil
       fileName,
       formatDateToFullDate(claim.respondent1ResponseDate, lang),
       new DocumentLinkInformation(
-        CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId)
+        CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
           .replace(':documentId',
             getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)),
         `defendant-response-${caseId}.pdf`))));
