@@ -11,6 +11,7 @@ import {
   UploadedEvidenceFormatter,
 } from 'services/features/caseProgression/uploadedEvidenceFormatter';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {formatDateSlash} from 'common/utils/dateUtils';
 
 export function getBundlesContent(claimId: string, claim: Claim, lang: string): ClaimSummaryContent[] {
 
@@ -91,7 +92,7 @@ function getBundleTableRows(claimId: string, claim: Claim, lng: string): TableCe
       const bundleNumber = bundles.length-i;
       tableRows.push([
         {html: t('PAGES.CLAIM_SUMMARY.BUNDLES.DOCUMENT_TITLE', lng) + ' ' + bundleNumber},
-        {html: bundle.getFormattedCreatedOn},
+        {html: formatDateSlash(bundle.createdOn)},
         {html: bundleLink},
       ]);
       i++;
@@ -159,6 +160,6 @@ function addUploadedAfterBundleToTable(document: UploadDocumentTypes, claimId: s
     const documentTypeName = UploadedEvidenceFormatter.getDocumentTypeName(document.documentType, lang);
     const documentLink = UploadedEvidenceFormatter.getDocumentLink(document, claimId);
 
-    tableRows.push([{html: documentTypeName}, {html: document.createdDateTimeFormatted}, {html: documentLink}]);
+    tableRows.push([{html: documentTypeName}, {html: formatDateSlash(document?.caseDocument?.createdDatetime)}, {html: documentLink}]);
   }
 }

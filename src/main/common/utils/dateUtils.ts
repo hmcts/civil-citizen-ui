@@ -93,6 +93,15 @@ export const formatStringDateSlash = (text: string) => {
   return `${day}/${month}/${year}`;
 };
 
+export const formatDateSlash = (dateToFormat: Date) => {
+  const date = new Date(dateToFormat);
+  const day = date.getDate().toString();
+  const month = (date.getUTCMonth() + 1).toString();
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
 export const checkEvidenceUploadTime = (date: Date): boolean => {
 
   const endOfDay = 18;

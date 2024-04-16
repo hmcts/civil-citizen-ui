@@ -15,6 +15,7 @@ import {UploadedEvidenceFormatter} from 'services/features/caseProgression/uploa
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 import {getMockDocument, getMockDocumentBinary} from '../../../../../utils/mockDocument';
 import {CaseRole} from 'form/models/caseRoles';
+import {formatDateSlash} from 'common/utils/dateUtils';
 
 jest.mock('i18next');
 jest.mock('services/features/caseProgression/uploadedEvidenceFormatter');
@@ -100,7 +101,7 @@ describe('getBundlesContent', () =>{
       checkForBundleTableHeaders(bundleTabActual);
       checkForBundleTableFirstRow(bundleTabActual);
       expect(bundleTabActual[0].contentSections[3].data.tableRows[1][0].html).toMatch(title);
-      expect(bundleTabActual[0].contentSections[3].data.tableRows[1][1].html).toMatch(bundle.getFormattedCreatedOn);
+      expect(bundleTabActual[0].contentSections[3].data.tableRows[1][1].html).toMatch(formatDateSlash(bundle.createdOn));
       expect(bundleTabActual[0].contentSections[3].data.tableRows[1][2].html).toMatch(documentUrlElement);
       expect(bundleTabActual[1]).toBeUndefined();
     });
@@ -179,10 +180,10 @@ describe('getBundlesContent', () =>{
       expect(bundleTabActual[1].contentSections[0].data.text).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS_CLAIMANT');
       expect(bundleTabActual[1].contentSections[1].data.text).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_DOCUMENTS_BELOW');
       expect(bundleTabActual[1].contentSections[2].data.tableRows[0][0].html).toMatch(EvidenceUploadDisclosure.DISCLOSURE_LIST);
-      expect(bundleTabActual[1].contentSections[2].data.tableRows[0][1].html).toMatch(uploadedDisclosureEvidence.createdDateTimeFormatted);
+      expect(bundleTabActual[1].contentSections[2].data.tableRows[0][1].html).toMatch(formatDateSlash(uploadedDisclosureEvidence?.caseDocument?.createdDatetime));
       expect(bundleTabActual[1].contentSections[2].data.tableRows[0][2].html).toMatch(documentURL);
       expect(bundleTabActual[1].contentSections[2].data.tableRows[1][0].html).toMatch(EvidenceUploadWitness.WITNESS_STATEMENT);
-      expect(bundleTabActual[1].contentSections[2].data.tableRows[1][1].html).toMatch(uploadedWitnessEvidence.createdDateTimeFormatted);
+      expect(bundleTabActual[1].contentSections[2].data.tableRows[1][1].html).toMatch(formatDateSlash(uploadedWitnessEvidence?.caseDocument?.createdDatetime));
       expect(bundleTabActual[1].contentSections[2].data.tableRows[1][2].html).toMatch(documentURL);
       expect(bundleTabActual[1].contentSections[2].data.tableRows[2]).toBeUndefined();
       expect(bundleTabActual[2]).toBeUndefined();
@@ -214,10 +215,10 @@ describe('getBundlesContent', () =>{
       expect(bundleTabActual[2].contentSections[0].data.text).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS_DEFENDANT');
       expect(bundleTabActual[2].contentSections[1].data.text).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_DOCUMENTS_BELOW');
       expect(bundleTabActual[2].contentSections[2].data.tableRows[0][0].html).toMatch(EvidenceUploadExpert.STATEMENT);
-      expect(bundleTabActual[2].contentSections[2].data.tableRows[0][1].html).toMatch(uploadedExpertEvidence.createdDateTimeFormatted);
+      expect(bundleTabActual[2].contentSections[2].data.tableRows[0][1].html).toMatch(formatDateSlash(uploadedExpertEvidence?.caseDocument?.createdDatetime));
       expect(bundleTabActual[2].contentSections[2].data.tableRows[0][2].html).toMatch(documentURL);
       expect(bundleTabActual[2].contentSections[2].data.tableRows[1][0].html).toMatch(EvidenceUploadTrial.SKELETON_ARGUMENT);
-      expect(bundleTabActual[2].contentSections[2].data.tableRows[1][1].html).toMatch(uploadedTrialEvidence.createdDateTimeFormatted);
+      expect(bundleTabActual[2].contentSections[2].data.tableRows[1][1].html).toMatch(formatDateSlash(uploadedTrialEvidence?.caseDocument?.createdDatetime));
       expect(bundleTabActual[2].contentSections[2].data.tableRows[1][2].html).toMatch(documentURL);
       expect(bundleTabActual[2].contentSections[2].data.tableRows[2]).toBeUndefined();
     });
@@ -296,6 +297,6 @@ function checkForBundleTableHeaders(bundleTabActual: ClaimSummaryContent[]){
 
 function checkForBundleTableFirstRow(bundleTabActual: ClaimSummaryContent[]){
   expect(bundleTabActual[0].contentSections[3].data.tableRows[0][0].html).toMatch(title +' 2');
-  expect(bundleTabActual[0].contentSections[3].data.tableRows[0][1].html).toMatch(bundle.getFormattedCreatedOn);
+  expect(bundleTabActual[0].contentSections[3].data.tableRows[0][1].html).toMatch(formatDateSlash(bundle.createdOn));
   expect(bundleTabActual[0].contentSections[3].data.tableRows[0][2].html).toMatch(documentUrlElement);
 }
