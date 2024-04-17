@@ -377,10 +377,6 @@ camunda-bpm:
     ingressHost: civil-cui-camunda-staging.aat.platform.hmcts.net
     disableKeyVaults: true
     releaseNameOverride: ${SERVICE_NAME}-camunda
-    devcpuRequests: 500m
-    devmemoryRequests: 512Mi
-    devcpuLimits: 1
-    devmemoryLimits: 1Gi
     environment:
       CAMUNDA_API_AUTH_ENABLED: false
       CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
