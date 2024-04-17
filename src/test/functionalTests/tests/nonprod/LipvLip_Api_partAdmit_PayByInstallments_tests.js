@@ -18,16 +18,11 @@ Scenario('Response with PartAdmit-PayByInstallments SmallClaims @citizenUI @part
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
-    //await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    //await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual);
     await api.waitForFinishedBusinessProcess();
     //Claimant response below here
-    console.log("XXcsdcsdclkj");
-    console.log(claimRef);
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitInstallmentsPayment(claimRef, '1345');
-    pause();
     await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-r2');

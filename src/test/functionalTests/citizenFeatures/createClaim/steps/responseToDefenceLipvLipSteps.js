@@ -30,7 +30,12 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifyDefResponseForPartAdmitInstallmentPayment(admittedAmount);
     await this.verifyDashboardLoaded();
     I.click(paths.links.accept_or_reject_the_plan);
-
+    await responseToDefence.acceptOrRejectTheAmountDefendantAdmittedAndSettle(admittedAmount, 'reject');
+    await this.verifyDQForSmallClaims();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.check_and_submit_your_response);
+    await responseToDefence.acceptOrRejectTheAmountCYA('reject');
+    await responseToDefence.verifyAcceptOrRejectConfirmationScreen('reject', '1500');
   }
 
   async claimantAcceptForDefRespPartAdmitImmediatePayment(caseReference, admittedAmount) {
