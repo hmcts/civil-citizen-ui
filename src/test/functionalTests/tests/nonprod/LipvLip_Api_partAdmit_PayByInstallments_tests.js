@@ -2,6 +2,7 @@ const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
+const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 
@@ -17,13 +18,15 @@ Scenario('Response with PartAdmit-PayByInstallments SmallClaims @citizenUI @part
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
-    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-    await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
+    //await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    //await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual);
     await api.waitForFinishedBusinessProcess();
     //Claimant response below here
+    console.log("XXcsdcsdclkj");
+    console.log(claimRef);
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitInstallmentsPayment(claimRef, '200');
+    await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitInstallmentsPayment(claimRef, '1345');
     pause();
     await api.waitForFinishedBusinessProcess();
   }

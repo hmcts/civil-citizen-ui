@@ -79,6 +79,14 @@ class ResponseToDefence {
     I.click(paths.buttons.continue);
   }
 
+  async verifyDefResponseForPartAdmitInstallmentPayment(claimAmount) {
+    I.waitForContent('Why they don’t owe the amount claimed?', 60);
+    I.see('The defendant suggested this repayment plan:');
+    I.see(`disagree with the claim amount ${claimAmount} is original`);
+    I.see(`They’ve offered to pay you £${claimAmount} in instalments. This is the total amount you’ll be paid, including the claim fee and interest if applicable.`);
+    I.click(paths.buttons.continue);
+  }
+
   async verifyDefResponseForPartAdmitImmediatePayment(claimAmount) {
     I.waitForContent('Why they don’t owe the amount claimed?', 60);
     I.see('Contracts and agreements');
