@@ -33,7 +33,7 @@ class LoginPage {
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);
     await I.click(buttons.submit);
-    await I.seeInCurrentUrl('/dashboard')
+    await I.seeInCurrentUrl('/dashboard');
   }
 
   async loginOCMC(email, password) {

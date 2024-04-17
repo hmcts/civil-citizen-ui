@@ -4,12 +4,10 @@ const EligibilityCheckOCMC = require('../pages/eligibilityCheckOCMC');
 const CreateClaim = require('../pages/createClaim');
 const CreateClaimOCMC = require('../pages/createClaimOCMC');
 
-
 const eligibilityCheck = new EligibilityCheck();
 const eligibilityCheckOCMC = new EligibilityCheckOCMC();
 const createClaim = new CreateClaim();
 const createClaimOCMC = new CreateClaimOCMC();
-
 
 const paths = {
   links: {
@@ -79,7 +77,7 @@ class CreateClaimSteps {
     await eligibilityCheckOCMC.eligibilityHWFReference();
   }
 
-  async CreateClaimCreationOCMC(claimInterestFlag) {
+  async CreateClaimCreationOCMC() {
     I.click('Resolving this dispute');
     await createClaimOCMC.verifyTryToResolveTheDispute();
     I.click('Completing your claim');

@@ -87,13 +87,6 @@ const paths = {
 
 class CreateClaimOCMC {
 
-  async verifyDashboard() {
-    I.waitForContent('Submit', 60, 'h2');
-    I.see('After you have completed all the actions you will be taken to a page where you can check your answers before submitting.');
-    I.see('Consider other options', 'h2');
-    I.see('Prepare your claim', 'h2');
-  }
-
   async verifyTryToResolveTheDispute() {
     I.waitForContent('explaining you\'ll make a claim against them if they don\'t follow your timetable',60);
     I.see('Try to resolve the dispute', 'h1');
@@ -113,7 +106,7 @@ class CreateClaimOCMC {
     I.click('.button');
   }
 
-    verifyAboutYouAndThisClaimForClaimant() {
+  verifyAboutYouAndThisClaimForClaimant() {
     I.waitForContent('For example a partnership, trust, charity, club or association',60);
     I.see('About you and this claim', 'h1');
     I.see('An individual');
@@ -147,7 +140,6 @@ class CreateClaimOCMC {
 
   verifyEnterDefendantsDetails() {
     I.waitForContent('Enter a UK postcode', 60);
-
   }
 
   inputEnterYourDetails(claimantFlag) {
@@ -163,18 +155,13 @@ class CreateClaimOCMC {
     this.selectAddress(claimantFlag);
   }
 
-  selectAddress(claimantFlag) {
+  selectAddress() {
     I.fillField(paths.buttons.find_address_field, 'MK5 7HH');
     I.click('Find address');
     I.wait(2);
     I.see('Pick an address');
-    if (claimantFlag === true) {
-      I.selectOption('Pick an address','THE COMMUNITY CENTRE, EGERTON GATE, SHENLEY BROOK END, MILTON KEYNES, MK5 7HH');
-    } else if (claimantFlag === false) {
-      I.selectOption('Pick an address','ARCANA, 54, EGERTON GATE, SHENLEY BROOK END, MILTON KEYNES, MK5 7HH');
-    }
+    I.selectOption('Pick an address','ARCANA, 54, EGERTON GATE, SHENLEY BROOK END, MILTON KEYNES, MK5 7HH');
     I.wait(2);
-    if(claimantFlag) { I.click('#hasCorrespondenceAddressfalse')}
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
@@ -215,35 +202,10 @@ class CreateClaimOCMC {
     I.waitForContent('Claim amount',60);
   }
 
-  async verifyAndInputDoYouWantToClaimInterest(claimInterestFlag) {
+  async verifyAndInputDoYouWantToClaimInterest() {
     I.waitForContent('No', 60);
     I.see('Yes');
     I.click(paths.options.no);
-    this.clickNextAction(paths.buttons.save_and_continue);
-  }
-
-  async verifyAndInputHowDoYouWantToClaimInterest() {
-    I.waitForContent('Break down interest for different time periods or items',60);
-    I.see('How do you want to claim interest?', 'h1');
-    I.see('Same rate for the whole period');
-    I.click(paths.options.same_rate_for_the_whole_period);
-    this.clickNextAction(paths.buttons.save_and_continue);
-  }
-
-  async verifyAndInputWhatAnnualRateOfInterestDoYouWantToClaim() {
-    I.waitForContent('A different rate', 60);
-    I.see('What annual rate of interest do you want to claim?', 'h1');
-    I.see('You can claim 8% per year unless you know that a different rate applies.:');
-    I.click(paths.options.same_interest_rate_type);
-    this.clickNextAction(paths.buttons.save_and_continue);
-    I.waitForContent('When are you claiming interest from', 60);
-    I.waitForElement(paths.options.date_that_you_submit_claim);
-    I.click(paths.options.date_that_you_submit_claim);
-  }
-
-  async verifyAndInputWhenWillYouClaimInterestFrom() {
-    I.waitForContent('For example the date an invoice was overdue or that you told someone they owed you the money.',60); 
-    I.click(paths.options.when_will_you_claim_interest_from);
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
@@ -273,10 +235,6 @@ class CreateClaimOCMC {
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
-  async verifyClaimDetailsTimeline() {
-    I.waitForContent('What happened',60);
-  }
-
   async inputClaimDetailsTimeline() {
     I.fillField(paths.fields.timeline_row_0_date, '01/06/1975');
     I.fillField(paths.fields.timeline_row_0_description, 'Drafting of Contracts');
@@ -284,37 +242,20 @@ class CreateClaimOCMC {
     this.clickNextAction(paths.buttons.save_and_continue);
   }
 
-  async verifyListEvidence() {
-    I.waitForContent('If your case goes to a court hearing, and is not settled, you will need to provide evidence.', 60);
-    I.see('List your evidence', 'h1');
-    I.see('List your evidence (optional)');
-    I.see('Tell us about any evidence you wish to provide.');
-    I.see('You do not need to send us any evidence now.');
-  }
-
   async inputEvidenceList() {
     I.waitForContent('If your case goes to a court hearing, and is not settled, you will need to provide evidence.', 60);
     this.clickNextAction(paths.buttons.save_and_continue);
-    I.click('I don\'t want to answer these questions')
+    I.click('I don\'t want to answer these questions');
   }
 
-  async rerouteFromEqualityAndDiversity(checkAndSubmitClaim) {
-    let url = await I.grabCurrentUrl();
-    //Check if PCQ page appears
-    if (url.includes('pcq')) {
-      I.amOnPage('/claim/task-list');
-      I.click(checkAndSubmitClaim);
-    }
-  }
-
-  async verifyCheckYourAnswers(claimInterestFlag) {
+  async verifyCheckYourAnswers() {
     I.waitForContent('a false statement in a document verified by a statement of truth without an honest belief in its truth.', 60);
 
     I.checkOption(paths.fields.statement_of_truth);
     I.click(paths.buttons.submit_claim);
   }
 
-  async verifyClaimSubmitted(isHWFClaim = false) {
+  async verifyClaimSubmitted() {
     I.waitForContent('Monday to Friday, 8.30am to 5pm.', 60);
     I.see('Claim submitted', 'h1');
     I.see('Your claim number:');
@@ -323,208 +264,8 @@ class CreateClaimOCMC {
     return claimReference;
   }
 
-  async verifyAndInputPayYourClaimFee(claimAmount, claimFee) {
-    I.waitForContent('You can ask the defendant to pay back your claim fee as part of the settlement.', 60);
-    I.see('Pay your claim fee', 'h1');
-    I.see('Claim amount');
-    I.see(claimAmount);
-    I.see('Claim fee');
-    I.see(claimFee);
-    I.see('Total claim amount');
-    I.see(claimAmount+claimFee);
-    I.see('If you settle out of court we won\'t refund your claim fee.');
-    await I.click(`continue to payment(£${claimFee})`);
-  }
-
-  async verifyAndInputCardDetails() {
-    I.waitForContent('£115.00', 60);
-    I.see('Enter card details', 'h1');
-    I.see('Payment summary','h2');
-    I.see('card payment');
-    I.see('Total amount:');
-    I.fillField('#card-no' ,'4444333322221111');
-    I.fillField('#expiry-month' ,new Date().getMonth());
-    I.fillField('#expiry-year' ,new Date().getFullYear()+1);
-    I.fillField('#cardholder-name','Test Name');
-    I.fillField('#cvc', '444');
-    I.fillField('[autocomplete=\'billing address-line1\']', '220 Helena House');
-    I.fillField('#address-city','Swansea');
-    I.fillField('#address-postcode','SA1 1XW');
-    I.fillField('#email','testxxx@hmcts.net');
-    await I.click('Continue');
-  }
-  async verifyConfirmYourPayment() {
-    I.waitForContent('£115.00', 60);
-    I.see('Confirm your payment','h1');
-    I.see('Payment summary','h2');
-    I.see('card payment');
-    I.see('Total amount:');
-    await I.click('Confirm payment');
-  }
-
-  async verifyYourPaymentWasSuccessfull() {
-    I.waitForContent('£115', 60);
-    I.see('Your payment was');
-    I.see('successful');
-    I.see('Your payment reference number is');
-    I.see('You\'ll receive a confirmation email in the next hour.');
-    I.see('Payment summary','h3');
-    I.see('Payment for');
-    I.see('Claim fee');
-    I.see('Total amount');
-    await I.click('Go to your account');
-  }
-
-  async signOut() {
-    I.click('Sign out');
-  }
-
   clickNextAction(action) {
     I.click(action);
-  }
-
-  async addClaimAmount(totalAmount, claimInterestFlag = false, standardInterest = true, selectHWF = false) {
-    I.fillField(paths.fields.claim_amount_reason_1, 'Broken bathroom');
-    I.fillField(paths.fields.claim_amount_amount_1, totalAmount);
-    I.click('Add another row');
-    this.clickNextAction(paths.buttons.save_and_continue);
-    await this.answerClaimInterest(claimInterestFlag, standardInterest);
-    await this.answerHWf(selectHWF);
-    await I.waitForContent('Total claim amount', 60);
-    this.clickNextAction(paths.buttons.save_and_continue);
-  }
-
-  async answerClaimInterest(selectInterest = false, standardInterest = true) {
-    if (selectInterest == true) {
-      I.waitForContent('Do you want to claim interest', 60);
-      I.click(paths.options.yes);
-      this.clickNextAction(paths.buttons.save_and_continue);
-      I.waitForContent('How do you want to claim interest', 60);
-      if (standardInterest == true) { 
-        I.click(paths.options.same_rate_for_the_whole_period);
-        this.clickNextAction(paths.buttons.save_and_continue);
-        I.waitForContent('You can claim 8% per year unless you know that a different rate applies', 60);
-        I.click(paths.options.same_interest_rate_type);
-        this.clickNextAction(paths.buttons.save_and_continue);
-        I.waitForElement(paths.options.date_that_you_submit_claim);
-        I.click(paths.options.date_that_you_submit_claim);
-      } else {
-        I.click(paths.options.variable_interest_rate_type);
-        this.clickNextAction(paths.buttons.save_and_continue);
-        I.waitForContent('What is the total interest for your claim', 60);
-        I.fillField(paths.options.interest_to_applied, 10);
-        I.fillField(paths.options.interest_reason, 'calculate interest for the different time periods');
-        this.clickNextAction(paths.buttons.save_and_continue);
-        I.waitForContent('Continue to claim interest after you submit your claim', 60);
-        I.click(paths.options.yes);
-        this.clickNextAction(paths.buttons.save_and_continue);
-        I.waitForContent('How much do you want to continue claiming', 60);
-        I.click(paths.options.claim_specific_interest_after_submission);
-        I.fillField(paths.options.daily_interest_amount, '2');
-      }
-    } else {
-      I.click(paths.options.no);
-    }
-    this.clickNextAction(paths.buttons.save_and_continue);
-  }
-
-  async answerHWf(selectHWF = false) {
-    I.waitForContent('Do you have a Help With Fees reference number', 60);
-    if (selectHWF) {
-      I.click(paths.options.yes);
-      await I.fillField(paths.fields.help_with_fees_reference_number, 'HWF-123-466');
-    } else {
-      I.click(paths.options.no);
-    }
-    this.clickNextAction(paths.buttons.save_and_continue);
-  }
-
-  async fillSoleTraderClaimantDetails() {
-    await I.click(paths.options.sole_trader_claimant);
-    this.clickNextAction(paths.buttons.save_and_continue);
-    await I.fillField(paths.fields.soleTraderTradingAs, 'Sole trader trading name');
-    this.selectAddress(true);
-    this.inputDateOfBirth();
-    I.fillField(paths.fields.telephone_number, '07818731017');
-    this.clickNextAction(paths.buttons.save_and_continue);
-  }
-
-  async fillSoleTraderDefendantDetails() {
-    await I.click(paths.options.sole_trader_defendant);
-    this.clickNextAction(paths.buttons.save_and_continue);
-    await I.fillField(paths.fields.soleTraderTradingAs, 'Defendant Sole trader trading name');
-    this.selectAddress(false);
-    I.fillField(paths.fields.email_address, 'civilmoneyclaimsdemo@gmail.com');
-    this.clickNextAction(paths.buttons.save_and_continue);
-    I.fillField(paths.fields.telephone_number, '07800000000');
-    this.clickNextAction(paths.buttons.save_and_continue);
-  }
-
-  async fillOrgClaimantDetails() {
-    await I.click(paths.options.org_claimant);
-    this.clickNextAction(paths.buttons.save_and_continue);
-    await I.waitForContent('Enter organisation details', 60);
-    await I.fillField(paths.fields.OrgpartyName, 'Claimant Org name');
-    await I.fillField(paths.fields.OrgContactPerson, 'Claimant contact name');
-    this.selectAddress(true);
-    I.fillField(paths.fields.telephone_number, '07818731017');
-    this.clickNextAction(paths.buttons.save_and_continue);
-  }
-
-  async fillOrgDefendantDetails() {
-    await I.click(paths.options.org_defendant);
-    this.clickNextAction(paths.buttons.save_and_continue);
-    await I.waitForContent('Enter organisation details', 60);
-    await I.fillField(paths.fields.OrgpartyName, 'Defendant Org name');
-    await I.fillField(paths.fields.OrgContactPerson, 'Defendant contact name');
-    this.selectAddress(false);
-    I.fillField(paths.fields.email_address, 'civilmoneyclaimsdemo@gmail.com');
-    this.clickNextAction(paths.buttons.save_and_continue);
-    I.fillField(paths.fields.telephone_number, '07800000000');
-    this.clickNextAction(paths.buttons.save_and_continue);
-  }
-
-  async fillCompanyClaimantDetails() {
-    await I.click(paths.options.limited_company_claimant);
-    this.clickNextAction(paths.buttons.save_and_continue);
-    await I.waitForContent('Company details', 60);
-    await I.fillField(paths.fields.OrgpartyName, 'Claimant Org name');
-    await I.fillField(paths.fields.OrgContactPerson, 'Claimant contact name');
-    this.selectAddress(true);
-    I.fillField(paths.fields.telephone_number, '07818731017');
-    this.clickNextAction(paths.buttons.save_and_continue);
-  }
-
-  async fillCompanyDefendantDetails() {
-    await I.click(paths.options.limited_company_defendant);
-    this.clickNextAction(paths.buttons.save_and_continue);
-    await I.waitForContent('Company details', 60);
-    await I.fillField(paths.fields.OrgpartyName, 'Defendant Company name');
-    await I.fillField(paths.fields.OrgContactPerson, 'Defendant Company name');
-    this.selectAddress(false);
-    I.fillField(paths.fields.email_address, 'civilmoneyclaimsdemo@gmail.com');
-    this.clickNextAction(paths.buttons.save_and_continue);
-    I.fillField(paths.fields.telephone_number, '07800000000');
-    this.clickNextAction(paths.buttons.save_and_continue);
-  }
-
-  async checkAndSubmit(selectedHWF = false, claimantPartyType = 'Individual') {
-    await I.click('Check and submit your claim');
-    I.waitForContent('a false statement in a document verified by a statement of truth without an honest belief in its truth', 60);
-    if (!selectedHWF) {
-      I.uncheckOption(paths.fields.no_changes_allowed_declaration);
-      I.checkOption(paths.fields.no_changes_allowed_declaration);
-    }
-    if (claimantPartyType == 'Company' || claimantPartyType == 'Org' ) {
-      I.fillField(paths.fields.signerName, 'signer claimant name');
-      I.fillField(paths.fields.signerRole, 'signer claimant role');
-    }
-    I.uncheckOption(paths.fields.statement_of_truth);
-    I.checkOption(paths.fields.statement_of_truth);
-    I.click(paths.buttons.submit_claim);
-    await I.waitForContent('Claim submitted', 60);
-    const caseReference = await this.verifyClaimSubmitted(selectedHWF);
-    return caseReference;
   }
 
   async payClaimFee() {
