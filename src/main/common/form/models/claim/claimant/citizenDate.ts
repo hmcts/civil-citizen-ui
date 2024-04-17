@@ -24,7 +24,6 @@ export class CitizenDate {
     day: number;
 
   constructor(day?: string, month?: string, year?: string) {
-    console.log('CONSTRUCTOR CitizenDate: ', new Date(new Date(year + '-' + month + '-' + day).setHours(0,0,0,0)));
     this.date = new Date(new Date(year + '-' + month + '-' + day).setHours(0,0,0,0));
     this.year = Number(year);
     this.month = Number(month);

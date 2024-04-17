@@ -32,12 +32,6 @@ claimantDoBController.post(CLAIMANT_DOB_URL, (async (req: AppRequest | Request, 
   try {
     const claimId = (<AppRequest>req).session.user?.id;
     const {year, month, day} = req.body;
-    
-    console.log('day: ', day);
-    console.log('month: ', month);
-    console.log('year: ', year);
-    console.log('today: ', new Date());
-    
     const form = new GenericForm(new CitizenDate(day, month, year));
     form.validateSync();
 
