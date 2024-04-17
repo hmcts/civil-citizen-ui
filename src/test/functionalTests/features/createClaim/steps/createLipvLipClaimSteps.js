@@ -109,7 +109,8 @@ class CreateClaimSteps {
     await createClaimOCMC.inputEvidenceList();
     I.click('Check and submit your claim');
     await createClaimOCMC.verifyCheckYourAnswers();
-    const caseReference = await createClaim.verifyClaimSubmitted();
+    await createClaimOCMC.payClaimFee();
+    const caseReference = await createClaimOCMC.verifyClaimSubmitted();
     console.log('The created Case Reference : ', caseReference);
     return caseReference;
   }
@@ -226,6 +227,10 @@ class CreateClaimSteps {
     caseRef = caseRef.replace(/-/g, '');
     console.log('The value of the claim reference : ', caseRef);
     return caseRef;
+  }
+
+  async CheckOCMCcasePreview() {
+    ]
   }
 }
 

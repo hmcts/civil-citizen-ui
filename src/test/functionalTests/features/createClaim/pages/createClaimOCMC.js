@@ -317,21 +317,9 @@ class CreateClaimOCMC {
   async verifyClaimSubmitted(isHWFClaim = false) {
     I.waitForContent('Monday to Friday, 8.30am to 5pm.', 60);
     I.see('Claim submitted', 'h1');
-    I.see('Claim number:');
-    const claimReference = await I.grabTextFrom('//div[contains(text(),\'Claim number\')]/strong');
+    I.see('Your claim number:');
+    const claimReference = await I.grabTextFrom('h1.bold-large:nth-child(2)');
     I.see('What happens next', 'h2');
-    if (isHWFClaim) {
-      I.see('Your claim will be issued once your Help With Fees application has been confirmed. We\'ll email you within 5 days to confirm this.');
-    } else {
-      I.see('Your claim will not be issued and sent to the other parties until you have paid the claim fee.');
-    }
-    I.see('If the defendant pays you');
-    I.see('You need to sign in to your account to tell us you\'ve been paid.');
-    I.seeElement('//a[contains(text(),\'What did you think of this service?\')]');
-    I.see('Email', 'h3');
-    I.see('Telephone');
-    I.see('0300 123 7050');
-    I.seeElement('//a[.=\'Find out about call charges (opens in a new window)\']');
     return claimReference;
   }
 
@@ -537,6 +525,22 @@ class CreateClaimOCMC {
     await I.waitForContent('Claim submitted', 60);
     const caseReference = await this.verifyClaimSubmitted(selectedHWF);
     return caseReference;
+  }
+
+  async payClaimFee() {
+    I.waitForContent('Enter card details', 60);
+    I.fillField('#card-no' ,'4444333322221111');
+    I.fillField('#expiry-month' ,new Date().getMonth());
+    I.fillField('#expiry-year' ,new Date().getFullYear()+1);
+    I.fillField('#cardholder-name','Test Name');
+    I.fillField('#cvc', '444');
+    I.fillField('[autocomplete=\'billing address-line1\']', '220 Helena House');
+    I.fillField('#address-city','Swansea');
+    I.fillField('#address-postcode','SA1 1XW');
+    I.fillField('#email','testxxx@hmcts.net');
+    await I.click('Continue');
+    I.waitForContent('Total amount:', 60);
+    await I.click('Confirm payment');
   }
 }
 

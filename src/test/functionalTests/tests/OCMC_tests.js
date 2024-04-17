@@ -20,5 +20,6 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
     await LoginSteps.EnterUserCredentials(config.claimantEmailsVerificationCitizenUser.email, config.claimantEmailsVerificationCitizenUser.password);
     await CreateLipvLipClaimSteps.EligibilityCheckStepsForClaimCreationOCMC();
     let claimRef = await CreateLipvLipClaimSteps.CreateClaimCreationOCMC(false);
+    await CreateLipvLipClaimSteps.CheckOCMCcasePreview(claimRef);
   }
 }).tag('@ocmc');
