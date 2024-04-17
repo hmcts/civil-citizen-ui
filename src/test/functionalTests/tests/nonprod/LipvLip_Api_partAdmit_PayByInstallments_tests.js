@@ -1,12 +1,11 @@
 const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
-const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 
-let claimRef, caseData, claimNumber, claimType;
+let claimRef, caseData, claimType;
 
 Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track');
 
@@ -17,7 +16,6 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims @citizenUI @par
     claimType = 'SmallClaims';
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-    claimNumber = await caseData.legacyCaseReference;
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual);
     await api.waitForFinishedBusinessProcess();
     //Claimant response below here
@@ -34,7 +32,6 @@ Scenario('Response with PartAdmit-PayByInstallments Fast Track @citizenUI @partA
     claimType = 'FastTrack';
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-    claimNumber = await caseData.legacyCaseReference;
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual);
     await api.waitForFinishedBusinessProcess();
     //Claimant response below here
