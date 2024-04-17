@@ -120,7 +120,6 @@ withPipeline(type, product, component) {
           ./bin/pull-latest-camunda-files.sh ${camundaBranch}
           ./bin/pull-latest-dmn-files.sh ${dmnBranch}
           ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
-          ./bin/pull-latest-ccd-files.sh ${ccdBranch}
           ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${ccdBranch}
         """
   }
@@ -167,7 +166,6 @@ withPipeline(type, product, component) {
       ./bin/pull-latest-camunda-files.sh ${camundaBranch}
       ./bin/pull-latest-dmn-files.sh ${dmnBranch}
       ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
-      ./bin/pull-latest-ccd-files.sh ${ccdBranch}
       ./bin/import-ccd-definition.sh "-e *-nonprod.json,*COS-nonprod.json,AuthorisationCaseType-shuttered.json" ${ccdBranch}
     """
   }

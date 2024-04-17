@@ -1,10 +1,8 @@
-
 const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const ClaimantResponseSteps = require('../../citizenFeatures/response/steps/lipClaimantResponseSteps');
 const UploadDocSteps = require('../../citizenFeatures/response/steps/uploadDocSteps');
-
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
