@@ -3,6 +3,7 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
@@ -23,6 +24,9 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by instal
     await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.SignOut();
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayByInstallmentWithIndividual);
+    await api.waitForFinishedBusinessProcess();
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsRejectionOfFullAdmitPayByInstalmentsSSA(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-r2');
