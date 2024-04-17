@@ -9,7 +9,7 @@ let claimRef, caseData, claimNumber, claimType;
 
 Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track');
 
-Scenario('Response with PartAdmit-PayByInstallments SmallClaims @citizenUI @partAdmit @nightly - @api', async ({api}) => {
+Scenario('Response with PartAdmit-PayByInstallments SmallClaims @citizenUI @partAdmit @nightly - @api @debug', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -20,6 +20,11 @@ Scenario('Response with PartAdmit-PayByInstallments SmallClaims @citizenUI @part
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual);
+    await api.waitForFinishedBusinessProcess();
+    //Claimant response below here
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitInstallmentsPayment(claimRef, '200');
+    pause();
     await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-r2');

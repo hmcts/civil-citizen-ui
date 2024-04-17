@@ -23,6 +23,12 @@ const paths = {
 
 class ResponseToDefenceLipVLipSteps {
 
+  async claimantAcceptForDefRespPartAdmitInstallmentsPayment(caseReference, xxx) {
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+  }
+
   async claimantAcceptForDefRespPartAdmitImmediatePayment(caseReference, admittedAmount) {
     await responseToDefence.open(caseReference);
     await responseToDefence.verifyDashboard();
