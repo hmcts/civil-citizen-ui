@@ -32,12 +32,12 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: Request, res: Respons
     const claimDetailsViewPath = (isCUIReleaseTwo && isDashboardEnabled) ? claimDetailsViewPathNew : claimDetailsViewPathOld;
     claim.totalInterest = interestData.interest;
     res.render(claimDetailsViewPath, {
-        claim, totalAmount, interestData, timelineRows, timelinePdfUrl, sealedClaimPdfUrl,
-        pageCaption: 'PAGES.CLAIM_DETAILS.THE_CLAIM',
-        pageTitle,
-        claimId: caseNumberPrettify(claimId),
-        dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
-      });
+      claim, totalAmount, interestData, timelineRows, timelinePdfUrl, sealedClaimPdfUrl,
+      pageCaption: 'PAGES.CLAIM_DETAILS.THE_CLAIM',
+      pageTitle,
+      claimId: caseNumberPrettify(claimId),
+      dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
+    });
   } catch (error) {
     next(error);
   }
