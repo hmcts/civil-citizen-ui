@@ -19,7 +19,7 @@ const fields = {
 
 class EligibilityCheckOCMC {
   async open() {
-    await I.amOnPage('/eligibility');
+    await I.amOnPage('https://moneyclaims.aat.platform.hmcts.net/eligibility');
     await I.click('Continue');
   }
 

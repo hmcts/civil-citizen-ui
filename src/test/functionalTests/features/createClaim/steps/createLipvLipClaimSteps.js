@@ -229,8 +229,8 @@ class CreateClaimSteps {
     return caseRef;
   }
 
-  async CheckOCMCcasePreview() {
-    ]
+  async CheckOCMCcasePreview(claimRef) {
+    I.waitForContent(claimRef, 60);
   }
 }
 

@@ -18,6 +18,10 @@ class LoginPage {
     await I.amOnPage('/');
   }
 
+  async openOCMC() {
+    await I.amOnPage('https://moneyclaims.aat.platform.hmcts.net');
+  }
+
   async acceptCookies() {
     await I.click(buttons.acceptCookies);
     await I.click(buttons.hideMessage);
@@ -29,7 +33,15 @@ class LoginPage {
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);
     await I.click(buttons.submit);
-    if (['preview', 'demo'].includes(config.runningEnv)) {await I.seeInCurrentUrl('/dashboard') };
+    await I.seeInCurrentUrl('/dashboard')
+  }
+
+  async loginOCMC(email, password) {
+    await I.waitForText('Email address', config.WaitForText);
+    await I.waitForVisible(fields.username);
+    await I.fillField(fields.username, email);
+    await I.fillField(fields.password, password);
+    await I.click(buttons.submit);
   }
 }
 

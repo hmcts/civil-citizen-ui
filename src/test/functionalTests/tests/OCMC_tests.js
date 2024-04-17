@@ -15,11 +15,11 @@ let claimNumber;
 
 Feature('Create Lip v Lip claim -  Full Admit and pay Immediately');
 
-Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immediately', async ({api}) => {
-  if (['aat'].includes(config.runningEnv)) {
-    await LoginSteps.EnterUserCredentials(config.claimantEmailsVerificationCitizenUser.email, config.claimantEmailsVerificationCitizenUser.password);
-    await CreateLipvLipClaimSteps.EligibilityCheckStepsForClaimCreationOCMC();
-    let claimRef = await CreateLipvLipClaimSteps.CreateClaimCreationOCMC(false);
-    await CreateLipvLipClaimSteps.CheckOCMCcasePreview(claimRef);
-  }
+Scenario('Create OCMC case and view it in preview', async ({api}) => {
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await LoginSteps.EnterUserCredentialsOCMC(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await CreateLipvLipClaimSteps.EligibilityCheckStepsForClaimCreationOCMC();
+  let claimRef = await CreateLipvLipClaimSteps.CreateClaimCreationOCMC(false);
+  await LoginSteps.EnterUserCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await CreateLipvLipClaimSteps.CheckOCMCcasePreview(claimRef);
 }).tag('@ocmc');
