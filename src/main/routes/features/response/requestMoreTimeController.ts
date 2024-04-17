@@ -21,7 +21,7 @@ async function renderView(res: Response, form: GenericForm<AdditionalTime>, clai
     form,
     responseDate: claim.formattedResponseDeadline(language),
     claimantName: claim.getClaimantFullName(),
-    isReleaseTwoEnabled
+    isReleaseTwoEnabled,
   });
 }
 

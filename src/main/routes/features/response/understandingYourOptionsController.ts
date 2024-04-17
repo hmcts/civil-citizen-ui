@@ -15,7 +15,7 @@ understandingYourOptionsController.get(UNDERSTANDING_RESPONSE_OPTIONS_URL, deadL
       const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
       res.render('features/response/understanding-your-options', {
         responseDate: claim.formattedResponseDeadline(lang),
-        isReleaseTwoEnabled
+        isReleaseTwoEnabled,
       });
     } catch (error) {
       next(error);

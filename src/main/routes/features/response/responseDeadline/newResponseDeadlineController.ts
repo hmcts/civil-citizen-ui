@@ -26,7 +26,7 @@ newResponseDeadlineController
         claimantName: claim.getClaimantFullName(),
         responseDeadline: formatDateToFullDate(claim.responseDeadline.calculatedResponseDeadline, lang),
         backUrl: constructResponseUrlWithIdParams(req.params.id, AGREED_TO_MORE_TIME_URL),
-        isReleaseTwoEnabled
+        isReleaseTwoEnabled,
       });
     } catch (error) {
       next(error);

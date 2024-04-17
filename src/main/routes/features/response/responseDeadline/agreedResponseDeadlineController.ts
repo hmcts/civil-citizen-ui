@@ -30,7 +30,7 @@ agreedResponseDeadlineController
           today: new Date(),
           claimantName: claim.getClaimantFullName(),
           backLink,
-          isReleaseTwoEnabled
+          isReleaseTwoEnabled,
         });
       } catch (error) {
         next(error);
@@ -54,7 +54,7 @@ agreedResponseDeadlineController
             today: new Date(),
             claimantName: claim.getClaimantFullName(),
             backLink,
-            isReleaseTwoEnabled
+            isReleaseTwoEnabled,
           });
         } else {
           await responseDeadlineService.saveAgreedResponseDeadline(redisKey, agreedResponseDeadlineDate.date);
