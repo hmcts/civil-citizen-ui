@@ -8,6 +8,7 @@
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../dashboard/claim-summary-content.njk" import claimSummaryContent %}
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "../../../macro/cancelLink.njk" import cancelLink %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
@@ -101,6 +102,7 @@
                 {{ govukButton({
                                  text: t('COMMON.BUTTONS.CONTINUE')
                 }) }}
+                {{ cancelLink(cancelUrl, t) }}
               </div>
               {{ contactUsForHelp(t) }}
         </div>

@@ -1,19 +1,23 @@
-import {CANCEL_TRIAL_ARRANGEMENTS, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
+import {CANCEL_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {RequestHandler, Router} from 'express';
-import {deleteDraftClaimFromStore, deleteFieldsDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import {
+  deleteFieldDraftClaimFromStore, generateRedisKey,
+} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
-import {CaseRole} from 'form/models/caseRoles';
+import {AppRequest} from 'models/AppRequest';
 
-const cancelTrialArrangementsController = Router();
+const cancelController = Router();
 
-cancelTrialArrangementsController.get([CANCEL_TRIAL_ARRANGEMENTS], (async (req, res, next) => {
+cancelController.get(CANCEL_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
-    await deleteFieldsDraftClaimFromStore(claimId);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const propertyName = req.params.propertyName;
+    const claim = await getClaimById(redisKey, req);
+    await deleteFieldDraftClaimFromStore(redisKey, claim, propertyName);
 
-    if (claim.caseRole === CaseRole.CLAIMANT){
+    if (claim.isClaimant()){
       res.redirect(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
     } else {
       res.redirect(constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL));
@@ -23,4 +27,4 @@ cancelTrialArrangementsController.get([CANCEL_TRIAL_ARRANGEMENTS], (async (req, 
   }
 })as RequestHandler);
 
-export default cancelTrialArrangementsController;
+export default cancelController;

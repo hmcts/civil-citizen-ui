@@ -77,18 +77,10 @@ const createNewCivilClaimResponse = (claimId: string) => {
 export const deleteDraftClaimFromStore = async (claimId: string, field?: string): Promise<void> => {
   await app.locals.draftStoreClient.del(claimId, field);
 };
-export const deleteFieldsDraftClaimFromStore = async (claimId: string, obj: any, propertyName: string ): Promise<void> => {
-  if (obj && typeof obj === 'object') {
-    if (Object.prototype.hasOwnProperty.call(obj, propertyName)) {
-      delete obj[propertyName];
-    }else{
-      for (const key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-          await deleteFieldsDraftClaimFromStore(claimId, obj[key], propertyName);
-        }
-      }
-    }
-    await saveDraftClaim(claimId, obj as Claim);
+export const deleteFieldDraftClaimFromStore = async (claimId: string, claim: Claim, propertyName: string): Promise<void> => {
+  if (Object.prototype.hasOwnProperty.call(claim, propertyName)) {
+    delete claim[propertyName];
+    await saveDraftClaim(claimId, claim);
   }
 };
 
