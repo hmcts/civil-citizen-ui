@@ -1,4 +1,4 @@
-const config = require('../../config');
+const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
