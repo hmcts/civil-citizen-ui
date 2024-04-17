@@ -28,6 +28,7 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'Company');
     console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
+    await api.setCaseId(claimRef);
     await api.waitForFinishedBusinessProcess();
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = caseData.legacyCaseReference;
@@ -82,6 +83,11 @@ Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
     await ResponseSteps.clickSaveButton();
     await ClaimantResponseSteps.verifyEditedEmailDetails();
     await api.waitForFinishedBusinessProcess();
+  }
+}).tag('@regression-carm');
+
+Scenario('Caseworker perform mediation unsuccessful', async ({api}) => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
     // Take Mediation Unsuccessful
     await api.mediationUnsuccessful(config.caseWorker, true);
     await api.waitForFinishedBusinessProcess();
