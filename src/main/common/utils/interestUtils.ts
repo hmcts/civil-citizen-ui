@@ -35,10 +35,8 @@ export function getInterestDateOrIssueDate(claim: Claim) : Date | string {
   } else if (claim.isInterestFromASpecificDate()) {
     interestFromDate = claim.interest?.interestStartDate.date;
   }
-
-  if(interestFromDate) { return new Date(interestFromDate).toISOString(); }
   
-  return undefined;
+  return interestFromDate ? new Date(interestFromDate).toISOString() : undefined;
 }
 
 export function getInterestRate(claim: Claim): number {
