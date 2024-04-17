@@ -1148,10 +1148,10 @@
         }
       },
       "MEDIATION": {
-        "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "You have decided not to accept the defendant's offer and wish to proceed with the claim.",
-        "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "A mediation appointment will now be arranged by the Small Claims Mediation Service. We will email you the date of your mediation appointment within the next 28 days.",
-        "WHAT_HAPPENS_NEXT_TEXT_PARA_3": "If a settlement is agreed at mediation, you will not need to go to court.",
-        "WHAT_HAPPENS_NEXT_TEXT_PARA_4": "If you do not attend your mediation appointment, you may be subject to penalties. You may be ordered to pay costs, or the Judge may automatically rule in the defendant's favour."
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_1": "Rydych wedi penderfynu peidio â derbyn cynnig y diffynnydd ac yn dymuno parhau â'r hawliad.",
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_2": "Bydd y Gwasanaeth Cyfryngu ar gyfer Hawliadau Bychain nawr yn trefnu apwyntiad cyfryngu. Byddwn yn anfon dyddiad eich apwyntiad cyfryngu atoch ar e-bost yn y 28 diwrnod nesaf.",
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_3": "Os byddwch yn cytuno i setlo’r hawliad yn yr apwyntiad cyfryngu, ni fydd angen i chi fynd i’r llys.",
+        "WHAT_HAPPENS_NEXT_TEXT_PARA_4": "Os na fyddwch yn mynychu’ch apwyntiad cyfryngu, yna byddwch yn cael eich cosbi. Efallai y gorchmynnir i chi dalu costau, neu efallai y bydd y Barnwr yn gwneud dyfarniad o blaid y diffynnydd yn awtomatig."
       },
       "REJECTED_PAYMENT_PLAN": {
         "MESSAGE": "You've proposed a different repayment plan"
