@@ -30,6 +30,8 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'Company');
     console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
+    await api.setCaseId(claimRef);
+    await api.waitForFinishedBusinessProcess();
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = caseData.legacyCaseReference;
     securityCode = caseData.respondent1PinToPostLRspec.accessCode;
@@ -60,6 +62,7 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
     await ResponseSteps.verifyEditedEmailDetails();
     await ResponseSteps.fillStatementOfTruthAndSubmit();
     await ResponseSteps.VerifyConfirmationPage('RejectsAndLessThanClaimAmount');
+    await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-carm');
 
@@ -84,10 +87,11 @@ Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
     await api.waitForFinishedBusinessProcess();
     // Take Mediation Unsuccessful
     await api.mediationUnsuccessful(config.caseWorker, true);
+    await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-carm');
 
-Scenario('LiP claimant uploads mediation documents', async () => {
+Scenario('LiP claimant uploads mediation documents', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ClaimantResponseSteps.StartUploadDocs(claimRef);
@@ -109,10 +113,11 @@ Scenario('LiP claimant uploads mediation documents', async () => {
     await UploadDocSteps.ClickContinue();
     await UploadDocSteps.CheckAndSendMediationDocs('Claimant');
     await UploadDocSteps.VerifyConfirmationPage();
+    await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-carm');
 
-Scenario('LiP defendant uploads mediation documents', async () => {
+Scenario('LiP defendant uploads mediation documents', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await ClaimantResponseSteps.StartUploadDocs(claimRef);
@@ -123,5 +128,6 @@ Scenario('LiP defendant uploads mediation documents', async () => {
     await UploadDocSteps.ClickContinue();
     await UploadDocSteps.CheckAndSendMediationDocs('Defendant');
     await UploadDocSteps.VerifyConfirmationPage();
+    await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-carm');
