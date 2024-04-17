@@ -1417,6 +1417,8 @@
       "TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?"
     },
     "DASHBOARD": {
+      "ACCORDION_TITLE": "If you cannot find a document you are looking for in this section",
+      "ACCORDION_CONTENT": "This is the main active hearing on the case. Older hearings and case documents can be found in",
       "ACTIONS": "Camau gweithredu",
       "ACTION_PROMPT": "Mae angen i chi ymateb cyn ",
       "CLAIMANT_NAME": "Enw’r hawlydd",
@@ -1437,7 +1439,8 @@
         "UPLOAD_DOCUMENTS": "Upload hearing documents",
         "VIEW_BUNDLE": "View the bundle",
         "VIEW_DOCUMENTS": "View documents",
-        "VIEW_HEARINGS": "View hearings"
+        "VIEW_HEARINGS": "View hearings",
+        "VIEW_THE_HEARING": "View the hearing"
       },
       "MAKE_A_NEW_CLAIM": "Gwneud hawliad newydd am arian",
       "NEXT": "Nesaf",
@@ -2082,6 +2085,10 @@
             "PARAGRAPH_ONCE": "Unwaith y byddwch wedi gwneud eich cais, dychwelwch i'r dudalen hon a chliciwch ar ‘parhau’ i symud ymlaen.",
             "TITLE": "Gwneud cais am help i dalu ffioedd"
           }
+        },
+        "VIEW_THE_HEARING": {
+          "TAB_TITLE": "Hearing",
+          "TITLE": "View the hearing"
         },
         "VIEW_ORDER": {
           "TITLE": "Mae gorchymyn wedi'i wneud ar eich hawliad",

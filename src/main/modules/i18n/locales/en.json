@@ -1417,6 +1417,8 @@
       "TITLE": "Are you paying money as a result of any court orders?"
     },
     "DASHBOARD": {
+      "ACCORDION_TITLE": "If you cannot find a document you are looking for in this section",
+      "ACCORDION_CONTENT": "This is the main active hearing on the case. Older hearings and case documents can be found in",
       "ACTIONS": "Actions",
       "ACTION_PROMPT": "You need to respond before ",
       "CLAIMANT_NAME": "Claimant name",
@@ -1437,7 +1439,8 @@
         "UPLOAD_DOCUMENTS": "Upload hearing documents",
         "VIEW_BUNDLE": "View the bundle",
         "VIEW_DOCUMENTS": "View documents",
-        "VIEW_HEARINGS": "View hearings"
+        "VIEW_HEARINGS": "View hearings",
+        "VIEW_THE_HEARING": "View the hearing"
       },
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
       "NEXT": "Next",
@@ -2083,6 +2086,10 @@
             "TITLE": "Apply for help with fees"
           }
         },
+        "VIEW_THE_HEARING": {
+            "TAB_TITLE": "Hearing",
+            "TITLE": "View the hearing"
+          },
         "VIEW_ORDER": {
           "TITLE": "An order has been made on your claim",
           "JUDGE_HAS_MADE_ORDER": "The Judge has made an order on your claim.",

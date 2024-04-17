@@ -1,0 +1,26 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{# Set some default values #}
+
+{% macro dashboardAccordion(t, link, header, content) %}
+
+  {% set header = t('PAGES.DASHBOARD.ACCORDION_TITLE') %}
+  {% set content = t('PAGES.DASHBOARD.ACCORDION_CONTENT') %}
+  {% set linkContent = 'orders and notices.' %}
+
+  {% set widget = _widgetLink(content,link,linkContent, '_blank') %}
+
+  {{ govukDetails({
+    summaryText: header,
+    html: widget
+  }) }}
+
+{% endmacro %}
+
+{% macro _widgetLink(content,link, linkContent, linkTarget) %}
+
+    {{ content }}
+    <a target= {{linkTarget}} href={{ link }} rel="noopener noreferrer">{% if linkContent!=='' %}{{ linkContent }}</a>
+    {% endif %}</a></p>
+
+{% endmacro %}

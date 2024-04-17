@@ -16,7 +16,7 @@ import {
   DATE_PAID_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
-  MEDIATION_SERVICE_EXTERNAL, PAY_HEARING_FEE_URL,
+  MEDIATION_SERVICE_EXTERNAL, PAY_HEARING_FEE_URL, VIEW_THE_HEARING_URL, VIEW_ORDERS_AND_NOTICES_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -53,11 +53,12 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{VIEW_RESPONSE_TO_CLAIM}', '#');
   valuesMap.set('{VIEW_INFO_ABOUT_DEFENDANT}', '#');
   valuesMap.set('{VIEW_HEARINGS}', '#');
+  valuesMap.set('{VIEW_THE_HEARING_URL}', VIEW_THE_HEARING_URL.replace(':id', claimId));
   valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', '#');
   valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId));
   valuesMap.set('{PAY_HEARING_FEE}', PAY_HEARING_FEE_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_BUNDLE}', '#');
-  valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', '#');
+  valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_JUDGEMENT}', '#');
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
   valuesMap.set('{VIEW_HEARING_NOTICE}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM)));
