@@ -116,7 +116,6 @@ class ResponseToDefence {
     I.click(paths.buttons.submit_response);
   }
 
-  //THIS ONE
   async acceptOrRejectTheirRepaymentPlan(acceptOrReject) {
     I.waitForContent('How they want to pay?');
     if (acceptOrReject == 'accept') {
