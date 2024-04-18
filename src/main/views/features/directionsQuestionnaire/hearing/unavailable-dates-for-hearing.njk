@@ -41,12 +41,14 @@
             <div class="govuk-!-margin-top-6">
               {{ govukButton({
                 text: t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.ADD_ANOTHER_DATE'),
-                classes: "govuk-button--secondary append-row"
+                classes: "govuk-button--secondary append-row",
+                type: "button"
               }) }}
             </div>
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+                type: "submit"
               }) }}
             </div>
           </form>
