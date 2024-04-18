@@ -8,7 +8,7 @@ import {
   CCJ_PAID_AMOUNT_URL,
   CCJ_REPAYMENT_PLAN_CLAIMANT_URL,
   CCJ_REPAYMENT_PLAN_DEFENDANT_URL,
-  CITIZEN_CONTACT_THEM_URL,
+  CITIZEN_CONTACT_THEM_URL, BUNDLES_URL,
   CLAIM_FEE_BREAKUP,
   CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
@@ -59,6 +59,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{PAY_HEARING_FEE}', PAY_HEARING_FEE_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_BUNDLE}', '#');
   valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId));
+  valuesMap.set('{VIEW_BUNDLE}', BUNDLES_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_JUDGEMENT}', '#');
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
   valuesMap.set('{VIEW_HEARING_NOTICE}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM)));
@@ -97,6 +98,10 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   //Rest of the code example in: src/main/routes/features/dashboard/notificationRedirectController.ts
   if(notificationId){
     //TODO: Example case for draft claim - can be removed once a real view document is added.
+    valuesMap.set('{VIEW_BUNDLE_REDIRECT}', DASHBOARD_NOTIFICATION_REDIRECT
+      .replace(':id', claimId)
+      .replace(':locationName', 'VIEW_BUNDLE')
+      .replace(':notificationId', notificationId));
     valuesMap.set('{VIEW_ORDERS_AND_NOTICES_REDIRECT}', DASHBOARD_NOTIFICATION_REDIRECT
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_ORDERS_AND_NOTICES')
