@@ -1,11 +1,10 @@
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {RequestHandler, Router} from 'express';
-import {
+import {BUNDLES_URL,
   CASE_DOCUMENT_VIEW_URL,
   DASHBOARD_NOTIFICATION_REDIRECT,
-  DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT,
-} from 'routes/urls';
+  DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {DocumentType} from 'models/document/documentType';
 import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
@@ -49,7 +48,7 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
 
   switch(locationName) {
     case 'VIEW_BUNDLE':
-      redirectUrl = '/#';
+      redirectUrl = BUNDLES_URL.replace(':id', claimId);
       break;
     case 'VIEW_ORDERS_AND_NOTICES':
       redirectUrl = '/#';

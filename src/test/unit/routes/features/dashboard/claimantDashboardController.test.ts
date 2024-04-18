@@ -23,6 +23,7 @@ jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/dashboard/dashboardService', () => ({
   getNotifications: jest.fn(),
   getDashboardForm: jest.fn(),
+  extractOrderDocumentIdFromNotification: jest.fn(),
 }));
 
 describe('claimant Dashboard Controller', () => {
@@ -67,7 +68,7 @@ describe('claimant Dashboard Controller', () => {
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(data);
       jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
-    
+
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Mr. Jan Clark v Version 1');

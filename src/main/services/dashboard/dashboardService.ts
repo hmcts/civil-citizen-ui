@@ -3,7 +3,7 @@ import {ClaimantOrDefendant} from 'models/partyType';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
-import {replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
+import {objectToMap, replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 
@@ -39,3 +39,16 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
     throw new Error('Notifications not found...');
   }
 };
+
+export function extractOrderDocumentIdFromNotification (notificationsList: DashboardNotificationList) : string {
+  for (const notification of notificationsList.items) {
+    const paramMap: Map<string, object> = objectToMap(notification.params);
+    if (paramMap) {
+      const orderDocument = paramMap.get('orderDocument');
+      if (orderDocument !== undefined && orderDocument !== null) {
+        return orderDocument.toString();
+      }
+    }
+  }
+  return undefined;
+}
