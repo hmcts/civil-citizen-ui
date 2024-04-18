@@ -29,8 +29,8 @@ viewTheHearingController.get(VIEW_THE_HEARING_URL, (async (req:Request, res:Resp
 
     res.render(hearingViewPath,
       {hearingSections,
-        pageCaption: 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.VIEW_THE_HEARING.TAB_TITLE',
-        pageTitle: 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.VIEW_THE_HEARING.TITLE',
+        pageCaption: 'PAGES.DASHBOARD.HEARINGS.VIEW_THE_HEARING',
+        pageTitle: 'PAGES.DASHBOARD.HEARINGS.HEARING',
         link: VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId),
         claimId: caseNumberPrettify(claimId),
         claimAmount: claim.totalClaimAmount,

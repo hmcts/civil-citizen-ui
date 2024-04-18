@@ -35,7 +35,7 @@ function getHearings(claimId: string, claim: Claim, lang: string): ClaimSummaryC
 function getHearingsHeader(lang: string): ClaimSummarySection{
   return {
     type:ClaimSummaryType.TITLE,
-    data:{text: t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.VIEW_THE_HEARING.TAB_TITLE', {lng:lang})}};
+    data:{text: t('PAGES.DASHBOARD.HEARINGS.HEARING', {lng:lang})}};
 }
 
 function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
@@ -47,7 +47,7 @@ function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
 
     if(hearingDocument?.value) {
       const hearingDocumentLink = formatDocumentAlignedViewURL(hearingDocument.value?.documentName, claim.id, hearingDocument.value?.documentLink.document_binary_url,alignText.ALIGN_TO_THE_RIGHT);
-      const hearingDoc = formatDocumentWithHintText(hearingDocument.value?.documentType,hearingDocument.value?.createdDatetime,lang);
+      const hearingDoc = formatDocumentWithHintText(t('PAGES.DASHBOARD.HEARINGS.HEARING_NOTICE', {lng:lang}),hearingDocument.value?.createdDatetime,lang);
       hearingRows.push({key:{html:hearingDoc},
         value:{html: hearingDocumentLink},
       });

@@ -1436,6 +1436,8 @@
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
         "CREATED": "Created ",
+        "HEARING": "Hearing",
+        "HEARING_NOTICE": "Hearing notice",
         "PAY_FEE": "Pay the hearing fee",
         "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
         "TITLE": "Hearings",
@@ -2089,10 +2091,6 @@
             "TITLE": "Apply for help with fees"
           }
         },
-        "VIEW_THE_HEARING": {
-            "TAB_TITLE": "Hearing",
-            "TITLE": "View the hearing"
-          },
         "VIEW_ORDER": {
           "TITLE": "An order has been made on your claim",
           "JUDGE_HAS_MADE_ORDER": "The Judge has made an order on your claim.",
