@@ -342,7 +342,7 @@
     }
   },
   "TASK_LIST": {
-    "APPLICATION_COMPLETE": "Cais wedi ei gwblhau",
+    "APPLICATION_COMPLETE": "Cais wedi'i gwblhau",
     "APPLICATION_INCOMPLETE": "Cais heb ei gwblhau",
     "COMPLETED_SECTIONS": "Rydych wedi  cwblhau {{ completed }} o {{ total }} adran",
     "PREPARE_YOUR_RESPONSE": {
@@ -880,12 +880,12 @@
     },
     "CLAIM_TASK_LIST": {
       "AFTER_COMPLETE": "Ar ôl i chi gwblhau'r holl gamau byddwch yn mynd ymlaen i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno.",
-      "APPLICATION_COMPLETE": "Cais wedi ei gwblhau",
+      "APPLICATION_COMPLETE": "Cais wedi'i gwblhau",
       "APPLICATION_INCOMPLETE": "Cais heb ei gwblhau",
       "CHECK_AND_SUBMIT": "Gwirio a chyflwyno’ch hawliad",
-      "CLAIM_AMOUNT": "Claim amount",
-      "CLAIM_DETAILS": "Claim details",
-      "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
+      "CLAIM_AMOUNT": "Swm yr hawliad",
+      "CLAIM_DETAILS": "Manylion yr hawliad",
+      "COMPLETED_SECTIONS": "Rydych wedi cwblhau {{ completed }} allan o {{ total }} adran",
       "COMPLETING_CLAIM": "Cwblhau eich hawliad",
       "CONSIDER_OPTIONS": "Ystyried opsiynau eraill",
       "PAGE_TITLE": "Gwneud hawliad am arian",
@@ -893,8 +893,8 @@
       "PREPARE_CLAIM": "Paratoi eich hawliad",
       "RESOLVING_DISPUTE": "Datrys yr anghydfod hwn",
       "SUBMIT": "Cyflwyno",
-      "THEIR_DETAILS": "Their details",
-      "YOUR_DETAILS": "Your details"
+      "THEIR_DETAILS": "Eu manylion",
+      "YOUR_DETAILS": "Eich manylion"
     },
     "CLAIM_JOURNEY": {
       "CLAIM_INTEREST": {
@@ -1121,7 +1121,7 @@
         "TELL_US_SETTLEMENT": "Mae angen i chi ddweud wrthym os ydych wedi setlo’r hawliad, er enghraifft oherwydd bod y diffynnydd wedi eich talu."
       },
       "ACCEPTED_DEFENDANT_RESPONSE_TO_SETTLE": {
-        "CLAIM_SETTLE": "The claim is now settled.We've emailed {{ defendantName }} to tell them."
+        "CLAIM_SETTLE": "The claim is now settled. We've emailed {{ defendantName }} to tell them."
       },
       "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "Ni wnaethoch fwrw ymlaen â'r hawliad",
@@ -1485,7 +1485,8 @@
         "NOT_ADMITTED_CLAIMANT": "Ymateb i'r diffynnydd.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
         "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post.",
-        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos."
+        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "Mae'r dogfennau'n cael eu cyfieithu."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
