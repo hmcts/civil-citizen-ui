@@ -25,7 +25,8 @@ def secrets = [
   's2s-${env}': [
     secret('microservicekey-ccd-gw', 'CCD_API_GATEWAY_S2S_SECRET'),
     secret('microservicekey-ccd-data', 'CCD_DATA_STORE_S2S_SECRET'),
-    secret('microservicekey-ccd-definition', 'CCD_DEFINITION_STORE_S2S_SECRET')
+    secret('microservicekey-ccd-definition', 'CCD_DEFINITION_STORE_S2S_SECRET'),
+    secret('microservicekey-xui-webapp', 'XUI_S2S_SECRET')
   ],
   'ccd-${env}': [
     secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET'),
@@ -89,7 +90,6 @@ withPipeline(type, product, component) {
   enableSlackNotifications('#civil_notifications')
   enableSlackNotifications('#citizen-ui-techteam')
   syncBranchesWithMaster(branchesToSync)
-  disableCleanupOfHelmReleaseOnFailure()
 
   onPR {
     env.ENVIRONMENT = "preview"
@@ -119,7 +119,6 @@ withPipeline(type, product, component) {
           ./bin/pull-latest-camunda-files.sh ${camundaBranch}
           ./bin/pull-latest-dmn-files.sh ${dmnBranch}
           ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
-          ./bin/pull-latest-ccd-files.sh ${ccdBranch}
           ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${ccdBranch}
         """
     setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
@@ -164,7 +163,6 @@ withPipeline(type, product, component) {
       ./bin/pull-latest-camunda-files.sh ${camundaBranch}
       ./bin/pull-latest-dmn-files.sh ${dmnBranch}
       ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
-      ./bin/pull-latest-ccd-files.sh ${ccdBranch}
       ./bin/import-ccd-definition.sh "-e *-nonprod.json,*COS-nonprod.json,AuthorisationCaseType-shuttered.json" ${ccdBranch}
     """
     setUrls("aat");

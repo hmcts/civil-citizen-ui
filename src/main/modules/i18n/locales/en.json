@@ -50,6 +50,7 @@
     "PARTIES": "{{ claimantName }} v {{ defendantName }}",
     "REASON": "Reason",
     "REMOVE": "Remove",
+    "REMOVE_CARM": "Remove",
     "RETURN_PAGE": "You can return to RETURN-PAGE and start your claim or defence again.",
     "TECHNICAL_PROBLEMS": "Sorry, we had some technical problems during your last operation. Please try again later.",
     "TOTAL_DEBT": "Total owed",
@@ -75,6 +76,7 @@
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE": "Save",
       "SAVE_AND_CONTINUE": "Save and continue",
+      "SAVE_AND_CONTINUE_CARM": "Save and continue",
       "SETTLE_THE_CLAIM": "Settle the claim",
       "START_AGAIN": "Start again",
       "SIGN_AND_SUBMIT_RESPONSE": "Sign and submit",
@@ -1111,7 +1113,7 @@
         "TELL_US_SETTLEMENT": "You need to tell us if you've settled the claim, for example because the defendant has paid you."
       },
       "ACCEPTED_DEFENDANT_RESPONSE_TO_SETTLE": {
-        "CLAIM_SETTLE": "The claim is now settled.We've emailed {{ defendantName }} to tell them."
+        "CLAIM_SETTLE": "The claim is now settled. We've emailed {{ defendantName }} to tell them."
       },
      "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
@@ -1450,7 +1452,8 @@
         "NOT_ADMITTED_CLAIMANT": "Respond to the defendant.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post.",
-        "WAITING_COURT_REVIEW": "Wait for the court to review the case."
+        "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
@@ -1921,6 +1924,7 @@
       "ENTER_NUMBER": "Enter the Help With Fees number",
       "PAGE_TITLE": "Do you have a Help With Fees reference number?",
       "REFERENCE_NUMBER": "Help with fees reference number",
+      "REFERENCE_NUMBER_NONE": "None",
       "TITLE": "Do you have a Help With Fees reference number?",
       "ONLY_ONE": "You'll only have one if you applied for Help With Fees."
     },
@@ -3284,6 +3288,7 @@
     "ENTER_LAST_NAME": "Enter last name",
     "ENTER_PERSON_NAME": "Enter the name of the person who needs support",
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
+    "ENTER_DATE_YOU_ARE_UNAVAILABILITY_CARM": "Enter the date you are unavailable",
     "ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates they are unavailable",
     "ENTER_DATE_FOR_UNAVAILABILITY": "Enter the date they are unavailable",
     "ENTER_DATE_FOR_UNAVAILABILITY_FROM": "Enter the date they are unavailable from",
@@ -3590,8 +3595,7 @@
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
-    "VALID_YES_NO_OPTION_CARM_EMAIL_CONFIRMATION": "Choose option: Yes or No",
-    "VALID_YES_NO_OPTION_CARM_CONTACT_PERSON_CONFIRMATION": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_CARM_IE_NEU_NA": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_NAC_YDW": "Choose option: Yes or No",
     "VALID_YES_OR_NO_OPTION": "Select Yes to settle the claim",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",

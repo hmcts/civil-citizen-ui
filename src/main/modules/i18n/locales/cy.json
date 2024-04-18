@@ -50,6 +50,7 @@
     "PARTIES": "{{ claimantName }} v {{ defendantName }}",
     "REASON": "Rheswm",
     "REMOVE": "Tynnu",
+    "REMOVE_CARM": "Dileu",
     "RETURN_PAGE": "Gallwch ddychwelyd i RETURN-PAGE a dechrau eich hawliad neu’ch amddiffyniad eto.",
     "TECHNICAL_PROBLEMS": "Mae’n ddrwg gennym, cawsom broblemau technegol yn ystod eich gweithred olaf. Rhowch gynnig arall arni nes ymlaen.",
     "TOTAL_DEBT": "Cyfanswm sy’n ddyledus gennych",
@@ -75,6 +76,7 @@
       "RESPOND_TO_CLAIM": "Ymateb i'r hawliad",
       "SAVE": "Cadw",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
+      "SAVE_AND_CONTINUE_CARM": "Arbed a pharhau",
       "SETTLE_THE_CLAIM": "Setlo'r hawliad",
       "START_AGAIN": "Dechrau eto",
       "SIGN_AND_SUBMIT_RESPONSE": "Llofnodi a chyflwyno",
@@ -337,7 +339,7 @@
     }
   },
   "TASK_LIST": {
-    "APPLICATION_COMPLETE": "Cais wedi ei gwblhau",
+    "APPLICATION_COMPLETE": "Cais wedi'i gwblhau",
     "APPLICATION_INCOMPLETE": "Cais heb ei gwblhau",
     "COMPLETED_SECTIONS": "Rydych wedi  cwblhau {{ completed }} o {{ total }} adran",
     "PREPARE_YOUR_RESPONSE": {
@@ -423,14 +425,14 @@
     },
     "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
       "PAGE_TITLE": "Unavailability dates for mediation",
-      "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend meditation",
-      "PAGE_HINT_TEXT1": "Provide all dates in the next 3 months when you cannot attend a mediation appointment as accurately as you can. Once a date for your appointment has been set, it can be difficult to re-arrange.",
-      "PAGE_HINT_TEXT2": "The Small claims Mediation Service operates Monday to Friday, 8am to 5pm, except bank holidays."
+      "PAGE_TEXT": "Nodwch ddyddiad unigol neu gyfnod hirach o amser pan na allwch fynychu apwyntiad cyfryngu",
+      "PAGE_HINT_TEXT1": "Nodwch yr holl ddyddiadau yn y 3 mis nesaf pan na allwch fynychu apwyntiad cyfryngu, gan fod mor gywir ag y gallwch. Unwaith y bydd dyddiad ar gyfer cyfryngu wedi’i bennu, gall fod yn anodd i’w aildrefnu.",
+      "PAGE_HINT_TEXT2": "Mae’r Gwasanaeth Cyfryngu Hawliadau Bychain yn gweithredu dydd Llun i ddydd Gwener, 8am i 5pm, heblaw am wyliau banc."
     },
     "UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION": {
       "PAGE_TITLE": "Unavailability for mediation",
-      "PAGE_TEXT": "Are there any dates in the next 3 months when you cannot attend mediation?",
-      "PAGE_HINT_TEXT": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you're already booked. If you do not attend your appointment, you may face a penalty."
+      "PAGE_TEXT": "A oes unrhyw ddyddiadau yn y 3 mis nesaf lle na allwch fynychu apwyntiad cyfryngu?",
+      "PAGE_HINT_TEXT": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol neu wrandawiad llys arall neu wyliau rydych eisoes wedi trefnu. Os na fyddwch yn mynychu eich apwyntiad, gallwch wynebu cosb."
     },
     "MEDIATION_ALTERNATIVE_EMAIL": {
       "PAGE_TITLE": "Alternative email address",
@@ -871,12 +873,12 @@
     },
     "CLAIM_TASK_LIST": {
       "AFTER_COMPLETE": "Ar ôl i chi gwblhau'r holl gamau byddwch yn mynd ymlaen i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno.",
-      "APPLICATION_COMPLETE": "Cais wedi ei gwblhau",
+      "APPLICATION_COMPLETE": "Cais wedi'i gwblhau",
       "APPLICATION_INCOMPLETE": "Cais heb ei gwblhau",
       "CHECK_AND_SUBMIT": "Gwirio a chyflwyno’ch hawliad",
-      "CLAIM_AMOUNT": "Claim amount",
-      "CLAIM_DETAILS": "Claim details",
-      "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
+      "CLAIM_AMOUNT": "Swm yr hawliad",
+      "CLAIM_DETAILS": "Manylion yr hawliad",
+      "COMPLETED_SECTIONS": "Rydych wedi cwblhau {{ completed }} allan o {{ total }} adran",
       "COMPLETING_CLAIM": "Cwblhau eich hawliad",
       "CONSIDER_OPTIONS": "Ystyried opsiynau eraill",
       "PAGE_TITLE": "Gwneud hawliad am arian",
@@ -884,8 +886,8 @@
       "PREPARE_CLAIM": "Paratoi eich hawliad",
       "RESOLVING_DISPUTE": "Datrys yr anghydfod hwn",
       "SUBMIT": "Cyflwyno",
-      "THEIR_DETAILS": "Their details",
-      "YOUR_DETAILS": "Your details"
+      "THEIR_DETAILS": "Eu manylion",
+      "YOUR_DETAILS": "Eich manylion"
     },
     "CLAIM_JOURNEY": {
       "CLAIM_INTEREST": {
@@ -1111,7 +1113,7 @@
         "TELL_US_SETTLEMENT": "Mae angen i chi ddweud wrthym os ydych wedi setlo’r hawliad, er enghraifft oherwydd bod y diffynnydd wedi eich talu."
       },
       "ACCEPTED_DEFENDANT_RESPONSE_TO_SETTLE": {
-        "CLAIM_SETTLE": "The claim is now settled.We've emailed {{ defendantName }} to tell them."
+        "CLAIM_SETTLE": "The claim is now settled. We've emailed {{ defendantName }} to tell them."
       },
       "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "Ni wnaethoch fwrw ymlaen â'r hawliad",
@@ -1163,7 +1165,7 @@
         "CCJ_REQUESTED": "Gofynnwyd am ddyfarniad Llys Sirol",
         "CCJ_NEXT_STEP_MSG1": "Rydych wedi gofyn am Ddyfarniad Llys Sirol yn erbyn y diffynnydd.",
         "CCJ_NEXT_STEP_MSG2": "Pan fyddwn wedi prosesu eich cais, byddwn yn postio copi o’r dyfarniad atoch chi ac at {{ defendantName }}.",
-        "CCJ_NEXT_STEP_MSG3": "You've rejected the defendant's repayment plan and a County Court Judgment has been requested against them.",
+        "CCJ_NEXT_STEP_MSG3": "Rydych wedi gwrthod cynllun ad-dalu’r diffynnydd a gwnaethpwyd gais am Ddyfarniad Llys Sirol yn eu herbyn.",
         "CCJ_NEXT_STEP_MSG4": "You've requested a County Court Judgment against {{ defendantName }}.",
         "CCJ_NEXT_STEP_MSG5": "A judge will decide what {{ defendantName }} can afford to pay, based on their financial details.",
         "CCJ_NEXT_STEP_MSG6": "We'll contact both you and {{ defendantName }} to tell you what to do next."
@@ -1450,7 +1452,8 @@
         "NOT_ADMITTED_CLAIMANT": "Ymateb i'r diffynnydd.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
         "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post.",
-        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos."
+        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "Mae'r dogfennau'n cael eu cyfieithu."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
@@ -1579,19 +1582,19 @@
       "TITLE": "Ymateb i'r cytundeb setlo"
     },
     "DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION": {
-      "ACCEPTED_SETTLEMENT_AGREEMENT_TITLE": "You've both signed a settlement agreement",
-      "CAN_REQUEST_CCJ": "The claimant can request a County Court Judgment (CCJ) against you. The CCJ would order you to repay the money in line with the terms of the agreement.",
-      "CANT_REQUEST_CCJ": "The claimant can't request a County Court Judgment against you unless you break the terms.",
-      "CONTACT_CLAIMANT": "Contact {{ claimantName }}",
-      "COURT_REVIEWED_PLAN": "The court has reviewed the plan and believes you can afford it, so a judge may not change it.",
-      "DOWNLOAD_SETTLEMENT_AGREEMENT_LINK_TEXT": "Download settlement agreement (PDF)",
-      "EMAIL_YOU": "We'll email you when the claimant responds.",
-      "GET_RECEIPTS": "Make sure you get receipts for any payments.",
+      "ACCEPTED_SETTLEMENT_AGREEMENT_TITLE": "Rydych eich dau wedi llofnodi’r cytundeb setlo",
+      "CAN_REQUEST_CCJ": "Gall yr hawlydd wneud cais am Ddyfarniad Llys Sirol (CCJ) yn eich erbyn. Byddai’r CCJ yn gorchymyn i chi ad-dalu’r arian yn unol â thelerau’r cytundeb.",
+      "CANT_REQUEST_CCJ": "Ni all yr hawlydd wneud cais am Ddyfarniad Llys Sirol yn eich erbyn oni bai eich bod yn torri’r telerau.",
+      "CONTACT_CLAIMANT": "Cysylltwch â {{ claimantName }}",
+      "COURT_REVIEWED_PLAN": "Mae'r llys wedi adolygu'r cynllun ac yn credu y gallwch ei fforddio, felly efallai na fydd barnwr yn ei newid.",
+      "DOWNLOAD_SETTLEMENT_AGREEMENT_LINK_TEXT": "Lawrlwytho’r cytundeb setlo (PDF)",
+      "EMAIL_YOU": "Byddwn yn anfon e-bost atoch chi pan fydd yr hawlydd yn ymateb.",
+      "GET_RECEIPTS": "Gwnewch yn siŵr eich bod yn cael derbynebau am unrhyw daliadau.",
       "PAGE_TITLE": "Respond to the settlement agreement confirmation",
-      "PAY_BY": "The agreement says you'll repay by {{ paymentDate }}.",
-      "REJECTED_SETTLEMENT_AGREEMENT_TITLE": "You've rejected the settlement agreement",
-      "REQUEST_CCJ": "If they request a CCJ, you can ask a judge to consider changing the repayment plan, based on your financial details.",
-      "THEIR_PAYMENT_DETAILS": "if you need their payment details.",
+      "PAY_BY": "Mae’r cytundeb yn dweud y byddwch yn ad-dalu erbyn {{ paymentDate }}.",
+      "REJECTED_SETTLEMENT_AGREEMENT_TITLE": "Rydych wedi gwrthod y cytundeb setlo.",
+      "REQUEST_CCJ": "Os byddant yn gwneud cais am CCJ, gallwch ofyn i farnwr ystyried newid y cynllun ad-dalu, yn seiliedig ar eich manylion ariannol.",
+      "THEIR_PAYMENT_DETAILS": "os oes arnoch angen eu manylion talu.",
       "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
     },
     "DEFENDANT_TIMELINE": {
@@ -1921,6 +1924,7 @@
       "ENTER_NUMBER": "Rhowch y rhif help i dalu ffioedd",
       "PAGE_TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
       "REFERENCE_NUMBER": "Cyfeirnod Help i Dalu Ffioedd",
+      "REFERENCE_NUMBER_NONE": "Dim",
       "TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
       "ONLY_ONE": "Dim ond os gwnaethoch gais am help i dalu ffioedd y bydd gennych gyfeirnod help i dalu ffioedd."
     },
@@ -3284,6 +3288,7 @@
     "ENTER_LAST_NAME": "Rhowch enw olaf",
     "ENTER_PERSON_NAME": "Nodwch enw’r unigolyn sydd angen cymorth",
     "ENTER_PAYMENT_EXPLANATION": "Rhowch eglurhad o sut y gwnaethoch dalu",
+    "ENTER_DATE_YOU_ARE_UNAVAILABILITY_CARM": "Nodwch y dyddiad nad ydych ar gael",
     "ENTER_DATES_FOR_UNAVAILABILITY": "Rhowch y dyddiadau nad yw ar gael",
     "ENTER_DATE_FOR_UNAVAILABILITY": "Rhowch y dyddiad nad yw ar gael",
     "ENTER_DATE_FOR_UNAVAILABILITY_FROM": "Rhowch y dyddiad nad yw ar gael o",
@@ -3590,8 +3595,7 @@
     "VALID_VALUE": "A ydych yn siŵr bod hwn yn swm dilys?",
     "VALID_YEAR": "Rhowch flwyddyn ddilys",
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
-    "VALID_YES_NO_OPTION_CARM_EMAIL_CONFIRMATION": "Dewisiwch opsiwn: ydy neu nac ydy",
-    "VALID_YES_NO_OPTION_CARM_CONTACT_PERSON_CONFIRMATION": "Dewisiwch opsiwn: ie neu na",
+    "VALID_YES_NO_OPTION_CARM_IE_NEU_NA": "Dewisiwch opsiwn: ie neu na",
     "VALID_YES_NO_OPTION_NAC_YDW": "Dewiswch opsiwn: ‘ydw’ neu ‘nac ydw’",
     "VALID_YES_OR_NO_OPTION": "Dewiswch Oes i setlo’r hawliad",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Dewiswch Oes neu Nac oes",

@@ -125,9 +125,7 @@ civil-service:
       CMC_DB_USERNAME: "{{ .Values.postgresql.auth.username}}"
       CMC_DB_PASSWORD: "{{ .Values.postgresql.auth.password}}"
       REFERENCE_DATABASE_MIGRATION: true
-      FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
-      FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
-      FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       POLLING_EVENT_EMITTER_ENABLED: false
       DOCUMENT_MANAGEMENT_SECURED: true
       STITCHING_API_ENABLED: false
@@ -273,7 +271,7 @@ ccd:
 
   ccd-api-gateway-web:
     nodejs:
-      image: hmctspublic.azurecr.io/ccd/api-gateway-web:prod-66e26b9-20231116094420
+      image: hmctspublic.azurecr.io/ccd/api-gateway-web:latest
       imagePullPolicy: Always
       environment:
         ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
@@ -316,6 +314,8 @@ ccd:
       environment:
         DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DEFINITION_STORE_IDAM_KEY: ${CCD_DEFINITION_STORE_S2S_SECRET}
+        DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 60
+        WELSH_TRANSLATION_ENABLED: false
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master

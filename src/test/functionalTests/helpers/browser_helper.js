@@ -4,7 +4,7 @@ module.exports = class BrowserHelpers extends Helper {
     return this.helpers['Playwright'] || this.helpers['WebDriver'];
   }
 
-  isPlaywirght(){
+  isPlaywright(){
     return this.helpers['Playwright'];
   }
 
@@ -36,7 +36,7 @@ module.exports = class BrowserHelpers extends Helper {
     const helper = this.getHelper();
     const waitTimeout = sec ? sec * 1000 : helper.options.waitForTimeout;
     try {
-      if (this.isPlaywirght()) {
+      if (this.isPlaywright()) {
         const context = await helper._getContext();
         return await context.waitForSelector(locator, {timeout: waitTimeout});
       } else {
@@ -49,11 +49,11 @@ module.exports = class BrowserHelpers extends Helper {
 
   async waitForContent(content, sec) {
     const helper = this.getHelper();
-    const waitTimeout = sec ? sec * 1000 : helper.options.waitForTimeout;
+    const waitTimeout = sec ? sec : helper.options.waitForTimeout;
     try {
-      if (this.isPlaywirght()) {
+      if (this.isPlaywright()) {
         const context = await helper._getContext();
-        return await context.waitForVisible(`//*[contains(text(), ${content})]`, 60);
+        return await context.waitForVisible(`//*[contains(text(), ${content})]`, waitTimeout);
       } else {
         return await helper.waitForVisible(content, waitTimeout);
       }
