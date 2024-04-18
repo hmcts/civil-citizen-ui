@@ -4,6 +4,10 @@ import {
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import {Email} from 'models/Email';
 import {getSummarySections} from 'services/features/claimantResponse/ccj/ccjCheckAnswersService';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
+import {YesNo} from 'form/models/yesNo';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -18,6 +22,7 @@ const FULL_NAME = `${TITLE} ${FIRST_NAME} ${LAST_NAME}`;
 const EMAIL_ADDRESS = 'contact@gmail.com';
 const ADDRESS = '23 Brook lane<br>Bristol<br>BS13SS';
 const CLAIM_ID = 'claimId';
+
 
 describe('Citizen Details Section', () => {
   const claim = createClaimWithBasicRespondentDetails();
@@ -51,6 +56,22 @@ describe('Citizen Details Section', () => {
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[0].summaryList.rows[0].value.html).toBe(FULL_NAME);
+  });
+
+  it('should return date of birth of a person when date of birth present', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    const dob = new Date('2000-11-11T00:00:00.000Z');
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.ccjRequest = new CCJRequest();
+    claim.claimantResponse.ccjRequest.defendantDOB = {
+      option: YesNo.YES,
+      dob: {dateOfBirth: dob},
+    };
+    //When
+    const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[0].summaryList.rows[2].value.html).toBe(formatDateToFullDate(dob));
   });
 
   it('should return email when it exists', async () => {
