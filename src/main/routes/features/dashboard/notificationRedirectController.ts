@@ -4,7 +4,7 @@ import {RequestHandler, Router} from 'express';
 import {BUNDLES_URL,
   CASE_DOCUMENT_VIEW_URL,
   DASHBOARD_NOTIFICATION_REDIRECT,
-  DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT,} from 'routes/urls';
+  DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {DocumentType} from 'models/document/documentType';
 import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
