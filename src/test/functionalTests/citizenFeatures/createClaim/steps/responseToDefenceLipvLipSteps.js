@@ -23,6 +23,25 @@ const paths = {
 
 class ResponseToDefenceLipVLipSteps {
 
+  async claimantAcceptForDefRespPartAdmitInstallmentsPayment(caseReference, admittedAmount, fastTrack) {
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefResponseForPartAdmitInstallmentPayment(admittedAmount);
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.accept_or_reject_the_plan);
+    await responseToDefence.acceptOrRejectTheAmountDefendantAdmittedAndSettle(admittedAmount, 'reject');
+    if (fastTrack == 'fast') {
+      await this.verifyDQForFastTrack();
+    } else {
+      await this.verifyDQForSmallClaims();
+    }
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.check_and_submit_your_response);
+    await responseToDefence.acceptOrRejectTheAmountCYA('reject');
+    await responseToDefence.verifyAcceptOrRejectConfirmationScreen('reject', '1500');
+  }
+
   async claimantAcceptForDefRespPartAdmitImmediatePayment(caseReference, admittedAmount) {
     await responseToDefence.open(caseReference);
     await responseToDefence.verifyDashboard();

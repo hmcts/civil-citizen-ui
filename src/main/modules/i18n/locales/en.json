@@ -1121,7 +1121,7 @@
         "TELL_US_SETTLEMENT": "You need to tell us if you've settled the claim, for example because the defendant has paid you."
       },
       "ACCEPTED_DEFENDANT_RESPONSE_TO_SETTLE": {
-        "CLAIM_SETTLE": "The claim is now settled.We've emailed {{ defendantName }} to tell them."
+        "CLAIM_SETTLE": "The claim is now settled. We've emailed {{ defendantName }} to tell them."
       },
      "RC_DISPUTE": {
         "NOT_PROCEED_WITH_CLAIM": "You didn't proceed with the claim",
@@ -1492,7 +1492,8 @@
         "NOT_ADMITTED_CLAIMANT": "Respond to the defendant.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post.",
-        "WAITING_COURT_REVIEW": "Wait for the court to review the case."
+        "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
