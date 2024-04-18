@@ -1435,7 +1435,7 @@
       "DRAFT_CLAIM_NUMBER": "Draft claim",
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
-        "CREATED": "Crëwyd ",
+        "CREATED": "Created ",
         "PAY_FEE": "Pay the hearing fee",
         "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
         "TITLE": "Hearings",

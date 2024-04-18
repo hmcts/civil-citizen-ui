@@ -1435,7 +1435,7 @@
       "DRAFT_CLAIM_NUMBER": "Hawliad drafft",
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
-        "CREATED": "Created ",
+        "CREATED": "Crëwyd ",
         "PAY_FEE": "Pay the hearing fee",
         "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
         "TITLE": "Hearings",

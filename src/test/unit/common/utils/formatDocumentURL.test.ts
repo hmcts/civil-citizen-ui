@@ -8,6 +8,7 @@ import {DocumentType} from 'models/document/documentType';
 import {HearingDateTimeFormatter} from 'services/features/caseProgression/hearingDateTimeFormatter';
 import {alignText} from 'form/models/alignText';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {t} from 'i18next';
 
 describe('format <a> element for document', ()=>{
   it('Should format document details into <a>', ()=>{
@@ -29,14 +30,16 @@ describe('format <a> element for document', ()=>{
   });
 });
 describe('format hint element for document', ()=>{
+  const lang = 'en';
   it('Should show hint date document details into', ()=>{
     const documentType = DocumentType.HEARING_FORM;
     const createdDatetime = new Date();
+    const created = t('PAGES.DASHBOARD.HEARINGS.CREATED', {lng:lang});
     //When
-    const urlElement = formatDocumentWithHintText(documentType, createdDatetime, 'en');
+    const urlElement = formatDocumentWithHintText(documentType, createdDatetime, lang);
     //Then
     const expectedResult = '<span class="govuk-body">'+ documentType +'</span>'
-      + '<span class="govuk-caption-m"> Created ['+ HearingDateTimeFormatter.getHearingDateFormatted(createdDatetime,'en') + ']</span>';
+      + '<span class="govuk-caption-m">'+created+'['+ HearingDateTimeFormatter.getHearingDateFormatted(createdDatetime,lang) + ']</span>';
     expect(urlElement).toEqual(expectedResult);
   });
 });

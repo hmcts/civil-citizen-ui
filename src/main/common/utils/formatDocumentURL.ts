@@ -22,6 +22,6 @@ export function formatDocumentWithHintText(documentType: string, createdDatetime
 
   const created = t('PAGES.DASHBOARD.HEARINGS.CREATED', {lng:lang});
   const hintText ='<span class="govuk-body">'+ documentType +'</span>'
-    + '<span class="govuk-caption-m">' + created + [HearingDateTimeFormatter.getHearingDateFormatted(createdDatetime,lang)]+'</span>';
+    + '<span class="govuk-caption-m">' + created + '['+HearingDateTimeFormatter.getHearingDateFormatted(createdDatetime,lang)+']'+'</span>';
   return hintText;
 }
