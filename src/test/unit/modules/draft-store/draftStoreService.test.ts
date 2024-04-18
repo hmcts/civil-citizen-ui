@@ -47,8 +47,7 @@ function createMockDraftStore(returnData: unknown) {
 describe('Draft store service to save and retrieve claim', () => {
   it('should get claim data successfully when data exists', async () => {
     //Given
-    const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
-    app.locals.draftStoreClient = draftStoreWithData;
+    app.locals.draftStoreClient = createMockDraftStore(REDIS_DATA[0]);
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
     //When
     const {id} = await getDraftClaimFromStore(CLAIM_ID);
@@ -168,7 +167,7 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(result).toBe('123451');
   });
 
-  it('should remove remove field from claim data', async () => {
+  it('should remove field from claim data and save on redis', async () => {
     //Given
     const draftStoreWithData = createMockDraftStore(undefined);
     app.locals.draftStoreClient = draftStoreWithData;
@@ -185,6 +184,7 @@ describe('Draft store service to save and retrieve claim', () => {
     mockClaim.totalClaimAmount = 123;
 
     const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
+
     //When
     await deleteFieldDraftClaimFromStore(CLAIM_ID,  mockClaim, 'totalClaimAmount');
     //Then
