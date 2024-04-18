@@ -18,12 +18,31 @@ const paths = {
     details_in_case_of_a_hearing : '//a[.="Give us details in case there\'s a hearing"]',
     have_you_been_paid: '//a[contains(text(), \'Have you been paid the\')]',
     settle_the_claim_for: '//a[contains(text(), \'Settle the claim for\')]',
+    propose_alternative_plan: '//a[contains(text(), \'Propose an alternative repayment plan\')]',
   },
 };
 
 class ResponseToDefenceLipVLipSteps {
 
+  //THIS ONE
   async claimantAcceptForDefRespPartAdmitInstallmentsPayment(caseReference, admittedAmount, fastTrack) {
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefResponseForPartAdmitInstallmentPayment(admittedAmount);
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.accept_or_reject_the_plan);
+    await responseToDefence.acceptOrRejectTheAmountDefendantAdmittedAndSettle(admittedAmount, 'accept');
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.accept_or_reject_the_payment_plan);
+    await responseToDefence.acceptOrRejectTheirRepaymentPlan('reject');
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.propose_alternative_plan);
+    await responseToDefence.proposePaymentPlan();
+    pause();
+  }
+
+  async claimantRejectForDefRespPartAdmitInstallmentsPayment(caseReference, admittedAmount, fastTrack) {
     await responseToDefence.open(caseReference);
     await responseToDefence.verifyDashboard();
     I.click(paths.links.view_defendants_response);

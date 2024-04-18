@@ -116,6 +116,23 @@ class ResponseToDefence {
     I.click(paths.buttons.submit_response);
   }
 
+  //THIS ONE
+  async acceptOrRejectTheirRepaymentPlan(acceptOrReject) {
+    I.waitForContent('How they want to pay?');
+    if (acceptOrReject == 'accept') {
+      I.see('Yes');
+      I.click(paths.options.yes);
+    } else {
+      I.see('No - I\'ll suggest my own');
+      I.click(paths.options.no);
+    }
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async proposePaymentPlan() {
+    I.checkOption('#paymentType'); //Immediately radio
+  }
+
   async verifyAcceptOrRejectConfirmationScreen(acceptOrReject = 'accept', admittedAmount = '200.00') {
     I.waitForContent('What happens next');
     if (acceptOrReject == 'accept') {
