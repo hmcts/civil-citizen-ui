@@ -1,6 +1,6 @@
 import {
   mapperDefendantResponseToDocumentView,
-  mapperMediationAgreementToDocumentView
+  mapperMediationAgreementToDocumentView,
 } from 'common/mappers/documentViewMapper';
 import {
   DocumentInformation,

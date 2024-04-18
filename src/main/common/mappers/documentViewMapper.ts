@@ -34,4 +34,4 @@ export const mapperDefendantResponseToDocumentView = (documentTitle: string, fil
           .replace(':documentId',
             getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)),
         `defendant-response-${caseId}.pdf`))));
-}
+};
