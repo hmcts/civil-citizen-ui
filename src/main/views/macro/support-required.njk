@@ -132,12 +132,14 @@
     {% if removeButton.hidden %}
       {{ govukButton({
         text: t('COMMON.REMOVE'),
-        classes: 'govuk-button--secondary remove-row govuk-visually-hidden'
+        classes: 'govuk-button--secondary remove-row govuk-visually-hidden',
+        type: "button"
       }) }}
     {% else %}
       {{ govukButton({
         text: t('COMMON.REMOVE'),
-        classes: 'govuk-button--secondary remove-row'
+        classes: 'govuk-button--secondary remove-row',
+        type: "button"
       }) }}
     {% endif %}
   </div>
