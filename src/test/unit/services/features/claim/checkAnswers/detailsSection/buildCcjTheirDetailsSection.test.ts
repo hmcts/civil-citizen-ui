@@ -23,7 +23,6 @@ const EMAIL_ADDRESS = 'contact@gmail.com';
 const ADDRESS = '23 Brook lane<br>Bristol<br>BS13SS';
 const CLAIM_ID = 'claimId';
 
-
 describe('Citizen Details Section', () => {
   const claim = createClaimWithBasicRespondentDetails();
   it('should return your Individual details summary sections', async () => {
@@ -80,7 +79,7 @@ describe('Citizen Details Section', () => {
     claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.ccjRequest = new CCJRequest();
     claim.claimantResponse.ccjRequest.defendantDOB = {
-      option: YesNo.NO
+      option: YesNo.NO,
     };
     //When
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
