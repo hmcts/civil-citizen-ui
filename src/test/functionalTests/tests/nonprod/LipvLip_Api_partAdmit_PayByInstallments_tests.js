@@ -37,4 +37,6 @@ Scenario('Response with PartAdmit-PayByInstallments Fast Track @citizenUI @partA
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitInstallmentsPayment(claimRef, '1236', 'fast');
     await api.waitForFinishedBusinessProcess();
   }
+
+  //Dummy commit
 }).tag('@regression-r2');
