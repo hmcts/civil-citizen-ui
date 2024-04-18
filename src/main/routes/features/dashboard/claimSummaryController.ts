@@ -21,7 +21,11 @@ import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/sys
 import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
 import {getBundlesContent} from 'services/features/caseProgression/bundles/bundlesService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {getDashboardForm, getNotifications} from 'services/dashboard/dashboardService';
+import {
+  extractOrderDocumentIdFromNotification,
+  getDashboardForm,
+  getNotifications,
+} from 'services/dashboard/dashboardService';
 import {getClaimWithExtendedPaymentDeadline} from 'services/features/response/submitConfirmation/submitConfirmationService';
 import {ClaimantOrDefendant} from 'models/partyType';
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
@@ -42,6 +46,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
     if (isReleaseTwoEnabled && isDashboardService) {
       const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest);
+      claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest);
       res.render(claimSummaryRedesignViewPath, {claim, claimId, dashboardTaskList, dashboardNotifications});
     } else {
