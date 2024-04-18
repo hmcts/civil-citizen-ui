@@ -1,5 +1,4 @@
 import * as urls from '../../main/routes/urls';
-import {VIEW_ORDERS_AND_NOTICES_URL} from '../../main/routes/urls';
 
 export const IGNORED_URLS = [
   urls.SIGN_IN_URL,
