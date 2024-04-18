@@ -58,7 +58,7 @@ describe('format align element for document file name', ()=>{
     //When
     const urlElement = formatDocumentAlignedViewURL(document.document_filename, claimId, document.document_binary_url,alignText.ALIGN_TO_THE_RIGHT);
     //Then
-    const expectedResult = `<div class="${alignClass}"><a class="govuk-link ${alignClass}" target="_blank" href="${url}">${document.document_filename}</a></div>`;
+    const expectedResult = `<div class="${alignClass}"><a class="govuk-link" target="_blank" href="${url}">${document.document_filename}</a></div>`;
     expect(urlElement).toEqual(expectedResult);
   });
 });
