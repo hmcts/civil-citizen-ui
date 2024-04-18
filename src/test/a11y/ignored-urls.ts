@@ -1,4 +1,5 @@
 import * as urls from '../../main/routes/urls';
+import {VIEW_ORDERS_AND_NOTICES_URL} from '../../main/routes/urls';
 
 export const IGNORED_URLS = [
   urls.SIGN_IN_URL,
@@ -50,4 +51,5 @@ export const IGNORED_URLS = [
   urls.DASHBOARD_CLAIMANT_URL,
   // WCAG2AA.Principle1.Guideline1_3.1_3_1.H39.3.LayoutTable - govUK has caption on tables
   urls.VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT,
+  urls.VIEW_ORDERS_AND_NOTICES_URL,
 ];
