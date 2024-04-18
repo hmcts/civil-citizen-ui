@@ -132,7 +132,7 @@ class ResponseToDefence {
     I.see('How do you want the defendant to pay?');
     I.checkOption('#paymentType'); //Immediately radio
     I.click(paths.buttons.save_and_continue);
-    I.see('The defendant can\’t afford your plan');
+    I.see('The defendant can\'t afford your plan');
     I.checkOption('#decision-2'); //Judge make repayment plan
     I.click(paths.buttons.save_and_continue);
     I.see('Why did you reject the repayment plan?');
