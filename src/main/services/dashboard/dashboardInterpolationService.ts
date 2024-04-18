@@ -8,7 +8,7 @@ import {
   CCJ_PAID_AMOUNT_URL,
   CCJ_REPAYMENT_PLAN_CLAIMANT_URL,
   CCJ_REPAYMENT_PLAN_DEFENDANT_URL,
-  CITIZEN_CONTACT_THEM_URL,
+  CITIZEN_CONTACT_THEM_URL, BUNDLES_URL,
   CLAIM_FEE_BREAKUP,
   CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
@@ -58,6 +58,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', '#');
   valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId));
   valuesMap.set('{PAY_HEARING_FEE}', PAY_HEARING_FEE_URL.replace(':id', claimId));
+  valuesMap.set('{VIEW_BUNDLE}', BUNDLES_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_BUNDLE}', '#');
   valuesMap.set('{VIEW_JUDGEMENT}', '#');
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
