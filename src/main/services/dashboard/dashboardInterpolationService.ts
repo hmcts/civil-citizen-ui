@@ -59,7 +59,6 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId));
   valuesMap.set('{PAY_HEARING_FEE}', PAY_HEARING_FEE_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_BUNDLE}', '#');
-  valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', '#');
   valuesMap.set('{VIEW_JUDGEMENT}', '#');
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
   valuesMap.set('{VIEW_HEARING_NOTICE}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM)));
@@ -122,8 +121,14 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
       .replace(':locationName', 'VIEW_FINAL_ORDER')
       .replace(':notificationId', notificationId)
       .replace(':documentId', documentIdExtractor(documentId)));
+
+  }
+
+  if (claim?.orderDocumentId != undefined) {
     valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', CASE_DOCUMENT_VIEW_URL
-      .replace(':id', claim.id).replace(':documentId', documentIdExtractor(documentId)));
+      .replace(':id', claimId).replace(':documentId', documentIdExtractor(claim?.orderDocumentId) + ' target="_blank"'));
+  } else {
+    valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', '#');
   }
 
   return valuesMap;
@@ -154,7 +159,7 @@ function getDocumentIdFromParams (notification: DashboardNotification): string {
   return '';
 }
 
-function objectToMap(obj: any): Map<string, any> {
+export function objectToMap(obj: any): Map<string, any> {
   const map = new Map<string, any>();
 
   for (const key in obj) {

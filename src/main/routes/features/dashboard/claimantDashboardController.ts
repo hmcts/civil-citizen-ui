@@ -1,6 +1,10 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {DASHBOARD_CLAIMANT_URL,OLD_DASHBOARD_CLAIMANT_URL} from '../../urls';
-import {getDashboardForm, getNotifications} from 'services/dashboard/dashboardService';
+import {
+  extractOrderDocumentIdFromNotification,
+  getDashboardForm,
+  getNotifications,
+} from 'services/dashboard/dashboardService';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
@@ -36,6 +40,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         dashboardId = claimId;  
       }
       const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req);
+      claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req);
       res.render(claimantDashboardViewPath, {claim:claim, claimId, dashboardTaskList:dashboard, dashboardNotifications, lng});
     } else {
