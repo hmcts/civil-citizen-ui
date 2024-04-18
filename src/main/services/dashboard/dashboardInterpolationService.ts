@@ -101,7 +101,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
     valuesMap.set('{VIEW_BUNDLE_REDIRECT}', DASHBOARD_NOTIFICATION_REDIRECT
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_BUNDLE')
-      .replace(':notificationId', notificationId));            
+      .replace(':notificationId', notificationId));
     valuesMap.set('{VIEW_ORDERS_AND_NOTICES_REDIRECT}', DASHBOARD_NOTIFICATION_REDIRECT
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_ORDERS_AND_NOTICES')
@@ -122,6 +122,8 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
       .replace(':locationName', 'VIEW_FINAL_ORDER')
       .replace(':notificationId', notificationId)
       .replace(':documentId', documentIdExtractor(documentId)));
+    valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', CASE_DOCUMENT_VIEW_URL
+      .replace(':id', claim.id).replace(':documentId', documentIdExtractor(documentId)));
   }
 
   return valuesMap;
