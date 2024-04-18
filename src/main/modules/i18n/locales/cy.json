@@ -979,6 +979,7 @@
       "ABOUT_CLAIM": "Am yr hawliad",
       "BUNDLES": {
         "TAB_TITLE": "Bwndeli",
+        "DOCUMENT_TITLE": "Bwndel",
         "FIND_BUNDLE_BELOW": "Gallwch ddod o hyd i’r bwndel isod.",
         "APPLY_TO_COURT_BEFORE": "Gan fod y bwndel bellach wedi’i greu, bydd angen ichi",
         "APPLY_TO_COURT_LINK": "wneud cais i’r llys",
@@ -988,10 +989,10 @@
         "CREATED_DATE_HEADER": "Crëwyd ar",
         "HEARING_DATE_HEADER": "Dyddiad y gwrandawiad",
         "URL_HEADER": "URL y ddogfen",
-        "UPLOADED_AFTER_DATE_UPLOADED": "Dyddiad llwytho’r ddogfen",
+        "DATE_UPLOADED": "Dyddiad llwytho’r ddogfen",
+        "DOCUMENT_NAME": "Enw’r ddogfen",
+        "DOCUMENT": "Dogfen",
         "UPLOADED_AFTER_DOCUMENTS_BELOW": "Mae'r dogfennau a restrir isod wedi'u llwytho ers i'r bwndel treial gael ei greu.",
-        "UPLOADED_AFTER_DOCUMENT_NAME": "Enw’r ddogfen",
-        "UPLOADED_AFTER_DOCUMENT": "Dogfen",
         "UPLOADED_AFTER_UPLOADED_DOCUMENTS_CLAIMANT": "Dogfennau'r hawlydd a uwchlwythwyd",
         "UPLOADED_AFTER_UPLOADED_DOCUMENTS_DEFENDANT": "Dogfennau'r diffynnydd a uwchlwythwyd"
       },
