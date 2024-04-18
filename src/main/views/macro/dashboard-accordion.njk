@@ -2,13 +2,14 @@
 
 {# Set some default values #}
 
-{% macro dashboardAccordion(t, link, header, content) %}
+{% macro dashboardAccordion(t, link, header, content,linkTarget) %}
 
   {% set header = t('PAGES.DASHBOARD.ACCORDION_TITLE') %}
   {% set content = t('PAGES.DASHBOARD.ACCORDION_CONTENT') %}
-  {% set linkContent = 'orders and notices.' %}
+  {% set linkContent = t('PAGES.DASHBOARD.ACCORDION_ORDERS')%}
+  {% set linkTarget = '_blank'%}
 
-  {% set widget = _widgetLink(content,link,linkContent, '_blank') %}
+  {% set widget = _widgetLink(content,link,linkContent, linkTarget) %}
 
   {{ govukDetails({
     summaryText: header,

@@ -1419,6 +1419,7 @@
     "DASHBOARD": {
       "ACCORDION_TITLE": "If you cannot find a document you are looking for in this section",
       "ACCORDION_CONTENT": "This is the main active hearing on the case. Older hearings and case documents can be found in",
+      "ACCORDION_ORDERS": "orders and notices.",
       "ACTIONS": "Actions",
       "ACTION_PROMPT": "You need to respond before ",
       "CLAIMANT_NAME": "Claimant name",
@@ -1433,6 +1434,7 @@
       "DRAFT_CLAIM_NUMBER": "Draft claim",
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
+        "CREATED": "Crëwyd ",
         "PAY_FEE": "Pay the hearing fee",
         "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
         "TITLE": "Hearings",

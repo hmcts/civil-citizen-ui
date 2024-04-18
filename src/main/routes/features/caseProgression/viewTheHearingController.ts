@@ -25,7 +25,7 @@ viewTheHearingController.get(VIEW_THE_HEARING_URL, (async (req:Request, res:Resp
       ? DASHBOARD_CLAIMANT_URL.replace(':id', claimId)
       : DEFENDANT_SUMMARY_URL.replace(':id', claimId);
 
-    const hearingSections = getHearingContent(claimId,claim, lang);
+    const hearingSections = getHearingContent(claimId,claim, lang,dashboardUrl);
 
     res.render(hearingViewPath,
       {hearingSections,

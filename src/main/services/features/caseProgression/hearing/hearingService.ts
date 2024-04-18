@@ -7,16 +7,15 @@ import {
   formatDocumentWithHintText,
 } from 'common/utils/formatDocumentURL';
 import {CaseProgressionHearingDocuments} from 'models/caseProgression/caseProgressionHearing';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {alignText} from 'form/models/alignText';
 
-export function getHearingContent(claimId: string, claim: Claim, lang: string): ClaimSummaryContent[] {
+export function getHearingContent(claimId: string, claim: Claim, lang: string, redirectUrl:string): ClaimSummaryContent[] {
 
   const claimSummaryContent = [] as ClaimSummaryContent[];
   claimSummaryContent.push(getHearings(claimId,claim, lang));
-  claimSummaryContent.push(getButton(claimId, claim, lang));
+  claimSummaryContent.push(getButton(claimId, claim, lang, redirectUrl));
 
   return claimSummaryContent;
 }
@@ -34,11 +33,9 @@ function getHearings(claimId: string, claim: Claim, lang: string): ClaimSummaryC
 }
 
 function getHearingsHeader(lang: string): ClaimSummarySection{
-  const hearingHeaders: ClaimSummarySection= {
+  return {
     type:ClaimSummaryType.TITLE,
     data:{text: t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.VIEW_THE_HEARING.TAB_TITLE', {lng:lang})}};
-
-  return hearingHeaders;
 }
 
 function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
@@ -57,16 +54,9 @@ function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
     }
   }
 
-  const hearingHeaders: ClaimSummarySection= {
-    type:ClaimSummaryType.SUMMARY,
-    data:{rows:hearingRows},
-  };
-
-  return hearingHeaders;
+  return {type:ClaimSummaryType.SUMMARY, data:{rows:hearingRows}};
 }
-function getButton(claimId: string, claim: Claim, lang: string): ClaimSummaryContent {
-
-  const redirectUrl = claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL;
+function getButton(claimId: string, claim: Claim, lang: string, redirectUrl:string): ClaimSummaryContent {
 
   const buttonSection = new PageSectionBuilder()
     .addButton(t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW', {lng:lang}), constructResponseUrlWithIdParams(claimId, redirectUrl))

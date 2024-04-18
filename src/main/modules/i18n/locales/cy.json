@@ -1419,6 +1419,7 @@
     "DASHBOARD": {
       "ACCORDION_TITLE": "If you cannot find a document you are looking for in this section",
       "ACCORDION_CONTENT": "This is the main active hearing on the case. Older hearings and case documents can be found in",
+      "ACCORDION_ORDERS": "orders and notices.",
       "ACTIONS": "Camau gweithredu",
       "ACTION_PROMPT": "Mae angen i chi ymateb cyn ",
       "CLAIMANT_NAME": "Enw’r hawlydd",
@@ -1433,6 +1434,7 @@
       "DRAFT_CLAIM_NUMBER": "Hawliad drafft",
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
+        "CREATED": "Created ",
         "PAY_FEE": "Pay the hearing fee",
         "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
         "TITLE": "Hearings",
