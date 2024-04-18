@@ -172,6 +172,10 @@ module.exports = {
       payload = hwfPayloads.partRemission();
     } else if (event === config.hwfEvents.fullRemission) {
       payload = hwfPayloads.fullRemission();
+    } else if (event === config.hwfEvents.moreInfoHWF) {
+      payload = hwfPayloads.moreInfoHWF();
+    } else if (event === config.hwfEvents.invalidHWFRef) {
+      payload = hwfPayloads.invalidHWFRef();
     }
     await apiRequest.setupTokens(user);
     eventName = payload['event'];

@@ -27,7 +27,7 @@ module.exports = {
       caseData: {
         'helpWithFees': {
           'helpWithFee': 'Yes',
-          'helpWithFeesReferenceNumber': 'HWF-345-908',
+          'helpWithFeesReferenceNumber': 'HWF-123-466',
         },
         'hwfFeeType': 'CLAIMISSUED',
         'hearingHelpFeesReferenceNumber': null,
@@ -52,7 +52,7 @@ module.exports = {
         'hwfFeeType': 'CLAIMISSUED',
         'helpWithFees': {
           'helpWithFee': 'Yes',
-          'helpWithFeesReferenceNumber': 'HWF-345-908',
+          'helpWithFeesReferenceNumber': 'HWF-123-466',
         },
         'claimIssuedHwfDetails': null,
         'hearingHwfDetails': null,

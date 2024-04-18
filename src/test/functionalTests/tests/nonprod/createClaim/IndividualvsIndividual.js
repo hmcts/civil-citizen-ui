@@ -94,13 +94,13 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
   }
 });
 
-Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - with hwf', async ({api}) => {
+Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - with hwf @testing', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     selectedHWF = true;
     claimInterestFlag = true;
     StandardInterest = false;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    //await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
     await steps.updateClaimAmount(claimAmount, claimInterestFlag, StandardInterest, selectedHWF);
@@ -130,7 +130,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
     }
     await api.submitHwfEventForUser(config.hwfEvents.fullRemission);
     if (isDashboardServiceEnabled) {
-      const notification = hwfFullRemission();
+      const notification = hwfFullRemission(claimFee);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
     }
   }

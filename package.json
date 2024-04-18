@@ -21,7 +21,7 @@
     "tests:a11y": "NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_ENV=test LOG_LEVEL=ERROR mocha --exit --reporter mochawesome --require ts-node/register --require tsconfig-paths/register src/test/a11y/a11y.mock-test.ts --timeout 60000 --reporter-options reportDir=functional-output/accessibility-report,reportFilename=a11y,inlineAssets=true,reportTitle=civil-citizen-ui",
     "sonar-scan": "sonar-scanner",
     "test:smoke": "MOCHAWESOME_REPORTFILENAME=smokeTests REPORT_DIR=test-results/smokeTest yarn test:functional:codeceptjs run-workers 1 --grep @smoketest --reporter mocha-multi --verbose",
-    "test:cui-r1": "MOCHAWESOME_REPORTFILENAME=cui yarn test:functional:codeceptjs run-workers --suites 9 --grep @regression-cui-r1 --reporter mocha-multi --verbose",
+    "test:cui-r1": "MOCHAWESOME_REPORTFILENAME=cui yarn test:functional:codeceptjs run-workers --suites 9 --grep @testing --reporter mocha-multi --verbose",
     "test:cui-cp": "MOCHAWESOME_REPORTFILENAME=cui yarn test:functional:codeceptjs run-workers --suites 9 --grep @regression-cp --reporter mocha-multi --verbose",
     "test:cui-regression": "MOCHAWESOME_REPORTFILENAME=cui yarn test:functional:codeceptjs run-workers --suites 12 --grep @regression --reporter mocha-multi --verbose",
     "test:carm": "MOCHAWESOME_REPORTFILENAME=carm yarn test:functional:codeceptjs run-workers --suites 2 --grep @regression-carm --reporter mocha-multi --verbose",
@@ -101,6 +101,7 @@
     "otplib": "^12.0.1",
     "reflect-metadata": "^0.1.13",
     "require-directory": "^2.1.1",
+    "select-dom": "^9.0.0",
     "serve-favicon": "^2.5.0",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.1",
@@ -108,9 +109,6 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.19.6",
-    "@babel/eslint-parser": "^7.19.1",
-    "@babel/preset-env": "^7.20.2",
     "@types/copy-webpack-plugin": "^10.1.0",
     "@types/jest": "^29.4.0",
     "@types/supertest": "^2.0.12",

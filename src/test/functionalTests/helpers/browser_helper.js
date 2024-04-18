@@ -61,4 +61,13 @@ module.exports = class BrowserHelpers extends Helper {
       return undefined;
     }
   }
+
+  async selectorsForAll(I, cssLocator) {
+    I.usePlaywrightTo('find all selectors', async (Playwright) => {
+      // access internal objects browser, page, context of helper
+      await Playwright.browserContext.setOffline(true);
+      // call a method of helper, await is required here
+      await Playwright.selectorsForAll(cssLocator);
+    });
+  }
 };
