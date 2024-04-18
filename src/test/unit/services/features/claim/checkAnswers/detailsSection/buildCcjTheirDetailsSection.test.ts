@@ -74,6 +74,32 @@ describe('Citizen Details Section', () => {
     expect(summarySections.sections[0].summaryList.rows[2].value.html).toBe(formatDateToFullDate(dob));
   });
 
+  it('should return date of birth of a person when date of birth not present', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.ccjRequest = new CCJRequest();
+    claim.claimantResponse.ccjRequest.defendantDOB = {
+      option: YesNo.NO
+    };
+    //When
+    const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[0].summaryList.rows[2]).toBeUndefined();
+  });
+
+  it('should return date of birth of a person when date of birth undefined', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.ccjRequest = new CCJRequest();
+    claim.claimantResponse.ccjRequest.defendantDOB = undefined;
+    //When
+    const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[0].summaryList.rows[2]).toBeUndefined();
+  });
+
   it('should return email when it exists', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();

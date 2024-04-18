@@ -26,7 +26,7 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
   }
   yourDetailsSection.summaryList.rows.push(summaryRow(t('COMMON.ADDRESS', {lng}),
     addressToString(claim.respondent1?.partyDetails.primaryAddress)));
-  if (claim.claimantResponse?.ccjRequest?.defendantDOB.option === YesNo.YES) {
+  if (claim.claimantResponse?.ccjRequest?.defendantDOB?.option === YesNo.YES) {
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng}),
       formatDateToFullDate(claim.claimantResponse.ccjRequest.defendantDOB.dob.dateOfBirth)));
   }
