@@ -22,16 +22,16 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const caseData: Claim = await getCaseDataFromStore(userId, true);
     if (!caseData?.isDraftClaim()) {
       await createDraftClaimInStoreWithExpiryTime(userId);
       await civilServiceClient.createDashboard(req);
     }
-    const taskLists = getTaskLists(caseData, userId, lang);
+    const taskLists = getTaskLists(caseData, userId, lng);
     const {completed, total} = calculateTotalAndCompleted(taskLists);
-    const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total});
-    const title = completed < total ? t('PAGES.CLAIM_TASK_LIST.APPLICATION_COMPLETE') : t('PAGES.CLAIM_TASK_LIST.APPLICATION_INCOMPLETE');
+    const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total, lng});
+    const title = completed < total ? t('PAGES.CLAIM_TASK_LIST.APPLICATION_COMPLETE', {lng}) : t('PAGES.CLAIM_TASK_LIST.APPLICATION_INCOMPLETE', {lng});
     res.render(taskListViewPath, {taskLists, title, description});
   } catch (error) {
     next(error);
