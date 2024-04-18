@@ -1,6 +1,6 @@
 import {
   createDraftClaimInStoreWithExpiryTime,
-  deleteDraftClaimFromStore,
+  deleteDraftClaimFromStore, deleteFieldDraftClaimFromStore,
   generateRedisKey,
   getCaseDataFromStore,
   getDraftClaimFromStore,
@@ -166,5 +166,28 @@ describe('Draft store service to save and retrieve claim', () => {
     const result = generateRedisKey(<AppRequest>req);
     //Then
     expect(result).toBe('123451');
+  });
+
+  it('should remove remove field from claim data', async () => {
+    //Given
+    const draftStoreWithData = createMockDraftStore(undefined);
+    app.locals.draftStoreClient = draftStoreWithData;
+    const expectedClaim = {
+      id: CLAIM_ID,
+      case_data: {
+        id: CLAIM_ID,
+      },
+    };
+    expectedClaim.id = CLAIM_ID;
+
+    const mockClaim = new Claim();
+    mockClaim.id = CLAIM_ID;
+    mockClaim.totalClaimAmount = 123;
+
+    const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
+    //When
+    await deleteFieldDraftClaimFromStore(CLAIM_ID,  mockClaim, 'totalClaimAmount');
+    //Then
+    expect(spySet).toBeCalledWith(CLAIM_ID, JSON.stringify(expectedClaim));
   });
 });
