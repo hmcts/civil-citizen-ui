@@ -1,15 +1,15 @@
-const config = require('../../config');
-const LoginSteps = require('./../commonFeatures/home/steps/login');
-const CitizenDashboardSteps = require('../citizenFeatures/citizenDashboard/steps/citizenDashboard');
-const {createAccount} = require('../specClaimHelpers/api/idamHelper');
-const ResponseSteps = require('../citizenFeatures/response/steps/lipDefendantResponseSteps');
-const { isDashboardServiceToggleEnabled } = require('../specClaimHelpers/api/testingSupport');
-const { verifyNotificationTitleAndContent } = require('../specClaimHelpers/e2e/dashboardHelper');
-const { respondToClaim, defendantResponseFullAdmitPayImmediately } = require('../specClaimHelpers/dashboardNotificationConstants');
+const config = require('../../../config');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
+const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
+const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
+const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
+const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
+const { respondToClaim, defendantResponseFullAdmitPayImmediately } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
-let caseData, claimNumber, claimRef, claimAmount = 1500, deadline= "6 March 2024";
+let caseData, claimNumber, claimRef, claimAmount = 1500, deadline= '6 March 2024';
 
 Feature('Create Lip v Lip claim -  Full Admit and pay Immediately');
 

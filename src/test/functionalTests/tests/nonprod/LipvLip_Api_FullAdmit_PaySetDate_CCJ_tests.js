@@ -1,16 +1,16 @@
-const config = require('../../config');
-const LoginSteps = require('./../commonFeatures/home/steps/login');
-const CitizenDashboardSteps = require('../citizenFeatures/citizenDashboard/steps/citizenDashboard');
-const {createAccount} = require('../specClaimHelpers/api/idamHelper');
-const ResponseToDefenceLipVsLipSteps = require('../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
-const ResponseSteps = require('../citizenFeatures/response/steps/lipDefendantResponseSteps');
-const { isDashboardServiceToggleEnabled } = require('../specClaimHelpers/api/testingSupport');
-const { verifyNotificationTitleAndContent } = require('../specClaimHelpers/e2e/dashboardHelper');
-const { defendantResponseFullAdmitPayBySetDate, claimantNotificationOfDefendantResponse, claimantNotificationCCJRequested } = require('../specClaimHelpers/dashboardNotificationConstants');
+const config = require('../../../config');
+const LoginSteps = require('../../commonFeatures/home/steps/login');
+const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
+const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
+const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
+const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
+const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
+const { defendantResponseFullAdmitPayBySetDate, claimantNotificationOfDefendantResponse, claimantNotificationCCJRequested } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
-let caseData, claimNumber, claimRef, claimAmount = 1500, date= "1 October 2025";
+let caseData, claimNumber, claimRef, claimAmount = 1500, date= '1 October 2025';
 
 Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise CCJ By Claimant');
 
