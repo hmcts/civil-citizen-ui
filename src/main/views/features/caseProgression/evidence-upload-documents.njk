@@ -1,0 +1,21 @@
+{% extends "../../claim-details-tpl-dashboard.njk" %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/page-information.njk" import pageInformation %}
+{% from "../dashboard/claim-summary-content.njk" import claimSummaryContent %}
+
+<script>
+  document.getElementById("#govuk-table__cell").classList.remove("govuk-table__cell");
+</script>
+
+{% block nestedContent %}
+
+  {{ pageInformation(t,pageCaption, pageTitle, claimId, claimAmount)}}
+
+  {% for documentSection in documentSections %}
+    {{ claimSummaryContent({
+      contentSections: documentSection.contentSections,
+      hasDivider: documentSection.hasDivider
+    }, t) }}
+  {% endfor %}
+
+{% endblock %}
