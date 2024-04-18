@@ -15,6 +15,10 @@ class ClaimantResponseSteps {
     await claimantUpdate.respondToClaim(claimRef);
   }
 
+  async StartUploadDocs(claimRef) {
+    await claimantUpdate.startUploadDocs(claimRef);
+  }
+
   async verifyDefendantResponse(claimRef) {
     await viewDefendantResponse.verifyDefendantResponse(claimRef);
   }
