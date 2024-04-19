@@ -17,7 +17,7 @@ import {
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
   MEDIATION_SERVICE_EXTERNAL, PAY_HEARING_FEE_URL,
-  UPLOAD_YOUR_DOCUMENTS_URL
+  UPLOAD_YOUR_DOCUMENTS_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
