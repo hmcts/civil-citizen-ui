@@ -57,7 +57,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', '#');
   valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId));
   valuesMap.set('{PAY_HEARING_FEE}', PAY_HEARING_FEE_URL.replace(':id', claimId));
-  valuesMap.set('{VIEW_BUNDLE}', '#');
+  valuesMap.set('{VIEW_BUNDLE}', BUNDLES_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_BUNDLE}', BUNDLES_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_JUDGEMENT}', '#');
