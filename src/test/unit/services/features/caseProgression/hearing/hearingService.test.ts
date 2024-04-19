@@ -10,9 +10,6 @@ import {CaseProgressionHearing, CaseProgressionHearingDocuments} from 'models/ca
 import {toInteger} from 'lodash';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 
-jest.mock('i18next');
-jest.mock('services/features/caseProgression/uploadedEvidenceFormatter');
-
 const lang = 'en';
 const createdBy= 'Jhon';
 const claimId = '1234';
