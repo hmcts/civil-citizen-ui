@@ -201,4 +201,19 @@ describe('dashboardInterpolationService', () => {
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
 
+  it('should replace placeholders for order made', () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.orderDocumentId = 'http://dm-store:8080/documents/f1c7d590-8d3f-49c2-8ee7-6420ab711801/binary';
+    const textToReplaceUrl = '{VIEW_ORDERS_AND_NOTICES}';
+    const params: Map<string, object> = new Map<string, object>();
+    params.set('orderDocument', undefined);
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params);
+
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const sizeExpected = '/case/123/view-documents/f1c7d590-8d3f-49c2-8ee7-6420ab711801 target="_blank"';
+
+    expect(textReplacedDynamic).toEqual(sizeExpected);
+  });
+
 });
