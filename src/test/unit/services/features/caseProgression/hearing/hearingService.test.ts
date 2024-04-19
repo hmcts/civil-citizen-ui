@@ -8,7 +8,6 @@ import {
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {CaseProgressionHearing, CaseProgressionHearingDocuments} from 'models/caseProgression/caseProgressionHearing';
 import {toInteger} from 'lodash';
-import {t} from 'i18next';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 
 jest.mock('i18next');
