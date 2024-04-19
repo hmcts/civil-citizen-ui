@@ -1,5 +1,5 @@
 import {IsDate, IsDefined, IsNotEmpty, Max, Min, Validate, ValidateIf} from 'class-validator';
-import {YesNo} from '../../form/models/yesNo';
+import {YesNo} from '../form/models/yesNo';
 import {OptionalDateNotInFutureValidator} from 'common/form/validators/optionalDateNotInFutureValidator';
 import {OptionalDateFourDigitValidator} from 'common/form/validators/optionalDateFourDigitValidator';
 import {DateConverter} from 'common/utils/dateConverter';
@@ -15,6 +15,8 @@ export class DelayedFlight {
   @ValidateIf(o => o.option === YesNo.YES)
   @IsNotEmpty({message: 'ERRORS.DELAYED_FLIGHT.AIRLINE_REQUIRED'})
     flightNumber?: string;
+
+  // private CaseLocationCivil flightCourtLocation;
 
   @ValidateIf(o => o.option === YesNo.YES)
   @ValidateIf(o => (o.day <32 && o.month<13 && o.year > 999))

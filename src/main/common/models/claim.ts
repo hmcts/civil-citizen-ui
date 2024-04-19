@@ -80,6 +80,7 @@ import { AdditionalLipPartyDetails } from './additionalLipPartyDetails';
 import {BusinessProcess} from 'models/businessProcess';
 import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
+import {DelayedFlight} from './delayedFlight';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -160,6 +161,7 @@ export class Claim {
   claimIssuedHwfDetails?: CCDHelpWithFeesDetails;
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
+  delayedFlight?: DelayedFlight;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);

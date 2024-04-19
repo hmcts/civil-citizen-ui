@@ -64,7 +64,11 @@
   }) }}
 
   <h1 class="govuk-heading-s">{{ t('PAGES.DELAYED_FLIGHT.SCHEDULED_DATE') }}</h1>
-
+  {# {% if form.hasErrors() %}
+    {% for error in errors %}
+      <span class="govuk-error-message">{{ t(error.text) }}</span>
+    {% endfor %}
+  {% endif %} #}
   {{ govukDateInput({
     id: "date",
     type: "number",
