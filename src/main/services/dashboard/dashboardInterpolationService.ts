@@ -100,7 +100,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
     valuesMap.set('{VIEW_BUNDLE_REDIRECT}', DASHBOARD_NOTIFICATION_REDIRECT
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_BUNDLE')
-      .replace(':notificationId', notificationId));            
+      .replace(':notificationId', notificationId));
     valuesMap.set('{VIEW_ORDERS_AND_NOTICES_REDIRECT}', DASHBOARD_NOTIFICATION_REDIRECT
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_ORDERS_AND_NOTICES')
