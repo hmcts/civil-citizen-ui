@@ -281,7 +281,7 @@ import mediationConfirmationController from 'routes/features/mediation/uploadDoc
 import notificationRedirectController from 'routes/features/dashboard/notificationRedirectController';
 import claimantClaimSummaryController from 'routes/features/dashboard/claimantClaimSummaryController';
 import bundlesController from 'routes/features/caseProgression/bundlesController';
-import viewMediationSettlementAgreementDocument
+import viewMediationSettlementAgreementDocument from 'routes/features/document/mediation/viewSettlementAgreementDocumentController'
 import viewDefendantInformationController from './features/dashboard/viewDefendantInformationController';
 import viewClaimantInformationController from './features/dashboard/viewClaimantInformationController';
   from 'routes/features/document/mediation/viewSettlementAgreementDocumentController';
