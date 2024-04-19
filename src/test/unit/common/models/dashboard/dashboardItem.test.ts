@@ -50,23 +50,23 @@ describe('Dashboard Items', ()=> {
       const claim = new Claim();
       claim.draftClaimCreatedAt= new Date();
       //When
-      const item = toDraftClaimDashboardItem(claim);
+      const item = toDraftClaimDashboardItem(claim, true);
       //Then
       expect(item).not.toBeUndefined();
     });
 
-    it('should return undefined when claim is empty', () => {
+    it('should return undefined when claim is empty', async () => {
       //Given
       const claim = new Claim();
       //When
-      const item = toDraftClaimDashboardItem(claim);
+      const item = await toDraftClaimDashboardItem(claim, true);
       //Then
       expect(item).toBeUndefined();
     });
 
-    it('should return undefined when claim is undefined', () => {
+    it('should return undefined when claim is undefined', async () => {
       //When
-      const item = toDraftClaimDashboardItem(undefined);
+      const item = await toDraftClaimDashboardItem(undefined, true);
       //Then
       expect(item).toBeUndefined();
     });
@@ -264,6 +264,16 @@ describe('Dashboard Items', ()=> {
 
       // Then
       expect(result).toBe(expectedTranslation);
+    });
+
+    it('should return translated status for claim WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status ='WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD');
     });
   });
 });
