@@ -25,6 +25,7 @@ import {getDashboardForm, getNotifications} from 'services/dashboard/dashboardSe
 import {getClaimWithExtendedPaymentDeadline} from 'services/features/response/submitConfirmation/submitConfirmationService';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
 
@@ -103,7 +104,7 @@ async function getTabs(claimId: string, claim: Claim, lang: string, respondentPa
   if(caseProgressionEnabled && bundleAvailable) {
     const bundleTabLabel = TabLabel.BUNDLES;
     const bundleTabId = TabId.BUNDLES;
-    const bundleTabContent = getBundlesContent(claim, lang);
+    const bundleTabContent = getBundlesContent(claimId, claim, lang);
 
     tabItems.push(new TabItem(bundleTabLabel, bundleTabId, bundleTabContent));
   }

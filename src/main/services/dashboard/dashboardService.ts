@@ -13,7 +13,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 const CARM_DASHBOARD_EXCLUSIONS = Array.of(new DashboardTaskList('Mediation', 'Mediation', []));
 
-export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest, carmEnabled = false): Promise<Dashboard> => {
+export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, claimId: string, req: AppRequest): Promise<Dashboard> => {
   const dashboard = await civilServiceClient.retrieveDashboard(claimId, caseRole, req);
   if (dashboard) {
     dashboard.items.forEach((taskList) => {
@@ -28,7 +28,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     if (!carmEnabled){
       dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
-    return dashboard ;
+    return dashboard;
   } else {
     throw new Error('Dashboard not found...');
   }

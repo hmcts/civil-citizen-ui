@@ -933,7 +933,15 @@ export class Claim {
   }
 
   hasClaimantAcceptedToSettleClaim(): boolean {
-    return this.isFullDefence() && this.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
+    return (this.isFullDefence() || this.isPartialAdmission()) && this.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
+  }
+
+  isLRClaimant() {
+    return this.applicant1Represented === YesNoUpperCamelCase.YES;
+  }
+
+  isLRDefendant() {
+    return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
   }
 
   isLRClaimant() {

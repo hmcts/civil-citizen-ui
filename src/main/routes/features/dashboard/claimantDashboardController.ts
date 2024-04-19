@@ -36,9 +36,9 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
         dashboardId = claimId;
       }
-      const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
-      const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req);
-      const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, carmEnabled);
+        const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
+        const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req);
+        const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, carmEnabled);
       res.render(claimantDashboardViewPath, {claim:claim, claimId, dashboardTaskList:dashboard, dashboardNotifications, lng});
     } else {
       res.redirect(constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL));
