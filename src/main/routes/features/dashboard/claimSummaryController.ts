@@ -21,11 +21,7 @@ import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/sys
 import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
 import {getBundlesContent} from 'services/features/caseProgression/bundles/bundlesService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {
-  extractOrderDocumentIdFromNotification,
-  getDashboardForm,
-  getNotifications,
-} from 'services/dashboard/dashboardService';
+import {extractOrderDocumentIdFromNotification, getDashboardForm, getNotifications} from 'services/dashboard/dashboardService';
 import {getClaimWithExtendedPaymentDeadline} from 'services/features/response/submitConfirmation/submitConfirmationService';
 import {ClaimantOrDefendant} from 'models/partyType';
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
