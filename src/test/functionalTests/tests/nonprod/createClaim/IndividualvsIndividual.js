@@ -94,7 +94,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
   }
 });
 
-Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - with hwf @testing', async ({api}) => {
+Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - with hwf', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     selectedHWF = true;
     claimInterestFlag = true;

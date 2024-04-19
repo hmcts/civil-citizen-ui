@@ -3,6 +3,7 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ClaimantResponseSteps = require('../../citizenFeatures/response/steps/lipClaimantResponseSteps');
+const { defendantResponseFullAdmitPayImmediately } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 const partAdmit = 'partial-admission';
@@ -14,7 +15,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Individual');
+Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Individual @testing');
 
 Before(async () => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
@@ -58,7 +59,7 @@ Scenario('LiP Defendant response with Part admit', async ({api}) => {
 Scenario('LiP Claimant response with Part admit', async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef);
+    await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, defendantResponseFullAdmitPayImmediately(500));
     await ClaimantResponseSteps.verifyDefendantResponse();
     await ClaimantResponseSteps.acceptOrRejectDefendantResponse('No');
     await ResponseSteps.EnterTelephoneMediationDetails();

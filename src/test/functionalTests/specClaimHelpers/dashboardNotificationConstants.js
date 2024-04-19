@@ -84,10 +84,12 @@ module.exports = {
     };
   },
 
+  //Add deadline logic later
   defendantResponseFullAdmitPayImmediately: (amount, deadline) => {
     return {
       title: 'Response to the claim',
-      content: `You have offered to pay £${amount} by ${deadline}. The payment must clear the account by then, if not the claimant can request a county court judgment.`,
+      deadlineDate: deadline,
+      content: [`You have offered to pay £${amount} by`, 'The payment must clear the account by then, if not the claimant can request a county court judgment.'],
       nextSteps: 'View your response',
     };
   },
@@ -111,7 +113,8 @@ module.exports = {
   claimantNotificationOfDefendantResponse: (amount, deadline) => {
     return {
       title: 'Response to the claim',
-      content: `The defendant has offered to pay £${amount} by ${deadline}`,
+      deadlineDate: deadline,
+      content: `The defendant has offered to pay £${amount} by`,
       nextSteps: 'View and respond',
     };
   },
@@ -122,6 +125,15 @@ module.exports = {
       content: ['You accepted the repayment plan.', 'When we\'ve processed the request, we\'ll post a copy of the judgment to you.'],
       nextSteps: 'Tell us it\'s paid',
       nextSteps2: 'repayment plan.',
+    };
+  },
+
+  //Add deadline logic later
+  claimantNotificationWithDefendantRejectMedidationWithRejectAll: () => {
+    return {
+      title: 'Response to the claim',
+      content: ['The defendant has rejected the claim and refused mediation.', 'You need to respond by '],
+      nextSteps: 'View and respond',
     };
   },
 };

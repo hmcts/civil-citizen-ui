@@ -27,14 +27,14 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayBySetDateWithIndividual);
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
-      const notification = defendantResponseFullAdmitPayBySetDate(claimAmount,date);
+      const notification = defendantResponseFullAdmitPayBySetDate(claimAmount, date);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
     }
     await ResponseSteps.SignOut();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     if (isDashboardServiceEnabled) {
-      const notification = claimantNotificationOfDefendantResponse(claimAmount,date);
+      const notification = claimantNotificationOfDefendantResponse(claimAmount, date);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
     }
