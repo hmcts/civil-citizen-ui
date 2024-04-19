@@ -21,6 +21,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','{{ gtmScriptId }}');</script>
 <!-- End Google Tag Manager -->
+
   {% include "webpack/css.njk" %}
 {% endblock %}
 
@@ -39,6 +40,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 {% endblock %}
 {{ setPageTitle(t, 'PAGES.CLAIM_TASK_LIST.PAGE_TITLE') }}
 {% block beforeContent %}
+
 {{ govukPhaseBanner({
         tag: {
           text: "beta"
@@ -65,6 +67,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 {% endblock %}
 
 {% block bodyStart %}
+
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ gtmScriptId }}&nojscript=true"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -148,6 +151,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   }) }} {% endif %}
 {% endblock %}
 {% block bodyEnd %}
+
 {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
 {% include "webpack/js.njk" %}
 {% endblock %}
