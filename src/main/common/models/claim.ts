@@ -49,7 +49,7 @@ import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders'
 import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
 import {Debts} from 'form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
-import {analyseClaimType, claimType} from 'common/form/models/claimType';
+import {analyseClaimType} from 'common/form/models/claimType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
@@ -164,7 +164,7 @@ export class Claim {
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
-  
+
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
     claim.claimDetails = toCUIClaimDetails(ccdClaim);
@@ -737,11 +737,11 @@ export class Claim {
   }
 
   get isFastTrackClaim(): boolean {
-    return this.claimType === claimType.FAST_TRACK_CLAIM;
+    return false;
   }
 
   get isSmallClaimsTrackDQ(): boolean {
-    return this.claimType === claimType.SMALL_CLAIM;
+    return true;
   }
 
   hasSdoOrderDocument(): boolean {
@@ -934,22 +934,6 @@ export class Claim {
 
   hasClaimantAcceptedToSettleClaim(): boolean {
     return (this.isFullDefence() || this.isPartialAdmission()) && this.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
-  }
-
-  isLRClaimant() {
-    return this.applicant1Represented === YesNoUpperCamelCase.YES;
-  }
-
-  isLRDefendant() {
-    return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
-  }
-
-  isLRClaimant() {
-    return this.applicant1Represented === YesNoUpperCamelCase.YES;
-  }
-
-  isLRDefendant() {
-    return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
   }
 
   hasClaimantNotSettled(): boolean {
