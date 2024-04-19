@@ -1,5 +1,5 @@
 import {Document} from 'models/document/document';
-import {formatStringDateDMY, formatStringTimeHMS} from 'common/utils/dateUtils';
+import {formatStringDateDMY} from 'common/utils/dateUtils';
 
 export class Bundle {
   title: string;
@@ -17,9 +17,8 @@ export class Bundle {
   get getFormattedCreatedOn(): string {
     if(this.createdOn){
       const createdOnDateFormatted = formatStringDateDMY(this.createdOn);
-      const createdOnTimeFormatted = formatStringTimeHMS(this.createdOn);
 
-      return `${createdOnDateFormatted}, ${createdOnTimeFormatted}`;
+      return `${createdOnDateFormatted}`;
     }
     return undefined;
   }
