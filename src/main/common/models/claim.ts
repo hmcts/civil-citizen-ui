@@ -164,7 +164,7 @@ export class Claim {
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
-  
+
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
     claim.claimDetails = toCUIClaimDetails(ccdClaim);
@@ -934,22 +934,6 @@ export class Claim {
 
   hasClaimantAcceptedToSettleClaim(): boolean {
     return (this.isFullDefence() || this.isPartialAdmission()) && this.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
-  }
-
-  isLRClaimant() {
-    return this.applicant1Represented === YesNoUpperCamelCase.YES;
-  }
-
-  isLRDefendant() {
-    return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
-  }
-
-  isLRClaimant() {
-    return this.applicant1Represented === YesNoUpperCamelCase.YES;
-  }
-
-  isLRDefendant() {
-    return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
   }
 
   hasClaimantNotSettled(): boolean {
