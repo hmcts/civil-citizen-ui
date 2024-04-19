@@ -170,7 +170,6 @@ export class Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
     claim.claimDetails = toCUIClaimDetails(ccdClaim);
     claim.evidence = toCUIEvidence(ccdClaim?.specResponselistYourEvidenceList);
-    claim.claimantEvidence = toCUIEvidence(ccdClaim?.speclistYourEvidenceList);
     claim.applicant1 = toCUIParty(ccdClaim?.applicant1);
     claim.respondent1 = toCUIParty(ccdClaim?.respondent1);
     claim.mediation = toCUIMediation(ccdClaim?.respondent1LiPResponse?.respondent1MediationLiPResponse);
@@ -935,7 +934,7 @@ export class Claim {
   }
 
   hasClaimantAcceptedToSettleClaim(): boolean {
-    return this.isFullDefence() && this.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
+    return (this.isFullDefence() || this.isPartialAdmission()) && this.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
   }
 
   isLRClaimant() {

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const testConfig = require('../config.js');
 const {unAssignAllUsers} = require('./specClaimHelpers/api/caseRoleAssignmentHelper');
 const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
@@ -12,7 +13,11 @@ exports.config = {
     await unAssignAllUsers();
     await deleteAllIdamTestUsers();
   },
-  tests: '../functionalTests/tests/**/*.js',
+  tests: process.env.ENVIRONMENT == 'aat' ? 
+    [ '../functionalTests/tests/prod/**/*.js',
+      '../functionalTests/tests/common/**/*.js'  ] : 
+    [ '../functionalTests/tests/nonprod/**/*.js',
+      '../functionalTests/tests/common/**/*.js' ],
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
     Playwright: {

@@ -63,7 +63,7 @@ class CheckYourAnswersPage {
     I.see('test@gmail.com');
     I.click(cButtons.submit[language]);
     I.waitForContent('You\'ve rejected their response',config.WaitForText);
-    I.see(content.confirmationSubheading[language]);
+    await I.waitForContent(content.confirmationSubheading[language]);
   }
 
   async clickEmailChangeLink() {

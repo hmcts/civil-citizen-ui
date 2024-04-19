@@ -53,6 +53,8 @@ describe('Claim details page', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    isReleaseTwo.mockResolvedValue(false);
+    isDashboardEnabled.mockResolvedValue(false);
   });
 
   describe('on Get', () => {
@@ -60,8 +62,6 @@ describe('Claim details page', () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
         .reply(400);
-      isReleaseTwo.mockResolvedValueOnce(false);
-      isDashboardEnabled.mockResolvedValueOnce(false);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       await request(app)
         .get('/case/1111/response/claim-details')
@@ -77,8 +77,6 @@ describe('Claim details page', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + 1111 + '/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      isReleaseTwo.mockResolvedValueOnce(false);
-      isDashboardEnabled.mockResolvedValueOnce(false);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const totalClaimAmount = currencyFormat(getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
@@ -109,11 +107,8 @@ describe('Claim details page', () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
         .reply(200, CivilClaimResponseMock);
-
       app.locals.draftStoreClient = mockCivilClaim;
       const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      isReleaseTwo.mockResolvedValueOnce(false);
-      isDashboardEnabled.mockResolvedValueOnce(false);
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
@@ -139,8 +134,6 @@ describe('Claim details page', () => {
       nock('http://localhost:4000')
         .get('/cases/1111')
         .reply(200, CivilClaimResponseMock);
-      isReleaseTwo.mockResolvedValueOnce(false);
-      isDashboardEnabled.mockResolvedValueOnce(false);
       app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
       const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       await request(app)
@@ -154,8 +147,6 @@ describe('Claim details page', () => {
     });
     it('should return 500 status when there is error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
-      isReleaseTwo.mockResolvedValueOnce(false);
-      isDashboardEnabled.mockResolvedValueOnce(false);
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
@@ -171,8 +162,8 @@ describe('Claim details page', () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + 1713273393110043 + '/userCaseRoles')
         .reply(200, [CaseRole.CLAIMANT]);
-      isReleaseTwo.mockResolvedValueOnce(true);
-      isDashboardEnabled.mockResolvedValueOnce(true);
+      isReleaseTwo.mockResolvedValue(true);
+      isDashboardEnabled.mockResolvedValue(true);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const totalClaimAmount = currencyFormat(getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
