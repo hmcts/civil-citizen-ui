@@ -70,7 +70,6 @@ import incompleteSubmissionController from './features/response/incompleteSubmis
 import incompleteClaimIssueSubmissionController from './features/claim/incompleteClaimIssueSubmissionController';
 import howMuchHaveYouPaidFRController from './features/response/admission/fullRejection/howMuchHaveYouPaidController';
 import claimSummaryController from './features/dashboard/claimSummaryController';
-import claimantClaimSummaryController from './features/dashboard/claimantClaimSummaryController';
 import expertGuidanceController from './features/directionsQuestionnaire/experts/expertGuidanceController';
 import partialAdmissionPaymentOptionController
   from './features/response/admission/partialAdmission/partialAdmissionPaymentOptionController';
@@ -231,6 +230,7 @@ import breathingSpaceLiftedCheckAnswersController from './features/breathingSpac
 import repaymentPlanSummaryClaimantController from './features/claimantResponse/ccj/repaymentPlanSummaryClaimantController';
 import payHearingFeeStartScreenController
   from 'routes/features/caseProgression/hearingFee/payHearingFeeStartScreenController';
+import claimantDashboardController from './features/dashboard/claimantDashboardController';
 import applyHelpFeeSelectionController
   from 'routes/features/caseProgression/hearingFee/applyHelpFeeSelectionController';
 import cancelHearingFeeJourneyController
@@ -278,6 +278,11 @@ import mediationUploadDocumentsController from 'routes/features/mediation/upload
 import mediationDocumentUploadCheckAnswerController
   from 'routes/features/mediation/uploadDocuments/checkAnswersController';
 import mediationConfirmationController from 'routes/features/mediation/uploadDocuments/confirmationController';
+import notificationRedirectController from 'routes/features/dashboard/notificationRedirectController';
+import claimantClaimSummaryController from 'routes/features/dashboard/claimantClaimSummaryController';
+import bundlesController from 'routes/features/caseProgression/bundlesController';
+import viewMediationSettlementAgreementDocument
+  from 'routes/features/document/mediation/viewSettlementAgreementDocumentController';
 import cancelController from 'routes/common/cancelController';
 
 export default [
@@ -345,6 +350,7 @@ export default [
   incompleteClaimIssueSubmissionController,
   howMuchHaveYouPaidFRController,
   claimSummaryController,
+  claimantDashboardController,
   claimantClaimSummaryController,
   paymentDatePAController,
   expertGuidanceController,
@@ -524,5 +530,8 @@ export default [
   mediationUploadDocumentsController,
   mediationDocumentUploadCheckAnswerController,
   mediationConfirmationController,
+  notificationRedirectController,
+  bundlesController,
+  viewMediationSettlementAgreementDocument,
   cancelController,
 ];

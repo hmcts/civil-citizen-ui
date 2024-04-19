@@ -1,5 +1,7 @@
 {
   "COMMON": {
+    "HOME": "Home",
+    "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Upload file",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
     "DOCUMENTS_UPLOADED": "Documents uploaded",
@@ -20,6 +22,7 @@
     "CHOOSE": "Dewiswch",
     "CIVIL_MONEY_CLAIMS": "Hawliadau am Arian yn y Llys Sifil",
     "CLAIM_AMOUNT": "Swm yr hawliad",
+    "CLAIM_AMOUNT_WITH_VALUE": "Swm yr hawliad: {{claimAmount}}",
     "CLAIM_NUMBER": "Rhif hawlio",
     "CONFIRM_YOUR_DETAILS": "Cadarnhau eich manylion",
     "DASHBOARD": "Dangosfwrdd",
@@ -339,7 +342,7 @@
     }
   },
   "TASK_LIST": {
-    "APPLICATION_COMPLETE": "Cais wedi ei gwblhau",
+    "APPLICATION_COMPLETE": "Cais wedi'i gwblhau",
     "APPLICATION_INCOMPLETE": "Cais heb ei gwblhau",
     "COMPLETED_SECTIONS": "Rydych wedi  cwblhau {{ completed }} o {{ total }} adran",
     "PREPARE_YOUR_RESPONSE": {
@@ -372,6 +375,10 @@
     }
   },
   "PAGES": {
+    "VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT": {
+      "PAGE_TITLE": "View mediation settlement agreement",
+      "DOCUMENT_TABLE_TITLE": "Mediation Settlement Agreement"
+    },
     "MEDIATION": {
       "CONFIRMATION_PAGE": {
         "PAGE_TITLE": "Mediation upload documents confirmation",
@@ -873,12 +880,12 @@
     },
     "CLAIM_TASK_LIST": {
       "AFTER_COMPLETE": "Ar ôl i chi gwblhau'r holl gamau byddwch yn mynd ymlaen i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno.",
-      "APPLICATION_COMPLETE": "Cais wedi ei gwblhau",
+      "APPLICATION_COMPLETE": "Cais wedi'i gwblhau",
       "APPLICATION_INCOMPLETE": "Cais heb ei gwblhau",
       "CHECK_AND_SUBMIT": "Gwirio a chyflwyno’ch hawliad",
-      "CLAIM_AMOUNT": "Claim amount",
-      "CLAIM_DETAILS": "Claim details",
-      "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
+      "CLAIM_AMOUNT": "Swm yr hawliad",
+      "CLAIM_DETAILS": "Manylion yr hawliad",
+      "COMPLETED_SECTIONS": "Rydych wedi cwblhau {{ completed }} allan o {{ total }} adran",
       "COMPLETING_CLAIM": "Cwblhau eich hawliad",
       "CONSIDER_OPTIONS": "Ystyried opsiynau eraill",
       "PAGE_TITLE": "Gwneud hawliad am arian",
@@ -886,8 +893,8 @@
       "PREPARE_CLAIM": "Paratoi eich hawliad",
       "RESOLVING_DISPUTE": "Datrys yr anghydfod hwn",
       "SUBMIT": "Cyflwyno",
-      "THEIR_DETAILS": "Their details",
-      "YOUR_DETAILS": "Your details"
+      "THEIR_DETAILS": "Eu manylion",
+      "YOUR_DETAILS": "Eich manylion"
     },
     "CLAIM_JOURNEY": {
       "CLAIM_INTEREST": {
@@ -972,6 +979,7 @@
       "ABOUT_CLAIM": "Am yr hawliad",
       "BUNDLES": {
         "TAB_TITLE": "Bwndeli",
+        "DOCUMENT_TITLE": "Bwndel",
         "FIND_BUNDLE_BELOW": "Gallwch ddod o hyd i’r bwndel isod.",
         "APPLY_TO_COURT_BEFORE": "Gan fod y bwndel bellach wedi’i greu, bydd angen ichi",
         "APPLY_TO_COURT_LINK": "wneud cais i’r llys",
@@ -981,10 +989,10 @@
         "CREATED_DATE_HEADER": "Crëwyd ar",
         "HEARING_DATE_HEADER": "Dyddiad y gwrandawiad",
         "URL_HEADER": "URL y ddogfen",
-        "UPLOADED_AFTER_DATE_UPLOADED": "Dyddiad llwytho’r ddogfen",
+        "DATE_UPLOADED": "Dyddiad llwytho’r ddogfen",
+        "DOCUMENT_NAME": "Enw’r ddogfen",
+        "DOCUMENT": "Dogfen",
         "UPLOADED_AFTER_DOCUMENTS_BELOW": "Mae'r dogfennau a restrir isod wedi'u llwytho ers i'r bwndel treial gael ei greu.",
-        "UPLOADED_AFTER_DOCUMENT_NAME": "Enw’r ddogfen",
-        "UPLOADED_AFTER_DOCUMENT": "Dogfen",
         "UPLOADED_AFTER_UPLOADED_DOCUMENTS_CLAIMANT": "Dogfennau'r hawlydd a uwchlwythwyd",
         "UPLOADED_AFTER_UPLOADED_DOCUMENTS_DEFENDANT": "Dogfennau'r diffynnydd a uwchlwythwyd"
       },
@@ -1422,9 +1430,34 @@
       "DEFENDANT_TITLE": "Hawliadau a wnaed yn eich erbyn",
       "DRAFT_CLAIM_NEXT_STEPS": "Parhau gyda'r hawliad",
       "DRAFT_CLAIM_NUMBER": "Hawliad drafft",
+      "HEARINGS": {
+        "ADD_TRIAL": "Add the trial arrangements",
+        "PAY_FEE": "Pay the hearing fee",
+        "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
+        "TITLE": "Hearings",
+        "UPLOAD_DOCUMENTS": "Upload hearing documents",
+        "VIEW_BUNDLE": "View the bundle",
+        "VIEW_DOCUMENTS": "View documents",
+        "VIEW_HEARINGS": "View hearings"
+      },
       "MAKE_A_NEW_CLAIM": "Gwneud hawliad newydd am arian",
       "NEXT": "Nesaf",
       "NEXT_STEPS": "Y camau nesaf",
+      "NOTIFICATIONS": {
+        "HEARINGS": {
+          "PAY_FEE": "of £{{ feeAmount }} by {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
+          "TEXT_BEFORE": "You must ",
+          "TEXT": "pay the hearing fee "
+        },
+        "HELP_WITH_FEES": {
+          "TITLE": "We're reviewing your help with fees application",
+          "HEARING_CONTENT": "You've applied for help with the hearing fee. You'll receive an update in 5 to 10 working days."
+        }
+      },
+      "ORDERS_NOTICE": {
+        "TITLE": "Orders and notices from the court",
+        "VIEW": "View orders and notices"
+      },
       "PAGE_TITLE": "Hawliadau a wnaed gennych neu yn eich erbyn",
       "PREVIOUS": "Blaenorol",
       "STATUS_CLAIMANT": {
@@ -1452,7 +1485,8 @@
         "NOT_ADMITTED_CLAIMANT": "Ymateb i'r diffynnydd.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
         "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post.",
-        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos."
+        "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "Mae'r dogfennau'n cael eu cyfieithu."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
@@ -2024,7 +2058,10 @@
               "PAYMENT_FOR": "Payment for",
               "TOTAL_AMOUNT": "Total amount"
             }
-          }
+          },
+          "PAID_NOTIFICATION_TITLE": "Hearing fee has been paid",
+          "PAID_NOTIFICATION_SUBTITLE": "The hearing fee has been paid in full.",
+          "PAID_TASK": "Pay the hearing fee"
         },
         "TRIAL_HEARING_CONTENT": {
           "YOUR_TRIAL_TITLE": "Mae treial wedi'i drefnu ar gyfer eich achos",
@@ -2144,6 +2181,7 @@
       "YOU_NEED_TO_SEND_THEM_YOUR_COMPANY_FINANCIAL": "Mae angen i chi anfon manylion ariannol eich cwmni at yr hawlydd os nad ydych eisoes wedi gwneud hynny.",
       "YOU_SAID_YOU_WILL_PAY": "Rydych wedi dweud y byddwch yn talu {{ amount }} i {{ claimantName }} cyn 4pm ar {{ paymentDate }}",
       "YOUR_RESPONSE_TO_THE_CLAIM": "Eich ymateb i'r hawliad",
+      "WAIT_DEFENDANT_TO_RESPOND": "Wait for the defendant to respond",
       "WAIT_FOR_THE_COURT_TO_REVIEW_THE_CASE": "Aros i'r llys adolygu'r achos.",
       "WE_WILL_CONTACT_YOU_WHEN_THEY_RESPOND": "Byddwn yn cysylltu â chi pan fydd yn ymateb.",
       "WE_HAVE_EMAILED": "Rydyn ni wedi e-bostio {{claimantName}} yn dweud pryd a sut gwnaethoch chi ddweud eich bod wedi talu'r hawliad.",
@@ -2890,7 +2928,12 @@
       "HEADER": "Ymateb i hawliad ariannol",
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "Ar ôl i chi gwblhau'r holl gamau byddwch yn mynd ymlaen i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno.",
       "COMPLETE": "Cyflawn",
-      "INCOMPLETE": "Anghyflawn"
+      "DONE": "Done",
+      "INCOMPLETE": "Anghyflawn",
+      "IN_PROGRESS": "In progress",
+      "READY_TO_VIEW": "Ready to view",
+      "NOT_AVAILABLE_YET": "Not available yet",
+      "ACTION_NEEDED": "Action needed"
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "A yw eich hawliad am flaendal tenantiaeth?"
