@@ -48,9 +48,9 @@ module.exports = {
   invalidHwfNumber: () => {
     return {
       title: 'You\'ve provided an invalid help with fees reference number',
-      content: 'You\'ve applied for help with the claim fee, but the reference number is invalid.',
-      content2: 'You\'ve been sent an email with instructions on what to do next. If you\'ve already read the email and taken action, disregard this message.',
-      content3: 'You can pay by phone by calling 0300 123 7050.',
+      content: ['You\'ve applied for help with the claim fee, but the reference number is invalid.', 
+        'You\'ve been sent an email with instructions on what to do next. If you\'ve already read the email and taken action, disregard this message.',
+        'You can pay by phone by calling 0300 123 7050.'],
     };
   },
 
@@ -73,8 +73,7 @@ module.exports = {
   hwfNoRemission: () => {
     return {
       title: 'Your help with fees application has been rejected',
-      content: 'We\'ve rejected your application for help with the claim fee. See the email for further details.',
-      content2: 'You\'ll need to pay the full fee of <Amount> by <Deadline date>. You can pay by phone by calling 0300 123 7050.',
+      content: ['We\'ve rejected your application for help with the claim fee. See the email for further details.', 'You\'ll need to pay the full fee of <Amount> by <Deadline date>. You can pay by phone by calling 0300 123 7050.'],
     };
   },
 

@@ -14,10 +14,8 @@ module.exports = {
     await I.waitForContent(title);
     await I.waitForVisible(selectors.titleClass, 60);
     await I.waitForVisible(selectors.contentClass, 60);
-    await I.wait(60);
     if (Array.isArray(content)) {
       for (let i = 0; i < content.length; i++) {
-        await I.see(title[i]);
         await I.see(content[i]);
       }
     } else {
