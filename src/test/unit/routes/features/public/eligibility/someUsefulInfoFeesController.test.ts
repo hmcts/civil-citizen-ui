@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {
   ELIGIBILITY_INFORMATION_FEES_URL,
   ELIGIBILITY_APPLY_HELP_FEES_URL,

@@ -1,4 +1,4 @@
-import {app} from '../../app';
+import {app} from '../../server';
 import {
   CCDClaim,
   CivilClaimResponse,

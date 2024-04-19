@@ -3,7 +3,7 @@ import {CLAIM_FEE_PAYMENT_CONFIRMATION_URL,CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WI
 import nock from 'nock';
 import request from 'supertest';
 import config from 'config';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as claimFeePaymentConfirmationService from 'services/features/claim/payment/claimFeePaymentConfirmationService';
 

@@ -1,5 +1,5 @@
 import {cancelDocumentUpload} from 'services/features/caseProgression/cancelDocumentUpload';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {Claim} from 'models/claim';
 
 const REDIS_DATA = require('../../../../../main/modules/draft-store/redisData.json');

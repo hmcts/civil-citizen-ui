@@ -7,7 +7,7 @@ import nock from 'nock';
 import request from 'supertest';
 import config from 'config';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');

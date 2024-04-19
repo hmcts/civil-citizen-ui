@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {DATE_PAID_URL, DATE_PAID_CONFIRMATION_URL} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';

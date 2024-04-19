@@ -6,7 +6,7 @@ import {
   getDraftClaimFromStore,
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
-import {app} from '../../../../main/app';
+import {app} from '../../../../main/server';
 import {Claim} from 'models/claim';
 import {AppRequest} from 'common/models/AppRequest';
 import {req} from '../../../utils/UserDetails';

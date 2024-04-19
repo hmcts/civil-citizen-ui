@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {DATE_PAID_CONFIRMATION_URL} from '../../../../../../main/routes/urls';
 import {t} from 'i18next';
 

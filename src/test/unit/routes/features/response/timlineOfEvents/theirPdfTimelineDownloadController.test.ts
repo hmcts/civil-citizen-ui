@@ -1,6 +1,6 @@
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import request from 'supertest';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as documentUtils from '../../../../../../main/common/utils/downloadUtils';

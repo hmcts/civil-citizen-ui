@@ -2,7 +2,7 @@ import config from 'config';
 import {t} from 'i18next';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {PartyType} from 'models/partyType';
 import {
   CLAIMANT_COMPANY_DETAILS_URL,

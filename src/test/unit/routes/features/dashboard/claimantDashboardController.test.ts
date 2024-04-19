@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import {DASHBOARD_CLAIMANT_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -67,7 +67,7 @@ describe('claimant Dashboard Controller', () => {
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(data);
       jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
-    
+
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Mr. Jan Clark v Version 1');

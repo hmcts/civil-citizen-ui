@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 
 import {
   FIRST_CONTACT_CLAIM_REFERENCE_URL,

@@ -12,7 +12,7 @@ const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
 const request = require('supertest');
-const {app} = require('../../../../../main/app');
+const {app} = require('../../../../../main/server');
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswersService');

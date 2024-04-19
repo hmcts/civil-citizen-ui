@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {
   DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
   DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL,

@@ -1,6 +1,6 @@
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import request from 'supertest';
 import {

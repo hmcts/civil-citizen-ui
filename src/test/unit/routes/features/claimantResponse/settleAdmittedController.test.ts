@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';

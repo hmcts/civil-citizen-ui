@@ -10,7 +10,7 @@ import { NextFunction, Request } from 'express';
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 
-const {app} = require('../../../../../main/app');
+const {app} = require('../../../../../main/server');
 const session = require('supertest-session');
 
 jest.mock('../../../../../main/modules/oidc');

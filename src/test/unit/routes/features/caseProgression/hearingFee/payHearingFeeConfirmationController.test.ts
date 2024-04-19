@@ -1,4 +1,4 @@
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {HEARING_FEE_CONFIRMATION_URL} from 'routes/urls';
 import nock from 'nock';
 import config from 'config';

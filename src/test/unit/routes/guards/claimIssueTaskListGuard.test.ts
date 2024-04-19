@@ -1,6 +1,6 @@
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {app} from '../../../../main/app';
+import {app} from '../../../../main/server';
 import request from 'supertest';
 import {
   BASE_ELIGIBILITY_URL,

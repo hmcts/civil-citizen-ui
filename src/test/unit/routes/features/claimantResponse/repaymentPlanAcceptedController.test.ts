@@ -2,7 +2,7 @@ import request from 'supertest';
 import nock from 'nock';
 import config from 'config';
 import {CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL} from '../../../../../main/routes/urls';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');

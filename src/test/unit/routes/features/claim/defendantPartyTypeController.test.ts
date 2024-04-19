@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {PartyType} from 'models/partyType';
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {

@@ -1,7 +1,7 @@
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../../../main/app';
+import {app} from '../../../../../../../main/server';
 import {
   CHILDREN_DISABILITY_URL,
   CITIZEN_DEPENDANTS_EDUCATION_URL,

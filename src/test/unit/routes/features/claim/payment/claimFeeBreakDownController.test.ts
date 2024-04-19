@@ -1,6 +1,6 @@
 import request from 'supertest';
 import express from 'express';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import claimFeeBreakDownController from 'routes/features/claim/payment/claimFeeBreakDownController';
 import { CLAIM_FEE_BREAKUP} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';

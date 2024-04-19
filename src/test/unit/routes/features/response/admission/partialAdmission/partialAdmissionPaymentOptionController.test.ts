@@ -1,7 +1,7 @@
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../../../main/app';
+import {app} from '../../../../../../../main/server';
 import {
   CITIZEN_PA_PAYMENT_DATE_URL,
   CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,

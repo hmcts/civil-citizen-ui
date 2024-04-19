@@ -1,6 +1,6 @@
 import express from 'express';
 const request = require('supertest');
-const {app} = require('../../../../../../main/app');
+const {app} = require('../../../../../../main/server');
 import nock from 'nock';
 import config from 'config';
 import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from '../../../../../../main/routes/urls';

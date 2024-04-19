@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import nock from 'nock';
 import config from 'config';
 import {RESPONSE_TASK_LIST_URL, DONT_WANT_FREE_MEDIATION_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';

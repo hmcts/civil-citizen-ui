@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../../../../main/routes/urls';
 import {
   mockCivilClaim, mockCivilClaimUnemploymentRetired,

@@ -1,6 +1,6 @@
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {CP_UPLOAD_FILE} from 'routes/urls';
 import Module from 'module';
 import { TypeOfDocumentSectionMapper } from 'services/features/caseProgression/TypeOfDocumentSectionMapper';

@@ -3,7 +3,7 @@ import nock from 'nock';
 import config from 'config';
 import {CLAIMANT_RESPONSE_REJECTION_REASON_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../test/utils/errorMessageTestConstants';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');

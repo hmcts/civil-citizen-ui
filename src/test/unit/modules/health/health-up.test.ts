@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../main/app';
+import {app} from '../../../../main/server';
 
 jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => {

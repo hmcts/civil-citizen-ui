@@ -1,7 +1,7 @@
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../../../main/app';
+import {app} from '../../../../../../../main/server';
 import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL} from '../../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';

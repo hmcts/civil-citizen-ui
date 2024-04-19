@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {
   BREATHING_SPACE_RESPITE_LIFTED_URL,
   BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL,

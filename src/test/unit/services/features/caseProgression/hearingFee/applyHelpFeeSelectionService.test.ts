@@ -3,7 +3,7 @@ import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/apply
 import * as requestModels from 'models/AppRequest';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {YesNo} from 'form/models/yesNo';
 import {APPLY_HELP_WITH_FEES} from 'routes/urls';

@@ -1,6 +1,6 @@
 
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaimWithTimelineAndEvidence, mockRedisFailure} from '../../../../../utils/mockDraftStore';

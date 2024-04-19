@@ -1,6 +1,6 @@
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {UPLOAD_YOUR_DOCUMENTS_URL} from 'routes/urls';
 import {t} from 'i18next';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';

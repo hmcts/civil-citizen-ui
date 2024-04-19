@@ -2,7 +2,7 @@ import express from 'express';
 import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {
   mockCivilClaimWithExpertAndWitness,
   mockRedisFailure,

@@ -1,4 +1,4 @@
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import config from 'config';
 import {CaseRole} from 'form/models/caseRoles';
 import {BUNDLES_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';

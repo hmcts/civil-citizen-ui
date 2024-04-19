@@ -5,7 +5,7 @@ import {
 import nock from 'nock';
 import request from 'supertest';
 import config from 'config';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as makePaymentAgainService from 'services/features/caseProgression/hearingFee/makePaymentAgainService';
 

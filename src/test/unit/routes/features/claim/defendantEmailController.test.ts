@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import nock from 'nock';
 import config from 'config';
 import {CLAIM_DEFENDANT_EMAIL_URL, CLAIM_DEFENDANT_PHONE_NUMBER_URL} from 'routes/urls';

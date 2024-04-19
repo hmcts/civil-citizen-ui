@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import request from 'supertest';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 

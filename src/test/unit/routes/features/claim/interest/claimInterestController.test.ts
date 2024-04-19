@@ -2,7 +2,7 @@ import {t} from 'i18next';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {
   CLAIM_INTEREST_URL,
   CLAIM_INTEREST_TYPE_URL,

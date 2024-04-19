@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {Claim} from 'common/models/claim';
 import {DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';

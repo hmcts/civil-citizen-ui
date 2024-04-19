@@ -8,7 +8,7 @@ import * as specificCourtLocationService from 'services/features/directionsQuest
 import * as directionQuestionnaireService
   from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('modules/oidc');

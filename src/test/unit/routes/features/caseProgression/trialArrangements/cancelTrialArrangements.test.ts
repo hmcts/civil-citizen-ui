@@ -2,7 +2,7 @@ import {
   mockCivilClaimFastTrack, mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
 import {CANCEL_TRIAL_ARRANGEMENTS, DEFENDANT_SUMMARY_URL} from 'routes/urls';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import config from 'config';
 import nock from 'nock';
 const session = require('supertest-session');

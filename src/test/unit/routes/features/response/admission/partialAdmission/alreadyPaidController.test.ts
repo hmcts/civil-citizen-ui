@@ -1,7 +1,7 @@
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../../../main/app';
+import {app} from '../../../../../../../main/server';
 import {
   CITIZEN_ALREADY_PAID_URL,
   RESPONSE_TASK_LIST_URL,

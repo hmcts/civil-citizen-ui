@@ -1,4 +1,4 @@
-import {app} from '../../app';
+import {app} from '../../server';
 import {CourtLocation} from 'models/courts/courtLocations';
 import {plainToInstance} from 'class-transformer';
 

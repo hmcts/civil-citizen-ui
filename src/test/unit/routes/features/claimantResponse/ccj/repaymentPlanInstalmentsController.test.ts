@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {
   CCJ_CHECK_AND_SEND_URL,
   CCJ_REPAYMENT_PLAN_INSTALMENTS_URL,

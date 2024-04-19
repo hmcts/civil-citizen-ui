@@ -1,4 +1,4 @@
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import config from 'config';
 import Module from 'module';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';

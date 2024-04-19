@@ -1,6 +1,6 @@
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import {CP_CHECK_ANSWERS_URL} from 'routes/urls';

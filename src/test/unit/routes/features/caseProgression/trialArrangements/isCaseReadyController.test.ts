@@ -4,7 +4,7 @@ import {
 } from '../../../../../utils/mockDraftStore';
 import {DEFENDANT_SUMMARY_URL, HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import config from 'config';
 import nock from 'nock';
 const session = require('supertest-session');

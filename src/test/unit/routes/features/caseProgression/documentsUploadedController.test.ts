@@ -1,6 +1,6 @@
 import request from 'supertest';
 import {CP_EVIDENCE_UPLOAD_SUBMISSION_URL} from 'routes/urls';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import config from 'config';
 import nock from 'nock';
 import {Claim} from 'models/claim';

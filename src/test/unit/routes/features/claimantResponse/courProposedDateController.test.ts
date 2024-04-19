@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {
   CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL,
   CLAIMANT_RESPONSE_REJECTION_REASON_URL,

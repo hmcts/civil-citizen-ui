@@ -2,7 +2,7 @@ import * as supertest from 'supertest';
 import * as urls from '../../main/routes/urls';
 import config from 'config';
 import nock from 'nock';
-import {app} from '../../main/app';
+import {app} from '../../main/server';
 import {fail} from 'assert';
 import {IGNORED_URLS} from './ignored-urls';
 import {mockCivilClaim} from '../utils/mockDraftStore';

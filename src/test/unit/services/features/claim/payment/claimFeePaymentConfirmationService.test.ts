@@ -2,7 +2,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {getRedirectUrl} from 'services/features/claim/payment/claimFeePaymentConfirmationService';
 import * as requestModels from 'models/AppRequest';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PAY_CLAIM_FEE_SUCCESSFUL_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL, DASHBOARD_URL} from 'routes/urls';

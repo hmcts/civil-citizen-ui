@@ -8,7 +8,7 @@ import {Claim} from 'models/claim';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {DocumentType} from 'models/document/documentType';
 import {MOCK_MEDIATION_AGREEMENT_DOCUMENT} from '../../../../../utils/mocks/documents/documentsMock';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {CaseRole} from 'form/models/caseRoles';
 import {MEDIATION_AGREEMENT_MOCK} from '../../../../../utils/mocks/Mediation/mediationAgreementMock';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';

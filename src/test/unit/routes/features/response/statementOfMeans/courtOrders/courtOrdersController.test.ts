@@ -7,7 +7,7 @@ import {mockResponseFullAdmitPayBySetDate, mockRedisFailure} from '../../../../.
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 const request = require('supertest');
-const {app} = require('../../../../../../../main/app');
+const {app} = require('../../../../../../../main/server');
 
 jest.mock('../../../../../../../main/modules/oidc');
 

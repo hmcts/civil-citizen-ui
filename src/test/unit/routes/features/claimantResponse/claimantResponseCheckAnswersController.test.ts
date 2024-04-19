@@ -18,7 +18,7 @@ import {
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
 
 const request = require('supertest');
-const {app} = require('../../../../../main/app');
+const {app} = require('../../../../../main/server');
 const session = require('supertest-session');
 
 jest.mock('../../../../../main/modules/oidc');

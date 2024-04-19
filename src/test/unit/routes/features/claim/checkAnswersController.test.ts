@@ -19,7 +19,7 @@ const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const request = require('supertest');
 
-const {app} = require('../../../../../main/app');
+const {app} = require('../../../../../main/server');
 const session = require('supertest-session');
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const data = require('../../../../utils/mocks/defendantClaimsMock.json');

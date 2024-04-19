@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import config from 'config';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';

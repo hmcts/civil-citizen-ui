@@ -1,4 +1,4 @@
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import config from 'config';
 import nock from 'nock';

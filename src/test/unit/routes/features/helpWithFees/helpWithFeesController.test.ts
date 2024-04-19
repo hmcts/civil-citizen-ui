@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import nock from 'nock';
 import config from 'config';
 import {APPLY_HELP_WITH_FEES, APPLY_HELP_WITH_FEES_START, HEARING_FEE_APPLY_HELP_FEE_SELECTION,

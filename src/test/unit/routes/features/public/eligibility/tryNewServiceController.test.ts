@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import { BASE_ELIGIBILITY_URL, CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL, MAKE_CLAIM } from 'routes/urls';
 import {t} from 'i18next';
 import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';

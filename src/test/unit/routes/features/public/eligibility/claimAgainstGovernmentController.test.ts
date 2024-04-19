@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {
   ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL,
   ELIGIBILITY_DEFENDANT_AGE_URL,

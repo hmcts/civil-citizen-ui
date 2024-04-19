@@ -1,7 +1,7 @@
 import request from 'supertest';
 import * as claimFeeService from 'services/features/claim/amount/claimFeesService';
 const session = require('supertest-session');
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import nock from 'nock';
 import config from 'config';
 import {CLAIM_TOTAL_URL, CLAIMANT_TASK_LIST_URL} from 'routes/urls';

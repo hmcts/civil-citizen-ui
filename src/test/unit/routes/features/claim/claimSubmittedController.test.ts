@@ -10,7 +10,7 @@ import {checkIfClaimFeeHasChanged} from 'services/features/claim/amount/checkCla
 import {YesNo} from 'form/models/yesNo';
 import {CivilServiceClient} from 'client/civilServiceClient';
 
-const {app} = require('../../../../../main/app');
+const {app} = require('../../../../../main/server');
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');

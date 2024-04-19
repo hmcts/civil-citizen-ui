@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
   DQ_REQUEST_EXTRA_4WEEKS_URL,

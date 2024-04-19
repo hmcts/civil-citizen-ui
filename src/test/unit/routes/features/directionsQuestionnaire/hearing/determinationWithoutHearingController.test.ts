@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {DETERMINATION_WITHOUT_HEARING_URL, DQ_EXPERT_SMALL_CLAIMS_URL} from '../../../../../../main/routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';

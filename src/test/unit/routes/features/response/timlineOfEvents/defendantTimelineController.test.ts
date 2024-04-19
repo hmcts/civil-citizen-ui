@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import request from 'supertest';
 import {CITIZEN_EVIDENCE_URL, CITIZEN_TIMELINE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';

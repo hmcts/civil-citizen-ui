@@ -1,6 +1,6 @@
 
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {
   FIRST_CONTACT_ACCESS_DENIED_URL,
 } from '../../../../../../main/routes/urls';

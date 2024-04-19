@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {
   DQ_EXPERT_GUIDANCE_URL,
   DQ_EXPERT_REPORT_DETAILS_URL,

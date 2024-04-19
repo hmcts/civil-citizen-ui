@@ -7,7 +7,7 @@ import {
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {SummarySection} from 'models/summaryList/summarySections';
 import {submitBreathingSpaceLifted} from 'services/features/breathingSpace/submission/submitBreathingSpaceLifted';
 

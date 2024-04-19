@@ -13,7 +13,7 @@ import {
   UploadDocuments,
 } from 'models/mediation/uploadDocuments/uploadDocuments';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import express from 'express';
 import {CaseDocument} from 'models/document/caseDocument';

@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app } from '../../../../../../../main/app';
+import { app } from '../../../../../../../main/server';
 import nock from 'nock';
 import config from 'config';
 import { CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_SEVERE_DISABILITY_URL, RESPONSE_TASK_LIST_URL } from '../../../../../../../main/routes/urls';

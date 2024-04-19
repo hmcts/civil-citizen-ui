@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {
   ELIGIBILITY_DEFENDANT_ADDRESS_URL,
   ELIGIBILITY_CLAIM_TYPE_URL,

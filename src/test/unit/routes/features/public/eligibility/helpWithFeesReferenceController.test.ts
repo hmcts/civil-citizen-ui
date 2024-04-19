@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {
   ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL,
   ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL,

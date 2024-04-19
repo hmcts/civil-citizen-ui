@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { app } from '../../../../../main/app';
+import { app } from '../../../../../main/server';
 import createDraftClaimController from 'routes/features/claim/createDraftClaim';
 import config from 'config';
 import nock from 'nock';

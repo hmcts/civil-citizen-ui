@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import config from 'config';
 import {AGE_ELIGIBILITY_URL} from '../../../../../../main/routes/urls';
 jest.mock('../../../../../../main/modules/oidc');

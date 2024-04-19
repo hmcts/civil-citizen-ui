@@ -1,7 +1,7 @@
 import request from 'supertest';
 import nock from 'nock';
 import config from 'config';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {
   mockCivilClaimClaimantIntention,

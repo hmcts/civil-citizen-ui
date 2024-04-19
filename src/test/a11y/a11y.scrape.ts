@@ -6,7 +6,7 @@ import {IGNORED_URLS} from './ignored-urls';
 import CivilClaimResponseMock from '../utils/mocks/civilClaimResponseMock.json';
 import {CIVIL_SERVICE_CALCULATE_DEADLINE} from '../../main/app/client/civilServiceUrls';
 import request from 'supertest';
-import {app} from '../../main/app';
+import {app} from '../../main/server';
 import {translateUrlToFilePath} from '../utils/mocks/a11y/urlToFileName';
 import {mockCivilClaim, mockResponseFullAdmitPayBySetDate} from '../utils/mockDraftStore';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';

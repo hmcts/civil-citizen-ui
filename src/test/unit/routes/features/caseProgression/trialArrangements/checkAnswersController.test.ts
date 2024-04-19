@@ -3,7 +3,7 @@ import {
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
   TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
 } from 'routes/urls';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import config from 'config';
 import nock from 'nock';
 const session = require('supertest-session');

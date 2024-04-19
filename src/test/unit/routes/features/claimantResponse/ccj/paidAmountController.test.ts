@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {
   CCJ_PAID_AMOUNT_URL,
   CCJ_PAID_AMOUNT_SUMMARY_URL, CCJ_EXTENDED_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,

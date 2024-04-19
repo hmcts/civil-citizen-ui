@@ -1,5 +1,5 @@
 import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {NotEligibleReason} from 'form/models/eligibility/NotEligibleReason';
 import {ClaimTypeOptions} from 'models/eligibility/claimTypeOptions';
 import {t} from 'i18next';

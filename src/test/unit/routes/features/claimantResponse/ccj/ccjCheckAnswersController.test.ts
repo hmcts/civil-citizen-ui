@@ -7,7 +7,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 
 const request = require('supertest');
-const {app} = require('../../../../../../main/app');
+const {app} = require('../../../../../../main/server');
 const session = require('supertest-session');
 const data = require('../../../../../utils/mocks/defendantClaimsMock.json');
 

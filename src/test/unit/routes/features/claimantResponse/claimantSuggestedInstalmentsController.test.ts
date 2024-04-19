@@ -2,7 +2,7 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {t} from 'i18next';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import {
   CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL,
   CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,

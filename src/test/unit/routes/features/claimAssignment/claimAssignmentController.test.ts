@@ -2,7 +2,7 @@ import request from 'supertest';
 import nock from 'nock';
 import config from 'config';
 import {ASSIGN_CLAIM_URL, DASHBOARD_URL} from 'routes/urls';
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { Claim } from 'common/models/claim';
@@ -53,7 +53,7 @@ describe('claim assignment controller', ()=>{
         });
     });
     it('on success  should redirect to dashboard', async () => {
-     
+
       jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce({} as Claim);
       app.request.session = { firstContact: { 'claimId': 123 } } as unknown as Session;

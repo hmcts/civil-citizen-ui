@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {t} from 'i18next';
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../main/server';
 import {
   CCJ_DEFENDANT_PAYMENT_DATE_URL,
   CCJ_PAYMENT_OPTIONS_URL,

@@ -14,7 +14,7 @@ import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 const request = require('supertest');
-const {app} = require('../../../../../../../main/app');
+const {app} = require('../../../../../../../main/server');
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService');

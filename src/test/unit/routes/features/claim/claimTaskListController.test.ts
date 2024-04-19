@@ -1,4 +1,4 @@
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../main/server';
 import config from 'config';
 import request from 'supertest';
 import {CLAIMANT_TASK_LIST_URL} from 'routes/urls';
