@@ -37,7 +37,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       } else {
         claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
         caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
-        dashboardId = claimId;  
+        dashboardId = claimId;
       }
       const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);

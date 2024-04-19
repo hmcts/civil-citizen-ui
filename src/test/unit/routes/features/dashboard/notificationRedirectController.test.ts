@@ -7,7 +7,7 @@ import * as ApplyHelpFeeSelectionService from 'services/features/caseProgression
 import {Claim} from 'models/claim';
 import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
-import {DASHBOARD_NOTIFICATION_REDIRECT} from 'routes/urls';
+import {DASHBOARD_NOTIFICATION_REDIRECT, DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT} from 'routes/urls';
 import {CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL} from 'client/civilServiceUrls';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -84,6 +84,44 @@ describe('Notification Redirect Controller - Get', () => {
       .expect((res: Response) => {
         expect(res.status).toBe(302);
         expect(res.text).toBe('Found. Redirecting to https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960');
+      });
+  });
+
+  it('Redirect to view document page with document Id', async () => {
+    //given
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.systemGeneratedCaseDocuments = [
+      {
+        id: '789',
+        value: {
+          documentLink: {
+            document_url: 'url',
+            document_filename: 'name',
+            document_binary_url: '/456/binary',
+          },
+          documentType: DocumentType.SEALED_CLAIM,
+        },
+      },
+    ] as SystemGeneratedCaseDocuments[];
+
+    nock(civilServiceUrl)
+      .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
+      .reply(200, {});
+
+    jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(claim));
+
+    //when
+    await request(app)
+      .get(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT
+        .replace(':id', '123')
+        .replace(':locationName', 'VIEW_ORDERS_AND_NOTICES')
+        .replace(':notificationId', '321')
+        .replace(':documentId', '1234'))
+      //then
+      .expect((res: Response) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toBe('Found. Redirecting to /#');
       });
   });
 
