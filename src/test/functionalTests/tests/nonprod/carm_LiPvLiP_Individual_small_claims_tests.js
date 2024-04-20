@@ -15,7 +15,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Individual @testing');
+Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Individual');
 
 Before(async () => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
