@@ -1,0 +1,184 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE') }}
+{% endblock %}
+
+{% set otherHtml %}
+  {{ govukRadios({
+    idPrefix: "applicationTypeOther",
+    name: "applicationTypeOther",
+    items: [
+      {
+        value: ApplicationTypeOption.ASK_CHANGE_CLAIM,
+        html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_CLAIM') + '</strong>',
+        checked: form.model.optionOther === ApplicationTypeOption.ASK_CHANGE_CLAIM,
+        hint: {
+          text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_CLAIM_DESCRIPTION')
+        }
+      },
+      {
+        value: ApplicationTypeOption.ASK_SUMMARY_JUDGMENT,
+        html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_SUMMARY_JUDGMENT') + '</strong>',
+        checked: form.model.optionOther === ApplicationTypeOption.ASK_SUMMARY_JUDGMENT,
+        hint: {
+          text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_SUMMARY_JUDGMENT_DESCRIPTION')
+        }
+      },
+      {
+        value: ApplicationTypeOption.ASK_STRIKE_OUT,
+        html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_STRIKE_OUT') + '</strong>',
+        checked: form.model.optionOther === ApplicationTypeOption.ASK_STRIKE_OUT,
+        hint: {
+          text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_STRIKE_OUT_DESCRIPTION')
+        }
+      },
+      {
+        value: ApplicationTypeOption.ASK_PAUSE,
+        html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_PAUSE') + '</strong>',
+        checked: form.model.optionOther === ApplicationTypeOption.ASK_PAUSE,
+        hint: {
+          text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_PAUSE_DESCRIPTION')
+        }
+      },
+      {
+        value: ApplicationTypeOption.ASK_IMPOSE_SANCTION,
+        html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_IMPOSE_SANCTION') + '</strong>',
+        checked: form.model.optionOther === ApplicationTypeOption.ASK_IMPOSE_SANCTION,
+        hint: {
+          text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_IMPOSE_SANCTION_DESCRIPTION_1') + '<br>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME_DESCRIPTION_2')
+        }
+      },
+      {
+        value: ApplicationTypeOption.ASK_SETTLING,
+        html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_SETTLING') + '</strong>',
+        checked: form.model.optionOther === ApplicationTypeOption.ASK_SETTLING,
+        hint: {
+          text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_SETTLING_DESCRIPTION')
+        }
+      },
+      {
+        value: ApplicationTypeOption.ASK_DO_SOMETHING,
+        html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_DO_SOMETHING') + '</strong>',
+        checked: form.model.optionOther === ApplicationTypeOption.ASK_DO_SOMETHING,
+        hint: {
+          text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_DO_SOMETHING_DESCRIPTION')
+        }
+      }
+    ],
+    errorMessage: {
+      text: t(typeError)
+    } if typeError
+  }) }}
+
+{% endset %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if form.hasErrors() %}
+        {{ errorSummary(form.getErrors(), t) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CAPTION') }}</h1>
+          <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE') }}</h1>
+          
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.WHEN_YOU_REQUEST') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.APPLICATION_NOT_NEW') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.SELECT_APPLICATION') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.NEED_MULTIPLE_APPLICATIONS') }}</p>
+
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {% set typeError = form.errorFor('option') %}
+            <div class="govuk-form-group">
+              {{ govukRadios({
+                idPrefix: "applicationType",
+                name: "applicationType",
+                items: [
+                  {
+                    value: ApplicationTypeOption.ASK_CANCEL_JUDGMENT,
+                    html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CANCEL_JUDGMENT') + '</strong>',
+                    checked: form.model.option === ApplicationTypeOption.ASK_CANCEL_JUDGMENT,
+                    hint: {
+                      text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CANCEL_JUDGMENT_DESCRIPTION')
+                    }
+                  },
+                  {
+                    value: ApplicationTypeOption.ASK_VARY_JUDGMENT,
+                    html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_VARY_JUDGMENT') + '</strong>',
+                    checked: form.model.option === ApplicationTypeOption.ASK_VARY_JUDGMENT,
+                    hint: {
+                      text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_VARY_JUDGMENT_DESCRIPTION')
+                    }
+                  },
+                  {
+                    value: ApplicationTypeOption.ASK_RECONSIDER,
+                    html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_RECONSIDER') + '</strong>',
+                    checked: form.model.option === ApplicationTypeOption.ASK_RECONSIDER,
+                    hint: {
+                      text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_RECONSIDER_DESCRIPTION')
+                    }
+                  },
+                  {
+                    value: ApplicationTypeOption.ASK_CHANGE_HEARING,
+                    html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING') + '</strong>',
+                    checked: form.model.option === ApplicationTypeOption.ASK_CHANGE_HEARING,
+                    hint: {
+                      text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION')
+                    }
+                  },
+                  {
+                    value: ApplicationTypeOption.ASK_MORE_TIME,
+                    html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME') + '</strong>',
+                    checked: form.model.option === ApplicationTypeOption.ASK_MORE_TIME,
+                    hint: {
+                      text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME_DESCRIPTION_1') + '<br>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME_DESCRIPTION_2')
+                    }
+                  },
+                  {
+                    value: ApplicationTypeOption.ASK_RELIEF_PENALTY,
+                    html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_RELIEF_PENALTY') + '</strong>',
+                    checked: form.model.option === ApplicationTypeOption.ASK_RELIEF_PENALTY,
+                    hint: {
+                      text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_RELIEF_PENALTY_DESCRIPTION')
+                    }
+                  },
+                  {
+                    value: ApplicationTypeOption.OTHER,
+                    html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.OTHER') + '</strong>',
+                    checked: form.model.option === ApplicationTypeOption.OTHER,
+                    conditional: {
+                      html: otherHtml
+                    }
+                  }
+                ],
+                errorMessage: {
+                  html: t(form.errorFor('option'))
+                } if form.hasErrors()
+              }) }}
+            </div>
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+              <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-thirds">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

@@ -1,4 +1,16 @@
-export enum ApplicationType {
+import {IsDefined} from 'class-validator';
+
+export class ApplicationType {
+  @IsDefined({ message: 'ERRORS.APPLICATION_TYPE_REQUIRED' })
+  option?: ApplicationTypeOption;
+
+  constructor(option?: ApplicationTypeOption) {
+    this.option = option;
+  }
+
+}
+
+export enum ApplicationTypeOption {
   ASK_CANCEL_JUDGMENT= 'ASK_CANCEL_JUDGMENT',
   ASK_VARY_JUDGMENT= 'ASK_VARY_JUDGMENT',
   ASK_RECONSIDER= 'ASK_RECONSIDER',

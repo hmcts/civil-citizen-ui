@@ -283,7 +283,7 @@ import claimantClaimSummaryController from 'routes/features/dashboard/claimantCl
 import bundlesController from 'routes/features/caseProgression/bundlesController';
 import viewMediationSettlementAgreementDocument
   from 'routes/features/document/mediation/viewSettlementAgreementDocumentController';
-import selectApplicationTypeController from './features/generalApplication/selectApplicationTypeController';
+import applicationTypeController from './features/generalApplication/applicationTypeController';
 
 export default [
   homeController,
@@ -533,5 +533,5 @@ export default [
   notificationRedirectController,
   bundlesController,
   viewMediationSettlementAgreementDocument,
-  selectApplicationTypeController,
+  applicationTypeController,
 ];
