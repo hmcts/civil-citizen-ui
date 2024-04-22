@@ -19,7 +19,7 @@ module.exports = {
   waitForDefendantToRespond: async () => {
     return {
       title: 'Wait for defendant to respond',
-      content: 'to respond. They can request an extra.',
+      content: 'to respond. They can request an extra',
     };
   },
 
