@@ -8,7 +8,7 @@ import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
-import {getEvidenceUploadContent} from "services/features/dashboard/claimSummaryService";
+import {getEvidenceUploadContent} from 'services/features/dashboard/evidenceUploadDocumentsService';
 
 const evidenceUploadDocumentsController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -29,7 +29,7 @@ evidenceUploadDocumentsController.get(EVIDENCE_UPLOAD_DOCUMENTS_URL, (async (req
 
     res.render(evidenceUploadDocumentsViewPath,
       {documentSections,
-        pageCaption: 'COMMON.HEARING',
+        pageCaption: 'PAGES.DASHBOARD.HEARINGS.HEARING',
         pageTitle: 'COMMON.VIEW_DOCUMENTS',
         claimId: caseNumberPrettify(claimId),
         claimAmount: claim.totalClaimAmount,

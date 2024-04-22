@@ -1432,13 +1432,17 @@
       "DRAFT_CLAIM_NUMBER": "Hawliad drafft",
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
+        "CREATED": "Crëwyd ",
+        "HEARING": "Hearing",
+        "HEARING_NOTICE": "Hearing notice",
         "PAY_FEE": "Pay the hearing fee",
         "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
         "TITLE": "Hearings",
         "UPLOAD_DOCUMENTS": "Upload hearing documents",
         "VIEW_BUNDLE": "View the bundle",
         "VIEW_DOCUMENTS": "View documents",
-        "VIEW_HEARINGS": "View hearings"
+        "VIEW_HEARINGS": "View hearings",
+        "VIEW_THE_HEARING": "View the hearing"
       },
       "MAKE_A_NEW_CLAIM": "Gwneud hawliad newydd am arian",
       "NEXT": "Nesaf",

@@ -283,7 +283,7 @@ import claimantClaimSummaryController from 'routes/features/dashboard/claimantCl
 import bundlesController from 'routes/features/caseProgression/bundlesController';
 import viewMediationSettlementAgreementDocument
   from 'routes/features/document/mediation/viewSettlementAgreementDocumentController';
-import evidenceUploadDocumentsController from "routes/features/caseProgression/evidenceUploadDocumentsController";
+import evidenceUploadDocumentsController from 'routes/features/caseProgression/evidenceUploadDocumentsController';
 
 export default [
   homeController,
