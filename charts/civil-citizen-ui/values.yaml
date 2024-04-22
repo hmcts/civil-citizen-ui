@@ -73,6 +73,10 @@ nodejs:
     PCQ_URL: https://pcq.{{ .Values.global.environment }}.platform.hmcts.net
     GOVPAY_URL: https://card.payments.service.gov.uk
     CARM_DATE: '01 August 2024'
+    ENFORCEJUDGMENT_URL: https://www.gov.uk/make-court-claim-for-money/enforce-a-judgment
+    CIVILMONEYCLAIMS_TELEPHONE: '0300 123 7050'
+    CIVILMONEYCLAIMS_COURT_EMAIL_ID: 'ocmcnton@justice.gov.uk'
+    APPLY_FOR_CERTIFICATE: https://www.gov.uk/government/publications/form-n443-application-for-a-certificate-of-satisfaction-or-cancellation
 
   autoscaling:
     enabled: true
