@@ -1,5 +1,5 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {CASE_DOCUMENT_DOWNLOAD_URL, CASE_TIMELINE_DOCUMENTS_URL, CLAIM_DETAILS_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
+import {CASE_DOCUMENT_DOWNLOAD_URL, CASE_DOCUMENT_VIEW_URL, CASE_TIMELINE_DOCUMENTS_URL, CLAIM_DETAILS_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
 import {getInterestDetails} from 'common/utils/interestUtils';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -27,7 +27,8 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: Request, res: Respons
     const totalAmount = getTotalAmountWithInterestAndFees(claim);
     const timelineRows = getClaimTimeline(claim, getLng(lang));
     const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id).replace(':documentId', claim.extractDocumentId());
-    const sealedClaimPdfUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', req.params.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM));
+    const claimFormUrl =  (isCUIReleaseTwo && isDashboardEnabled) ? CASE_DOCUMENT_VIEW_URL : CASE_DOCUMENT_DOWNLOAD_URL
+    const sealedClaimPdfUrl = claimFormUrl.replace(':id', req.params.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM));
     const pageTitle = 'PAGES.CLAIM_DETAILS.PAGE_TITLE_NEW';
     const claimDetailsViewPath = (isCUIReleaseTwo && isDashboardEnabled) ? claimDetailsViewPathNew : claimDetailsViewPathOld;
     claim.totalInterest = interestData.interest;

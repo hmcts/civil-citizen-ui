@@ -37,7 +37,7 @@
            {{ t('PAGES.CLAIM_DETAILS.PAGE_TITLE_NEW') }}
        </span>
      </p>
-     <p class="govuk-body"><a id="sealed-claim-link" href={{ sealedClaimPdfUrl }} rel="noreferrer noopener">{{ t('PAGES.CLAIM_DETAILS.VIEW_THE_CLAIM_PDF') }}</a></p>
+     <p class="govuk-body"><a id="sealed-claim-link" target="_blank" href={{ sealedClaimPdfUrl }} rel="noreferrer noopener">{{ t('PAGES.CLAIM_DETAILS.VIEW_THE_CLAIM_PDF') }}</a></p>
      <br>
      {{ govukButton({
         text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW'),
