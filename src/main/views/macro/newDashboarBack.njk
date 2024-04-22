@@ -1,0 +1,9 @@
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% macro back(backUrl, t) %}
+
+    {{ govukBackLink({
+        text: t('COMMON.BUTTONS.BACK'),
+        href: backUrl
+    }) }}
+
+{% endmacro %}
