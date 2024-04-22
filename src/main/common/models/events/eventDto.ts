@@ -27,4 +27,5 @@ export interface ClaimUpdate {
   applicant1SuggestInstalmentsPaymentAmountForDefendantSpec?: number;
   applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec?: string;
   applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec?: CCDRepaymentPlanFrequency;
+  applicant1ClaimSettledDate?: Date;
 }
