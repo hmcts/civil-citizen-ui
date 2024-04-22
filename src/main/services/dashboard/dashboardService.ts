@@ -24,7 +24,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
         task.hintTextCy = replaceDashboardPlaceholders(task.hintTextCy, claim, claimId);
       });
     });
-    //remove carm sections
+    //exclude Carm sections
     if (!isCarmApplicable){
       dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
