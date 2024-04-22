@@ -164,7 +164,7 @@ export class Claim {
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
-  
+
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
     claim.claimDetails = toCUIClaimDetails(ccdClaim);
@@ -732,16 +732,16 @@ export class Claim {
     return party?.partyDetails?.partyName;
   }
 
-  get claimType(): string {
+  get claimTrackType(): string {
     return analyseClaimType(this.totalClaimAmount);
   }
 
   get isFastTrackClaim(): boolean {
-    return this.claimType === claimType.FAST_TRACK_CLAIM;
+    return this.claimTrackType === claimType.FAST_TRACK_CLAIM;
   }
 
   get isSmallClaimsTrackDQ(): boolean {
-    return this.claimType === claimType.SMALL_CLAIM;
+    return this.claimTrackType === claimType.SMALL_CLAIM;
   }
 
   hasSdoOrderDocument(): boolean {
