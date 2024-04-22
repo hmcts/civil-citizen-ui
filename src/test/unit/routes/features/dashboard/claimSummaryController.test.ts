@@ -102,7 +102,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithSdo);
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
@@ -118,6 +118,7 @@ describe('Claim Summary Controller Defendant', () => {
       //given
       isCaseProgressionV1EnableMock.mockResolvedValue(true);
       getLatestUpdateContentMock.mockReturnValue([]);
+
       const claimWithoutSDO = JSON.parse(JSON.stringify(claim));
       claimWithoutSDO.case_data.systemGeneratedCaseDocuments = [{
         'id': '9e632049-ff29-44a0-bdb7-d71ec1d42e2d',
@@ -140,7 +141,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithoutSDO);
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
@@ -162,7 +163,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithSdo);
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
@@ -185,7 +186,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithSdo);
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
@@ -219,7 +220,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithHeringDocs);
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
@@ -240,11 +241,7 @@ describe('Claim Summary Controller Defendant', () => {
       const caseProgressionHearing = getCaseProgressionHearingMock();
 
       const bundles = [] as CCDBundle[];
-      bundles.push(new CCDBundle('1234', new Bundle('document', {
-        document_url: 'url',
-        document_filename: 'name',
-        document_binary_url: 'binaryurl',
-      }, new Date('01-01-2023'), new Date('01-01-2023'))));
+      bundles.push(new CCDBundle('1234', new Bundle('document', {document_url: 'url',document_filename: 'name', document_binary_url: 'binaryurl'}, new Date('01-01-2023'), new Date('01-01-2023'))));
 
       const claimWithHearingAndBundleDocs = {
         ...claim,
@@ -267,7 +264,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithHearingAndBundleDocs);
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
@@ -307,7 +304,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimWithHeringDocs);
       nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //then
       await testSession
