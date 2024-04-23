@@ -8,6 +8,7 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {t} from 'i18next';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import  {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/oidc');
 
@@ -21,6 +22,7 @@ describe('Bilingual language preference', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+    jest.spyOn(CivilServiceClient.prototype, 'createDashboard').mockReturnValue(null);
   });
 
   describe('on Get', () => {

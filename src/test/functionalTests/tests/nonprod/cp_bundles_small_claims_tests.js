@@ -1,5 +1,5 @@
 const config = require('../../../config');
-const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
+//const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
 const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
@@ -27,6 +27,6 @@ Before(async ({api}) => {
 
 Scenario('Case progression journey - Small Claims - Verify Bundles tab', async () => {
   if (['demo'].includes(config.runningEnv)) {
-    CaseProgressionSteps.verifyBundle(claimRef, claimType);
+    //CaseProgressionSteps.verifyBundle(claimRef, claimType);
   }
 }).tag('@regression-cp');

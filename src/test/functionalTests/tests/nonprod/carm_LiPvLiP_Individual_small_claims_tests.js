@@ -3,6 +3,7 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ClaimantResponseSteps = require('../../citizenFeatures/response/steps/lipClaimantResponseSteps');
+const { claimantNotificationOfDefendantResponse } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 const partAdmit = 'partial-admission';
@@ -27,6 +28,8 @@ Scenario('LiP Defendant response with Part admit', async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled);
     console.log('LIP vs LIP claim has been created Successfully    <===>  '  , claimRef);
+    await api.setCaseId(claimRef);
+    await api.waitForFinishedBusinessProcess();
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber =  caseData.legacyCaseReference;
     securityCode = caseData.respondent1PinToPostLRspec.accessCode;
@@ -53,10 +56,10 @@ Scenario('LiP Defendant response with Part admit', async ({api}) => {
   }
 }).tag('@regression-carm');
 
-Scenario('LiP Claimant response with Part admit', async () => {
+Scenario('LiP Claimant response with Part admit', async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef);
+    await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, claimantNotificationOfDefendantResponse(500));
     await ClaimantResponseSteps.verifyDefendantResponse();
     await ClaimantResponseSteps.acceptOrRejectDefendantResponse('No');
     await ResponseSteps.EnterTelephoneMediationDetails();
@@ -66,5 +69,6 @@ Scenario('LiP Claimant response with Part admit', async () => {
     await ResponseSteps.EnterDQForSmallClaims(claimRef);
     await ClaimantResponseSteps.verifyClaimantMediationDetailsInCYA(claimRef);
     await ClaimantResponseSteps.submitClaimantResponse();
+    await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-carm');

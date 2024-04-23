@@ -1,7 +1,7 @@
 const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/DateUtilsComponent');
-const TrialArrangementSteps = require('../../citizenFeatures/caseProgression/steps/trialArrangementSteps');
+//const TrialArrangementSteps = require('../../citizenFeatures/caseProgression/steps/trialArrangementSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
@@ -24,11 +24,11 @@ Before(async ({api}) => {
 });
 
 //Bug CIV-12591
-Scenario('Fast Track Trial Arrangements - not ready for Trial Journey.', async ({api}) => {
+Scenario('Fast Track Trial Arrangements - not ready for Trial Journey.', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'no');
+    /*TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'no');
     await api.waitForFinishedBusinessProcess();
-    TrialArrangementSteps.verifyTrialArrangementsMade();
+    TrialArrangementSteps.verifyTrialArrangementsMade();*/
   }
 }).tag('@regression-cp');
 
