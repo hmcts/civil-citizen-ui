@@ -72,5 +72,5 @@ Scenario('Personal detail error screen @nightly', async () => {
 });
 
 //todo:financial screens
-Scenario('Share your financial details screens @nightly', async () => {
+Scenario('Share your financial details screens @nightly @kiyron', async () => {
 });
