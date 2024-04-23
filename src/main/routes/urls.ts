@@ -293,3 +293,4 @@ export const BUNDLES_URL = `${BASE_CASE_URL}/bundle-overview`;
 export const VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT = `${MEDIATION_URL}/view-mediation-settlement-agreement-document`;
 export const VIEW_DEFENDANT_INFO = `${DASHBOARD_URL}/:id/information-defendant`;
 export const VIEW_CLAIMANT_INFO = `${DASHBOARD_URL}/:id/information-claimant`;
+export const CANCEL_URL = `${BASE_CASE_URL}/:propertyName/cancel`;

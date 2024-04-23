@@ -284,6 +284,7 @@ import bundlesController from 'routes/features/caseProgression/bundlesController
 import viewMediationSettlementAgreementDocument from 'routes/features/document/mediation/viewSettlementAgreementDocumentController'
 import viewDefendantInformationController from './features/dashboard/viewDefendantInformationController';
 import viewClaimantInformationController from './features/dashboard/viewClaimantInformationController';
+import cancelController from 'routes/common/cancelController';
 
 export default [
   homeController,
@@ -535,4 +536,5 @@ export default [
   viewClaimantInformationController,
   viewMediationSettlementAgreementDocument,
   bundlesController,
+  cancelController,
 ];
