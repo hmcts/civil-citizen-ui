@@ -16,7 +16,7 @@ import {
   DATE_PAID_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
-  MEDIATION_SERVICE_EXTERNAL, PAY_HEARING_FEE_URL, CLAIM_DETAILS_URL,
+  MEDIATION_SERVICE_EXTERNAL, PAY_HEARING_FEE_URL, VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT, CLAIM_DETAILS_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -88,6 +88,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{HEARING_DUE_DATE}', claim?.caseProgressionHearing?.hearingDate? claim.bundleStitchingDeadline: '');
   valuesMap.set('{APPLY_HELP_WITH_FEES_START}', APPLY_HELP_WITH_FEES_START.replace(':id', claimId));
   valuesMap.set('{VIEW_CCJ_REPAYMENT_PLAN_CLAIMANT}', CCJ_REPAYMENT_PLAN_CLAIMANT_URL.replace(':id', claimId));
+  valuesMap.set('{VIEW_MEDIATION_SETTLEMENT_AGREEMENT}', VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.replace(':id', claimId));
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
@@ -99,7 +100,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
     valuesMap.set('{VIEW_BUNDLE_REDIRECT}', DASHBOARD_NOTIFICATION_REDIRECT
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_BUNDLE')
-      .replace(':notificationId', notificationId));            
+      .replace(':notificationId', notificationId));
     valuesMap.set('{VIEW_ORDERS_AND_NOTICES_REDIRECT}', DASHBOARD_NOTIFICATION_REDIRECT
       .replace(':id', claimId)
       .replace(':locationName', 'VIEW_ORDERS_AND_NOTICES')

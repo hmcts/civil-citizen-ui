@@ -1,12 +1,12 @@
 import {t} from 'i18next';
 import {ClaimSummaryType} from 'common/form/models/claimSummarySection';
 import {Claim} from 'common/models/claim';
-import {addDaysToDate, formatDateToFullDate} from 'common/utils/dateUtils';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 export const getPAPayImmediatelyAcceptedNextSteps = (claim: Claim, lang: string) => {
   const admittedAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
-  const paymentDeadLine = addDaysToDate(claim?.respondent1ResponseDate, 5);
-  const paymentDate = formatDateToFullDate(paymentDeadLine, lang);
+  const paymentDate = formatDateToFullDate(claim.respondentPaymentDeadline, lang);
+
   return [
     {
       type: ClaimSummaryType.TITLE,
