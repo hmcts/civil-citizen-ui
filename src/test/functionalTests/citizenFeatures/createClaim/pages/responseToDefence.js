@@ -79,6 +79,13 @@ class ResponseToDefence {
     I.click(paths.buttons.continue);
   }
 
+  async verifyDefResponseForPartAdmitInstallmentPayment(claimAmount) {
+    I.waitForContent('Why they don’t owe the amount claimed?', 60);
+    I.see('The defendant suggested this repayment plan:');
+    I.see(`They’ve offered to pay you £${claimAmount} in instalments. This is the total amount you’ll be paid, including the claim fee and interest if applicable.`);
+    I.click(paths.buttons.continue);
+  }
+
   async verifyDefResponseForPartAdmitImmediatePayment(claimAmount) {
     I.waitForContent('Why they don’t owe the amount claimed?', 60);
     I.see('Contracts and agreements');
@@ -480,7 +487,7 @@ class ResponseToDefence {
     I.see('The defendant’s response','h1');
     I.see('Sir John Doe said they paid you');
     I.see('When they say they paid this amount','h3');
-    I.see('How they said they paid?','h3');
+    I.see('How they say they paid?','h3');
     I.seeElement(paths.links.full_response_pdf_link);
     I.click(paths.links.full_response_pdf_link);
     I.click(paths.buttons.continue);
@@ -492,7 +499,7 @@ class ResponseToDefence {
     I.see('Sir John Doe said they paid you');
     I.see('They said this is all they owe, not the amount you claim.');
     I.see('When they say they paid this amount','h3');
-    I.see('How they said they paid?','h3');
+    I.see('How they say they paid?','h3');
     I.see('Why they say they dont owe the amount you claimed?', 'h3');
     I.seeElement(paths.links.full_response_pdf_link);
     I.click(paths.links.full_response_pdf_link);
