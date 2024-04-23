@@ -1,4 +1,5 @@
 import * as urls from '../../main/routes/urls';
+import {VIEW_THE_HEARING_URL} from '../../main/routes/urls';
 
 export const IGNORED_URLS = [
   urls.SIGN_IN_URL,
@@ -53,4 +54,5 @@ export const IGNORED_URLS = [
   urls.DASHBOARD_CLAIMANT_URL,
   //TODO: remove this once finished the page
   urls.VIEW_ORDERS_AND_NOTICES_URL,
+  urls.VIEW_THE_HEARING_URL,
 ];
