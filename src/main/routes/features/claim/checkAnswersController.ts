@@ -6,7 +6,7 @@ import {
   saveStatementOfTruth,
 } from 'services/features/claim/checkAnswers/checkAnswersService';
 import {
-  deleteDraftClaimFromStore,
+  // deleteDraftClaimFromStore,
   getCaseDataFromStore,
 } from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
@@ -78,11 +78,11 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
         //TODO Will be implemented after integration ready
         //const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
         //res.redirect(paymentUrlWithId);
-        await deleteDraftClaimFromStore(userId);
-        res.clearCookie('eligibilityCompleted');
+        // await deleteDraftClaimFromStore(userId);
+        // res.clearCookie('eligibilityCompleted');
         res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       } else {
-        await deleteDraftClaimFromStore(userId);
+        // await deleteDraftClaimFromStore(userId);
         res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
       }
     }
