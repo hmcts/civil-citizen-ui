@@ -10,7 +10,10 @@ import {Claim} from 'models/claim';
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {mapperMediationAgreementToDocumentView} from 'common/mappers/documentViewMapper';
+import {
+  mapperMediationAgreementToDocumentView,
+  mapperMediationDocumentsReferredToDocumentView,
+} from 'common/mappers/documentViewMapper';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -21,9 +24,9 @@ const viewDocuments = 'features/common/viewDocuments';
 const renderView = (res: Response, claimId: string, claim: Claim, lang: string): void => {
 
   const mediationDocuments = Array.of(
-    mapperMediationAgreementToDocumentView(
-      'PAGES.VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.DOCUMENT_TABLE_TITLE',
-      claim.mediationAgreement, claim.mediationSettlementAgreedAt,
+    mapperMediationDocumentsReferredToDocumentView(
+      'PAGES.VIEW_MEDIATION_DOCUMENTS.DOCUMENT_TABLE_TITLE',
+      claim.res1MediationDocumentsReferred,
       claimId,
       lang),
     mapperMediationAgreementToDocumentView(
