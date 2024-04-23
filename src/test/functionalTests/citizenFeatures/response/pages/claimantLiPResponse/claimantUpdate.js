@@ -1,11 +1,21 @@
 const I = actor();
 const config = require('../../../../../config');
 
+const { isDashboardServiceToggleEnabled } = require('../../../../specClaimHelpers/api/testingSupport');
+const { verifyNotificationTitleAndContent } = require('../../../../specClaimHelpers/e2e/dashboardHelper');
+
 class ClaimantUpdate {
-  async respondToClaim(claimRef) {
+  async respondToClaim(claimRef, notification) {
+    console.log('notification..', notification);
     I.amOnPage('/dashboard/' + claimRef + '/claimant');
-    I.waitForContent('About claim', config.WaitForText);
-    I.click('Respond to claim');
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+    if (isDashboardServiceEnabled) {
+      await verifyNotificationTitleAndContent('', notification.title, notification.content);
+      await I.click(notification.nextSteps);
+    } else {
+      I.waitForContent('About claim', config.WaitForText);
+      I.click('Respond to claim');
+    }
   }
 
   async startUploadDocs(claimRef) {
