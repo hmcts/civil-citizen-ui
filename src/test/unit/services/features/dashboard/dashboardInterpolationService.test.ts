@@ -1,4 +1,4 @@
-import {replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
+import {objectToMap, replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
 import {Claim} from 'models/claim';
 import {addDaysToDate} from 'common/utils/dateUtils';
 import {DocumentType} from 'common/models/document/documentType';
@@ -214,6 +214,36 @@ describe('dashboardInterpolationService', () => {
     const sizeExpected = '/case/123/view-documents/f1c7d590-8d3f-49c2-8ee7-6420ab711801 target="_blank"';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
+  });
+
+  describe('objectToMap', () => {
+    it('should convert an object to a map', () => {
+      const obj = {
+        name: 'defendant',
+        age: 30,
+        city: 'London',
+      };
+
+      const result = objectToMap(obj);
+
+      expect(result).toBeInstanceOf(Map);
+      expect(result.size).toBe(Object.keys(obj).length);
+
+      for (const key in obj) {
+        if (key in obj) {
+          expect(result.has(key)).toBe(true);
+        }
+      }
+    });
+
+    it('should return an empty map if given an empty object', () => {
+      const obj = {};
+
+      const result = objectToMap(obj);
+
+      expect(result).toBeInstanceOf(Map);
+      expect(result.size).toBe(0);
+    });
   });
 
 });
