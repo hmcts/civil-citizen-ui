@@ -456,7 +456,6 @@ describe('translate response to ccd version', () => {
           date: new Date('2022-09-12'),
         },
       ],
-
     };
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, false);

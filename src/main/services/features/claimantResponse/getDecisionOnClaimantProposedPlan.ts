@@ -47,4 +47,4 @@ export const getDecisionOnClaimantProposedPlan = async (req: AppRequest, claimId
 const getClaimantSuggestedImmediatePaymentDeadLineDate = async (req: AppRequest, claim:Claim): Promise<void> => {
   const immediatePaymentDeadLine =  await civilServiceClient.calculateExtendedResponseDeadline(new Date(Date.now()), 5, req);
   await saveClaimantResponse(generateRedisKey(req), immediatePaymentDeadLine, 'suggestedImmediatePaymentDeadLine');
-}
+};
