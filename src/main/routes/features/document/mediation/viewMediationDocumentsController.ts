@@ -11,9 +11,11 @@ import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
-  mapperMediationAgreementToDocumentView,
-  mapperMediationDocumentsReferredToDocumentView,
+  mapperMediationDocumentsToDocumentView,
 } from 'common/mappers/documentViewMapper';
+import {
+  getClaimantMediationDocuments, getDefendantMediationDocuments,
+} from 'services/features/dodument/mediation/mediationDocumentService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -22,16 +24,17 @@ const viewMediationDocuments = Router();
 const viewDocuments = 'features/common/viewDocuments';
 
 const renderView = (res: Response, claimId: string, claim: Claim, lang: string): void => {
-
+  const claimantMediationDocuments = getClaimantMediationDocuments(claim);
+  const defendantMediationDocuments = getDefendantMediationDocuments(claim);
   const mediationDocuments = Array.of(
-    mapperMediationDocumentsReferredToDocumentView(
-      'PAGES.VIEW_MEDIATION_DOCUMENTS.DOCUMENT_TABLE_TITLE',
-      claim.res1MediationDocumentsReferred,
+    mapperMediationDocumentsToDocumentView(
+      'PAGES.VIEW_MEDIATION_DOCUMENTS.CLAIMANT_TABLE_TITLE',
+      claimantMediationDocuments,
       claimId,
       lang),
-    mapperMediationAgreementToDocumentView(
-      'PAGES.VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.DOCUMENT_TABLE_TITLE',
-      claim.mediationAgreement, claim.mediationSettlementAgreedAt,
+    mapperMediationDocumentsToDocumentView(
+      'PAGES.VIEW_MEDIATION_DOCUMENTS.DEFENDANT_TABLE_TITLE',
+      defendantMediationDocuments,
       claimId,
       lang),
   );
@@ -39,7 +42,7 @@ const renderView = (res: Response, claimId: string, claim: Claim, lang: string):
   res.render(viewDocuments, {
     documentsSection: mediationDocuments,
     pageCaption: 'COMMON.MEDIATION',
-    pageTitle: 'PAGES.VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.PAGE_TITLE',
+    pageTitle: 'PAGES.VIEW_MEDIATION_DOCUMENTS.PAGE_TITLE',
     claimId: caseNumberPrettify(claimId),
     claimAmount: claim.totalClaimAmount,
     dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),

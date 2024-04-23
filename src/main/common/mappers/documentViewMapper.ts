@@ -8,9 +8,12 @@ import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {
-  MediationMediationNonAttendanceDocs,
   MediationUploadDocumentsCCD,
 } from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
+import {
+  isMediationDocumentsReferred,
+  isMediationNonAttendanceDocs,
+} from 'services/features/dodument/mediation/mediationDocumentService';
 
 export const mapperMediationAgreementToDocumentView = (documentTitle: string, mediationAgreement: MediationAgreement, mediationSettlementAgreedAt: Date, claimId: string, lang: string) => {
 
@@ -24,18 +27,24 @@ export const mapperMediationAgreementToDocumentView = (documentTitle: string, me
         mediationAgreement.document.document_filename))));
 };
 
-export const mapperMediationDocumentsReferredToDocumentView = (documentTitle: string, mediationDocuments: MediationUploadDocumentsCCD[] , claimId: string, lang: string) => {
-
-  return new DocumentsViewComponent(documentTitle,
-    mediationDocuments.map((item) => {
-      return new DocumentInformation(
-        !(item.value instanceof MediationMediationNonAttendanceDocs) ? item.value.documentType : item.value.yourName,
-        formatDateToFullDate(item.value.documentDate, lang),
-        new DocumentLinkInformation(
-          CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId',
-            documentIdExtractor(item.value.document.document_binary_url)),
-          item.value.document.document_filename));
-    }),
-  );
-
+export const mapperMediationDocumentsToDocumentView = (documentTitle: string, mediationDocuments: MediationUploadDocumentsCCD[] , claimId: string, lang: string) => {
+  if (mediationDocuments.length > 0){
+    return new DocumentsViewComponent(documentTitle,
+      mediationDocuments.map((item) => {
+        let fileName: string;
+        if (isMediationNonAttendanceDocs(item.value)){
+          fileName = item.value.yourName;
+        } else  if (isMediationDocumentsReferred(item.value)){
+          fileName = item.value.documentType;
+        }
+        return new DocumentInformation(
+          fileName,
+          formatDateToFullDate(item.value.documentUploadedDatetime, lang),
+          new DocumentLinkInformation(
+            CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId',
+              documentIdExtractor(item.value.document.document_binary_url)),
+            item.value.document.document_filename));
+      }),
+    );
+  }
 };
