@@ -16,7 +16,7 @@ import {
   DATE_PAID_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
-  MEDIATION_SERVICE_EXTERNAL, PAY_HEARING_FEE_URL,
+  MEDIATION_SERVICE_EXTERNAL, PAY_HEARING_FEE_URL, VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT,
   VIEW_RESPONSE_TO_CLAIM,
 } from 'routes/urls';
 import config from 'config';
@@ -89,6 +89,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{HEARING_DUE_DATE}', claim?.caseProgressionHearing?.hearingDate? claim.bundleStitchingDeadline: '');
   valuesMap.set('{APPLY_HELP_WITH_FEES_START}', APPLY_HELP_WITH_FEES_START.replace(':id', claimId));
   valuesMap.set('{VIEW_CCJ_REPAYMENT_PLAN_CLAIMANT}', CCJ_REPAYMENT_PLAN_CLAIMANT_URL.replace(':id', claimId));
+  valuesMap.set('{VIEW_MEDIATION_SETTLEMENT_AGREEMENT}', VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.replace(':id', claimId));
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
