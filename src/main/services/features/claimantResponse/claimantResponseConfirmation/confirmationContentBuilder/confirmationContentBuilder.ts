@@ -5,7 +5,7 @@ import {getClaimantResponseStatus, getRCDisputeNotContinueNextSteps} from './dis
 import {
   getPAPayImmediatelyAcceptedNextSteps,
   getRejectedResponseNoMediationNextSteps,
-  getRejectedResponseYesMediationNextSteps
+  getRejectedResponseYesMediationNextSteps,
 } from './partAdmitConfirmationContentBuilder';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {
