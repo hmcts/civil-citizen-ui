@@ -8,21 +8,31 @@ export class ApplicationType {
     this.option = option;
   }
 
+  isOtherSelected(): boolean {
+    return this.option === ApplicationTypeOption.AMEND_A_STMT_OF_CASE ||
+      this.option === ApplicationTypeOption.SUMMARY_JUDGEMENT ||
+      this.option === ApplicationTypeOption.STRIKE_OUT ||
+      this.option === ApplicationTypeOption.STAY_THE_CLAIM ||
+      this.option === ApplicationTypeOption.UNLESS_ORDER ||
+      this.option === ApplicationTypeOption.SETTLE_BY_CONSENT ||
+      this.option === ApplicationTypeOption.PROCEEDS_IN_HERITAGE
+  }
+
 }
 
 export enum ApplicationTypeOption {
-  ASK_CANCEL_JUDGMENT= 'ASK_CANCEL_JUDGMENT',
-  ASK_VARY_JUDGMENT= 'ASK_VARY_JUDGMENT',
-  ASK_RECONSIDER= 'ASK_RECONSIDER',
-  ASK_CHANGE_HEARING= 'ASK_CHANGE_HEARING',
-  ASK_MORE_TIME= 'ASK_MORE_TIME',
-  ASK_RELIEF_PENALTY= 'ASK_RELIEF_PENALTY',
-  OTHER= 'OTHER',
-  ASK_CHANGE_CLAIM= 'ASK_CHANGE_CLAIM',
-  ASK_SUMMARY_JUDGMENT= 'ASK_SUMMARY_JUDGMENT',
-  ASK_STRIKE_OUT= 'ASK_STRIKE_OUT',
-  ASK_PAUSE= 'ASK_PAUSE',
-  ASK_IMPOSE_SANCTION= 'ASK_IMPOSE_SANCTION',
-  ASK_SETTLING= 'ASK_SETTLING',
-  ASK_DO_SOMETHING= 'ASK_DO_SOMETHING',
+  STRIKE_OUT = 'Strike out',
+  SUMMARY_JUDGEMENT = 'Summary judgment',
+  STAY_THE_CLAIM = 'Stay the claim',
+  EXTEND_TIME = 'Extend time',
+  AMEND_A_STMT_OF_CASE = 'Amend a statement of case',
+  RELIEF_FROM_SANCTIONS = 'Relief from sanctions',
+  PROCEEDS_IN_HERITAGE = 'Proceeds In Heritage',
+  SET_ASIDE_JUDGEMENT = 'Set aside judgment',
+  SETTLE_BY_CONSENT = 'Settle by consent',
+  VARY_ORDER = 'Vary order',
+  ADJOURN_HEARING = 'Adjourn a hearing',
+  UNLESS_ORDER = 'Unless order',
+  OTHER = 'Other',
+  VARY_PAYMENT_TERMS_OF_JUDGMENT = 'Vary payment terms of judgment',
 }

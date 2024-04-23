@@ -3,19 +3,36 @@ import {APPLICATION_TYPE_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
-import {getGeneralApplication, saveApplicationType} from 'services/features/generalApplication/generalApplicationService';
+import {saveApplicationType} from 'services/features/generalApplication/generalApplicationService';
+import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+// import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
+import { getClaimById } from 'modules/utilityService';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
+const cancelUrl = 'test';
+const backLinkUrl = 'test';
 
 applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const generalApplication = await getGeneralApplication(claimId);
-    const form = new GenericForm(generalApplication.applicationType);
-    const cancelUrl = 'test';
-    const backLinkUrl = 'test';
-    res.render(viewPath, {form, cancelUrl, backLinkUrl});
+    // const claimId = generateRedisKey(<AppRequest>req);
+
+    const claim = await getClaimById(claimId, req, true);
+    // const generalApplication = new GeneralApplication(claim.generalApplication.applicationType);
+    // const generalApplication = await getGeneralApplication(redisKey);
+    const applicationType = new ApplicationType(claim.generalApplication?.applicationType?.option)
+    console.log('GA',claim.generalApplication);
+    
+    const form = new GenericForm(applicationType);
+    console.log('form: ', form);
+
+    res.render(viewPath, {
+      form,
+      cancelUrl,
+      backLinkUrl,
+      isOtherSelected: applicationType.isOtherSelected()
+    });
   } catch (error) {
     next(error);
   }
@@ -23,10 +40,12 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
 
 applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
-    const cancelUrl = 'test';
-    const backLinkUrl = 'test';
+    // const claimId = req.params.id;
+    const redisKey = generateRedisKey(<AppRequest>req);
+
     let applicationType = null;
+    console.log('body: ', req.body);
+
     if (req.body.applicationType === ApplicationTypeOption.OTHER) {
       applicationType = new ApplicationType(req.body.applicationTypeOther);
     } else {
@@ -38,7 +57,9 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl });
     } else {
-      await saveApplicationType(claimId, applicationType);
+    console.log('save: ', applicationType);
+
+      await saveApplicationType(redisKey, applicationType);
       res.redirect('test');
     }
   } catch (error) {
