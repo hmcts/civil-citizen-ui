@@ -8,7 +8,7 @@ export function formatDocumentViewURL(documentName: string, claimId: string, bin
 
   const url = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(binaryURL));
 
-  return `<a class="govuk-link govuk-!-text-align-right" target="_blank" href="${url}">${documentName}</a>`;
+  return `<a class="govuk-link" target="_blank" href="${url}">${documentName}</a>`;
 }
 
 export function formatEvidenceDocumentAlignedViewURL(documentName: string, claimId: string, binaryURL: string, align:alignText): string {
