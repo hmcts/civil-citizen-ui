@@ -33,8 +33,7 @@
     "test:functional:codeceptjs": "codeceptjs --config src/test/functionalTests/codecept.conf.js",
     "test:api": "MOCHAWESOME_REPORTFILENAME=api npx codeceptjs -c 'e2e/codecept.conf.js' run --grep @test --reporter mocha-multi --verbose",
     "cichecks": "yarn && yarn build && yarn lint && yarn test:coverage && yarn test:routes && yarn test:a11y",
-    "cichecks:win": "yarn && yarn build && yarn lint:win && yarn test:coverage && yarn test:routes && yarn test:a11y",
-    "test:debug": "MOCHAWESOME_REPORTFILENAME=debug codeceptjs --config src/test/functionalTests/codecept.conf.js run --grep @debug --reporter mocha-multi --verbose"
+    "cichecks:win": "yarn && yarn build && yarn lint:win && yarn test:coverage && yarn test:routes && yarn test:a11y"
   },
   "dependencies": {
     "@codeceptjs/configure": "^0.10.0",
