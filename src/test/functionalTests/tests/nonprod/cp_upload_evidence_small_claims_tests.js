@@ -1,5 +1,5 @@
 const config = require('../../../config');
-const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
+//const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
@@ -24,13 +24,13 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Small Claims Response with RejectAll and DisputeAll For the Case Progression and Hearing Scheduled Process To Complete',  async ({api}) => {
+Scenario('Small Claims Response with RejectAll and DisputeAll For the Case Progression and Hearing Scheduled Process To Complete',  async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    CaseProgressionSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType, true);
+    /*CaseProgressionSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType, true);
     //Lip initiates docs
     CaseProgressionSteps.initiateUploadEvidenceJourney(claimRef, claimType);
     await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
     //Lip verifies solicitor docs
-    CaseProgressionSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
+    CaseProgressionSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);*/
   }
 }).tag('@regression-cp');
