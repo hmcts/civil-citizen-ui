@@ -22,14 +22,19 @@ module.exports = {
     url: 'http://localhost:5555',
   },
   url: {
+    /*manageCase: process.env.URL || 'https://xui-civil-citizen-ui-pr-3591.preview.platform.hmcts.net',
+    authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
+    ccdDataStore: process.env.CCD_DATA_STORE_URL || 'https://ccd-data-store-api-civil-citizen-ui-pr-3591.preview.platform.hmcts.net',
+    dmStore:process.env.DM_STORE_URL || 'http://dm-store-aat.service.core-compute-aat.internal',
+    idamApi:  'https://idam-api.aat.platform.hmcts.net',
+    civilService: process.env.CIVIL_SERVICE_URL || 'https://civil-citizen-ui-pr-3591-civil-service.preview.platform.hmcts.net',*/
     manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
     authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
     ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-demo.service.core-compute-demo.internal',
     dmStore: process.env.DM_STORE_URL || 'http://dm-store-demo.service.core-compute-demo.internal',
     idamApi: process.env.IDAM_API_URL || 'https://idam-api.demo.platform.hmcts.net',
     civilService: process.env.CIVIL_SERVICE_URL || 'http://civil-service-demo.service.core-compute-demo.internal',
-    waTaskMgmtApi: process.env.WA_TASK_MGMT_URL || 'http://wa-task-management-api-demo.service.core-compute-demo.internal',
-  },
+    waTaskMgmtApi: process.env.WA_TASK_MGMT_URL || 'http://wa-task-management-api-demo.service.core-compute-demo.internal'},
   s2s: {
     microservice: 'civil_service',
     secret: process.env.S2S_SECRET || 'AABBCCDDEEFFGGHH',
@@ -50,6 +55,7 @@ module.exports = {
   },
   claimantCitizenUser: {
     password: defaultPassword,
+    //email:'civilmoneyclaimsdemo@gmail.com',
     email: `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'claimant',
   },
@@ -98,6 +104,11 @@ module.exports = {
     password: defaultPassword,
     type: 'caseworker',
   },
+  ctscAdmin: {
+    email: 'ctsc_admin@justice.gov.uk',
+    password: defaultPassword,
+    type: 'CTSC_ADMIN',
+  },
   systemUpdate: {
     password: defaultPasswordSystemUser,
     email: 'civil-system-update@mailnesia.com',
@@ -119,6 +130,13 @@ module.exports = {
   defendant2SolicitorOrgId: process.env.ENVIRONMENT =='demo' ? 'LCVTI1I' : 'H2156A0',
   defendantSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
   claimantLRSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
+  hwfEvents: {
+    updateHWFNumber: 'UPDATE_HELP_WITH_FEE_NUMBER',
+    partRemission: 'PARTIAL_REMISSION_HWF_GRANTED',
+    fullRemission: 'FULL_REMISSION_HWF',
+    invalidHWFRef: 'INVALID_HWF_REFERENCE',
+    moreInfoHWF: 'MORE_INFORMATION_HWF',
+  },
   defenceType: {
     admitAllPayImmediate: 'ADMIT_ALL_PAU_IMMEDIATE',
     admitAllPayBySetDate: 'ADMIT_ALL_PAY_BY_SET_DATE',

@@ -3,7 +3,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
-import {BASE_ELIGIBILITY_URL} from 'routes/urls';
+import {BASE_ELIGIBILITY_URL, DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -82,7 +82,10 @@ export class DashboardClaimantItem extends DashboardItem {
       RESPONSE_BY_POST: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.RESPONSE_BY_POST'},
       WAITING_FOR_CLAIMANT_TO_RESPOND: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
       WAITING_COURT_REVIEW: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_COURT_REVIEW'},
-      DEFAULT_JUDGEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ'},
+      DEFAULT_JUDGEMENT: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ',
+        parameter: [paramDefendantName],
+      },
       CLAIMANT_AND_DEFENDANT_SIGNED_SETTLEMENT_AGREEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.BOTH_SIGNED_SETTLEMENT_AGREEMENT'},
       CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT'},
       CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED'},
@@ -221,7 +224,7 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
   return t(translationKey, {lng:getLng(lang)} );
 };
 
-export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem | undefined => {
+export const toDraftClaimDashboardItem = (claim: Claim, isReleaseTwoEnabled: boolean): DashboardClaimantItem | undefined => {
   if (claim?.isDraftClaim()) {
     const draftClaim = new DashboardClaimantItem();
     draftClaim.claimId = 'draft';
@@ -231,7 +234,12 @@ export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem |
     draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
     draftClaim.claimantName = claim.getClaimantFullName();
     draftClaim.defendantName = claim.getDefendantFullName();
-    draftClaim.url = BASE_ELIGIBILITY_URL;
+
+    if(isReleaseTwoEnabled){
+      draftClaim.url = DASHBOARD_CLAIMANT_URL.replace(':id', 'draft');
+    } else {
+      draftClaim.url = BASE_ELIGIBILITY_URL;
+    }
     return draftClaim;
   } else {
     return undefined;

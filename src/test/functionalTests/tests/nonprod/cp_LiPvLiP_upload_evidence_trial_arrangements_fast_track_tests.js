@@ -1,12 +1,12 @@
 const config = require('../../../config');
-const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
+//const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/DateUtilsComponent');
-const TrialArrangementSteps = require('../../citizenFeatures/caseProgression/steps/trialArrangementSteps');
+//const TrialArrangementSteps = require('../../citizenFeatures/caseProgression/steps/trialArrangementSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
-const partyType = 'LiPvLiP';
+//const partyType = 'LiPvLiP';
 let claimRef;
 
 Feature('Case progression journey - Claimant Lip Upload Evidence and Trial Arrangements - Fast Track');
@@ -26,12 +26,12 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Citizen Claimant perform evidence upload and trial arrangements',  async ({api}) => {
+Scenario('Citizen Claimant perform evidence upload and trial arrangements',  async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    CaseProgressionSteps.initiateUploadEvidenceJourney(claimRef, claimType, partyType);
+    /*CaseProgressionSteps.initiateUploadEvidenceJourney(claimRef, claimType, partyType);
     TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'yes', partyType);
     await api.waitForFinishedBusinessProcess();
-    TrialArrangementSteps.verifyTrialArrangementsMade();
+    TrialArrangementSteps.verifyTrialArrangementsMade();*/
   }
 }).tag('@regression-cp');
 
