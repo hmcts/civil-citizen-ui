@@ -83,6 +83,15 @@ class ResponseToDefence {
     I.waitForContent('Why they don’t owe the amount claimed?', 60);
     I.see('The defendant suggested this repayment plan:');
     I.see(`They’ve offered to pay you £${claimAmount} in instalments. This is the total amount you’ll be paid, including the claim fee and interest if applicable.`);
+    I.see(`They’ve offered to pay you £${claimAmount} by`);
+    I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
+    I.click(paths.buttons.continue);
+  }
+
+  async verifyDefResponseForPartAdmitPayBySetDate(claimAmount) {
+    I.waitForContent('Why they don’t owe the amount claimed?', 60);
+    I.see(`Sir John Doe admits they owe you £${claimAmount}. They don’t believe they owe the full amount claimed.`);
+
     I.click(paths.buttons.continue);
   }
 
@@ -211,7 +220,7 @@ class ResponseToDefence {
   async verifyHowTheyWantToPay(claimReference) {
     I.waitForContent('Test reason', 60);
     I.see('How they want to pay?', 'h1');
-    I.see('They’ve offered to pay you £500 by');
+    I.see('They’ve offered to pay you £456 by');
     I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
     I.see('Why they can’t pay the full amount now?');
     I.click(paths.links.see_their_financial_details);
@@ -225,6 +234,19 @@ class ResponseToDefence {
     I.see('£8,000');
     I.click(paths.buttons.continue);
   }
+
+  async verifyHowTheyWantToPayPayBySetDate(claimReference) {
+    I.waitForContent('Why they can’t pay the full amount now?', 60);
+    I.see('How they want to pay?', 'h1');
+    I.see('They’ve offered to pay you');
+    I.see('by');
+    I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
+    I.click(paths.links.see_their_financial_details);
+    I.see('Where are they living?');
+    I.see('Balance');
+    I.click(paths.buttons.continue);
+  }
+
 
   async verifyDoYouWantToSettleTheClaim() {
 
@@ -257,6 +279,16 @@ class ResponseToDefence {
     I.click(paths.options.yes);
     I.click(paths.buttons.save_and_continue);
   }
+
+  verifyRepaymentPlanForPartAdmitPayBySetDate() {
+    I.waitForContent('No - I\'ll suggest my own',60);
+    I.see('How they want to pay?', 'h1');
+    I.see('Sir John Doe has offered to pay you in full by');
+    I.see('Do you accept the repayment plan?');
+    I.see('Yes');
+    I.click(paths.options.yes);
+    I.click(paths.buttons.save_and_continue);
+  } 
 
   verifySignTheSettlementAgreementForFullAdmit() {
     I.waitForContent('I confirm I’ve read and accept the terms of the agreement.', 60);
@@ -316,6 +348,29 @@ class ResponseToDefence {
     I.see('Make sure this agreement includes everything you’ve agreed with Mrs Jane Doe before signing.');
     I.see('You won’t be able to change this later.');
     I.see('I confirm I’ve read and accept the terms of the agreement.');
+    I.uncheckOption(paths.options.confirm_and_sign);
+    I.checkOption(paths.options.confirm_and_sign);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+
+  verifySignTheSettlementAgreementForPartAdmit() {
+    I.waitForContent('I confirm I’ve read and accept the terms of the agreement.', 60);
+    I.see('Terms of the agreement', 'h1');
+    I.see('The agreement');
+    I.see('Sir John Doe will pay ');
+    I.see(', no later than');
+    I.see('Completion date');
+    I.see('This agreement settles the claim made by Miss Jane Doe against Sir John Doe.');
+    I.see('This includes all money owed in the claim, for example court fees, expenses or interest.');
+    I.see('Neither party can make any further claims relating to this case, other than to enforce it.');
+    I.see('Either party can view and download this agreement from their Money Claims account.');
+    I.see('Both parties should keep a copy of this agreement.');
+    I.see('If the agreement is broken','h2');
+    I.see('The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.');
+    I.see('Sign the agreement','h2');
+    I.see('Make sure this agreement includes everything you’ve agreed with Sir John Doe before signing.');
+    I.see('You won’t be able to change this later.');
     I.uncheckOption(paths.options.confirm_and_sign);
     I.checkOption(paths.options.confirm_and_sign);
     I.click(paths.buttons.save_and_continue);
