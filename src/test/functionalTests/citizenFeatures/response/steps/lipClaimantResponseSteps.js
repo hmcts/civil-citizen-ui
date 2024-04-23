@@ -11,8 +11,12 @@ const yourResponse = new YourResponse();
 const checkYourAnswers = new CheckYourAnswers();
 
 class ClaimantResponseSteps {
-  async RespondToClaimAsClaimant(claimRef) {
-    await claimantUpdate.respondToClaim(claimRef);
+  async RespondToClaimAsClaimant(claimRef, notification) {
+    await claimantUpdate.respondToClaim(claimRef, notification);
+  }
+
+  async StartUploadDocs(claimRef) {
+    await claimantUpdate.startUploadDocs(claimRef);
   }
 
   async verifyDefendantResponse(claimRef) {
