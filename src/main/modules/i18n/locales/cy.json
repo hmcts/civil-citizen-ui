@@ -1607,6 +1607,7 @@
           "PAY_BY_SET_DATE": "Bydd {{ defendant }} yn talu £{{ amount }} erbyn dim hwyrach na {{ paymentDate }}.",
           "REPAYMENT_PLAN": "Bydd {{ defendant }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ paymentAmount }} bob {{ frequency }}. Telir y rhandaliad cyntaf erbyn {{ firstRepaymentDate }}."
         },
+        "AGREEMENT_IMMEDIATELY_PLAN": "Bydd {{ defendant }} yn talu £{{ amount }} ar unwaith. Bydd {{ claimant }} yn derbyn yr arian erbyn {{ paymentDate }} fan bellaf. Bydd unrhyw sieciau neu drosglwyddiadau banc wedi clirio ac yng nghyfrif {{ defendant }}'s erbyn y dyddiad hwn.",
         "THIRD_PARAGRAPH": "Gall y naill barti neu’r llall weld a lawrlwytho'r cytundeb hwn o'u cyfrif Hawliadau am Arian. Dylai'r ddau barti gadw copi o'r cytundeb hwn.",
         "VALID_YES_NO_OPTION": "Dewiswch Ydw - rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb os ydych am dderbyn y cytundeb",
         "YES": "Ydw - Rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb."

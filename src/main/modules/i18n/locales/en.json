@@ -1607,6 +1607,7 @@
           "PAY_BY_SET_DATE": "{{ defendant }} will pay £{{ amount }} no later than {{ paymentDate }}.",
           "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ frequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
         },
+        "AGREEMENT_IMMEDIATELY_PLAN": "{{ defendant }} will pay £{{ amount }} immediately. {{ claimant }} will receive the money no later than {{ paymentDate }}. Any cheques or transfers will be clear in {{ defendant }}'s account by this date.",
         "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
         "VALID_YES_NO_OPTION": "Select Yes - I confirm I have read and accept the terms of the agreement if you want to accept the agreement",
         "YES": "Yes - I confirm I've read and accept the terms of the agreement."

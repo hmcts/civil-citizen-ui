@@ -92,6 +92,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.claimantResponse.mediation = toCUIClaimantMediation(ccdClaim.applicant1ClaimMediationSpecRequiredLip);
   claim.claimantResponse.courtDecision = ccdClaim.applicant1LiPResponse?.claimantCourtDecision;
   claim.claimantResponse.mediationCarm = toCUIMediationCarm(ccdClaim.applicant1LiPResponseCarm);
+  claim.claimantResponse.suggestedImmediatePaymentDeadLine = ccdClaim.applicant1LiPResponse?.applicant1SuggestedImmediatePaymentDeadLine;
   return claim;
 };
 
