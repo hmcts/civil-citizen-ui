@@ -1,11 +1,11 @@
 const config = require('../../../config');
-const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
+//const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 
 const claimType = 'SmallClaims';
-const partyType = 'LiPvLiP';
+//const partyType = 'LiPvLiP';
 let claimRef;
 
 Feature('Case progression journey - Claimant Lip Upload Evidence - Small Claims');
@@ -27,7 +27,7 @@ Before(async ({api}) => {
 
 Scenario('Citizen Claimant perform evidence upload',  async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    CaseProgressionSteps.initiateUploadEvidenceJourney(claimRef, claimType, partyType);
+    //CaseProgressionSteps.initiateUploadEvidenceJourney(claimRef, claimType, partyType);
   }
 }).tag('@regression-cp');
 
