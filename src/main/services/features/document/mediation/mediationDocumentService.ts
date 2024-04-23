@@ -4,7 +4,7 @@ import {
 } from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {Claim} from 'models/claim';
 
-export const orderByDate = (mediationDocuments: MediationUploadDocumentsCCD[]) =>
+export const orderByDocumentUploadedDate = (mediationDocuments: MediationUploadDocumentsCCD[]) =>
   mediationDocuments
     .sort((a, b) =>
       new Date(b.value.documentUploadedDatetime).getTime() - new Date(a.value.documentUploadedDatetime).getTime());
@@ -17,7 +17,7 @@ export const getClaimantMediationDocuments = (claim: Claim) => {
   if (claim.app1MediationNonAttendanceDocs) {
     mediationDocuments.push(...claim.app1MediationNonAttendanceDocs);
   }
-  return mediationDocuments.length > 0 ? orderByDate(mediationDocuments) : mediationDocuments;
+  return mediationDocuments.length > 0 ? orderByDocumentUploadedDate(mediationDocuments) : mediationDocuments;
 };
 
 export const getDefendantMediationDocuments = (claim: Claim) => {
@@ -28,7 +28,7 @@ export const getDefendantMediationDocuments = (claim: Claim) => {
   if (claim.res1MediationNonAttendanceDocs) {
     mediationDocuments.push(...claim.res1MediationNonAttendanceDocs);
   }
-  return mediationDocuments.length > 0 ? orderByDate(mediationDocuments) : mediationDocuments;
+  return mediationDocuments.length > 0 ? orderByDocumentUploadedDate(mediationDocuments) : mediationDocuments;
 };
 
 export const isMediationDocumentsReferred = (value: any): value is MediationDocumentsReferred => {

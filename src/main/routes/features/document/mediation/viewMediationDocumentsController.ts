@@ -15,7 +15,7 @@ import {
 } from 'common/mappers/documentViewMapper';
 import {
   getClaimantMediationDocuments, getDefendantMediationDocuments,
-} from 'services/features/dodument/mediation/mediationDocumentService';
+} from 'services/features/document/mediation/mediationDocumentService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);

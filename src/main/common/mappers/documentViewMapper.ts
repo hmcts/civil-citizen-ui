@@ -13,7 +13,7 @@ import {
 import {
   isMediationDocumentsReferred,
   isMediationNonAttendanceDocs,
-} from 'services/features/dodument/mediation/mediationDocumentService';
+} from 'services/features/document/mediation/mediationDocumentService';
 
 export const mapperMediationAgreementToDocumentView = (documentTitle: string, mediationAgreement: MediationAgreement, mediationSettlementAgreedAt: Date, claimId: string, lang: string) => {
 
