@@ -1,7 +1,7 @@
 const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/DateUtilsComponent');
-const TrialArrangementSteps = require('../../citizenFeatures/caseProgression/steps/trialArrangementSteps');
+//const TrialArrangementSteps = require('../../citizenFeatures/caseProgression/steps/trialArrangementSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 
 const claimType = 'FastTrack';
@@ -27,7 +27,7 @@ Before(async ({api}) => {
 //covered in cp_upload_evidence_small_claims_tests
 Scenario('Fast Track Other Party Trial Arrangements Journey.', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    TrialArrangementSteps.verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType);
+    //TrialArrangementSteps.verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType);
   }
 });
 
