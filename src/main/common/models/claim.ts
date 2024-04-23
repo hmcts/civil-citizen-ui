@@ -164,7 +164,10 @@ export class Claim {
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
-  
+
+  // Index signature to allow dynamic property access
+  [key: string]: any;
+
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
     claim.claimDetails = toCUIClaimDetails(ccdClaim);
