@@ -30,6 +30,7 @@ const defendantResponse = require('../fixtures/events/createDefendantResponse.js
 const claimantResponse = require('../fixtures/events/createClaimantResponseToDefence.js');
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
 const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
+const hwfPayloads = require('../fixtures/events/hwfPayloads.js');
 const {submitEvent} = require('./apiRequest');
 const idamHelper = require('./idamHelper');
 const createLipClaim = require('../fixtures/events/createLiPClaim.js');
@@ -160,6 +161,27 @@ module.exports = {
     respondent1deadline = {'respondent1ResponseDeadline':'2024-01-10T15:59:50'};
     await testingSupport.updateCaseData(caseId, respondent1deadline);
     console.log('ResponseDeadline updated');
+  },
+
+  submitHwfEventForUser: async (event, user = config.ctscAdmin) => {
+    console.log('This is inside submitHwfEventForUser() : ' + caseId);
+    let payload = {};
+    if (event === config.hwfEvents.updateHWFNumber) {
+      payload = hwfPayloads.updateHWFNumber();
+    } else if (event === config.hwfEvents.partRemission) {
+      payload = hwfPayloads.partRemission();
+    } else if (event === config.hwfEvents.fullRemission) {
+      payload = hwfPayloads.fullRemission();
+    } else if (event === config.hwfEvents.moreInfoHWF) {
+      payload = hwfPayloads.moreInfoHWF();
+    } else if (event === config.hwfEvents.invalidHWFRef) {
+      payload = hwfPayloads.invalidHWFRef();
+    }
+    await apiRequest.setupTokens(user);
+    eventName = payload['event'];
+    caseData = payload['caseData'];
+    await assertSubmittedSpecEvent();
+    console.log('End of submitHwfEventForUser()');
   },
 
   createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, partyType) => {
