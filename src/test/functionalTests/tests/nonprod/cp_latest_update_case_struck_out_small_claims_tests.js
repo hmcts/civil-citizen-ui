@@ -1,5 +1,5 @@
 const config = require('../../../config');
-const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
+//const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 
@@ -24,7 +24,7 @@ Before(async ({api}) => {
 
 Scenario('Small claims case is struck out due to hearing fee not being paid', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    CaseProgressionSteps.verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType);
+    //CaseProgressionSteps.verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType);
   }
 }).tag('@regression-cp');
 

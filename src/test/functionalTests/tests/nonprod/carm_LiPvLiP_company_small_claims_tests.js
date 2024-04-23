@@ -4,6 +4,7 @@ const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendant
 const ClaimantResponseSteps = require('../../citizenFeatures/response/steps/lipClaimantResponseSteps');
 const UploadDocSteps = require('../../citizenFeatures/response/steps/uploadDocSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
+const { claimantNotificationWithDefendantRejectMedidationWithRejectAll } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 const rejectAll = 'rejectAll';
@@ -67,7 +68,7 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
 Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef);
+    await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, claimantNotificationWithDefendantRejectMedidationWithRejectAll());
     await ClaimantResponseSteps.verifyDefendantResponse();
     await ClaimantResponseSteps.isDefendantPaid('No');
     await ResponseSteps.EnterTelephoneMediationDetails();

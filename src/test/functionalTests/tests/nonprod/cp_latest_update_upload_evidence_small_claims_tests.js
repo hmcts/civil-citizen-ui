@@ -1,5 +1,5 @@
 const config = require('../../../config');
-const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
+//const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 
@@ -24,6 +24,6 @@ Before(async ({api}) => {
 //Covered in cp_upload_evidence_small_claims_tests
 Scenario('Case progression journey - Small Claims - Verify latest Update page For Evidence Upload', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    CaseProgressionSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType);
+    //CaseProgressionSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType);
   }
 });
