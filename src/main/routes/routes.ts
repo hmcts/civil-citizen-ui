@@ -283,7 +283,7 @@ import claimantClaimSummaryController from 'routes/features/dashboard/claimantCl
 import bundlesController from 'routes/features/caseProgression/bundlesController';
 import viewMediationSettlementAgreementDocument from 'routes/features/document/mediation/viewSettlementAgreementDocumentController'
 import viewDefendantInformationController from './features/dashboard/viewDefendantInformationController';
-import viewClaimantInformationController from './features/dashboard/viewClaimantInformationController';
+import viewClaimantInformationController from './features/dashboard/viewClaimantInformationController'
   from 'routes/features/document/mediation/viewSettlementAgreementDocumentController';
 
 export default [
