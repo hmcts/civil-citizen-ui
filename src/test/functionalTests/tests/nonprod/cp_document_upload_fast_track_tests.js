@@ -1,5 +1,5 @@
 const config = require('../../../config');
-const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
+//const CaseProgressionSteps = require('../../citizenFeatures/caseProgression/steps/caseProgressionSteps');
 const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
@@ -33,7 +33,7 @@ Before(async ({api}) => {
 //covered in cp_upload_evidence_small_claims_tests
 Scenario('Case progression journey - Fast Track - Verify uploaded documents by LR in the Documents tab', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    CaseProgressionSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
+    //CaseProgressionSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
   }
 });
 
