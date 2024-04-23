@@ -2715,7 +2715,7 @@
         }
       },
       "WHEN_THEY_PAID_THIS_AMOUNT": "Pa bryd mae’n dweud ei fod wedi talu’r swm yma?",
-      "HOW_THEY_PAID": "Sut ddywedodd ei fod wedi talu?",
+      "HOW_THEY_PAID": "Sut mae’n dweud iddo dalu?",
       "THEY_DONT_OWE_CLAIM_AMOUNT": "Pam mae'n dweud nad oes arno’r swm yr oeddech chi'n ei hawlio?",
       "REJECT_CLAIM_PAID_FULL_STATEMENT": "Dywedodd {{ defendant }} ei fod wedi talu £{{ paidAmount}} ichi.",
       "REJECT_CLAIM_PAID_LESS_STATEMENT": "Dywedodd {{ defendant }} ei fod wedi talu £{{ paidAmount}} ichi. Dywedodd mai dyma'r cyfan sydd arno, nid y swm rydych chi'n ei hawlio."
