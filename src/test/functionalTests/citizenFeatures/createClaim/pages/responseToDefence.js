@@ -220,7 +220,7 @@ class ResponseToDefence {
   async verifyHowTheyWantToPay(claimReference) {
     I.waitForContent('Test reason', 60);
     I.see('How they want to pay?', 'h1');
-    I.see('They’ve offered to pay you £456 by');
+    I.see('They’ve offered to pay you £500 by');
     I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
     I.see('Why they can’t pay the full amount now?');
     I.click(paths.links.see_their_financial_details);
