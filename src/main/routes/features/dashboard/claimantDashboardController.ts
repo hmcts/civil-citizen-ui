@@ -20,7 +20,7 @@ import {
   getDebtRespiteUrl, 
   representYourselfUrl, 
   whatToExpectUrl,
-} from '../../../common/utils/externalURLs';
+} from 'common/utils/externalURLs';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();

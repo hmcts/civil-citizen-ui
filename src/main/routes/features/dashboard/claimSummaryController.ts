@@ -33,7 +33,7 @@ import {
   findOutMediationUrl, 
   representYourselfUrl, 
   whatToExpectUrl,
-} from '../../../common/utils/externalURLs';
+} from 'common/utils/externalURLs';
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
 

@@ -24,6 +24,7 @@
         </div>
       </div>
       <div class="govuk-grid-row">
+        {# Left side #}
         <div class="govuk-grid-column-two-thirds">
           <div class="border-small-top"></div>
             {% for notification in dashboardNotifications.items %}
@@ -63,6 +64,7 @@
             {% endfor %}
           </div>
 
+        {# TODO: Right side #}
         <div class="govuk-grid-column-one-third">
           <div class="border-small-top"></div>
           {% if iWantToLinks.length %}
