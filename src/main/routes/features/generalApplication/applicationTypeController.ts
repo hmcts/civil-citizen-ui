@@ -4,9 +4,8 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {saveApplicationType} from 'services/features/generalApplication/generalApplicationService';
-import { generateRedisKey } from 'modules/draft-store/draftStoreService';
-// import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { getClaimById } from 'modules/utilityService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
@@ -16,17 +15,9 @@ const backLinkUrl = 'test';
 applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    // const claimId = generateRedisKey(<AppRequest>req);
-
     const claim = await getClaimById(claimId, req, true);
-    // const generalApplication = new GeneralApplication(claim.generalApplication.applicationType);
-    // const generalApplication = await getGeneralApplication(redisKey);
     const applicationType = new ApplicationType(claim.generalApplication?.applicationType?.option)
-    console.log('GA',claim.generalApplication);
-    
     const form = new GenericForm(applicationType);
-    console.log('form: ', form);
-
     res.render(viewPath, {
       form,
       cancelUrl,
@@ -40,27 +31,21 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
 
 applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    // const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
-
     let applicationType = null;
-    console.log('body: ', req.body);
-
+    
     if (req.body.applicationType === ApplicationTypeOption.OTHER) {
       applicationType = new ApplicationType(req.body.applicationTypeOther);
     } else {
       applicationType = new ApplicationType(req.body.applicationType);
     }
     const form = new GenericForm(applicationType);
-
     await form.validate();
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl });
     } else {
-    console.log('save: ', applicationType);
-
       await saveApplicationType(redisKey, applicationType);
-      res.redirect('test');
+      res.redirect('test'); // TODO: add url
     }
   } catch (error) {
     next(error);
