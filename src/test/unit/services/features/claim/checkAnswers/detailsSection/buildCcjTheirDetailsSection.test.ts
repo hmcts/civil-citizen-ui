@@ -107,7 +107,7 @@ describe('Citizen Details Section', () => {
     const dob = new Date('2000-11-11T00:00:00.000Z');
     claim.respondent1.dateOfBirth = {
       date: dob,
-      year: 2000, month: 11, day: 11
+      year: 2000, month: 11, day: 11,
     };
     //When
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
