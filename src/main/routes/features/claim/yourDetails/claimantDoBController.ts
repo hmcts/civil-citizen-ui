@@ -8,6 +8,7 @@ import {
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
+import {getDOBforAgeFromCurrentTime} from 'common/utils/dateUtils';
 
 const claimantDoBController = Router();
 const claimantDoBViewPath = 'features/response/citizenDob/citizen-dob';
@@ -21,7 +22,7 @@ claimantDoBController.get(CLAIMANT_DOB_URL, (async (req: AppRequest, res: Respon
       const dateOfBirth = new Date(claim.applicant1.dateOfBirth as unknown as string);
       form = new GenericForm(new CitizenDate(dateOfBirth.getDate().toString(), (dateOfBirth.getMonth() + 1).toString(), dateOfBirth.getFullYear().toString()));
     }
-    res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true});
+    res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true, maxDateForAge18: getDOBforAgeFromCurrentTime(18)});
   } catch (error) {
     next(error);
   }
@@ -35,7 +36,7 @@ claimantDoBController.post(CLAIMANT_DOB_URL, (async (req: AppRequest | Request, 
     form.validateSync();
 
     if (form.hasErrors()) {
-      res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true});
+      res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true, maxDateForAge18: getDOBforAgeFromCurrentTime(18)});
     } else {
       const claim = await getCaseDataFromStore(claimId);
       claim.applicant1.dateOfBirth =new CitizenDate(day, month, year);
