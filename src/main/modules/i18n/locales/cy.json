@@ -2,7 +2,7 @@
   "COMMON": {
     "HOME": "Home",
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
-    "UPLOAD_FILE": "Upload file",
+    "UPLOAD_FILE": "Llwytho ffeil i fyny",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
     "DOCUMENTS_UPLOADED": "Dogfennau wedi’u llwytho",
     "CASE_REFERENCE_NUMBER": "Cyfeirnod eich achos",
@@ -3622,7 +3622,7 @@
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Rhowch o leiaf un cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Rhowch rif ar gyfer o leiaf un maes",
-    "VALID_ENTER_AT_LEAST_ONE_UPLOAD": "You must select at least one type of document",
+    "VALID_ENTER_AT_LEAST_ONE_UPLOAD": "Rhaid i chi ddewis o leiaf un math o ddogfen",
     "VALID_FOUR_DIGIT_YEAR": "Nodwch flwyddyn sy'n cynnwys 4 digid",
     "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
