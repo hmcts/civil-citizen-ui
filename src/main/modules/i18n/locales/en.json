@@ -475,6 +475,7 @@
     "AGREED_RESPONSE_DEADLINE": {
       "PAGE_TITLE": "Agree more time to respond",
       "SUB_TITLE": "Enter the respond date you have agreed with {{ claimantName }}'s legal representative",
+      "SUB_TITLE_R2": "Enter the respond date you have agreed with the other party or their legal representative",
       "TITLE": "You have already agreed to more time to respond"
     },
     "APPLY_HELP_WITH_FEES": {
@@ -617,10 +618,11 @@
       "CONTACT_NUMBER_NOT_OPTIONAL": "Contact number",
       "CONSIDER_CLAIMANT_DOCUMENT": "Are there any documents the claimant has that you want the court to consider?",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
-      "COURT_DECISION_SECTION":"Court Decision",
-      "COURT_DECISION_ROW":"Court decision",
-      "COURT_REJECTED_YOUR_REPAYMENT_PLAN":"The court rejected your repayment plan and calculated a more affordable one.",
-      "COURT_REPAYMENT_PLAN":"Court repayment plan",
+      "COURT_ACCEPTED_YOUR_REPAYMENT_PLAN": "The court accepted your repayment plan.",
+      "COURT_DECISION_SECTION": "Court Decision",
+      "COURT_DECISION_ROW": "Court decision",
+      "COURT_REJECTED_YOUR_REPAYMENT_PLAN": "The court rejected your repayment plan and calculated a more affordable one.",
+      "COURT_REPAYMENT_PLAN": "Court repayment plan",
       "COURT_ORDERS_TITLE": "Are you paying money as a result of any court orders?",
       "COURT_ORDERS_CLAIM_NUMBER": "Claim number",
       "COURT_ORDERS_AMOUNT_OWNED": "Amount you owe",
@@ -766,6 +768,7 @@
       "WITNESS": "Witness",
       "WILL_REPAY_IN_INSTALLMENTS": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
       "WILL_PAY_BY_PAYMENT_DATE": " {{ fullName }} will pay £{{ amount }}, no later than {{ paymentDate }}",
+      "WILL_PAY_IMMEDIATELY": "{{ fullName }} will pay immediately",
       "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details",
       "YOUR_RESPONSE": "Your response"
     },
@@ -1467,6 +1470,7 @@
         "CLAIM_ENDED": "You stopped this claim.",
         "CLAIM_SUBMIT_HWF": "We're checking your Help with Fees Application.",
         "CLAIMANT_REJECTED_PAYMENT_PLAN": "You need to send the defendant’s financial details to the court.",
+        "REJECTED_PAYMENT_PLAN_REQUEST_JUDGE_DECISION": "Awaiting judge’s review",
         "CLAIMANT_REQUESTED_CCJ": "You requested a County Court Judgment against {{defendantName}}.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
@@ -2312,6 +2316,7 @@
     },
     "NEW_RESPONSE_DEADLINE": {
       "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",
+      "CONTENT_R2": "We’ll email the new response date to you and the other party or their legal representative.",
       "PAGE_TITLE": "New response deadline",
       "TITLE": "4pm on {{ responseDeadline }}"
     },
@@ -2619,8 +2624,10 @@
       "PAGE_TITLE": "Request more time",
       "POST": "Or, you can post the completed form to:",
       "SELECT_SAVE_AND_CONTACT": "Select 'Save and continue' and contact {{ claimantName }}'s legal representative to request this.",
+      "SELECT_SAVE_AND_CONTACT_R2": "Select 'Save and continue' and contact the other party or their legal representative to request this.",
       "SELECT_SAVE_AND_CONTINUE": " and select 'Save and continue'.",
       "TELL_OTHER_PARTY": "You'll also need to tell the other party that you have applied to the court.",
+      "TELL_OTHER_PARTY_R2": "You’ll also need to inform the other party or their legal representative that you’ve applied to the court.",
       "TITLE": "Request more time to respond",
       "UP_TO_28_DAYS": "Up to 28 days"
     },
@@ -2640,12 +2647,14 @@
       "FORM": "Form N244 (opens in new tab)",
       "MORE_TIME": "Do you want to request more time to respond?",
       "OPTION_AGREED": "I have already agreed more time with {{ claimantName }}'s legal representative",
+      "OPTION_AGREED_R2": "I have already agreed more time with the other party or their legal representative",
       "OPTION_NO": "No, I do not want to request more time",
       "OPTION_REFUSED": "My request for more time has been refused",
       "OPTION_YES": "Yes, I want to request more time",
       "PAGE_TITLE": "Response deadline",
       "POST": "Or, you can post the completed form to:",
-      "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
+      "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading ",
+      "REQUEST_REFUSED_R2": "If your request to the other party or their legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
     },
     "REVIEW_DEFENDANTS_RESPONSE": {
       "AGED_11_TO_15": "How many are aged 11 to 15?",
@@ -3045,6 +3054,8 @@
       "PAGE_TITLE": "Requesting extra time",
       "REQUEST_EXTENSION_DEFAULT": "If you want to request an extension of up to 28 days, you'll need to ask the other party's legal representative directly.",
       "REQUEST_EXTENSION_MORE": "If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party's legal representative, you'll need to apply to the court.",
+      "REQUEST_EXTENSION_DEFAULT_R2": "If you want to request an extension of up to 28 days, you'll need to ask the other party or their legal representative directly.",
+      "REQUEST_EXTENSION_MORE_R2": "If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party or their legal representative, you'll need to apply to the court.",
       "UNABLE_TO_RESPOND_BEFORE_DEADLINE": "If you think that you will be unable to respond to a claim before this deadline, you can request more time."
     },
     "UNEMPLOYMENT": {
