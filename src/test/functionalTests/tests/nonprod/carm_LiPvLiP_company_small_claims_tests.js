@@ -4,7 +4,8 @@ const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendant
 const ClaimantResponseSteps = require('../../citizenFeatures/response/steps/lipClaimantResponseSteps');
 const UploadDocSteps = require('../../citizenFeatures/response/steps/uploadDocSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const { claimantNotificationWithDefendantRejectMedidationWithRejectAll } = require('../../specClaimHelpers/dashboardNotificationConstants');
+const { claimantNotificationWithDefendantRejectMedidationWithRejectAll, mediationAppointmentUnsuccessful} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {verifyNotificationTitleAndContent} = require("../../specClaimHelpers/e2e/dashboardHelper");
 
 const claimType = 'SmallClaims';
 const rejectAll = 'rejectAll';
@@ -15,8 +16,9 @@ let claimRef;
 let caseData;
 let claimNumber;
 let securityCode;
+let legacyCaseReference;
 
-Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Company');
+Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Company @123');
 
 Before(async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -34,6 +36,7 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = caseData.legacyCaseReference;
     securityCode = caseData.respondent1PinToPostLRspec.accessCode;
+    legacyCaseReference = await caseData.legacyCaseReference;
     console.log('claim number', claimNumber);
     console.log('Security code', securityCode);
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -133,5 +136,7 @@ Scenario('LiP defendant uploads mediation documents', async ({api}) => {
     await UploadDocSteps.CheckAndSendMediationDocs('Defendant');
     await UploadDocSteps.VerifyConfirmationPage();
     await api.waitForFinishedBusinessProcess();
+    const notification = mediationAppointmentUnsuccessful();
+    await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
   }
 }).tag('@regression-carm');
