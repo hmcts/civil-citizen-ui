@@ -9,7 +9,7 @@ import {ApplicationUpdate, EventDto} from "models/generalApplication/events/even
 import {Application} from "models/generalApplication/application";
 import {AssertionError} from "assert";
 import {ApplicationResponse} from "models/generalApplication/applicationResponse";
-import {translateCCDCaseDataToCUIModel} from "services/translation/convertToCUI/cuiTranslation";
+import {translateCCDCaseDataToCUIModel} from "services/translation/convertToCUI/generalApplication/cuiTranslation";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('generalApplicationClient');
