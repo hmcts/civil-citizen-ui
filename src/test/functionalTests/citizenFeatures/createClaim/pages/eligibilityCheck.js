@@ -240,6 +240,32 @@ class EligibilityCheck {
     await I.click('Save and continue');
   }
 
+  async eligibilityForHWF(){
+    await I.seeInCurrentUrl('/eligibility/help-with-fees');
+    await I.waitForContent('Do you need help paying your court fee?');
+    await I.see('You could get financial help with court fees if you have little or no savings, are on a low income or get certain benefits.');
+    await I.click(fields.hwfReferenceYes);
+    await I.click('Save and continue');
+  }
+
+  async eligibilityInfoAboutHWF(){
+    await I.seeInCurrentUrl('/eligibility/information-about-help-with-fees');
+    await I.waitForContent('Some useful information about Help with Fees');
+    await I.see('Making an application for Help with Fees does not guarantee that you will get your fee covered.');
+    await I.see('You may still have to pay some or all of your court fee to get the claim issued (for the court system to officially start the claim and send details to the other side).');
+    await I.see('When you apply for Help with Fees, you should receive an update from us within 5 working days, giving you the result of your application.');
+    await I.see('If you want to apply for Help with Fees, you will complete an online form in a new window.');
+    await I.see('This will give you a reference number. Please note the number and keep it safe, as you will need it later in the claim process.');
+    await I.see('(NB: if you have more than one claim going on, each claim must have a separate Help with Fees application and reference number).');
+    await I.see('You can send in your claim as soon as you have the Help with Fees reference number, but the claim will not be issued until the Help with Fees application has been processed by the court.');
+    await I.see('This is so that you will know what fees are covered and what you still have to pay. If you choose not to pay, the claim will not be issued.');
+    await I.see('The claim will stop here unless you change your mind within 95 days.');
+    await I.see('You may be asked by the court to email evidence in support of your application before your claim is issued.');
+    await I.see('Do you wish to continue to make a Help with Fees Application?');
+    await I.click(fields.hwfReferenceYes);
+    await I.click('Save and continue');
+  }
+
   async eligibilityApplyForHWF(){
     await I.seeInCurrentUrl('/eligibility/apply-for-help-with-fees');
     await I.waitForContent('Apply For Help With Fees');
@@ -273,7 +299,6 @@ class EligibilityCheck {
     await I.see('You can use this service');
     await I.see('Based on your answers you can make a money claim using this service.');
     await I.see('Remember that you will not know about the fee until we have processed your Help with Fees application. Your claim will only be issued after Help with Fees is confirmed, or the fee is paid.');
-    await I.amOnPage('/eligibility/help-with-fees-reference');
   }
 
   async eligibilityHWFReference() {
