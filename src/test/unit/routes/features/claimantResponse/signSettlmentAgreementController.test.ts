@@ -71,13 +71,13 @@ describe('Sign Settlement Agreement', () => {
       const civilClaimResponseMock = {
         'case_data': {
           'respondent1': {
-            'partyDetails': { 'firstName': 'John', 'lastName': 'White',},
+            'partyDetails': { 'firstName': 'John', 'lastName': 'White' },
             'responseType': ResponseType.PART_ADMISSION,
             'type': PartyType.INDIVIDUAL,
           },
           'applicant1': {
-            'partyDetails': { 'firstName': 'James', 'lastName': 'White', },
-            'type': PartyType.INDIVIDUAL
+            'partyDetails': { 'firstName': 'James', 'lastName': 'White' },
+            'type': PartyType.INDIVIDUAL,
           },
           'claimantResponse': {
             'courtProposedPlan': {
@@ -90,8 +90,8 @@ describe('Sign Settlement Agreement', () => {
             'suggestedImmediatePaymentDeadLine': new Date(Date.now()),
           },
           'partialAdmission': {
-            'alreadyPaid': { 'option': 'yes', },
-            'howMuchDoYouOwe': { 'amount': 200, 'totalAmount': 1000, },
+            'alreadyPaid': { 'option': 'yes' },
+            'howMuchDoYouOwe': { 'amount': 200, 'totalAmount': 1000 },
             'paymentIntention': {
               'repaymentPlan': {
                 'paymentAmount': 50,

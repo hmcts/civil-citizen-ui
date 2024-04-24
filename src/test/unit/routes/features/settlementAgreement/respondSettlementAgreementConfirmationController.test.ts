@@ -30,7 +30,6 @@ describe('Claimant response confirmation controller', () => {
     mockClaim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
     return mockClaim;
   }
-
   describe('on GET', () => {
     it('should return accept settlement agreement confirmation', async () => {
       // Given
@@ -53,7 +52,7 @@ describe('Claimant response confirmation controller', () => {
       mockClaim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
       mockClaim.claimantResponse.suggestedPaymentIntention.paymentOption =
           PaymentOptionType.IMMEDIATELY;
-      mockClaim.claimantResponse.suggestedImmediatePaymentDeadLine = new Date();;
+      mockClaim.claimantResponse.suggestedImmediatePaymentDeadLine = new Date();
       mockClaim.defendantSignedSettlementAgreement = YesNo.YES;
 
       mockGetCaseData.mockImplementation(() => mockClaim);
