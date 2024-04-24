@@ -70,9 +70,8 @@ Scenario('Create Claim -  Company vs Individual - small claims - with standard i
     await steps.verifyAndPayClaimFee(claimAmount, claimFee);
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
-      const notification = waitForDefendantToRespond(caseData.respondent1.partyName, await caseData.respondent1ResponseDeadline);
+      const notification = await waitForDefendantToRespond(caseData.respondent1.partyName, await caseData.respondent1ResponseDeadline);
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
-      await I.click(notification.nextSteps);
     }
   }
 });
