@@ -7,6 +7,8 @@ import {replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpol
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
+import { t } from 'i18next';
+import { feesHelpUrl, findCourtTribunalUrl, findLegalAdviceUrl, findOutMediationUrl, representYourselfUrl, whatToExpectUrl } from 'common/utils/externalURLs';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -46,3 +48,18 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
     throw new Error('Notifications not found...');
   }
 };
+
+export const getHelpSupportTitle = (lng: string) => {
+  return t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT', { lng });
+}
+
+export const getHelpSupportLinks = (lng: string) => {
+  return [
+    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES', { lng }), url: feesHelpUrl },
+    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_MEDIATION', { lng }), url: findOutMediationUrl },
+    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.WHAT_EXPECT_HEARING', { lng }), url: whatToExpectUrl },
+    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF', { lng }), url: representYourselfUrl },
+    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE', { lng }), url: findLegalAdviceUrl },
+    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT', { lng }), url: findCourtTribunalUrl },
+  ];
+}

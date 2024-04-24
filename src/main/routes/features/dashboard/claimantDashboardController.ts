@@ -1,6 +1,6 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {DASHBOARD_CLAIMANT_URL, DATE_PAID_URL, OLD_DASHBOARD_CLAIMANT_URL} from '../../urls';
-import {getDashboardForm, getNotifications} from 'services/dashboard/dashboardService';
+import {getDashboardForm, getHelpSupportLinks, getHelpSupportTitle, getNotifications} from 'services/dashboard/dashboardService';
 import {Claim} from 'models/claim';
 import {CaseState} from 'common/form/models/claimDetails';
 import {getClaimById} from 'modules/utilityService';
@@ -11,16 +11,7 @@ import {isDashboardServiceEnabled} from '../../../app/auth/launchdarkly/launchDa
 import config from 'config';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import {t} from 'i18next';
-import { 
-  applicationNoticeUrl, 
-  feesHelpUrl, 
-  findCourtTribunalUrl, 
-  findLegalAdviceUrl, 
-  findOutMediationUrl, 
-  getDebtRespiteUrl, 
-  representYourselfUrl, 
-  whatToExpectUrl,
-} from 'common/utils/externalURLs';
+import {applicationNoticeUrl, getDebtRespiteUrl} from 'common/utils/externalURLs';
 import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
@@ -100,15 +91,8 @@ const getSupportLinks = (claim: Claim, claimId: string, lng: string) => {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }), url: getDebtRespiteUrl });
   }
 
-  const helpSupportTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT', { lng });
-  const helpSupportLinks = [
-    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES', { lng }), url: feesHelpUrl },
-    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_MEDIATION', { lng }), url: findOutMediationUrl },
-    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.WHAT_EXPECT_HEARING', { lng }), url: whatToExpectUrl },
-    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF', { lng }), url: representYourselfUrl },
-    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE', { lng }), url: findLegalAdviceUrl },
-    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT', { lng }), url: findCourtTribunalUrl },
-  ];
+  const helpSupportTitle = getHelpSupportTitle(lng);
+  const helpSupportLinks = getHelpSupportLinks(lng);
   
   return [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] as const;
 };
