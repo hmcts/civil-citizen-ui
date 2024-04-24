@@ -4,8 +4,8 @@
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Upload file",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
-    "DOCUMENTS_UPLOADED": "Documents uploaded",
-    "CASE_REFERENCE_NUMBER": "Your case reference number",
+    "DOCUMENTS_UPLOADED": "Dogfennau wedi’u llwytho",
+    "CASE_REFERENCE_NUMBER": "Cyfeirnod eich achos",
     "CONTACT_NAME": "Enw cyswllt",
     "CONTACT_NUMBER": "Rhif cyswllt",
     "CONTACT_EMAIL": "Cyfeiriad e-bost",
@@ -382,16 +382,16 @@
     "MEDIATION": {
       "CONFIRMATION_PAGE": {
         "PAGE_TITLE": "Mediation upload documents confirmation",
-        "TEXT_BEFORE": "You can",
-        "LINK_TEXT": "upload more documents",
-        "TEXT_AFTER": "now or come back later. You can view your documents and the other party's documents"
+        "TEXT_BEFORE": "Gallwch",
+        "LINK_TEXT": "lwytho mwy o ddogfennau",
+        "TEXT_AFTER": "nawr neu ddod yn ôl yn ddiweddarach. Gallwch weld eich dogfennau a dogfennau'r parti arall."
       },
       "UPLOAD_DOCUMENTS": {
         "SECTION_TITLE": "Datganiad cyfryngu di-bresenoldeb",
 
         "TITLE": {
           "YOUR_STATEMENT": "Eich datganiad",
-          "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement"
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Dogfennau y cyfeirir atynt yn y datganiad"
         },
         "YOUR_NAME": {
           "YOUR_STATEMENT": "Eich enw",
@@ -399,7 +399,7 @@
         },
         "DATE_INPUT": {
           "YOUR_STATEMENT" : "Y dyddiad yr ysgrifenwyd y datganiad",
-          "DOCUMENTS_REFERRED_TO_IN_STATEMENT" : "Date document was produced"
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT" : "Y dyddiad y cynhyrchwyd y ddogfen"
         }
       },
       "TYPE_OF_DOCUMENTS": {
@@ -407,7 +407,7 @@
         "CHECKBOX_HINT": "Select all that apply",
         "YOUR_STATEMENT": "Eich datganiad",
         "YOUR_STATEMENT_HINT": "A written statement explaining why you did not attend your mediation appointment",
-        "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement",
+        "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Dogfennau y cyfeirir atynt yn y datganiad",
         "DOCUMENTS_REFERRED_TO_IN_STATEMENT_HINT": "Documents you refer to in your statement - for example emails, photographs or doctor’s notes"
       },
       "START_PAGE": {
@@ -1437,7 +1437,7 @@
         "TITLE": "Hearings",
         "UPLOAD_DOCUMENTS": "Upload hearing documents",
         "VIEW_BUNDLE": "View the bundle",
-        "VIEW_DOCUMENTS": "View documents",
+        "VIEW_DOCUMENTS": "Gweld y dogfennau",
         "VIEW_HEARINGS": "View hearings"
       },
       "MAKE_A_NEW_CLAIM": "Gwneud hawliad newydd am arian",
@@ -2251,9 +2251,9 @@
       "YOUR_STATEMENT_HINT": "Datganiad ysgrifenedig o'r hyn yr ydych am ei ddweud wrth y llys"
     },
     "EVIDENCE_DOCUMENTS_UPLOADED": {
-      "TITLE": "Documents uploaded",
-      "CASE_REFERENCE_NUMBER": "Your case reference number",
-      "VIEW_DOCUMENTS": "View documents",
+      "TITLE": "Dogfennau wedi’u llwytho",
+      "CASE_REFERENCE_NUMBER": "Cyfeirnod eich achos",
+      "VIEW_DOCUMENTS": "Gweld y dogfennau",
       "UPLOAD_MORE_DOCUMENTS_START": "You can",
       "UPLOAD_MORE_DOCUMENTS_MID": "upload more documents",
       "UPLOAD_MORE_DOCUMENTS_END": "now or come back later. You can view your documents and the other party's documents."
@@ -3090,7 +3090,7 @@
       "WITNESS": {
         "DATE_STATEMENT": "Y dyddiad yr ysgrifenwyd y datganiad",
         "DATE_SUMMARY": "Date summary was written",
-        "DOCUMENT": "Documents referred to in the statement",
+        "DOCUMENT": "Dogfennau y cyfeirir atynt yn y datganiad",
         "NOTICE": "Notice of intention to rely on hearsay evidence",
         "STATEMENT": "Witness statement",
         "SUMMARY": "Witness summary",
