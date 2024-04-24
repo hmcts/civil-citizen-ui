@@ -37,6 +37,7 @@ services:
   civilMoneyClaims:
     telephone: CIVILMONEYCLAIMS_TELEPHONE
     courtEmailId: CIVILMONEYCLAIMS_COURT_EMAIL_ID
+  generalApplication: CIVIL_GENERAL_APPLICATIONS_URL
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY

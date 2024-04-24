@@ -35,6 +35,7 @@ module.exports = {
     idamApi: process.env.IDAM_API_URL || 'https://idam-api.demo.platform.hmcts.net',
     civilService: process.env.CIVIL_SERVICE_URL || 'http://civil-service-demo.service.core-compute-demo.internal',
     waTaskMgmtApi: process.env.WA_TASK_MGMT_URL || 'http://wa-task-management-api-demo.service.core-compute-demo.internal'},
+    generalApplication: process.env.CIVIL_GENERAL_APPLICATIONS_URL || 'http://civil-general-applications-demo.service.core-compute-demo.internal',
   s2s: {
     microservice: 'civil_service',
     secret: process.env.S2S_SECRET || 'AABBCCDDEEFFGGHH',

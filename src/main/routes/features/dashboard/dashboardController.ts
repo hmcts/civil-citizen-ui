@@ -8,9 +8,13 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {DraftClaimData, getDraftClaimData} from 'services/dashboard/draftClaimService';
 import { buildPagination } from 'services/features/dashboard/claimPaginationService';
 import { DashboardClaimantResponse, DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
+import {GeneralApplicationClient} from "client/generalApplicationClient";
+import {Application} from "models/generalApplication/application";
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+const generalApplicationApiBaseUrl = config.get<string>('services.generalApplication.url');
+const generalApplicationClient: GeneralApplicationClient = new GeneralApplicationClient(generalApplicationApiBaseUrl);
 
 function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: DashboardClaimantItem,
   claimsAsDefendant: DashboardDefendantItem[], responseDraftSaved: boolean, draftClaimUrl: string,
@@ -45,6 +49,9 @@ dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
     const responseDraftSaved = false;
     const paginationArgumentClaimant = buildPagination(claimsAsClaimant.totalPages, req.query?.claimantPage as string, lang, 'claimantPage', defendantPage);
     const draftClaimUrl = draftClaimData?.claimCreationUrl;
+
+    const application: Application = await generalApplicationClient.retrieveApplicationDetails('1712145230390015', appRequest);
+    console.log(application);
     renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang);
   }catch(error){
     next(error);
