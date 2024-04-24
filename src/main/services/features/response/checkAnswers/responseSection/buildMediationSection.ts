@@ -44,7 +44,7 @@ export const buildMediationSection = (claim: Claim, claimId: string, lang: strin
       lng: getLng(lang),
       partyContactPerson: contactPerson,
     }),
-    t(`COMMON.VARIATION_2.${isContactPersonCorrectOption.toUpperCase()}`, {lng: getLng(lang)}),
+    t(`COMMON.VARIATION.${isContactPersonCorrectOption.toUpperCase()}`, {lng: getLng(lang)}),
     constructResponseUrlWithIdParams(claimId, MEDIATION_CONTACT_PERSON_CONFIRMATION_URL), changeLabel(lang)));
 
     if (isContactPersonCorrectOption === YesNo.NO) {
@@ -60,7 +60,7 @@ export const buildMediationSection = (claim: Claim, claimId: string, lang: strin
     lng: getLng(lang),
     partyPhone: isClaimantResponse ? claim.applicant1.partyPhone.phone : claim.respondent1.partyPhone.phone,
   }),
-  t(`COMMON.VARIATION_2.${isPhoneCorrectOption.toUpperCase()}`, {lng: getLng(lang)}),
+  t(`COMMON.VARIATION.${isPhoneCorrectOption.toUpperCase()}`, {lng: getLng(lang)}),
   constructResponseUrlWithIdParams(claimId, MEDIATION_PHONE_CONFIRMATION_URL), changeLabel(lang)));
   if (isPhoneCorrectOption === YesNo.NO) {
     mediationSection.summaryList.rows.push(summaryRow(t('COMMON.CONTACT_NUMBER', {lng: getLng(lang)}),
@@ -73,7 +73,7 @@ export const buildMediationSection = (claim: Claim, claimId: string, lang: strin
     lng: getLng(lang),
     partyEmail: isClaimantResponse ? claim.applicant1.emailAddress.emailAddress : claim.respondent1.emailAddress.emailAddress,
   }),
-  t(`COMMON.VARIATION_2.${isMediationEmailCorrectOption.toUpperCase()}`, {lng: getLng(lang)}),
+  t(`COMMON.VARIATION.${isMediationEmailCorrectOption.toUpperCase()}`, {lng: getLng(lang)}),
   constructResponseUrlWithIdParams(claimId, MEDIATION_EMAIL_CONFIRMATION_URL), changeLabel(lang)));
   if (isMediationEmailCorrectOption === YesNo.NO) {
     mediationSection.summaryList.rows.push(summaryRow(t('COMMON.CONTACT_EMAIL', {lng: getLng(lang)}),
@@ -83,12 +83,12 @@ export const buildMediationSection = (claim: Claim, claimId: string, lang: strin
   //UNAVAILABILITY SECTION
   const hasUnavailabilityOption = isClaimantResponse ? claim.claimantResponse.mediationCarm.hasUnavailabilityNextThreeMonths.option : claim.mediationCarm.hasUnavailabilityNextThreeMonths.option;
   mediationSection.summaryList.rows.push(summaryRow(t('PAGES.UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION.PAGE_TEXT', {lng: getLng(lang)}),
-    t(`COMMON.VARIATION_2.${hasUnavailabilityOption.toUpperCase()}`, {lng: getLng(lang)}),
+    t(`COMMON.VARIATION.${hasUnavailabilityOption.toUpperCase()}`, {lng: getLng(lang)}),
     constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL), changeLabel(lang)));
   if (hasUnavailabilityOption === YesNo.YES) {
     const hasUnavailableDatesMediation = isClaimantResponse ? getListOfUnavailableDate(claim.claimantResponse.mediationCarm.unavailableDatesForMediation, getLng(lang)) : getListOfUnavailableDate(claim.mediationCarm.unavailableDatesForMediation, getLng(lang));
     mediationSection.summaryList.rows.push(summaryRow(
-      t('COMMON.UNAVAILABLE_DATES', {lang}),
+      t('COMMON.UNAVAILABLE_DATES', {lng: getLng(lang)}),
       ` ${[...hasUnavailableDatesMediation].join('<br>')}`,
       constructResponseUrlWithIdParams(claimId, MEDIATION_UNAVAILABLE_SELECT_DATES_URL),
       changeLabel(lang),
