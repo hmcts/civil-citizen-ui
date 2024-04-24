@@ -88,7 +88,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
     paymentAmount: ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec,
     firstRepaymentDate: translateCCDPaymentDateToCUIccd(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec),
     repaymentFrequency: translateCCDPaymentFrequencyToCUI(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec),
-  }
+  };
   claim.claimantResponse.courtProposedPlan = new CourtProposedPlan();
   claim.claimantResponse.courtProposedDate = new CourtProposedDate();
   claim.claimantResponse.courtProposedPlan.decision = CourtProposedPlanOptions[ccdClaim.applicant1LiPResponse?.claimantResponseOnCourtDecision as CourtProposedPlanOptions];
