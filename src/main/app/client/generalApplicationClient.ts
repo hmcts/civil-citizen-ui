@@ -1,5 +1,5 @@
 
-import Axios, {AxiosInstance} from "axios/index";
+import Axios, {AxiosInstance} from 'axios';
 import {AppRequest} from "models/AppRequest";
 import {
     CIVIL_GENERAL_APPLICATIONS_SUBMIT_EVENT
