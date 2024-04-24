@@ -30,6 +30,10 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng}),
       formatDateToFullDate(claim.claimantResponse.ccjRequest.defendantDOB.dob.dateOfBirth)));
   }
+  if (claim.respondent1?.dateOfBirth) {
+    yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng}),
+      formatDateToFullDate(claim.respondent1?.dateOfBirth?.date)));
+  }
   if (claim.respondent1?.emailAddress?.emailAddress) {
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL', {lng}),
       claim.respondent1.emailAddress.emailAddress));
