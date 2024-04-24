@@ -11,6 +11,8 @@ import {buildYourResponseSection} from 'services/features/claimantResponse/respo
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import { TransactionSchedule } from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import { RejectAllOfClaim } from 'common/form/models/rejectAllOfClaim';
+import { HowMuchHaveYouPaid } from 'common/form/models/admission/howMuchHaveYouPaid';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -66,6 +68,10 @@ describe('Your response Section', () => {
     claim.respondent1 = new Party();
     claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
     claim.claimantResponse = new ClaimantResponse();
+    claim.rejectAllOfClaim = new RejectAllOfClaim();
+    claim.rejectAllOfClaim.howMuchHaveYouPaid = new HowMuchHaveYouPaid();
+    claim.rejectAllOfClaim.howMuchHaveYouPaid.amount = 5;
+    claim.totalClaimAmount = 10;
 
     claim.claimantResponse.hasDefendantPaidYou = new GenericYesNo(YesNo.YES);
     claim.claimantResponse.hasPartPaymentBeenAccepted = new GenericYesNo(YesNo.NO);
@@ -129,6 +135,10 @@ describe('Your response Section for settle the claim', () => {
     claim = new Claim();
     claim.claimantResponse = new ClaimantResponse();
     claim.respondent1 = new Party();
+    claim.rejectAllOfClaim = new RejectAllOfClaim();
+    claim.rejectAllOfClaim.howMuchHaveYouPaid = new HowMuchHaveYouPaid();
+    claim.rejectAllOfClaim.howMuchHaveYouPaid.amount = 10;
+    claim.totalClaimAmount = 10;
   });
 
   it('should return Settle The Claim Section when it is Full Defence and Paid with Yes', async () => {
