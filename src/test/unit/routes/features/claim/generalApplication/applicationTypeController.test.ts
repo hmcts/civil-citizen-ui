@@ -5,20 +5,12 @@ import request from 'supertest';
 import {APPLICATION_TYPE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {
-  // getClaimDetails,
-  saveClaimDetails,
-} from 'services/features/claim/details/claimDetailsService';
-// import {Claim} from 'models/claim';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/services/features/claim/details/claimDetailsService');
-
-// const mockClaimDetails = getClaimDetails as jest.Mock;
-const mockSaveClaimDetails = saveClaimDetails as jest.Mock;
 
 describe('General Application - Application type', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
