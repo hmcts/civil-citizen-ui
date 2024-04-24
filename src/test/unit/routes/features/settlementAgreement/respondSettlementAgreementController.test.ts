@@ -8,7 +8,6 @@ import {
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION,
 } from 'routes/urls';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ResponseType} from 'common/form/models/responseType';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
