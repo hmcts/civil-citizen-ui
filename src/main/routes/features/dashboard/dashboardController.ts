@@ -18,7 +18,7 @@ const generalApplicationClient: GeneralApplicationClient = new GeneralApplicatio
 
 function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: DashboardClaimantItem,
   claimsAsDefendant: DashboardDefendantItem[], responseDraftSaved: boolean, draftClaimUrl: string,
-  paginationArgumentClaimant: object, paginationArgumentDefendant: object, lang: string ): void {
+  paginationArgumentClaimant: object, paginationArgumentDefendant: object, lang: string, application: Application ): void {
 
   res.render('features/dashboard/dashboard', {
     claimsAsClaimant,
@@ -29,6 +29,7 @@ function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], cl
     paginationArgumentDefendant,
     lang,
     newOcmcClaimUrl: draftClaimUrl,
+    application
   });
 }
 
@@ -52,7 +53,7 @@ dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
 
     const application: Application = await generalApplicationClient.retrieveApplicationDetails('1712145230390015', appRequest);
     console.log(application);
-    renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang);
+    renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang, application);
   }catch(error){
     next(error);
   }
