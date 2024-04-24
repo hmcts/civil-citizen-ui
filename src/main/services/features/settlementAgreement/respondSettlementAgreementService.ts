@@ -67,7 +67,7 @@ function getTextForPayByInstallments(claim: Claim, lang: string, isClaimantPlanA
 function getTextForPayImmediately(claim: Claim, lang: string, req: Request){
   const date = claim.claimantResponse.suggestedImmediatePaymentDeadLine;
   return {
-    agreementText: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.AGREEMENT_IMMEDIATELY_PLAN', {
+    agreementText: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.THE_AGREEMENT.PAY_IMMEDIATELY_PLAN', {
       lng: lang,
       defendant: claim.getDefendantFullName(),
       amount: getAmount(claim),

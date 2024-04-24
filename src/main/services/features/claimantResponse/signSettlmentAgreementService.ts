@@ -22,7 +22,7 @@ export const getPaymentText = (claim: Claim, req: Request): object => {
     } else if (claim.getSuggestedPaymentIntentionOptionFromClaimant() == PaymentOptionType.INSTALMENTS) {
       data = getTextForPayByInstallments(claim, lang, true);
     } else if (claim.getSuggestedPaymentIntentionOptionFromClaimant() == PaymentOptionType.IMMEDIATELY) {
-      data = getTextForImmediatePayment(claim, lang);
+      data = getTextForPayByImmediately(claim, lang);
     }
   } else {
     if (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate()) {
@@ -66,17 +66,17 @@ function getTextForPayByInstallments(claim: Claim, lang: string, isClaimantPlanA
   };
 }
 
-function getTextForImmediatePayment(claim: Claim, lang: string){
+function getTextForPayByImmediately(claim: Claim, lang: string){
   const date = claim.claimantResponse.suggestedImmediatePaymentDeadLine as unknown as PaymentDate;
   const paymentDate = date as unknown as Date;
   return {
-    paymentText: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.AGREEMENT_IMMEDIATELY_PLAN', {
+    paymentText: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THE_AGREEMENT.IMMEDIATE_PLAN', {
       lng: lang,
-      defendant: claim.getDefendantFullName(),
+      fullName: claim.getDefendantFullName(),
       amount: getAmount(claim),
       claimant: claim.getClaimantFullName(),
       paymentDate: formatDateToFullDate(paymentDate, lang),
     }),
-    completionDate: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', { finalRepaymentDate: formatDateToFullDate(paymentDate, lang) }),
+    completionDate: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', { finalRepaymentDate: formatDateToFullDate(paymentDate, lang) }),
   };
 }
