@@ -1,7 +1,7 @@
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {t} from 'i18next';
-import {getLng} from "common/utils/languageToggleUtils";
+import {getLng} from 'common/utils/languageToggleUtils';
 
 export class PaymentSuccessfulSectionBuilder extends PageSectionBuilder {
 
