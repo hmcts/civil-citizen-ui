@@ -19,7 +19,6 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CCJ_EXTENDED_PAID_AMOUNT_URL, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL} from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getJudgmentAmountSummary} from '../ccj/judgmentAmountSummaryService';
-import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 
@@ -58,7 +57,7 @@ export const buildSettlementAgreementSection = (claim: Claim, claimId: string, l
   const isSignSettlement = claim.claimantResponse?.isSignASettlementAgreement;
   const isSignSettlementForPayBySetDate = isSignSettlement && (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate());
   const isSignSettlementForPayByInstallments = isSignSettlement && (claim.isPAPaymentOptionInstallments() || claim.isFAPaymentOptionInstallments());
-  if (claim.hasCourtAcceptedClaimantsPlan()) {
+  if (claim.hasCourtAcceptedClaimantsPlan() && isSignSettlement) {
     if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.BY_SET_DATE) {
       return buildSummaryForPayBySetDate(claim, claimId, lng,true);
     } else if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.INSTALMENTS) {
@@ -79,11 +78,13 @@ export const buildJudgmentRequestSection = (claim: Claim, claimId: string, lng: 
   const ccjPaidAmountHref = constructResponseUrlWithIdParams(claimId, CCJ_EXTENDED_PAID_AMOUNT_URL);
   const paymentOption = claim.getHasDefendantPaid();
 
+  const paymentOptionTranslationKey = paymentOption ? `COMMON.VARIATION.${paymentOption.toUpperCase()}` : '';
+  const paymentOptionText = paymentOptionTranslationKey ? t(paymentOptionTranslationKey, {lng}) : '';
   const judgmentRequestSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST', {lng}),
     summaryRows: [
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME', {lng}),
-        paymentOption === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO, ccjPaidAmountHref, changeLabel(lng)),
+        paymentOptionText?.charAt(0).toUpperCase() + paymentOptionText?.substring(1), ccjPaidAmountHref, changeLabel(lng)),
     ],
   });
   if (claim.getDefendantPaidAmount()) {
