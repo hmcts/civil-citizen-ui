@@ -29,8 +29,7 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
   if (claim.claimantResponse?.ccjRequest?.defendantDOB?.option === YesNo.YES) {
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng}),
       formatDateToFullDate(claim.claimantResponse.ccjRequest.defendantDOB.dob.dateOfBirth)));
-  }
-  if (claim.respondent1?.dateOfBirth) {
+  } else if (!claim.isBusiness() && claim.respondent1?.dateOfBirth?.date) {
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng}),
       formatDateToFullDate(claim.respondent1?.dateOfBirth?.date)));
   }

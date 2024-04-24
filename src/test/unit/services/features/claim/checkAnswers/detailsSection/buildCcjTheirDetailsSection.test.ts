@@ -8,6 +8,7 @@ import {ClaimantResponse} from 'models/claimantResponse';
 import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
 import {YesNo} from 'form/models/yesNo';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {PartyType} from 'models/partyType';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -30,12 +31,13 @@ describe('Citizen Details Section', () => {
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
     //Then
     expect(summarySections.sections[0].title).toBe('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT');
-    expect(summarySections.sections[0].summaryList.rows.length).toBe(3);
+    expect(summarySections.sections[0].summaryList.rows.length).toBe(4);
     expect(summarySections.sections[0].summaryList.rows[0].value.html).toBe(FULL_NAME);
     expect(summarySections.sections[0].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.FULL_NAME');
     expect(summarySections.sections[0].summaryList.rows[1].value.html).toBe(ADDRESS);
-    expect(summarySections.sections[0].summaryList.rows[2].value.html).toBe(EMAIL_ADDRESS);
-    expect(summarySections.sections[0].summaryList.rows[2].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMAIL');
+    expect(summarySections.sections[0].summaryList.rows[2].value.html).toBe(formatDateToFullDate(claim.respondent1.dateOfBirth.date));
+    expect(summarySections.sections[0].summaryList.rows[3].value.html).toBe(EMAIL_ADDRESS);
+    expect(summarySections.sections[0].summaryList.rows[3].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EMAIL');
   });
 
   it('should return address when it exists', async () => {
@@ -73,7 +75,7 @@ describe('Citizen Details Section', () => {
     expect(summarySections.sections[0].summaryList.rows[2].value.html).toBe(formatDateToFullDate(dob));
   });
 
-  it('should return date of birth of a person when date of birth not present', async () => {
+  it('should return undefined when date of birth not present', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();
     claim.claimantResponse = new ClaimantResponse();
@@ -87,12 +89,47 @@ describe('Citizen Details Section', () => {
     expect(summarySections.sections[0].summaryList.rows[2]).toBeUndefined();
   });
 
-  it('should return date of birth of a person when date of birth undefined', async () => {
+  it('should return undefined when date of birth undefined', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();
     claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.ccjRequest = new CCJRequest();
     claim.claimantResponse.ccjRequest.defendantDOB = undefined;
+    //When
+    const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[0].summaryList.rows[2]).toBeUndefined();
+  });
+
+  it('should return date of birth of a person when defendant input present', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    const dob = new Date('2000-11-11T00:00:00.000Z');
+    claim.respondent1.dateOfBirth = {
+      date: dob,
+      year: 2000, month: 11, day: 11
+    };
+    //When
+    const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[0].summaryList.rows[2].value.html).toBe(formatDateToFullDate(dob));
+  });
+
+  it('should return undefined when date of defendant input undefined', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.dateOfBirth = undefined;
+    //When
+    const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[0].summaryList.rows[2]).toBeUndefined();
+  });
+
+  it('should return undefined when date of defendant is business', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.type = PartyType.COMPANY;
+    claim.respondent1.dateOfBirth = undefined;
     //When
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
     //Then
