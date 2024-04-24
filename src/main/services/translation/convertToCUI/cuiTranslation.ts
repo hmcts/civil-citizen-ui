@@ -31,6 +31,7 @@ import {CourtProposedPlan, CourtProposedPlanOptions} from 'form/models/claimantR
 import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
 import {toCUIClaimantMediation} from 'services/translation/convertToCUI/convertToCUIClaimantMediation';
+import {CCDRepaymentPlanFrequency} from 'models/ccdResponse/ccdRepaymentPlan';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaimObj);
@@ -83,6 +84,11 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.interest = claim?.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim);
   claim.claimantResponse.suggestedPaymentIntention.paymentOption = toCUIClaimantPaymentOption(ccdClaim.applicant1RepaymentOptionForDefendantSpec);
   claim.claimantResponse.suggestedPaymentIntention.paymentDate = translateCCDPaymentDateToCUIccd(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec?.paymentSetDate);
+  claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = {
+    paymentAmount: ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec,
+    firstRepaymentDate: translateCCDPaymentDateToCUIccd(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec),
+    repaymentFrequency: translateCCDPaymentFrequencyToCUI(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec),
+  }
   claim.claimantResponse.courtProposedPlan = new CourtProposedPlan();
   claim.claimantResponse.courtProposedDate = new CourtProposedDate();
   claim.claimantResponse.courtProposedPlan.decision = CourtProposedPlanOptions[ccdClaim.applicant1LiPResponse?.claimantResponseOnCourtDecision as CourtProposedPlanOptions];
@@ -136,4 +142,19 @@ function translateFullDefence(ccdClaim: CCDClaim, claimantResponse: ClaimantResp
 
 function translateCCDPaymentDateToCUIccd(paymentDate: string): Date {
   return (paymentDate) ? new Date(paymentDate) : undefined;
+}
+
+function translateCCDPaymentFrequencyToCUI(paymentFrequency: CCDRepaymentPlanFrequency): string {
+  switch (paymentFrequency) {
+    case CCDRepaymentPlanFrequency.ONCE_ONE_WEEK:
+      return 'WEEK';
+    case CCDRepaymentPlanFrequency.ONCE_TWO_WEEKS:
+      return 'TWO_WEEKS';
+    case CCDRepaymentPlanFrequency.ONCE_FOUR_WEEKS:
+      return 'FOUR_WEEKS';
+    case CCDRepaymentPlanFrequency.ONCE_ONE_MONTH:
+      return 'MONTH';
+    default:
+      return undefined;
+  }
 }
