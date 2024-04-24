@@ -283,6 +283,7 @@ import claimantClaimSummaryController from 'routes/features/dashboard/claimantCl
 import bundlesController from 'routes/features/caseProgression/bundlesController';
 import viewMediationSettlementAgreementDocument
   from 'routes/features/document/mediation/viewSettlementAgreementDocumentController';
+import cancelController from 'routes/common/cancelController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
 
 export default [
@@ -533,5 +534,6 @@ export default [
   notificationRedirectController,
   bundlesController,
   viewMediationSettlementAgreementDocument,
+  cancelController,
   viewResponseToClaimController,
 ];
