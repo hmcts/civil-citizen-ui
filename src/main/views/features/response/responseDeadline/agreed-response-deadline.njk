@@ -16,6 +16,14 @@
   nextYear: today.getFullYear()
 }) %}
 
+{% set SUB_TITLE %}
+    {% if isReleaseTwoEnabled %}
+        {{ t('PAGES.AGREED_RESPONSE_DEADLINE.SUB_TITLE_R2') }}
+    {% else %}
+        {{ t('PAGES.AGREED_RESPONSE_DEADLINE.SUB_TITLE', {  claimantName : claimantName}) | safe }}
+    {% endif %}
+{% endset %}
+
 {% block content %}
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
@@ -48,7 +56,7 @@
                 name: "date",
                 fieldset: {
                   legend: {
-                    text: t('PAGES.AGREED_RESPONSE_DEADLINE.SUB_TITLE', {  claimantName : claimantName}),
+                    text: SUB_TITLE,
                     isPageHeading: false,
                     classes: 'govuk-fieldset__legend--m'
                   }
