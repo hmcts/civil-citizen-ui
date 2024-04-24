@@ -10,7 +10,7 @@
     "CONTACT_NUMBER": "Rhif cyswllt",
     "CONTACT_EMAIL": "Cyfeiriad e-bost",
     "UNAVAILABLE_DATES": "Dyddiadau pan na fyddwch ar gael",
-    "CASE_REFERENCE": "Case reference: {{ claimId }}",
+    "CASE_REFERENCE": "Cyfeirnod yr achos: {{ claimId }}",
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
     "ANNUAL_TURNOVER": "Trosiant blynyddol",
@@ -387,7 +387,7 @@
         "TEXT_AFTER": "now or come back later. You can view your documents and the other party's documents"
       },
       "UPLOAD_DOCUMENTS": {
-        "SECTION_TITLE": "Mediation non-attendance",
+        "SECTION_TITLE": "Datganiad cyfryngu di-bresenoldeb",
 
         "TITLE": {
           "YOUR_STATEMENT": "Eich datganiad",
@@ -403,7 +403,7 @@
         }
       },
       "TYPE_OF_DOCUMENTS": {
-        "CHECKBOX_TITLE": "Mediation non-attendance",
+        "CHECKBOX_TITLE": "Datganiad cyfryngu di-bresenoldeb",
         "CHECKBOX_HINT": "Select all that apply",
         "YOUR_STATEMENT": "Eich datganiad",
         "YOUR_STATEMENT_HINT": "A written statement explaining why you did not attend your mediation appointment",
@@ -3203,7 +3203,7 @@
     "UPLOAD_YOUR_DOCUMENTS": {
       "PAGE_TITLE": "Upload your documents",
       "TITLE": "Upload your documents",
-      "CASE_REFERENCE": "Case reference: {{ caseId }}",
+      "CASE_REFERENCE": "Cyfeirnod yr achos: {{ caseId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "CHECK_THE_ORDER": "Check the order the court sent you for what documents you need to upload for your case.",
       "YOU_CANNOT_WITHDRAW": "You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example 'version2'.",
