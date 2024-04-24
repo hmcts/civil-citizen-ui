@@ -1,5 +1,5 @@
 import config from 'config';
-import { LDClient, init, LDFlagValue } from 'launchdarkly-node-server-sdk';
+import {init, LDClient, LDFlagValue} from 'launchdarkly-node-server-sdk';
 
 const user = {
   'name': 'civil-service',
@@ -41,7 +41,9 @@ export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
   // return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
   return true;
 }
-
+export async function isDashboardServiceEnabled(): Promise<boolean> {
+  return await getFlagValue('dashboard-service') as boolean;
+}
 export async function isCARMEnabled(): Promise<boolean> {
   return await getFlagValue('carm') as boolean;
 }

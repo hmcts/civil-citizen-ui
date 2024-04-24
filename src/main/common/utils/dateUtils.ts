@@ -65,6 +65,7 @@ export const addDaysToDate = (date: Date, value: number) => {
 export const getDOBforAgeFromCurrentTime = (age: number): Date => {
   const referenceDate = new Date();
   referenceDate.setFullYear(referenceDate.getFullYear() - age);
+  console.log('VALIDATION: ', referenceDate);
   return referenceDate;
 };
 
@@ -88,6 +89,15 @@ export const formatStringDateSlash = (text: string) => {
   const date = new Date(Date.parse(text));
   const day = date.getDate().toString();
   const month = (date.getUTCMonth() + 1).toString();
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
+export const formatDateSlash = (dateToFormat: Date) => {
+  const date = new Date(dateToFormat);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
   const year = date.getFullYear();
 
   return `${day}/${month}/${year}`;

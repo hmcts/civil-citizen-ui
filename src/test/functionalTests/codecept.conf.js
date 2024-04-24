@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const testConfig = require('../config.js');
 const {unAssignAllUsers} = require('./specClaimHelpers/api/caseRoleAssignmentHelper');
 const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
@@ -12,12 +13,16 @@ exports.config = {
     await unAssignAllUsers();
     await deleteAllIdamTestUsers();
   },
-  tests: '../functionalTests/tests/**/*.js',
+  tests: process.env.ENVIRONMENT == 'aat' ? 
+    [ '../functionalTests/tests/prod/**/*.js',
+      '../functionalTests/tests/common/**/*.js'  ] : 
+    [ '../functionalTests/tests/nonprod/**/*.js',
+      '../functionalTests/tests/common/**/*.js' ],
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
     Playwright: {
       url: testConfig.TestUrl,
-      show: true,
+      show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
       browser: 'chromium',
       waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
       windowSize: '1280x960',
@@ -30,7 +35,7 @@ exports.config = {
           dir:'failed-videos',
         },
       },
-      waitForNavigation:'load',
+      waitForNavigation: 'networkidle',
       bypassCSP: true,
       ignoreHTTPSErrors: true,
       retries: 3,
