@@ -21,6 +21,7 @@ import {
   representYourselfUrl, 
   whatToExpectUrl,
 } from 'common/utils/externalURLs';
+import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -45,10 +46,12 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       } else {
         claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
         caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
-        dashboardId = claimId;  
+        dashboardId = claimId;
       }
+      const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
+      const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
       const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req);
-      const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req);
+      const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(claim, claimId, lng);
 
       res.render(claimantDashboardViewPath, {
