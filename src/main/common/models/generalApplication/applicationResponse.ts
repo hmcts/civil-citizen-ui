@@ -4,13 +4,13 @@ import {CaseState} from "form/models/claimDetails";
 
 export class ApplicationResponse {
     id: string;
-    case_data: CCDClaim;
+    case_data: CCDApplication;
     state: CaseState;
     last_modified: Date;
 
     constructor(
         id?: string,
-        case_data?: CCDClaim,
+        case_data?: CCDApplication,
         state?: CaseState,
         last_modified?: Date,
     ) {
@@ -21,6 +21,6 @@ export class ApplicationResponse {
     }
 }
 
-export interface CCDClaim extends ApplicationUpdate {
+export interface CCDApplication extends ApplicationUpdate {
     legacyCaseReference?: string;
 }

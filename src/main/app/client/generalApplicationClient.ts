@@ -8,9 +8,19 @@ import {CaseEvent} from "models/generalApplication/events/caseEvent";
 import {ApplicationUpdate, EventDto} from "models/generalApplication/events/eventDto";
 import {Application} from "models/generalApplication/application";
 import {AssertionError} from "assert";
+import {ApplicationResponse} from "models/generalApplication/applicationResponse";
+import {translateCCDCaseDataToCUIModel} from "services/translation/convertToCUI/cuiTranslation";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('generalApplicationClient');
+
+const convertCaseToApplication = (caseDetails: ApplicationResponse): Application => {
+    const claim: Application = translateCCDCaseDataToCUIModel(caseDetails.case_data);
+    claim.ccdState = caseDetails.state;
+    claim.id = caseDetails.id;
+    claim.lastModifiedDate = caseDetails.last_modified;
+    return claim;
+};
 
 export class GeneralApplicationClient {
     client: AxiosInstance;
@@ -45,8 +55,8 @@ export class GeneralApplicationClient {
             if (!response.data) {
                 throw new AssertionError({message: 'Claim details not available!'});
             }
-            const caseDetails: Application = response.data;
-            return caseDetails;
+            const caseDetails: ApplicationResponse = response.data;
+            return convertCaseToApplication(caseDetails);
         } catch (err: unknown) {
             logger.error('Error when retrieving claim details');
             throw err;
