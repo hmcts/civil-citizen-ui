@@ -165,6 +165,7 @@ export class Claim {
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
   claimantEvidence: ClaimantEvidence;
+  [key: string]: any;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
