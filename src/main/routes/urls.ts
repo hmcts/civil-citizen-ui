@@ -292,3 +292,4 @@ export const MEDIATION_SERVICE_EXTERNAL = 'https://www.gov.uk/guidance/small-cla
 export const BUNDLES_URL = `${BASE_CASE_URL}/bundle-overview`;
 export const VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT = `${MEDIATION_URL}/view-mediation-settlement-agreement-document`;
 export const DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT = '/notification/:notificationId/redirectDocument/:locationName/:id/:documentId';
+export const CANCEL_URL = `${BASE_CASE_URL}/:propertyName/cancel`;
