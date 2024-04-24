@@ -85,6 +85,7 @@ describe('Check Answers Page :Settlement Agreement Section', () => {
       claim.respondent1 = { responseType: ResponseType.FULL_ADMISSION };
       claim.claimantResponse=new ClaimantResponse();
       claim.claimantResponse.courtDecision=RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);
       claim.claimantResponse.suggestedPaymentIntention={
         paymentOption:PaymentOptionType.INSTALMENTS,
         repaymentPlan:{
@@ -107,6 +108,7 @@ describe('Check Answers Page :Settlement Agreement Section', () => {
       claim.respondent1 = { responseType: ResponseType.FULL_ADMISSION };
       claim.claimantResponse=new ClaimantResponse();
       claim.claimantResponse.courtDecision=RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+      claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);
       claim.claimantResponse.suggestedPaymentIntention={
         paymentOption:PaymentOptionType.BY_SET_DATE,
         paymentDate: new Date(),
