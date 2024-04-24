@@ -1,4 +1,4 @@
-import {ApplicationType} from "./applicationType";
+import {ApplicationType} from './applicationType';
 
 export class GeneralApplication {
  

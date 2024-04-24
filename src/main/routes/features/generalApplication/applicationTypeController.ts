@@ -9,20 +9,20 @@ import {getClaimById} from 'modules/utilityService';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
-const cancelUrl = 'test';
-const backLinkUrl = 'test';
+const cancelUrl = 'test'; // TODO: add url
+const backLinkUrl = 'test'; // TODO: add url
 
 applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const applicationType = new ApplicationType(claim.generalApplication?.applicationType?.option)
+    const applicationType = new ApplicationType(claim.generalApplication?.applicationType?.option);
     const form = new GenericForm(applicationType);
     res.render(viewPath, {
       form,
       cancelUrl,
       backLinkUrl,
-      isOtherSelected: applicationType.isOtherSelected()
+      isOtherSelected: applicationType.isOtherSelected(),
     });
   } catch (error) {
     next(error);
@@ -34,11 +34,12 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const redisKey = generateRedisKey(<AppRequest>req);
     let applicationType = null;
     
-    if (req.body.applicationType === ApplicationTypeOption.OTHER) {
-      applicationType = new ApplicationType(req.body.applicationTypeOther);
+    if (req.body.option === ApplicationTypeOption.OTHER) {
+      applicationType = new ApplicationType(req.body.optionOther);
     } else {
-      applicationType = new ApplicationType(req.body.applicationType);
+      applicationType = new ApplicationType(req.body.option);
     }
+
     const form = new GenericForm(applicationType);
     await form.validate();
     if (form.hasErrors()) {

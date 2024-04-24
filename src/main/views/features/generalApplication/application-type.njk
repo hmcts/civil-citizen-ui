@@ -12,8 +12,8 @@
 
 {% set otherHtml %}
   {{ govukRadios({
-    idPrefix: "applicationTypeOther",
-    name: "applicationTypeOther",
+    idPrefix: "optionOther",
+    name: "optionOther",
     items: [
       {
         value: ApplicationTypeOption.AMEND_A_STMT_OF_CASE,
@@ -87,7 +87,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CAPTION') }}</h1>
+          <h1 class="govuk-caption-l">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CAPTION') }}</h1>
           <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE') }}</h1>
           
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.WHEN_YOU_REQUEST') }}</p>
@@ -100,8 +100,8 @@
             {% set typeError = form.errorFor('option') %}
             <div class="govuk-form-group">
               {{ govukRadios({
-                idPrefix: "applicationType",
-                name: "applicationType",
+                idPrefix: "option",
+                name: "option",
                 items: [
                   {
                     value: ApplicationTypeOption.SET_ASIDE_JUDGEMENT,
