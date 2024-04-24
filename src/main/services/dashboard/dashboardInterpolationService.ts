@@ -49,7 +49,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   const enforceJudgementUrl = config.get<string>('services.enforceJudgment.url');
   const applyForCertificate = config.get<string>('services.applyForCertificate.url');
   const civilMoneyClaimsTelephone = config.get<string>('services.civilMoneyClaims.telephone');
-  const civilMoneyClaimsTelephoneWelshSpeaker = config.get<string>('services.civilMoneyClaims.welshSpeaker.telephone');
+  const civilMoneyClaimsTelephoneWelshSpeaker = config.get<string>('services.civilMoneyClaims.welshspeaker.telephone');
   const cmcCourtEmailId = config.get<string>('services.civilMoneyClaims.courtEmailId');
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
 
