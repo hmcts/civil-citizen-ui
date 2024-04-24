@@ -25,7 +25,8 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmA
       : null;
   };
   const getJudgmentRequestSection = () => {
-    return claim.claimantResponse?.isCCJRequested
+    const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+    return claimantResponse.isCCJRequested
       ? buildJudgmentRequestSection(claim, claimId, lang, claimFee)
       : null;
   };
