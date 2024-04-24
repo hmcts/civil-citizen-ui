@@ -20,6 +20,7 @@ import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
+import {DashboardTaskStatus} from 'models/dashboard/taskList/dashboardTaskStatus';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -196,6 +197,53 @@ describe('dashboardService', () => {
         //Then
         expect(claimantDashboard.items).toEqual(mockExpectedDashboardInfo);
 
+      });
+
+      it('should exclude mediation section when carm is off', async () => {
+        //Given
+        const mockGet = jest.fn().mockResolvedValue({
+          data: Array.of(
+            new CivilServiceDashboardTask(
+              'test',
+              'test',
+              'test',
+              'test',
+              'test',
+              DashboardTaskStatus.COMPLETE,
+              'test',
+              'test',
+              'test'),
+          ),
+        });
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+
+        const dashboard = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('Mediation', 'Mediation', [])
+            , new DashboardTaskList('test', 'test', []),
+          ));
+
+        const dashboardExpected = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('test', 'test', []),
+          ));
+
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
+
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        //When
+        const claimantDashboard = await getDashboardForm(
+          ClaimantOrDefendant.DEFENDANT
+          , claim
+          , '1234567890'
+          , appReq
+          , false);
+
+        //Then
+        expect(claimantDashboard).toEqual(dashboardExpected);
       });
 
       it('ExtractDocumentFromNotificationList', async () => {
