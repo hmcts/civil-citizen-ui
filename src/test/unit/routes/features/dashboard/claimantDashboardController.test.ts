@@ -27,8 +27,19 @@ jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/dashboard/dashboardService', () => ({
   getNotifications: jest.fn(),
   getDashboardForm: jest.fn(),
+  getHelpSupportTitle: jest.fn(()=>t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT')),
+  getHelpSupportLinks: jest.fn(()=>HELP_SUPPORT_LINKS),
 }));
 jest.mock('common/utils/carmToggleUtils');
+
+const HELP_SUPPORT_LINKS = [
+  { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'), url: 'test' },
+  { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_MEDIATION'), url: 'test' },
+  { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.WHAT_EXPECT_HEARING'), url: 'test' },
+  { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF'), url: 'test' },
+  { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE'), url: 'test' },
+  { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'), url: 'test' },
+];
 
 describe('claimant Dashboard Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
