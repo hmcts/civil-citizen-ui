@@ -74,6 +74,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmA
 
 export const getSummarySections = (claimId: string, claim: Claim, lang?: string, claimFee?: number, carmApplicable = false): SummarySections => {
   const lng = getLng(lang);
+  claim.claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   return buildSummarySections(claim, claimId, lng, carmApplicable, claimFee);
 };
 
