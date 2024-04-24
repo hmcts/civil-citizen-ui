@@ -52,7 +52,6 @@ dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
     const draftClaimUrl = draftClaimData?.claimCreationUrl;
 
     const application: Application = await generalApplicationClient.retrieveApplicationDetails('1712145230390015', appRequest);
-    console.log(application);
     renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang, application);
   }catch(error){
     next(error);
