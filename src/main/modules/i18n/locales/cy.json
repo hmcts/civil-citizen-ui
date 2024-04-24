@@ -3665,7 +3665,7 @@
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
     "VALID_YES_NO_SELECTION_UPPER": "Dewiswch Oes neu Nac oes",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "Rhaid i chi nodi y math o ddogfen",
-    "VALID_ENTER_YOUR_NAME": "You must enter your name",
+    "VALID_ENTER_YOUR_NAME": "Mae’n rhaid ichi nodi eich enw",
     "VALID_ENTER_WITNESS_NAME": "Rhaid i chi nodi enw’r tyst",
     "VALID_ENTER_EXPERT_NAME": "Rhowch enw'r arbenigwr",
     "VALID_ENTER_EXPERT_NAMES": "Rhaid i chi nodi enw o leiaf un arbenigwr",
@@ -3689,6 +3689,6 @@
     "VALID_DATE_NOT_FUTURE": "Rhaid i’r dyddiad y ddogfen fod heddiw neu yn y gorffennol",
     "VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cyhoeddwyd y ddogfen neu’r dyddiad yr anfonwyd y neges",
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
-    "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced"
+    "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cafodd y datganiad ei ysgrifennu neu ei gynhyrchu"
   }
 }
