@@ -21,7 +21,7 @@ export function formatDocumentAlignedViewURL(documentName: string, claimId: stri
 export function formatDocumentWithHintText(documentType: string, createdDatetime: Date,lang: string): string {
 
   const created = t('PAGES.DASHBOARD.HEARINGS.CREATED', {lng:lang});
-  const hintText ='<span class="govuk-body">'+ documentType +'</span>'
-    + '<span class="govuk-caption-m">' + created + '['+HearingDateTimeFormatter.getHearingDateFormatted(createdDatetime,lang)+']'+'</span>';
+  const hintText ='<div><span class="govuk-body">'+ documentType +'</span>'
+    + '<span class="govuk-caption-m">' + created + '['+HearingDateTimeFormatter.getHearingDateFormatted(createdDatetime,lang)+']'+'</span></div>';
   return hintText;
 }
