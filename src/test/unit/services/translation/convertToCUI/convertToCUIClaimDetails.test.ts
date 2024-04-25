@@ -50,7 +50,7 @@ describe('translate Claim Details to CUI model', () => {
       claimIssuedPaymentDetails: {
         status: undefined,
         reference: undefined,
-      }
+      },
     };
     //When
     const claimDetailsResponseCUI = toCUIClaimDetails(ccdClaimMock);
