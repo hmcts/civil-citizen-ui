@@ -38,8 +38,8 @@ describe('format hint element for document', ()=>{
     //When
     const urlElement = formatDocumentWithHintText(documentType, createdDatetime, lang);
     //Then
-    const expectedResult = '<span class="govuk-body">'+ documentType +'</span>'
-      + '<span class="govuk-caption-m">'+created+'['+ HearingDateTimeFormatter.getHearingDateFormatted(createdDatetime,lang) + ']</span>';
+    const expectedResult = '<div><span class="govuk-body">'+ documentType +'</span>'
+      + '<span class="govuk-caption-m">'+created+'['+ HearingDateTimeFormatter.getHearingDateFormatted(createdDatetime,lang) + ']</span></div>';
     expect(urlElement).toEqual(expectedResult);
   });
 });
