@@ -4,7 +4,6 @@ import {t} from 'i18next';
 import {UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
 import {orderDocumentNewestToOldest} from 'services/features/caseProgression/documentTableBuilder';
 import {UploadedEvidenceFormatter} from 'services/features/caseProgression/uploadedEvidenceFormatter';
-import {EvidenceUploadExpert} from 'models/document/documentType';
 import {formatEvidenceDocumentWithHintText} from 'common/utils/formatDocumentURL';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -152,7 +151,7 @@ function addParagraph (lang: string): ClaimSummarySection {
   return ({
     type: ClaimSummaryType.PARAGRAPH,
     data: {
-      text: t('PAGES.CLAIM_SUMMARY.EVIDENCE_UPLOAD_SUMMARY', {lng: lang}),
+      text: t('PAGES.CLAIM_SUMMARY.EVIDENCE_UPLOAD_SUMMARY_HEARING', {lng: lang}),
       classes: 'govuk-!-margin-bottom-7',
     },
   });
@@ -172,17 +171,11 @@ function getDocumentHTML(rows: UploadDocumentTypes[], title: string, claim: Clai
   }
 
   for(const upload of rows) {
-    const uploadDateString: string  = upload.createdDateTimeFormatted;
 
     const uploaderName = isClaimant  ? t('PAGES.CLAIM_SUMMARY.CLAIMANT', {lng: lang}) : t('PAGES.CLAIM_SUMMARY.DEFENDANT', {lng: lang});
     const documentTypeName = UploadedEvidenceFormatter.getDocumentTypeName(upload.documentType, lang);
-    let documentName: string;
 
-    if(upload.documentType == EvidenceUploadExpert.STATEMENT) {
-      documentName = documentTypeName + uploadDateString;
-    } else {
-      documentName = uploaderName + documentTypeName.toLowerCase();
-    }
+    const documentName = uploaderName + documentTypeName.toLowerCase();
 
     documentsHTML = documentsHTML.concat('<div class="govuk-grid-row">');
     documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentName, upload.caseDocument.createdDatetime, lang));
