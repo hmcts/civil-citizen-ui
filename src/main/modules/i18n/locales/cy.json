@@ -480,6 +480,7 @@
     "AGREED_RESPONSE_DEADLINE": {
       "PAGE_TITLE": "Cytuno ar fwy o amser i ymateb",
       "SUB_TITLE": "Rhowch y dyddiad ymateb yr ydych wedi’i gytuno â chynrychiolydd cyfreithiol {{ claimantName }}",
+      "SUB_TITLE_R2": "Enter the respond date you have agreed with the other party or their legal representative",
       "TITLE": "Rydych eisoes wedi cytuno i ragor o amser i ymateb"
     },
     "APPLY_HELP_WITH_FEES": {
@@ -622,15 +623,16 @@
       "CONTACT_NUMBER_NOT_OPTIONAL": "Rhif cyswllt",
       "CONSIDER_CLAIMANT_DOCUMENT": "A oes yna unrhyw ddogfennau sydd gan yr hawlydd yr ydych am i'r llys eu hystyried?",
       "CORRESPONDENCE_ADDRESS": "Cyfeiriad ar gyfer anfon gohebiaeth",
-      "COURT_DECISION_SECTION":"Court Decision",
-      "COURT_DECISION_ROW":"Court decision",
-      "COURT_REJECTED_YOUR_REPAYMENT_PLAN":"The court rejected your repayment plan and calculated a more affordable one.",
-      "COURT_REPAYMENT_PLAN":"Court repayment plan",
+      "COURT_ACCEPTED_YOUR_REPAYMENT_PLAN": "The court accepted your repayment plan.",
+      "COURT_DECISION_SECTION": "Court Decision",
+      "COURT_DECISION_ROW": "Court decision",
+      "COURT_REJECTED_YOUR_REPAYMENT_PLAN": "The court rejected your repayment plan and calculated a more affordable one.",
+      "COURT_REPAYMENT_PLAN": "Court repayment plan",
       "COURT_ORDERS_TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?",
       "COURT_ORDERS_CLAIM_NUMBER": "Rhif hawlio",
       "COURT_ORDERS_AMOUNT_OWNED": "Swm sy'n ddyledus gennych",
       "COURT_ORDERS_MONTHLY_INSTALMENT": "Swm rhandaliad misol",
-      "DATE_FOR_FIRST_INSTALMENT": "Date for first instalment",
+      "DATE_FOR_FIRST_INSTALMENT": "Dyddiad ar gyfer rhandaliad cyntaf",
       "DEBTS_LOANS_OR_CREDIT_CARDS": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
       "DECLARATION": "Rwy'n datgan bod y manylion a roddais yn gywir hyd eithaf fy ngwybodaeth.",
       "DECLARATION_TITLE": "Datganiad",
@@ -666,14 +668,14 @@
       "FREE_TELEPHONE_CONTACT_NAME": "Enw cyswllt",
       "FREE_TELEPHONE_CONTACT_NUMBER": "Rhif cyswllt",
       "FREE_TELEPHONE_MEDIATION": "Ydych chi’n fodlon rhoi cynnig ar gyfryngu am ddim?",
-      "FREQUENCY_OF_PAYMENTS": "Frequency of payments",
+      "FREQUENCY_OF_PAYMENTS": "Amlder taliadau",
       "FIRST_PAYMENT": "Gwneud y taliad cyntaf ar",
       "FULL_NAME": "Enw llawn",
       "GIVE_DOC_DETAILS": "Rhoi manylion y dogfennau",
       "GIVE_EVIDENCE": "Ydych chi eisiau rhoi tystiolaeth?",
       "HAS_THE_DEFENDANT_PAID_SOME_OF_THE_AMOUNT_OWED": "A yw'r diffynnydd wedi talu rhywfaint o'r swm sy'n ddyledus?",
       "HEARING_REQUIREMENTS_TITLE": "Gofynion ar gyfer gwrandawiad",
-      "HOW_DO_WANT_TO_DEFENDANT_TO_PAY": "How you want the defendant to pay?",
+      "HOW_DO_WANT_TO_DEFENDANT_TO_PAY": "Sut ydych chi am i'r diffynnydd dalu?",
       "HOW_DO_YOU_WANT_TO_FORMALISE_THE_REPAYMENT_PLAN": "Sut ydych chi eisiau ffurfioli'r cynllun ad-dalu",
       "HOW_DO_YOU_WISH_TO_PROCEED": "Sut ydych chi eisiau symud ymlaen?",
       "HOW_DO_WANT_TO_FORMALISE_REPAYMENT_PLAN": "Sut ydych chi eisiau ffurfioli'r cynllun ad-dalu?",
@@ -771,6 +773,7 @@
       "WITNESS": "Tyst",
       "WILL_REPAY_IN_INSTALLMENTS": "Bydd {{ fullName }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ instalmentAmount }} bob {{ frequency }}. Bydd y rhandaliad cyntaf yn cael ei dalu erbyn {{ instalmentDate }}",
       "WILL_PAY_BY_PAYMENT_DATE": " Bydd {{ fullName }} yn talu £{{ amount }}, heb fod yn hwyrach na {{ paymentDate }}",
+      "WILL_PAY_IMMEDIATELY": "{{ fullName }} will pay immediately",
       "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol",
       "YOUR_RESPONSE": "Eich ymateb"
     },
@@ -1321,7 +1324,11 @@
       "DEFENDANT": "Diffynnydd",
       "CONTACT": "Cyswllt ",
       "PAGE_TITLE": "Cysylltu â’r hawlydd",
-      "PHONE": "Rhif ffôn"
+      "PAGE_TITLE_CLAIMANT": "View information about the claimant",
+      "PAGE_TITLE_DEFENDANT": "View information about the defendant",
+      "PHONE": "Rhif ffôn",
+      "THE_CLAIM": "The claim",
+      "THE_RESPONSE": "The response"
     },
     "COOKIES": {
       "ADDITIONAL_COOKIES": "Gall gwasanaethau'r llywodraeth osod cwcis ychwanegol ac, os felly, bydd ganddyn nhw eu polisi a'u baner cwcis eu hunain.",
@@ -2318,6 +2325,7 @@
     },
     "NEW_RESPONSE_DEADLINE": {
       "CONTENT": "Byddwn yn anfon neges e-bost atoch chi a chynrychiolydd cyfreithiol {{ claimantName }} i gadarnhau eich bod wedi cytuno â’r dyddiad ymateb newydd hwn.",
+      "CONTENT_R2": "We’ll email the new response date to you and the other party or their legal representative.",
       "PAGE_TITLE": "Terfyn amser newydd ar gyfer ymateb",
       "TITLE": "4pm ar {{ responseDeadline }}"
     },
@@ -2625,8 +2633,10 @@
       "PAGE_TITLE": "Gofyn am fwy o amser",
       "POST": "Neu gallwch bostio’r ffurflen wedi’i llenwi i:",
       "SELECT_SAVE_AND_CONTACT": "Dewiswch ‘Cadw a pharhau’ a chysylltu â chynrychiolydd cyfreithiol {{ claimantName }} i ofyn am hyn.",
+      "SELECT_SAVE_AND_CONTACT_R2": "Select 'Save and continue' and contact the other party or their legal representative to request this.",
       "SELECT_SAVE_AND_CONTINUE": " a dewis ‘Cadw a pharhau’.",
       "TELL_OTHER_PARTY": "Bydd angen i chi hefyd ddweud wrth y parti arall eich bod wedi gwneud cais i’r llys.",
+      "TELL_OTHER_PARTY_R2": "You’ll also need to inform the other party or their legal representative that you’ve applied to the court.",
       "TITLE": "Gwneud cais am ragor o amser i ymateb",
       "UP_TO_28_DAYS": "Hyd at 28 diwrnod"
     },
@@ -2646,12 +2656,14 @@
       "FORM": "Ffurflen N244 (agor mewn tab newydd)",
       "MORE_TIME": "Ydych chi eisiau gwneud cais am ragor o amser i ymateb?",
       "OPTION_AGREED": "Rwyf eisoes wedi cytuno ar ragor o amser gyda chynrychiolydd cyfreithiol {{ claimantName }}",
+      "OPTION_AGREED_R2": "I have already agreed more time with the other party or their legal representative",
       "OPTION_NO": "Na, nid wyf eisiau gwneud cais am ragor o amser i ymateb",
       "OPTION_REFUSED": "Mae fy nghais am ragor o amser wedi’i wrthod",
       "OPTION_YES": "Ydw, rwyf eisiau gwneud cais am ragor o amser i ymateb",
       "PAGE_TITLE": "Terfyn amser ar gyfer ymateb",
       "POST": "Neu gallwch bostio’r ffurflen wedi’i llenwi i:",
-      "REQUEST_REFUSED": "Os yw eich cais i gynrychiolydd cyfreithiol {{ claimantName }} am ragor o amser i ymateb wedi’i wrthod, bydd angen i chi wneud cais i’r llys i ystyried eich cais drwy lawrlwytho"
+      "REQUEST_REFUSED": "Os yw eich cais i gynrychiolydd cyfreithiol {{ claimantName }} am ragor o amser i ymateb wedi’i wrthod, bydd angen i chi wneud cais i’r llys i ystyried eich cais drwy lawrlwytho",
+      "REQUEST_REFUSED_R2": "If your request to the other party or their legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
     },
     "REVIEW_DEFENDANTS_RESPONSE": {
       "AGED_11_TO_15": "Faint sy’n 11 i 15 oed?",
@@ -3051,6 +3063,8 @@
       "PAGE_TITLE": "Gwneud cais am ragor o amser",
       "REQUEST_EXTENSION_DEFAULT": "Os ydych eisiau gwneud cais am estyniad o hyd at 28 diwrnod, bydd angen i chi ofyn yn uniongyrchol i gynrychiolydd cyfreithiol y parti arall.",
       "REQUEST_EXTENSION_MORE": "Os ydych eisiau gwneud cais am estyniad o fwy na 28 diwrnod, neu os yw eich cais am estyniad wedi’i wrthod gan gynrychiolydd cyfreithiol y parti arall, bydd angen i chi wneud cais i’r llys.",
+      "REQUEST_EXTENSION_DEFAULT_R2": "If you want to request an extension of up to 28 days, you'll need to ask the other party or their legal representative directly.",
+      "REQUEST_EXTENSION_MORE_R2": "If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party or their legal representative, you'll need to apply to the court.",
       "UNABLE_TO_RESPOND_BEFORE_DEADLINE": "Os ydych yn credu na fyddwch yn gallu ymateb i hawliad cyn y terfyn amser hwn, gallwch wneud cais am ragor o amser."
     },
     "UNEMPLOYMENT": {
