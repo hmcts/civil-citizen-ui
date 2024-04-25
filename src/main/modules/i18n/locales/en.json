@@ -1019,6 +1019,7 @@
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
       "DOWNLOAD_RESPONSE": "Download response",
       "EVIDENCE_UPLOAD_SUMMARY": "Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.",
+      "EVIDENCE_UPLOAD_SUMMARY_HEARING": "Read and save all documents uploaded by the parties involved in the claim. Three weeks before the hearing, a bundle will be created containing all submitted documents in one place. You will be told when this is available.",
       "EXPERT_EVIDENCE": "expert evidence",
       "EXPERT_REPORT": "expert report",
       "DOCUMENTS_REFERRED_TO_STATEMENT": "Documents referred to in statement",
@@ -1439,13 +1440,17 @@
       "DRAFT_CLAIM_NUMBER": "Draft claim",
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
+        "CREATED": "Created ",
+        "HEARING": "Hearing",
+        "HEARING_NOTICE": "Hearing notice",
         "PAY_FEE": "Pay the hearing fee",
         "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
         "TITLE": "Hearings",
         "UPLOAD_DOCUMENTS": "Upload hearing documents",
         "VIEW_BUNDLE": "View the bundle",
         "VIEW_DOCUMENTS": "View documents",
-        "VIEW_HEARINGS": "View hearings"
+        "VIEW_HEARINGS": "View hearings",
+        "VIEW_THE_HEARING": "View the hearing"
       },
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
       "NEXT": "Next",
