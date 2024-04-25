@@ -56,17 +56,24 @@ const getAcceptSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
   const nextSteps = [];
   let paymentDate;
   if (claim.hasCourtAcceptedClaimantsPlan()) {
-    if (claim.getSuggestedPaymentIntentionOptionFromClaimant() == PaymentOptionType.IMMEDIATELY) {
+    if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.IMMEDIATELY) {
       paymentDate = claim.claimantResponse.suggestedImmediatePaymentDeadLine;
-    } else if (claim.getSuggestedPaymentIntentionOptionFromClaimant() == PaymentOptionType.BY_SET_DATE) {
+    } else if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.BY_SET_DATE) {
       const date = claim.claimantResponse.suggestedPaymentIntention.paymentDate as unknown as PaymentDate;
       paymentDate = date as unknown as Date;
     }
+    if(paymentDate) {
+      nextSteps.push(
+        {
+          type: ClaimSummaryType.PARAGRAPH,
+          data: {
+            text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.PAY_BY', {paymentDate: formatDateToFullDate(paymentDate, lang), lng: lang}),
+          },
+        },
+      );
+    }
   } else if (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate()) {
     paymentDate = getPaymentDate(claim);
-  }
-
-  if (isCourtAcceptedClaimantsPlanOrPayByDate(claim)) {
     nextSteps.push(
       {
         type: ClaimSummaryType.PARAGRAPH,
@@ -76,6 +83,7 @@ const getAcceptSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
       },
     );
   }
+
   nextSteps.push(...[
     {
       type: ClaimSummaryType.PARAGRAPH,
@@ -116,14 +124,3 @@ const getRejectSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
     .addParagraph(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.EMAIL_YOU', {lng: lang}))
     .build();
 };
-
-function isCourtAcceptedClaimantsPlanOrPayByDate(claim: Claim): boolean {
-  if (claim.hasCourtAcceptedClaimantsPlan()) {
-    if (claim.getSuggestedPaymentIntentionOptionFromClaimant() == PaymentOptionType.IMMEDIATELY
-           || claim.getSuggestedPaymentIntentionOptionFromClaimant() == PaymentOptionType.BY_SET_DATE) {
-      return true;
-    }
-  } else if (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate()) {
-    return true;
-  }
-}
