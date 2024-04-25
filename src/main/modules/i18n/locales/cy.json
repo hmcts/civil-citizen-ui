@@ -1536,6 +1536,19 @@
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement."
       },
+      "SUPPORT_LINKS": {
+        "CONTACT_COURT": "Contact the court to request a change to my case (make an application)",
+        "FIND_INFO_COURT": "Find information about my court",
+        "FIND_MEDIATION": "Find out about mediation",
+        "FIND_LEGAL_ADVICE": "Find legal advice",
+        "GET_DEBT_RESPITE": "Get debt respite (breathing space)",
+        "HELP_SUPPORT": "Help and support",
+        "HELP_FEES": "Help with fees",
+        "I_WANT_TO": "I want to...",
+        "REPRESENT_MYSELF": "Represent myself at a hearing",
+        "TELL_US_ENDED": "Tell us you've ended the claim",
+        "WHAT_EXPECT_HEARING": "What to expect at a hearing"
+      },
       "TITLE": "Eich cyfrif hawliadau am arian",
       "VIEW": "Weiv",
       "VIEW_CLAIM_NUMBER": "Rhif yr Hawliad {{ claimNumber }}"
