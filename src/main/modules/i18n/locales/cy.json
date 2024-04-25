@@ -233,7 +233,7 @@
       "WEEKLY": "Taliadau wythnosol"
     },
     "POSTAL_ADDRESS": {
-      "BUILDING": "Hawliadau am Arian yn y Llys Sifil GLlTEF",
+      "BUILDING": "Hawliadau am Arian yn y Llys Sifil GLlTEF / HMCTS CMC",
       "CITY": "Harlow",
       "PO_BOX": "Blwch Post 12747",
       "POSTCODE": "CM20 9RA",
@@ -475,7 +475,7 @@
     "AGREED_RESPONSE_DEADLINE": {
       "PAGE_TITLE": "Cytuno ar fwy o amser i ymateb",
       "SUB_TITLE": "Rhowch y dyddiad ymateb yr ydych wedi’i gytuno â chynrychiolydd cyfreithiol {{ claimantName }}",
-      "SUB_TITLE_R2": "Enter the respond date you have agreed with the other party or their legal representative",
+      "SUB_TITLE_R2": "Nodwch y dyddiad ymateb yr ydych wedi cytuno arno gyda’r parti arall neu eu cynrychiolydd cyfreithiol.",
       "TITLE": "Rydych eisoes wedi cytuno i ragor o amser i ymateb"
     },
     "APPLY_HELP_WITH_FEES": {
@@ -2320,7 +2320,7 @@
     },
     "NEW_RESPONSE_DEADLINE": {
       "CONTENT": "Byddwn yn anfon neges e-bost atoch chi a chynrychiolydd cyfreithiol {{ claimantName }} i gadarnhau eich bod wedi cytuno â’r dyddiad ymateb newydd hwn.",
-      "CONTENT_R2": "We’ll email the new response date to you and the other party or their legal representative.",
+      "CONTENT_R2": "Byddwn yn anfon y dyddiad ymateb newydd atoch chi a’r parti arall neu eu cynrychiolydd cyfreithiol.",
       "PAGE_TITLE": "Terfyn amser newydd ar gyfer ymateb",
       "TITLE": "4pm ar {{ responseDeadline }}"
     },
@@ -2628,10 +2628,10 @@
       "PAGE_TITLE": "Gofyn am fwy o amser",
       "POST": "Neu gallwch bostio’r ffurflen wedi’i llenwi i:",
       "SELECT_SAVE_AND_CONTACT": "Dewiswch ‘Cadw a pharhau’ a chysylltu â chynrychiolydd cyfreithiol {{ claimantName }} i ofyn am hyn.",
-      "SELECT_SAVE_AND_CONTACT_R2": "Select 'Save and continue' and contact the other party or their legal representative to request this.",
+      "SELECT_SAVE_AND_CONTACT_R2": "Dewiswch ‘Cadw a pharhau’ a chysylltu â’r parti arall neu eu cynrychiolydd cyfreithiol i wneud cais ar gyfer hyn.",
       "SELECT_SAVE_AND_CONTINUE": " a dewis ‘Cadw a pharhau’.",
       "TELL_OTHER_PARTY": "Bydd angen i chi hefyd ddweud wrth y parti arall eich bod wedi gwneud cais i’r llys.",
-      "TELL_OTHER_PARTY_R2": "You’ll also need to inform the other party or their legal representative that you’ve applied to the court.",
+      "TELL_OTHER_PARTY_R2": "Bydd angen i chi hefyd roi gwybod i’r parti arall neu eu cynrychiolydd cyfreithiol eich bod yn gwneud cais i’r llys.",
       "TITLE": "Gwneud cais am ragor o amser i ymateb",
       "UP_TO_28_DAYS": "Hyd at 28 diwrnod"
     },
@@ -2651,14 +2651,14 @@
       "FORM": "Ffurflen N244 (agor mewn tab newydd)",
       "MORE_TIME": "Ydych chi eisiau gwneud cais am ragor o amser i ymateb?",
       "OPTION_AGREED": "Rwyf eisoes wedi cytuno ar ragor o amser gyda chynrychiolydd cyfreithiol {{ claimantName }}",
-      "OPTION_AGREED_R2": "I have already agreed more time with the other party or their legal representative",
+      "OPTION_AGREED_R2": "Rwyf eisoes wedi cytuno ar ragor o amser gyda’r parti arall neu eu cynrychiolydd cyfreithiol",
       "OPTION_NO": "Na, nid wyf eisiau gwneud cais am ragor o amser i ymateb",
       "OPTION_REFUSED": "Mae fy nghais am ragor o amser wedi’i wrthod",
       "OPTION_YES": "Ydw, rwyf eisiau gwneud cais am ragor o amser i ymateb",
       "PAGE_TITLE": "Terfyn amser ar gyfer ymateb",
       "POST": "Neu gallwch bostio’r ffurflen wedi’i llenwi i:",
       "REQUEST_REFUSED": "Os yw eich cais i gynrychiolydd cyfreithiol {{ claimantName }} am ragor o amser i ymateb wedi’i wrthod, bydd angen i chi wneud cais i’r llys i ystyried eich cais drwy lawrlwytho",
-      "REQUEST_REFUSED_R2": "If your request to the other party or their legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
+      "REQUEST_REFUSED_R2": "Os yw eich cais i’r parti arall neu eu cynrychiolydd cyfreithiol am ragor o amser wedi cael ei wrthod, mae angen ichi wneud cais i’r llys i ailystyried eich cais trwy lawrlwytho "
     },
     "REVIEW_DEFENDANTS_RESPONSE": {
       "AGED_11_TO_15": "Faint sy’n 11 i 15 oed?",
@@ -3058,8 +3058,8 @@
       "PAGE_TITLE": "Gwneud cais am ragor o amser",
       "REQUEST_EXTENSION_DEFAULT": "Os ydych eisiau gwneud cais am estyniad o hyd at 28 diwrnod, bydd angen i chi ofyn yn uniongyrchol i gynrychiolydd cyfreithiol y parti arall.",
       "REQUEST_EXTENSION_MORE": "Os ydych eisiau gwneud cais am estyniad o fwy na 28 diwrnod, neu os yw eich cais am estyniad wedi’i wrthod gan gynrychiolydd cyfreithiol y parti arall, bydd angen i chi wneud cais i’r llys.",
-      "REQUEST_EXTENSION_DEFAULT_R2": "If you want to request an extension of up to 28 days, you'll need to ask the other party or their legal representative directly.",
-      "REQUEST_EXTENSION_MORE_R2": "If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party or their legal representative, you'll need to apply to the court.",
+      "REQUEST_EXTENSION_DEFAULT_R2": "Os ydych eisiau gwneud cais am estyniad o hyd at 28 diwrnod, bydd angen i chi ofyn yn uniongyrchol i'r parti arall neu eu cynrychiolydd cyfreithiol.",
+      "REQUEST_EXTENSION_MORE_R2": "Os ydych eisiau gwneud cais am estyniad o fwy na 28 diwrnod, neu os yw eich cais am estyniad wedi’i wrthod gan gynrychiolydd cyfreithiol y parti arall, bydd angen i chi wneud cais i’r llys.",
       "UNABLE_TO_RESPOND_BEFORE_DEADLINE": "Os ydych yn credu na fyddwch yn gallu ymateb i hawliad cyn y terfyn amser hwn, gallwch wneud cais am ragor o amser."
     },
     "UNEMPLOYMENT": {
