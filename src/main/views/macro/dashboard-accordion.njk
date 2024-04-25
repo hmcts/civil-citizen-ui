@@ -7,7 +7,6 @@
   {% set header = t('PAGES.DASHBOARD.ACCORDION_TITLE') %}
   {% set content = t('PAGES.DASHBOARD.ACCORDION_CONTENT') %}
   {% set linkContent = t('PAGES.DASHBOARD.ACCORDION_ORDERS')%}
-  {% set linkTarget = '_blank'%}
 
   {% set widget = _widgetLink(content,link,linkContent, linkTarget) %}
 
@@ -18,10 +17,10 @@
 
 {% endmacro %}
 
-{% macro _widgetLink(content,link, linkContent, linkTarget) %}
+{% macro _widgetLink(content,link, linkContent) %}
 
     {{ content }}
-    <a target= {{linkTarget}} href={{ link }} rel="noopener noreferrer">{% if linkContent!=='' %}{{ linkContent }}</a>
+    <a class="govuk-link" href={{ link }} rel="noopener noreferrer">{% if linkContent!=='' %}{{ linkContent }}</a>
     {% endif %}</a></p>
 
 {% endmacro %}

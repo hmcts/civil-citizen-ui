@@ -13,7 +13,7 @@ import {getHearingContent} from 'services/features/caseProgression/hearing/heari
 const viewTheHearingController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-const hearingViewPath = 'features/caseProgression/view_the_hearing';
+const hearingViewPath = 'features/caseProgression/view-the-hearing';
 
 viewTheHearingController.get(VIEW_THE_HEARING_URL, (async (req:Request, res:Response, next: NextFunction) => {
   try {
@@ -29,8 +29,8 @@ viewTheHearingController.get(VIEW_THE_HEARING_URL, (async (req:Request, res:Resp
 
     res.render(hearingViewPath,
       {hearingSections,
-        pageCaption: 'PAGES.DASHBOARD.HEARINGS.VIEW_THE_HEARING',
-        pageTitle: 'PAGES.DASHBOARD.HEARINGS.HEARING',
+        pageCaption: 'PAGES.DASHBOARD.HEARINGS.HEARING',
+        pageTitle: 'PAGES.DASHBOARD.HEARINGS.VIEW_THE_HEARING',
         link: VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId),
         claimId: caseNumberPrettify(claimId),
         claimAmount: claim.totalClaimAmount,
