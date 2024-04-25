@@ -285,6 +285,7 @@ import viewMediationSettlementAgreementDocument from 'routes/features/document/m
 import viewDefendantInformationController from './features/dashboard/viewDefendantInformationController';
 import viewClaimantInformationController from './features/dashboard/viewClaimantInformationController';
 import cancelController from 'routes/common/cancelController';
+import evidenceUploadDocumentsController from 'routes/features/caseProgression/evidenceUploadDocumentsController';
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
 
 export default [
@@ -538,5 +539,6 @@ export default [
   viewMediationSettlementAgreementDocument,
   bundlesController,
   cancelController,
+  evidenceUploadDocumentsController,
   viewTheHearingController,
 ];

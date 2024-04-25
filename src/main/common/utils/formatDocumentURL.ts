@@ -1,8 +1,8 @@
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {HearingDateTimeFormatter} from 'services/features/caseProgression/hearingDateTimeFormatter';
-import {alignText} from 'form/models/alignText';
 import {t} from 'i18next';
+import {alignText} from 'form/models/alignText';
 
 export function formatDocumentViewURL(documentName: string, claimId: string, binaryURL: string): string {
 
