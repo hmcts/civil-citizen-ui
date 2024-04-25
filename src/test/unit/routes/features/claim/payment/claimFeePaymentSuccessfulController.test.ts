@@ -46,7 +46,7 @@ describe('Claim fee payment confirmation', () => {
     });
 
     it('should return error if there is no claim fee data', async () => {
-      app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
 
       spyDel.mockImplementation(() => {return null;});
 
