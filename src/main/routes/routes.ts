@@ -287,6 +287,7 @@ import viewClaimantInformationController from './features/dashboard/viewClaimant
 import cancelController from 'routes/common/cancelController';
 import evidenceUploadDocumentsController from 'routes/features/caseProgression/evidenceUploadDocumentsController';
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
+import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
 
 export default [
   homeController,
@@ -541,4 +542,5 @@ export default [
   cancelController,
   evidenceUploadDocumentsController,
   viewTheHearingController,
+  viewResponseToClaimController,
 ];
