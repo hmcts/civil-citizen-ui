@@ -43,6 +43,8 @@ jest.mock('common/utils/carmToggleUtils.ts');
 jest.mock('services/dashboard/dashboardService', () => ({
   getNotifications: jest.fn(),
   getDashboardForm: jest.fn(),
+  getHelpSupportTitle: jest.fn(),
+  getHelpSupportLinks: jest.fn(),
   extractOrderDocumentIdFromNotification : jest.fn(),
 }));
 
