@@ -18,6 +18,7 @@
     "BALANCE": "Balans",
     "BANK_AND_SAVINGS_ACCOUNTS": "Cyfrifon banc a chynilo",
     "BANK_JOINT_ACCOUNT": "Cyfrif ar y cyd",
+    "CANNOT_FIND_DOCUMENT_TEXT": "If you cannot find a document that you are looking for in this section",
     "CHILDREN": "Plant",
     "CHOOSE": "Dewiswch",
     "CIVIL_MONEY_CLAIMS": "Hawliadau am Arian yn y Llys Sifil",
@@ -49,6 +50,7 @@
     "NO": "Nac oes",
     "NUMBER_OF_PEOPLE": "Nifer y bobl",
     "OPTIONAL_CONTACT_PERSON": "Unigolyn cyswllt (dewisol)",
+    "ORDER_AND_NOTICES": "orders and notices",
     "MANDATORY_CONTACT_PERSON": "Contact person",
     "PARTIES": "{{ claimantName }} v {{ defendantName }}",
     "REASON": "Rheswm",
@@ -869,6 +871,7 @@
       "AMOUNT": "Swm",
       "AMOUNT_BREAKDOWN": "Dadansoddiad o’r swm",
       "CLAIM_FEE": "Ffi’r hawliad",
+      "CLAIM_HAS_BEEN_MADE_TEXT": "This is the claim that's has been made in the case. It can also be found in",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CLAIM_TOTAL": "Cyfanswm yr hawliad",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Lawrlwytho a gweld llinell amser",
@@ -877,9 +880,13 @@
       "INTEREST": "Llog",
       "INTEREST_SNIPPET": "Llog wedi ei gyfrifo ar {{ rate }}% am  {{ numberOfDays }} diwrnod ({{ interestDate }} tan {{ interestToDate }})",
       "PAGE_TITLE": "Manylion yr hawliad",
+      "PAGE_TITLE_NEW": "View the claim",
       "REASON_FOR_CLAIM": "Rheswm dros yr hawliad",
+      "THE_CLAIM": "The Claim",
       "TIMELINE": "Amserlen",
-      "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm"
+      "TITLE": "Claim Details",
+      "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm",
+      "VIEW_THE_CLAIM_PDF": "View the claim (PDF)"
     },
     "CLAIM_TASK_LIST": {
       "AFTER_COMPLETE": "Ar ôl i chi gwblhau'r holl gamau byddwch yn mynd ymlaen i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno.",

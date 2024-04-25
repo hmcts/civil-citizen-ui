@@ -21,7 +21,7 @@ import {
   VIEW_DEFENDANT_INFO,
   VIEW_CLAIMANT_INFO,
   VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT,
-  VIEW_THE_HEARING_URL, VIEW_ORDERS_AND_NOTICES_URL,
+  VIEW_THE_HEARING_URL, VIEW_ORDERS_AND_NOTICES_URL, CLAIM_DETAILS_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -55,7 +55,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
   const notificationId = notification?.id;
 
-  valuesMap.set('{VIEW_CLAIM_URL}', '#');
+  valuesMap.set('{VIEW_CLAIM_URL}', CLAIM_DETAILS_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_INFO_ABOUT_CLAIMANT}', VIEW_CLAIMANT_INFO.replace(':id', claimId));
   valuesMap.set('{VIEW_RESPONSE_TO_CLAIM}', '#');
   valuesMap.set('{VIEW_INFO_ABOUT_DEFENDANT}', VIEW_DEFENDANT_INFO.replace(':id', claimId));
