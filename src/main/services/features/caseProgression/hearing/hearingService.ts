@@ -48,7 +48,7 @@ function getHearingsSummary(claim: Claim,lang: string): ClaimSummarySection {
     if(hearingDocument?.value) {
       const hearingDocumentLink = formatDocumentAlignedViewURL(hearingDocument.value?.documentName, claim.id, hearingDocument.value?.documentLink.document_binary_url,alignText.ALIGN_TO_THE_RIGHT);
       const hearingDoc = formatDocumentWithHintText(t('PAGES.DASHBOARD.HEARINGS.HEARING_NOTICE', {lng:lang}),hearingDocument.value?.createdDatetime,lang);
-      hearingRows.push({key:{html:hearingDoc},
+      hearingRows.push({key:{html:hearingDoc,classes:'govuk-!-width-one-half'},
         value:{html: hearingDocumentLink},
       });
     }
