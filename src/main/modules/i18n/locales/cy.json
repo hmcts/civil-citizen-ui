@@ -3058,8 +3058,8 @@
       "PAGE_TITLE": "Gwneud cais am ragor o amser",
       "REQUEST_EXTENSION_DEFAULT": "Os ydych eisiau gwneud cais am estyniad o hyd at 28 diwrnod, bydd angen i chi ofyn yn uniongyrchol i gynrychiolydd cyfreithiol y parti arall.",
       "REQUEST_EXTENSION_MORE": "Os ydych eisiau gwneud cais am estyniad o fwy na 28 diwrnod, neu os yw eich cais am estyniad wedi’i wrthod gan gynrychiolydd cyfreithiol y parti arall, bydd angen i chi wneud cais i’r llys.",
-      "REQUEST_EXTENSION_DEFAULT_R2": "Os ydych eisiau gwneud cais am estyniad o hyd at 28 diwrnod, bydd angen i chi ofyn yn uniongyrchol i'r parti arall neu eu cynrychiolydd cyfreithiol.",
-      "REQUEST_EXTENSION_MORE_R2": "Os ydych am wneud cais am estyniad o fwy na 28 diwrnod, neu os yw eich cais am estyniad wedi’i wrthod gan y parti arall neu ei gynrychiolydd cyfreithiol, bydd angen i chi wneud cais i’r llys.",
+      "REQUEST_EXTENSION_DEFAULT_R2": "Os ydych eisiau gwneud cais am estyniad o hyd at 28 diwrnod, bydd angen i chi ofyn yn uniongyrchol i’r parti arall neu eu cynrychiolydd cyfreithiol.",
+      "REQUEST_EXTENSION_MORE_R2": "Os ydych eisiau gwneud cais am estyniad o fwy na 28 diwrnod, neu os yw eich cais am estyniad wedi’i wrthod gan y parti arall neud eu cynrychiolydd cyfreithiol, bydd angen i chi wneud cais i’r llys.",
       "UNABLE_TO_RESPOND_BEFORE_DEADLINE": "Os ydych yn credu na fyddwch yn gallu ymateb i hawliad cyn y terfyn amser hwn, gallwch wneud cais am ragor o amser."
     },
     "UNEMPLOYMENT": {
