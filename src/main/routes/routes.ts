@@ -537,6 +537,6 @@ export default [
   viewClaimantInformationController,
   viewMediationSettlementAgreementDocument,
   bundlesController,
-  cancelController, 
+  cancelController,
   viewTheHearingController,
 ];
