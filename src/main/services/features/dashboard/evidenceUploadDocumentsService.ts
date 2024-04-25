@@ -4,6 +4,7 @@ import {t} from 'i18next';
 import {UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
 import {orderDocumentNewestToOldest} from 'services/features/caseProgression/documentTableBuilder';
 import {UploadedEvidenceFormatter} from 'services/features/caseProgression/uploadedEvidenceFormatter';
+import {EvidenceUploadExpert} from 'models/document/documentType';
 import {formatEvidenceDocumentWithHintText} from 'common/utils/formatDocumentURL';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -174,8 +175,13 @@ function getDocumentHTML(rows: UploadDocumentTypes[], title: string, claim: Clai
 
     const uploaderName = isClaimant  ? t('PAGES.CLAIM_SUMMARY.CLAIMANT', {lng: lang}) : t('PAGES.CLAIM_SUMMARY.DEFENDANT', {lng: lang});
     const documentTypeName = UploadedEvidenceFormatter.getDocumentTypeName(upload.documentType, lang);
+    let documentName: string;
 
-    const documentName = uploaderName + documentTypeName.toLowerCase();
+    if(upload.documentType == EvidenceUploadExpert.STATEMENT) {
+      documentName = documentTypeName;
+    } else {
+      documentName = uploaderName + documentTypeName.toLowerCase();
+    }
 
     documentsHTML = documentsHTML.concat('<div class="govuk-grid-row">');
     documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentName, upload.caseDocument.createdDatetime, lang));
