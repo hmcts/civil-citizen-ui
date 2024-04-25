@@ -52,6 +52,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   const enforceJudgementUrl = config.get<string>('services.enforceJudgment.url');
   const applyForCertificate = config.get<string>('services.applyForCertificate.url');
   const civilMoneyClaimsTelephone = config.get<string>('services.civilMoneyClaims.telephone');
+  const civilMoneyClaimsTelephoneWelshSpeaker = config.get<string>('services.civilMoneyClaims.welshspeaker.telephone');
   const cmcCourtEmailId = config.get<string>('services.civilMoneyClaims.courtEmailId');
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
   const notificationId = notification?.id;
@@ -87,6 +88,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{APPLY_FOR_CERTIFICATE}', applyForCertificate);
   valuesMap.set('{enforceJudgementUrl}', enforceJudgementUrl);
   valuesMap.set('{civilMoneyClaimsTelephone}', civilMoneyClaimsTelephone);
+  valuesMap.set('{civilMoneyClaimsTelephoneWelshSpeaker}', civilMoneyClaimsTelephoneWelshSpeaker);
   valuesMap.set('{cmcCourtEmailId}', cmcCourtEmailId);
   valuesMap.set('{cmcCourtAddress}', getSendFinancialDetailsAddress());
   valuesMap.set('{fullAdmitPayImmediatelyPaymentAmount}', getTotalAmountWithInterestAndFees(claim).toString());
