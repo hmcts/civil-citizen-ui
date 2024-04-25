@@ -13,11 +13,14 @@ const paymentUnsuccessfulViewPath  = 'features/caseProgression/hearingFee/paymen
 paymentUnsuccessfulController.get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIMISSUED, req);
     const makePaymentAgainUrl = paymentRedirectInformation.nextUrl;
     const claim = await getCaseDataFromStore(generateRedisKey(req));
+    console.log('paymentUnsuccessfulController - language-------------------',lng);
     const claimNumber : string = claim.getFormattedCaseReferenceNumber(claimId);
     claim.claimDetails.claimFeePayment = paymentRedirectInformation;
+    console.log('paymentUnsuccessfulController - paymentRedirectInformation-------------------',paymentRedirectInformation);
     await saveDraftClaim(claim.id, claim, true);
     res.render(paymentUnsuccessfulViewPath, {
       claimNumber,
