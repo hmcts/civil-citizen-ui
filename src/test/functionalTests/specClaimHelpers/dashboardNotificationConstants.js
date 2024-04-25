@@ -89,7 +89,7 @@ module.exports = {
     return {
       title: 'Response to the claim',
       deadlineDate: deadline,
-      content: [`You have offered to pay £${amount} by`, 'The payment must clear the account by then, if not the claimant can request a county court judgment.'],
+      content: [`You have offered to pay £${amount} by`, 'The payment must be received in Miss Jane Doe\'s acount by then, if not they can request a county court judgment.'],
       nextSteps: 'View your response',
     };
   },
@@ -97,7 +97,7 @@ module.exports = {
   defendantResponseFullAdmitPayInstalments: (amount, instalmentAmount, date) => {
     return {
       title: 'Response to the claim',
-      content: [`You have offered to pay £${amount} in instalments of £${instalmentAmount} every month starting ${date}.`, 'The court will contact you when they respond.'],
+      content: [`You have offered to pay £${amount} in instalments of £${instalmentAmount} every month.`, `You have offered to do this starting from ${date}`,  'We will contact you when the claimant responds to your offer.'],
       nextSteps: 'View your response',
     };
   },
@@ -114,7 +114,7 @@ module.exports = {
     return {
       title: 'Response to the claim',
       deadlineDate: deadline,
-      content: `The defendant has offered to pay £${amount} by`,
+      content: `Sir John Doe has offered to pay £${amount} by`,
       nextSteps: 'View and respond',
     };
   },
@@ -132,7 +132,7 @@ module.exports = {
   claimantNotificationWithDefendantRejectMedidationWithRejectAll: () => {
     return {
       title: 'Response to the claim',
-      content: ['The defendant has rejected the claim and refused mediation.', 'You need to respond by '],
+      content: ['Test Company Defendant has rejected the claim and refused mediation.', 'You need to respond by '],
       nextSteps: 'View and respond',
     };
   },
