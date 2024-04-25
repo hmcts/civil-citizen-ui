@@ -48,7 +48,7 @@ module.exports = {
   invalidHwfNumber: () => {
     return {
       title: 'You\'ve provided an invalid help with fees reference number',
-      content: ['You\'ve applied for help with the claim fee, but the reference number is invalid.', 
+      content: ['You\'ve applied for help with the claim fee, but the reference number is invalid.',
         'You\'ve been sent an email with instructions on what to do next. If you\'ve already read the email and taken action, disregard this message.',
         'You can pay by phone by calling 0300 123 7050.'],
     };
@@ -132,7 +132,7 @@ module.exports = {
   claimantNotificationWithDefendantRejectMedidationWithRejectAll: () => {
     return {
       title: 'Response to the claim',
-      content: ['The defendant has rejected the claim and refused mediation.', 'You need to respond by '],
+      content: ['Test Company Defendant has rejected the claim and refused mediation.', 'You need to respond by '],
       nextSteps: 'View and respond',
     };
   },
