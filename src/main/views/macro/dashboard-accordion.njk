@@ -20,7 +20,7 @@
 {% macro _widgetLink(content,link, linkContent) %}
 
     {{ content }}
-    <a class="govuk-link" href={{ link }} rel="noopener noreferrer">{% if linkContent!=='' %}{{ linkContent }}</a>
+    <a class="govuk-link" href={{ link }} rel="noopener noreferrer">{% if linkContent!=='' %}{{ linkContent }}</a>.
     {% endif %}</a></p>
 
 {% endmacro %}
