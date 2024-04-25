@@ -89,7 +89,7 @@ module.exports = {
     return {
       title: 'Response to the claim',
       deadlineDate: deadline,
-      content: [`You have offered to pay £${amount} by`, 'The payment must be received in Miss Jane Doe\'s acount by then, if not they can request a county court judgment.'],
+      content: [`You have offered to pay £${amount} by`, 'The payment must be received in Miss Jane Doe\'s account by then, if not they can request a county court judgment.'],
       nextSteps: 'View your response',
     };
   },
@@ -105,7 +105,7 @@ module.exports = {
   defendantResponseFullAdmitPayBySetDate: (amount, deadline) => {
     return {
       title: 'Response to the claim',
-      content: `You have offered to pay £${amount} by ${deadline}. The court will contact you when they respond.`,
+      content: `You have offered to pay £${amount} by ${deadline}. We will contact you when the claimant responds to your offer.`,
       nextSteps: 'View your response',
     };
   },
@@ -114,7 +114,7 @@ module.exports = {
     return {
       title: 'Response to the claim',
       deadlineDate: deadline,
-      content: `Sir John Doe has offered to pay £${amount} by`,
+      content: ['Sir John Doe has offered to pay',  `£${amount} by`],
       nextSteps: 'View and respond',
     };
   },
