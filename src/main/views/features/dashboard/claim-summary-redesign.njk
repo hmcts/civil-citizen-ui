@@ -6,9 +6,9 @@
 {% from "./claim-summary-content.njk" import claimSummaryContent %}
 {% from "../../macro/notifications.njk" import notifications %}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "../../macro/support-links.njk" import supportLinks %}
 
 {% block content %}
-
 
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
@@ -67,10 +67,16 @@
         {# TODO: Right side #}
         <div class="govuk-grid-column-one-third">
           <div class="border-small-top"></div>
-          <p class="govuk-heading-s"> I want to... </p>
-          <p class="govuk-heading-s"> Help and support </p>
-          <div>
-          {{ contactUsForHelp(t) }}
+          {% if iWantToLinks.length %}
+            <div class="govuk-!-margin-bottom-8">
+              {{ supportLinks(t, iWantToTitle, iWantToLinks) }}
+            </div>
+          {% endif %}
+          {% if helpSupportLinks.length %}
+            {{ supportLinks(t, helpSupportTitle, helpSupportLinks) }}
+          {% endif %}
+          <div class="govuk-!-padding-top-8">
+            {{ contactUsForHelp(t) }}
           </div>
         </div>
       </div>
