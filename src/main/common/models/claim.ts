@@ -164,6 +164,7 @@ export class Claim {
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
+  orderDocumentId?: string;
 
   // Index signature to allow dynamic property access
   [key: string]: any;
