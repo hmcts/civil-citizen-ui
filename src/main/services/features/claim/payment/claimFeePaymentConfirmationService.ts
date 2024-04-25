@@ -8,6 +8,7 @@ import { deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore } fro
 import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {Claim} from 'models/claim';
+import { ClaimBilingualLanguagePreference } from 'common/models/claimBilingualLanguagePreference';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimFeePaymentConfirmationService');
@@ -23,8 +24,9 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo?.paymentReference, FeeType.CLAIMISSUED, req);
 
     if(paymentStatus.status === success) {
+      const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH ? 'cy' : 'en'
       deleteDraftClaimFromStore(redisClaimId);
-      return PAY_CLAIM_FEE_SUCCESSFUL_URL;
+      return `${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=${lang}`;
     }
 
     return paymentStatus.errorDescription !== paymentCancelledByUser ?
