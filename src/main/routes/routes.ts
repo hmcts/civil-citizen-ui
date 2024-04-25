@@ -281,8 +281,9 @@ import mediationConfirmationController from 'routes/features/mediation/uploadDoc
 import notificationRedirectController from 'routes/features/dashboard/notificationRedirectController';
 import claimantClaimSummaryController from 'routes/features/dashboard/claimantClaimSummaryController';
 import bundlesController from 'routes/features/caseProgression/bundlesController';
-import viewMediationSettlementAgreementDocument
-  from 'routes/features/document/mediation/viewSettlementAgreementDocumentController';
+import viewMediationSettlementAgreementDocument from 'routes/features/document/mediation/viewSettlementAgreementDocumentController';
+import viewDefendantInformationController from './features/dashboard/viewDefendantInformationController';
+import viewClaimantInformationController from './features/dashboard/viewClaimantInformationController';
 import cancelController from 'routes/common/cancelController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
 
@@ -532,8 +533,10 @@ export default [
   mediationDocumentUploadCheckAnswerController,
   mediationConfirmationController,
   notificationRedirectController,
-  bundlesController,
+  viewDefendantInformationController,
+  viewClaimantInformationController,
   viewMediationSettlementAgreementDocument,
+  bundlesController,
   cancelController,
   viewResponseToClaimController,
 ];
