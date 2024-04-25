@@ -292,4 +292,4 @@ export const MEDIATION_SERVICE_EXTERNAL = 'https://www.gov.uk/guidance/small-cla
 export const BUNDLES_URL = `${BASE_CASE_URL}/bundle-overview`;
 export const VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT = `${MEDIATION_URL}/view-mediation-settlement-agreement-document`;
 export const VIEW_THE_HEARING_URL = `${BASE_CASE_URL}/view-the-hearing`;
-export const VIEW_ORDERS_AND_NOTICES_URL = `${BASE_CASE_URL}/view_orders_and_notices`;
+export const VIEW_ORDERS_AND_NOTICES_URL = `${BASE_CASE_URL}/view-orders-and-notices`;
