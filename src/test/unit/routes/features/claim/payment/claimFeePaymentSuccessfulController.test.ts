@@ -41,7 +41,7 @@ describe('Claim fee payment confirmation', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Claim fee');
-          expect(res.text).toContain('REF-123-123')
+          expect(res.text).toContain('REF-123-123');
         });
     });
 

@@ -16,7 +16,7 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 async function renderView(res: Response, req: AppRequest, claimId: string, redirectUrl: string) {
-  const claim = await civilServiceClient.retrieveClaimDetails(claimId, req)
+  const claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
   const lng = req.query.lang ? req.query.lang : req.cookies.lang;
   res.render(paymentSuccessfulViewPath,
     {
