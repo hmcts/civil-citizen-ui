@@ -19,7 +19,7 @@
     "BALANCE": "Balance",
     "BANK_AND_SAVINGS_ACCOUNTS": "Bank and savings accounts",
     "BANK_JOINT_ACCOUNT": "Joint account",
-    "CANNOT_FIND_DOCUMENT_TEXT": "If you cannot find a document you are looking for in this section",
+    "CANNOT_FIND_DOCUMENT_TEXT": "If you cannot find a document that you are looking for in this section",
     "CHILDREN": "Children",
     "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
@@ -872,6 +872,7 @@
       "AMOUNT": "Amount",
       "AMOUNT_BREAKDOWN": "Amount breakdown",
       "CLAIM_FEE": "Claim fee",
+      "CLAIM_HAS_BEEN_MADE_TEXT": "This is the claim that's has been made in the case. It can also be found in",
       "CLAIM_NUMBER": "Claim number",
       "CLAIM_TOTAL": "Claim Total",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
@@ -880,9 +881,13 @@
       "INTEREST": "Interest",
       "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})",
       "PAGE_TITLE": "Claim Details",
+      "PAGE_TITLE_NEW": "View the claim",
       "REASON_FOR_CLAIM": "Reason for claim",
+      "THE_CLAIM": "The Claim",
       "TIMELINE": "Timeline",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
+      "TITLE": "Claim Details",
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "VIEW_THE_CLAIM_PDF": "View the claim (PDF)"
     },
     "CLAIM_TASK_LIST":{
       "AFTER_COMPLETE": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
@@ -1429,6 +1434,9 @@
       "TITLE": "Are you paying money as a result of any court orders?"
     },
     "DASHBOARD": {
+      "ACCORDION_TITLE": "If you cannot find a document you are looking for in this section",
+      "ACCORDION_CONTENT": "This is the main active hearing on the case. Older hearings and case documents can be found in",
+      "ACCORDION_ORDERS": "orders and notices",
       "ACTIONS": "Actions",
       "ACTION_PROMPT": "You need to respond before ",
       "CLAIMANT_NAME": "Claimant name",
