@@ -21,7 +21,7 @@ describe('dashboardInterpolationService', () => {
     const textExpectedDynamic = 'You have 28 days left.';
 
     const textReplacedUrl = replaceDashboardPlaceholders(textToReplaceUrl, claim, '123');
-    const textExpectedUrl = '#';
+    const textExpectedUrl = '/case/123/response/claim-details';
 
     expect(textReplacedDynamic).toEqual(textExpectedDynamic);
     expect(textReplacedUrl).toEqual(textExpectedUrl);
