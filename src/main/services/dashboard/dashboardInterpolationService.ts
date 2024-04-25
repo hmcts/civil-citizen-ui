@@ -16,8 +16,11 @@ import {
   DATE_PAID_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
-  MEDIATION_SERVICE_EXTERNAL, 
-  PAY_HEARING_FEE_URL, 
+  MEDIATION_SERVICE_EXTERNAL,
+  PAY_HEARING_FEE_URL,
+  VIEW_DEFENDANT_INFO,
+  VIEW_CLAIMANT_INFO,
+  VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT,
   VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT, 
   CLAIM_DETAILS_URL,
 } from 'routes/urls';
@@ -52,9 +55,9 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
 
   valuesMap.set('{VIEW_CLAIM_URL}', CLAIM_DETAILS_URL.replace(':id', claimId));
-  valuesMap.set('{VIEW_INFO_ABOUT_CLAIMANT}', '#');
+  valuesMap.set('{VIEW_INFO_ABOUT_CLAIMANT}', VIEW_CLAIMANT_INFO.replace(':id', claimId));
   valuesMap.set('{VIEW_RESPONSE_TO_CLAIM}', '#');
-  valuesMap.set('{VIEW_INFO_ABOUT_DEFENDANT}', '#');
+  valuesMap.set('{VIEW_INFO_ABOUT_DEFENDANT}', VIEW_DEFENDANT_INFO.replace(':id', claimId));
   valuesMap.set('{VIEW_HEARINGS}', '#');
   valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', '#');
   valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId));
