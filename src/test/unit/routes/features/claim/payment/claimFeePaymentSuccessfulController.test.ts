@@ -4,11 +4,15 @@ import nock from 'nock';
 import config from 'config';
 import {PAY_CLAIM_FEE_SUCCESSFUL_URL} from 'routes/urls';
 import {
-  mockCivilClaim,
   mockCivilClaimApplicantIndividualType,
 } from '../../../../../utils/mockDraftStore';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import { CivilServiceClient } from 'client/civilServiceClient';
+import { Claim } from 'common/models/claim';
+import { ClaimDetails } from 'common/form/models/claim/details/claimDetails';
+import { PaymentInformation } from 'common/models/feePayment/paymentInformation';
+import { ClaimFee } from 'common/form/models/claimDetails';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -26,12 +30,18 @@ describe('Claim fee payment confirmation', () => {
 
   describe('on GET', () => {
     it('should return resolving successful payment page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      const claim = new Claim();
+      claim.claimDetails = new ClaimDetails();
+      claim.claimDetails.claimFeePayment = new PaymentInformation('', 'REF-123-123', 'status');
+      claim.claimFee = { calculatedAmountInPence: 1000 } as ClaimFee;
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
       await request(app)
         .get(PAY_CLAIM_FEE_SUCCESSFUL_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Claim fee');
+          expect(res.text).toContain('REF-123-123')
         });
     });
 

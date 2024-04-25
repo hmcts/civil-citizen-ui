@@ -4,7 +4,7 @@ import {
   PAY_CLAIM_FEE_UNSUCCESSFUL_URL,
   DASHBOARD_URL,
 } from 'routes/urls';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import { deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {Claim} from 'models/claim';
@@ -23,6 +23,7 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo?.paymentReference, FeeType.CLAIMISSUED, req);
 
     if(paymentStatus.status === success) {
+      deleteDraftClaimFromStore(redisClaimId);
       return PAY_CLAIM_FEE_SUCCESSFUL_URL;
     }
 
