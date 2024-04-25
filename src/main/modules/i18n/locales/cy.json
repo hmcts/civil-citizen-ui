@@ -1319,7 +1319,11 @@
       "DEFENDANT": "Diffynnydd",
       "CONTACT": "Cyswllt ",
       "PAGE_TITLE": "Cysylltu â’r hawlydd",
-      "PHONE": "Rhif ffôn"
+      "PAGE_TITLE_CLAIMANT": "View information about the claimant",
+      "PAGE_TITLE_DEFENDANT": "View information about the defendant",
+      "PHONE": "Rhif ffôn",
+      "THE_CLAIM": "The claim",
+      "THE_RESPONSE": "The response"
     },
     "COOKIES": {
       "ADDITIONAL_COOKIES": "Gall gwasanaethau'r llywodraeth osod cwcis ychwanegol ac, os felly, bydd ganddyn nhw eu polisi a'u baner cwcis eu hunain.",
