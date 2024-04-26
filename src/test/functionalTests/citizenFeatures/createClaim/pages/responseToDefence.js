@@ -410,7 +410,6 @@ class ResponseToDefence {
     I.click(paths.buttons.save_and_continue);
   }
 
-
   verifySignTheSettlementAgreementForPartAdmit() {
     I.waitForContent('I confirm I’ve read and accept the terms of the agreement.', 60);
     I.see('Terms of the agreement', 'h1');

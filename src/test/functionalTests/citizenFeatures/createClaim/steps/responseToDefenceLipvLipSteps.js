@@ -43,8 +43,6 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifyAcceptOrRejectConfirmationScreen('reject', '1500');
   }
 
-
-
   async claimantAcceptForDefRespPartAdmitPayBySetDate(caseReference, admittedAmount, claimNumber) {
     await responseToDefence.open(caseReference);
     await responseToDefence.verifyDashboard();
@@ -68,7 +66,6 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.acceptOrRejectTheAmountCYA('accept');
     await responseToDefence.verifyConfirmationScreenForPartAdmitSettlementAgreement(claimNumber);
   }
-
 
   async claimantAcceptForDefRespPartAdmitImmediatePayment(caseReference, admittedAmount) {
     await responseToDefence.open(caseReference);
