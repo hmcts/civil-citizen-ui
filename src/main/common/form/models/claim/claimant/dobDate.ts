@@ -6,7 +6,7 @@ export class DOBDate extends CitizenDate {
   @ValidateIf(o => (o.day < 32 && o.month < 13 && o.year > 999))
   @IsDate({ message: 'ERRORS.VALID_DATE' })
   @MaxDate(() => getDOBforAgeFromCurrentTime(18), { message: 'ERRORS.VALID_ENTER_A_DATE_BEFORE' })
-  date?: Date;
+    date?: Date;
 
   constructor(day?: string, month?: string, year?: string) {
     super(day, month, year);
