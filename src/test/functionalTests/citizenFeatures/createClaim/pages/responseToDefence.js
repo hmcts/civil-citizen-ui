@@ -104,7 +104,7 @@ class ResponseToDefence {
     I.click(paths.buttons.continue);
   }
 
-  async verifyDefResponseForPartAdmitPayBySetDate(claimAmount) {
+  verifyDefResponseForPartAdmitPayBySetDate(claimAmount) {
     I.waitForContent('Why they don’t owe the amount claimed?', 60);
     I.see(`Sir John Doe admits they owe you £${claimAmount}. They don’t believe they owe the full amount claimed.`);
     I.see(`They’ve offered to pay you £${claimAmount} by`);
@@ -252,7 +252,7 @@ class ResponseToDefence {
     I.click(paths.buttons.continue);
   }
 
-  async verifyHowTheyWantToPayPayBySetDate() {
+  verifyHowTheyWantToPayPayBySetDate() {
     I.waitForContent('Why they can’t pay the full amount now?', 60);
     I.see('How they want to pay?', 'h1');
     I.see('They’ve offered to pay you');
