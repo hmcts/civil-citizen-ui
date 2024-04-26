@@ -1,21 +1,20 @@
 import {Claim} from 'models/claim';
 import {convertToPoundsFilter, currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {PaymentSuccessfulSectionBuilder} from 'services/features/claim/paymentSuccessfulSectionBuilder';
-import {getLng} from 'common/utils/languageToggleUtils';
 
-export const getPaymentSuccessfulPanelContent = (claim : Claim, lng?: string) => {
+export const getPaymentSuccessfulPanelContent = (claim : Claim) => {
   return new PaymentSuccessfulSectionBuilder()
-    .addPanel(claim.claimDetails?.claimFeePayment?.paymentReference, lng)
+    .addPanel(claim.claimDetails?.claimFeePayment?.paymentReference)
     .build();
 };
 
-export const getPaymentSuccessfulBodyContent = (claim : Claim, lng?: string) => {
+export const getPaymentSuccessfulBodyContent = (claim : Claim) => {
   return new PaymentSuccessfulSectionBuilder()
-    .addParagraph('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.CONFIRMATION', { lng: getLng(lng) })
-    .addTitle('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_SUMMARY', { lng: getLng(lng) })
+    .addParagraph('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.CONFIRMATION')
+    .addTitle('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_SUMMARY')
     .addSummary(currencyFormatWithNoTrailingZeros(convertToPoundsFilter(
       claim.claimFee.calculatedAmountInPence)),
-    'COMMON.MICRO_TEXT.CLAIM_FEE', lng)
+    'COMMON.MICRO_TEXT.CLAIM_FEE')
     .build();
 };
 

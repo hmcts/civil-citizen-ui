@@ -6,11 +6,11 @@ import {FeeType} from 'form/models/helpWithFees/feeType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('ClaimFeeMakePaymentAgainService');
+
 export const getRedirectUrl = async (claimId: string,  req: AppRequest): Promise<string> => {
   try{
     const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIMISSUED, req);
     const claim = await getCaseDataFromStore(generateRedisKey(req));
-    console.log('makePaymentAgainController ------paymentRedirectInformation---------claim fee--------', paymentRedirectInformation);
     claim.claimDetails.claimFeePayment = paymentRedirectInformation;
     await saveDraftClaim(claim.id, claim, true);
     return paymentRedirectInformation?.nextUrl;

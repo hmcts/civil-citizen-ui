@@ -18,11 +18,10 @@ async function renderView(res: Response, req: any, claimId: string, redirectUrl:
   const claim: Claim = await getClaimById(claimId, req, true);
   const redisClaimId = generateRedisKey(req);
   await deleteDraftClaimFromStore(redisClaimId);
-  const lng = req.query.lang ? req.query.lang : req.cookies.lang;
   res.render(paymentSuccessfulViewPath,
     {
-      paymentSuccessfulPanel: getPaymentSuccessfulPanelContent(claim, lng),
-      paymentSuccessfulBody: getPaymentSuccessfulBodyContent(claim, lng),
+      paymentSuccessfulPanel: getPaymentSuccessfulPanelContent(claim),
+      paymentSuccessfulBody: getPaymentSuccessfulBodyContent(claim),
       paymentSuccessfulButton: getPaymentSuccessfulButtonContent(redirectUrl),
     });
 }

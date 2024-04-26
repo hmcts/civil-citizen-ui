@@ -14,7 +14,6 @@ paymentUnsuccessfulController.get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL, (async (req: A
     const makePaymentAgainUrl = constructResponseUrlWithIdParams(claimId, CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL);
     const claim = await getCaseDataFromStore(generateRedisKey(req));
     const claimNumber : string = claim.getFormattedCaseReferenceNumber(claimId);
-    console.log('paymentUnsuccessfulController ------makePaymentAgainUrl---------claim fee--------',makePaymentAgainUrl);
     res.render(paymentUnsuccessfulViewPath, {
       claimNumber,
       makePaymentAgainUrl,
