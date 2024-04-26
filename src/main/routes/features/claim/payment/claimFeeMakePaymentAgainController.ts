@@ -9,7 +9,7 @@ claimFeeMakePaymentAgainController.get(CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL, (async 
   try {
     const claimId = req.params.id;
     const redirectUrl = await getRedirectUrl(claimId, <AppRequest>req);
-      console.log('makePaymentAgainController ------redirectUrl---------claim fee--------',redirectUrl);
+    console.log('makePaymentAgainController ------redirectUrl---------claim fee--------', redirectUrl);
     res.redirect(redirectUrl);
   }catch (error) {
     next(error);
