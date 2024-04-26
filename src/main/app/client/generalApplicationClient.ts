@@ -48,6 +48,22 @@ export class GeneralApplicationClient {
         };
     }
 
+    async getApplications(req: AppRequest): Promise<ApplicationResponse[]> {
+        const config = this.getConfig(req);
+        let applications: ApplicationResponse[] = [];
+        try {
+            const response = await this.client.post(`/cases/`, {match_all: {}}, config);
+            applications = response.data.cases.map((application: ApplicationResponse) => {
+                const caseData = Object.assign(new Application(), application.case_data);
+                return new ApplicationResponse(application.id, caseData, application.state, application.last_modified);
+            });
+            return applications;
+        } catch (err) {
+            logger.error('Error when getApplications');
+            throw err;
+        }
+    }
+
     async retrieveApplicationDetails(claimId: string, req: AppRequest): Promise<Application> {
         const config = this.getConfig(req);
         try {

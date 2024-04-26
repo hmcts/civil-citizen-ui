@@ -104,6 +104,7 @@
       </div>
     </div>
   {% endif %}
+  {% if applications | length %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-full">
           <h2 class="govuk-heading-m">GA</h2>
@@ -119,15 +120,18 @@
                       </tr>
                     </thead>
             <tbody class="govuk-table__body">
+            {% for application in applications %}
                 <tr class="govuk-table__row">
-                  <td class="govuk-table__cell">{{ application.ccdState }}</td>
+                  <td class="govuk-table__cell">{{ application.state }}</td>
                   <td class="govuk-table__cell">{{ application.id }}</td>
-                  <td class="govuk-table__cell">{{ application.applicantPartyName }} </td>
+                  <td class="govuk-table__cell">{{ application.case_data.applicantPartyName }} </td>
                 </tr>
+            {% endfor %}
             </tbody>
           </table>
         </div>
       </div>
+  {% endif %}
   {% if paginationArgumentDefendant %}
     {{ govukPagination({
       previous: paginationArgumentDefendant.previous,
