@@ -23,6 +23,7 @@ import {
   VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT,
   VIEW_THE_HEARING_URL, VIEW_ORDERS_AND_NOTICES_URL, CLAIM_DETAILS_URL,
   VIEW_RESPONSE_TO_CLAIM,
+  UPLOAD_YOUR_DOCUMENTS_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -63,7 +64,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{VIEW_INFO_ABOUT_DEFENDANT}', VIEW_DEFENDANT_INFO.replace(':id', claimId));
   valuesMap.set('{VIEW_HEARINGS}',VIEW_THE_HEARING_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_THE_HEARING_URL}', VIEW_THE_HEARING_URL.replace(':id', claimId));
-  valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', '#');
+  valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', claimId));
   valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId));
   valuesMap.set('{PAY_HEARING_FEE}', PAY_HEARING_FEE_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_BUNDLE}', BUNDLES_URL.replace(':id', claimId));
