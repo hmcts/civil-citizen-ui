@@ -3805,18 +3805,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:6.12.3":
-  version: 6.12.3
-  resolution: "ajv@npm:6.12.3"
-  dependencies:
-    fast-deep-equal: ^3.1.1
-    fast-json-stable-stringify: ^2.0.0
-    json-schema-traverse: ^0.4.1
-    uri-js: ^4.2.2
-  checksum: ca559d34710e6969d33bc1316282e1ece4d4d99ff5fdca4bfe31947740f8f90e7824238cdc2954e499cf75b2432e3e6c56b32814ebe04fccf8abcc3fbf36b348
-  languageName: node
-  linkType: hard
-
 "ajv@npm:^4.7.0":
   version: 4.11.8
   resolution: "ajv@npm:4.11.8"
@@ -4966,7 +4954,6 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.50.0
     "@typescript-eslint/eslint-plugin-tslint": ^5.50.0
     "@typescript-eslint/parser": ^5.50.0
-    ajv: 6.12.3
     applicationinsights: ^2.3.5
     axios: ^1.3.0
     babel-loader: ^9.1.0
