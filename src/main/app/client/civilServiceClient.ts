@@ -492,7 +492,7 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     try {
       const redisKey = req?.session?.user?.id;
-      const scenarioRef = 'Scenario.AAA7.ClaimIssue.ClaimSubmit.Required';
+      const scenarioRef = 'Scenario.AAA6.ClaimIssue.ClaimSubmit.Required';
       await this.client.post(CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL.replace(':scenarioRef', scenarioRef).replace(':redisKey', redisKey), {params: new Map()},config);
     } catch (err: unknown) {
       logger.error(err);
