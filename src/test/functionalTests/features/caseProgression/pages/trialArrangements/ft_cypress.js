@@ -1,5 +1,4 @@
 import ContactUs from '../../../common/contactUs';
-import Cypress from 'cypress';
 
 const cy = require('cypress');
 const contactUs = new ContactUs();
