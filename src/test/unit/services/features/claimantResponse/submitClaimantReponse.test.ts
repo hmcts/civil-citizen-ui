@@ -21,7 +21,6 @@ import {ResponseType} from 'form/models/responseType';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 
-
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/translation/claimantResponse/claimantResponseCCDTranslation');
 jest.spyOn(CivilServiceClient.prototype, 'getClaimAmountFee').mockImplementation(() => Promise.resolve(0));
