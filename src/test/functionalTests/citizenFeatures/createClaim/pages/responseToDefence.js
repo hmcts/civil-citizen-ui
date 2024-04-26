@@ -305,8 +305,8 @@ class ResponseToDefence {
     if (acceptOrReject == 'accept') {
       I.click(paths.options.yes);
     } else {
-      I.click(paths.options.no)
-    };
+      I.click(paths.options.no);
+    }
     I.click(paths.buttons.save_and_continue);
   }
 
