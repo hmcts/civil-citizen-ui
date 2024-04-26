@@ -261,9 +261,10 @@ class ResponseToDefence {
     I.click(paths.links.see_their_financial_details);
     I.see('Where are they living?');
     I.see('Balance');
+    I.see('Claim number');
+    I.see(`${claimReference}`);
     I.click(paths.buttons.continue);
   }
-
 
   async verifyDoYouWantToSettleTheClaim() {
 
