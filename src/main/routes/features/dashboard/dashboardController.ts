@@ -9,7 +9,7 @@ import {DraftClaimData, getDraftClaimData} from 'services/dashboard/draftClaimSe
 import { buildPagination } from 'services/features/dashboard/claimPaginationService';
 import { DashboardClaimantResponse, DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
 import {GeneralApplicationClient} from "client/generalApplicationClient";
-import {Application} from "models/generalApplication/application";
+import {ApplicationResponse} from "models/generalApplication/applicationResponse";
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -18,7 +18,7 @@ const generalApplicationClient: GeneralApplicationClient = new GeneralApplicatio
 
 function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: DashboardClaimantItem,
   claimsAsDefendant: DashboardDefendantItem[], responseDraftSaved: boolean, draftClaimUrl: string,
-  paginationArgumentClaimant: object, paginationArgumentDefendant: object, lang: string, application: Application ): void {
+  paginationArgumentClaimant: object, paginationArgumentDefendant: object, lang: string, applications: ApplicationResponse[] ): void {
 
   res.render('features/dashboard/dashboard', {
     claimsAsClaimant,
@@ -29,7 +29,7 @@ function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], cl
     paginationArgumentDefendant,
     lang,
     newOcmcClaimUrl: draftClaimUrl,
-    application
+    applications
   });
 }
 
@@ -51,8 +51,9 @@ dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
     const paginationArgumentClaimant = buildPagination(claimsAsClaimant.totalPages, req.query?.claimantPage as string, lang, 'claimantPage', defendantPage);
     const draftClaimUrl = draftClaimData?.claimCreationUrl;
 
-    const application: Application = await generalApplicationClient.retrieveApplicationDetails('1712145230390015', appRequest);
-    renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang, application);
+    //const application: Application = await generalApplicationClient.retrieveApplicationDetails('1712145230390015', appRequest);
+    const applications: ApplicationResponse[] = await generalApplicationClient.getApplications(appRequest);
+    renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang, applications);
   }catch(error){
     next(error);
   }
