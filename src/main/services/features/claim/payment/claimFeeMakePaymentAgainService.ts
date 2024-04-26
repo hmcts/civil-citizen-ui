@@ -10,6 +10,7 @@ export const getRedirectUrl = async (claimId: string,  req: AppRequest): Promise
   try{
     const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIMISSUED, req);
     const claim = await getCaseDataFromStore(generateRedisKey(req));
+    console.log('makePaymentAgainController ------paymentRedirectInformation---------claim fee--------',paymentRedirectInformation);
     claim.claimDetails.claimFeePayment = paymentRedirectInformation;
     await saveDraftClaim(claim.id, claim, true);
     return paymentRedirectInformation?.nextUrl;
