@@ -1,9 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {DASHBOARD_CLAIMANT_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL} from 'routes/urls';
+import {CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL, DASHBOARD_CLAIMANT_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {getFeePaymentRedirectInformation} from 'services/features/feePayment/feePaymentService';
-import {FeeType} from 'form/models/helpWithFees/feeType';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const paymentUnsuccessfulController: Router = Router();
@@ -13,15 +11,9 @@ const paymentUnsuccessfulViewPath  = 'features/caseProgression/hearingFee/paymen
 paymentUnsuccessfulController.get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIMISSUED, req);
-    const makePaymentAgainUrl = paymentRedirectInformation.nextUrl;
+    const makePaymentAgainUrl = constructResponseUrlWithIdParams(claimId, CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL);;
     const claim = await getCaseDataFromStore(generateRedisKey(req));
-    console.log('paymentUnsuccessfulController - language-------------------',lng);
     const claimNumber : string = claim.getFormattedCaseReferenceNumber(claimId);
-    claim.claimDetails.claimFeePayment = paymentRedirectInformation;
-    console.log('paymentUnsuccessfulController - paymentRedirectInformation-------------------',paymentRedirectInformation);
-    await saveDraftClaim(claim.id, claim, true);
     res.render(paymentUnsuccessfulViewPath, {
       claimNumber,
       makePaymentAgainUrl,

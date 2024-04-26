@@ -278,6 +278,7 @@ export const PAY_HEARING_FEE_SUCCESSFUL_URL = `${BASE_CASE_PROGRESSION_URL}/paym
 export const HELP_WITH_FEES_ELIGIBILITY = 'https://www.gov.uk/get-help-with-court-fees#eligibility';
 export const CLAIM_FEE_PAYMENT_CONFIRMATION_URL='/claim-issued-payment-confirmation/:id';
 export const CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID='/claim-issued-payment-confirmation/:id/:uniqueId/confirmation';
+export const CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL = `${BASE_CASE_URL}/make-payment-again`;
 export const PAY_CLAIM_FEE_SUCCESSFUL_URL = `${BASE_CASE_URL}/payment-successful`;
 export const PAY_CLAIM_FEE_UNSUCCESSFUL_URL = `${BASE_CASE_URL}/payment-unsuccessful`;
 export const PAY_HEARING_FEE_UNSUCCESSFUL_URL = `${BASE_CASE_PROGRESSION_URL}/payment-unsuccessful`;
