@@ -41,7 +41,7 @@ module.exports = {
   hwfFullRemission: (feeAmount) => {
     return {
       title: 'Your help with fees application has been reviewed',
-      content: `The full claim fee of £${feeAmount} will be covered by fee remission. You do not need to make a payment.`,
+      content: [`The full claim fee of £${feeAmount} will be covered by fee remission.`, 'You do not need to make a payment.'],
     };
   },
 
