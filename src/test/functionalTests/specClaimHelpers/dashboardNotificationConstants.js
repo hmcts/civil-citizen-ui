@@ -66,7 +66,7 @@ module.exports = {
   hwfPartRemission: () => {
     return {
       title: 'Your help with fees application has been reviewed',
-      content: ['You\'ll get help with the claim fee. You\'ll receive £23 towards it.', 'You must still pay the remaining fee of £92. You can pay by phone by calling 0300 123 7050.'],
+      content: ['get help with the claim fee. £23 will be covered by fee remission.', 'You must still pay the remaining fee of £92. You can pay by phone by calling 0300 123 7050.'],
     };
   },
 
