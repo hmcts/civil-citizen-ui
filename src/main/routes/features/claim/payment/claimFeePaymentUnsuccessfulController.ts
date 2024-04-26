@@ -11,7 +11,7 @@ const paymentUnsuccessfulViewPath  = 'features/caseProgression/hearingFee/paymen
 paymentUnsuccessfulController.get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const makePaymentAgainUrl = constructResponseUrlWithIdParams(claimId, CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL);;
+    const makePaymentAgainUrl = constructResponseUrlWithIdParams(claimId, CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL);
     const claim = await getCaseDataFromStore(generateRedisKey(req));
     const claimNumber : string = claim.getFormattedCaseReferenceNumber(claimId);
     res.render(paymentUnsuccessfulViewPath, {
