@@ -24,6 +24,7 @@ function getUpdatedQuery(query, language) {
 
 document.addEventListener('DOMContentLoaded', function () {
   const lang = getCookie('lang');
+
   document.documentElement.lang = lang;
   const query = window.location.search;
   const toggleLangText = lang === 'en' ? 'Cymraeg' :'English';
