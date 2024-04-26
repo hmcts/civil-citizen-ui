@@ -41,7 +41,7 @@ module.exports = {
   hwfFullRemission: (feeAmount) => {
     return {
       title: 'Your help with fees application has been reviewed',
-      content: `The full claim fee of £${feeAmount} will be covered. You do not need to make a payment.`,
+      content: `The full claim fee of £${feeAmount} will be covered by fee remission. You do not need to make a payment.`,
     };
   },
 
@@ -58,7 +58,7 @@ module.exports = {
     return {
       title: 'Your help with fees application needs more information',
       content: ['We need more information on your application for help with the claim fee.',
-        'You\'ve been sent an email with further details. If you\'ve already read the email and taken action, disregard this message.',
+        'You\'ve been sent an email with further details. If you\'ve already read the email and taken action, you can disregard this message.',
         'You can pay by phone by calling 0300 123 7050.'],
     };
   },
