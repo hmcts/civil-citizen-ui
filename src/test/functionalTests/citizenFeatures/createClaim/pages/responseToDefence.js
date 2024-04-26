@@ -252,7 +252,7 @@ class ResponseToDefence {
     I.click(paths.buttons.continue);
   }
 
-  async verifyHowTheyWantToPayPayBySetDate(claimReference) {
+  async verifyHowTheyWantToPayPayBySetDate() {
     I.waitForContent('Why they can’t pay the full amount now?', 60);
     I.see('How they want to pay?', 'h1');
     I.see('They’ve offered to pay you');
@@ -261,8 +261,6 @@ class ResponseToDefence {
     I.click(paths.links.see_their_financial_details);
     I.see('Where are they living?');
     I.see('Balance');
-    I.see('Claim number');
-    I.see(`${claimReference}`);
     I.click(paths.buttons.continue);
   }
 
@@ -298,13 +296,17 @@ class ResponseToDefence {
     I.click(paths.buttons.save_and_continue);
   }
 
-  verifyRepaymentPlanForPartAdmitPayBySetDate() {
+  verifyRepaymentPlanForPartAdmitPayBySetDate(acceptOrReject) {
     I.waitForContent('No - I\'ll suggest my own',60);
     I.see('How they want to pay?', 'h1');
     I.see('Sir John Doe has offered to pay you in full by');
     I.see('Do you accept the repayment plan?');
     I.see('Yes');
-    I.click(paths.options.yes);
+    if (acceptOrReject == 'accept') {
+      I.click(paths.options.yes);
+    } else {
+      I.click(paths.options.no)
+    };
     I.click(paths.buttons.save_and_continue);
   }
 
@@ -341,6 +343,12 @@ class ResponseToDefence {
     I.see('I want a judge to make a repayment plan');
     I.click(paths.options.acceptCourtDecision);
     I.click(paths.buttons.save_and_continue);
+  }
+
+  verifyCourtAcceptedProposedPlan() {
+    I.waitForContent('The court has accepted your repayment plan', 60);
+    I.see('Repayment plan accepted', 'h1');
+    I.click(paths.buttons.continue);
   }
 
   verifySignTheSettlementAgreementForFullAdmit(option) {
@@ -531,6 +539,12 @@ class ResponseToDefence {
 
   verifyConfirmationScreenForPartAdmitSettlementAgreement(claimNumber) {
     I.waitForContent('You\'ve signed a settlement agreement', 60);
+    I.see('Your claim number:');
+    I.see(`${claimNumber}`);
+  }
+
+  verifyConfirmationScreenForPartAdmitCCJ(claimNumber) {
+    I.waitForContent('County Court Judgment requested', 60);
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
   }

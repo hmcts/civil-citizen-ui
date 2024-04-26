@@ -48,13 +48,13 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifyDashboard();
     I.click(paths.links.view_defendants_response);
     await responseToDefence.verifyDefResponseForPartAdmitPayBySetDate(admittedAmount);
-    await responseToDefence.verifyHowTheyWantToPayPayBySetDate(caseReference);
+    await responseToDefence.verifyHowTheyWantToPayPayBySetDate();
     await this.verifyDashboardLoaded();
     I.click(paths.links.accept_or_reject_the_plan);
     await responseToDefence.acceptOrRejectTheAmountDefendantAdmittedAndSettle(admittedAmount, 'accept');
     await this.verifyDashboardLoaded();
     I.click(paths.links.accept_or_reject_the_payment_plan);
-    await responseToDefence.verifyRepaymentPlanForPartAdmitPayBySetDate();
+    await responseToDefence.verifyRepaymentPlanForPartAdmitPayBySetDate('accept');
     await this.verifyDashboardLoaded();
     I.click(paths.links.how_to_formalise_repayment);
     await responseToDefence.verifyHowToFormaliseARepayment('settlementAgreement');
@@ -65,6 +65,34 @@ class ResponseToDefenceLipVLipSteps {
     I.click(paths.links.check_and_submit_your_response);
     await responseToDefence.acceptOrRejectTheAmountCYA('accept');
     await responseToDefence.verifyConfirmationScreenForPartAdmitSettlementAgreement(claimNumber);
+  }
+
+  async claimantAcceptForDefRespPartAdmitPayBySetDateRejectRepaymentPlanCCJ(caseReference, admittedAmount, claimNumber) {
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefResponseForPartAdmitPayBySetDate(admittedAmount);
+    await responseToDefence.verifyHowTheyWantToPayPayBySetDate();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.accept_or_reject_the_plan);
+    await responseToDefence.acceptOrRejectTheAmountDefendantAdmittedAndSettle(admittedAmount, 'accept');
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.accept_or_reject_the_payment_plan);
+    await responseToDefence.verifyRepaymentPlanForPartAdmitPayBySetDate('reject');
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.propose_an_alternative_repayment_plan);
+    await responseToDefence.verifyProposeAnAlternativePaymentPlan();
+    await responseToDefence.verifyCourtAcceptedProposedPlan();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.how_to_formalise_repayment);
+    await responseToDefence.verifyHowToFormaliseARepayment('CCJ');
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.request_a_CCJ);
+    await responseToDefence.verifyCCJ();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.check_and_submit_your_response);
+    await responseToDefence.acceptOrRejectTheAmountCYA('accept');
+    await responseToDefence.verifyConfirmationScreenForPartAdmitCCJ(claimNumber);
   }
 
   async claimantAcceptForDefRespPartAdmitImmediatePayment(caseReference, admittedAmount) {
