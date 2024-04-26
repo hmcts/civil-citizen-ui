@@ -48,7 +48,7 @@ module.exports = {
   invalidHwfNumber: () => {
     return {
       title: 'You\'ve provided an invalid help with fees reference number',
-      content: ['You\'ve applied for help with the claim fee, but the reference number is invalid.', 
+      content: ['You\'ve applied for help with the claim fee, but the reference number is invalid.',
         'You\'ve been sent an email with instructions on what to do next. If you\'ve already read the email and taken action, disregard this message.',
         'You can pay by phone by calling 0300 123 7050.'],
     };
@@ -89,7 +89,7 @@ module.exports = {
     return {
       title: 'Response to the claim',
       deadlineDate: deadline,
-      content: [`You have offered to pay £${amount} by`, 'The payment must be received in Miss Jane Doe\'s acount by then, if not they can request a county court judgment.'],
+      content: [`You have offered to pay £${amount} by`, 'The payment must be received in Miss Jane Doe\'s account by then, if not they can request a county court judgment.'],
       nextSteps: 'View your response',
     };
   },
@@ -105,7 +105,7 @@ module.exports = {
   defendantResponseFullAdmitPayBySetDate: (amount, deadline) => {
     return {
       title: 'Response to the claim',
-      content: `You have offered to pay £${amount} by ${deadline}. The court will contact you when they respond.`,
+      content: `You have offered to pay £${amount} by ${deadline}. We will contact you when the claimant responds to your offer.`,
       nextSteps: 'View your response',
     };
   },
@@ -114,7 +114,7 @@ module.exports = {
     return {
       title: 'Response to the claim',
       deadlineDate: deadline,
-      content: `Sir John Doe has offered to pay £${amount} by`,
+      content: ['Sir John Doe has offered to pay',  `£${amount} by`],
       nextSteps: 'View and respond',
     };
   },
