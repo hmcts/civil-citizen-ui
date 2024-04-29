@@ -8,7 +8,6 @@ import {
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION,
 } from 'routes/urls';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ResponseType} from 'common/form/models/responseType';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
@@ -168,7 +167,7 @@ describe('Respond To Settlement Agreement', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      const error = new Error(TestMessages.SOMETHING_WENT_WRONG);
+      const error = new Error('Something went wrong');
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockRejectedValueOnce(error);
@@ -177,7 +176,7 @@ describe('Respond To Settlement Agreement', () => {
         .get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT)
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.text).toContain(new Error(TestMessages.SOMETHING_WENT_WRONG));
+          expect(res.text).toContain(t('ERRORS.SOMETHING_WENT_WRONG'));
         });
     });
   });
@@ -214,7 +213,7 @@ describe('Respond To Settlement Agreement', () => {
         .send({})
         .expect((res) => {
           expect(res.status).toBe(500);
-          expect(res.text).toContain(new Error(TestMessages.SOMETHING_WENT_WRONG));
+          expect(res.text).toContain(t('ERRORS.SOMETHING_WENT_WRONG'));
         });
     });
 
