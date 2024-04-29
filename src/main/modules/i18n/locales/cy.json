@@ -2636,10 +2636,10 @@
       "WARNING": "Ni fydd hyn yn newid y terfyn amser ar gyfer ymateb. Hyd yn oed os caniateir 4 wythnos arall i setlo’r hawliad, bydd dal angen i chi ymateb i’r hawliad erbyn y terfyn amser a nodir."
     },
     "REQUEST_MORE_TIME": {
-      "APPLY_TO_COURT": "Mae angen i chi wneud cais i'r llys i ofyn am ragor o amser.",
+      "APPLY_TO_COURT": "Mae angen i chi wneud cais i’r llys i ofyn am ragor o amser.",
       "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
       "DOWNLOAD_FORM": "Dylech lawrlwytho ffurflen N244 (agor mewn tab newydd)",
-      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi ar e-bost i contact@justice.gov.uk",
+      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi trwy e-bost i : contact@justice.gov.uk.",
       "HOW_MUCH_ADDITIONAL_TIME": "Faint o amser ychwanegol yr ydych yn gwneud cais amdano?",
       "IF_AGREED": "Os bydd y cais yn cael ei ganiatáu, bydd yr amser ychwanegol yn dechrau o {{ responseDeadline }}",
       "MORE_THAN_28_DAYS": "Mwy na 28 diwrnod",
@@ -2666,8 +2666,8 @@
     },
     "RESPONSE_DEADLINE_OPTIONS": {
       "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
-      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi ar e-bost i contact@justice.gov.uk",
-      "FORM": "Ffurflen N244 (agor mewn tab newydd)",
+      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi trwy e-bost i : contact@justice.gov.uk.",
+      "FORM": "Ffurflen N244 (yn agor mewn tab newydd)",
       "MORE_TIME": "Ydych chi eisiau gwneud cais am ragor o amser i ymateb?",
       "OPTION_AGREED": "Rwyf eisoes wedi cytuno ar ragor o amser gyda chynrychiolydd cyfreithiol {{ claimantName }}",
       "OPTION_AGREED_R2": "Rwyf eisoes wedi cytuno ar ragor o amser gyda’r parti arall neu eu cynrychiolydd cyfreithiol",
