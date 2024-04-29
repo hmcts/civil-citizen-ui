@@ -15,7 +15,7 @@ import {
   toCCDClaimantSuggestedFirstRepaymentDate,
   toCCDClaimantSuggestedPayByDate,
   toCCDClaimantPaymentOption,
-  toCCDClaimantSuggestedImmediatePaymentDateInFavourClaimant
+  toCCDClaimantSuggestedImmediatePaymentDateInFavourClaimant,
 }
   from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
 import {toCCDDQHearingSupport} from '../response/convertToCCDHearingSupport';
