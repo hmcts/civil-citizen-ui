@@ -334,16 +334,17 @@ module.exports = {
 
   createSDO: async (user, sdoSelectionType = config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes) => {
     let createSDOPayload;
+    const document = await uploadDocument();
     if (sdoSelectionType === config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes) {
-      createSDOPayload = createSDOReqPayload.judgementSumSelectedYesAssignToSmallClaimsYes();
+      createSDOPayload = createSDOReqPayload.judgementSumSelectedYesAssignToSmallClaimsYes(document);
     } else if (sdoSelectionType === config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing) {
-      createSDOPayload = createSDOReqPayload.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing();
+      createSDOPayload = createSDOReqPayload.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing(document);
     } else if (sdoSelectionType === config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoTrialHearing) {
-      createSDOPayload = createSDOReqPayload.judgementSumSelectedYesAssignToSmallClaimsNoTrialHearing();
+      createSDOPayload = createSDOReqPayload.judgementSumSelectedYesAssignToSmallClaimsNoTrialHearing(document);
     } else if (sdoSelectionType === config.sdoSelectionType.judgementSumSelectedNoAssignToSmallClaimsYes) {
-      createSDOPayload = createSDOReqPayload.judgementSumSelectedNoAssignToSmallClaimsYes();
+      createSDOPayload = createSDOReqPayload.judgementSumSelectedNoAssignToSmallClaimsYes(document);
     } else if (sdoSelectionType === config.sdoSelectionType.judgementSumSelectedNoAssignToFastTrackYes) {
-      createSDOPayload = createSDOReqPayload.judgementSumSelectedNoAssignToFastTrackYes();
+      createSDOPayload = createSDOReqPayload.judgementSumSelectedNoAssignToFastTrackYes(document);
     }
 
     eventName = createSDOPayload['event'];
