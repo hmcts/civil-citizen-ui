@@ -31,7 +31,7 @@ import {CourtProposedPlan, CourtProposedPlanOptions} from 'form/models/claimantR
 import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
 import {toCUIClaimantMediation} from 'services/translation/convertToCUI/convertToCUIClaimantMediation';
-import {RepaymentPlan} from 'models/repaymentPlan';
+import { RepaymentPlan } from 'common/models/repaymentPlan';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaimObj);
@@ -84,7 +84,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.interest = claim?.interest ? claim?.interest : translateCCDInterestDetailsToCUI(ccdClaim);
   claim.claimantResponse.suggestedPaymentIntention.paymentOption = toCUIClaimantPaymentOption(ccdClaim.applicant1RepaymentOptionForDefendantSpec);
   claim.claimantResponse.suggestedPaymentIntention.paymentDate = translateCCDPaymentDateToCUIccd(ccdClaim.applicant1RequestedPaymentDateForDefendantSpec?.paymentSetDate);
-  claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = translateCCDRepaymentPlanToCUIRepaymentPlan(ccdClaim);
+  claim.claimantResponse.suggestedPaymentIntention.repaymentPlan = toCUIApplicant1RepaymentPlan(ccdClaim);
   claim.claimantResponse.courtProposedPlan = new CourtProposedPlan();
   claim.claimantResponse.courtProposedDate = new CourtProposedDate();
   claim.claimantResponse.courtProposedPlan.decision = CourtProposedPlanOptions[ccdClaim.applicant1LiPResponse?.claimantResponseOnCourtDecision as CourtProposedPlanOptions];
@@ -141,11 +141,10 @@ function translateCCDPaymentDateToCUIccd(paymentDate: string): Date {
   return (paymentDate) ? new Date(paymentDate) : undefined;
 }
 
-function translateCCDRepaymentPlanToCUIRepaymentPlan(ccdClaim: CCDClaim): RepaymentPlan {
-  const repaymentPlan =  {
-    paymentAmount: (ccdClaim?.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec) ? ccdClaim?.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec : undefined,
-    firstRepaymentDate: (ccdClaim?.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec) ? new Date(ccdClaim?.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec) : undefined,
-    repaymentFrequency: ccdClaim?.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec ? toCUIRepaymentPlanFrequency(ccdClaim?.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec) : undefined,
+function toCUIApplicant1RepaymentPlan(ccdClaim: CCDClaim): RepaymentPlan  {
+  return {
+    paymentAmount : ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec,
+    repaymentFrequency : toCUIRepaymentPlanFrequency(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec),
+    firstRepaymentDate : new Date(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec),
   };
-  return repaymentPlan;
 }
