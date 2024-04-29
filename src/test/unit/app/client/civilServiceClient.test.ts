@@ -1057,7 +1057,7 @@ describe('Civil Service Client', () => {
         baseURL: baseUrl,
       });
       expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL
-        .replace(':scenarioRef', 'Scenario.AAA7.ClaimIssue.ClaimSubmit.Required')
+        .replace(':scenarioRef', 'Scenario.AAA6.ClaimIssue.ClaimSubmit.Required')
         .replace(':redisKey', '1'));
     });
 
