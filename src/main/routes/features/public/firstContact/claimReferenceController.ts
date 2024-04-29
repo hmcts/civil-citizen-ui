@@ -1,4 +1,4 @@
-import {Request, RequestHandler, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
   FIRST_CONTACT_PIN_URL,
@@ -20,23 +20,27 @@ claimReferenceController.get(FIRST_CONTACT_CLAIM_REFERENCE_URL, (req: Request, r
   res.render(claimReferenceViewPath, { form: new GenericForm(new ClaimReference(req.body.claimReferenceValue)) });
 });
 
-claimReferenceController.post(FIRST_CONTACT_CLAIM_REFERENCE_URL, (async (req: Request, res: Response) => {
+claimReferenceController.post(FIRST_CONTACT_CLAIM_REFERENCE_URL, (async (req: Request, res: Response, next: NextFunction) => {
   const firstContactClaimReference = new ClaimReference(req.body.claimReferenceValue);
   const form = new GenericForm(firstContactClaimReference);
   await form.validate();
   if (form.hasErrors()) {
     res.render(claimReferenceViewPath, {form});
   } else {
-    req.session = saveFirstContactData(req.session as AppSession, { claimReference: req.body.claimReferenceValue });
-    if (req.body.claimReferenceValue?.includes('MC')) {
-      const linked: boolean = await civilServiceClient.isOcmcDefendantLinked(req.body.claimReferenceValue);
-      if (linked) {
-        res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
+    try {
+      req.session = saveFirstContactData(req.session as AppSession, {claimReference: req.body.claimReferenceValue});
+      if (req.body.claimReferenceValue?.includes('MC')) {
+        const linked: boolean = await civilServiceClient.isOcmcDefendantLinked(req.body.claimReferenceValue);
+        if (linked) {
+          res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
+        } else {
+          res.redirect(FIRST_CONTACT_PIN_URL);
+        }
       } else {
         res.redirect(FIRST_CONTACT_PIN_URL);
       }
-    } else {
-      res.redirect(FIRST_CONTACT_PIN_URL);
+    } catch (error) {
+      next(error);
     }
   }
 }) as RequestHandler);
