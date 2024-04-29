@@ -25,6 +25,7 @@ import {CIVIL_SERVICE_SUBMIT_EVENT} from 'client/civilServiceUrls';
 import { ClaimantResponse } from 'common/models/claimantResponse';
 import { RepaymentDecisionType } from 'common/models/claimantResponse/RepaymentDecisionType';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {PartyType} from 'models/partyType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -162,6 +163,39 @@ describe('Respond To Settlement Agreement', () => {
         expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.TITLE'));
         expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.THE_AGREEMENT.REPAYMENT_PLAN',
           {defendant: '', amount: '200',paymentAmount: '1000',frequency: 'month' , firstRepaymentDate: formatDateToFullDate(new Date('2024-11-01'))},
+        ));
+      });
+    });
+
+    it('should return respond to settlement agreement page for pay by immediately when claimant plan is accepted', async () => {
+      const mockClaim = getMockClaim();
+      mockClaim.respondent1 = new Party();
+      mockClaim.respondent1.partyDetails = { 'firstName': 'John', 'lastName': 'White' };
+      mockClaim.respondent1.type = PartyType.INDIVIDUAL;
+      mockClaim.applicant1 = new Party();
+      mockClaim.applicant1.partyDetails = { 'firstName': 'James', 'lastName': 'White' };
+      mockClaim.applicant1.type = PartyType.INDIVIDUAL;
+      mockClaim.claimantResponse= new ClaimantResponse();
+      mockClaim.claimantResponse.courtDecision =
+          RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+      mockClaim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+      mockClaim.claimantResponse.suggestedPaymentIntention.paymentOption =
+          PaymentOptionType.IMMEDIATELY;
+      mockClaim.claimantResponse.suggestedImmediatePaymentDeadLine = new Date();
+      mockClaim.defendantSignedSettlementAgreement = YesNo.YES;
+
+      const claim = Object.assign(new Claim(), mockClaim);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockReturnValue(
+          new Promise((resolve) => resolve(claim)),
+        );
+
+      await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.TITLE'));
+        expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.THE_AGREEMENT.PAY_IMMEDIATELY_PLAN',
+          {defendant: 'John White', amount: '200', claimant: 'James White', paymentDate: formatDateToFullDate(new Date())},
         ));
       });
     });
