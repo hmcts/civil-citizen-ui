@@ -29,13 +29,8 @@ claimReferenceController.post(FIRST_CONTACT_CLAIM_REFERENCE_URL, (async (req: Re
   } else {
     try {
       req.session = saveFirstContactData(req.session as AppSession, {claimReference: req.body.claimReferenceValue});
-      if (req.body.claimReferenceValue?.includes('MC')) {
-        const linked: boolean = await civilServiceClient.isOcmcDefendantLinked(req.body.claimReferenceValue);
-        if (linked) {
-          res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
-        } else {
-          res.redirect(FIRST_CONTACT_PIN_URL);
-        }
+      if (req.body.claimReferenceValue?.includes('MC') && await civilServiceClient.isOcmcDefendantLinked(req.body.claimReferenceValue)) {
+        res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
       } else {
         res.redirect(FIRST_CONTACT_PIN_URL);
       }
