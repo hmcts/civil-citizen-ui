@@ -297,3 +297,4 @@ export const VIEW_DEFENDANT_INFO = `${DASHBOARD_URL}/:id/information-defendant`;
 export const VIEW_CLAIMANT_INFO = `${DASHBOARD_URL}/:id/information-claimant`;
 export const CANCEL_URL = `${BASE_CASE_URL}/:propertyName/cancel`;
 export const EVIDENCE_UPLOAD_DOCUMENTS_URL = `${BASE_CASE_URL}/evidence-upload-documents`;
+export const GA_AGREEMENT_FROM_OTHER_PARTY = `${BASE_GENERAL_APPLICATION_URL}/agreement-from-other-party`;
