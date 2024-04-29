@@ -4,6 +4,7 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 import {CCDClaimantPayBySetDate} from '../ccdResponse/ccdPayBySetDate';
 import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
+import {CCDRepaymentPlanFrequency} from 'models/ccdResponse/ccdRepaymentPlan';
 
 export interface EventDto {
   event: CaseEvent,
@@ -23,5 +24,8 @@ export interface ClaimUpdate {
   respondentSignSettlementAgreement? : YesNoUpperCamelCase;
   applicant1RequestedPaymentDateForDefendantSpec? : CCDClaimantPayBySetDate;
   applicant1AcceptAdmitAmountPaidSpec?: YesNoUpperCamelCase;
+  applicant1SuggestInstalmentsPaymentAmountForDefendantSpec?: number;
+  applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec?: string;
+  applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec?: CCDRepaymentPlanFrequency;
   applicant1ClaimSettledDate?: Date;
 }
