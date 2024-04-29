@@ -2009,6 +2009,16 @@
         "SELECT_APPLICATION": "Select the application you want and click continue.",
         "TITLE": "Select application",
         "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order."
+      },
+      "CONFIRMATION_PAGE": {
+        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of",
+        "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
+        "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
+        "TITLE": "Application created",
+        "PAGE_TITLE": "Application created",
+        "PAY_FEE_BUTTON": "Pay application fee",
+        "RETURN_CASE_DETAILS": "Close and return to case details",
+        "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge.",
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
