@@ -227,7 +227,7 @@ export class CivilServiceClient {
       const response = await this.client.get(CIVIL_SERVICE_CHECK_OCMC_DEFENDENT_LINKED_URL //nosonar
         .replace(':caseReference', caseReference), {headers: {'Content-Type': 'application/json'}});// no-sonar
       if (!response.data) {
-        return null;
+        return false;
       }
       return response.data as boolean;
     } catch (err: unknown) {
