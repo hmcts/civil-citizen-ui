@@ -414,9 +414,7 @@ describe('translateCCDCaseDataToCUIModel', () => {
     //Given
     const paymentDate = new Date('2024-04-30');
     const input: CCDClaim = {
-      applicant1LiPResponse : {
-        applicant1SuggestedImmediatePaymentDeadLine: paymentDate,
-      },
+      applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec : paymentDate,
     };
 
     const claim = translateCCDCaseDataToCUIModel(input);

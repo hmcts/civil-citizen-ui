@@ -2,6 +2,7 @@ import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paym
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {convertDateToStringFormat} from 'common/utils/dateUtils';
+import {RepaymentDecisionType} from "models/claimantResponse/RepaymentDecisionType";
 
 export const toCCDClaimantPaymentOption = (paymentOptionType: PaymentOptionType) : CCDClaimantPaymentOption => {
   switch (paymentOptionType) {
@@ -32,3 +33,12 @@ export const toCCDClaimantSuggestedFirstRepaymentDate = (claimantResponse?: Clai
 
   return undefined;
 };
+
+export const toCCDClaimantSuggestedImmediatePaymentDateInFavourClaimant = (claimantResponse?: ClaimantResponse): boolean => {
+
+console.log(claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT );
+console.log(claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY );
+  return claimantResponse?.courtDecision === RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT && 
+  claimantResponse?.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;
+};
+

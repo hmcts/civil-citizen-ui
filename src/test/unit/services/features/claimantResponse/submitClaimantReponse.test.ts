@@ -19,7 +19,6 @@ import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {PartialAdmission} from 'models/partialAdmission';
 import {ResponseType} from 'form/models/responseType';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
-import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/services/translation/claimantResponse/claimantResponseCCDTranslation');
@@ -169,33 +168,6 @@ describe('Submit claimant response to ccd', () => {
       //Then
       expect(spyOnTranslation).toHaveBeenCalled();
       expect(spyOnCCJTranslation).toHaveBeenCalled();
-      if (!nock.isDone()) {
-        nock.cleanAll();
-        fail('did not submit event to civil service');
-      }
-    });
-    it('should submit claimant response with claimant payment date when court accepts pay immediately', async () => {
-      //Given
-      claim.respondent1.responseType = ResponseType.FULL_ADMISSION;
-      claim.fullAdmission = new PartialAdmission();
-      claim.fullAdmission.paymentIntention = new PaymentIntention();
-      claim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
-      claim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
-      claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
-      claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
-      nock(citizenBaseUrl)
-        .post('/cases/1/citizen/undefined/event')
-        .reply(200, {});
-      mockGetCaseData.mockImplementation(async () => {
-        return claim;
-      });
-      const spyOnGetPaymentDate =
-        jest.spyOn(CivilServiceClient.prototype, 'calculateExtendedResponseDeadline').mockImplementation(() => Promise.resolve(new Date('2024-04-26')));
-      //When
-      await submitClaimantResponse(mockedAppRequest);
-      //Then
-      expect(spyOnGetPaymentDate).toHaveBeenCalled();
-
       if (!nock.isDone()) {
         nock.cleanAll();
         fail('did not submit event to civil service');

@@ -23,10 +23,6 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
       const ccdResponseForRequestDefaultJudgement = translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD(claim, claimFee);
       ccdResponse = {...ccdResponse, ...ccdResponseForRequestDefaultJudgement};
     }
-    if (claimantResponse.isCourtDecisionInFavourOfClaimant && claimantResponse.isClaimantSuggestedPayImmediately) {
-      ccdResponse.applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec =
-        await civilServiceClient.calculateExtendedResponseDeadline(new Date(Date.now()), 5, req);
-    }
     logger.info('Submitting claimant intention...');
     return await civilServiceClient.submitClaimantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {
