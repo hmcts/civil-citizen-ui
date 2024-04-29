@@ -7,6 +7,9 @@ import {mockCivilClaimApplicantCompanyType} from '../../../../utils/mockDraftSto
 import {mockCivilClaimHearingFee} from '../../../../utils/mockDraftStore';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -24,6 +27,11 @@ describe('Apply for help with fees', () => {
 
   describe('on GET', () => {
     it('should return resolving successful payment page', async () => {
+      const caseData = Object.assign(new Claim(), claim.case_data);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(caseData);
+
       app.locals.draftStoreClient = mockCivilClaimHearingFee;
       await request(app)
         .get(PAY_HEARING_FEE_SUCCESSFUL_URL)
