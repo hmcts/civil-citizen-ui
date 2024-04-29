@@ -41,7 +41,7 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
     },
   };
   if (href) {
-    const accessibilityText = hiddentText ? `${key} (${hiddentText})` : `${key}`
+    const accessibilityText = hiddentText ? `${key} (${hiddentText})` : `${key}`;
     row.actions = {
       items: [
         {
