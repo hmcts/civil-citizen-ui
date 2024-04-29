@@ -3,7 +3,7 @@ import {app} from '../../../../../../main/app';
 import {
   ELIGIBILITY_INFORMATION_FEES_URL,
   ELIGIBILITY_APPLY_HELP_FEES_URL,
-  ELIGIBILITY_APPLY_HELP_WITH_FEES_URL,
+  ELIGIBILITY_HELP_WITH_FEES_URL,
 } from '../../../../../../main/routes/urls';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 
@@ -50,7 +50,7 @@ describe('Some useful information about Help with Fees Controller', () => {
       app.request.cookies = {eligibility: {foo: 'blah'}};
       const res = await request(app).post(ELIGIBILITY_INFORMATION_FEES_URL).send({option: YesNo.NO});
       expect(res.status).toBe(302);
-      expect(res.header.location).toBe(ELIGIBILITY_APPLY_HELP_WITH_FEES_URL);
+      expect(res.header.location).toBe(ELIGIBILITY_HELP_WITH_FEES_URL);
       expect(app.request.cookies.eligibility.someUsefulInfoFees).toBe(YesNo.NO);
       expect(app.request.cookies.eligibility.foo).toBe('blah');
     });
