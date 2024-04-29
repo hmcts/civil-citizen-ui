@@ -41,7 +41,7 @@ module.exports = {
   hwfFullRemission: (feeAmount) => {
     return {
       title: 'Your help with fees application has been reviewed',
-      content: `The full claim fee of £${feeAmount} will be covered. You do not need to make a payment.`,
+      content: [`The full claim fee of £${feeAmount} will be covered by fee remission.`, 'You do not need to make a payment.'],
     };
   },
 
@@ -58,7 +58,7 @@ module.exports = {
     return {
       title: 'Your help with fees application needs more information',
       content: ['We need more information on your application for help with the claim fee.',
-        'You\'ve been sent an email with further details. If you\'ve already read the email and taken action, disregard this message.',
+        'You\'ve been sent an email with further details. If you\'ve already read the email and taken action, you can disregard this message.',
         'You can pay by phone by calling 0300 123 7050.'],
     };
   },
@@ -66,7 +66,7 @@ module.exports = {
   hwfPartRemission: () => {
     return {
       title: 'Your help with fees application has been reviewed',
-      content: ['You\'ll get help with the claim fee. You\'ll receive £23 towards it.', 'You must still pay the remaining fee of £92. You can pay by phone by calling 0300 123 7050.'],
+      content: ['get help with the claim fee. £23 will be covered by fee remission.', 'You must still pay the remaining fee of £92. You can pay by phone by calling 0300 123 7050.'],
     };
   },
 
@@ -89,7 +89,7 @@ module.exports = {
     return {
       title: 'Response to the claim',
       deadlineDate: deadline,
-      content: [`You have offered to pay £${amount} by`, 'The payment must clear the account by then, if not the claimant can request a county court judgment.'],
+      content: [`You have offered to pay £${amount} by`, 'The payment must be received in Miss Jane Doe\'s account by then, if not they can request a county court judgment.'],
       nextSteps: 'View your response',
     };
   },
@@ -97,7 +97,7 @@ module.exports = {
   defendantResponseFullAdmitPayInstalments: (amount, instalmentAmount, date) => {
     return {
       title: 'Response to the claim',
-      content: [`You have offered to pay £${amount} in instalments of £${instalmentAmount} every month starting ${date}.`, 'The court will contact you when they respond.'],
+      content: [`You have offered to pay £${amount} in instalments of £${instalmentAmount} every month.`, `You have offered to do this starting from ${date}`,  'We will contact you when the claimant responds to your offer.'],
       nextSteps: 'View your response',
     };
   },
@@ -105,7 +105,7 @@ module.exports = {
   defendantResponseFullAdmitPayBySetDate: (amount, deadline) => {
     return {
       title: 'Response to the claim',
-      content: `You have offered to pay £${amount} by ${deadline}. The court will contact you when they respond.`,
+      content: `You have offered to pay £${amount} by ${deadline}. We will contact you when the claimant responds to your offer.`,
       nextSteps: 'View your response',
     };
   },
@@ -114,7 +114,7 @@ module.exports = {
     return {
       title: 'Response to the claim',
       deadlineDate: deadline,
-      content: `The defendant has offered to pay £${amount} by`,
+      content: ['Sir John Doe has offered to pay',  `£${amount} by`],
       nextSteps: 'View and respond',
     };
   },
@@ -132,7 +132,7 @@ module.exports = {
   claimantNotificationWithDefendantRejectMedidationWithRejectAll: () => {
     return {
       title: 'Response to the claim',
-      content: ['The defendant has rejected the claim and refused mediation.', 'You need to respond by '],
+      content: ['Test Company Defendant has rejected the claim and refused mediation.', 'You need to respond by '],
       nextSteps: 'View and respond',
     };
   },
