@@ -15,6 +15,7 @@ import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
 import {CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {CCDRejectAllOfClaimType} from 'models/ccdResponse/ccdRejectAllOfClaimType';
+import { CCDRepaymentPlanFrequency } from 'common/models/ccdResponse/ccdRepaymentPlan';
 
 const phoneCCD = '123456789';
 const title = 'Mr';
@@ -390,5 +391,25 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     //Then
     expect(claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled).toEqual(undefined);
+  });
+
+  it('should translate claimant suggestedPaymentIntention repaymentplan to CUI model for having value', () => {
+    //Given
+    const input: CCDClaim = {
+      applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: 1000,
+      applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: '2024-06-01',
+      applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: CCDRepaymentPlanFrequency.ONCE_ONE_MONTH,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    const repaymentPlan = {
+      paymentAmount : 1000,
+      repaymentFrequency : 'MONTH',
+      firstRepaymentDate : new Date('2024-06-01'),
+    };
+
+    expect(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan).toEqual(repaymentPlan);
   });
 });
