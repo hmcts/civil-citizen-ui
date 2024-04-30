@@ -53,5 +53,6 @@ export const IGNORED_URLS = [
   // WCAG2AA.Principle1.Guideline1_3.1_3_1.H39.3.LayoutTable - govUK has caption on tables
   urls.VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT,
   urls.CANCEL_URL,
+  urls.VIEW_MEDIATION_DOCUMENTS,
   urls.BASE_GENERAL_APPLICATION_URL,
 ];
