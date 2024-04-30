@@ -18,13 +18,16 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 const getGeneralApplicationConfirmationContent = (claimId: string, claim: Claim, lng: string) => {
 
+  // Need to change after getting the application fee based on the scenarios
+  const applicationFee = '#';
+
   const dashboardUrl = claim.isClaimant()
     ? DASHBOARD_CLAIMANT_URL.replace(':id', claimId)
     : DEFENDANT_SUMMARY_URL.replace(':id', claimId);
 
   return new PageSectionBuilder()
     .addTitle('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT')
-    .addParagraph('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.APPLICATION_SAVE')
+    .addParagraph('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.APPLICATION_SAVE', {applicationFee})
     .addParagraph('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.UNTIL_PAY_FEE')
     .addParagraph('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.APPLY_HELP_WITH_FEES')
     .addButton(t('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.PAY_FEE_BUTTON', {lng}), '#')
