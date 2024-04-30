@@ -6,7 +6,7 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import { YesNo } from 'common/form/models/yesNo';
 
 jest.mock('../../../../../main/modules/draft-store');
-
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
 describe('General Application service', () => {
@@ -36,7 +36,6 @@ describe('General Application service', () => {
       await expect(saveApplicationType('123', new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
-
   describe('Save agreement from other party', () => {
     it('should save agreement from other party', async () => {
       //Given
@@ -46,7 +45,7 @@ describe('General Application service', () => {
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
       mockSaveClaim.mockResolvedValue(() => {});
-      
+
       //When
       await saveAgreementFromOtherParty('123', YesNo.NO);
       //Then

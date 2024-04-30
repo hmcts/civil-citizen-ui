@@ -24,6 +24,7 @@ export const IGNORED_URLS = [
   urls.CLAIM_FEE_URL,
   urls.DEFENDANT_SUMMARY_TAB_URL,
   urls.DASHBOARD_NOTIFICATION_REDIRECT,
+  urls.DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT,
   urls.MEDIATION_SERVICE_EXTERNAL,
   //Currently failing on accessibility
   urls.ASSIGN_CLAIM_URL,
@@ -46,6 +47,7 @@ export const IGNORED_URLS = [
   urls.MAKE_CLAIM,
   urls.VIEW_DEFENDANT_INFO,
   urls.VIEW_CLAIMANT_INFO,
+  urls.VIEW_RESPONSE_TO_CLAIM,
   //TODO: remove this once finished CIV-11619
   urls.MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND,
   urls.TESTING_SUPPORT_URL,
@@ -53,5 +55,10 @@ export const IGNORED_URLS = [
   // WCAG2AA.Principle1.Guideline1_3.1_3_1.H39.3.LayoutTable - govUK has caption on tables
   urls.VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT,
   urls.CANCEL_URL,
+  urls.VIEW_MEDIATION_DOCUMENTS,
   urls.BASE_GENERAL_APPLICATION_URL,
+  urls.DASHBOARD_CLAIMANT_URL,
+  //TODO: remove this once finished the page
+  urls.VIEW_ORDERS_AND_NOTICES_URL,
+  urls.VIEW_THE_HEARING_URL,
 ];

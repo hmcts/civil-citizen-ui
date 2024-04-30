@@ -6,7 +6,7 @@ import {StatementOfMeans} from './statementOfMeans';
 import {PartyType} from './partyType';
 import {FullAdmission} from './fullAdmission';
 import {PartialAdmission} from './partialAdmission';
-import {DefendantEvidence} from './evidence/evidence';
+import {ClaimantEvidence, DefendantEvidence} from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
@@ -166,7 +166,8 @@ export class Claim {
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
   generalApplication?: GeneralApplication;
-  
+  orderDocumentId?: string;
+  claimantEvidence: ClaimantEvidence;
   // Index signature to allow dynamic property access
   [key: string]: any;
 
