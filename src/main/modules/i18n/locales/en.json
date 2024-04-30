@@ -1986,7 +1986,7 @@
         "SETTLING": "Court to make an order settling the claim by consent",
         "STRIKE_OUT": "Court to strike out all or part of the other parties' case without a trial",
         "SUMMARY_JUDGMENT": "Court to make a summary judgment on a case",
-        "VARY_A_JUDGMENT": "Vary a judgment example"
+        "VARY_JUDGMENT": "Vary a judgment example"
       },
       "SELECT_TYPE": {
         "ALL_APPLICATIONS": "All applications",
