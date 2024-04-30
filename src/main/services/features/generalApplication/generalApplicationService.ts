@@ -25,8 +25,7 @@ export const saveAgreementFromOtherParty = async (claimId: string, agreementFrom
     claim.generalApplication.agreementFromOtherParty = agreementFromOtherParty;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
-
     logger.error(error);
     throw error;
   }
-}
+};

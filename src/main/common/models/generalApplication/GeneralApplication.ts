@@ -1,5 +1,5 @@
-import { YesNo } from "common/form/models/yesNo";
-import {ApplicationType} from "./applicationType";
+import { YesNo } from 'common/form/models/yesNo';
+import {ApplicationType} from './applicationType';
 
 export class GeneralApplication {
  

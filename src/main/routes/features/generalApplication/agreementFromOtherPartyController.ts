@@ -15,23 +15,21 @@ const agreementFromOtherPartyController = Router();
 const viewPath = 'features/generalApplication/agreement-from-other-party';
 const cancelUrl = 'test';
 
-
 agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-
-     const backLinkUrl = getBackLinkUrl(<AppRequest>req);
-     const redisKey = generateRedisKey(<AppRequest>req);
-     const claim = await getClaimById(redisKey, req, true);
+    const backLinkUrl = getBackLinkUrl(<AppRequest>req);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getClaimById(redisKey, req, true);
    
-     const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
-     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.agreementFromOtherParty));
+    const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
+    const form = new GenericForm(new GenericYesNo(claim.generalApplication?.agreementFromOtherParty));
    
-     res.render(viewPath, {
-       form,
-       applicationType,
-       cancelUrl,
-       backLinkUrl
-     });
+    res.render(viewPath, {
+      form,
+      applicationType,
+      cancelUrl,
+      backLinkUrl,
+    });
   } catch (error) {
     next(error);
   }
@@ -72,13 +70,13 @@ function validateNoConsentOption(req: AppRequest, errors : ValidationError[], ap
  
   if(req.body.option === YesNo.NO && applicationTypeOption === ApplicationTypeOption.SETTLE_BY_CONSENT) {
    
-   const validationError = new FormValidationError({
-    target: new GenericYesNo(req.body.option, ''),
-    value: req.body.option,
-    constraints: {
-      shouldNotBeNoForSettleByConsent :'ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED'
-    },
-    property: 'option'
+    const validationError = new FormValidationError({
+      target: new GenericYesNo(req.body.option, ''),
+      value: req.body.option,
+      constraints: {
+        shouldNotBeNoForSettleByConsent :'ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED',
+      },
+      property: 'option',
     });
 
     errors.push(validationError);

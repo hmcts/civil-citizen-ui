@@ -47,7 +47,7 @@ describe('General Application - Application type', () => {
     it('should return http 500 when has error in the get method', async () => {
      
       mockGetClaim.mockImplementation(() => {
-       throw new Error(TestMessages.REDIS_FAILURE);
+        throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
         .get(GA_AGREEMENT_FROM_OTHER_PARTY)
@@ -113,7 +113,7 @@ describe('General Application - Application type', () => {
       
       mockGetClaim.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
-       });
+      });
 
       await request(app)
         .post(GA_AGREEMENT_FROM_OTHER_PARTY)

@@ -44,7 +44,7 @@ describe('General Application service', () => {
       });
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => {});
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
 
       //When
       await saveAgreementFromOtherParty('123', YesNo.NO);
