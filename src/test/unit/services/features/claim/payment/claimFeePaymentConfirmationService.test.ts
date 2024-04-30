@@ -33,7 +33,7 @@ describe('Claim Fee PaymentConfirmation Service', () => {
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, mockedAppRequest);
 
     //Then
-    expect(actualPaymentRedirectUrl).toBe(PAY_CLAIM_FEE_SUCCESSFUL_URL);
+    expect(actualPaymentRedirectUrl).toBe(`${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=en`);
   });
 
   it('should return to Payment Unsuccessful page when payment has failed', async () => {
