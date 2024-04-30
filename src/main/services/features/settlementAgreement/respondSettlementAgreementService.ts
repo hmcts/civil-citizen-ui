@@ -2,10 +2,14 @@ import { Request} from 'express';
 import {
   convertFrequencyToTextForRepaymentPlan,
   getAmount,
-  getFinalPaymentDate, getFinalPaymentDateForClaimantPlan,
-  getFirstRepaymentDate, getFirstRepaymentDateClaimantPlan,
-  getPaymentAmount, getPaymentAmountClaimantPlan,
-  getRepaymentFrequency, getRepaymentFrequencyForClaimantPlan,
+  getFinalPaymentDate,
+  getFinalPaymentDateForClaimantPlan,
+  getFirstRepaymentDate,
+  getFirstRepaymentDateClaimantPlan,
+  getPaymentAmount,
+  getPaymentAmountClaimantPlan,
+  getRepaymentFrequency,
+  getRepaymentFrequencyForClaimantPlan,
 } from 'common/utils/repaymentUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'common/models/claim';

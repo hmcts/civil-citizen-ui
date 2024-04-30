@@ -109,7 +109,7 @@ describe('Respond To Settlement Agreement', () => {
         ));
       });
     });
- 
+
     it('should return respond to settlement agreement page with claimant suggested set by date repayment plan', async () => {
       const mockClaim = getMockClaim();
       mockClaim.claimantResponse = new ClaimantResponse();

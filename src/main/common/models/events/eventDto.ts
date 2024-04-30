@@ -22,7 +22,7 @@ export interface ClaimUpdate {
   applicant1PartAdmitConfirmAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1PartAdmitIntentionToSettleClaimSpec?: YesNoUpperCamelCase;
   respondentSignSettlementAgreement? : YesNoUpperCamelCase;
-  applicant1RequestedPaymentDateForDefendantSpec? : CCDClaimantPayBySetDate;
+  applicant1RequestedPaymentDateForDefendantSpec?: CCDClaimantPayBySetDate;
   applicant1AcceptAdmitAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1SuggestInstalmentsPaymentAmountForDefendantSpec?: number;
   applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec?: string;
