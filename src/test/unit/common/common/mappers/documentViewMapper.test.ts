@@ -1,4 +1,7 @@
-import {mapperMediationAgreementToDocumentView} from 'common/mappers/documentViewMapper';
+import {
+  mapperDefendantResponseToDocumentView,
+  mapperMediationAgreementToDocumentView,
+} from 'common/mappers/documentViewMapper';
 import {
   DocumentInformation,
   DocumentLinkInformation,
@@ -8,6 +11,9 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {MEDIATION_AGREEMENT_MOCK} from '../../../../utils/mocks/Mediation/mediationAgreementMock';
+import {Claim} from 'models/claim';
+import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {DocumentType} from 'models/document/documentType';
 
 describe('Test of Document View Mapper', () => {
 
@@ -28,6 +34,35 @@ describe('Test of Document View Mapper', () => {
       mediationAgreement.case_data.mediationAgreement,
       mediationAgreement.case_data.mediationSettlementAgreedAt,
       mediationAgreement.id,
+      'en',
+    );
+    //Then
+    expect(expected).toEqual(result);
+  });
+
+  it('should map defendant response to Document View', () => {
+    //Given
+    const claim = new Claim();
+    claim.legacyCaseReference = '000MC001';
+    claim.respondent1ResponseDate = new Date();
+    const claimId = '1234';
+    const fileName = 'PAGES.VIEW_RESPONSE_TO_THE_CLAIM.DOCUMENT_LABEL';
+
+    const expected = new DocumentsViewComponent('PAGES.VIEW_RESPONSE_TO_THE_CLAIM.TABLE_TITLE', Array.of(
+      new DocumentInformation(
+        fileName,
+        formatDateToFullDate(claim.respondent1ResponseDate, 'lang'),
+        new DocumentLinkInformation(
+          CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
+            .replace(':documentId',
+              getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)),
+          'defendant-response-000MC001.pdf'))));
+    //When
+    const result = mapperDefendantResponseToDocumentView(
+      'PAGES.VIEW_RESPONSE_TO_THE_CLAIM.TABLE_TITLE',
+      'PAGES.VIEW_RESPONSE_TO_THE_CLAIM.DOCUMENT_LABEL',
+      claim,
+      claimId,
       'en',
     );
     //Then
