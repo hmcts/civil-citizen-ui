@@ -582,6 +582,11 @@ class ResponseToDefence {
     I.waitForContent('County Court Judgment requested', 60);
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
+    I.see('What happens next');
+    I.see('You\'ve requested a County Court Judgment against Sir John Doe');
+    I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
+    I.see('Email');
+    I.see('Telephone');
   }
 
   verifyConfirmationScreenForFullAdmitCCJ(claimNumber) {
@@ -590,17 +595,6 @@ class ResponseToDefence {
     I.see(`${claimNumber}`);
     I.see('What happens next');
     I.see('You\'ve requested a County Court Judgment against the defendant.');
-    I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
-    I.see('Email');
-    I.see('Telephone');
-  }
-
-  verifyConfirmationScreenForPartAdmitCCJ(claimNumber) {
-    I.waitForContent('County Court Judgment', 60);
-    I.see('Your claim number:');
-    I.see(`${claimNumber}`);
-    I.see('What happens next');
-    I.see('You\'ve requested a County Court Judgment against Sir John Doe');
     I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
     I.see('Email');
     I.see('Telephone');
