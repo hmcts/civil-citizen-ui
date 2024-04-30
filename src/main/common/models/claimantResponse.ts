@@ -38,6 +38,7 @@ export class ClaimantResponse {
   claimantStatementOfTruth?: StatementOfTruthForm;
   hasFullDefenceStatesPaidClaimSettled?: GenericYesNo;
   submittedDate?: Date;
+  suggestedImmediatePaymentDeadLine: Date;
 
   get isClaimantSuggestedPayImmediately(): boolean{
     return this.suggestedPaymentIntention?.paymentOption === PaymentOptionType.IMMEDIATELY;

@@ -412,4 +412,19 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     expect(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan).toEqual(repaymentPlan);
   });
+
+  it('should translate claimant suggested immediate repayment deadline date to CUI model for having value', () => {
+    //Given
+    const paymentDate = new Date('2024-04-30');
+    const input: CCDClaim = {
+      applicant1LiPResponse : {
+        applicant1SuggestedImmediatePaymentDeadLine: paymentDate,
+      },
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.suggestedImmediatePaymentDeadLine).toEqual(paymentDate);
+  });
 });
