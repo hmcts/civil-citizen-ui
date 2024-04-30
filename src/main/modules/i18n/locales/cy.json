@@ -2,15 +2,15 @@
   "COMMON": {
     "HOME": "Home",
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
-    "UPLOAD_FILE": "Upload file",
+    "UPLOAD_FILE": "Llwytho ffeil i fyny",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
-    "DOCUMENTS_UPLOADED": "Documents uploaded",
-    "CASE_REFERENCE_NUMBER": "Your case reference number",
+    "DOCUMENTS_UPLOADED": "Dogfennau wedi’u llwytho",
+    "CASE_REFERENCE_NUMBER": "Cyfeirnod eich achos",
     "CONTACT_NAME": "Enw cyswllt",
     "CONTACT_NUMBER": "Rhif cyswllt",
     "CONTACT_EMAIL": "Cyfeiriad e-bost",
     "UNAVAILABLE_DATES": "Dyddiadau pan na fyddwch ar gael",
-    "CASE_REFERENCE": "Case reference: {{ claimId }}",
+    "CASE_REFERENCE": "Cyfeirnod yr achos: {{ claimId }}",
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
     "ANNUAL_TURNOVER": "Trosiant blynyddol",
@@ -387,16 +387,16 @@
     "MEDIATION": {
       "CONFIRMATION_PAGE": {
         "PAGE_TITLE": "Mediation upload documents confirmation",
-        "TEXT_BEFORE": "You can",
-        "LINK_TEXT": "upload more documents",
-        "TEXT_AFTER": "now or come back later. You can view your documents and the other party's documents"
+        "TEXT_BEFORE": "Gallwch",
+        "LINK_TEXT": "lwytho mwy o ddogfennau",
+        "TEXT_AFTER": "nawr neu ddod yn ôl yn ddiweddarach. Gallwch weld eich dogfennau a dogfennau'r parti arall."
       },
       "UPLOAD_DOCUMENTS": {
-        "SECTION_TITLE": "Mediation non-attendance",
+        "SECTION_TITLE": "Datganiad cyfryngu di-bresenoldeb",
 
         "TITLE": {
           "YOUR_STATEMENT": "Eich datganiad",
-          "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement"
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Dogfennau y cyfeirir atynt yn y datganiad"
         },
         "YOUR_NAME": {
           "YOUR_STATEMENT": "Eich enw",
@@ -404,31 +404,31 @@
         },
         "DATE_INPUT": {
           "YOUR_STATEMENT" : "Y dyddiad yr ysgrifenwyd y datganiad",
-          "DOCUMENTS_REFERRED_TO_IN_STATEMENT" : "Date document was produced"
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT" : "Y dyddiad y cynhyrchwyd y ddogfen"
         }
       },
       "TYPE_OF_DOCUMENTS": {
-        "CHECKBOX_TITLE": "Mediation non-attendance",
-        "CHECKBOX_HINT": "Select all that apply",
+        "CHECKBOX_TITLE": "Datganiad cyfryngu di-bresenoldeb",
+        "CHECKBOX_HINT": "Dewiswch bob un sy'n berthnasol",
         "YOUR_STATEMENT": "Eich datganiad",
-        "YOUR_STATEMENT_HINT": "A written statement explaining why you did not attend your mediation appointment",
-        "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement",
-        "DOCUMENTS_REFERRED_TO_IN_STATEMENT_HINT": "Documents you refer to in your statement - for example emails, photographs or doctor’s notes"
+        "YOUR_STATEMENT_HINT": "Datganiad ysgrifenedig yn esbonio pam na wnaethoch chi fynychu eich apwyntiad cyfryngu",
+        "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Dogfennau y cyfeirir atynt yn y datganiad",
+        "DOCUMENTS_REFERRED_TO_IN_STATEMENT_HINT": "Dogfennau rydych chi’n cyfeirio atynt yn eich datganiad - er enghraifft e-byst, ffotograffau neu nodiadau gan feddyg"
       },
       "START_PAGE": {
-        "PAGE_TITLE": "Upload your documents",
-        "YOU_DID_NOT_ATTEND": "You did not attend your mediation appointment. The judge may order you to pay costs or may automatically rule in the other party’s favour.",
-        "IF_YOU_WERE_UNABLE": "If you were unable to attend mediation due to exceptional circumstances, you can explain why with supporting evidence, such as a doctor’s note or photographs of relevant documents. This is sometimes known as filing a representation. If the judge accepts your reasons for non-attendance, you will not be issued with a penalty.",
-        "YOU_CANNOT_WITHDRAW": "You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example, ‘version 2’.",
-        "THE_OTHER_PARTIES": "The other parties will be able to see the documents you have uploaded and you will be able to see their documents.",
+        "PAGE_TITLE": "Uwchlwytho eich dogfennau",
+        "YOU_DID_NOT_ATTEND": "Ni wnaethoch fynychu eich apwyntiad cyfryngu. Gall y barnwr orchymyn i chi dalu costau neu gall ddyfarnu yn awtomatig o blaid y parti arall.",
+        "IF_YOU_WERE_UNABLE": "Os nad oeddech yn gallu mynd i’r apwyntiad cyfryngu oherwydd amgylchiadau eithriadol, gallwch esbonio pam gyda thystiolaeth ategol, megis nodyn gan feddyg neu ffotograffau o ddogfennau perthnasol. Weithiau gelwir hyn yn ffeilio cynrychiolaeth. Os yw’r barnwr yn derbyn eich rhesymau dros beidio â mynychu, ni fyddwch yn cael cosb.",
+        "YOU_CANNOT_WITHDRAW": "Ni allwch dynnu dogfen yn ôl ar ôl i chi ei chyflwyno., Os ydych chi am ychwanegu mwy o wybodaeth at rywbeth rydych chi eisoes wedi’i gyflwyno, gallwch chi lwytho'r ddogfen eto. Dylech ychwanegu rhif fersiwn at yr enw, er enghraifft ‘fersiwn2'.",
+        "THE_OTHER_PARTIES": "Bydd y partïon eraill yn gallu gweld y dogfennau rydych chi wedi’u llwytho, a byddwch chi’n gallu gweld eu dogfennau nhw.",
 
-        "DEADLINES_FOR_UPLOADING_TITLE": "Deadlines for uploading documents",
-        "YOU_HAVE_UNTIL": "You have until 14 days before your hearing to submit documents.",
-        "YOU_DO_NOT_HAVE": "You do not have to upload all your documents at once. You can return to upload them later.",
+        "DEADLINES_FOR_UPLOADING_TITLE": "Dyddiadau cau ar gyfer llwytho dogfennau",
+        "YOU_HAVE_UNTIL": "Mae gennych hyd at 14 diwrnod cyn eich gwrandawiad i gyflwyno dogfennau.",
+        "YOU_DO_NOT_HAVE": "Nid oes angen i chi lwytho eich holl ddogfennau ar unwaith. Gallwch ddod yn ôl i’w llwytho yn nes ymlaen.",
 
-        "BEFORE_YOU_UPLOAD_TITLE": "Before you upload your documents",
-        "BEFORE YOU UPLOAD": "Before you upload your document, give it a name that tells the court what it is, for example “Mediation non-attendance statement by Jane Smith”",
-        "EACH_DOCUMENT_MUST": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
+        "BEFORE_YOU_UPLOAD_TITLE": "Cyn ichi lwytho eich dogfennau",
+        "BEFORE YOU UPLOAD": "Cyn i chi lwytho’r ddogfen, rhowch enw iddi sy’n dweud wrth y llys beth ydyw, er enghraifft “Datganiad cyfryngu di-bresenoldeb gan Jane Smith”/",
+        "EACH_DOCUMENT_MUST": "Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
       }
     },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
@@ -1453,7 +1453,7 @@
         "TITLE": "Hearings",
         "UPLOAD_DOCUMENTS": "Upload hearing documents",
         "VIEW_BUNDLE": "View the bundle",
-        "VIEW_DOCUMENTS": "View documents",
+        "VIEW_DOCUMENTS": "Gweld y dogfennau",
         "VIEW_HEARINGS": "View hearings",
         "VIEW_THE_HEARING": "View the hearing"
       },
@@ -2282,9 +2282,9 @@
       "YOUR_STATEMENT_HINT": "Datganiad ysgrifenedig o'r hyn yr ydych am ei ddweud wrth y llys"
     },
     "EVIDENCE_DOCUMENTS_UPLOADED": {
-      "TITLE": "Documents uploaded",
-      "CASE_REFERENCE_NUMBER": "Your case reference number",
-      "VIEW_DOCUMENTS": "View documents",
+      "TITLE": "Dogfennau wedi’u llwytho",
+      "CASE_REFERENCE_NUMBER": "Cyfeirnod eich achos",
+      "VIEW_DOCUMENTS": "Gweld y dogfennau",
       "UPLOAD_MORE_DOCUMENTS_START": "You can",
       "UPLOAD_MORE_DOCUMENTS_MID": "upload more documents",
       "UPLOAD_MORE_DOCUMENTS_END": "now or come back later. You can view your documents and the other party's documents."
@@ -3128,7 +3128,7 @@
       "WITNESS": {
         "DATE_STATEMENT": "Y dyddiad yr ysgrifenwyd y datganiad",
         "DATE_SUMMARY": "Date summary was written",
-        "DOCUMENT": "Documents referred to in the statement",
+        "DOCUMENT": "Dogfennau y cyfeirir atynt yn y datganiad",
         "NOTICE": "Notice of intention to rely on hearsay evidence",
         "STATEMENT": "Witness statement",
         "SUMMARY": "Witness summary",
@@ -3239,9 +3239,9 @@
       "CLAIMANT": "Anfonir eich ymateb at {{ claimantFullName }}."
     },
     "UPLOAD_YOUR_DOCUMENTS": {
-      "PAGE_TITLE": "Upload your documents",
-      "TITLE": "Upload your documents",
-      "CASE_REFERENCE": "Case reference: {{ caseId }}",
+      "PAGE_TITLE": "Uwchlwytho eich dogfennau",
+      "TITLE": "Uwchlwytho eich dogfennau",
+      "CASE_REFERENCE": "Cyfeirnod yr achos: {{ caseId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "CHECK_THE_ORDER": "Check the order the court sent you for what documents you need to upload for your case.",
       "YOU_CANNOT_WITHDRAW": "You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example 'version2'.",
@@ -3254,7 +3254,7 @@
       "YOU_DO_NOT_HAVE": "You do not have to upload all your documents at once. You can return to upload them later.",
       "BEFORE_YOU_UPLOAD_YOUR": "Before you upload your documents",
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
-      "START_NOW": "Start now"
+      "START_NOW": "Dechreuwch nawr"
     },
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
@@ -3660,7 +3660,7 @@
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Rhowch o leiaf un cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Rhowch rif ar gyfer o leiaf un maes",
-    "VALID_ENTER_AT_LEAST_ONE_UPLOAD": "You must select at least one type of document",
+    "VALID_ENTER_AT_LEAST_ONE_UPLOAD": "Rhaid i chi ddewis o leiaf un math o ddogfen",
     "VALID_FOUR_DIGIT_YEAR": "Nodwch flwyddyn sy'n cynnwys 4 digid",
     "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
@@ -3703,7 +3703,7 @@
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
     "VALID_YES_NO_SELECTION_UPPER": "Dewiswch Oes neu Nac oes",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "Rhaid i chi nodi y math o ddogfen",
-    "VALID_ENTER_YOUR_NAME": "You must enter your name",
+    "VALID_ENTER_YOUR_NAME": "Mae’n rhaid ichi nodi eich enw",
     "VALID_ENTER_WITNESS_NAME": "Rhaid i chi nodi enw’r tyst",
     "VALID_ENTER_EXPERT_NAME": "Rhowch enw'r arbenigwr",
     "VALID_ENTER_EXPERT_NAMES": "Rhaid i chi nodi enw o leiaf un arbenigwr",
@@ -3727,6 +3727,6 @@
     "VALID_DATE_NOT_FUTURE": "Rhaid i’r dyddiad y ddogfen fod heddiw neu yn y gorffennol",
     "VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cyhoeddwyd y ddogfen neu’r dyddiad yr anfonwyd y neges",
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
-    "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced"
+    "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cafodd y datganiad ei ysgrifennu neu ei gynhyrchu"
   }
 }
