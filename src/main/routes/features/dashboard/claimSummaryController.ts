@@ -21,7 +21,7 @@ import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/sys
 import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
 import {getBundlesContent} from 'services/features/caseProgression/bundles/bundlesService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {getDashboardForm, getHelpSupportLinks, getHelpSupportTitle, getNotifications} from 'services/dashboard/dashboardService';
+import {extractOrderDocumentIdFromNotification, getDashboardForm, getHelpSupportLinks, getHelpSupportTitle, getNotifications} from 'services/dashboard/dashboardService';
 import {getClaimWithExtendedPaymentDeadline} from 'services/features/response/submitConfirmation/submitConfirmationService';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
@@ -48,10 +48,11 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
       const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest);
+      claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest, isCarmApplicable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(lang);
 
-      res.render(claimSummaryRedesignViewPath, 
+      res.render(claimSummaryRedesignViewPath,
         {
           claim,
           claimId,
