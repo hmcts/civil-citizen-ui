@@ -81,6 +81,7 @@ import {BusinessProcess} from 'models/businessProcess';
 import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
+import {GeneralApplication} from './generalApplication/GeneralApplication';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -164,7 +165,8 @@ export class Claim {
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
-
+  generalApplication?: GeneralApplication;
+  
   // Index signature to allow dynamic property access
   [key: string]: any;
 
