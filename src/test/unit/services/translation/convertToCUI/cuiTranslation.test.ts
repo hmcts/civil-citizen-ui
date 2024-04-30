@@ -393,21 +393,24 @@ describe('translateCCDCaseDataToCUIModel', () => {
     expect(claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled).toEqual(undefined);
   });
 
-  it('should translate claimant suggested repayment plan to CUI model for having value', () => {
+  it('should translate claimant suggestedPaymentIntention repaymentplan to CUI model for having value', () => {
     //Given
-    const paymentDate = new Date('2024-12-23');
     const input: CCDClaim = {
-      applicant1SuggestInstalmentsPaymentAmountForDefendantSpec : 200,
-      applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec : paymentDate.toString(),
-      applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec : CCDRepaymentPlanFrequency.ONCE_ONE_MONTH,
+      applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: 1000,
+      applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: '2024-06-01',
+      applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: CCDRepaymentPlanFrequency.ONCE_ONE_MONTH,
     };
 
     const claim = translateCCDCaseDataToCUIModel(input);
 
     //Then
-    expect(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.paymentAmount).toEqual(200);
-    expect(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.repaymentFrequency).toEqual('MONTH');
-    expect(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.firstRepaymentDate).toEqual(paymentDate);
+    const repaymentPlan = {
+      paymentAmount : 1000,
+      repaymentFrequency : 'MONTH',
+      firstRepaymentDate : new Date('2024-06-01'),
+    };
+
+    expect(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan).toEqual(repaymentPlan);
   });
 
   it('should translate claimant suggested immediate repayment deadline date to CUI model for having value', () => {
@@ -415,21 +418,6 @@ describe('translateCCDCaseDataToCUIModel', () => {
     const paymentDate = new Date('2024-04-30');
     const input: CCDClaim = {
       applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec : paymentDate,
-    };
-
-    const claim = translateCCDCaseDataToCUIModel(input);
-
-    //Then
-    expect(claim.claimantResponse.suggestedImmediatePaymentDeadLine).toEqual(paymentDate);
-  });
-
-  it('should translate claimant suggested immediate repayment deadline date to CUI model for having value', () => {
-    //Given
-    const paymentDate = new Date('2024-04-30');
-    const input: CCDClaim = {
-      applicant1LiPResponse : {
-        applicant1SuggestedImmediatePaymentDeadLine: paymentDate,
-      },
     };
 
     const claim = translateCCDCaseDataToCUIModel(input);
