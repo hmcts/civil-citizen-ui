@@ -378,6 +378,11 @@
     }
   },
   "PAGES": {
+    "VIEW_MEDIATION_DOCUMENTS": {
+      "CLAIMANT_TABLE_TITLE": "Claimant mediation documents",
+      "DEFENDANT_TABLE_TITLE": "Defendant mediation documents",
+      "PAGE_TITLE": "View mediation documents"
+    },
     "VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT": {
       "PAGE_TITLE": "View mediation settlement agreement",
       "DOCUMENT_TABLE_TITLE": "Mediation Settlement Agreement"
