@@ -301,3 +301,4 @@ export const EVIDENCE_UPLOAD_DOCUMENTS_URL = `${BASE_CASE_URL}/evidence-upload-d
 export const VIEW_THE_HEARING_URL = `${BASE_CASE_URL}/view-the-hearing`;
 export const VIEW_ORDERS_AND_NOTICES_URL = `${BASE_CASE_URL}/view-orders-and-notices`;
 export const VIEW_RESPONSE_TO_CLAIM = `${BASE_CASE_URL}/view-response-to-claim`;
+export const VIEW_MEDIATION_DOCUMENTS = `${MEDIATION_URL}/view-mediation-documents`;
