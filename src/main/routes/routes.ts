@@ -287,6 +287,7 @@ import viewClaimantInformationController from './features/dashboard/viewClaimant
 import cancelController from 'routes/common/cancelController';
 import evidenceUploadDocumentsController from 'routes/features/caseProgression/evidenceUploadDocumentsController';
 import applicationTypeController from './features/generalApplication/applicationTypeController';
+import payingForApplicationController from './features/generalApplication/payingForApplicationController';
 
 export default [
   homeController,
@@ -541,4 +542,5 @@ export default [
   cancelController,
   evidenceUploadDocumentsController,
   applicationTypeController,
+  payingForApplicationController,
 ];
