@@ -456,6 +456,17 @@ describe('Translate claimant response to ccd version', () => {
     //Then
     expect(ccdClaim.applicant1DQHearingSupport).toEqual({ supportRequirements: 'No' });
   });
+  it('should not translate applicant1SuggestedImmediatePaymentDeadLine to ccd when not exist', () => {
+    //Given
+    const claim = new Claim();
+    claim.claimantResponse = new ClaimantResponse();
+
+    //When
+    const ccdClaim = translateClaimantResponseToCCD(claim);
+
+    //Then
+    expect(ccdClaim.applicant1LiPResponse.applicant1SuggestedImmediatePaymentDeadLine).toBe(undefined);
+  });
 });
 
 function getClaimantResponseDQ(claim: Claim): Claim {
