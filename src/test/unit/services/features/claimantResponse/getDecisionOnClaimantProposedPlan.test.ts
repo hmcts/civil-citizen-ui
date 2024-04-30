@@ -18,6 +18,7 @@ import {
   CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL,
   CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL, CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('modules/utilityService', () => ({
@@ -104,6 +105,32 @@ describe('Get Court Decision test', ()=> {
     expect(courtDecision).toBe(CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL);
   });
 
+  it('Get redirection URL when Court Decision is in Favour of Claimant and repayment plan immediately', async () => {
+
+    //given
+    claim.partialAdmission.paymentIntention = new PaymentIntention();
+    claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.suggestedPaymentIntention = {paymentOption: PaymentOptionType.IMMEDIATELY} ;
+    const immediatePaymentDeadLine  = new Date();
+    
+    jest
+      .spyOn(CivilServiceClient.prototype, 'calculateExtendedResponseDeadline')
+      .mockReturnValue(
+        new Promise((resolve) => resolve(immediatePaymentDeadLine)),
+      );
+
+    nock(citizenBaseUrl)
+      .post('/cases/11/courtDecision')
+      .reply(200, RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT);
+
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim as Claim);
+    //When
+    const courtDecision = await getDecisionOnClaimantProposedPlan(mockedAppRequest, '11');
+    //Then
+    expect(courtDecision).toBe(CLAIMANT_RESPONSE_REPAYMENT_PLAN_ACCEPTED_URL);
+  });
+  
   it('Get redirection URL when Defendant is Org or Company', async () => {
     //given
     claim.respondent1 = {
