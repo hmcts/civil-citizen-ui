@@ -286,7 +286,10 @@ import viewDefendantInformationController from './features/dashboard/viewDefenda
 import viewClaimantInformationController from './features/dashboard/viewClaimantInformationController';
 import cancelController from 'routes/common/cancelController';
 import evidenceUploadDocumentsController from 'routes/features/caseProgression/evidenceUploadDocumentsController';
+import viewMediationDocuments from 'routes/features/document/mediation/viewMediationDocumentsController';
 import applicationTypeController from './features/generalApplication/applicationTypeController';
+import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
+import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
 
 export default [
   homeController,
@@ -540,5 +543,8 @@ export default [
   bundlesController,
   cancelController,
   evidenceUploadDocumentsController,
+  viewMediationDocuments,
   applicationTypeController,
+  viewTheHearingController,
+  viewResponseToClaimController,
 ];
