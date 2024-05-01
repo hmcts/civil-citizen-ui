@@ -3198,19 +3198,19 @@
         "WITNESS_NAME": "Witness's name"
       },
       "EXPERT": {
-        "TITLE": "Expert evidence",
-        "EXPERT_REPORT": "Expert's report",
-        "EXPERT_NAME": "Expert's name",
-        "FIELD_EXPERTISE": "Field of expertise",
-        "DATE_REPORT_WAS": "Date report was written",
-        "JOINT_STATEMENT": "Joint statement of experts",
-        "EXPERTS_NAMES": "Experts' names",
-        "QUESTIONS_FOR_OTHER": "Questions for other party's expert or joint expert",
-        "OTHER_PARTY_NAME": "Other party's name",
-        "NAME_DOCUMENT_YOU": "Name of document you have questions about",
-        "ANSWERS_TO_QUESTIONS": "Answers to questions asked by other party",
-        "NAME_DOCUMENT_WITH": "Name of document with other party's questions",
-        "SELECT": "Select"
+        "TITLE": "Tystiolaeth arbenigol",
+        "EXPERT_REPORT": "Adroddiad yr Arbenigwr",
+        "EXPERT_NAME": "Enw’r arbenigwr",
+        "FIELD_EXPERTISE": "Maes arbenigedd",
+        "DATE_REPORT_WAS": "Y dyddiad yr ysgrifennwyd yr adroddiad",
+        "JOINT_STATEMENT": "Datganiad ar y cyd yr arbenigwyr",
+        "EXPERTS_NAMES": "Enwau’r arbenigwyr",
+        "QUESTIONS_FOR_OTHER": "Cwestiynau i arbenigwr y parti arall neu gyd-arbenigwr y parti arall",
+        "OTHER_PARTY_NAME": "Enw’r parti arall",
+        "NAME_DOCUMENT_YOU": "Enw’r ddogfen y mae gennych gwestiynau amdani",
+        "ANSWERS_TO_QUESTIONS": "Atebion i’r cwestiynau a ofynnwyd gan y parti arall",
+        "NAME_DOCUMENT_WITH": "Enw’r ddogfen gyda chwestiynau’r parti arall",
+        "SELECT": "Dewiswch"
       },
       "HEARING": {
         "TITLE": "Dogfennau’r gwrandawiad",
