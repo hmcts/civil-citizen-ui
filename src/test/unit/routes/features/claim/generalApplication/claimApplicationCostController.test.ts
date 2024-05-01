@@ -2,7 +2,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {APPLICATION_COSTS_URL} from 'routes/urls';
+import {GA_CLAIM_APPLICATION_COST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
@@ -36,10 +36,10 @@ describe('General Application - Application cost', () => {
     it('should return Application Costs page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .get(APPLICATION_COSTS_URL)
+        .get(GA_CLAIM_APPLICATION_COST_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_COST.TITLE'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.TITLE'));
         });
     });
 
@@ -48,7 +48,7 @@ describe('General Application - Application cost', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .get(APPLICATION_COSTS_URL)
+        .get(GA_CLAIM_APPLICATION_COST_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -60,7 +60,7 @@ describe('General Application - Application cost', () => {
     it('should send the value and redirect', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(APPLICATION_COSTS_URL)
+        .post(GA_CLAIM_APPLICATION_COST_URL)
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -70,11 +70,11 @@ describe('General Application - Application cost', () => {
     it('should show error message if radio button not selected', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(APPLICATION_COSTS_URL)
+        .post(GA_CLAIM_APPLICATION_COST_URL)
         .send({option: null})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.APPLICATION_COSTS_YES_NO_SELECTION'));
+          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.CLAIM_APPLICATION_COSTS_YES_NO_SELECTION'));
         });
     });
 
@@ -83,7 +83,7 @@ describe('General Application - Application cost', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .post(APPLICATION_COSTS_URL)
+        .post(GA_CLAIM_APPLICATION_COST_URL)
         .send({option:YesNo.NO })
         .expect((res) => {
           expect(res.status).toBe(500);

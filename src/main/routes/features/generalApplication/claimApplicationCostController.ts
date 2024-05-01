@@ -1,5 +1,5 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {APPLICATION_COSTS_URL} from 'routes/urls';
+import {GA_CLAIM_APPLICATION_COST_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
@@ -9,12 +9,13 @@ import {selectedApplicationType} from 'models/generalApplication/applicationType
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
 
-const applicationCostsController = Router();
-const viewPath = 'features/generalApplication/application-costs';
-const backLinkUrl = 'test';// need to add the url
+const claimApplicationCostController = Router();
+const viewPath = 'features/generalApplication/claim-application-cost';
+const backLinkUrl = 'test'; // TODO: add url
 
-function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, cancelUrl: string, res: Response): void {
+async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response): Promise<void> {
   const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
+  const cancelUrl = await getCancelUrl(claimId, claim);
   res.render(viewPath, {
     form,
     cancelUrl,
@@ -23,35 +24,33 @@ function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: stri
   });
 }
 
-applicationCostsController.get(APPLICATION_COSTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+claimApplicationCostController.get(GA_CLAIM_APPLICATION_COST_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const cancelUrl = await getCancelUrl(claimId, claim);
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.applicationCosts));
-    renderView(form, claim, claimId, cancelUrl, res);
+    await renderView(form, claim, claimId, res);
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-applicationCostsController.post(APPLICATION_COSTS_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+claimApplicationCostController.post(GA_CLAIM_APPLICATION_COST_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
-    const cancelUrl = await getCancelUrl(claimId, claim);
-    const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.APPLICATION_COSTS_YES_NO_SELECTION'));
+    const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.CLAIM_APPLICATION_COSTS_YES_NO_SELECTION'));
     await form.validate();
 
     if (form.hasErrors()) {
-      renderView(form, claim, claimId, cancelUrl, res);
+      await renderView(form, claim, claimId, res);
     } else {
       await saveApplicationCosts(redisKey, req.body.option);
-      res.redirect('test'); // need to add the url
+      res.redirect('test'); // TODO: add url
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
-export default applicationCostsController;
+export default claimApplicationCostController;

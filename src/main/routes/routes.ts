@@ -290,7 +290,7 @@ import viewMediationDocuments from 'routes/features/document/mediation/viewMedia
 import applicationTypeController from './features/generalApplication/applicationTypeController';
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
-import applicationCostsController from './features/generalApplication/applicationCostsController';
+import claimApplicationCostController from './features/generalApplication/claimApplicationCostController';
 
 export default [
   homeController,
@@ -548,5 +548,5 @@ export default [
   applicationTypeController,
   viewTheHearingController,
   viewResponseToClaimController,
-  applicationCostsController,
+  claimApplicationCostController,
 ];

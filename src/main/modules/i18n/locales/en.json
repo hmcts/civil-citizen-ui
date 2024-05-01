@@ -2049,20 +2049,19 @@
         "SUMMARY_JUDGMENT": "Court to make a summary judgment on a case",
         "VARY_JUDGMENT": "Vary a judgment"
       },
-      "APPLICATION_COST": {
-        "TITLE": "Application costs",
-        "JUDGE_MAKE_DECISION": "When a judge makes a decision on your application, they’ll decide who should pay the costs.",
-        "IF_APPLICATION_SUCCESS": "If your application is successful, the other parties may be ordered to pay back your costs associated with the application.",
+      "CLAIM_APPLICATION_COST": {
+        "ASK_YOUR_COSTS_BACK": "Do you want to ask for your costs back?",
+        "ASK_YOUR_COSTS_BACK_YES": "If you know the details of the costs you want to claim back, you can upload a document with a description of these when we ask if you want to upload documents to support your application later on",
         "COSTS_INCLUDE": {
           "COST_INCLUDE": "Costs can include amounts like:",
           "APPLICATION_FEE": "your application fee",
           "HEARING_COST": "loss of earnings and travel costs if you have to attend a hearing"
         },
-        "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application",
+        "JUDGE_MAKE_DECISION": "When a judge makes a decision on your application, they’ll decide who should pay the costs.",
+        "IF_APPLICATION_SUCCESS": "If your application is successful, the other parties may be ordered to pay back your costs associated with the application.",
         "OTHER_PARTIES": "The other parties will be able to see your answer to this question and respond to it.",
-        "ASK_YOUR_COSTS_BACK": "Do you want to ask for your costs back?",
-        "ASK_YOUR_COSTS_BACK_YES": "If you know the details of the costs you want to claim back, you can upload a document with a description of these when we ask if you want to upload documents to support your application later on",
-        "CAPTION": "Change a hearing date"
+        "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application",
+        "TITLE": "Application costs"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -3826,7 +3825,7 @@
     "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced",
     "GENERAL_APPLICATION": {
-      "APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No"
+      "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No"
     }
   }
 }

@@ -9,11 +9,11 @@
 
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.APPLICATION_COST.TITLE') }}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.TITLE') }}
 {% endblock %}
 
 {% set yesHtml %}
-  <p class="govuk-body govuk-!-margin-bottom-2">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_COST.ASK_YOUR_COSTS_BACK_YES') }}</p>
+  <p class="govuk-body govuk-!-margin-bottom-2">{{ t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.ASK_YOUR_COSTS_BACK_YES') }}</p>
 {% endset -%}
 
 {% block content %}
@@ -24,17 +24,17 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          {{ headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.APPLICATION_COST.TITLE') }}
-          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_COST.JUDGE_MAKE_DECISION') }}</p>
-          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_COST.IF_APPLICATION_SUCCESS') }}</p>
-          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_COST.COSTS_INCLUDE.COST_INCLUDE') }}</p>
+          {{ headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.TITLE') }}
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.JUDGE_MAKE_DECISION') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.IF_APPLICATION_SUCCESS') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.COSTS_INCLUDE.COST_INCLUDE') }}</p>
           <ul class="govuk-list govuk-list--bullet govuk-!-padding-left-6">
-             <li>{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_COST.COSTS_INCLUDE.APPLICATION_FEE') }}</li>
-             <li>{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_COST.COSTS_INCLUDE.HEARING_COST') }}</li>
+             <li>{{ t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.COSTS_INCLUDE.APPLICATION_FEE') }}</li>
+             <li>{{ t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.COSTS_INCLUDE.HEARING_COST') }}</li>
           </ul>
-          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_COST.PAY_APPLICATION_FEE') }}</p>
-          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_COST.OTHER_PARTIES') }}</p>
-          <h2 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.APPLICATION_COST.ASK_YOUR_COSTS_BACK')}}</h2>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.PAY_APPLICATION_FEE') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.OTHER_PARTIES') }}</p>
+          <h2 class="govuk-heading-s">{{t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.ASK_YOUR_COSTS_BACK')}}</h2>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
              <div class="govuk-form-group">
