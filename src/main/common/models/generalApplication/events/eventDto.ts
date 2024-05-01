@@ -6,4 +6,5 @@ export interface EventDto {
 }
 
 export interface ApplicationUpdate {
+  issueDate?: Date;
 }
