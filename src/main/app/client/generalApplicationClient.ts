@@ -34,7 +34,7 @@ export class GeneralApplicationClient {
       });
     } else {
       this.client = Axios.create({
-          baseURL,
+        baseURL,
       });
     }
   }
@@ -52,7 +52,7 @@ export class GeneralApplicationClient {
     const config = this.getConfig(req);
     let applications: ApplicationResponse[] = [];
     try {
-      const response = await this.client.post(`/cases/`, {match_all: {}}, config);
+      const response = await this.client.post('/cases/', {match_all: {}}, config);
       applications = response.data.cases.map((application: ApplicationResponse) => {
         const caseData = Object.assign(new Application(), application.case_data);
         return new ApplicationResponse(application.id, caseData, application.state, application.last_modified);
@@ -90,8 +90,8 @@ export class GeneralApplicationClient {
       const response = await this.client.post(CIVIL_GENERAL_APPLICATIONS_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
-        const application = response.data as Application;
-        return application;
+      const application = response.data as Application;
+      return application;
     } catch (err: unknown) {
       logger.error(`Error when submitting event ${event}`);
       throw err;
