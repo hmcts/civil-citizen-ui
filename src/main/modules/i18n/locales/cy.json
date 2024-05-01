@@ -2053,8 +2053,8 @@
         "ASK_YOUR_COSTS_BACK": "Do you want to ask for your costs back?",
         "ASK_YOUR_COSTS_BACK_YES": "If you know the details of the costs you want to claim back, you can upload a document with a description of these when we ask if you want to upload documents to support your application later on",
         "COSTS_INCLUDE": {
-          "COST_INCLUDE": "Costs can include amounts like:",
           "APPLICATION_FEE": "your application fee",
+          "COST_INCLUDE": "Costs can include amounts like:",
           "HEARING_COST": "loss of earnings and travel costs if you have to attend a hearing"
         },
         "JUDGE_MAKE_DECISION": "When a judge makes a decision on your application, they’ll decide who should pay the costs.",
