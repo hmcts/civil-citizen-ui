@@ -11,13 +11,13 @@ import {Claim} from 'models/claim';
 
 const applicationCostsController = Router();
 const viewPath = 'features/generalApplication/application-costs';
-const backLinkUrl = 'test'; // TODO: add url
+const backLinkUrl = 'test';// need to add the url
 
 function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, cancelUrl: string, res: Response): void {
   const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
   res.render(viewPath, {
     form,
-    cancelUrl: cancelUrl,
+    cancelUrl,
     backLinkUrl,
     applicationType,
   });
@@ -27,8 +27,8 @@ applicationCostsController.get(APPLICATION_COSTS_URL, (async (req: AppRequest, r
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const form = new GenericForm(new GenericYesNo(claim.generalApplication?.applicationCosts));
     const cancelUrl = await getCancelUrl(claimId, claim);
+    const form = new GenericForm(new GenericYesNo(claim.generalApplication?.applicationCosts));
     renderView(form, claim, claimId, cancelUrl, res);
   } catch (error) {
     next(error);
@@ -48,7 +48,7 @@ applicationCostsController.post(APPLICATION_COSTS_URL, (async (req: AppRequest |
       renderView(form, claim, claimId, cancelUrl, res);
     } else {
       await saveApplicationCosts(redisKey, req.body.option);
-      res.redirect('test'); // TODO: add url
+      res.redirect('test'); // need to add the url
     }
   } catch (error) {
     next(error);

@@ -33,7 +33,7 @@ export const saveApplicationCosts = async (claimId: string, applicationCosts: Ye
   }
 };
 
-export const getCancelUrl =  (claimId: string, claim: Claim): string => {
+export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
   if (claim.isClaimant()) {
     const isDashboardEnabled = isDashboardServiceEnabled();
     if (isDashboardEnabled) {
