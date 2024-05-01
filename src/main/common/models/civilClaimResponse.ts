@@ -112,6 +112,7 @@ export interface CCDClaim extends ClaimUpdate {
   totalClaimAmount?: number;
   respondent1ResponseDeadline?: Date;
   claimDetails?: ClaimDetails;
+  claimIssuedPaymentDetails?: ClaimIssuedPaymentDetails;
   respondent1?: CCDParty;
   hwfFeeType?: FeeType;
   statementOfMeans?: StatementOfMeans;
@@ -304,4 +305,9 @@ export interface ClaimFeeData {
 export interface IdamUserDetails {
   email: string;
   id: string;
+}
+
+interface ClaimIssuedPaymentDetails {
+  status?: string;
+  reference?: string;
 }
