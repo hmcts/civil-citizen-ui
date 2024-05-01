@@ -8,8 +8,8 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {DraftClaimData, getDraftClaimData} from 'services/dashboard/draftClaimService';
 import { buildPagination } from 'services/features/dashboard/claimPaginationService';
 import { DashboardClaimantResponse, DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
-import {GeneralApplicationClient} from "client/generalApplicationClient";
-import {ApplicationResponse} from "models/generalApplication/applicationResponse";
+import {GeneralApplicationClient} from 'client/generalApplicationClient';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -29,7 +29,7 @@ function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], cl
     paginationArgumentDefendant,
     lang,
     newOcmcClaimUrl: draftClaimUrl,
-    applications
+    applications,
   });
 }
 

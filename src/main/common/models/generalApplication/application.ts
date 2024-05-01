@@ -1,7 +1,7 @@
-import {CaseState} from "form/models/claimDetails";
+import {CaseState} from 'form/models/claimDetails';
 
 export class Application {
-    ccdState: CaseState;
-    id: string;
-    lastModifiedDate?: Date;
+  ccdState: CaseState;
+  id: string;
+  lastModifiedDate?: Date;
 }
