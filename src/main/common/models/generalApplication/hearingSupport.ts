@@ -22,7 +22,7 @@ export class HearingSupport {
   @ValidateNested()
   otherSupport?: Support;
 
-  constructor(selectedSupport?: string[], signLanguageContent?: string, languageContent?: string, otherContent?: string) {
+  constructor(selectedSupport: SupportType[], signLanguageContent?: string, languageContent?: string, otherContent?: string) {
     this.stepFreeAccess = new Support(SupportType.STEP_FREE_ACCESS, selectedSupport.includes(SupportType.STEP_FREE_ACCESS));
     this.hearingLoop = new Support(SupportType.HEARING_LOOP, selectedSupport.includes(SupportType.HEARING_LOOP));
     this.signLanguageInterpreter = new Support(SupportType.SIGN_LANGUAGE_INTERPRETER, selectedSupport.includes(SupportType.SIGN_LANGUAGE_INTERPRETER), signLanguageContent);
@@ -30,12 +30,12 @@ export class HearingSupport {
     this.otherSupport = new Support(SupportType.OTHER_SUPPORT, selectedSupport.includes(SupportType.OTHER_SUPPORT), otherContent);
   }
 
-  static convertToArray(param: string[] | string): string[] {
+  static convertToArray(param: string[] | string): SupportType[] {
     if (Array.isArray(param)) {
-      return param;
+      return param as SupportType[];
     }
     if (param) {
-      return [param];
+      return [param] as SupportType[];
     }
     return [];
   }
@@ -59,11 +59,11 @@ export class Support {
 function generateErrorMessage (sourceName: string): string {
   switch (sourceName) {
     case SupportType.SIGN_LANGUAGE_INTERPRETER:
-      return 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.ERRORS.MISSING_SIGN_LANGUAGE';
+      return 'ERRORS.GENERAL_APPLICATION.MISSING_SIGN_LANGUAGE';
     case SupportType.LANGUAGE_INTERPRETER:
-      return 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.ERRORS.MISSING_LANGUAGE';
+      return 'ERRORS.GENERAL_APPLICATION.MISSING_LANGUAGE';
     case SupportType.OTHER_SUPPORT:
-      return 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.ERRORS.MISSING_OTHER';
+      return 'ERRORS.GENERAL_APPLICATION.MISSING_OTHER';
     default:
       return undefined;
   }
