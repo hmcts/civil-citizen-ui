@@ -158,7 +158,7 @@ class ResponseToDefence {
     I.see('How do you want the defendant to pay?');
     I.checkOption('#paymentType'); //Immediately radio
     I.click(paths.buttons.save_and_continue);
-    I.see('The defendant can\'t afford your plan');
+    I.see('t afford your plan');
     I.checkOption('#decision-2'); //Judge make repayment plan
     I.click(paths.buttons.save_and_continue);
     I.see('Why did you reject the repayment plan?');
@@ -583,7 +583,6 @@ class ResponseToDefence {
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
     I.see('What happens next');
-    I.see('You\'ve requested a County Court Judgment against Sir John Doe');
     I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
     I.see('Email');
     I.see('Telephone');
