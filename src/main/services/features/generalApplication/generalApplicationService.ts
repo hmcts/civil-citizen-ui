@@ -35,7 +35,7 @@ export const saveApplicationCosts = async (claimId: string, applicationCosts: Ye
 
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
   if (claim.isClaimant()) {
-    const isDashboardEnabled = isDashboardServiceEnabled();
+    const isDashboardEnabled = await isDashboardServiceEnabled();
     if (isDashboardEnabled) {
       return DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
     }
