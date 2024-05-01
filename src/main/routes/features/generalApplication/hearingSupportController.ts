@@ -19,16 +19,9 @@ hearingSupportController.get(HEARING_SUPPORT_URL, (async (req: AppRequest, res: 
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
-
     const hearingSupport = claim.generalApplication?.hearingSupport || new HearingSupport([]);
     const form = new GenericForm(hearingSupport);
-    res.render(viewPath, {
-      form,
-      cancelUrl,
-      backLinkUrl,
-      applicationType,
-      headingTitle: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE'),
-    });
+    res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationType, headingTitle: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE') });
   } catch (error) {
     next(error);
   }
