@@ -1517,7 +1517,7 @@
         "NO_RESPONSE_ELIGIBLE_CCJ": "Nid yw'r diffynnydd wedi ymateb i'ch hawliad. Gallwch ofyn am Ddyfarniad Llys Sirol yn ei erbyn.",
         "NOT_ADMITTED_CLAIMANT": "Ymateb i'r diffynnydd.",
         "OFFERED_INSTALMENTS": "Mae'r diffynnydd wedi cynnig talu mewn rhandaliadau. Gallwch dderbyn neu wrthod ei gynnig/chynnig.",
-        "OFFERED_SET_DATE": "The defendant has offered to pay by a set date. You can accept or reject their offer.",
+        "OFFERED_SET_DATE": "Mae'r diffynnydd wedi cynnig talu erbyn dyddiad penodol. Gallwch dderbyn neu wrthod eu cynnig.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
         "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post.",
         "SDO_ORDER_STATUS": "Mae’r llys wedi cyhoeddi gorchymyn; ni ellir parhau â’r hawliad hwn ar-lein a bydd yn rhaid defnyddio ffurflenni papur.",
