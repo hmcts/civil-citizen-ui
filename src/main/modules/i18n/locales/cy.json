@@ -483,7 +483,7 @@
     "AGREED_RESPONSE_DEADLINE": {
       "PAGE_TITLE": "Cytuno ar fwy o amser i ymateb",
       "SUB_TITLE": "Rhowch y dyddiad ymateb yr ydych wedi’i gytuno â chynrychiolydd cyfreithiol {{ claimantName }}",
-      "SUB_TITLE_R2": "Enter the respond date you have agreed with the other party or their legal representative",
+      "SUB_TITLE_R2": "Nodwch y dyddiad ymateb yr ydych wedi cytuno arno gyda’r parti arall neu eu cynrychiolydd cyfreithiol.",
       "TITLE": "Rydych eisoes wedi cytuno i ragor o amser i ymateb"
     },
     "APPLY_HELP_WITH_FEES": {
@@ -565,7 +565,7 @@
       "ACTIONS_LINK_TEXT": "Gwybodaeth am gamau y gallwch eu cymryd ar ôl cyhoeddi CCJ ",
       "PAGE_TITLE": "Cadarnhad Dyfarniad Llys Sirol",
       "PROCESS_YOUR_REQUEST": "Byddwn yn prosesu eich cais ac yn postio copi o'r dyfarniad i chi ac i {{ defendantName }}. Ein nod yw prosesu'r cais hwn cyn gynted â phosibl.",
-      "PROCESS_YOUR_REQUEST_1": "Please do not call the Court & Tribunal Service Centre (CTSC) about the progress of your request.",
+      "PROCESS_YOUR_REQUEST_1": "Peidiwch â ffonio Canolfan Gwasanaethau’r Llysoedd a’r Tribiwnlysoedd (CTSC) ynghylch y cynnydd gyda’ch cais.",
       "POSTAL_RESPONSE": "Os derbynnir ymateb drwy'r post cyn cyhoeddi'r dyfarniad bydd eich cais yn cael ei wrthod.",
       "TITLE": "Cais am Ddyfarniad Llys Sirol",
       "UPDATES": "Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru wrth i’r hawliad hwn fynd rhagddo a bydd unrhyw ddiweddariadau pellach drwy'r post.",
@@ -2433,7 +2433,7 @@
     },
     "NEW_RESPONSE_DEADLINE": {
       "CONTENT": "Byddwn yn anfon neges e-bost atoch chi a chynrychiolydd cyfreithiol {{ claimantName }} i gadarnhau eich bod wedi cytuno â’r dyddiad ymateb newydd hwn.",
-      "CONTENT_R2": "We’ll email the new response date to you and the other party or their legal representative.",
+      "CONTENT_R2": "Byddwn yn anfon y dyddiad ymateb newydd atoch chi a’r parti arall neu eu cynrychiolydd cyfreithiol.",
       "PAGE_TITLE": "Terfyn amser newydd ar gyfer ymateb",
       "TITLE": "4pm ar {{ responseDeadline }}"
     },
@@ -2587,13 +2587,13 @@
     },
     "PAYMENT_CONFIRMATION": {
       "SUCCESSFUL": {
-        "PAGE_TITLE": "Your payment was ",
-        "PAGE_TITLE2": "successful",
-        "PAYMENT_IS": "Your payment reference number is",
-        "PAYMENT_SUMMARY": "Payment summary",
-        "CONFIRMATION": "You'll receive a confirmation email in the next hour.",
-        "PAYMENT_FOR": "Payment for",
-        "TOTAL_AMOUNT": "Total amount"
+        "PAGE_TITLE": "Roedd eich taliad yn ",
+        "PAGE_TITLE2": "llwyddiannus",
+        "PAYMENT_IS": "Cyfeirnod eich taliad yw",
+        "PAYMENT_SUMMARY": "Crynodeb o’r taliad.",
+        "CONFIRMATION": "Byddwch yn cael e-bost cadarnhau yn yr awr nesaf.",
+        "PAYMENT_FOR": "Taliad ar gyfer",
+        "TOTAL_AMOUNT": "Cyfanswm"
       },
       "UNSUCCESSFUL": {
         "CALL_US_ON": "Or, call us on ",
@@ -2730,10 +2730,10 @@
       "WARNING": "Ni fydd hyn yn newid y terfyn amser ar gyfer ymateb. Hyd yn oed os caniateir 4 wythnos arall i setlo’r hawliad, bydd dal angen i chi ymateb i’r hawliad erbyn y terfyn amser a nodir."
     },
     "REQUEST_MORE_TIME": {
-      "APPLY_TO_COURT": "Mae angen i chi wneud cais i’r llys am ragor o amser.",
+      "APPLY_TO_COURT": "Mae angen i chi wneud cais i’r llys i ofyn am ragor o amser.",
       "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
       "DOWNLOAD_FORM": "Dylech lawrlwytho ffurflen N244 (agor mewn tab newydd)",
-      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi ar e-bost i contact@justice.gov.uk",
+      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi trwy e-bost i : contact@justice.gov.uk.",
       "HOW_MUCH_ADDITIONAL_TIME": "Faint o amser ychwanegol yr ydych yn gwneud cais amdano?",
       "IF_AGREED": "Os bydd y cais yn cael ei ganiatáu, bydd yr amser ychwanegol yn dechrau o {{ responseDeadline }}",
       "MORE_THAN_28_DAYS": "Mwy na 28 diwrnod",
@@ -2741,10 +2741,10 @@
       "PAGE_TITLE": "Gofyn am fwy o amser",
       "POST": "Neu gallwch bostio’r ffurflen wedi’i llenwi i:",
       "SELECT_SAVE_AND_CONTACT": "Dewiswch ‘Cadw a pharhau’ a chysylltu â chynrychiolydd cyfreithiol {{ claimantName }} i ofyn am hyn.",
-      "SELECT_SAVE_AND_CONTACT_R2": "Select 'Save and continue' and contact the other party or their legal representative to request this.",
+      "SELECT_SAVE_AND_CONTACT_R2": "Dewiswch ‘Cadw a pharhau’ a chysylltu â’r parti arall neu eu cynrychiolydd cyfreithiol i wneud cais ar gyfer hyn.",
       "SELECT_SAVE_AND_CONTINUE": " a dewis ‘Cadw a pharhau’.",
       "TELL_OTHER_PARTY": "Bydd angen i chi hefyd ddweud wrth y parti arall eich bod wedi gwneud cais i’r llys.",
-      "TELL_OTHER_PARTY_R2": "You’ll also need to inform the other party or their legal representative that you’ve applied to the court.",
+      "TELL_OTHER_PARTY_R2": "Bydd angen i chi hefyd roi gwybod i’r parti arall neu eu cynrychiolydd cyfreithiol eich bod yn gwneud cais i’r llys.",
       "TITLE": "Gwneud cais am ragor o amser i ymateb",
       "UP_TO_28_DAYS": "Hyd at 28 diwrnod"
     },
@@ -2760,18 +2760,18 @@
     },
     "RESPONSE_DEADLINE_OPTIONS": {
       "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
-      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi ar e-bost i contact@justice.gov.uk",
-      "FORM": "Ffurflen N244 (agor mewn tab newydd)",
+      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi trwy e-bost i : contact@justice.gov.uk.",
+      "FORM": "Ffurflen N244 (yn agor mewn tab newydd)",
       "MORE_TIME": "Ydych chi eisiau gwneud cais am ragor o amser i ymateb?",
       "OPTION_AGREED": "Rwyf eisoes wedi cytuno ar ragor o amser gyda chynrychiolydd cyfreithiol {{ claimantName }}",
-      "OPTION_AGREED_R2": "I have already agreed more time with the other party or their legal representative",
+      "OPTION_AGREED_R2": "Rwyf eisoes wedi cytuno ar ragor o amser gyda’r parti arall neu eu cynrychiolydd cyfreithiol",
       "OPTION_NO": "Na, nid wyf eisiau gwneud cais am ragor o amser i ymateb",
       "OPTION_REFUSED": "Mae fy nghais am ragor o amser wedi’i wrthod",
       "OPTION_YES": "Ydw, rwyf eisiau gwneud cais am ragor o amser i ymateb",
       "PAGE_TITLE": "Terfyn amser ar gyfer ymateb",
       "POST": "Neu gallwch bostio’r ffurflen wedi’i llenwi i:",
       "REQUEST_REFUSED": "Os yw eich cais i gynrychiolydd cyfreithiol {{ claimantName }} am ragor o amser i ymateb wedi’i wrthod, bydd angen i chi wneud cais i’r llys i ystyried eich cais drwy lawrlwytho",
-      "REQUEST_REFUSED_R2": "If your request to the other party or their legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
+      "REQUEST_REFUSED_R2": "Os yw eich cais i’r parti arall neu eu cynrychiolydd cyfreithiol am ragor o amser wedi cael ei wrthod, mae angen ichi wneud cais i’r llys i ailystyried eich cais trwy lawrlwytho "
     },
     "REVIEW_DEFENDANTS_RESPONSE": {
       "AGED_11_TO_15": "Faint sy’n 11 i 15 oed?",
@@ -3171,8 +3171,8 @@
       "PAGE_TITLE": "Gwneud cais am ragor o amser",
       "REQUEST_EXTENSION_DEFAULT": "Os ydych eisiau gwneud cais am estyniad o hyd at 28 diwrnod, bydd angen i chi ofyn yn uniongyrchol i gynrychiolydd cyfreithiol y parti arall.",
       "REQUEST_EXTENSION_MORE": "Os ydych eisiau gwneud cais am estyniad o fwy na 28 diwrnod, neu os yw eich cais am estyniad wedi’i wrthod gan gynrychiolydd cyfreithiol y parti arall, bydd angen i chi wneud cais i’r llys.",
-      "REQUEST_EXTENSION_DEFAULT_R2": "If you want to request an extension of up to 28 days, you'll need to ask the other party or their legal representative directly.",
-      "REQUEST_EXTENSION_MORE_R2": "If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party or their legal representative, you'll need to apply to the court.",
+      "REQUEST_EXTENSION_DEFAULT_R2": "Os ydych eisiau gwneud cais am estyniad o hyd at 28 diwrnod, bydd angen i chi ofyn yn uniongyrchol i’r parti arall neu eu cynrychiolydd cyfreithiol.",
+      "REQUEST_EXTENSION_MORE_R2": "Os ydych eisiau gwneud cais am estyniad o fwy na 28 diwrnod, neu os yw eich cais am estyniad wedi’i wrthod gan y parti arall neud eu cynrychiolydd cyfreithiol, bydd angen i chi wneud cais i’r llys.",
       "UNABLE_TO_RESPOND_BEFORE_DEADLINE": "Os ydych yn credu na fyddwch yn gallu ymateb i hawliad cyn y terfyn amser hwn, gallwch wneud cais am ragor o amser."
     },
     "UNEMPLOYMENT": {
@@ -3229,19 +3229,19 @@
         "WITNESS_NAME": "Witness's name"
       },
       "EXPERT": {
-        "TITLE": "Expert evidence",
-        "EXPERT_REPORT": "Expert's report",
-        "EXPERT_NAME": "Expert's name",
-        "FIELD_EXPERTISE": "Field of expertise",
-        "DATE_REPORT_WAS": "Date report was written",
-        "JOINT_STATEMENT": "Joint statement of experts",
-        "EXPERTS_NAMES": "Experts' names",
-        "QUESTIONS_FOR_OTHER": "Questions for other party's expert or joint expert",
-        "OTHER_PARTY_NAME": "Other party's name",
-        "NAME_DOCUMENT_YOU": "Name of document you have questions about",
-        "ANSWERS_TO_QUESTIONS": "Answers to questions asked by other party",
-        "NAME_DOCUMENT_WITH": "Name of document with other party's questions",
-        "SELECT": "Select"
+        "TITLE": "Tystiolaeth arbenigol",
+        "EXPERT_REPORT": "Adroddiad yr Arbenigwr",
+        "EXPERT_NAME": "Enw’r arbenigwr",
+        "FIELD_EXPERTISE": "Maes arbenigedd",
+        "DATE_REPORT_WAS": "Y dyddiad yr ysgrifennwyd yr adroddiad",
+        "JOINT_STATEMENT": "Datganiad ar y cyd yr arbenigwyr",
+        "EXPERTS_NAMES": "Enwau’r arbenigwyr",
+        "QUESTIONS_FOR_OTHER": "Cwestiynau i arbenigwr y parti arall neu gyd-arbenigwr y parti arall",
+        "OTHER_PARTY_NAME": "Enw’r parti arall",
+        "NAME_DOCUMENT_YOU": "Enw’r ddogfen y mae gennych gwestiynau amdani",
+        "ANSWERS_TO_QUESTIONS": "Atebion i’r cwestiynau a ofynnwyd gan y parti arall",
+        "NAME_DOCUMENT_WITH": "Enw’r ddogfen gyda chwestiynau’r parti arall",
+        "SELECT": "Dewiswch"
       },
       "HEARING": {
         "TITLE": "Dogfennau’r gwrandawiad",
