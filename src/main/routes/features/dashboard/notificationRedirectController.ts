@@ -5,7 +5,7 @@ import {
   BUNDLES_URL,
   CASE_DOCUMENT_VIEW_URL,
   DASHBOARD_NOTIFICATION_REDIRECT,
-  DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, VIEW_ORDERS_AND_NOTICES_URL
+  DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, VIEW_ORDERS_AND_NOTICES_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {DocumentType} from 'models/document/documentType';
