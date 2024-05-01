@@ -122,9 +122,9 @@ describe('General Application service', () => {
       claim.generalApplication = new GeneralApplication();
 
       //When
-     const cancelUrl = await getCancelUrl('123',claim);
+      const cancelUrl = await getCancelUrl('123',claim);
       //Then
-      expect(cancelUrl).toEqual(DASHBOARD_CLAIMANT_URL.replace(":id",'123'));
+      expect(cancelUrl).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id','123'));
     });  
 
     it('should return claimant old dashboard url when user is claimant and dashboard feature flag is disabled', async () => {
@@ -137,9 +137,9 @@ describe('General Application service', () => {
       claim.generalApplication = new GeneralApplication();
 
       //When
-     const cancelUrl = await getCancelUrl('123',claim);
+      const cancelUrl = await getCancelUrl('123',claim);
       //Then
-      expect(cancelUrl).toEqual(OLD_DASHBOARD_CLAIMANT_URL.replace(":id",'123'));
+      expect(cancelUrl).toEqual(OLD_DASHBOARD_CLAIMANT_URL.replace(':id','123'));
     }); 
 
     it('should return defendant dashboard url when user is defendent', async () => {
@@ -152,9 +152,9 @@ describe('General Application service', () => {
       claim.generalApplication = new GeneralApplication();
 
       //When
-     const cancelUrl = await getCancelUrl('123',claim);
+      const cancelUrl = await getCancelUrl('123',claim);
       //Then
-      expect(cancelUrl).toEqual(DEFENDANT_SUMMARY_URL.replace(":id",'123'));
+      expect(cancelUrl).toEqual(DEFENDANT_SUMMARY_URL.replace(':id','123'));
     }); 
   });
 });
