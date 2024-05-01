@@ -2033,6 +2033,36 @@
         "SELECT_APPLICATION": "Select the application you want and click continue.",
         "TITLE": "Select application",
         "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order."
+      },
+      "SELECTED_APPLICATION_TYPE": {
+        "CANCEL_JUDGMENT": "Set aside (cancel) a judgment",
+        "CHANGE_CLAIM": "Make a change to your claim or defence that you've submitted",
+        "CHANGE_HEARING": "Change a hearing date",
+        "DO_SOMETHING": "Court to do something that's not on this list",
+        "IMPOSE_SANCTION": "Court to impose a sanction on the other parties unless they do a specific action",
+        "MORE_TIME": "More time to do what is required by a court order",
+        "PAUSE": "Court to pause a claim",
+        "RECONSIDER": "Court to reconsider an order",
+        "RELIEF_PENALTY": "Relief from a penalty you've been given by the court",
+        "SETTLING": "Court to make an order settling the claim by consent",
+        "STRIKE_OUT": "Court to strike out all or part of the other parties' case without a trial",
+        "SUMMARY_JUDGMENT": "Court to make a summary judgment on a case",
+        "VARY_JUDGMENT": "Vary a judgment"
+      },
+      "APPLICATION_COST": {
+        "TITLE": "Application costs",
+        "JUDGE_MAKE_DECISION": "When a judge makes a decision on your application, they’ll decide who should pay the costs.",
+        "IF_APPLICATION_SUCCESS": "If your application is successful, the other parties may be ordered to pay back your costs associated with the application.",
+        "COSTS_INCLUDE": {
+          "COST_INCLUDE": "Costs can include amounts like:",
+          "APPLICATION_FEE": "your application fee",
+          "HEARING_COST": "loss of earnings and travel costs if you have to attend a hearing"
+        },
+        "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application",
+        "OTHER_PARTIES": "The other parties will be able to see your answer to this question and respond to it.",
+        "ASK_YOUR_COSTS_BACK": "Do you want to ask for your costs back?",
+        "ASK_YOUR_COSTS_BACK_YES": "If you know the details of the costs you want to claim back, you can upload a document with a description of these when we ask if you want to upload documents to support your application later on",
+        "CAPTION": "Change a hearing date"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -3794,6 +3824,9 @@
     "VALID_DATE_NOT_FUTURE": "Rhaid i’r dyddiad y ddogfen fod heddiw neu yn y gorffennol",
     "VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cyhoeddwyd y ddogfen neu’r dyddiad yr anfonwyd y neges",
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
-    "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cafodd y datganiad ei ysgrifennu neu ei gynhyrchu"
+    "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cafodd y datganiad ei ysgrifennu neu ei gynhyrchu",
+    "GENERAL_APPLICATION": {
+      "APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No"
+    }
   }
 }
