@@ -2050,8 +2050,6 @@
         "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order."
       },
       "APPLICATION_FROM_OTHER_PARTY": {
-        "TITLE": "Application from the other parties",
-        "PAY_APPLICATION_FEE": "You'll need to pay a fee to make an application",
         "APPLICATION_FEE_AMOUNT": "The fee amount depends on whether the other parties have agreed to you making this application. The other parties are the other side or siders involved in your case.",
         "GETTING_AGREEMENT": "Getting agreement",
         "GETTING_AGREEMENT_PARA_1": "Asking the other parties to agree is optional. If they've agreed, you do not need to have proof of this.",
@@ -2061,9 +2059,11 @@
         "OTHER_PARTY_ALREADY_AGREED_PARA_2": "There may also be no need for a hearing to make a decision on the application. You'll see the final application fee amount before you pay.",
         "OTHER_PARTY_ALREADY_AGREED_QUESTION":"Have the other parties agreed to the order that you want the judge to make?",
         "OTHER_PARTY_ALREADY_AGREED_QUESTION_PARA_1":"If you'll be selecting multiple applications, this answer will apply to all of them.",
+        "PAY_APPLICATION_FEE": "You'll need to pay a fee to make an application",
+        "RECONSIDER_ORDER": "reconsider an order",
         "SET_ASIDE_JUDGMENT": "set aside (remove) a judgment",
-        "VARY_JUDGMENT": "vary a judgment",
-        "RECONSIDER_ORDER": "reconsider an order"
+        "TITLE": "Application from the other parties",
+        "VARY_JUDGMENT": "vary a judgment"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -3827,8 +3827,8 @@
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cafodd y datganiad ei ysgrifennu neu ei gynhyrchu",
     "GENERAL_APPLICATION": {
-      "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
-      "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No"
+      "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
+      "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application." 
     }
   }
 }
