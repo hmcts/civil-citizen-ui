@@ -9,6 +9,7 @@
     "CONTACT_NAME": "Contact name",
     "CONTACT_NUMBER": "Contact number",
     "CONTACT_EMAIL": "Contact email",
+    "CREATED_DATE": "Created [{{ createdDate }}]",
     "UNAVAILABLE_DATES": "Dates unavailable",
     "CASE_REFERENCE": "Case reference: {{ claimId }}",
     "ACCOUNT_TYPE": "Type of account",
@@ -18,6 +19,7 @@
     "BALANCE": "Balance",
     "BANK_AND_SAVINGS_ACCOUNTS": "Bank and savings accounts",
     "BANK_JOINT_ACCOUNT": "Joint account",
+    "CANNOT_FIND_DOCUMENT_TEXT": "If you cannot find a document that you are looking for in this section",
     "CHILDREN": "Children",
     "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
@@ -49,6 +51,7 @@
     "NO": "No",
     "NUMBER_OF_PEOPLE": "Number of people",
     "OPTIONAL_CONTACT_PERSON": "Contact person (optional)",
+    "ORDER_AND_NOTICES": "orders and notices",
     "MANDATORY_CONTACT_PERSON": "Contact person",
     "PARTIES": "{{ claimantName }} v {{ defendantName }}",
     "REASON": "Reason",
@@ -375,6 +378,11 @@
     }
   },
   "PAGES": {
+    "VIEW_MEDIATION_DOCUMENTS": {
+      "CLAIMANT_TABLE_TITLE": "Claimant mediation documents",
+      "DEFENDANT_TABLE_TITLE": "Defendant mediation documents",
+      "PAGE_TITLE": "View mediation documents"
+    },
     "VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT": {
       "PAGE_TITLE": "View mediation settlement agreement",
       "DOCUMENT_TABLE_TITLE": "Mediation Settlement Agreement"
@@ -869,6 +877,7 @@
       "AMOUNT": "Amount",
       "AMOUNT_BREAKDOWN": "Amount breakdown",
       "CLAIM_FEE": "Claim fee",
+      "CLAIM_HAS_BEEN_MADE_TEXT": "This is the claim that's has been made in the case. It can also be found in",
       "CLAIM_NUMBER": "Claim number",
       "CLAIM_TOTAL": "Claim Total",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
@@ -877,9 +886,13 @@
       "INTEREST": "Interest",
       "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})",
       "PAGE_TITLE": "Claim Details",
+      "PAGE_TITLE_NEW": "View the claim",
       "REASON_FOR_CLAIM": "Reason for claim",
+      "THE_CLAIM": "The Claim",
       "TIMELINE": "Timeline",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
+      "TITLE": "Claim Details",
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "VIEW_THE_CLAIM_PDF": "View the claim (PDF)"
     },
     "CLAIM_TASK_LIST":{
       "AFTER_COMPLETE": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
@@ -1258,7 +1271,8 @@
           "LABEL": "The agreement",
           "REPAYMENT_PLAN_PART_ONE": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every ",
           "REPAYMENT_PLAN_PART_TWO": "The first instalment will be paid by {{ firstRepaymentDate }}",
-          "PAYMENT_TEXT": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} every {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}"
+          "PAYMENT_TEXT": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} every {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
+          "IMMEDIATE_PLAN": "{{ fullName }} will pay £{{ amount }} immediately. {{ claimant }} will receive the money no later than {{ paymentDate }}. Any cheques or transfers will be clear in {{ fullName }}’s account by this date."
         },
         "COMPLETION_DATE": {
           "LABEL": "Completion date",
@@ -1426,6 +1440,9 @@
       "TITLE": "Are you paying money as a result of any court orders?"
     },
     "DASHBOARD": {
+      "ACCORDION_TITLE": "If you cannot find a document you are looking for in this section",
+      "ACCORDION_CONTENT": "This is the main active hearing on the case. Older hearings and case documents can be found in",
+      "ACCORDION_ORDERS": "orders and notices",
       "ACTIONS": "Actions",
       "ACTION_PROMPT": "You need to respond before ",
       "CLAIMANT_NAME": "Claimant name",
@@ -1638,7 +1655,8 @@
         "THE_AGREEMENT": {
           "LABEL": "The agreement",
           "PAY_BY_SET_DATE": "{{ defendant }} will pay £{{ amount }} no later than {{ paymentDate }}.",
-          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ frequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
+          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ frequency }}. The first instalment will be paid by {{ firstRepaymentDate }}.",
+          "PAY_IMMEDIATELY_PLAN": "{{ defendant }} will pay £{{ amount }} immediately. {{ claimant }} will receive the money no later than {{ paymentDate }}. Any cheques or transfers will be clear in {{ defendant }}’s account by this date."
         },
         "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
         "VALID_YES_NO_OPTION": "Select Yes - I confirm I have read and accept the terms of the agreement if you want to accept the agreement",
@@ -1977,6 +1995,45 @@
       "OPENS_IN_NEW_TAB": "free telephone mediation (opens in new tab).",
       "PAGE_TITLE": "Free telephone mediation",
       "REACHING_SETTLEMENT": "Reaching a settlement"
+    },
+    "GENERAL_APPLICATION": {
+      "SELECT_TYPE": {
+        "ALL_APPLICATIONS": "All applications",
+        "APPLICATION_NOT_NEW": "An application is not a new claim. It is a request for a judge to take an action on an existing claim.",
+        "ASK_CANCEL_JUDGMENT": "Ask to set aside (cancel) a judgment",
+        "ASK_CANCEL_JUDGMENT_DESCRIPTION": "For example, if you do not believe a judgment should've been made or you've not had the opportunity to respond to a claim and you have a defence. This application is usually made by defendants.",
+        "ASK_CHANGE_CLAIM": "Ask to make a change to your claim or defence that you've submitted",
+        "ASK_CHANGE_CLAIM_DESCRIPTION": "This is also known as an application to amend a statement of case.",
+        "ASK_CHANGE_HEARING": "Ask to change a hearing date",
+        "ASK_CHANGE_HEARING_DESCRIPTION": "This is also known as an application to adjourn a hearing.",
+        "ASK_DO_SOMETHING": "Ask the court to do something that's not on this list",
+        "ASK_DO_SOMETHING_DESCRIPTION": "Select this option if you cannot see the application you want on this list.",
+        "ASK_IMPOSE_SANCTION": "Ask the court to impose a sanction on the other parties unless they do a specific action",
+        "ASK_IMPOSE_SANCTION_DESCRIPTION": "For example. striking out their claim or defence unless they upload all their documents by a specific date. This is also known as an application for an unless order.",
+        "ASK_MORE_TIME": "Ask for more time to do what is required by a court order",
+        "ASK_MORE_TIME_DESCRIPTION_1": "For example, asking for the deadline for uploading documents before a trial or hearing to be extended. You'll need to provide a valid reason for not meeting the original deadline. This application can only be made before the original deadline has passed. This is also known as an application to extend time.",
+        "ASK_MORE_TIME_DESCRIPTION_2": "Instead of making an application, you can get written agreement from the other parties for more time to do what's required by the court. To do this, the time extension you request must be less than 28 days and should not affect a hearing date.",
+        "ASK_PAUSE": "Ask the court to pause a claim",
+        "ASK_PAUSE_DESCRIPTION": "This is also known as an application to stay the claim.",
+        "ASK_RECONSIDER": "Ask the court to reconsider an order",
+        "ASK_RECONSIDER_DESCRIPTION": "If an order has been made after an application or a hearing that you were not informed about. This is also known as an application to set aside or vary an order.",
+        "ASK_RELIEF_PENALTY": "Ask for relief from a penalty you've been given by the court",
+        "ASK_RELIEF_PENALTY_DESCRIPTION": "For example, if you have not uploaded documents by the deadline. You can only make this application after the penalty has been given. This is also known as an application for relief from sanctions.",
+        "ASK_SETTLING": "Ask the court to make an order settling the claim by consent",
+        "ASK_SETTLING_DESCRIPTION": "The other parties must have agreed to this application. If there's a hearing date already scheduled for your case, you'll need to request cancellation of this when you provide details about your application.",
+        "ASK_STRIKE_OUT": "Ask the court to strike out all or part of the other parties' case without a trial",
+        "ASK_SUMMARY_JUDGMENT": "Ask the court to make a summary judgment on a case",
+        "ASK_SUMMARY_JUDGMENT_DESCRIPTION": "This application should only be made if you do not believe the other parties' claim has any real prospect of success.",
+        "ASK_STRIKE_OUT_DESCRIPTION": "This application should only be made if you believe that a document uploaded by the other parties, such as their defence, should be struck out as it has no real prospect of success.",
+        "ASK_VARY_JUDGMENT": "Ask to vary a judgment",
+        "ASK_VARY_JUDGMENT_DESCRIPTION": "For example, if you want to request to pay a judgment amount in instalments or make a change to instalments you've already agreed. This application is usually made by defendants. Your payment offer will be presented to the other parties who can accept or reject it. If you're a defendant selecting this application, you'll need to upload an N245 form.",
+        "CAPTION": "Make an application",
+        "NEED_MULTIPLE_APPLICATIONS": "If you need to make multiple applications, you'll have the option to add another application later on.",
+        "OTHER": "Other applications",
+        "SELECT_APPLICATION": "Select the application you want and click continue.",
+        "TITLE": "Select application",
+        "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order."
+      }
     },
     "ACCEPT_REPAYMENT_PLAN": {
       "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
@@ -3181,6 +3238,14 @@
       "WHAT_SUPPORT": "What support do you, experts or witnesses need?",
       "FOR_EXAMPLE": "For example, a witness requires a courtroom with step-free access."
     },
+    "VIEW_RESPONSE_TO_THE_CLAIM": {
+      "DOCUMENT_LABEL": "Defendant response",
+      "OTHER_DOCUMENT_TEXT": "This is the response to the claim. This form and other case documents can also be found in ",
+      "PAGE_CAPTION": "The response",
+      "PAGE_TITLE": "View the response to the claim",
+      "RESPONSE_TYPE_LABEL": "Response type",
+      "TABLE_TITLE": "Response"
+    },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
       "QUESTION_1": "This is someone who has been the victim of domestic or other abuse, has a learning disability, physical or mental illness or reduced mental capacity. The court will look at what adjustments or support the person needs.",
@@ -3335,6 +3400,7 @@
     "AMOUNT_LESS_THAN_CLAIMED": "Enter a value less than the amount claimed",
     "AMOUNT_REQUIRED": "Enter an amount of £1 or more",
     "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
+    "APPLICATION_TYPE_REQUIRED": "Select an application",
     "CHOOSE_TYPE_OF_INTEREST": "Choose a type of interest",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",

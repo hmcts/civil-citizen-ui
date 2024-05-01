@@ -2,15 +2,16 @@
   "COMMON": {
     "HOME": "Home",
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
-    "UPLOAD_FILE": "Upload file",
+    "UPLOAD_FILE": "Llwytho ffeil i fyny",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
-    "DOCUMENTS_UPLOADED": "Documents uploaded",
-    "CASE_REFERENCE_NUMBER": "Your case reference number",
+    "DOCUMENTS_UPLOADED": "Dogfennau wedi’u llwytho",
+    "CASE_REFERENCE_NUMBER": "Cyfeirnod eich achos",
     "CONTACT_NAME": "Enw cyswllt",
     "CONTACT_NUMBER": "Rhif cyswllt",
     "CONTACT_EMAIL": "Cyfeiriad e-bost",
+    "CREATED_DATE": "Created [{{ createdDate }}]",
     "UNAVAILABLE_DATES": "Dyddiadau pan na fyddwch ar gael",
-    "CASE_REFERENCE": "Case reference: {{ claimId }}",
+    "CASE_REFERENCE": "Cyfeirnod yr achos: {{ claimId }}",
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
     "ANNUAL_TURNOVER": "Trosiant blynyddol",
@@ -18,6 +19,7 @@
     "BALANCE": "Balans",
     "BANK_AND_SAVINGS_ACCOUNTS": "Cyfrifon banc a chynilo",
     "BANK_JOINT_ACCOUNT": "Cyfrif ar y cyd",
+    "CANNOT_FIND_DOCUMENT_TEXT": "If you cannot find a document that you are looking for in this section",
     "CHILDREN": "Plant",
     "CHOOSE": "Dewiswch",
     "CIVIL_MONEY_CLAIMS": "Hawliadau am Arian yn y Llys Sifil",
@@ -49,6 +51,7 @@
     "NO": "Nac oes",
     "NUMBER_OF_PEOPLE": "Nifer y bobl",
     "OPTIONAL_CONTACT_PERSON": "Unigolyn cyswllt (dewisol)",
+    "ORDER_AND_NOTICES": "orders and notices",
     "MANDATORY_CONTACT_PERSON": "Contact person",
     "PARTIES": "{{ claimantName }} v {{ defendantName }}",
     "REASON": "Rheswm",
@@ -375,6 +378,11 @@
     }
   },
   "PAGES": {
+    "VIEW_MEDIATION_DOCUMENTS": {
+      "CLAIMANT_TABLE_TITLE": "Claimant mediation documents",
+      "DEFENDANT_TABLE_TITLE": "Defendant mediation documents",
+      "PAGE_TITLE": "View mediation documents"
+    },
     "VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT": {
       "PAGE_TITLE": "View mediation settlement agreement",
       "DOCUMENT_TABLE_TITLE": "Mediation Settlement Agreement"
@@ -382,16 +390,16 @@
     "MEDIATION": {
       "CONFIRMATION_PAGE": {
         "PAGE_TITLE": "Mediation upload documents confirmation",
-        "TEXT_BEFORE": "You can",
-        "LINK_TEXT": "upload more documents",
-        "TEXT_AFTER": "now or come back later. You can view your documents and the other party's documents"
+        "TEXT_BEFORE": "Gallwch",
+        "LINK_TEXT": "lwytho mwy o ddogfennau",
+        "TEXT_AFTER": "nawr neu ddod yn ôl yn ddiweddarach. Gallwch weld eich dogfennau a dogfennau'r parti arall."
       },
       "UPLOAD_DOCUMENTS": {
-        "SECTION_TITLE": "Mediation non-attendance",
+        "SECTION_TITLE": "Datganiad cyfryngu di-bresenoldeb",
 
         "TITLE": {
           "YOUR_STATEMENT": "Eich datganiad",
-          "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement"
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Dogfennau y cyfeirir atynt yn y datganiad"
         },
         "YOUR_NAME": {
           "YOUR_STATEMENT": "Eich enw",
@@ -399,31 +407,31 @@
         },
         "DATE_INPUT": {
           "YOUR_STATEMENT" : "Y dyddiad yr ysgrifenwyd y datganiad",
-          "DOCUMENTS_REFERRED_TO_IN_STATEMENT" : "Date document was produced"
+          "DOCUMENTS_REFERRED_TO_IN_STATEMENT" : "Y dyddiad y cynhyrchwyd y ddogfen"
         }
       },
       "TYPE_OF_DOCUMENTS": {
-        "CHECKBOX_TITLE": "Mediation non-attendance",
-        "CHECKBOX_HINT": "Select all that apply",
+        "CHECKBOX_TITLE": "Datganiad cyfryngu di-bresenoldeb",
+        "CHECKBOX_HINT": "Dewiswch bob un sy'n berthnasol",
         "YOUR_STATEMENT": "Eich datganiad",
-        "YOUR_STATEMENT_HINT": "A written statement explaining why you did not attend your mediation appointment",
-        "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement",
-        "DOCUMENTS_REFERRED_TO_IN_STATEMENT_HINT": "Documents you refer to in your statement - for example emails, photographs or doctor’s notes"
+        "YOUR_STATEMENT_HINT": "Datganiad ysgrifenedig yn esbonio pam na wnaethoch chi fynychu eich apwyntiad cyfryngu",
+        "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Dogfennau y cyfeirir atynt yn y datganiad",
+        "DOCUMENTS_REFERRED_TO_IN_STATEMENT_HINT": "Dogfennau rydych chi’n cyfeirio atynt yn eich datganiad - er enghraifft e-byst, ffotograffau neu nodiadau gan feddyg"
       },
       "START_PAGE": {
-        "PAGE_TITLE": "Upload your documents",
-        "YOU_DID_NOT_ATTEND": "You did not attend your mediation appointment. The judge may order you to pay costs or may automatically rule in the other party’s favour.",
-        "IF_YOU_WERE_UNABLE": "If you were unable to attend mediation due to exceptional circumstances, you can explain why with supporting evidence, such as a doctor’s note or photographs of relevant documents. This is sometimes known as filing a representation. If the judge accepts your reasons for non-attendance, you will not be issued with a penalty.",
-        "YOU_CANNOT_WITHDRAW": "You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example, ‘version 2’.",
-        "THE_OTHER_PARTIES": "The other parties will be able to see the documents you have uploaded and you will be able to see their documents.",
+        "PAGE_TITLE": "Uwchlwytho eich dogfennau",
+        "YOU_DID_NOT_ATTEND": "Ni wnaethoch fynychu eich apwyntiad cyfryngu. Gall y barnwr orchymyn i chi dalu costau neu gall ddyfarnu yn awtomatig o blaid y parti arall.",
+        "IF_YOU_WERE_UNABLE": "Os nad oeddech yn gallu mynd i’r apwyntiad cyfryngu oherwydd amgylchiadau eithriadol, gallwch esbonio pam gyda thystiolaeth ategol, megis nodyn gan feddyg neu ffotograffau o ddogfennau perthnasol. Weithiau gelwir hyn yn ffeilio cynrychiolaeth. Os yw’r barnwr yn derbyn eich rhesymau dros beidio â mynychu, ni fyddwch yn cael cosb.",
+        "YOU_CANNOT_WITHDRAW": "Ni allwch dynnu dogfen yn ôl ar ôl i chi ei chyflwyno., Os ydych chi am ychwanegu mwy o wybodaeth at rywbeth rydych chi eisoes wedi’i gyflwyno, gallwch chi lwytho'r ddogfen eto. Dylech ychwanegu rhif fersiwn at yr enw, er enghraifft ‘fersiwn2'.",
+        "THE_OTHER_PARTIES": "Bydd y partïon eraill yn gallu gweld y dogfennau rydych chi wedi’u llwytho, a byddwch chi’n gallu gweld eu dogfennau nhw.",
 
-        "DEADLINES_FOR_UPLOADING_TITLE": "Deadlines for uploading documents",
-        "YOU_HAVE_UNTIL": "You have until 14 days before your hearing to submit documents.",
-        "YOU_DO_NOT_HAVE": "You do not have to upload all your documents at once. You can return to upload them later.",
+        "DEADLINES_FOR_UPLOADING_TITLE": "Dyddiadau cau ar gyfer llwytho dogfennau",
+        "YOU_HAVE_UNTIL": "Mae gennych hyd at 14 diwrnod cyn eich gwrandawiad i gyflwyno dogfennau.",
+        "YOU_DO_NOT_HAVE": "Nid oes angen i chi lwytho eich holl ddogfennau ar unwaith. Gallwch ddod yn ôl i’w llwytho yn nes ymlaen.",
 
-        "BEFORE_YOU_UPLOAD_TITLE": "Before you upload your documents",
-        "BEFORE YOU UPLOAD": "Before you upload your document, give it a name that tells the court what it is, for example “Mediation non-attendance statement by Jane Smith”",
-        "EACH_DOCUMENT_MUST": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
+        "BEFORE_YOU_UPLOAD_TITLE": "Cyn ichi lwytho eich dogfennau",
+        "BEFORE YOU UPLOAD": "Cyn i chi lwytho’r ddogfen, rhowch enw iddi sy’n dweud wrth y llys beth ydyw, er enghraifft “Datganiad cyfryngu di-bresenoldeb gan Jane Smith”/",
+        "EACH_DOCUMENT_MUST": "Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
       }
     },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
@@ -869,6 +877,7 @@
       "AMOUNT": "Swm",
       "AMOUNT_BREAKDOWN": "Dadansoddiad o’r swm",
       "CLAIM_FEE": "Ffi’r hawliad",
+      "CLAIM_HAS_BEEN_MADE_TEXT": "This is the claim that's has been made in the case. It can also be found in",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CLAIM_TOTAL": "Cyfanswm yr hawliad",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Lawrlwytho a gweld llinell amser",
@@ -877,9 +886,13 @@
       "INTEREST": "Llog",
       "INTEREST_SNIPPET": "Llog wedi ei gyfrifo ar {{ rate }}% am  {{ numberOfDays }} diwrnod ({{ interestDate }} tan {{ interestToDate }})",
       "PAGE_TITLE": "Manylion yr hawliad",
+      "PAGE_TITLE_NEW": "View the claim",
       "REASON_FOR_CLAIM": "Rheswm dros yr hawliad",
+      "THE_CLAIM": "The Claim",
       "TIMELINE": "Amserlen",
-      "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm"
+      "TITLE": "Claim Details",
+      "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm",
+      "VIEW_THE_CLAIM_PDF": "View the claim (PDF)"
     },
     "CLAIM_TASK_LIST": {
       "AFTER_COMPLETE": "Ar ôl i chi gwblhau'r holl gamau byddwch yn mynd ymlaen i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno.",
@@ -1258,7 +1271,8 @@
           "LABEL": "Y cytundeb",
           "REPAYMENT_PLAN_PART_ONE": "Bydd {{ defendant }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ paymentAmount }} pob  ",
           "REPAYMENT_PLAN_PART_TWO": "Telir y rhandaliad cyntaf erbyn {{ firstRepaymentDate }}",
-          "PAYMENT_TEXT": "Bydd {{ fullName }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ instalmentAmount }} pob {{ frequency }}. Telir y rhandaliad cyntaf erbyn {{ instalmentDate }}"
+          "PAYMENT_TEXT": "Bydd {{ fullName }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ instalmentAmount }} pob {{ frequency }}. Telir y rhandaliad cyntaf erbyn {{ instalmentDate }}",
+          "IMMEDIATE_PLAN": "Bydd {{ fullName }} yn talu £{{ amount }} ar unwaith. Bydd {{ claimant }} yn derbyn yr arian erbyn {{ paymentDate }} fan bellaf. Bydd unrhyw sieciau neu drosglwyddiadau banc wedi clirio ac yng nghyfrif {{ fullName }}'s erbyn y dyddiad hwn."
         },
         "COMPLETION_DATE": {
           "LABEL": "Dyddiad cwblhau",
@@ -1426,6 +1440,9 @@
       "TITLE": "A ydych yn talu arian o ganlyniad i unrhyw orchmynion llys?"
     },
     "DASHBOARD": {
+      "ACCORDION_TITLE": "If you cannot find a document you are looking for in this section",
+      "ACCORDION_CONTENT": "This is the main active hearing on the case. Older hearings and case documents can be found in",
+      "ACCORDION_ORDERS": "orders and notices",
       "ACTIONS": "Camau gweithredu",
       "ACTION_PROMPT": "Mae angen i chi ymateb cyn ",
       "CLAIMANT_NAME": "Enw’r hawlydd",
@@ -1448,7 +1465,7 @@
         "TITLE": "Hearings",
         "UPLOAD_DOCUMENTS": "Upload hearing documents",
         "VIEW_BUNDLE": "View the bundle",
-        "VIEW_DOCUMENTS": "View documents",
+        "VIEW_DOCUMENTS": "Gweld y dogfennau",
         "VIEW_HEARINGS": "View hearings",
         "VIEW_THE_HEARING": "View the hearing"
       },
@@ -1638,7 +1655,8 @@
         "THE_AGREEMENT": {
           "LABEL": "Y cytundeb",
           "PAY_BY_SET_DATE": "Bydd {{ defendant }} yn talu £{{ amount }} erbyn dim hwyrach na {{ paymentDate }}.",
-          "REPAYMENT_PLAN": "Bydd {{ defendant }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ paymentAmount }} bob {{ frequency }}. Telir y rhandaliad cyntaf erbyn {{ firstRepaymentDate }}."
+          "REPAYMENT_PLAN": "Bydd {{ defendant }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ paymentAmount }} bob {{ frequency }}. Telir y rhandaliad cyntaf erbyn {{ firstRepaymentDate }}.",
+          "PAY_IMMEDIATELY_PLAN": "Bydd {{ defendant }} yn talu £{{ amount }} ar unwaith. Bydd {{ claimant }} yn derbyn yr arian erbyn {{ paymentDate }} fan bellaf. Bydd unrhyw sieciau neu drosglwyddiadau banc wedi clirio ac yng nghyfrif {{ defendant }}'s erbyn y dyddiad hwn."
         },
         "THIRD_PARAGRAPH": "Gall y naill barti neu’r llall weld a lawrlwytho'r cytundeb hwn o'u cyfrif Hawliadau am Arian. Dylai'r ddau barti gadw copi o'r cytundeb hwn.",
         "VALID_YES_NO_OPTION": "Dewiswch Ydw - rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb os ydych am dderbyn y cytundeb",
@@ -1978,6 +1996,45 @@
       "PAGE_TITLE": "Cyfryngu dros y ffôn am ddim",
       "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
+    "GENERAL_APPLICATION": {
+      "SELECT_TYPE": {
+        "ALL_APPLICATIONS": "All applications",
+        "APPLICATION_NOT_NEW": "An application is not a new claim. It is a request for a judge to take an action on an existing claim.",
+        "ASK_CANCEL_JUDGMENT": "Ask to set aside (cancel) a judgment",
+        "ASK_CANCEL_JUDGMENT_DESCRIPTION": "For example, if you do not believe a judgment should've been made or you've not had the opportunity to respond to a claim and you have a defence. This application is usually made by defendants.",
+        "ASK_CHANGE_CLAIM": "Ask to make a change to your claim or defence that you've submitted",
+        "ASK_CHANGE_CLAIM_DESCRIPTION": "This is also known as an application to amend a statement of case.",
+        "ASK_CHANGE_HEARING": "Ask to change a hearing date",
+        "ASK_CHANGE_HEARING_DESCRIPTION": "This is also known as an application to adjourn a hearing.",
+        "ASK_DO_SOMETHING": "Ask the court to do something that's not on this list",
+        "ASK_DO_SOMETHING_DESCRIPTION": "Select this option if you cannot see the application you want on this list.",
+        "ASK_IMPOSE_SANCTION": "Ask the court to impose a sanction on the other parties unless they do a specific action",
+        "ASK_IMPOSE_SANCTION_DESCRIPTION": "For example. striking out their claim or defence unless they upload all their documents by a specific date. This is also known as an application for an unless order.",
+        "ASK_MORE_TIME": "Ask for more time to do what is required by a court order",
+        "ASK_MORE_TIME_DESCRIPTION_1": "For example, asking for the deadline for uploading documents before a trial or hearing to be extended. You'll need to provide a valid reason for not meeting the original deadline. This application can only be made before the original deadline has passed. This is also known as an application to extend time.",
+        "ASK_MORE_TIME_DESCRIPTION_2": "Instead of making an application, you can get written agreement from the other parties for more time to do what's required by the court. To do this, the time extension you request must be less than 28 days and should not affect a hearing date.",
+        "ASK_PAUSE": "Ask the court to pause a claim",
+        "ASK_PAUSE_DESCRIPTION": "This is also known as an application to stay the claim.",
+        "ASK_RECONSIDER": "Ask the court to reconsider an order",
+        "ASK_RECONSIDER_DESCRIPTION": "If an order has been made after an application or a hearing that you were not informed about. This is also known as an application to set aside or vary an order.",
+        "ASK_RELIEF_PENALTY": "Ask for relief from a penalty you've been given by the court",
+        "ASK_RELIEF_PENALTY_DESCRIPTION": "For example, if you have not uploaded documents by the deadline. You can only make this application after the penalty has been given. This is also known as an application for relief from sanctions.",
+        "ASK_SETTLING": "Ask the court to make an order settling the claim by consent",
+        "ASK_SETTLING_DESCRIPTION": "The other parties must have agreed to this application. If there's a hearing date already scheduled for your case, you'll need to request cancellation of this when you provide details about your application.",
+        "ASK_STRIKE_OUT": "Ask the court to strike out all or part of the other parties' case without a trial",
+        "ASK_SUMMARY_JUDGMENT": "Ask the court to make a summary judgment on a case",
+        "ASK_SUMMARY_JUDGMENT_DESCRIPTION": "This application should only be made if you do not believe the other parties' claim has any real prospect of success.",
+        "ASK_STRIKE_OUT_DESCRIPTION": "This application should only be made if you believe that a document uploaded by the other parties, such as their defence, should be struck out as it has no real prospect of success.",
+        "ASK_VARY_JUDGMENT": "Ask to vary a judgment",
+        "ASK_VARY_JUDGMENT_DESCRIPTION": "For example, if you want to request to pay a judgment amount in instalments or make a change to instalments you've already agreed. This application is usually made by defendants. Your payment offer will be presented to the other parties who can accept or reject it. If you're a defendant selecting this application, you'll need to upload an N245 form.",
+        "CAPTION": "Make an application",
+        "NEED_MULTIPLE_APPLICATIONS": "If you need to make multiple applications, you'll have the option to add another application later on.",
+        "OTHER": "Other applications",
+        "SELECT_APPLICATION": "Select the application you want and click continue.",
+        "TITLE": "Select application",
+        "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order."
+      }
+    },
     "ACCEPT_REPAYMENT_PLAN": {
       "DEFENDANT_OFFERED_TO_PAY": "Mae {{ defendantName }}  wedi cynnig eich talu'n llawn erbyn {{ proposedSetDate }}",
       "DO_YOU_ACCEPT": "Ydych chi'n derbyn y cynllun ad-dalu?",
@@ -2283,9 +2340,9 @@
       "YOUR_STATEMENT_HINT": "Datganiad ysgrifenedig o'r hyn yr ydych am ei ddweud wrth y llys"
     },
     "EVIDENCE_DOCUMENTS_UPLOADED": {
-      "TITLE": "Documents uploaded",
-      "CASE_REFERENCE_NUMBER": "Your case reference number",
-      "VIEW_DOCUMENTS": "View documents",
+      "TITLE": "Dogfennau wedi’u llwytho",
+      "CASE_REFERENCE_NUMBER": "Cyfeirnod eich achos",
+      "VIEW_DOCUMENTS": "Gweld y dogfennau",
       "UPLOAD_MORE_DOCUMENTS_START": "You can",
       "UPLOAD_MORE_DOCUMENTS_MID": "upload more documents",
       "UPLOAD_MORE_DOCUMENTS_END": "now or come back later. You can view your documents and the other party's documents."
@@ -2499,13 +2556,13 @@
     },
     "PAYMENT_CONFIRMATION": {
       "SUCCESSFUL": {
-        "PAGE_TITLE": "Your payment was ",
-        "PAGE_TITLE2": "successful",
-        "PAYMENT_IS": "Your payment reference number is",
-        "PAYMENT_SUMMARY": "Payment summary",
-        "CONFIRMATION": "You'll receive a confirmation email in the next hour.",
-        "PAYMENT_FOR": "Payment for",
-        "TOTAL_AMOUNT": "Total amount"
+        "PAGE_TITLE": "Roedd eich taliad yn ",
+        "PAGE_TITLE2": "llwyddiannus",
+        "PAYMENT_IS": "Cyfeirnod eich taliad yw",
+        "PAYMENT_SUMMARY": "Crynodeb o’r taliad.",
+        "CONFIRMATION": "Byddwch yn cael e-bost cadarnhau yn yr awr nesaf.",
+        "PAYMENT_FOR": "Taliad ar gyfer",
+        "TOTAL_AMOUNT": "Cyfanswm"
       },
       "UNSUCCESSFUL": {
         "CALL_US_ON": "Or, call us on ",
@@ -3129,7 +3186,7 @@
       "WITNESS": {
         "DATE_STATEMENT": "Y dyddiad yr ysgrifenwyd y datganiad",
         "DATE_SUMMARY": "Date summary was written",
-        "DOCUMENT": "Documents referred to in the statement",
+        "DOCUMENT": "Dogfennau y cyfeirir atynt yn y datganiad",
         "NOTICE": "Notice of intention to rely on hearsay evidence",
         "STATEMENT": "Witness statement",
         "SUMMARY": "Witness summary",
@@ -3180,6 +3237,14 @@
       "DIRECTIONS": "directions questionnaire.",
       "WHAT_SUPPORT": "What support do you, experts or witnesses need?",
       "FOR_EXAMPLE": "For example, a witness requires a courtroom with step-free access."
+    },
+    "VIEW_RESPONSE_TO_THE_CLAIM": {
+      "DOCUMENT_LABEL": "Defendant response",
+      "OTHER_DOCUMENT_TEXT": "This is the response to the claim. This form and other case documents can also be found in ",
+      "PAGE_CAPTION": "The response",
+      "PAGE_TITLE": "View the response to the claim",
+      "RESPONSE_TYPE_LABEL": "Response type",
+      "TABLE_TITLE": "Response"
     },
     "VULNERABILITY": {
       "PAGE_TITLE": "Cwestiynau bregusrwydd",
@@ -3240,9 +3305,9 @@
       "CLAIMANT": "Anfonir eich ymateb at {{ claimantFullName }}."
     },
     "UPLOAD_YOUR_DOCUMENTS": {
-      "PAGE_TITLE": "Upload your documents",
-      "TITLE": "Upload your documents",
-      "CASE_REFERENCE": "Case reference: {{ caseId }}",
+      "PAGE_TITLE": "Uwchlwytho eich dogfennau",
+      "TITLE": "Uwchlwytho eich dogfennau",
+      "CASE_REFERENCE": "Cyfeirnod yr achos: {{ caseId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "CHECK_THE_ORDER": "Check the order the court sent you for what documents you need to upload for your case.",
       "YOU_CANNOT_WITHDRAW": "You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example 'version2'.",
@@ -3255,7 +3320,7 @@
       "YOU_DO_NOT_HAVE": "You do not have to upload all your documents at once. You can return to upload them later.",
       "BEFORE_YOU_UPLOAD_YOUR": "Before you upload your documents",
       "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
-      "START_NOW": "Start now"
+      "START_NOW": "Dechreuwch nawr"
     },
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
@@ -3335,6 +3400,7 @@
     "AMOUNT_LESS_THAN_CLAIMED": "Nodwch werth sy'n llai na'r swm a hawlir",
     "AMOUNT_REQUIRED": "Nodwch swm o £1 neu fwy",
     "ANNUAL_TURNOVER_REQUIRED": "A ydych yn siŵr bod hwn yn swm dilys?",
+    "APPLICATION_TYPE_REQUIRED": "Select an application",
     "CHOOSE_TYPE_OF_INTEREST": "Dewis math o log",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "Mae angen i chi nodi rhif yr hawliad",
@@ -3661,7 +3727,7 @@
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Rhowch o leiaf un cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Rhowch rif ar gyfer o leiaf un maes",
-    "VALID_ENTER_AT_LEAST_ONE_UPLOAD": "You must select at least one type of document",
+    "VALID_ENTER_AT_LEAST_ONE_UPLOAD": "Rhaid i chi ddewis o leiaf un math o ddogfen",
     "VALID_FOUR_DIGIT_YEAR": "Nodwch flwyddyn sy'n cynnwys 4 digid",
     "VALID_FREE_TEXT_DATE_LENGTH": "Rhowch ddyddiad sydd ddim hirach na $constraint1 nod",
     "VALID_HOUSING": "Disgrifiwch eich cartref",
@@ -3704,7 +3770,7 @@
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
     "VALID_YES_NO_SELECTION_UPPER": "Dewiswch Oes neu Nac oes",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "Rhaid i chi nodi y math o ddogfen",
-    "VALID_ENTER_YOUR_NAME": "You must enter your name",
+    "VALID_ENTER_YOUR_NAME": "Mae’n rhaid ichi nodi eich enw",
     "VALID_ENTER_WITNESS_NAME": "Rhaid i chi nodi enw’r tyst",
     "VALID_ENTER_EXPERT_NAME": "Rhowch enw'r arbenigwr",
     "VALID_ENTER_EXPERT_NAMES": "Rhaid i chi nodi enw o leiaf un arbenigwr",
@@ -3728,6 +3794,6 @@
     "VALID_DATE_NOT_FUTURE": "Rhaid i’r dyddiad y ddogfen fod heddiw neu yn y gorffennol",
     "VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cyhoeddwyd y ddogfen neu’r dyddiad yr anfonwyd y neges",
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
-    "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced"
+    "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cafodd y datganiad ei ysgrifennu neu ei gynhyrchu"
   }
 }
