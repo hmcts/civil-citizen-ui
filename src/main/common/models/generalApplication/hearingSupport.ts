@@ -1,6 +1,6 @@
 import {
   IsDefined, IsNotEmpty,
-  ValidateIf, ValidateNested
+  ValidateIf, ValidateNested,
 } from 'class-validator';
 
 export enum SupportType {
@@ -16,11 +16,11 @@ export class HearingSupport {
   stepFreeAccess?: Support;
   hearingLoop?: Support;
   @ValidateNested()
-  signLanguageInterpreter?: Support;
+    signLanguageInterpreter?: Support;
   @ValidateNested()
-  languageInterpreter?: Support;
+    languageInterpreter?: Support;
   @ValidateNested()
-  otherSupport?: Support;
+    otherSupport?: Support;
 
   constructor(selectedSupport: SupportType[], signLanguageContent?: string, languageContent?: string, otherContent?: string) {
     this.stepFreeAccess = new Support(SupportType.STEP_FREE_ACCESS, selectedSupport.includes(SupportType.STEP_FREE_ACCESS));
@@ -47,7 +47,7 @@ export class Support {
   @ValidateIf(o => o.selected)
   @IsDefined({message: withMessage(generateErrorMessage)})
   @IsNotEmpty({message: withMessage(generateErrorMessage)})
-  content?: string;
+    content?: string;
 
   constructor(sourceName: string, selected: boolean, content?: string) {
     this.sourceName = sourceName;

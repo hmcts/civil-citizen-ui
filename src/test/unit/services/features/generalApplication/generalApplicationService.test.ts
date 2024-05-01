@@ -3,7 +3,7 @@ import {Claim} from 'models/claim';
 import {
   getCancelUrl,
   saveApplicationType,
-  saveHearingSupport
+  saveHearingSupport,
 } from 'services/features/generalApplication/generalApplicationService';
 import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -88,7 +88,7 @@ describe('General Application service', () => {
       //When
       const cancelUrl = await getCancelUrl('123',claim);
       //Then
-      expect(cancelUrl).toEqual(DASHBOARD_CLAIMANT_URL.replace(":id",'123'));
+      expect(cancelUrl).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id','123'));
     });
     it('should return claimant old dashboard url when user is claimant and dashboard feature flag is disabled', async () => {
       //Given
@@ -99,7 +99,7 @@ describe('General Application service', () => {
       //When
       const cancelUrl = await getCancelUrl('123',claim);
       //Then
-      expect(cancelUrl).toEqual(OLD_DASHBOARD_CLAIMANT_URL.replace(":id",'123'));
+      expect(cancelUrl).toEqual(OLD_DASHBOARD_CLAIMANT_URL.replace(':id','123'));
     });
     it('should return defendant dashboard url when user is defendent', async () => {
       //Given
@@ -110,7 +110,7 @@ describe('General Application service', () => {
       //When
       const cancelUrl = await getCancelUrl('123',claim);
       //Then
-      expect(cancelUrl).toEqual(DEFENDANT_SUMMARY_URL.replace(":id",'123'));
+      expect(cancelUrl).toEqual(DEFENDANT_SUMMARY_URL.replace(':id','123'));
     });
   });
 });
