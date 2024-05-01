@@ -2556,13 +2556,13 @@
     },
     "PAYMENT_CONFIRMATION": {
       "SUCCESSFUL": {
-        "PAGE_TITLE": "Your payment was ",
-        "PAGE_TITLE2": "successful",
-        "PAYMENT_IS": "Your payment reference number is",
-        "PAYMENT_SUMMARY": "Payment summary",
-        "CONFIRMATION": "You'll receive a confirmation email in the next hour.",
-        "PAYMENT_FOR": "Payment for",
-        "TOTAL_AMOUNT": "Total amount"
+        "PAGE_TITLE": "Roedd eich taliad yn ",
+        "PAGE_TITLE2": "llwyddiannus",
+        "PAYMENT_IS": "Cyfeirnod eich taliad yw",
+        "PAYMENT_SUMMARY": "Crynodeb o’r taliad.",
+        "CONFIRMATION": "Byddwch yn cael e-bost cadarnhau yn yr awr nesaf.",
+        "PAYMENT_FOR": "Taliad ar gyfer",
+        "TOTAL_AMOUNT": "Cyfanswm"
       },
       "UNSUCCESSFUL": {
         "CALL_US_ON": "Or, call us on ",
