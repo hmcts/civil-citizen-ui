@@ -27,14 +27,16 @@ describe('General Application - Application type', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
+  beforeEach(() => {
+    mockGetClaim.mockImplementation(() => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT));
+      return claim;
+    });
+  });
+
   describe('on GET', () => {
     it('should return page', async () => {
-     
-      mockGetClaim.mockImplementation(() => {
-        const claim = new Claim();
-        claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT));
-        return claim;
-      });
 
       await request(app)
         .get(GA_AGREEMENT_FROM_OTHER_PARTY)
@@ -61,12 +63,6 @@ describe('General Application - Application type', () => {
 
   describe('on POST', () => {
     it('should save the value and redirect', async () => {
-      
-      mockGetClaim.mockImplementation(() => {
-        const claim = new Claim();
-        claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT));
-        return claim;
-      });
 
       await request(app)
         .post(GA_AGREEMENT_FROM_OTHER_PARTY)
@@ -78,12 +74,6 @@ describe('General Application - Application type', () => {
 
     it('should return errors on no input', async () => {
 
-      mockGetClaim.mockImplementation(() => {
-        const claim = new Claim();
-        claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT));
-        return claim;
-      });
-
       await request(app)
         .post(GA_AGREEMENT_FROM_OTHER_PARTY)
         .send({option: null})
@@ -94,13 +84,7 @@ describe('General Application - Application type', () => {
     });
 
     it('should return error message if application type is Settle by consent and option choosen in No', async () => {
-      
-      mockGetClaim.mockImplementation(() => {
-        const claim = new Claim();
-        claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT));
-        return claim;
-      });
-
+    
       await request(app)
         .post(GA_AGREEMENT_FROM_OTHER_PARTY)
         .send({option: 'no'})

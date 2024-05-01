@@ -5,11 +5,8 @@ import {AppRequest} from 'common/models/AppRequest';
 import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
-import { getCancelUrl, saveAgreementFromOtherParty} from 'services/features/generalApplication/generalApplicationService';
-import { ApplicationTypeOption, selectedApplicationType } from 'common/models/generalApplication/applicationType';
-import { YesNo } from 'common/form/models/yesNo';
-import { FormValidationError } from 'common/form/validationErrors/formValidationError';
-import { ValidationError } from 'class-validator';
+import { getCancelUrl, saveAgreementFromOtherParty, validateNoConsentOption} from 'services/features/generalApplication/generalApplicationService';
+import { selectedApplicationType } from 'common/models/generalApplication/applicationType';
 
 const agreementFromOtherPartyController = Router();
 const viewPath = 'features/generalApplication/agreement-from-other-party';
@@ -64,23 +61,6 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY, (async (re
 function getBackLinkUrl(req: AppRequest) : string {
   const claimId = req.params.id;
   return APPLICATION_TYPE_URL.replace(':id', claimId);
-}
-
-function validateNoConsentOption(req: AppRequest, errors : ValidationError[], applicationTypeOption : string) {
- 
-  if(req.body.option === YesNo.NO && applicationTypeOption === ApplicationTypeOption.SETTLE_BY_CONSENT) {
-   
-    const validationError = new FormValidationError({
-      target: new GenericYesNo(req.body.option, ''),
-      value: req.body.option,
-      constraints: {
-        shouldNotBeNoForSettleByConsent :'ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED',
-      },
-      property: 'option',
-    });
-
-    errors.push(validationError);
-  }
 }
 
 export default agreementFromOtherPartyController;

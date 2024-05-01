@@ -1,10 +1,14 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
-import {ApplicationType} from 'common/models/generalApplication/applicationType';
+import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import { YesNo } from 'common/form/models/yesNo';
 import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from '../../../routes/urls';
 import { Claim } from 'common/models/claim';
+import { AppRequest } from 'common/models/AppRequest';
+import { FormValidationError } from 'common/form/validationErrors/formValidationError';
+import { GenericYesNo } from 'common/form/models/genericYesNo';
+import { ValidationError } from 'class-validator';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -42,3 +46,20 @@ export const getCancelUrl = async (claimId: string, claim: Claim): Promise<strin
   }
   return DEFENDANT_SUMMARY_URL.replace(':id', claimId);
 };
+
+export function validateNoConsentOption(req: AppRequest, errors : ValidationError[], applicationTypeOption : string) {
+ 
+  if(req.body.option === YesNo.NO && applicationTypeOption === ApplicationTypeOption.SETTLE_BY_CONSENT) {
+   
+    const validationError = new FormValidationError({
+      target: new GenericYesNo(req.body.option, ''),
+      value: req.body.option,
+      constraints: {
+        shouldNotBeNoForSettleByConsent :'ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED',
+      },
+      property: 'option',
+    });
+
+    errors.push(validationError);
+  }
+}
