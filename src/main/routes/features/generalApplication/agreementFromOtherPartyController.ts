@@ -5,7 +5,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
-import { saveAgreementFromOtherParty} from 'services/features/generalApplication/generalApplicationService';
+import { getCancelUrl, saveAgreementFromOtherParty} from 'services/features/generalApplication/generalApplicationService';
 import { ApplicationTypeOption, selectedApplicationType } from 'common/models/generalApplication/applicationType';
 import { YesNo } from 'common/form/models/yesNo';
 import { FormValidationError } from 'common/form/validationErrors/formValidationError';
@@ -13,14 +13,13 @@ import { ValidationError } from 'class-validator';
 
 const agreementFromOtherPartyController = Router();
 const viewPath = 'features/generalApplication/agreement-from-other-party';
-const cancelUrl = 'test';
 
 agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const backLinkUrl = getBackLinkUrl(<AppRequest>req);
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
-   
+    const cancelUrl = await getCancelUrl(req.params.id, claim);
     const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.agreementFromOtherParty));
    
@@ -41,6 +40,7 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY, (async (re
     const backLinkUrl = getBackLinkUrl(<AppRequest>req);
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
+    const cancelUrl = await getCancelUrl(req.params.id, claim);
     const applicationTypeOption = claim.generalApplication?.applicationType?.option;
     const applicationType = selectedApplicationType[applicationTypeOption];
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION'));
@@ -53,7 +53,7 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY, (async (re
     if (form.hasErrors()) {
       res.render(viewPath, { form, applicationType,cancelUrl, backLinkUrl });
     } else {
-      await saveAgreementFromOtherParty(redisKey, req.body.option);
+      await saveAgreementFromOtherParty(redisKey, claim, req.body.option);
       res.redirect('test');
     }
   } catch (error) {

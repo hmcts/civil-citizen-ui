@@ -2,6 +2,9 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {ApplicationType} from 'common/models/generalApplication/applicationType';
 import { YesNo } from 'common/form/models/yesNo';
+import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from '../../../routes/urls';
+import { Claim } from 'common/models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -18,9 +21,8 @@ export const saveApplicationType = async (claimId: string, applicationType: Appl
   }
 };
 
-export const saveAgreementFromOtherParty = async (claimId: string, agreementFromOtherParty: YesNo): Promise<void> => {
+export const saveAgreementFromOtherParty = async (claimId: string, claim: Claim, agreementFromOtherParty: YesNo): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.agreementFromOtherParty = agreementFromOtherParty;
     await saveDraftClaim(claimId, claim);
@@ -28,4 +30,15 @@ export const saveAgreementFromOtherParty = async (claimId: string, agreementFrom
     logger.error(error);
     throw error;
   }
+};
+
+export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
+  if (claim.isClaimant()) {
+    const isDashboardEnabled = await isDashboardServiceEnabled();
+    if (isDashboardEnabled) {
+      return DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
+    }
+    return OLD_DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
+  }
+  return DEFENDANT_SUMMARY_URL.replace(':id', claimId);
 };
