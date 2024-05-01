@@ -1,10 +1,10 @@
-import { LatestUpdateSectionBuilder } from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
-import { Claim } from 'common/models/claim';
-import { t } from 'i18next';
+import {LatestUpdateSectionBuilder} from 'common/models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
+import {Claim} from 'common/models/claim';
+import {t} from 'i18next';
 
 export const getSendFinancialDetails = (claim: Claim, lang: string) => {
 
-  const email = 'civilmoneyclaimsaat@gmail.com';
+  const email = 'ocmcnton@justice.gov.uk';
 
   return new LatestUpdateSectionBuilder()
     .addTitle(t('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT', {lng: lang}))
