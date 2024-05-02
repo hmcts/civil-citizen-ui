@@ -12,7 +12,6 @@ const informOtherPartiesController = Router();
 const backLinkUrl = 'test'; // TODO: add url
 
 const renderView = async (req: AppRequest, res: Response, form?: GenericForm<InformOtherParties>): Promise<void> => {
-  try {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
@@ -25,10 +24,7 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Inf
       backLinkUrl,
       applicationType: selectedApplicationType[claim.generalApplication?.applicationType?.option],
       form,
-    })
-  } catch (error) {
-    throw error;
-  }
+    });
 };
 
 informOtherPartiesController.get(INFORM_OTHER_PARTIES, (req: AppRequest, res: Response, next: NextFunction) => {
