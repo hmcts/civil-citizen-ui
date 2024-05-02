@@ -2059,7 +2059,7 @@
         "SHOULD_COURT_INFORM_PARTIES": "Should the court inform the other parties about this application?",
         "SOME_CIRCUMSTANCES": "In some circumstances a judge may make an order without sending your application to the other parties first.",
         "WHY_DO_NOT_WANT_COURT": "Why do you not want the court to inform the other parties?"
-    }
+     },
       "APPLICATION_FROM_OTHER_PARTY": {
         "APPLICATION_FEE_AMOUNT": "The fee amount depends on whether the other parties have agreed to you making this application. The other parties are the other side or siders involved in your case.",
         "GETTING_AGREEMENT": "Getting agreement",
