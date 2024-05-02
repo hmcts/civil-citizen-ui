@@ -32,7 +32,7 @@ const addTimeline = (claim: Claim, claimId: string, lang: string , section: Summ
   );
 
   for (const item of timeline.rows) {
-    const timelineDate = formatDateToFullDate(new Date(item.date));
+    const timelineDate = formatDateToFullDate(new Date(item.date),lang);
     section.summaryList.rows.push(
       summaryRow(timelineDate.toString(), item.description, yourTimelineHref, changeLabel(lang)),
     );

@@ -10,14 +10,26 @@ export function formatDocumentViewURL(documentName: string, claimId: string, bin
 
   return `<a class="govuk-link" target="_blank" href="${url}">${documentName}</a>`;
 }
-
 export function formatEvidenceDocumentAlignedViewURL(documentName: string, claimId: string, binaryURL: string, align:alignText): string {
 
   const url = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(binaryURL));
 
   return `<div class="${align} govuk-body govuk-grid-column-one-half"><a class="govuk-link" target="_blank" href="${url}">${documentName}</a></div>`;
 }
+export function formatDocumentAlignedViewURL(documentName: string, claimId: string, binaryURL: string, align:alignText): string {
 
+  const url = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(binaryURL));
+
+  return `<div class="${align}"><a class="govuk-link" target="_blank" href="${url}">${documentName}</a></div>`;
+}
+
+export function formatDocumentWithHintText(documentType: string, createdDatetime: Date,lang: string): string {
+
+  const created = t('PAGES.DASHBOARD.HEARINGS.CREATED', {lng:lang});
+  const hintText ='<div><span class="govuk-body">'+ documentType +'</span>'
+    + '<span class="govuk-caption-m">' + created + '['+HearingDateTimeFormatter.getHearingDateFormatted(createdDatetime,lang)+']'+'</span></div>';
+  return hintText;
+}
 export function formatEvidenceDocumentWithHintText(documentType: string, createdDatetime: Date,lang: string): string {
 
   const created = t('PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED', {lng: lang});
