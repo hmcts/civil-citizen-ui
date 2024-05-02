@@ -9,6 +9,7 @@ import { AppRequest } from 'common/models/AppRequest';
 import { FormValidationError } from 'common/form/validationErrors/formValidationError';
 import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { ValidationError } from 'class-validator';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
