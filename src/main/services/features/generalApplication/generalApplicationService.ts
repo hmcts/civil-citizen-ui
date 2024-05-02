@@ -5,6 +5,7 @@ import {YesNo} from 'form/models/yesNo';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {isDashboardServiceEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -37,9 +38,9 @@ export const getCancelUrl = async (claimId: string, claim: Claim): Promise<strin
   if (claim.isClaimant()) {
     const isDashboardEnabled = await isDashboardServiceEnabled();
     if (isDashboardEnabled) {
-      return DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
+      return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
     }
-    return OLD_DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
+    return constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL);
   }
-  return DEFENDANT_SUMMARY_URL.replace(':id', claimId);
+  return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 };
