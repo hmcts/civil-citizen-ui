@@ -1,9 +1,9 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, PAYING_FOR_APPLICATION_URL} from 'routes/urls';
+import {PAYING_FOR_APPLICATION_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 
 const payingForApplicationController = Router();
 const viewPath = 'features/generalApplication/paying-for-application';
@@ -13,9 +13,7 @@ payingForApplicationController.get(PAYING_FOR_APPLICATION_URL, (async (req: AppR
   try {
     const claimId = req.params.id
     const claim = await getClaimById(claimId, req, true);
-    const cancelUrl = claim.isClaimant() 
-      ? constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL) 
-      : constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+    const cancelUrl = await getCancelUrl(claimId, claim);
     const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
     const applicationFee = 100; //TODO: get fee from https://tools.hmcts.net/jira/browse/CIV-9442
     res.render(viewPath, {applicationType, applicationFee, cancelUrl, backLinkUrl});

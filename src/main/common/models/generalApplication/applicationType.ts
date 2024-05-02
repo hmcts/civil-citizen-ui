@@ -10,7 +10,7 @@ export class ApplicationType {
 
   isOtherSelected(): boolean {
     return this.option === ApplicationTypeOption.AMEND_A_STMT_OF_CASE ||
-      this.option === ApplicationTypeOption.SUMMARY_JUDGEMENT ||
+      this.option === ApplicationTypeOption.SUMMARY_JUDGMENT ||
       this.option === ApplicationTypeOption.STRIKE_OUT ||
       this.option === ApplicationTypeOption.STAY_THE_CLAIM ||
       this.option === ApplicationTypeOption.UNLESS_ORDER ||
@@ -22,7 +22,7 @@ export class ApplicationType {
 
 export enum ApplicationTypeOption {
   STRIKE_OUT = 'STRIKE_OUT', 
-  SUMMARY_JUDGEMENT = 'SUMMARY_JUDGEMENT', 
+  SUMMARY_JUDGMENT = 'SUMMARY_JUDGMENT', 
   STAY_THE_CLAIM = 'STAY_THE_CLAIM', 
   EXTEND_TIME = 'EXTEND_TIME', 
   AMEND_A_STMT_OF_CASE = 'AMEND_A_STMT_OF_CASE', 
@@ -47,7 +47,7 @@ export const selectedApplicationType: Partial<{ [key in ApplicationTypeOption]: 
   [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT',
   [ApplicationTypeOption.STAY_THE_CLAIM]: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.PAUSE',
   [ApplicationTypeOption.STRIKE_OUT]: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.STRIKE_OUT',
-  [ApplicationTypeOption.SUMMARY_JUDGEMENT]: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.SUMMARY_JUDGMENT',
+  [ApplicationTypeOption.SUMMARY_JUDGMENT]: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.SUMMARY_JUDGMENT',
   [ApplicationTypeOption.UNLESS_ORDER]: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.IMPOSE_SANCTION',
   [ApplicationTypeOption.VARY_ORDER]: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.RECONSIDER',
   [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.VARY_JUDGMENT',

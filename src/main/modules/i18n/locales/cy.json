@@ -1974,7 +1974,7 @@
     },
     "GENERAL_APPLICATION": {
       "PAYMENT_FOR_APPLICATION": {
-        "APPLICATION_FEE": "Application fee to pay",
+        "APPLICATION_FEE": "Application fee to pay:",
         "TITLE": "Paying for your application",
         "YOU_WILL_BE_ASKED": "You'll be asked to pay for your application once it's been submitted."
       },
