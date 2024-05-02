@@ -1,9 +1,11 @@
 import { YesNo } from 'common/form/models/yesNo';
 import {ApplicationType} from './applicationType';
+import {HearingSupport} from 'models/generalApplication/hearingSupport';
 
 export class GeneralApplication {
- 
+
   applicationType?: ApplicationType;
+  hearingSupport?: HearingSupport;
   agreementFromOtherParty?: YesNo;
 
   constructor(applicationType?: ApplicationType, agreementFromOtherParty?: YesNo) {
