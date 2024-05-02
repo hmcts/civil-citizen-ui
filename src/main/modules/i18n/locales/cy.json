@@ -2060,7 +2060,7 @@
         "JUDGE_MAKE_DECISION": "When a judge makes a decision on your application, they’ll decide who should pay the costs.",
         "IF_APPLICATION_SUCCESS": "If your application is successful, the other parties may be ordered to pay back your costs associated with the application.",
         "OTHER_PARTIES": "The other parties will be able to see your answer to this question and respond to it.",
-        "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application",
+        "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application.",
         "TITLE": "Application costs"
       }
     },

@@ -34,11 +34,10 @@
           </ul>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.PAY_APPLICATION_FEE') }}</p>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.OTHER_PARTIES') }}</p>
-          <h2 class="govuk-heading-s">{{t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.ASK_YOUR_COSTS_BACK')}}</h2>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
              <div class="govuk-form-group">
-                {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml:yesHtml}) }}
+                {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.ASK_YOUR_COSTS_BACK'), form, '', {yesHtml:yesHtml}) }}
             </div>
             <div class="govuk-button-group">
               {{ govukButton({
