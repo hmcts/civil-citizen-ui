@@ -292,6 +292,7 @@ import viewTheHearingController from 'routes/features/caseProgression/viewTheHea
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
 import claimFeeMakePaymentAgainController
   from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
+import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
 
 export default [
   homeController,
@@ -550,4 +551,5 @@ export default [
   viewTheHearingController,
   viewResponseToClaimController,
   claimFeeMakePaymentAgainController,
+  agreementFromOtherPartyController,
 ];
