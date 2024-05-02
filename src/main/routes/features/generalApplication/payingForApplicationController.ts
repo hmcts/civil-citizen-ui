@@ -11,7 +11,7 @@ const backLinkUrl = 'test'; // TODO: add url
 
 payingForApplicationController.get(PAYING_FOR_APPLICATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id
+    const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
