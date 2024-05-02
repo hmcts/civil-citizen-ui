@@ -33,7 +33,7 @@ export const saveInformOtherParties = async (redisKey: string, informOtherPartie
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.informOtherParties = informOtherParties;
     await saveDraftClaim(redisKey, claim);
-      } catch (error) {
+  } catch (error) {
     logger.error(error);
     throw error;
   };
@@ -60,7 +60,6 @@ export const getCancelUrl = async (claimId: string, claim: Claim): Promise<strin
   }
   return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 };
-
 
 export function validateNoConsentOption(req: AppRequest, errors : ValidationError[], applicationTypeOption : string) {
  
