@@ -104,6 +104,14 @@ class ResponseToDefence {
     I.click(paths.buttons.continue);
   }
 
+  verifyDefResponseForPartAdmitPayBySetDate(claimAmount) {
+    I.waitForContent('Why they don’t owe the amount claimed?', 60);
+    I.see(`Sir John Doe admits they owe you £${claimAmount}. They don’t believe they owe the full amount claimed.`);
+    I.see(`They’ve offered to pay you £${claimAmount} by`);
+    I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
+    I.click(paths.buttons.continue);
+  }
+
   async verifyDefResponseForPartAdmitImmediatePayment(claimAmount) {
     I.waitForContent('Why they don’t owe the amount claimed?', 60);
     I.see('Contracts and agreements');
@@ -132,6 +140,30 @@ class ResponseToDefence {
       I.checkOption('#directionsQuestionnaireSigned');
     }
     I.click(paths.buttons.submit_response);
+  }
+
+  async acceptOrRejectTheirRepaymentPlan(acceptOrReject) {
+    I.waitForContent('How they want to pay?');
+    if (acceptOrReject == 'accept') {
+      I.see('Yes');
+      I.click(paths.options.yes);
+    } else {
+      I.see('No - I\'ll suggest my own');
+      I.click(paths.options.no);
+    }
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async proposePaymentPlan() {
+    I.see('How do you want the defendant to pay?');
+    I.checkOption('#paymentType'); //Immediately radio
+    I.click(paths.buttons.save_and_continue);
+    I.see('t afford your plan');
+    I.checkOption('#decision-2'); //Judge make repayment plan
+    I.click(paths.buttons.save_and_continue);
+    I.see('Why did you reject the repayment plan?');
+    I.fillField(paths.textBoxes.rejectReason, 'testReason');
+    I.click(paths.buttons.save_and_continue);
   }
 
   async verifyAcceptOrRejectConfirmationScreen(acceptOrReject = 'accept', admittedAmount = '200.00') {
@@ -244,6 +276,18 @@ class ResponseToDefence {
     I.click(paths.buttons.continue);
   }
 
+  verifyHowTheyWantToPayPayBySetDate() {
+    I.waitForContent('Why they can’t pay the full amount now?', 60);
+    I.see('How they want to pay?', 'h1');
+    I.see('They’ve offered to pay you');
+    I.see('by');
+    I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
+    I.click(paths.links.see_their_financial_details);
+    I.see('Where are they living?');
+    I.see('Balance');
+    I.click(paths.buttons.continue);
+  }
+
   async verifyDoYouWantToSettleTheClaim() {
 
     I.waitForContent('The claim will continue for the total amount you claimed: £1,520',60);
@@ -273,6 +317,20 @@ class ResponseToDefence {
     I.see('Do you accept the repayment plan?');
     I.see('Yes');
     I.click(paths.options.yes);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  verifyRepaymentPlanForPartAdmitPayBySetDate(acceptOrReject) {
+    I.waitForContent('No - I\'ll suggest my own',60);
+    I.see('How they want to pay?', 'h1');
+    I.see('Sir John Doe has offered to pay you in full by');
+    I.see('Do you accept the repayment plan?');
+    I.see('Yes');
+    if (acceptOrReject == 'accept') {
+      I.click(paths.options.yes);
+    } else {
+      I.click(paths.options.no);
+    }
     I.click(paths.buttons.save_and_continue);
   }
 
@@ -309,6 +367,12 @@ class ResponseToDefence {
     I.see('I want a judge to make a repayment plan');
     I.click(paths.options.acceptCourtDecision);
     I.click(paths.buttons.save_and_continue);
+  }
+
+  verifyCourtAcceptedProposedPlan() {
+    I.waitForContent('The court has accepted your repayment plan', 60);
+    I.see('Repayment plan accepted', 'h1');
+    I.click(paths.buttons.continue);
   }
 
   verifySignTheSettlementAgreementForFullAdmit(option) {
@@ -373,6 +437,28 @@ class ResponseToDefence {
     I.see('Make sure this agreement includes everything you’ve agreed with Mrs Jane Doe before signing.');
     I.see('You won’t be able to change this later.');
     I.see('I confirm I’ve read and accept the terms of the agreement.');
+    I.uncheckOption(paths.options.confirm_and_sign);
+    I.checkOption(paths.options.confirm_and_sign);
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  verifySignTheSettlementAgreementForPartAdmit() {
+    I.waitForContent('I confirm I’ve read and accept the terms of the agreement.', 60);
+    I.see('Terms of the agreement', 'h1');
+    I.see('The agreement');
+    I.see('Sir John Doe will pay ');
+    I.see(', no later than');
+    I.see('Completion date');
+    I.see('This agreement settles the claim made by Miss Jane Doe against Sir John Doe.');
+    I.see('This includes all money owed in the claim, for example court fees, expenses or interest.');
+    I.see('Neither party can make any further claims relating to this case, other than to enforce it.');
+    I.see('Either party can view and download this agreement from their Money Claims account.');
+    I.see('Both parties should keep a copy of this agreement.');
+    I.see('If the agreement is broken','h2');
+    I.see('The claimant can request a County Court Judgment (CCJ) for any money still owed from this agreement.');
+    I.see('Sign the agreement','h2');
+    I.see('Make sure this agreement includes everything you’ve agreed with Sir John Doe before signing.');
+    I.see('You won’t be able to change this later.');
     I.uncheckOption(paths.options.confirm_and_sign);
     I.checkOption(paths.options.confirm_and_sign);
     I.click(paths.buttons.save_and_continue);
@@ -449,6 +535,17 @@ class ResponseToDefence {
     I.click(paths.buttons.submit_response);
   }
 
+  verifyCheckYourAnswersForPartAdmitCCJ() {
+    I.waitForContent('Issue a County Court Judgment (CCJ)',60);
+    I.see('Check your answers', 'h1');
+    I.see('Your response','h2');
+    I.see('Do you accept the defendant repayment plan?');
+    I.see('I reject this repayment plan');
+    I.see('How do you wish to proceed?','h2');
+    I.see('How do you want to formalise the repayment plan');
+    I.click(paths.buttons.submit_response);
+  }
+
   verifyConfirmationScreenForFullAdmitSettlementAgreement(claimNumber) {
     I.waitForContent('You\'ve signed a settlement agreement', 60,'h1');
     I.see('Your claim number:');
@@ -479,6 +576,16 @@ class ResponseToDefence {
     I.waitForContent('You\'ve signed a settlement agreement', 60);
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
+  }
+
+  verifyConfirmationScreenForPartAdmitCCJ(claimNumber) {
+    I.waitForContent('County Court Judgment requested', 60);
+    I.see('Your claim number:');
+    I.see(`${claimNumber}`);
+    I.see('What happens next');
+    I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
+    I.see('Email');
+    I.see('Telephone');
   }
 
   verifyConfirmationScreenForFullAdmitCCJ(claimNumber) {

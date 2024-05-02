@@ -18,7 +18,7 @@ export class ApplicationType {
       this.option === ApplicationTypeOption.PROCEEDS_IN_HERITAGE;
   }
 
-}
+};
 
 export enum ApplicationTypeOption {
   STRIKE_OUT = 'STRIKE_OUT', 
@@ -35,7 +35,7 @@ export enum ApplicationTypeOption {
   UNLESS_ORDER = 'UNLESS_ORDER', 
   OTHER = 'OTHER', 
   VARY_PAYMENT_TERMS_OF_JUDGMENT = 'VARY_PAYMENT_TERMS_OF_JUDGMENT', 
-}
+};
 
 export const selectedApplicationType: Partial<{ [key in ApplicationTypeOption]: string; }> = {
   [ApplicationTypeOption.ADJOURN_HEARING]: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING',
