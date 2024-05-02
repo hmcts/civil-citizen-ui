@@ -1,11 +1,16 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
-import {ApplicationType} from 'common/models/generalApplication/applicationType';
+import {ApplicationType,ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import { InformOtherParties } from 'common/models/generalApplication/informOtherParties';
 import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
 import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { Claim } from 'common/models/claim';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { YesNo } from 'common/form/models/yesNo';
+import { AppRequest } from 'common/models/AppRequest';
+import { FormValidationError } from 'common/form/validationErrors/formValidationError';
+import { GenericYesNo } from 'common/form/models/genericYesNo';
+import { ValidationError } from 'class-validator';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -28,6 +33,16 @@ export const saveInformOtherParties = async (redisKey: string, informOtherPartie
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.informOtherParties = informOtherParties;
     await saveDraftClaim(redisKey, claim);
+      } catch (error) {
+    logger.error(error);
+    throw error;
+  };
+  
+export const saveAgreementFromOtherParty = async (claimId: string, claim: Claim, agreementFromOtherParty: YesNo): Promise<void> => {
+  try {
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.agreementFromOtherParty = agreementFromOtherParty;
+    await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -44,3 +59,21 @@ export const getCancelUrl = async (claimId: string, claim: Claim): Promise<strin
   }
   return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 };
+
+
+export function validateNoConsentOption(req: AppRequest, errors : ValidationError[], applicationTypeOption : string) {
+ 
+  if(req.body.option === YesNo.NO && applicationTypeOption === ApplicationTypeOption.SETTLE_BY_CONSENT) {
+   
+    const validationError = new FormValidationError({
+      target: new GenericYesNo(req.body.option, ''),
+      value: req.body.option,
+      constraints: {
+        shouldNotBeNoForSettleByConsent :'ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED',
+      },
+      property: 'option',
+    });
+
+    errors.push(validationError);
+  }
+}
