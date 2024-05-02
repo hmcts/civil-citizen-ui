@@ -293,6 +293,7 @@ import viewResponseToClaimController from 'routes/features/dashboard/viewRespons
 import hearingSupportController from './features/generalApplication/hearingSupportController';
 import claimFeeMakePaymentAgainController
   from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
+import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
 
 export default [
   homeController,
@@ -552,4 +553,5 @@ export default [
   viewResponseToClaimController,
   hearingSupportController,
   claimFeeMakePaymentAgainController,
+  agreementFromOtherPartyController,
 ];

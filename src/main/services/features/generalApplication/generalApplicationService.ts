@@ -1,10 +1,15 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
-import {ApplicationType} from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
-import {isDashboardServiceEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import { YesNo } from 'common/form/models/yesNo';
+import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import { AppRequest } from 'common/models/AppRequest';
+import { FormValidationError } from 'common/form/validationErrors/formValidationError';
+import { GenericYesNo } from 'common/form/models/genericYesNo';
+import { ValidationError } from 'class-validator';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -34,6 +39,17 @@ export const saveHearingSupport = async (claimId: string, hearingSupport: Hearin
   }
 };
 
+export const saveAgreementFromOtherParty = async (claimId: string, claim: Claim, agreementFromOtherParty: YesNo): Promise<void> => {
+  try {
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.agreementFromOtherParty = agreementFromOtherParty;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
   if (claim.isClaimant()) {
     const isDashboardEnabled = await isDashboardServiceEnabled();
@@ -44,3 +60,20 @@ export const getCancelUrl = async (claimId: string, claim: Claim): Promise<strin
   }
   return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 };
+
+export function validateNoConsentOption(req: AppRequest, errors : ValidationError[], applicationTypeOption : string) {
+
+  if(req.body.option === YesNo.NO && applicationTypeOption === ApplicationTypeOption.SETTLE_BY_CONSENT) {
+
+    const validationError = new FormValidationError({
+      target: new GenericYesNo(req.body.option, ''),
+      value: req.body.option,
+      constraints: {
+        shouldNotBeNoForSettleByConsent :'ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED',
+      },
+      property: 'option',
+    });
+
+    errors.push(validationError);
+  }
+}

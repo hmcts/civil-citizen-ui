@@ -2,22 +2,24 @@ import * as draftStoreService from '../../../../../main/modules/draft-store/draf
 import {Claim} from 'models/claim';
 import {
   getCancelUrl,
+  saveAgreementFromOtherParty,
   saveApplicationType,
-  saveHearingSupport,
+  saveHearingSupport
 } from 'services/features/generalApplication/generalApplicationService';
 import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import { YesNo } from 'common/form/models/yesNo';
+import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
+import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import { CaseRole } from 'common/form/models/caseRoles';
+import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
-import {isDashboardServiceEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {CaseRole} from 'form/models/caseRoles';
-import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
 describe('General Application service', () => {
   describe('Save application type', () => {
@@ -26,19 +28,18 @@ describe('General Application service', () => {
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
       });
-      mockSaveClaim.mockRestore();
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
       await saveApplicationType('123', new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
       //Then
       expect(spy).toBeCalled();
     });
-    it('saveApplicationType should throw error when draft store throws error', async () => {
+    it('should throw error when draft store throws error', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
       });
-
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
       //When
       mockSaveClaim.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
@@ -48,14 +49,53 @@ describe('General Application service', () => {
     });
   });
 
-  describe('Save hearing support', () => {
-    it('should save hearing support successfully', async () => {
+  describe('Save agreement from other party', () => {
+    it('should save agreement from other party', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
       });
-      mockSaveClaim.mockRestore();
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+
+      //When
+      await saveAgreementFromOtherParty('123',claim, YesNo.NO);
+      //Then
+      expect(spy).toBeCalled();
+    });
+
+    it('should throw error when draft store throws error', async () => {
+      //Given
+
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      //When
+      mockSaveClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      //Then
+      await expect(saveAgreementFromOtherParty('123',claim, YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+
+  describe('Save hearing support', () => {
+    it('should save hearing support', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+
       //When
       await saveHearingSupport('123',
         new HearingSupport([SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT],
@@ -63,15 +103,17 @@ describe('General Application service', () => {
       //Then
       expect(spy).toBeCalled();
     });
-    it('saveHearingSupport should throw error when draft store throws error', async () => {
+
+    it('should throw error when draft store throws error', async () => {
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
+
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
       //When
       mockSaveClaim.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
       //Then
       await expect(saveHearingSupport('123',
         new HearingSupport([]))).rejects.toThrow(TestMessages.REDIS_FAILURE);
@@ -82,31 +124,42 @@ describe('General Application service', () => {
     it('should return claimant new dashboard url when user is claimant and dashboard feature flag is enabled', async () => {
       //Given
       (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(true);
+
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
+
       claim.generalApplication = new GeneralApplication();
+
       //When
       const cancelUrl = await getCancelUrl('123',claim);
       //Then
       expect(cancelUrl).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id','123'));
     });
+
     it('should return claimant old dashboard url when user is claimant and dashboard feature flag is disabled', async () => {
       //Given
       (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(false);
+
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
+
       claim.generalApplication = new GeneralApplication();
+
       //When
       const cancelUrl = await getCancelUrl('123',claim);
       //Then
       expect(cancelUrl).toEqual(OLD_DASHBOARD_CLAIMANT_URL.replace(':id','123'));
     });
+
     it('should return defendant dashboard url when user is defendent', async () => {
       //Given
       (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(false);
+
       const claim = new Claim();
       claim.caseRole = CaseRole.DEFENDANT;
+
       claim.generalApplication = new GeneralApplication();
+
       //When
       const cancelUrl = await getCancelUrl('123',claim);
       //Then
