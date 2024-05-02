@@ -291,6 +291,8 @@ import applicationTypeController from './features/generalApplication/application
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
 import hearingSupportController from './features/generalApplication/hearingSupportController';
+import claimFeeMakePaymentAgainController
+  from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
 
 export default [
   homeController,
@@ -549,4 +551,5 @@ export default [
   viewTheHearingController,
   viewResponseToClaimController,
   hearingSupportController,
+  claimFeeMakePaymentAgainController,
 ];
