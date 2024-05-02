@@ -40,11 +40,11 @@ export const getCancelUrl = async (claimId: string, claim: Claim): Promise<strin
   if (claim.isClaimant()) {
     const isDashboardEnabled = await isDashboardServiceEnabled();
     if (isDashboardEnabled) {
-      return DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
+      return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
     }
-    return OLD_DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
+    return constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL);
   }
-  return DEFENDANT_SUMMARY_URL.replace(':id', claimId);
+  return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 };
 
 export function validateNoConsentOption(req: AppRequest, errors : ValidationError[], applicationTypeOption : string) {
