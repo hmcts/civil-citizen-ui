@@ -12,19 +12,19 @@ const informOtherPartiesController = Router();
 const backLinkUrl = 'test'; // TODO: add url
 
 const renderView = async (req: AppRequest, res: Response, form?: GenericForm<InformOtherParties>): Promise<void> => {
-    const claimId = req.params.id;
-    const redisKey = generateRedisKey(req);
-    const claim = await getCaseDataFromStore(redisKey);
-    const cancelUrl = await getCancelUrl(claimId, claim);
-    if (!form) {
-      form = new GenericForm(new InformOtherParties(claim.generalApplication?.informOtherParties?.option, claim.generalApplication?.informOtherParties?.reasonForCourtNotInformingOtherParties));
-    }
-    res.render(viewPath, {
-      cancelUrl,
-      backLinkUrl,
-      applicationType: selectedApplicationType[claim.generalApplication?.applicationType?.option],
-      form,
-    });
+  const claimId = req.params.id;
+  const redisKey = generateRedisKey(req);
+  const claim = await getCaseDataFromStore(redisKey);
+  const cancelUrl = await getCancelUrl(claimId, claim);
+  if (!form) {
+    form = new GenericForm(new InformOtherParties(claim.generalApplication?.informOtherParties?.option, claim.generalApplication?.informOtherParties?.reasonForCourtNotInformingOtherParties));
+  }
+  res.render(viewPath, {
+    cancelUrl,
+    backLinkUrl,
+    applicationType: selectedApplicationType[claim.generalApplication?.applicationType?.option],
+    form,
+  });
 };
 
 informOtherPartiesController.get(INFORM_OTHER_PARTIES, (req: AppRequest, res: Response, next: NextFunction) => {

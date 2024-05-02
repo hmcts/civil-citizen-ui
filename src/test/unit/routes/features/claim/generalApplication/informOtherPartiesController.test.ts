@@ -46,7 +46,7 @@ describe('General Application - inform other parties', () => {
 
     it('should return http 500 when has error in the get method', async () => {
 
-      mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG))
+      mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
         .get(INFORM_OTHER_PARTIES)
         .expect((res) => {
