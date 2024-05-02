@@ -9,14 +9,14 @@ import { getCancelUrl, saveInformOtherParties } from 'services/features/generalA
 
 const viewPath = 'features/generalApplication/inform-other-parties';
 const informOtherPartiesController = Router();
-const cancelUrl = 'test'; // TODO: add url
+const backLinkUrl = 'test'; // TODO: add url
 
 const renderView = async (req: AppRequest, res: Response, form?: GenericForm<InformOtherParties>): Promise<void> => {
     try {
         const claimId = req.params.id;
         const redisKey = generateRedisKey(req);
         const claim = await getCaseDataFromStore(redisKey);
-        const backLinkUrl = await getCancelUrl(claimId, claim);
+        const cancelUrl = await getCancelUrl(claimId, claim);
         if (!form) {
             form = new GenericForm(new InformOtherParties(claim.generalApplication?.informOtherParties?.option, claim.generalApplication?.informOtherParties?.reasonForCourtNotInformingOtherParties));
         }
@@ -40,14 +40,13 @@ informOtherPartiesController.get(INFORM_OTHER_PARTIES, (req: AppRequest, res: Re
 
 informOtherPartiesController.post(INFORM_OTHER_PARTIES, (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-        const claimId = req.params.id
         const informOtherParties = new InformOtherParties(req.body.option, req.body?.reasonForCourtNotInformingOtherParties)
         const form = new GenericForm(informOtherParties);
         await form.validate();
         if (form.hasErrors()) {
             return await renderView(req, res, form);
         }
-        await saveInformOtherParties(claimId, informOtherParties);
+        await saveInformOtherParties(generateRedisKey(req), informOtherParties);
         res.redirect('test'); // TODO: add url
     } catch (error) {
         next(error);

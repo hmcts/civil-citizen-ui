@@ -22,12 +22,12 @@ export const saveApplicationType = async (claimId: string, applicationType: Appl
   }
 };
 
-export const saveInformOtherParties = async (claimId: string, informOtherParties: InformOtherParties): Promise<void> => {
+export const saveInformOtherParties = async (redisKey: string, informOtherParties: InformOtherParties): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(claimId, true);
+    const claim = await getCaseDataFromStore(redisKey);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.informOtherParties = informOtherParties;
-    await saveDraftClaim(claimId, claim)
+    await saveDraftClaim(redisKey, claim)
   } catch (error) {
     logger.error(error);
     throw error;
