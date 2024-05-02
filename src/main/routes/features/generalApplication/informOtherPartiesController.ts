@@ -2,20 +2,21 @@ import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
 import { selectedApplicationType } from 'common/models/generalApplication/applicationType';
 import { InformOtherParties } from 'common/models/generalApplication/informOtherParties';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { NextFunction, RequestHandler, Response, Router } from 'express';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
-import { INFORM_OTHER_PARTIES } from 'routes/urls';
+import { GA_AGREEMENT_FROM_OTHER_PARTY, INFORM_OTHER_PARTIES } from 'routes/urls';
 import { getCancelUrl, saveInformOtherParties } from 'services/features/generalApplication/generalApplicationService';
 
 const viewPath = 'features/generalApplication/inform-other-parties';
 const informOtherPartiesController = Router();
-const backLinkUrl = 'test'; // TODO: add url
 
 const renderView = async (req: AppRequest, res: Response, form?: GenericForm<InformOtherParties>): Promise<void> => {
   const claimId = req.params.id;
   const redisKey = generateRedisKey(req);
   const claim = await getCaseDataFromStore(redisKey);
   const cancelUrl = await getCancelUrl(claimId, claim);
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY);
   if (!form) {
     form = new GenericForm(new InformOtherParties(claim.generalApplication?.informOtherParties?.option, claim.generalApplication?.informOtherParties?.reasonForCourtNotInformingOtherParties));
   }
