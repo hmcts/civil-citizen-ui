@@ -1,4 +1,5 @@
 import * as urls from '../../main/routes/urls';
+import {CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL} from "../../main/routes/urls";
 
 export const IGNORED_URLS = [
   urls.SIGN_IN_URL,
@@ -44,6 +45,7 @@ export const IGNORED_URLS = [
   urls.PAY_CLAIM_FEE_UNSUCCESSFUL_URL,
   urls.CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID,
   urls.CLAIM_FEE_PAYMENT_CONFIRMATION_URL,
+  urls.CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL,
   urls.MAKE_CLAIM,
   urls.VIEW_DEFENDANT_INFO,
   urls.VIEW_CLAIMANT_INFO,
