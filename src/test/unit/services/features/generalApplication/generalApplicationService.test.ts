@@ -4,7 +4,7 @@ import {
   getCancelUrl,
   saveAgreementFromOtherParty,
   saveApplicationType,
-  saveHearingSupport
+  saveHearingSupport,
 } from 'services/features/generalApplication/generalApplicationService';
 import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
