@@ -60,7 +60,7 @@ export const saveApplicationCosts = async (claimId: string, applicationCosts: Ye
     logger.error(error);
     throw error;
   }
-}
+};
 
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
   if (claim.isClaimant()) {
