@@ -551,5 +551,5 @@ export default [
   viewTheHearingController,
   viewResponseToClaimController,
   claimFeeMakePaymentAgainController,
-  informOtherPartiesController
+  informOtherPartiesController,
 ];
