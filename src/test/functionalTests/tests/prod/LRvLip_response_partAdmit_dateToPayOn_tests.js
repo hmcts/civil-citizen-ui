@@ -14,7 +14,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit and Date to PayOn - Small Claims');
+Feature('Response with PartAdmit and Date to PayOn - Small Claims @kiyron');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

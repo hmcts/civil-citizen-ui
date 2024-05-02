@@ -45,8 +45,8 @@ module.exports = {
   getDomain: (url) => new URL(url).host,
   s2s: {
     microservice: 'civil_service',
-    // secret: process.env.S2S_SECRET || '4W4QUXOYX623JW64', //demo
-    secret: process.env.S2S_SECRET || 'BTZQFPGY4TUMAFGL', //preview or aat
+    secret: process.env.S2S_SECRET || '4W4QUXOYX623JW64', //demo
+    // secret: process.env.S2S_SECRET || 'BTZQFPGY4TUMAFGL', //preview or aat
   },
   s2sForXUI: {
     microservice: 'xui_webapp',
