@@ -13,10 +13,7 @@ exports.config = {
     await unAssignAllUsers();
     await deleteAllIdamTestUsers();
   },
-  tests: process.env.ENVIRONMENT == 'aat' ? 
-    [ '../functionalTests/tests/prod/**/*.js',
-      '../functionalTests/tests/common/**/*.js'  ] : 
-    [ '../functionalTests/tests/nonprod/**/*.js',
+  tests: ['../functionalTests/tests/prod/**/*.js',
       '../functionalTests/tests/common/**/*.js' ],
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
