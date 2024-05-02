@@ -36,7 +36,7 @@ export const saveInformOtherParties = async (redisKey: string, informOtherPartie
   } catch (error) {
     logger.error(error);
     throw error;
-  };
+  }
 };
   
 export const saveAgreementFromOtherParty = async (claimId: string, claim: Claim, agreementFromOtherParty: YesNo): Promise<void> => {
