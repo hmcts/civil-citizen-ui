@@ -350,6 +350,8 @@ civil-general-applications:
   enabled: true
   java:
     image: 'hmctspublic.azurecr.io/civil/general-applications:latest'
+    releaseNameOverride: ${SERVICE_NAME}-general-applications
+    ingressHost: general-applications-${SERVICE_FQDN}
     imagePullPolicy: Always
     keyVaults:
       civil:
