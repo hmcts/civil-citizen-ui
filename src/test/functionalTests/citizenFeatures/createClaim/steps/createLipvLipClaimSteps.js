@@ -44,6 +44,8 @@ class CreateClaimSteps {
     await eligibilityCheck.eligibilityDefendantAge();
     await eligibilityCheck.eligibilityClaimantAgeValidations();
     await eligibilityCheck.eligibilityClaimantAge();
+    await eligibilityCheck.eligibilityForHWF();
+    await eligibilityCheck.eligibilityInfoAboutHWF();
     await eligibilityCheck.eligibilityApplyForHWF();
     await eligibilityCheck.eligibilityHWFReferenceValidations();
     await eligibilityCheck.eligibilityHWFReference();
@@ -60,6 +62,8 @@ class CreateClaimSteps {
     await eligibilityCheck.eligibilityGovtDept();
     await eligibilityCheck.eligibilityDefendantAge();
     await eligibilityCheck.eligibilityClaimantAge();
+    await eligibilityCheck.eligibilityForHWF();
+    await eligibilityCheck.eligibilityInfoAboutHWF();
     await eligibilityCheck.eligibilityApplyForHWF();
     await eligibilityCheck.eligibilityHWFReference();
   }
@@ -196,7 +200,7 @@ class CreateClaimSteps {
     await createClaim.fillSoleTraderDefendantDetails();
   }
 
-  async addOrgClaimant() {  
+  async addOrgClaimant() {
     await I.amOnPage('/claim/claimant-party-type-selection');
     await createClaim.fillOrgClaimantDetails();
   }

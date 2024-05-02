@@ -6,6 +6,8 @@ import {getPaymentDate} from 'common/utils/repaymentUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {YesNo} from 'form/models/yesNo';
 import { PageSectionBuilder } from 'common/utils/pageSectionBuilder';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 
 export function buildPanelSection(claim: Claim, lang: string): ClaimSummarySection[] {
   if (claim.defendantSignedSettlementAgreement === YesNo.YES) {
@@ -52,16 +54,36 @@ export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummaryS
 const getAcceptSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
   const claimantName = claim.getClaimantFullName();
   const nextSteps = [];
-  if (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate()) {
+  let paymentDate;
+  if (claim.hasCourtAcceptedClaimantsPlan()) {
+    if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.IMMEDIATELY) {
+      paymentDate = claim.claimantResponse.suggestedImmediatePaymentDeadLine;
+    } else if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.BY_SET_DATE) {
+      const date = claim.claimantResponse.suggestedPaymentIntention.paymentDate as unknown as PaymentDate;
+      paymentDate = date as unknown as Date;
+    }
+    if(paymentDate) {
+      nextSteps.push(
+        {
+          type: ClaimSummaryType.PARAGRAPH,
+          data: {
+            text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.PAY_BY', {paymentDate: formatDateToFullDate(paymentDate, lang), lng: lang}),
+          },
+        },
+      );
+    }
+  } else if (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate()) {
+    paymentDate = getPaymentDate(claim);
     nextSteps.push(
       {
         type: ClaimSummaryType.PARAGRAPH,
         data: {
-          text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.PAY_BY', {paymentDate: formatDateToFullDate(getPaymentDate(claim), lang), lng: lang}),
+          text: t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.PAY_BY', {paymentDate: formatDateToFullDate(paymentDate, lang), lng: lang}),
         },
       },
     );
   }
+
   nextSteps.push(...[
     {
       type: ClaimSummaryType.PARAGRAPH,
