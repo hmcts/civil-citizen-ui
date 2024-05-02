@@ -35,6 +35,10 @@ dependencies:
     version: 1.0.4
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: servicebus.enabled
+  - name: civil-general-applications
+    version: 0.0.55
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    condition: civil-general-applications.enabled
 # WA
   - name: wa-task-management-api
     version: ~0.0.37

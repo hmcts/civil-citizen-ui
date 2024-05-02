@@ -347,6 +347,7 @@ civil-wa:
   enabled: false
 
 civil-general-applications:
+  enabled: true
   java:
     image: 'hmctspublic.azurecr.io/civil/general-applications:latest'
     imagePullPolicy: Always
