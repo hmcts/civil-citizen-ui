@@ -27,7 +27,7 @@ export const saveInformOtherParties = async (claimId: string, informOtherParties
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.informOtherParties = informOtherParties;
-    saveDraftClaim(claimId, claim);
+    await saveDraftClaim(claimId, claim)
   } catch (error) {
     logger.error(error);
     throw error;
