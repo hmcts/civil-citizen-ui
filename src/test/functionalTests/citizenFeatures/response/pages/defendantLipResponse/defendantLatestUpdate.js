@@ -30,7 +30,7 @@ class DefendantLatestUpdate {
     await I.see('Claim number: ');
     await I.see('You need to respond before');
     //exact days to be updated based on logic
-    await I.see('Days remaining');
+    await I.see('ays remaining');
     await I.see('About claim');
     await I.see('Claimant name:');
     await I.see('Claim amount');

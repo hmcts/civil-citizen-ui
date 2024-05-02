@@ -34,6 +34,11 @@ services:
   govPay:
     url: GOVPAY_URL
   carmDate: CARM_DATE
+  civilMoneyClaims:
+    telephone: CIVILMONEYCLAIMS_TELEPHONE
+    courtEmailId: CIVILMONEYCLAIMS_COURT_EMAIL_ID
+    welshspeaker:
+      telephone: CIVILMONEYCLAIMS_WELSHSPEAKER_TELEPHONE
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY

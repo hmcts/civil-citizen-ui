@@ -6,7 +6,7 @@ import {StatementOfMeans} from './statementOfMeans';
 import {PartyType} from './partyType';
 import {FullAdmission} from './fullAdmission';
 import {PartialAdmission} from './partialAdmission';
-import {DefendantEvidence} from './evidence/evidence';
+import {ClaimantEvidence, DefendantEvidence} from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
@@ -76,10 +76,12 @@ import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPlanInstalments';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {toCCDYesNo, toCCDYesNoReverse} from 'services/translation/response/convertToCCDYesNo';
-import { AdditionalLipPartyDetails } from './additionalLipPartyDetails';
+import {AdditionalLipPartyDetails} from './additionalLipPartyDetails';
 import {BusinessProcess} from 'models/businessProcess';
 import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
+import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
+import {GeneralApplication} from './generalApplication/GeneralApplication';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -150,6 +152,8 @@ export class Claim {
   courtDecision: RepaymentDecisionType;
   feeTypeHelpRequested: FeeType;
   helpWithFeesRequested: string;
+  applicant1Represented?: YesNoUpperCamelCase;
+  specRespondent1Represented?: YesNoUpperCamelCase;
   respondentPaymentDeadline: Date;
   respondentSignSettlementAgreement?: GenericYesNo;
   mediationUploadDocuments?: UploadDocuments;
@@ -160,6 +164,12 @@ export class Claim {
   claimIssuedHwfDetails?: CCDHelpWithFeesDetails;
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
+  mediationSettlementAgreedAt?: Date;
+  generalApplication?: GeneralApplication;
+  orderDocumentId?: string;
+  claimantEvidence: ClaimantEvidence;
+  // Index signature to allow dynamic property access
+  [key: string]: any;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -448,7 +458,7 @@ export class Claim {
     return this.systemGeneratedCaseDocuments?.length > 0;
   }
 
-  getDocumentDetails(documentType: DocumentType): CaseDocument {
+  getDocumentDetails(documentType: DocumentType, claimantOrDefendant?: DirectionQuestionnaireType): CaseDocument {
     if (documentType === DocumentType.HEARING_FORM && this.hasCaseProgressionHearingDocuments()) {
       const hearingNotice = this.caseProgressionHearing.hearingDocuments.find(document => {
         return document.value.documentType === documentType;
@@ -460,6 +470,9 @@ export class Claim {
 
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
+        if (documentType == DocumentType.DIRECTIONS_QUESTIONNAIRE) {
+          return document.value.documentType === documentType && document.value.documentName.startsWith(claimantOrDefendant);
+        }
         return document?.value.documentType === documentType;
       });
       return filteredDocumentDetailsByType?.value;
@@ -881,7 +894,7 @@ export class Claim {
   }
 
   isClaimant() {
-    return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT;
+    return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT || this.caseRole === CaseRole.CREATOR;
   }
 
   isDraftClaim(): boolean {
@@ -927,6 +940,14 @@ export class Claim {
 
   hasClaimantAcceptedToSettleClaim(): boolean {
     return (this.isFullDefence() || this.isPartialAdmission()) && this.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
+  }
+
+  isLRClaimant() {
+    return this.applicant1Represented === YesNoUpperCamelCase.YES;
+  }
+
+  isLRDefendant() {
+    return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
   }
 
   hasClaimantNotSettled(): boolean {
