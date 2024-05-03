@@ -65,7 +65,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with standar
     await api.waitForFinishedBusinessProcess();
   }
 });
-//dummy
+
 Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - no hwf', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     selectedHWF = false;

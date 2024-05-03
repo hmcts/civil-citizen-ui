@@ -1,7 +1,11 @@
 const config = require('../../../config');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
+const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
+const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
+const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
+const { claimIsSettled} = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 let claimRef, claimType;
 let caseData;
@@ -17,11 +21,19 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle t
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitAmountPaidWithIndividual);
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaid(claimRef, claimNumber, 'disagree');
     await api.waitForFinishedBusinessProcess();
+    if (isDashboardServiceEnabled) {
+      console.log("In if statement");
+      await ResponseSteps.SignOut();
+      await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password)
+      const notification = claimIsSettled(700, '1 January 2020');
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
   }
 }).tag('@regression-r2');
 
