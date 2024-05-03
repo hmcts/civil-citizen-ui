@@ -1,13 +1,18 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
-import {getCancelUrl, saveAgreementFromOtherParty, saveApplicationType} from 'services/features/generalApplication/generalApplicationService';
-import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {
+  getCancelUrl,
+  saveAgreementFromOtherParty,
+  saveApplicationType,
+  saveRespondentAgreeToOrder,
+} from 'services/features/generalApplication/generalApplicationService';
+import {ApplicationType, ApplicationTypeOption,} from 'common/models/generalApplication/applicationType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import { YesNo } from 'common/form/models/yesNo';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
-import { CaseRole } from 'common/form/models/caseRoles';
-import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
+import {YesNo} from 'common/form/models/yesNo';
+import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {CaseRole} from 'common/form/models/caseRoles';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -64,41 +69,7 @@ describe('General Application service', () => {
 
     it('should throw error when draft store throws error', async () => {
       //Given
-     
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      //When
-      mockSaveClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-      //Then
-      await expect(saveAgreementFromOtherParty('123',claim, YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
-    });
-  });
 
-  describe('Save agreement from other party', () => {
-    it('should save agreement from other party', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
-
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-
-      //When
-      await saveAgreementFromOtherParty('123',claim, YesNo.NO);
-      //Then
-      expect(spy).toBeCalled();
-    });
-
-    it('should throw error when draft store throws error', async () => {
-      //Given
-     
       const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
       //When
       mockSaveClaim.mockImplementation(async () => {
@@ -125,7 +96,7 @@ describe('General Application service', () => {
       const cancelUrl = await getCancelUrl('123',claim);
       //Then
       expect(cancelUrl).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id','123'));
-    });  
+    });
 
     it('should return claimant old dashboard url when user is claimant and dashboard feature flag is disabled', async () => {
       //Given
@@ -140,7 +111,7 @@ describe('General Application service', () => {
       const cancelUrl = await getCancelUrl('123',claim);
       //Then
       expect(cancelUrl).toEqual(OLD_DASHBOARD_CLAIMANT_URL.replace(':id','123'));
-    }); 
+    });
 
     it('should return defendant dashboard url when user is defendent', async () => {
       //Given
@@ -155,6 +126,40 @@ describe('General Application service', () => {
       const cancelUrl = await getCancelUrl('123',claim);
       //Then
       expect(cancelUrl).toEqual(DEFENDANT_SUMMARY_URL.replace(':id','123'));
-    }); 
+    });
+  });
+
+  describe('Save respondent agree to order', () => {
+    it('should save respondent agree to order', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+
+      //When
+      await saveRespondentAgreeToOrder('123',claim, YesNo.NO);
+      //Then
+      expect(spy).toBeCalled();
+    });
+
+    it('should throw error when draft store throws error', async () => {
+      //Given
+
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      //When
+      mockSaveClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      //Then
+      await expect(saveRespondentAgreeToOrder('123',claim, YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
   });
 });

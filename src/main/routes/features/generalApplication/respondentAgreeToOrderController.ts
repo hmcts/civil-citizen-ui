@@ -17,8 +17,8 @@ const backLinkUrl = 'test'; // TODO: add url
 
 respondentAgreeToOrderController.get(GA_AGREE_TO_ORDER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getClaimById(redisKey, req, true);
+    const claimId = req.params.id;
+    const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const caption: string = getRespondToApplicationCaption(claim, lang);
@@ -38,11 +38,12 @@ respondentAgreeToOrderController.get(GA_AGREE_TO_ORDER_URL, (async (req: AppRequ
 respondentAgreeToOrderController.post(GA_AGREE_TO_ORDER_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getClaimById(redisKey, req, true);
+    const claimId = req.params.id;
+    const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const caption: string = getRespondToApplicationCaption(claim, lang);
-    const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
+    const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.AGREE_TO_ORDER_NOT_SELECTED'));
 
     form.validateSync();
 
