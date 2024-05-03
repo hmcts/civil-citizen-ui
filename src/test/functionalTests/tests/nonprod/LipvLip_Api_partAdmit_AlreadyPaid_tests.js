@@ -28,9 +28,8 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle t
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaid(claimRef, claimNumber, 'disagree');
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
-      console.log("In if statement");
       await ResponseSteps.SignOut();
-      await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password)
+      await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
       const notification = claimIsSettled(700, '1 January 2020');
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
