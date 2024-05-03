@@ -23,7 +23,7 @@ describe('GAFlagGuard', () => {
 
   afterAll(() => {
     jest.clearAllMocks();
-  })
+  });
 
   it('should call next if isGAFlag enabled returns true', async () => {
     (isGaForLipsEnabled as jest.Mock).mockReturnValueOnce(true);
