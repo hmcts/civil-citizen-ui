@@ -4,15 +4,18 @@ import {
   getCancelUrl,
   saveAgreementFromOtherParty,
   saveApplicationType,
+  saveHearingSupport,
+  saveApplicationCosts,
   saveRespondentAgreeToOrder,
 } from 'services/features/generalApplication/generalApplicationService';
 import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {YesNo} from 'common/form/models/yesNo';
-import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
-import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
-import {CaseRole} from 'common/form/models/caseRoles';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import { YesNo } from 'common/form/models/yesNo';
+import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
+import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import { CaseRole } from 'common/form/models/caseRoles';
+import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
+import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -79,6 +82,74 @@ describe('General Application service', () => {
       claim.generalApplication = new GeneralApplication();
       //Then
       await expect(saveAgreementFromOtherParty('123',claim, YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+
+  describe('Save hearing support', () => {
+    it('should save hearing support', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+
+      //When
+      await saveHearingSupport('123',
+        new HearingSupport([SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT],
+          'test1', 'test2', 'test3'));
+      //Then
+      expect(spy).toBeCalled();
+    });
+
+    it('should throw error when draft store throws error', async () => {
+      //Given
+
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      //When
+      mockSaveClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      //Then
+      await expect(saveHearingSupport('123',
+        new HearingSupport([]))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+
+  describe('Save Application cost selection', () => {
+    it('should save application costs selected', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.generalApplication = new GeneralApplication();
+        return claim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      //When
+      await saveApplicationCosts('123', YesNo.YES);
+      //Then
+      expect(spy).toBeCalled();
+    });
+    it('should throw error when draft store throws error', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      //When
+      mockSaveClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      //Then
+      await expect(saveApplicationCosts('123', YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
