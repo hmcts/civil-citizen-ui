@@ -73,7 +73,7 @@
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Ychwanegu digwyddiad arall",
       "BACK": "Yn ol",
-      "BACK_TO_CASE_DETAILS": "Back to case details",
+      "BACK_TO_CASE_DETAILS": "Yn ôl i fanylion yr achos",
       "CHANGE": "Newid",
       "CONTINUE": "Parhau",
       "CANCEL": "Canslo",
@@ -495,7 +495,7 @@
         "CONTINUE_APPLICATION": "Do you want to continue to apply for help with fees?",
         "ELIGIBILITY": "Applying for help with fees does not guarantee your fee will be covered. You will need to meet the ",
         "ELIGIBILITY_LINK": "eligibility criteria (opens in new tab).",
-        "HEARING_FEE": "Hearing fee",
+        "HEARING_FEE": "Ffi’r Gwrandawiad",
         "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The hearing fee is: £{{ feeAmount }}</span>",
         "RECEIVE_DECISION": "Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.",
         "REJECTED_TITLE": "If your application for help with fees is rejected",
@@ -534,11 +534,11 @@
       "WELSH": "Cymraeg"
     },
     "CLAIM_BILINGUAL_LANGUAGE_PREFERENCE": {
-      "DESCRIPTION_1": "You must choose which language you want to use to make this claim.",
-      "DESCRIPTION_2": "If you select 'Welsh', information and documents will be presented in Welsh. But some notifications about your claim will still be in English.",
+      "DESCRIPTION_1": "Mae’n rhaid i chi ddewis pa iaith rydych chi eisiau ei defnyddio i wneud yr hawliad hwn.",
+      "DESCRIPTION_2": "Os byddwch yn dewis 'Cymraeg', bydd yr wybodaeth a’r dogfennau yn cael eu cyflwyno yn Gymraeg. Ond bydd rhai hysbysiadau am eich cais yn dal i fod yn Saesneg.",
       "ENGLISH": "Saesneg",
       "PAGE_TITLE": "Iaith",
-      "QUESTION": "In what language do you want to make your claim?",
+      "QUESTION": "Ym mha iaith ydych chi eisiau gwneud eich cais?",
       "TITLE": "Iaith",
       "WELSH_AND_ENGLISH": "Cymraeg"
     },
@@ -972,7 +972,7 @@
         "HINT_AFTER_4PM": "Os byddwch yn ei gyflwyno ar ôl 4pm bydd hwn y diwrnod gwaith nesaf.",
         "HINT_EXAMPLE_DATE": "Er enghraifft, dyddiad pan oedd yr anfoneb yn hwyr neu y dywedoch wrth rywun fod arno arian ichi.",
         "PAGE_TITLE": "O pa bryd ydych chi’n hawlio llog?",
-        "REASON": "Explain why you're claiming for this date?",
+        "REASON": "Esboniwch pam rydych chi’n hawlio am y dyddiad hwn?",
         "TITLE": "O pa bryd ydych chi’n hawlio llog?"
       }
     },
@@ -2202,14 +2202,14 @@
               "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
               "PAYMENT_BY_CARD": "Talu gyda cherdyn",
               "PAYMENT_BY_CARD_PARAGRAPH_PART_1": "Gallwch geisio",
-              "PAYMENT_BY_CARD_PARAGRAPH_CARD_PAYMENT_URL": "gwneud taliad gyda cherdyn",
-              "PAYMENT_BY_CARD_PARAGRAPH_PART_2": "eto.",
+              "PAYMENT_BY_CARD_PARAGRAPH_CARD_PAYMENT_URL": "gwneud taliad",
+              "PAYMENT_BY_CARD_PARAGRAPH_PART_2": "eto gyda cherdyn.",
               "PAYMENT_BY_PHONE": "Talu dros y ffôn",
               "PAYMENT_BY_PHONE_PARAGRAPH_1": "Gallwch dalu dros y ffôn drwy ein ffonio ar 0300 303 5174. Dyfynnwch eich cyfeirnod achos sef {{ claimId }}.",
               "PAYMENT_BY_PHONE_PARAGRAPH_2": "Mae'r llinellau ar agor o ddydd Llun i ddydd Iau 9am - 5pm, dydd Gwener 9am - 4.30pm.",
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Cyn cysylltu â ni ",
-              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "darllenwch fwy am gost galwadau (yn agor mewn tab newydd).",
-              "RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd at y trosolwg o’r achos"
+              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "dewch o hyd i wybodaeth am gost galwadau (yn agor mewn tab newydd).",
+              "RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos"
             },
             "SUCCESSFUL": {
               "PAGE_TITLE": "Your payment was ",
@@ -2644,10 +2644,10 @@
         "GO_BACK": "Go back and ",
         "TRY_PAYMENT_AGAIN": "try the payment again",
         "MAKE_YOUR_PAYMENT": " to make your payment manually, quoting the case reference above.",
-        "NO_MONEY_TAKEN": "No money has been taken from your account.",
+        "NO_MONEY_TAKEN": "Nid oes arian wedi ei gymryd o'ch cyfrif.",
         "PAGE_TITLE": "Claim fee payment unsuccessful",
         "OPEN_TIMES": "Opening times:",
-        "TITLE": "Your payment was unsuccessful"
+        "TITLE": "Roedd eich taliad yn aflwyddiannus"
       }
     },
     "PAYMENT_OPTION": {
@@ -3476,7 +3476,7 @@
     "CHOOSE_TYPE_OF_INTEREST": "Dewis math o log",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "Mae angen i chi nodi rhif yr hawliad",
-    "CLAIM_SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh if you want to create this claim in Welsh",
+    "CLAIM_SELECT_WELSH_AND_ENGLISH_OPTION": "Dewiswch ‘Cymraeg’ os ydych am greu’r hawliad hwn yn Gymraeg",
     "CLAIM_SUBMITTED_ADVICE_REQUIRED": "Dewiswch: Unwaith y bydd eich cais yn cael ei gyflwyno, ni fyddwch yn gallu gwneud unrhyw newidiadau. Ni fydd eich hawliad yn cael ei gyhoeddi a’i anfon at y partïon eraill nes eich bod wedi talu ffi’r hawliad.",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
     "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Dewiswch rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb",
