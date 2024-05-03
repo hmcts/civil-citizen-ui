@@ -6,9 +6,10 @@
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
+{% from "../dashboard/item-content.njk" import itemContent %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE') }}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.ORDER_JUDGE.TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -19,24 +20,22 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          {{ headingWithCaption(t, applicationType, 'PAGES.GENERAL_APPLICATION.PAYMENT_FOR_APPLICATION.TITLE') }}
-
-          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.WHEN_YOU_REQUEST') }}</p>
-            
+          {{ headingWithCaption(t, applicationType, 'PAGES.GENERAL_APPLICATION.ORDER_JUDGE.TITLE') }}
+          
+          {% for content in contentList %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {% set typeError = form.errorFor('option') %}
             <div class="govuk-form-group">
 
+              <h1 class="govuk-heading-s">{{ t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.ENTER_THE_ORDER') }}</h1>
               {{ govukTextarea({
                 name: "moreDetail",
                 id: "more-detail",
-                label: {
-                  text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ALL_APPLICATIONS'),
-                  classes: "govuk-heading-m",
-                  isPageHeading: true
-                }
+                value: hintText
               }) }}
             </div>
             <div class="govuk-button-group">
