@@ -61,13 +61,13 @@ def setUrls(suffix){
     env.URL="https://civil-cui-xui-staging.aat.platform.hmcts.net"
     env.TEST_URL="https://civil-citizen-ui-staging.aat.platform.hmcts.net"
     env.CIVIL_SERVICE_URL="https://civil-cui-civil-service-staging.aat.platform.hmcts.net"
-
+    env.CIVIL_GENERAL_APPLICATIONS_URL="https://civil-cui-general-applications.aat.platform.hmcts.net"
   } else {
     env.CCD_DATA_STORE_URL = "https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
     env.URL="https://xui-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
     env.TEST_URL="https://civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
     env.CIVIL_SERVICE_URL="https://civil-citizen-ui-pr-${CHANGE_ID}-civil-service.preview.platform.hmcts.net"
-
+    env.CIVIL_GENERAL_APPLICATIONS_URL="https://civil-ga-ccd-pr-${CHANGE_ID}-general-applications.preview.platform.hmcts.net"
   }
   env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
 }
