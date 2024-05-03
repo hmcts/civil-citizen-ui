@@ -1,6 +1,7 @@
 import { YesNo } from 'common/form/models/yesNo';
 import {ApplicationType} from './applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
+import { OrderJudge } from './orderJudge';
 
 export class GeneralApplication {
 
@@ -8,6 +9,7 @@ export class GeneralApplication {
   hearingSupport?: HearingSupport;
   agreementFromOtherParty?: YesNo;
   applicationCosts?: YesNo;
+  orderJudge?: OrderJudge;
 
   constructor(applicationType?: ApplicationType, agreementFromOtherParty?: YesNo, applicationCosts?: YesNo) {
     this.applicationType = applicationType;

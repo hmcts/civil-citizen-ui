@@ -3,12 +3,13 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {ORDER_JUDGE_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
-import {ApplicationType, ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
-import {saveApplicationType} from 'services/features/generalApplication/generalApplicationService';
+import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {saveOrderJudge} from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
-import { PageSectionBuilder } from 'common/utils/pageSectionBuilder';
-import { t } from 'i18next';
+import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+import {t} from 'i18next';
+import { OrderJudge } from 'common/models/generalApplication/orderJudge';
 
 const orderJudgeController = Router();
 const viewPath = 'features/generalApplication/order-judge';
@@ -19,9 +20,10 @@ orderJudgeController.get(ORDER_JUDGE_URL, (async (req: AppRequest, res: Response
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
+    const orderJudge = new OrderJudge(claim.generalApplication?.orderJudge?.text);
     const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
     const {contentList, hintText} = buildPageContent(claim.generalApplication?.applicationType?.option);
-    const form = new GenericForm(applicationType);
+    const form = new GenericForm(orderJudge);
     res.render(viewPath, {
       form,
       cancelUrl,
@@ -37,21 +39,29 @@ orderJudgeController.get(ORDER_JUDGE_URL, (async (req: AppRequest, res: Response
 
 orderJudgeController.post(ORDER_JUDGE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
+    const claimId = req.params.id;
+    const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
-    let applicationType = null;
-    
-    if (req.body.option === ApplicationTypeOption.OTHER) {
-      applicationType = new ApplicationType(req.body.optionOther);
-    } else {
-      applicationType = new ApplicationType(req.body.option);
-    }
+    const orderJudge = new OrderJudge(req.body.text);
+    const {contentList, hintText} = buildPageContent(claim.generalApplication?.applicationType?.option);
+    const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
 
-    const form = new GenericForm(applicationType);
+    console.log(req.body);
+    
+    const form = new GenericForm(orderJudge);
     await form.validate();
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl });
+      res.render(viewPath, {
+        form,
+        cancelUrl,
+        backLinkUrl,
+        applicationType,
+        contentList,
+        hintText,
+      });
     } else {
-      await saveApplicationType(redisKey, applicationType);
+      await saveOrderJudge(redisKey, orderJudge);
       res.redirect('test'); // TODO: add url
     }
   } catch (error) {
@@ -61,7 +71,6 @@ orderJudgeController.post(ORDER_JUDGE_URL, (async (req: AppRequest | Request, re
 
 export default orderJudgeController;
 
-
 const buildPageContent = (applicationType: ApplicationTypeOption) => {
  
   switch (applicationType) {
@@ -69,7 +78,7 @@ const buildPageContent = (applicationType: ApplicationTypeOption) => {
     case ApplicationTypeOption.SET_ASIDE_JUDGEMENT:
       return {
         contentList: new PageSectionBuilder()
-        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER_TO_MAKE'))
+        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER_SET_ASIDE_JUDGEMENT'))
         .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.ADD_OR_ALTER'))
         .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.EXPLAIN_REASONS'))
         .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.CONTENT_BOX'))
@@ -81,7 +90,7 @@ const buildPageContent = (applicationType: ApplicationTypeOption) => {
       // TODO: check N/A - no pre-populated variable This screen should not show in the case of a vary judgment application.
       return { 
         contentList: new PageSectionBuilder()
-        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER_AND_MAKE'))
+        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER'))
         .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.YOU_SHOULD'))
         .addRawHtml(
           `<ul class="govuk-list govuk-list--bullet">
@@ -97,7 +106,7 @@ const buildPageContent = (applicationType: ApplicationTypeOption) => {
     case ApplicationTypeOption.VARY_ORDER:
       return {
         contentList: new PageSectionBuilder()
-        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER_AND_MAKE'))
+        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER'))
         .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.SHOULD_EXPLAIN'))
         .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.THE_INFORMATION'))
         .build(),
@@ -107,7 +116,7 @@ const buildPageContent = (applicationType: ApplicationTypeOption) => {
     case ApplicationTypeOption.ADJOURN_HEARING:
       return {
         contentList: new PageSectionBuilder()
-        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.A_JUDGE_WILL_CONSIDER'))
+        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.A_JUDGE_WILL_CONSIDER_ADJOURN_HEARING'))
         .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.YOU_WILL_NEED_ADD_INFO'))
         .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.YOU_CAN_ALSO_ALTER'))
         .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.EXPLAIN_REASONS'))
@@ -131,7 +140,7 @@ const buildPageContent = (applicationType: ApplicationTypeOption) => {
     case ApplicationTypeOption.RELIEF_FROM_SANCTIONS:
       return {
         contentList: new PageSectionBuilder()
-        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER_AND_MAKE'))
+        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER'))
         .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.SHOULD_EXPLAIN_PENALTY'))
         .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.EXPLAIN_REASONS'))
         .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.THE_INFORMATION'))
@@ -170,7 +179,7 @@ const buildPageContent = (applicationType: ApplicationTypeOption) => {
     case ApplicationTypeOption.STRIKE_OUT:
       return {
         contentList: new PageSectionBuilder()
-        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER_AND_MAKE'))
+        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER'))
         .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.YOU_SHOULD'))
         .addRawHtml(
           `<ul class="govuk-list govuk-list--bullet">
@@ -199,7 +208,7 @@ const buildPageContent = (applicationType: ApplicationTypeOption) => {
     case ApplicationTypeOption.UNLESS_ORDER:
       return {
         contentList: new PageSectionBuilder()
-        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER_AND_MAKE'))
+        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER'))
         .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.YOU_SHOULD'))
         .addRawHtml(
           `<ul class="govuk-list govuk-list--bullet">
@@ -211,18 +220,34 @@ const buildPageContent = (applicationType: ApplicationTypeOption) => {
         .build(),
         hintText: '',
       };
-
     
     case ApplicationTypeOption.SETTLE_BY_CONSENT:
-      
-      break;
+      return {
+        contentList: new PageSectionBuilder()
+        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER'))
+        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.YOU_SHOULD'))
+        .addRawHtml(
+          `<ul class="govuk-list govuk-list--bullet">
+            <li>${t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.EXPLAIN_SETTLED')}</li>
+            <li>${t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.INCLUDE_NAME')}</li>
+            <li>${t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.EXPLAIN_TERMS')}</li>
+          </ul>`)      
+        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.THE_INFORMATION'))
+        .build(),
+        hintText: '',
+      };
         
     case ApplicationTypeOption.PROCEEDS_IN_HERITAGE:
+      return {
+        contentList: new PageSectionBuilder()
+        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER'))
+        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.SHOULD_EXPLAIN_PROCEEDS_IN_HERITAGE'))
+        .addParagraph(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.THE_INFORMATION'))
+        .build(),
+        hintText: '',
+      };
     
-      break;
-
-
     default:
-      break;
+      return {contentList: [], hintText: ''};
   }
 };

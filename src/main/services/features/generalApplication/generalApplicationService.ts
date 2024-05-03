@@ -11,6 +11,7 @@ import { FormValidationError } from 'common/form/validationErrors/formValidation
 import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { ValidationError } from 'class-validator';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import { OrderJudge } from 'common/models/generalApplication/orderJudge';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -20,6 +21,18 @@ export const saveApplicationType = async (claimId: string, applicationType: Appl
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.applicationType = applicationType;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveOrderJudge = async (claimId: string, orderJudge: OrderJudge): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.orderJudge = orderJudge;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);

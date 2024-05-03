@@ -2001,13 +2001,13 @@
         "TITLE": "What order do you want the judge to make?",
         "ENTER_THE_ORDER": "Enter the order that you want the judge to make",
 
-        "JUDGE_WILL_CONSIDER_TO_MAKE": "A judge will consider your application to make an order. The order that a judge would usually make to set aside (remove) a judgment is in the box below.", 
+        "JUDGE_WILL_CONSIDER_SET_ASIDE_JUDGEMENT": "A judge will consider your application to make an order. The order that a judge would usually make to set aside (remove) a judgment is in the box below.", 
         "ADD_OR_ALTER": "You can add or alter any of the text if you need to.",
         "CONTENT_BOX": "The contents of this box will be seen by the other parties.",
         "SET_ASIDE_JUDGEMENT_HINT_TEXT": "The judgment made against me is removed.",
         "EXPLAIN_REASONS": "You'll be able to explain your reasons on the next screen.",
 
-        "JUDGE_WILL_CONSIDER_AND_MAKE": "A judge will consider your application and make an order.",
+        "JUDGE_WILL_CONSIDER": "A judge will consider your application and make an order.",
         "YOU_SHOULD": "You should:",
         "EXPLAIN_THAT": "explain that you want the judgment to be varied (changed)",
         "SUGGEST_NEW_PLAN": "suggest a new payment plan",
@@ -2015,7 +2015,7 @@
  
         "SHOULD_EXPLAIN": "You should explain which order and which parts of it you'd like to be reconsidered. You'll be able to explain your reasons on the next screen.",
 
-        "A_JUDGE_WILL_CONSIDER": "A judge will consider your application and make an order. The order that a judge would usually make to change a hearing date is in the box below.",
+        "A_JUDGE_WILL_CONSIDER_ADJOURN_HEARING": "A judge will consider your application and make an order. The order that a judge would usually make to change a hearing date is in the box below.",
         "YOU_WILL_NEED_ADD_INFO": "You'll need to add information to the box, like when your hearing is currently arranged for, after what date you'd like to change it to and any dates to avoid.",
         "YOU_CAN_ALSO_ALTER": "You can also alter any of the other text if you need to.",
         "ADJOURN_HEARING_HINT_TEXT": "The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid].",
@@ -2043,7 +2043,17 @@
         "STAY_THE_CLAIM_HINT_TEXT": "The claim will be stayed (paused) until [specify date].",
 
         "EXPLAIN_ACTION_UNLESS_ORDER": "explain the action you want the other parties to take and by which date they should do this action",
-        "EXPLAIN_UNLESS_ORDER": "explain that you'd like the court to give an appropriate sanction to the other parties"
+        "EXPLAIN_UNLESS_ORDER": "explain that you'd like the court to give an appropriate sanction to the other parties",
+
+
+        "EXPLAIN_SETTLED": "explain that you and all the parties involved in the case should be settled",
+        "INCLUDE_NAME": "include the name of all the parties involved",
+        "EXPLAIN_TERMS": "explain the terms of settlement",
+
+    
+        "SHOULD_EXPLAIN_PROCEEDS_IN_HERITAGE": "You should explain what order you want the judge to make. You'll be able to explain your reasons on the next screen."
+        
+        
       
 
       },
@@ -3915,6 +3925,7 @@
     "GENERAL_APPLICATION": {
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
+      "ENTER_ORDER_JUDGE": "You need to enter the order you want the judge to make",
       "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
