@@ -34,7 +34,7 @@ export const saveInformOtherParties = async (redisKey: string, informOtherPartie
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.informOtherParties = informOtherParties;
     await saveDraftClaim(redisKey, claim);
-     } catch (error) {
+  } catch (error) {
     logger.error(error);
     throw error;
   }
