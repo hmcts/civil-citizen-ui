@@ -4,11 +4,11 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {
   getCancelUrl,
+  getRespondToApplicationCaption,
   saveRespondentAgreeToOrder,
 } from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
-import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import {GenericYesNo} from 'form/models/genericYesNo';
 
 const respondentAgreeToOrderController = Router();
@@ -20,12 +20,13 @@ respondentAgreeToOrderController.get(GA_AGREE_TO_ORDER_URL, (async (req: AppRequ
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
-    const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const caption: string = getRespondToApplicationCaption(claim, lang);
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.respondentAgreeToOrder));
 
     res.render(viewPath, {
       form,
-      applicationType,
+      caption,
       cancelUrl,
       backLinkUrl,
     });
@@ -39,14 +40,14 @@ respondentAgreeToOrderController.post(GA_AGREE_TO_ORDER_URL, (async (req: AppReq
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
-    const applicationTypeOption = claim.generalApplication?.applicationType?.option;
-    const applicationType = selectedApplicationType[applicationTypeOption];
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const caption: string = getRespondToApplicationCaption(claim, lang);
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
 
     form.validateSync();
 
     if (form.hasErrors()) {
-      res.render(viewPath, { form, applicationType,cancelUrl, backLinkUrl });
+      res.render(viewPath, { form, caption,cancelUrl, backLinkUrl });
     } else {
       await saveRespondentAgreeToOrder(redisKey, claim, req.body.option);
       res.redirect('test_url');

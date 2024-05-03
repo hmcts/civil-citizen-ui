@@ -1,15 +1,21 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
-import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
-import { YesNo } from 'common/form/models/yesNo';
-import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
-import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from '../../../routes/urls';
-import { Claim } from 'common/models/claim';
-import { AppRequest } from 'common/models/AppRequest';
-import { FormValidationError } from 'common/form/validationErrors/formValidationError';
-import { GenericYesNo } from 'common/form/models/genericYesNo';
-import { ValidationError } from 'class-validator';
+import {
+  ApplicationType,
+  ApplicationTypeOption,
+  selectedApplicationType
+} from 'common/models/generalApplication/applicationType';
+import {YesNo} from 'common/form/models/yesNo';
+import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from '../../../routes/urls';
+import {Claim} from 'common/models/claim';
+import {AppRequest} from 'common/models/AppRequest';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {ValidationError} from 'class-validator';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {t} from 'i18next';
+import {getLng} from 'common/utils/languageToggleUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -75,3 +81,8 @@ export const saveRespondentAgreeToOrder = async (claimId: string, claim: Claim, 
     throw error;
   }
 };
+
+export function getRespondToApplicationCaption(claim: Claim, lng: string) : string {
+  const applicationType = t(selectedApplicationType[claim.generalApplication?.applicationType?.option], {lng: getLng(lng)}).toLowerCase();
+  return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', { lng: getLng(lng), applicationType});
+}
