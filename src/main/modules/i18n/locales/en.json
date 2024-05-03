@@ -2010,7 +2010,7 @@
         "SETTLING": "Court to make an order settling the claim by consent",
         "STRIKE_OUT": "Court to strike out all or part of the other parties' case without a trial",
         "SUMMARY_JUDGMENT": "Court to make a summary judgment on a case",
-        "VARY_JUDGMENT": "Vary a judgment example"
+        "VARY_JUDGMENT": "Vary a judgment"
       },
       "SELECT_TYPE": {
         "ALL_APPLICATIONS": "All applications",
@@ -2075,6 +2075,42 @@
         "SET_ASIDE_JUDGMENT": "set aside (remove) a judgment",
         "TITLE": "Application from the other parties",
         "VARY_JUDGMENT": "vary a judgment"
+      },
+      "HEARING_SUPPORT": {
+        "ALWAYS_ARRANGE": "We'll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the 'Sign language interpreter' box below.",
+        "ARRANGING_OWN": "If you'll be arranging your own interpreter, you still need to tell us what language you'll be using by ticking the 'Language interpreter' box below.",
+        "DO_YOU_NEED": "Do you need any adjustments or support to attend a hearing (optional)?",
+        "FIND_OUT": "Find out how to",
+        "GET_INTERPRETER": "get an interpreter at a court or tribunal.",
+        "IF_YOU_NEED": "If you need a sign language or language interpreter",
+        "NEED_TO_ARRANGE": "You'll need to arrange your own language interpreter.",
+        "NOT_ABLE": "If you're not able to arrange your own interpreter, the court may be able to arrange one for you.",
+        "SELECT_ALL_THAT_APPLY": "Select all that apply",
+        "SUPPORT": {
+          "HEARING_LOOP": "Hearing loop",
+          "LANGUAGE_INTERPRETER": "Language interpreter",
+          "OTHER": "Other support",
+          "SIGN_LANGUAGE_INTERPRETER": "Sign language interpreter",
+          "STEP_FREE_ACCESS": "Step-free access",
+          "WHAT_LANGUAGE": "What language do you need an interpreter for?",
+          "WHAT_SIGN_LANGUAGE": "What type of sign language do you need an interpreter for?",
+          "WHAT_OTHER": "What other support do you need?"
+        },
+        "TITLE": "Adjustments or support to attend a hearing"
+      },
+      "CLAIM_APPLICATION_COST": {
+        "ASK_YOUR_COSTS_BACK": "Do you want to ask for your costs back?",
+        "ASK_YOUR_COSTS_BACK_YES": "If you know the details of the costs you want to claim back, you can upload a document with a description of these when we ask if you want to upload documents to support your application later on.",
+        "COSTS_INCLUDE": {
+          "APPLICATION_FEE": "your application fee",
+          "COST_INCLUDE": "Costs can include amounts like:",
+          "HEARING_COST": "loss of earnings and travel costs if you have to attend a hearing"
+        },
+        "JUDGE_MAKE_DECISION": "When a judge makes a decision on your application, they’ll decide who should pay the costs.",
+        "IF_APPLICATION_SUCCESS": "If your application is successful, the other parties may be ordered to pay back your costs associated with the application.",
+        "OTHER_PARTIES": "The other parties will be able to see your answer to this question and respond to it.",
+        "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application.",
+        "TITLE": "Application costs"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -3840,7 +3876,11 @@
     "GENERAL_APPLICATION": {
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
-      "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No"
+      "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
+      "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
+      "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
+      "MISSING_OTHER": "You need to tell us what other type of support you need.",
+      "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No"
     }
   }
 }

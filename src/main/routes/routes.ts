@@ -293,7 +293,9 @@ import viewResponseToClaimController from 'routes/features/dashboard/viewRespons
 import claimFeeMakePaymentAgainController
   from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
 import informOtherPartiesController from './features/generalApplication/informOtherPartiesController';
+import hearingSupportController from './features/generalApplication/hearingSupportController';
 import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
+import claimApplicationCostController from './features/generalApplication/claimApplicationCostController';
 
 export default [
   homeController,
@@ -551,7 +553,9 @@ export default [
   applicationTypeController,
   viewTheHearingController,
   viewResponseToClaimController,
+  hearingSupportController,
   claimFeeMakePaymentAgainController,
   agreementFromOtherPartyController,
   informOtherPartiesController,
+  claimApplicationCostController,
 ];

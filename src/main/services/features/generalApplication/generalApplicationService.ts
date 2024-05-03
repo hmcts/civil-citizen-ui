@@ -6,6 +6,7 @@ import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_U
 import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { Claim } from 'common/models/claim';
 import { YesNo } from 'common/form/models/yesNo';
+import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import { AppRequest } from 'common/models/AppRequest';
 import { FormValidationError } from 'common/form/validationErrors/formValidationError';
 import { GenericYesNo } from 'common/form/models/genericYesNo';
@@ -33,16 +34,40 @@ export const saveInformOtherParties = async (redisKey: string, informOtherPartie
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.informOtherParties = informOtherParties;
     await saveDraftClaim(redisKey, claim);
+     } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveHearingSupport = async (claimId: string, hearingSupport: HearingSupport): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.hearingSupport = hearingSupport;
+    await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
-  
+
 export const saveAgreementFromOtherParty = async (claimId: string, claim: Claim, agreementFromOtherParty: YesNo): Promise<void> => {
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.agreementFromOtherParty = agreementFromOtherParty;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveApplicationCosts = async (claimId: string, applicationCosts: YesNo): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.applicationCosts = applicationCosts;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -62,9 +87,9 @@ export const getCancelUrl = async (claimId: string, claim: Claim): Promise<strin
 };
 
 export function validateNoConsentOption(req: AppRequest, errors : ValidationError[], applicationTypeOption : string) {
- 
+
   if(req.body.option === YesNo.NO && applicationTypeOption === ApplicationTypeOption.SETTLE_BY_CONSENT) {
-   
+
     const validationError = new FormValidationError({
       target: new GenericYesNo(req.body.option, ''),
       value: req.body.option,
