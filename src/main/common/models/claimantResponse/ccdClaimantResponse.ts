@@ -39,4 +39,5 @@ export interface CCDClaimantResponse extends ClaimUpdate, ClaimantResponseReques
   applicant1ProceedWithClaim?: YesNoUpperCamelCase;
   applicant1SettleClaim?: YesNoUpperCamelCase;
   applicant1RequestedPaymentDateForDefendantSpec?: CCDClaimantPayBySetDate;
+  applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec?: Date;
 }
