@@ -12,6 +12,7 @@ export interface SummaryRow {
 export interface Key {
   text?: string;
   html?: string;
+  classes?: string;
 }
 
 export interface Value {
