@@ -6,7 +6,7 @@ import {
   saveApplicationType,
   saveRespondentAgreeToOrder,
 } from 'services/features/generalApplication/generalApplicationService';
-import {ApplicationType, ApplicationTypeOption,} from 'common/models/generalApplication/applicationType';
+import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from 'common/form/models/yesNo';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';

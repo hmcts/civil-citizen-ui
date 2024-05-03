@@ -3,11 +3,11 @@ import {GeneralApplication} from 'common/models/generalApplication/GeneralApplic
 import {
   ApplicationType,
   ApplicationTypeOption,
-  selectedApplicationType
+  selectedApplicationType,
 } from 'common/models/generalApplication/applicationType';
 import {YesNo} from 'common/form/models/yesNo';
 import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from '../../../routes/urls';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {Claim} from 'common/models/claim';
 import {AppRequest} from 'common/models/AppRequest';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
