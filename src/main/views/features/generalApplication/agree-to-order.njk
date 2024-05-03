@@ -22,13 +22,14 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          {{headingWithCaption(t,'Respond to an application to ' + applicationType,'PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.TITLE' )}}
+          {{headingWithCaption(t,caption,'PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.TITLE' )}}
+           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.MADE_AWARE') }}</p>
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '') }}
              <div class="govuk-button-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                text: t('COMMON.BUTTONS.CONTINUE')
               }) }}
               <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </div>
