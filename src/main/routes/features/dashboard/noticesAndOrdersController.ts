@@ -3,7 +3,6 @@ import {
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
   NOTICES_AND_ORDERS_URL,
-  VIEW_RESPONSE_TO_CLAIM,
 } from 'routes/urls';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -12,53 +11,36 @@ import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
-  mapperDefendantResponseToDocumentView,
-} from 'common/mappers/documentViewMapper';
-import {ResponseType} from 'form/models/responseType';
+  getClaimantDocuments,
+  getCourtDocuments,
+  getDefendantDocuments,
+} from 'services/features/dashboard/noticesAndOrdersService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const viewResponseToClaimController = Router();
-const viewResponseToClaim = 'features/dashboard/view-response-to-claim';
+const viewResponseToClaim = 'features/dashboard/notices-and-orders';
 
 const renderView = (res: Response, claimId: string, claim: Claim, lang: string): void => {
-  let responseType;
 
-  const documentsSection = mapperDefendantResponseToDocumentView(
-    'PAGES.VIEW_RESPONSE_TO_THE_CLAIM.TABLE_TITLE',
-    'PAGES.VIEW_RESPONSE_TO_THE_CLAIM.DOCUMENT_LABEL',
-    claim,
-    claimId,
-    lang);
-
-  switch (claim.respondent1.responseType) {
-    case ResponseType.PART_ADMISSION:
-      responseType = 'PAGES.CITIZEN_RESPONSE_TYPE.ADMIT_PART';
-      break;
-    case ResponseType.FULL_ADMISSION:
-      responseType = 'PAGES.CITIZEN_RESPONSE_TYPE.ADMIT_ALL';
-      break;
-    case ResponseType.FULL_DEFENCE:
-      responseType = 'PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL';
-      break;
-    default:
-      responseType = null;
-  }
+  const claimantDocuments = getClaimantDocuments(claim, claimId, lang);
+  const defendantDocuments = getDefendantDocuments(claim, claimId, lang);
+  const courtDocuments = getCourtDocuments(claim, claimId, lang);
 
   res.render(viewResponseToClaim, {
-    documentsSection: documentsSection,
-    pageCaption: 'PAGES.VIEW_RESPONSE_TO_THE_CLAIM.PAGE_CAPTION',
-    pageTitle: 'PAGES.VIEW_RESPONSE_TO_THE_CLAIM.PAGE_TITLE',
+    claimantDocuments: claimantDocuments,
+    defendantDocuments: defendantDocuments,
+    courtDocuments: courtDocuments,
+    pageCaption: 'PAGES.NOTICES_AND_ORDERS.PAGE_CAPTION',
+    pageTitle: 'PAGES.NOTICES_AND_ORDERS.PAGE_TITLE',
     claimId: caseNumberPrettify(claimId),
     claimAmount: claim.totalClaimAmount,
     dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
-    responseType: responseType,
-    noticesAndOrdersUrl:  constructResponseUrlWithIdParams(claimId, NOTICES_AND_ORDERS_URL),
   });
 };
 
-viewResponseToClaimController.get(VIEW_RESPONSE_TO_CLAIM, (async (req: Request, res: Response, next: NextFunction) => {
+viewResponseToClaimController.get(NOTICES_AND_ORDERS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
