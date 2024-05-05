@@ -294,6 +294,7 @@ export interface CCDClaim extends ClaimUpdate {
   res1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   claimIssuedHwfDetails?: CCDHelpWithFeesDetails;
   mediationSettlementAgreedAt?: Date;
+  defendantResponseDocuments?: SystemGeneratedCaseDocuments[];
 }
 
 export interface ClaimFeeData {
