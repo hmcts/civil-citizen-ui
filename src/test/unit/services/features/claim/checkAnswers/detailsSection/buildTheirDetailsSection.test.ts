@@ -46,7 +46,7 @@ describe('Citizen Details Section', () => {
     claim.respondent1.type = PartyType.SOLE_TRADER;
     claim.respondent1.partyDetails.soleTraderTradingAs = 'test';
     claim.respondent1.partyDetails.contactPerson = 'contact';
-    claim.respondent1.emailAddress = new Email('test@test.com')
+    claim.respondent1.emailAddress = new Email('test@test.com');
     //When
     const summarySections = await buildTheirDetailsSection(claim, CLAIM_ID, 'en');
     console.log(summarySections);
