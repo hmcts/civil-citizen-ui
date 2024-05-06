@@ -16,8 +16,9 @@ import {PartyDetails} from '../../../../../../../main/common/form/models/partyDe
 import {Email} from '../../../../../../../main/common/models/Email';
 import {CitizenDate} from '../../../../../../../main/common/form/models/claim/claimant/citizenDate';
 import { buildTheirDetailsSection } from 'services/features/claim/checkAnswers/detailsSection/buildTheirDetailsSection';
-import { Address } from 'common/form/models/address';
+// import { Address } from 'common/form/models/address';
 import { t } from 'i18next';
+import { Address } from 'common/form/models/address';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -39,6 +40,37 @@ const CLAIM_ID = 'claimId';
 const INDEX_THEIRDETAILS_SECTION = 1;
 
 describe('Citizen Details Section', () => {
+  it('should build Their Details Section', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.type = PartyType.SOLE_TRADER;
+    claim.respondent1.partyDetails.soleTraderTradingAs = 'test';
+    claim.respondent1.partyDetails.contactPerson = 'contact';
+    claim.respondent1.emailAddress = new Email('test@test.com')
+    //When
+    const summarySections = await buildTheirDetailsSection(claim, CLAIM_ID, 'en');
+    console.log(summarySections);
+    //Then
+    expect(summarySections.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT'));
+    expect(summarySections.summaryList.rows[0].value.html).toBe(FULL_NAME);
+    expect(summarySections.summaryList.rows[1].value.html).toBe('test');
+    expect(summarySections.summaryList.rows[2].value.html).toBe('contact');
+    expect(summarySections.summaryList.rows[4].value.html).toBe('24 Brook lane<br>Bristol<br>BS13SS');
+    expect(summarySections.summaryList.rows[5].value.html).toBe('test@test.com');
+    expect(summarySections.summaryList.rows[6].value.html).toBe('077777777779');
+  });
+  it('should build Their Details Section with DOB', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.type = PartyType.INDIVIDUAL;
+    claim.respondent1.dateOfBirth = new CitizenDate('1', '1', '1991');
+    //When
+    const summarySections = await buildTheirDetailsSection(claim, CLAIM_ID, 'en');
+    //Then
+    expect(summarySections.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT'));
+    expect(summarySections.summaryList.rows[0].value.html).toBe(FULL_NAME);
+    expect(summarySections.summaryList.rows[3].value.html).toBe('1 January 1991');
+  });
   const claim = createClaimWithBasicRespondentDetails();
   it('should return your Individual details summary sections', async () => {
     //When
@@ -138,20 +170,5 @@ describe('Citizen Details Section', () => {
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe('Nice organisation');
-  });
-  it('should build Your Details Section', async () => {
-    //Given
-    claim.respondent1.type = PartyType.SOLE_TRADER;
-    claim.respondent1.partyDetails.soleTraderTradingAs = 'test';
-    claim.respondent1.partyDetails.contactPerson = 'contact';
-    claim.respondent1.partyDetails.primaryAddress = new Address('Test street', 'N1', null, 'London', '123');
-    //When
-    const summarySections = await buildTheirDetailsSection(claim, CLAIM_ID, 'en');
-    //Then
-    expect(summarySections.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT'));
-    expect(summarySections.summaryList.rows[0].value.html).toBe(FULL_NAME);
-    expect(summarySections.summaryList.rows[1].value.html).toBe('test');
-    expect(summarySections.summaryList.rows[2].value.html).toBe('contact');
-    expect(summarySections.summaryList.rows[3].value.html).toBe('Test street<br>London<br>123');
   });
 });
