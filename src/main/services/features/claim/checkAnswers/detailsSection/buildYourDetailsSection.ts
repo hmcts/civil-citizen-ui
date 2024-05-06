@@ -17,7 +17,7 @@ import {Address} from '../../../../../common/form/models/address';
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
-export const addressToString = (address: Address) => {
+const addressToString = (address: Address) => {
   return address?.addressLine1 + '<br>' + address?.city + '<br>' + address?.postCode;
 };
 

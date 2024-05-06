@@ -10,7 +10,7 @@ import {
   createClaimWithContactPersonApplicantDetails,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import {Address} from 'common/form/models/address';
-import {addressToString, buildYourDetailsSection} from 'services/features/claim/checkAnswers/detailsSection/buildYourDetailsSection';
+import {buildYourDetailsSection} from 'services/features/claim/checkAnswers/detailsSection/buildYourDetailsSection';
 import {t} from 'i18next';
 import {PartyType} from 'common/models/partyType';
 
@@ -34,21 +34,13 @@ const INDEX_DETAILS_SECTION = 0;
 
 describe('Cirizen Details Section', () => {
   const claim = createClaimWithBasicApplicantDetails();
-  it('should convert address to string', async () => {
-    //Given
-    const address = new Address('Test street', 'N1', null, 'London', '123');
-    //When
-    const result = addressToString(address);
-    //Then
-    expect(result).toBe('Test street<br>London<br>123');
-  });
-
   it('should build Your Details Section', async () => {
     //Given
     const claim = createClaimWithApplicantIndividualDetails();
     claim.applicant1.type = PartyType.SOLE_TRADER;
     claim.applicant1.partyDetails.soleTraderTradingAs = 'test';
     claim.applicant1.partyDetails.contactPerson = 'contact';
+    claim.applicant1.partyDetails.primaryAddress = new Address('Test street', 'N1', null, 'London', '123');
     //When
     const summarySections = await buildYourDetailsSection(claim, CLAIM_ID, 'en');
     //Then
@@ -56,6 +48,7 @@ describe('Cirizen Details Section', () => {
     expect(summarySections.summaryList.rows[0].value.html).toBe(FULL_NAME);
     expect(summarySections.summaryList.rows[1].value.html).toBe('test');
     expect(summarySections.summaryList.rows[2].value.html).toBe('contact');
+    expect(summarySections.summaryList.rows[3].value.html).toBe('Test street<br>London<br>123');
   });
 
   it('should return your details summary sections', async () => {
