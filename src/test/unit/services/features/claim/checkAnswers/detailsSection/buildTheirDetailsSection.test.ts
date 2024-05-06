@@ -44,18 +44,17 @@ describe('Citizen Details Section', () => {
     claim.respondent1.type = PartyType.SOLE_TRADER;
     claim.respondent1.partyDetails.soleTraderTradingAs = 'test';
     claim.respondent1.partyDetails.contactPerson = 'contact';
-    claim.respondent1.emailAddress = new Email('test@test.com');
+    claim.respondent1.emailAddress = new Email(EMAIL_ADDRESS);
     //When
     const summarySections = await buildTheirDetailsSection(claim, CLAIM_ID, 'en');
-    console.log(summarySections);
     //Then
     expect(summarySections.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT'));
     expect(summarySections.summaryList.rows[0].value.html).toBe(FULL_NAME);
     expect(summarySections.summaryList.rows[1].value.html).toBe('test');
     expect(summarySections.summaryList.rows[2].value.html).toBe('contact');
-    expect(summarySections.summaryList.rows[4].value.html).toBe('24 Brook lane<br>Bristol<br>BS13SS');
-    expect(summarySections.summaryList.rows[5].value.html).toBe('test@test.com');
-    expect(summarySections.summaryList.rows[6].value.html).toBe('077777777779');
+    expect(summarySections.summaryList.rows[4].value.html).toBe(ADDRESS);
+    expect(summarySections.summaryList.rows[5].value.html).toBe(EMAIL_ADDRESS);
+    expect(summarySections.summaryList.rows[6].value.html).toBe(CONTACT_NUMBER);
   });
   it('should build Their Details Section with DOB', async () => {
     //Given
@@ -69,8 +68,9 @@ describe('Citizen Details Section', () => {
     expect(summarySections.summaryList.rows[0].value.html).toBe(FULL_NAME);
     expect(summarySections.summaryList.rows[3].value.html).toBe('1 January 1991');
   });
-  const claim = createClaimWithBasicRespondentDetails();
   it('should return your Individual details summary sections', async () => {
+    //Given
+    const claim = createClaimWithBasicRespondentDetails();
     //When
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
     //Then
