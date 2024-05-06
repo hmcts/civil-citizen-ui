@@ -52,7 +52,7 @@ describe('Citizen Details Section', () => {
     expect(summarySections.summaryList.rows[0].value.html).toBe(FULL_NAME);
     expect(summarySections.summaryList.rows[1].value.html).toBe('test');
     expect(summarySections.summaryList.rows[2].value.html).toBe('contact');
-    expect(summarySections.summaryList.rows[4].value.html).toBe(ADDRESS);
+    expect(summarySections.summaryList.rows[4].value.html).toBe(CORRESPONDENCE_ADDRESS);
     expect(summarySections.summaryList.rows[5].value.html).toBe(EMAIL_ADDRESS);
     expect(summarySections.summaryList.rows[6].value.html).toBe(CONTACT_NUMBER);
   });
