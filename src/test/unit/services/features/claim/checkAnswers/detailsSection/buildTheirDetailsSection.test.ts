@@ -15,6 +15,9 @@ import {formatDateToFullDate} from '../../../../../../../main/common/utils/dateU
 import {PartyDetails} from '../../../../../../../main/common/form/models/partyDetails';
 import {Email} from '../../../../../../../main/common/models/Email';
 import {CitizenDate} from '../../../../../../../main/common/form/models/claim/claimant/citizenDate';
+import { buildTheirDetailsSection } from 'services/features/claim/checkAnswers/detailsSection/buildTheirDetailsSection';
+import { Address } from 'common/form/models/address';
+import { t } from 'i18next';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -37,6 +40,21 @@ const INDEX_THEIRDETAILS_SECTION = 1;
 
 describe('Citizen Details Section', () => {
   const claim = createClaimWithBasicRespondentDetails();
+  it('should build Your Details Section', async () => {
+    //Given
+    claim.respondent1.type = PartyType.SOLE_TRADER;
+    claim.respondent1.partyDetails.soleTraderTradingAs = 'test';
+    claim.respondent1.partyDetails.contactPerson = 'contact';
+    claim.respondent1.partyDetails.primaryAddress = new Address('Test street', 'N1', null, 'London', '123');
+    //When
+    const summarySections = await buildTheirDetailsSection(claim, CLAIM_ID, 'en');
+    //Then
+    expect(summarySections.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT'));
+    expect(summarySections.summaryList.rows[0].value.html).toBe(FULL_NAME);
+    expect(summarySections.summaryList.rows[1].value.html).toBe('test');
+    expect(summarySections.summaryList.rows[2].value.html).toBe('contact');
+    expect(summarySections.summaryList.rows[3].value.html).toBe('Test street<br>London<br>123');
+  });
   it('should return your Individual details summary sections', async () => {
     //When
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
