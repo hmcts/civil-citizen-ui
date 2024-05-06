@@ -15,10 +15,8 @@ import {formatDateToFullDate} from '../../../../../../../main/common/utils/dateU
 import {PartyDetails} from '../../../../../../../main/common/form/models/partyDetails';
 import {Email} from '../../../../../../../main/common/models/Email';
 import {CitizenDate} from '../../../../../../../main/common/form/models/claim/claimant/citizenDate';
-import { buildTheirDetailsSection } from 'services/features/claim/checkAnswers/detailsSection/buildTheirDetailsSection';
-// import { Address } from 'common/form/models/address';
-import { t } from 'i18next';
-import { Address } from 'common/form/models/address';
+import {buildTheirDetailsSection} from 'services/features/claim/checkAnswers/detailsSection/buildTheirDetailsSection';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
