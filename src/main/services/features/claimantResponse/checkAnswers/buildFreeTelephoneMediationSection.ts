@@ -19,9 +19,10 @@ export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string
   const canWeUse = claimantResponse?.canWeUseFromClaimantResponse;
 
   let freeTelephoneMediationSection: SummarySection = null;
+  const title = t('PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE', {lng: getLng(lang)});
 
   freeTelephoneMediationSection = summarySection({
-    title: t('PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE', {lng: getLng(lang)}),
+    title: title,
     summaryRows: [],
   });
 
@@ -29,9 +30,9 @@ export const buildFreeTelephoneMediationSection = (claim: Claim, claimId: string
   if (canWeUse === YesNoUpperCase.YES) {
     if (claim.applicant1.type === 'ORGANISATION' || claim.applicant1.type === 'COMPANY') {
       const contactNameHref = constructResponseUrlWithIdParams(claimId, CAN_WE_USE_COMPANY_URL);
-      freeTelephoneMediationSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_CONTACT_NAME', {lng: getLng(lang)}), `${contactName}`, contactNameHref, changeLabel(lang)));
+      freeTelephoneMediationSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_CONTACT_NAME', {lng: getLng(lang)}), `${contactName}`, contactNameHref, changeLabel(lang), title));
     }
-    freeTelephoneMediationSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_CONTACT_NUMBER', {lng: getLng(lang)}), `${contactNumber}`, contactNumberHref, changeLabel(lang)));
+    freeTelephoneMediationSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_CONTACT_NUMBER', {lng: getLng(lang)}), `${contactNumber}`, contactNumberHref, changeLabel(lang), title));
   }
   return freeTelephoneMediationSection;
 };
