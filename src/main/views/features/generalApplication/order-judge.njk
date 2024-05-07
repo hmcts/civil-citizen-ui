@@ -35,7 +35,10 @@
               {{ govukTextarea({
                 name: "text",
                 id: "text",
-                value: hintText
+                value: hintText,
+                errorMessage: {
+                  html: t(form.errorFor("text"))
+                } if form.hasFieldError("text")
               }) }}
             </div>
             <div class="govuk-button-group">
