@@ -6,7 +6,7 @@ These are the Terraform resources specifically for the Civil Citizen UI Applicat
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 2.95 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 2.95 | fedf
 
 ## Providers
 
