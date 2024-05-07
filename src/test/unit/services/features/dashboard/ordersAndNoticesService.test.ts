@@ -2,12 +2,12 @@ import {Claim} from 'models/claim';
 import {
   getClaimantDocuments,
   getCourtDocuments,
-  getDefendantDocuments
+  getDefendantDocuments,
 } from 'services/features/dashboard/ordersAndNoticesService';
 import {
   DocumentInformation,
   DocumentLinkInformation,
-  DocumentsViewComponent
+  DocumentsViewComponent,
 } from 'form/models/documents/DocumentsViewComponent';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {DocumentType} from 'models/document/documentType';
@@ -16,7 +16,7 @@ import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePre
 describe('View Orders And Notices Service', () => {
 
   describe('Get Claimant Documents', () => {
-    const claimId = "test1"
+    const claimId = 'test1'
     it('should get empty array if there is no data', async () => {
       //given
       const claim = new Claim();
@@ -45,8 +45,8 @@ describe('View Orders And Notices Service', () => {
       //given
       const documentName = 'test_response_000MC001.pdf';
       const claim = new Claim();
-      claim.specRespondent1Represented = YesNoUpperCamelCase.YES
-      const defendantResponse = setUpMockFile(documentName, DocumentType.SEALED_CLAIM)
+      claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
+      const defendantResponse = setUpMockFile(documentName, DocumentType.SEALED_CLAIM);
       claim.systemGeneratedCaseDocuments = new Array(defendantResponse);
       //When
       const result = getDefendantDocuments(claim, claimId, 'en');
@@ -64,8 +64,8 @@ describe('View Orders And Notices Service', () => {
       //given
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
-      claim.specRespondent1Represented = YesNoUpperCamelCase.NO
-      const defendantResponse = setUpMockFile(documentName, DocumentType.DEFENDANT_DEFENCE)
+      claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
+      const defendantResponse = setUpMockFile(documentName, DocumentType.DEFENDANT_DEFENCE);
       claim.systemGeneratedCaseDocuments = new Array(defendantResponse);
       //When
       const result = getDefendantDocuments(claim, claimId, 'en');
@@ -85,7 +85,7 @@ describe('View Orders And Notices Service', () => {
       const claim = new Claim();
       claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
-      const defendantResponse = setUpMockFile(documentName, DocumentType.DEFENCE_TRANSLATED_DOCUMENT)
+      const defendantResponse = setUpMockFile(documentName, DocumentType.DEFENCE_TRANSLATED_DOCUMENT);
       claim.systemGeneratedCaseDocuments = new Array(defendantResponse);
       //When
       const result = getDefendantDocuments(claim, claimId, 'en');
