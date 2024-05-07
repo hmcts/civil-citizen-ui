@@ -16,20 +16,20 @@ import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePre
 describe('View Orders And Notices Service', () => {
 
   describe('Get Claimant Documents', () => {
-    const claimId = 'test1'
+    const claimId = 'test1';
     it('should get empty array if there is no data', async () => {
       //given
       const claim = new Claim();
       //When
       const result = getClaimantDocuments(claim, claimId, 'en');
       //Then
-      const expectedResult = new DocumentsViewComponent('Claimant', [])
+      const expectedResult = new DocumentsViewComponent('Claimant', []);
       expect(result).toEqual(expectedResult);
     });
   });
 
   describe('Get Defendant Documents', () => {
-    const claimId = 'test2'
+    const claimId = 'test2';
     const documentUrl = '/case/test2/view-documents/71582e35-300e-4294-a604-35d8cabc33de';
     it('should get empty array if there is no data', async () => {
       //given
@@ -37,7 +37,7 @@ describe('View Orders And Notices Service', () => {
       //When
       const result = getDefendantDocuments(claim, claimId, 'en');
       //Then
-      const expectedResult = new DocumentsViewComponent('Defendant', [])
+      const expectedResult = new DocumentsViewComponent('Defendant', []);
       expect(result).toEqual(expectedResult);
     });
 
@@ -54,9 +54,9 @@ describe('View Orders And Notices Service', () => {
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
         '21 June 2022',
-        new DocumentLinkInformation(documentUrl, documentName)
-        )
-      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument])
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
 
@@ -73,9 +73,9 @@ describe('View Orders And Notices Service', () => {
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
         '21 June 2022',
-        new DocumentLinkInformation(documentUrl, documentName)
-      )
-      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument])
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
 
@@ -93,22 +93,22 @@ describe('View Orders And Notices Service', () => {
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
         '21 June 2022',
-        new DocumentLinkInformation(documentUrl, documentName)
-      )
-      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument])
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
   });
 
   describe('Get Court Documents', () => {
-    const claimId = "test3"
+    const claimId = 'test3';
     it('should get empty array if there is no data', async () => {
       //given
       const claim = new Claim();
       //When
       const result = getCourtDocuments(claim, claimId, 'en');
       //Then
-      const expectedResult = new DocumentsViewComponent('CourtDocument', [])
+      const expectedResult = new DocumentsViewComponent('CourtDocument', []);
       expect(result).toEqual(expectedResult);
     });
   });
