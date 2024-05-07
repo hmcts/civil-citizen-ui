@@ -5,7 +5,7 @@ import {
   BUNDLES_URL,
   CASE_DOCUMENT_VIEW_URL,
   DASHBOARD_NOTIFICATION_REDIRECT,
-  DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, VIEW_ORDERS_AND_NOTICES_URL,
+  DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, NOTICES_AND_ORDERS_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {DocumentType} from 'models/document/documentType';
@@ -53,7 +53,7 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       redirectUrl = BUNDLES_URL.replace(':id', claimId);
       break;
     case 'VIEW_ORDERS_AND_NOTICES':
-      redirectUrl = VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId);
+      redirectUrl = NOTICES_AND_ORDERS_URL.replace(':id', claimId);
       break;
     case 'VIEW_HEARING_NOTICE':
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
