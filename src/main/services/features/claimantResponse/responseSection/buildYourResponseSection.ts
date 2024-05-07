@@ -27,7 +27,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 export const buildFDDisputeTheClaimSummaryRows = (claim: Claim, claimId: string, lng : string) : SummaryRow =>{
   const intentionToProceedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL);
-  const intentionToProceed = claim.hasClaimantIntentToProceedResponse ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+  const intentionToProceed = (claim.getIntentionToProceed() === YesNo.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.PROCEED_WITH_CLAIM', {lng}),
     t(`COMMON.${intentionToProceed}`, {lng}),

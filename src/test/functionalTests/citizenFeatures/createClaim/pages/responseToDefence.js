@@ -142,6 +142,30 @@ class ResponseToDefence {
     I.click(paths.buttons.submit_response);
   }
 
+  async acceptOrRejectTheirRepaymentPlan(acceptOrReject) {
+    I.waitForContent('How they want to pay?');
+    if (acceptOrReject == 'accept') {
+      I.see('Yes');
+      I.click(paths.options.yes);
+    } else {
+      I.see('No - I\'ll suggest my own');
+      I.click(paths.options.no);
+    }
+    I.click(paths.buttons.save_and_continue);
+  }
+
+  async proposePaymentPlan() {
+    I.see('How do you want the defendant to pay?');
+    I.checkOption('#paymentType'); //Immediately radio
+    I.click(paths.buttons.save_and_continue);
+    I.see('t afford your plan');
+    I.checkOption('#decision-2'); //Judge make repayment plan
+    I.click(paths.buttons.save_and_continue);
+    I.see('Why did you reject the repayment plan?');
+    I.fillField(paths.textBoxes.rejectReason, 'testReason');
+    I.click(paths.buttons.save_and_continue);
+  }
+
   async verifyAcceptOrRejectConfirmationScreen(acceptOrReject = 'accept', admittedAmount = '200.00') {
     I.waitForContent('What happens next');
     if (acceptOrReject == 'accept') {
@@ -511,6 +535,17 @@ class ResponseToDefence {
     I.click(paths.buttons.submit_response);
   }
 
+  verifyCheckYourAnswersForPartAdmitCCJ() {
+    I.waitForContent('Issue a County Court Judgment (CCJ)',60);
+    I.see('Check your answers', 'h1');
+    I.see('Your response','h2');
+    I.see('Do you accept the defendant repayment plan?');
+    I.see('I reject this repayment plan');
+    I.see('How do you wish to proceed?','h2');
+    I.see('How do you want to formalise the repayment plan');
+    I.click(paths.buttons.submit_response);
+  }
+
   verifyConfirmationScreenForFullAdmitSettlementAgreement(claimNumber) {
     I.waitForContent('You\'ve signed a settlement agreement', 60,'h1');
     I.see('Your claim number:');
@@ -547,6 +582,10 @@ class ResponseToDefence {
     I.waitForContent('County Court Judgment requested', 60);
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
+    I.see('What happens next');
+    I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
+    I.see('Email');
+    I.see('Telephone');
   }
 
   verifyConfirmationScreenForFullAdmitCCJ(claimNumber) {
