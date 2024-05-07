@@ -79,9 +79,9 @@
     }) }}
     {% if removeButton %}
       {% if removeButton.hidden %}
-        <button class="govuk-link-button remove-row govuk-visually-hidden">{{ t(removeButton.text) }}</button>
+        <button type="button" class="govuk-link-button remove-row govuk-visually-hidden">{{ t(removeButton.text) }}</button>
       {% else %}
-        <button class="govuk-link-button remove-row">{{ t(removeButton.text) }}</button>
+        <button type="button" class="govuk-link-button remove-row">{{ t(removeButton.text) }}</button>
       {% endif %}
     {% endif %}
   </div>

@@ -20,6 +20,7 @@ nodejs:
     OAUTH_CLIENT_REDIRECT: https://civil-citizen-ui-staging.aat.platform.hmcts.net/oauth2/callback
     IDAM_SIGN_OUT_REDIRECT_URL: https://civil-citizen-ui-staging.aat.platform.hmcts.net/dashboard
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-java
+    LAUNCH_DARKLY_ENV: service-staging
 
 civil-service:
   enabled: true
@@ -115,9 +116,7 @@ civil-service:
       CMC_DB_USERNAME: ${POSTGRES_USER}
       CMC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       REFERENCE_DATABASE_MIGRATION: true
-      FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
-      FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
-      FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       POLLING_EVENT_EMITTER_ENABLED: false
       STITCHING_API_ENABLED: false
       DOCUMENT_MANAGEMENT_SECURED: true
