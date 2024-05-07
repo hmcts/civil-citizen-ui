@@ -24,6 +24,7 @@ export const getClaimantDocuments = (claim: Claim, claimId: string, lang: string
   // Documents for LR only
   claimantDocumentsArray.push(...getClaimantParticularsOfClaim(claim, claimId, lang));
   claimantDocumentsArray.push(...getClaimantTimelineEventsDocument(claim, claimId, lang));
+  claimantDocumentsArray.push(...getClaimantResponseToDefenceDocument(claim, claimId, lang))
   return new DocumentsViewComponent('Claimant', claimantDocumentsArray);
 };
 
@@ -80,6 +81,12 @@ const getClaimantTimelineEventsDocument = (claim: Claim, claimId: string, lang: 
   const timeLineDocument = claim.specClaimTemplateDocumentFiles;
   return timeLineDocument ? Array.of(setUpDocumentLinkObject(
     timeLineDocument, claim.submittedDate, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CLAIMANT_TIMELINE')) : [];
+};
+
+const getClaimantResponseToDefenceDocument = (claim: Claim, claimId: string, lang: string) => {
+  const responseToDefenceDocument = claim.claimantResponse?.applicant1DefenceResponseDocumentSpec?.file;
+  return responseToDefenceDocument ? Array.of(setUpDocumentLinkObject(
+    responseToDefenceDocument, claim.submittedDate, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.RESPOND_TO_DEFENCE')) : [];
 };
 
 const getClaimantParticularsOfClaim = (claim: Claim, claimId: string, lang: string) => {

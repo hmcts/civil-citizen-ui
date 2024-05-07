@@ -14,3 +14,7 @@ export interface ServedDocumentFiles {
   timelineEventUpload: TimeLineDocument[]
   particularsOfClaimDocument: TimeLineDocument[]
 }
+
+export interface ResponseDocument {
+  file: Document;
+}
