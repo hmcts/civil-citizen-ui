@@ -152,6 +152,6 @@ module.exports = {
         'If the case goes to a hearing we will contact you with further details.'],
       nextSteps: 'View your response',
       nextSteps2: 'View the claimant\'s hearing requirements',
-    }
-  }
+    };
+  },
 };
