@@ -54,7 +54,7 @@ const renderView = (res: Response, claimId: string, claim: Claim, lang: string):
     claimAmount: claim.totalClaimAmount,
     dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
     responseType: responseType,
-    noticesAndOrdersUrl:  constructResponseUrlWithIdParams(claimId, NOTICES_AND_ORDERS_URL),
+    ordersAndNoticesUrl:  constructResponseUrlWithIdParams(claimId, NOTICES_AND_ORDERS_URL),
   });
 };
 
