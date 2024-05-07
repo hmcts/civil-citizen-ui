@@ -14,6 +14,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ValidationError} from 'class-validator';
+import {InformOtherParties} from 'common/models/generalApplication/informOtherParties';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
@@ -27,6 +28,18 @@ export const saveApplicationType = async (claimId: string, applicationType: Appl
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.applicationType = applicationType;
     await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveInformOtherParties = async (redisKey: string, informOtherParties: InformOtherParties): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(redisKey);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.informOtherParties = informOtherParties;
+    await saveDraftClaim(redisKey, claim);
   } catch (error) {
     logger.error(error);
     throw error;
