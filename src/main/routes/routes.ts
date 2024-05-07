@@ -293,6 +293,7 @@ import viewResponseToClaimController from 'routes/features/dashboard/viewRespons
 import claimFeeMakePaymentAgainController
   from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
 import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
+import applicationFeePaymentSuccessfulController from './features/generalApplication/applicationFeePaymentSuccessfulController';
 
 export default [
   homeController,
@@ -552,4 +553,5 @@ export default [
   viewResponseToClaimController,
   claimFeeMakePaymentAgainController,
   agreementFromOtherPartyController,
+  applicationFeePaymentSuccessfulController,
 ];
