@@ -290,8 +290,10 @@ import viewMediationDocuments from 'routes/features/document/mediation/viewMedia
 import applicationTypeController from './features/generalApplication/applicationTypeController';
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
+import claimFeeMakePaymentAgainController
+  from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
+import informOtherPartiesController from './features/generalApplication/informOtherPartiesController';
 import hearingSupportController from './features/generalApplication/hearingSupportController';
-import claimFeeMakePaymentAgainController from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
 import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
 import claimApplicationCostController from './features/generalApplication/claimApplicationCostController';
 import payingForApplicationController from './features/generalApplication/payingForApplicationController';
@@ -555,6 +557,7 @@ export default [
   hearingSupportController,
   claimFeeMakePaymentAgainController,
   agreementFromOtherPartyController,
+  informOtherPartiesController,
   claimApplicationCostController,
   payingForApplicationController,
 ];
