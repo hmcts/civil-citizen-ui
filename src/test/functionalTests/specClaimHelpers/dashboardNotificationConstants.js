@@ -143,4 +143,15 @@ module.exports = {
       nextSteps: 'View and respond',
     };
   },
+
+  goToHearingPartAdmit : (amount) => {
+    return {
+      title: 'Wait for the court to review the case',
+      content: ['Miss Jane Doe wants to proceed to court.',
+        `They rejected your admission of £${amount}.`,
+        'If the case goes to a hearing we will contact you with further details.'],
+      nextSteps: 'View your response',
+      nextSteps2: 'View the claimant\'s hearing requirements',
+    }
+  }
 };
