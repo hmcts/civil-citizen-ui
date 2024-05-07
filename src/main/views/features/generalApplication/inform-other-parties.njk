@@ -34,7 +34,10 @@
                 value: form.model.reasonForCourtNotInformingOtherParties,
                 label: {
                   text:t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT')
-                }
+                },
+                errorMessage: {
+                text: t(form.errorFor('reasonForCourtNotInformingOtherParties'))
+              } if form.hasFieldError('reasonForCourtNotInformingOtherParties')
               }) }}
             {% endset %}
 

@@ -75,7 +75,15 @@ describe('General Application - inform other parties', () => {
           expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.NEED_TO_TELL'));
         });
     });
-
+    it('should return errors when selected no and not provided the reason', async () => {
+      await request(app)
+        .post(INFORM_OTHER_PARTIES)
+        .send({ option: 'no' })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.EXPLAIN_DO_NOT_WANT_COURT'));
+        });
+    });
     it('should return http 500 when has error in the post method', async () => {
       mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
