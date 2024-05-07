@@ -14,13 +14,13 @@ import {
   getClaimantDocuments,
   getCourtDocuments,
   getDefendantDocuments,
-} from 'services/features/dashboard/noticesAndOrdersService';
+} from 'services/features/dashboard/ordersAndNoticesService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-const viewResponseToClaimController = Router();
-const viewResponseToClaim = 'features/dashboard/notices-and-orders';
+const ordersAndNoticesController = Router();
+const viewResponseToClaim = 'features/dashboard/orders-and-notices';
 
 const renderView = (res: Response, claimId: string, claim: Claim, lang: string): void => {
 
@@ -32,15 +32,15 @@ const renderView = (res: Response, claimId: string, claim: Claim, lang: string):
     claimantDocuments: claimantDocuments,
     defendantDocuments: defendantDocuments,
     courtDocuments: courtDocuments,
-    pageCaption: 'PAGES.NOTICES_AND_ORDERS.PAGE_CAPTION',
-    pageTitle: 'PAGES.NOTICES_AND_ORDERS.PAGE_TITLE',
+    pageCaption: 'PAGES.ORDERS_AND_NOTICES.PAGE_CAPTION',
+    pageTitle: 'PAGES.ORDERS_AND_NOTICES.PAGE_TITLE',
     claimId: caseNumberPrettify(claimId),
     claimAmount: claim.totalClaimAmount,
     dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
   });
 };
 
-viewResponseToClaimController.get(NOTICES_AND_ORDERS_URL, (async (req: Request, res: Response, next: NextFunction) => {
+ordersAndNoticesController.get(NOTICES_AND_ORDERS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -51,4 +51,4 @@ viewResponseToClaimController.get(NOTICES_AND_ORDERS_URL, (async (req: Request, 
   }
 }) as RequestHandler);
 
-export default viewResponseToClaimController;
+export default ordersAndNoticesController;
