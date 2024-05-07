@@ -78,6 +78,7 @@ nodejs:
     CIVILMONEYCLAIMS_WELSHSPEAKER_TELEPHONE: '0300 303 5174'
     CIVILMONEYCLAIMS_COURT_EMAIL_ID: 'ocmcnton@justice.gov.uk'
     APPLY_FOR_CERTIFICATE: https://www.gov.uk/government/publications/form-n443-application-for-a-certificate-of-satisfaction-or-cancellation
+    LAUNCH_DARKLY_ENV: '{{ .Values.global.environment }}'
 
   autoscaling:
     enabled: true
