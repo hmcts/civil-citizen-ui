@@ -7,6 +7,7 @@ export class GeneralApplication {
   applicationType?: ApplicationType;
   hearingSupport?: HearingSupport;
   agreementFromOtherParty?: YesNo;
+  applyHelpWithFees?: YesNo;
 
   constructor(applicationType?: ApplicationType, agreementFromOtherParty?: YesNo) {
     this.applicationType = applicationType;

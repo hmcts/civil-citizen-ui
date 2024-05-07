@@ -305,3 +305,5 @@ export const VIEW_RESPONSE_TO_CLAIM = `${BASE_CASE_URL}/view-response-to-claim`;
 export const VIEW_MEDIATION_DOCUMENTS = `${MEDIATION_URL}/view-mediation-documents`;
 export const HEARING_SUPPORT_URL = `${BASE_GENERAL_APPLICATION_URL}/hearing-support`;
 export const GA_AGREEMENT_FROM_OTHER_PARTY = `${BASE_GENERAL_APPLICATION_URL}/agreement-from-other-party`;
+export const GA_PAY_APPLICATION_FEE = `${BASE_GENERAL_APPLICATION_URL}/pay-application-fee`;
+

@@ -294,6 +294,7 @@ import hearingSupportController from './features/generalApplication/hearingSuppo
 import claimFeeMakePaymentAgainController
   from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
 import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
+import payApplicationFeeController from 'routes/features/generalApplication/payApplicationFeeController';
 
 export default [
   homeController,
@@ -554,4 +555,5 @@ export default [
   hearingSupportController,
   claimFeeMakePaymentAgainController,
   agreementFromOtherPartyController,
+  payApplicationFeeController,
 ];

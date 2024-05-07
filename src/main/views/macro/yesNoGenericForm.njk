@@ -16,12 +16,12 @@ for example {noHtml:'<span>you clicked on no</span>' #}
       legend: {
         text: title,
         isPageHeading: true,
-        classes: "govuk-fieldset__legend--l"
+        classes: params.legendClasses if params.legendClasses is defined else "govuk-fieldset__legend--l"
       }
     } if title,
     hint: {
       text: description
-    },
+    } if description is defined and description is not none,
     items: [
       {
         value: YesNo.YES,
