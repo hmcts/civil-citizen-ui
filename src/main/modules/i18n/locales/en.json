@@ -2055,7 +2055,7 @@
         "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order."
       },
       "APPLICATION_FROM_OTHER_PARTY": {
-        "APPLICATION_FEE_AMOUNT": "The fee amount depends on whether the other parties have agreed to you making this application. The other parties are the other side or siders involved in your case.",
+        "APPLICATION_FEE_AMOUNT": "The fee amount depends on whether the other parties have agreed to you making this application. The other parties are the other side or sides involved in your case.",
         "GETTING_AGREEMENT": "Getting agreement",
         "GETTING_AGREEMENT_PARA_1": "Asking the other parties to agree is optional. If they've agreed, you do not need to have proof of this.",
         "GETTING_AGREEMENT_PARA_2": "If you're not able to contact the other parties, or you've attempted to contact them but have not had a response, select 'No'.",
