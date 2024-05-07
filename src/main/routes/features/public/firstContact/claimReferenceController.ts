@@ -3,7 +3,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {
   FIRST_CONTACT_PIN_URL,
   FIRST_CONTACT_CLAIM_REFERENCE_URL,
-  FIRST_CONTACT_CLAIM_SUMMARY_URL,
+  BASE_CLAIM_URL,
 } from '../../../../routes/urls';
 import {ClaimReference} from '../../../../common/models/firstContact/claimReference';
 import { AppSession } from 'common/models/AppRequest';
@@ -30,7 +30,7 @@ claimReferenceController.post(FIRST_CONTACT_CLAIM_REFERENCE_URL, (async (req: Re
     try {
       req.session = saveFirstContactData(req.session as AppSession, {claimReference: req.body.claimReferenceValue});
       if (req.body.claimReferenceValue?.includes('MC') && await civilServiceClient.isOcmcDefendantLinked(req.body.claimReferenceValue)) {
-        res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
+        res.redirect(BASE_CLAIM_URL);
       } else {
         res.redirect(FIRST_CONTACT_PIN_URL);
       }

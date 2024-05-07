@@ -3,7 +3,7 @@ import {app} from '../../../../../../main/app';
 
 import {
   FIRST_CONTACT_CLAIM_REFERENCE_URL,
-  FIRST_CONTACT_CLAIM_SUMMARY_URL,
+  BASE_CLAIM_URL,
   FIRST_CONTACT_PIN_URL,
 } from '../../../../../../main/routes/urls';
 import { t } from 'i18next';
@@ -71,7 +71,7 @@ describe('Respond to Claim - Claim Reference Controller', () => {
         .reply(200, 'true');
       await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV1}).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(FIRST_CONTACT_CLAIM_SUMMARY_URL);
+        expect(res.header.location).toBe(BASE_CLAIM_URL);
         expect((app.request.session as AppSession).firstContact.claimReference).toBe(validClaimNumberV1);
       });
     });
