@@ -46,8 +46,8 @@ describe('View Orders And Notices Service', () => {
       const documentName = 'test_response_000MC001.pdf';
       const claim = new Claim();
       claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
-      const defendantResponse = setUpMockFile(documentName, DocumentType.SEALED_CLAIM);
-      claim.systemGeneratedCaseDocuments = new Array(defendantResponse);
+      const document = setUpMockFile(documentName, DocumentType.SEALED_CLAIM);
+      claim.systemGeneratedCaseDocuments = new Array(document);
       //When
       const result = getDefendantDocuments(claim, claimId, 'en');
       //Then
@@ -65,8 +65,8 @@ describe('View Orders And Notices Service', () => {
       const documentName = 'test_000MC001.pdf';
       const claim = new Claim();
       claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
-      const defendantResponse = setUpMockFile(documentName, DocumentType.DEFENDANT_DEFENCE);
-      claim.systemGeneratedCaseDocuments = new Array(defendantResponse);
+      const document = setUpMockFile(documentName, DocumentType.DEFENDANT_DEFENCE);
+      claim.systemGeneratedCaseDocuments = new Array(document);
       //When
       const result = getDefendantDocuments(claim, claimId, 'en');
       //Then
@@ -85,13 +85,53 @@ describe('View Orders And Notices Service', () => {
       const claim = new Claim();
       claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
-      const defendantResponse = setUpMockFile(documentName, DocumentType.DEFENCE_TRANSLATED_DOCUMENT);
-      claim.systemGeneratedCaseDocuments = new Array(defendantResponse);
+      const document = setUpMockFile(documentName, DocumentType.DEFENCE_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
       //When
       const result = getDefendantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for defendant dq', async () => {
+      //given
+      const documentName = 'defendant_test_000MC001.pdf';
+      const claim = new Claim();
+      claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
+      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+      const document = setUpMockFile(documentName, DocumentType.DIRECTIONS_QUESTIONNAIRE);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.DEFENDANT_DQ',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for support document', async () => {
+      //given
+      const documentName = 'defendant_test_000MC001.pdf';
+      const claim = new Claim();
+      claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
+      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+      const document = setUpMockFile(documentName, DocumentType.DIRECTIONS_QUESTIONNAIRE);
+      claim.defendantResponseDocuments = new Array(document);
+      //When
+      const result = getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.DEFENDANT_SUPPORT_DOC',
         '21 June 2022',
         new DocumentLinkInformation(documentUrl, documentName),
       );
