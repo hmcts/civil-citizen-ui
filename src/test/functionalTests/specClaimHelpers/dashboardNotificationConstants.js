@@ -15,6 +15,13 @@ module.exports = {
     };
   },
 
+  claimIsSettled: (amount, date) => {
+    return {
+      title: 'The claim is settled',
+      content: `The claimant has confirmed that you paid £${amount} on ${date}.`,
+    };
+  },
+
   //Date calculation should be based on CIV-13128 fix
   waitForDefendantToRespond: async () => {
     return {
