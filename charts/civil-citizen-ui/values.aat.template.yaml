@@ -389,8 +389,12 @@ camunda-bpm:
       RELEASE_REVISION: "{{ .Release.Revision }}"
 
 civil-general-applications:
+  enabled: true
   java:
     ingressHost: civil-cui-general-applications.aat.platform.hmcts.net
+    releaseNameOverride: ${SERVICE_NAME}-general-applications
+    image: 'hmctspublic.azurecr.io/civil/general-applications:latest'
+    imagePullPolicy: Always
     keyVaults:
       civil:
         resourceGroup: civil
