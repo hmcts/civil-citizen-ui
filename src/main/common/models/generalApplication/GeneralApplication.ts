@@ -10,10 +10,12 @@ export class GeneralApplication {
   hearingSupport?: HearingSupport;
   agreementFromOtherParty?: YesNo;
   applicationCosts?: YesNo;
+  respondentAgreeToOrder?: YesNo;
 
-  constructor(applicationType?: ApplicationType, agreementFromOtherParty?: YesNo, applicationCosts?: YesNo) {
+  constructor(applicationType?: ApplicationType, agreementFromOtherParty?: YesNo, applicationCosts?: YesNo, respondentAgreeToOrder?: YesNo) {
     this.applicationType = applicationType;
     this.agreementFromOtherParty = agreementFromOtherParty;
     this.applicationCosts = applicationCosts;
+    this.respondentAgreeToOrder = respondentAgreeToOrder;
   }
 }
