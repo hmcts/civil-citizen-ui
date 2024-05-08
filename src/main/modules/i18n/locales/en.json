@@ -1999,6 +1999,16 @@
       "REACHING_SETTLEMENT": "Reaching a settlement"
     },
     "GENERAL_APPLICATION": {
+      "AGREE_TO_ORDER": {
+        "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
+        "RESPOND_TO": "Respond to an application to {{applicationType}}",
+        "TITLE": "The other parties have said that you've agreed to the order they've requested. Is this correct?"
+    },
+      "PAYMENT_FOR_APPLICATION": {
+        "APPLICATION_FEE": "Application fee to pay:",
+        "TITLE": "Paying for your application",
+        "YOU_WILL_BE_ASKED": "You'll be asked to pay for your application once it's been submitted."
+      },
       "SELECTED_APPLICATION_TYPE": {
         "CANCEL_JUDGMENT": "Set aside (cancel) a judgment",
         "CHANGE_CLAIM": "Make a change to your claim or defence that you've submitted",
@@ -2051,8 +2061,19 @@
         "TITLE": "Select application",
         "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order."
       },
+      "INFORM_OTHER_PARTIES": {
+        "COURT_SEND_OTHER_PARTIES": "The court will usually send the other parties a copy of your application to give them the opportunity to respond to it.",
+        "DO_NOT_WANT_COURT": "If you do not want the court to inform the other parties about this application",
+        "INFORM_OTHER_PARTIES_HEADER": "Informing the other parties",
+        "JUDGE_ORDERS_OTHER_PARTIES": "If the judge orders that the other parties should be informed, you’ll be notified and you'll need to pay an additional fee. Your application may also be delayed.",
+        "PROVIDE_A_REASON": "You must provide a reason which will be considered by a judge.",
+        "SELECTING_MULTIPLE_APPLICATIONS": "If you’ll be selecting multiple applications, this answer will apply to all of them.",
+        "SHOULD_COURT_INFORM_PARTIES": "Should the court inform the other parties about this application?",
+        "SOME_CIRCUMSTANCES": "In some circumstances a judge may make an order without sending your application to the other parties first.",
+        "WHY_DO_NOT_WANT_COURT": "Why do you not want the court to inform the other parties?"
+     },
       "APPLICATION_FROM_OTHER_PARTY": {
-        "APPLICATION_FEE_AMOUNT": "The fee amount depends on whether the other parties have agreed to you making this application. The other parties are the other side or siders involved in your case.",
+        "APPLICATION_FEE_AMOUNT": "The fee amount depends on whether the other parties have agreed to you making this application. The other parties are the other side or sides involved in your case.",
         "GETTING_AGREEMENT": "Getting agreement",
         "GETTING_AGREEMENT_PARA_1": "Asking the other parties to agree is optional. If they've agreed, you do not need to have proof of this.",
         "GETTING_AGREEMENT_PARA_2": "If you're not able to contact the other parties, or you've attempted to contact them but have not had a response, select 'No'.",
@@ -3886,12 +3907,15 @@
     "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced",
     "GENERAL_APPLICATION": {
+      "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
+      "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No",
+      "EXPLAIN_DO_NOT_WANT_COURT":"You need to explain why you do not want the court to inform the other parties.",
       "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
-      "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
-      "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No"
+      "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
+      "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No"
     }
   }
 }
