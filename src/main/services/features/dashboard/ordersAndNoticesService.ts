@@ -24,7 +24,7 @@ export const getClaimantDocuments = (claim: Claim, claimId: string, lang: string
   // Documents for LR only
   claimantDocumentsArray.push(...getClaimantParticularsOfClaim(claim, claimId, lang));
   claimantDocumentsArray.push(...getClaimantTimelineEventsDocument(claim, claimId, lang));
-  claimantDocumentsArray.push(...getClaimantResponseToDefenceDocument(claim, claimId, lang))
+  claimantDocumentsArray.push(...getClaimantResponseToDefenceDocument(claim, claimId, lang));
   return new DocumentsViewComponent('Claimant', claimantDocumentsArray);
 };
 

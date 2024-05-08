@@ -6,7 +6,7 @@ import {
   CLAIM_DETAILS_URL,
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
-  NOTICES_AND_ORDERS_URL
+  NOTICES_AND_ORDERS_URL,
 } from 'routes/urls';
 import {Claim} from 'models/claim';
 import {getInterestDetails} from 'common/utils/interestUtils';
