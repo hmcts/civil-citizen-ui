@@ -3,7 +3,7 @@ import {app} from '../../../../../../main/app';
 
 import {
   FIRST_CONTACT_CLAIM_REFERENCE_URL,
-  BASE_CLAIM_URL,
+  DASHBOARD_URL,
   FIRST_CONTACT_PIN_URL,
 } from '../../../../../../main/routes/urls';
 import { t } from 'i18next';
@@ -19,6 +19,7 @@ describe('Respond to Claim - Claim Reference Controller', () => {
   const validClaimNumberV1 = '123MC123';
   const validClaimNumberV2 = '123DC123';
   const civilServiceUrl = config.get<string>('services.civilService.url');
+  const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
   describe('on GET', () => {
     it('should display page successfully', async () => {
@@ -71,7 +72,7 @@ describe('Respond to Claim - Claim Reference Controller', () => {
         .reply(200, 'true');
       await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV1}).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(BASE_CLAIM_URL);
+        expect(res.header.location).toBe(ocmcBaseUrl + DASHBOARD_URL);
         expect((app.request.session as AppSession).firstContact.claimReference).toBe(validClaimNumberV1);
       });
     });
