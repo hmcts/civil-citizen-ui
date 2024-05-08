@@ -77,6 +77,12 @@ const getClaimantDraftClaim = (claim: Claim, claimId: string, lang: string) => {
     setUpDocumentLinkObject(claimantDraftClaim.documentLink, claimantDraftClaim.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DRAFT_CLAIM')) : [];
 };
 
+const getClaimantParticularsOfClaim = (claim: Claim, claimId: string, lang: string) => {
+  const particularsOfClaim = claim.specParticularsOfClaimDocumentFiles;
+  return particularsOfClaim ? Array.of(setUpDocumentLinkObject(
+    particularsOfClaim, claim.submittedDate, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.PARTICULARS_CLAIM')) : [];
+};
+
 const getClaimantTimelineEventsDocument = (claim: Claim, claimId: string, lang: string) => {
   const timeLineDocument = claim.specClaimTemplateDocumentFiles;
   return timeLineDocument ? Array.of(setUpDocumentLinkObject(
@@ -86,13 +92,7 @@ const getClaimantTimelineEventsDocument = (claim: Claim, claimId: string, lang: 
 const getClaimantResponseToDefenceDocument = (claim: Claim, claimId: string, lang: string) => {
   const responseToDefenceDocument = claim.claimantResponse?.applicant1DefenceResponseDocumentSpec?.file;
   return responseToDefenceDocument ? Array.of(setUpDocumentLinkObject(
-    responseToDefenceDocument, claim.submittedDate, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.RESPOND_TO_DEFENCE')) : [];
-};
-
-const getClaimantParticularsOfClaim = (claim: Claim, claimId: string, lang: string) => {
-  const particularsOfClaim = claim.specParticularsOfClaimDocumentFiles;
-  return particularsOfClaim ? Array.of(setUpDocumentLinkObject(
-    particularsOfClaim, claim.submittedDate, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.PARTICULARS_CLAIM')) : [];
+    responseToDefenceDocument, claim.claimantResponse?.submittedDate, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.RESPOND_TO_DEFENCE')) : [];
 };
 
 const getDefendantResponse = (claim: Claim, claimId: string, lang: string) => {
