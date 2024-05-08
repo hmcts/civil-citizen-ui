@@ -27,7 +27,7 @@
         {# Left side #}
         <div class="govuk-grid-column-two-thirds">
           <div class="border-small-top"></div>
-            <div id="dashboardNotificationBanner">
+            <div class="dashboard-notification">
             {% for notification in dashboardNotifications.items %}
                 {{ govukNotificationBanner({
                    titleText: notification.titleCy if lang=="cy" else notification.titleEn,
