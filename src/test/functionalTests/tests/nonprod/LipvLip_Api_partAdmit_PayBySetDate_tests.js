@@ -2,6 +2,10 @@ const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
+const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
+const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
+const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
+const {claimantAcceptSignSettlment, judgmentRequestedCourtAgrees} = require('../../specClaimHelpers/dashboardNotificationConstants');
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 
@@ -21,10 +25,18 @@ Scenario('Response with PartAdmit-PayBySetDate Small claims @citizenUI @partAdmi
     //Claimant response below here
     let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
 
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitPayBySetDate(claimRef, '456', claimNumber);
     await api.waitForFinishedBusinessProcess();
+
+    if (isDashboardServiceEnabled) {
+      await ResponseSteps.SignOut();
+      await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+      const notification = claimantAcceptSignSettlment();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
   }
 }).tag('@regression-r2');
 
@@ -40,10 +52,18 @@ Scenario('Response with PartAdmit-PayBySetDate Fast Track @citizenUI @partAdmit 
     //Claimant response below here
     let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
 
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitPayBySetDate(claimRef, '3456', claimNumber);
     await api.waitForFinishedBusinessProcess();
+
+    if (isDashboardServiceEnabled) {
+      await ResponseSteps.SignOut();
+      await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+      const notification = claimantAcceptSignSettlment();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
   }
 }).tag('@regression-r2');
 
@@ -59,9 +79,17 @@ Scenario('Response with PartAdmit-PayBySetDate Small claims Reject repayment pla
     //Claimant response below here
     let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
 
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitPayBySetDateRejectRepaymentPlanCCJ(claimRef, '456', claimNumber);
     await api.waitForFinishedBusinessProcess();
+
+    if (isDashboardServiceEnabled) {
+      await ResponseSteps.SignOut();
+      await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+      const notification = judgmentRequestedCourtAgrees();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
   }
 }).tag('@regression-r2');

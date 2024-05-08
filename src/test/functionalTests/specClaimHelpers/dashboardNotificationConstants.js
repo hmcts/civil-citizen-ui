@@ -165,4 +165,25 @@ module.exports = {
       nextSteps2: 'View your response',
     };
   },
+
+  judgmentRequestedCourtAgrees: () => {
+    return {
+      title: 'Miss Jane Doe has requested a County Court Judgment against you',
+      content: ['The claimant rejected your repayment plan and has proposed a new plan, which the court agreed with, based on the financial details you provided.',
+        'When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
+        'If you pay the debt within one month of the date of judgment, the County Court Judgment (CCJ) is removed from the public register. You can pay £15 to apply for a certificate (opens in new tab) that confirms this.'],
+      nextSteps: 'Contact Miss Jane Doe if you need their payment details.',
+      nextSteps2: 'View your response',
+    };
+  },
+
+  claimantAcceptSignSettlment: () => {
+    return {
+      title: 'Settlement agreement',
+      content: ['The claimant has accepted your plan and asked you to sign a settlement agreement. You must respond by',
+        'If you do not respond by then, or reject the agreement, they can request a County Court Judgment.'],
+      nextSteps: 'View the repayment plan',
+      nextSteps2: 'View your response',
+    };
+  },
 };
