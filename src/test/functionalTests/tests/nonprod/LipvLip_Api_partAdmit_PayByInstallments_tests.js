@@ -5,7 +5,7 @@ const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClai
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
-const {goToHearingPartAdmit} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {goToHearingPartAdmit, judgmentRequestedClaimantDisagrees} = require('../../specClaimHelpers/dashboardNotificationConstants');
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 
@@ -69,12 +69,19 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept 
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual);
     await api.waitForFinishedBusinessProcess();
     //Claimant response below here
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitInstallmentsPayment(claimRef, '1345', claimNumber);
     await api.waitForFinishedBusinessProcess();
+    if (isDashboardServiceEnabled) {
+      await ResponseSteps.SignOut();
+      await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+      const notification = judgmentRequestedClaimantDisagrees();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
   }
 }).tag('@regression-r2');
 
@@ -86,11 +93,18 @@ Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantAccept @c
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual);
     await api.waitForFinishedBusinessProcess();
     //Claimant response below here
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitInstallmentsPayment(claimRef, '1236', claimNumber);
     await api.waitForFinishedBusinessProcess();
+    if (isDashboardServiceEnabled) {
+      await ResponseSteps.SignOut();
+      await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+      const notification = judgmentRequestedClaimantDisagrees();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
   }
 }).tag('@regression-r2');

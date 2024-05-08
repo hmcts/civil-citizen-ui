@@ -144,7 +144,7 @@ module.exports = {
     };
   },
 
-  goToHearingPartAdmit : (amount) => {
+  goToHearingPartAdmit: (amount) => {
     return {
       title: 'Wait for the court to review the case',
       content: ['Miss Jane Doe wants to proceed to court.',
@@ -152,6 +152,17 @@ module.exports = {
         'If the case goes to a hearing we will contact you with further details.'],
       nextSteps: 'View your response',
       nextSteps2: 'View the claimant\'s hearing requirements',
+    };
+  },
+
+  judgmentRequestedClaimantDisagrees: () => {
+    return {
+      title: 'Miss Jane Doe has requested a County Court Judgment against you',
+      content: ['The claimant rejected your repayment plan and an alternative plan proposed by the court based on your financial details. They asked a judge to make a new plan.',
+        'When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
+        'If you pay the debt within one month of the date of judgment, the County Court Judgment (CCJ) is removed from the public register. You can pay £15 to apply for a certificate (opens in new tab) that confirms this.'],
+      nextSteps: 'Contact Miss Jane Doe if you need their payment details.',
+      nextSteps2: 'View your response',
     };
   },
 };
