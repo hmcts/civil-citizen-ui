@@ -4,7 +4,7 @@ import {
 import {
   FinaliseYourTrialSectionBuilder,
 } from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
-import {DEFENDANT_SUMMARY_TAB_URL, NOTICES_AND_ORDERS_URL} from 'routes/urls';
+import {DEFENDANT_SUMMARY_TAB_URL, VIEW_ORDERS_AND_NOTICES_URL} from 'routes/urls';
 import {TabId} from 'routes/tabs';
 import {Claim} from 'models/claim';
 import {plainToInstance} from 'class-transformer';
@@ -81,7 +81,7 @@ describe('Trial arrangements confirmation service', () => {
     const readyTrialArrangementsConfirmationContentExpected = new FinaliseYourTrialSectionBuilder()
       .addMainTitle(TITLE)
       .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.NOTICES_AND_ORDERS',
-        NOTICES_AND_ORDERS_URL.replace(':id', claimId),
+        VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId),
         'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_CAN_VIEW_TRIAL_ARRANGEMENTS',
         'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IN_THE_CASE_DETAILS')
       .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.MAKE_AN_APPLICATION',

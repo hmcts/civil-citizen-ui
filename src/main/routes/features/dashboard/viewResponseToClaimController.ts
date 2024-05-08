@@ -2,7 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
-  NOTICES_AND_ORDERS_URL,
+  VIEW_ORDERS_AND_NOTICES_URL,
   VIEW_RESPONSE_TO_CLAIM,
 } from 'routes/urls';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
@@ -54,7 +54,7 @@ const renderView = (res: Response, claimId: string, claim: Claim, lang: string):
     claimAmount: claim.totalClaimAmount,
     dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
     responseType: responseType,
-    ordersAndNoticesUrl:  constructResponseUrlWithIdParams(claimId, NOTICES_AND_ORDERS_URL),
+    ordersAndNoticesUrl:  constructResponseUrlWithIdParams(claimId, VIEW_ORDERS_AND_NOTICES_URL),
   });
 };
 

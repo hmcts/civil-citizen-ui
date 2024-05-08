@@ -62,5 +62,4 @@ export const IGNORED_URLS = [
   //TODO: remove this once finished the page
   urls.VIEW_ORDERS_AND_NOTICES_URL,
   urls.VIEW_THE_HEARING_URL,
-  urls.NOTICES_AND_ORDERS_URL,
 ];

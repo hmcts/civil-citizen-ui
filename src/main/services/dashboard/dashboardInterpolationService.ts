@@ -24,7 +24,7 @@ import {
   START_MEDIATION_UPLOAD_FILES,
   VIEW_THE_HEARING_URL, CLAIM_DETAILS_URL,
   VIEW_RESPONSE_TO_CLAIM,
-  UPLOAD_YOUR_DOCUMENTS_URL, NOTICES_AND_ORDERS_URL,
+  UPLOAD_YOUR_DOCUMENTS_URL, VIEW_ORDERS_AND_NOTICES_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -69,7 +69,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId));
   valuesMap.set('{PAY_HEARING_FEE}', PAY_HEARING_FEE_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_BUNDLE}', BUNDLES_URL.replace(':id', claimId));
-  valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', NOTICES_AND_ORDERS_URL.replace(':id', claimId));
+  valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_JUDGEMENT}', '#');
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
   valuesMap.set('{VIEW_HEARING_NOTICE}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM)));

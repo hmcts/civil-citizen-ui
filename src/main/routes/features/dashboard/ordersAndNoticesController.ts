@@ -2,7 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
-  NOTICES_AND_ORDERS_URL,
+  VIEW_ORDERS_AND_NOTICES_URL,
 } from 'routes/urls';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -40,7 +40,7 @@ const renderView = (res: Response, claimId: string, claim: Claim, lang: string):
   });
 };
 
-ordersAndNoticesController.get(NOTICES_AND_ORDERS_URL, (async (req: Request, res: Response, next: NextFunction) => {
+ordersAndNoticesController.get(VIEW_ORDERS_AND_NOTICES_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;

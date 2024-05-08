@@ -4,7 +4,7 @@ import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {CaseRole} from 'form/models/caseRoles';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {NOTICES_AND_ORDERS_URL} from 'routes/urls';
+import {VIEW_ORDERS_AND_NOTICES_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -38,7 +38,7 @@ describe('view mediation settlement agreement document controller', () => {
         .reply(200, claim);
       //then
       await request(app)
-        .get(NOTICES_AND_ORDERS_URL.replace(':id', claimId))
+        .get(VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('View orders and notices');
@@ -53,7 +53,7 @@ describe('view mediation settlement agreement document controller', () => {
 
       //then
       await request(app)
-        .get(NOTICES_AND_ORDERS_URL.replace(':id', claimId))
+        .get(VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId))
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

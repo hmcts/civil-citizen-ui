@@ -6,7 +6,7 @@ import {
   CLAIM_DETAILS_URL,
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
-  NOTICES_AND_ORDERS_URL,
+  VIEW_ORDERS_AND_NOTICES_URL,
 } from 'routes/urls';
 import {Claim} from 'models/claim';
 import {getInterestDetails} from 'common/utils/interestUtils';
@@ -46,7 +46,7 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: Request, res: Respons
       pageTitle,
       claimId: caseNumberPrettify(claimId),
       dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
-      ordersAndNoticesUrl: NOTICES_AND_ORDERS_URL.replace(':id', claimId),
+      ordersAndNoticesUrl: VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId),
     });
   } catch (error) {
     next(error);
