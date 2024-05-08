@@ -4,13 +4,24 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "../dashboard/item-content.njk" import itemContent %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, 'TITLE') }}
 {% endblock %}
 
 {% block content %}
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: t('COMMON.BUTTONS.BACK_BREADCRUMBS'),
+        href: previousUrl
+      }
+    ],
+    classes: "govuk-!-margin-top-0"
+  }) }}
 <div class="govuk-width-container">
   <main class="govuk-main-wrapper" role="main">
     {% if form.hasErrors() %}
@@ -20,9 +31,9 @@
       <div class="govuk-grid-column-two-thirds">
          <form method="post" novalidate>
           {{ csrfProtection(csrf) }}
-          <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TITLE') }}</h1>
-          <p class="govuk-body-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER', {caseNumber: claimId}) }}</p>
-          <p class="govuk-body-l">{{claimantFullName}} v {{defendantFullName}}</p>
+           {% for content in typeOfDocumentsContents %}
+             {{ itemContent(content,t) }}
+           {% endfor %}
           <p class="govuk-body">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.SELECT_THE_TYPE_OF_DOCUMENT') }}</p>
                   <div class='multiple-row'>
                       {% if isFastTrack %}

@@ -73,6 +73,7 @@
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Add another event",
       "BACK": "Back",
+      "BACK_BREADCRUMBS": "< Back",
       "BACK_TO_CASE_DETAILS": "Back to case details",
       "CHANGE": "Change",
       "CONTINUE": "Continue",
