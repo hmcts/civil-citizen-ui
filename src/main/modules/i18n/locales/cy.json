@@ -1997,6 +1997,35 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
     "GENERAL_APPLICATION": {
+      "APPLICATION_REASON": {
+        "CANCEL_JUDGMENT": {
+          "EXPLAIN": "explain why you believe the judgment should be set aside. For example, if you missed the deadline to respond to the original claim form, then you should explain why",
+          "IF_DONT_BELIEVE": "if you don't believe you owe the money, or if you disagree with the claim made against you, explain why",
+          "SHOULD": "You should:",
+          "YOU_WILL_HAVE_OPTION": "You'll have the option to upload documents to support your reasons on the next screen."
+        },
+        "CHANGE_CLAIM": "You should explain why the change is needed also. If necessary, why it was not included in the original documents. You'll have the option to upload a new version of the document on the next screen.",
+        "CHANGE_HEARING": "You should explain why you want the hearing date to be changed. You'll have the option to upload documents to support your reasons on the next screen.",
+        "ENTER_REASONS": "Enter your reasons for requesting this order",
+        "IMPOSE_SANCTION": "You should explain why you want the other parties to take this action. You'll have the option to upload documents to support your reasons on the next screen.",
+        "MORE_TIME": "You should explain why you're not going to meet the original deadline. You'll have the option to upload documents to support your reasons on the next screen.",
+        "NOT_ON_LIST": "You should explain why you're requesting this order. You'll have the option to upload documents to support your reason on the next screen.",
+        "PAUSE": "You should explain why the claim should be paused until the date you gave on the previous screen. You'll have the option to upload documents to support your reasons on the next screen.",
+        "RECONSIDER": "You should explain why you want the order to be reconsidered. You'll have the option to upload documents to support your reasons on the next screen.",
+        "RELIEF_PENALTY": {
+          "ANY_RELEVANT_INFORMATION": "any other relevant information you think the court should know",
+          "SHOULD": "You should explain:",
+          "THE_EFFECT": "the effect this has had on the case",
+          "WHY_BEEN_UNABLE": "why you've been unable to meet what was required of you by a rule or court order",
+          "YOU_WILL_HAVE_OPTION": "You'll have the option to upload documents to support your reasons on the next screen."
+        },
+        "SETTLING": "Court to make an order settling the claim by consent",
+        "STRIKE_OUT": "You should explain why you want the documents to be dismissed. You'll have the option to upload documents to support your reasons on the next screen.",
+        "SUMMARY_JUDGMENT": "You should explain why you do not believe the other parties' claim will succeed. You'll have the option to upload documents to support your reasons on the next screen.",
+        "THE_INFORMATION": "The information you enter on this page will be seen by the other parties.",
+        "VARY_JUDGMENT": "You should explain why you want to vary the judgment. You'll have the option to upload documents to support your reasons on the next screen.",
+        "WHY_REQUESTING": "Why are you requesting this order?"
+      },
       "SELECTED_APPLICATION_TYPE": {
         "CANCEL_JUDGMENT": "Set aside (cancel) a judgment",
         "CHANGE_CLAIM": "Make a change to your claim or defence that you've submitted",
@@ -3865,6 +3894,7 @@
     "GENERAL_APPLICATION": {
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
+      "ENTER_REQUESTING_REASON": "You need to enter your reasons for requesting this order",
       "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
