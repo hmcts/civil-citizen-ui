@@ -22,4 +22,12 @@ module.exports = {
       await I.see(content);
     }
   },
+
+  verifyTasklistLinkAndState: async (tasklist, locator, status, isLinkFlag = false) => {
+    await I.see(tasklist, locator);
+    await I.see(status, locator);
+    if (isLinkFlag === true) {
+      I.seeElement(`//a[contains(@class, "govuk-link")][normalize-space(.)="${tasklist}"]`);
+    }
+  },
 };

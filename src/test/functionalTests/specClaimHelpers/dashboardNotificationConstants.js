@@ -136,4 +136,20 @@ module.exports = {
       nextSteps: 'View and respond',
     };
   },
+
+  claimStruckOut: () => {
+    return {
+      title: 'The claim has been struck out',
+      content: 'This is because the hearing fee was not paid by 10 November 2023 as stated in the hearing notice.',
+      nextSteps: 'hearing notice.'
+    };
+  },
+
+  orderMade: () => {
+    return {
+      title: 'An order has been made',
+      content: 'The judge has made an order on your claim. View the order.',
+      nextSteps: 'View the order'
+    };
+  },
 };
