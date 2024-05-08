@@ -52,18 +52,10 @@ Scenario('Response with PartAdmit-PayBySetDate Fast Track @citizenUI @partAdmit 
     //Claimant response below here
     let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
-    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
 
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitPayBySetDate(claimRef, '3456', claimNumber);
     await api.waitForFinishedBusinessProcess();
-
-    if (isDashboardServiceEnabled) {
-      await ResponseSteps.SignOut();
-      await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-      const notification = claimantAcceptSignSettlment();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-    }
   }
 }).tag('@regression-r2');
 

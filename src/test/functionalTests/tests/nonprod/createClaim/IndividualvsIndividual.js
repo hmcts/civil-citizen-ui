@@ -8,7 +8,7 @@ const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers
 const { payClaimFee, hwfSubmission, updateHWFNum, hwfPartRemission, hwfMoreInfoRequired, hwfFullRemission } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115;
-//dummy
+
 Feature('Create Lip v Lip claim - Individual vs Individual @claimCreation').tag('@regression-r2');
 
 Scenario('Create Claim -  Individual vs Individual - small claims - no interest - no hwf', async ({I, api}) => {
