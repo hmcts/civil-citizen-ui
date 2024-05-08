@@ -1713,15 +1713,13 @@
       "TITLE": "Do you want to give evidence yourself?"
     },
     "DELAYED_FLIGHT": {
-      "CREATE_CLAIM": "Create claim",
-      "TITLE": "Flight delay claims",
-      "CLAIMING_FOR_DELAYED": "Are you claiming for a flight delay?",
-      "AIRLINE_NOT_LISTED": "If the airline is not listed below, select 'Other' and enter the name of the airline.",
-      "FLIGHT_DETAILS": "Enter flight detauls",
+      "CLAIMING_FOR_DELAYED": "Are you claiming for a flight delay?"
+    },
+    "FLIGHT_DETAILS": {
+      "FLIGHT_DETAILS": "Enter flight details",
       "AIRLINE": "Airline",
       "FLIGHT_NUMBER": "Flight number",
-      "SCHEDULED_DATE": "Scheduled date of flight",
-      "NAME_OF_AIRLINE": "Name of airline"
+      "SCHEDULED_DATE": "Scheduled date of flight"
     },
     "DEPENDANTS": {
       "GROUP11": "11 to 15",
@@ -3505,6 +3503,12 @@
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
     "DELAYED_FLIGHT": {
       "CLAIMING_FOR_DELAY_REQUIRED": "Are you claiming for a flight delay is required"
+    },
+    "FLIGHT_DETAILS": {
+      "AIRLINE_REQUIRED": "Airline is required",
+      "FLIGHT_NUMBER_REQUIRED": "Flight number is required",
+      "DATE_FLIGH_REQUIRED": "Date of flight is required",
+      "DATE_FLIGHT_PAST": "Scheduled date of flight must be today or in the past"
     },
     "ENTER_A_DEBT": "Enter a debt",
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can’t pay now",

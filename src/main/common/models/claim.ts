@@ -83,6 +83,7 @@ import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails'
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import {GeneralApplication} from './generalApplication/GeneralApplication';
 import {DelayedFlight} from './delayedFlight';
+import {FlightDetails} from './flightDetails';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -170,6 +171,7 @@ export class Claim {
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
   delayedFlight?: DelayedFlight;
+  flightDetails?: FlightDetails;
   // Index signature to allow dynamic property access
   [key: string]: any;
 
