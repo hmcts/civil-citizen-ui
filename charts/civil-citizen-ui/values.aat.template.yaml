@@ -20,6 +20,7 @@ nodejs:
     OAUTH_CLIENT_REDIRECT: https://civil-citizen-ui-staging.aat.platform.hmcts.net/oauth2/callback
     IDAM_SIGN_OUT_REDIRECT_URL: https://civil-citizen-ui-staging.aat.platform.hmcts.net/dashboard
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-java
+    LAUNCH_DARKLY_ENV: service-staging
 
 civil-service:
   enabled: true

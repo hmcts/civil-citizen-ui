@@ -65,12 +65,15 @@ describe('Expected end date page', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const currentDate = new Date();
       const leapYear = isTwentyNineLeapYear(currentDate);
+      if (!leapYear) {
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
 
       await request(app)
         .post(BREATHING_SPACE_RESPITE_END_DATE_URL)
         .send(`year=${currentDate.getFullYear()}`)
         .send(`month=${currentDate.getMonth() + 1}`)
-        .send(`day=${leapYear? currentDate.getDate() : currentDate.getDate() + 1}`)
+        .send(`day=${currentDate.getDate()}`)
         .send('reason=breathing space end')
         .expect((res) => {
           expect(res.status).toBe(302);

@@ -9,6 +9,7 @@
     "CONTACT_NAME": "Contact name",
     "CONTACT_NUMBER": "Contact number",
     "CONTACT_EMAIL": "Contact email",
+    "CREATED_DATE": "Created [{{ createdDate }}]",
     "UNAVAILABLE_DATES": "Dates unavailable",
     "CASE_REFERENCE": "Case reference: {{ claimId }}",
     "ACCOUNT_TYPE": "Type of account",
@@ -18,6 +19,7 @@
     "BALANCE": "Balance",
     "BANK_AND_SAVINGS_ACCOUNTS": "Bank and savings accounts",
     "BANK_JOINT_ACCOUNT": "Joint account",
+    "CANNOT_FIND_DOCUMENT_TEXT": "If you cannot find a document that you are looking for in this section",
     "CHILDREN": "Children",
     "CHOOSE": "Choose",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
@@ -49,6 +51,7 @@
     "NO": "No",
     "NUMBER_OF_PEOPLE": "Number of people",
     "OPTIONAL_CONTACT_PERSON": "Contact person (optional)",
+    "ORDER_AND_NOTICES": "orders and notices",
     "MANDATORY_CONTACT_PERSON": "Contact person",
     "PARTIES": "{{ claimantName }} v {{ defendantName }}",
     "REASON": "Reason",
@@ -375,6 +378,11 @@
     }
   },
   "PAGES": {
+    "VIEW_MEDIATION_DOCUMENTS": {
+      "CLAIMANT_TABLE_TITLE": "Claimant mediation documents",
+      "DEFENDANT_TABLE_TITLE": "Defendant mediation documents",
+      "PAGE_TITLE": "View mediation documents"
+    },
     "VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT": {
       "PAGE_TITLE": "View mediation settlement agreement",
       "DOCUMENT_TABLE_TITLE": "Mediation Settlement Agreement"
@@ -463,7 +471,7 @@
       "WHAT_HAPPENS_IF": "What happens if you do not attend your mediation appointment?",
       "IF_YOU_DO_NOT_ATTEND": "If you do not attend your mediation appointment, the judge may apply a penalty. This could include the judge automatically ruling in the other party’s favour, or paying for some or all of the other party’s costs.",
       "AFTER_THE_PHONE_CALL":"After the phone call",
-      "IF_MEDIATION_IS_SUCCESSFUL": "If mediation is successful, you will not have to go to court. You will make a agreement over the phone, which we will email to you. You will not have to sign anything, but the agreement is binding.",
+      "IF_MEDIATION_IS_SUCCESSFUL": "If mediation is successful, you will not have to go to court. You will make an agreement over the phone, which we will email to you. You will not have to sign anything, but the agreement is binding.",
       "IF_EITHER_PARTY": "If either party breaks the terms of the agreement, the other party can go back to the court to ask for a judgment or hearing.",
       "IF_YOU_DO_NOT_REACH": "If you do not reach an agreement at mediation, you may need to attend a court hearing. Any mediation discussions cannot be mentioned at the hearing."
     },
@@ -475,6 +483,7 @@
     "AGREED_RESPONSE_DEADLINE": {
       "PAGE_TITLE": "Agree more time to respond",
       "SUB_TITLE": "Enter the respond date you have agreed with {{ claimantName }}'s legal representative",
+      "SUB_TITLE_R2": "Enter the respond date you have agreed with the other party or their legal representative",
       "TITLE": "You have already agreed to more time to respond"
     },
     "APPLY_HELP_WITH_FEES": {
@@ -617,10 +626,11 @@
       "CONTACT_NUMBER_NOT_OPTIONAL": "Contact number",
       "CONSIDER_CLAIMANT_DOCUMENT": "Are there any documents the claimant has that you want the court to consider?",
       "CORRESPONDENCE_ADDRESS": "Correspondence address",
-      "COURT_DECISION_SECTION":"Court Decision",
-      "COURT_DECISION_ROW":"Court decision",
-      "COURT_REJECTED_YOUR_REPAYMENT_PLAN":"The court rejected your repayment plan and calculated a more affordable one.",
-      "COURT_REPAYMENT_PLAN":"Court repayment plan",
+      "COURT_ACCEPTED_YOUR_REPAYMENT_PLAN": "The court accepted your repayment plan.",
+      "COURT_DECISION_SECTION": "Court Decision",
+      "COURT_DECISION_ROW": "Court decision",
+      "COURT_REJECTED_YOUR_REPAYMENT_PLAN": "The court rejected your repayment plan and calculated a more affordable one.",
+      "COURT_REPAYMENT_PLAN": "Court repayment plan",
       "COURT_ORDERS_TITLE": "Are you paying money as a result of any court orders?",
       "COURT_ORDERS_CLAIM_NUMBER": "Claim number",
       "COURT_ORDERS_AMOUNT_OWNED": "Amount you owe",
@@ -766,6 +776,7 @@
       "WITNESS": "Witness",
       "WILL_REPAY_IN_INSTALLMENTS": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
       "WILL_PAY_BY_PAYMENT_DATE": " {{ fullName }} will pay £{{ amount }}, no later than {{ paymentDate }}",
+      "WILL_PAY_IMMEDIATELY": "{{ fullName }} will pay immediately",
       "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details",
       "YOUR_RESPONSE": "Your response"
     },
@@ -866,6 +877,7 @@
       "AMOUNT": "Amount",
       "AMOUNT_BREAKDOWN": "Amount breakdown",
       "CLAIM_FEE": "Claim fee",
+      "CLAIM_HAS_BEEN_MADE_TEXT": "This is the claim that's has been made in the case. It can also be found in",
       "CLAIM_NUMBER": "Claim number",
       "CLAIM_TOTAL": "Claim Total",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
@@ -874,9 +886,13 @@
       "INTEREST": "Interest",
       "INTEREST_SNIPPET": "Interest calculated at {{ rate }}% for {{ numberOfDays }} days ({{ interestDate }} to {{ interestToDate }})",
       "PAGE_TITLE": "Claim Details",
+      "PAGE_TITLE_NEW": "View the claim",
       "REASON_FOR_CLAIM": "Reason for claim",
+      "THE_CLAIM": "The Claim",
       "TIMELINE": "Timeline",
-      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown"
+      "TITLE": "Claim Details",
+      "VIEW_AMOUNT_BREAKDOWN": "View amount breakdown",
+      "VIEW_THE_CLAIM_PDF": "View the claim (PDF)"
     },
     "CLAIM_TASK_LIST":{
       "AFTER_COMPLETE": "After you have completed all the actions you will be taken to a page where you can check your answers before submitting.",
@@ -1016,6 +1032,7 @@
       "DOWNLOAD_JUDGMENT_ORDER": "Download the judgment order",
       "DOWNLOAD_RESPONSE": "Download response",
       "EVIDENCE_UPLOAD_SUMMARY": "Read and save all documents uploaded by the parties involved in the claim. Three weeks before the trial, a bundle will be created containing all submitted documents in one place. You will be told when this is available.",
+      "EVIDENCE_UPLOAD_SUMMARY_HEARING": "Read and save all documents uploaded by the parties involved in the claim. Three weeks before the hearing, a bundle will be created containing all submitted documents in one place. You will be told when this is available.",
       "EXPERT_EVIDENCE": "expert evidence",
       "EXPERT_REPORT": "expert report",
       "DOCUMENTS_REFERRED_TO_STATEMENT": "Documents referred to in statement",
@@ -1254,7 +1271,8 @@
           "LABEL": "The agreement",
           "REPAYMENT_PLAN_PART_ONE": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every ",
           "REPAYMENT_PLAN_PART_TWO": "The first instalment will be paid by {{ firstRepaymentDate }}",
-          "PAYMENT_TEXT": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} every {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}"
+          "PAYMENT_TEXT": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} every {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
+          "IMMEDIATE_PLAN": "{{ fullName }} will pay £{{ amount }} immediately. {{ claimant }} will receive the money no later than {{ paymentDate }}. Any cheques or transfers will be clear in {{ fullName }}’s account by this date."
         },
         "COMPLETION_DATE": {
           "LABEL": "Completion date",
@@ -1316,7 +1334,11 @@
       "DEFENDANT": "Defendant",
       "CONTACT": "Contact ",
       "PAGE_TITLE": "Contact claimant",
-      "PHONE": "Phone"
+      "PAGE_TITLE_CLAIMANT": "View information about the claimant",
+      "PAGE_TITLE_DEFENDANT": "View information about the defendant",
+      "PHONE": "Phone",
+      "THE_CLAIM": "The claim",
+      "THE_RESPONSE": "The response"
     },
     "COOKIES": {
       "ADDITIONAL_COOKIES": "Government services may set additional cookies and, if so, will have their own cookie policy and banner.",
@@ -1418,6 +1440,9 @@
       "TITLE": "Are you paying money as a result of any court orders?"
     },
     "DASHBOARD": {
+      "ACCORDION_TITLE": "If you cannot find a document you are looking for in this section",
+      "ACCORDION_CONTENT": "This is the main active hearing on the case. Older hearings and case documents can be found in",
+      "ACCORDION_ORDERS": "orders and notices",
       "ACTIONS": "Actions",
       "ACTION_PROMPT": "You need to respond before ",
       "CLAIMANT_NAME": "Claimant name",
@@ -1432,13 +1457,17 @@
       "DRAFT_CLAIM_NUMBER": "Draft claim",
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
+        "CREATED": "Created ",
+        "HEARING": "Hearing",
+        "HEARING_NOTICE": "Hearing notice",
         "PAY_FEE": "Pay the hearing fee",
         "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
         "TITLE": "Hearings",
         "UPLOAD_DOCUMENTS": "Upload hearing documents",
         "VIEW_BUNDLE": "View the bundle",
         "VIEW_DOCUMENTS": "View documents",
-        "VIEW_HEARINGS": "View hearings"
+        "VIEW_HEARINGS": "View hearings",
+        "VIEW_THE_HEARING": "View the hearing"
       },
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
       "NEXT": "Next",
@@ -1465,12 +1494,16 @@
         "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Wait for the defendant to pay you.",
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
         "CLAIM_ENDED": "You stopped this claim.",
+        "CLAIM_FEE_NOT_PAID": "Pay the claim fee.",
+        "CLAIM_SETTLED": "This claim is settled.",
         "CLAIM_SUBMIT_HWF": "We're checking your Help with Fees Application.",
         "CLAIMANT_REJECTED_PAYMENT_PLAN": "You need to send the defendant’s financial details to the court.",
+        "REJECTED_PAYMENT_PLAN_REQUEST_JUDGE_DECISION": "Awaiting judge’s review",
         "CLAIMANT_REQUESTED_CCJ": "You requested a County Court Judgment against {{defendantName}}.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
+        "DOCUMENTS_BEING_TRANSLATED": "The documents are being translated.",
         "HWF_FEE_PAYMENT_OUTCOME": "The hearing fee has been paid.",
         "HWF_INVALID_REF_NUMBER": "You gave us an invalid Help with Fees number.",
         "HWF_MORE_INFORMATION_NEEDED": "We need more information.",
@@ -1483,10 +1516,13 @@
         "NO_RESPONSE_ON_TIME": "Wait for the defendant to respond.",
         "NO_RESPONSE_ELIGIBLE_CCJ":  "The defendant has not responded to your claim. You can request a County Court Judgment against them.",
         "NOT_ADMITTED_CLAIMANT": "Respond to the defendant.",
+        "OFFERED_INSTALMENTS": "The defendant has offered to pay in instalments. You can accept or reject their offer.",
+        "OFFERED_SET_DATE": "The defendant has offered to pay by a set date. You can accept or reject their offer.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post.",
-        "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
-        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated."
+        "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
+        "WAITING_COURT_REVIEW": "Wait for the court to review the case."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
@@ -1506,6 +1542,7 @@
         "CLAIMANT_REJECT_PARTIAL_ADMISSION": "{{ claimantName }} rejected your admission of £{{ amount }}.",
         "CLAIMANT_REQUESTED_CCJ": "{{ claimantName }} requested a County Court Judgment against you on {{ccjRequestedDate}}.",
         "CLAIMANT_REQUESTED_CCJ_BY_DETERMINATION": "{{ claimantName }} requested a County Court Judgment against you.",
+        "DOCUMENTS_BEING_TRANSLATED": "The documents are being translated.",
         "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days.",
         "MORE_DETAILS_REQUIRED": "Send us more details before the hearing.",
         "MEDIATION_UNSUCCESSFUL": "Mediation was unsuccessful.",
@@ -1515,7 +1552,7 @@
         "NO_RESPONSE_DUE_TODAY": "Respond to claim: due today.",
         "NO_RESPONSE_ELIGIBLE_CCJ": "You haven’t responded to the claim. {{ claimantName }} can now ask for a County Court Judgment (CCJ) against you. You can still respond to this claim before they ask for a CCJ.",
         "PART_ADMIT_NOT_PAID": "You’ve admitted part of the claim.",
-        "PART_ADMIT_STATES_PAID": "We’ve emailed{{ claimantName }} telling them when and how you said you paid the claim.",
+        "PART_ADMIT_STATES_PAID": "We’ve emailed {{ claimantName }} telling them when and how you said you paid the claim.",
         "RESPONSE_BY_POST": "The claim will continue by post",
         "REQUESTED_CHANGE_BY_CLAIMANT": "The claimant applied to change something about the claim.",
         "REQUESTED_CHANGE_BY_DEFENDANT": "You applied to change the claim.",
@@ -1527,6 +1564,19 @@
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement."
+      },
+      "SUPPORT_LINKS": {
+        "CONTACT_COURT": "Contact the court to request a change to my case (make an application)",
+        "FIND_INFO_COURT": "Find information about my court",
+        "FIND_MEDIATION": "Find out about mediation",
+        "FIND_LEGAL_ADVICE": "Find legal advice",
+        "GET_DEBT_RESPITE": "Get debt respite (breathing space)",
+        "HELP_SUPPORT": "Help and support",
+        "HELP_FEES": "Help with fees",
+        "I_WANT_TO": "I want to...",
+        "REPRESENT_MYSELF": "Represent myself at a hearing",
+        "TELL_US_ENDED": "Tell us you've ended the claim",
+        "WHAT_EXPECT_HEARING": "What to expect at a hearing"
       },
       "TITLE": "Your money claims account",
       "VIEW": "View",
@@ -1605,7 +1655,8 @@
         "THE_AGREEMENT": {
           "LABEL": "The agreement",
           "PAY_BY_SET_DATE": "{{ defendant }} will pay £{{ amount }} no later than {{ paymentDate }}.",
-          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ frequency }}. The first instalment will be paid by {{ firstRepaymentDate }}."
+          "REPAYMENT_PLAN": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every {{ frequency }}. The first instalment will be paid by {{ firstRepaymentDate }}.",
+          "PAY_IMMEDIATELY_PLAN": "{{ defendant }} will pay £{{ amount }} immediately. {{ claimant }} will receive the money no later than {{ paymentDate }}. Any cheques or transfers will be clear in {{ defendant }}’s account by this date."
         },
         "THIRD_PARAGRAPH": "Either party can view and download this agreement from their Money Claims account. Both parties should keep a copy of this agreement.",
         "VALID_YES_NO_OPTION": "Select Yes - I confirm I have read and accept the terms of the agreement if you want to accept the agreement",
@@ -1944,6 +1995,133 @@
       "OPENS_IN_NEW_TAB": "free telephone mediation (opens in new tab).",
       "PAGE_TITLE": "Free telephone mediation",
       "REACHING_SETTLEMENT": "Reaching a settlement"
+    },
+    "GENERAL_APPLICATION": {
+      "AGREE_TO_ORDER": {
+        "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
+        "RESPOND_TO": "Respond to an application to {{applicationType}}",
+        "TITLE": "The other parties have said that you've agreed to the order they've requested. Is this correct?"
+    },
+      "PAYMENT_FOR_APPLICATION": {
+        "APPLICATION_FEE": "Application fee to pay:",
+        "TITLE": "Paying for your application",
+        "YOU_WILL_BE_ASKED": "You'll be asked to pay for your application once it's been submitted."
+      },
+      "SELECTED_APPLICATION_TYPE": {
+        "CANCEL_JUDGMENT": "Set aside (cancel) a judgment",
+        "CHANGE_CLAIM": "Make a change to your claim or defence that you've submitted",
+        "CHANGE_HEARING": "Change a hearing date",
+        "IMPOSE_SANCTION": "Court to impose a sanction on the other parties unless they do a specific action",
+        "MORE_TIME": "More time to do what is required by a court order",
+        "NOT_ON_LIST": "Court to do something that's not on this list",
+        "PAUSE": "Court to pause a claim",
+        "RECONSIDER": "Court to reconsider an order",
+        "RELIEF_PENALTY": "Relief from a penalty you've been given by the court",
+        "SETTLING": "Court to make an order settling the claim by consent",
+        "STRIKE_OUT": "Court to strike out all or part of the other parties' case without a trial",
+        "SUMMARY_JUDGMENT": "Court to make a summary judgment on a case",
+        "VARY_JUDGMENT": "Vary a judgment"
+      },
+      "SELECT_TYPE": {
+        "ALL_APPLICATIONS": "All applications",
+        "APPLICATION_NOT_NEW": "An application is not a new claim. It is a request for a judge to take an action on an existing claim.",
+        "ASK_CANCEL_JUDGMENT": "Ask to set aside (cancel) a judgment",
+        "ASK_CANCEL_JUDGMENT_DESCRIPTION": "For example, if you do not believe a judgment should've been made or you've not had the opportunity to respond to a claim and you have a defence. This application is usually made by defendants.",
+        "ASK_CHANGE_CLAIM": "Ask to make a change to your claim or defence that you've submitted",
+        "ASK_CHANGE_CLAIM_DESCRIPTION": "This is also known as an application to amend a statement of case.",
+        "ASK_CHANGE_HEARING": "Ask to change a hearing date",
+        "ASK_CHANGE_HEARING_DESCRIPTION": "This is also known as an application to adjourn a hearing.",
+        "ASK_DO_SOMETHING": "Ask the court to do something that's not on this list",
+        "ASK_DO_SOMETHING_DESCRIPTION": "Select this option if you cannot see the application you want on this list.",
+        "ASK_IMPOSE_SANCTION": "Ask the court to impose a sanction on the other parties unless they do a specific action",
+        "ASK_IMPOSE_SANCTION_DESCRIPTION": "For example. striking out their claim or defence unless they upload all their documents by a specific date. This is also known as an application for an unless order.",
+        "ASK_MORE_TIME": "Ask for more time to do what is required by a court order",
+        "ASK_MORE_TIME_DESCRIPTION_1": "For example, asking for the deadline for uploading documents before a trial or hearing to be extended. You'll need to provide a valid reason for not meeting the original deadline. This application can only be made before the original deadline has passed. This is also known as an application to extend time.",
+        "ASK_MORE_TIME_DESCRIPTION_2": "Instead of making an application, you can get written agreement from the other parties for more time to do what's required by the court. To do this, the time extension you request must be less than 28 days and should not affect a hearing date.",
+        "ASK_PAUSE": "Ask the court to pause a claim",
+        "ASK_PAUSE_DESCRIPTION": "This is also known as an application to stay the claim.",
+        "ASK_RECONSIDER": "Ask the court to reconsider an order",
+        "ASK_RECONSIDER_DESCRIPTION": "If an order has been made after an application or a hearing that you were not informed about. This is also known as an application to set aside or vary an order.",
+        "ASK_RELIEF_PENALTY": "Ask for relief from a penalty you've been given by the court",
+        "ASK_RELIEF_PENALTY_DESCRIPTION": "For example, if you have not uploaded documents by the deadline. You can only make this application after the penalty has been given. This is also known as an application for relief from sanctions.",
+        "ASK_SETTLING": "Ask the court to make an order settling the claim by consent",
+        "ASK_SETTLING_DESCRIPTION": "The other parties must have agreed to this application. If there's a hearing date already scheduled for your case, you'll need to request cancellation of this when you provide details about your application.",
+        "ASK_STRIKE_OUT": "Ask the court to strike out all or part of the other parties' case without a trial",
+        "ASK_SUMMARY_JUDGMENT": "Ask the court to make a summary judgment on a case",
+        "ASK_SUMMARY_JUDGMENT_DESCRIPTION": "This application should only be made if you do not believe the other parties' claim has any real prospect of success.",
+        "ASK_STRIKE_OUT_DESCRIPTION": "This application should only be made if you believe that a document uploaded by the other parties, such as their defence, should be struck out as it has no real prospect of success.",
+        "ASK_VARY_JUDGMENT": "Ask to vary a judgment",
+        "ASK_VARY_JUDGMENT_DESCRIPTION": "For example, if you want to request to pay a judgment amount in instalments or make a change to instalments you've already agreed. This application is usually made by defendants. Your payment offer will be presented to the other parties who can accept or reject it. If you're a defendant selecting this application, you'll need to upload an N245 form.",
+        "CAPTION": "Make an application",
+        "NEED_MULTIPLE_APPLICATIONS": "If you need to make multiple applications, you'll have the option to add another application later on.",
+        "OTHER": "Other applications",
+        "SELECT_APPLICATION": "Select the application you want and click continue.",
+        "TITLE": "Select application",
+        "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order."
+      },
+      "INFORM_OTHER_PARTIES": {
+        "COURT_SEND_OTHER_PARTIES": "The court will usually send the other parties a copy of your application to give them the opportunity to respond to it.",
+        "DO_NOT_WANT_COURT": "If you do not want the court to inform the other parties about this application",
+        "INFORM_OTHER_PARTIES_HEADER": "Informing the other parties",
+        "JUDGE_ORDERS_OTHER_PARTIES": "If the judge orders that the other parties should be informed, you’ll be notified and you'll need to pay an additional fee. Your application may also be delayed.",
+        "PROVIDE_A_REASON": "You must provide a reason which will be considered by a judge.",
+        "SELECTING_MULTIPLE_APPLICATIONS": "If you’ll be selecting multiple applications, this answer will apply to all of them.",
+        "SHOULD_COURT_INFORM_PARTIES": "Should the court inform the other parties about this application?",
+        "SOME_CIRCUMSTANCES": "In some circumstances a judge may make an order without sending your application to the other parties first.",
+        "WHY_DO_NOT_WANT_COURT": "Why do you not want the court to inform the other parties?"
+     },
+      "APPLICATION_FROM_OTHER_PARTY": {
+        "APPLICATION_FEE_AMOUNT": "The fee amount depends on whether the other parties have agreed to you making this application. The other parties are the other side or sides involved in your case.",
+        "GETTING_AGREEMENT": "Getting agreement",
+        "GETTING_AGREEMENT_PARA_1": "Asking the other parties to agree is optional. If they've agreed, you do not need to have proof of this.",
+        "GETTING_AGREEMENT_PARA_2": "If you're not able to contact the other parties, or you've attempted to contact them but have not had a response, select 'No'.",
+        "OTHER_PARTY_ALREADY_AGREED": "If the other parties have agreed",
+        "OTHER_PARTY_ALREADY_AGREED_PARA_1": "The application fee will be reduced, unless this is an application to:",
+        "OTHER_PARTY_ALREADY_AGREED_PARA_2": "There may also be no need for a hearing to make a decision on the application. You'll see the final application fee amount before you pay.",
+        "OTHER_PARTY_ALREADY_AGREED_QUESTION": "Have the other parties agreed to this application?",
+        "OTHER_PARTY_ALREADY_AGREED_QUESTION_PARA_1":"If you'll be selecting multiple applications, this answer will apply to all of them.",
+        "PAY_APPLICATION_FEE": "You'll need to pay a fee to make an application",
+        "RECONSIDER_ORDER": "reconsider an order",
+        "SET_ASIDE_JUDGMENT": "set aside (remove) a judgment",
+        "TITLE": "Application from the other parties",
+        "VARY_JUDGMENT": "vary a judgment"
+      },
+      "HEARING_SUPPORT": {
+        "ALWAYS_ARRANGE": "We'll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the 'Sign language interpreter' box below.",
+        "ARRANGING_OWN": "If you'll be arranging your own interpreter, you still need to tell us what language you'll be using by ticking the 'Language interpreter' box below.",
+        "DO_YOU_NEED": "Do you need any adjustments or support to attend a hearing (optional)?",
+        "FIND_OUT": "Find out how to",
+        "GET_INTERPRETER": "get an interpreter at a court or tribunal.",
+        "IF_YOU_NEED": "If you need a sign language or language interpreter",
+        "NEED_TO_ARRANGE": "You'll need to arrange your own language interpreter.",
+        "NOT_ABLE": "If you're not able to arrange your own interpreter, the court may be able to arrange one for you.",
+        "SELECT_ALL_THAT_APPLY": "Select all that apply",
+        "SUPPORT": {
+          "HEARING_LOOP": "Hearing loop",
+          "LANGUAGE_INTERPRETER": "Language interpreter",
+          "OTHER": "Other support",
+          "SIGN_LANGUAGE_INTERPRETER": "Sign language interpreter",
+          "STEP_FREE_ACCESS": "Step-free access",
+          "WHAT_LANGUAGE": "What language do you need an interpreter for?",
+          "WHAT_SIGN_LANGUAGE": "What type of sign language do you need an interpreter for?",
+          "WHAT_OTHER": "What other support do you need?"
+        },
+        "TITLE": "Adjustments or support to attend a hearing"
+      },
+      "CLAIM_APPLICATION_COST": {
+        "ASK_YOUR_COSTS_BACK": "Do you want to ask for your costs back?",
+        "ASK_YOUR_COSTS_BACK_YES": "If you know the details of the costs you want to claim back, you can upload a document with a description of these when we ask if you want to upload documents to support your application later on.",
+        "COSTS_INCLUDE": {
+          "APPLICATION_FEE": "your application fee",
+          "COST_INCLUDE": "Costs can include amounts like:",
+          "HEARING_COST": "loss of earnings and travel costs if you have to attend a hearing"
+        },
+        "JUDGE_MAKE_DECISION": "When a judge makes a decision on your application, they’ll decide who should pay the costs.",
+        "IF_APPLICATION_SUCCESS": "If your application is successful, the other parties may be ordered to pay back your costs associated with the application.",
+        "OTHER_PARTIES": "The other parties will be able to see your answer to this question and respond to it.",
+        "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application.",
+        "TITLE": "Application costs"
+      }
     },
     "ACCEPT_REPAYMENT_PLAN": {
       "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
@@ -2312,6 +2490,7 @@
     },
     "NEW_RESPONSE_DEADLINE": {
       "CONTENT": "We’ll email both you and {{ claimantName }} legal representative to confirm that you have agreed this new response date.",
+      "CONTENT_R2": "We’ll email the new response date to you and the other party or their legal representative.",
       "PAGE_TITLE": "New response deadline",
       "TITLE": "4pm on {{ responseDeadline }}"
     },
@@ -2619,8 +2798,10 @@
       "PAGE_TITLE": "Request more time",
       "POST": "Or, you can post the completed form to:",
       "SELECT_SAVE_AND_CONTACT": "Select 'Save and continue' and contact {{ claimantName }}'s legal representative to request this.",
+      "SELECT_SAVE_AND_CONTACT_R2": "Select 'Save and continue' and contact the other party or their legal representative to request this.",
       "SELECT_SAVE_AND_CONTINUE": " and select 'Save and continue'.",
       "TELL_OTHER_PARTY": "You'll also need to tell the other party that you have applied to the court.",
+      "TELL_OTHER_PARTY_R2": "You’ll also need to inform the other party or their legal representative that you’ve applied to the court.",
       "TITLE": "Request more time to respond",
       "UP_TO_28_DAYS": "Up to 28 days"
     },
@@ -2640,12 +2821,14 @@
       "FORM": "Form N244 (opens in new tab)",
       "MORE_TIME": "Do you want to request more time to respond?",
       "OPTION_AGREED": "I have already agreed more time with {{ claimantName }}'s legal representative",
+      "OPTION_AGREED_R2": "I have already agreed more time with the other party or their legal representative",
       "OPTION_NO": "No, I do not want to request more time",
       "OPTION_REFUSED": "My request for more time has been refused",
       "OPTION_YES": "Yes, I want to request more time",
       "PAGE_TITLE": "Response deadline",
       "POST": "Or, you can post the completed form to:",
-      "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
+      "REQUEST_REFUSED": "If your request to {{ claimantName }}'s legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading ",
+      "REQUEST_REFUSED_R2": "If your request to the other party or their legal representative for more time has been refused, you need to make an application to the court to consider your request by downloading "
     },
     "REVIEW_DEFENDANTS_RESPONSE": {
       "AGED_11_TO_15": "How many are aged 11 to 15?",
@@ -3045,6 +3228,8 @@
       "PAGE_TITLE": "Requesting extra time",
       "REQUEST_EXTENSION_DEFAULT": "If you want to request an extension of up to 28 days, you'll need to ask the other party's legal representative directly.",
       "REQUEST_EXTENSION_MORE": "If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party's legal representative, you'll need to apply to the court.",
+      "REQUEST_EXTENSION_DEFAULT_R2": "If you want to request an extension of up to 28 days, you'll need to ask the other party or their legal representative directly.",
+      "REQUEST_EXTENSION_MORE_R2": "If you want to request an extension of more than 28 days, or if your extension request has been rejected by the other party or their legal representative, you'll need to apply to the court.",
       "UNABLE_TO_RESPOND_BEFORE_DEADLINE": "If you think that you will be unable to respond to a claim before this deadline, you can request more time."
     },
     "UNEMPLOYMENT": {
@@ -3140,6 +3325,14 @@
       "DIRECTIONS": "directions questionnaire.",
       "WHAT_SUPPORT": "What support do you, experts or witnesses need?",
       "FOR_EXAMPLE": "For example, a witness requires a courtroom with step-free access."
+    },
+    "VIEW_RESPONSE_TO_THE_CLAIM": {
+      "DOCUMENT_LABEL": "Defendant response",
+      "OTHER_DOCUMENT_TEXT": "This is the response to the claim. This form and other case documents can also be found in ",
+      "PAGE_CAPTION": "The response",
+      "PAGE_TITLE": "View the response to the claim",
+      "RESPONSE_TYPE_LABEL": "Response type",
+      "TABLE_TITLE": "Response"
     },
     "VULNERABILITY": {
       "PAGE_TITLE": "Vulnerability questions",
@@ -3295,6 +3488,7 @@
     "AMOUNT_LESS_THAN_CLAIMED": "Enter a value less than the amount claimed",
     "AMOUNT_REQUIRED": "Enter an amount of £1 or more",
     "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
+    "APPLICATION_TYPE_REQUIRED": "Select an application",
     "CHOOSE_TYPE_OF_INTEREST": "Choose a type of interest",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
@@ -3332,28 +3526,48 @@
     "ENTER_PAYMENT_EXPLANATION": "Enter text explaining how you paid",
     "ENTER_DATE_YOU_ARE_UNAVAILABILITY_CARM": "Enter the date you are unavailable",
     "ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates they are unavailable",
+    "CARM_ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates you are unavailable",
     "ENTER_DATE_FOR_UNAVAILABILITY": "Enter the date they are unavailable",
     "ENTER_DATE_FOR_UNAVAILABILITY_FROM": "Enter the date they are unavailable from",
     "ENTER_DATE_FOR_UNAVAILABILITY_TO": "Enter the date they are unavailable to",
+    "CARM_ENTER_DATE_FOR_UNAVAILABILITY": "Enter the date you are unavailable",
+    "CARM_ENTER_DATE_FOR_UNAVAILABILITY_FROM": "Enter the date you are unavailable from",
+    "CARM_ENTER_DATE_FOR_UNAVAILABILITY_TO": "Enter the date you are unavailable to",
     "ENTER_DAY_FOR_UNAVAILABILITY_FROM": "Date they are unavailable from must include a day",
     "ENTER_DAY_FOR_UNAVAILABILITY": "Date they are unavailable must include a day",
     "ENTER_DAY_FOR_UNAVAILABILITY_TO": "Date they are unavailable to must include a day",
+    "CARM_ENTER_DAY_FOR_UNAVAILABILITY_FROM": "Date you are unavailable from must include a day",
+    "CARM_ENTER_DAY_FOR_UNAVAILABILITY": "Date you are unavailable must include a day",
+    "CARM_ENTER_DAY_FOR_UNAVAILABILITY_TO": "Date you are unavailable to must include a day",
     "ENTER_MONTH_FOR_UNAVAILABILITY": "Date they are unavailable must include a month",
     "ENTER_MONTH_FOR_UNAVAILABILITY_FROM": "Date they are unavailable from must include a month",
     "ENTER_MONTH_FOR_UNAVAILABILITY_TO": "Date they are unavailable to must include a month",
+    "CARM_ENTER_MONTH_FOR_UNAVAILABILITY": "Date you are unavailable must include a month",
+    "CARM_ENTER_MONTH_FOR_UNAVAILABILITY_FROM": "Date you are unavailable from must include a month",
+    "CARM_ENTER_MONTH_FOR_UNAVAILABILITY_TO": "Date you are unavailable to must include a month",
     "ENTER_YEAR_FOR_UNAVAILABILITY": "Date they are unavailable must include a year",
     "ENTER_YEAR_FOR_UNAVAILABILITY_FROM": "Date they are unavailable from must include a year",
     "ENTER_YEAR_FOR_UNAVAILABILITY_TO": "Date they are unavailable to must include a year",
+    "CARM_ENTER_YEAR_FOR_UNAVAILABILITY": "Date you are unavailable must include a year",
+    "CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM": "Date you are unavailable from must include a year",
+    "CARM_ENTER_YEAR_FOR_UNAVAILABILITY_TO": "Date you are unavailable to must include a year",
     "ENTER_UNAVAILABILITY_DATE_IN_FUTURE": "Date they are unavailable must be today or in the future",
     "ENTER_UNAVAILABILITY_DATE_IN_FUTURE_FROM": "Date they are unavailable from must be today or in the future",
     "ENTER_UNAVAILABILITY_DATE_IN_FUTURE_TO": "Date they are unavailable to must be today or in the future",
+    "CARM_ENTER_UNAVAILABILITY_DATE_IN_FUTURE": "Date you are unavailable must be today or in the future",
+    "CARM_ENTER_UNAVAILABILITY_DATE_IN_FUTURE_FROM": "Date you are unavailable from must be today or in the future",
+    "CARM_ENTER_UNAVAILABILITY_DATE_IN_FUTURE_TO": "Date you are unavailable to must be today or in the future",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS": "Date they are unavailable must be in the next 12 months",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_FROM": "Date they are unavailable from must be in the next 12 months",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_TO": "Date they are unavailable to must be in the next 12 months",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS": "Date they are unavailable must be in the next 3 months",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_FROM": "Date they are unavailable from must be in the next 3 months",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO": "Date they are unavailable to must be in the next 3 months",
+    "CARM_ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS": "Date you are unavailable must be in the next 3 months",
+    "CARM_ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_FROM": "Date you are unavailable from must be in the next 3 months",
+    "CARM_ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO": "Date you are unavailable to must be in the next 3 months",
     "ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Date they are unavailable from must be before the date they are unavailable to",
+    "CARM_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Date you are unavailable from must be before the date you are unavailable to",
     "ENTER_VALID_EMAIL": "Enter a valid email address",
     "ENTER_VALID_EMAIL_EVIDENCE": "Enter an email address in the correct format, like name@example.com",
     "ENTER_SECURITY_CODE": "Enter your security code",
@@ -3668,6 +3882,17 @@
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
     "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
-    "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced"
+    "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced",
+    "GENERAL_APPLICATION": {
+      "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
+      "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
+      "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
+      "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No",
+      "EXPLAIN_DO_NOT_WANT_COURT":"You need to explain why you do not want the court to inform the other parties.",
+      "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
+      "MISSING_OTHER": "You need to tell us what other type of support you need.",
+      "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
+      "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No"
+    }
   }
 }
