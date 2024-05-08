@@ -5,6 +5,7 @@ import {
   saveAgreementFromOtherParty,
   saveApplicationType,
   saveHearingSupport,
+  saveApplicationCosts,
 } from 'services/features/generalApplication/generalApplicationService';
 import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -120,6 +121,37 @@ describe('General Application service', () => {
     });
   });
 
+  describe('Save Application cost selection', () => {
+    it('should save application costs selected', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.generalApplication = new GeneralApplication();
+        return claim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      //When
+      await saveApplicationCosts('123', YesNo.YES);
+      //Then
+      expect(spy).toBeCalled();
+    });
+    it('should throw error when draft store throws error', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      //When
+      mockSaveClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      //Then
+      await expect(saveApplicationCosts('123', YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+    
   describe('Get cancel button url', () => {
     it('should return claimant new dashboard url when user is claimant and dashboard feature flag is enabled', async () => {
       //Given
