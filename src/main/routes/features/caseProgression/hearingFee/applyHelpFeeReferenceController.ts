@@ -24,7 +24,7 @@ const helpFeeReferenceNumberForm = 'helpFeeReferenceNumberForm';
 
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<ApplyHelpFeesReferenceForm>, claimId: string, redirectUrl: string) {
   const redisClaimId = generateRedisKey(<AppRequest>req);
-  const claim: Claim = await getCaseDataFromStore(redisClaimId);
+  const claim: Claim = await getCaseDataFromStore(redisClaimId, true);
   if (!form.hasErrors()) {
     form = claim.caseProgression?.helpFeeReferenceNumberForm ? new GenericForm(claim.caseProgression.helpFeeReferenceNumberForm) : form;
   }
