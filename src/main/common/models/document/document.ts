@@ -12,7 +12,7 @@ export interface TimeLineDocument {
 
 export interface ServedDocumentFiles {
   timelineEventUpload: TimeLineDocument[]
-  particularsOfClaimDocument: TimeLineDocument[]
+  particularsOfClaimDocument?: TimeLineDocument[]
 }
 
 export interface ResponseDocument {
