@@ -18,6 +18,10 @@ class LoginPage {
     await I.amOnPage('/');
   }
 
+  async openOCMC() {
+    await I.amOnPage('https://moneyclaims.aat.platform.hmcts.net');
+  }
+
   async openManageCase() {
     await I.amOnPage(config.url.manageCase);
   }
@@ -41,9 +45,14 @@ class LoginPage {
     await this.#login(email, password, '/dashboard');
   }
 
+  async ocmcLogin(email, password) {
+    await this.#login(email, password, '/eligibility');
+  }
+
   async caseWorkerLogin(email, password) {
     await this.#login(email, password, '/work/my-work/list');
   }
+
 }
 
 module.exports = new LoginPage();
