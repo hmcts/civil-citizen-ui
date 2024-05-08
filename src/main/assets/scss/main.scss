@@ -245,3 +245,13 @@
   table-layout: fixed;
   width: 100%;
 }
+
+#dashboardNotificationBanner {
+  .govuk-notification-banner {
+  .govuk-notification-banner__content {
+      .govuk-body {
+          margin-bottom: 0 !important; /* Set bottom margin to zero */
+      }
+  }
+}
+}

@@ -27,12 +27,14 @@
         {# Left side #}
         <div class="govuk-grid-column-two-thirds">
           <div class="border-small-top"></div>
+            <div id="dashboardNotificationBanner">
             {% for notification in dashboardNotifications.items %}
                 {{ govukNotificationBanner({
                    titleText: notification.titleCy if lang=="cy" else notification.titleEn,
                    html: notification.descriptionCy if lang=="cy" else notification.descriptionEn
                  })  }}
             {% endfor %}
+          </div>
             {% for taskList in dashboardTaskList.items %}
               <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
                 <h2 class="app-task-list__section">
