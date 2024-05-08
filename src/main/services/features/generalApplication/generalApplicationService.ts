@@ -4,13 +4,14 @@ import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
-import { YesNo } from 'common/form/models/yesNo';
-import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
-import { AppRequest } from 'common/models/AppRequest';
-import { FormValidationError } from 'common/form/validationErrors/formValidationError';
-import { GenericYesNo } from 'common/form/models/genericYesNo';
-import { ValidationError } from 'class-validator';
+import {YesNo} from 'common/form/models/yesNo';
+import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {AppRequest} from 'common/models/AppRequest';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {ValidationError} from 'class-validator';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {RequestingReason} from 'models/generalApplication/requestingReason';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -89,3 +90,15 @@ export function validateNoConsentOption(req: AppRequest, errors : ValidationErro
     errors.push(validationError);
   }
 }
+
+export const saveRequestingReason = async (claimId: string, requestingReason: RequestingReason): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.requestingReason = requestingReason;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
