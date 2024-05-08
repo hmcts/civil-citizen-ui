@@ -13,12 +13,6 @@ cd ..
 
 #Copy ccd definition files  to civil-ccd-def which contians bpmn files
 cp -r ./civil-general-apps-ccd-definition/ga-ccd-definition .
-cp -r ./civil-general-apps-ccd-definition/e2e .
-cp -r ./civil-general-apps-ccd-definition/package.json .
-cp -r ./civil-general-apps-ccd-definition/yarn.lock .
-cp -r ./civil-general-apps-ccd-definition/codecept.conf.js .
-cp -r ./civil-general-apps-ccd-definition/saucelabs.conf.js .
-echo *
 rm -rf ./civil-general-apps-ccd-definition
 
 definition_input_dir=$(realpath 'ga-ccd-definition')
