@@ -32,7 +32,7 @@ interface Item {
   html?: string;
 }
 
-export function summaryRow(key?: string, value?: string, href?: string, hrefText?: string): SummaryRow {
+export function summaryRow(key?: string, value?: string, href?: string, hrefText?: string, hiddentText?: string): SummaryRow {
   const row: SummaryRow = {
     key: {
       text: key,
@@ -42,12 +42,13 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
     },
   };
   if (href) {
+    const accessibilityText = hiddentText ? `${key} (${hiddentText})` : `${key}`;
     row.actions = {
       items: [
         {
           href: href,
           text: hrefText,
-          visuallyHiddenText: ` ${key}`,
+          visuallyHiddenText: accessibilityText,
         },
       ],
     };
