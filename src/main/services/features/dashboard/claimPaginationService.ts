@@ -37,4 +37,4 @@ const buildVisualText = (pageName: string): string => {
 
   }
   return 'PAGES.DASHBOARD.CLAIMS_YOU_HAVE_MADE_HIDDEN_TEXT';
-}
+};
