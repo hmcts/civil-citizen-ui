@@ -27,8 +27,8 @@ describe('General Application - Respondent Agree to order', () => {
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-      (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
+      .reply(200, { id_token: citizenRoleToken });
+    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   beforeEach(() => {
