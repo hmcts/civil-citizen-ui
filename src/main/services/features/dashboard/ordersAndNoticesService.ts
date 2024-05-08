@@ -122,19 +122,19 @@ const getDefendantSupportDocument = (claim: Claim, claimId: string, lang: string
 };
 
 const getStandardDirectionsOrder = (claim: Claim, claimId: string, lang: string) => {
-  const standardDirectionsOrder = claim.getDocumentDetails(DocumentType.SDO_ORDER, DirectionQuestionnaireType.DEFENDANT);
+  const standardDirectionsOrder = claim.getDocumentDetails(DocumentType.SDO_ORDER);
   return standardDirectionsOrder ? Array.of(
     setUpDocumentLinkObject(standardDirectionsOrder.documentLink, standardDirectionsOrder.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.STANDARD_DIRECTIONS_ORDER')) : [];
 };
 
 const getManualDetermination = (claim: Claim, claimId: string, lang: string) => {
-  const manualDetermination = claim.getDocumentDetails(DocumentType.LIP_MANUAL_DETERMINATION, DirectionQuestionnaireType.DEFENDANT);
+  const manualDetermination = claim.getDocumentDetails(DocumentType.LIP_MANUAL_DETERMINATION);
   return manualDetermination ? Array.of(
     setUpDocumentLinkObject(manualDetermination.documentLink, manualDetermination.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DETERMINATION_REQUEST')) : [];
 };
 
 const getCcjRequestAdmission = (claim: Claim, claimId: string, lang: string) => {
-  const ccjRequestAdmission = claim.getDocumentDetails(DocumentType.CCJ_REQUEST_ADMISSION, DirectionQuestionnaireType.DEFENDANT);
+  const ccjRequestAdmission = claim.getDocumentDetails(DocumentType.CCJ_REQUEST_ADMISSION);
   return ccjRequestAdmission ? Array.of(
     setUpDocumentLinkObject(ccjRequestAdmission.documentLink, ccjRequestAdmission.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.CCJ_REQUEST')) : [];
 };
