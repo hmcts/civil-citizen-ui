@@ -36,6 +36,8 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
     securityCode = caseData.respondent1PinToPostLRspec.accessCode;
     console.log('claim number', claimNumber);
     console.log('Security code', securityCode);
+    console.log('claim Data    <===>  ', caseData);
+
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await ResponseSteps.RespondToClaim(claimRef);
     await ResponseSteps.EnterCompDetails(carmEnabled);
