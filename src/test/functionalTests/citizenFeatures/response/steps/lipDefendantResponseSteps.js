@@ -528,7 +528,7 @@ class ResponseSteps {
   }
 
   async SignOut() {
-    await I.waitForContent('Sign out', 60)
+    await I.waitForContent('Sign out', 60);
     await I.click('Sign out');
   }
 
