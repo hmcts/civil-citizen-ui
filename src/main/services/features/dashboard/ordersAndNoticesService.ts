@@ -99,7 +99,7 @@ const getDefendantResponse = (claim: Claim, claimId: string, lang: string) => {
   const defendResponse =
     claim.isLRDefendant() ?
       claim.getDocumentDetails(DocumentType.SEALED_CLAIM, DirectionQuestionnaireType.DEFENDANT) :
-      isBilingual(claim.claimantBilingualLanguagePreference) ?
+      isBilingual(claim.claimBilingualLanguagePreference) ?
         claim.getDocumentDetails(DocumentType.DEFENCE_TRANSLATED_DOCUMENT) :
         claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE);
   return defendResponse ? Array.of(
