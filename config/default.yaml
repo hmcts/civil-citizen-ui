@@ -11,6 +11,7 @@ services:
     ordnanceSurveyApiKey:
   launchDarkly:
     sdk:
+    env: 'default'
   idam:
     url: 'http://localhost:5000'
     authorizationURL: 'http://localhost:9002/login'
