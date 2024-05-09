@@ -82,7 +82,6 @@ import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uplo
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import {GeneralApplication} from './generalApplication/GeneralApplication';
-import {DelayedFlight} from './delayedFlight';
 import {FlightDetails} from './flightDetails';
 
 export class Claim {
@@ -170,7 +169,7 @@ export class Claim {
   generalApplication?: GeneralApplication;
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
-  delayedFlight?: DelayedFlight;
+  delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
   // Index signature to allow dynamic property access
   [key: string]: any;

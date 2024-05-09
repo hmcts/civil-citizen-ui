@@ -294,7 +294,8 @@ import hearingSupportController from './features/generalApplication/hearingSuppo
 import claimFeeMakePaymentAgainController from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
 import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
 import claimApplicationCostController from './features/generalApplication/claimApplicationCostController';
-import delayedFlightController from './features/claim/delayedFlight/delayedFlightController';
+import flightDetailsController from './features/claim/airlines/flightDetailsController';
+import delayedFlightController from './features/claim/airlines/delayedFlightController';
 
 export default [
   homeController,
@@ -556,5 +557,6 @@ export default [
   claimFeeMakePaymentAgainController,
   agreementFromOtherPartyController,
   claimApplicationCostController,
+  flightDetailsController,
   delayedFlightController,
 ];

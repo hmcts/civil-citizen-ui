@@ -16,20 +16,10 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% if form.hasErrors() %}
-      
         {% set errors = form.getErrors() %}
         <div class="govuk-grid-row">
           {{ errorSummary(errors, t) }}
         </div>
-
-        {# {% set errorMessages %}
-          {% if errors %}
-            {% for error in errors %}
-              <span class="govuk-error-message">{{ t(error.text) }}</span>
-            {% endfor %}
-          {% endif %}
-        {% endset -%} #}
-
       {% endif %}
       
       <div class="govuk-grid-row">
@@ -38,16 +28,37 @@
             {{ csrfProtection(csrf) }}
             
             <h1 class="govuk-heading-l">{{ t('PAGES.FLIGHT_DETAILS.FLIGHT_DETAILS') }}</h1>
-              {{airlines | dump}}
-            
-            <p class="govuk-body">{{ t('PAGES.FLIGHT_DETAILS.AIRLINE') }}</p>
-            <input list="airlines" name="airline" id="airline" class="govuk-input govuk-!-width-one-half">
-            
-            <datalist id="airlines" class="govuk-!-padding-bottom-5">
-              {% for airline in airlines %}
-                <option value={{airline.airline}}>
-              {% endfor %}
-            </datalist>
+              {# {{airlines | dump}}
+              <ul>
+                {% for airline in airlines %}
+                  <li>{{airline.airline}}</li>
+                {% endfor %}
+              </ul>
+             #}
+        
+            {% set formGroupErrorClass = "govuk-form-group" %}
+            {% set messageErrorClass = "govuk-visually-hidden" %}
+            {% set inputErrorClass = "govuk-input govuk-!-width-one-half" %}
+
+            {% if hasAirlineError %}
+              {% set formGroupErrorClass = "govuk-form-group--error" %}
+              {% set messageErrorClass = "govuk-error-message" %}
+              {% set inputErrorClass = "govuk-input govuk-!-width-one-half govuk-input--error" %}
+            {% endif %}
+
+            <div class={{formGroupErrorClass}}>
+              <p class="govuk-body govuk-!-margin-bottom-1">{{ t('PAGES.FLIGHT_DETAILS.AIRLINE') }}</p>
+              <p class={{messageErrorClass}}>{{ t('ERRORS.FLIGHT_DETAILS.AIRLINE_REQUIRED') }}</p>
+              <input list="airlines" name="airline" id="airline" class={{inputErrorClass}}>
+              <datalist id="airlines" class="govuk-!-padding-bottom-0">
+                {% for airline in airlines %}
+                  <option value={{airline.airline}}>
+                    {{airline.airline}}
+                    {{airline.epimsID}}
+                  </option>
+                {% endfor %}
+              </datalist>
+            </div>
 
             {{ govukInput({
               id: "flightNumber",
@@ -63,11 +74,6 @@
             }) }}
 
             <h1 class="govuk-heading-s">{{ t('PAGES.FLIGHT_DETAILS.SCHEDULED_DATE') }}</h1>
-            {% if form.hasErrors() %}
-              {% for error in errors %}
-                <span class="govuk-error-message">{{ t(error.text) }}</span>
-              {% endfor %}
-            {% endif %}
             {{ govukDateInput({
               id: "flightDate",
               name: "flightDate",

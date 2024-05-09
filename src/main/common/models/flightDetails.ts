@@ -18,15 +18,15 @@ export class FlightDetails {
 
   @Min(1872,{message:'ERRORS.VALID_YEAR'})
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
-    year: string;
+    year: number;
 
   @Min(1,{message:'ERRORS.VALID_MONTH'})
   @Max(12,{message:'ERRORS.VALID_MONTH'})
-    month: string;
+    month: number;
 
   @Min(1,{message:'ERRORS.VALID_DAY'})
   @Max(31,{message:'ERRORS.VALID_DAY'})
-    day: string;
+    day: number;
 
     constructor(
       airline?: string,
@@ -38,8 +38,8 @@ export class FlightDetails {
       this.airline = airline;
       this.flightNumber = flightNumber;
       this.flightDate = DateConverter.convertToDate(year, month, day);
-      this.year = year;
-      this.month = month;
-      this.day = day;
+      this.year = Number(year);
+      this.month = Number(month);
+      this.day = Number(day);
     }
 }
