@@ -11,15 +11,15 @@ uploadYourDocumentsController.get(UPLOAD_YOUR_DOCUMENTS_URL, (async (req, res, n
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
-    let homeUrl;
+    let dashboardUrl;
     if (claim.isClaimant()) {
-      homeUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
+      dashboardUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
     } else {
-      homeUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+      dashboardUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
     }
     res.render(uploadYourDocumentsViewPath, {
       uploadYourDocumentsContents:getUploadYourDocumentsContents(claimId, claim),
-      homeUrl,
+      dashboardUrl,
     });
   } catch (error) {
     next(error);

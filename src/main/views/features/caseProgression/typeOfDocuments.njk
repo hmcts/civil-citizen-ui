@@ -1,30 +1,16 @@
-{% extends "claim-details-tpl.njk" %}
-{% from "../../macro/page-title.njk" import setPageTitle %}
-{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
+{% extends "claim-details-tpl-dashboard.njk" %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% from "../dashboard/item-content.njk" import itemContent %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
-{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "../../macro/button.njk" import addButton %}
 
-{% block pageTitle %}
-  {{ setPageTitle(t, 'TITLE') }}
-{% endblock %}
+{% set pageTitle = t('TITLE') %}
 
-{% block content %}
-  {{ govukBackLink({
-    text: t('COMMON.BUTTONS.BACK'),
-    href: previousUrl,
-    classes: "govuk-!-margin-top-0"
-  }) }}
-<div class="govuk-width-container">
-  <main class="govuk-main-wrapper" role="main">
+{% block nestedContent %}
     {% if form.hasErrors() %}
     {{ errorSummary(form.getAllErrors(), t) }}
     {% endif %}
-    <div class="govuk-grid-row">
-      <div class="govuk-grid-column-two-thirds">
          <form method="post" novalidate>
           {{ csrfProtection(csrf) }}
            {% for content in typeOfDocumentsContents %}
@@ -353,20 +339,8 @@
                             }) }}
                             {% endif %}
                   </div>
-               <div class="govuk-button-group">
-                 {{ govukButton({
-                   text: t('COMMON.BUTTONS.CONTINUE')
-                 }) }}
-                 <a href={{ latestUploadUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
-               </div>
+                 {{ addButton(t, 'CONTINUE',cancelUrl) }}
 
         </form>
-        </div>
-      <div class="govuk-grid-column-one-third">
-        {{ contactUsForHelp(t) }}
-      </div>
-      </div>
-    </main>
-  </div>
 
 {% endblock %}

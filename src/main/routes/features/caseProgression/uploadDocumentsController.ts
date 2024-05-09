@@ -42,7 +42,7 @@ async function renderView(res: Response, claim: Claim, claimId: string, form: Ge
     const expertContent = getExpertContent(claim, form);
     const trialContent = getTrialContent(claim, form, isSmallClaims);
     const uploadDocumentsContents= getUploadDocumentsContents(claimId, claim);
-    const previousUrl = constructResponseUrlWithIdParams(claimId, TYPES_OF_DOCUMENTS_URL);
+    const backLinkUrl = constructResponseUrlWithIdParams(claimId, TYPES_OF_DOCUMENTS_URL);
     res.render(uploadDocumentsViewPath, {
       form,
       claim,
@@ -54,7 +54,7 @@ async function renderView(res: Response, claim: Claim, claimId: string, form: Ge
       cancelUrl,
       isSmallClaims,
       uploadDocumentsContents,
-      previousUrl,
+      backLinkUrl,
     });
   }
 }

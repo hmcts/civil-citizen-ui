@@ -20,17 +20,17 @@ const typeOfDocumentsController = Router();
 const dqPropertyName = 'defendantUploadDocuments';
 const dqPropertyNameClaimant = 'claimantUploadDocuments';
 
-async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocuments>, previousUrl: string) {
+async function renderView(res: Response, claimId: string, form: GenericForm<UploadDocuments>, backLinkUrl: string) {
 
   const claim = await getCaseDataFromStore(claimId);
   const typeOfDocumentsContents = getTypeOfDocumentsContents(claimId, claim);
-  const latestUploadUrl = constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL);
+  const cancelUrl = constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL);
   const isFastTrack = claim.isFastTrackClaim;
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
   claimId = caseNumberPrettify(claimId);
 
   res.render(typeOfDocumentsViewPath, {form,
-    claimId, typeOfDocumentsContents, latestUploadUrl, isFastTrack, isSmallClaims, previousUrl,
+    claimId, typeOfDocumentsContents, cancelUrl, isFastTrack, isSmallClaims, backLinkUrl,
   });
 }
 

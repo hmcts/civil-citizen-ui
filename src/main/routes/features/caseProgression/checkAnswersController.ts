@@ -24,7 +24,7 @@ function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionFor
   const topPageContents = getTopElements(claim);
   let summarySections: DocumentUploadSections;
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
-  const previousUrl = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
 
   if(isClaimant) {
     summarySections = getSummarySections(claim.caseProgression.claimantDocuments, claimId, isSmallClaims, lang);
@@ -35,7 +35,7 @@ function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionFor
   const cancelUrl = constructResponseUrlWithIdParams(claim.id, CP_EVIDENCE_UPLOAD_CANCEL);
 
   res.render(checkAnswersViewPath, {
-    form, topPageContents, summarySections, bottomPageContents, isSmallClaims, cancelUrl, previousUrl,
+    form, topPageContents, summarySections, bottomPageContents, isSmallClaims, cancelUrl, backLinkUrl,
   });
 }
 
