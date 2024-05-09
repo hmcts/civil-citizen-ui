@@ -36,6 +36,10 @@
                 name: "text",
                 id: "text",
                 value: hintText,
+                label: {
+                  text: t("PAGES.GENERAL_APPLICATION.ORDER_JUDGE.ENTER_THE_ORDER"),
+                  classes: "govuk-visually-hidden"
+                },
                 errorMessage: {
                   html: t(form.errorFor("text"))
                 } if form.hasFieldError("text")
