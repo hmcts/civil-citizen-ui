@@ -6,7 +6,7 @@ const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClai
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
-const {defendantRejectsSettlement, claimantAskDefendantToSignSettlement} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {defendantRejectsSettlementDefendant, claimantAskDefendantToSignSettlement, defendantAcceptsSettlementClaimant, defendantAcceptsSettlementDefendant} = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
@@ -23,6 +23,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayBySetDateWithIndividual);
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -32,6 +33,20 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.DefendantAdmissionSSA(claimRef, 'yes');
+
+    if (isDashboardServiceEnabled) {
+      const notification = defendantAcceptsSettlementDefendant();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
+    //This sign out is not working for some reason???
+    await api.waitForFinishedBusinessProcess();
+    await ResponseSteps.SignOut;
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    if (isDashboardServiceEnabled) {
+      //await api.waitForFinishedBusinessProcess();
+      const notification = defendantAcceptsSettlementClaimant();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
   }
 }).tag('@regression-r2');
 
@@ -58,7 +73,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     await ResponseSteps.DefendantAdmissionSSA(claimRef, 'no');
 
     if (isDashboardServiceEnabled) {
-      const notification = defendantRejectsSettlement();
+      const notification = defendantRejectsSettlementDefendant();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }

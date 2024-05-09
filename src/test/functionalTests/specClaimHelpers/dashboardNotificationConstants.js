@@ -187,7 +187,7 @@ module.exports = {
     };
   },
 
-  defendantRejectsSettlement: () => {
+  defendantRejectsSettlementDefendant: () => {
     return {
       title: 'Settlement agreement',
       content: ['You have rejected the settlement agreement.',
@@ -196,12 +196,33 @@ module.exports = {
     };
   },
 
+  defendantRejectsSettlementClaimant: () => {
+
+  },
+
   claimantAskDefendantToSignSettlement: () => {
     return {
       title: 'Settlement agreement',
       content: ['You have accepted the Sir John Doe offer and asked them to sign a settlement agreement.',
         'The defendant must respond by ',
         'If they do not respond by then, or reject the agreement, you can request a County Court Judgment(CCJ).'],
+    };
+  },
+
+  defendantAcceptsSettlementDefendant: () => {
+    return {
+      title: 'Settlement agreement',
+      content: ['You have accepted the settlement agreement.',
+        'The claimant cannot request a County Court Judgment, unless you break the terms of the agreement.'],
+    };
+  },
+
+  defendantAcceptsSettlementClaimant: () => {
+    return {
+      title: 'Settlement agreement',
+      content: ['Sir John Doe has accepted the settlement agreement.',
+        'You cannot request a County Court Judgment(CCJ), unless they break the terms of the agreement.'],
+      nextSteps: 'You can view the settlement agreement or tell us it\'s settled',
     };
   },
 };
