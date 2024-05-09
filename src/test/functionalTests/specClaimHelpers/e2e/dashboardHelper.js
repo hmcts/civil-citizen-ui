@@ -30,4 +30,15 @@ module.exports = {
       I.seeElement(`//a[contains(@class, "govuk-link")][normalize-space(.)="${tasklist}"]`);
     }
   },
+
+  verifyTasklistLinkAndState: async (tasklist, locator, status, isLinkFlag= false, isDeadlinePresent= false, deadline) => {
+    await I.see(tasklist, locator);
+    await I.see(status, locator);
+    if (isLinkFlag === true) {
+      I.seeElement(`//a[contains(@class, "govuk-link")][normalize-space(.)="${tasklist}"]`);
+    }
+    if (isDeadlinePresent === true) {
+      await I.see(deadline, locator);
+    }
+  },
 };

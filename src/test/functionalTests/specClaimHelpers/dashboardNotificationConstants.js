@@ -148,7 +148,7 @@ module.exports = {
     return {
       title: 'The claim has been struck out',
       content: 'This is because the hearing fee was not paid by 10 November 2023 as stated in the hearing notice.',
-      nextSteps: 'hearing notice.'
+      nextSteps: 'hearing notice.',
     };
   },
 
@@ -156,7 +156,40 @@ module.exports = {
     return {
       title: 'An order has been made',
       content: 'The judge has made an order on your claim. View the order.',
-      nextSteps: 'View the order'
+      nextSteps: 'View the order',
+    };
+  },
+
+  claimStruckOut: () => {
+    return {
+      title: 'The claim has been struck out',
+      content: 'This is because the hearing fee was not paid by 10 November 2023 as stated in the hearing notice.',
+      nextSteps: 'hearing notice.',
+    };
+  },
+
+  orderMade: () => {
+    return {
+      title: 'An order has been made',
+      content: 'The judge has made an order on your claim. View the order.',
+      nextSteps: 'View the order',
+    };
+  },
+
+  hearingScheduled: (hearingDate) => {
+    return {
+      title: 'A hearing has been scheduled',
+      content: `Your hearing has been scheduled for ${hearingDate} at Central London County Court. Please keep your contact details and anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050. View the hearing notice.`,
+      nextSteps: 'View the hearing notice',
+    };
+  },
+
+  payTheHearingFeeClaimant: (amount, deadline) => {
+    return {
+      title: 'You must pay the hearing fee',
+      content: `You must either pay the hearing fee of £${amount} or apply for help with fees. You must do this by ${deadline}. If you do not take one of these actions, your claim will be struck out.`,
+      nextSteps: 'pay the hearing fee',
+      nextSteps2: 'apply for help with fees',
     };
   },
 };

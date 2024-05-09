@@ -6,6 +6,7 @@ const ApplyHelpWithFeesReferenceNumber = require ('../pages/hearingFee/applyHelp
 const ApplyHelpWithFeesConfirmation = require ('../pages/hearingFee/applyHelpWithFeesConfirmation');
 const PaymentSuccessful = require ('../pages/hearingFee/paymentSuccessful');
 const GovPay = require ('../../common/govPay');
+const { isDashboardServiceToggleEnabled } = require('../../../specClaimHelpers/api/testingSupport');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const payHearingFee = new PayHearingFee();
@@ -19,17 +20,20 @@ const govPay = new GovPay();
 
 class hearingFeeSteps {
 
-  initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, dueDate) {
-    console.log('The value of the Claim Reference : ' + claimRef);
-    payHearingFee.open(claimRef);
-    payHearingFee.verifyPageContent(feeAmount, dueDate);
-    payHearingFee.nextAction('Start now');
-    applyHelpFeeSelection.verifyPageContent(feeAmount);
-    applyHelpFeeSelection.nextAction('Yes');
-    applyHelpFeeSelection.nextAction('Continue');
-    applyHelpFees.verifyPageContent(feeAmount);
-    applyHelpFees.nextAction('Yes');
-    applyHelpFees.nextAction('Continue');
+  async initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, dueDate) {
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+    if (!isDashboardServiceEnabled) {
+      console.log('The value of the Claim Reference : ' + claimRef);
+      payHearingFee.open(claimRef);
+      payHearingFee.verifyPageContent(feeAmount, dueDate);
+      payHearingFee.nextAction('Start now');
+      applyHelpFeeSelection.verifyPageContent(feeAmount);
+      applyHelpFeeSelection.nextAction('Yes');
+      applyHelpFeeSelection.nextAction('Continue');
+      applyHelpFees.verifyPageContent(feeAmount);
+      applyHelpFees.nextAction('Yes');
+      applyHelpFees.nextAction('Continue');
+    }
     applyHelpWithFeesStart.verifyPageContent();
     applyHelpWithFeesStart.nextAction('Continue');
     applyHelpWithFeesReferenceNumber.verifyPageContent();
@@ -39,7 +43,8 @@ class hearingFeeSteps {
     applyHelpWithFeesConfirmation.verifyPageContent();
   }
 
-  payHearingFeeJourney(claimRef, feeAmount, dueDate) {
+  payHearingFeeJourney(claimRef, feeAmount, dueDate)
+  {
     console.log('The value of the Claim Reference : ' + claimRef);
     payHearingFee.open(claimRef);
     payHearingFee.verifyPageContent(feeAmount, dueDate);

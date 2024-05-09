@@ -16,7 +16,7 @@ Feature('Case progression journey - Verify latest Update page For an Order being
 Before(async ({api}) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    // await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
