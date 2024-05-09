@@ -22,6 +22,7 @@ nodejs:
     OAUTH_CLIENT_REDIRECT: https://${SERVICE_FQDN}/oauth2/callback
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
     IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
+    LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
 
 civil-service:
   enabled: true
