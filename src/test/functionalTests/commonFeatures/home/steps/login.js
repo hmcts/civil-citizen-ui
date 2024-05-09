@@ -14,6 +14,13 @@ class LoginSteps  {
     await LoginPage.citizenLogin(username, password);
   }
 
+  async EnterCitizenCredentialsOCMC(username, password) {
+    await I.wait(10);
+    await LoginPage.openOCMC();
+    //await this.AcceptCookies(); -- skip as it is flaky
+    await LoginPage.ocmcLogin(username, password);
+  }
+
   async EnterCaseworkerCredentials(username, password) {
     await I.wait(10);
     await LoginPage.openManageCase();
