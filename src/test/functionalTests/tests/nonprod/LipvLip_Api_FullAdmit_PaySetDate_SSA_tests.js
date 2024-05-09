@@ -6,7 +6,7 @@ const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClai
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
-const {defendantRejectsSettlement} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {defendantRejectsSettlement, claimantAskDefendantToSignSettlement} = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
@@ -48,6 +48,10 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDateSSA(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
+    if (isDashboardServiceEnabled) {
+      const notification = claimantAskDefendantToSignSettlement();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
     await ResponseSteps.SignOut();
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);

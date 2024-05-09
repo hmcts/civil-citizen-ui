@@ -195,4 +195,13 @@ module.exports = {
         'If the claimant requests a CCJ then you can ask a judge to consider changing the plan, based on your financial details.'],
     };
   },
+
+  claimantAskDefendantToSignSettlement: () => {
+    return {
+      title: 'Settlement agreement',
+      content: ['You have accepted the Sir John Doe offer and asked them to sign a settlement agreement.',
+        'The defendant must respond by ',
+        'If they do not respond by then, or reject the agreement, you can request a County Court Judgment(CCJ).'],
+    };
+  },
 };
