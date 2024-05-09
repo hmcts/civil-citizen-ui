@@ -21,7 +21,7 @@
 {% for item in documentsSection.documents %}
 {% set rows = (rows.push([
     {
-        html: addCreateFileInformation(t(item.fileName), t(item.uploadDate))
+        html: addCreateFileInformation(t, t(item.fileName), t(item.uploadDate))
     },
     {
         html: addFileLink(item.linkInformation.url, item.linkInformation.text)

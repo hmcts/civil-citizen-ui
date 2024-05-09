@@ -20,7 +20,7 @@
     {% for item in claimantDocuments.documents %}
     {% set claimantDocRows = (claimantDocRows.push([
         {
-            html: addCreateFileInformation(t(item.fileName), t(item.uploadDate))
+            html: addCreateFileInformation(t, t(item.fileName), t(item.uploadDate))
         },
         {
             html: addFileLink(item.linkInformation.url, item.linkInformation.text)
@@ -40,7 +40,7 @@
     {% for item in defendantDocuments.documents %}
     {% set defendantDocRows = (defendantDocRows.push([
         {
-            html: addCreateFileInformation(t(item.fileName), t(item.uploadDate))
+            html: addCreateFileInformation(t, t(item.fileName), t(item.uploadDate))
         },
         {
             html: addFileLink(item.linkInformation.url, item.linkInformation.text)
@@ -60,7 +60,7 @@
     {% for item in courtDocuments.documents %}
     {% set courtDocRows = (courtDocRows.push([
         {
-            html: addCreateFileInformation(t(item.fileName), t(item.uploadDate))
+            html: addCreateFileInformation(t, t(item.fileName), t(item.uploadDate))
         },
         {
             html: addFileLink(item.linkInformation.url, item.linkInformation.text)
