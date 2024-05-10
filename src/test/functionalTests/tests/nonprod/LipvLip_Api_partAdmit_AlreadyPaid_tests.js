@@ -21,6 +21,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle t
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+    console.log('isDashboardServiceEnabled..', isDashboardServiceEnabled);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitAmountPaidWithIndividual);
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

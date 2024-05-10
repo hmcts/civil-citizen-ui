@@ -20,6 +20,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+    console.log('isDashboardServiceEnabled..', isDashboardServiceEnabled);
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     if (isDashboardServiceEnabled) {

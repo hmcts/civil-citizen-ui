@@ -64,7 +64,7 @@ Scenario('Response with PartAdmit-PayBySetDate Small claims Reject repayment pla
     let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-
+    console.log('isDashboardServiceEnabled..', isDashboardServiceEnabled);
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitPayBySetDateRejectRepaymentPlanCCJ(claimRef, '456', claimNumber);
     await api.waitForFinishedBusinessProcess();

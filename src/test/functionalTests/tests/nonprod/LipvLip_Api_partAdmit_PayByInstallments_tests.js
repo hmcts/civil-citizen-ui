@@ -61,6 +61,7 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept 
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+    console.log('isDashboardServiceEnabled..', isDashboardServiceEnabled);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual);
     await api.waitForFinishedBusinessProcess();
     //Claimant response below here
