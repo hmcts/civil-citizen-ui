@@ -371,7 +371,7 @@ civil-general-applications:
         secrets:
           - microservicekey-civil-general-applications
     environment:
-      CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
+      CORE_CASE_DATA_API_URL: http://ccd-data-store-api-civil-citizen-ui-pr-3748.preview.platform.hmcts.net
       OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
       CMC_DB_HOST: ${SERVICE_NAME}-postgresql
       CMC_DB_USERNAME: ${POSTGRES_USER}
