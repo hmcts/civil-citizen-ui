@@ -177,16 +177,6 @@ module.exports = {
     };
   },
 
-  claimantAcceptSignSettlment: () => {
-    return {
-      title: 'Settlement agreement',
-      content: ['The claimant has accepted your plan and asked you to sign a settlement agreement. You must respond by',
-        'If you do not respond by then, or reject the agreement, they can request a County Court Judgment.'],
-      nextSteps: 'View the repayment plan',
-      nextSteps2: 'View your response',
-    };
-  },
-
   defendantRejectsSettlementDefendant: () => {
     return {
       title: 'Settlement agreement',
@@ -204,7 +194,17 @@ module.exports = {
     };
   },
 
-  claimantAskDefendantToSignSettlement: () => {
+  claimantAskDefendantToSignSettlementDefendant: () => {
+    return {
+      title: 'Settlement agreement',
+      content: ['The claimant has accepted your plan and asked you to sign a settlement agreement. You must respond by',
+        'If you do not respond by then, or reject the agreement, they can request a County Court Judgment.'],
+      nextSteps: 'View the repayment plan',
+      nextSteps2: 'View your response',
+    };
+  },
+
+  claimantAskDefendantToSignSettlementClaimant: () => {
     return {
       title: 'Settlement agreement',
       content: ['You have accepted the Sir John Doe offer and asked them to sign a settlement agreement.',

@@ -6,7 +6,7 @@ const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClai
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
-const {defendantRejectsSettlementDefendant, defendantRejectsSettlementClaimant, claimantAskDefendantToSignSettlement, defendantAcceptsSettlementClaimant, defendantAcceptsSettlementDefendant} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {defendantRejectsSettlementDefendant, defendantRejectsSettlementClaimant, claimantAskDefendantToSignSettlementClaimant, claimantAskDefendantToSignSettlementDefendant, defendantAcceptsSettlementClaimant, defendantAcceptsSettlementDefendant} = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
@@ -50,7 +50,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
   }
 }).tag('@regression-r2');
 
-Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and reject by Defendant - @api', async ({I, api}) => {
+Scenario('@debug Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and reject by Defendant - @api', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -63,13 +63,21 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDateSSA(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
+
     if (isDashboardServiceEnabled) {
-      const notification = claimantAskDefendantToSignSettlement();
+      const notification = claimantAskDefendantToSignSettlementClaimant();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
+
     await I.click('Sign out');
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
+
+    if (isDashboardServiceEnabled) {
+      const notification = claimantAskDefendantToSignSettlementDefendant();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
+
     await ResponseSteps.DefendantAdmissionSSA(claimRef, 'no');
 
     if (isDashboardServiceEnabled) {

@@ -4,7 +4,7 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
-const {claimantAcceptSignSettlment, judgmentRequestedCourtAgrees} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {judgmentRequestedCourtAgrees} = require('../../specClaimHelpers/dashboardNotificationConstants');
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 
@@ -29,13 +29,6 @@ Scenario('Response with PartAdmit-PayBySetDate Small claims @citizenUI @partAdmi
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitPayBySetDate(claimRef, '456', claimNumber);
     await api.waitForFinishedBusinessProcess();
-
-    if (isDashboardServiceEnabled) {
-      await I.click('Sign out');
-      await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-      const notification = claimantAcceptSignSettlment();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-    }
   }
 }).tag('@regression-r2');
 
