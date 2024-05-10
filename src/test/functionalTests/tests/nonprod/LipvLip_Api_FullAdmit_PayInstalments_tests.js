@@ -2,7 +2,6 @@ const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
@@ -36,7 +35,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by instal
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
     }
-    await ResponseSteps.SignOut();
+    await I.click('Sign out');
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsRejectionOfFullAdmitPayByInstalmentsSSA(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();

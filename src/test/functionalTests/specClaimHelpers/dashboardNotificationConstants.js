@@ -201,7 +201,7 @@ module.exports = {
       title: 'Settlement agreement',
       content: ['Sir John Doe has rejected the settlement agreement.',
         'You can request a County Court Judgment'],
-    }
+    };
   },
 
   claimantAskDefendantToSignSettlement: () => {

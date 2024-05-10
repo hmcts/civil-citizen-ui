@@ -14,9 +14,9 @@ let claimRef;
 let caseData;
 let claimNumber;
 
-Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise SSA By Claimant');
+Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise SSA By Claimant ');
 
-Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and Defendant - @api', async ({api}) => {
+Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and Defendant - @api', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -30,7 +30,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDateSSA(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
-    await ResponseSteps.SignOut();
+    await I.click('Sign out');
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.DefendantAdmissionSSA(claimRef, 'yes');
@@ -41,7 +41,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
     //This sign out is not working for some reason???
-    await ResponseSteps.SignOut;
+    await I.click('Sign out');
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     if (isDashboardServiceEnabled) {
       const notification = defendantAcceptsSettlementClaimant();
@@ -50,7 +50,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
   }
 }).tag('@regression-r2');
 
-Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and reject by Defendant - @api', async ({api}) => {
+Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and reject by Defendant - @api', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -67,7 +67,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
       const notification = claimantAskDefendantToSignSettlement();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
-    await ResponseSteps.SignOut();
+    await I.click('Sign out');
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     await ResponseSteps.DefendantAdmissionSSA(claimRef, 'no');
@@ -77,7 +77,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
 
-    await ResponseSteps.SignOut();
+    await I.click('Sign out');
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 
     if (isDashboardServiceEnabled) {
