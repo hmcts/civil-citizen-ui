@@ -10,20 +10,21 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 // const { viewHearings, payTheHearingFee } = require('../../specClaimHelpers/dashboardTasklistConstants');
 
 const claimType = 'FastTrack';
-let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, hearingFeeDueDate, hearingDate;
+// let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, hearingFeeDueDate, hearingDate;
+let claimRef, fiveWeeksFromToday;
 
-Feature('Case progression - Lip v Lip - Hearing Fee journey - Fast Track');
+  Feature('Case progression - Lip v Lip - Hearing Fee journey - Fast Track');
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(5);
-    hearingFeeDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fiveWeeksFromToday);
-    hearingDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(fiveWeeksFromToday);
+    // hearingFeeDueDate = DateUtilsComponent.DateUtilsComponent.getPastDateInFormat(fiveWeeksFromToday);
+    // hearingDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(fiveWeeksFromToday);
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
-    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-    claimNumber = await caseData.legacyCaseReference;
+    // caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+    // claimNumber = await caseData.legacyCaseReference;
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
     await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, 'JUDICIAL_REFERRAL');
     await api.performCaseProgressedToSDO(config.judgeUserWithRegionId1, claimRef, 'fastTrack');
@@ -34,7 +35,7 @@ Before(async ({api}) => {
 });
 
 // uncomment once CIV-13830 is released
-Scenario('Apply for Help with Fees Journey - Fast Track', async ({I}) => {
+// Scenario('Apply for Help with Fees Journey - Fast Track', async ({I}) => {
   // if (['preview', 'demo'].includes(config.runningEnv)) {
   //   const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
   //   if (isDashboardServiceEnabled) {
@@ -55,7 +56,7 @@ Scenario('Apply for Help with Fees Journey - Fast Track', async ({I}) => {
   //     await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, '545', hearingFeeDueDate);
   //   }
   // }
-}).tag('@regression-cp');
+// }).tag('@regression-cp');
 
 // Scenario('Pay the Hearing Fee Journey - Fast Track', () => {
 //   if (['preview', 'demo'].includes(config.runningEnv)) {
