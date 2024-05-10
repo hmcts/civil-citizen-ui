@@ -229,7 +229,7 @@ module.exports = {
     if (carmEnabled) {
       console.log('carm enabled, updating submitted date');
       await addData(caseId, config.systemUpdate, (caseData) => {
-        const submittedDate = new Date(2024, 8, 3);
+        const submittedDate = new Date.now();
         return {...caseData, submittedDate: submittedDate};
       });
       console.log('submitted date update to after carm date');
@@ -278,7 +278,8 @@ module.exports = {
     if (carmEnabled) {
       console.log('carm enabled, updating submitted date');
       await addData(caseId, config.systemUpdate, (caseData) => {
-        const submittedDate = new Date(2024, 8, 3);
+        const submittedDate = new Date.now();
+        console.log('submittedDate --->>' + submittedDate);
         return {...caseData, submittedDate: submittedDate};
       });
       console.log('submitted date update to after carm date');
@@ -418,7 +419,7 @@ module.exports = {
     const mediationUnsuccessfulPayload = mediation.mediationUnSuccessfulPayload(carmEnabled);
     eventName = mediationUnsuccessfulPayload['event'];
     caseData = mediationUnsuccessfulPayload['caseData'];
-  
+
     await apiRequest.setupTokens(user);
     await assertSubmittedSpecEvent(config.claimState.JUDICIAL_REFERRAL);
     console.log('End of mediationUnsuccessful()');
