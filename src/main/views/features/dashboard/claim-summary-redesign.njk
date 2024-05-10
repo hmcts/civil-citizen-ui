@@ -8,8 +8,6 @@
 
 {% block content %}
 
-  <div class="govuk-width-container govuk-!-padding-top-0">
-    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
       {% if claimId !== 'draft' %}
         {% set claimantName = claim.getClaimantFullName() %}
         {% set defendantName = claim.getDefendantFullName() %}
@@ -82,8 +80,5 @@
           </div>
         </div>
       </div>
-
-    </main>
-  </div>
 
 {% endblock %}
