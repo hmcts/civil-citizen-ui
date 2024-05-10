@@ -39,25 +39,18 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     if (isDashboardServiceEnabled) {
       const notification = defendantAcceptsSettlementDefendant();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-
-      await ResponseSteps.SignOut;
-      await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-
-      const notification2 = defendantAcceptsSettlementClaimant();
-      await verifyNotificationTitleAndContent(claimNumber, notification2.title, notification2.content);
     }
     //This sign out is not working for some reason???
-    // await ResponseSteps.SignOut;
-    // await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    // if (isDashboardServiceEnabled) {
-    //   //await api.waitForFinishedBusinessProcess();
-    //   const notification = defendantAcceptsSettlementClaimant();
-    //   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-    // }
+    await ResponseSteps.SignOut;
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    if (isDashboardServiceEnabled) {
+      const notification = defendantAcceptsSettlementClaimant();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
   }
 }).tag('@regression-r2');
 
-Scenario('@debug Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and reject by Defendant - @api', async ({api}) => {
+Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and reject by Defendant - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
