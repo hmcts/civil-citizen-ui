@@ -6,7 +6,7 @@ const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClai
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
-const {defendantRejectsSettlementDefendant, claimantAskDefendantToSignSettlement, defendantAcceptsSettlementClaimant, defendantAcceptsSettlementDefendant} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {defendantRejectsSettlementDefendant, defendantRejectsSettlementClaimant, claimantAskDefendantToSignSettlement, defendantAcceptsSettlementClaimant, defendantAcceptsSettlementDefendant} = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
@@ -39,19 +39,25 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     if (isDashboardServiceEnabled) {
       const notification = defendantAcceptsSettlementDefendant();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+
+      await ResponseSteps.SignOut;
+      await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+
+      const notification2 = defendantAcceptsSettlementClaimant();
+      await verifyNotificationTitleAndContent(claimNumber, notification2.title, notification2.content);
     }
     //This sign out is not working for some reason???
-    await ResponseSteps.SignOut;
-    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    if (isDashboardServiceEnabled) {
-      //await api.waitForFinishedBusinessProcess();
-      const notification = defendantAcceptsSettlementClaimant();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-    }
+    // await ResponseSteps.SignOut;
+    // await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    // if (isDashboardServiceEnabled) {
+    //   //await api.waitForFinishedBusinessProcess();
+    //   const notification = defendantAcceptsSettlementClaimant();
+    //   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    // }
   }
 }).tag('@regression-r2');
 
-Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and reject by Defendant - @api', async ({api}) => {
+Scenario('@debug Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and reject by Defendant - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -75,6 +81,14 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
 
     if (isDashboardServiceEnabled) {
       const notification = defendantRejectsSettlementDefendant();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
+
+    await ResponseSteps.SignOut();
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+
+    if (isDashboardServiceEnabled) {
+      const notification = defendantRejectsSettlementClaimant();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
