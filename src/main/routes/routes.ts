@@ -281,8 +281,23 @@ import mediationConfirmationController from 'routes/features/mediation/uploadDoc
 import notificationRedirectController from 'routes/features/dashboard/notificationRedirectController';
 import claimantClaimSummaryController from 'routes/features/dashboard/claimantClaimSummaryController';
 import bundlesController from 'routes/features/caseProgression/bundlesController';
-import viewMediationSettlementAgreementDocument
-  from 'routes/features/document/mediation/viewSettlementAgreementDocumentController';
+import viewMediationSettlementAgreementDocument from 'routes/features/document/mediation/viewSettlementAgreementDocumentController';
+import viewDefendantInformationController from './features/dashboard/viewDefendantInformationController';
+import viewClaimantInformationController from './features/dashboard/viewClaimantInformationController';
+import cancelController from 'routes/common/cancelController';
+import evidenceUploadDocumentsController from 'routes/features/caseProgression/evidenceUploadDocumentsController';
+import viewMediationDocuments from 'routes/features/document/mediation/viewMediationDocumentsController';
+import applicationTypeController from './features/generalApplication/applicationTypeController';
+import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
+import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
+import claimFeeMakePaymentAgainController
+  from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
+import informOtherPartiesController from './features/generalApplication/informOtherPartiesController';
+import hearingSupportController from './features/generalApplication/hearingSupportController';
+import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
+import claimApplicationCostController from './features/generalApplication/claimApplicationCostController';
+import respondentAgreeToOrderController from 'routes/features/generalApplication/respondentAgreeToOrderController';
+import payingForApplicationController from './features/generalApplication/payingForApplicationController';
 
 export default [
   homeController,
@@ -530,6 +545,21 @@ export default [
   mediationDocumentUploadCheckAnswerController,
   mediationConfirmationController,
   notificationRedirectController,
-  bundlesController,
+  viewDefendantInformationController,
+  viewClaimantInformationController,
   viewMediationSettlementAgreementDocument,
+  bundlesController,
+  cancelController,
+  evidenceUploadDocumentsController,
+  viewMediationDocuments,
+  applicationTypeController,
+  viewTheHearingController,
+  viewResponseToClaimController,
+  hearingSupportController,
+  claimFeeMakePaymentAgainController,
+  agreementFromOtherPartyController,
+  informOtherPartiesController,
+  claimApplicationCostController,
+  respondentAgreeToOrderController,
+  payingForApplicationController,
 ];
