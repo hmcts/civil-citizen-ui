@@ -56,7 +56,6 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   const civilMoneyClaimsTelephone = config.get<string>('services.civilMoneyClaims.telephone');
   const civilMoneyClaimsTelephoneWelshSpeaker = config.get<string>('services.civilMoneyClaims.welshspeaker.telephone');
   const cmcCourtEmailId = config.get<string>('services.civilMoneyClaims.courtEmailId');
-  const generalApplicationsUrl = config.get<string>('services.genApps.url');
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
   const notificationId = notification?.id;
 
@@ -104,7 +103,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{VIEW_CCJ_REPAYMENT_PLAN_CLAIMANT}', CCJ_REPAYMENT_PLAN_CLAIMANT_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_MEDIATION_SETTLEMENT_AGREEMENT}', VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.replace(':id', claimId));
   valuesMap.set('{UPLOAD_MEDIATION_DOCUMENTS}', START_MEDIATION_UPLOAD_FILES.replace(':id', claimId));
-  valuesMap.set('{SERVICE_REQUEST_UPDATE}', generalApplicationsUrl);
+  valuesMap.set('{SERVICE_REQUEST_UPDATE}', '#');
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
