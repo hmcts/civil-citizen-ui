@@ -49,7 +49,7 @@ export class UploadDocumentsUserForm {
     trialDocumentary?: TypeOfDocumentSection[];
 
   constructor(documentsForDisclosure?: TypeOfDocumentSection[], disclosureList?: FileOnlySection[],
-    witnessStatement?: WitnessSection[], witnessSummary?: WitnessSection[], noticeOfIntention?: WitnessSection[], documentsReferred?: ReferredToInTheStatementSection[],
+    witnessStatement?: WitnessSection[], witnessSummary?: WitnessSummarySection[], noticeOfIntention?: WitnessSection[], documentsReferred?: ReferredToInTheStatementSection[],
     expertReport?: ExpertSection[], expertStatement?: ExpertSection[], questionsForExperts?: ExpertSection[], answersForExperts?: ExpertSection[],
     trialCaseSummary?: FileOnlySection[], trialSkeletonArgument?: FileOnlySection[], trialAuthorities?: FileOnlySection[], trialCosts?: FileOnlySection[], trialDocumentary?: TypeOfDocumentSection[]) {
     //disclosure sections
@@ -132,7 +132,7 @@ export class DateInputFieldsWitnessSummary extends DateInputFields{
   @IsNotEmpty({message: 'ERRORS.VALID_DATE_WITNESS_SUMMARY'})
   @IsDate({message: 'ERRORS.VALID_DATE'})
   @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.VALID_DATE_NOT_FUTURE'})
-  date: Date;
+    date: Date;
 
   constructor(day?: string, month?: string, year?: string) {
     super(day, month, year);
@@ -178,7 +178,7 @@ export class WitnessSection {
 
 export class WitnessSummarySection extends WitnessSection{
   @ValidateNested()
-  dateInputFields: DateInputFieldsWitnessSummary;
+    dateInputFields: DateInputFieldsWitnessSummary;
 
   constructor(day?: string, month?: string, year?: string) {
     super(day, month, year);
