@@ -7,7 +7,6 @@ import {redirectToPage} from 'services/features/claim/partyTypeService';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimantInformation, saveClaimantProperty} from 'services/features/claim/yourDetails/claimantDetailsService';
 import {Party} from 'models/party';
-import {deleteDelayedFlight} from 'services/features/claim/delayedFlightService';
 
 const claimantPartyTypeViewPath = 'features/claim/claimant-party-type';
 const claimantPartyTypeController = Router();
@@ -32,9 +31,6 @@ claimantPartyTypeController.post(CLAIMANT_PARTY_TYPE_SELECTION_URL, (async (req:
     if (form.hasErrors()) {
       res.render(claimantPartyTypeViewPath, {form});
     } else {
-      if (form.model.option !== PartyType.COMPANY) {
-        await deleteDelayedFlight(userId);
-      }
       await saveClaimantProperty(userId, 'type', form.model.option);
       redirectToPage(form.model.option, res, ClaimantOrDefendant.CLAIMANT);
     }

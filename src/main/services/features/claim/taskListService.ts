@@ -9,7 +9,7 @@ import {
   CLAIM_AMOUNT_URL,
   CLAIM_CHECK_ANSWERS_URL,
   CLAIM_COMPLETING_CLAIM_URL,
-  DELAYED_FLIGHT_URL,
+  CLAIM_DEFENDANT_PARTY_TYPE_URL,
   CLAIM_REASON_URL,
   CLAIM_RESOLVING_DISPUTE_URL,
 } from 'routes/urls';
@@ -85,7 +85,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
 
   const theirDetailsTask = {
     description: t('PAGES.CLAIM_TASK_LIST.THEIR_DETAILS', { lng: getLng(lang) }),
-    url: constructResponseUrlWithIdParams(userId, DELAYED_FLIGHT_URL),
+    url: constructResponseUrlWithIdParams(userId, CLAIM_DEFENDANT_PARTY_TYPE_URL),
     status: TaskStatus.INCOMPLETE,
   };
 
