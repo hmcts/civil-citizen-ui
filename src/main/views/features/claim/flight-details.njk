@@ -28,37 +28,7 @@
             {{ csrfProtection(csrf) }}
             
             <h1 class="govuk-heading-l">{{ t('PAGES.FLIGHT_DETAILS.FLIGHT_DETAILS') }}</h1>
-              {# {{airlines | dump}}
-              <ul>
-                {% for airline in airlines %}
-                  <li>{{airline.airline}}</li>
-                {% endfor %}
-              </ul>
-             #}
-        
-            {% set formGroupErrorClass = "govuk-form-group" %}
-            {% set messageErrorClass = "govuk-visually-hidden" %}
-            {% set inputErrorClass = "govuk-input govuk-!-width-one-half" %}
-
-            {% if hasAirlineError %}
-              {% set formGroupErrorClass = "govuk-form-group--error" %}
-              {% set messageErrorClass = "govuk-error-message" %}
-              {% set inputErrorClass = "govuk-input govuk-!-width-one-half govuk-input--error" %}
-            {% endif %}
-
-            <div class={{formGroupErrorClass}}>
-              <p class="govuk-body govuk-!-margin-bottom-1">{{ t('PAGES.FLIGHT_DETAILS.AIRLINE') }}</p>
-              <p class={{messageErrorClass}}>{{ t('ERRORS.FLIGHT_DETAILS.AIRLINE_REQUIRED') }}</p>
-              <input list="airlines" name="airline" id="airline" class={{inputErrorClass}}>
-              <datalist id="airlines" class="govuk-!-padding-bottom-0">
-                {% for airline in airlines %}
-                  <option value={{airline.airline}}>
-                    {{airline.airline}}
-                    {{airline.epimsID}}
-                  </option>
-                {% endfor %}
-              </datalist>
-            </div>
+            {{ datalist | safe}}
 
             {{ govukInput({
               id: "flightNumber",

@@ -192,7 +192,7 @@ export class CivilServiceClient {
     }
   }
 
-  async getAirlines(req: AppRequest): Promise<object> {
+  async getAirlines(req: AppRequest): Promise<any> {
     const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_AIRLINES_URL}`, config);
