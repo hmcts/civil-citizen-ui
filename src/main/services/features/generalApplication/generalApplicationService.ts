@@ -18,6 +18,7 @@ import {InformOtherParties} from 'common/models/generalApplication/informOtherPa
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
+import {RequestingReason} from 'models/generalApplication/requestingReason';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -124,3 +125,15 @@ export function getRespondToApplicationCaption(claim: Claim, lng: string) : stri
   const applicationType = t(selectedApplicationType[claim.generalApplication?.applicationType?.option], {lng: getLng(lng)}).toLowerCase();
   return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', { lng: getLng(lng), applicationType});
 }
+
+export const saveRequestingReason = async (claimId: string, requestingReason: RequestingReason): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.requestingReason = requestingReason;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
