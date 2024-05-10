@@ -1713,7 +1713,7 @@
       "TITLE": "Do you want to give evidence yourself?"
     },
     "DELAYED_FLIGHT": {
-      "CLAIMING_FOR_DELAYED": "Are you claiming for a flight delay?"
+      "CLAIMING_FOR_DELAYED": "Are you claiming for a delayed flight?"
     },
     "FLIGHT_DETAILS": {
       "FLIGHT_DETAILS": "Enter flight details",
@@ -3502,7 +3502,7 @@
     "DETAILS_REQUIRED": "Enter details",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
     "DELAYED_FLIGHT": {
-      "CLAIMING_FOR_DELAY_REQUIRED": "Are you claiming for a flight delay is required"
+      "CLAIMING_FOR_DELAY_REQUIRED": "'Are you claiming for a delayed flight?' is required"
     },
     "FLIGHT_DETAILS": {
       "AIRLINE_REQUIRED": "Airline is required",

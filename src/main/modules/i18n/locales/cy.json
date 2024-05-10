@@ -1712,6 +1712,15 @@
       "PAGE_TITLE": "Tystiolaeth y diffynnydd ei hun",
       "TITLE": "A ydych eisiau rhoi tystiolaeth eich hun?"
     },
+    "DELAYED_FLIGHT": {
+      "CLAIMING_FOR_DELAYED": "Are you claiming for a delayed flight?"
+    },
+    "FLIGHT_DETAILS": {
+      "FLIGHT_DETAILS": "Enter flight details",
+      "AIRLINE": "Airline",
+      "FLIGHT_NUMBER": "Flight number",
+      "SCHEDULED_DATE": "Scheduled date of flight"
+    },
     "DEPENDANTS": {
       "GROUP11": "11 i 15",
       "GROUP16": "16 i 19",
@@ -3492,6 +3501,15 @@
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
     "DETAILS_REQUIRED": "Rhowch fanylion",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod manylion yr anghenion ar gyfer y gwrandawiad ar y dudalen hon yn wir",
+    "DELAYED_FLIGHT": {
+      "CLAIMING_FOR_DELAY_REQUIRED": "'Are you claiming for a delayed flight?' is required"
+    },
+    "FLIGHT_DETAILS": {
+      "AIRLINE_REQUIRED": "Airline is required",
+      "FLIGHT_NUMBER_REQUIRED": "Flight number is required",
+      "DATE_FLIGH_REQUIRED": "Date of flight is required",
+      "DATE_FLIGHT_PAST": "Scheduled date of flight must be today or in the past"
+    },
     "ENTER_A_DEBT": "Rhowch fanylion y ddyled",
     "ENTER_AN_EXPLANATION": "Rhowch esboniad pam na allwch dalu nawr",
     "ENTER_AT_LEAST_ONE_DEBT": "Rhowch fanylion o leiaf un ddyled",
