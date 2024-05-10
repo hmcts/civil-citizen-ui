@@ -52,6 +52,8 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
       const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest, isCarmApplicable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(lang);
 
+      await civilServiceClient.updateTaskStatus(dashboardTaskList.items[2].tasks[2].id, <AppRequest>req);
+
       res.render(claimSummaryRedesignViewPath,
         {
           claim,

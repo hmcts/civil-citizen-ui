@@ -29,6 +29,7 @@ export interface AppSession extends Session {
   claimIssueTasklist: boolean;
   firstContact: FirstContact;
   issuedAt: number;
+  dashboard: Dashboard;
 
 }
 
@@ -39,5 +40,9 @@ export interface UserDetails {
   givenName: string;
   familyName: string;
   roles: string[];
+}
+
+export interface Dashboard {
+  taskIdHearingUploadDocuments: string;
 }
 

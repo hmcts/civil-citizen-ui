@@ -52,6 +52,8 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(claim, claimId, lng);
 
+      req.session.dashboard.taskIdHearingUploadDocuments = dashboard.items[2]?.tasks[2]?.id;
+
       res.render(claimantDashboardViewPath, {
         claim: claim,
         claimId,
