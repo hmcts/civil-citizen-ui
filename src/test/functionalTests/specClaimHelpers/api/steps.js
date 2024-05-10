@@ -181,7 +181,7 @@ module.exports = {
     eventName = payload['event'];
     caseData = payload['caseData'];
     await assertSubmittedSpecEvent();
-    console.log('End of submitHwfEventForUser()');
+    console.log('End of submitHwfEventForUuser()');
   },
 
   createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, partyType) => {
@@ -418,7 +418,7 @@ module.exports = {
     const mediationUnsuccessfulPayload = mediation.mediationUnSuccessfulPayload(carmEnabled);
     eventName = mediationUnsuccessfulPayload['event'];
     caseData = mediationUnsuccessfulPayload['caseData'];
-  
+
     await apiRequest.setupTokens(user);
     await assertSubmittedSpecEvent(config.claimState.JUDICIAL_REFERRAL);
     console.log('End of mediationUnsuccessful()');
