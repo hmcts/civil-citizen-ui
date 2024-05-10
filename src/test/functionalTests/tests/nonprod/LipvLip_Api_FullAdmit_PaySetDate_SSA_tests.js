@@ -80,6 +80,7 @@ Scenario('@debug Create LipvLip claim and defendant response as FullAdmit pay by
     }
 
     await ResponseSteps.DefendantAdmissionSSA(claimRef, 'no');
+    await api.waitForFinishedBusinessProcess();
 
     if (isDashboardServiceEnabled) {
       const notification = defendantRejectsSettlementDefendant();
