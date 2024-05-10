@@ -13,7 +13,7 @@ import {
   FileOnlySection, ReferredToInTheStatementSection,
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
-  WitnessSection,
+  WitnessSection, WitnessSummarySection,
 } from 'models/caseProgression/uploadDocumentsUserForm';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -174,7 +174,7 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm =>
   const documentsList = getFormSection<FileOnlySection>(req.body.disclosureList, bindRequestToFileOnlySectionObj);
 
   const witnessStatement = getFormSection<WitnessSection>(req.body.witnessStatement, bindRequestToWitnessSectionObj);
-  const witnessSummary = getFormSection<WitnessSection>(req.body.witnessSummary, bindRequestToWitnessSectionObj);
+  const witnessSummary = getFormSection<WitnessSummarySection>(req.body.witnessSummary, bindRequestToWitnessSectionObj);
   const noticeOfIntention = getFormSection<WitnessSection>(req.body.noticeOfIntention, bindRequestToWitnessSectionObj);
   const documentsReferred = getFormSection<ReferredToInTheStatementSection>(req.body.documentsReferred, bindRequestToReferredToInTheStatementSectionObj);
 

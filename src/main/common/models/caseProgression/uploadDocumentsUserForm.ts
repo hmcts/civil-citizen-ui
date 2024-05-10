@@ -24,7 +24,7 @@ export class UploadDocumentsUserForm {
   @ValidateNested()
     witnessStatement?: WitnessSection[];
   @ValidateNested()
-    witnessSummary?: WitnessSection[];
+    witnessSummary?: WitnessSummarySection[];
   @ValidateNested()
     noticeOfIntention?: WitnessSection[];
   @ValidateNested()
@@ -125,6 +125,20 @@ export class DateInputFields {
   }
 }
 
+export class DateInputFieldsWitnessSummary extends DateInputFields{
+  @ValidateIf(o => ((o.dateDay !== undefined && o.dateMonth !== undefined && o.dateDay && o.dateMonth && o.dateYear && o.dateDay > 0 && o.dateDay < 32 && o.dateMonth > 0 && o.dateMonth < 13 && o.dateYear > 999)
+    || (o.dateDay !== undefined && o.dateMonth !== undefined && !o.dateDay && !o.dateMonth && !o.dateYear)))
+  @IsDefined({message: 'ERRORS.VALID_DATE_WITNESS_SUMMARY'})
+  @IsNotEmpty({message: 'ERRORS.VALID_DATE_WITNESS_SUMMARY'})
+  @IsDate({message: 'ERRORS.VALID_DATE'})
+  @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.VALID_DATE_NOT_FUTURE'})
+  date: Date;
+
+  constructor(day?: string, month?: string, year?: string) {
+    super(day, month, year);
+  }
+}
+
 export class TypeOfDocumentSection {
   @IsNotEmpty({message: 'ERRORS.VALID_ENTER_TYPE_OF_DOCUMENT'})
     typeOfDocument: string;
@@ -159,6 +173,16 @@ export class WitnessSection {
 
   constructor(day?: string, month?: string, year?: string) {
     this.dateInputFields = new DateInputFields(day, month, year);
+  }
+}
+
+export class WitnessSummarySection extends WitnessSection{
+  @ValidateNested()
+  dateInputFields: DateInputFieldsWitnessSummary;
+
+  constructor(day?: string, month?: string, year?: string) {
+    super(day, month, year);
+    this.dateInputFields = new DateInputFieldsWitnessSummary(day, month, year);
   }
 }
 
