@@ -65,7 +65,7 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
     await ResponseSteps.VerifyConfirmationPage('RejectsAndLessThanClaimAmount');
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-carm');
+}).tag('@skip-regression-carm');
 
 Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -87,7 +87,7 @@ Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
     await ClaimantResponseSteps.verifyEditedEmailDetails();
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-carm');
+}).tag('@skip-regression-carm');
 
 Scenario('Caseworker perform mediation unsuccessful', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -95,7 +95,7 @@ Scenario('Caseworker perform mediation unsuccessful', async ({api}) => {
     await api.mediationUnsuccessful(config.caseWorker, true);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-carm');
+}).tag('@skip-regression-carm');
 
 Scenario('LiP claimant uploads mediation documents', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -121,7 +121,7 @@ Scenario('LiP claimant uploads mediation documents', async ({api}) => {
     await UploadDocSteps.VerifyConfirmationPage();
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-carm');
+}).tag('@skip-regression-carm');
 
 Scenario('LiP defendant uploads mediation documents', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -136,4 +136,4 @@ Scenario('LiP defendant uploads mediation documents', async ({api}) => {
     await UploadDocSteps.VerifyConfirmationPage();
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-carm');
+}).tag('@skip-regression-carm');
