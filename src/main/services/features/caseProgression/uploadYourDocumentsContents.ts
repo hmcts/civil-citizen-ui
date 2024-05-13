@@ -4,6 +4,7 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {UploadYourDocumentsSectionBuilder} from 'models/caseProgression/uploadYourDocumentsSectionBuilder';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {t} from 'i18next';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 const UPLOAD_YOUR_DOCUMENTS = 'PAGES.UPLOAD_YOUR_DOCUMENTS';
 
@@ -15,12 +16,10 @@ export const getUploadYourDocumentsContents = (claimId: string, claim: Claim) =>
     </p><br>`;
 
   return new UploadYourDocumentsSectionBuilder()
+    .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
     .addMainTitle('PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE')
-    .addLeadParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.CASE_REFERENCE', {claimId:caseNumberPrettify( claimId)})
-    .addLeadParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.PARTIES', {
-      claimantName: claim.getClaimantFullName(),
-      defendantName: claim.getDefendantFullName(),
-    })
+    .addLeadParagraph('COMMON.CASE_NUMBER', {claimId:caseNumberPrettify( claimId)}, 'govuk-!-margin-bottom-1')
+    .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.CHECK_THE_ORDER')
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.YOU_CANNOT_WITHDRAW')
     .addParagraph('PAGES.UPLOAD_YOUR_DOCUMENTS.THE_OTHER_PARTIES')
