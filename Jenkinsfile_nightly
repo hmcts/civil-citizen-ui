@@ -19,7 +19,7 @@ properties([
         string(name: 'CIVIL_SERVICE_URL', defaultValue: 'http://civil-service-aat.service.core-compute-aat.internal',
           description: 'The URL of civil service'),
         string(name: 'CIVIL_GENERAL_APPLICATIONS_URL', defaultValue: 'http://civil-general-applications-aat.service.core-compute-aat.internal',
-                description: 'The URL of general applications'),
+          description: 'The URL of general applications'),
     ])
 ])
 
