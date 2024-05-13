@@ -1,5 +1,10 @@
 import {NextFunction, Response, RequestHandler, Router} from 'express';
-import {CP_CHECK_ANSWERS_URL, CP_EVIDENCE_UPLOAD_CANCEL, CP_UPLOAD_DOCUMENTS_URL} from '../../urls';
+import {
+  CP_CHECK_ANSWERS_URL,
+  CP_EVIDENCE_UPLOAD_CANCEL,
+  CP_UPLOAD_DOCUMENTS_URL,
+  TYPES_OF_DOCUMENTS_URL,
+} from '../../urls';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
@@ -13,6 +18,7 @@ import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUse
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
 import {AppRequest} from 'common/models/AppRequest';
+import {getUploadDocumentsContents} from 'services/features/caseProgression/evidenceUploadDocumentsContent';
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
@@ -35,6 +41,8 @@ async function renderView(res: Response, claim: Claim, claimId: string, form: Ge
     const witnessContent = getWitnessContent(claim, form);
     const expertContent = getExpertContent(claim, form);
     const trialContent = getTrialContent(claim, form, isSmallClaims);
+    const uploadDocumentsContents= getUploadDocumentsContents(claimId, claim);
+    const backLinkUrl = constructResponseUrlWithIdParams(claimId, TYPES_OF_DOCUMENTS_URL);
     res.render(uploadDocumentsViewPath, {
       form,
       claim,
@@ -45,6 +53,8 @@ async function renderView(res: Response, claim: Claim, claimId: string, form: Ge
       trialContent,
       cancelUrl,
       isSmallClaims,
+      uploadDocumentsContents,
+      backLinkUrl,
     });
   }
 }
