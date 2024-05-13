@@ -28,7 +28,7 @@ export class GeneralApplication {
     requestingReason?: RequestingReason,
     orderJudge?: OrderJudge,
     hearingArrangement?: HearingArrangement,
-    hearingContactDetails?: HearingContactDetails
+    hearingContactDetails?: HearingContactDetails,
   ) {
     this.applicationType = applicationType;
     this.agreementFromOtherParty = agreementFromOtherParty;
