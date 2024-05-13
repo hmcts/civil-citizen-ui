@@ -2150,6 +2150,24 @@
         "OTHER_PARTIES": "The other parties will be able to see your answer to this question and respond to it.",
         "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application.",
         "TITLE": "Application costs"
+      },
+      "APPLICATION_HEARING_ARRANGEMENTS": {
+        "HEARING_TYPE": {
+          "PERSON_AT_COURT": "In person at the court",
+          "TELEPHONE": "Telephone",
+          "VIDEO_CONFERENCE": "Video Conference"
+        },
+        "JUDGE_HEARING_PREFERRED_LOCATION": "If a judge requires the hearing to take place in person at the court, do you have a preferred location?(optional)",
+        "PAGE_TITLE": "Hearing preferences for your application",
+        "SELECT_A_LOCATION": "-- Select a location --",
+        "TITLE": "Application hearing arrangements",
+        "WHAT_TYPE_OF_HEARING_PREFER": "What type of hearing would you prefer?",
+        "WHY_PREFER_HEARING_TYPE": "Why would you prefer this type of hearing?"
+      },
+      "HEARING_CONTACT_DETAILS": {
+        "PREFERRED_EMAIL_ADDRESS": "Preferred email address",
+        "PREFERRED_TELEPHONE_NUMBER": "Preferred telephone number",
+        "TITLE": "Contact Details"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -3922,7 +3940,11 @@
       "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
-      "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No"
+      "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
+      "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
+      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
+      "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
+      "ENTER_VALID_EMAIL": "You need to enter a valid email address"
     }
   }
 }

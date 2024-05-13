@@ -304,6 +304,8 @@ import claimApplicationCostController from './features/generalApplication/claimA
 import respondentAgreeToOrderController from 'routes/features/generalApplication/respondentAgreeToOrderController';
 import payingForApplicationController from './features/generalApplication/payingForApplicationController';
 import requestingReasonController from 'routes/features/generalApplication/requestingReasonController';
+import hearingArrangementController from './features/generalApplication/hearingArrangementController';
+import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 
 export default [
   homeController,
@@ -569,4 +571,6 @@ export default [
   respondentAgreeToOrderController,
   payingForApplicationController,
   requestingReasonController,
+  hearingArrangementController,
+  hearingContactDetailsController,
 ];
