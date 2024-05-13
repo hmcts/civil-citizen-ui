@@ -21,7 +21,7 @@ describe('General Application - Application type', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-      (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
+    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   describe('on GET', () => {
