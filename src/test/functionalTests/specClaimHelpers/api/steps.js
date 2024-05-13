@@ -287,7 +287,6 @@ module.exports = {
         console.log(e);
 
       }
-      console.log(ts.toString());
       console.log('submitted date update to after carm date');
     }
     return caseId;
