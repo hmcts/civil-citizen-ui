@@ -10,9 +10,11 @@ import { GeneralApplication } from 'common/models/generalApplication/GeneralAppl
 import { InformOtherParties } from 'common/models/generalApplication/informOtherParties';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
+import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 describe('General Application - inform other parties', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -23,6 +25,7 @@ describe('General Application - inform other parties', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
+    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   beforeEach(() => {
