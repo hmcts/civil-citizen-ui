@@ -396,7 +396,6 @@
       },
       "UPLOAD_DOCUMENTS": {
         "SECTION_TITLE": "Mediation non-attendance",
-
         "TITLE": {
           "YOUR_STATEMENT": "Your statement",
           "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement"
@@ -1026,6 +1025,52 @@
       "DISCLOSURE_DOCUMENTS": "disclosure",
       "DOCUMENTARY_EVIDENCE": "Documentary evidence",
       "DOCUMENTS": "Documents",
+      "DOCUMENT_HEADERS": {
+        "CLAIMANT": {
+          "ANSWERS_TO_QUESTIONS": "Claimant answers to questions asked by other party",
+          "CASE_SUMMARY": "Claimant case summary",
+          "COSTS": "Claimant costs",
+          "DISCLOSURE_DOCUMENTS": "Claimant disclosure",
+          "DISCLOSURE_LIST": "Claimant disclosure list",
+          "DOCUMENTARY_EVIDENCE": "Claimant documentary evidence",
+          "DOCUMENTS_FOR_DISCLOSURE": "Claimant documents for disclosure",
+          "DOCUMENTS_REFERRED_TO_STATEMENT": "Claimant documents referred to in statement",
+          "EXPERT_EVIDENCE": "Claimant expert evidence",
+          "EXPERT_REPORT": "Claimant expert report",
+          "HEARING_DOCUMENTS": "Claimant hearing documents",
+          "JOINT_STATEMENT_OF_EXPERTS": "Joint statement of experts",
+          "LEGAL_AUTHORITIES": "Claimant legal authorities",
+          "NOTICE_OF_INTENTION": "Claimant intention to rely on hearsay evidence",
+          "QUESTIONS_FOR_OTHER_PARTY": "Claimant questions for other party's expert or joint expert",
+          "SKELETON_ARGUMENT": "Claimant skeleton argument",
+          "TRIAL_DOCUMENTS": "Claimant trial documents",
+          "WITNESS_EVIDENCE": "Claimant witness evidence",
+          "WITNESS_STATEMENT": "Claimant witness statement",
+          "WITNESS_SUMMARY": "Claimant witness summary"
+        },
+        "DEFENDANT": {
+          "ANSWERS_TO_QUESTIONS": "Defendant answers to questions asked by other party",
+          "CASE_SUMMARY": "Defendant case summary",
+          "COSTS": "Defendant costs",
+          "DISCLOSURE_DOCUMENTS": "Defendant disclosure",
+          "DISCLOSURE_LIST": "Defendant disclosure list",
+          "DOCUMENTARY_EVIDENCE": "Defendant documentary evidence",
+          "DOCUMENTS_FOR_DISCLOSURE": "Defendant documents for disclosure",
+          "DOCUMENTS_REFERRED_TO_STATEMENT": "Defendant documents referred to in statement",
+          "EXPERT_EVIDENCE": "Defendant expert evidence",
+          "EXPERT_REPORT": "Defendant expert report",
+          "HEARING_DOCUMENTS": "Defendant hearing documents",
+          "JOINT_STATEMENT_OF_EXPERTS": "Joint statement of experts",
+          "LEGAL_AUTHORITIES": "Defendant legal authorities",
+          "NOTICE_OF_INTENTION": "Defendant intention to rely on hearsay evidence",
+          "QUESTIONS_FOR_OTHER_PARTY": "Defendant questions for other party's expert or joint expert",
+          "SKELETON_ARGUMENT": "Defendant skeleton argument",
+          "TRIAL_DOCUMENTS": "Defendant trial documents",
+          "WITNESS_EVIDENCE": "Defendant witness evidence",
+          "WITNESS_STATEMENT": "Defendant witness statement",
+          "WITNESS_SUMMARY": "Defendant witness summary"
+        }
+      },
       "DOCUMENT_CREATED": "Created:",
       "DOWNLOAD_CLAIM": "Download claim",
       "DOWNLOAD_HEARING_NOTICE": "Download hearing notice",
