@@ -277,7 +277,16 @@ module.exports = {
 
     if (carmEnabled) {
       console.log('carm enabled, updating submitted date');
-      var ts = await addData(caseId, config.systemUpdate, (caseData));
+      try{
+        await addData(caseId, config.systemUpdate, (caseData) => {
+          const submittedDate = new Date(2024, 8, 3);
+          return {...caseData, submittedDate: submittedDate};
+        });
+
+      } catch (e){
+        console.log(e);
+
+      }
       console.log(ts.toString());
       console.log('submitted date update to after carm date');
     }
