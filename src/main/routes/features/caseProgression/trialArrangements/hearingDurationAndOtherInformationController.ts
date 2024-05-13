@@ -1,7 +1,6 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 import {
   CANCEL_TRIAL_ARRANGEMENTS,
-  DEFENDANT_SUMMARY_URL,
   HAS_ANYTHING_CHANGED_URL,
   TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
@@ -32,13 +31,13 @@ hearingDurationController.get([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (req
     const claim: Claim = await getClaimById(claimId, req);
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimIdPrettified: string = caseNumberPrettify(req.params.id);
-    const hasAnythingChangedUrl: string = constructResponseUrlWithIdParams(claimId, HAS_ANYTHING_CHANGED_URL);
-    const latestUpdatesUrl: string = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+    const backLinkUrl: string = constructResponseUrlWithIdParams(claimId, HAS_ANYTHING_CHANGED_URL);
+
     const form = new GenericForm(getOtherInformationForm(claim));
     const cancelUrl = constructResponseUrlWithIdParams(claimId, CANCEL_TRIAL_ARRANGEMENTS);
     res.render(hearingDurationViewPath, {form: form,
       hearingDurationContents: getHearingDurationAndOtherInformation(claim, lng, claimIdPrettified),
-      latestUpdatesUrl: latestUpdatesUrl, hasAnythingChangedUrl: hasAnythingChangedUrl, cancelUrl});
+      backLinkUrl: backLinkUrl, cancelUrl});
   } catch (error) {
     next(error);
   }
