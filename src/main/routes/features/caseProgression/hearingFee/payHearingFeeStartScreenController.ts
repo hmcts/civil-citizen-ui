@@ -20,7 +20,7 @@ payHearingFeeStartScreenController.get(PAY_HEARING_FEE_URL, (async (req, res, ne
     const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     res.render(payHearingFeeStartScreenViewPath, {
-      payHearingFeeStartScreenContent: getHearingFeeStartPageContent(claimId, lang, claim.caseProgressionHearing.hearingFeeInformation),
+      payHearingFeeStartScreenContent: getHearingFeeStartPageContent(claimId, lang,claim.totalClaimAmount, claim.caseProgressionHearing.hearingFeeInformation),
       homeUrl: constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),
     });
   } catch (error) {
