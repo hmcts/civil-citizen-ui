@@ -68,6 +68,13 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept 
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitInstallmentsPayment(claimRef, '1345', claimNumber);
     await api.waitForFinishedBusinessProcess();
+
+    // CIV-13483 test to be put in here
+    // if (isDashboardServiceEnabled) {
+    //   const notification = ();
+    //   await verifyNotificationTitleAndContent
+    // }
+
     if (isDashboardServiceEnabled) {
       await I.click('Sign out');
       await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

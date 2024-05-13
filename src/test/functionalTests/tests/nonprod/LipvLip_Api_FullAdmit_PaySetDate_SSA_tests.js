@@ -40,7 +40,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
       const notification = defendantAcceptsSettlementDefendant();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
-    //This sign out is not working for some reason???
+
     await I.click('Sign out');
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     if (isDashboardServiceEnabled) {
@@ -50,7 +50,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
   }
 }).tag('@regression-r2');
 
-Scenario('@debug Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and reject by Defendant - @api', async ({I, api}) => {
+Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and reject by Defendant - @api', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -87,10 +87,9 @@ Scenario('@debug Create LipvLip claim and defendant response as FullAdmit pay by
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
 
-    await I.click('Sign out');
-    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-
     if (isDashboardServiceEnabled) {
+      await I.click('Sign out');
+      await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
       const notification = defendantRejectsSettlementClaimant();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
