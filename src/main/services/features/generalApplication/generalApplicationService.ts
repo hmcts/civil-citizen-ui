@@ -19,6 +19,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
+import {OrderJudge} from 'common/models/generalApplication/orderJudge';
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 
@@ -43,6 +44,18 @@ export const saveInformOtherParties = async (redisKey: string, informOtherPartie
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.informOtherParties = informOtherParties;
     await saveDraftClaim(redisKey, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveOrderJudge = async (claimId: string, orderJudge: OrderJudge): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.orderJudge = orderJudge;
+    await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
     throw error;
