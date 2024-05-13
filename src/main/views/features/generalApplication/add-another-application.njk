@@ -3,7 +3,7 @@
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/button.njk" import addButton %}
 
 {% block content %}
     <div class="govuk-width-container">
@@ -18,10 +18,7 @@
                         <span class="govuk-caption-l">{{ t(applicationType) }}</span>
                         {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.GENERAL_APPLICATION.ADD_ANOTHER_APPLICATION.DO_YOU_ADD_ANOTHER_APPLICATION'), form, t('PAGES.GENERAL_APPLICATION.ADD_ANOTHER_APPLICATION.ADDITIONAL_FEE')) }}
                         <div class="govuk-button-group">
-                            {{ govukButton({
-                                 text: t('COMMON.BUTTONS.CONTINUE')
-                                }) }}
-                            <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener">{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+                            {{ addButton(t, 'CONTINUE', cancelUrl) }}
                         </div>
                     </form>
                 </div>
