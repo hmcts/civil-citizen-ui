@@ -103,7 +103,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{VIEW_CCJ_REPAYMENT_PLAN_CLAIMANT}', CCJ_REPAYMENT_PLAN_CLAIMANT_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_MEDIATION_SETTLEMENT_AGREEMENT}', VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.replace(':id', claimId));
   valuesMap.set('{UPLOAD_MEDIATION_DOCUMENTS}', START_MEDIATION_UPLOAD_FILES.replace(':id', claimId));
-  valuesMap.set('{SERVICE_REQUEST_UPDATE}', '#');
+  valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', '#');
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
