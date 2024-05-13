@@ -69,8 +69,8 @@ withNightlyPipeline(type, product, component) {
   env.SERVICE_AUTH_PROVIDER_API_BASE_URL = params.SERVICE_AUTH_PROVIDER_API_BASE_URL
   env.CCD_DATA_STORE_URL = params.CCD_DATA_STORE_URL
   env.CIVIL_SERVICE_URL = params.CIVIL_SERVICE_URL
-  env.TESTS_FOR_ACCESSIBILITY = false
   env.CIVIL_GENERAL_APPLICATIONS_URL = params.CIVIL_GENERAL_APPLICATIONS_URL
+  env.TESTS_FOR_ACCESSIBILITY = false
   overrideVaultEnvironments([
     'aat': params.ENVIRONMENT
   ])
