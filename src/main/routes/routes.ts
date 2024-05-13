@@ -304,6 +304,7 @@ import claimApplicationCostController from './features/generalApplication/claimA
 import respondentAgreeToOrderController from 'routes/features/generalApplication/respondentAgreeToOrderController';
 import payingForApplicationController from './features/generalApplication/payingForApplicationController';
 import requestingReasonController from 'routes/features/generalApplication/requestingReasonController';
+import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
 
 export default [
   homeController,
@@ -569,4 +570,5 @@ export default [
   respondentAgreeToOrderController,
   payingForApplicationController,
   requestingReasonController,
+  confirmYouHaveBeenPaidController,
 ];
