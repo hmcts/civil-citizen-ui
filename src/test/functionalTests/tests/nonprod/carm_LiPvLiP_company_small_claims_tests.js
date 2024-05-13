@@ -7,8 +7,6 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const { claimantNotificationWithDefendantRejectMedidationWithRejectAll } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
-const rejectAll = 'rejectAll';
-const dontWantMoreTime = 'dontWantMoreTime';
 
 const carmEnabled = true;
 let claimRef;
