@@ -1,5 +1,5 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {HEARING_SUPPORT_URL} from 'routes/urls';
+import {GA_HEARING_SUPPORT_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
@@ -20,7 +20,7 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<Heari
   res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationType, headingTitle: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE') });
 }
 
-hearingSupportController.get(HEARING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+hearingSupportController.get(GA_HEARING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
@@ -32,7 +32,7 @@ hearingSupportController.get(HEARING_SUPPORT_URL, (async (req: AppRequest, res: 
   }
 }) as RequestHandler);
 
-hearingSupportController.post(HEARING_SUPPORT_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+hearingSupportController.post(GA_HEARING_SUPPORT_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);

@@ -298,6 +298,7 @@ import agreementFromOtherPartyController from './features/generalApplication/agr
 import claimApplicationCostController from './features/generalApplication/claimApplicationCostController';
 import respondentAgreeToOrderController from 'routes/features/generalApplication/respondentAgreeToOrderController';
 import payingForApplicationController from './features/generalApplication/payingForApplicationController';
+import applicationCostsController from './features/generalApplication/applicationCostsController';
 
 export default [
   homeController,
@@ -562,4 +563,5 @@ export default [
   claimApplicationCostController,
   respondentAgreeToOrderController,
   payingForApplicationController,
+  applicationCostsController,
 ];
