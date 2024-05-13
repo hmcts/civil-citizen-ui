@@ -162,4 +162,4 @@ export const saveHearingContactDetails = async (claimId: string, hearingContactD
     logger.error(error);
     throw error;
   }
-}
+};
