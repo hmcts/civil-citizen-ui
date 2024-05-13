@@ -26,12 +26,12 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderView(res: Response, claim: Claim, claimId: string, lang: string) {
-  const latestUpdatesUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
   const hearingDurationTrialArrangementsUrl = constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_HEARING_DURATION);
   const caseInfoContents = getCaseInfoContents(claimId, claim);
   const summarySections = getSummarySections(claimId, claim, lang);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CANCEL_TRIAL_ARRANGEMENTS);
-  res.render(checkAnswersViewPath, {caseInfoContents, summarySections, latestUpdatesUrl, hearingDurationTrialArrangementsUrl, cancelUrl});
+  res.render(checkAnswersViewPath, {caseInfoContents, summarySections, backLinkUrl, hearingDurationTrialArrangementsUrl, cancelUrl});
 }
 
 trialCheckAnswersController.get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,

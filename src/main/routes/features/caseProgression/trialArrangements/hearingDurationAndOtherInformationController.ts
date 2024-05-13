@@ -8,7 +8,7 @@ import {
 import {
   getHearingDurationAndOtherInformation,
 } from 'services/features/caseProgression/trialArrangements/hearingDurationAndOtherInformation';
-import {caseNumberPrettify, removeWhiteSpacesIfNoText} from 'common/utils/stringUtils';
+import {removeWhiteSpacesIfNoText} from 'common/utils/stringUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 
@@ -25,25 +25,24 @@ const hearingDurationViewPath = 'features/caseProgression/trialArrangements/hear
 const hearingDurationController = Router();
 const propertyName = 'otherTrialInformation';
 
-hearingDurationController.get([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (req, res, next: NextFunction) => {
+hearingDurationController.get(TRIAL_ARRANGEMENTS_HEARING_DURATION, (async (req, res, next: NextFunction) => {
   try {
     const claimId: string = req.params.id;
     const claim: Claim = await getClaimById(claimId, req);
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimIdPrettified: string = caseNumberPrettify(req.params.id);
     const backLinkUrl: string = constructResponseUrlWithIdParams(claimId, HAS_ANYTHING_CHANGED_URL);
 
     const form = new GenericForm(getOtherInformationForm(claim));
     const cancelUrl = constructResponseUrlWithIdParams(claimId, CANCEL_TRIAL_ARRANGEMENTS);
     res.render(hearingDurationViewPath, {form: form,
-      hearingDurationContents: getHearingDurationAndOtherInformation(claim, lng, claimIdPrettified),
+      hearingDurationContents: getHearingDurationAndOtherInformation(claimId,claim, lng),
       backLinkUrl: backLinkUrl, cancelUrl});
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-hearingDurationController.post([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (req, res, next) => {
+hearingDurationController.post(TRIAL_ARRANGEMENTS_HEARING_DURATION, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
     let otherInfo = req.body.otherInformation;
@@ -59,5 +58,4 @@ hearingDurationController.post([TRIAL_ARRANGEMENTS_HEARING_DURATION], (async (re
     next(error);
   }
 })as RequestHandler);
-
 export default hearingDurationController;
