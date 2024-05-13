@@ -36,7 +36,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
       form,
       backLinkUrl,
       genericHelpFeeUrl,
-      applyHelpFeeReferenceContents: getApplyHelpFeeReferenceContents(),
+      applyHelpFeeReferenceContents: getApplyHelpFeeReferenceContents(claimId,claim.totalClaimAmount),
       applyHelpFeeReferenceButtonContents: getButtonsContents(claimId),
     });
 }

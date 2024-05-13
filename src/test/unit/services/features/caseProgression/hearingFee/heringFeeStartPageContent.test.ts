@@ -14,7 +14,7 @@ describe('getPayHearingFeeStartScreenContent', () => {
     const payHearingFeeStartScreenContentActual = getHearingFeeStartPageContent(claim.id, 'en', 1000,claim.caseProgressionHearing.hearingFeeInformation);
 
     //Then
-    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual('COMMON.MICRO_TEXT.HEARING_FEE');
+    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual('PAGES.DASHBOARD.HEARINGS.HEARING');
     expect(payHearingFeeStartScreenContentActual[1].data.text).toEqual('PAGES.PAY_HEARING_FEE.START_PAGE.TITLE');
     expect(payHearingFeeStartScreenContentActual[2].data.text).toEqual('COMMON.CASE_NUMBER');
     expect(payHearingFeeStartScreenContentActual[3].data.text).toEqual('COMMON.CLAIM_AMOUNT_WITH_VALUE');

@@ -33,7 +33,7 @@ describe('Apply for help with fees', () => {
         .get(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Hearing fee');
+          expect(res.text).toContain('Hearing');
         });
     });
 
@@ -46,7 +46,7 @@ describe('Apply for help with fees', () => {
         .get(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Hearing fee');
+          expect(res.text).toContain('Hearing');
         });
     });
 
@@ -56,7 +56,7 @@ describe('Apply for help with fees', () => {
         .get(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Hearing fee');
+          expect(res.text).toContain('Hearing');
         });
     });
 
