@@ -1,0 +1,34 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block content %}
+    <div class="govuk-width-container">
+        <main class="govuk-main-wrapper" role="main">
+            {% if form.hasErrors() %}
+                {{ errorSummary(form.getErrors(), t) }}
+            {% endif %}
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-two-thirds">
+                    <form method="post" novalidate>
+                        {{ csrfProtection(csrf) }}
+                        <span class="govuk-caption-l">{{ t(applicationType) }}</span>
+                        {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.GENERAL_APPLICATION.ADD_ANOTHER_APPLICATION.DO_YOU_ADD_ANOTHER_APPLICATION'), form, t('PAGES.GENERAL_APPLICATION.ADD_ANOTHER_APPLICATION.ADDITIONAL_FEE')) }}
+                        <div class="govuk-button-group">
+                            {{ govukButton({
+                                 text: t('COMMON.BUTTONS.CONTINUE')
+                                }) }}
+                            <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener">{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="govuk-grid-column-one-third">
+                    {{ contactUsForHelp(t) }}
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
