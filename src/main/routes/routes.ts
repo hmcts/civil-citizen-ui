@@ -305,6 +305,7 @@ import respondentAgreeToOrderController from 'routes/features/generalApplication
 import payingForApplicationController from './features/generalApplication/payingForApplicationController';
 import requestingReasonController from 'routes/features/generalApplication/requestingReasonController';
 import addAnotherApplicationController from './features/generalApplication/addAnotherApplicationController';
+import orderJudgeController from './features/generalApplication/orderJudgeController';
 
 export default [
   homeController,
@@ -571,4 +572,5 @@ export default [
   payingForApplicationController,
   requestingReasonController,
   addAnotherApplicationController,
+  orderJudgeController,
 ];
