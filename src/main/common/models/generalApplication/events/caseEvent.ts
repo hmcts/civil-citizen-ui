@@ -1,3 +1,0 @@
-export enum CaseEvent {
-    RESPOND_TO_APPLICATION = 'RESPOND_TO_APPLICATION',
-}

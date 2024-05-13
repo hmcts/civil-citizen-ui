@@ -89,8 +89,8 @@ describe('Dashboard page', () => {
       await testSession
         .get(DASHBOARD_URL)
         .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          // expect(res.text).toContain('Claims made against you');
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Claims made against you');
         });
     });
     it('should return error page when there is an error with civil service response', async () => {
