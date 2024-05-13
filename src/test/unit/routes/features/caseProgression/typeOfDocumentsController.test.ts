@@ -35,6 +35,7 @@ describe('Upload document- type of documents controller', () => {
       await request(app).get(typeOfDocumentUrl).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TITLE'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.HEARINGS.HEARING'));
       });
     });
 
