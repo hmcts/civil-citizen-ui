@@ -1,6 +1,6 @@
 import { NextFunction, Response, Router } from 'express';
 import { AppRequest } from 'common/models/AppRequest';
-import { GA_ADD_ANOTHER_APPLICATION } from 'routes/urls';
+import { GA_ADD_ANOTHER_APPLICATION_URL } from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { selectedApplicationType } from 'common/models/generalApplication/applicationType';
@@ -23,13 +23,13 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Gen
   res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationType });
 };
 
-addAnotherApplicationController.get(GA_ADD_ANOTHER_APPLICATION, async (req: AppRequest, res: Response, next: NextFunction) => {
+addAnotherApplicationController.get(GA_ADD_ANOTHER_APPLICATION_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   renderView(req, res).catch((error) => {
     next(error);
   });
 });
 
-addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION, async (req: AppRequest, res: Response, next: NextFunction) => {
+addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.WANT_TO_ADD_ANOTHER_APPLICATION'));
     await form.validate();

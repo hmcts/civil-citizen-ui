@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import { GA_ADD_ANOTHER_APPLICATION } from 'routes/urls';
+import { GA_ADD_ANOTHER_APPLICATION_URL } from 'routes/urls';
 import { app } from '../../../../../../main/app';
 import * as draftService from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
@@ -37,7 +37,7 @@ describe('General Application - add another application', () => {
   describe('on GET', () => {
     it('should return page', async () => {
       await request(app)
-        .get(GA_ADD_ANOTHER_APPLICATION)
+        .get(GA_ADD_ANOTHER_APPLICATION_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.ADD_ANOTHER_APPLICATION.DO_YOU_ADD_ANOTHER_APPLICATION'));
@@ -49,7 +49,7 @@ describe('General Application - add another application', () => {
 
       mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
-        .get(GA_ADD_ANOTHER_APPLICATION)
+        .get(GA_ADD_ANOTHER_APPLICATION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -60,7 +60,7 @@ describe('General Application - add another application', () => {
   describe('on POST', () => {
     it('should save the value and redirect', async () => {
       await request(app)
-        .post(GA_ADD_ANOTHER_APPLICATION)
+        .post(GA_ADD_ANOTHER_APPLICATION_URL)
         .send({ option: 'yes' })
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -69,7 +69,7 @@ describe('General Application - add another application', () => {
 
     it('should return errors on no input', async () => {
       await request(app)
-        .post(GA_ADD_ANOTHER_APPLICATION)
+        .post(GA_ADD_ANOTHER_APPLICATION_URL)
         .send({ option: null })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -79,7 +79,7 @@ describe('General Application - add another application', () => {
     it('should return http 500 when has error in the post method', async () => {
       mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
-        .post(GA_ADD_ANOTHER_APPLICATION)
+        .post(GA_ADD_ANOTHER_APPLICATION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
