@@ -5,7 +5,6 @@ import {getFeePaymentRedirectInformation} from 'services/features/feePayment/fee
 import {FeeType} from 'form/models/helpWithFees/feeType';
 
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
-import {getClaimById} from 'modules/utilityService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('MakePaymentAgainService');
