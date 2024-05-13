@@ -2,12 +2,11 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {APPLICATION_TYPE_URL} from 'routes/urls';
+import {ORDER_JUDGE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import {isGaForLipsEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -30,17 +29,17 @@ describe('General Application - Application type', () => {
       app.locals.draftStoreClient = mockCivilClaim;
 
       await request(app)
-        .get(APPLICATION_TYPE_URL)
+        .get(ORDER_JUDGE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.TITLE'));
         });
     });
 
     it('should return http 500 when has error in the get method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(APPLICATION_TYPE_URL)
+        .get(ORDER_JUDGE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -52,39 +51,29 @@ describe('General Application - Application type', () => {
     it('should send the value and redirect', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(APPLICATION_TYPE_URL)
-        .send({option: ApplicationTypeOption.ADJOURN_HEARING})
+        .post(ORDER_JUDGE_URL)
+        .send({text: 'test'})
         .expect((res) => {
           expect(res.status).toBe(302);
         });
     });
 
-    it('should send the value when select OTHER and redirect', async () => {
+    it('should return errors on empty textarea', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(APPLICATION_TYPE_URL)
-        .send({option: ApplicationTypeOption.OTHER, optionOther: ApplicationTypeOption.PROCEEDS_IN_HERITAGE})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
-    });
-
-    it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(APPLICATION_TYPE_URL)
-        .send({option: null})
+        .post(ORDER_JUDGE_URL)
+        .send({text: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.APPLICATION_TYPE_REQUIRED'));
+          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.ENTER_ORDER_JUDGE'));
         });
     });
 
     it('should return http 500 when has error in the post method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(APPLICATION_TYPE_URL)
-        .send({option: ApplicationTypeOption.ADJOURN_HEARING})
+        .post(ORDER_JUDGE_URL)
+        .send({text: 'test'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
