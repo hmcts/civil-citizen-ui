@@ -14,9 +14,7 @@ interface ContentParagraph {
   variables?: object;
 }
 
-export const getApplicationCostsContent = async (applicationTypeOption: ApplicationTypeOption,
-                                                 withConsent: YesNo, withNotice: YesNo,
-                                                 lang: string, req: AppRequest) => {
+export const getApplicationCostsContent = async (applicationTypeOption: ApplicationTypeOption, withConsent: YesNo, withNotice: YesNo, lang: string, req: AppRequest) => {
   const gaFee = await civilServiceClient.getGeneralApplicationFee(applicationTypeOption, withConsent, withNotice, req);
   const pageSectionBuilder = new PageSectionBuilder();
   const selectedApplicationTypeContent = getSelectedApplicationTypeContent(lang);
@@ -41,7 +39,7 @@ const getSelectedApplicationTypeContent = (lang: string) : Partial<{ [key in App
         variables: {
           applicationType: t('PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.ADJOURN_HEARING', {lng: lang}),
           applicationFee: 123,
-        }
+        },
       },
       {text: 'PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.HEARING_MORE_THAN'},
       {text: 'PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.HEARING_LESS_THAN'},
@@ -53,8 +51,8 @@ const getSelectedApplicationTypeContent = (lang: string) : Partial<{ [key in App
         variables: {
           applicationType: t('PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.SET_ASIDE_JUDGEMENT', {lng: lang}),
           applicationFee: 123,
-        }
-      }
+        },
+      },
     ],
     [ApplicationTypeOption.VARY_ORDER]: [
       {
@@ -62,8 +60,8 @@ const getSelectedApplicationTypeContent = (lang: string) : Partial<{ [key in App
         variables: {
           applicationType: t('PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.VARY_ORDER', {lng: lang}),
           applicationFee: 123,
-        }
-      }
+        },
+      },
     ],
     [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: [
       {
@@ -71,8 +69,8 @@ const getSelectedApplicationTypeContent = (lang: string) : Partial<{ [key in App
         variables: {
           applicationType: t('PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.VARY_PAYMENT_TERMS_OF_JUDGMENT', {lng: lang}),
           applicationFee: 123,
-        }
-      }
+        },
+      },
     ],
   };
-}
+};
