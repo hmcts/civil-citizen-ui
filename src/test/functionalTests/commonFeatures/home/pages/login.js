@@ -1,8 +1,9 @@
 const I = actor();
-const config = require('../../../../config');
-const cuiCookies = require('../../../specClaimHelpers/fixtures/cookies/cuiCookies');
-const cmcCookies = require('../../../specClaimHelpers/fixtures/cookies/cmcCookies');
-const idamCookies = require('../../../specClaimHelpers/fixtures/cookies/idamCookies');
+const config = require("../../../../config");
+const cuiCookies = require("../../../specClaimHelpers/fixtures/cookies/cuiCookies");
+const cmcCookies = require("../../../specClaimHelpers/fixtures/cookies/cmcCookies");
+const idamCookies = require("../../../specClaimHelpers/fixtures/cookies/idamCookies");
+const exuiCookies = require("../../../specClaimHelpers/fixtures/cookies/exuiCookies");
 
 const fields = {
   username: 'input[id="username"]',
@@ -10,8 +11,8 @@ const fields = {
 };
 
 const buttons = {
-  submit: 'input.button',
-  hmctsSignIn: 'Sign in',
+  submit: "input.button",
+  hmctsSignIn: "Sign in",
   acceptCookies: 'button[id="cookie-accept-submit"]',
   hideMessage: 'button[name="hide-accepted"]',
 };
@@ -20,13 +21,13 @@ class LoginPage {
   async openCitizenLogin() {
     await I.clearCookie();
     await I.setCookie([...idamCookies, ...cuiCookies]);
-    await I.amOnPage('/');
+    await I.amOnPage("/");
   }
 
   async openOCMC() {
     await I.clearCookie();
     await I.setCookie([...idamCookies, ...cmcCookies]);
-    await I.amOnPage('https://moneyclaims.aat.platform.hmcts.net');
+    await I.amOnPage("https://moneyclaims.aat.platform.hmcts.net");
   }
 
   async openManageCase() {
@@ -41,7 +42,7 @@ class LoginPage {
   }
 
   async #login(email, password, endpoint) {
-    await I.waitForContent('Email address', config.WaitForText);
+    await I.waitForContent("Email address", config.WaitForText);
     await I.waitForVisible(fields.username);
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);
@@ -51,15 +52,17 @@ class LoginPage {
   }
 
   async citizenLogin(email, password) {
-    await this.#login(email, password, '/dashboard');
+    await this.#login(email, password, "/dashboard");
   }
 
   async ocmcLogin(email, password) {
-    await this.#login(email, password, '/eligibility');
+    await this.#login(email, password, "/eligibility");
   }
 
-  async caseWorkerLogin(email, password) {
-    await this.#login(email, password, '/work/my-work/list');
+  async caseworkerLogin(email, password) {
+    await this.#login(email, password, "/work/my-work/list");
+    const userid = (await I.grabCookie('__userid__'));
+    await I.setCookie(exuiCookies(userid));
   }
 }
 
