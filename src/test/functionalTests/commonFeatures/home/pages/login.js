@@ -61,8 +61,9 @@ class LoginPage {
 
   async caseworkerLogin(email, password) {
     await this.#login(email, password, "/work/my-work/list");
-    const userid = (await I.grabCookie('__userid__'));
+    const userid = (await I.grabCookie('__userid__')).value;
     await I.setCookie(exuiCookies(userid));
+    await I.refreshPage();
   }
 }
 
