@@ -22,7 +22,9 @@
                   {{ claimIdPrettified }}
               </p>
             {% endif %}
-            <p class="govuk-body-m">{{  t('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: claimAmountFormatted}) }}</p>
+            {% if claimAmountFormatted %}
+              <p class="govuk-body-m">{{  t('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: claimAmountFormatted}) }}</p>
+            {% endif %}
           </div>
         </div>
       {% endif %}
