@@ -6,7 +6,6 @@ const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClai
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
 const { respondToClaim, defendantResponseFullAdmitPayInstalments, defendantResponseFullAdmitPayInstalmentsClaimant, claimantAskDefendantToSignSettlementCourtPlanDefendant } = require('../../specClaimHelpers/dashboardNotificationConstants');
-const { ids } = require('webpack');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
