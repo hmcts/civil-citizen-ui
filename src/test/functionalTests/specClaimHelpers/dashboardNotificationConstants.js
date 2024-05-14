@@ -15,10 +15,11 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.ClaimantIntent.ClaimSettled.Claimant
   claimIsSettledClaimant: (amount, date) => {
     return {
       title: 'The claim is settled',
-      content: `You have confirmed that Sir John Doe paid £${amount} on ${date}.`
+      content: `You have confirmed that Sir John Doe paid £${amount} on ${date}.`,
     };
   },
 
