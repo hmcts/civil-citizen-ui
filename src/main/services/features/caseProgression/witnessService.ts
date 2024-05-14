@@ -10,7 +10,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {
   ReferredToInTheStatementSection,
   UploadDocumentsUserForm,
-  WitnessSection,
+  WitnessSection, WitnessSummarySection,
 } from 'models/caseProgression/uploadDocumentsUserForm';
 import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 
@@ -60,7 +60,7 @@ const getWitnessSummary = (form: GenericForm<UploadDocumentsUserForm>): ClaimSum
   const sectionContent = [];
 
   if (form && form.model.witnessSummary.length != 0) {
-    form.model.witnessSummary.forEach(function (witnessSection: WitnessSection, index: number) {
+    form.model.witnessSummary.forEach(function (witnessSection: WitnessSummarySection, index: number) {
       sectionContent.push([buildWitnessSummary(witnessSection, index, form)]);
     });
   } else {
