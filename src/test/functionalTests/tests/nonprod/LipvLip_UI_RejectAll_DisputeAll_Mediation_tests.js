@@ -43,7 +43,7 @@ Scenario('Assign case to defendant', async ({api}) => {
   }
 }).tag('@regression-r2');
 
-Scenario('Defendant responds with Rejected All', async ({api}) => {
+Scenario('Defendant responds with Rejected All', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
@@ -58,7 +58,7 @@ Scenario('Defendant responds with Rejected All', async ({api}) => {
     await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
     await ResponseSteps.EnterDQForSmallClaims(claimRef);
     await ResponseSteps.CheckAndSubmit(claimRef, rejectAll);
-    await ResponseSteps.SignOut();
+    await I.click('Sign out');
     await api.waitForFinishedBusinessProcess();
   }
 }).retry(1).tag('@regression-r2');
