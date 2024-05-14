@@ -16,6 +16,9 @@ import {CourtProposedPlanOptions} from 'form/models/claimantResponse/courtPropos
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {CCDRejectAllOfClaimType} from 'models/ccdResponse/ccdRejectAllOfClaimType';
 import { CCDRepaymentPlanFrequency } from 'common/models/ccdResponse/ccdRepaymentPlan';
+import { CCDEvidenceType } from 'common/models/ccdResponse/ccdEvidence';
+import { EvidenceItem } from 'common/form/models/evidence/evidenceItem';
+import { EvidenceType } from 'common/models/evidence/evidenceType';
 
 const phoneCCD = '123456789';
 const title = 'Mr';
@@ -417,14 +420,40 @@ describe('translateCCDCaseDataToCUIModel', () => {
     //Given
     const paymentDate = new Date('2024-04-30');
     const input: CCDClaim = {
-      applicant1LiPResponse : {
-        applicant1SuggestedImmediatePaymentDeadLine: paymentDate,
-      },
+      applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec : paymentDate,
     };
 
     const claim = translateCCDCaseDataToCUIModel(input);
 
     //Then
     expect(claim.claimantResponse.suggestedImmediatePaymentDeadLine).toEqual(paymentDate);
+  });
+
+  it('should translate claimant evidence to CUI model for having value', () => {
+    //Given
+    const input: CCDClaim = {
+      speclistYourEvidenceList: [
+        {
+          'id': '339536de-eeb8-4b74-968d-4b9d02c00ef7',
+          'value': {
+            evidenceType: CCDEvidenceType.OTHER,
+            otherEvidence: 'test other',
+          },
+        },
+      ],
+    };
+
+    const evidenceCUI: EvidenceItem[] = [
+      {
+        type: EvidenceType.OTHER,
+        description: 'test other',
+      },
+    ];
+
+    // When
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantEvidence.evidenceItem).toEqual(evidenceCUI);
   });
 });

@@ -45,6 +45,7 @@ jest.mock('services/dashboard/dashboardService', () => ({
   getDashboardForm: jest.fn(),
   getHelpSupportTitle: jest.fn(),
   getHelpSupportLinks: jest.fn(),
+  extractOrderDocumentIdFromNotification : jest.fn(),
 }));
 
 export const USER_DETAILS = {

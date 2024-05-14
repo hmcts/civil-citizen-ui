@@ -19,12 +19,36 @@ const paths = {
     details_in_case_of_a_hearing : '//a[.="Give us details in case there\'s a hearing"]',
     have_you_been_paid: '//a[contains(text(), \'Have you been paid the\')]',
     settle_the_claim_for: '//a[contains(text(), \'Settle the claim for\')]',
+    propose_alternative_plan: '//a[contains(text(), \'Propose an alternative repayment plan\')]',
   },
 };
 
 class ResponseToDefenceLipVLipSteps {
 
-  async claimantAcceptForDefRespPartAdmitInstallmentsPayment(caseReference, admittedAmount, fastTrack) {
+  async claimantAcceptForDefRespPartAdmitInstallmentsPayment(caseReference, admittedAmount, claimNumber) {
+    await responseToDefence.open(caseReference);
+    await responseToDefence.verifyDashboard();
+    I.click(paths.links.view_defendants_response);
+    await responseToDefence.verifyDefResponseForPartAdmitInstallmentPayment(admittedAmount);
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.accept_or_reject_the_plan);
+    await responseToDefence.acceptOrRejectTheAmountDefendantAdmittedAndSettle(admittedAmount, 'accept');
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.accept_or_reject_the_payment_plan);
+    await responseToDefence.acceptOrRejectTheirRepaymentPlan('reject');
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.propose_alternative_plan);
+    await responseToDefence.proposePaymentPlan();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.request_a_CCJ);
+    await responseToDefence.verifyCCJ();
+    await this.verifyDashboardLoaded();
+    I.click(paths.links.check_and_submit_your_response);
+    await responseToDefence.verifyCheckYourAnswersForPartAdmitCCJ();
+    await responseToDefence.verifyConfirmationScreenForPartAdmitCCJ(claimNumber);
+  }
+
+  async claimantRejectForDefRespPartAdmitInstallmentsPayment(caseReference, admittedAmount, fastTrack) {
     await responseToDefence.open(caseReference);
     await responseToDefence.verifyDashboard();
     I.click(paths.links.view_defendants_response);
@@ -146,8 +170,8 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifySignTheSettlementAgreement();
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
-    responseToDefence.verifyCheckYourAnswersForPartAdmitSettlementAgreement();
-    responseToDefence.verifyConfirmationScreenForPartAdmitSettlementAgreement(claimNumber);
+    await responseToDefence.verifyCheckYourAnswersForPartAdmitSettlementAgreement();
+    await responseToDefence.verifyConfirmationScreenForPartAdmitSettlementAgreement(claimNumber);
   }
 
   async ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(caseReference, claimNumber)
@@ -189,8 +213,8 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifyCCJ();
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
-    responseToDefence.verifyCheckYourAnswersForFullAdmitCCJ();
-    responseToDefence.verifyConfirmationScreenForFullAdmitCCJ(claimNumber);
+    await responseToDefence.verifyCheckYourAnswersForFullAdmitCCJ();
+    await responseToDefence.verifyConfirmationScreenForFullAdmitCCJ(claimNumber);
   }
 
   async ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDateSSA(caseReference, claimNumber)
@@ -210,8 +234,8 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifySignTheSettlementAgreementForFullAdmit('bySetDate');
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
-    responseToDefence.verifyCheckYourAnswersForFullAdmitSettlementAgreement();
-    responseToDefence.verifyConfirmationScreenForFullAdmitSettlementAgreement(claimNumber);
+    await responseToDefence.verifyCheckYourAnswersForFullAdmitSettlementAgreement();
+    await responseToDefence.verifyConfirmationScreenForFullAdmitSettlementAgreement(claimNumber);
   }
 
   async ResponseToDefenceStepsAsRejectionOfFullAdmitPayByInstalmentsSSA(caseReference, claimNumber)
@@ -235,8 +259,8 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.verifySignTheSettlementAgreementForFullAdmit('byInstalments');
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
-    responseToDefence.verifyCheckYourAnswersForFullAdmitRejectPlanSettlementAgreement();
-    responseToDefence.verifyConfirmationScreenForFullAdmitRejectPlanSettlementAgreement(claimNumber);
+    await responseToDefence.verifyCheckYourAnswersForFullAdmitRejectPlanSettlementAgreement();
+    await responseToDefence.verifyConfirmationScreenForFullAdmitRejectPlanSettlementAgreement(claimNumber);
   }
 
   async ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceDisputeAll(caseReference, claimNumber)
@@ -250,8 +274,8 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.inputNoToProceedWithTheClaim();
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
-    responseToDefence.verifyCheckYourAnswersRejectAllNoToProceed();
-    responseToDefence.verifyConfirmationScreenForRejectAllNoToProceed(claimNumber);
+    await responseToDefence.verifyCheckYourAnswersRejectAllNoToProceed();
+    await responseToDefence.verifyConfirmationScreenForRejectAllNoToProceed(claimNumber);
   }
 
   async ResponseToDefenceStepsAsAnRejectionOfFullDefenceDisputeAll(caseReference, claimNumber)
@@ -267,8 +291,8 @@ class ResponseToDefenceLipVLipSteps {
     await this.verifyDQForFastTrack();
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
-    responseToDefence.verifyCheckYourAnswersRejectAllYesToProceed();
-    responseToDefence.verifyConfirmationScreenForRejectAllYesToProceed(claimNumber);
+    await responseToDefence.verifyCheckYourAnswersRejectAllYesToProceed();
+    await responseToDefence.verifyConfirmationScreenForRejectAllYesToProceed(claimNumber);
   }
 
   async ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceAlreadyPaidInFull(caseReference, claimNumber)
@@ -282,8 +306,8 @@ class ResponseToDefenceLipVLipSteps {
     await responseToDefence.inputSettleWithTheClaimInFull();
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
-    responseToDefence.verifyCheckYourAnswersRejectAllSettleClaimInFull();
-    responseToDefence.verifyConfirmationScreenForRejectAllSettleClaimInFull(claimNumber);
+    await responseToDefence.verifyCheckYourAnswersRejectAllSettleClaimInFull();
+    await responseToDefence.verifyConfirmationScreenForRejectAllSettleClaimInFull(claimNumber);
   }
 
   async ResponseToDefenceStepsAsAnRejectionOfFullDefenceAlreadyPaidInFull(caseReference, claimNumber)
@@ -299,8 +323,8 @@ class ResponseToDefenceLipVLipSteps {
     await this.verifyDQForFastTrack();
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
-    responseToDefence.verifyCheckYourAnswersRejectAllNotToSettleClaimInFull();
-    responseToDefence.verifyConfirmationScreenForRejectAllYesToProceed(claimNumber);
+    await responseToDefence.verifyCheckYourAnswersRejectAllNotToSettleClaimInFull();
+    await responseToDefence.verifyConfirmationScreenForRejectAllYesToProceed(claimNumber);
   }
 
   async ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceAlreadyPaidNotInFull(caseReference, claimNumber)
@@ -316,8 +340,8 @@ class ResponseToDefenceLipVLipSteps {
     I.click(paths.links.settle_the_claim_for);
     await responseToDefence.paymentNotInFullYesToSettle();
     I.click(paths.links.check_and_submit_your_response);
-    responseToDefence.verifyCheckYourAnswersRejectAllSettleClaimNotInFull();
-    responseToDefence.verifyConfirmationScreenForRejectAllSettleClaimInFull(claimNumber);
+    await responseToDefence.verifyCheckYourAnswersRejectAllSettleClaimNotInFull();
+    await responseToDefence.verifyConfirmationScreenForRejectAllSettleClaimInFull(claimNumber);
   }
 
   async ResponseToDefenceStepsAsAnRejectionOfFullDefenceAlreadyPaidNotInFull(caseReference, claimNumber)
@@ -336,8 +360,8 @@ class ResponseToDefenceLipVLipSteps {
     await this.verifyDQForSmallClaims();
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
-    responseToDefence.verifyCheckYourAnswersRejectAllNotToSettleClaimNotInFull();
-    responseToDefence.verifyConfirmationScreenForRejectAllYesToProceed(claimNumber);
+    await responseToDefence.verifyCheckYourAnswersRejectAllNotToSettleClaimNotInFull();
+    await responseToDefence.verifyConfirmationScreenForRejectAllYesToProceed(claimNumber);
   }
 
   async ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaid(caseReference, claimNumber)
@@ -353,8 +377,8 @@ class ResponseToDefenceLipVLipSteps {
     I.click(paths.links.settle_the_claim_for);
     await responseToDefence.paymentNotInFullYesToSettle();
     I.click(paths.links.check_and_submit_your_response);
-    responseToDefence.verifyCheckYourAnswersPartAdmitAlreadyPaidSettleClaim();
-    responseToDefence.verifyConfirmationScreenForPartAdmitAlreadyPaidSettleClaim(claimNumber);
+    await responseToDefence.verifyCheckYourAnswersPartAdmitAlreadyPaidSettleClaim();
+    await responseToDefence.verifyConfirmationScreenForPartAdmitAlreadyPaidSettleClaim(claimNumber);
   }
 
   async ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidGoToMediation(caseReference, claimNumber)
@@ -374,8 +398,8 @@ class ResponseToDefenceLipVLipSteps {
     await this.verifyDQForSmallClaims();
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
-    responseToDefence.verifyCheckYourAnswersPartAdmitAlreadyPaidGoToMediation();
-    responseToDefence.verifyConfirmationScreenForPartAdmitAlreadyPaidGoToMediation(claimNumber);
+    await responseToDefence.verifyCheckYourAnswersPartAdmitAlreadyPaidGoToMediation();
+    await responseToDefence.verifyConfirmationScreenForPartAdmitAlreadyPaidGoToMediation(claimNumber);
   }
 
   async ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidAndProceed(caseReference, claimNumber, withTimeLineEvidenceDisagree)
@@ -394,8 +418,8 @@ class ResponseToDefenceLipVLipSteps {
     await this.verifyDQForFastTrack();
     await this.verifyDashboardLoaded();
     I.click(paths.links.check_and_submit_your_response);
-    responseToDefence.verifyCheckYourAnswersPartAdmitAlreadyPaidNotToSettleClaim();
-    responseToDefence.verifyConfirmationScreenForRejectAllYesToProceed(claimNumber);
+    await responseToDefence.verifyCheckYourAnswersPartAdmitAlreadyPaidNotToSettleClaim();
+    await responseToDefence.verifyConfirmationScreenForRejectAllYesToProceed(claimNumber);
   }
 
   async verifyDashboardLoaded() {

@@ -2,7 +2,11 @@ import {Claim} from 'models/claim';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 import {FIXED_DATE} from '../../../../utils/dateUtils';
-import {getDashboardForm, getNotifications} from 'services/dashboard/dashboardService';
+import {
+  extractOrderDocumentIdFromNotification,
+  getDashboardForm,
+  getNotifications,
+} from 'services/dashboard/dashboardService';
 import {CaseRole} from 'form/models/caseRoles';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {AppRequest} from 'common/models/AppRequest';
@@ -240,6 +244,21 @@ describe('dashboardService', () => {
 
         //Then
         expect(claimantDashboard).toEqual(dashboardExpected);
+      });
+
+      it('ExtractDocumentFromNotificationList', async () => {
+        //Given
+        const notificationList: DashboardNotificationList = new DashboardNotificationList();
+        const params: Map<string, object> = new Map<string, object>();
+        params.set('orderDocument', new Object('http://dm-store:8080/documents/f1c7d590-8d3f-49c2-8ee7-6420ab711801/binary'));
+        const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params);
+        notificationList.items = new Array(dashboardNotification);
+        //When
+        const documentId = extractOrderDocumentIdFromNotification(notificationList);
+
+        //Then
+        expect(documentId).toEqual(undefined);
+
       });
     });
   });

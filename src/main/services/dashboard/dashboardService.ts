@@ -3,12 +3,12 @@ import {ClaimantOrDefendant} from 'models/partyType';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
-import {replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
+import {objectToMap, replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {t} from 'i18next';
-import { 
+import {
   feesHelpUrl,
   findCourtTribunalUrl,
   findLegalAdviceUrl,
@@ -47,8 +47,8 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
   if (dashboardNotifications) {
     dashboardNotifications.items.forEach((notification) => {
-      notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification.id);
-      notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification.id);
+      notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification);
+      notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification);
     });
     return dashboardNotifications;
   } else {
@@ -70,3 +70,16 @@ export const getHelpSupportLinks = (lng: string) => {
     { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT', { lng }), url: findCourtTribunalUrl },
   ];
 };
+
+export function extractOrderDocumentIdFromNotification (notificationsList: DashboardNotificationList) : string {
+  for (const notification of notificationsList.items) {
+    const paramMap: Map<string, object> = objectToMap(notification.params);
+    if (paramMap) {
+      const orderDocument = paramMap.get('orderDocument');
+      if (orderDocument !== undefined && orderDocument !== null) {
+        return orderDocument.toString();
+      }
+    }
+  }
+  return undefined;
+}

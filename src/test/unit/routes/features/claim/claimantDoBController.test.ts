@@ -26,6 +26,10 @@ describe('Claimant Date of Birth Controller', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
+
   describe('on GET', () => {
     it('should render date of birth page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;

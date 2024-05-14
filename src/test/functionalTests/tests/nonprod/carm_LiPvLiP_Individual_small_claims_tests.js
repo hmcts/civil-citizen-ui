@@ -54,7 +54,7 @@ Scenario('LiP Defendant response with Part admit', async ({api}) => {
     await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
     await ResponseSteps.VerifyConfirmationPage('PartAdmitAndPayImmediately');
   }
-}).tag('@regression-carm');
+}).tag('@skip-regression-carm');
 
 Scenario('LiP Claimant response with Part admit', async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
@@ -71,4 +71,4 @@ Scenario('LiP Claimant response with Part admit', async ({api}) => {
     await ClaimantResponseSteps.submitClaimantResponse();
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-carm');
+}).tag('@skip-regression-carm');

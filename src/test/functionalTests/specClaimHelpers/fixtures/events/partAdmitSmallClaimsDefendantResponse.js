@@ -600,7 +600,7 @@ module.exports = {
             'value': {
               'accountType': 'SAVINGS',
               'jointAccount': 'Yes',
-              'balance': 300000,
+              'balance': 300,
             },
           },
         ],

@@ -12,7 +12,7 @@ import {
   CLAIM_FEE_BREAKUP,
   CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
-  DASHBOARD_NOTIFICATION_REDIRECT,
+  DASHBOARD_NOTIFICATION_REDIRECT, DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT,
   DATE_PAID_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
@@ -22,6 +22,9 @@ import {
   VIEW_CLAIMANT_INFO,
   VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT,
   START_MEDIATION_UPLOAD_FILES,
+  VIEW_THE_HEARING_URL, VIEW_ORDERS_AND_NOTICES_URL, CLAIM_DETAILS_URL,
+  VIEW_RESPONSE_TO_CLAIM,
+  UPLOAD_YOUR_DOCUMENTS_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -32,10 +35,11 @@ import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
 import { t } from 'i18next';
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 
-export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim, claimId: string, notificationId?: string): string => {
+export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim, claimId: string, notification?: DashboardNotification): string => {
 
-  const valuesMap = setDashboardValues(claim, claimId, notificationId);
+  const valuesMap = setDashboardValues(claim, claimId, notification);
   valuesMap.forEach((value: string, key: string) => {
     textToReplace = textToReplace?.replace(key, value);
   });
@@ -43,26 +47,29 @@ export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim
   return textToReplace;
 };
 
-const setDashboardValues = (claim: Claim, claimId: string, notificationId?: string): Map<string, string> => {
+const setDashboardValues = (claim: Claim, claimId: string, notification?: DashboardNotification): Map<string, string> => {
 
   const valuesMap: Map<string, string> = new Map<string, string>();
   const daysLeftToRespond = claim?.respondent1ResponseDeadline ? getNumberOfDaysBetweenTwoDays(new Date(), claim.respondent1ResponseDeadline).toString() : '';
   const enforceJudgementUrl = config.get<string>('services.enforceJudgment.url');
   const applyForCertificate = config.get<string>('services.applyForCertificate.url');
   const civilMoneyClaimsTelephone = config.get<string>('services.civilMoneyClaims.telephone');
+  const civilMoneyClaimsTelephoneWelshSpeaker = config.get<string>('services.civilMoneyClaims.welshspeaker.telephone');
   const cmcCourtEmailId = config.get<string>('services.civilMoneyClaims.courtEmailId');
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
+  const notificationId = notification?.id;
 
-  valuesMap.set('{VIEW_CLAIM_URL}', '#');
+  valuesMap.set('{VIEW_CLAIM_URL}', CLAIM_DETAILS_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_INFO_ABOUT_CLAIMANT}', VIEW_CLAIMANT_INFO.replace(':id', claimId));
-  valuesMap.set('{VIEW_RESPONSE_TO_CLAIM}', '#');
+  valuesMap.set('{VIEW_RESPONSE_TO_CLAIM}', VIEW_RESPONSE_TO_CLAIM.replace(':id', claimId));
   valuesMap.set('{VIEW_INFO_ABOUT_DEFENDANT}', VIEW_DEFENDANT_INFO.replace(':id', claimId));
-  valuesMap.set('{VIEW_HEARINGS}', '#');
-  valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', '#');
+  valuesMap.set('{VIEW_HEARINGS}',VIEW_THE_HEARING_URL.replace(':id', claimId));
+  valuesMap.set('{VIEW_THE_HEARING_URL}', VIEW_THE_HEARING_URL.replace(':id', claimId));
+  valuesMap.set('{UPLOAD_HEARING_DOCUMENTS}', UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', claimId));
   valuesMap.set('{ADD_TRIAL_ARRANGEMENTS}', CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId));
   valuesMap.set('{PAY_HEARING_FEE}', PAY_HEARING_FEE_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_BUNDLE}', BUNDLES_URL.replace(':id', claimId));
-  valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', '#');
+  valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_JUDGEMENT}', '#');
   valuesMap.set('{VIEW_APPLICATIONS}', '#');
   valuesMap.set('{VIEW_HEARING_NOTICE}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getHearingDocumentsCaseDocumentIdByType(claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM)));
@@ -83,6 +90,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
   valuesMap.set('{APPLY_FOR_CERTIFICATE}', applyForCertificate);
   valuesMap.set('{enforceJudgementUrl}', enforceJudgementUrl);
   valuesMap.set('{civilMoneyClaimsTelephone}', civilMoneyClaimsTelephone);
+  valuesMap.set('{civilMoneyClaimsTelephoneWelshSpeaker}', civilMoneyClaimsTelephoneWelshSpeaker);
   valuesMap.set('{cmcCourtEmailId}', cmcCourtEmailId);
   valuesMap.set('{cmcCourtAddress}', getSendFinancialDetailsAddress());
   valuesMap.set('{fullAdmitPayImmediatelyPaymentAmount}', getTotalAmountWithInterestAndFees(claim).toString());
@@ -121,6 +129,17 @@ const setDashboardValues = (claim: Claim, claimId: string, notificationId?: stri
       .replace(':id', claimId)
       .replace(':locationName', 'PAY_HEARING_FEE_URL')
       .replace(':notificationId', notificationId));
+    const documentId = getDocumentIdFromParams(notification);
+    valuesMap.set('{VIEW_FINAL_ORDER}', DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT
+      .replace(':id', claimId)
+      .replace(':locationName', 'VIEW_FINAL_ORDER')
+      .replace(':notificationId', notificationId)
+      .replace(':documentId', documentIdExtractor(documentId)));
+
+  }
+
+  if (claim.orderDocumentId != undefined) {
+    valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(claim?.orderDocumentId) + ' target="_blank"'));
   }
 
   return valuesMap;
@@ -139,4 +158,26 @@ function getSendFinancialDetailsAddress() : string {
     ${t('COMMON.POSTAL_ADDRESS.PO_BOX')}<br>
     ${t('COMMON.POSTAL_ADDRESS.CITY')}<br>
     ${t('COMMON.POSTAL_ADDRESS.POSTCODE')}</p>`;
+}
+
+function getDocumentIdFromParams (notification: DashboardNotification): string {
+  if (notification?.params) {
+    const paramMap: Map<string, object> = objectToMap(notification.params);
+    if (paramMap.get('orderDocument')) {
+      return paramMap.get('orderDocument').toString();
+    }
+  }
+  return '';
+}
+
+export function objectToMap(obj: any): Map<string, any> {
+  const map = new Map<string, any>();
+
+  for (const key in obj) {
+    if (key in obj) {
+      map.set(key, obj[key]);
+    }
+  }
+
+  return map;
 }

@@ -180,6 +180,7 @@ export const enum TestMessages {
   FULL_NAME_TOO_LONG = 'Full name must be no longer than 70 characters',
   MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION = 'Mediation upload documents confirmation',
   MEDIATION_CHECK_YOUR_ANSWERS = 'Check your answers',
-  VIEW_MEDIATION_SETTLEMENT_AGREEMENT = 'View mediation settlement agreement'
+  VIEW_MEDIATION_SETTLEMENT_AGREEMENT = 'View mediation settlement agreement',
+  VIEW_MEDIATION_DOCUMENTS = 'View mediation documents',
 
 }

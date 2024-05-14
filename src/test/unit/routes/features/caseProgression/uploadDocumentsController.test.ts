@@ -76,6 +76,7 @@ describe('Upload document- upload document controller', () => {
     await request(app).get(CP_UPLOAD_DOCUMENTS_URL).expect((res) => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.UPLOAD_DOCUMENTS.TITLE'));
+      expect(res.text).toContain(t('PAGES.DASHBOARD.HEARINGS.HEARING'));
       expect(res.text).not.toContain('Disclosure');
       expect(res.text).not.toContain('Witness');
       expect(spyDisclosure).toHaveBeenCalledWith(claim, null);
