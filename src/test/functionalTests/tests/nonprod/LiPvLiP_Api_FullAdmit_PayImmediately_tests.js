@@ -2,7 +2,6 @@ const config = require('../../../config');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
 const { respondToClaim, defendantResponseFullAdmitPayImmediately } = require('../../specClaimHelpers/dashboardNotificationConstants');
@@ -21,6 +20,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+    console.log('isDashboardServiceEnabled..', isDashboardServiceEnabled);
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
     if (isDashboardServiceEnabled) {
@@ -35,6 +35,6 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
     }
-    await ResponseSteps.SignOut();
+    await I.click('Sign out');
   }
 }).tag('@regression-r2');
