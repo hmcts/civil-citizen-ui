@@ -11,7 +11,7 @@ properties([
         string(name: 'IDAM_API_URL', defaultValue: 'https://idam-web-public.aat.platform.hmcts.net',
           description: 'The URL of idam api'),
         string(name: 'IDAM_WEB_URL', defaultValue: 'https://idam-api.aat.platform.hmcts.net',
-          description: 'The URL of idam api'),
+          description: 'The URL of idam web'),
         string(name: 'DM_STORE_URL', defaultValue: 'http://dm-store-aat.service.core-compute-aat.internal',
           description: 'The URL of dm store'),
         string(name: 'SERVICE_AUTH_PROVIDER_API_BASE_URL', defaultValue: 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
