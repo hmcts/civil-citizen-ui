@@ -3500,9 +3500,11 @@
     },
     "CONFIRM_YOU_HAVE_BEEN_PAID": {
       "PAGE_TITLE": "Confirm that you've been paid",
+      "TITLE": "Confirm that you've been paid",
       "ENTER_THE_DATE": "Enter the date that you were paid the full amount that was specified on the judgment",
-      "IF_YOU": "If you've been paid in installments, enter the date of the final payment you received. For example, 16 4 2021",
-      "I_CONFIRM": "I confirm that I've been paid the full amount that was specified on the judgment. Once you've confirmed this, it cannot be changed."
+      "HINT": "If you've been paid in installments, enter the date of the final payment you received. For example, 16 4 2021",
+      "CONFIRM": "I confirm that I've been paid the full amount that was specified on the judgment. Once you've confirmed this, it cannot be changed.",
+      "JUDGMENT_LINK": "View the judgment made against the defendant"
     }
   },
   "FOOTER": {
