@@ -1469,6 +1469,11 @@
         "VIEW_HEARINGS": "View hearings",
         "VIEW_THE_HEARING": "View the hearing"
       },
+      "JUDGEMENTS": {
+        "THE_JUDGEMENT": "The Judgement",
+        "JUDGEMENT": "Judgement",
+        "VIEW_THE_JUDGEMENT": "View the judgement"
+      },
       "MAKE_A_NEW_CLAIM": "Gwneud hawliad newydd am arian",
       "NEXT": "Nesaf",
       "NEXT_STEPS": "Y camau nesaf",
