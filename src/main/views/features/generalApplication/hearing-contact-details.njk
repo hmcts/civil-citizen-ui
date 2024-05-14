@@ -1,11 +1,11 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "../../macro/button.njk" import addButton %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.HEARING_CONTACT_DETAILS.TITLE') }}
@@ -46,12 +46,7 @@
                     html: t(form.errorFor('emailAddress'))
                 } if form.hasErrors()
             }) }}
-            <div class="govuk-button-group">
-              {{ govukButton({
-                text: t('COMMON.BUTTONS.CONTINUE')
-              }) }}
-              <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
-            </div>
+            {{ addButton(t, 'CONTINUE', cancelUrl) }}
           </form>
         </div>
         <div class="govuk-grid-column-one-third">
