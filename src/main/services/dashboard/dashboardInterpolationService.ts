@@ -24,7 +24,7 @@ import {
   START_MEDIATION_UPLOAD_FILES,
   VIEW_THE_HEARING_URL, VIEW_ORDERS_AND_NOTICES_URL, CLAIM_DETAILS_URL,
   VIEW_RESPONSE_TO_CLAIM,
-  UPLOAD_YOUR_DOCUMENTS_URL,
+  UPLOAD_YOUR_DOCUMENTS_URL, CONFIRM_YOU_HAVE_BEEN_PAID_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -104,6 +104,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{VIEW_MEDIATION_SETTLEMENT_AGREEMENT}', VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.replace(':id', claimId));
   valuesMap.set('{UPLOAD_MEDIATION_DOCUMENTS}', START_MEDIATION_UPLOAD_FILES.replace(':id', claimId));
   valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', '#');
+  valuesMap.set('{CONFIRM_YOU_HAVE_BEEN_PAID_URL}', CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', claimId));
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
