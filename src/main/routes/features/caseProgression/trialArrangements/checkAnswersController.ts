@@ -5,7 +5,6 @@ import {AppRequest} from 'common/models/AppRequest';
 import {
   CANCEL_TRIAL_ARRANGEMENTS,
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
-  DEFENDANT_SUMMARY_URL,
   TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
@@ -26,12 +25,11 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderView(res: Response, claim: Claim, claimId: string, lang: string) {
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
-  const hearingDurationTrialArrangementsUrl = constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_HEARING_DURATION);
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_HEARING_DURATION);
   const caseInfoContents = getCaseInfoContents(claimId, claim);
   const summarySections = getSummarySections(claimId, claim, lang);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CANCEL_TRIAL_ARRANGEMENTS);
-  res.render(checkAnswersViewPath, {caseInfoContents, summarySections, backLinkUrl, hearingDurationTrialArrangementsUrl, cancelUrl});
+  res.render(checkAnswersViewPath, {caseInfoContents, summarySections, backLinkUrl, cancelUrl});
 }
 
 trialCheckAnswersController.get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,

@@ -2,7 +2,7 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {getClaimById} from 'modules/utilityService';
 import {
   CANCEL_TRIAL_ARRANGEMENTS,
-  DEFENDANT_SUMMARY_URL,
+  IS_CASE_READY_URL,
   HAS_ANYTHING_CHANGED_URL,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
@@ -58,7 +58,7 @@ hasAnythingChangedController.post(HAS_ANYTHING_CHANGED_URL,(async (req, res, nex
 })as RequestHandler);
 
 async function renderView(res: Response, claimId: string, claim: Claim, form: GenericForm<HasAnythingChangedForm>) {
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, IS_CASE_READY_URL);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CANCEL_TRIAL_ARRANGEMENTS);
   res.render(hasAnythingChangedViewPath, {form, hasAnythingChangedContents:getHasAnythingChanged(claimId, claim), backLinkUrl, cancelUrl});
 }
