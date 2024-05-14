@@ -31,7 +31,6 @@ const claimantResponse = require('../fixtures/events/createClaimantResponseToDef
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
 const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
 const hwfPayloads = require('../fixtures/events/hwfPayloads.js');
-const {submitEvent} = require('./apiRequest');
 const idamHelper = require('./idamHelper');
 const createLipClaim = require('../fixtures/events/createLiPClaim.js');
 const createLiPClaimForCompany = require('../fixtures/events/createLiPClaimForCompany.js');
