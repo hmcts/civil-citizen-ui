@@ -61,6 +61,7 @@ describe('claimant Dashboard Controller', () => {
       await request(app).get(DASHBOARD_CLAIMANT_URL.replace(':id', 'draft')).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).not.toContain('Mr. Jan Clark v Version 1');
+        expect(res.text).not.toContain('Case number: ');
       });
     });
     it('should return claimant dashboard page with claimant and fast Track', async () => {
@@ -111,6 +112,7 @@ describe('claimant Dashboard Controller', () => {
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Mr. Jan Clark v Version 1');
+        expect(res.text).toContain('Case number: ');
       });
     });
 

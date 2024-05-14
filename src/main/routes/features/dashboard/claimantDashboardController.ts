@@ -19,6 +19,7 @@ import { CivilServiceClient } from 'client/civilServiceClient';
 import {t} from 'i18next';
 import {applicationNoticeUrl, getDebtRespiteUrl} from 'common/utils/externalURLs';
 import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -34,6 +35,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       let claim: Claim;
       let caseRole: ClaimantOrDefendant;
       let dashboardId;
+      let claimIdPrettified;
 
       if(claimId == 'draft') {
         caseRole = ClaimantOrDefendant.CLAIMANT;
@@ -44,6 +46,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
         caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
         dashboardId = claimId;
+        claimIdPrettified = caseNumberPrettify(claimId);
       }
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
@@ -54,7 +57,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
 
       res.render(claimantDashboardViewPath, {
         claim: claim,
-        claimId,
+        claimIdPrettified,
         dashboardTaskList: dashboard,
         dashboardNotifications,
         iWantToTitle,

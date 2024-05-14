@@ -16,11 +16,14 @@
       {% set defendantName = claim.getDefendantFullName() %}
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+          {% if claimantName and defendantName %}
           <h1 class="govuk-heading-m govuk-!-margin-0">{{ claimantName }} v {{ defendantName }}</h1>
+          {% endif %}
+          {% if claimIdPrettified %}
           <p class="govuk-body-s">
-              {{ t('PAGES.CLAIM_SUMMARY.CLAIM_NUMBER') }}
-              {{ claim.legacyCaseReference }}
+              {{ t('COMMON.CASE_NUMBER', {claimId: claimIdPrettified}) }}
           </p>
+          {% endif %}
         </div>
       </div>
       <div class="govuk-grid-row">

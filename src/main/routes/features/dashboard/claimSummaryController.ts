@@ -27,6 +27,7 @@ import {ClaimantOrDefendant} from 'models/partyType';
 import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 import {t} from 'i18next';
 import {applicationNoticeUrl} from 'common/utils/externalURLs';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
@@ -51,11 +52,12 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest, isCarmApplicable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(lang);
+      const claimIdPrettified = caseNumberPrettify(claimId);
 
       res.render(claimSummaryRedesignViewPath,
         {
           claim,
-          claimId,
+          claimIdPrettified,
           dashboardTaskList,
           dashboardNotifications,
           iWantToTitle,
