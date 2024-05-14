@@ -37,7 +37,7 @@ hearingContactDetailsController.post(GA_HEARING_CONTACT_DETAILS_URL, (async (req
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
-    const hearingContactDetails: HearingContactDetails = new HearingContactDetails(req.body.preferredTelephoneNumber, req.body.preferredEmailAddress);
+    const hearingContactDetails: HearingContactDetails = new HearingContactDetails(req.body.telephoneNumber, req.body.emailAddress);
     const form = new GenericForm(hearingContactDetails);
     await form.validate();
     if (form.hasErrors()) {

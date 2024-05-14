@@ -24,27 +24,27 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukInput({
-                id: "preferredTelephoneNumber",
-                name: "preferredTelephoneNumber",
-                value: form.model.preferredTelephoneNumber,
+                id: "telephoneNumber",
+                name: "telephoneNumber",
+                value: form.model.telephoneNumber,
                 label: {
                     text: t('PAGES.GENERAL_APPLICATION.HEARING_CONTACT_DETAILS.PREFERRED_TELEPHONE_NUMBER'),
                     classes: "govuk-label--s"
                 },
                 errorMessage: {
-                    html: t(form.errorFor('preferredTelephoneNumber'))
+                    html: t(form.errorFor('telephoneNumber'))
                 } if form.hasErrors()
             }) }}
             {{ govukInput({
-                id: "preferredEmailAddress",
-                name: "preferredEmailAddress",
-                value: form.model.preferredEmailAddress,
+                id: "emailAddress",
+                name: "emailAddress",
+                value: form.model.emailAddress,
                 label: {
                     text: t('PAGES.GENERAL_APPLICATION.HEARING_CONTACT_DETAILS.PREFERRED_EMAIL_ADDRESS'),
                     classes: "govuk-label--s"
                 },
                 errorMessage: {
-                    html: t(form.errorFor('preferredEmailAddress'))
+                    html: t(form.errorFor('emailAddress'))
                 } if form.hasErrors()
             }) }}
             <div class="govuk-button-group">

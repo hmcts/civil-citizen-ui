@@ -2,7 +2,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_CLAIM_APPLICATION_COST_URL, GA_HEARING_ARRANGEMENT_URL} from 'routes/urls';
+import {GA_HEARING_ARRANGEMENT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
@@ -90,7 +90,7 @@ describe('General Application - Application hearing arrangements', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .post(GA_CLAIM_APPLICATION_COST_URL)
+        .post(GA_HEARING_ARRANGEMENT_URL)
         .send({option: 'PERSON_AT_COURT', reasonForPreferredHearingType: 'Testing' })
         .expect((res) => {
           expect(res.status).toBe(500);

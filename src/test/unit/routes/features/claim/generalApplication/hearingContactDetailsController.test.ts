@@ -61,7 +61,7 @@ describe('General Application - Contact Details', () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(GA_HEARING_CONTACT_DETAILS_URL)
-        .send({preferredTelephoneNumber: '04432188664', preferredEmailAddress: 'test@gmail.com'})
+        .send({telephoneNumber: '04432188664', emailAddress: 'test@gmail.com'})
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -71,7 +71,7 @@ describe('General Application - Contact Details', () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(GA_HEARING_CONTACT_DETAILS_URL)
-        .send({preferredTelephoneNumber: null, preferredEmailAddress: null})
+        .send({telephoneNumber: null, emailAddress: null})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.ENTER_TELEPHONE_NUMBER'));
@@ -85,7 +85,7 @@ describe('General Application - Contact Details', () => {
       });
       await request(app)
         .post(GA_HEARING_CONTACT_DETAILS_URL)
-        .send({preferredTelephoneNumber: '04432188664', preferredEmailAddress: 'test@gmail.com' })
+        .send({telephoneNumber: '04432188664', emailAddress: 'test@gmail.com' })
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
