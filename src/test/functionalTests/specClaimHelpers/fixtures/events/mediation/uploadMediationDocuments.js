@@ -2,7 +2,7 @@ const {date} = require('../../../api/dataHelper');
 const uuid = require('uuid');
 
 module.exports = {
-  uploadMediationDocumentsClaimantOne_Citizen: (document) => {
+  uploadMediationDocumentsClaimantOne_Citizen: () => {
     return {
       event: 'CUI_UPLOAD_MEDIATION_DOCUMENTS',
       caseDataUpdate: {
@@ -18,8 +18,8 @@ module.exports = {
               },
               documentDate: date(-1),
               documentType: 'Doc referred',
-              documentUploadedDatetime: '2024-05-01T10:51:05'
-            }
+              documentUploadedDatetime: '2024-05-01T10:51:05',
+            },
           },
         ],
         app1MediationNonAttendanceDocs: [
@@ -34,15 +34,15 @@ module.exports = {
               },
               documentDate: date(-1),
               documentType: 'Non attendance doc',
-              documentUploadedDatetime: '2024-05-01T10:51:05'
-            }
+              documentUploadedDatetime: '2024-05-01T10:51:05',
+            },
           },
         ],
       },
     };
   },
 
-  uploadMediationDocumentsRespondentOne_Citizen: (document) => {
+  uploadMediationDocumentsRespondentOne_Citizen: () => {
     return {
       event: 'CUI_UPLOAD_MEDIATION_DOCUMENTS',
       caseDataUpdate: {
@@ -58,8 +58,8 @@ module.exports = {
               },
               documentDate: date(-1),
               documentType: 'Doc referred',
-              documentUploadedDatetime: '2024-05-01T10:51:05'
-            }
+              documentUploadedDatetime: '2024-05-01T10:51:05',
+            },
           },
         ],
         res1MediationNonAttendanceDocs: [
@@ -74,8 +74,8 @@ module.exports = {
               },
               documentDate: date(-1),
               documentType: 'Non attendance doc',
-              documentUploadedDatetime: '2024-05-01T10:51:05'
-            }
+              documentUploadedDatetime: '2024-05-01T10:51:05',
+            },
           },
         ],
       },

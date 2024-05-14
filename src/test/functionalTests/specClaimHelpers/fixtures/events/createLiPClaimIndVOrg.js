@@ -36,10 +36,10 @@ const createLipClaimIndVOrg = (user, userId, totalClaimAmount) => {
           AddressLine2: '',
           AddressLine3: '',
           PostCode: 'E1 6AN',
-          PostTown: 'London'
+          PostTown: 'London',
         },
         soleTraderDateOfBirth: null,
-        type: 'ORGANISATION'
+        type: 'ORGANISATION',
       },
       defenceRouteRequired: undefined,
       respondToClaim: undefined,

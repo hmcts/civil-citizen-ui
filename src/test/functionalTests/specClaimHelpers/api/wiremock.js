@@ -3,7 +3,7 @@ const {url} = require('../../../config');
 
 const wireMockUrl = `${url.wiremockService}/__admin/mappings`;
 const headers = {
-  'Content-Type': 'application/json'
+  'Content-Type': 'application/json',
 };
 
 const getStubs = async () => {
@@ -35,12 +35,12 @@ const updateStubById = async (stubId, mappingContent) => {
 const updateStubResponseFileByRequestUrl = async (stubRequestUrl, bodyFileName) => {
   return getStubByRequestUrl(stubRequestUrl)
     .then(stub => updateStubById(stub.id, {
-        ...stub,
-        response: {
-          ...stub.response,
-          bodyFileName
-        }
-      })
+      ...stub,
+      response: {
+        ...stub.response,
+        bodyFileName,
+      },
+    }),
     );
 };
 
@@ -48,5 +48,5 @@ module.exports = {
   getStubs,
   getStubByRequestUrl,
   updateStubById,
-  updateStubResponseFileByRequestUrl
+  updateStubResponseFileByRequestUrl,
 };

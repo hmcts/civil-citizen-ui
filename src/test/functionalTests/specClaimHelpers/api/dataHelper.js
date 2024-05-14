@@ -43,7 +43,7 @@ module.exports = {
   listElementWithCode: (code, string) => {
     return {
       code: code,
-      label: string
+      label: string,
     };
   },
 

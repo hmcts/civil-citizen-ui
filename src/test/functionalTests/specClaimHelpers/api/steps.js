@@ -307,11 +307,11 @@ module.exports = {
     } else if (partyType === 'DefendantCompany') {
       payload = data.CREATE_LIP_CLAIM_DEFENDANT_COMPANY(user, userId, totalClaimAmount);
     } else if (partyType === 'DefendantSoleTrader') {
-      payload = data.CREATE_LIP_CLAIM_DEFENDANT_SOLE_TRADER(user, userId, totalClaimAmount)
+      payload = data.CREATE_LIP_CLAIM_DEFENDANT_SOLE_TRADER(user, userId, totalClaimAmount);
     } else if (partyType === 'SoleTraderVCompany') {
-      payload = data.CREATE_LIP_CLAIM_SOLE_TRADER_V_COMPANY(user, userId, totalClaimAmount)
+      payload = data.CREATE_LIP_CLAIM_SOLE_TRADER_V_COMPANY(user, userId, totalClaimAmount);
     } else if (partyType === 'IndividualVOrganisation') {
-      payload = data.CREATE_LIP_CLAIM_IND_V_ORGANISATION(user, userId, totalClaimAmount)
+      payload = data.CREATE_LIP_CLAIM_IND_V_ORGANISATION(user, userId, totalClaimAmount);
     } else {
       payload = data.CREATE_LIP_CLAIM(user, userId, totalClaimAmount);
     }
@@ -446,7 +446,7 @@ module.exports = {
     await apiRequest.setupTokens(user);
 
     if (carmEnabled) {
-      payload = claimantResponse.createClaimantLipIntendsToProceedResponseCarm()
+      payload = claimantResponse.createClaimantLipIntendsToProceedResponseCarm();
     } else {
       payload = claimantResponse.createClaimantLipIntendsToProceedResponse();
     }
@@ -456,7 +456,7 @@ module.exports = {
     console.log('End of claimantLipRespondToDefence()');
   },
 
-  claimantLrRespondToDefence: async (user, caseId, carmEnabled = false) => {
+  claimantLrRespondToDefence: async (user, caseId) => {
     console.log('This is inside performLrRespondToDefence : ' + caseId);
 
     await apiRequest.setupTokens(user);
@@ -466,7 +466,7 @@ module.exports = {
 
     let claimantResponseData = rejectAllClaimantResponseCarm.rejectAllDisputeAllButClaimantWantsToProceed_Carm();
 
-    caseData = returnedCaseData
+    caseData = returnedCaseData;
 
     for (let pageId of Object.keys(claimantResponseData.userInput)) {
       await assertValidDataSpec(claimantResponseData, pageId);
@@ -627,7 +627,7 @@ async function updateCaseDataWithPlaceholders(data, document) {
   const placeholders = {
     TEST_DOCUMENT_URL: document.document_url,
     TEST_DOCUMENT_BINARY_URL: document.document_binary_url,
-    TEST_DOCUMENT_FILENAME: document.document_filename
+    TEST_DOCUMENT_FILENAME: document.document_filename,
   };
 
   data = lodash.template(JSON.stringify(data))(placeholders);

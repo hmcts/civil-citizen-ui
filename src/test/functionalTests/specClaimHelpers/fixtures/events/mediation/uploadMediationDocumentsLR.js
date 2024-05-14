@@ -8,9 +8,9 @@ module.exports = {
       partyChosen = {
         uploadMediationDocumentsPartyChosen: {
           list_items: [
-            listElementWithCode('CLAIMANT_1', 'Claimant 1: Miss Jane Doe')
+            listElementWithCode('CLAIMANT_1', 'Claimant 1: Miss Jane Doe'),
           ],
-          value: listElementWithCode('CLAIMANT_1', 'Claimant 1: Miss Jane Doe')
+          value: listElementWithCode('CLAIMANT_1', 'Claimant 1: Miss Jane Doe'),
         },
       };
     } else {
@@ -20,9 +20,9 @@ module.exports = {
             list_items: [
               listElementWithCode('DEFENDANT_1', 'Defendant 1: Mr John Doe'),
               listElementWithCode('DEFENDANT_2', 'Second Defendant'),
-              listElementWithCode('DEFENDANTS', 'Defendants 1 and 2')
+              listElementWithCode('DEFENDANTS', 'Defendants 1 and 2'),
             ],
-            value: listElementWithCode('DEFENDANTS', 'Defendants 1 and 2')
+            value: listElementWithCode('DEFENDANTS', 'Defendants 1 and 2'),
           },
         };
       } else {
@@ -30,9 +30,9 @@ module.exports = {
           partyChosen = {
             uploadMediationDocumentsPartyChosen: {
               list_items: [
-                listElementWithCode('DEFENDANT_1', 'Defendant 1: Test Company Defendant')
+                listElementWithCode('DEFENDANT_1', 'Defendant 1: Test Company Defendant'),
               ],
-              value: listElementWithCode('DEFENDANT_1', 'Defendant 1: Test Company Defendant')
+              value: listElementWithCode('DEFENDANT_1', 'Defendant 1: Test Company Defendant'),
             },
           };
         }
@@ -40,9 +40,9 @@ module.exports = {
           partyChosen = {
             uploadMediationDocumentsPartyChosen: {
               list_items: [
-                listElementWithCode('DEFENDANT_2', 'Defendant 2: Dr Foo Bar')
+                listElementWithCode('DEFENDANT_2', 'Defendant 2: Dr Foo Bar'),
               ],
-              value: listElementWithCode('DEFENDANT_2', 'Defendant 2: Dr Foo Bar')
+              value: listElementWithCode('DEFENDANT_2', 'Defendant 2: Dr Foo Bar'),
             },
           };
         }
@@ -64,12 +64,12 @@ module.exports = {
                 document: {
                   document_url: '${TEST_DOCUMENT_URL}',
                   document_binary_url: '${TEST_DOCUMENT_BINARY_URL}',
-                  document_filename: '${TEST_DOCUMENT_FILENAME}'
+                  document_filename: '${TEST_DOCUMENT_FILENAME}',
                 },
                 documentDate: date(-1),
-                yourName: 'name'
+                yourName: 'name',
               },
-            }
+            },
           ],
           documentsReferredForm: [
             {
@@ -78,15 +78,15 @@ module.exports = {
                 document: {
                   document_url: '${TEST_DOCUMENT_URL}',
                   document_binary_url: '${TEST_DOCUMENT_BINARY_URL}',
-                  document_filename: '${TEST_DOCUMENT_FILENAME}'
+                  document_filename: '${TEST_DOCUMENT_FILENAME}',
                 },
                 documentDate: date(-1),
-                documentType: 'type'
+                documentType: 'type',
               },
             },
           ],
         },
       },
     };
-  }
+  },
 };

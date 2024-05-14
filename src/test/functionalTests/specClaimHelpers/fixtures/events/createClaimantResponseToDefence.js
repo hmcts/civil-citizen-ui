@@ -250,7 +250,7 @@ module.exports = {
 
   createClaimantLipIntendsToProceedResponseCarm: () => {
     const claimantResponseData = {
-        event: 'CLAIMANT_RESPONSE_CUI',
+      event: 'CLAIMANT_RESPONSE_CUI',
       caseDataUpdate: {
         applicant1LiPResponse: {
           applicant1DQExtraDetails: {
@@ -262,8 +262,8 @@ module.exports = {
             considerClaimantDocumentsDetails: '',
             applicant1DQLiPExpert: {
               caseNeedsAnExpert: 'No',
-              expertCanStillExamineDetails: ''
-            }
+              expertCanStillExamineDetails: '',
+            },
           },
           applicant1DQHearingSupportLip: {
             supportRequirementLip: 'Yes',
@@ -272,27 +272,27 @@ module.exports = {
                 value: {
                   name: 'Test Inc',
                   requirements: [
-                    'DISABLED_ACCESS'
+                    'DISABLED_ACCESS',
                   ],
                   signLanguageRequired: '',
                   languageToBeInterpreted: '',
-                  otherSupport: ''
-                }
+                  otherSupport: '',
+                },
               },
               {
                 value: {
                   name: 'Whit Ness',
                   requirements: [
-                    'HEARING_LOOPS'
+                    'HEARING_LOOPS',
                   ],
                   signLanguageRequired: '',
                   languageToBeInterpreted: '',
-                  otherSupport: ''
-                }
-              }
-            ]
+                  otherSupport: '',
+                },
+              },
+            ],
           },
-          applicant1RejectedRepaymentReason: 'reasons'
+          applicant1RejectedRepaymentReason: 'reasons',
         },
         applicant1LiPResponseCarm: {
           isMediationContactNameCorrect: 'No',
@@ -308,8 +308,8 @@ module.exports = {
                 who: 'defendant',
                 date: date(6),
                 fromDate: date(6),
-                unavailableDateType: 'SINGLE_DATE'
-              }
+                unavailableDateType: 'SINGLE_DATE',
+              },
             },
             {
               value: {
@@ -317,18 +317,18 @@ module.exports = {
                 date: date(10),
                 fromDate: date(10),
                 toDate: date(15),
-                unavailableDateType: 'DATE_RANGE'
-              }
-            }
-          ]
+                unavailableDateType: 'DATE_RANGE',
+              },
+            },
+          ],
         },
         applicant1DQLanguage: {
           court: 'ENGLISH',
-          documents: 'ENGLISH'
+          documents: 'ENGLISH',
         },
         applicant1DQVulnerabilityQuestions: {
           vulnerabilityAdjustmentsRequired: 'Yes',
-          vulnerabilityAdjustments: 'vulnerable'
+          vulnerabilityAdjustments: 'vulnerable',
         },
         applicant1DQRequestedCourt: {
           requestHearingAtSpecificCourt: 'Yes',
@@ -338,8 +338,8 @@ module.exports = {
           responseCourtLocations: [],
           caseLocation: {
             region: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
-            baseLocation: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ'
-          }
+            baseLocation: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
+          },
         },
         applicant1DQWitnesses: {
           witnessesToAppear: 'Yes',
@@ -351,10 +351,10 @@ module.exports = {
                 lastName: 'Ness',
                 emailAddress: '',
                 phoneNumber: '',
-                reasonForWitness: 'terrible things'
-              }
-            }
-          ]
+                reasonForWitness: 'terrible things',
+              },
+            },
+          ],
         },
         applicant1DQSmallClaimHearing: {
           unavailableDatesRequired: 'Yes',
@@ -364,8 +364,8 @@ module.exports = {
                 who: 'defendant',
                 date: date(6),
                 fromDate: date(6),
-                unavailableDateType: 'SINGLE_DATE'
-              }
+                unavailableDateType: 'SINGLE_DATE',
+              },
             },
             {
               value: {
@@ -373,20 +373,20 @@ module.exports = {
                 date: date(10),
                 fromDate: date(10),
                 toDate: date(15),
-                unavailableDateType: 'DATE_RANGE'
-              }
-            }
-          ]
+                unavailableDateType: 'DATE_RANGE',
+              },
+            },
+          ],
         },
         applicant1DQExperts: {},
         applicant1DQHearingSupport: {
           supportRequirements: 'Yes',
-          supportRequirementsAdditional: 'Test Inc :Disabled access;Whit Ness :Hearing loop;'
+          supportRequirementsAdditional: 'Test Inc :Disabled access;Whit Ness :Hearing loop;',
         },
         applicant1PartAdmitIntentionToSettleClaimSpec: 'No',
         applicant1FullDefenceConfirmAmountPaidSpec: 'Yes',
-        applicant1SettleClaim: 'No'
-      }
+        applicant1SettleClaim: 'No',
+      },
     };
     return claimantResponseData;
   },

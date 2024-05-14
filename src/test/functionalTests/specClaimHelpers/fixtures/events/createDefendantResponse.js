@@ -7,7 +7,6 @@ const rejectAllSmallClaims = require('./rejectAllSmallClaimsDefendantResponse');
 const rejectAllFastTrack = require('./rejectAllFastTrackDefendantResponse');
 const rejectAllSmallClaimsCarm = require('./defendantResponseCarm');
 
-
 module.exports = {
   createDefendantResponse: (totalClaimAmount, responseType, claimType, partyType) => {
     switch (responseType) {
@@ -61,13 +60,13 @@ module.exports = {
         }
       case config.defenceType.rejectAllSmallClaimsCarm:
         if (partyType === 'DefendantCompany') {
-          return rejectAllSmallClaimsCarm.citizenDefendantResponseCarmCompany(totalClaimAmount)
+          return rejectAllSmallClaimsCarm.citizenDefendantResponseCarmCompany(totalClaimAmount);
         } else if (partyType === 'DefendantSoleTrader') {
-          return rejectAllSmallClaimsCarm.citizenDefendantResponseCarmSoleTrader(totalClaimAmount)
+          return rejectAllSmallClaimsCarm.citizenDefendantResponseCarmSoleTrader(totalClaimAmount);
         } else if (partyType === 'DefendantOrganisation') {
-          return rejectAllSmallClaimsCarm.citizenDefendantResponseCarmOrganisation(totalClaimAmount)
+          return rejectAllSmallClaimsCarm.citizenDefendantResponseCarmOrganisation(totalClaimAmount);
         } else if (partyType === 'SoleTraderVCompany') {
-          return rejectAllSmallClaimsCarm.LrDefendantResponseCarmCompany(totalClaimAmount)
+          return rejectAllSmallClaimsCarm.LrDefendantResponseCarmCompany(totalClaimAmount);
         }
     }
   },

@@ -9,9 +9,9 @@ module.exports = {
           document: {
             document_url: '${TEST_DOCUMENT_URL}',
             document_binary_url: '${TEST_DOCUMENT_BINARY_URL}',
-            document_filename: '${TEST_DOCUMENT_FILENAME}'
+            document_filename: '${TEST_DOCUMENT_FILENAME}',
           },
-          documentType: 'MEDIATION_AGREEMENT'
+          documentType: 'MEDIATION_AGREEMENT',
         },
         manageDocuments: [
           {
@@ -20,13 +20,13 @@ module.exports = {
               documentLink: {
                 document_url: '${TEST_DOCUMENT_URL}',
                 document_binary_url: '${TEST_DOCUMENT_BINARY_URL}',
-                document_filename: '${TEST_DOCUMENT_FILENAME}'
+                document_filename: '${TEST_DOCUMENT_FILENAME}',
               },
               documentName: 'staff uploaded doc',
               documentType: 'MEDIATION_AGREEMENT',
-              createdDatetime: '2022-09-09T15:13:54'
-            }
-          }
+              createdDatetime: '2022-09-09T15:13:54',
+            },
+          },
         ],
       },
     };

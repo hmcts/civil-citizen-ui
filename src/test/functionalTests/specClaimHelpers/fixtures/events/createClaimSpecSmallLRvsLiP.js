@@ -33,13 +33,11 @@ const respondent1WithPartyName = {
   partyTypeDisplayValue: 'Organisation',
 };
 
-
 const solicitor1Email = 'hmcts.civil+organisation.1.solicitor.1@gmail.com';
 const claimAmount = '1500';
 
 const validPba = listElement('PBA0088192');
 const invalidPba = listElement('PBA0078095');
-
 
 module.exports = {
   createClaim: () => {

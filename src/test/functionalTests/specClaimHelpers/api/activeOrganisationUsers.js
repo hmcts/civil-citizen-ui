@@ -24,5 +24,5 @@ module.exports = {
     const responseFileLocation = getResponseFileLocationByUser(userFromOrganisation);
     console.log(`Setting active organisation users response file: ${responseFileLocation}`);
     await updateStubResponseFileByRequestUrl(activeOrganisationUsersRequestUrl, responseFileLocation);
-  }
+  },
 };

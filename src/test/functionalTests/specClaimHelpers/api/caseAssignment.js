@@ -18,7 +18,7 @@ const serviceToken = async() => {
       {'Content-Type': 'application/json'},
       {
         microservice: config.s2s.microservice,
-        oneTimePassword: totp(config.s2s.secret)
+        oneTimePassword: totp(config.s2s.secret),
       })
       .then(response => response.text());
   }
@@ -30,7 +30,7 @@ const getRequestHeaders = async (user) => {
   return {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${await authToken(user)}`,
-    'ServiceAuthorization': `Bearer ${await serviceToken()}`
+    'ServiceAuthorization': `Bearer ${await serviceToken()}`,
   };
 };
 
@@ -48,11 +48,10 @@ module.exports = {
       .then(async response => ({status: response.status, body: response.json()}));
   },
   submitNocRequest: async (claimRef, answers, user) => {
-   const headers = await getRequestHeaders(user);
+    const headers = await getRequestHeaders(user);
     return restHelper.request(
       `${config.url.caseAssignmentService}/noc/noc-requests`, headers, {case_id: claimRef, answers}, 'POST')
       .then(async response => ({status: response.status, body: response.json()}));
-  }
+  },
 };
-
 

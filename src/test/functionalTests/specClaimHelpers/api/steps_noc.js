@@ -6,7 +6,6 @@ const {fetchCaseDetails} = require('./apiRequest');
 const chai = require('chai');
 const {assert} = chai;
 
-
 const requestNoticeOfChange = async (claimRef, newSolicitor, orgPolicyTag, answers) => {
   if (config.localNoCTests === true) {
     await updateActiveOrganisationUsersMocks(newSolicitor);
@@ -37,7 +36,7 @@ const requestNoticeOfChange = async (claimRef, newSolicitor, orgPolicyTag, answe
 };
 
 const buildNocAnswers = (clientName) => ([
-  {question_id: 'clientName', value: `${clientName}`}
+  {question_id: 'clientName', value: `${clientName}`},
 ]);
 
 module.exports = {
@@ -47,22 +46,22 @@ module.exports = {
   },
   requestNoticeOfChangeForRespondent2Solicitor: async (claimRef, newSolicitor) => {
     await requestNoticeOfChange(claimRef, newSolicitor, 'respondent2OrganisationPolicy',
-      buildNocAnswers('Dr Foo bar')
+      buildNocAnswers('Dr Foo bar'),
     );
   },
   requestNoticeOfChangeForApplicant1Solicitor: async (claimRef, newSolicitor) => {
     await requestNoticeOfChange(claimRef, newSolicitor, 'applicant1OrganisationPolicy',
-        buildNocAnswers('Miss Jane Doe')
+      buildNocAnswers('Miss Jane Doe'),
     );
   },
   requestNoticeOfChangeForApplicant2Solicitor: async (claimRef, newSolicitor) => {
     await requestNoticeOfChange(claimRef, newSolicitor, 'applicant1OrganisationPolicy',
-      buildNocAnswers('Dr Jane Doe')
+      buildNocAnswers('Dr Jane Doe'),
     );
   },
   requestNoticeOfChangeForRespondent2SolicitorSpec: async (claimRef, newSolicitor) => {
     await requestNoticeOfChange(claimRef, newSolicitor, 'respondent2OrganisationPolicy',
-      buildNocAnswers('Second Defendant')
+      buildNocAnswers('Second Defendant'),
     );
   },
 };

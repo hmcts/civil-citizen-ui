@@ -60,7 +60,7 @@ exports.config = {
   include: {
     api: './specClaimHelpers/api/steps.js',
     wa: './specClaimHelpers/api/stepsWA.js',
-    noc: './specClaimHelpers/api/steps_noc.js'
+    noc: './specClaimHelpers/api/steps_noc.js',
   },
   plugins: {
     autoDelay: {
