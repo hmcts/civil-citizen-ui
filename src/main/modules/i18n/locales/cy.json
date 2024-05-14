@@ -23,7 +23,7 @@
     "CANNOT_FIND_DOCUMENT_TEXT": "Os na allwch ddod o hyd i ddogfen rydych yn chwilio amdani yn yr adran hon",
     "CHILDREN": "Plant",
     "CHOOSE": "Dewiswch",
-    "CASE_NUMBER": "Case number: ",
+    "CASE_NUMBER": "Rhif yr achos: ",
     "CIVIL_MONEY_CLAIMS": "Hawliadau am Arian yn y Llys Sifil",
     "CLAIM_AMOUNT": "Swm yr hawliad",
     "CLAIM_AMOUNT_WITH_VALUE": "Swm yr hawliad: {{claimAmount}}",
