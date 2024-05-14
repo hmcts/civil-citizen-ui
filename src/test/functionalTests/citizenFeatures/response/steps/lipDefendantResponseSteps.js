@@ -524,11 +524,12 @@ class ResponseSteps {
   }
 
   async clickSaveButton() {
-    I.click('Save and continue');
+    await I.click('Save and continue');
   }
 
   async SignOut() {
-    I.click('Sign out');
+    await I.waitForContent('Sign out', 60);
+    await I.click('Sign out');
   }
 
   async EnterUnavailableDates() {
