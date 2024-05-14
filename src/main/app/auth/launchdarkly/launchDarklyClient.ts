@@ -58,3 +58,6 @@ export async function isDashboardServiceEnabled(): Promise<boolean> {
 export async function isCARMEnabled(): Promise<boolean> {
   return await getFlagValue('carm') as boolean;
 }
+export async function isGaForLipsEnabled(): Promise<boolean> {
+  return await getFlagValue('GaForLips') as boolean;
+}
