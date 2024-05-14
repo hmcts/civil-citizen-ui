@@ -32,7 +32,7 @@ class LoginPage {
 
   async openManageCase() {
     await I.clearCookie();
-    await I.setCookie([...idamCookies]);
+    await I.setCookie(idamCookies);
     await I.amOnPage(config.url.manageCase);
   }
 
