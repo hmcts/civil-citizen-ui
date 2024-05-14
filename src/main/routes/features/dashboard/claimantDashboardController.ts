@@ -20,6 +20,7 @@ import {t} from 'i18next';
 import {applicationNoticeUrl, getDebtRespiteUrl} from 'common/utils/externalURLs';
 import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -29,15 +30,16 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId =  req.params.id;
+    let claimIdPrettified;
+    let claimAmountFormatted;
     const isDashboardEnabled = await isDashboardServiceEnabled();
     if (isDashboardEnabled){
       const lng = req.query.lang ? req.query.lang : req.cookies.lang;
       let claim: Claim;
       let caseRole: ClaimantOrDefendant;
       let dashboardId;
-      let claimIdPrettified;
 
-      if(claimId == 'draft') {
+      if(claimId === 'draft') {
         caseRole = ClaimantOrDefendant.CLAIMANT;
         const userId = (<AppRequest>req)?.session?.user?.id.toString();
         claim = await getClaimById(userId, req);
@@ -47,6 +49,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
         dashboardId = claimId;
         claimIdPrettified = caseNumberPrettify(claimId);
+        claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
       }
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
@@ -57,7 +60,9 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
 
       res.render(claimantDashboardViewPath, {
         claim: claim,
+        claimId,
         claimIdPrettified,
+        claimAmountFormatted,
         dashboardTaskList: dashboard,
         dashboardNotifications,
         iWantToTitle,
