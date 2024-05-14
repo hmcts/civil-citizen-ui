@@ -47,6 +47,13 @@ module.exports = {
     password: defaultPassword,
     email: 'hmcts.civil+organisation.1.solicitor.1@gmail.com',
     type: 'applicant_solicitor',
+    orgId: process.env.ENVIRONMENT === 'demo' ? 'B04IXE4' : 'Q1KOKP2'
+  },
+  defendantSolicitorUser: {
+    password: defaultPassword,
+    email: 'hmcts.civil+organisation.2.solicitor.1@gmail.com',
+    type: 'defendant_solicitor',
+    orgId: process.env.ENVIRONMENT === 'demo' ? 'DAWY9LJ' : '79ZRSOU'
   },
   claimantEmailsVerificationCitizenUser: {
     password: defaultPassword,
@@ -104,10 +111,10 @@ module.exports = {
     password: defaultPassword,
     type: 'caseworker',
   },
-  ctscAdmin: {
-    email: 'ctsc_admin@justice.gov.uk',
+  hearingCenterAdminLocal: {
+    email: 'hearing-centre-admin-01@example.com',
     password: defaultPassword,
-    type: 'CTSC_ADMIN',
+    type: 'caseworker',
   },
   systemUpdate: {
     password: defaultPasswordSystemUser,
@@ -130,6 +137,8 @@ module.exports = {
   defendant2SolicitorOrgId: process.env.ENVIRONMENT =='demo' ? 'LCVTI1I' : 'H2156A0',
   defendantSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
   claimantLRSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
+  localMediationTests: true,
+  localNoCTests: true,
   hwfEvents: {
     updateHWFNumber: 'UPDATE_HELP_WITH_FEE_NUMBER',
     partRemission: 'PARTIAL_REMISSION_HWF_GRANTED',
@@ -158,6 +167,7 @@ module.exports = {
     partAdmitHaventPaidPartiallyWantsToPayImmediatelyWithIndividual: 'PART_ADMIT_PAY_IMMEDIATELY_INDIVIDUAL',
     partAdmitWithPartPaymentOnSpecificDateWithIndividual: 'PART_ADMIT_PAY_BY_SET_DATE_INDIVIDUAL',
     partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual: 'PART_ADMIT_PAY_BY_INSTALLMENTS_INDIVIDUAL',
+    rejectAllSmallClaimsCarm: 'REJECT_ALL_CARM',
   },
   sdoSelectionType: {
     judgementSumSelectedYesAssignToSmallClaimsYes: 'JUDGEMENT_SUM_YES_SMALL_CLAIMS_YES',

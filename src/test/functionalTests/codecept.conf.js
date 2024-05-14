@@ -13,9 +13,9 @@ exports.config = {
     await unAssignAllUsers();
     await deleteAllIdamTestUsers();
   },
-  tests: process.env.ENVIRONMENT == 'aat' ? 
+  tests: process.env.ENVIRONMENT == 'aat' ?
     [ '../functionalTests/tests/prod/**/*.js',
-      '../functionalTests/tests/common/**/*.js'  ] : 
+      '../functionalTests/tests/common/**/*.js'  ] :
     [ '../functionalTests/tests/nonprod/**/*.js',
       '../functionalTests/tests/common/**/*.js' ],
   output: process.env.REPORT_DIR || 'test-results/functional',
@@ -60,6 +60,7 @@ exports.config = {
   include: {
     api: './specClaimHelpers/api/steps.js',
     wa: './specClaimHelpers/api/stepsWA.js',
+    noc: './specClaimHelpers/api/steps_noc.js'
   },
   plugins: {
     autoDelay: {

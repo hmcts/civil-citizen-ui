@@ -6,11 +6,13 @@ const mediation = require('../fixtures/events/mediation.js');
 const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantResponse.js');
 const partAdmitClaimantResponse = require('../fixtures/events/partAdmitClaimantResponse.js');
 const rejectAllClaimantResponse = require('../fixtures/events/rejectAllClaimantResponse.js');
+const rejectAllClaimantResponseCarm = require('../fixtures/events/rejectAllClaimantResponseCarm.js');
 const createSDOReqPayload = require('../fixtures/events/createSDO.js');
 const createAnAssistedOrder = require('../fixtures/events/createAnAssistedOrder');
 const createATrialArrangement = require('../fixtures/events/createATrialArrangement');
 const evidenceUpload = require('../fixtures/events/evidenceUpload');
 const testingSupport = require('./testingSupport');
+const lodash = require('lodash');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -31,10 +33,16 @@ const claimantResponse = require('../fixtures/events/createClaimantResponseToDef
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
 const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
 const hwfPayloads = require('../fixtures/events/hwfPayloads.js');
-const {submitEvent} = require('./apiRequest');
+const {submitEvent, fetchCaseDetails} = require('./apiRequest');
 const idamHelper = require('./idamHelper');
+const mediationDocumentsCui = require('../fixtures/events/mediation/uploadMediationDocuments');
+const mediationDocumentsLr = require('../fixtures/events/mediation/uploadMediationDocumentsLR');
 const createLipClaim = require('../fixtures/events/createLiPClaim.js');
 const createLiPClaimForCompany = require('../fixtures/events/createLiPClaimForCompany.js');
+const createLipClaimDefendantCompany = require('../fixtures/events/createLipClaimDefendantCompany.js');
+const createLipClaimDefendantSoleTrader = require('../fixtures/events/createLipClaimDefendantSoleTrader.js');
+const createLipClaimSoleTraderVCompany = require('../fixtures/events/createLipClaimSoleTraderVCompany.js');
+const createLipClaimIndVOrg = require('../fixtures/events/createLipClaimIndVOrg.js');
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
@@ -44,6 +52,10 @@ const data = {
   CREATE_SPEC_CLAIM_FASTTRACKLRvLR: (mpScenario) => claimSpecDataFastTrackLRvLR.createClaim(mpScenario),
   CREATE_LIP_CLAIM: (user, userId, totalClaimAmount) => createLipClaim(user, userId, totalClaimAmount),
   CREATE_LIP_CLAIM_FOR_COMPANY: (user, userId, totalClaimAmount) => createLiPClaimForCompany(user, userId, totalClaimAmount),
+  CREATE_LIP_CLAIM_DEFENDANT_COMPANY: (user, userId, totalClaimAmount) => createLipClaimDefendantCompany(user, userId, totalClaimAmount),
+  CREATE_LIP_CLAIM_DEFENDANT_SOLE_TRADER: (user, userId, totalClaimAmount) => createLipClaimDefendantSoleTrader(user, userId, totalClaimAmount),
+  CREATE_LIP_CLAIM_SOLE_TRADER_V_COMPANY: (user, userId, totalClaimAmount) => createLipClaimSoleTraderVCompany(user, userId, totalClaimAmount),
+  CREATE_LIP_CLAIM_IND_V_ORGANISATION: (user, userId, totalClaimAmount) => createLipClaimIndVOrg(user, userId, totalClaimAmount),
 
 };
 
@@ -136,7 +148,7 @@ module.exports = {
     console.log('End of performCaseProgressedToSDO()');
   },
 
-  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims', responseType) => {
+  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims', responseType, partyType) => {
     console.log('This is inside performCitizenResponse : ' + caseId);
     let totalClaimAmount, eventName = 'DEFENDANT_RESPONSE_CUI';
     let payload = {};
@@ -147,12 +159,45 @@ module.exports = {
       console.log('SmallClaim...');
       totalClaimAmount = '1500';
     }
-    payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType);
+    payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType, partyType);
     //console.log('The payload : ' + payload);
     await apiRequest.setupTokens(user);
     await apiRequest.startEventForCitizen(eventName, caseId, payload);
     await waitForFinishedBusinessProcess(caseId);
     console.log('End of performCitizenResponse()');
+  },
+
+  performLrResponse: async (user, caseId, claimType = 'SmallClaims', responseType, partyType) => {
+    console.log('This is inside performLrResponse : ' + caseId);
+    await apiRequest.setupTokens(user);
+    eventName = 'DEFENDANT_RESPONSE_SPEC';
+    let totalClaimAmount;
+
+    if (claimType === 'FastTrack') {
+      console.log('FastTrack claim...');
+      totalClaimAmount = '15000';
+    } else {
+      console.log('SmallClaim...');
+      totalClaimAmount = '1500';
+    }
+
+    let returnedCaseData = await apiRequest.startEvent(eventName, caseId);
+
+    let defendantResponseData = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType, partyType);
+
+    caseData = returnedCaseData;
+
+    console.log(`${claimType} ${partyType}`);
+
+    for (let pageId of Object.keys(defendantResponseData.userInput)) {
+      await assertValidDataSpec(defendantResponseData, pageId);
+    }
+
+    await assertSubmittedSpecEvent();
+    await waitForFinishedBusinessProcess(caseId);
+
+    deleteCaseFields('respondent1Copy');
+    console.log('End of performLrResponse()');
   },
 
   amendRespondent1ResponseDeadline: async (user) => {
@@ -259,6 +304,14 @@ module.exports = {
 
     if (partyType === 'Company') {
       payload = data.CREATE_LIP_CLAIM_FOR_COMPANY(user, userId, totalClaimAmount);
+    } else if (partyType === 'DefendantCompany') {
+      payload = data.CREATE_LIP_CLAIM_DEFENDANT_COMPANY(user, userId, totalClaimAmount);
+    } else if (partyType === 'DefendantSoleTrader') {
+      payload = data.CREATE_LIP_CLAIM_DEFENDANT_SOLE_TRADER(user, userId, totalClaimAmount)
+    } else if (partyType === 'SoleTraderVCompany') {
+      payload = data.CREATE_LIP_CLAIM_SOLE_TRADER_V_COMPANY(user, userId, totalClaimAmount)
+    } else if (partyType === 'IndividualVOrganisation') {
+      payload = data.CREATE_LIP_CLAIM_IND_V_ORGANISATION(user, userId, totalClaimAmount)
     } else {
       payload = data.CREATE_LIP_CLAIM(user, userId, totalClaimAmount);
     }
@@ -385,13 +438,43 @@ module.exports = {
     console.log('End of viewAndRespondToDefence()');
   },
 
-  claimantLipRespondToDefence: async (user, caseId) => {
+  claimantLipRespondToDefence: async (user, caseId, carmEnabled = false) => {
+    console.log('This is inside claimantLipRespondToDefence : ' + caseId);
     eventName = 'CLAIMANT_RESPONSE_CUI';
-    let payload = claimantResponse.createClaimantLipIntendsToProceedResponse();
+    let payload;
+
     await apiRequest.setupTokens(user);
+
+    if (carmEnabled) {
+      payload = claimantResponse.createClaimantLipIntendsToProceedResponseCarm()
+    } else {
+      payload = claimantResponse.createClaimantLipIntendsToProceedResponse();
+    }
+
     await apiRequest.startEventForCitizen(eventName, caseId, payload);
     await waitForFinishedBusinessProcess(caseId, user);
     console.log('End of claimantLipRespondToDefence()');
+  },
+
+  claimantLrRespondToDefence: async (user, caseId, carmEnabled = false) => {
+    console.log('This is inside performLrRespondToDefence : ' + caseId);
+
+    await apiRequest.setupTokens(user);
+    eventName = 'CLAIMANT_RESPONSE_SPEC';
+
+    let returnedCaseData = await apiRequest.startEvent(eventName, caseId);
+
+    let claimantResponseData = rejectAllClaimantResponseCarm.rejectAllDisputeAllButClaimantWantsToProceed_Carm();
+
+    caseData = returnedCaseData
+
+    for (let pageId of Object.keys(claimantResponseData.userInput)) {
+      await assertValidDataSpec(claimantResponseData, pageId);
+    }
+
+    await assertSubmittedSpecEvent();
+    await waitForFinishedBusinessProcess(caseId, user);
+    console.log('End of claimantLrRespondToDefence()');
   },
 
   enterBreathingSpace: async (user) => {
@@ -404,24 +487,89 @@ module.exports = {
   },
 
   mediationSuccessful: async (user) => {
+    console.log('This is inside mediationSuccessful : ' + caseId);
+    eventName = 'MEDIATION_SUCCESSFUL';
+
     const mediationSuccessfulPayload = mediation.mediationSuccessfulPayload();
+
     eventName = mediationSuccessfulPayload['event'];
     caseData = mediationSuccessfulPayload['caseData'];
+
     await apiRequest.setupTokens(user);
+
+    const document = await testingSupport.uploadDocument();
+    caseData = await updateCaseDataWithPlaceholders(caseData, document);
+
     await assertSubmittedSpecEvent(config.claimState.CASE_STAYED);
     console.log('End of mediationSuccessful()');
   },
 
   mediationUnsuccessful: async (user, carmEnabled = false) => {
+    console.log('This is inside mediationUnsuccessful : ' + caseId);
     eventName = 'MEDIATION_UNSUCCESSFUL';
 
     const mediationUnsuccessfulPayload = mediation.mediationUnSuccessfulPayload(carmEnabled);
     eventName = mediationUnsuccessfulPayload['event'];
     caseData = mediationUnsuccessfulPayload['caseData'];
-  
+
     await apiRequest.setupTokens(user);
     await assertSubmittedSpecEvent(config.claimState.JUDICIAL_REFERRAL);
     console.log('End of mediationUnsuccessful()');
+  },
+
+  uploadMediationDocumentsCui: async (user, caseId) => {
+    console.log('This is inside uploadMediationDocumentsCui : ' + caseId);
+    eventName = 'CUI_UPLOAD_MEDIATION_DOCUMENTS';
+
+    const document = await testingSupport.uploadDocumentUser(user);
+    let payload;
+    if (user === config.claimantCitizenUser) {
+      payload = mediationDocumentsCui.uploadMediationDocumentsClaimantOne_Citizen(document);
+    } else if (user === config.defendantCitizenUser) {
+      payload = mediationDocumentsCui.uploadMediationDocumentsRespondentOne_Citizen(document);
+    }
+    await apiRequest.setupTokens(user);
+
+    caseData = await updateCaseDataWithPlaceholders(payload, document);
+    caseData = await apiRequest.startEventForCitizen(eventName, caseId, caseData);
+
+    await waitForFinishedBusinessProcess(caseId, user);
+
+    console.log('End of uploadMediationDocumentsCui()');
+  },
+
+  uploadMediationDocumentsExui: async (user) => {
+    console.log('This is inside uploadMediationDocumentsExui : ' + caseId);
+    eventName = 'UPLOAD_MEDIATION_DOCUMENTS';
+    await apiRequest.setupTokens(user);
+
+    const document = await testingSupport.uploadDocumentUser(user);
+    caseData = await apiRequest.startEvent(eventName, caseId);
+
+    let payload;
+    if (user === config.applicantSolicitorUser) {
+      payload = mediationDocumentsLr.uploadMediationDocuments('claimant');
+    } else if (user === config.defendantSolicitorUser) {
+      payload = mediationDocumentsLr.uploadMediationDocuments('defendant');
+    }
+
+    payload = await updateCaseDataWithPlaceholders(payload, document);
+
+    for (let pageId of Object.keys(payload.userInput)) {
+      await assertValidDataSpec(payload, pageId);
+    }
+
+    await assertSubmittedSpecEvent();
+
+    await waitForFinishedBusinessProcess(caseId, user);
+
+    console.log('End of uploadMediationDocumentsExUi()');
+  },
+
+  checkUserCaseAccess: async (user, shouldHaveAccess) => {
+    console.log(`Checking ${user.email} ${shouldHaveAccess ? 'has' : 'does not have'} access to the case.`);
+    const expectedStatus = shouldHaveAccess ? 200 : 403;
+    return await fetchCaseDetails(user, caseId, expectedStatus);
   },
 
   liftBreathingSpace: async (user) => {
@@ -474,6 +622,18 @@ const assertValidDataSpec = async (data, pageId) => {
 
   caseData = update(caseData, responseBody.data);
 };
+
+async function updateCaseDataWithPlaceholders(data, document) {
+  const placeholders = {
+    TEST_DOCUMENT_URL: document.document_url,
+    TEST_DOCUMENT_BINARY_URL: document.document_binary_url,
+    TEST_DOCUMENT_FILENAME: document.document_filename
+  };
+
+  data = lodash.template(JSON.stringify(data))(placeholders);
+
+  return JSON.parse(data);
+}
 
 function update(currentObject, modifications) {
   const modified = {...currentObject};
