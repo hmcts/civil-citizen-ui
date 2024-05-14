@@ -7,7 +7,7 @@ import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {YesNo} from 'common/form/models/yesNo';
 
 const delayedFlightController = Router();
-const delayedFlightPath = 'features/claim/delayed-flight';
+const delayedFlightPath = 'features/claim/airlines/delayed-flight';
 
 delayedFlightController.get(DELAYED_FLIGHT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {

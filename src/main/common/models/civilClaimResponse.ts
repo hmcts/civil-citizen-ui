@@ -294,6 +294,16 @@ export interface CCDClaim extends ClaimUpdate {
   res1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   claimIssuedHwfDetails?: CCDHelpWithFeesDetails;
   mediationSettlementAgreedAt?: Date;
+  isFlightDelayClaim?: string;
+  flightDelayDetails?: CCDFlightDelayDetails; 
+}
+
+export interface CCDFlightDelayDetails {
+  // airlineList: object[];
+  nameOfAirline: String;
+  flightNumber: String;
+  scheduledDate: string;
+  // flightCourtLocation: string;
 }
 
 export interface ClaimFeeData {
