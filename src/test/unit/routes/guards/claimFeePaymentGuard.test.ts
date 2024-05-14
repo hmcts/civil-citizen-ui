@@ -47,7 +47,7 @@ describe('Claim Fee Payment Guard', () => {
     (checkIfClaimFeeHasChanged as jest.Mock).mockResolvedValueOnce(false);
 
     //When
-    await  claimFeePaymentGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    await claimFeePaymentGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
     expect(MOCK_NEXT).toHaveBeenCalled();
   });
