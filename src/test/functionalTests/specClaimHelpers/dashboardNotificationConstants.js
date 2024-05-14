@@ -110,11 +110,21 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.DefResponse.FullOrPartAdmit.PayByInstalments.Defendant
   defendantResponseFullAdmitPayInstalments: (amount, instalmentAmount, date) => {
     return {
       title: 'Response to the claim',
       content: [`You have offered to pay £${amount} in instalments of £${instalmentAmount} every month.`, `You have offered to do this starting from ${date}`,  'We will contact you when the claimant responds to your offer.'],
       nextSteps: 'View your response',
+    };
+  },
+
+  //Notice.AAA6.DefResponse.FullOrPartAdmit.PayByInstalments.Claimant
+  defendantResponseFullAdmitPayInstalmentsClaimant: (amount, instalmentAmount, date) => {
+    return {
+      title: 'Response to the claim',
+      content: `Sir John Doe has offered to pay you £${amount} in instalments of £${instalmentAmount} every month. They are offering to do this starting from ${date}.`,
+      nextSteps: 'View and respond',
     };
   },
 
@@ -222,6 +232,17 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.ClaimantIntent.SettlementAgreement.ClaimantRejectsPlan.CourtAgreesWithDefendant.Defendant
+  claimantAskDefendantToSignSettlementCourtPlanDefendant: () => {
+    return {
+      title: 'Settlement agreement',
+      content: ['The claimant has rejected your plan and asked you to sign a settlement agreement.',
+        'The claimant proposed a repayment plan, and the court then responded with an alternative plan that was accepted.',
+        'If you do not respond by then, or reject the agreement, they can request a County Court Judgment.'],
+    };
+  },
+
+  //Notice.AAA6.ClaimantIntent.SettlementAgreement.AcceptOrRejectDefPlan.Claimant
   claimantAskDefendantToSignSettlementClaimant: () => {
     return {
       title: 'Settlement agreement',
