@@ -350,6 +350,29 @@ describe('on POST', () => {
       });
   });
 
+  it('should display witness summary validation error when invalid', async () => {
+    const model = {
+      'witnessSummary': [{
+        'witnessName': '',
+        'dateInputFields': {
+          'dateDay': '',
+          'dateMonth': '',
+          'dateYear': '',
+        },
+        'fileUpload': '',
+      }],
+    };
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(model)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_WITNESS_NAME);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_DATE_WITNESS_SUMMARY);
+      });
+  });
+
   it('should display all expert validation errors', async () => {
     const model = {
       'expertReport': [{
