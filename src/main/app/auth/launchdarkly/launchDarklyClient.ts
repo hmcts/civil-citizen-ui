@@ -38,7 +38,7 @@ export async function getFlagValue(
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
-  return true;
+  return await getFlagValue('cui-case-progression') as boolean;
 }
 
 export async function isServiceShuttered(): Promise<boolean> {
@@ -50,10 +50,10 @@ export async function isPcqShutterOn(): Promise<boolean> {
 }
 
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
-  return true;
+  return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
 }
 export async function isDashboardServiceEnabled(): Promise<boolean> {
-  return true;
+  return await getFlagValue('dashboard-service') as boolean;
 }
 export async function isCARMEnabled(): Promise<boolean> {
   return await getFlagValue('carm') as boolean;
