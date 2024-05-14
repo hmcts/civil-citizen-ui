@@ -13,8 +13,7 @@ exports.config = {
     await unAssignAllUsers();
     await deleteAllIdamTestUsers();
   },
-  tests: ['../functionalTests/tests/prod/**/*.js',
-      '../functionalTests/tests/common/**/*.js' ],
+  tests: '../functionalTests/tests/**/*.js',
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
     Playwright: {
