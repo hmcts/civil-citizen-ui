@@ -24,7 +24,8 @@ import {
   START_MEDIATION_UPLOAD_FILES,
   VIEW_THE_HEARING_URL, VIEW_ORDERS_AND_NOTICES_URL, CLAIM_DETAILS_URL,
   VIEW_RESPONSE_TO_CLAIM,
-  UPLOAD_YOUR_DOCUMENTS_URL, CONFIRM_YOU_HAVE_BEEN_PAID_URL,
+  UPLOAD_YOUR_DOCUMENTS_URL,
+  CONFIRM_YOU_HAVE_BEEN_PAID_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
