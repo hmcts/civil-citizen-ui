@@ -50,20 +50,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 {% if backLinkUrl %}
   {{ back(backLinkUrl, t, false, false) }}
+{% elseif dashboardUrl %}
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: t('COMMON.HOME'),
+        href: dashboardUrl
+      },
+      {
+        text: t(pageTitle)
+      }
+    ]
+  }) }}
 {% else %}
-{{ govukBreadcrumbs({
-  items: [
-    {
-      text: t('COMMON.HOME'),
-      href: dashboardUrl
-    },
-    {
-      text: t(pageTitle)
-    }
-  ]
-}) }}
+    {{ govukBreadcrumbs({
+      items: [
+        {
+          text: t('COMMON.HOME')
+        }
+      ]
+    }) }}
 {% endif %}
-
 {% endblock %}
 
 {% block bodyStart %}
