@@ -563,14 +563,6 @@ function checkGenerated(responseBodyData, generated, prefix = '') {
   }
 }
 
-const addData = async (caseId, user, cb) => {
-  const event = 'UPDATE_CASE_DATA';
-  await apiRequest.setupTokens(user);
-  const startEventData = await apiRequest.startEvent(event, caseId);
-  const caseData = cb(startEventData);
-  return await submitEvent(event, caseData, caseId);
-};
-
 const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true) => {
   await apiRequest.startEvent(eventName, caseId);
 
