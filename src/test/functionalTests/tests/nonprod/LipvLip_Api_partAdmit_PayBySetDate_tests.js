@@ -12,7 +12,7 @@ let claimRef, claimType, claimNumber;
 
 Feature('Response with PartAdmit-PayBySetDate - Small Claims & Fast Track ');
 
-Scenario('Response with PartAdmit-PayBySetDate Small claims @citizenUI @partAdmit @nightly - @api', async ({api}) => {
+Scenario.only('Response with PartAdmit-PayBySetDate Small claims @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -40,7 +40,7 @@ Scenario('Response with PartAdmit-PayBySetDate Fast Track @citizenUI @partAdmit 
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentOnSpecificDateWithIndividual);
     await api.waitForFinishedBusinessProcess();
-    
+
     //Claimant response below here
     let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
