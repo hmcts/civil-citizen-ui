@@ -6,6 +6,7 @@ export const BASE_GENERAL_APPLICATION_URL = `${BASE_CASE_URL}/general-applicatio
 export const APPLICATION_TYPE_URL = `${BASE_GENERAL_APPLICATION_URL}/application-type`;
 export const GA_CLAIM_APPLICATION_COST_URL = `${BASE_GENERAL_APPLICATION_URL}/claim-application-cost`;
 export const PAYING_FOR_APPLICATION_URL = `${BASE_GENERAL_APPLICATION_URL}/paying-for-application`;
+export const ORDER_JUDGE_URL = `${BASE_GENERAL_APPLICATION_URL}/order-judge`;
 const BASE_BREATHING_SPACE_URL = `${BASE_CASE_URL}/breathing-space`;
 const BASE_CASE_RESPONSE_URL = `${BASE_CASE_URL}/response`;
 const BASE_CASE_PAID_IN_FULL_URL = `${BASE_CASE_URL}/paid-in-full`;
