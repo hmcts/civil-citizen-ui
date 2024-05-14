@@ -277,10 +277,9 @@ module.exports = {
 
     if (carmEnabled) {
       console.log('carm enabled, updating submitted date');
-      await addData(caseId, config.systemUpdate, (caseData) => {
-        const submittedDate = new Date(2024, 8, 3);
-        return {...caseData, submittedDate: submittedDate};
-      });
+      await apiRequest.setupTokens(config.systemUpdate);
+      const submittedDate = {'submittedDate':'2024-08-10T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after carm date');
     }
     return caseId;
