@@ -230,13 +230,21 @@ module.exports = {
     };
   },
 
-  //After CIV-13483 is merged the content might need updating to:
-  //You rejected the repayment plan. When a judge has made a decision, we’ll post a copy of the judgment to you.
+  //CIV-13483
   claimantRejectPlanJudgeNewPlan: () => {
     return {
       title: 'You requested a County Court Judgment against Sir John Doe',
       content: ['You rejected the repayment plan.',
-        'When we\'ve processed the request, we\'ll post a copy of the judgment to you.'],
+        'When a judge has made a decision, we’ll post a copy of the judgment to you.'],
     };
   },
+
+  // This should work for CIV-13035 notification
+  // ClaimantRejectPlanJudgeNewPlan: () => {
+  //   return {
+  //     title: 'You requested a County Court Judgment against Sir John Doe',
+  //     content: ['You rejected the repayment plan.',
+  //       'When we\'ve processed the request, we\'ll post a copy of the judgment to you.'],
+  //   };
+  // },
 };
