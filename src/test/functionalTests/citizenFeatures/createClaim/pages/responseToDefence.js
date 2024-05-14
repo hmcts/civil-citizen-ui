@@ -48,7 +48,7 @@ const paths = {
 class ResponseToDefence {
 
   async open(caseReference) {
-    I.amOnPage(`/case/${caseReference}/claimant-response/task-list`);
+    await I.amOnPage(`/case/${caseReference}/claimant-response/task-list`);
   }
 
   async verifyDashboard() {
@@ -63,53 +63,53 @@ class ResponseToDefence {
     I.waitForContent('Sir John Doe admits they owe all the money you’ve claimed.',60);
     I.see('The defendant’s response','h1');
     if(option === 'bySetDate'){
-      I.see('This is the total amount you’ll be paid,');
-      I.see('including the claim fee and interest if applicable.');
-      I.see('They’ve offered to pay you this by');
-      I.click(paths.links.see_their_financial_details);
-      I.see('Bank and savings accounts');
-      I.see('Type of account');
-      I.see('Savings account');
-      I.see('Balance');
-      I.see('£4,000');
-      I.see('Joint account');
-      I.see('No');
-      I.see('Where are they living?');
-      I.see('Private rental');
-      I.see('Children');
-    }else{
-      I.see('They\'ve offered to pay you this in instalments.');
-      I.see('How they want to pay?');
-      I.see('The defendant suggested this repayment plan:');
-      I.see('Regular payments of');
-      I.see('Frequency of payments');
-      I.see('First payment date');
-      I.see('Final payment date');
-      I.see('Length of repayment plan');
-      I.click(paths.links.see_their_financial_details);
-      I.see('Bank and savings accounts');
-      I.see('Do they have a job?');
-      I.see('Do they receive any income?');
-      I.see('Has a court ordered them to pay anyone else?');
+      await I.see('This is the total amount you’ll be paid,');
+      await I.see('including the claim fee and interest if applicable.');
+      await I.see('They’ve offered to pay you this by');
+      await I.click(paths.links.see_their_financial_details);
+      await I.see('Bank and savings accounts');
+      await I.see('Type of account');
+      await I.see('Savings account');
+      await I.see('Balance');
+      await I.see('£4,000');
+      await I.see('Joint account');
+      await I.see('No');
+      await I.see('Where are they living?');
+      await I.see('Private rental');
+      await I.see('Children');
+    } else{
+      await I.see('They\'ve offered to pay you this in instalments.');
+      await I.see('How they want to pay?');
+      await I.see('The defendant suggested this repayment plan:');
+      await I.see('Regular payments of');
+      await I.see('Frequency of payments');
+      await I.see('First payment date');
+      await I.see('Final payment date');
+      await I.see('Length of repayment plan');
+      await I.click(paths.links.see_their_financial_details);
+      await I.see('Bank and savings accounts');
+      await I.see('Do they have a job?');
+      await I.see('Do they receive any income?');
+      await I.see('Has a court ordered them to pay anyone else?');
     }
     I.see('Why they can’t pay the full amount now?');
     I.see('test');
-    I.click(paths.buttons.continue);
+    await I.click(paths.buttons.continue);
   }
 
   async verifyDefResponseForPartAdmitInstallmentPayment(claimAmount) {
     I.waitForContent('Why they don’t owe the amount claimed?', 60);
     I.see('The defendant suggested this repayment plan:');
     I.see(`They’ve offered to pay you £${claimAmount} in instalments. This is the total amount you’ll be paid, including the claim fee and interest if applicable.`);
-    I.click(paths.buttons.continue);
+    await I.click(paths.buttons.continue);
   }
 
-  verifyDefResponseForPartAdmitPayBySetDate(claimAmount) {
+  async verifyDefResponseForPartAdmitPayBySetDate(claimAmount) {
     I.waitForContent('Why they don’t owe the amount claimed?', 60);
     I.see(`Sir John Doe admits they owe you £${claimAmount}. They don’t believe they owe the full amount claimed.`);
     I.see(`They’ve offered to pay you £${claimAmount} by`);
     I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
-    I.click(paths.buttons.continue);
+    await I.click(paths.buttons.continue);
   }
 
   async verifyDefResponseForPartAdmitImmediatePayment(claimAmount) {
@@ -117,67 +117,67 @@ class ResponseToDefence {
     I.see('Contracts and agreements');
     I.see(`Sir John Doe admits they owe you £${claimAmount}`);
     I.see(`They’ve offered to pay you £${claimAmount} immediately. This is the total amount you’ll be paid, including the claim fee and interest if applicable.`);
-    I.click(paths.buttons.continue);
+    await I.click(paths.buttons.continue);
   }
 
   async acceptOrRejectTheAmountDefendantAdmittedAndSettle(claimAmount, acceptOrReject) {
     I.waitForContent(`Do you want to settle the claim for the £${claimAmount} the defendant admitted?`);
     I.see('You can agree to their repayment plan or suggest your own');
     if (acceptOrReject == 'accept') {
-      I.click(paths.options.yes);
+      await I.click(paths.options.yes);
     } else {
-      I.click(paths.options.no);
+      await I.click(paths.options.no);
     }
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async acceptOrRejectTheAmountCYA(acceptOrReject) {
     I.waitForContent('Do you accept or reject the defendant\'s admission?');
     if (acceptOrReject == 'accept') {
-      I.see('I accept this amount');
+      await I.see('I accept this amount');
     } else {
-      I.see('I reject this amount');
-      I.checkOption('#directionsQuestionnaireSigned');
+      await I.see('I reject this amount');
+      await I.checkOption('#directionsQuestionnaireSigned');
     }
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
   async acceptOrRejectTheirRepaymentPlan(acceptOrReject) {
     I.waitForContent('How they want to pay?');
     if (acceptOrReject == 'accept') {
-      I.see('Yes');
-      I.click(paths.options.yes);
+      await I.see('Yes');
+      await I.click(paths.options.yes);
     } else {
-      I.see('No - I\'ll suggest my own');
-      I.click(paths.options.no);
+      await I.see('No - I\'ll suggest my own');
+      await I.click(paths.options.no);
     }
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async proposePaymentPlan() {
     I.see('How do you want the defendant to pay?');
     I.checkOption('#paymentType'); //Immediately radio
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
     I.see('t afford your plan');
     I.checkOption('#decision-2'); //Judge make repayment plan
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
     I.see('Why did you reject the repayment plan?');
     I.fillField(paths.textBoxes.rejectReason, 'testReason');
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyAcceptOrRejectConfirmationScreen(acceptOrReject = 'accept', admittedAmount = '200.00') {
     I.waitForContent('What happens next');
     if (acceptOrReject == 'accept') {
-      I.see('You\'ve accepted their response');
-      I.see(`The defendant said they'll pay you £${admittedAmount} immediately.`);
-      I.see('They must make sure you have the money by');
-      I.see('Any cheques or transfers should be clear in your account.');
-      I.see('You need to tell us if you\'ve settled the claim, for example because the defendant has paid you.');
-      I.see('Go to your account');
+      await I.see('You\'ve accepted their response');
+      await I.see(`The defendant said they'll pay you £${admittedAmount} immediately.`);
+      await I.see('They must make sure you have the money by');
+      await I.see('Any cheques or transfers should be clear in your account.');
+      await I.see('You need to tell us if you\'ve settled the claim, for example because the defendant has paid you.');
+      await I.see('Go to your account');
     } else {
-      I.see('You\'ve rejected their response');
-      I.see('We\'ll review the case. We\'ll contact you to tell you what to do next.');
+      await I.see('You\'ve rejected their response');
+      await I.see('We\'ll review the case. We\'ll contact you to tell you what to do next.');
     }
   }
 
@@ -203,7 +203,7 @@ class ResponseToDefence {
     I.see('They’ve offered to pay you £500 by');
     I.see('This is the total amount you\'ll be paid, including the claim fee and interest if applicable.');
     I.see('Why they can’t pay the full amount now?','h2');
-    I.click(paths.links.see_their_financial_details);
+    await I.click(paths.links.see_their_financial_details);
     I.see('Bank and savings accounts');
     I.see('Type of account');
     I.see('Current account');
@@ -255,7 +255,7 @@ class ResponseToDefence {
     I.see('Student loan');
     I.see('£8,000');
     I.see('£400');
-    I.click(paths.buttons.continue);
+    await I.click(paths.buttons.continue);
   }
 
   async verifyHowTheyWantToPay(claimReference) {
@@ -264,7 +264,7 @@ class ResponseToDefence {
     I.see('They’ve offered to pay you £500 by');
     I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
     I.see('Why they can’t pay the full amount now?');
-    I.click(paths.links.see_their_financial_details);
+    await I.click(paths.links.see_their_financial_details);
     I.see('Where are they living?');
     I.see('Home you own yourself (or pay a mortgage on)');
     I.see('Balance');
@@ -273,19 +273,19 @@ class ResponseToDefence {
     I.see(`${claimReference}`);
     I.see('Student loan');
     I.see('£8,000');
-    I.click(paths.buttons.continue);
+    await I.click(paths.buttons.continue);
   }
 
-  verifyHowTheyWantToPayPayBySetDate() {
+  async verifyHowTheyWantToPayPayBySetDate() {
     I.waitForContent('Why they can’t pay the full amount now?', 60);
     I.see('How they want to pay?', 'h1');
     I.see('They’ve offered to pay you');
     I.see('by');
     I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
-    I.click(paths.links.see_their_financial_details);
+    await I.click(paths.links.see_their_financial_details);
     I.see('Where are they living?');
     I.see('Balance');
-    I.click(paths.buttons.continue);
+    await I.click(paths.buttons.continue);
   }
 
   async verifyDoYouWantToSettleTheClaim() {
@@ -296,45 +296,45 @@ class ResponseToDefence {
     I.see('Yes');
     I.see('You can agree to their repayment plan or suggest your own');
     I.see('No');
-    I.click(paths.options.yes);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.yes);
+    await I.click(paths.buttons.save_and_continue);
   }
 
-  verifyAboutTheRepaymentPlan() {
+  async verifyAboutTheRepaymentPlan() {
     I.waitForContent('No - I\'ll suggest my own', 60);
     I.see('How they want to pay?', 'h1');
     I.see('Mrs Jane Doe has offered to pay you in full by');
     I.see('Do you accept the repayment plan?');
     I.see('Yes');
-    I.click(paths.options.yes);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.yes);
+    await I.click(paths.buttons.save_and_continue);
   }
 
-  verifyRepaymentPlanForFullAdmitPayBySetDate() {
+  async verifyRepaymentPlanForFullAdmitPayBySetDate() {
     I.waitForContent('No - I\'ll suggest my own',60);
     I.see('How they want to pay?', 'h1');
     I.see('Sir John Doe has offered to pay you in full by');
     I.see('Do you accept the repayment plan?');
     I.see('Yes');
-    I.click(paths.options.yes);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.yes);
+    await I.click(paths.buttons.save_and_continue);
   }
 
-  verifyRepaymentPlanForPartAdmitPayBySetDate(acceptOrReject) {
+  async verifyRepaymentPlanForPartAdmitPayBySetDate(acceptOrReject) {
     I.waitForContent('No - I\'ll suggest my own',60);
     I.see('How they want to pay?', 'h1');
     I.see('Sir John Doe has offered to pay you in full by');
     I.see('Do you accept the repayment plan?');
     I.see('Yes');
     if (acceptOrReject == 'accept') {
-      I.click(paths.options.yes);
+      await I.click(paths.options.yes);
     } else {
-      I.click(paths.options.no);
+      await I.click(paths.options.no);
     }
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
   }
 
-  verifyRepaymentPlanForFullAdmitPayByInstalments() {
+  async verifyRepaymentPlanForFullAdmitPayByInstalments() {
     I.waitForContent('No - I\'ll suggest my own',60);
     I.see('How they want to pay?', 'h1');
     I.see('Regular payments of');
@@ -343,20 +343,20 @@ class ResponseToDefence {
     I.see('Final payment date');
     I.see('Length of repayment plan');
     I.see('Do you accept the repayment plan?');
-    I.click(paths.options.no);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.no);
+    await I.click(paths.buttons.save_and_continue);
   }
 
-  verifyProposeAnAlternativePaymentPlan() {
+  async verifyProposeAnAlternativePaymentPlan() {
     I.waitForContent('By instalments',60);
     I.see('How do you want the defendant to pay?', 'h1');
     I.see('Immediately');
     I.see('By a set date');
-    I.click(paths.options.paymentOptionImmediate);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.paymentOptionImmediate);
+    await I.click(paths.buttons.save_and_continue);
   }
 
-  verifyCourtRejectedProposedPlan() {
+  async verifyCourtRejectedProposedPlan() {
     I.waitForContent('The defendant can’t afford your plan',60);
     I.see('Based on the financial details provided by the defendant');
     I.see('we don’t believe they would be able to make these repayments.');
@@ -365,25 +365,25 @@ class ResponseToDefence {
     I.see('Do you accept the court’s proposed repayment plan?');
     I.see('I want to accept this repayment plan');
     I.see('I want a judge to make a repayment plan');
-    I.click(paths.options.acceptCourtDecision);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.acceptCourtDecision);
+    await I.click(paths.buttons.save_and_continue);
   }
 
-  verifyCourtAcceptedProposedPlan() {
+  async verifyCourtAcceptedProposedPlan() {
     I.waitForContent('The court has accepted your repayment plan', 60);
     I.see('Repayment plan accepted', 'h1');
-    I.click(paths.buttons.continue);
+    await I.click(paths.buttons.continue);
   }
 
-  verifySignTheSettlementAgreementForFullAdmit(option) {
+  async verifySignTheSettlementAgreementForFullAdmit(option) {
     I.waitForContent('I confirm I’ve read and accept the terms of the agreement.', 60);
     I.see('Terms of the agreement', 'h1');
     I.see('The agreement');
     if(option === 'bySetDate'){
-      I.see('Sir John Doe will pay £1500, no later than');
+      await I.see('Sir John Doe will pay £1500, no later than');
     }else {
-      I.see('Sir John Doe will repay £1500 in instalments');
-      I.see('The first instalment will be paid by');
+      await I.see('Sir John Doe will repay £1500 in instalments');
+      await I.see('The first instalment will be paid by');
     }
     I.see('Completion date');
     I.see('This agreement settles the claim made by Miss Jane Doe against Sir John Doe.');
@@ -398,10 +398,10 @@ class ResponseToDefence {
     I.see('You won’t be able to change this later.');
     I.uncheckOption(paths.options.confirm_and_sign);
     I.checkOption(paths.options.confirm_and_sign);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
   }
 
-  verifyHowToFormaliseARepayment(formaliseType) {
+  async verifyHowToFormaliseARepayment(formaliseType) {
     I.waitForContent('which may make it more difficult for them to borrow money to repay you.', 60);
     I.see('Choose how to formalise repayment', 'h1');
     I.see('Sign a settlement agreement');
@@ -412,14 +412,14 @@ class ResponseToDefence {
     I.see('You can ask the court to make a formal order binding the defendant to the repayment plan.');
     I.see('This adds the defendant to the CCJ register,');
     if(formaliseType  ===  'CCJ'){
-      I.click(paths.options.ccj);
+      await I.click(paths.options.ccj);
     }else{
-      I.click(paths.options.sign_a_settlements_agreement);
+      await I.click(paths.options.sign_a_settlements_agreement);
     }
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
   }
 
-  verifySignTheSettlementAgreement() {
+  async verifySignTheSettlementAgreement() {
     I.waitForContent('I confirm I’ve read and accept the terms of the agreement.', 60);
     I.see('Terms of the agreement', 'h1');
     I.see('The agreement');
@@ -439,10 +439,10 @@ class ResponseToDefence {
     I.see('I confirm I’ve read and accept the terms of the agreement.');
     I.uncheckOption(paths.options.confirm_and_sign);
     I.checkOption(paths.options.confirm_and_sign);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
   }
 
-  verifySignTheSettlementAgreementForPartAdmit() {
+  async verifySignTheSettlementAgreementForPartAdmit() {
     I.waitForContent('I confirm I’ve read and accept the terms of the agreement.', 60);
     I.see('Terms of the agreement', 'h1');
     I.see('The agreement');
@@ -461,16 +461,16 @@ class ResponseToDefence {
     I.see('You won’t be able to change this later.');
     I.uncheckOption(paths.options.confirm_and_sign);
     I.checkOption(paths.options.confirm_and_sign);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
   }
 
-  verifyCCJ() {
+  async verifyCCJ() {
     I.waitForContent('Has the defendant paid some of the amount owed?', 60);
     I.see('Yes');
     I.see('No');
-    I.click(paths.options.yes);
+    await I.click(paths.options.yes);
     I.fillField(paths.textBoxes.amountAlreadyPaidCCJ, '100');
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
     I.waitForContent('The judgment will order the defendant to pay');
     I.see('Judgment amount', 'h1');
     I.see('including your claim fee and any interest, as shown in this table:');
@@ -480,21 +480,21 @@ class ResponseToDefence {
     I.see('Subtotal');
     I.see('Minus amount already paid');
     I.see('Total');
-    I.click(paths.buttons.continue);
+    await I.click(paths.buttons.continue);
   }
 
-  verifyCheckYourAnswersForFullAdmitSettlementAgreement() {
-    I.waitForContent('Sign a settlement agreement',60);
+  async verifyCheckYourAnswersForFullAdmitSettlementAgreement() {
+    await I.waitForContent('Sign a settlement agreement',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
     I.see('Do you accept the defendant repayment plan?');
     I.see('I accept this repayment plan');
     I.see('How do you wish to proceed?','h2');
     I.see('How do you want to formalise the repayment plan');
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
-  verifyCheckYourAnswersForFullAdmitRejectPlanSettlementAgreement() {
+  async verifyCheckYourAnswersForFullAdmitRejectPlanSettlementAgreement() {
     I.waitForContent('Sign a settlement agreement',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
@@ -508,10 +508,10 @@ class ResponseToDefence {
     I.see('Sir John Doe will repay £1500 in instalments of £100 every month.');
     I.see('The first instalment will be paid by');
     I.see('Completion date');
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
-  verifyCheckYourAnswersForPartAdmitSettlementAgreement() {
+  async verifyCheckYourAnswersForPartAdmitSettlementAgreement() {
     I.waitForContent('Sign a settlement agreement',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
@@ -521,10 +521,10 @@ class ResponseToDefence {
     I.see('I accept this repayment plan');
     I.see('How do you wish to proceed?','h2');
     I.see('How do you want to formalise the repayment plan');
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
-  verifyCheckYourAnswersForFullAdmitCCJ() {
+  async verifyCheckYourAnswersForFullAdmitCCJ() {
     I.waitForContent('Issue a County Court Judgment (CCJ)',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
@@ -532,10 +532,10 @@ class ResponseToDefence {
     I.see('I accept this repayment plan');
     I.see('How do you wish to proceed?','h2');
     I.see('How do you want to formalise the repayment plan');
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
-  verifyCheckYourAnswersForPartAdmitCCJ() {
+  async verifyCheckYourAnswersForPartAdmitCCJ() {
     I.waitForContent('Issue a County Court Judgment (CCJ)',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
@@ -543,16 +543,16 @@ class ResponseToDefence {
     I.see('I reject this repayment plan');
     I.see('How do you wish to proceed?','h2');
     I.see('How do you want to formalise the repayment plan');
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
-  verifyConfirmationScreenForFullAdmitSettlementAgreement(claimNumber) {
+  async verifyConfirmationScreenForFullAdmitSettlementAgreement(claimNumber) {
     I.waitForContent('You\'ve signed a settlement agreement', 60,'h1');
     I.see('Your claim number:');
-    I.see(`${claimNumber}`);
+    await I.see(`${claimNumber}`);
   }
 
-  verifyConfirmationScreenForFullAdmitRejectPlanSettlementAgreement(claimNumber){
+  async verifyConfirmationScreenForFullAdmitRejectPlanSettlementAgreement(claimNumber){
     I.waitForContent('You\'ve signed a settlement agreement', 60,'h1');
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
@@ -572,13 +572,13 @@ class ResponseToDefence {
     I.see('Telephone');
   }
 
-  verifyConfirmationScreenForPartAdmitSettlementAgreement(claimNumber) {
+  async verifyConfirmationScreenForPartAdmitSettlementAgreement(claimNumber) {
     I.waitForContent('You\'ve signed a settlement agreement', 60);
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
   }
 
-  verifyConfirmationScreenForPartAdmitCCJ(claimNumber) {
+  async verifyConfirmationScreenForPartAdmitCCJ(claimNumber) {
     I.waitForContent('County Court Judgment requested', 60);
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
@@ -588,7 +588,7 @@ class ResponseToDefence {
     I.see('Telephone');
   }
 
-  verifyConfirmationScreenForFullAdmitCCJ(claimNumber) {
+  async verifyConfirmationScreenForFullAdmitCCJ(claimNumber) {
     I.waitForContent('County Court Judgment requested', 60);
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
@@ -599,39 +599,39 @@ class ResponseToDefence {
     I.see('Telephone');
   }
 
-  verifyCheckYourAnswersRejectAllNoToProceed() {
+  async verifyCheckYourAnswersRejectAllNoToProceed() {
     I.waitForContent('Do you want to proceed with the claim?',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
-  verifyCheckYourAnswersRejectAllSettleClaimInFull() {
+  async verifyCheckYourAnswersRejectAllSettleClaimInFull() {
     I.waitForContent('Do you want to settle the claim for the £1500?',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
-  verifyCheckYourAnswersRejectAllSettleClaimNotInFull() {
+  async verifyCheckYourAnswersRejectAllSettleClaimNotInFull() {
     I.waitForContent('Do you want to settle the claim for the £10000?',60);
     I.see('Do you agree the defendant has paid £10000?');
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
-  verifyCheckYourAnswersRejectAllNotToSettleClaimNotInFull(){
+  async verifyCheckYourAnswersRejectAllNotToSettleClaimNotInFull(){
     I.waitForContent('Do you agree the defendant has paid £567?',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
     I.see('Do you want to settle the claim for the £567?');
     I.see('Hearing requirements');
     I.see('Have you already got a report written by an expert?');
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
-  verifyCheckYourAnswersRejectAllNotToSettleClaimInFull() {
+  async verifyCheckYourAnswersRejectAllNotToSettleClaimInFull() {
     I.waitForContent('Do you want to settle the claim for the £15000?',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
@@ -640,10 +640,10 @@ class ResponseToDefence {
     I.see('Do you want an extra 4 weeks to try to settle the claim?');
     I.see('Are there any documents the claimant has that you want the court to consider?');
     I.see('What languages will the documents be provided in?');
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
-  verifyCheckYourAnswersRejectAllYesToProceed() {
+  async verifyCheckYourAnswersRejectAllYesToProceed() {
     I.waitForContent('Do you want to proceed with the claim?',60);
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
@@ -652,7 +652,7 @@ class ResponseToDefence {
     I.see('Do you want an extra 4 weeks to try to settle the claim?');
     I.see('Are there any documents the claimant has that you want the court to consider?');
     I.see('What languages will the documents be provided in?');
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
   async verifyCheckYourAnswersPartAdmitAlreadyPaidSettleClaim() {
@@ -660,7 +660,7 @@ class ResponseToDefence {
     I.see('Do you want to settle the claim for the £700?');
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
   async verifyCheckYourAnswersPartAdmitAlreadyPaidNotToSettleClaim() {
@@ -672,7 +672,7 @@ class ResponseToDefence {
     I.see('Welsh language');
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
   async verifyCheckYourAnswersPartAdmitAlreadyPaidGoToMediation() {
@@ -685,7 +685,7 @@ class ResponseToDefence {
     I.see('Welsh language');
     I.see('Check your answers', 'h1');
     I.see('Your response','h2');
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
   async verifyDefendantsResponseForRejection() {
@@ -701,8 +701,8 @@ class ResponseToDefence {
     I.see('Contracts and agreements');
     I.see('TestEvidence');
     I.seeElement(paths.links.full_response_pdf_link);
-    I.click(paths.links.full_response_pdf_link);
-    I.click(paths.buttons.continue);
+    await I.click(paths.links.full_response_pdf_link);
+    await I.click(paths.buttons.continue);
   }
 
   async verifyDefendantsResponseForRejectAllDisputeAll() {
@@ -712,8 +712,8 @@ class ResponseToDefence {
     I.see('Their defence','h3');
     I.see('Why they disagree with the claim?','h3');
     I.seeElement(paths.links.full_response_pdf_link);
-    I.click(paths.links.full_response_pdf_link);
-    I.click(paths.buttons.continue);
+    await I.click(paths.links.full_response_pdf_link);
+    await I.click(paths.buttons.continue);
   }
 
   async verifyDefendantsResponseForRejectAllAlreadyPaidInFull() {
@@ -723,8 +723,8 @@ class ResponseToDefence {
     I.see('When they say they paid this amount','h3');
     I.see('How they say they paid?','h3');
     I.seeElement(paths.links.full_response_pdf_link);
-    I.click(paths.links.full_response_pdf_link);
-    I.click(paths.buttons.continue);
+    await I.click(paths.links.full_response_pdf_link);
+    await I.click(paths.buttons.continue);
   }
 
   async verifyDefendantsResponseForRejectAllAlreadyPaidNotInFull() {
@@ -736,8 +736,8 @@ class ResponseToDefence {
     I.see('How they say they paid?','h3');
     I.see('Why they say they dont owe the amount you claimed?', 'h3');
     I.seeElement(paths.links.full_response_pdf_link);
-    I.click(paths.links.full_response_pdf_link);
-    I.click(paths.buttons.continue);
+    await I.click(paths.links.full_response_pdf_link);
+    await I.click(paths.buttons.continue);
   }
 
   async verifyDefendantsResponseForPartAdmiAlreadyPaid(withTimeLineEvidenceDisagree) {
@@ -750,67 +750,67 @@ class ResponseToDefence {
     I.see('Why they say they don’t owe the amount you claimed?');
     I.see('Their timeline of events');
     if (withTimeLineEvidenceDisagree === 'disagree') {
-      I.see('Why they disagree with your timeline?');
-      I.see('Why they disagree with your evidence?');
+      await I.see('Why they disagree with your timeline?');
+      await I.see('Why they disagree with your evidence?');
     }
     I.see('Their evidence');
     I.seeElement(paths.links.full_response_pdf_link);
-    I.click(paths.links.full_response_pdf_link);
-    I.click(paths.buttons.continue);
+    await I.click(paths.links.full_response_pdf_link);
+    await I.click(paths.buttons.continue);
   }
 
   async inputProceedWithTheClaim() {
     I.waitForContent('Do you want to proceed with claim?',60);
-    I.click(paths.options.yes);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.yes);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async inputNoToProceedWithTheClaim() {
     I.waitForContent('Do you want to proceed with claim?',60);
-    I.click(paths.options.no);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.no);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async inputSettleWithTheClaimInFull() {
     I.waitForContent('Do you agree the defendant has paid the £1500 in full?',60);
-    I.click(paths.options.yes);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.yes);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async inputNotoSettleWithTheClaimInFull() {
     I.waitForContent('Do you agree the defendant has paid the £15000 in full?',60);
-    I.click(paths.options.no);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.no);
+    await I.click(paths.buttons.save_and_continue);
     I.waitForContent('Why did you reject their response?', 60);
     I.fillField(paths.textBoxes.rejectReason, 'testReason');
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async paymentNotInFullYesPaid() {
     I.waitForContent('Has the defendant paid you', 60);
-    I.click(paths.options.yes);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.yes);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async paymentNotInFullNoPaid() {
     I.waitForContent('Has the defendant paid you', 60);
-    I.click(paths.options.no);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.no);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async paymentNotInFullNoToSettle() {
     I.waitForContent('Do you want to settle the claim for the',60);
-    I.click(paths.options.no);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.no);
+    await I.click(paths.buttons.save_and_continue);
     I.waitForContent('Why did you reject their response?', 60);
     I.fillField(paths.textBoxes.rejectReason, 'testReason');
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async paymentNotInFullYesToSettle() {
     I.waitForContent('Do you want to settle the claim for the',60);
-    I.click(paths.options.yes);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.yes);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyFreeMediation() {
@@ -836,7 +836,7 @@ class ResponseToDefence {
   }
 
   async verifyChoseNoFreeMediation() {
-    I.click(paths.links.do_not_agree_to_free_mediation);
+    await I.click(paths.links.do_not_agree_to_free_mediation);
     I.waitForContent('If you choose not to try mediation this cannot be changed once your response is submitted.', 60);
     I.see('You chose not to try free mediation','h1');
     I.see('The claim will continue and you may have to go to a hearing.');
@@ -850,16 +850,16 @@ class ResponseToDefence {
     I.seeElement('//a[contains(.,\'County Court Judgment (opens in a new tab)\')]');
     I.see('being made against you');
     I.see('Will you change your decision and try free mediation?','h2');
-    I.click(paths.options.no);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.no);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyChoseYesFreeMediation() {
-    I.click(paths.buttons.continue);
+    await I.click(paths.buttons.continue);
     I.waitForContent('Confirm your telephone number', 60);
     I.see('Can the mediation service use');
-    I.click(paths.options.yes);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.yes);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyChoseNoFreeMediationReasons() {
@@ -873,7 +873,7 @@ class ResponseToDefence {
     I.see('I want a judge to make a decision on the dispute');
     I.see('Another reason (please specify)');
     I.see('Any information you provide is used solely by HM Courts and Tribunals Service to help us improve our services. ');
-    I.click(paths.links.skip_this_section);
+    await I.click(paths.links.skip_this_section);
   }
 
   async verifyDeterminationWithoutHearingQuestions() {
@@ -882,8 +882,8 @@ class ResponseToDefence {
     I.see('Do you consider that this claim is suitable for determination without a hearing,');
     I.see('i.e. by a judge reading and considering the case papers,');
     I.see('witness statements and other documents filled by the parties, making a decision,');
-    I.click(paths.options.yes);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.yes);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyUsingAnExpertQuestion() {
@@ -891,34 +891,34 @@ class ResponseToDefence {
     I.see('Using an expert', 'h1');
     I.see('It\'s rare for a judge to allow you to use an expert in a small claim.');
     I.see('Most small claims don\'t need an expert.');
-    I.click(paths.buttons.continue_without_an_expert);
+    await I.click(paths.buttons.continue_without_an_expert);
   }
 
   async verifyDoYouWantToGiveEvidenceYourself() {
     I.waitForContent('Do you want to give evidence yourself?', 60);
-    I.click(paths.options.yes);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.yes);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyDoYouHaveOtherWitness() {
     I.waitForContent('Do you have other witnesses?', 60);
     I.see('This is someone who can confirm your version of events.');
-    I.click(paths.options.no);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.no);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyAnyDatesInTheNext12Months(){
     I.waitForContent('Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?', 60);
     I.see('These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked');
-    I.click(paths.options.no);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.no);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyDoYouWantToAskForATelephone(){
     I.waitForContent('Do you want to ask for a telephone or video hearing?', 60);
     I.see('The judge will decide if the hearing can be held by telephone or video.');
-    I.click(paths.options.no);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.no);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyAreYourExpertsVulnerable(){
@@ -926,14 +926,14 @@ class ResponseToDefence {
     I.see('Are you, your experts or witnesses vulnerable in a way that the court needs to consider?', 'h1');
     I.see('This is someone who has been the victim of domestic or other abuse,');
     I.see('has a learning disability, physical or mental illness or reduced mental capacity.');
-    I.click(paths.options.no);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.no);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyDoYouOrExpertsNeedToAttendHearing(){
     I.waitForContent('Do you, your experts or witnesses need support to attend a hearing?', 60);
-    I.click(paths.options.no);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.no);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyHearingAtSpecificCourt(){
@@ -941,8 +941,8 @@ class ResponseToDefence {
     I.see('Do you want to ask for the hearing to be held at a specific court?', 'h1');
     I.see('You can ask for the hearing to be held at a specific court,');
     I.see('for example, if you spend weekdays a long distance from your home.');
-    I.click(paths.options.no);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.no);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyWelshLanguage(){
@@ -955,9 +955,9 @@ class ResponseToDefence {
     I.see('What languages will the documents be provided in?');
     I.see('English');
     I.see('Welsh');
-    I.click(paths.options.english_language);
-    I.click(paths.options.document_language);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.english_language);
+    await I.click(paths.options.document_language);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyTriedToSettle(){
@@ -967,8 +967,8 @@ class ResponseToDefence {
     I.see('discuss the claim and negotiate with each other');
     I.see('try to reach an agreement about the claim');
     I.see('consider another form of dispute resolution, such as mediation');
-    I.click(paths.options.yes);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.yes);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyRequestExtra4Weeks(){
@@ -977,15 +977,15 @@ class ResponseToDefence {
     I.see('You can use this time to try to settle the claim without going to a hearing.');
     I.see('Settling without going to a hearing may avoid costs including fees.');
     I.see('even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline.');
-    I.click(paths.options.no);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.no);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyConsiderClaimantDocuments(){
     I.waitForContent('Are there any documents the other party has that you want the court to consider?');
-    I.click(paths.options.yes);
+    await I.click(paths.options.yes);
     I.fillField(paths.textBoxes.details, 'test');
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyExpertEvidence(){
@@ -994,14 +994,14 @@ class ResponseToDefence {
     I.see('Expert evidence is an opinion based on the expertise of a specialist, for example - a building surveyor who can comment on the quality of building work.');
     I.see('It will only be allowed if the court cannot make a decision without the expert.');
     I.see('Experts usually only give written evidence. They may appear at a hearing if the experts disagree, and the court can only decide between their evidence by hearing it in person.');
-    I.click(paths.options.yes);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.yes);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifySentExpertReports(){
     I.waitForContent('Have you already sent expert reports to other parties?');
-    I.click(paths.options.no);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.no);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifySharedExpert(){
@@ -1009,8 +1009,8 @@ class ResponseToDefence {
     I.see('Do you want to share an expert with the other party?', 'h1');
     I.see('If you share an expert, you will also share the costs unless the judge decides that one party must pay the other party’s share.');
     I.see('This is known as a ’single joint expert’');
-    I.click(paths.options.yes);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.yes);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyEnterExpertDetails(){
@@ -1023,25 +1023,25 @@ class ResponseToDefence {
     I.fillField(paths.textBoxes.item0FieldOfExpertise, 'test');
     I.fillField(paths.textBoxes.item0WhyNeedExpert, 'testest');
     I.fillField(paths.textBoxes.item0EstimatedCost, '100');
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyGiveEvidenceYourself(){
     I.waitForContent('Do you want to give evidence yourself?');
-    I.click(paths.options.yes);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.yes);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyOtherWitnesses(){
     I.waitForContent('This is someone who can confirm your version of events.');
     I.see('Do you have other witnesses?', 'h1');
-    I.click(paths.options.yes);
+    await I.click(paths.options.yes);
     I.waitForContent('Tell us what they witnessed');
     I.fillField(paths.textBoxes.item0WitnessFirstName, 'WitnessFName');
     I.fillField(paths.textBoxes.item0WitnessLastName, 'WitnessLName');
     I.fillField(paths.textBoxes.item0WitnessEmail, 'test@test.com');
     I.fillField(paths.textBoxes.item0WitnessDetails, 'testtest');
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.buttons.save_and_continue);
   }
 
   async verifyCheckYourAnswersForMediationHearingExpertsAndLanguage() {
@@ -1067,16 +1067,16 @@ class ResponseToDefence {
     I.see('Welsh language');
     I.see('What languages will you, your experts and your witnesses speak at the hearing?');
     I.see('English');
-    I.click(paths.buttons.submit_response);
+    await I.click(paths.buttons.submit_response);
   }
 
-  verifyConfirmationScreenForRejection(claimNumber) {
+  async verifyConfirmationScreenForRejection(claimNumber) {
     I.waitForContent('You\'ve rejected their response', 60);
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
   }
 
-  verifyConfirmationScreenForRejectAllNoToProceed(claimNumber) {
+  async verifyConfirmationScreenForRejectAllNoToProceed(claimNumber) {
     I.waitForContent('You didn\'t proceed with the claim', 60);
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
@@ -1086,7 +1086,7 @@ class ResponseToDefence {
     I.see('Telephone');
   }
 
-  verifyConfirmationScreenForRejectAllYesToProceed(claimNumber) {
+  async verifyConfirmationScreenForRejectAllYesToProceed(claimNumber) {
     I.waitForContent('You\'ve rejected their response', 60);
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
@@ -1096,7 +1096,7 @@ class ResponseToDefence {
     I.see('Telephone');
   }
 
-  verifyConfirmationScreenForRejectAllSettleClaimInFull(claimNumber) {
+  async verifyConfirmationScreenForRejectAllSettleClaimInFull(claimNumber) {
     I.waitForContent('You\'ve accepted their response', 60);
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
@@ -1106,7 +1106,7 @@ class ResponseToDefence {
     I.see('Telephone');
   }
 
-  verifyConfirmationScreenForPartAdmitAlreadyPaidSettleClaim(claimNumber) {
+  async verifyConfirmationScreenForPartAdmitAlreadyPaidSettleClaim(claimNumber) {
     I.waitForContent('You\'ve accepted their response', 60);
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
@@ -1116,7 +1116,7 @@ class ResponseToDefence {
     I.see('Telephone');
   }
 
-  verifyConfirmationScreenForPartAdmitAlreadyPaidGoToMediation(claimNumber){
+  async verifyConfirmationScreenForPartAdmitAlreadyPaidGoToMediation(claimNumber){
     I.waitForContent('You\'ve rejected their response', 60);
     I.see('Your claim number:');
     I.see(`${claimNumber}`);
@@ -1137,9 +1137,9 @@ class ResponseToDefence {
     I.see('What languages will the documents be provided in?');
     I.see('English');
     I.see('Welsh');
-    I.click(paths.options.english_language);
-    I.click(paths.options.document_language);
-    I.click(paths.buttons.save_and_continue);
+    await I.click(paths.options.english_language);
+    await I.click(paths.options.document_language);
+    await I.click(paths.buttons.save_and_continue);
   }
 }
 

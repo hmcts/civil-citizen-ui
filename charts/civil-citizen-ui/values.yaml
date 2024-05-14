@@ -22,7 +22,7 @@ civil-wa:
 aac-manage-case-assignment:
   enabled: false
 
-civil-applications:
+civil-general-applications:
   enabled: false
 
 nodejs:
