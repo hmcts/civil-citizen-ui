@@ -35,7 +35,7 @@ function getJudgements(claimId: string, claim: Claim, lang: string): ClaimSummar
 function getJudgementsHeader(lang: string): ClaimSummarySection{
   return {
     type:ClaimSummaryType.TITLE,
-    data:{text: t('PAGES.DASHBOARD.JUDGEMENTS.THE_JUDGEMENT', {lng:lang})}};
+    data:{text: t('PAGES.DASHBOARD.JUDGEMENTS.JUDGEMENT', {lng:lang})}};
 }
 
 function getJudgementSummary(claim: Claim,lang: string): ClaimSummarySection {
@@ -46,10 +46,10 @@ function getJudgementSummary(claim: Claim,lang: string): ClaimSummarySection {
   for(const judgementDocument of judgementDocuments){
 
     if(judgementDocument?.value) {
-      const hearingDocumentLink = formatDocumentAlignedViewURL(judgementDocument.value?.documentName, claim.id, judgementDocument.value?.documentLink.document_binary_url,alignText.ALIGN_TO_THE_RIGHT);
-      const hearingDoc = formatDocumentWithHintText(t('PAGES.DASHBOARD.JUDGEMENTS.JUDGEMENT', {lng:lang}),judgementDocument.value?.createdDatetime,lang);
-      judgementRows.push({key:{html:hearingDoc,classes:'govuk-!-width-one-half'},
-        value:{html: hearingDocumentLink},
+      const judgementDocumentLink = formatDocumentAlignedViewURL(judgementDocument.value?.documentName, claim.id, judgementDocument.value?.documentLink.document_binary_url,alignText.ALIGN_TO_THE_RIGHT);
+      const judgementDoc = formatDocumentWithHintText(t('PAGES.DASHBOARD.JUDGEMENTS.JUDGEMENT', {lng:lang}),judgementDocument.value?.createdDatetime,lang);
+      judgementRows.push({key:{html:judgementDoc,classes:'govuk-!-width-one-half'},
+        value:{html: judgementDocumentLink},
       });
     }
   }

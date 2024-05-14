@@ -42,7 +42,7 @@ describe('View the judgement Controller', () => {
         //then
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('View the Judgement');
+          expect(res.text).toContain('View the judgement');
           expect(res.text).toContain(DASHBOARD_CLAIMANT_URL.replace(':id', claim.id));
         });
     });
@@ -60,7 +60,7 @@ describe('View the judgement Controller', () => {
         //then
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('View the Judgement');
+          expect(res.text).toContain('View the judgement');
           expect(res.text).toContain(DEFENDANT_SUMMARY_URL.replace(':id', claim.id));
         });
     });

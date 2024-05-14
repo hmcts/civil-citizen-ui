@@ -10,8 +10,8 @@
 
   {% for judgementSection in judgementSections %}
     {{ claimSummaryContent({
-      contentSections: hearingSection.contentSections,
-      hasDivider: hearingSection.hasDivider
+      contentSections: judgementSection.contentSections,
+      hasDivider: judgementSection.hasDivider
     }, t) }}
   {% endfor %}
   {{ dashboardAccordion(t,link) }}
