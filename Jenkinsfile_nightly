@@ -18,6 +18,8 @@ properties([
           description: 'The URL of ccd data store'),
         string(name: 'CIVIL_SERVICE_URL', defaultValue: 'http://civil-service-aat.service.core-compute-aat.internal',
           description: 'The URL of civil service'),
+        string(name: 'CIVIL_GENERAL_APPLICATIONS_URL', defaultValue: 'http://civil-general-applications-aat.service.core-compute-aat.internal',
+          description: 'The URL of general applications'),
     ])
 ])
 
@@ -67,6 +69,7 @@ withNightlyPipeline(type, product, component) {
   env.SERVICE_AUTH_PROVIDER_API_BASE_URL = params.SERVICE_AUTH_PROVIDER_API_BASE_URL
   env.CCD_DATA_STORE_URL = params.CCD_DATA_STORE_URL
   env.CIVIL_SERVICE_URL = params.CIVIL_SERVICE_URL
+  env.CIVIL_GENERAL_APPLICATIONS_URL = params.CIVIL_GENERAL_APPLICATIONS_URL
   env.TESTS_FOR_ACCESSIBILITY = false
   overrideVaultEnvironments([
     'aat': params.ENVIRONMENT

@@ -32,6 +32,8 @@ import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {CaseEvent} from 'models/events/caseEvent';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -49,9 +51,10 @@ export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, c
 export const getTopElements = (claim:Claim): ClaimSummarySection[] => {
 
   return new PageSectionBuilder()
+    .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
     .addMainTitle('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_TITLE')
-    .addLeadParagraph('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER', {caseNumber: claim.id})
-    .addLeadParagraph('COMMON.PARTIES', {claimantName: claim.getClaimantFullName(), defendantName: claim.getDefendantFullName()})
+    .addLeadParagraph('COMMON.CASE_NUMBER', {claimId:caseNumberPrettify( claim.id)}, 'govuk-!-margin-bottom-1')
+    .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
     .addInsetText('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_WARNING_FULL')
     .build();
 };
