@@ -93,7 +93,7 @@
       "SUBMIT_RESPONSE_PAYMENT": "Cyflwyno a symud ymlaen i'r adran dalu (£{{ payment }})",
       "SUBMIT": "Cyflwyno",
       "START_NOW": "Dechrau nawr",
-      "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos"
+      "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd at drosolwg o’r achos"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Ffi gwrandawiad",
@@ -122,11 +122,11 @@
       "REPAYMENT_AMOUNT_HINT": "Dylech ond cynnwys y swm rydych yn ei dalu i glirio'r taliadau rheolaidd a fethwyd yn flaenorol"
     },
     "CONTACT_US_FOR_HELP": {
-      "CALL_CHARGES": "Gwybodaeth am brisiau galwadau (yn agor mewn ffenestr newydd)",
+      "CALL_CHARGES": "Gwybodaeth am gost galwadau (yn agor mewn ffenestr newydd)",
       "EMAIL": "E-bost",
       "OPENING_HOURS": "Dydd Llun i ddydd Gwener, 8.30am i 5pm.",
       "RESPONSE_DELAY": "Byddwn yn cysylltu â chi o fewn 10 diwrnod.",
-      "TITLE": "Cysylltwch â ni i gael cymorth",
+      "TITLE": "Cysylltu â ni am gymorth",
       "TELEPHONE": "Ffôn",
       "WEB_CHAT": "Sgwrsio ar y We",
       "WEB_CHAT_CLOSED": "Mae’r gwasanaeth sgwrsio dros y we nawr ar gau. Dewch yn ôl dydd Llun i ddydd Gwener rhwng 8.30am - 5pm neu cysylltwch â ni dros y ffôn neu drwy e-bost.",
@@ -2341,7 +2341,7 @@
               "PAYMENT_BY_PHONE_PARAGRAPH_2": "Mae'r llinellau ar agor o ddydd Llun i ddydd Iau 9am - 5pm, dydd Gwener 9am - 4.30pm.",
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Cyn cysylltu â ni ",
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "dewch o hyd i wybodaeth am gost galwadau (yn agor mewn tab newydd).",
-              "RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos"
+              "RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd at drosolwg o’r achos"
             },
             "SUCCESSFUL": {
               "PAGE_TITLE": "Your payment was ",
