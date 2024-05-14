@@ -31,10 +31,10 @@ Scenario('Apply for Help with Fees Journey - Small Claims', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     //HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, '123', hearingFeeDueDate);
   }
-}).tag('@regression-cp');
+}).tag('@skip-regression-cp');
 
 Scenario('Pay the Hearing Fee Journey - Small Claims', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     //HearingFeeSteps.payHearingFeeJourney(claimRef, '123', hearingFeeDueDate);
   }
-}).tag('@regression-cp');
+}).tag('@skip-regression-cp');

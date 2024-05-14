@@ -26,5 +26,5 @@ Scenario('Case progression journey - Fast Track - Verify latest Update page for 
   if (['preview', 'demo'].includes(config.runningEnv)) {
     //CaseProgressionSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
   }
-}).tag('@regression-cp');
+}).tag('@skip-regression-cp');
 

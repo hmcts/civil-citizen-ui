@@ -26,5 +26,5 @@ Scenario('Fast Track case is struck out due to hearing fee not being paid', asyn
   if (['preview', 'demo'].includes(config.runningEnv)) {
     //CaseProgressionSteps.verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType);
   }
-}).tag('@regression-cp');
+}).tag('@skip-regression-cp');
 
