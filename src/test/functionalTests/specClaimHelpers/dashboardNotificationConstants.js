@@ -153,7 +153,16 @@ module.exports = {
     };
   },
 
-  goToHearingPartAdmit: (amount) => {
+  //Notice.AAA6.ClaimantIntent.GoToHearing.Claimant
+  goToHearingClaimant: () => {
+    return {
+      title: 'Wait for the court to review the case',
+      content: 'You have rejected Sir John Doe\'s response. The case will be referred to a judge who will decide what should happen next.',
+    };
+  },
+
+  //Notice.AAA6.ClaimantIntent.GoToHearing.DefPartAdmit.Defendant
+  goToHearingPartAdmitDefendant: (amount) => {
     return {
       title: 'Wait for the court to review the case',
       content: ['Miss Jane Doe wants to proceed to court.',
