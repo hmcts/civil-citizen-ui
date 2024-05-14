@@ -1,4 +1,4 @@
-const getDomain = require("../../../../config").getDomain;
+const getDomain = require('../../../../config').getDomain;
 
 module.exports = [
   {

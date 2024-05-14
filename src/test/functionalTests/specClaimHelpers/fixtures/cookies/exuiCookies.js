@@ -1,4 +1,4 @@
-const config = require("../../../../config");
+const config = require('../../../../config');
 const getDomain = config.getDomain;
 
 module.exports = {
@@ -9,5 +9,5 @@ module.exports = {
       domain: getDomain(config.url.manageCase),
       path: '/',
     },
-  ]
-}
+  ],
+};

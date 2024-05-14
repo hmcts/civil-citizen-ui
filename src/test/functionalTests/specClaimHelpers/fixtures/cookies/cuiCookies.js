@@ -1,4 +1,4 @@
-const config = require("../../../../config");
+const config = require('../../../../config');
 const getDomain = config.getDomain;
 
 module.exports = [
@@ -7,5 +7,5 @@ module.exports = [
     value: '{"analytics":"on","apm":"on"}',
     domain: getDomain(config.TestUrl),
     path: '/',
-  }
-]
+  },
+];
