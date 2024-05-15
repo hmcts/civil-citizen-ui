@@ -7,6 +7,7 @@ import {FlightDetails} from 'common/models/flightDetails';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {t} from 'i18next';
+import {AirlineList} from 'common/models/airlines/flights';
 
 const flightDetailsController = Router();
 const flightDetailsPath = 'features/claim/airlines/flight-details';
@@ -15,11 +16,12 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 flightDetailsController.get(FLIGHT_DETAILS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.session?.user?.id;
     const flightDetails = await getFlightDetails(claimId);
     const form = new GenericForm(flightDetails)
     const airlines = await civilServiceClient.getAirlines(req);
-    const datalist = buildDataList(airlines, form.hasFieldError('airline'), flightDetails.airline);
+    const datalist = buildDataList(airlines, form.hasFieldError('airline'), flightDetails.airline, lng);
     res.render(flightDetailsPath, {form, today: new Date(), airlines, datalist});
     } catch (error) {
     next(error);
@@ -28,15 +30,16 @@ flightDetailsController.get(FLIGHT_DETAILS_URL, (async (req: AppRequest, res: Re
 
 flightDetailsController.post(FLIGHT_DETAILS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const userId = (<AppRequest>req).session?.user?.id;
-    const airlines = await civilServiceClient.getAirlines(req);
+    const airlines: AirlineList[] = await civilServiceClient.getAirlines(req);
     const {airline, flightNumber, year, month, day} = req.body;
     const flightDetails = new FlightDetails(airline, flightNumber, year, month, day);
     const form = new GenericForm(flightDetails);
 
     form.validateSync();
     if (form.hasErrors()) {
-      const datalist = buildDataList(airlines, form.hasFieldError('airline'), airline);
+      const datalist = buildDataList(airlines, form.hasFieldError('airline'), airline, lng);
       res.render(flightDetailsPath, {form, today: new Date(), airlines, datalist});
     } else {
       await saveFlightDetails(userId, flightDetails);
@@ -47,16 +50,17 @@ flightDetailsController.post(FLIGHT_DETAILS_URL, (async (req: AppRequest, res: R
   }
 }) as RequestHandler);
 
-const buildDataList = (airlines: any, hasAirlineError: boolean, selection: string = '') => {
+const buildDataList = (airlines: AirlineList[], hasAirlineError: boolean, selection: string = '', lng: string) => {
   let options = '';
-  airlines.forEach((airline: { airline: string; }) => {
+  airlines = airlines.filter(item => item.airline !== "OTHER");
+  airlines.forEach((airline) => {
     options += `<option value="${airline.airline}"> `;
   });
 
   return `
     <div class="${hasAirlineError ? 'govuk-form-group--error govuk-!-margin-bottom-6' : 'govuk-form-group'}">
-      <p class="govuk-body govuk-!-margin-bottom-1">${t('PAGES.FLIGHT_DETAILS.AIRLINE')}</p>
-      <p class="${hasAirlineError ? 'govuk-error-message' : 'govuk-visually-hidden'}">${t('ERRORS.FLIGHT_DETAILS.AIRLINE_REQUIRED')}</p>
+      <p class="govuk-body govuk-!-margin-bottom-1">${t('PAGES.FLIGHT_DETAILS.AIRLINE', { lng })}</p>
+      <p class="${hasAirlineError ? 'govuk-error-message' : 'govuk-visually-hidden'}">${t('ERRORS.FLIGHT_DETAILS.AIRLINE_REQUIRED', { lng })}</p>
       <input list="airlines" name="airline" id="airline" value="${selection}" class="${hasAirlineError ? 'govuk-input govuk-!-width-one-half govuk-input--error' : 'govuk-input govuk-!-width-one-half'}">
       <datalist id="airlines" class="govuk-!-padding-bottom-0">
         ${options}

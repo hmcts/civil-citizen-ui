@@ -61,7 +61,7 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     res1MediationNonAttendanceDocs: [],
     app1MediationDocumentsReferred: [],
     app1MediationNonAttendanceDocs: [],
-    isFlightDelayClaim: claim.delayedFlight?.option ? YesNoUpperCamelCase.NO : YesNoUpperCamelCase.YES,
+    isFlightDelayClaim: claim.delayedFlight?.option === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
     flightDelayDetails: claim.delayedFlight?.option === YesNo.YES ? toCCDFlightDetails(claim.flightDetails) : undefined,
   };
 };

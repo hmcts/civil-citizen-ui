@@ -1,4 +1,4 @@
-import {CCDFlightDelayDetails} from "common/models/civilClaimResponse";
+import {CCDFlightDelayDetails} from "common/models/airlines/flights";
 import {FlightDetails} from "common/models/flightDetails";
 import {DateTime} from 'luxon';
 

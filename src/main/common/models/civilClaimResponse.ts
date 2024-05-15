@@ -83,6 +83,7 @@ import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uplo
 import { FeeType } from 'common/form/models/helpWithFees/feeType';
 import {PaymentDetails} from 'models/PaymentDetails';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
+import {CCDFlightDelayDetails} from './airlines/flights';
 
 export class CivilClaimResponse {
   id: string;
@@ -296,14 +297,6 @@ export interface CCDClaim extends ClaimUpdate {
   mediationSettlementAgreedAt?: Date;
   isFlightDelayClaim?: string;
   flightDelayDetails?: CCDFlightDelayDetails; 
-}
-
-export interface CCDFlightDelayDetails {
-  // airlineList: object[];
-  nameOfAirline: String;
-  flightNumber: String;
-  scheduledDate: string;
-  // flightCourtLocation: string;
 }
 
 export interface ClaimFeeData {

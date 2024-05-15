@@ -1713,13 +1713,13 @@
       "TITLE": "A ydych eisiau rhoi tystiolaeth eich hun?"
     },
     "DELAYED_FLIGHT": {
-      "CLAIMING_FOR_DELAYED": "Are you claiming for a delayed flight?"
+      "CLAIMING_FOR_DELAYED": "A ydych yn hawlio am oedi wrth hedfan?"
     },
     "FLIGHT_DETAILS": {
-      "FLIGHT_DETAILS": "Enter flight details",
-      "AIRLINE": "Airline",
-      "FLIGHT_NUMBER": "Flight number",
-      "SCHEDULED_DATE": "Scheduled date of flight"
+      "FLIGHT_DETAILS": "Rhowch fanylion y daith hedfan",
+      "AIRLINE": "Cwmni hedfan",
+      "FLIGHT_NUMBER": "Rhif Hedfan",
+      "SCHEDULED_DATE": "Dyddiad hedfan a drefnwyd"
     },
     "DEPENDANTS": {
       "GROUP11": "11 i 15",
@@ -3502,13 +3502,13 @@
     "DETAILS_REQUIRED": "Rhowch fanylion",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod manylion yr anghenion ar gyfer y gwrandawiad ar y dudalen hon yn wir",
     "DELAYED_FLIGHT": {
-      "CLAIMING_FOR_DELAY_REQUIRED": "'Are you claiming for a delayed flight?' is required"
+      "CLAIMING_FOR_DELAY_REQUIRED": "Mae angen dewis opsiwn ar gyfer A ydych yn hawlio am oedi wrth hedfan"
     },
     "FLIGHT_DETAILS": {
-      "AIRLINE_REQUIRED": "Airline is required",
-      "FLIGHT_NUMBER_REQUIRED": "Flight number is required",
-      "DATE_FLIGH_REQUIRED": "Date of flight is required",
-      "DATE_FLIGHT_PAST": "Scheduled date of flight must be today or in the past"
+      "AIRLINE_REQUIRED": "Mae angen manylion y cwmni hedfan",
+      "FLIGHT_NUMBER_REQUIRED": "Mae angen rhif hedfan",
+      "DATE_FLIGH_REQUIRED": "Mae angen dyddiad hedfan",
+      "DATE_FLIGHT_PAST": "Rhaid i'r dyddiad hedfan a drefnwyd fod heddiw neu yn y gorffennol"
     },
     "ENTER_A_DEBT": "Rhowch fanylion y ddyled",
     "ENTER_AN_EXPLANATION": "Rhowch esboniad pam na allwch dalu nawr",
