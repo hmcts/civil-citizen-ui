@@ -155,5 +155,5 @@ const createLipClaimDefendantSoleTrader = (user, userId, totalClaimAmount) => {
   };
   return eventDto;
 };
-  
+    
 module.exports = createLipClaimDefendantSoleTrader;
