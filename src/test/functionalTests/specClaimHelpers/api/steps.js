@@ -31,7 +31,6 @@ const claimantResponse = require('../fixtures/events/createClaimantResponseToDef
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
 const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
 const hwfPayloads = require('../fixtures/events/hwfPayloads.js');
-const {submitEvent} = require('./apiRequest');
 const idamHelper = require('./idamHelper');
 const createLipClaim = require('../fixtures/events/createLiPClaim.js');
 const createLiPClaimForCompany = require('../fixtures/events/createLiPClaimForCompany.js');
@@ -228,11 +227,17 @@ module.exports = {
 
     if (carmEnabled) {
       console.log('carm enabled, updating submitted date');
-      await addData(caseId, config.systemUpdate, (caseData) => {
-        const submittedDate = new Date(2024, 8, 3);
-        return {...caseData, submittedDate: submittedDate};
-      });
+      console.log('carm enabled, updating submitted date');
+      await apiRequest.setupTokens(config.systemUpdate);
+      const submittedDate = {'submittedDate':'2024-08-10T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after carm date');
+    } else {
+      console.log('carm not enabled, updating submitted date');
+      await apiRequest.setupTokens(config.systemUpdate);
+      const submittedDate = {'submittedDate':'2023-08-10T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
+      console.log('submitted date update to before carm date');
     }
     return caseId;
   },
@@ -281,6 +286,12 @@ module.exports = {
       const submittedDate = {'submittedDate':'2024-08-10T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after carm date');
+    } else {
+      console.log('carm not enabled, updating submitted date');
+      await apiRequest.setupTokens(config.systemUpdate);
+      const submittedDate = {'submittedDate':'2023-08-10T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
+      console.log('submitted date update to before carm date');
     }
     return caseId;
   },
@@ -550,14 +561,6 @@ function checkGenerated(responseBodyData, generated, prefix = '') {
     }
   }
 }
-
-const addData = async (caseId, user, cb) => {
-  const event = 'UPDATE_CASE_DATA';
-  await apiRequest.setupTokens(user);
-  const startEventData = await apiRequest.startEvent(event, caseId);
-  const caseData = cb(startEventData);
-  return await submitEvent(event, caseData, caseId);
-};
 
 const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true) => {
   await apiRequest.startEvent(eventName, caseId);
