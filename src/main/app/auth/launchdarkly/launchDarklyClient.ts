@@ -1,10 +1,5 @@
 import config from 'config';
-import {init, LDClient, LDFlagValue} from 'launchdarkly-node-server-sdk';
-
-const user = {
-  'name': 'civil-service',
-  'key': 'civil-service',
-};
+import {init, LDClient, LDFlagValue, LDUser} from 'launchdarkly-node-server-sdk';
 
 let ldClient: LDClient;
 
@@ -17,12 +12,29 @@ async function getClient(): Promise<void> {
   }
 }
 
+async function getUser(): Promise<LDUser> {
+  const launchDarklyEnv = config.get<string>('services.launchDarkly.env');
+  let user: LDUser = {'name': 'civil-service', 'key': 'civil-service'};
+
+  if (launchDarklyEnv) {
+    user = {
+      'name': 'civil-service', 'key': 'civil-service',
+      'custom': {
+        environment: launchDarklyEnv,
+        timestamp: new Date().getMilliseconds(),
+      },
+    };
+
+  }
+  return user;
+}
+
 export async function getFlagValue(
   key: string,
 ): Promise<LDFlagValue> {
   if (!ldClient) await getClient();
   if (ldClient)
-    return await ldClient.variation(key, user, false);
+    return await ldClient.variation(key, await getUser(), false);
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
@@ -45,4 +57,7 @@ export async function isDashboardServiceEnabled(): Promise<boolean> {
 }
 export async function isCARMEnabled(): Promise<boolean> {
   return await getFlagValue('carm') as boolean;
+}
+export async function isGaForLipsEnabled(): Promise<boolean> {
+  return await getFlagValue('GaForLips') as boolean;
 }

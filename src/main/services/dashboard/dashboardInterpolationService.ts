@@ -140,8 +140,6 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
 
   if (claim.orderDocumentId != undefined) {
     valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(claim?.orderDocumentId) + ' target="_blank"'));
-  } else {
-    valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', '#');
   }
 
   return valuesMap;

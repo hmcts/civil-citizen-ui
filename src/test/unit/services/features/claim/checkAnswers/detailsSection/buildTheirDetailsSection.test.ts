@@ -15,6 +15,8 @@ import {formatDateToFullDate} from '../../../../../../../main/common/utils/dateU
 import {PartyDetails} from '../../../../../../../main/common/form/models/partyDetails';
 import {Email} from '../../../../../../../main/common/models/Email';
 import {CitizenDate} from '../../../../../../../main/common/form/models/claim/claimant/citizenDate';
+import {buildTheirDetailsSection} from 'services/features/claim/checkAnswers/detailsSection/buildTheirDetailsSection';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -36,8 +38,39 @@ const CLAIM_ID = 'claimId';
 const INDEX_THEIRDETAILS_SECTION = 1;
 
 describe('Citizen Details Section', () => {
-  const claim = createClaimWithBasicRespondentDetails();
+  it('should build Their Details Section', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.type = PartyType.SOLE_TRADER;
+    claim.respondent1.partyDetails.soleTraderTradingAs = 'test';
+    claim.respondent1.partyDetails.contactPerson = 'contact';
+    claim.respondent1.emailAddress = new Email(EMAIL_ADDRESS);
+    //When
+    const summarySections = await buildTheirDetailsSection(claim, CLAIM_ID, 'en');
+    //Then
+    expect(summarySections.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT'));
+    expect(summarySections.summaryList.rows[0].value.html).toBe(FULL_NAME);
+    expect(summarySections.summaryList.rows[1].value.html).toBe('test');
+    expect(summarySections.summaryList.rows[2].value.html).toBe('contact');
+    expect(summarySections.summaryList.rows[4].value.html).toBe(CORRESPONDENCE_ADDRESS);
+    expect(summarySections.summaryList.rows[5].value.html).toBe(EMAIL_ADDRESS);
+    expect(summarySections.summaryList.rows[6].value.html).toBe(CONTACT_NUMBER);
+  });
+  it('should build Their Details Section with DOB', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.type = PartyType.INDIVIDUAL;
+    claim.respondent1.dateOfBirth = new CitizenDate('1', '1', '1991');
+    //When
+    const summarySections = await buildTheirDetailsSection(claim, CLAIM_ID, 'en');
+    //Then
+    expect(summarySections.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT'));
+    expect(summarySections.summaryList.rows[0].value.html).toBe(FULL_NAME);
+    expect(summarySections.summaryList.rows[3].value.html).toBe('1 January 1991');
+  });
   it('should return your Individual details summary sections', async () => {
+    //Given
+    const claim = createClaimWithBasicRespondentDetails();
     //When
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
     //Then

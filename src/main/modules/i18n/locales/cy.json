@@ -12,6 +12,7 @@
     "CREATED_DATE": "Created [{{ createdDate }}]",
     "UNAVAILABLE_DATES": "Dyddiadau pan na fyddwch ar gael",
     "CASE_REFERENCE": "Cyfeirnod yr achos: {{ claimId }}",
+    "CASE_NUMBER": "Case number: {{ claimId }}",
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
     "ANNUAL_TURNOVER": "Trosiant blynyddol",
@@ -22,6 +23,7 @@
     "CANNOT_FIND_DOCUMENT_TEXT": "If you cannot find a document that you are looking for in this section",
     "CHILDREN": "Plant",
     "CHOOSE": "Dewiswch",
+    "CASE_NUMBER": "Case number: ",
     "CIVIL_MONEY_CLAIMS": "Hawliadau am Arian yn y Llys Sifil",
     "CLAIM_AMOUNT": "Swm yr hawliad",
     "CLAIM_AMOUNT_WITH_VALUE": "Swm yr hawliad: {{claimAmount}}",
@@ -73,7 +75,7 @@
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Ychwanegu digwyddiad arall",
       "BACK": "Yn ol",
-      "BACK_TO_CASE_DETAILS": "Back to case details",
+      "BACK_TO_CASE_DETAILS": "Yn ôl i fanylion yr achos",
       "CHANGE": "Newid",
       "CONTINUE": "Parhau",
       "CANCEL": "Canslo",
@@ -497,7 +499,7 @@
         "CONTINUE_APPLICATION": "Do you want to continue to apply for help with fees?",
         "ELIGIBILITY": "Applying for help with fees does not guarantee your fee will be covered. You will need to meet the ",
         "ELIGIBILITY_LINK": "eligibility criteria (opens in new tab).",
-        "HEARING_FEE": "Hearing fee",
+        "HEARING_FEE": "Ffi’r Gwrandawiad",
         "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The hearing fee is: £{{ feeAmount }}</span>",
         "RECEIVE_DECISION": "Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.",
         "REJECTED_TITLE": "If your application for help with fees is rejected",
@@ -536,11 +538,11 @@
       "WELSH": "Cymraeg"
     },
     "CLAIM_BILINGUAL_LANGUAGE_PREFERENCE": {
-      "DESCRIPTION_1": "You must choose which language you want to use to make this claim.",
-      "DESCRIPTION_2": "If you select 'Welsh', information and documents will be presented in Welsh. But some notifications about your claim will still be in English.",
+      "DESCRIPTION_1": "Mae’n rhaid i chi ddewis pa iaith rydych chi eisiau ei defnyddio i wneud yr hawliad hwn.",
+      "DESCRIPTION_2": "Os byddwch yn dewis 'Cymraeg', bydd yr wybodaeth a’r dogfennau yn cael eu cyflwyno yn Gymraeg. Ond bydd rhai hysbysiadau am eich cais yn dal i fod yn Saesneg.",
       "ENGLISH": "Saesneg",
       "PAGE_TITLE": "Iaith",
-      "QUESTION": "In what language do you want to make your claim?",
+      "QUESTION": "Ym mha iaith ydych chi eisiau gwneud eich cais?",
       "TITLE": "Iaith",
       "WELSH_AND_ENGLISH": "Cymraeg"
     },
@@ -974,7 +976,7 @@
         "HINT_AFTER_4PM": "Os byddwch yn ei gyflwyno ar ôl 4pm bydd hwn y diwrnod gwaith nesaf.",
         "HINT_EXAMPLE_DATE": "Er enghraifft, dyddiad pan oedd yr anfoneb yn hwyr neu y dywedoch wrth rywun fod arno arian ichi.",
         "PAGE_TITLE": "O pa bryd ydych chi’n hawlio llog?",
-        "REASON": "Explain why you're claiming for this date?",
+        "REASON": "Esboniwch pam rydych chi’n hawlio am y dyddiad hwn?",
         "TITLE": "O pa bryd ydych chi’n hawlio llog?"
       }
     },
@@ -1999,20 +2001,99 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
     "GENERAL_APPLICATION": {
+      "AGREE_TO_ORDER": {
+        "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
+        "RESPOND_TO": "Respond to an application to {{applicationType}}",
+        "TITLE": "The other parties have said that you've agreed to the order they've requested. Is this correct?"
+      },
+      "APPLICATION_REASON": {
+        "CANCEL_JUDGMENT": {
+          "EXPLAIN": "explain why you believe the judgment should be set aside. For example, if you missed the deadline to respond to the original claim form, then you should explain why",
+          "IF_DONT_BELIEVE": "if you don't believe you owe the money, or if you disagree with the claim made against you, explain why",
+          "SHOULD": "You should:",
+          "YOU_WILL_HAVE_OPTION": "You'll have the option to upload documents to support your reasons on the next screen."
+        },
+        "CHANGE_CLAIM": "You should explain why the change is needed also. If necessary, why it was not included in the original documents. You'll have the option to upload a new version of the document on the next screen.",
+        "CHANGE_HEARING": "You should explain why you want the hearing date to be changed. You'll have the option to upload documents to support your reasons on the next screen.",
+        "ENTER_REASONS": "Enter your reasons for requesting this order",
+        "IMPOSE_SANCTION": "You should explain why you want the other parties to take this action. You'll have the option to upload documents to support your reasons on the next screen.",
+        "MORE_TIME": "You should explain why you're not going to meet the original deadline. You'll have the option to upload documents to support your reasons on the next screen.",
+        "NOT_ON_LIST": "You should explain why you're requesting this order. You'll have the option to upload documents to support your reason on the next screen.",
+        "PAUSE": "You should explain why the claim should be paused until the date you gave on the previous screen. You'll have the option to upload documents to support your reasons on the next screen.",
+        "RECONSIDER": "You should explain why you want the order to be reconsidered. You'll have the option to upload documents to support your reasons on the next screen.",
+        "RELIEF_PENALTY": {
+          "ANY_RELEVANT_INFORMATION": "any other relevant information you think the court should know",
+          "SHOULD": "You should explain:",
+          "THE_EFFECT": "the effect this has had on the case",
+          "WHY_BEEN_UNABLE": "why you've been unable to meet what was required of you by a rule or court order",
+          "YOU_WILL_HAVE_OPTION": "You'll have the option to upload documents to support your reasons on the next screen."
+        },
+        "STRIKE_OUT": "You should explain why you want the documents to be dismissed. You'll have the option to upload documents to support your reasons on the next screen.",
+        "SUMMARY_JUDGMENT": "You should explain why you do not believe the other parties' claim will succeed. You'll have the option to upload documents to support your reasons on the next screen.",
+        "THE_INFORMATION": "The information you enter on this page will be seen by the other parties.",
+        "VARY_JUDGMENT": "You should explain why you want to vary the judgment. You'll have the option to upload documents to support your reasons on the next screen.",
+        "WHY_REQUESTING": "Why are you requesting this order?"
+      },
+      "PAYMENT_FOR_APPLICATION": {
+        "APPLICATION_FEE": "Application fee to pay:",
+        "TITLE": "Paying for your application",
+        "YOU_WILL_BE_ASKED": "You'll be asked to pay for your application once it's been submitted."
+      },
+      "ORDER_JUDGE": {
+        "ADD_INFO_MORE_TIME": "You'll need to add information to the box, like what you're asking for more time to do and a new deadline.",
+        "ADD_INFO_STAY_THE_CLAIM": "You'll need to add information to the box, like when you'd like the claim to be paused until.",
+        "ADD_OR_ALTER": "You can add or alter any of the text if you need to.",
+        "ADJOURN_HEARING_HINT_TEXT": "The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid].",
+        "CHANGE_CLAIM_HINT_TEXT": "I'm asking for permission to make a change to [specify the document you'd like to change].",
+        "CONTENT_BOX": "The contents of this box will be seen by the other parties.",
+        "ENTER_THE_ORDER": "Enter the order that you want the judge to make",
+        "EXPLAIN_ACTION_UNLESS_ORDER": "explain the action you want the other parties to take and by which date they should do this action",
+        "EXPLAIN_DOCUMENT": "explain which document you want to amend",
+        "EXPLAIN_DOCUMENT_DISMISSED": "explain which document you want to be dismissed",
+        "EXPLAIN_REASONS": "You'll be able to explain your reasons on the next screen.",
+        "EXPLAIN_TERMS": "explain the terms of settlement",
+        "EXPLAIN_THAT": "explain that you want the judgment to be varied (changed)",
+        "EXPLAIN_SETTLED": "explain that you and all the parties involved in the case should be settled",
+        "EXPLAIN_UNLESS_ORDER": "explain that you'd like the court to give an appropriate sanction to the other parties",
+        "INCLUDE_NAME": "include the name of all the parties involved",
+        "JUDGE_WILL_CONSIDER": "A judge will consider your application and make an order.",
+        "JUDGE_WILL_CONSIDER_ADJOURN_HEARING": "A judge will consider your application and make an order. The order that a judge would usually make to change a hearing date is in the box below.",
+        "JUDGE_WILL_CONSIDER_CHANGE_CLAIM": "A judge will consider your application and make an order. The order that a judge would usually make to allow you to change your claim or defence is in the box below.",
+        "JUDGE_WILL_CONSIDER_MORE_TIME": "A judge will consider your application and make an order. The order that a judge would usually make to give more time to do what's required by a court order is in the box below.",
+        "JUDGE_WILL_CONSIDER_SET_ASIDE_JUDGEMENT": "A judge will consider your application to make an order. The order that a judge would usually make to set aside (remove) a judgment is in the box below.", 
+        "JUDGE_WILL_CONSIDER_STAY_THE_CLAIM": "A judge will consider your application and make an order. The order that a judge would usually make to pause a claim is in the box below.",
+        "JUDGE_WILL_CONSIDER_SUMMARY_JUDGMENT": "A judge will consider your application to make an order. The order that a judge would usually make for a summary judgment is in the box below.",
+        "MENTION_DATE": "mention the date that the document was submitted",
+        "MORE_TIME_HINT_TEXT": "The time by which I must [specify what needs to be done] be extended to [enter the date you can do this by].",
+        "SET_ASIDE_JUDGEMENT_HINT_TEXT": "The judgment made against me is removed.",
+        "SHOULD_EXPLAIN": "You should explain which order and which parts of it you'd like to be reconsidered. You'll be able to explain your reasons on the next screen.",
+        "SHOULD_EXPLAIN_PENALTY": "You should explain what penalty you're asking for relief from. For example, if you missed a deadline to provide documents to the court, or if the court made an order giving you a penalty.",
+        "SHOULD_EXPLAIN_PROCEEDS_IN_HERITAGE": "You should explain what order you want the judge to make. You'll be able to explain your reasons on the next screen.",
+        "STAY_THE_CLAIM_HINT_TEXT": "The claim will be stayed (paused) until [specify date].",
+        "SUGGEST_NEW_PLAN": "suggest a new payment plan",
+        "SUMMARY_JUDGMENT_HINT_TEXT": "There will be a summary judgment on the claim in this case.",
+        "THE_INFORMATION": "The information you enter on this page will be seen by the other parties.",
+        "TITLE": "What order do you want the judge to make?",
+        "YOU_SHOULD": "You should:",
+        "YOU_WILL_NEED_ADD_INFO": "You'll need to add information to the box, like when your hearing is currently arranged for, after what date you'd like to change it to and any dates to avoid.",
+        "YOU_CAN_ALSO_ALTER": "You can also alter any of the other text if you need to.",
+        "YOU_CAN": "You can:",
+        "UPLOAD_NEW_VERSION": "upload a new version of this document with any amends underlined. We'll ask if you want to upload documents to support your application later on"
+      },
       "SELECTED_APPLICATION_TYPE": {
         "CANCEL_JUDGMENT": "Set aside (cancel) a judgment",
         "CHANGE_CLAIM": "Make a change to your claim or defence that you've submitted",
         "CHANGE_HEARING": "Change a hearing date",
-        "DO_SOMETHING": "Court to do something that's not on this list",
         "IMPOSE_SANCTION": "Court to impose a sanction on the other parties unless they do a specific action",
         "MORE_TIME": "More time to do what is required by a court order",
+        "NOT_ON_LIST": "Court to do something that's not on this list",
         "PAUSE": "Court to pause a claim",
         "RECONSIDER": "Court to reconsider an order",
         "RELIEF_PENALTY": "Relief from a penalty you've been given by the court",
         "SETTLING": "Court to make an order settling the claim by consent",
         "STRIKE_OUT": "Court to strike out all or part of the other parties' case without a trial",
         "SUMMARY_JUDGMENT": "Court to make a summary judgment on a case",
-        "VARY_JUDGMENT": "Vary a judgment example"
+        "VARY_JUDGMENT": "Vary a judgment"
       },
       "SELECT_TYPE": {
         "ALL_APPLICATIONS": "All applications",
@@ -2051,8 +2132,19 @@
         "TITLE": "Select application",
         "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order."
       },
+      "INFORM_OTHER_PARTIES": {
+        "COURT_SEND_OTHER_PARTIES": "The court will usually send the other parties a copy of your application to give them the opportunity to respond to it.",
+        "DO_NOT_WANT_COURT": "If you do not want the court to inform the other parties about this application",
+        "INFORM_OTHER_PARTIES_HEADER": "Informing the other parties",
+        "JUDGE_ORDERS_OTHER_PARTIES": "If the judge orders that the other parties should be informed, you’ll be notified and you'll need to pay an additional fee. Your application may also be delayed.",
+        "PROVIDE_A_REASON": "You must provide a reason which will be considered by a judge.",
+        "SELECTING_MULTIPLE_APPLICATIONS": "If you’ll be selecting multiple applications, this answer will apply to all of them.",
+        "SHOULD_COURT_INFORM_PARTIES": "Should the court inform the other parties about this application?",
+        "SOME_CIRCUMSTANCES": "In some circumstances a judge may make an order without sending your application to the other parties first.",
+        "WHY_DO_NOT_WANT_COURT": "Why do you not want the court to inform the other parties?"
+      },
       "APPLICATION_FROM_OTHER_PARTY": {
-        "APPLICATION_FEE_AMOUNT": "The fee amount depends on whether the other parties have agreed to you making this application. The other parties are the other side or siders involved in your case.",
+        "APPLICATION_FEE_AMOUNT": "The fee amount depends on whether the other parties have agreed to you making this application. The other parties are the other side or sides involved in your case.",
         "GETTING_AGREEMENT": "Getting agreement",
         "GETTING_AGREEMENT_PARA_1": "Asking the other parties to agree is optional. If they've agreed, you do not need to have proof of this.",
         "GETTING_AGREEMENT_PARA_2": "If you're not able to contact the other parties, or you've attempted to contact them but have not had a response, select 'No'.",
@@ -2078,6 +2170,42 @@
         "WHAT_HAPPENS_NEXT_PARA_2": "You may be required to attend an application hearing so that a judge can consider your application with you and the other parties and decide what the next steps should be.",
         "WHAT_HAPPENS_NEXT_PARA_3": "You'll receive a notification letting you know if an application hearing has been scheduled.",
         "WHAT_HAPPENS_NEXT_PARA_4" : "If you've made an application to change a hearing date, the trial or hearing will go ahead as planned on the original date unless a judge makes an order changing the date of the hearing."
+      },
+      "HEARING_SUPPORT": {
+        "ALWAYS_ARRANGE": "We'll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the 'Sign language interpreter' box below.",
+        "ARRANGING_OWN": "If you'll be arranging your own interpreter, you still need to tell us what language you'll be using by ticking the 'Language interpreter' box below.",
+        "DO_YOU_NEED": "Do you need any adjustments or support to attend a hearing (optional)?",
+        "FIND_OUT": "Find out how to",
+        "GET_INTERPRETER": "get an interpreter at a court or tribunal.",
+        "IF_YOU_NEED": "If you need a sign language or language interpreter",
+        "NEED_TO_ARRANGE": "You'll need to arrange your own language interpreter.",
+        "NOT_ABLE": "If you're not able to arrange your own interpreter, the court may be able to arrange one for you.",
+        "SELECT_ALL_THAT_APPLY": "Select all that apply",
+        "SUPPORT": {
+          "HEARING_LOOP": "Hearing loop",
+          "LANGUAGE_INTERPRETER": "Language interpreter",
+          "OTHER": "Other support",
+          "SIGN_LANGUAGE_INTERPRETER": "Sign language interpreter",
+          "STEP_FREE_ACCESS": "Step-free access",
+          "WHAT_LANGUAGE": "What language do you need an interpreter for?",
+          "WHAT_SIGN_LANGUAGE": "What type of sign language do you need an interpreter for?",
+          "WHAT_OTHER": "What other support do you need?"
+        },
+        "TITLE": "Adjustments or support to attend a hearing"
+      },
+      "CLAIM_APPLICATION_COST": {
+        "ASK_YOUR_COSTS_BACK": "Do you want to ask for your costs back?",
+        "ASK_YOUR_COSTS_BACK_YES": "If you know the details of the costs you want to claim back, you can upload a document with a description of these when we ask if you want to upload documents to support your application later on.",
+        "COSTS_INCLUDE": {
+          "APPLICATION_FEE": "your application fee",
+          "COST_INCLUDE": "Costs can include amounts like:",
+          "HEARING_COST": "loss of earnings and travel costs if you have to attend a hearing"
+        },
+        "JUDGE_MAKE_DECISION": "When a judge makes a decision on your application, they’ll decide who should pay the costs.",
+        "IF_APPLICATION_SUCCESS": "If your application is successful, the other parties may be ordered to pay back your costs associated with the application.",
+        "OTHER_PARTIES": "The other parties will be able to see your answer to this question and respond to it.",
+        "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application.",
+        "TITLE": "Application costs"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -2175,14 +2303,14 @@
               "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
               "PAYMENT_BY_CARD": "Talu gyda cherdyn",
               "PAYMENT_BY_CARD_PARAGRAPH_PART_1": "Gallwch geisio",
-              "PAYMENT_BY_CARD_PARAGRAPH_CARD_PAYMENT_URL": "gwneud taliad gyda cherdyn",
-              "PAYMENT_BY_CARD_PARAGRAPH_PART_2": "eto.",
+              "PAYMENT_BY_CARD_PARAGRAPH_CARD_PAYMENT_URL": "gwneud taliad",
+              "PAYMENT_BY_CARD_PARAGRAPH_PART_2": "eto gyda cherdyn.",
               "PAYMENT_BY_PHONE": "Talu dros y ffôn",
               "PAYMENT_BY_PHONE_PARAGRAPH_1": "Gallwch dalu dros y ffôn drwy ein ffonio ar 0300 303 5174. Dyfynnwch eich cyfeirnod achos sef {{ claimId }}.",
               "PAYMENT_BY_PHONE_PARAGRAPH_2": "Mae'r llinellau ar agor o ddydd Llun i ddydd Iau 9am - 5pm, dydd Gwener 9am - 4.30pm.",
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Cyn cysylltu â ni ",
-              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "darllenwch fwy am gost galwadau (yn agor mewn tab newydd).",
-              "RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd at y trosolwg o’r achos"
+              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "dewch o hyd i wybodaeth am gost galwadau (yn agor mewn tab newydd).",
+              "RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos"
             },
             "SUCCESSFUL": {
               "PAGE_TITLE": "Your payment was ",
@@ -2617,10 +2745,10 @@
         "GO_BACK": "Go back and ",
         "TRY_PAYMENT_AGAIN": "try the payment again",
         "MAKE_YOUR_PAYMENT": " to make your payment manually, quoting the case reference above.",
-        "NO_MONEY_TAKEN": "No money has been taken from your account.",
+        "NO_MONEY_TAKEN": "Nid oes arian wedi ei gymryd o'ch cyfrif.",
         "PAGE_TITLE": "Claim fee payment unsuccessful",
         "OPEN_TIMES": "Opening times:",
-        "TITLE": "Your payment was unsuccessful"
+        "TITLE": "Roedd eich taliad yn aflwyddiannus"
       }
     },
     "PAYMENT_OPTION": {
@@ -3449,7 +3577,7 @@
     "CHOOSE_TYPE_OF_INTEREST": "Dewis math o log",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "Mae angen i chi nodi rhif yr hawliad",
-    "CLAIM_SELECT_WELSH_AND_ENGLISH_OPTION": "Select Welsh if you want to create this claim in Welsh",
+    "CLAIM_SELECT_WELSH_AND_ENGLISH_OPTION": "Dewiswch ‘Cymraeg’ os ydych am greu’r hawliad hwn yn Gymraeg",
     "CLAIM_SUBMITTED_ADVICE_REQUIRED": "Dewiswch: Unwaith y bydd eich cais yn cael ei gyflwyno, ni fyddwch yn gallu gwneud unrhyw newidiadau. Ni fydd eich hawliad yn cael ei gyhoeddi a’i anfon at y partïon eraill nes eich bod wedi talu ffi’r hawliad.",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
     "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Dewiswch rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb",
@@ -3838,11 +3966,21 @@
     "VALID_REAL_YEAR": "Rhaid i flwyddyn y dyddiad fod yn flwyddyn ddilys",
     "VALID_DATE_NOT_FUTURE": "Rhaid i’r dyddiad y ddogfen fod heddiw neu yn y gorffennol",
     "VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cyhoeddwyd y ddogfen neu’r dyddiad yr anfonwyd y neges",
+    "VALID_DATE_WITNESS_SUMMARY": "Date summary was written is required",
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cafodd y datganiad ei ysgrifennu neu ei gynhyrchu",
     "GENERAL_APPLICATION": {
+      "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
-      "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application." 
+      "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
+      "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No",
+      "EXPLAIN_DO_NOT_WANT_COURT":"You need to explain why you do not want the court to inform the other parties.",
+      "ENTER_REQUESTING_REASON": "You need to enter your reasons for requesting this order",
+      "ENTER_ORDER_JUDGE": "You need to enter the order you want the judge to make",
+      "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
+      "MISSING_OTHER": "You need to tell us what other type of support you need.",
+      "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
+      "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No"
     }
   }
 }
