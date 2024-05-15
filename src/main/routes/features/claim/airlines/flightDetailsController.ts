@@ -50,7 +50,7 @@ flightDetailsController.post(FLIGHT_DETAILS_URL, (async (req: AppRequest, res: R
   }
 }) as RequestHandler);
 
-const buildDataList = (airlines: AirlineList[], hasAirlineError: boolean, selection: string = '', lng: string) => {
+const buildDataList = (airlines: AirlineList[] = [], hasAirlineError: boolean, selection: string = '', lng: string) => {
   let options = '';
   airlines = airlines.filter(item => item.airline !== "OTHER");
   airlines.forEach((airline) => {

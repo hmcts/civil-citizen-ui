@@ -23,7 +23,7 @@ import {toCCDHelpWithFees} from 'services/translation/response/convertToCCDHelpW
 import {toCCDLanguage} from 'models/ccdResponse/ccdWelshLanguageRequirements';
 import {toCCDMediationCarm} from 'services/translation/response/convertToCCDMediationCarm';
 import { FeeType } from 'common/form/models/helpWithFees/feeType';
-import {toCCDFlightDetails} from '../response/covertToCCDFlightDetails';
+import {toCCDFlightDetails} from '../response/convertToCCDFlightDetails';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
