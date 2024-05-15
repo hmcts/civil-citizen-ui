@@ -12,7 +12,7 @@
     "CREATED_DATE": "Created [{{ createdDate }}]",
     "UNAVAILABLE_DATES": "Dyddiadau pan na fyddwch ar gael",
     "CASE_REFERENCE": "Cyfeirnod yr achos: {{ claimId }}",
-    "CASE_NUMBER": "Rhif yr achos: {{ claimId }}",
+    "CASE_NUMBER_PARAM": "Rhif yr achos: {{ claimId }}",
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
     "ANNUAL_TURNOVER": "Trosiant blynyddol",

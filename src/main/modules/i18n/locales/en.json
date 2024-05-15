@@ -12,7 +12,7 @@
     "CREATED_DATE": "Created [{{ createdDate }}]",
     "UNAVAILABLE_DATES": "Dates unavailable",
     "CASE_REFERENCE": "Case reference: {{ claimId }}",
-    "CASE_NUMBER": "Case number: {{ claimId }}",
+    "CASE_NUMBER_PARAM": "Case number: {{ claimId }}",
     "ACCOUNT_TYPE": "Type of account",
     "ADDRESS": "Address",
     "ANNUAL_TURNOVER": "Annual Turnover",
@@ -2103,7 +2103,7 @@
         "JUDGE_WILL_CONSIDER_ADJOURN_HEARING": "A judge will consider your application and make an order. The order that a judge would usually make to change a hearing date is in the box below.",
         "JUDGE_WILL_CONSIDER_CHANGE_CLAIM": "A judge will consider your application and make an order. The order that a judge would usually make to allow you to change your claim or defence is in the box below.",
         "JUDGE_WILL_CONSIDER_MORE_TIME": "A judge will consider your application and make an order. The order that a judge would usually make to give more time to do what's required by a court order is in the box below.",
-        "JUDGE_WILL_CONSIDER_SET_ASIDE_JUDGEMENT": "A judge will consider your application to make an order. The order that a judge would usually make to set aside (remove) a judgment is in the box below.", 
+        "JUDGE_WILL_CONSIDER_SET_ASIDE_JUDGEMENT": "A judge will consider your application to make an order. The order that a judge would usually make to set aside (remove) a judgment is in the box below.",
         "JUDGE_WILL_CONSIDER_STAY_THE_CLAIM": "A judge will consider your application and make an order. The order that a judge would usually make to pause a claim is in the box below.",
         "JUDGE_WILL_CONSIDER_SUMMARY_JUDGMENT": "A judge will consider your application to make an order. The order that a judge would usually make for a summary judgment is in the box below.",
         "MENTION_DATE": "mention the date that the document was submitted",
@@ -2121,7 +2121,7 @@
         "YOU_WILL_NEED_ADD_INFO": "You'll need to add information to the box, like when your hearing is currently arranged for, after what date you'd like to change it to and any dates to avoid.",
         "YOU_CAN_ALSO_ALTER": "You can also alter any of the other text if you need to.",
         "YOU_CAN": "You can:",
-        "UPLOAD_NEW_VERSION": "upload a new version of this document with any amends underlined. We'll ask if you want to upload documents to support your application later on"    
+        "UPLOAD_NEW_VERSION": "upload a new version of this document with any amends underlined. We'll ask if you want to upload documents to support your application later on"
       },
       "SELECTED_APPLICATION_TYPE": {
         "CANCEL_JUDGMENT": "Set aside (cancel) a judgment",
