@@ -208,7 +208,7 @@ export class CivilServiceClient {
           feeUrl += `&withNotice=${withNotice === YesNo.YES ? 'true' : 'false'}`;
         }
       } else if (withNotice) {
-        feeUrl += `&withNotice=${withNotice === YesNo.YES ? 'true' : 'false'}`;
+        feeUrl += `?withNotice=${withNotice === YesNo.YES ? 'true' : 'false'}`;
       }
       const response: AxiosResponse<object> = await this.client.get(feeUrl, config);
       return response.data;
