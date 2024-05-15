@@ -39,8 +39,8 @@ const mediationDocumentsCui = require('../fixtures/events/mediation/uploadMediat
 const mediationDocumentsLr = require('../fixtures/events/mediation/uploadMediationDocumentsLR');
 const createLipClaim = require('../fixtures/events/createLiPClaim.js');
 const createLiPClaimForCompany = require('../fixtures/events/createLiPClaimForCompany.js');
-const createLipClaimDefendantCompany = require('../fixtures/events/createLipClaimDefendantCompany.js');
 const createLipClaimDefendantSoleTrader = require('../fixtures/events/createLipClaimDefendantSoleTrader.js');
+const createLipClaimDefendantCompany = require('../fixtures/events/createLipClaimDefendantCompany.js');
 const createLipClaimSoleTraderVCompany = require('../fixtures/events/createLipClaimSoleTraderVCompany.js');
 const createLipClaimIndVOrg = require('../fixtures/events/createLipClaimIndVOrg.js');
 
