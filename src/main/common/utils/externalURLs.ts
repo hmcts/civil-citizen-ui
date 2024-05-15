@@ -1,6 +1,4 @@
 export const legacyServiceUrl = 'https://www.moneyclaim.gov.uk/web/mcol/welcome';
-export const n1FormUrl = 'https://formfinder.hmctsformfinder.justice.gov.uk/n1-eng.pdf';
-export const n510Url = 'https://formfinder.hmctsformfinder.justice.gov.uk/n510-eng.pdf';
 export const citizensAdviceUrl = 'https://www.citizensadvice.org.uk/about-us/how-we-provide-advice/advice/';
 export const citizenAdviceContactUsUrl = 'https://www.citizensadvice.org.uk/about-us/contact-us/contact-us/contact-us/';
 export const governmentDepartmentsUrl = 'https://www.gov.uk/government/publications/serve-the-treasury-solicitor-with-legal-proceedings';
