@@ -305,6 +305,8 @@ import respondentAgreeToOrderController from 'routes/features/generalApplication
 import payingForApplicationController from './features/generalApplication/payingForApplicationController';
 import requestingReasonController from 'routes/features/generalApplication/requestingReasonController';
 import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
+import confirmYouHaveBeenPaidConfirmController
+  from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
 
 export default [
   homeController,
@@ -571,4 +573,5 @@ export default [
   payingForApplicationController,
   requestingReasonController,
   confirmYouHaveBeenPaidController,
+  confirmYouHaveBeenPaidConfirmController,
 ];
