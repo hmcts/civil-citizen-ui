@@ -66,7 +66,7 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
       yourDetailsSection.summaryList.rows.push(
         summaryRow(t('PAGES.CHECK_YOUR_ANSWER.AIRLINE', {lng}), claim.flightDetails.airline, FLIGHT_DETAILS_URL, changeLabel(lng), title),
         summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FLIGHT_NUMBER', {lng}), claim.flightDetails.flightNumber, FLIGHT_DETAILS_URL, changeLabel(lng), title),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SCHEDULED_DATE_OF_FLIGHT', {lng}), formatDateToFullDate(new Date(claim.flightDetails.year, claim.flightDetails.month, claim.flightDetails.day), lng), FLIGHT_DETAILS_URL, changeLabel(lng), title));
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SCHEDULED_DATE_OF_FLIGHT', {lng}), formatDateToFullDate(claim.flightDetails.flightDate, lng), FLIGHT_DETAILS_URL, changeLabel(lng), title));
     }
   }
   yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng}), claim.respondent1?.partyPhone?.phone, CLAIM_DEFENDANT_PHONE_NUMBER_URL, changeLabel(lng), title));
