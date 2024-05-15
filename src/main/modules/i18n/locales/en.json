@@ -12,7 +12,7 @@
     "CREATED_DATE": "Created [{{ createdDate }}]",
     "UNAVAILABLE_DATES": "Dates unavailable",
     "CASE_REFERENCE": "Case reference: {{ claimId }}",
-    "CASE_NUMBER": "Case number: {{ claimId }}",
+    "CASE_NUMBER_PARAM": "Case number: {{ claimId }}",
     "ACCOUNT_TYPE": "Type of account",
     "ADDRESS": "Address",
     "ANNUAL_TURNOVER": "Annual Turnover",
@@ -398,7 +398,6 @@
       },
       "UPLOAD_DOCUMENTS": {
         "SECTION_TITLE": "Mediation non-attendance",
-
         "TITLE": {
           "YOUR_STATEMENT": "Your statement",
           "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement"
@@ -1028,6 +1027,52 @@
       "DISCLOSURE_DOCUMENTS": "disclosure",
       "DOCUMENTARY_EVIDENCE": "Documentary evidence",
       "DOCUMENTS": "Documents",
+      "DOCUMENT_HEADERS": {
+        "CLAIMANT": {
+          "ANSWERS_TO_QUESTIONS": "Claimant answers to questions asked by other party",
+          "CASE_SUMMARY": "Claimant case summary",
+          "COSTS": "Claimant costs",
+          "DISCLOSURE_DOCUMENTS": "Claimant disclosure",
+          "DISCLOSURE_LIST": "Claimant disclosure list",
+          "DOCUMENTARY_EVIDENCE": "Claimant documentary evidence",
+          "DOCUMENTS_FOR_DISCLOSURE": "Claimant documents for disclosure",
+          "DOCUMENTS_REFERRED_TO_STATEMENT": "Claimant documents referred to in statement",
+          "EXPERT_EVIDENCE": "Claimant expert evidence",
+          "EXPERT_REPORT": "Claimant expert report",
+          "HEARING_DOCUMENTS": "Claimant hearing documents",
+          "JOINT_STATEMENT_OF_EXPERTS": "Joint statement of experts",
+          "LEGAL_AUTHORITIES": "Claimant legal authorities",
+          "NOTICE_OF_INTENTION": "Claimant intention to rely on hearsay evidence",
+          "QUESTIONS_FOR_OTHER_PARTY": "Claimant questions for other party's expert or joint expert",
+          "SKELETON_ARGUMENT": "Claimant skeleton argument",
+          "TRIAL_DOCUMENTS": "Claimant trial documents",
+          "WITNESS_EVIDENCE": "Claimant witness evidence",
+          "WITNESS_STATEMENT": "Claimant witness statement",
+          "WITNESS_SUMMARY": "Claimant witness summary"
+        },
+        "DEFENDANT": {
+          "ANSWERS_TO_QUESTIONS": "Defendant answers to questions asked by other party",
+          "CASE_SUMMARY": "Defendant case summary",
+          "COSTS": "Defendant costs",
+          "DISCLOSURE_DOCUMENTS": "Defendant disclosure",
+          "DISCLOSURE_LIST": "Defendant disclosure list",
+          "DOCUMENTARY_EVIDENCE": "Defendant documentary evidence",
+          "DOCUMENTS_FOR_DISCLOSURE": "Defendant documents for disclosure",
+          "DOCUMENTS_REFERRED_TO_STATEMENT": "Defendant documents referred to in statement",
+          "EXPERT_EVIDENCE": "Defendant expert evidence",
+          "EXPERT_REPORT": "Defendant expert report",
+          "HEARING_DOCUMENTS": "Defendant hearing documents",
+          "JOINT_STATEMENT_OF_EXPERTS": "Joint statement of experts",
+          "LEGAL_AUTHORITIES": "Defendant legal authorities",
+          "NOTICE_OF_INTENTION": "Defendant intention to rely on hearsay evidence",
+          "QUESTIONS_FOR_OTHER_PARTY": "Defendant questions for other party's expert or joint expert",
+          "SKELETON_ARGUMENT": "Defendant skeleton argument",
+          "TRIAL_DOCUMENTS": "Defendant trial documents",
+          "WITNESS_EVIDENCE": "Defendant witness evidence",
+          "WITNESS_STATEMENT": "Defendant witness statement",
+          "WITNESS_SUMMARY": "Defendant witness summary"
+        }
+      },
       "DOCUMENT_CREATED": "Created:",
       "DOWNLOAD_CLAIM": "Download claim",
       "DOWNLOAD_HEARING_NOTICE": "Download hearing notice",
@@ -2215,6 +2260,10 @@
         "OTHER_PARTIES": "The other parties will be able to see your answer to this question and respond to it.",
         "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application.",
         "TITLE": "Application costs"
+      },
+      "ADD_ANOTHER_APPLICATION": {
+        "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
+        "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -3975,6 +4024,7 @@
     "VALID_REAL_YEAR": "Year of Date must be a valid year",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
+    "VALID_DATE_WITNESS_SUMMARY": "Date summary was written is required",
     "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced",
     "GENERAL_APPLICATION": {
@@ -3982,13 +4032,14 @@
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
       "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No",
-      "EXPLAIN_DO_NOT_WANT_COURT":"You need to explain why you do not want the court to inform the other parties.",
       "ENTER_REQUESTING_REASON": "You need to enter your reasons for requesting this order",
+      "EXPLAIN_DO_NOT_WANT_COURT":"You need to explain why you do not want the court to inform the other parties.",
       "ENTER_ORDER_JUDGE": "You need to enter the order you want the judge to make",
       "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
-      "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No"
+      "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
+      "WANT_TO_ADD_ANOTHER_APPLICATION":"You need to tell us if you want to add another application. Choose option: Yes or No"
     }
   }
 }
