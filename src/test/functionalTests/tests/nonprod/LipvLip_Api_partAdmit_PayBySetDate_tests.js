@@ -40,7 +40,7 @@ Scenario('Response with PartAdmit-PayBySetDate Fast Track @citizenUI @partAdmit 
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentOnSpecificDateWithIndividual);
     await api.waitForFinishedBusinessProcess();
-    
+
     //Claimant response below here
     let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
