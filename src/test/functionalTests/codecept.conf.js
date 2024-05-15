@@ -10,12 +10,12 @@ exports.config = {
 
   async teardown() {
     console.log('Current worker has finished running tests so we should clean up the user roles');
-    // await unAssignAllUsers();
-    // await deleteAllIdamTestUsers();
+    await unAssignAllUsers();
+    await deleteAllIdamTestUsers();
   },
-  tests: process.env.ENVIRONMENT == 'aat' ? 
+  tests: process.env.ENVIRONMENT == 'aat' ?
     [ '../functionalTests/tests/prod/**/*.js',
-      '../functionalTests/tests/common/**/*.js'  ] : 
+      '../functionalTests/tests/common/**/*.js'  ] :
     [ '../functionalTests/tests/nonprod/**/*.js',
       '../functionalTests/tests/common/**/*.js' ],
   output: process.env.REPORT_DIR || 'test-results/functional',
