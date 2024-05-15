@@ -138,8 +138,8 @@ module.exports = {
   defendant2SolicitorOrgId: process.env.ENVIRONMENT =='demo' ? 'LCVTI1I' : 'H2156A0',
   defendantSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
   claimantLRSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
-  localMediationTests: true,
-  localNoCTests: true,
+  localMediationTests: false,
+  localNoCTests: false,
   hwfEvents: {
     updateHWFNumber: 'UPDATE_HELP_WITH_FEE_NUMBER',
     partRemission: 'PARTIAL_REMISSION_HWF_GRANTED',
