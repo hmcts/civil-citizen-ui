@@ -19,11 +19,11 @@ flightDetailsController.get(FLIGHT_DETAILS_URL, (async (req: AppRequest, res: Re
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.session?.user?.id;
     const flightDetails = await getFlightDetails(claimId);
-    const form = new GenericForm(flightDetails)
+    const form = new GenericForm(flightDetails);
     const airlines = await civilServiceClient.getAirlines(req);
     const datalist = buildDataList(airlines, form.hasFieldError('airline'), flightDetails.airline, lng);
     res.render(flightDetailsPath, {form, today: new Date(), airlines, datalist});
-    } catch (error) {
+  } catch (error) {
     next(error);
   }
 }) as RequestHandler);
@@ -45,14 +45,14 @@ flightDetailsController.post(FLIGHT_DETAILS_URL, (async (req: AppRequest, res: R
       await saveFlightDetails(userId, flightDetails);
       res.redirect(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
     }
-} catch (error) {
+  } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-const buildDataList = (airlines: AirlineList[] = [], hasAirlineError: boolean, selection: string = '', lng: string) => {
+const buildDataList = (airlines: AirlineList[] = [], hasAirlineError: boolean, selection = '', lng: string) => {
   let options = '';
-  airlines = airlines.filter(item => item.airline !== "OTHER");
+  airlines = airlines.filter(item => item.airline !== 'OTHER');
   airlines.forEach((airline) => {
     options += `<option value="${airline.airline}"> `;
   });

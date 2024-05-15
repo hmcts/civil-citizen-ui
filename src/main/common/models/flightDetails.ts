@@ -28,18 +28,18 @@ export class FlightDetails {
   @Max(31,{message:'ERRORS.VALID_DAY'})
     day: number;
 
-    constructor(
-      airline?: string,
-      flightNumber?: string,
-      year?: string,
-      month?: string,
-      day?: string,
-    ) {
-      this.airline = airline;
-      this.flightNumber = flightNumber;
-      this.flightDate = DateConverter.convertToDate(year, month, day);
-      this.year = Number(year);
-      this.month = Number(month);
-      this.day = Number(day);
-    }
+  constructor(
+    airline?: string,
+    flightNumber?: string,
+    year?: string,
+    month?: string,
+    day?: string,
+  ) {
+    this.airline = airline;
+    this.flightNumber = flightNumber;
+    this.flightDate = DateConverter.convertToDate(year, month, day);
+    this.year = Number(year);
+    this.month = Number(month);
+    this.day = Number(day);
+  }
 }

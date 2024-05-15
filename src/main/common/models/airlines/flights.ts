@@ -1,10 +1,10 @@
 export interface CCDFlightDelayDetails {
-  nameOfAirline: String;
-  flightNumber: String;
+  nameOfAirline: string;
+  flightNumber: string;
   scheduledDate: string;
 }
 
 export interface AirlineList {
-  airline: String;
-  epimsID: String;
+  airline: string;
+  epimsID: string;
 }

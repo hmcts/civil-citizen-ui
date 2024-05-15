@@ -1,9 +1,9 @@
-import {getCaseDataFromStore, saveDraftClaim} from "modules/draft-store/draftStoreService";
-import {FlightDetails} from "common/models/flightDetails";
-import {GenericYesNo} from "common/form/models/genericYesNo";
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {FlightDetails} from 'common/models/flightDetails';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
-const {Logger} = require("@hmcts/nodejs-logging");
-const logger = Logger.getLogger("Claim - Claim Interest");
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('Claim - Claim Interest');
 
 export const getDelayedFlight = async (claimId: string): Promise<GenericYesNo> => {
   try {
@@ -34,12 +34,12 @@ export const getFlightDetails = async (claimId: string): Promise<FlightDetails> 
     const caseData = await getCaseDataFromStore(claimId);
     return caseData.flightDetails
       ? new FlightDetails(
-          caseData.flightDetails?.airline,
-          caseData.flightDetails?.flightNumber,
-          caseData.flightDetails?.year.toString(),
-          caseData.flightDetails?.month.toString(),
-          caseData.flightDetails?.day.toString(),
-        )
+        caseData.flightDetails?.airline,
+        caseData.flightDetails?.flightNumber,
+        caseData.flightDetails?.year.toString(),
+        caseData.flightDetails?.month.toString(),
+        caseData.flightDetails?.day.toString(),
+      )
       : new FlightDetails();
   } catch (error) {
     logger.error(error);

@@ -15,7 +15,7 @@ delayedFlightController.get(DELAYED_FLIGHT_URL, (async (req: AppRequest, res: Re
     const delayedFlight = await getDelayedFlight(userId);
     const form = new GenericForm(delayedFlight);
     res.render(delayedFlightPath, {form});
-    } catch (error) {
+  } catch (error) {
     next(error);
   }
 }) as RequestHandler);
@@ -33,13 +33,13 @@ delayedFlightController.post(DELAYED_FLIGHT_URL, (async (req: AppRequest, res: R
       await saveDelayedFlight(userId, delayedFlight);
 
       delayedFlight.option === YesNo.YES 
-      ? res.redirect(FLIGHT_DETAILS_URL)
-      : res.redirect(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
+        ? res.redirect(FLIGHT_DETAILS_URL)
+        : res.redirect(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
     }
   
   } catch (error) {
-      next(error);
-    }
-  }) as RequestHandler);
+    next(error);
+  }
+}) as RequestHandler);
 
 export default delayedFlightController;
