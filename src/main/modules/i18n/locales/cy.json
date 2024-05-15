@@ -2192,6 +2192,10 @@
         "OTHER_PARTIES": "The other parties will be able to see your answer to this question and respond to it.",
         "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application.",
         "TITLE": "Application costs"
+      },
+      "ADD_ANOTHER_APPLICATION": {
+        "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
+        "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -3960,13 +3964,14 @@
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
       "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No",
-      "EXPLAIN_DO_NOT_WANT_COURT":"You need to explain why you do not want the court to inform the other parties.",
       "ENTER_REQUESTING_REASON": "You need to enter your reasons for requesting this order",
+      "EXPLAIN_DO_NOT_WANT_COURT":"You need to explain why you do not want the court to inform the other parties.",
       "ENTER_ORDER_JUDGE": "You need to enter the order you want the judge to make",
       "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
-      "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No"
+      "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
+      "WANT_TO_ADD_ANOTHER_APPLICATION":"You need to tell us if you want to add another application. Choose option: Yes or No"
     }
   }
 }
