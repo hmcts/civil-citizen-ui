@@ -311,5 +311,6 @@ export const HEARING_SUPPORT_URL = `${BASE_GENERAL_APPLICATION_URL}/hearing-supp
 export const GA_AGREEMENT_FROM_OTHER_PARTY = `${BASE_GENERAL_APPLICATION_URL}/agreement-from-other-party`;
 export const GA_AGREE_TO_ORDER_URL = `${BASE_GENERAL_APPLICATION_URL}/agree-to-order`;
 export const GA_REQUESTING_REASON_URL = `${BASE_GENERAL_APPLICATION_URL}/requesting-reason`;
+export const GA_ADD_ANOTHER_APPLICATION_URL = `${BASE_GENERAL_APPLICATION_URL}/add-another-application`;
 export const GA_HEARING_ARRANGEMENT_URL = `${BASE_GENERAL_APPLICATION_URL}/hearing-arrangement`;
 export const GA_HEARING_CONTACT_DETAILS_URL = `${BASE_GENERAL_APPLICATION_URL}/hearing-contact-details`;
