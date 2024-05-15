@@ -304,6 +304,7 @@ import claimApplicationCostController from './features/generalApplication/claimA
 import respondentAgreeToOrderController from 'routes/features/generalApplication/respondentAgreeToOrderController';
 import payingForApplicationController from './features/generalApplication/payingForApplicationController';
 import requestingReasonController from 'routes/features/generalApplication/requestingReasonController';
+import addAnotherApplicationController from './features/generalApplication/addAnotherApplicationController';
 import orderJudgeController from './features/generalApplication/orderJudgeController';
 import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNoticesController';
 
@@ -571,6 +572,7 @@ export default [
   respondentAgreeToOrderController,
   payingForApplicationController,
   requestingReasonController,
+  addAnotherApplicationController,
   orderJudgeController,
   ordersAndNoticesController,
 ];
