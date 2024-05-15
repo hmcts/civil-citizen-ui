@@ -17,7 +17,7 @@ interface ContentParagraph {
 export const getApplicationCostsContent = async (applicationTypeOption: ApplicationTypeOption, withConsent: YesNo, withNotice: YesNo, lang: string, req: AppRequest) => {
   const gaFee = await civilServiceClient.getGeneralApplicationFee(applicationTypeOption, withConsent, withNotice, req);
   const pageSectionBuilder = new PageSectionBuilder();
-  const selectedApplicationTypeContent = getSelectedApplicationTypeContent(lang);
+  const selectedApplicationTypeContent = getSelectedApplicationTypeContent(lang, gaFee);
   if (applicationTypeOption in selectedApplicationTypeContent) {
     const content = selectedApplicationTypeContent[applicationTypeOption];
     content.forEach(contentParagraph => pageSectionBuilder.addParagraph(contentParagraph.text, contentParagraph.variables));
@@ -31,14 +31,14 @@ export const getApplicationCostsContent = async (applicationTypeOption: Applicat
   return pageSectionBuilder.build();
 };
 
-const getSelectedApplicationTypeContent = (lang: string) : Partial<{ [key in ApplicationTypeOption]: ContentParagraph[] }> => {
+const getSelectedApplicationTypeContent = (lang: string, gaFee: number) : Partial<{ [key in ApplicationTypeOption]: ContentParagraph[] }> => {
   return {
     [ApplicationTypeOption.ADJOURN_HEARING]: [
       {
         text: 'PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.TO_APPLY_MULTIPLE',
         variables: {
           applicationType: t('PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.ADJOURN_HEARING', {lng: lang}),
-          applicationFee: 123,
+          applicationFee: gaFee,
         },
       },
       {text: 'PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.HEARING_MORE_THAN'},
@@ -50,7 +50,7 @@ const getSelectedApplicationTypeContent = (lang: string) : Partial<{ [key in App
         text: 'PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.TO_APPLY',
         variables: {
           applicationType: t('PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.SET_ASIDE_JUDGEMENT', {lng: lang}),
-          applicationFee: 123,
+          applicationFee: gaFee,
         },
       },
     ],
@@ -59,7 +59,7 @@ const getSelectedApplicationTypeContent = (lang: string) : Partial<{ [key in App
         text: 'PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.TO_APPLY',
         variables: {
           applicationType: t('PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.VARY_ORDER', {lng: lang}),
-          applicationFee: 123,
+          applicationFee: gaFee,
         },
       },
     ],
@@ -68,7 +68,7 @@ const getSelectedApplicationTypeContent = (lang: string) : Partial<{ [key in App
         text: 'PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.TO_APPLY',
         variables: {
           applicationType: t('PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.VARY_PAYMENT_TERMS_OF_JUDGMENT', {lng: lang}),
-          applicationFee: 123,
+          applicationFee: gaFee,
         },
       },
     ],
