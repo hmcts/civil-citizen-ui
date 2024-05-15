@@ -112,6 +112,11 @@ module.exports = {
     password: defaultPassword,
     type: 'caseworker',
   },
+  ctscAdmin: {
+    email: 'ctsc_admin@justice.gov.uk',
+    password: defaultPassword,
+    type: 'CTSC_ADMIN',
+  },
   hearingCenterAdminLocal: {
     email: 'hearing-centre-admin-01@example.com',
     password: defaultPassword,
