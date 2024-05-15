@@ -2249,7 +2249,6 @@
           "VIDEO_CONFERENCE": "Video Conference"
         },
         "JUDGE_HEARING_PREFERRED_LOCATION": "If a judge requires the hearing to take place in person at the court, do you have a preferred location? (optional)",
-        "PAGE_TITLE": "Hearing preferences for your application",
         "SELECT_A_LOCATION": "-- Select a location --",
         "TITLE": "Application hearing arrangements",
         "WHAT_TYPE_OF_HEARING_PREFER": "What type of hearing would you prefer?",
