@@ -3,7 +3,7 @@ const config = require('../../../../config');
 const cuiCookies = require('../../../specClaimHelpers/fixtures/cookies/cuiCookies');
 const cmcCookies = require('../../../specClaimHelpers/fixtures/cookies/cmcCookies');
 const idamCookies = require('../../../specClaimHelpers/fixtures/cookies/idamCookies');
-const exuiCookies = require('../../../specClaimHelpers/fixtures/cookies/exuiCookies');
+const generateExuiCookies = require('../../../specClaimHelpers/fixtures/cookies/exuiCookies');
 
 const fields = {
   username: 'input[id="username"]',
@@ -60,9 +60,9 @@ class LoginPage {
   }
 
   async caseworkerLogin(email, password) {
+    const exuiCookies = await generateExuiCookies({email, password});
+    await I.setCookie(exuiCookies); 
     await this.#login(email, password, '/work/my-work/list');
-    const userid = (await I.grabCookie('__userid__')).value;
-    await I.setCookie(exuiCookies(userid));
   }
 }
 
