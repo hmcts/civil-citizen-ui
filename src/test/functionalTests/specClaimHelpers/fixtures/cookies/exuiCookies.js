@@ -12,5 +12,5 @@ module.exports = async (user) => {
       domain: getDomain(config.url.manageCase),
       path: '/',
     },
-  ]
+  ];
 };
