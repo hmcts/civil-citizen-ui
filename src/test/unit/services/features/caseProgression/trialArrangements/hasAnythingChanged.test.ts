@@ -34,7 +34,7 @@ describe('hasAnythingChanged', () => {
     const actualIsCaseReadyContent = getHasAnythingChanged(claim.id.toString(), claim);
 
     //Then
-    expect(actualIsCaseReadyContent[0].data.text).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.PAGE_TITLE');
+    expect(actualIsCaseReadyContent[0].data.text).toEqual('PAGES.DASHBOARD.HEARINGS.HEARING');
     expect(actualIsCaseReadyContent[1].data.text).toEqual('PAGES.HAS_ANYTHING_CHANGED.FINALISE');
     expect(actualIsCaseReadyContent[2].data.text).toEqual('COMMON.CASE_NUMBER');
     expect(actualIsCaseReadyContent[3].data.text).toEqual('COMMON.CLAIM_AMOUNT_WITH_VALUE');

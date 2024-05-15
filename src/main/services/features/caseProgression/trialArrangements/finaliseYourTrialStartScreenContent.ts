@@ -25,7 +25,7 @@ export const getFinaliseTrialArrangementContents = (claimId: string, claim: Clai
   }
 
   return new FinaliseYourTrialSectionBuilder()
-    .addMicroText('PAGES.FINALISE_TRIAL_ARRANGEMENTS.PAGE_TITLE')
+    .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
     .addMainTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.TITLE')
     .addLeadParagraph('COMMON.CASE_NUMBER', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
     .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})

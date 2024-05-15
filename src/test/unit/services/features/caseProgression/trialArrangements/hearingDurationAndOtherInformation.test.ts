@@ -44,7 +44,7 @@ describe('hearingDurationAndOtherInformation', () => {
     const actualHearingDurationContent = getHearingDurationAndOtherInformation(claimContent.id.toString(),claim, 'en');
 
     //Then
-    expect(actualHearingDurationContent[0].data.text).toEqual('PAGES.FINALISE_TRIAL_ARRANGEMENTS.PAGE_TITLE');
+    expect(actualHearingDurationContent[0].data.text).toEqual('PAGES.DASHBOARD.HEARINGS.HEARING');
     expect(actualHearingDurationContent[1].data.text).toEqual('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TITLE');
     expect(actualHearingDurationContent[2].data.text).toEqual('COMMON.CASE_NUMBER');
     expect(actualHearingDurationContent[3].data.text).toEqual('COMMON.CLAIM_AMOUNT_WITH_VALUE');

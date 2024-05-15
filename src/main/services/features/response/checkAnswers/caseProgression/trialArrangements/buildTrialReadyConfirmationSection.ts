@@ -46,7 +46,7 @@ export const buildIsCaseReadyForTrialOrHearing = (claim: Claim, claimId: string,
 
 export const buildCaseInfoContents = (claim: Claim, claimId: string): ClaimSummarySection[] => {
   return new PageSectionBuilder()
-    .addMicroText('PAGES.FINALISE_TRIAL_ARRANGEMENTS.PAGE_TITLE')
+    .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
     .addMainTitle('PAGES.CHECK_YOUR_ANSWER.TITLE')
     .addLeadParagraph('COMMON.CASE_NUMBER', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
     .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
