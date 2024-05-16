@@ -23,7 +23,7 @@
     "CANNOT_FIND_DOCUMENT_TEXT": "If you cannot find a document that you are looking for in this section",
     "CHILDREN": "Children",
     "CHOOSE": "Choose",
-    "CASE_NUMBER": "Case number: ",
+    "CASE_NUMBER_WITHOUT_VALUE": "Case number: ",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "CLAIM_AMOUNT": "Claim amount",
     "CLAIM_AMOUNT_WITH_VALUE": "Claim amount: {{claimAmount}}",
@@ -3284,7 +3284,7 @@
       "TOTAL_AMOUNT": "Total interest amount"
     },
     "TRIAL_DURATION_TRIAL_ARRANGEMENTS": {
-      "TITLE": "Finalise your trial arrangements",
+      "TITLE": "Finalise your trial or hearing arrangements",
       "TRIAL_DURATION_TITLE": "Trial duration",
       "TRIAL_DURATION_PARAGRAPH": "The trial duration originally allocated is <span class=\"govuk-body govuk-!-font-weight-bold\">{{ hearingDuration }}</span>.",
       "REQUIRE_LESS_TIME": "If you require less time please set out your reasons in the 'Other information' box below.",
@@ -3429,10 +3429,10 @@
       "YEAR": "Year"
     },
     "IS_CASE_READY": {
-      "PAGE_TITLE": "Finalise your trial arrangements",
+      "PAGE_TITLE": "Finalise your trial or hearing arrangements",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
-      "IS_CASE_READY": "Is the case ready for trial?",
+      "IS_CASE_READY": "Is the case ready for trial or hearing?",
       "YOU_ARE_REMINDED": "You are reminded that this information will be shared with all other parties",
       "YOU_WILL_STILL": "You will still need to continue and provide some information on trial arrangements.",
       "YOU_WILL_NEED": "You will need to make an application to the court if this case is not ready for the trial.",
@@ -3440,7 +3440,7 @@
     },
     "HAS_ANYTHING_CHANGED": {
       "PAGE_TITLE": "Has anything changed to the support",
-      "FINALISE": "Finalise your trial arrangements",
+      "FINALISE": "Finalise your trial or hearing arrangements",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "HAS_ANYTHING": "Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?",
       "YOU_CAN": "You can check your previous answers in the ",
@@ -3555,8 +3555,8 @@
     },
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
-      "TITLE": "Finalise your trial arrangements",
-      "CASE_REFERENCE": "Claim number: {{ claimId }}",
+      "TITLE": "Finalise your trial or hearing arrangements",
+      "CASE_REFERENCE": "Case number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "YOU_HAVE_UNTIL_DATE": "You have until {{ hearingDueDate }} to provide this information.",
       "YOU_SHOULD_FINALISE": "You should finalise your trial arrangements to ensure the court has the necessary information for the trial to proceed in a suitable way.",
