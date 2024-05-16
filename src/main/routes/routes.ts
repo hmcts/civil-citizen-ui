@@ -300,6 +300,7 @@ import claimFeeMakePaymentAgainController
 import informOtherPartiesController from './features/generalApplication/informOtherPartiesController';
 import hearingSupportController from './features/generalApplication/hearingSupportController';
 import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
+import applicationFeePaymentSuccessfulController from './features/generalApplication/applicationFeePaymentSuccessfulController';
 import claimApplicationCostController from './features/generalApplication/claimApplicationCostController';
 import respondentAgreeToOrderController from 'routes/features/generalApplication/respondentAgreeToOrderController';
 import payingForApplicationController from './features/generalApplication/payingForApplicationController';
@@ -568,6 +569,7 @@ export default [
   hearingSupportController,
   claimFeeMakePaymentAgainController,
   agreementFromOtherPartyController,
+  applicationFeePaymentSuccessfulController,
   informOtherPartiesController,
   claimApplicationCostController,
   respondentAgreeToOrderController,
