@@ -61,7 +61,7 @@ const buildDataList = (airlines: AirlineList[] = [], hasAirlineError: boolean, s
     <div class="${hasAirlineError ? 'govuk-form-group--error govuk-!-margin-bottom-6' : 'govuk-form-group'}">
       <p class="govuk-body govuk-!-margin-bottom-1">${t('PAGES.FLIGHT_DETAILS.AIRLINE', { lng })}</p>
       <p class="${hasAirlineError ? 'govuk-error-message' : 'govuk-visually-hidden'}">${t('ERRORS.FLIGHT_DETAILS.AIRLINE_REQUIRED', { lng })}</p>
-      <input list="airlines" name="airline" id="airline" value="${selection}" class="${hasAirlineError ? 'govuk-input govuk-!-width-one-half govuk-input--error' : 'govuk-input govuk-!-width-one-half'}">
+      <input list="airlines" name="airline" id="airline" value="${selection}" aria-label="airline list" class="${hasAirlineError ? 'govuk-input govuk-!-width-one-half govuk-input--error' : 'govuk-input govuk-!-width-one-half'}">
       <datalist id="airlines" class="govuk-!-padding-bottom-0">
         ${options}
       </datalist>
