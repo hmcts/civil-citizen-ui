@@ -1,6 +1,6 @@
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {Claim} from 'models/claim';
-import {DEFENDANT_SUMMARY_TAB_URL, NOTICES_AND_ORDERS_URL} from 'routes/urls';
+import {DEFENDANT_SUMMARY_TAB_URL, VIEW_ORDERS_AND_NOTICES_URL} from 'routes/urls';
 import {
   FinaliseYourTrialSectionBuilder,
 } from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
@@ -9,7 +9,7 @@ import {TabId} from 'routes/tabs';
 export function getConfirmationPageSection(claimId: string, claim: Claim, readyForTrialOrHearing: boolean): ClaimSummarySection[] {
   const title = 'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.WHAT_HAPPENS_NEXT';
   const document = 'https://www.gov.uk/government/publications/form-n244-application-notice';
-  const noticesAndOrdersLink = claim.isClaimant() ? NOTICES_AND_ORDERS_URL.replace(':id', claim.id) : DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES);
+  const noticesAndOrdersLink = claim.isClaimant() ? VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claim.id) : DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES);
 
   if (readyForTrialOrHearing) {
     return new FinaliseYourTrialSectionBuilder()

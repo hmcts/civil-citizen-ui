@@ -23,7 +23,7 @@
         {{ govukDetails({
           summaryText: t('PAGES.CLAIM_DETAILS.INTEREST'),
           classes : "govuk-!-margin-0",
-          text: interestSnippet(interestData.rate, interestData.numberOfDays, interestData.interestFromDate, interestData.interestToDate)
+          text: interestSnippet(t, interestData.rate, interestData.numberOfDays, interestData.interestFromDate, interestData.interestToDate)
           }) }}
       {% else %}
         {{ t('PAGES.CLAIM_DETAILS.INTEREST') }}

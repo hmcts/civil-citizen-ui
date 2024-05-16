@@ -300,11 +300,15 @@ import claimFeeMakePaymentAgainController
 import informOtherPartiesController from './features/generalApplication/informOtherPartiesController';
 import hearingSupportController from './features/generalApplication/hearingSupportController';
 import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
+import applicationFeePaymentSuccessfulController from './features/generalApplication/applicationFeePaymentSuccessfulController';
 import claimApplicationCostController from './features/generalApplication/claimApplicationCostController';
 import respondentAgreeToOrderController from 'routes/features/generalApplication/respondentAgreeToOrderController';
 import payingForApplicationController from './features/generalApplication/payingForApplicationController';
+import applicationCostsController from './features/generalApplication/applicationCostsController';
 import requestingReasonController from 'routes/features/generalApplication/requestingReasonController';
+import addAnotherApplicationController from './features/generalApplication/addAnotherApplicationController';
 import orderJudgeController from './features/generalApplication/orderJudgeController';
+import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNoticesController';
 
 export default [
   homeController,
@@ -565,10 +569,14 @@ export default [
   hearingSupportController,
   claimFeeMakePaymentAgainController,
   agreementFromOtherPartyController,
+  applicationFeePaymentSuccessfulController,
   informOtherPartiesController,
   claimApplicationCostController,
   respondentAgreeToOrderController,
   payingForApplicationController,
+  applicationCostsController,
   requestingReasonController,
+  addAnotherApplicationController,
   orderJudgeController,
+  ordersAndNoticesController,
 ];
