@@ -1,8 +1,7 @@
 const LoginPage = require('../../../commonFeatures/home/pages/login');
-const I= actor();
+const I = actor();
 
-class LoginSteps  {
-
+class LoginSteps {
   async AcceptCookies() {
     await LoginPage.acceptCookies();
   }
@@ -25,8 +24,8 @@ class LoginSteps  {
     await I.wait(10);
     await LoginPage.openManageCase();
     //await this.AcceptCookies(); -- skip as it is flaky
-    await LoginPage.caseWorkerLogin(username, password);
+    await LoginPage.caseworkerLogin(username, password);
   }
 }
 
-module.exports =  new LoginSteps();
+module.exports = new LoginSteps();
