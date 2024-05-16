@@ -27,7 +27,7 @@ export const getFinaliseTrialArrangementContents = (claimId: string, claim: Clai
   return new FinaliseYourTrialSectionBuilder()
     .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
     .addMainTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.TITLE')
-    .addLeadParagraph('COMMON.CASE_NUMBER', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
+    .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
     .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
     .addWarning('PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_HAVE_UNTIL_DATE',{hearingDueDate:claim.bundleStitchingDeadline})
     .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_SHOULD_FINALISE')

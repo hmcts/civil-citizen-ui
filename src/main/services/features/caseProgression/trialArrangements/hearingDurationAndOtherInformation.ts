@@ -12,7 +12,7 @@ export const getHearingDurationAndOtherInformation = (claimId:string, claim: Cla
   return new FinaliseYourTrialSectionBuilder()
     .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
     .addMainTitle('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TITLE')
-    .addLeadParagraph('COMMON.CASE_NUMBER', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
+    .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
     .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
     .addTitle('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TRIAL_DURATION_TITLE')
     .addParagraphWithHTML(t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TRIAL_DURATION_PARAGRAPH', {lng, hearingDuration: HearingDurationFormatter.formatHearingDuration(claim.caseProgressionHearing.hearingDuration, lng)}))

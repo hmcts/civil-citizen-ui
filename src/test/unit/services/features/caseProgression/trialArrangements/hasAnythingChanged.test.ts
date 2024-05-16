@@ -36,7 +36,7 @@ describe('hasAnythingChanged', () => {
     //Then
     expect(actualIsCaseReadyContent[0].data.text).toEqual('PAGES.DASHBOARD.HEARINGS.HEARING');
     expect(actualIsCaseReadyContent[1].data.text).toEqual('PAGES.HAS_ANYTHING_CHANGED.FINALISE');
-    expect(actualIsCaseReadyContent[2].data.text).toEqual('COMMON.CASE_NUMBER');
+    expect(actualIsCaseReadyContent[2].data.text).toEqual('COMMON.CASE_NUMBER_PARAM');
     expect(actualIsCaseReadyContent[3].data.text).toEqual('COMMON.CLAIM_AMOUNT_WITH_VALUE');
     expect(actualIsCaseReadyContent[4].data.text).toEqual('PAGES.HAS_ANYTHING_CHANGED.HAS_ANYTHING');
     expect(actualIsCaseReadyContent[5].data.text).toEqual('PAGES.HAS_ANYTHING_CHANGED.DIRECTIONS');

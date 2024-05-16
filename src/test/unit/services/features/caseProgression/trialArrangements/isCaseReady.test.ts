@@ -32,7 +32,7 @@ describe('isCaseReady', () => {
     //Then
     expect(actualIsCaseReadyContent[0].data.text).toEqual('PAGES.DASHBOARD.HEARINGS.HEARING');
     expect(actualIsCaseReadyContent[1].data.text).toEqual('PAGES.IS_CASE_READY.PAGE_TITLE');
-    expect(actualIsCaseReadyContent[2].data.text).toEqual('COMMON.CASE_NUMBER');
+    expect(actualIsCaseReadyContent[2].data.text).toEqual('COMMON.CASE_NUMBER_PARAM');
     expect(actualIsCaseReadyContent[3].data.text).toEqual('COMMON.CLAIM_AMOUNT_WITH_VALUE');
     expect(actualIsCaseReadyContent[4].data.text).toEqual('PAGES.IS_CASE_READY.IS_CASE_READY');
     expect(actualIsCaseReadyContent[5].data.text).toEqual('PAGES.IS_CASE_READY.YOU_ARE_REMINDED');

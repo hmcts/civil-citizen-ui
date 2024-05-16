@@ -46,7 +46,7 @@ describe('hearingDurationAndOtherInformation', () => {
     //Then
     expect(actualHearingDurationContent[0].data.text).toEqual('PAGES.DASHBOARD.HEARINGS.HEARING');
     expect(actualHearingDurationContent[1].data.text).toEqual('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TITLE');
-    expect(actualHearingDurationContent[2].data.text).toEqual('COMMON.CASE_NUMBER');
+    expect(actualHearingDurationContent[2].data.text).toEqual('COMMON.CASE_NUMBER_PARAM');
     expect(actualHearingDurationContent[3].data.text).toEqual('COMMON.CLAIM_AMOUNT_WITH_VALUE');
     expect(actualHearingDurationContent[4].data.text).toEqual('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TRIAL_DURATION_TITLE');
     expect(actualHearingDurationContent[5].data.html).toEqual('<p class="govuk-body">'+t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TRIAL_DURATION_PARAGRAPH', '1 and a half hours')+'</p>');
