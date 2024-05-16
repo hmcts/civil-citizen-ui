@@ -524,6 +524,9 @@ module.exports = {
     caseData = mediationUnsuccessfulPayload['caseData'];
 
     await apiRequest.setupTokens(user);
+    const document = await testingSupport.uploadDocument();
+    caseData = await updateCaseDataWithPlaceholders(caseData, document);
+
     await assertSubmittedSpecEvent(config.claimState.JUDICIAL_REFERRAL);
     console.log('End of mediationUnsuccessful()');
   },
