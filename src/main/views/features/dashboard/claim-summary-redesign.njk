@@ -8,14 +8,13 @@
 
 {% block content %}
 
-      {% if claimId !== 'draft' %}
         {% set claimantName = claim.getClaimantFullName() %}
         {% set defendantName = claim.getDefendantFullName() %}
         <div class="govuk-grid-row govuk-!-margin-top-0">
           <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
             <h1 class="govuk-heading-m">{{ claimantName }} v {{ defendantName }}</h1>
             <p class="govuk-body-m govuk-!-margin-bottom-0">
-                {{ t('COMMON.CASE_NUMBER_WITHOUT_VALUE') }}
+                {{ t('COMMON.CASE_NUMBER') }}
                 {{ claimIdPrettified }}
             </p>
             <p class="govuk-body-m">{{  t('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: claimAmountFormatted}) }}</p>
