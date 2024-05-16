@@ -1,0 +1,84 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/create-table-documents.njk" import addCreateFileInformation, addFileLink, createDocumentsTableWithoutTableCaption %}
+{% from "../../macro/page-information.njk" import pageInformation %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% set claimantDocRows = [] %}
+{% set defendantDocRows = [] %}
+{% set courtDocRows = [] %}
+{% if claimantDocuments.documents.length > 0 %}
+    {% set claimantDocRows = (claimantDocRows.push([
+        {
+            text: t('COMMON.CLAIMANT'),
+            classes: "govuk-body govuk-!-font-weight-bold"
+        },
+        {
+            text: t(responseType)
+        }
+        ]), claimantDocRows) %}
+    {% for item in claimantDocuments.documents %}
+    {% set claimantDocRows = (claimantDocRows.push([
+        {
+            html: addCreateFileInformation(t, t(item.fileName), t(item.uploadDate))
+        },
+        {
+            html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+        }]), claimantDocRows) %}
+    {% endfor %}
+{% endif %}
+{% if defendantDocuments.documents.length > 0 %}
+    {% set defendantDocRows = (defendantDocRows.push([
+        {
+            text: t('COMMON.DEFENDANT'),
+            classes: "govuk-body govuk-!-font-weight-bold"
+        },
+        {
+            text: t(responseType)
+        }
+        ]), defendantDocRows) %}
+    {% for item in defendantDocuments.documents %}
+    {% set defendantDocRows = (defendantDocRows.push([
+        {
+            html: addCreateFileInformation(t, t(item.fileName), t(item.uploadDate))
+        },
+        {
+            html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+        }]), defendantDocRows) %}
+    {% endfor %}
+{% endif %}
+{% if courtDocuments.documents.length > 0 %}
+    {% set courtDocRows = (courtDocRows.push([
+        {
+            text: t('PAGES.ORDERS_AND_NOTICES.COURT_DOCUMENTS'),
+            classes: "govuk-body govuk-!-font-weight-bold"
+        },
+        {
+            text: t(responseType)
+        }
+        ]), courtDocRows) %}
+    {% for item in courtDocuments.documents %}
+    {% set courtDocRows = (courtDocRows.push([
+        {
+            html: addCreateFileInformation(t, t(item.fileName), t(item.uploadDate))
+        },
+        {
+            html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+        }]), courtDocRows) %}
+    {% endfor %}
+{% endif %}
+
+{% block nestedContent %}
+
+{{ pageInformation(t,pageCaption, pageTitle, claimId, claimAmount)}}
+
+{{ createDocumentsTableWithoutTableCaption(claimantDocRows) }}
+{{ createDocumentsTableWithoutTableCaption(defendantDocRows) }}
+{{ createDocumentsTableWithoutTableCaption(courtDocRows) }}
+
+{{ govukButton({
+    text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW'),
+    href: dashboardUrl
+}) }}
+
+{% endblock %}
