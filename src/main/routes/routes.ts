@@ -306,6 +306,7 @@ import payingForApplicationController from './features/generalApplication/paying
 import requestingReasonController from 'routes/features/generalApplication/requestingReasonController';
 import addAnotherApplicationController from './features/generalApplication/addAnotherApplicationController';
 import orderJudgeController from './features/generalApplication/orderJudgeController';
+import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNoticesController';
 
 export default [
   homeController,
@@ -573,4 +574,5 @@ export default [
   requestingReasonController,
   addAnotherApplicationController,
   orderJudgeController,
+  ordersAndNoticesController,
 ];
