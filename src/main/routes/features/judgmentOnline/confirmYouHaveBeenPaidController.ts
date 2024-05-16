@@ -60,9 +60,10 @@ confirmYouHaveBeenPaidController.get(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req
 
 confirmYouHaveBeenPaidController.post(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req: Request | AppRequest, res: Response, next: NextFunction) => {
   try {
+    const {year, month, day, confirmed} = req.body;
     // const claimId = req.params.id;
     // const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const form = new GenericForm(new DateYouHaveBeenPaidForm(req.body.signed));
+    const form = new GenericForm(new DateYouHaveBeenPaidForm(year, month, day, confirmed));
     // const claim = await getCaseDataFromStore(claimId);
     await form.validate();
     const claimId = req.params.id;

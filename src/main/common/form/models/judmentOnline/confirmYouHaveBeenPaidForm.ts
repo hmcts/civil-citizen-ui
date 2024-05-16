@@ -1,46 +1,37 @@
-import {IsDate, IsDefined, IsNotEmpty, Validate, ValidateIf, ValidateNested} from 'class-validator';
+import {IsDate, IsNotEmpty, Max, Min, Validate, ValidateIf} from 'class-validator';
 import {OptionalDateNotInFutureValidator} from 'form/validators/optionalDateNotInFutureValidator';
-import {DateDayValidator} from 'form/validators/dateDayValidator';
-import {DateMonthValidator} from 'form/validators/dateMonthValidator';
-import {DateYearValidator} from 'form/validators/dateYearValidator';
 import {DateConverter} from 'common/utils/dateConverter';
+import {OptionalDateFourDigitValidator} from 'form/validators/optionalDateFourDigitValidator';
 
 export class DateYouHaveBeenPaidForm {
-  @ValidateNested()
-    dateInputFields: DateInputField;
 
-  constructor(day?: string, month?: string, year?: string) {
-    this.dateInputFields = new DateInputField(day, month, year);
-  }
-}
-
-export class DateInputField {
-  @ValidateIf(o => ((o.dateDay !== undefined && o.dateMonth !== undefined && o.dateDay && o.dateMonth && o.dateYear && o.dateDay > 0 && o.dateDay < 32 && o.dateMonth > 0 && o.dateMonth < 13 && o.dateYear > 999)
-      || (o.dateDay !== undefined && o.dateMonth !== undefined && !o.dateDay && !o.dateMonth && !o.dateYear)))
-  @IsDefined({message: 'ERRORS.MEDIATION_VALID_YOU_MUST_ENTER_DOI'})
-  @IsNotEmpty({message: 'ERRORS.MEDIATION_VALID_YOU_MUST_ENTER_DOI'})
+  @ValidateIf(o => (o.day <32 && o.month<13 && o.year > 999))
   @IsDate({message: 'ERRORS.VALID_DATE'})
-  @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.VALID_DATE_NOT_FUTURE'})
-    date: Date;
+  @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.CORRECT_DATE_NOT_IN_FUTURE'})
+    date?: Date;
 
-  @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-  @Validate(DateDayValidator)
-    dateDay: string;
+  @Min(1872,{message:'ERRORS.VALID_YEAR'})
+  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
+    year: number;
 
-  @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-  @Validate(DateMonthValidator)
-    dateMonth: string;
+  @Min(1,{message:'ERRORS.VALID_MONTH'})
+  @Max(12,{message:'ERRORS.VALID_MONTH'})
+    month: number;
 
-  @ValidateIf(o => (o.dateDay || o.dateMonth || o.dateYear))
-  @Validate(DateYearValidator)
-    dateYear: string;
+  @Min(1,{message:'ERRORS.VALID_DAY'})
+  @Max(31,{message:'ERRORS.VALID_DAY'})
+    day: number;
 
-  constructor(day?: string, month?: string, year?: string) {
+  @IsNotEmpty({message: 'PAGES.CONFIRM_YOU_HAVE_BEEN_PAID.CHECK_ERROR_MESSAGE'})
+    confirmed?: boolean;
+
+  constructor(year?: string, month?: string, day?: string, confirmed?: boolean) {
     if (day !== undefined && month !== undefined && year != undefined) {
-      this.dateDay = day;
-      this.dateMonth = month;
-      this.dateYear = year;
+      this.day = Number(day);
+      this.month = Number(month);
+      this.year = Number(year);
       this.date = DateConverter.convertToDate(year, month, day);
+      this.confirmed = confirmed;
     }
   }
 }

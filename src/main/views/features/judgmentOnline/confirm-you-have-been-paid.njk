@@ -36,8 +36,7 @@
             <h1 class="govuk-heading-l">{{ titleH1 }}</h1>
 
             {{ govukDateInput({
-              id: "date-you-were-paid",
-              namePrefix: "date-you-were-paid",
+              id: "date",
               fieldset: {
                 legend: {
                   text: titleH2,
@@ -51,18 +50,18 @@
             }) }}
 
             {{ govukCheckboxes({
-              idPrefix: 'signed',
-              name: 'signed',
+              idPrefix: 'confirmed',
+              name: 'confirmed',
               items: [
                 {
                   value: true,
                   html: t('PAGES.CONFIRM_YOU_HAVE_BEEN_PAID.CONFIRM'),
-                  checked: true if form.model.signed
+                  checked: true if form.model.confirmed
                 }
               ],
               errorMessage: {
-                text:t(form.errorFor(signed))
-              } if form.errorFor(signed)
+                text:t(form.errorFor(confirmed))
+              } if form.errorFor(confirmed)
             }) }}
 
             <div class="govuk-button-group">
