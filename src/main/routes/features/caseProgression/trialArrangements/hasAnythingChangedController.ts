@@ -2,9 +2,8 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {getClaimById} from 'modules/utilityService';
 import {
   CANCEL_TRIAL_ARRANGEMENTS,
-  DEFENDANT_SUMMARY_URL,
-  HAS_ANYTHING_CHANGED_URL,
   IS_CASE_READY_URL,
+  HAS_ANYTHING_CHANGED_URL,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
@@ -24,7 +23,7 @@ const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/h
 const hasAnythingChangedController = Router();
 const dqPropertyName = 'hasAnythingChanged';
 
-hasAnythingChangedController.get([HAS_ANYTHING_CHANGED_URL], (async (req, res, next: NextFunction) => {
+hasAnythingChangedController.get(HAS_ANYTHING_CHANGED_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
@@ -35,7 +34,7 @@ hasAnythingChangedController.get([HAS_ANYTHING_CHANGED_URL], (async (req, res, n
   }
 }) as RequestHandler);
 
-hasAnythingChangedController.post([HAS_ANYTHING_CHANGED_URL],(async (req, res, next) => {
+hasAnythingChangedController.post(HAS_ANYTHING_CHANGED_URL,(async (req, res, next) => {
   try {
     const option = req.body.option;
     const textArea = req.body.textArea;
@@ -59,9 +58,8 @@ hasAnythingChangedController.post([HAS_ANYTHING_CHANGED_URL],(async (req, res, n
 })as RequestHandler);
 
 async function renderView(res: Response, claimId: string, claim: Claim, form: GenericForm<HasAnythingChangedForm>) {
-  const latestUpdatesUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
-  const isCaseReadyUrl = constructResponseUrlWithIdParams(claimId, IS_CASE_READY_URL);
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, IS_CASE_READY_URL);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CANCEL_TRIAL_ARRANGEMENTS);
-  res.render(hasAnythingChangedViewPath, {form, hasAnythingChangedContents:getHasAnythingChanged(claimId, claim), latestUpdatesUrl, isCaseReadyUrl, cancelUrl});
+  res.render(hasAnythingChangedViewPath, {form, hasAnythingChangedContents:getHasAnythingChanged(claimId, claim), backLinkUrl, cancelUrl});
 }
 export default hasAnythingChangedController;
