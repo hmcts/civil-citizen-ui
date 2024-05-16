@@ -2160,16 +2160,17 @@
         "VARY_JUDGMENT": "vary a judgment"
       },
       "GA_PAYMENT_SUCCESSFUL" : {
-        "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY": "If you've chosen not to inform the other parties",
+        "APPLICATION_SUBMITTED":"Application Submitted",
         "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_1": "If you have not provided a valid reason, a judge may order that the other parties should be informed. If this happens, you'll need to pay an additional fee and your application may also be delayed.",
         "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_2": "If a judge agrees that the other parties should not be informed, the other parties will not be able to respond to the application before the judge makes a decision.",
+        "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY": "If you've chosen not to inform the other parties",
         "PAYMENT_SUMMARY_TITLE": "Payment Summary",
         "TITLE" : "General application payment fee confirmation",
-        "WHAT_HAPPENS_NEXT": "What happens next",
         "WHAT_HAPPENS_NEXT_PARA_1": "If you chosen to inform the other parties or agreed the application, they will have 5 working days to respond to your application. If you have a hearing in the next 10 days, your application will be treated urgently.",
         "WHAT_HAPPENS_NEXT_PARA_2": "You may be required to attend an application hearing so that a judge can consider your application with you and the other parties and decide what the next steps should be.",
         "WHAT_HAPPENS_NEXT_PARA_3": "You'll receive a notification letting you know if an application hearing has been scheduled.",
-        "WHAT_HAPPENS_NEXT_PARA_4" : "If you've made an application to change a hearing date, the trial or hearing will go ahead as planned on the original date unless a judge makes an order changing the date of the hearing."
+        "WHAT_HAPPENS_NEXT_PARA_4" : "If you've made an application to change a hearing date, the trial or hearing will go ahead as planned on the original date unless a judge makes an order changing the date of the hearing.",
+        "WHAT_HAPPENS_NEXT": "What happens next"
       },
       "HEARING_SUPPORT": {
         "ALWAYS_ARRANGE": "We'll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the 'Sign language interpreter' box below.",
