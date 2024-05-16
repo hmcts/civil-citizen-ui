@@ -23,7 +23,7 @@
     "CANNOT_FIND_DOCUMENT_TEXT": "If you cannot find a document that you are looking for in this section",
     "CHILDREN": "Children",
     "CHOOSE": "Choose",
-    "CASE_NUMBER_WITHOUT_VALUE": "Case number: ",
+    "CASE_NUMBER": "Case number: ",
     "CIVIL_MONEY_CLAIMS": "Civil Money Claims",
     "CLAIM_AMOUNT": "Claim amount",
     "CLAIM_AMOUNT_WITH_VALUE": "Claim amount: {{claimAmount}}",
@@ -95,11 +95,13 @@
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
       "SUBMIT": "Submit",
       "START_NOW": "Start now",
-      "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
+      "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview",
+      "CLOSE_AND_RETURN_TO_DASHBOARD": "Close and return to dashboard"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Hearing fee",
-      "CLAIM_FEE": "Claim fee"
+      "CLAIM_FEE": "Claim fee",
+      "APPLICATION_FEE" : "Application fee"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Council Tax or Community Charge",
@@ -2226,6 +2228,20 @@
         "SET_ASIDE_JUDGMENT": "set aside (remove) a judgment",
         "TITLE": "Application from the other parties",
         "VARY_JUDGMENT": "vary a judgment"
+      },
+      "GA_PAYMENT_SUCCESSFUL" : {
+        "APPLICATION_SUBMITTED":"Application Submitted",
+        "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_1": "If you have not provided a valid reason, a judge may order that the other parties should be informed. If this happens, you'll need to pay an additional fee and your application may also be delayed.",
+        "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_2": "If a judge agrees that the other parties should not be informed, the other parties will not be able to respond to the application before the judge makes a decision.",
+        "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY": "If you've chosen not to inform the other parties",
+        "PAYMENT_SUMMARY_TITLE": "Payment Summary",
+        "TITLE" : "General application payment fee confirmation",
+        "WHAT_HAPPENS_NEXT_PARA_1": "If you chosen to inform the other parties or agreed the application, they will have 5 working days to respond to your application. If you have a hearing in the next 10 days, your application will be treated urgently.",
+        "WHAT_HAPPENS_NEXT_PARA_2": "You may be required to attend an application hearing so that a judge can consider your application with you and the other parties and decide what the next steps should be.",
+        "WHAT_HAPPENS_NEXT_PARA_3": "You'll receive a notification letting you know if an application hearing has been scheduled.",
+        "WHAT_HAPPENS_NEXT_PARA_4" : "If you've made an application to change a hearing date, the trial or hearing will go ahead as planned on the original date unless a judge makes an order changing the date of the hearing.",
+        "WHAT_HAPPENS_NEXT_PARA_5": "The other parties will have 5 working days to respond to your application. If you have a hearing in the next 10 days, your application will be treated urgently.",
+        "WHAT_HAPPENS_NEXT": "What happens next"
       },
       "HEARING_SUPPORT": {
         "ALWAYS_ARRANGE": "We'll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the 'Sign language interpreter' box below.",
