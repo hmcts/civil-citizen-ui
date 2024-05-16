@@ -28,7 +28,6 @@ export const COOKIES_URL = '/cookies';
 export const SIGN_IN_URL = '/login';
 export const SIGN_OUT_URL = '/logout';
 export const DASHBOARD_URL = '/dashboard';
-export const NOTICES_AND_ORDERS_URL = `${BASE_CASE_URL}/notices-and-orders`;
 export const DASHBOARD_CLAIMANT_URL = `${DASHBOARD_URL}/:id/claimantNewDesign`;
 export const OLD_DASHBOARD_CLAIMANT_URL = `${DASHBOARD_URL}/:id/claimant`;
 export const CITIZEN_PHONE_NUMBER_URL = `${BASE_CASE_RESPONSE_URL}/your-phone`;

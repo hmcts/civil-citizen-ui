@@ -306,8 +306,10 @@ import payingForApplicationController from './features/generalApplication/paying
 import requestingReasonController from 'routes/features/generalApplication/requestingReasonController';
 import addAnotherApplicationController from './features/generalApplication/addAnotherApplicationController';
 import orderJudgeController from './features/generalApplication/orderJudgeController';
+import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNoticesController';
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
+
 export default [
   homeController,
   dashboardController,
@@ -574,6 +576,7 @@ export default [
   requestingReasonController,
   addAnotherApplicationController,
   orderJudgeController,
+  ordersAndNoticesController,
   hearingArrangementController,
   hearingContactDetailsController,
 ];
