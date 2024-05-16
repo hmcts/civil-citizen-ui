@@ -61,7 +61,6 @@ describe('Claim fee payment confirmation', () => {
           expect(res.text).toContain('Application fee');
           expect(res.text).toContain('Application Submitted');
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_1'));
         });
 
     });
