@@ -42,8 +42,8 @@ describe('Trial Arrangements check answers - On GET', () => {
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.CHECK_YOUR_ANSWER.TITLE'));
-        expect(res.text).toContain('Claim number: 1692 7957 9336 1508');
-        expect(res.text).toContain('Mr. Jan Clark v Version 1');
+        expect(res.text).toContain('Case number: 1692 7957 9336 1508');
+        expect(res.text).toContain('Claim amount:');
       });
     const dom = new JSDOM(response.text);
     const htmlDocument = dom.window.document;
