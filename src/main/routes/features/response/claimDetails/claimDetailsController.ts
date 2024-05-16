@@ -1,5 +1,13 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {CASE_DOCUMENT_DOWNLOAD_URL, CASE_DOCUMENT_VIEW_URL, CASE_TIMELINE_DOCUMENTS_URL, CLAIM_DETAILS_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
+import {
+  CASE_DOCUMENT_DOWNLOAD_URL,
+  CASE_DOCUMENT_VIEW_URL,
+  CASE_TIMELINE_DOCUMENTS_URL,
+  CLAIM_DETAILS_URL,
+  DASHBOARD_CLAIMANT_URL,
+  DEFENDANT_SUMMARY_URL,
+  VIEW_ORDERS_AND_NOTICES_URL,
+} from 'routes/urls';
 import {Claim} from 'models/claim';
 import {getInterestDetails} from 'common/utils/interestUtils';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -38,6 +46,7 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: Request, res: Respons
       pageTitle,
       claimId: caseNumberPrettify(claimId),
       dashboardUrl: constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL),
+      ordersAndNoticesUrl: VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId),
     });
   } catch (error) {
     next(error);
