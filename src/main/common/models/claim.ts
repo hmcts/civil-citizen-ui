@@ -113,6 +113,7 @@ export class Claim {
   issueDate?: Date;
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
+  specParticularsOfClaimDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
@@ -169,6 +170,7 @@ export class Claim {
   generalApplication?: GeneralApplication;
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
+  defendantResponseDocuments: SystemGeneratedCaseDocuments[];
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
   // Index signature to allow dynamic property access
@@ -475,6 +477,8 @@ export class Claim {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
         if (documentType == DocumentType.DIRECTIONS_QUESTIONNAIRE) {
           return document.value.documentType === documentType && document.value.documentName.startsWith(claimantOrDefendant);
+        } else if (documentType == DocumentType.SEALED_CLAIM && claimantOrDefendant == DirectionQuestionnaireType.DEFENDANT) {
+          return document.value.documentType === documentType && document.value.documentName.includes('_response_');
         }
         return document?.value.documentType === documentType;
       });

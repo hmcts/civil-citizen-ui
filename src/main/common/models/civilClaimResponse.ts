@@ -16,7 +16,7 @@ import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTrut
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Interest} from 'form/models/interest/interest';
-import {Document, ServedDocumentFiles} from 'models/document/document';
+import {Document, ResponseDocument, ServedDocumentFiles} from 'models/document/document';
 import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
 import {ResponseDeadline} from 'models/responseDeadline';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
@@ -295,6 +295,8 @@ export interface CCDClaim extends ClaimUpdate {
   res1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   claimIssuedHwfDetails?: CCDHelpWithFeesDetails;
   mediationSettlementAgreedAt?: Date;
+  defendantResponseDocuments?: SystemGeneratedCaseDocuments[];
+  applicant1DefenceResponseDocumentSpec?: ResponseDocument;
   isFlightDelayClaim?: string;
   flightDelayDetails?: CCDFlightDelayDetails; 
 }
