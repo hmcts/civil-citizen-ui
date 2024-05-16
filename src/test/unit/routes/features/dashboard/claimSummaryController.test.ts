@@ -343,6 +343,7 @@ describe('Claim Summary Controller Defendant', () => {
         .get(`/dashboard/${claimId}/defendant`)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain('Case number: ');
         });
     });
   });
