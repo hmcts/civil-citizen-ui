@@ -95,7 +95,7 @@ describe('checkAnswersServiceTest', () => {
       const topElementsExpected = [
         {type: ClaimSummaryType.MICRO_TEXT, data: {text: 'PAGES.DASHBOARD.HEARINGS.HEARING'}},
         {type: ClaimSummaryType.MAINTITLE, data: {text: 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_TITLE'}},
-        {type: ClaimSummaryType.LEAD_PARAGRAPH, data: {text: 'COMMON.CASE_NUMBER', variables:{claimId:caseNumberPrettify( claim.id)}, classes:'govuk-!-margin-bottom-1'}},
+        {type: ClaimSummaryType.LEAD_PARAGRAPH, data: {text: 'COMMON.CASE_NUMBER_PARAM', variables:{claimId:caseNumberPrettify( claim.id)}, classes:'govuk-!-margin-bottom-1'}},
         {type: ClaimSummaryType.LEAD_PARAGRAPH, data: {text: 'COMMON.CLAIM_AMOUNT_WITH_VALUE', variables:{claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)}}},
         {type: ClaimSummaryType.INSET_TEXT, data: {html: 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_WARNING_FULL'}},
       ];

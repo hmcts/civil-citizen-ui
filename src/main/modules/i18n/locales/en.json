@@ -12,7 +12,7 @@
     "CREATED_DATE": "Created [{{ createdDate }}]",
     "UNAVAILABLE_DATES": "Dates unavailable",
     "CASE_REFERENCE": "Case reference: {{ claimId }}",
-    "CASE_NUMBER": "Case number: {{ claimId }}",
+    "CASE_NUMBER_PARAM": "Case number: {{ claimId }}",
     "ACCOUNT_TYPE": "Type of account",
     "ADDRESS": "Address",
     "ANNUAL_TURNOVER": "Annual Turnover",
@@ -28,12 +28,14 @@
     "CLAIM_AMOUNT": "Claim amount",
     "CLAIM_AMOUNT_WITH_VALUE": "Claim amount: {{claimAmount}}",
     "CLAIM_NUMBER": "Claim number",
+    "CLAIMANT": "Claimant",
     "CONFIRM_YOUR_DETAILS": "Confirm your details",
     "DASHBOARD": "Dashboard",
     "DATE": "Date",
     "DATE_EXAMPLE": "For example, {{ date }}",
     "DAY": "Day",
     "DEBT": "Debt",
+    "DEFENDANT": "Defendant",
     "DESCRIPTION": "Description",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "EMAIL": "Email",
@@ -398,7 +400,6 @@
       },
       "UPLOAD_DOCUMENTS": {
         "SECTION_TITLE": "Mediation non-attendance",
-
         "TITLE": {
           "YOUR_STATEMENT": "Your statement",
           "DOCUMENTS_REFERRED_TO_IN_STATEMENT": "Documents referred to in the statement"
@@ -1028,6 +1029,52 @@
       "DISCLOSURE_DOCUMENTS": "disclosure",
       "DOCUMENTARY_EVIDENCE": "Documentary evidence",
       "DOCUMENTS": "Documents",
+      "DOCUMENT_HEADERS": {
+        "CLAIMANT": {
+          "ANSWERS_TO_QUESTIONS": "Claimant answers to questions asked by other party",
+          "CASE_SUMMARY": "Claimant case summary",
+          "COSTS": "Claimant costs",
+          "DISCLOSURE_DOCUMENTS": "Claimant disclosure",
+          "DISCLOSURE_LIST": "Claimant disclosure list",
+          "DOCUMENTARY_EVIDENCE": "Claimant documentary evidence",
+          "DOCUMENTS_FOR_DISCLOSURE": "Claimant documents for disclosure",
+          "DOCUMENTS_REFERRED_TO_STATEMENT": "Claimant documents referred to in statement",
+          "EXPERT_EVIDENCE": "Claimant expert evidence",
+          "EXPERT_REPORT": "Claimant expert report",
+          "HEARING_DOCUMENTS": "Claimant hearing documents",
+          "JOINT_STATEMENT_OF_EXPERTS": "Joint statement of experts",
+          "LEGAL_AUTHORITIES": "Claimant legal authorities",
+          "NOTICE_OF_INTENTION": "Claimant intention to rely on hearsay evidence",
+          "QUESTIONS_FOR_OTHER_PARTY": "Claimant questions for other party's expert or joint expert",
+          "SKELETON_ARGUMENT": "Claimant skeleton argument",
+          "TRIAL_DOCUMENTS": "Claimant trial documents",
+          "WITNESS_EVIDENCE": "Claimant witness evidence",
+          "WITNESS_STATEMENT": "Claimant witness statement",
+          "WITNESS_SUMMARY": "Claimant witness summary"
+        },
+        "DEFENDANT": {
+          "ANSWERS_TO_QUESTIONS": "Defendant answers to questions asked by other party",
+          "CASE_SUMMARY": "Defendant case summary",
+          "COSTS": "Defendant costs",
+          "DISCLOSURE_DOCUMENTS": "Defendant disclosure",
+          "DISCLOSURE_LIST": "Defendant disclosure list",
+          "DOCUMENTARY_EVIDENCE": "Defendant documentary evidence",
+          "DOCUMENTS_FOR_DISCLOSURE": "Defendant documents for disclosure",
+          "DOCUMENTS_REFERRED_TO_STATEMENT": "Defendant documents referred to in statement",
+          "EXPERT_EVIDENCE": "Defendant expert evidence",
+          "EXPERT_REPORT": "Defendant expert report",
+          "HEARING_DOCUMENTS": "Defendant hearing documents",
+          "JOINT_STATEMENT_OF_EXPERTS": "Joint statement of experts",
+          "LEGAL_AUTHORITIES": "Defendant legal authorities",
+          "NOTICE_OF_INTENTION": "Defendant intention to rely on hearsay evidence",
+          "QUESTIONS_FOR_OTHER_PARTY": "Defendant questions for other party's expert or joint expert",
+          "SKELETON_ARGUMENT": "Defendant skeleton argument",
+          "TRIAL_DOCUMENTS": "Defendant trial documents",
+          "WITNESS_EVIDENCE": "Defendant witness evidence",
+          "WITNESS_STATEMENT": "Defendant witness statement",
+          "WITNESS_SUMMARY": "Defendant witness summary"
+        }
+      },
       "DOCUMENT_CREATED": "Created:",
       "DOWNLOAD_CLAIM": "Download claim",
       "DOWNLOAD_HEARING_NOTICE": "Download hearing notice",
@@ -2192,6 +2239,10 @@
         "OTHER_PARTIES": "The other parties will be able to see your answer to this question and respond to it.",
         "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application.",
         "TITLE": "Application costs"
+      },
+      "ADD_ANOTHER_APPLICATION": {
+        "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
+        "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -3397,6 +3448,27 @@
       "WHAT_SUPPORT": "What support do you, experts or witnesses need?",
       "FOR_EXAMPLE": "For example, a witness requires a courtroom with step-free access."
     },
+    "ORDERS_AND_NOTICES": {
+      "CCJ_REQUEST": "County Court Judgment request",
+      "CLAIMANT_DQ": "Claimant Directions Questionnaire",
+      "CLAIMANT_RESPONSE_RECEIPT": "Claimant response receipt",
+      "CLAIMANT_TIMELINE": "Claimant timeline of events",
+      "COURT_DOCUMENTS": "Documents from the court",
+      "DEFENDANT_DQ": "Defendant Directions Questionnaire",
+      "DEFENDANT_RESPONSE": "Defendant response",
+      "DEFENDANT_SUPPORT_DOC": "Defendants supporting documents",
+      "DEFENDANT_TIMELINE": "Defendant timeline of events",
+      "DETERMINATION_REQUEST": "Determination request",
+      "DRAFT_CLAIM": "Draft claim form",
+      "PAGE_CAPTION": "Orders and notices from the court",
+      "PAGE_TITLE": "View orders and notices",
+      "PARTICULARS_CLAIM": "Particulars of claim",
+      "RESPOND_TO_DEFENCE": "Respond to defence",
+      "SEALED_CLAIM": "Sealed Claim form",
+      "SETTLEMENT_AGREEMENT": "Settlement agreement",
+      "STANDARD_DIRECTIONS_ORDER": "Standard Directions Order",
+      "UNSEALED_CLAIM":"Unsealed Claim form"
+    },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Defendant response",
       "OTHER_DOCUMENT_TEXT": "This is the response to the claim. This form and other case documents can also be found in ",
@@ -3960,13 +4032,14 @@
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
       "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No",
-      "EXPLAIN_DO_NOT_WANT_COURT":"You need to explain why you do not want the court to inform the other parties.",
       "ENTER_REQUESTING_REASON": "You need to enter your reasons for requesting this order",
+      "EXPLAIN_DO_NOT_WANT_COURT":"You need to explain why you do not want the court to inform the other parties.",
       "ENTER_ORDER_JUDGE": "You need to enter the order you want the judge to make",
       "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
-      "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No"
+      "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
+      "WANT_TO_ADD_ANOTHER_APPLICATION":"You need to tell us if you want to add another application. Choose option: Yes or No"
     }
   }
 }
