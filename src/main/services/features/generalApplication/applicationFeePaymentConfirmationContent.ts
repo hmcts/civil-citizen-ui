@@ -5,6 +5,8 @@ import { getLng } from 'common/utils/languageToggleUtils';
 import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { CaseProgressionHearing } from 'common/models/caseProgression/caseProgressionHearing';
 
+const daysForHearingAdjournWithoutFee =14;
+
 export const getGaPaymentSuccessfulPanelContent = (claim: Claim, lng?: string) => {
   const panelBuilder = new PaymentSuccessfulSectionBuilder();
   if (isApplicationSubmittedWithoutFee(claim.generalApplication.applicationType?.option, claim.caseProgressionHearing)) {
@@ -46,5 +48,5 @@ export const getGaPaymentSuccessfulButtonContent = (redirectUrl : string) => {
 
 const isApplicationSubmittedWithoutFee = (applicationType: ApplicationTypeOption, caseProgressionHearing: CaseProgressionHearing) => {
   const caseProgressionHearingDetails = Object.assign(new CaseProgressionHearing(), caseProgressionHearing);
-  return applicationType === ApplicationTypeOption.ADJOURN_HEARING && (caseProgressionHearingDetails.getDurationOfDaysForHearing() >= 14 || !caseProgressionHearingDetails.hearingDate);
+  return applicationType === ApplicationTypeOption.ADJOURN_HEARING && (caseProgressionHearingDetails.getDurationOfDaysForHearing() >= daysForHearingAdjournWithoutFee || !caseProgressionHearingDetails.hearingDate);
 };
