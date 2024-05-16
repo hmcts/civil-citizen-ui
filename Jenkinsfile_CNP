@@ -65,6 +65,7 @@ def secrets = [
 
 def setUrls(suffix){
   env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
+  env.IDAM_WEB_URL = "https://idam-web-public.aat.platform.hmcts.net"
   env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   if("${suffix}" == 'aat') {
     env.CCD_DATA_STORE_URL = "https://civil-cui-data-store-staging.aat.platform.hmcts.net"
