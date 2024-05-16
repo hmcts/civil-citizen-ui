@@ -620,7 +620,32 @@ describe('Civil Service Client', () => {
       //Then
       expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
     });
-
+    describe('getAirlines', () => {
+      const mockData = [
+        {airline: 'airline 1', epimsID: '1'}, 
+        {airline: 'airline 2', epimsID: '2'},
+      ];
+      it('should get airline list', async () => {
+        //Given
+        const mockGet = jest.fn().mockResolvedValue({data: mockData});
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        const civilServiceClient = new CivilServiceClient(baseUrl, true);
+        //When
+        const airlines = await civilServiceClient.getAirlines(appReq);
+        //Then
+        expect(airlines).toEqual(mockData);
+      });
+      it('should throw error when there is an error with api', async () => {
+        //Given
+        const mockGet = jest.fn().mockImplementation(() => {
+          throw new Error('error');
+        });
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        const civilServiceClient = new CivilServiceClient(baseUrl);
+        //Then
+        await expect(civilServiceClient.getAirlines(appReq)).rejects.toThrow('error');
+      });
+    });
     it('should throw error on get claim fee data', async () => {
       //Given
       const mockGet = jest.fn().mockImplementation(() => {
