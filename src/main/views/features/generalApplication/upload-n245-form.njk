@@ -1,0 +1,28 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "../../macro/button.njk" import addButton %}
+{% from "../dashboard/item-content.njk" import itemContent %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.PAGE_TITLE') }}
+{% endblock %}
+
+{% block nestedContent %}
+  {% if form.hasErrors() %}
+    {{ errorSummary(form.getAllErrors(), t) }}
+  {% endif %}
+  {{headingWithCaption(t,'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.VARY_JUDGMENT','PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.TITLE' )}}
+    {% for content in contentList %}
+      {{ itemContent(content,t) }}
+    {% endfor %}
+    <form method="post" novalidate>
+    {{ csrfProtection(csrf) }}
+    <div class="govuk-button-group">
+      {{ addButton(t, 'CONTINUE', cancelUrl) }}
+    </div>
+  </form>
+{% endblock %}

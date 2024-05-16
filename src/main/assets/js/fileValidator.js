@@ -145,7 +145,7 @@ function addEventListenerWhenDomIsLoaded() {
   });
 }
 
-if (window.location.href.includes('case-progression/upload-documents')) {
+if (window.location.href.includes('case-progression/upload-documents') || window.location.href.includes('general-application/upload-n245-form')) {
   const {observer, observerConfig} = createObservable();
   observer.observe(document, observerConfig);
   addEventListenerWhenDomIsLoaded();

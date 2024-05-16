@@ -47,11 +47,14 @@ export class UploadDocumentsUserForm {
     trialCosts?: FileOnlySection[];
   @ValidateNested()
     trialDocumentary?: TypeOfDocumentSection[];
+  @ValidateNested()
+    gaN245Form?: FileOnlySection[];
 
   constructor(documentsForDisclosure?: TypeOfDocumentSection[], disclosureList?: FileOnlySection[],
     witnessStatement?: WitnessSection[], witnessSummary?: WitnessSummarySection[], noticeOfIntention?: WitnessSection[], documentsReferred?: ReferredToInTheStatementSection[],
     expertReport?: ExpertSection[], expertStatement?: ExpertSection[], questionsForExperts?: ExpertSection[], answersForExperts?: ExpertSection[],
-    trialCaseSummary?: FileOnlySection[], trialSkeletonArgument?: FileOnlySection[], trialAuthorities?: FileOnlySection[], trialCosts?: FileOnlySection[], trialDocumentary?: TypeOfDocumentSection[]) {
+    trialCaseSummary?: FileOnlySection[], trialSkeletonArgument?: FileOnlySection[], trialAuthorities?: FileOnlySection[], trialCosts?: FileOnlySection[], trialDocumentary?: TypeOfDocumentSection[],
+    gaN245Form?: FileOnlySection[]) {
     //disclosure sections
     this.documentsForDisclosure = documentsForDisclosure;
     this.disclosureList = disclosureList;
@@ -74,6 +77,9 @@ export class UploadDocumentsUserForm {
     this.trialAuthorities = trialAuthorities;
     this.trialCosts = trialCosts;
     this.trialDocumentary = trialDocumentary;
+
+    //ga documents
+    this.gaN245Form = gaN245Form;
   }
 }
 

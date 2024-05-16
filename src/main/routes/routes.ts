@@ -305,6 +305,7 @@ import respondentAgreeToOrderController from 'routes/features/generalApplication
 import payingForApplicationController from './features/generalApplication/payingForApplicationController';
 import requestingReasonController from 'routes/features/generalApplication/requestingReasonController';
 import orderJudgeController from './features/generalApplication/orderJudgeController';
+import uploadN245FormController from 'routes/features/generalApplication/uploadN245FormController';
 
 export default [
   homeController,
@@ -571,4 +572,5 @@ export default [
   payingForApplicationController,
   requestingReasonController,
   orderJudgeController,
+  uploadN245FormController,
 ];
