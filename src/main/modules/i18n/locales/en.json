@@ -81,6 +81,7 @@
       "CHANGE": "Change",
       "CONTINUE": "Continue",
       "CANCEL": "Cancel",
+      "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Go back and try payment again",
       "GO_TO_ACCOUNT": "Go to your account",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
@@ -2124,6 +2125,11 @@
         "YOU_CAN_ALSO_ALTER": "You can also alter any of the other text if you need to.",
         "YOU_CAN": "You can:",
         "UPLOAD_NEW_VERSION": "upload a new version of this document with any amends underlined. We'll ask if you want to upload documents to support your application later on"
+      },
+      "PAYMENT_UNSUCCESSFUL": {
+        "CONTACT_YOUR_BANK": "Contact your bank for more details. No money has been taken from your account.",
+        "TITLE": "Unsuccessful payment",
+        "YOUR_PAYMENT_HAS_FAILED": "Your payment has failed"
       },
       "SELECTED_APPLICATION_TYPE": {
         "CANCEL_JUDGMENT": "Set aside (cancel) a judgment",
