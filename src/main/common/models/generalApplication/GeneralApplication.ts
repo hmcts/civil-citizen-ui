@@ -4,7 +4,7 @@ import { InformOtherParties } from './informOtherParties';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {OrderJudge} from './orderJudge';
-import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import { UploadN245Form } from './uploadN245form';
 
 export class GeneralApplication {
 
@@ -16,7 +16,7 @@ export class GeneralApplication {
   respondentAgreeToOrder?: YesNo;
   requestingReason?: RequestingReason;
   orderJudge?: OrderJudge;
-  uploadDocuments?: UploadDocumentsUserForm;
+  uploadN245Form?: UploadN245Form;
 
   constructor(
     applicationType?: ApplicationType,
@@ -25,7 +25,6 @@ export class GeneralApplication {
     respondentAgreeToOrder?: YesNo,
     requestingReason?: RequestingReason,
     orderJudge?: OrderJudge,
-    uploadDocuments?: UploadDocumentsUserForm,
   ) {
     this.applicationType = applicationType;
     this.agreementFromOtherParty = agreementFromOtherParty;
@@ -33,6 +32,5 @@ export class GeneralApplication {
     this.respondentAgreeToOrder = respondentAgreeToOrder;
     this.requestingReason = requestingReason;
     this.orderJudge = orderJudge;
-    this.uploadDocuments = uploadDocuments;
   }
 }
