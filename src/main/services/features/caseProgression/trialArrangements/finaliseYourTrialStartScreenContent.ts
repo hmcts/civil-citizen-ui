@@ -10,6 +10,7 @@ import {FinaliseYourTrialSectionBuilder} from 'models/caseProgression/trialArran
 import {DocumentType} from 'models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 export const getFinaliseTrialArrangementContents = (claimId: string, claim: Claim) => {
   let defendantOrClaimant;
@@ -24,12 +25,10 @@ export const getFinaliseTrialArrangementContents = (claimId: string, claim: Clai
   }
 
   return new FinaliseYourTrialSectionBuilder()
+    .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
     .addMainTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.TITLE')
-    .addLeadParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CASE_REFERENCE', {claimId:caseNumberPrettify( claimId)}, 'govuk-!-margin-bottom-1')
-    .addLeadParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.PARTIES', {
-      claimantName: claim.getClaimantFullName(),
-      defendantName: claim.getDefendantFullName(),
-    })
+    .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
+    .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
     .addWarning('PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_HAVE_UNTIL_DATE',{hearingDueDate:claim.bundleStitchingDeadline})
     .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_SHOULD_FINALISE')
     .addTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.IS_THE_CASE_READY_FOR_TRIAL')

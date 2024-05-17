@@ -20,10 +20,10 @@
     "BALANCE": "Balans",
     "BANK_AND_SAVINGS_ACCOUNTS": "Cyfrifon banc a chynilo",
     "BANK_JOINT_ACCOUNT": "Cyfrif ar y cyd",
-    "CANNOT_FIND_DOCUMENT_TEXT": "Os na allwch ddod o hyd i ddogfen rydych yn chwilio amdani yn yr adran hon",
+    "CANNOT_FIND_DOCUMENT_TEXT": "Os na allwch ddod o hyd i'r ddogfen yr ydych yn chwilio amdani yn yr adran hon",
     "CHILDREN": "Plant",
     "CHOOSE": "Dewiswch",
-    "CASE_NUMBER": "Rhif yr achos: ",
+    "CASE_NUMBER_WITHOUT_VALUE": "Rhif yr achos: ",
     "CIVIL_MONEY_CLAIMS": "Hawliadau am Arian yn y Llys Sifil",
     "CLAIM_AMOUNT": "Swm yr hawliad",
     "CLAIM_AMOUNT_WITH_VALUE": "Swm yr hawliad: {{claimAmount}}",
@@ -55,7 +55,7 @@
     "NO": "Nac oes",
     "NUMBER_OF_PEOPLE": "Nifer y bobl",
     "OPTIONAL_CONTACT_PERSON": "Unigolyn cyswllt (dewisol)",
-    "ORDER_AND_NOTICES": "orders and notices",
+    "ORDER_AND_NOTICES": "gorchmynion a rhybuddion",
     "MANDATORY_CONTACT_PERSON": "Contact person",
     "PARTIES": "{{ claimantName }} v {{ defendantName }}",
     "REASON": "Rheswm",
@@ -153,7 +153,7 @@
     },
     "EVIDENCE_SUMMARY": {
       "TITLE": "Tystiolaeth",
-      "ROW_TYPE": "Type"
+      "ROW_TYPE": "Math"
     },
     "HEADER": {
       "MONEY_CLAIMS": "Hawliadau am Arian",
@@ -880,7 +880,7 @@
       "AMOUNT": "Swm",
       "AMOUNT_BREAKDOWN": "Dadansoddiad o’r swm",
       "CLAIM_FEE": "Ffi’r hawliad",
-      "CLAIM_HAS_BEEN_MADE_TEXT": "This is the claim that's has been made in the case. It can also be found in",
+      "CLAIM_HAS_BEEN_MADE_TEXT": "Dyma'r hawliad sydd wedi'i wneud yn yr achos. Gellir hefyd dod o hyd iddo yn yr adran",
       "CLAIM_NUMBER": "Rhif yr hawliad",
       "CLAIM_TOTAL": "Cyfanswm yr hawliad",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Lawrlwytho a gweld llinell amser",
@@ -889,9 +889,9 @@
       "INTEREST": "Llog",
       "INTEREST_SNIPPET": "Llog wedi ei gyfrifo ar {{ rate }}% am  {{ numberOfDays }} diwrnod ({{ interestDate }} tan {{ interestToDate }})",
       "PAGE_TITLE": "Manylion yr hawliad",
-      "PAGE_TITLE_NEW": "View the claim",
+      "PAGE_TITLE_NEW": "Gweld yr hawliad",
       "REASON_FOR_CLAIM": "Rheswm dros yr hawliad",
-      "THE_CLAIM": "The Claim",
+      "THE_CLAIM": "Yr hawliad",
       "TIMELINE": "Amserlen",
       "TITLE": "Claim Details",
       "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm",
@@ -1383,11 +1383,11 @@
       "DEFENDANT": "Diffynnydd",
       "CONTACT": "Cyswllt ",
       "PAGE_TITLE": "Cysylltu â’r hawlydd",
-      "PAGE_TITLE_CLAIMANT": "View information about the claimant",
-      "PAGE_TITLE_DEFENDANT": "View information about the defendant",
+      "PAGE_TITLE_CLAIMANT": "Gweld yr wybodaeth am yr hawlydd",
+      "PAGE_TITLE_DEFENDANT": "Gweld yr wybodaeth am y diffynnydd",
       "PHONE": "Rhif ffôn",
-      "THE_CLAIM": "The claim",
-      "THE_RESPONSE": "The response"
+      "THE_CLAIM": "Yr hawliad",
+      "THE_RESPONSE": "Yr ymateb"
     },
     "COOKIES": {
       "ADDITIONAL_COOKIES": "Gall gwasanaethau'r llywodraeth osod cwcis ychwanegol ac, os felly, bydd ganddyn nhw eu polisi a'u baner cwcis eu hunain.",
@@ -1615,17 +1615,17 @@
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement."
       },
       "SUPPORT_LINKS": {
-        "CONTACT_COURT": "Contact the court to request a change to my case (make an application)",
-        "FIND_INFO_COURT": "Find information about my court",
-        "FIND_MEDIATION": "Find out about mediation",
-        "FIND_LEGAL_ADVICE": "Find legal advice",
-        "GET_DEBT_RESPITE": "Get debt respite (breathing space)",
-        "HELP_SUPPORT": "Help and support",
-        "HELP_FEES": "Help with fees",
-        "I_WANT_TO": "I want to...",
-        "REPRESENT_MYSELF": "Represent myself at a hearing",
-        "TELL_US_ENDED": "Tell us you've ended the claim",
-        "WHAT_EXPECT_HEARING": "What to expect at a hearing"
+        "CONTACT_COURT": "Cysylltu â'r llys i ofyn i wneud newid i fy achos (gwneud cais)",
+        "FIND_INFO_COURT": "Dod o hyd i wybodaeth am fy llys",
+        "FIND_MEDIATION": "Canfod mwy am gyfryngu",
+        "FIND_LEGAL_ADVICE": "Dod o hyd i gyngor cyfreithiol",
+        "GET_DEBT_RESPITE": "Cael seibiant o ddyledion (lle i anadlu)",
+        "HELP_SUPPORT": "Cymorth a chefnogaeth",
+        "HELP_FEES": "Help i dalu ffioedd",
+        "I_WANT_TO": "Rwyf eisiau...",
+        "REPRESENT_MYSELF": "Cynrychioli fy hun mewn gwrandawiad",
+        "TELL_US_ENDED": "Dywedwch wrthym eich bod wedi dod â’r hawliad i ben",
+        "WHAT_EXPECT_HEARING": "Beth i'w ddisgwyl mewn gwrandawiad"
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
       "VIEW": "Weiv",
@@ -3242,12 +3242,12 @@
       "HEADER": "Ymateb i hawliad ariannol",
       "ALL_ACTIONS_COMPLETED_CHECK_ANSWERS": "Ar ôl i chi gwblhau'r holl gamau byddwch yn mynd ymlaen i dudalen lle gallwch wirio'ch atebion cyn eu cyflwyno.",
       "COMPLETE": "Cyflawn",
-      "DONE": "Done",
+      "DONE": "Wedi'i wneud",
       "INCOMPLETE": "Anghyflawn",
       "IN_PROGRESS": "In progress",
       "READY_TO_VIEW": "Ready to view",
-      "NOT_AVAILABLE_YET": "Not available yet",
-      "ACTION_NEEDED": "Action needed"
+      "NOT_AVAILABLE_YET": "Ddim ar gael eto",
+      "ACTION_NEEDED": "Mae angen gweithredu"
     },
     "TENANCY_DEPOSIT": {
       "TITLE": "A yw eich hawliad am flaendal tenantiaeth?"
@@ -3479,12 +3479,12 @@
       "UNSEALED_CLAIM": "Ffurflen Hawlio heb ei selio"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
-      "DOCUMENT_LABEL": "Defendant response",
-      "OTHER_DOCUMENT_TEXT": "This is the response to the claim. This form and other case documents can also be found in ",
-      "PAGE_CAPTION": "The response",
-      "PAGE_TITLE": "View the response to the claim",
-      "RESPONSE_TYPE_LABEL": "Response type",
-      "TABLE_TITLE": "Response"
+      "DOCUMENT_LABEL": "Ymateb y Diffynnydd",
+      "OTHER_DOCUMENT_TEXT": "Dyma'r ymateb i'r hawliad. Gellir dod o hyd i'yr ffurflen hon a dogfennau eraill yr achos yn yr adran ",
+      "PAGE_CAPTION": "Yr ymateb",
+      "PAGE_TITLE": "'Gweld yr ymateb i’r hawliad",
+      "RESPONSE_TYPE_LABEL": "Math o ymateb",
+      "TABLE_TITLE": "Ymateb"
     },
     "VULNERABILITY": {
       "PAGE_TITLE": "Cwestiynau bregusrwydd",
