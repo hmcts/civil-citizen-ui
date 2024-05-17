@@ -1,4 +1,4 @@
-import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL,
   CONFIRM_YOU_HAVE_BEEN_PAID_URL,
@@ -10,17 +10,16 @@ import {t} from 'i18next';
 import {getClaimById} from 'modules/utilityService';
 import {DateYouHaveBeenPaidForm} from 'form/models/judmentOnline/confirmYouHaveBeenPaidForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import config from 'config';
+import {DateConverter} from 'common/utils/dateConverter';
+import {translateJudgmentOnlineToCCD} from 'services/translation/judgmentOnline/ccdJudgmentOnlineTranslation';
+import {JudgmentPaidInFull} from 'models/judgmentOnline/judgmentPaidInFull';
 
 const confirmYouHaveBeenPaidViewPath = 'features/judgmentOnline/confirm-you-have-been-paid';
 const confirmYouHaveBeenPaidController = Router();
-// function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, isClaimant: boolean, lang: string) {
-//   const isSmallClaims = claim.isSmallClaimsTrackDQ;
-//   const cancelUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claim.id);
-// // if(isClaimant && specClaim) {
-//   res.render(confirmYouHaveBeenPaidViewPath, {
-//     form, isSmallClaims, cancelUrl,
-//   });
-// }
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const getSupportLinks = (lng: string) => {
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
@@ -30,61 +29,55 @@ const getSupportLinks = (lng: string) => {
   return [iWantToTitle, iWantToLinks] as const;
 };
 
+function renderView(form: GenericForm<DateYouHaveBeenPaidForm>, res: Response, lang: string, cancelUrl: string) {
+  const [iWantToTitle, iWantToLinks] = getSupportLinks(lang);
+  res.render(
+    confirmYouHaveBeenPaidViewPath, {
+      form,
+      iWantToTitle,
+      iWantToLinks,
+      cancelUrl,
+    },
+  );
+}
+
 confirmYouHaveBeenPaidController.get(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const [iWantToTitle, iWantToLinks] = getSupportLinks(lang);
     const isSmallClaims = claim.isSmallClaimsTrackDQ;
     const isClaimant = claim.isClaimant();
     const cancelUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claim.id);
 
     const form = new GenericForm(new DateYouHaveBeenPaidForm());
-    // res.render(confirmYouHaveBeenPaidViewPath, {confirmYouHaveBeenPaid:getConfirmYouHaveBeenPaidContents(claimId, claim)});
-    // renderView(res, form, claim, claimId, claim.isClaimant(), iWantToLinks, iWantToTitle, helpSupportLinks, helpSupportTitle, lang);
     if (isClaimant && isSmallClaims) {
-      res.render(
-        confirmYouHaveBeenPaidViewPath, {
-          form,
-          iWantToTitle,
-          iWantToLinks,
-          cancelUrl,
-        },
-      );
+      renderView(form, res, lang, cancelUrl);
     }
   } catch (error) {
     next(error);
   }
 })as RequestHandler);
 
-confirmYouHaveBeenPaidController.post(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req: Request | AppRequest, res: Response, next: NextFunction) => {
+confirmYouHaveBeenPaidController.post(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const {year, month, day, confirmed} = req.body;
-    // const claimId = req.params.id;
-    // const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const form = new GenericForm(new DateYouHaveBeenPaidForm(year, month, day, confirmed));
-    // const claim = await getCaseDataFromStore(claimId);
     await form.validate();
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const [iWantToTitle, iWantToLinks] = getSupportLinks(lang);
     const cancelUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claim.id);
 
     if (form.hasErrors()) {
-      res.render(
-        confirmYouHaveBeenPaidViewPath, {
-          form,
-          iWantToTitle,
-          iWantToLinks,
-          cancelUrl,
-        },
-      );
-      // renderView(res, form, claim, claimId, isSmallClaims, lang);
+      renderView(form, res, lang, cancelUrl);
     } else {
-      // await saveUploadedDocuments(claim, <AppRequest>req);
-      // await deleteDraftClaimFromStore(claimId);
+      const judgmentPaidInFull = new JudgmentPaidInFull;
+      judgmentPaidInFull.dateOfFullPaymentMade = DateConverter.convertToDate(year, month, day);
+      judgmentPaidInFull.confirmFullPaymentMade = confirmed;
+      claim.judgmentPaidInFull = judgmentPaidInFull;
+      const claimUpdate = translateJudgmentOnlineToCCD(claim);
+      await civilServiceClient.submitJudgmentPaidInFull(claimId, claimUpdate, req);
       res.redirect(constructResponseUrlWithIdParams(claim.id, CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL));
     }
   } catch (error) {

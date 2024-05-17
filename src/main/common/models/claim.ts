@@ -82,6 +82,7 @@ import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uplo
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import {GeneralApplication} from './generalApplication/GeneralApplication';
+import {JudgmentPaidInFull} from 'models/judgmentOnline/judgmentPaidInFull';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -168,6 +169,7 @@ export class Claim {
   generalApplication?: GeneralApplication;
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
+  judgmentPaidInFull?: JudgmentPaidInFull;
   // Index signature to allow dynamic property access
   [key: string]: any;
 
