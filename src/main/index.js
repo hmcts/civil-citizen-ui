@@ -10,7 +10,7 @@ import './assets/js/jquery';
 import './assets/js/mojAll';
 import './assets/js/select-toggle';
 import './assets/js/language-toggle';
-import { initAll } from 'govuk-frontend';
+import { initAll } from 'govuk-frontend/dist';
 import './modules/cookie/cookieConfig';
 import './assets/js/fileValidator.js';
 import './assets/js/cookies-controller.js';

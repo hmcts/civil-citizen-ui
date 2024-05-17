@@ -71,7 +71,7 @@ export class Nunjucks {
       '..',
       '..',
       'node_modules',
-      'govuk-frontend',
+      'govuk-frontend/dist',
     );
     const mojFrontendPath = join(
       __dirname,
