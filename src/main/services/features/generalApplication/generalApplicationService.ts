@@ -62,6 +62,18 @@ export const saveApplicationCosts = async (claimId: string, applicationCosts: Ye
   }
 };
 
+export const saveIfPartyWantsToUploadDoc = async (claimId: string, wantToSaveDoc: YesNo): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.wantToUploadDocuments = wantToSaveDoc;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
   if (claim.isClaimant()) {
     const isDashboardEnabled = await isDashboardServiceEnabled();

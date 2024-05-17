@@ -2065,6 +2065,11 @@
         "TITLE": "Application from the other parties",
         "VARY_JUDGMENT": "vary a judgment"
       },
+      "HEARING_APPLICATION": {
+        "TITLE": "Application hearing arrangements",
+        "MSG1": "You may need to attend an application hearing so that a judge can consider the application with you and the other parties and decide what the next steps should be.",
+        "MSG2": "This hearing is not to discuss the claim. This is a separate hearing to discuss the application."
+      },
       "HEARING_SUPPORT": {
         "ALWAYS_ARRANGE": "We'll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the 'Sign language interpreter' box below.",
         "ARRANGING_OWN": "If you'll be arranging your own interpreter, you still need to tell us what language you'll be using by ticking the 'Language interpreter' box below.",
@@ -2100,6 +2105,17 @@
         "OTHER_PARTIES": "The other parties will be able to see your answer to this question and respond to it.",
         "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application.",
         "TITLE": "Application costs"
+      },
+      "WANT_TO_UPLOAD_DOCUMENTS": {
+        "TITLE": "Do you want to upload documents to support your application? (Optional)",
+        "MSG1": "If you've selected multiple applications, you should upload documents that relate to all of them.",
+        "ERROR_MSG": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No' and don't allow progression to next screen."
+      },
+      "UPLOAD_DOCUMENTS": {
+        "TITLE": "Upload documents to support your application",
+        "MSG1": "You should only upload documents that are relevant to your application.",
+        "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",
+        "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {

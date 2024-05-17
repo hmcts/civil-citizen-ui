@@ -8,6 +8,7 @@ export class GeneralApplication {
   hearingSupport?: HearingSupport;
   agreementFromOtherParty?: YesNo;
   applicationCosts?: YesNo;
+  wantToUploadDocuments?: YesNo;
 
   constructor(applicationType?: ApplicationType, agreementFromOtherParty?: YesNo, applicationCosts?: YesNo) {
     this.applicationType = applicationType;
