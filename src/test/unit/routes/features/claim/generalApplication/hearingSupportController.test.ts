@@ -2,7 +2,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {HEARING_SUPPORT_URL} from 'routes/urls';
+import {GA_HEARING_SUPPORT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
@@ -30,7 +30,7 @@ describe('General Application - Application type', () => {
       app.locals.draftStoreClient = mockCivilClaim;
 
       await request(app)
-        .get(HEARING_SUPPORT_URL)
+        .get(GA_HEARING_SUPPORT_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE'));
@@ -40,7 +40,7 @@ describe('General Application - Application type', () => {
     it('should return http 500 when has error in the get method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(HEARING_SUPPORT_URL)
+        .get(GA_HEARING_SUPPORT_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -52,7 +52,7 @@ describe('General Application - Application type', () => {
     it('should send the value and redirect', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(HEARING_SUPPORT_URL)
+        .post(GA_HEARING_SUPPORT_URL)
         .send({requiredSupport: [SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT],
           signLanguageContent: 'test1', languageContent: 'test2', otherContent: 'test3'})
         .expect((res) => {
@@ -63,7 +63,7 @@ describe('General Application - Application type', () => {
     it('should return errors on box selected but no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
-        .post(HEARING_SUPPORT_URL)
+        .post(GA_HEARING_SUPPORT_URL)
         .send({requiredSupport: SupportType.OTHER_SUPPORT, signLanguageContent: '', languageContent: '', otherContent: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -74,7 +74,7 @@ describe('General Application - Application type', () => {
     it('should return http 500 when has error in the post method', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(HEARING_SUPPORT_URL)
+        .post(GA_HEARING_SUPPORT_URL)
         .send({requiredSupport: [SupportType.STEP_FREE_ACCESS, SupportType.HEARING_LOOP]})
         .expect((res) => {
           expect(res.status).toBe(500);
