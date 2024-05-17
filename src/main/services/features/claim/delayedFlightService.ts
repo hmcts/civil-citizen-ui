@@ -74,10 +74,10 @@ export const saveFlightDetails = async (claimId: string, flightDetails: FlightDe
 export const buildDataList = (airlines: AirlineList[] = [], hasAirlineError: boolean, selection = '', lng: string) => {
   let options = '';
   airlines
-  .filter(item => item.airline !== 'OTHER')
-  .forEach((airline) => {
-    options += `<option value="${airline.airline}"> `;
-  });
+    .filter(item => item.airline !== 'OTHER')
+    .forEach((airline) => {
+      options += `<option value="${airline.airline}"> `;
+    });
 
   return `
     <div class="${hasAirlineError ? 'govuk-form-group--error govuk-!-margin-bottom-6' : 'govuk-form-group'}">
