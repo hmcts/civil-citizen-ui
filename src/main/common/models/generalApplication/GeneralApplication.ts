@@ -4,6 +4,7 @@ import { InformOtherParties } from './informOtherParties';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {OrderJudge} from './orderJudge';
+import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 
 export class GeneralApplication {
 
@@ -15,11 +16,12 @@ export class GeneralApplication {
   respondentAgreeToOrder?: YesNo;
   requestingReason?: RequestingReason;
   orderJudge?: OrderJudge;
+  unavailableDatesHearing?: UnavailableDatesGaHearing;
 
   constructor(
-    applicationType?: ApplicationType, 
-    agreementFromOtherParty?: YesNo, 
-    applicationCosts?: YesNo, 
+    applicationType?: ApplicationType,
+    agreementFromOtherParty?: YesNo,
+    applicationCosts?: YesNo,
     respondentAgreeToOrder?: YesNo,
     requestingReason?: RequestingReason,
     orderJudge?: OrderJudge,

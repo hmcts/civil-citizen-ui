@@ -181,13 +181,15 @@
           {{ govukButton({
             text: t('COMMON.REMOVE_CARM') if isCarm else t('COMMON.REMOVE') ,
             classes: "govuk-button--secondary remove-row govuk-visually-hidden",
-            type: "button"
+            type: "button" if not removeButton.noJs
           }) }}
         {% else %}
           {{ govukButton({
             text: t('COMMON.REMOVE_CARM') if isCarm else t('COMMON.REMOVE') ,
             classes: "govuk-button--secondary remove-row",
-            type: "button"
+            name: 'action',
+            value: 'remove-unavailableDates' + index,
+            type: "button" if not removeButton.noJs
           }) }}
         {% endif %}
       {% endif %}

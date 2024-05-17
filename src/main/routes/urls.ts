@@ -313,3 +313,4 @@ export const GA_AGREE_TO_ORDER_URL = `${BASE_GENERAL_APPLICATION_URL}/agree-to-o
 export const GA_APPLICATION_COSTS_URL = `${BASE_GENERAL_APPLICATION_URL}/application-costs`;
 export const GA_REQUESTING_REASON_URL = `${BASE_GENERAL_APPLICATION_URL}/requesting-reason`;
 export const GA_ADD_ANOTHER_APPLICATION_URL = `${BASE_GENERAL_APPLICATION_URL}/add-another-application`;
+export const GA_UNAVAILABLE_HEARING_DATES_URL = `${BASE_GENERAL_APPLICATION_URL}/unavailable-dates`;
