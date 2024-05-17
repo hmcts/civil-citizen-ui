@@ -1765,8 +1765,8 @@
       "CLAIMING_FOR_DELAYED": "A ydych yn hawlio am oedi wrth hedfan?"
     },
     "FLIGHT_DETAILS": {
-      "FLIGHT_DETAILS": "Rhowch fanylion y daith hedfan",
       "AIRLINE": "Cwmni hedfan",
+      "FLIGHT_DETAILS": "Rhowch fanylion y daith hedfan",
       "FLIGHT_NUMBER": "Rhif Hedfan",
       "SCHEDULED_DATE": "Dyddiad hedfan a drefnwyd"
     },
@@ -3670,9 +3670,9 @@
     },
     "FLIGHT_DETAILS": {
       "AIRLINE_REQUIRED": "Mae angen manylion y cwmni hedfan",
-      "FLIGHT_NUMBER_REQUIRED": "Mae angen rhif hedfan",
-      "DATE_FLIGH_REQUIRED": "Mae angen dyddiad hedfan",
-      "DATE_FLIGHT_PAST": "Rhaid i'r dyddiad hedfan a drefnwyd fod heddiw neu yn y gorffennol"
+      "DATE_FLIGHT_PAST": "Rhaid i'r dyddiad hedfan a drefnwyd fod heddiw neu yn y gorffennol",
+      "DATE_FLIGHT_REQUIRED": "Mae angen dyddiad hedfan",
+      "FLIGHT_NUMBER_REQUIRED": "Mae angen rhif hedfan"
     },
     "ENTER_A_DEBT": "Rhowch fanylion y ddyled",
     "ENTER_AN_EXPLANATION": "Rhowch esboniad pam na allwch dalu nawr",

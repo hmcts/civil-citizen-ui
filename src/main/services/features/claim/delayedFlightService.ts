@@ -1,6 +1,8 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {FlightDetails} from 'common/models/flightDetails';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {AirlineList} from 'common/models/airlines/flights';
+import {t} from 'i18next';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('Claim - Claim Interest');
@@ -67,4 +69,23 @@ export const saveFlightDetails = async (claimId: string, flightDetails: FlightDe
     logger.error(error);
     throw error;
   }
+};
+
+export const buildDataList = (airlines: AirlineList[] = [], hasAirlineError: boolean, selection = '', lng: string) => {
+  let options = '';
+  airlines
+  .filter(item => item.airline !== 'OTHER')
+  .forEach((airline) => {
+    options += `<option value="${airline.airline}"> `;
+  });
+
+  return `
+    <div class="${hasAirlineError ? 'govuk-form-group--error govuk-!-margin-bottom-6' : 'govuk-form-group'}">
+      <p class="govuk-body govuk-!-margin-bottom-1">${t('PAGES.FLIGHT_DETAILS.AIRLINE', { lng })}</p>
+      <p class="${hasAirlineError ? 'govuk-error-message' : 'govuk-visually-hidden'}">${t('ERRORS.FLIGHT_DETAILS.AIRLINE_REQUIRED', { lng })}</p>
+      <input list="airlines" name="airline" id="airline" value="${selection}" aria-label="airline list" class="${hasAirlineError ? 'govuk-input govuk-!-width-one-half govuk-input--error' : 'govuk-input govuk-!-width-one-half'}">
+      <datalist id="airlines" class="govuk-!-padding-bottom-0">
+        ${options}
+      </datalist>
+    </div>`;
 };

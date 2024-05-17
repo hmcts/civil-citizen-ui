@@ -2,11 +2,10 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {CLAIM_DEFENDANT_COMPANY_DETAILS_URL, FLIGHT_DETAILS_URL} from '../../../urls';
 import {AppRequest} from 'models/AppRequest';
-import {getFlightDetails, saveFlightDetails} from 'services/features/claim/delayedFlightService';
+import {buildDataList, getFlightDetails, saveFlightDetails} from 'services/features/claim/delayedFlightService';
 import {FlightDetails} from 'common/models/flightDetails';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
-import {t} from 'i18next';
 import {AirlineList} from 'common/models/airlines/flights';
 
 const flightDetailsController = Router();
@@ -49,23 +48,5 @@ flightDetailsController.post(FLIGHT_DETAILS_URL, (async (req: AppRequest, res: R
     next(error);
   }
 }) as RequestHandler);
-
-const buildDataList = (airlines: AirlineList[] = [], hasAirlineError: boolean, selection = '', lng: string) => {
-  let options = '';
-  airlines = airlines.filter(item => item.airline !== 'OTHER');
-  airlines.forEach((airline) => {
-    options += `<option value="${airline.airline}"> `;
-  });
-
-  return `
-    <div class="${hasAirlineError ? 'govuk-form-group--error govuk-!-margin-bottom-6' : 'govuk-form-group'}">
-      <p class="govuk-body govuk-!-margin-bottom-1">${t('PAGES.FLIGHT_DETAILS.AIRLINE', { lng })}</p>
-      <p class="${hasAirlineError ? 'govuk-error-message' : 'govuk-visually-hidden'}">${t('ERRORS.FLIGHT_DETAILS.AIRLINE_REQUIRED', { lng })}</p>
-      <input list="airlines" name="airline" id="airline" value="${selection}" aria-label="airline list" class="${hasAirlineError ? 'govuk-input govuk-!-width-one-half govuk-input--error' : 'govuk-input govuk-!-width-one-half'}">
-      <datalist id="airlines" class="govuk-!-padding-bottom-0">
-        ${options}
-      </datalist>
-    </div>`;
-};
 
 export default flightDetailsController;

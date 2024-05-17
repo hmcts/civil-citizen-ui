@@ -1765,8 +1765,8 @@
       "CLAIMING_FOR_DELAYED": "Are you claiming for a delayed flight?"
     },
     "FLIGHT_DETAILS": {
-      "FLIGHT_DETAILS": "Enter flight details",
       "AIRLINE": "Airline",
+      "FLIGHT_DETAILS": "Enter flight details",
       "FLIGHT_NUMBER": "Flight number",
       "SCHEDULED_DATE": "Scheduled date of flight"
     },
@@ -3670,9 +3670,9 @@
     },
     "FLIGHT_DETAILS": {
       "AIRLINE_REQUIRED": "Airline is required",
-      "FLIGHT_NUMBER_REQUIRED": "Flight number is required",
-      "DATE_FLIGH_REQUIRED": "Date of flight is required",
-      "DATE_FLIGHT_PAST": "Scheduled date of flight must be today or in the past"
+      "DATE_FLIGHT_PAST": "Scheduled date of flight must be today or in the past",
+      "DATE_FLIGHT_REQUIRED": "Date of flight is required",
+      "FLIGHT_NUMBER_REQUIRED": "Flight number is required"
     },
     "ENTER_A_DEBT": "Enter a debt",
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can’t pay now",
