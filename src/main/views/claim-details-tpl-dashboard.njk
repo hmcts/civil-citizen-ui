@@ -83,6 +83,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 {% endblock %}
 {% block content %}
 <div class="govuk-grid-row">
+  {% if form != null and form.hasErrors() %}
+    {{ errorSummary(form.getAllErrors(), t) }}
+  {% endif %}
+</div>
+<div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     {% block nestedContent %}{% endblock %}
   </div>
