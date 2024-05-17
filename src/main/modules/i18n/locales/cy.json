@@ -2311,6 +2311,12 @@
         "SENT_TO_JUDGE": "Their application and your response will then be sent to a judge.",
         "TITLE": "Respond to a request for a change to the case",
         "WHAT_TO_DO_NEXT": "What to do next"
+      },
+      "RESPONDENT_AGREEMENT": {
+        "TITLE": "Do you agree that the court should make the order that the other parties have requested?",
+        "TEXT_REVIEW": "Make sure you've reviewed the full application. If you disagree with any part of the application, select 'No' and explain why.",
+        "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
+        "DISAGREE_EXPLANATION": "Explain why you disagree with the application"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -4111,7 +4117,10 @@
       "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
       "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
       "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
-      "ENTER_VALID_EMAIL": "You need to enter a valid email address"
+      "ENTER_VALID_EMAIL": "You need to enter a valid email address",
+      "RESPONDENT_AGREEMENT": {
+        "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No"
+      }
     }
   }
 }
