@@ -309,6 +309,8 @@ import requestingReasonController from 'routes/features/generalApplication/reque
 import addAnotherApplicationController from './features/generalApplication/addAnotherApplicationController';
 import orderJudgeController from './features/generalApplication/orderJudgeController';
 import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNoticesController';
+import respondentRequestChangeInformationController
+  from 'routes/features/generalApplication/respondentRequestChangeInformationController';
 
 export default [
   homeController,
@@ -579,4 +581,5 @@ export default [
   addAnotherApplicationController,
   orderJudgeController,
   ordersAndNoticesController,
+  respondentRequestChangeInformationController,
 ];
