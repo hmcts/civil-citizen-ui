@@ -13,7 +13,7 @@ import {
   FileOnlySection, ReferredToInTheStatementSection,
   TypeOfDocumentSection,
   UploadDocumentsUserForm,
-  WitnessSection,
+  WitnessSection, WitnessSummarySection,
 } from 'models/caseProgression/uploadDocumentsUserForm';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -174,7 +174,7 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm =>
   const documentsList = getFormSection<FileOnlySection>(req.body.disclosureList, bindRequestToFileOnlySectionObj);
 
   const witnessStatement = getFormSection<WitnessSection>(req.body.witnessStatement, bindRequestToWitnessSectionObj);
-  const witnessSummary = getFormSection<WitnessSection>(req.body.witnessSummary, bindRequestToWitnessSectionObj);
+  const witnessSummary = getFormSection<WitnessSummarySection>(req.body.witnessSummary, bindRequestToWitnessSummarySectionObj);
   const noticeOfIntention = getFormSection<WitnessSection>(req.body.noticeOfIntention, bindRequestToWitnessSectionObj);
   const documentsReferred = getFormSection<ReferredToInTheStatementSection>(req.body.documentsReferred, bindRequestToReferredToInTheStatementSectionObj);
 
@@ -238,6 +238,15 @@ const bindRequestToReferredToInTheStatementSectionObj = (request: any): Referred
 
 const bindRequestToWitnessSectionObj = (request: any): WitnessSection => {
   const formObj: WitnessSection = new WitnessSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
+  formObj.witnessName = request['witnessName'].trim();
+  if (request['caseDocument'] && request['caseDocument'] !== '') {
+    formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
+  }
+  return formObj;
+};
+
+const bindRequestToWitnessSummarySectionObj = (request: any): WitnessSummarySection => {
+  const formObj: WitnessSummarySection = new WitnessSummarySection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.witnessName = request['witnessName'].trim();
   if (request['caseDocument'] && request['caseDocument'] !== '') {
     formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
