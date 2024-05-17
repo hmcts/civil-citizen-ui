@@ -9,9 +9,6 @@
 {% set pageTitle = t('PAGES.CHECK_YOUR_ANSWER.TITLE') %}
 
 {% block nestedContent %}
-      {% if form.hasErrors() %}
-        {{ errorSummary(form.getErrors(), t) }}
-      {% endif %}
           {% for content in topPageContents %}
             {{ itemContent(content,t) }}
           {% endfor %}
