@@ -28,15 +28,15 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   if (!form.hasErrors()) {
     form = claim.caseProgression?.helpFeeReferenceNumberForm ? new GenericForm(claim.caseProgression.helpFeeReferenceNumberForm) : form;
   }
-  const startApplyHelpFee = constructResponseUrlWithIdParams(req.params.id, APPLY_HELP_WITH_FEES_START);
+  const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, APPLY_HELP_WITH_FEES_START);
   const genericHelpFeeUrl : string = GENERIC_HELP_FEES_URL;
   res.render(applyHelpFeeReferenceViewPath,
     {
       redirectUrl,
       form,
-      startApplyHelpFee,
+      backLinkUrl,
       genericHelpFeeUrl,
-      applyHelpFeeReferenceContents: getApplyHelpFeeReferenceContents(),
+      applyHelpFeeReferenceContents: getApplyHelpFeeReferenceContents(claimId,claim.totalClaimAmount),
       applyHelpFeeReferenceButtonContents: getButtonsContents(claimId),
     });
 }
