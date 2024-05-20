@@ -17,14 +17,14 @@ import {
 } from 'services/features/caseProgression/hearingFee/applyHelpFeeReferenceContents';
 import {YesNo} from 'form/models/yesNo';
 import {triggerNotifyEvent} from 'services/features/caseProgression/hearingFee/hearingFeeService';
+import {getClaimById} from 'modules/utilityService';
 
 const applyHelpFeeReferenceViewPath  = 'features/caseProgression/hearingFee/apply-help-fee-reference';
 const applyHelpFeeReferenceController: Router = Router();
 const helpFeeReferenceNumberForm = 'helpFeeReferenceNumberForm';
 
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<ApplyHelpFeesReferenceForm>, claimId: string, redirectUrl: string) {
-  const redisClaimId = generateRedisKey(<AppRequest>req);
-  const claim: Claim = await getCaseDataFromStore(redisClaimId);
+  const claim: Claim = await getClaimById(claimId, req, true);
   if (!form.hasErrors()) {
     form = claim.caseProgression?.helpFeeReferenceNumberForm ? new GenericForm(claim.caseProgression.helpFeeReferenceNumberForm) : form;
   }
