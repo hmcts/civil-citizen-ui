@@ -25,6 +25,7 @@ import {
   CIVIL_SERVICE_DASHBOARD_TASKLIST_URL,
   CIVIL_SERVICE_NOTIFICATION_LIST_URL,
   CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL, CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL,
+  CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -54,6 +55,7 @@ import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
+import {YesNo} from 'form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -185,6 +187,31 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     try {
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
+      return response.data;
+    } catch (err: unknown) {
+      logger.error('Error when getting claim fee data');
+      throw err;
+    }
+  }
+
+  async getGeneralApplicationFee(applicationTypeOption: string, withConsent: YesNo, withNotice: YesNo, req: AppRequest): Promise<number> {
+    const gaFeeData = await this.getGeneralApplicationFeeData(applicationTypeOption, withConsent, withNotice, req);
+    return convertToPoundsFilter(gaFeeData?.calculatedAmountInPence.toString());
+  }
+
+  async getGeneralApplicationFeeData(applicationTypeOption: string, withConsent: YesNo, withNotice: YesNo, req: AppRequest): Promise<ClaimFeeData> {
+    const config = this.getConfig(req);
+    try {
+      let feeUrl = `${CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL}/${applicationTypeOption}`;
+      if (withConsent) {
+        feeUrl += `?withConsent=${withConsent === YesNo.YES ? 'true' : 'false'}`;
+        if (withNotice) {
+          feeUrl += `&withNotice=${withNotice === YesNo.YES ? 'true' : 'false'}`;
+        }
+      } else if (withNotice) {
+        feeUrl += `?withNotice=${withNotice === YesNo.YES ? 'true' : 'false'}`;
+      }
+      const response: AxiosResponse<object> = await this.client.get(feeUrl, config);
       return response.data;
     } catch (err: unknown) {
       logger.error('Error when getting claim fee data');

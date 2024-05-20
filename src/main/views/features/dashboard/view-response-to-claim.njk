@@ -5,7 +5,7 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% set claimHasBeenMadeHtml %}
-    <p class="govuk-body">{{ t('PAGES.VIEW_RESPONSE_TO_THE_CLAIM.OTHER_DOCUMENT_TEXT') }} <a id="order-and-notice-link" href="#" rel="noreferrer noopener">{{ t('COMMON.ORDER_AND_NOTICES') }}</a></p>
+    <p class="govuk-body">{{ t('PAGES.VIEW_RESPONSE_TO_THE_CLAIM.OTHER_DOCUMENT_TEXT') }} <a id="order-and-notice-link" href="{{ ordersAndNoticesUrl }}" rel="noreferrer noopener">{{ t('COMMON.ORDER_AND_NOTICES') }}</a></p>
 {% endset -%}
 
 {% set rows = [] %}
@@ -21,7 +21,7 @@
 {% for item in documentsSection.documents %}
 {% set rows = (rows.push([
     {
-        html: addCreateFileInformation(t(item.fileName), t(item.uploadDate))
+        html: addCreateFileInformation(t, t(item.fileName), t(item.uploadDate))
     },
     {
         html: addFileLink(item.linkInformation.url, item.linkInformation.text)

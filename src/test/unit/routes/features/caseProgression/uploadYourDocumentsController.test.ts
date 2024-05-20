@@ -58,6 +58,7 @@ describe('"upload your documents" page test', () => {
         .expect((res: { status: unknown; text: unknown; }) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.HEARINGS.HEARING'));
         });
     });
 
