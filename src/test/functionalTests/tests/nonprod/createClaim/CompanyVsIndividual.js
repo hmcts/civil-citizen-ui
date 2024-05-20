@@ -9,7 +9,7 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115, claimantPartyType = 'Company';
 
-Feature('Create Lip v Lip claim - Company vs Individual @claimCreation').tag('@regression-r2').tag('@kiyron');
+Feature('Create Lip v Lip claim - Company vs Individual @claimCreation').tag('@regression-r2')
 
 Scenario('Create Claim -  Company vs Individual - small claims - no interest - no hwf', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
