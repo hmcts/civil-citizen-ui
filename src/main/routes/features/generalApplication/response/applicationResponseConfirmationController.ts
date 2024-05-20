@@ -1,5 +1,5 @@
 import {NextFunction, RequestHandler, Router} from 'express';
-import {DEFENDANT_SUMMARY_URL, GA_RESPONSE_CONFIRMATION_URL,} from 'routes/urls';
+import {DEFENDANT_SUMMARY_URL, GA_RESPONSE_CONFIRMATION_URL} from 'routes/urls';
 
 const submitGeneralApplicationConfirmationViewPath = 'features/generalApplication/response/application-response-confirmation';
 const applicationResponseConfirmationController = Router();
