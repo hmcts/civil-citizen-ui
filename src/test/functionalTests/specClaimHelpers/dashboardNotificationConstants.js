@@ -124,11 +124,11 @@ module.exports = {
 
   //Notice.AAA6.ClaimantIntent.FullAdmit.Claimant
   //Not currently in use
-  defendantResponseFullAdmitPayImmediatelyClaimant: (amount, deadline) => {
-    return {
-      title: 'Immediate payment',
-    };
-  },
+  // defendantResponseFullAdmitPayImmediatelyClaimant: (amount, deadline) => {
+  //   return {
+  //     title: 'Immediate payment',
+  //   };
+  // },
 
   //Notice.AAA6.DefResponse.FullOrPartAdmit.PayByInstalments.Defendant
   defendantResponseFullAdmitPayInstalments: (amount, instalmentAmount, date) => {
