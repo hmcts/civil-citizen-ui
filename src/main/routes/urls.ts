@@ -315,3 +315,5 @@ export const GA_APPLICATION_COSTS_URL = `${BASE_GENERAL_APPLICATION_URL}/applica
 export const CONFIRM_YOU_HAVE_BEEN_PAID_URL = `${BASE_JUDGMENT_ONLINE_URL}/confirm-you-have-been-paid`;
 export const GA_REQUESTING_REASON_URL = `${BASE_GENERAL_APPLICATION_URL}/requesting-reason`;
 export const GA_ADD_ANOTHER_APPLICATION_URL = `${BASE_GENERAL_APPLICATION_URL}/add-another-application`;
+export const GA_HEARING_ARRANGEMENT_URL = `${BASE_GENERAL_APPLICATION_URL}/hearing-arrangement`;
+export const GA_HEARING_CONTACT_DETAILS_URL = `${BASE_GENERAL_APPLICATION_URL}/hearing-contact-details`;
