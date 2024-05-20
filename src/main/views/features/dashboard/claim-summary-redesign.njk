@@ -6,8 +6,7 @@
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 {% from "../../macro/support-links.njk" import supportLinks %}
 
-{% block content %}
-
+{% block nestedContent %}
         {% set claimantName = claim.getClaimantFullName() %}
         {% set defendantName = claim.getDefendantFullName() %}
             {% if claimantName and defendantName %}
@@ -22,9 +21,6 @@
             {% if claimAmountFormatted %}
               <p class="govuk-body-m">{{  t('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: claimAmountFormatted}) }}</p>
             {% endif %}
-      <div class="govuk-grid-row">
-        {# Left side #}
-        <div class="govuk-grid-column-two-thirds">
           <div class="border-small-top"></div>
             {% for notification in dashboardNotifications.items %}
                 {{ govukNotificationBanner({
@@ -62,23 +58,4 @@
                 </ol>
               </div>
             {% endfor %}
-          </div>
-
-        {# TODO: Right side #}
-        <div class="govuk-grid-column-one-third">
-          <div class="border-small-top"></div>
-          {% if iWantToLinks.length %}
-            <div class="govuk-!-margin-bottom-8">
-              {{ supportLinks(t, iWantToTitle, iWantToLinks) }}
-            </div>
-          {% endif %}
-          {% if helpSupportLinks.length %}
-            {{ supportLinks(t, helpSupportTitle, helpSupportLinks) }}
-          {% endif %}
-          <div class="govuk-!-padding-top-8">
-            {{ contactUsForHelp(t) }}
-          </div>
-        </div>
-      </div>
-
 {% endblock %}
