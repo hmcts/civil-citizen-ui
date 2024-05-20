@@ -578,23 +578,21 @@ export class Claim {
   }
 
   isDefendantDetailsCompleted(): boolean {
-    return (
-      !!this.respondent1?.type &&
+    return !!this.respondent1?.type && 
       !!this.respondent1?.partyDetails?.primaryAddress &&
-      (this.isCompany() && this.isAirlineComplete()) ||
-      ((this.isOrganisation() && !!this.respondent1?.partyDetails?.partyName) ||
-        (!this.isOrganisation() && !!this.respondent1?.partyDetails?.firstName))
-    );
+      (
+        (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName) ||
+        (this.isOrganisation() && !!this.respondent1?.partyDetails?.partyName) ||
+        (this.isCompany() && this.isAirlineComplete() && !!this.respondent1?.partyDetails?.partyName)
+      );
   }
 
   isAirlineComplete(): boolean {
-    return !!(this.isCompany() && 
-    (this.delayedFlight?.option === YesNo.NO || 
+    return this.delayedFlight?.option === YesNo.NO || 
       (this.delayedFlight?.option === YesNo.YES && 
-        this.flightDetails?.airline && 
-        this.flightDetails?.flightNumber &&
-        this.flightDetails?.flightDate)
-    ) && (!!this.respondent1?.partyDetails?.partyName || !!this.respondent1?.partyDetails?.firstName))
+        !!this.flightDetails?.airline && 
+        !!this.flightDetails?.flightNumber &&
+        !!this.flightDetails?.flightDate);
   }
 
   isClaimantDetailsCompleted(): boolean {
