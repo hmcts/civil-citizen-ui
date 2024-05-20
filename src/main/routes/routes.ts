@@ -299,8 +299,7 @@ import claimFeeMakePaymentAgainController from 'routes/features/claim/payment/cl
 import informOtherPartiesController from './features/generalApplication/informOtherPartiesController';
 import hearingSupportController from './features/generalApplication/hearingSupportController';
 import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
-import applicationFeePaymentSuccessfulController
-  from './features/generalApplication/applicationFeePaymentSuccessfulController';
+import applicationFeePaymentSuccessfulController from './features/generalApplication/applicationFeePaymentSuccessfulController';
 import claimApplicationCostController from './features/generalApplication/claimApplicationCostController';
 import respondentAgreeToOrderController from 'routes/features/generalApplication/respondentAgreeToOrderController';
 import payingForApplicationController from './features/generalApplication/payingForApplicationController';
@@ -309,6 +308,8 @@ import requestingReasonController from 'routes/features/generalApplication/reque
 import addAnotherApplicationController from './features/generalApplication/addAnotherApplicationController';
 import orderJudgeController from './features/generalApplication/orderJudgeController';
 import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNoticesController';
+import hearingArrangementController from './features/generalApplication/hearingArrangementController';
+import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 import applicationResponseConfirmationController
   from 'routes/features/generalApplication/response/applicationResponseConfirmationController';
 
@@ -581,5 +582,7 @@ export default [
   addAnotherApplicationController,
   orderJudgeController,
   ordersAndNoticesController,
+  hearingArrangementController,
+  hearingContactDetailsController,
   applicationResponseConfirmationController,
 ];
