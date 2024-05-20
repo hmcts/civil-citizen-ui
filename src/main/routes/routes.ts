@@ -295,12 +295,12 @@ import viewMediationDocuments from 'routes/features/document/mediation/viewMedia
 import applicationTypeController from './features/generalApplication/applicationTypeController';
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
-import claimFeeMakePaymentAgainController
-  from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
+import claimFeeMakePaymentAgainController from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
 import informOtherPartiesController from './features/generalApplication/informOtherPartiesController';
 import hearingSupportController from './features/generalApplication/hearingSupportController';
 import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
-import applicationFeePaymentSuccessfulController from './features/generalApplication/applicationFeePaymentSuccessfulController';
+import applicationFeePaymentSuccessfulController
+  from './features/generalApplication/applicationFeePaymentSuccessfulController';
 import claimApplicationCostController from './features/generalApplication/claimApplicationCostController';
 import respondentAgreeToOrderController from 'routes/features/generalApplication/respondentAgreeToOrderController';
 import payingForApplicationController from './features/generalApplication/payingForApplicationController';
@@ -309,6 +309,8 @@ import requestingReasonController from 'routes/features/generalApplication/reque
 import addAnotherApplicationController from './features/generalApplication/addAnotherApplicationController';
 import orderJudgeController from './features/generalApplication/orderJudgeController';
 import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNoticesController';
+import applicationResponseConfirmationController
+  from 'routes/features/generalApplication/response/applicationResponseConfirmationController';
 
 export default [
   homeController,
@@ -579,4 +581,5 @@ export default [
   addAnotherApplicationController,
   orderJudgeController,
   ordersAndNoticesController,
+  applicationResponseConfirmationController,
 ];
