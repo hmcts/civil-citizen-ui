@@ -26,9 +26,9 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {% for unavailableDate in form.model.items %}
-              {{ unavailableDateRow(unavailableDate, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden, noJs: true}, today, false) }}
+              {{ unavailableDateRow(unavailableDate, 'PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.SELECT', loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden, noJs: true}, today, false) }}
             {% else %}
-              {{ unavailableDateRow(unavailableDate, 0, form.errorFor, t, {hidden:true, noJs: true}, today, false) }}
+              {{ unavailableDateRow(unavailableDate, 'PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.SELECT', 0, form.errorFor, t, {hidden:true, noJs: true}, today, false) }}
             {% endfor %}
             {{ govukButton({
               text: t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.ADD_ANOTHER_DATE'),
