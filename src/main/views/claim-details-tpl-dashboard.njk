@@ -92,6 +92,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     {% block nestedContent %}{% endblock %}
   </div>
   <div class="govuk-grid-column-one-third">
+    {% if iWantToLinks != null and iWantToLinks.length %}
+        <div class="govuk-!-margin-bottom-8">
+          {{ supportLinks(t, iWantToTitle, iWantToLinks) }}
+        </div>
+      {% endif %}
+      {% if helpSupportLinks != null and helpSupportLinks.length %}
+        {{ supportLinks(t, helpSupportTitle, helpSupportLinks) }}
+    {% endif %}
     {{ contactUsForHelp(t) }}
   </div>
 </div>
