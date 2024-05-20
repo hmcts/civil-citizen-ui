@@ -44,12 +44,12 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
   return getClaimantResponseStatus(claim, claimantResponseStatusTitle, lang);
 }
 
-export function buildNextStepsSection(claim: Claim, lang: string, carmApplicable: boolean): ClaimSummarySection[] {
+export function buildNextStepsSection(claim: Claim, lang: string, carmApplicable: boolean, respondToSettlementAgreementDeadLine?: Date): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   const RCDisputeNotContinueNextSteps = getRCDisputeNotContinueNextSteps(claim, lang);
   const PAPayImmediatelyAcceptedNextSteps = getPAPayImmediatelyAcceptedNextSteps(claim, lang);
   const ccjNextSteps = getCCJNextSteps(claim, lang);
-  const SignSettlementAgreementNextSteps = getSignSettlementAgreementNextSteps(claim, lang);
+  const SignSettlementAgreementNextSteps = getSignSettlementAgreementNextSteps(claim, lang, respondToSettlementAgreementDeadLine);
   const RejectedResponseNoMediationNextSteps = getRejectedResponseNoMediationNextSteps(lang);
   const RejectedResponseYesMediationNextSteps = getRejectedResponseYesMediationNextSteps(lang);
   const RejectedResponseCarmMediationNextSteps = getMediationCarmNextSteps(lang);
