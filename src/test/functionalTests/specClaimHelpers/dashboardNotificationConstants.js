@@ -122,6 +122,14 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.ClaimantIntent.FullAdmit.Claimant
+  //Not currently in use
+  defendantResponseFullAdmitPayImmediatelyClaimant: (amount, deadline) => {
+    return {
+      title: 'Immediate payment',
+    };
+  },
+
   //Notice.AAA6.DefResponse.FullOrPartAdmit.PayByInstalments.Defendant
   defendantResponseFullAdmitPayInstalments: (amount, instalmentAmount, date) => {
     return {
@@ -172,6 +180,7 @@ module.exports = {
   },
 
   //Add deadline logic later
+  //Notice.AAA6.DefResponse.FullDefence.FullDispute.RefusedMediation.Claimant
   claimantNotificationWithDefendantRejectMedidationWithRejectAll: () => {
     return {
       title: 'Response to the claim',
@@ -224,7 +233,7 @@ module.exports = {
     };
   },
 
-  //Notice.AAA6.ClaimantIntent.SettlementAgreement.ClaimantRejectsPlan.Defendant
+  //Notice.AAA6.ClaimantIntent.SettlementAgreement.ClaimantAcceptsPlan.Defendant
   claimantAskDefendantToSignSettlementDefendant: () => {
     return {
       title: 'Settlement agreement',
@@ -266,7 +275,7 @@ module.exports = {
     };
   },
 
-  //Notice.AAA6.ClaimantIntent.SettlementAgreement.DefendantAccepted.Claimant
+  //Notice.AAA6.ClaimantIntent.Settlement.DefendantResponseAccepts.Claimant
   defendantAcceptsSettlementClaimant: () => {
     return {
       title: 'Settlement agreement',
