@@ -310,6 +310,8 @@ import addAnotherApplicationController from './features/generalApplication/addAn
 import orderJudgeController from './features/generalApplication/orderJudgeController';
 import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNoticesController';
 import unavailableHearingDatesController from 'routes/features/generalApplication/unavailableHearingDatesController';
+import hearingArrangementController from './features/generalApplication/hearingArrangementController';
+import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 
 export default [
   homeController,
@@ -581,4 +583,6 @@ export default [
   orderJudgeController,
   ordersAndNoticesController,
   unavailableHearingDatesController,
+  hearingArrangementController,
+  hearingContactDetailsController,
 ];

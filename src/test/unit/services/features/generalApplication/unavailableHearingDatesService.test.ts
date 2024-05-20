@@ -2,7 +2,7 @@ import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavai
 import {CURRENT_DAY, CURRENT_MONTH, CURRENT_YEAR} from '../../../../utils/dateUtils';
 import {
   UnavailableDatePeriodGaHearing,
-  UnavailableDatesGaHearing
+  UnavailableDatesGaHearing,
 } from 'models/generalApplication/unavailableDatesGaHearing';
 import {getUnavailableDatesForHearingForm} from 'services/features/generalApplication/unavailableHearingDatesService';
 

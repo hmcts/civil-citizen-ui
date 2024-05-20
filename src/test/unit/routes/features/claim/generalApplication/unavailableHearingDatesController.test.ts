@@ -12,7 +12,7 @@ import {CURRENT_DAY, CURRENT_MONTH, CURRENT_YEAR} from '../../../../../utils/dat
 import {getUnavailableDatesForHearingForm} from 'services/features/generalApplication/unavailableHearingDatesService';
 import {
   UnavailableDatePeriodGaHearing,
-  UnavailableDatesGaHearing
+  UnavailableDatesGaHearing,
 } from 'models/generalApplication/unavailableDatesGaHearing';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -61,7 +61,7 @@ describe('General Application - Unavailable hearing dates', () => {
       getUnavailableDatesHearingFormMock.mockImplementation(() => {
         return new UnavailableDatesGaHearing(
           [new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
-            {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})]
+            {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
         );
       });
       app.locals.draftStoreClient = mockCivilClaim;
@@ -77,7 +77,7 @@ describe('General Application - Unavailable hearing dates', () => {
       getUnavailableDatesHearingFormMock.mockImplementation(() => {
         return new UnavailableDatesGaHearing(
           [new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
-            {'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})]
+            {'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
         );
       });
       app.locals.draftStoreClient = mockCivilClaim;
@@ -93,7 +93,7 @@ describe('General Application - Unavailable hearing dates', () => {
     it('should add another period if add another clicked', async () => {
       const unavailableDates = new UnavailableDatesGaHearing(
         [new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
-          {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})]
+          {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
       );
       getUnavailableDatesHearingFormMock.mockImplementation(() => {
         return unavailableDates;
@@ -112,7 +112,7 @@ describe('General Application - Unavailable hearing dates', () => {
     it('should remove period if remove button clicked', async () => {
       const unavailableDates = new UnavailableDatesGaHearing(
         [new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
-          {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})]
+          {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
       );
       getUnavailableDatesHearingFormMock.mockImplementation(() => {
         return unavailableDates;

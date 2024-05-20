@@ -5,6 +5,8 @@ import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {OrderJudge} from './orderJudge';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
+import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
+import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 
 export class GeneralApplication {
 
@@ -17,6 +19,8 @@ export class GeneralApplication {
   requestingReason?: RequestingReason;
   orderJudge?: OrderJudge;
   unavailableDatesHearing?: UnavailableDatesGaHearing;
+  hearingArrangement?: HearingArrangement;
+  hearingContactDetails?: HearingContactDetails;
 
   constructor(
     applicationType?: ApplicationType,
@@ -25,6 +29,9 @@ export class GeneralApplication {
     respondentAgreeToOrder?: YesNo,
     requestingReason?: RequestingReason,
     orderJudge?: OrderJudge,
+    unavailableDatesHearing?: UnavailableDatesGaHearing,
+    hearingArrangement?: HearingArrangement,
+    hearingContactDetails?: HearingContactDetails,
   ) {
     this.applicationType = applicationType;
     this.agreementFromOtherParty = agreementFromOtherParty;
@@ -32,5 +39,8 @@ export class GeneralApplication {
     this.respondentAgreeToOrder = respondentAgreeToOrder;
     this.requestingReason = requestingReason;
     this.orderJudge = orderJudge;
+    this.unavailableDatesHearing = unavailableDatesHearing;
+    this.hearingArrangement = hearingArrangement;
+    this.hearingContactDetails = hearingContactDetails;
   }
 }

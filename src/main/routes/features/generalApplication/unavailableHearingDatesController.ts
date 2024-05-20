@@ -10,10 +10,10 @@ import {t} from 'i18next';
 import {Claim} from 'models/claim';
 import {
   UnavailableDatePeriodGaHearing,
-  UnavailableDatesGaHearing
+  UnavailableDatesGaHearing,
 } from 'models/generalApplication/unavailableDatesGaHearing';
 import {
-  getUnavailableDatesForHearingForm
+  getUnavailableDatesForHearingForm,
 } from 'services/features/generalApplication/unavailableHearingDatesService';
 
 const unavailableHearingDatesController = Router();

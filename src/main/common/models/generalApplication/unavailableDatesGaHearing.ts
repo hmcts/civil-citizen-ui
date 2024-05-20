@@ -23,7 +23,7 @@ export enum UnavailableDateType {
 
 export class UnavailableDatesGaHearing {
   @ValidateNested()
-  items?: UnavailableDatePeriodGaHearing[];
+    items?: UnavailableDatePeriodGaHearing[];
 
   constructor(items?: UnavailableDatePeriodGaHearing[]) {
     this.items = items;
@@ -40,44 +40,44 @@ export class UnavailableDatePeriodGaHearing {
   @IsDate({ message: generateErrorMessageForIsDate })
   @Validate(OptionalDateNotInPastValidator, {message: generateErrorMessageForDateNotInPastValidator})
   @Validate(DateNotAfterReferenceDate, ['until'], {message: 'ERRORS.GA_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE'})
-  from?: Date;
+    from?: Date;
 
   @ValidateIf(o => o.type && (o.startDay || o.startMonth || o.startYear))
   @Min(1, { message: generateErrorMessage })
   @Max(31, { message: generateErrorMessage })
-  startDay?: number;
+    startDay?: number;
 
   @ValidateIf(o => o.type && (o.startDay || o.startMonth || o.startYear))
   @Min(1, { message: generateErrorMessage })
   @Max(12, { message: generateErrorMessage })
-  startMonth?: number;
+    startMonth?: number;
 
   @ValidateIf(o => o.type && (o.startDay || o.startMonth || o.startYear))
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
   @Min(1872, { message: generateErrorMessage })
-  startYear?: number;
+    startYear?: number;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && ((!!o.endDay && o.endDay < 32 && !!o.endMonth && o.endMonth < 13 && o.endYear > 999) ||
     (!o.endDay && !o.endMonth && !o.endYear)))
   @MaxDate(addMonths(new Date(), MAX_MONTHS), {message: 'ERRORS.GA_ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO'})
   @IsDate({ message: generateErrorMessage })
   @Validate(OptionalDateNotInPastValidator, {message: 'ERRORS.GA_ENTER_UNAVAILABILITY_DATE_IN_FUTURE_TO'})
-  until?: Date;
+    until?: Date;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
   @Min(1, {message: 'ERRORS.GA_ENTER_DAY_FOR_UNAVAILABILITY_TO'})
   @Max(31, {message: 'ERRORS.GA_ENTER_DAY_FOR_UNAVAILABILITY_TO'})
-  endDay?: number;
+    endDay?: number;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
   @Min(1, {message: 'ERRORS.GA_ENTER_MONTH_FOR_UNAVAILABILITY_TO'})
   @Max(12, {message: 'ERRORS.GA_ENTER_MONTH_FOR_UNAVAILABILITY_TO'})
-  endMonth?: number;
+    endMonth?: number;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
   @Min(1872, {message: 'ERRORS.GA_ENTER_YEAR_FOR_UNAVAILABILITY_TO'})
-  endYear?: number;
+    endYear?: number;
 
   [key: string]: UnavailableDateType | Date | number;
   constructor(type?: UnavailableDateType, paramsFrom?: Record<string, string>, paramsUntil?: Record<string, string>) {
