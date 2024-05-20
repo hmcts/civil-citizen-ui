@@ -14,9 +14,9 @@ import {getClaimById} from 'modules/utilityService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
-import {RepaymentDecisionType} from "models/claimantResponse/RepaymentDecisionType";
-import {PaymentIntention} from "form/models/admission/paymentIntention";
-import {PaymentOptionType} from "form/models/admission/paymentOption/paymentOptionType";
+import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
