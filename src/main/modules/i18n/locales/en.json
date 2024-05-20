@@ -28,12 +28,14 @@
     "CLAIM_AMOUNT": "Claim amount",
     "CLAIM_AMOUNT_WITH_VALUE": "Claim amount: {{claimAmount}}",
     "CLAIM_NUMBER": "Claim number",
+    "CLAIMANT": "Claimant",
     "CONFIRM_YOUR_DETAILS": "Confirm your details",
     "DASHBOARD": "Dashboard",
     "DATE": "Date",
     "DATE_EXAMPLE": "For example, {{ date }}",
     "DAY": "Day",
     "DEBT": "Debt",
+    "DEFENDANT": "Defendant",
     "DESCRIPTION": "Description",
     "DOWNLOAD_THE_CLAIM": "Download the claim",
     "EMAIL": "Email",
@@ -93,11 +95,13 @@
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
       "SUBMIT": "Submit",
       "START_NOW": "Start now",
-      "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
+      "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview",
+      "CLOSE_AND_RETURN_TO_DASHBOARD": "Close and return to dashboard"
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Hearing fee",
-      "CLAIM_FEE": "Claim fee"
+      "CLAIM_FEE": "Claim fee",
+      "APPLICATION_FEE" : "Application fee"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Council Tax or Community Charge",
@@ -878,7 +882,7 @@
       "AMOUNT": "Amount",
       "AMOUNT_BREAKDOWN": "Amount breakdown",
       "CLAIM_FEE": "Claim fee",
-      "CLAIM_HAS_BEEN_MADE_TEXT": "This is the claim that's has been made in the case. It can also be found in",
+      "CLAIM_HAS_BEEN_MADE_TEXT": "This is the claim that's been made in the case. It can also be found in",
       "CLAIM_NUMBER": "Claim number",
       "CLAIM_TOTAL": "Claim Total",
       "DOWNLOAD_AND_VIEW_TIMELINE": "Download and view timeline",
@@ -2049,6 +2053,29 @@
         "RESPOND_TO": "Respond to an application to {{applicationType}}",
         "TITLE": "The other parties have said that you've agreed to the order they've requested. Is this correct?"
       },
+      "APPLICATION_COSTS": {
+        "ADJOURN_HEARING": "change a hearing date",
+        "AMEND_A_STMT_OF_CASE": "make a change to your claim or defence",
+        "HEARING_LESS_THAN": "If the hearing is less than 14 days away, the fee above applies.",
+        "HEARING_MORE_THAN": "If the hearing is more than 14 days away from the date you make this application, you will not need to pay a fee. If you add another application, you'll still have to pay the fee for this additional application.",
+        "EXTEND_TIME": "extend time",
+        "FEE_NEED_TO_BE_PAID": "This fee will need to be paid once you've created the application. If you're eligible, you may be able to apply for help with fees.",
+        "MAKE_AN_APPLICATION": "Make an application",
+        "MAY_NOT_AGREE": "The court may not agree to change the hearing, even if both parties have agreed.",
+        "PROCEEDS_IN_HERITAGE": "the court to do something else",
+        "RELIEF_FROM_SANCTIONS": "ask for relief from a penalty",
+        "SET_ASIDE_JUDGEMENT": "set aside (remove) a judgment",
+        "SETTLE_BY_CONSENT": "the court to make an order settling the claim by consent",
+        "STRIKE_OUT": "the court to strike out all or part of the other parties’ case",
+        "SUMMARY_JUDGMENT": "the court to make a summary judgment",
+        "STAY_THE_CLAIM": "the court to pause a claim",
+        "TITLE": "Application costs",
+        "TO_APPLY": "To apply to {{applicationType}}, the application fee is £{{applicationFee}}.",
+        "TO_APPLY_MULTIPLE": "To apply to {{applicationType}}, the application fee is £{{applicationFee}}. If you'll be selecting multiple applications, this fee may be reduced.",
+        "UNLESS_ORDER": "the court to impose a sanction on the other parties unless they do a specific action",
+        "VARY_ORDER": "reconsider an order",
+        "VARY_PAYMENT_TERMS_OF_JUDGMENT": "vary a judgment"
+      },
       "APPLICATION_REASON": {
         "CANCEL_JUDGMENT": {
           "EXPLAIN": "explain why you believe the judgment should be set aside. For example, if you missed the deadline to respond to the original claim form, then you should explain why",
@@ -2124,14 +2151,14 @@
         "UPLOAD_NEW_VERSION": "upload a new version of this document with any amends underlined. We'll ask if you want to upload documents to support your application later on"
       },
       "SELECTED_APPLICATION_TYPE": {
-        "CANCEL_JUDGMENT": "Set aside (cancel) a judgment",
+        "CANCEL_JUDGMENT": "Set aside (remove) a judgment",
         "CHANGE_CLAIM": "Make a change to your claim or defence that you've submitted",
         "CHANGE_HEARING": "Change a hearing date",
         "IMPOSE_SANCTION": "Court to impose a sanction on the other parties unless they do a specific action",
         "MORE_TIME": "More time to do what is required by a court order",
         "NOT_ON_LIST": "Court to do something that's not on this list",
         "PAUSE": "Court to pause a claim",
-        "RECONSIDER": "Court to reconsider an order",
+        "RECONSIDER": "Reconsider an order",
         "RELIEF_PENALTY": "Relief from a penalty you've been given by the court",
         "SETTLING": "Court to make an order settling the claim by consent",
         "STRIKE_OUT": "Court to strike out all or part of the other parties' case without a trial",
@@ -2185,7 +2212,7 @@
         "SHOULD_COURT_INFORM_PARTIES": "Should the court inform the other parties about this application?",
         "SOME_CIRCUMSTANCES": "In some circumstances a judge may make an order without sending your application to the other parties first.",
         "WHY_DO_NOT_WANT_COURT": "Why do you not want the court to inform the other parties?"
-     },
+      },
       "APPLICATION_FROM_OTHER_PARTY": {
         "APPLICATION_FEE_AMOUNT": "The fee amount depends on whether the other parties have agreed to you making this application. The other parties are the other side or sides involved in your case.",
         "GETTING_AGREEMENT": "Getting agreement",
@@ -2201,6 +2228,20 @@
         "SET_ASIDE_JUDGMENT": "set aside (remove) a judgment",
         "TITLE": "Application from the other parties",
         "VARY_JUDGMENT": "vary a judgment"
+      },
+      "GA_PAYMENT_SUCCESSFUL" : {
+        "APPLICATION_SUBMITTED":"Application Submitted",
+        "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_1": "If you have not provided a valid reason, a judge may order that the other parties should be informed. If this happens, you'll need to pay an additional fee and your application may also be delayed.",
+        "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_2": "If a judge agrees that the other parties should not be informed, the other parties will not be able to respond to the application before the judge makes a decision.",
+        "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY": "If you've chosen not to inform the other parties",
+        "PAYMENT_SUMMARY_TITLE": "Payment Summary",
+        "TITLE" : "General application payment fee confirmation",
+        "WHAT_HAPPENS_NEXT_PARA_1": "If you chosen to inform the other parties or agreed the application, they will have 5 working days to respond to your application. If you have a hearing in the next 10 days, your application will be treated urgently.",
+        "WHAT_HAPPENS_NEXT_PARA_2": "You may be required to attend an application hearing so that a judge can consider your application with you and the other parties and decide what the next steps should be.",
+        "WHAT_HAPPENS_NEXT_PARA_3": "You'll receive a notification letting you know if an application hearing has been scheduled.",
+        "WHAT_HAPPENS_NEXT_PARA_4" : "If you've made an application to change a hearing date, the trial or hearing will go ahead as planned on the original date unless a judge makes an order changing the date of the hearing.",
+        "WHAT_HAPPENS_NEXT_PARA_5": "The other parties will have 5 working days to respond to your application. If you have a hearing in the next 10 days, your application will be treated urgently.",
+        "WHAT_HAPPENS_NEXT": "What happens next"
       },
       "HEARING_SUPPORT": {
         "ALWAYS_ARRANGE": "We'll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the 'Sign language interpreter' box below.",
@@ -2241,6 +2282,23 @@
       "ADD_ANOTHER_APPLICATION": {
         "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
         "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
+      },
+      "APPLICATION_HEARING_ARRANGEMENTS": {
+        "HEARING_TYPE": {
+          "PERSON_AT_COURT": "In person at the court",
+          "TELEPHONE": "Telephone",
+          "VIDEO_CONFERENCE": "Video Conference"
+        },
+        "JUDGE_HEARING_PREFERRED_LOCATION": "If a judge requires the hearing to take place in person at the court, do you have a preferred location? (optional)",
+        "SELECT_A_LOCATION": "-- Select a location --",
+        "TITLE": "Application hearing arrangements",
+        "WHAT_TYPE_OF_HEARING_PREFER": "What type of hearing would you prefer?",
+        "WHY_PREFER_HEARING_TYPE": "Why would you prefer this type of hearing?"
+      },
+      "HEARING_CONTACT_DETAILS": {
+        "PREFERRED_EMAIL_ADDRESS": "Preferred email address",
+        "PREFERRED_TELEPHONE_NUMBER": "Preferred telephone number",
+        "TITLE": "Contact Details"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -3282,7 +3340,7 @@
       "TOTAL_AMOUNT": "Total interest amount"
     },
     "TRIAL_DURATION_TRIAL_ARRANGEMENTS": {
-      "TITLE": "Finalise your trial arrangements",
+      "TITLE": "Finalise your trial or hearing arrangements",
       "TRIAL_DURATION_TITLE": "Trial duration",
       "TRIAL_DURATION_PARAGRAPH": "The trial duration originally allocated is <span class=\"govuk-body govuk-!-font-weight-bold\">{{ hearingDuration }}</span>.",
       "REQUIRE_LESS_TIME": "If you require less time please set out your reasons in the 'Other information' box below.",
@@ -3427,10 +3485,10 @@
       "YEAR": "Year"
     },
     "IS_CASE_READY": {
-      "PAGE_TITLE": "Finalise your trial arrangements",
+      "PAGE_TITLE": "Finalise your trial or hearing arrangements",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
-      "IS_CASE_READY": "Is the case ready for trial?",
+      "IS_CASE_READY": "Is the case ready for trial or hearing?",
       "YOU_ARE_REMINDED": "You are reminded that this information will be shared with all other parties",
       "YOU_WILL_STILL": "You will still need to continue and provide some information on trial arrangements.",
       "YOU_WILL_NEED": "You will need to make an application to the court if this case is not ready for the trial.",
@@ -3438,13 +3496,34 @@
     },
     "HAS_ANYTHING_CHANGED": {
       "PAGE_TITLE": "Has anything changed to the support",
-      "FINALISE": "Finalise your trial arrangements",
+      "FINALISE": "Finalise your trial or hearing arrangements",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "HAS_ANYTHING": "Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?",
       "YOU_CAN": "You can check your previous answers in the ",
       "DIRECTIONS": "directions questionnaire.",
       "WHAT_SUPPORT": "What support do you, experts or witnesses need?",
       "FOR_EXAMPLE": "For example, a witness requires a courtroom with step-free access."
+    },
+    "ORDERS_AND_NOTICES": {
+      "CCJ_REQUEST": "County Court Judgment request",
+      "CLAIMANT_DQ": "Claimant Directions Questionnaire",
+      "CLAIMANT_RESPONSE_RECEIPT": "Claimant response receipt",
+      "CLAIMANT_TIMELINE": "Claimant timeline of events",
+      "COURT_DOCUMENTS": "Documents from the court",
+      "DEFENDANT_DQ": "Defendant Directions Questionnaire",
+      "DEFENDANT_RESPONSE": "Defendant response",
+      "DEFENDANT_SUPPORT_DOC": "Defendants supporting documents",
+      "DEFENDANT_TIMELINE": "Defendant timeline of events",
+      "DETERMINATION_REQUEST": "Determination request",
+      "DRAFT_CLAIM": "Draft claim form",
+      "PAGE_CAPTION": "Orders and notices from the court",
+      "PAGE_TITLE": "View orders and notices",
+      "PARTICULARS_CLAIM": "Particulars of claim",
+      "RESPOND_TO_DEFENCE": "Respond to defence",
+      "SEALED_CLAIM": "Sealed Claim form",
+      "SETTLEMENT_AGREEMENT": "Settlement agreement",
+      "STANDARD_DIRECTIONS_ORDER": "Standard Directions Order",
+      "UNSEALED_CLAIM":"Unsealed Claim form"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
       "DOCUMENT_LABEL": "Defendant response",
@@ -3532,8 +3611,8 @@
     },
     "FINALISE_TRIAL_ARRANGEMENTS": {
       "PAGE_TITLE": "Trial arrangements",
-      "TITLE": "Finalise your trial arrangements",
-      "CASE_REFERENCE": "Claim number: {{ claimId }}",
+      "TITLE": "Finalise your trial or hearing arrangements",
+      "CASE_REFERENCE": "Case number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "YOU_HAVE_UNTIL_DATE": "You have until {{ hearingDueDate }} to provide this information.",
       "YOU_SHOULD_FINALISE": "You should finalise your trial arrangements to ensure the court has the necessary information for the trial to proceed in a suitable way.",
@@ -4016,7 +4095,11 @@
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
       "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
-      "WANT_TO_ADD_ANOTHER_APPLICATION":"You need to tell us if you want to add another application. Choose option: Yes or No"
+      "WANT_TO_ADD_ANOTHER_APPLICATION":"You need to tell us if you want to add another application. Choose option: Yes or No",
+      "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
+      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
+      "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
+      "ENTER_VALID_EMAIL": "You need to enter a valid email address"
     }
   }
 }

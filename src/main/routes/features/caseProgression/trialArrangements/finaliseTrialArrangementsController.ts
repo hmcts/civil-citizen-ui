@@ -1,11 +1,14 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 import {
-  CP_FINALISE_TRIAL_ARRANGEMENTS_URL} from 'routes/urls';
+  CP_FINALISE_TRIAL_ARRANGEMENTS_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL,
+} from 'routes/urls';
 import {getFinaliseTrialArrangementContents} from 'services/features/caseProgression/trialArrangements/finaliseYourTrialStartScreenContent';
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {CaseRole} from 'form/models/caseRoles';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const finalizeTrialArrangementsViewPath = 'features/caseProgression/trialArrangements/finalise-trial-arrangements';
 const finaliseTrialArrangementsController = Router();
@@ -17,7 +20,10 @@ finaliseTrialArrangementsController.get([CP_FINALISE_TRIAL_ARRANGEMENTS_URL], (a
     const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     await saveDraftClaim(claimId, claim);
-    res.render(finalizeTrialArrangementsViewPath, {finaliseYourTrialContents:getFinaliseTrialArrangementContents(claimId, claim)});
+
+    const dashboardUrl = claim.caseRole === CaseRole.CLAIMANT ? constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL) : constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+
+    res.render(finalizeTrialArrangementsViewPath, {finaliseYourTrialContents:getFinaliseTrialArrangementContents(claimId, claim),dashboardUrl});
   } catch (error) {
     next(error);
   }

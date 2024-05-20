@@ -6,6 +6,7 @@ import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGene
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {CaseRole} from 'form/models/caseRoles';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 export const getHasAnythingChanged = (claimId: string, claim: Claim) => {
   let defendantOrClaimant;
@@ -18,12 +19,10 @@ export const getHasAnythingChanged = (claimId: string, claim: Claim) => {
 
   const documentId = getDocumentId(claim, DocumentType.DIRECTIONS_QUESTIONNAIRE, defendantOrClaimant);
   return new PageSectionBuilder()
+    .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
     .addMainTitle('PAGES.HAS_ANYTHING_CHANGED.FINALISE')
-    .addLeadParagraph('PAGES.HAS_ANYTHING_CHANGED.CLAIM_NUMBER', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-0')
-    .addLeadParagraph('COMMON.PARTIES', {
-      claimantName: claim.getClaimantFullName(),
-      defendantName: claim.getDefendantFullName(),
-    })
+    .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
+    .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
     .addTitle('PAGES.HAS_ANYTHING_CHANGED.HAS_ANYTHING')
     .addLink('PAGES.HAS_ANYTHING_CHANGED.DIRECTIONS',CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentId), 'PAGES.HAS_ANYTHING_CHANGED.YOU_CAN')
     .build();
