@@ -174,6 +174,8 @@ module.exports = {
       content: `You must either pay the hearing fee of £${amount} or apply for help with fees. You must do this by ${deadline}. If you do not take one of these actions, your claim will be struck out.`,
       nextSteps: 'pay the hearing fee',
       nextSteps2: 'apply for help with fees',
+    };
+  },
 
   goToHearingPartAdmit: (amount) => {
     return {
