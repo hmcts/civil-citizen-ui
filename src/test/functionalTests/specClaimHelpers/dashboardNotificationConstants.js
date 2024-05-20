@@ -174,6 +174,90 @@ module.exports = {
       content: `You must either pay the hearing fee of £${amount} or apply for help with fees. You must do this by ${deadline}. If you do not take one of these actions, your claim will be struck out.`,
       nextSteps: 'pay the hearing fee',
       nextSteps2: 'apply for help with fees',
+
+  goToHearingPartAdmit: (amount) => {
+    return {
+      title: 'Wait for the court to review the case',
+      content: ['Miss Jane Doe wants to proceed to court.',
+        `They rejected your admission of £${amount}.`,
+        'If the case goes to a hearing we will contact you with further details.'],
+      nextSteps: 'View your response',
+      nextSteps2: 'View the claimant\'s hearing requirements',
+    };
+  },
+
+  judgmentRequestedClaimantDisagrees: () => {
+    return {
+      title: 'Miss Jane Doe has requested a County Court Judgment against you',
+      content: ['The claimant rejected your repayment plan and an alternative plan proposed by the court based on your financial details. They asked a judge to make a new plan.',
+        'When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
+        'If you pay the debt within one month of the date of judgment, the County Court Judgment (CCJ) is removed from the public register. You can pay £15 to apply for a certificate (opens in new tab) that confirms this.'],
+      nextSteps: 'Contact Miss Jane Doe if you need their payment details.',
+      nextSteps2: 'View your response',
+    };
+  },
+
+  judgmentRequestedCourtAgrees: () => {
+    return {
+      title: 'Miss Jane Doe has requested a County Court Judgment against you',
+      content: ['The claimant rejected your repayment plan and has proposed a new plan, which the court agreed with, based on the financial details you provided.',
+        'When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
+        'If you pay the debt within one month of the date of judgment, the County Court Judgment (CCJ) is removed from the public register. You can pay £15 to apply for a certificate (opens in new tab) that confirms this.'],
+      nextSteps: 'Contact Miss Jane Doe if you need their payment details.',
+      nextSteps2: 'View your response',
+    };
+  },
+
+  defendantRejectsSettlementDefendant: () => {
+    return {
+      title: 'Settlement agreement',
+      content: ['You have rejected the settlement agreement.',
+        'The claimant can request a County Court Judgment (CCJ), which would order you to repay the money in line with the agreement. The court believes you can afford this.',
+        'If the claimant requests a CCJ then you can ask a judge to consider changing the plan, based on your financial details.'],
+    };
+  },
+
+  defendantRejectsSettlementClaimant: () => {
+    return {
+      title: 'Settlement agreement',
+      content: ['Sir John Doe has rejected the settlement agreement.',
+        'You can request a County Court Judgment'],
+    };
+  },
+
+  claimantAskDefendantToSignSettlementDefendant: () => {
+    return {
+      title: 'Settlement agreement',
+      content: ['The claimant has accepted your plan and asked you to sign a settlement agreement. You must respond by',
+        'If you do not respond by then, or reject the agreement, they can request a County Court Judgment.'],
+      nextSteps: 'View the repayment plan',
+      nextSteps2: 'View your response',
+    };
+  },
+
+  claimantAskDefendantToSignSettlementClaimant: () => {
+    return {
+      title: 'Settlement agreement',
+      content: ['You have accepted the Sir John Doe offer and asked them to sign a settlement agreement.',
+        'The defendant must respond by ',
+        'If they do not respond by then, or reject the agreement, you can request a County Court Judgment(CCJ).'],
+    };
+  },
+
+  defendantAcceptsSettlementDefendant: () => {
+    return {
+      title: 'Settlement agreement',
+      content: ['You have accepted the settlement agreement.',
+        'The claimant cannot request a County Court Judgment, unless you break the terms of the agreement.'],
+    };
+  },
+
+  defendantAcceptsSettlementClaimant: () => {
+    return {
+      title: 'Settlement agreement',
+      content: ['Sir John Doe has accepted the settlement agreement.',
+        'You cannot request a County Court Judgment(CCJ), unless they break the terms of the agreement.'],
+      nextSteps: 'You can view the settlement agreement or tell us it\'s settled',
     };
   },
 };
