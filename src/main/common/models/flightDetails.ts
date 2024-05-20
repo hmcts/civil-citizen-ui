@@ -10,8 +10,8 @@ export class FlightDetails {
 
   @IsNotEmpty({message: 'ERRORS.FLIGHT_DETAILS.FLIGHT_NUMBER_REQUIRED'})
     flightNumber?: string;
-
-  @ValidateIf(o => (o.day <32 && o.month<13 && o.year > 999))
+    
+  @ValidateIf(o => (o.day && o.month && o.year && o.day <32 && o.month<13 && o.year > 999))
   @IsDate({message: 'ERRORS.VALID_DATE'})
   @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.FLIGHT_DETAILS.DATE_FLIGHT_PAST'})
     flightDate?: Date;
