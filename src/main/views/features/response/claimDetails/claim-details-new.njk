@@ -6,12 +6,12 @@
 {% from "../../../macro/page-information.njk" import pageInformation %}
 {% from "../../../macro/amount-breakdown.njk" import amountBreakdownTable %}
 {% set claimHasBeenMadeHtml %}
-    <p class="govuk-body">{{ t('PAGES.CLAIM_DETAILS.CLAIM_HAS_BEEN_MADE_TEXT') }} <a id="order-and-notice-link" href="#" rel="noreferrer noopener">{{ t('COMMON.ORDER_AND_NOTICES') }}</a></p>
+    <p class="govuk-body">{{ t('PAGES.CLAIM_DETAILS.CLAIM_HAS_BEEN_MADE_TEXT') }} <a id="order-and-notice-link" href="{{ ordersAndNoticesUrl }}" rel="noreferrer noopener">{{ t('COMMON.ORDER_AND_NOTICES') }}</a></p>
 {% endset -%}
 {% set evidenceRows = claim.claimantEvidence.evidenceItem %}
-    
+
 {% block nestedContent %}
-    
+
     {{ pageInformation(t,pageCaption, pageTitle, claimId, totalAmount)}}
 
     <br>

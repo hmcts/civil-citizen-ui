@@ -35,4 +35,15 @@ export class PaymentSuccessfulSectionBuilder extends PageSectionBuilder {
     this._claimSummarySections.push(section);
     return this;
   }
+  
+  addPanelForConfirmation(title: string, lng?: string) {
+    const section = ({
+      type: ClaimSummaryType.PANEL,
+      data: {
+        title: `<span class='govuk-!-font-size-36'>${t(title, { lng: getLng(lng) })}</span>`,
+      },
+    });
+    this._claimSummarySections.push(section);
+    return this;
+  }
 }
