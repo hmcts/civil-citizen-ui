@@ -158,10 +158,12 @@ module.exports = {
   },
 
   //Notice.AAA6.DefResponse.FullOrPartAdmit.PayBySetDate.Claimant
-  defendantResponseFullAdmitPayBySetDateClaimant: (amount, deadline) => {
+  //This might not be strictly correct ^
+  //Deadline logic needs adding
+  defendantResponseFullAdmitPayBySetDateClaimant: (amount) => {
     return {
       title: 'Response to the claim',
-      content: `Sir John Doe has offered to pay you £${amount} by ${deadline}`,
+      content: ['Sir John Doe has offered to pay',  `£${amount} by`],
       nextSteps: 'View and respond',
     };
   },

@@ -34,7 +34,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
     await I.click('Sign out');
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     if (isDashboardServiceEnabled) {
-      const notification = defendantResponseFullAdmitPayBySetDateClaimant(claimAmount, date);
+      const notification = defendantResponseFullAdmitPayBySetDateClaimant(claimAmount);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
     }
