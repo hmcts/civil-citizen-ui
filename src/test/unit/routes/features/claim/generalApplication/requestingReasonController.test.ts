@@ -6,10 +6,12 @@ import {GA_REQUESTING_REASON_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/services/features/claim/details/claimDetailsService');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 describe('General Application - Requesting reason', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -19,6 +21,7 @@ describe('General Application - Requesting reason', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
 
   describe('on GET', () => {
