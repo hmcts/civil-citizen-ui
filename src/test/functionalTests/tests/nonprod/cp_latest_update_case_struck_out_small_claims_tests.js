@@ -5,7 +5,7 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent, verifyTasklistLinkAndState } = require('../../specClaimHelpers/e2e/dashboardHelper');
 const { claimStruckOut } = require('../../specClaimHelpers/dashboardNotificationConstants');
-const { addTrialArrangements, uploadHearingDocuments } = require('../../specClaimHelpers/dashboardTasklistConstants');
+const { uploadHearingDocuments } = require('../../specClaimHelpers/dashboardTasklistConstants');
 
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem;
