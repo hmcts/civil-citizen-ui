@@ -9,7 +9,6 @@ import config from 'config';
 import nock from 'nock';
 const session = require('supertest-session');
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {t} from 'i18next';
 import {mockCivilClaim, mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import civilClaimResponseFastTrackMock from '../../../../../utils/mocks/civilClaimResponseFastTrackMock.json';
@@ -33,16 +32,30 @@ describe('Hearing duration & other info - On GET', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
-  it('should render page successfully if cookie has correct values', async () => {
+  it('should render page successfully in English if cookie has correct values', async () => {
     //Given
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
     //When
     await testSession
-      .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', claimId))
+      .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', claimId)).query({lang: 'en'})
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TITLE'));
+        expect(res.text).toContain('Finalise your trial or hearing arrangements');
+        expect(res.text).toContain('Other Information');
+      });
+  });
+
+  it('should render page successfully in Welsh if query is cy', async () => {
+    //Given
+    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    //When
+    await testSession
+      .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', claimId)).query({lang: 'cy'})
+      //Then
+      .expect((res: { status: unknown; text: unknown; }) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Cwblhau trefniadau eich treial neu drefniadau eich gwrandawiad');
         expect(res.text).toContain('Other Information');
       });
   });
@@ -52,7 +65,7 @@ describe('Hearing duration & other info - On GET', () => {
     app.locals.draftStoreClient = mockRedisFailure;
     //When
     await testSession
-      .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
+      .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111')).query({lang: 'en'})
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(500);

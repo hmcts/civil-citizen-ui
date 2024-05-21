@@ -1,5 +1,4 @@
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
-import {t} from 'i18next';
 import {UploadYourDocumentsSectionBuilder} from 'models/caseProgression/uploadYourDocumentsSectionBuilder';
 export class FinaliseYourTrialSectionBuilder extends UploadYourDocumentsSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
@@ -33,7 +32,9 @@ export class FinaliseYourTrialSectionBuilder extends UploadYourDocumentsSectionB
     const insetSection = ({
       type: ClaimSummaryType.INSET_TEXT,
       data: {
-        html: '<STRONG>'+ t(text) +'</STRONG>' + t(text1) +'<P>' + t(text2) +'</P>',
+        text1: text,
+        text2: text1,
+        text3: text2,
         variables: variables,
       },
     });
