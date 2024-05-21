@@ -49,7 +49,7 @@ Scenario('Apply for Help with Fees Journey - Fast Track', async ({I}) => {
       notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       taskListItem = viewHearings();
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locatorFastTrack, 'AVAILABLE', true);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'AVAILABLE', true);
       taskListItem = payTheHearingFee(hearingFeeDueDate);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'ACTION NEEDED', true, true, taskListItem.deadline);
       await I.click(notification.nextSteps2);

@@ -36,7 +36,7 @@ Scenario('Case progression journey - Fast Track - Verify latest Update page for 
       const notification = orderMade();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       taskListItem = ordersAndNotices();
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locatorFastTrack, 'AVAILABLE', true);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'AVAILABLE', true);
       await I.click(notification.nextSteps);
       await ResponseSteps.SignOut();
       await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
