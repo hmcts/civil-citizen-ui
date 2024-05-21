@@ -191,6 +191,7 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.CP.StrikeOut.HearingFeeUnpaid.TrialReady.Claimant
   claimStruckOut: () => {
     return {
       title: 'The claim has been struck out',
@@ -199,6 +200,7 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.CP.OrderMade.Claimant
   orderMade: () => {
     return {
       title: 'An order has been made',
@@ -207,6 +209,7 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.CP.Hearing.Scheduled.Claimant
   hearingScheduled: (hearingDate) => {
     return {
       title: 'A hearing has been scheduled',
@@ -215,6 +218,7 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.CP.HearingFee.Required.Claimant
   payTheHearingFeeClaimant: (amount, deadline) => {
     return {
       title: 'You must pay the hearing fee',
