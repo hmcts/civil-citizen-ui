@@ -31,6 +31,8 @@ import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {AppRequest} from 'common/models/AppRequest';
 import {req} from '../../../utils/UserDetails';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {YesNo} from 'form/models/yesNo';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -620,7 +622,32 @@ describe('Civil Service Client', () => {
       //Then
       expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
     });
-
+    describe('getAirlines', () => {
+      const mockData = [
+        {airline: 'airline 1', epimsID: '1'}, 
+        {airline: 'airline 2', epimsID: '2'},
+      ];
+      it('should get airline list', async () => {
+        //Given
+        const mockGet = jest.fn().mockResolvedValue({data: mockData});
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        const civilServiceClient = new CivilServiceClient(baseUrl, true);
+        //When
+        const airlines = await civilServiceClient.getAirlines(appReq);
+        //Then
+        expect(airlines).toEqual(mockData);
+      });
+      it('should throw error when there is an error with api', async () => {
+        //Given
+        const mockGet = jest.fn().mockImplementation(() => {
+          throw new Error('error');
+        });
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        const civilServiceClient = new CivilServiceClient(baseUrl);
+        //Then
+        await expect(civilServiceClient.getAirlines(appReq)).rejects.toThrow('error');
+      });
+    });
     it('should throw error on get claim fee data', async () => {
       //Given
       const mockGet = jest.fn().mockImplementation(() => {
@@ -633,40 +660,40 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.getClaimAmountFee(100, appReq)).rejects.toThrow('error');
     });
   });
-  describe('getClaimFeeData', () => {
+  describe('getGeneralApplicationFeeData', () => {
     const mockData = {
       calculatedAmountInPence: 123,
       code: 'code',
       version: 1,
     };
 
-    it('should get claim fee data', async () => {
+    it('should get ga app fee data', async () => {
       //Given
       const mockGet = jest.fn().mockResolvedValue({data: mockData});
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
 
       //When
-      const feeResponse: ClaimFeeData = await civilServiceClient.getClaimFeeData(100, appReq);
+      const feeResponse: ClaimFeeData = await civilServiceClient.getGeneralApplicationFeeData(ApplicationTypeOption.STRIKE_OUT, YesNo.YES, YesNo.NO, appReq);
 
       //Then
       expect(feeResponse).toEqual(mockData);
     });
 
-    it('should get claim fee amount', async () => {
+    it('should get ga app fee amount', async () => {
       //Given
       const mockGet = jest.fn().mockResolvedValue({data: mockData});
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
 
       //When
-      const feeAmount: number = await civilServiceClient.getClaimAmountFee(100, appReq);
+      const feeAmount: number = await civilServiceClient.getGeneralApplicationFee(ApplicationTypeOption.STRIKE_OUT, YesNo.NO, YesNo.YES, appReq);
 
       //Then
       expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
     });
 
-    it('should throw error on get claim fee data', async () => {
+    it('should throw error on get ga app fee data', async () => {
       //Given
       const mockGet = jest.fn().mockImplementation(() => {
         throw new Error('error');
@@ -675,7 +702,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
 
       //Then
-      await expect(civilServiceClient.getClaimAmountFee(100, appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.getGeneralApplicationFee(ApplicationTypeOption.STRIKE_OUT, undefined, YesNo.YES, appReq)).rejects.toThrow('error');
     });
   });
   describe('verifyOcmcPin', () => {
