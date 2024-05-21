@@ -5,8 +5,8 @@ import { YesNo } from 'common/form/models/yesNo';
 export class RespondentAgreement extends GenericYesNo {
 
   @ValidateIf(o => o.option == YesNo.NO)
-  @IsDefined({ message: 'ERRORS.GENERAL_APPLICATION.EXPLAIN_WHY_DISAGREE_APPLICATION' })
-  @IsNotEmpty({ message: 'ERRORS.GENERAL_APPLICATION.EXPLAIN_WHY_DISAGREE_APPLICATION' })
+  @IsDefined({ message: 'ERRORS.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.EXPLAIN_WHY_DISAGREE_APPLICATION' })
+  @IsNotEmpty({ message: 'ERRORS.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.EXPLAIN_WHY_DISAGREE_APPLICATION' })
     reasonForDisagreement?: string;
 
   constructor(option?: string, reasonForDisagreement?: string) {

@@ -22,8 +22,7 @@ import { RequestingReason } from 'models/generalApplication/requestingReason';
 import { OrderJudge } from 'common/models/generalApplication/orderJudge';
 import { HearingArrangement } from 'models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
-import { RespondentAgreement } from 'common/models/generalApplication/respondentAgreement';
-
+import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -55,8 +54,14 @@ export const saveInformOtherParties = async (redisKey: string, informOtherPartie
 export const saveRespondentAgreement = async (redisKey: string, respondentAgreement: RespondentAgreement): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(redisKey);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.respondentAgreement = respondentAgreement;
+    const generalApplication = claim.generalApplication || new GeneralApplication();
+    claim.generalApplication = {
+      ...generalApplication,
+      response: {
+        ...generalApplication.response,
+        respondentAgreement,
+      },
+    };
     await saveDraftClaim(redisKey, claim);
   } catch (error) {
     logger.error(error);
