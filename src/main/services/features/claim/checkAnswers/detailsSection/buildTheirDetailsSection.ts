@@ -61,13 +61,13 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL', {lng}), claim.respondent1.emailAddress.emailAddress, CLAIM_DEFENDANT_EMAIL_URL, changeLabel(lng), title));
   }
   if (claim.isCompany()) {
-    const flightDelayed = claim.delayedFlight.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+    const flightDelayed = claim.delayedFlight?.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.ARE_YOU_CLAIMING_DELAYED_FLIGHT', {lng}), t(`COMMON.VARIATION.${flightDelayed}`, {lng}), DELAYED_FLIGHT_URL, changeLabel(lng), title));
-    if (claim.delayedFlight.option === YesNo.YES) {
+    if (claim.delayedFlight?.option === YesNo.YES) {
       yourDetailsSection.summaryList.rows.push(
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.AIRLINE', {lng}), claim.flightDetails.airline, FLIGHT_DETAILS_URL, changeLabel(lng), title),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FLIGHT_NUMBER', {lng}), claim.flightDetails.flightNumber, FLIGHT_DETAILS_URL, changeLabel(lng), title),
-        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SCHEDULED_DATE_OF_FLIGHT', {lng}), formatDateToFullDate(claim.flightDetails.flightDate, lng), FLIGHT_DETAILS_URL, changeLabel(lng), title));
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.AIRLINE', {lng}), claim.flightDetails?.airline, FLIGHT_DETAILS_URL, changeLabel(lng), title),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FLIGHT_NUMBER', {lng}), claim.flightDetails?.flightNumber, FLIGHT_DETAILS_URL, changeLabel(lng), title),
+        summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SCHEDULED_DATE_OF_FLIGHT', {lng}), formatDateToFullDate(claim.flightDetails?.flightDate, lng), FLIGHT_DETAILS_URL, changeLabel(lng), title));
     }
   }
   yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng}), claim.respondent1?.partyPhone?.phone, CLAIM_DEFENDANT_PHONE_NUMBER_URL, changeLabel(lng), title));
