@@ -224,7 +224,7 @@ module.exports = {
     };
   },
 
-   //Notice.AAA6.ClaimantIntent.GoToHearing.Claimant
+  //Notice.AAA6.ClaimantIntent.GoToHearing.Claimant
   goToHearingClaimant: () => {
     return {
       title: 'Wait for the court to review the case',
