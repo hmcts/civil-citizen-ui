@@ -17,6 +17,9 @@ import {Email} from '../../../../../../../main/common/models/Email';
 import {CitizenDate} from '../../../../../../../main/common/form/models/claim/claimant/citizenDate';
 import {buildTheirDetailsSection} from 'services/features/claim/checkAnswers/detailsSection/buildTheirDetailsSection';
 import {t} from 'i18next';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {YesNo} from 'common/form/models/yesNo';
+import {FlightDetails} from 'common/models/flightDetails';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -148,6 +151,8 @@ describe('Citizen Details Section', () => {
   it('should return your Company details summary sections', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();
+    claim.delayedFlight = new GenericYesNo(YesNo.YES);
+    claim.flightDetails = new FlightDetails('test', '123', '2023', '1', '1');
     if (claim.respondent1) {
       claim.respondent1.type = PartyType.COMPANY;
       claim.respondent1.partyDetails.contactPerson = CONTACT_PERSON;
@@ -157,6 +162,10 @@ describe('Citizen Details Section', () => {
     //Then
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe('Nice organisation');
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].value.html).toBe('The Post Man');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].value.html).toBe('COMMON.VARIATION.YES');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[5].value.html).toBe('test');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[6].value.html).toBe('123');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[7].value.html).toBe('1 January 2023');
   });
   it('should return your Organisation details summary sections', async () => {
     //Given

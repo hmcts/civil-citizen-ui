@@ -16,7 +16,7 @@ import {
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {PartyType} from '../../../../../common/models/partyType';
 import {Address} from '../../../../../common/form/models/address';
-import {YesNo} from 'form/models/yesNo';
+import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
@@ -60,8 +60,9 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
   if (claim.respondent1?.emailAddress?.emailAddress) {
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL', {lng}), claim.respondent1.emailAddress.emailAddress, CLAIM_DEFENDANT_EMAIL_URL, changeLabel(lng), title));
   }
-  if (claim.respondent1?.type === PartyType.COMPANY) {
-    yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.ARE_YOU_CLAIMING_DELAYED_FLIGHT', {lng}), claim.delayedFlight.option, DELAYED_FLIGHT_URL, changeLabel(lng), title));
+  if (claim.isCompany()) {
+    const flightDelayed = claim.delayedFlight.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+    yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.ARE_YOU_CLAIMING_DELAYED_FLIGHT', {lng}), t(`COMMON.VARIATION.${flightDelayed}`, {lng}), DELAYED_FLIGHT_URL, changeLabel(lng), title));
     if (claim.delayedFlight.option === YesNo.YES) {
       yourDetailsSection.summaryList.rows.push(
         summaryRow(t('PAGES.CHECK_YOUR_ANSWER.AIRLINE', {lng}), claim.flightDetails.airline, FLIGHT_DETAILS_URL, changeLabel(lng), title),

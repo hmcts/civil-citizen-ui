@@ -503,6 +503,10 @@ export class Claim {
     return this.respondent1?.type === PartyType.COMPANY || this.respondent1?.type === PartyType.ORGANISATION;
   }
 
+  isCompany(): boolean {
+    return this.respondent1?.type === PartyType.COMPANY;
+  }
+
   isClaimantBusiness(): boolean {
     return this.applicant1?.type === PartyType.COMPANY || this.applicant1?.type === PartyType.ORGANISATION;
   }
