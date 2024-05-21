@@ -4,7 +4,7 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
-const {goToHearingPartAdmit, judgmentRequestedClaimantDisagrees} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {goToHearingClaimant, goToHearingPartAdmitDefendant, judgmentRequestedClaimantDisagrees, claimantRejectPlanJudgeNewPlan} = require('../../specClaimHelpers/dashboardNotificationConstants');
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 
@@ -28,10 +28,16 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject 
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.claimantRejectForDefRespPartAdmitInstallmentsPayment(claimRef, '1345', 'small');
     await api.waitForFinishedBusinessProcess();
+
+    if (isDashboardServiceEnabled) {
+      const notification = goToHearingClaimant();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
+
     if (isDashboardServiceEnabled) {
       await I.click('Sign out');
       await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-      const notification = goToHearingPartAdmit(1345);
+      const notification = goToHearingPartAdmitDefendant(1345);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
@@ -69,11 +75,10 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept 
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitInstallmentsPayment(claimRef, '1345', claimNumber);
     await api.waitForFinishedBusinessProcess();
 
-    // CIV-13483 test to be put in here
-    // if (isDashboardServiceEnabled) {
-    //   const notification = ();
-    //   await verifyNotificationTitleAndContent
-    // }
+    if (isDashboardServiceEnabled) {
+      const notification = claimantRejectPlanJudgeNewPlan();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
 
     if (isDashboardServiceEnabled) {
       await I.click('Sign out');
