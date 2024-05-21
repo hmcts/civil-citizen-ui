@@ -4,7 +4,7 @@ import { InformOtherParties } from './informOtherParties';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {OrderJudge} from './orderJudge';
-import { UploadN245Form } from './uploadN245form';
+import { UploadGAFiles } from './uploadN245form';
 
 export class GeneralApplication {
 
@@ -16,7 +16,7 @@ export class GeneralApplication {
   respondentAgreeToOrder?: YesNo;
   requestingReason?: RequestingReason;
   orderJudge?: OrderJudge;
-  uploadN245Form?: UploadN245Form;
+  uploadN245Form?: UploadGAFiles;
 
   constructor(
     applicationType?: ApplicationType,

@@ -36,30 +36,24 @@
            classes: "govuk-button--secondary govuk-!-margin-bottom-0"
          }) }}
     </div>
-    {% if formattedSummary.summaryList.rows %}
+    {% if documentName %}
       <h2 class="govuk-heading-m">Uploaded files</h2>
       <dl class="govuk-summary-list">
-    
-      
         <div class="govuk-summary-list__row">
           <dt class="govuk-summary-list__key">
-            Welsh translations for batch 2B (1) (3).xlsx
+            {{ documentName }}
           </dt>
-          
-          
-            <dd class="govuk-summary-list__actions">
-              
-                <a class="govuk-link" href="/case/1715948625323823/general-application/upload-n245-form">
-                Remove document<span class="govuk-visually-hidden"> Welsh translations for batch 2B (1) (3).xlsx</span>
-                </a>
-              
-            </dd>
-          
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="{{ currentUrl }}?action=REMOVE_DOC">
+              Remove document<span class="govuk-visually-hidden">
+                {{ documentName }}</span>
+            </a>
+          </dd>
         </div>
       </dl>
-        {# {{ govukSummaryList({
-                              rows: formattedSummary.summaryList.rows
-                          }) }} #}
+      {# {{ govukSummaryList({
+                                    rows: formattedSummary.summaryList.rows
+                                }) }} #}
     {% endif %}
     <div class="govuk-button-group">
       {{ addButton(t, 'CONTINUE', cancelUrl) }}

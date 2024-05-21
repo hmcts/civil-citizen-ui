@@ -2286,7 +2286,8 @@
       "UPLOAD_N245_FORM": {
         "PAGE_TITLE": "Upload N245",
         "TITLE": "Upload N245 form",
-        "UPLOAD_HERE": "You need to complete the N245 form and upload it here.",
+        "COMPLETE_N245_FORM":"complete the N245 Form",
+        "UPLOAD_HERE": "You need to LINK_FOR_N245_FORM and upload it here.",
         "OFFER_OF_PAYMENT": "You should set out the new monthly instalments that you're proposing in the 'Offer of payment' section.",
         "INCOME_AND_EXPENSE": "We'll ask for information about your income and expenses to divide whether these instalments are affordable for you. So it may be useful to have documents like you bank statements to hand.",
         "WAYS_TO_COMPLETE": "There are two ways to complete the form. You can either:",

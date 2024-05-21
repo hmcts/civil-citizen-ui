@@ -3,7 +3,7 @@ import { FileUpload } from '../caseProgression/uploadDocumentsUserForm';
 import { CaseDocument } from '../document/caseDocument';
 
 
-export class UploadN245Form {
+export class UploadGAFiles {
     @ValidateNested()
     @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '')
     @IsNotEmpty({ message: 'ERRORS.VALID_CHOOSE_THE_FILE' })
