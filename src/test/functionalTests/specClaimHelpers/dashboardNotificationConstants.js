@@ -250,7 +250,7 @@ module.exports = {
   claimantAskDefendantToSignSettlementCourtPlanDefendant: () => {
     return {
       title: 'Settlement agreement',
-      content: ['Miss Jane Doe has rejected your plan and asked you to sign a settlement agreement.',
+      content: ['Miss Jane Doe has rejected your offer and asked you to sign a settlement agreement.',
         'Miss Jane Doe proposed a repayment plan, and the court then responded with an alternative plan that was accepted.',
         'If you do not respond by then, or reject the agreement, they can request a County Court Judgment.'],
       nextSteps: 'View the repayment plan',
