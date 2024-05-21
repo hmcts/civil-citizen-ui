@@ -18,7 +18,7 @@ module.exports = {
   claimIsSettled: (amount, date) => {
     return {
       title: 'The claim is settled',
-      content: `The claimant has confirmed that you paid £${amount} on ${date}.`,
+      content: `Miss Jane Doe has confirmed that you paid £${amount} on ${date}.`,
     };
   },
 
