@@ -3,11 +3,8 @@ import {Claim} from 'models/claim';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {FIXED_DATE} from '../../../../../utils/dateUtils';
+import {t} from 'i18next';
 
-jest.mock('i18next', () => ({
-  t: (i: string | unknown) => i,
-  use: jest.fn(),
-}));
 describe('getPayHearingFeeStartScreenContent en', () => {
   it('should return all the content', () => {
     //Given
@@ -22,8 +19,8 @@ describe('getPayHearingFeeStartScreenContent en', () => {
     expect(payHearingFeeStartScreenContentActual[1].data.text).toEqual('PAGES.PAY_HEARING_FEE.START_PAGE.TITLE');
     expect(payHearingFeeStartScreenContentActual[2].data.text).toEqual('COMMON.CASE_NUMBER');
     expect(payHearingFeeStartScreenContentActual[3].data.text).toEqual('COMMON.CLAIM_AMOUNT_WITH_VALUE');
-    expect(payHearingFeeStartScreenContentActual[4].data.text).toEqual('PAGES.PAY_HEARING_FEE.START_PAGE.YOU_MUST_PAY');
-    expect(payHearingFeeStartScreenContentActual[5].data.text).toEqual('PAGES.PAY_HEARING_FEE.START_PAGE.IF_YOU_DO_NOT_PAY');
+    expect(payHearingFeeStartScreenContentActual[4].data.text).toEqual(t('PAGES.PAY_HEARING_FEE.START_PAGE.YOU_MUST_PAY',{lng:'en'}));
+    expect(payHearingFeeStartScreenContentActual[5].data.text).toEqual(t('PAGES.PAY_HEARING_FEE.START_PAGE.IF_YOU_DO_NOT_PAY',{lng:'en'}));
     expect(payHearingFeeStartScreenContentActual[6].data.text).toEqual('COMMON.BUTTONS.START_NOW');
   });
   it('should return all the content cy', () => {
@@ -39,8 +36,8 @@ describe('getPayHearingFeeStartScreenContent en', () => {
     expect(payHearingFeeStartScreenContentActual[1].data.text).toEqual('PAGES.PAY_HEARING_FEE.START_PAGE.TITLE');
     expect(payHearingFeeStartScreenContentActual[2].data.text).toEqual('COMMON.CASE_NUMBER');
     expect(payHearingFeeStartScreenContentActual[3].data.text).toEqual('COMMON.CLAIM_AMOUNT_WITH_VALUE');
-    expect(payHearingFeeStartScreenContentActual[4].data.text).toEqual('PAGES.PAY_HEARING_FEE.START_PAGE.YOU_MUST_PAY');
-    expect(payHearingFeeStartScreenContentActual[5].data.text).toEqual('PAGES.PAY_HEARING_FEE.START_PAGE.IF_YOU_DO_NOT_PAY');
+    expect(payHearingFeeStartScreenContentActual[4].data.text).toEqual(t('PAGES.PAY_HEARING_FEE.START_PAGE.YOU_MUST_PAY',{lng:'cy'}));
+    expect(payHearingFeeStartScreenContentActual[5].data.text).toEqual(t('PAGES.PAY_HEARING_FEE.START_PAGE.IF_YOU_DO_NOT_PAY',{lng:'cy'}));
     expect(payHearingFeeStartScreenContentActual[6].data.text).toEqual('COMMON.BUTTONS.START_NOW');
   });
 });
