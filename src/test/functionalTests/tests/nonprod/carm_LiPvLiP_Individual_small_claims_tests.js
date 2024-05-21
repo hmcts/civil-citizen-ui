@@ -3,7 +3,7 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ClaimantResponseSteps = require('../../citizenFeatures/response/steps/lipClaimantResponseSteps');
-const { claimantNotificationOfDefendantResponse } = require('../../specClaimHelpers/dashboardNotificationConstants');
+const { defendantResponseFullAdmitPayBySetDateClaimant } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 const claimType = 'SmallClaims';
 const partAdmit = 'partial-admission';
@@ -54,12 +54,12 @@ Scenario('LiP Defendant response with Part admit', async ({api}) => {
     await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
     await ResponseSteps.VerifyConfirmationPage('PartAdmitAndPayImmediately');
   }
-}).tag('@skip-regression-carm');
+}).tag('@regression-carm');
 
 Scenario('LiP Claimant response with Part admit', async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, claimantNotificationOfDefendantResponse(500));
+    await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, defendantResponseFullAdmitPayBySetDateClaimant(500));
     await ClaimantResponseSteps.verifyDefendantResponse();
     await ClaimantResponseSteps.acceptOrRejectDefendantResponse('No');
     await ResponseSteps.EnterTelephoneMediationDetails();
@@ -71,4 +71,4 @@ Scenario('LiP Claimant response with Part admit', async ({api}) => {
     await ClaimantResponseSteps.submitClaimantResponse();
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@skip-regression-carm');
+}).tag('@regression-carm');

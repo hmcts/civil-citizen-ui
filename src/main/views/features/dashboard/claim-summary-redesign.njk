@@ -1,6 +1,4 @@
-{% extends "claim-details-tpl.njk" %}
-{% from "govuk/components/tabs/macro.njk" import govukTabs %}
-{% from "../../macro/about-claim-widget.njk" import aboutClaimWidget %}
+{% extends "claim-details-tpl-dashboard.njk" %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/task-list.njk" import taskListComponent %}
 {% from "./claim-summary-content.njk" import claimSummaryContent %}
@@ -10,19 +8,20 @@
 
 {% block content %}
 
-  <div class="govuk-width-container govuk-!-padding-top-0">
-    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
-      {% set claimantName = claim.getClaimantFullName() %}
-      {% set defendantName = claim.getDefendantFullName() %}
-      <div class="govuk-grid-row govuk-!-margin-top-0">
-        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
-          <h1 class="govuk-heading-m govuk-!-margin-0">{{ claimantName }} v {{ defendantName }}</h1>
-          <p class="govuk-body-s">
-              {{ t('PAGES.CLAIM_SUMMARY.CLAIM_NUMBER') }}
-              {{ claim.legacyCaseReference }}
+        {% set claimantName = claim.getClaimantFullName() %}
+        {% set defendantName = claim.getDefendantFullName() %}
+        {% if claimantName and defendantName %}
+          <h1 class="govuk-heading-m">{{ claimantName }} v {{ defendantName }}</h1>
+        {% endif %}
+        {% if claimIdPrettified %}
+          <p class="govuk-body-m govuk-!-margin-bottom-0">
+              {{ t('COMMON.CASE_NUMBER') }}
+              {{ claimIdPrettified }}
           </p>
-        </div>
-      </div>
+        {% endif %}
+        {% if claimAmountFormatted %}
+          <p class="govuk-body-m">{{  t('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: claimAmountFormatted}) }}</p>
+        {% endif %}
       <div class="govuk-grid-row">
         {# Left side #}
         <div class="govuk-grid-column-two-thirds">
@@ -30,7 +29,8 @@
             {% for notification in dashboardNotifications.items %}
                 {{ govukNotificationBanner({
                    titleText: notification.titleCy if lang=="cy" else notification.titleEn,
-                   html: notification.descriptionCy if lang=="cy" else notification.descriptionEn
+                   html: notification.descriptionCy if lang=="cy" else notification.descriptionEn,
+                   classes: "govuk-!-margin-bottom-4"
                  })  }}
             {% endfor %}
             {% for taskList in dashboardTaskList.items %}
@@ -80,8 +80,5 @@
           </div>
         </div>
       </div>
-
-    </main>
-  </div>
 
 {% endblock %}

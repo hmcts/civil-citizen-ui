@@ -19,6 +19,9 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
+import {OrderJudge} from 'common/models/generalApplication/orderJudge';
+import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
+import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -41,6 +44,18 @@ export const saveInformOtherParties = async (redisKey: string, informOtherPartie
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.informOtherParties = informOtherParties;
     await saveDraftClaim(redisKey, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveOrderJudge = async (claimId: string, orderJudge: OrderJudge): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.orderJudge = orderJudge;
+    await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -131,6 +146,30 @@ export const saveRequestingReason = async (claimId: string, requestingReason: Re
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.requestingReason = requestingReason;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveHearingArrangement = async (claimId: string, hearingArrangement: HearingArrangement): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.hearingArrangement = hearingArrangement;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveHearingContactDetails = async (claimId: string, hearingContactDetails: HearingContactDetails): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.hearingContactDetails = hearingContactDetails;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);

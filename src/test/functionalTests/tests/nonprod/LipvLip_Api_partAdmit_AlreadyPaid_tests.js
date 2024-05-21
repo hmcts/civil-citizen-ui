@@ -1,11 +1,10 @@
 const config = require('../../../config');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
-const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
-const { claimIsSettled} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const { claimIsSettledDefendant, claimIsSettledClaimant } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 let claimRef, claimType;
 let caseData;
@@ -13,7 +12,7 @@ let claimNumber;
 
 Feature('Response with PartAdmit-AlreadyPaid - Small Claims & Fast Track');
 
-Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle the claim @citizenUI @partAdmit @nightly - @api', async ({api}) => {
+Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle the claim @citizenUI @partAdmit @nightly - @api', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -22,15 +21,22 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle t
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+    console.log('isDashboardServiceEnabled..', isDashboardServiceEnabled);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitAmountPaidWithIndividual);
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaid(claimRef, claimNumber, 'disagree');
     await api.waitForFinishedBusinessProcess();
+    
     if (isDashboardServiceEnabled) {
-      await ResponseSteps.SignOut();
+      const notification = claimIsSettledClaimant(700, '1 January 2020');
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
+
+    if (isDashboardServiceEnabled) {
+      await I.click('Sign out');
       await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-      const notification = claimIsSettled(700, '1 January 2020');
+      const notification = claimIsSettledDefendant(700, '1 January 2020');
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
