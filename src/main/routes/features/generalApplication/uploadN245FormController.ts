@@ -12,9 +12,9 @@ import config from 'config';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { TypeOfDocumentSectionMapper } from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
-import { UploadGAFiles } from 'common/models/generalApplication/uploadN245form';
 import { saveN245Form } from 'services/features/generalApplication/generalApplicationService';
 import { formN245Url } from 'common/utils/externalURLs';
+import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
 
 
 const uploadN245FormController = Router();

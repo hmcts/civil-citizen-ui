@@ -26,7 +26,10 @@
        name: "selectedFile",
         label: {
           html: '<strong>Upload a file</strong>'
-        }
+        },
+         errorMessage: {
+    text: form.errorFor('fileUpload')
+  } if form.hasFieldError('fileUpload')
       }) }}
       {{ govukButton({
                           id: 'uploadFileButton',
@@ -52,8 +55,8 @@
         </div>
       </dl>
       {# {{ govukSummaryList({
-                                    rows: formattedSummary.summaryList.rows
-                                }) }} #}
+                                          rows: formattedSummary.summaryList.rows
+                                      }) }} #}
     {% endif %}
     <div class="govuk-button-group">
       {{ addButton(t, 'CONTINUE', cancelUrl) }}

@@ -20,7 +20,7 @@ import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {OrderJudge} from 'common/models/generalApplication/orderJudge';
-import { UploadGAFiles } from 'common/models/generalApplication/uploadN245form';
+import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');

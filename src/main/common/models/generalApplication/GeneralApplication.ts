@@ -4,7 +4,7 @@ import { InformOtherParties } from './informOtherParties';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {OrderJudge} from './orderJudge';
-import { UploadGAFiles } from './uploadN245form';
+import { UploadGAFiles } from './uploadGAFiles';
 
 export class GeneralApplication {
 
