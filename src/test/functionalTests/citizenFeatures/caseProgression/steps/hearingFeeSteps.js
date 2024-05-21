@@ -20,41 +20,45 @@ const govPay = new GovPay();
 
 class hearingFeeSteps {
 
-  async initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, dueDate) {
+  async initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, dueDate, caseNumber, claimAmount) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (!isDashboardServiceEnabled) {
       console.log('The value of the Claim Reference : ' + claimRef);
       payHearingFee.open(claimRef);
-      payHearingFee.verifyPageContent(feeAmount, dueDate);
+      payHearingFee.verifyPageContent(feeAmount, dueDate, caseNumber, claimAmount);
       payHearingFee.nextAction('Start now');
-      applyHelpFeeSelection.verifyPageContent(feeAmount);
+      applyHelpFeeSelection.verifyPageContent(feeAmount, caseNumber, claimAmount);
       applyHelpFeeSelection.nextAction('Yes');
       applyHelpFeeSelection.nextAction('Continue');
-      applyHelpFees.verifyPageContent(feeAmount);
+      applyHelpFees.verifyPageContent(feeAmount, caseNumber, claimAmount);
       applyHelpFees.nextAction('Yes');
       applyHelpFees.nextAction('Continue');
     }
-    applyHelpWithFeesStart.verifyPageContent();
+    applyHelpWithFeesStart.verifyPageContent(caseNumber, claimAmount);
     applyHelpWithFeesStart.nextAction('Continue');
-    applyHelpWithFeesReferenceNumber.verifyPageContent();
+    applyHelpWithFeesReferenceNumber.verifyPageContent(caseNumber, claimAmount);
     applyHelpWithFeesReferenceNumber.nextAction('Yes');
     applyHelpWithFeesReferenceNumber.addHelpWithFeesReference();
     applyHelpWithFeesReferenceNumber.nextAction('Continue');
     applyHelpWithFeesConfirmation.verifyPageContent();
+    applyHelpWithFeesConfirmation.nextAction('Close and return to case overview');
   }
 
-  payHearingFeeJourney(claimRef, feeAmount, dueDate)
-  {
-    console.log('The value of the Claim Reference : ' + claimRef);
-    payHearingFee.open(claimRef);
-    payHearingFee.verifyPageContent(feeAmount, dueDate);
-    payHearingFee.nextAction('Start now');
-    applyHelpFeeSelection.verifyPageContent(feeAmount);
-    applyHelpFeeSelection.nextAction('No');
-    applyHelpFeeSelection.nextAction('Continue');
-    govPay.addValidCardDetails(feeAmount);
+  async payHearingFeeJourney(claimRef, feeAmount, dueDate, caseNumber, claimAmount) {
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+    if (!isDashboardServiceEnabled) {
+      console.log('The value of the Claim Reference : ' + claimRef);
+      payHearingFee.open(claimRef);
+      payHearingFee.verifyPageContent(feeAmount, dueDate, caseNumber, claimAmount);
+      payHearingFee.nextAction('Start now');
+      applyHelpFeeSelection.verifyPageContent(caseNumber, claimAmount);
+      applyHelpFeeSelection.nextAction('No');
+      applyHelpFeeSelection.nextAction('Continue');
+    }
+    await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
     paymentSuccessful.verifyPageContent(feeAmount);
+    paymentSuccessful.nextAction('Close and return to case overview');
   }
 }
 
