@@ -7,10 +7,28 @@
   "state": "PENDING_CASE_ISSUED",
   "security_classification": "PUBLIC",
   "case_data": {
+    "applicant1": {
+      "type": "ORGANISATION",
+      "partyPhone": {
+        "phone": "(0)207 127 0000"
+      },
+      "emailAddress": "hmcts@hmcts.com",
+      "partyDetails": {
+        "primaryAddress": {
+          "postCode": "RG4 7AA",
+          "city": "Reading",
+          "addressLine1": "Flat 2",
+          "addressLine2": "Caversham House 15-17",
+          "addressLine3": "Church Road"
+        },
+        "partyName": "Mr. Jan Clark"
+      },
+      "partyTypeDisplayValue": "Organisation"
+    },
     "partialAdmission": {
       "howMuchHaveYouPaid": {
         "amount": 20
-      } 
+      }
     },
     "respondent1": {
       "responseType": "PART_ADMISSION"
