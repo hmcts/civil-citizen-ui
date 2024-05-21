@@ -10,7 +10,7 @@ const { hearingScheduled, payTheHearingFeeClaimant } = require('../../specClaimH
 const { viewHearings, payTheHearingFee } = require('../../specClaimHelpers/dashboardTasklistConstants');
 
 const claimType = 'SmallClaims';
-const claimAmount = '£1,000';
+const claimAmount = '£1,500';
 const feeAmount = '123';
 let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, hearingFeeDueDate, hearingDate;
 
