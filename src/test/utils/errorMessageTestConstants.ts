@@ -182,5 +182,19 @@ export const enum TestMessages {
   MEDIATION_CHECK_YOUR_ANSWERS = 'Check your answers',
   VIEW_MEDIATION_SETTLEMENT_AGREEMENT = 'View mediation settlement agreement',
   VIEW_MEDIATION_DOCUMENTS = 'View mediation documents',
+  // Judgment Online
+  CONFIRM_YOU_HAVE_BEEN_PAID_PAGE_TITLE = 'Confirm that you&#39;ve been paid',
+  CONFIRM_YOU_HAVE_BEEN_PAID_ENTER_THE_DATE = 'Enter the date that you were paid the full amount that was specified on the judgment',
+  CONFIRM_YOU_HAVE_BEEN_PAID_HINT = 'If you&#39;ve been paid in installments, enter the date of the final payment you received. For example, 16 4 2021',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM = 'I confirm that I&#39;ve been paid the full amount that was specified on the judgment. Once you&#39;ve confirmed this, it cannot be changed.',
+  CONFIRM_YOU_HAVE_BEEN_PAID_JUDGMENT_LINK = 'View the judgment made against the defendant',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CHECK_ERROR_MESSAGE = 'Please confirm you&#39;ve been paid the full amount',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_PAGE_TITLE = 'Confirm that you&#39;ve been paid - Confirmation',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_YOU_CONFIRMED = 'You&#39;ve confirmed that you&#39;ve been paid',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_WHAT_NEXT = 'What happens next',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_NO_FURTHER = 'There&#39;s no further action you need to take.',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_CLOSE_AND_RETURN = 'Close and return to case details',
+  ERRORS_CORRECT_DATE_NOT_IN_FUTURE = 'Correct the date. You can&#39;t use a future date.',
+  ERRORS_VALID_DATE = 'Please enter a valid date',
 
 }
