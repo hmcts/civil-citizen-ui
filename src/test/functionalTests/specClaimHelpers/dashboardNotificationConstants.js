@@ -239,8 +239,8 @@ module.exports = {
   claimantAskDefendantToSignSettlementDefendant: () => {
     return {
       title: 'Settlement agreement',
-      content: ['Miss Jane Doe has accepted your plan and asked you to sign a settlement agreement. You must respond by',
-        'If you do not respond by then, or reject the agreement, they can request a County Court Judgment.'],
+      content: ['Miss Jane Doe has accepted your offer and asked you to sign a settlement agreement. You must respond by',
+        'If you do not respond by then, or reject the agreement, they can request a County Court Judgment (CCJ).'],
       nextSteps: 'View the repayment plan',
       nextSteps2: 'View your response',
     };
@@ -291,8 +291,8 @@ module.exports = {
   defendantRejectsSettlementDefendant: () => {
     return {
       title: 'Settlement agreement',
-      content: ['You have rejected the settlement agreement.',
-        'The claimant can request a County Court Judgment (CCJ), which would order you to repay the money in line with the agreement. The court believes you can afford this.',
+      content: [
+        'Miss Jane Doe can request a County Court Judgment (CCJ), which would order you to repay the money in line with the agreement. The court believes you can afford this.',
         'If the claimant requests a CCJ then you can ask a judge to consider changing the plan, based on your financial details.'],
     };
   },
