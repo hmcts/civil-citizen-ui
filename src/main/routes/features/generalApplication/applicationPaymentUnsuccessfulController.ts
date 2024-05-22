@@ -1,10 +1,9 @@
-import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {
-  DASHBOARD_URL,
-  GA_PAYMENT_UNSUCCESSFUL_URL,
-} from 'routes/urls';
+import {NextFunction, Router} from 'express';
+import {GA_PAYMENT_UNSUCCESSFUL_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
 
 const applicationPaymentUnsuccessfulViewPath = 'features/generalApplication/application-payment-unsuccessful';
 const applicationPaymentUnsuccessfulController: Router = Router();
@@ -13,19 +12,15 @@ applicationPaymentUnsuccessfulController.get(GA_PAYMENT_UNSUCCESSFUL_URL, (req, 
   (async () => {
     try {
       const claimId = req.params.id;
-      const cancelUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_URL);
-      res.render(applicationPaymentUnsuccessfulViewPath, {cancelUrl});
+      const redisKey = generateRedisKey(<AppRequest>req);
+      const claim = await getClaimById(redisKey, req, true);
+      const cancelUrl = await getCancelUrl(claimId, claim);
+      const makePaymentAgainUrl = 'test'; //TODO: CIV-13767
+      res.render(applicationPaymentUnsuccessfulViewPath, {cancelUrl, makePaymentAgainUrl});
     } catch (error) {
       next(error);
     }
   })();
 });
 
-applicationPaymentUnsuccessfulController.post(GA_PAYMENT_UNSUCCESSFUL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
-  try {
-    res.redirect(GA_PAYMENT_UNSUCCESSFUL_URL);
-  } catch (error) {
-    next(error);
-  }
-}) as RequestHandler);
 export default applicationPaymentUnsuccessfulController;

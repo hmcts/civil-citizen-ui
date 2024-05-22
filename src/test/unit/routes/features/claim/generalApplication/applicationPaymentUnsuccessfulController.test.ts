@@ -2,14 +2,13 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import { GA_PAYMENT_UNSUCCESSFUL_URL } from 'routes/urls';
-import { Claim } from 'common/models/claim';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import {GA_PAYMENT_UNSUCCESSFUL_URL} from 'routes/urls';
+import {Claim} from 'common/models/claim';
+import {isGaForLipsEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import * as draftService from 'modules/draft-store/draftStoreService';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
-import { CaseProgressionHearing } from 'common/models/caseProgression/caseProgressionHearing';
-import { t } from 'i18next';
+import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -30,7 +29,6 @@ describe('Claim fee unsuccessful payment confirmation', () => {
   beforeEach(() => {
     claim = new Claim();
     claim.generalApplication = new GeneralApplication();
-    claim.caseProgressionHearing = new CaseProgressionHearing();
   });
 
   describe('on GET', () => {
