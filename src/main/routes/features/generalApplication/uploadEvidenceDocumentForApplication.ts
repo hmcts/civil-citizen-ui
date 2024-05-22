@@ -58,24 +58,15 @@ uploadEvidenceDocumentsForApplicationController.get(GA_UPLOAD_DOCUMENTS, (async 
         title: '',
         summaryRows: [],
       });
-    if (req?.session?.fileUpload !== undefined){
-      if (req?.session?.fileUpload === 'empty') {
-        form.validateSync();
-        console.log(form.getErrors());
-      } else {
-        uploadDocuments = new UploadGAFiles();
-        uploadDocuments.fileUpload = JSON.parse(req.session.fileUpload);
-        form = new GenericForm(uploadDocuments);
-        form.validateSync();
-      }
+    if (req?.session?.fileUpload) {
+      const parsedData = JSON.parse(req?.session?.fileUpload);
+      form = new GenericForm(uploadDocuments, parsedData); 
       req.session.fileUpload = undefined;
     }
     if (req.query?.id) {
       const index = req.query.id;
       await removeDocumentFromRedis(claim.id, claim, Number(index)-1);
     }
-
-    console.log(req.body);
     await getSummaryList(formattedSummary, redisKey, claimId);
     await renderView(form, claim, claimId, res, formattedSummary);
   } catch (error) {

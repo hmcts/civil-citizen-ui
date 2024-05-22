@@ -36,7 +36,7 @@
             {{ csrfProtection(csrf) }}
             <div class="govuk-inset-text" >
             {{govukFileUpload({
-              id: "idValue",
+              id: idValue,
               name: "selectedFile",
               label: {
                 html: '<strong>Upload a file</strong>'
