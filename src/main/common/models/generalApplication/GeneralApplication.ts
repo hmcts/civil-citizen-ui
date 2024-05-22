@@ -37,10 +37,10 @@ export class GeneralApplication {
     this.agreementFromOtherParty = agreementFromOtherParty;
     this.applicationCosts = applicationCosts;
     this.respondentAgreeToOrder = respondentAgreeToOrder;
-    this.response = response;
     this.requestingReason = requestingReason;
     this.orderJudge = orderJudge;
     this.hearingArrangement = hearingArrangement;
     this.hearingContactDetails = hearingContactDetails;
+    this.response = response;
   }
 }
