@@ -4,7 +4,7 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../specClaimHelpers/e2e/dashboardHelper');
-const { claimIsSettled} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const { claimIsSettledDefendant, claimIsSettledClaimant } = require('../../specClaimHelpers/dashboardNotificationConstants');
 
 let claimRef, claimType;
 let caseData;
@@ -27,10 +27,16 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle t
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaid(claimRef, claimNumber, 'disagree');
     await api.waitForFinishedBusinessProcess();
+    
+    if (isDashboardServiceEnabled) {
+      const notification = claimIsSettledClaimant(700, '1 January 2020');
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    }
+
     if (isDashboardServiceEnabled) {
       await I.click('Sign out');
       await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-      const notification = claimIsSettled(700, '1 January 2020');
+      const notification = claimIsSettledDefendant(700, '1 January 2020');
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
