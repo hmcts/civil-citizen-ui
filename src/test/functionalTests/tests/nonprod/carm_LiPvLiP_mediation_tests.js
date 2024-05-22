@@ -23,7 +23,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({api}
     console.log('LIP vs LIP claim has been created Successfully    <===>  '  , claimRef);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllSmallClaimsCarm, 'DefendantCompany');
     await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, true, 'IN_MEDIATION');
-    await api.mediationUnsuccessful(mediationAdmin, true);
+    await api.mediationUnsuccessful(mediationAdmin, true, ['NOT_CONTACTABLE_CLAIMANT_ONE', 'NOT_CONTACTABLE_DEFENDANT_ONE']);
     await api.uploadMediationDocumentsCui(config.claimantCitizenUser, claimRef);
     await api.uploadMediationDocumentsCui(config.defendantCitizenUser, claimRef);
     await api.waitForFinishedBusinessProcess();

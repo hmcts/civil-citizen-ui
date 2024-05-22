@@ -25,8 +25,8 @@ Scenario('LR vs LiP Unsuccessful Mediation with Upload Documents', async ({api, 
     await api.checkUserCaseAccess(config.claimantCitizenUser, false);
     await api.checkUserCaseAccess(config.applicantSolicitorUser, true);
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllSmallClaimsCarm, 'DefendantOrganisation');
-    await api.claimantLrRespondToDefence(config.applicantSolicitorUser, claimRef, carmEnabled);
-    await api.mediationUnsuccessful(mediationAdmin, true);
+    await api.claimantLrRespondToDefence(config.applicantSolicitorUser, claimRef, 'IN_MEDIATION');
+    await api.mediationUnsuccessful(mediationAdmin, true, ['NOT_CONTACTABLE_CLAIMANT_ONE', 'NOT_CONTACTABLE_DEFENDANT_ONE']);
     await api.uploadMediationDocumentsExui(config.applicantSolicitorUser, claimRef);
     await api.uploadMediationDocumentsCui(config.defendantCitizenUser, claimRef);
     await api.waitForFinishedBusinessProcess();
@@ -43,7 +43,7 @@ Scenario('LiP vs LR Unsuccessful Mediation with Upload Documents', async ({api, 
     await api.checkUserCaseAccess(config.defendantSolicitorUser, true);
     await api.performLrResponse(config.defendantSolicitorUser, claimRef, claimType, config.defenceType.rejectAllSmallClaimsCarm, 'SoleTraderVCompany');
     await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, true, 'IN_MEDIATION');
-    await api.mediationUnsuccessful(mediationAdmin, true);
+    await api.mediationUnsuccessful(mediationAdmin, true, ['NOT_CONTACTABLE_CLAIMANT_ONE', 'NOT_CONTACTABLE_DEFENDANT_ONE']);
     await api.uploadMediationDocumentsCui(config.claimantCitizenUser, claimRef);
     await api.uploadMediationDocumentsExui(config.defendantSolicitorUser);
     await api.waitForFinishedBusinessProcess();

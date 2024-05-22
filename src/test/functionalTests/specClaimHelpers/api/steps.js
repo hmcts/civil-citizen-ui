@@ -449,7 +449,7 @@ module.exports = {
     console.log('End of viewAndRespondToDefence()');
   },
 
-  claimantLipRespondToDefence: async (user, caseId, carmEnabled = false) => {
+  claimantLipRespondToDefence: async (user, caseId, carmEnabled = false, expectedEndState) => {
     console.log('This is inside claimantLipRespondToDefence : ' + caseId);
     eventName = 'CLAIMANT_RESPONSE_CUI';
     let payload;
@@ -464,10 +464,14 @@ module.exports = {
 
     await apiRequest.startEventForCitizen(eventName, caseId, payload);
     await waitForFinishedBusinessProcess(caseId, user);
+    if (expectedEndState) {
+      const response = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
+      assert.equal(response.state, expectedEndState);
+    }
     console.log('End of claimantLipRespondToDefence()');
   },
 
-  claimantLrRespondToDefence: async (user, caseId) => {
+  claimantLrRespondToDefence: async (user, caseId, expectedEndState) => {
     console.log('This is inside performLrRespondToDefence : ' + caseId);
 
     await apiRequest.setupTokens(user);
@@ -485,7 +489,10 @@ module.exports = {
 
     await assertSubmittedSpecEvent();
     await waitForFinishedBusinessProcess(caseId, user);
-    console.log('End of claimantLrRespondToDefence()');
+    if (expectedEndState) {
+      const response = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
+      assert.equal(response.state, expectedEndState);
+    }    console.log('End of claimantLrRespondToDefence()');
   },
 
   enterBreathingSpace: async (user) => {
@@ -515,11 +522,11 @@ module.exports = {
     console.log('End of mediationSuccessful()');
   },
 
-  mediationUnsuccessful: async (user, carmEnabled = false) => {
+  mediationUnsuccessful: async (user, carmEnabled = false, mediationReason) => {
     console.log('This is inside mediationUnsuccessful : ' + caseId);
     eventName = 'MEDIATION_UNSUCCESSFUL';
 
-    const mediationUnsuccessfulPayload = mediation.mediationUnSuccessfulPayload(carmEnabled);
+    const mediationUnsuccessfulPayload = mediation.mediationUnSuccessfulPayload(carmEnabled, mediationReason);
     eventName = mediationUnsuccessfulPayload['event'];
     caseData = mediationUnsuccessfulPayload['caseData'];
 

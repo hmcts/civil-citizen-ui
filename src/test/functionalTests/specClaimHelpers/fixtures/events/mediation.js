@@ -32,19 +32,21 @@ module.exports = {
     };
   },
 
-  mediationUnSuccessfulPayload: (carmEnabled = false) => {
+  mediationUnSuccessfulPayload: (carmEnabled = false, mediationReason) => {
     return {
       event: 'MEDIATION_UNSUCCESSFUL',
-      caseData: mediationUnsuccessfulPayload(carmEnabled),
+      caseData: mediationUnsuccessfulPayload(carmEnabled, mediationReason),
     };
   },
 };
 
-const mediationUnsuccessfulPayload = (carmEnabled) => {
+const mediationUnsuccessfulPayload = (carmEnabled, mediationReason) => {
   let payload;
   if (carmEnabled) {
     payload = {
-      mediationUnsuccessfulReasonsMultiSelect: ['PARTY_WITHDRAWS', 'APPOINTMENT_NOT_ASSIGNED', 'NOT_CONTACTABLE_CLAIMANT_ONE', 'NOT_CONTACTABLE_CLAIMANT_TWO', 'NOT_CONTACTABLE_DEFENDANT_ONE', 'NOT_CONTACTABLE_DEFENDANT_TWO'],
+      mediationUnsuccessfulReasonsMultiSelect: mediationReason
+        // list of mediation reasons:
+        // ['PARTY_WITHDRAWS', 'APPOINTMENT_NOT_ASSIGNED', 'NOT_CONTACTABLE_CLAIMANT_ONE', 'NOT_CONTACTABLE_CLAIMANT_TWO', 'NOT_CONTACTABLE_DEFENDANT_ONE', 'NOT_CONTACTABLE_DEFENDANT_TWO']
     };
   } else {
     payload = {
