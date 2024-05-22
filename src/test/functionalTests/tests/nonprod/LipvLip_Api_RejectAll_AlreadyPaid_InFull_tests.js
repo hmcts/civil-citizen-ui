@@ -42,4 +42,4 @@ Scenario('Response with RejectAll-AlreadyPaid-InFull Fast Track and Claimant pro
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnRejectionOfFullDefenceAlreadyPaidInFull(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+}).tag('@r2-regression').tag('@nightly');
