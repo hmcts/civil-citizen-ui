@@ -245,3 +245,15 @@
   table-layout: fixed;
   width: 100%;
 }
+
+.summaryListBorderTop {
+  border-top: 1px solid $govuk-border-colour;
+}
+
+.summaryListBorderBottom {
+  border-bottom: 1px solid $govuk-border-colour;
+}
+
+.summaryListNoBorderBottom {
+  border-bottom: 0;
+}

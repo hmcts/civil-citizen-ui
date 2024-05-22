@@ -7,6 +7,7 @@ export interface SummaryRow {
   key: Key;
   value: Value;
   actions?: Actions;
+  classes?: string;
 }
 
 export interface Key {
@@ -18,6 +19,7 @@ export interface Key {
 export interface Value {
   text?: string;
   html?: string;
+  classes?: string;
 }
 
 interface Actions {
@@ -32,7 +34,7 @@ interface Item {
   html?: string;
 }
 
-export function summaryRow(key?: string, value?: string, href?: string, hrefText?: string, hiddentText?: string): SummaryRow {
+export function summaryRow(key?: string, value?: string, href?: string, hrefText?: string, hiddentText?: string, subItem?: boolean): SummaryRow {
   const row: SummaryRow = {
     key: {
       text: key,
@@ -41,6 +43,10 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
       html: value,
     },
   };
+  if (subItem) {
+    row.classes = 'summaryListNoBorderBottom';
+    row.value.classes = 'summaryListBorderBottom';
+  }
   if (href) {
     const accessibilityText = hiddentText ? `${key} (${hiddentText})` : `${key}`;
     row.actions = {
@@ -52,6 +58,9 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
         },
       ],
     };
+    if (subItem) {
+      row.actions.classes = 'summaryListBorderBottom';
+    }
   }
   return row;
 }

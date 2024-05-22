@@ -14,7 +14,7 @@ const hearingContactDetailsController = Router();
 const viewPath = 'features/generalApplication/hearing-contact-details';
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingContactDetails>, res: Response): Promise<void> {
-  const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
+  const applicationType = selectedApplicationType[claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option];
   const cancelUrl = await getCancelUrl(claimId, claim);
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL);
   res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationType });

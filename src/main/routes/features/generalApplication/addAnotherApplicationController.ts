@@ -16,7 +16,7 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Gen
   const redisKey = generateRedisKey(req);
   const claim = await getClaimById(redisKey, req, true);
   const cancelUrl = await getCancelUrl(req.params.id, claim);
-  const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
+  const applicationType = selectedApplicationType[claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option];
   if (!form) {
     form = new GenericForm(new GenericYesNo(''));
   }

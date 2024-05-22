@@ -17,9 +17,9 @@ agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY, (async (req
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
-    const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
+    const applicationType = selectedApplicationType[claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option];
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.agreementFromOtherParty));
-   
+
     res.render(viewPath, {
       form,
       applicationType,
@@ -33,17 +33,17 @@ agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY, (async (req
 
 agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-   
+
     const backLinkUrl = getBackLinkUrl(<AppRequest>req);
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
-    const applicationTypeOption = claim.generalApplication?.applicationType?.option;
+    const applicationTypeOption = claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option;
     const applicationType = selectedApplicationType[applicationTypeOption];
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION'));
-   
+
     form.validateSync();
-    
+
     // Validate No option for application type Settle by Consent
     validateNoConsentOption(<AppRequest>req, form.errors,applicationTypeOption);
 

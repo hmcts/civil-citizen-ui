@@ -7,20 +7,22 @@ import {OrderJudge} from './orderJudge';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
+import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 
 export class GeneralApplication {
 
-  applicationType?: ApplicationType;
+  applicationTypes?: ApplicationType[];
   informOtherParties?: InformOtherParties;
   hearingSupport?: HearingSupport;
   agreementFromOtherParty?: YesNo;
   applicationCosts?: YesNo;
   respondentAgreeToOrder?: YesNo;
-  requestingReason?: RequestingReason;
-  orderJudge?: OrderJudge;
+  requestingReasons?: RequestingReason[];
+  orderJudges?: OrderJudge[];
   unavailableDatesHearing?: UnavailableDatesGaHearing;
   hearingArrangement?: HearingArrangement;
   hearingContactDetails?: HearingContactDetails;
+  statementOfTruth?: StatementOfTruthForm;
 
   constructor(
     applicationType?: ApplicationType,
@@ -32,15 +34,17 @@ export class GeneralApplication {
     unavailableDatesHearing?: UnavailableDatesGaHearing,
     hearingArrangement?: HearingArrangement,
     hearingContactDetails?: HearingContactDetails,
+    statementOfTruth?: StatementOfTruthForm,
   ) {
-    this.applicationType = applicationType;
+    this.applicationTypes = applicationType ? [applicationType] : [];
     this.agreementFromOtherParty = agreementFromOtherParty;
     this.applicationCosts = applicationCosts;
     this.respondentAgreeToOrder = respondentAgreeToOrder;
-    this.requestingReason = requestingReason;
-    this.orderJudge = orderJudge;
+    this.requestingReasons = requestingReason ? [requestingReason] : [];
+    this.orderJudges = orderJudge ? [orderJudge] : [];
     this.unavailableDatesHearing = unavailableDatesHearing;
     this.hearingArrangement = hearingArrangement;
     this.hearingContactDetails = hearingContactDetails;
+    this.statementOfTruth = statementOfTruth;
   }
 }

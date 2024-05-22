@@ -16,7 +16,11 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const applicationType = new ApplicationType(claim.generalApplication?.applicationType?.option);
+    const queryApplicationTypeIndex = req.query.index;
+    const applicationTypeOption  = queryApplicationTypeIndex
+      ? claim.generalApplication?.applicationTypes[parseInt(queryApplicationTypeIndex as string)]?.option
+      : undefined;
+    const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
     res.render(viewPath, {
       form,
@@ -33,7 +37,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     let applicationType = null;
-    
+
     if (req.body.option === ApplicationTypeOption.OTHER) {
       applicationType = new ApplicationType(req.body.optionOther);
     } else {
@@ -45,7 +49,11 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl });
     } else {
-      await saveApplicationType(redisKey, applicationType);
+      const queryApplicationTypeIndex = req.query.index;
+      const applicationTypeIndex = queryApplicationTypeIndex
+        ? parseInt(queryApplicationTypeIndex as string)
+        : undefined;
+      await saveApplicationType(redisKey, applicationType, applicationTypeIndex);
       res.redirect('test'); // TODO: add url
     }
   } catch (error) {

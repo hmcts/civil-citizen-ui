@@ -16,7 +16,7 @@ const viewPath = 'features/generalApplication/hearing-arrangement';
 const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingArrangement>, req: AppRequest | Request, res: Response): Promise<void> {
-  const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
+  const applicationType = selectedApplicationType[claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option];
   const cancelUrl = await getCancelUrl(claimId, claim);
   const courtLocations = await getListOfCourtLocations(<AppRequest> req);
   res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationType, courtLocations });

@@ -21,9 +21,17 @@ orderJudgeController.get(ORDER_JUDGE_URL, [orderJudgeGuard], (async (req: AppReq
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const orderJudge = new OrderJudge(claim.generalApplication?.orderJudge?.text);
-    const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
-    const {contentList, hintText} = buildPageContent(claim.generalApplication?.applicationType?.option, lng);
+    const queryOrderJudgeIndex = req.query.index;
+    const orderJudgeIndex = queryOrderJudgeIndex ? parseInt(queryOrderJudgeIndex as string) : -1;
+    const applicationTypeOption  = orderJudgeIndex >= 0 && orderJudgeIndex < claim.generalApplication?.orderJudges?.length
+      ? claim.generalApplication?.applicationTypes[orderJudgeIndex]?.option
+      : claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option;
+    const orderJudgeText = orderJudgeIndex >= 0 && orderJudgeIndex < claim.generalApplication?.orderJudges?.length
+      ? claim.generalApplication.orderJudges[orderJudgeIndex].text
+      : undefined;
+    const orderJudge = new OrderJudge(orderJudgeText);
+    const applicationType = selectedApplicationType[applicationTypeOption];
+    const {contentList, hintText} = buildPageContent(claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option, lng);
     const form = new GenericForm(orderJudge);
     res.render(viewPath, {
       form,
@@ -46,8 +54,13 @@ orderJudgeController.post(ORDER_JUDGE_URL, [orderJudgeGuard],  (async (req: AppR
     const cancelUrl = await getCancelUrl(claimId, claim);
     const redisKey = generateRedisKey(<AppRequest>req);
     const orderJudge = new OrderJudge(req.body.text);
-    const {contentList, hintText} = buildPageContent(claim.generalApplication?.applicationType?.option, lng);
-    const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
+    const queryOrderJudgeIndex = req.query.index;
+    const orderJudgeIndex = queryOrderJudgeIndex ? parseInt(queryOrderJudgeIndex as string) : -1;
+    const applicationTypeOption  = orderJudgeIndex >= 0 && orderJudgeIndex < claim.generalApplication?.orderJudges?.length
+      ? claim.generalApplication?.applicationTypes[orderJudgeIndex]?.option
+      : claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option;
+    const applicationType = selectedApplicationType[applicationTypeOption];
+    const {contentList, hintText} = buildPageContent(applicationTypeOption, lng);
     const form = new GenericForm(orderJudge);
     await form.validate();
     if (form.hasErrors()) {
@@ -60,7 +73,7 @@ orderJudgeController.post(ORDER_JUDGE_URL, [orderJudgeGuard],  (async (req: AppR
         hintText,
       });
     } else {
-      await saveOrderJudge(redisKey, orderJudge);
+      await saveOrderJudge(redisKey, orderJudge, orderJudgeIndex);
       res.redirect('test'); // TODO: add url
     }
   } catch (error) {

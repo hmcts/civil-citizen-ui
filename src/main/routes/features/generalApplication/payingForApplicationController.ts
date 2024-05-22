@@ -14,7 +14,7 @@ payingForApplicationController.get(PAYING_FOR_APPLICATION_URL, (async (req: AppR
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
+    const applicationType = selectedApplicationType[claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option];
     const applicationFee = 100; //TODO: get fee from https://tools.hmcts.net/jira/browse/CIV-9442
     res.render(viewPath, {applicationType, applicationFee, cancelUrl, backLinkUrl});
   } catch (error) {

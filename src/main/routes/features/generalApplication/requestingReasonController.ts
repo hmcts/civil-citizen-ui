@@ -19,9 +19,17 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, (async (req: AppRequest
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const requestingReason = new RequestingReason(claim.generalApplication?.requestingReason?.text);
-    const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
-    const contentList = buildRequestingReasonPageContent(claim.generalApplication?.applicationType?.option, lng);
+    const queryRequestingReasonIndex = req.query.index;
+    const requestingReasonIndex = queryRequestingReasonIndex ? parseInt(queryRequestingReasonIndex as string) : -1;
+    const applicationTypeOption  = requestingReasonIndex >= 0 && requestingReasonIndex < claim.generalApplication?.requestingReasons?.length
+      ? claim.generalApplication?.applicationTypes[requestingReasonIndex]?.option
+      : claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option;
+    const requestingReasonText = requestingReasonIndex >= 0 && requestingReasonIndex < claim.generalApplication?.requestingReasons?.length
+      ? claim.generalApplication.requestingReasons[requestingReasonIndex].text
+      : undefined;
+    const requestingReason = new RequestingReason(requestingReasonText);
+    const applicationType = selectedApplicationType[applicationTypeOption];
+    const contentList = buildRequestingReasonPageContent(claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option, lng);
     const form = new GenericForm(requestingReason);
     res.render(viewPath, {
       form,
@@ -42,8 +50,14 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, (async (req: AppReques
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const requestingReason = new RequestingReason(req.body.text);
-    const contentList = buildRequestingReasonPageContent(claim.generalApplication?.applicationType?.option, lng);
-    const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
+    const queryRequestingReasonIndex = req.query.index;
+    const requestingReasonIndex = queryRequestingReasonIndex ? parseInt(queryRequestingReasonIndex as string) : -1;
+    const applicationTypeOption  = requestingReasonIndex >= 0 && requestingReasonIndex < claim.generalApplication?.requestingReasons?.length
+      ? claim.generalApplication?.applicationTypes[requestingReasonIndex]?.option
+      : claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option;
+    const applicationType = selectedApplicationType[applicationTypeOption];
+    const contentList =
+      buildRequestingReasonPageContent(claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option, lng);
 
     const form = new GenericForm(requestingReason);
     await form.validate();
@@ -56,7 +70,7 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, (async (req: AppReques
         contentList,
       });
     } else {
-      await saveRequestingReason(redisKey, requestingReason);
+      await saveRequestingReason(redisKey, requestingReason, requestingReasonIndex);
       res.redirect('test'); // TODO: add url
     }
   } catch (error) {

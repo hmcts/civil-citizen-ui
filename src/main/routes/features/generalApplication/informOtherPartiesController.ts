@@ -23,7 +23,7 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Inf
   res.render(viewPath, {
     cancelUrl,
     backLinkUrl,
-    applicationType: selectedApplicationType[claim.generalApplication?.applicationType?.option],
+    applicationType: selectedApplicationType[claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option],
     form,
   });
 };

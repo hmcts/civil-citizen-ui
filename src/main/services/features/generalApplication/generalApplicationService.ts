@@ -23,15 +23,20 @@ import {OrderJudge} from 'common/models/generalApplication/orderJudge';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
+import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 
-export const saveApplicationType = async (claimId: string, applicationType: ApplicationType): Promise<void> => {
+export const saveApplicationType = async (claimId: string, applicationType: ApplicationType, index?: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.applicationType = applicationType;
+    if (index >= 0 && index < claim.generalApplication.applicationTypes.length) {
+      claim.generalApplication.applicationTypes[index] = applicationType;
+    } else {
+      claim.generalApplication.applicationTypes.push(applicationType);
+    }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -51,11 +56,15 @@ export const saveInformOtherParties = async (redisKey: string, informOtherPartie
   }
 };
 
-export const saveOrderJudge = async (claimId: string, orderJudge: OrderJudge): Promise<void> => {
+export const saveOrderJudge = async (claimId: string, orderJudge: OrderJudge, index: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.orderJudge = orderJudge;
+    if (index >= 0 && index < claim.generalApplication.orderJudges.length) {
+      claim.generalApplication.orderJudges[index] = orderJudge;
+    } else {
+      claim.generalApplication.orderJudges.push(orderJudge);
+    }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -152,15 +161,20 @@ export const saveUnavailableDates = async (claimId: string, claim: Claim, unavai
 };
 
 export function getRespondToApplicationCaption(claim: Claim, lng: string) : string {
-  const applicationType = t(selectedApplicationType[claim.generalApplication?.applicationType?.option], {lng: getLng(lng)}).toLowerCase();
+  const applicationType =
+    t(selectedApplicationType[claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option], {lng: getLng(lng)}).toLowerCase();
   return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', { lng: getLng(lng), applicationType});
 }
 
-export const saveRequestingReason = async (claimId: string, requestingReason: RequestingReason): Promise<void> => {
+export const saveRequestingReason = async (claimId: string, requestingReason: RequestingReason, index?: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.requestingReason = requestingReason;
+    if (index >= 0 && index < claim.generalApplication.requestingReasons.length) {
+      claim.generalApplication.requestingReasons[index] = requestingReason;
+    } else {
+      claim.generalApplication.requestingReasons.push(requestingReason);
+    }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -185,6 +199,18 @@ export const saveHearingContactDetails = async (claimId: string, hearingContactD
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.hearingContactDetails = hearingContactDetails;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveStatementOfTruth = async (claimId: string, statementOfTruth: StatementOfTruthForm): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.statementOfTruth = statementOfTruth;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);

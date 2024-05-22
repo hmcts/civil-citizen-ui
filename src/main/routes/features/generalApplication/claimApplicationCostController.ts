@@ -14,7 +14,7 @@ const viewPath = 'features/generalApplication/claim-application-cost';
 const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response): Promise<void> {
-  const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
+  const applicationType = selectedApplicationType[claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option];
   const cancelUrl = await getCancelUrl(claimId, claim);
   res.render(viewPath, {
     form,

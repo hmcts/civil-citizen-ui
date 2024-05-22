@@ -2104,6 +2104,23 @@
         "VARY_JUDGMENT": "You should explain why you want to vary the judgment. You'll have the option to upload documents to support your reasons on the next screen.",
         "WHY_REQUESTING": "Why are you requesting this order?"
       },
+      "CHECK_YOUR_ANSWER": {
+        "APPLICATION_TYPE": "Application type",
+        "ASK_FOR_COSTS": "Do you want to ask for your costs back?",
+        "CHOOSE_PREFERRED_TYPE": "Choose your preferred type of hearing",
+        "DATES_CANNOT_ATTEND": "Dates when you cannot attend a hearing",
+        "INFORM_OTHER_PARTIES": "Do you want the court to inform the other parties?",
+        "NAME": "Name",
+        "NEED_ADJUSTMENTS": "Do you need any adjustments or support to attend a hearing?",
+        "NONE": "None",
+        "PARTIES_AGREED": "Have the other parties agreed?",
+        "PREFERRED_COURT_LOCATION": "Preferred court location",
+        "PREFERRED_EMAIL": "Preferred email",
+        "PREFERRED_TELEPHONE": "Preferred telephone number",
+        "WHAT_ORDER": "What order do you want the judge to make?",
+        "WHY_PREFER": "Why would you prefer this type of hearing?",
+        "WHY_REQUESTING": "Why are you requesting this order?"
+      },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Application fee to pay:",
         "TITLE": "Paying for your application",
