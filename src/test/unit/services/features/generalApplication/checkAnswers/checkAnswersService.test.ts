@@ -43,14 +43,14 @@ describe('Check Answers service', () => {
       generalApplication.applicationTypes = [
         new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
         new ApplicationType(ApplicationTypeOption.STRIKE_OUT),
-        new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT)
+        new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT),
       ];
       generalApplication.hearingArrangement = new HearingArrangement();
       generalApplication.hearingArrangement.option = HearingTypeOptions.TELEPHONE;
       generalApplication.hearingArrangement.reasonForPreferredHearingType = 'test';
       generalApplication.hearingArrangement.courtLocation = 'Court 1';
       generalApplication.hearingSupport = new HearingSupport([
-        SupportType.HEARING_LOOP, SupportType.STEP_FREE_ACCESS, SupportType.LANGUAGE_INTERPRETER, SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT
+        SupportType.HEARING_LOOP, SupportType.STEP_FREE_ACCESS, SupportType.LANGUAGE_INTERPRETER, SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT,
       ]);
       generalApplication.agreementFromOtherParty = YesNo.YES;
       generalApplication.informOtherParties = new InformOtherParties();
