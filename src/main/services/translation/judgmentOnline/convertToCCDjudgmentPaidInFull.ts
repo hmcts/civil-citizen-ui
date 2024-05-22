@@ -5,6 +5,6 @@ export const toCCDjudgmentPaidInFull = (claim: Claim): CCDJudgmentPaidInFull => 
 
   return {
     dateOfFullPaymentMade: claim.judgmentPaidInFull?.dateOfFullPaymentMade,
-    confirmFullPaymentMade: claim.judgmentPaidInFull.confirmFullPaymentMade ? ['CONFIRMED'] : null,
+    confirmFullPaymentMade: claim.judgmentPaidInFull?.confirmFullPaymentMade ? ['CONFIRMED'] : null,
   };
 };
