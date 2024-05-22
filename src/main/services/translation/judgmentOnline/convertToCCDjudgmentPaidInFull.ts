@@ -4,7 +4,7 @@ import {CCDJudgmentPaidInFull} from 'models/judgmentOnline/ccdJudgmentPaidInFull
 export const toCCDjudgmentPaidInFull = (claim: Claim): CCDJudgmentPaidInFull => {
 
   return {
-    dateOfFullPaymentMade: claim.judgmentPaidInFull?.dateOfFullPaymentMade,
+    dateOfFullPaymentMade: claim.judgmentPaidInFull ? claim.judgmentPaidInFull.dateOfFullPaymentMade : null,
     confirmFullPaymentMade: claim.judgmentPaidInFull?.confirmFullPaymentMade ? ['CONFIRMED'] : null,
   };
 };

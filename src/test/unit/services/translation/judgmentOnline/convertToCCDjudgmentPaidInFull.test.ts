@@ -46,4 +46,17 @@ describe('should convert Judgment Paid In Full to CCD', () => {
     expect(judgmentPaidInFullCCD.dateOfFullPaymentMade).toEqual(converted.dateOfFullPaymentMade);
     expect(judgmentPaidInFullCCD.confirmFullPaymentMade).toEqual(converted.confirmFullPaymentMade);
   });
+
+  it('should handle null values for judgmentPaidInFull', () => {
+    // Given
+    const claim = new Claim();
+    claim.judgmentPaidInFull = null;
+
+    // When
+    const converted = toCCDjudgmentPaidInFull(claim);
+
+    // Then
+    expect(converted.dateOfFullPaymentMade).toBeNull();
+    expect(converted.confirmFullPaymentMade).toBeNull();
+  });
 });
