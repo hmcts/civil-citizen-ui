@@ -296,7 +296,7 @@ import agreementFromOtherPartyController from './features/generalApplication/agr
 import claimApplicationCostController from './features/generalApplication/claimApplicationCostController';
 import hearingArrangementsController from 'routes/features/generalApplication/hearingArrangementsController';
 import wantToUploadDocumentsController from 'routes/features/generalApplication/wantToUploadDocuments';
-import uploadDocumentsToSupportApplicationController from 'routes/features/generalApplication/uploadDocument';
+import uploadEvidenceDocumentsForApplicationController from 'routes/features/generalApplication/uploadEvidenceDocumentForApplication';
 
 export default [
   homeController,
@@ -560,5 +560,5 @@ export default [
   claimApplicationCostController,
   hearingArrangementsController,
   wantToUploadDocumentsController,
-  uploadDocumentsToSupportApplicationController,
+  uploadEvidenceDocumentsForApplicationController,
 ];
