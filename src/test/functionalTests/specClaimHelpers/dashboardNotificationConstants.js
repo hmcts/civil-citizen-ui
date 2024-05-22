@@ -29,7 +29,7 @@ module.exports = {
   claimIsSettledDefendant: (amount, date) => {
     return {
       title: 'The claim is settled',
-      content: `The claimant has confirmed that you paid £${amount} on ${date}.`,
+      content: `Miss Jane Doe has confirmed that you paid £${amount} on ${date}.`,
     };
   },
 
@@ -252,7 +252,7 @@ module.exports = {
   judgmentRequestedClaimantDisagrees: () => {
     return {
       title: 'Miss Jane Doe has requested a County Court Judgment against you',
-      content: ['The claimant rejected your repayment plan and an alternative plan proposed by the court based on your financial details. They asked a judge to make a new plan.',
+      content: ['Miss Jane Doe rejected your repayment plan and an alternative plan proposed by the court based on your financial details. They asked a judge to make a new plan.',
         'When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
         'If you pay the debt within one month of the date of judgment, the County Court Judgment (CCJ) is removed from the public register. You can pay £15 to apply for a certificate (opens in new tab) that confirms this.'],
       nextSteps: 'Contact Miss Jane Doe if you need their payment details.',
@@ -264,7 +264,7 @@ module.exports = {
   judgmentRequestedCourtAgrees: () => {
     return {
       title: 'Miss Jane Doe has requested a County Court Judgment against you',
-      content: ['The claimant rejected your repayment plan and has proposed a new plan, which the court agreed with, based on the financial details you provided.',
+      content: ['Miss Jane Doe rejected your repayment plan and has proposed a new plan, which the court agreed with, based on the financial details you provided.',
         'When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
         'If you pay the debt within one month of the date of judgment, the County Court Judgment (CCJ) is removed from the public register. You can pay £15 to apply for a certificate (opens in new tab) that confirms this.'],
       nextSteps: 'Contact Miss Jane Doe if you need their payment details.',
@@ -276,8 +276,8 @@ module.exports = {
   claimantAskDefendantToSignSettlementDefendant: () => {
     return {
       title: 'Settlement agreement',
-      content: ['The claimant has accepted your plan and asked you to sign a settlement agreement. You must respond by',
-        'If you do not respond by then, or reject the agreement, they can request a County Court Judgment.'],
+      content: ['Miss Jane Doe has accepted your offer and asked you to sign a settlement agreement. You must respond by',
+        'If you do not respond by then, or reject the agreement, they can request a County Court Judgment (CCJ).'],
       nextSteps: 'View the repayment plan',
       nextSteps2: 'View your response',
     };
@@ -287,9 +287,9 @@ module.exports = {
   claimantAskDefendantToSignSettlementCourtPlanDefendant: () => {
     return {
       title: 'Settlement agreement',
-      content: ['The claimant has rejected your plan and asked you to sign a settlement agreement.',
-        'The claimant proposed a repayment plan, and the court then responded with an alternative plan that was accepted.',
-        'If you do not respond by then, or reject the agreement, they can request a County Court Judgment.'],
+      content: ['Miss Jane Doe has rejected your offer and asked you to sign a settlement agreement.',
+        'Miss Jane Doe proposed a repayment plan, and the court then responded with an alternative plan that was accepted.',
+        'If you do not respond by then, or reject the agreement, they can request a County Court Judgment (CCJ).'],
       nextSteps: 'View the repayment plan',
       nextSteps2: 'View your response',
     };
@@ -328,8 +328,8 @@ module.exports = {
   defendantRejectsSettlementDefendant: () => {
     return {
       title: 'Settlement agreement',
-      content: ['You have rejected the settlement agreement.',
-        'The claimant can request a County Court Judgment (CCJ), which would order you to repay the money in line with the agreement. The court believes you can afford this.',
+      content: [
+        'Miss Jane Doe can request a County Court Judgment (CCJ), which would order you to repay the money in line with the agreement. The court believes you can afford this.',
         'If the claimant requests a CCJ then you can ask a judge to consider changing the plan, based on your financial details.'],
     };
   },
