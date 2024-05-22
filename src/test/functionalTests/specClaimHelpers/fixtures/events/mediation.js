@@ -44,9 +44,9 @@ const mediationUnsuccessfulPayload = (carmEnabled, mediationReason) => {
   let payload;
   if (carmEnabled) {
     payload = {
-      mediationUnsuccessfulReasonsMultiSelect: mediationReason
-        // list of mediation reasons:
-        // ['PARTY_WITHDRAWS', 'APPOINTMENT_NOT_ASSIGNED', 'NOT_CONTACTABLE_CLAIMANT_ONE', 'NOT_CONTACTABLE_CLAIMANT_TWO', 'NOT_CONTACTABLE_DEFENDANT_ONE', 'NOT_CONTACTABLE_DEFENDANT_TWO']
+      mediationUnsuccessfulReasonsMultiSelect: mediationReason,
+      // list of mediation reasons:
+      // ['PARTY_WITHDRAWS', 'APPOINTMENT_NOT_ASSIGNED', 'NOT_CONTACTABLE_CLAIMANT_ONE', 'NOT_CONTACTABLE_CLAIMANT_TWO', 'NOT_CONTACTABLE_DEFENDANT_ONE', 'NOT_CONTACTABLE_DEFENDANT_TWO']
     };
   } else {
     payload = {
