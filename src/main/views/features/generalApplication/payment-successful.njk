@@ -3,7 +3,7 @@
 {% from "../dashboard/item-content.njk" import itemContent %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.TITLE') }}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -12,14 +12,14 @@
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           {{ csrfProtection(csrf) }}
-          {% for content in paymentSuccessfulPanel %}
+          {% for content in gaPaymentSuccessfulPanel %}
             {{ itemContent(content,t) }}
           {% endfor %}
-          {% for content in paymentSuccessfulBody %}
-            {{ itemContent(content,t) }}
+          {% for content in gaPaymentSuccessfulBody %}
+            {{ itemContent(content,t)  }}
           {% endfor %}
           <div class="govuk-width-container govuk-!-padding-top-5">
-          {% for content in paymentSuccessfulButton %}
+          {% for content in gaPaymentSuccessfulButton %}
             {{ itemContent(content,t) }}
           {% endfor %}
           </div>
