@@ -292,7 +292,7 @@ module.exports = {
     return {
       title: 'Settlement agreement',
       content: ['You have rejected the settlement agreement.',
-        'The claimant can request a County Court Judgment (CCJ), which would order you to repay the money in line with the agreement. The court believes you can afford this.',
+        'Miss Jane Doe can request a County Court Judgment (CCJ), which would order you to repay the money in line with the agreement. The court believes you can afford this.',
         'If the claimant requests a CCJ then you can ask a judge to consider changing the plan, based on your financial details.'],
     };
   },
