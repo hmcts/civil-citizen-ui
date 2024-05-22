@@ -9,7 +9,7 @@ import {
   GA_HEARING_ARRANGEMENT_URL, GA_HEARING_CONTACT_DETAILS_URL, GA_HEARING_SUPPORT_URL,
   GA_REQUESTING_REASON_URL, GA_UNAVAILABLE_HEARING_DATES_URL,
   INFORM_OTHER_PARTIES,
-  ORDER_JUDGE_URL
+  ORDER_JUDGE_URL,
 } from 'routes/urls';
 import {selectedApplicationType} from 'models/generalApplication/applicationType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';

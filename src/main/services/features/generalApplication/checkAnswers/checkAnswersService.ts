@@ -3,7 +3,7 @@ import {
   addApplicationTypesRows,
   addAskForCostsRow, addContactDetailsRows, addHearingArrangementsRows, addHearingSupportRows,
   addInformOtherPartiesRow, addOrderJudgeRows,
-  addOtherPartiesAgreedRow, addRequestingReasonRows, addUnavailableDatesRows
+  addOtherPartiesAgreedRow, addRequestingReasonRows, addUnavailableDatesRows,
 } from './addCheckAnswersRows';
 import {SummaryRow} from 'models/summaryList/summaryList';
 
@@ -19,11 +19,9 @@ const buildSummarySections = (claimId: string, claim: Claim, lang: string ): Sum
     ...addContactDetailsRows(claimId, claim, lang),
     ...addUnavailableDatesRows(claimId, claim, lang),
     ...addHearingSupportRows(claimId, claim, lang),
-  ]
+  ];
 };
 
 export const getSummarySections = (claimId: string, claim: Claim, lang?: string ): SummaryRow[] => {
   return buildSummarySections(claimId, claim, lang);
 };
-
-

@@ -5,7 +5,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import {
   getCancelUrl,
-  saveStatementOfTruth
+  saveStatementOfTruth,
 } from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
