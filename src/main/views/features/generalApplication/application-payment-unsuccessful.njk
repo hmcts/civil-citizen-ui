@@ -25,8 +25,6 @@
 
       <hr class="govuk-section-break govuk-section-break--l">
 
-      <form method="post" novalidate>
-        {{ csrfProtection(csrf) }}
         <div class="govuk-button-group">
           {{ govukButton({
           text: t('COMMON.BUTTONS.GO_BACK_AND_TRY_PAYMENT_AGAIN'),
@@ -34,7 +32,5 @@
         }) }}
           {{ cancelLink(cancelUrl, t) }}
         </div>
-      </form>
-    </div>
   </div>
 {% endblock %}
