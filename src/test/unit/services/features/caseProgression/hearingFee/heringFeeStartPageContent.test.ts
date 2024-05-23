@@ -11,13 +11,15 @@ describe('getPayHearingFeeStartScreenContent', () => {
     claim.id = '1234567890';
     claim.caseProgressionHearing = new CaseProgressionHearing(null, null,null,null, null, new HearingFeeInformation({calculatedAmountInPence: '1000', code: 'test', version: '1'}, FIXED_DATE));
     //When
-    const payHearingFeeStartScreenContentActual = getHearingFeeStartPageContent(claim.id, 'en', claim.caseProgressionHearing.hearingFeeInformation);
+    const payHearingFeeStartScreenContentActual = getHearingFeeStartPageContent(claim.id, 'en', 1000,claim.caseProgressionHearing.hearingFeeInformation);
 
     //Then
-    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual('COMMON.MICRO_TEXT.HEARING_FEE');
+    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual('PAGES.DASHBOARD.HEARINGS.HEARING');
     expect(payHearingFeeStartScreenContentActual[1].data.text).toEqual('PAGES.PAY_HEARING_FEE.START_PAGE.TITLE');
-    expect(payHearingFeeStartScreenContentActual[2].data.text).toEqual('PAGES.PAY_HEARING_FEE.START_PAGE.YOU_MUST_PAY');
-    expect(payHearingFeeStartScreenContentActual[3].data.text).toEqual('PAGES.PAY_HEARING_FEE.START_PAGE.IF_YOU_DO_NOT_PAY');
-    expect(payHearingFeeStartScreenContentActual[4].data.text).toEqual('COMMON.BUTTONS.START_NOW');
+    expect(payHearingFeeStartScreenContentActual[2].data.text).toEqual('COMMON.CASE_NUMBER');
+    expect(payHearingFeeStartScreenContentActual[3].data.text).toEqual('COMMON.CLAIM_AMOUNT_WITH_VALUE');
+    expect(payHearingFeeStartScreenContentActual[4].data.text).toEqual('PAGES.PAY_HEARING_FEE.START_PAGE.YOU_MUST_PAY');
+    expect(payHearingFeeStartScreenContentActual[5].data.text).toEqual('PAGES.PAY_HEARING_FEE.START_PAGE.IF_YOU_DO_NOT_PAY');
+    expect(payHearingFeeStartScreenContentActual[6].data.text).toEqual('COMMON.BUTTONS.START_NOW');
   });
 });
