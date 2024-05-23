@@ -295,7 +295,8 @@ import viewMediationDocuments from 'routes/features/document/mediation/viewMedia
 import applicationTypeController from './features/generalApplication/applicationTypeController';
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
-import claimFeeMakePaymentAgainController from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
+import claimFeeMakePaymentAgainController
+  from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
 import informOtherPartiesController from './features/generalApplication/informOtherPartiesController';
 import hearingSupportController from './features/generalApplication/hearingSupportController';
 import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
@@ -312,6 +313,8 @@ import hearingArrangementController from './features/generalApplication/hearingA
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 import applicationResponseConfirmationController
   from 'routes/features/generalApplication/response/applicationResponseConfirmationController';
+import respondentRequestChangeInformationController
+  from 'routes/features/generalApplication/respondentRequestChangeInformationController';
 
 export default [
   homeController,
@@ -584,5 +587,6 @@ export default [
   ordersAndNoticesController,
   hearingArrangementController,
   hearingContactDetailsController,
+  respondentRequestChangeInformationController,
   applicationResponseConfirmationController,
 ];
