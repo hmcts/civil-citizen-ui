@@ -15,7 +15,7 @@ const getBasicDocumentsContents = (claimId: string, claim: Claim, title: string)
   return new PageSectionBuilder()
     .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
     .addMainTitle(title)
-    .addLeadParagraph('COMMON.CASE_NUMBER', {claimId:caseNumberPrettify( claimId)}, 'govuk-!-margin-bottom-1')
+    .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify( claimId)}, 'govuk-!-margin-bottom-1')
     .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
     .build();
 };

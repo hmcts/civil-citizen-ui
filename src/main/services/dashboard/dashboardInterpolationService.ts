@@ -22,9 +22,11 @@ import {
   VIEW_CLAIMANT_INFO,
   VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT,
   START_MEDIATION_UPLOAD_FILES,
-  VIEW_THE_HEARING_URL, VIEW_ORDERS_AND_NOTICES_URL, CLAIM_DETAILS_URL,
+  VIEW_THE_HEARING_URL, CLAIM_DETAILS_URL,
   VIEW_RESPONSE_TO_CLAIM,
   UPLOAD_YOUR_DOCUMENTS_URL,
+  VIEW_ORDERS_AND_NOTICES_URL,
+  EVIDENCE_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -103,6 +105,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{VIEW_CCJ_REPAYMENT_PLAN_CLAIMANT}', CCJ_REPAYMENT_PLAN_CLAIMANT_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_MEDIATION_SETTLEMENT_AGREEMENT}', VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.replace(':id', claimId));
   valuesMap.set('{UPLOAD_MEDIATION_DOCUMENTS}', START_MEDIATION_UPLOAD_FILES.replace(':id', claimId));
+  valuesMap.set('{VIEW_EVIDENCE_UPLOAD_DOCUMENTS}', EVIDENCE_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
@@ -136,10 +139,6 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
       .replace(':notificationId', notificationId)
       .replace(':documentId', documentIdExtractor(documentId)));
 
-  }
-
-  if (claim.orderDocumentId != undefined) {
-    valuesMap.set('{VIEW_ORDERS_AND_NOTICES}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(claim?.orderDocumentId) + ' target="_blank"'));
   }
 
   return valuesMap;
