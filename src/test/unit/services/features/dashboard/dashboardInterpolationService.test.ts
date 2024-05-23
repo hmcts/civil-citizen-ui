@@ -216,6 +216,18 @@ describe('dashboardInterpolationService', () => {
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
 
+  it('should replace placeholders for view the evidence upload documents', () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    const textToReplaceUrl = '{VIEW_EVIDENCE_UPLOAD_DOCUMENTS}';
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined);
+
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const sizeExpected = '/case/123/evidence-upload-documents';
+
+    expect(textReplacedDynamic).toEqual(sizeExpected);
+  });
+
   describe('objectToMap', () => {
     it('should convert an object to a map', () => {
       const obj = {
