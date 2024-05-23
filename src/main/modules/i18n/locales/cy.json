@@ -4115,7 +4115,8 @@
       "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
       "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
       "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
-      "ENTER_VALID_EMAIL": "You need to enter a valid email address"
+      "ENTER_VALID_EMAIL": "You need to enter a valid email address",
+      "UPLOAD_FILE_MESSAGE": "You need to choose a file before clicking 'Upload file'"
     }
   }
 }
