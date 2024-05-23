@@ -16,10 +16,31 @@ const whatTypeOfDocumentsDoYouWantToUpload = new WhatTypeOfDocumentsDoYouWantToU
 const uploadYourDocument = new UploadYourDocument();
 const checkYourAnswers = new CheckYourAnswers();
 const uploadYourDocumentsConfirmation = new UploadYourDocumentsConfirmation();
+const sharedData = require('../../../../sharedData');
+const language = sharedData.language;
+
+const buttons = {
+  startNow: {
+    en: 'Start now',
+    cy: 'Iaith',
+  },
+  continue: {
+    en: 'Continue',
+    cy: 'Mae\'n rhaid ichi ddewis pa iaith yr hoffech ei defnyddio i ymateb i\'r hawliad hwn.',
+  },
+  submit: {
+    en: 'Submit',
+    cy: 'SubmitCY',
+  },
+  viewDocuments: {
+    en: 'View documents',
+    cy: 'View documentsCY',
+  },
+};
 
 class CaseProgressionSteps {
 
-  initiateUploadEvidenceJourney(claimRef, claimType, partyType) {
+  initiateUploadEvidenceJourney(claimRef, claimType, partyType, language = 'en') {
     console.log('The value of the Claim Reference : '+claimRef);
     let partiesOnTheCase;
     if (partyType === 'LiPvLiP') {
@@ -29,23 +50,23 @@ class CaseProgressionSteps {
       partiesOnTheCase = 'Test Inc v Sir John Doe';
       latestUpdateTab.nextAction('Upload documents');
     }
-    uploadYourDocumentsIntroduction.verifyPageContent(partiesOnTheCase);
-    uploadYourDocumentsIntroduction.nextAction('Start now');
+    uploadYourDocumentsIntroduction.verifyPageContent(language);
+    uploadYourDocumentsIntroduction.nextAction(buttons.startNow[language]);
     whatTypeOfDocumentsDoYouWantToUpload.verifyPageContent(claimType, partiesOnTheCase);
     whatTypeOfDocumentsDoYouWantToUpload.checkAllDocumentUploadOptions(claimType);
-    whatTypeOfDocumentsDoYouWantToUpload.nextAction('Continue');
+    whatTypeOfDocumentsDoYouWantToUpload.nextAction(buttons.continue[language]);
     uploadYourDocument.verifyPageContent(claimType);
     if (claimType === 'FastTrack') {
       uploadYourDocument.inputDataForFastTrackSections(claimType);
     } else {
       uploadYourDocument.inputDataForSmallClaimsSections(claimType);
     }
-    uploadYourDocument.nextAction('Continue');
-    checkYourAnswers.verifyPageContent(claimType, partiesOnTheCase, partyType);
+    uploadYourDocument.nextAction(buttons.continue[language]);
+    checkYourAnswers.verifyPageContent(claimType, partyType);
     checkYourAnswers.clickConfirm();
-    checkYourAnswers.nextAction('Submit');
+    checkYourAnswers.nextAction(buttons.submit[language]);
     uploadYourDocumentsConfirmation.verifyPageContent();
-    uploadYourDocumentsConfirmation.nextAction('View documents');
+    uploadYourDocumentsConfirmation.nextAction(buttons.viewDocuments[language]);
     if (partyType !== 'LiPvLiP') {
       documentsTab.verifyLatestUpdatePageContent(claimType);
     }
