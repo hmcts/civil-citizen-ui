@@ -20,6 +20,9 @@
         {% set errors = translateErrors(form.getAllErrors(),t)[0] %}
         {% set idValue = errors.fieldName %}
       {% endif %}
+      {% set uploadFileLabel %}
+      <strong>{{ t('COMMON.UPLOAD_FILE_LABEL') }}</strong>
+      {% endset %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           {{ headingWithCaption(t,'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.VARY_JUDGMENT','PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.TITLE' ) }}
@@ -33,7 +36,7 @@
                   id: idValue,
                   name: "selectedFile",
                   label: {
-                   html: '<strong>Upload a file</strong>'
+                   html: uploadFileLabel
                   },
                   errorMessage: {
                      text: t(errors.text)
@@ -69,7 +72,7 @@
             </div>
           </form>
         </div>
-         <div class="govuk-grid-column-one-third">
+        <div class="govuk-grid-column-one-third">
           {{ contactUsForHelp(t) }}
         </div>
       </div>

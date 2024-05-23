@@ -3,6 +3,7 @@
     "HOME": "Hafan",
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Llwytho ffeil i fyny",
+    "UPLOAD_FILE_LABEL":"Upload a file",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
     "DOCUMENTS_UPLOADED": "Dogfennau wedi’u llwytho",
     "CASE_REFERENCE_NUMBER": "Cyfeirnod eich achos",

@@ -3,6 +3,7 @@
     "HOME": "Home",
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Upload file",
+    "UPLOAD_FILE_LABEL":"Upload a file",
     "VIEW_DOCUMENTS": "View documents",
     "DOCUMENTS_UPLOADED": "Documents uploaded",
     "CASE_REFERENCE_NUMBER": "Your case reference number",
