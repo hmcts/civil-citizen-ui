@@ -328,11 +328,11 @@ export class CivilServiceClient {
   }
 
   async submitBreathingSpaceEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
-    return this.submitEvent(CaseEvent.ENTER_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
+    return this.submitEvent(CaseEvent.ENTER_BREATHING_SPACE_SPEC, claimId, updatedClaim, req);
   }
 
   async submitBreathingSpaceLiftedEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
-    return this.submitEvent(CaseEvent.LIFT_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
+    return this.submitEvent(CaseEvent.LIFT_BREATHING_SPACE_SPEC, claimId, updatedClaim, req);
   }
 
   async submitDefendantSignSettlementAgreementEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
