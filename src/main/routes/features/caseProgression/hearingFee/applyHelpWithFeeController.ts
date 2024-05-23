@@ -6,9 +6,8 @@ import {
 
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {AppRequest} from 'models/AppRequest';
 import {getHearingFeeStartPageContent} from 'services/features/caseProgression/hearingFee/applyHelpWithFeesPageContent';
+import {getClaimById} from 'modules/utilityService';
 
 const applyHelpWithFeeViewPath  = 'features/caseProgression/hearingFee/apply-help-with-fees';
 const applyHelpWithFeeController: Router = Router();
@@ -29,10 +28,9 @@ applyHelpWithFeeController.get(APPLY_HELP_WITH_FEES_START, (async (req, res) => 
 
   const claimId = req.params.id;
   const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-  const redisClaimId = generateRedisKey(<AppRequest>req);
   const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
   const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, APPLY_HELP_WITH_FEES);
-  const claim: Claim = await getCaseDataFromStore(redisClaimId);
+  const claim: Claim = await getClaimById(claimId, req, true);
 
   await renderView(res, redirectUrl,backLinkUrl,claimId,claim.totalClaimAmount,lng);
 }) as RequestHandler);
