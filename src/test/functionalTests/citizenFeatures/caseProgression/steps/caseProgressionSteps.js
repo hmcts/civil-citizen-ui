@@ -16,8 +16,6 @@ const whatTypeOfDocumentsDoYouWantToUpload = new WhatTypeOfDocumentsDoYouWantToU
 const uploadYourDocument = new UploadYourDocument();
 const checkYourAnswers = new CheckYourAnswers();
 const uploadYourDocumentsConfirmation = new UploadYourDocumentsConfirmation();
-const sharedData = require('../../../../sharedData');
-const language = sharedData.language;
 
 const buttons = {
   startNow: {
