@@ -9,12 +9,14 @@ import {
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {alignText} from 'form/models/alignText';
-import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
+import {CaseDocument} from 'models/document/caseDocument';
+import {DocumentType} from 'models/document/documentType';
+import { SystemGeneratedCaseDocuments } from 'common/models/document/systemGeneratedCaseDocuments';
 
-export function getJudgementContent(claimId: string, claim: Claim, lang: string, redirectUrl:string): ClaimSummaryContent[] {
+export function getJudgementContent(claimId: string, claim: Claim, lang: string, redirectUrl: string): ClaimSummaryContent[] {
 
   const claimSummaryContent = [] as ClaimSummaryContent[];
-  claimSummaryContent.push(getJudgements(claimId,claim, lang));
+  claimSummaryContent.push(getJudgements(claimId, claim, lang));
   claimSummaryContent.push(getButton(claimId, claim, lang, redirectUrl));
 
   return claimSummaryContent;
@@ -23,7 +25,7 @@ export function getJudgementContent(claimId: string, claim: Claim, lang: string,
 function getJudgements(claimId: string, claim: Claim, lang: string): ClaimSummaryContent {
 
   const judgementHeaders = getJudgementsHeader(lang);
-  const judgementSummary = getJudgementSummary(claim,lang);
+  const judgementSummary = getJudgementSummary(claim, lang);
 
   const hearingsSection = [] as ClaimSummarySection[];
   hearingsSection.push(judgementHeaders);
@@ -32,35 +34,70 @@ function getJudgements(claimId: string, claim: Claim, lang: string): ClaimSummar
   return {contentSections: hearingsSection, hasDivider: false};
 }
 
-function getJudgementsHeader(lang: string): ClaimSummarySection{
+function getJudgementsHeader(lang: string): ClaimSummarySection {
   return {
-    type:ClaimSummaryType.TITLE,
-    data:{text: t('PAGES.DASHBOARD.JUDGEMENTS.JUDGEMENT', {lng:lang})}};
+    type: ClaimSummaryType.TITLE,
+    data: {text: t('PAGES.DASHBOARD.JUDGEMENTS.JUDGEMENT', {lng: lang})},
+  };
 }
 
-function getJudgementSummary(claim: Claim,lang: string): ClaimSummarySection {
+function getJudgementSummary(claim: Claim, lang: string): ClaimSummarySection {
 
   const judgementRows = [] as SummaryRow[];
-  const judgementDocuments :FinalOrderDocumentCollection[] = claim.caseProgression?.finalOrderDocumentCollection;
+  const judgementDocument: CaseDocument = getJudgementDocument(claim);
 
-  for(const judgementDocument of judgementDocuments){
-
-    if(judgementDocument?.value) {
-      const judgementDocumentLink = formatDocumentAlignedViewURL(judgementDocument.value?.documentName, claim.id, judgementDocument.value?.documentLink.document_binary_url,alignText.ALIGN_TO_THE_RIGHT);
-      const judgementDoc = formatDocumentWithHintText(t('PAGES.DASHBOARD.JUDGEMENTS.JUDGEMENT', {lng:lang}),judgementDocument.value?.createdDatetime,lang);
-      judgementRows.push({key:{html:judgementDoc,classes:'govuk-!-width-one-half'},
-        value:{html: judgementDocumentLink},
-      });
-    }
+  if (judgementDocument != undefined) {
+    const judgementDocumentLink = formatDocumentAlignedViewURL(judgementDocument?.documentName, claim.id, judgementDocument?.documentLink.document_binary_url, alignText.ALIGN_TO_THE_RIGHT);
+    const judgementDoc = formatDocumentWithHintText(t('PAGES.DASHBOARD.JUDGEMENTS.JUDGEMENT', {lng: lang}), judgementDocument?.createdDatetime, lang);
+    judgementRows.push({
+      key: {html: judgementDoc, classes: 'govuk-!-width-one-half'},
+      value: {html: judgementDocumentLink},
+    });
   }
 
-  return {type:ClaimSummaryType.SUMMARY, data:{rows:judgementRows}};
+  return {type: ClaimSummaryType.SUMMARY, data: {rows: judgementRows}};
 }
-function getButton(claimId: string, claim: Claim, lang: string, redirectUrl:string): ClaimSummaryContent {
+
+function getButton(claimId: string, claim: Claim, lang: string, redirectUrl: string): ClaimSummaryContent {
 
   const buttonSection = new PageSectionBuilder()
-    .addButton(t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW', {lng:lang}), constructResponseUrlWithIdParams(claimId, redirectUrl))
+    .addButton(t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW', {lng: lang}), constructResponseUrlWithIdParams(claimId, redirectUrl))
     .build();
 
   return {contentSections: buttonSection, hasDivider: false};
+}
+
+function getJudgementDocument(claim: Claim): CaseDocument {
+  const documentTypes = {
+    claimant: [DocumentType.JUDGMENT_BY_ADMISSION_CLAIMANT, DocumentType.JUDGMENT_BY_DETERMINATION_CLAIMANT, DocumentType.DEFAULT_JUDGMENT_CLAIMANT1, DocumentType.DEFAULT_JUDGMENT_CLAIMANT2],
+    defendant: [DocumentType.JUDGMENT_BY_ADMISSION_DEFENDANT, DocumentType.JUDGMENT_BY_DETERMINATION_DEFENDANT, DocumentType.DEFAULT_JUDGMENT_DEFENDANT1, DocumentType.DEFAULT_JUDGMENT_DEFENDANT2],
+  };
+
+  let judgementDocument;
+
+  const checkDocumentType = (documentType: any, documentTypesArray: string | any[]) => documentTypesArray.includes(documentType);
+
+  const findJudgementDocument = (documents: SystemGeneratedCaseDocuments[]) => {
+    for (const document of documents) {
+      if (claim.isClaimant() && checkDocumentType(document.value.documentType, documentTypes.claimant)) {
+        judgementDocument = document.value;
+        break;
+      } else if (!claim.isClaimant() && checkDocumentType(document.value.documentType, documentTypes.defendant)) {
+        judgementDocument = document.value;
+        break;
+      }
+    }
+  };
+
+  const systemGeneratedCaseDocuments = claim.systemGeneratedCaseDocuments;
+  if (systemGeneratedCaseDocuments && systemGeneratedCaseDocuments.length > 0) {
+    findJudgementDocument(systemGeneratedCaseDocuments);
+  }
+
+  const defaultJudgmentDocuments = claim.defaultJudgmentDocuments;
+  if (defaultJudgmentDocuments && defaultJudgmentDocuments.length > 0) {
+    findJudgementDocument(defaultJudgmentDocuments);
+  }
+
+  return judgementDocument;
 }

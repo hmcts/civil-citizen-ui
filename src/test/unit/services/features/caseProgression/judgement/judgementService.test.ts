@@ -1,6 +1,5 @@
 import {getJudgementContent} from 'services/features/caseProgression/judgement/judgementService';
 import {Claim} from 'models/claim';
-import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CASE_DOCUMENT_VIEW_URL, DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {
   DocumentType,
@@ -35,9 +34,8 @@ describe('getJudgementContent', () =>{
       //given
       const caseData = new Claim();
       caseData.id = '1234';
-      caseData.caseProgression = new CaseProgression();
-      caseData.caseProgression.finalOrderDocumentCollection = [mockFinalOrderDocument1];
-      caseData.caseProgression.finalOrderDocumentCollection.push(judgementDocumnets);
+      caseData.defaultJudgmentDocuments = [mockFinalOrderDocument1];
+      caseData.defaultJudgmentDocuments.push(judgementDocumnets);
       const dashboardUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
 
       //when
