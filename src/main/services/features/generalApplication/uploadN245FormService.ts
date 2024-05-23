@@ -15,8 +15,8 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
 export const getUploadFormContent = (lng: string) => {
-  let uploadItHere = t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.UPLOAD_HERE', { lng })
-  const linkForN245Form = `<a href="${formN245Url}" target="_blank">${t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.COMPLETE_N245_FORM', { lng })}</a>`
+  const uploadItHere = t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.UPLOAD_HERE', { lng });
+  const linkForN245Form = `<a href="${formN245Url}" target="_blank">${t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.COMPLETE_N245_FORM', { lng })}</a>`;
   return new UploadDocumentsSectionBuilder()
     .addRawHtml(`<p class="govuk-body ">${uploadItHere.replace('LINK_FOR_N245_FORM', linkForN245Form)}</p>`)
     .addParagraph('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.OFFER_OF_PAYMENT')
@@ -36,21 +36,17 @@ export const getUploadFormContent = (lng: string) => {
 };
 
 export const uploadSelectedFile = async (req: AppRequest, claim: Claim): Promise<{ form: GenericForm<UploadGAFiles>, documentName: string }> => {
-  try {
-    const uploadedN245Details = new UploadGAFiles();
-    const redisKey = generateRedisKey(req)
-    const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
-    uploadedN245Details.fileUpload = fileUpload;
-    const form = new GenericForm(uploadedN245Details);
-    form.validateSync();
-    if (!form.hasErrors()) {
-      uploadedN245Details.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
-      saveN245Form(redisKey, claim, uploadedN245Details)
-    }
-    const documentName = uploadedN245Details.caseDocument?.documentName || claim.generalApplication?.uploadN245Form?.caseDocument?.documentName;
-    return Promise.resolve({ form, documentName });
-  } catch (error) {
-    throw error;
+  const uploadedN245Details = new UploadGAFiles();
+  const redisKey = generateRedisKey(req);
+  const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
+  uploadedN245Details.fileUpload = fileUpload;
+  const form = new GenericForm(uploadedN245Details);
+  form.validateSync();
+  if (!form.hasErrors()) {
+    uploadedN245Details.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+    saveN245Form(redisKey, claim, uploadedN245Details);
   }
+  const documentName = uploadedN245Details.caseDocument?.documentName || claim.generalApplication?.uploadN245Form?.caseDocument?.documentName;
+  return Promise.resolve({ form, documentName });
 };
 

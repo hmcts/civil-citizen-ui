@@ -5,7 +5,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import {Claim} from 'models/claim';
-import multer from 'multer'
+import multer from 'multer';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { getCancelUrl, saveN245Form } from 'services/features/generalApplication/generalApplicationService';
 import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
@@ -32,7 +32,7 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, (async (req: AppRequest, r
     const contentList = getUploadFormContent(lng);
     const redisKey = generateRedisKey(<AppRequest>req);
     const uploadedN245Details = claim.generalApplication?.uploadN245Form || new UploadGAFiles();
-    let documentName = uploadedN245Details.caseDocument?.documentName
+    let documentName = uploadedN245Details.caseDocument?.documentName;
     const cancelUrl = await getCancelUrl(claimId, claim);
     const form = new GenericForm(uploadedN245Details);
     const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL);
@@ -58,7 +58,7 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFil
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL);
-    const redisKey = generateRedisKey(req)
+    const redisKey = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
     const contentList = getUploadFormContent(lng);
     const cancelUrl = await getCancelUrl(claimId, claim);
@@ -93,7 +93,5 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFil
     next(error);
   }
 }) as RequestHandler);
-
-
 
 export default uploadN245FormController;

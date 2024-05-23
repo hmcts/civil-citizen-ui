@@ -18,7 +18,6 @@ jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
-
 describe('General Application - upload n245 form', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -68,7 +67,7 @@ describe('General Application - upload n245 form', () => {
         .field('action', 'uploadButton')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Choose the file you want to upload')
+          expect(res.text).toContain('You need to choose a file before clicking');
         });
     });
     it('should save the file and display', async () => {
@@ -85,16 +84,16 @@ describe('General Application - upload n245 form', () => {
         documentName: 'test.text',
         documentType: null,
         documentSize: 12345,
-        createdDatetime: new Date()
+        createdDatetime: new Date(),
       };
-      jest.spyOn(CivilServiceClient.prototype, "uploadDocument").mockResolvedValueOnce(mockCaseDocument)
+      jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
       await request(app)
         .post(GA_UPLOAD_N245_FORM_URL)
         .field('action', 'uploadButton')
         .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(file.originalname)
+          expect(res.text).toContain(file.originalname);
         });
     });
     it('should return http 500 when has error in the get method', async () => {
@@ -105,7 +104,7 @@ describe('General Application - upload n245 form', () => {
         size: 123,
         buffer: Buffer.from('Test file content'),
       };
-      jest.spyOn(CivilServiceClient.prototype, "uploadDocument").mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG))
+      jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
         .post(GA_UPLOAD_N245_FORM_URL)
         .field('action', 'uploadButton')
@@ -115,5 +114,5 @@ describe('General Application - upload n245 form', () => {
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
-  })
-})
+  });
+});
