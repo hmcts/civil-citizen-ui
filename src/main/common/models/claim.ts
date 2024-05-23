@@ -855,9 +855,6 @@ export class Claim {
   }
 
   isDefendantLrAgreedForMediation() {
-    console.log(this.isLRDefendant());
-    console.log(this.responseClaimMediationSpecRequired);
-    console.log(this.responseClaimMediationSpecRequired === YesNo.YES);
     return this.isLRDefendant()
       && this.responseClaimMediationSpecRequired === YesNo.YES;
   }
