@@ -8,7 +8,7 @@ const content = {
   },
   openingHours: {
     en: 'Monday to Friday, 8.30am to 5pm.',
-    cy: 'Dydd Llun i ddydd Gwener, 8.30am i 5pm.'
+    cy: 'Dydd Llun i ddydd Gwener, 8.30am i 5pm.',
   },
   email: {
     en: 'Email',
