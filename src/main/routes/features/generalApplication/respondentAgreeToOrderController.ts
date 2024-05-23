@@ -22,7 +22,7 @@ respondentAgreeToOrderController.get(GA_AGREE_TO_ORDER_URL, (async (req: AppRequ
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const caption: string = getRespondToApplicationCaption(claim, lang);
-    const form = new GenericForm(new GenericYesNo(claim.generalApplication?.response.agreeToOrder));
+    const form = new GenericForm(new GenericYesNo(claim.generalApplication?.response?.agreeToOrder));
 
     res.render(viewPath, {
       form,
