@@ -9,6 +9,8 @@ cd civil-camunda-bpmn-definition
 echo "Switch to ${branchName} branch on civil-camunda-bpmn-definition"
 git checkout ${branchName}
 cd ..
+mkdir civil-bpmn
+cd civil-bpmn
 
 #Copy camunda folder to civil-ccd-def which contians bpmn files
 cp -r ./civil-camunda-bpmn-definition/src/main/resources/camunda .
@@ -16,3 +18,5 @@ rm -rf ./civil-camunda-bpmn-definition
 
 #upload bpmn files to environment      
 ./bin/import-bpmn-diagram.sh .
+cd ..
+rm -rf ./civil-bpmn
