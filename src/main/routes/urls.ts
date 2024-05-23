@@ -316,6 +316,6 @@ export const GA_REQUESTING_REASON_URL = `${BASE_GENERAL_APPLICATION_URL}/request
 export const GA_ADD_ANOTHER_APPLICATION_URL = `${BASE_GENERAL_APPLICATION_URL}/add-another-application`;
 export const GA_HEARING_ARRANGEMENT_URL = `${BASE_GENERAL_APPLICATION_URL}/hearing-arrangement`;
 export const GA_HEARING_CONTACT_DETAILS_URL = `${BASE_GENERAL_APPLICATION_URL}/hearing-contact-details`;
-export const VIEW_THE_JUDGEMENT_URL = `${BASE_CASE_URL}/view-the-judgement`;
+export const VIEW_THE_JUDGEMENT_URL = `${BASE_CASE_URL}/view-the-judgement`; //TODO remove from src/test/a11y/ignored-urls.ts once implemented
 export const CONFIRM_YOU_HAVE_BEEN_PAID_URL = `${BASE_JUDGMENT_ONLINE_URL}/confirm-you-have-been-paid`;
 export const CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL = `${BASE_JUDGMENT_ONLINE_URL}/confirm-you-have-been-paid/confirmation`;
