@@ -17,10 +17,11 @@ class PayHearingFee {
     I.click(nextAction);
   }
 
-  verifyPageContent(feeAmount, dueDate) {
+  verifyPageContent(feeAmount, dueDate, caseNumber, claimAmount) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
     this.verifyHeadingDetails();
+    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     this.verifyPageText(feeAmount, dueDate);
     contactUs.verifyContactUs();
   }
@@ -31,8 +32,13 @@ class PayHearingFee {
   }
 
   verifyHeadingDetails() {
-    I.see('Hearing fee', 'span');
+    I.see('Hearing', 'span');
     I.see('Pay hearing fee', 'h1');
+  }
+
+  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    // I.see('Case number: ' + caseNumber, 'p');
+    I.see('Claim amount: ' + claimAmount, 'p');
   }
 
   verifyPageText(feeAmount, dueDate) {
