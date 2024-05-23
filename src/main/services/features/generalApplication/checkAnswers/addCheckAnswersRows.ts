@@ -38,12 +38,13 @@ export const addApplicationTypesRows = (claimId: string, claim: Claim, lang: str
         );
       } else if (index < arr.length - 1) {
         rows.push(
-          summaryRow(undefined, t(applicationTypeDisplay, {lng}),
-            href, changeLabel(lang), undefined, true),
+          summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {lng}), t(applicationTypeDisplay, {lng}),
+            href, changeLabel(lang), undefined, true, true),
         );
       } else {
         rows.push(
-          summaryRow(undefined, t(applicationTypeDisplay, {lng}), href, changeLabel(lang)),
+          summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {lng}), t(applicationTypeDisplay, {lng}),
+            href, changeLabel(lang), undefined, false, true),
         );
       }
     });
@@ -113,12 +114,13 @@ export const addOrderJudgeRows = (claimId: string, claim: Claim, lang: string): 
         );
       } else if (index < arr.length - 1) {
         rows.push(
-          summaryRow(undefined, orderJudge.text,
-            href, changeLabel(lang), undefined, true),
+          summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), orderJudge.text,
+            href, changeLabel(lang), undefined, true, true),
         );
       } else {
         rows.push(
-          summaryRow(undefined, orderJudge.text, href, changeLabel(lang)),
+          summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), orderJudge.text,
+            href, changeLabel(lang), undefined, false, true),
         );
       }
     });
@@ -146,12 +148,13 @@ export const addRequestingReasonRows = (claimId: string, claim: Claim, lang: str
         );
       } else if (index < arr.length - 1) {
         rows.push(
-          summaryRow(undefined, requestingReason.text,
-            href, changeLabel(lang), undefined, true),
+          summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), requestingReason.text,
+            href, changeLabel(lang), undefined, true, true),
         );
       } else {
         rows.push(
-          summaryRow(undefined, requestingReason.text, href, changeLabel(lang)),
+          summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), requestingReason.text,
+            href, changeLabel(lang), undefined, false, true),
         );
       }
     });
