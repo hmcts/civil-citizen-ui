@@ -511,17 +511,17 @@
         "TITLE_YES": "Rhowch eich cyfeirnod Help i Dalu Ffioedd",
         "SUBTITLE_YES": "Dim ond os gwnaethoch gais am Help i Dalu Ffioedd y bydd gennych chi gyfeirnod.’ Peidiwch â rhoi rhif sydd eisoes wedi'i ddefnyddio ar gyfer cais blaenorol.",
         "HINT_YES" : "Er enghraifft, HWF-A1B-23C",
-        "TITLE_NO": "Next steps",
-        "PARAGRAPH_NO": "You must apply for help with fees before submitting your application.",
-        "QUESTION_TITLE": "Do you have a help with fees reference number?",
+        "TITLE_NO": "Y camau nesaf",
+        "PARAGRAPH_NO": "Mae’n rhaid i chi wneud cais am Help i Dalu Ffioedd cyn i chi gyflwyno’ch cais.",
+        "QUESTION_TITLE": "A oes gennych chi gyfeirnod Help i Dalu Ffioedd?",
         "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
         "LIST_ITEMS": {
-          "FIRST": "Go to ",
-          "FIRST_LINK": "apply for help with fees (opens in a new tab).",
-          "SECOND": "When you are asked to enter a court or tribunal number, enter 'hearing fee' followed by short explanation, for example 'hearing fee for small claims' or 'hearing fee for fast track.",
-          "THIRD": "Complete the help with fees application.",
-          "FOURTH": "Return here to your online money claims account.",
-          "FIFTH": "Complete the hearing fee payment by entering your help with fees reference number."
+          "FIRST": "Ewch ",
+          "FIRST_LINK": "i ‘gwneud cais am help i dalu ffioedd’ (yn agor mewn tab newydd).",
+          "SECOND": "Pan ofynnir i chi nodi rhif llys neu dribiwnlys, rhowch 'ffi’r gwrandawiad' ac yna esboniad byr, er enghraifft 'ffi gwrandawiad hawliadau bychain' neu 'ffi gwrandawiad trac cyflym.",
+          "THIRD": "Cwblhewch y cais am help i dalu ffioedd.",
+          "FOURTH": "Dychwelwch yma i'ch cyfrif hawliadau am arian ar-lein.",
+          "FIFTH": "Cwblhewch y cais am help i dalu ffioedd trwy roi eich cyfeirnod help i dalu ffioedd."
         }
       }
     },
