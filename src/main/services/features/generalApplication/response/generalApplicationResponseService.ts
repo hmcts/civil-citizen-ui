@@ -1,6 +1,6 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
-import {selectedApplicationType,} from 'common/models/generalApplication/applicationType';
+import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import {Claim} from 'models/claim';
 import {YesNo} from 'common/form/models/yesNo';
 import {t} from 'i18next';

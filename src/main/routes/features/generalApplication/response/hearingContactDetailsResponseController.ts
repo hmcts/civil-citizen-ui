@@ -1,5 +1,5 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {GA_RESPONSE_HEARING_ARRANGEMENT_URL, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL,} from 'routes/urls';
+import {GA_RESPONSE_HEARING_ARRANGEMENT_URL, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
