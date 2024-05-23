@@ -9,9 +9,13 @@ cd civil-wa-task-configuration
 echo "Switch to ${branchName} branch on civil-wa-task-configuration"
 git checkout ${branchName}
 cd ..
+mkdir civil-bpmn
+cd civil-bpmn
 
 #Copy camunda folder to civil-ccd-def which contians dmn files
 cp -r ./civil-wa-task-configuration/src/main/resources .
 rm -rf ./civil-wa-task-configuration
 
 ./bin/import-dmn-diagram.sh . civil civil
+cd ..
+rm -rf ./civil-bpmn
