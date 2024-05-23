@@ -1,10 +1,6 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
-import {
-  ApplicationType,
-  ApplicationTypeOption,
-  selectedApplicationType,
-} from 'common/models/generalApplication/applicationType';
+import {ApplicationType, ApplicationTypeOption,} from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
@@ -16,8 +12,6 @@ import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ValidationError} from 'class-validator';
 import {InformOtherParties} from 'common/models/generalApplication/informOtherParties';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {t} from 'i18next';
-import {getLng} from 'common/utils/languageToggleUtils';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {OrderJudge} from 'common/models/generalApplication/orderJudge';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
@@ -126,17 +120,6 @@ export function validateNoConsentOption(req: AppRequest, errors : ValidationErro
   }
 }
 
-export const saveRespondentAgreeToOrder = async (claimId: string, claim: Claim, respondentAgreeToOrder: YesNo): Promise<void> => {
-  try {
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.respondentAgreeToOrder = respondentAgreeToOrder;
-    await saveDraftClaim(claimId, claim);
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
-};
-
 export const saveUnavailableDates = async (claimId: string, claim: Claim, unavailableDates: UnavailableDatesGaHearing): Promise<void> => {
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
@@ -150,11 +133,6 @@ export const saveUnavailableDates = async (claimId: string, claim: Claim, unavai
     throw error;
   }
 };
-
-export function getRespondToApplicationCaption(claim: Claim, lng: string) : string {
-  const applicationType = t(selectedApplicationType[claim.generalApplication?.applicationType?.option], {lng: getLng(lng)}).toLowerCase();
-  return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', { lng: getLng(lng), applicationType});
-}
 
 export const saveRequestingReason = async (claimId: string, requestingReason: RequestingReason): Promise<void> => {
   try {
