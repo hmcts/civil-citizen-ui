@@ -6,7 +6,7 @@ export class UploadGAFiles {
   @ValidateNested()
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '')
   @IsNotEmpty({ message: 'ERRORS.GENERAL_APPLICATION.UPLOAD_FILE_MESSAGE' })
-   fileUpload: FileUpload;
+    fileUpload: FileUpload;
   caseDocument: CaseDocument;
 
   constructor(fileUpload?: FileUpload) {
