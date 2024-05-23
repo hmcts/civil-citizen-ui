@@ -312,6 +312,8 @@ import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNotic
 import uploadN245FormController from 'routes/features/generalApplication/uploadN245FormController';
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
+import respondentRequestChangeInformationController
+  from 'routes/features/generalApplication/respondentRequestChangeInformationController';
 
 export default [
   homeController,
@@ -585,4 +587,5 @@ export default [
   uploadN245FormController,
   hearingArrangementController,
   hearingContactDetailsController,
+  respondentRequestChangeInformationController,
 ];
