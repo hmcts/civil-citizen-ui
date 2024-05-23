@@ -8,6 +8,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 import {Response} from 'models/generalApplication/response/response';
+import {HearingSupport} from 'models/generalApplication/hearingSupport';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -54,3 +55,17 @@ export const saveRespondentHearingContactDetails = async (claimId: string, heari
     throw error;
   }
 };
+
+export const saveRespondentHearingSupport = async (claimId: string, hearingSupport: HearingSupport): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.response = Object.assign(new Response(), claim.generalApplication.response);
+    claim.generalApplication.hearingSupport = hearingSupport;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+

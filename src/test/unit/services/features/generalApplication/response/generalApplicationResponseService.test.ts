@@ -7,10 +7,12 @@ import {
   saveRespondentAgreeToOrder,
   saveRespondentHearingArrangement,
   saveRespondentHearingContactDetails,
+  saveRespondentHearingSupport,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 import {Response} from 'models/generalApplication/response/response';
+import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -89,9 +91,9 @@ describe('General Application Response service', () => {
     });
   });
 
-  describe('Save Defendant Hearing Contact Details', () => {
+  describe('Save Respondent Hearing Contact Details', () => {
     const hearingContactDetails = new HearingContactDetails('04476211997', 'test@gmail.com');
-    it('should save application resposne hearing contact details', async () => {
+    it('should save application response hearing contact details', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
@@ -119,6 +121,43 @@ describe('General Application Response service', () => {
       });
       //Then
       await expect(saveRespondentHearingContactDetails('123', hearingContactDetails)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+
+  describe('Save respondent hearing support', () => {
+    it('should save respondent hearing support', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+
+      //When
+      await saveRespondentHearingSupport('123',
+        new HearingSupport([SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT],
+          'test1', 'test2', 'test3'));
+      //Then
+      expect(spy).toBeCalled();
+    });
+
+    it('should throw error when draft store throws error', async () => {
+      //Given
+
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      //When
+      mockSaveClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      //Then
+      await expect(saveRespondentHearingSupport('123',
+        new HearingSupport([]))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
