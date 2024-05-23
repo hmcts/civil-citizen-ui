@@ -2,7 +2,7 @@ import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_RESPONSE_HEARING_CONTACT_DETAILS_URL,} from 'routes/urls';
+import {GA_RESPONSE_HEARING_CONTACT_DETAILS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
