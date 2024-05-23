@@ -313,6 +313,8 @@ import hearingArrangementController from './features/generalApplication/hearingA
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 import flightDetailsController from './features/claim/airlines/flightDetailsController';
 import delayedFlightController from './features/claim/airlines/delayedFlightController';
+import respondentRequestChangeInformationController 
+  from 'routes/features/generalApplication/respondentRequestChangeInformationController';
 
 export default [
   homeController,
@@ -587,4 +589,5 @@ export default [
   hearingContactDetailsController,
   flightDetailsController,
   delayedFlightController,
+  respondentRequestChangeInformationController,
 ];
