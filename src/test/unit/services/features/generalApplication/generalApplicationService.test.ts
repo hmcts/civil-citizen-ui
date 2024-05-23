@@ -5,11 +5,11 @@ import {
   saveAgreementFromOtherParty,
   saveApplicationCosts,
   saveApplicationType,
+  saveHearingArrangement,
+  saveHearingContactDetails,
   saveHearingSupport,
   saveRequestingReason,
-  saveRespondentAgreeToOrder,
-  saveHearingArrangement,
-  saveHearingContactDetails, saveUnavailableDates,
+  saveUnavailableDates,
 } from 'services/features/generalApplication/generalApplicationService';
 import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -242,40 +242,6 @@ describe('General Application service', () => {
       const cancelUrl = await getCancelUrl('123',claim);
       //Then
       expect(cancelUrl).toEqual(DEFENDANT_SUMMARY_URL.replace(':id','123'));
-    });
-  });
-
-  describe('Save respondent agree to order', () => {
-    it('should save respondent agree to order', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
-
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-
-      //When
-      await saveRespondentAgreeToOrder('123',claim, YesNo.NO);
-      //Then
-      expect(spy).toBeCalled();
-    });
-
-    it('should throw error when draft store throws error', async () => {
-      //Given
-
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      //When
-      mockSaveClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-      //Then
-      await expect(saveRespondentAgreeToOrder('123',claim, YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
