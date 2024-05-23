@@ -2284,19 +2284,19 @@
         "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
       },
       "UPLOAD_N245_FORM": {
-        "PAGE_TITLE": "Upload N245",
-        "TITLE": "Upload N245 form",
         "COMPLETE_N245_FORM":"complete the N245 Form",
-        "UPLOAD_HERE": "You need to LINK_FOR_N245_FORM and upload it here.",
-        "OFFER_OF_PAYMENT": "You should set out the new monthly instalments that you're proposing in the 'Offer of payment' section.",
-        "INCOME_AND_EXPENSE": "We'll ask for information about your income and expenses to divide whether these instalments are affordable for you. So it may be useful to have documents like you bank statements to hand.",
-        "WAYS_TO_COMPLETE": "There are two ways to complete the form. You can either:",
+        "FILE_FORMAT": "the file is in a JPG, PNG, SVG, GIF, DOC, DOCX or PDF format.",
+        "FILE_SIZE": "the file size is no more than 100MB",
         "FILL_ONLINE": "fill out the interactive form online, save it to your device and then upload it here",
+        "INCOME_AND_EXPENSE": "We'll ask for information about your income and expenses to divide whether these instalments are affordable for you. So it may be useful to have documents like you bank statements to hand.",
+        "NAME_THE_FORM": "you give it a name that tells the court what it is, for example 'N245 form by Jane Smith'",
+        "OFFER_OF_PAYMENT": "You should set out the new monthly instalments that you're proposing in the 'Offer of payment' section.",
+        "PAGE_TITLE": "Upload N245",
         "PRINT_THE_FORM": "print the form, complete it by hand, scan or take a photo of it and then upload it here.",
         "SAVE_THE_FORM": "When you save and upload your completed form, make sure:",
-        "NAME_THE_FORM": "you give it a name that tells the court what it is, for example 'N245 form by Jane Smith'",
-        "FILE_SIZE": "the file size is no more than 100MB",
-        "FILE_FORMAT": "the file is in a JPG, PNG, SVG, GIF, DOC, DOCX or PDF format."
+        "TITLE": "Upload N245 form",
+        "UPLOAD_HERE": "You need to LINK_FOR_N245_FORM and upload it here.",
+        "WAYS_TO_COMPLETE": "There are two ways to complete the form. You can either:"
       },
       "APPLICATION_HEARING_ARRANGEMENTS": {
         "HEARING_TYPE": {
