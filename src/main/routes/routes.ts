@@ -311,6 +311,8 @@ import orderJudgeController from './features/generalApplication/orderJudgeContro
 import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNoticesController';
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
+import respondentRequestChangeInformationController
+  from 'routes/features/generalApplication/respondentRequestChangeInformationController';
 import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
 import confirmYouHaveBeenPaidConfirmController
   from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
@@ -586,6 +588,7 @@ export default [
   ordersAndNoticesController,
   hearingArrangementController,
   hearingContactDetailsController,
+  respondentRequestChangeInformationController,
   confirmYouHaveBeenPaidController,
   confirmYouHaveBeenPaidConfirmController,
 ];
