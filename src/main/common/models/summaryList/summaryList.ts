@@ -5,7 +5,7 @@ export interface SummaryList {
 
 export interface SummaryRow {
   key: Key;
-  value?: Value;
+  value: Value;
   actions?: Actions;
 }
 
@@ -36,7 +36,10 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
   const row: SummaryRow = {
     key: {
       text: key,
-    }
+    },
+    value: {
+      html: value,
+    },
   };
   if (href) {
     const accessibilityText = hiddentText ? `${key} (${hiddentText})` : `${key}`;

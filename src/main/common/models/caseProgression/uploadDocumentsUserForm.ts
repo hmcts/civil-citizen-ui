@@ -51,8 +51,7 @@ export class UploadDocumentsUserForm {
   constructor(documentsForDisclosure?: TypeOfDocumentSection[], disclosureList?: FileOnlySection[],
     witnessStatement?: WitnessSection[], witnessSummary?: WitnessSummarySection[], noticeOfIntention?: WitnessSection[], documentsReferred?: ReferredToInTheStatementSection[],
     expertReport?: ExpertSection[], expertStatement?: ExpertSection[], questionsForExperts?: ExpertSection[], answersForExperts?: ExpertSection[],
-    trialCaseSummary?: FileOnlySection[], trialSkeletonArgument?: FileOnlySection[], trialAuthorities?: FileOnlySection[], trialCosts?: FileOnlySection[], trialDocumentary?: TypeOfDocumentSection[],
-  ) {
+    trialCaseSummary?: FileOnlySection[], trialSkeletonArgument?: FileOnlySection[], trialAuthorities?: FileOnlySection[], trialCosts?: FileOnlySection[], trialDocumentary?: TypeOfDocumentSection[]) {
     //disclosure sections
     this.documentsForDisclosure = documentsForDisclosure;
     this.disclosureList = disclosureList;
