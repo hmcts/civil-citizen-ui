@@ -311,6 +311,7 @@ import orderJudgeController from './features/generalApplication/orderJudgeContro
 import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNoticesController';
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
+import accessibilityStatementController from './features/public/accessibilityStatementController';
 
 export default [
   homeController,
@@ -583,4 +584,5 @@ export default [
   ordersAndNoticesController,
   hearingArrangementController,
   hearingContactDetailsController,
+  accessibilityStatementController,
 ];
