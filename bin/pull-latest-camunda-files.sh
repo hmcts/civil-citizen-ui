@@ -17,6 +17,6 @@ cp -r ../civil-camunda-bpmn-definition/src/main/resources/camunda .
 rm -rf ../civil-camunda-bpmn-definition
 
 #upload bpmn files to environment      
-./bin/import-bpmn-diagram.sh .
+./../bin/import-bpmn-diagram.sh .
 cd ..
 rm -rf ./civil-bpmn

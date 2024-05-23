@@ -16,6 +16,6 @@ cd wa-dmn
 cp -r ./../civil-wa-task-configuration/src/main/resources .
 rm -rf ./../civil-wa-task-configuration
 
-./bin/import-dmn-diagram.sh . civil civil
+./../bin/import-dmn-diagram.sh . civil civil
 cd ..
 rm -rf ./wa-dmn
