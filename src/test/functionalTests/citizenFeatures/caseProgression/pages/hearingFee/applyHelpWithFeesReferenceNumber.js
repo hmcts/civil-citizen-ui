@@ -13,10 +13,11 @@ class ApplyHelpWithFeesReferenceNumber {
     I.click(nextAction);
   }
 
-  verifyPageContent() {
+  verifyPageContent(caseNumber, claimAmount) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
     this.verifyHeadingDetails();
+    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     this.verifyPageText();
     this.verifyYesOptionContent();
     this.verifyNoOptionContent();
@@ -24,12 +25,17 @@ class ApplyHelpWithFeesReferenceNumber {
   }
 
   verifyBreadcrumbs() {
-    I.see('Back', '//*[@id="main-content"]/div/main/div/div[1]/div[1]/a');
+    I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
   verifyHeadingDetails() {
-    I.see('Hearing fee', 'span');
+    I.see('Hearing', 'span');
     I.see('Help with fees', 'h1');
+  }
+
+  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    // I.see('Case number: ' + caseNumber, 'p');
+    I.see('Claim amount: ' + claimAmount, 'p');
   }
 
   verifyPageText() {

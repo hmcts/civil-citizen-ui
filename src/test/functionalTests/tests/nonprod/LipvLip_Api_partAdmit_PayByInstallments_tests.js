@@ -10,7 +10,7 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType, caseData, claimNumber;
 
-Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track ');
+Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track ').tag('@r2-regression').tag('@nightly');
 
 Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject @citizenUI @partAdmit @nightly - @api', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -41,7 +41,7 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject 
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
-}).tag('@regression-r2');
+});
 
 Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -56,7 +56,7 @@ Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject @c
     await ResponseToDefenceLipVsLipSteps.claimantRejectForDefRespPartAdmitInstallmentsPayment(claimRef, '1236', 'fast');
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('"regression-r2');
+});
 
 Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept @citizenUI @partAdmit @nightly - @api', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -87,7 +87,7 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept 
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
-}).tag('@regression-r2');
+});
 
 Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantAccept @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -104,4 +104,4 @@ Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantAccept @c
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitInstallmentsPayment(claimRef, '1236', claimNumber);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+});
