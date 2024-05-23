@@ -170,6 +170,7 @@ export class Claim {
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
   defendantResponseDocuments: SystemGeneratedCaseDocuments[];
+  responseClaimMediationSpecRequired?: YesNo;
   // Index signature to allow dynamic property access
   [key: string]: any;
 
@@ -851,6 +852,14 @@ export class Claim {
     return this.mediation?.canWeUse
       && this.mediation?.companyTelephoneNumber
       && (Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0);
+  }
+
+  isDefendantLrAgreedForMediation() {
+    console.log(this.isLRDefendant());
+    console.log(this.responseClaimMediationSpecRequired);
+    console.log(this.responseClaimMediationSpecRequired === YesNo.YES);
+    return this.isLRDefendant()
+      && this.responseClaimMediationSpecRequired === YesNo.YES;
   }
 
   isClaimantRejectedPaymentPlan() {

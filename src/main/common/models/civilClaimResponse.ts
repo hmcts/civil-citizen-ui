@@ -156,7 +156,7 @@ export interface CCDClaim extends ClaimUpdate {
   defenceAdmitPartPaymentTimeRouteRequired?: CCDPaymentOption;
   respondent1RepaymentPlan?: CCDRepaymentPlan;
   respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
-  responseClaimMediationSpecRequired?: string;
+  responseClaimMediationSpecRequired?: YesNoUpperCamelCase;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   claimantUserDetails?: IdamUserDetails;
   //Defendant Response part
