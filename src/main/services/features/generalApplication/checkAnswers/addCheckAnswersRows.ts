@@ -21,32 +21,14 @@ export const addApplicationTypesRows = (claimId: string, claim: Claim, lang: str
   const lng = getLng(lang);
   const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: lng});
   const rows: SummaryRow[] = [];
-  if (claim.generalApplication?.applicationTypes?.length === 1) {
-    rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {lng}),
-        t(selectedApplicationType[claim.generalApplication.applicationTypes[0].option], {lng}),
-        `${constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)}?index=0`, changeLabel(lang)),
-    );
-  } else {
+  if (claim.generalApplication?.applicationTypes) {
     claim.generalApplication?.applicationTypes?.forEach((applicationType, index, arr) => {
       const applicationTypeDisplay = selectedApplicationType[applicationType.option];
       const href = `${constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)}?index=${index}`;
-      if (index === 0) {
-        rows.push(
-          summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {lng}), t(applicationTypeDisplay, {lng}),
-            href, changeLabel(lang), undefined, true),
-        );
-      } else if (index < arr.length - 1) {
-        rows.push(
-          summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {lng}), t(applicationTypeDisplay, {lng}),
-            href, changeLabel(lang), undefined, true, true),
-        );
-      } else {
-        rows.push(
-          summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {lng}), t(applicationTypeDisplay, {lng}),
-            href, changeLabel(lang), undefined, false, true),
-        );
-      }
+      rows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {lng}), t(applicationTypeDisplay, {lng}),
+          href, changeLabel(lang), undefined, index, arr.length),
+      );
     });
   }
   return rows;
@@ -98,31 +80,13 @@ export const addOrderJudgeRows = (claimId: string, claim: Claim, lang: string): 
   const lng = getLng(lang);
   const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: lng});
   const rows: SummaryRow[] = [];
-  if (claim.generalApplication?.orderJudges?.length === 1) {
-    rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}),
-        claim.generalApplication?.orderJudges[0].text,
-        `${constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL)}?index=0`, changeLabel(lang)),
-    );
-  } else {
+  if (claim.generalApplication?.orderJudges) {
     claim.generalApplication?.orderJudges?.forEach((orderJudge, index, arr) => {
       const href = `${constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL)}?index=${index}`;
-      if (index === 0) {
-        rows.push(
-          summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), orderJudge.text,
-            href, changeLabel(lang), undefined, true),
-        );
-      } else if (index < arr.length - 1) {
-        rows.push(
-          summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), orderJudge.text,
-            href, changeLabel(lang), undefined, true, true),
-        );
-      } else {
-        rows.push(
-          summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), orderJudge.text,
-            href, changeLabel(lang), undefined, false, true),
-        );
-      }
+      rows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), orderJudge.text,
+          href, changeLabel(lang), undefined, index, arr.length),
+      );
     });
   }
   return rows;
@@ -132,31 +96,13 @@ export const addRequestingReasonRows = (claimId: string, claim: Claim, lang: str
   const lng = getLng(lang);
   const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: lng});
   const rows: SummaryRow[] = [];
-  if (claim.generalApplication?.requestingReasons?.length === 1) {
-    rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}),
-        claim.generalApplication.requestingReasons[0].text,
-        `${constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL)}?index=0`, changeLabel(lang)),
-    );
-  } else {
+  if (claim.generalApplication?.requestingReasons) {
     claim.generalApplication?.requestingReasons?.forEach((requestingReason, index, arr) => {
       const href = `${constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL)}?index=${index}`;
-      if (index === 0) {
-        rows.push(
-          summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), requestingReason.text,
-            href, changeLabel(lang), undefined, true),
-        );
-      } else if (index < arr.length - 1) {
-        rows.push(
-          summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), requestingReason.text,
-            href, changeLabel(lang), undefined, true, true),
-        );
-      } else {
-        rows.push(
-          summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), requestingReason.text,
-            href, changeLabel(lang), undefined, false, true),
-        );
-      }
+      rows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), requestingReason.text,
+          href, changeLabel(lang), undefined, index, arr.length),
+      );
     });
   }
   return rows;

@@ -34,7 +34,7 @@ interface Item {
   html?: string;
 }
 
-export function summaryRow(key?: string, value?: string, href?: string, hrefText?: string, hiddentText?: string, subItem?: boolean, hiddenKey?: boolean): SummaryRow {
+export function summaryRow(key?: string, value?: string, href?: string, hrefText?: string, hiddentText?: string, multivalueIndex?: number, multiValueTotalRows?: number): SummaryRow {
   const row: SummaryRow = {
     key: {
       text: key,
@@ -43,11 +43,11 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
       html: value,
     },
   };
-  if (subItem) {
+  if (multivalueIndex < multiValueTotalRows - 1) {
     row.classes = 'summaryListNoBorderBottom';
     row.value.classes = 'summaryListBorderBottom';
   }
-  if (hiddenKey) {
+  if (multivalueIndex > 0) {
     row.key.classes = 'govuk-visually-hidden';
   }
   if (href) {
@@ -61,7 +61,7 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
         },
       ],
     };
-    if (subItem) {
+    if (multivalueIndex < multiValueTotalRows - 1) {
       row.actions.classes = 'summaryListBorderBottom';
     }
   }
