@@ -2,13 +2,13 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GA_AGREE_TO_ORDER_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
-import {getCancelUrl,} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {
   getRespondToApplicationCaption,
-  saveRespondentAgreeToOrder
+  saveRespondentAgreeToOrder,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 
 const respondentAgreeToOrderController = Router();
