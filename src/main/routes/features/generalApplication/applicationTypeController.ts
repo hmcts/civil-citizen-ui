@@ -6,6 +6,8 @@ import {ApplicationType, ApplicationTypeOption} from 'common/models/generalAppli
 import {saveApplicationType} from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
+import { FormValidationError } from 'common/form/validationErrors/formValidationError';
+import { GenericYesNo } from 'common/form/models/genericYesNo';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
@@ -35,7 +37,10 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
 
 applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
+    const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getClaimById(claimId, req, true);
+    console.log(claim);
     let applicationType = null;
 
     if (req.body.option === ApplicationTypeOption.OTHER) {
@@ -45,9 +50,26 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     }
 
     const form = new GenericForm(applicationType);
-    await form.validate();
+    form.validateSync();
+
+    if(claim.generalApplication?.applicationTypes?.length > 0 && getListOfNotAllowedAdditionalApp().includes(applicationType.option)) {
+      const errorMessage = additionalApplicationErrorMessages[applicationType.option];
+
+      const validationError = new FormValidationError({
+        target: new GenericYesNo(req.body.optionOther, ''),
+        value: req.body.option,
+        constraints: {
+          additionalApplicationError :errorMessage,
+        },
+        property: 'option',
+      });
+  
+      form.errors.push(validationError);
+
+    }
+
     if (form.hasErrors()) {
-      res.render(viewPath, { form, cancelUrl, backLinkUrl });
+      res.render(viewPath, { form, cancelUrl, backLinkUrl,isOtherSelected: applicationType.isOtherSelected() });
     } else {
       const queryApplicationTypeIndex = req.query.index;
       const applicationTypeIndex = queryApplicationTypeIndex
@@ -60,5 +82,18 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     next(error);
   }
 }) as RequestHandler);
+
+function getListOfNotAllowedAdditionalApp() : ApplicationTypeOption[] {
+  var notAllowedList : ApplicationTypeOption[]; 
+  notAllowedList = [ApplicationTypeOption.SET_ASIDE_JUDGEMENT,ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT,ApplicationTypeOption.SETTLE_BY_CONSENT] ;
+  return notAllowedList;
+}
+
+export const additionalApplicationErrorMessages: Partial<{ [key in ApplicationTypeOption]: string; }> = {
+  [ApplicationTypeOption.SETTLE_BY_CONSENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING',
+  [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT',
+  [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT',
+};
+
 
 export default applicationTypeController;

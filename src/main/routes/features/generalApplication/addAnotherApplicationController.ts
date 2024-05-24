@@ -1,6 +1,6 @@
 import { NextFunction, Response, Router } from 'express';
 import { AppRequest } from 'common/models/AppRequest';
-import { GA_ADD_ANOTHER_APPLICATION_URL } from 'routes/urls';
+import { APPLICATION_TYPE_URL, GA_ADD_ANOTHER_APPLICATION_URL } from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { selectedApplicationType } from 'common/models/generalApplication/applicationType';
@@ -36,11 +36,14 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, async (req:
     if (form.hasErrors()) {
       await renderView(req, res, form);
     } else {
-      res.redirect('test');
+      const claimId = req.params.id;
+      const redirectUrl = APPLICATION_TYPE_URL.replace(':id', claimId)
+      res.redirect(redirectUrl);
     }
   } catch (error) {
     next(error);
   }
 });
+
 
 export default addAnotherApplicationController;

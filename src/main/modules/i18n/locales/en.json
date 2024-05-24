@@ -4148,7 +4148,10 @@
       "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
       "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
       "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
-      "ENTER_VALID_EMAIL": "You need to enter a valid email address"
+      "ENTER_VALID_EMAIL": "You need to enter a valid email address",
+      "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
+      "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
+      "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application."
     }
   }
 }
