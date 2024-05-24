@@ -11,6 +11,8 @@ import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/
 import { Claim } from 'common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import {CaseDocument} from 'models/document/caseDocument';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -20,6 +22,23 @@ const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;
 const mockClaim = new Claim();
 mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+
+const mockCaseDocument: CaseDocument = <CaseDocument>{
+  createdBy: 'test',
+  documentLink: { document_url: 'http://test', document_binary_url: 'http://test/binary', document_filename: 'test.png' },
+  documentName: 'test.text',
+  documentType: null,
+  documentSize: 12345,
+  createdDatetime: new Date(),
+};
+const file = {
+  fieldname: 'selectedFile',
+  originalname: 'test.text',
+  mimetype: 'text/plain',
+  size: 123,
+  buffer: Buffer.from('Test file content'),
+};
+
 
 describe('General Application - Want to upload documents to support hearing', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -35,11 +54,13 @@ describe('General Application - Want to upload documents to support hearing', ()
   describe('on GET', () => {
     it('should return want to upload document page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
+      mockClaim.generalApplication.applicationType = new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT);
       await request(app)
         .get(GA_WANT_TO_UPLOAD_DOCUMENTS)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.WANT_TO_UPLOAD_DOCUMENTS.TITLE'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT'));
         });
     });
 
@@ -64,21 +85,26 @@ describe('General Application - Want to upload documents to support hearing', ()
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain('Found. Redirecting to '+ GA_UPLOAD_DOCUMENTS);
+          expect(res.text).toContain(GA_UPLOAD_DOCUMENTS);
         });
     });
 
     it('should send the value and redirect to application hearing arrangement page', async () => {
+      const uploadDocument = new UploadGAFiles();
+      uploadDocument.caseDocument = mockCaseDocument;
+      uploadDocument.fileUpload = file;
+
+      mockClaim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(GA_WANT_TO_UPLOAD_DOCUMENTS)
         .send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain('Found. Redirecting to '+ GA_HEARING_ARRANGEMENTS);
+          expect(res.text).toContain(GA_HEARING_ARRANGEMENTS);
+          expect(mockClaim.generalApplication.uploadEvidenceForApplication).toEqual([]);
         });
     });
-
 
     it('should show error message if radio button not selected', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);

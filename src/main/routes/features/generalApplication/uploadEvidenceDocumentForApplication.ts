@@ -17,7 +17,7 @@ import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftS
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {
   getSummaryList,
-  removeDocumentFromRedis, uploadSelectedFile,
+  removeSelectedDocument, uploadSelectedFile,
 } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
 
@@ -29,7 +29,6 @@ const upload = multer({
     fileSize: fileSize,
   },
 });
-
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
   const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
@@ -51,7 +50,7 @@ uploadEvidenceDocumentsForApplicationController.get(GA_UPLOAD_DOCUMENTS, (async 
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(req);
-    let uploadDocuments = new UploadGAFiles();
+    const uploadDocuments = new UploadGAFiles();
     let form = new GenericForm(uploadDocuments);
     const formattedSummary = summarySection(
       {
@@ -60,12 +59,12 @@ uploadEvidenceDocumentsForApplicationController.get(GA_UPLOAD_DOCUMENTS, (async 
       });
     if (req?.session?.fileUpload) {
       const parsedData = JSON.parse(req?.session?.fileUpload);
-      form = new GenericForm(uploadDocuments, parsedData); 
+      form = new GenericForm(uploadDocuments, parsedData);
       req.session.fileUpload = undefined;
     }
     if (req.query?.id) {
       const index = req.query.id;
-      await removeDocumentFromRedis(claim.id, claim, Number(index)-1);
+      await removeSelectedDocument(redisKey, claim, Number(index)-1);
     }
     await getSummaryList(formattedSummary, redisKey, claimId);
     await renderView(form, claim, claimId, res, formattedSummary);
@@ -91,7 +90,6 @@ uploadEvidenceDocumentsForApplicationController.post(GA_UPLOAD_DOCUMENTS, upload
       await uploadSelectedFile(req, formattedSummary, claimId);
       return res.redirect(`${currentUrl}`);
     }
-
     const uploadDoc = new UploadGAFiles();
     const form = new GenericForm(uploadDoc);
     form.validateSync();

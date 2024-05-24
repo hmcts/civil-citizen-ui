@@ -41,9 +41,21 @@ export const saveDocumentsToUploaded = async (claimId: string, uploadDocument: U
   }
 };
 
-export const removeDocumentFromRedis = async (claimId: string, claim: Claim, index: number) : Promise<void> => {
+export const removeSelectedDocument = async (claimId: string, claim: Claim, index: number) : Promise<void> => {
   try {
     claim?.generalApplication?.uploadEvidenceForApplication?.splice(index, 1);
+    await saveDraftClaim(claimId, claim);
+  } catch(error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const removeAllUploadedDocuments = async (claimId: string, claim: Claim) : Promise<void> => {
+  try {
+    if(claim?.generalApplication?.uploadEvidenceForApplication) {
+      claim.generalApplication.uploadEvidenceForApplication = [];
+    }
     await saveDraftClaim(claimId, claim);
   } catch(error) {
     logger.error(error);
@@ -64,7 +76,8 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
       await saveDocumentsToUploaded(redisKey, uploadDocument);
       await getSummaryList(summarySection, redisKey, claimId);
     } else {
-      const errors = translateErrors(form.getAllErrors(), t)
+      const errors = translateErrors(form.getAllErrors(), t);
+      console.log(errors);
       req.session.fileUpload = JSON.stringify(errors);
     }
   } catch(error) {
@@ -72,7 +85,6 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
     throw error;
   }
 };
-
 
 const translateErrors = (keys: FormValidationError[], t: (key: string) => string, formatValues?: { keyError: string, keyToReplace: string, valueToReplace: string }[]) => {
   return keys.map((key) => {
@@ -85,7 +97,7 @@ const translateErrors = (keys: FormValidationError[], t: (key: string) => string
       }
     }
     if (key?.target) {
-      key.target = {}
+      key.target = {};
     }
     if (key?.text)
       return ({ ...key, text: t(key?.text) });

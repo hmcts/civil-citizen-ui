@@ -2066,9 +2066,9 @@
         "VARY_JUDGMENT": "vary a judgment"
       },
       "APPLICATION_HEARING_ARRANGEMENTS": {
-        "TITLE": "Application hearing arrangements",
         "MSG1": "You may need to attend an application hearing so that a judge can consider the application with you and the other parties and decide what the next steps should be.",
-        "MSG2": "This hearing is not to discuss the claim. This is a separate hearing to discuss the application."
+        "MSG2": "This hearing is not to discuss the claim. This is a separate hearing to discuss the application.",
+        "TITLE": "Application hearing arrangements"
       },
       "HEARING_SUPPORT": {
         "ALWAYS_ARRANGE": "We'll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the 'Sign language interpreter' box below.",
@@ -2111,11 +2111,12 @@
         "MSG1": "If you've selected multiple applications, you should upload documents that relate to all of them."
       },
       "UPLOAD_DOCUMENTS": {
-        "TITLE": "Upload documents to support your application",
-        "LIST_TITLE": "Upload files",
+        "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "LIST_TITLE": "Uploaded files",
         "MSG1": "You should only upload documents that are relevant to your application.",
         "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",
-        "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
+        "REMOVE_DOC": "Remove document",
+        "TITLE": "Upload documents to support your application"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {

@@ -33,11 +33,13 @@ describe('General Application - application hearing arrangements', () => {
   describe('on GET', () => {
     it('should return  application hearing arrangements page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
+      mockClaim.generalApplication.applicationType = new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT);
       await request(app)
         .get(GA_HEARING_ARRANGEMENTS)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.TITLE'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT'));
         });
     });
 

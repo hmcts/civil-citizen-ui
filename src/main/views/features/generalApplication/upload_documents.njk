@@ -1,14 +1,15 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
-{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "../../macro/button.njk" import addButton %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.TITLE') }}
@@ -25,8 +26,9 @@
           {% set idValue = errors.fieldName %}
         {% endif %}
       {% endif %}
+
       <div class="govuk-grid-row">
-        <dl class="govuk-grid-column-two-thirds">
+        <div class="govuk-grid-column-two-thirds">
           {{ headingWithCaption(t, applicationType, 'PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.TITLE') }}
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.MSG1') }}</p>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.NAME_DOCUMENT') }}</p>
@@ -50,30 +52,28 @@
               text: t('COMMON.UPLOAD_FILE'),
               classes: "govuk-button--secondary govuk-!-margin-bottom-0"
             }) }}
-        </div>
+            </div>
             {% if formattedSummary.summaryList.rows.length > 0 %}
               <h2 class="govuk-heading-m">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.LIST_TITLE') }}</h2>
-             {% for row in formattedSummary.summaryList.rows  %}
-              <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">
-                    {{ row.key.text }}
-                  </dt>
-                  <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="{{ row.actions.items[0].href }}&action=REMOVE_DOC">
-                      Remove document<span class="govuk-visually-hidden">
-                {{ row.key.text }}</span>
-                    </a>
-                  </dd>
-                </div>
-              </dl>
-              {% endfor %}
+              <div class="govuk-section-break--s govuk-section-break--visible"></div>
+              {% for row in formattedSummary.summaryList.rows  %}
+                 <dl class="govuk-summary-list govuk-!-margin-bottom-0">
+                  <div class="govuk-summary-list__row ">
+                    <dt class="govuk-summary-list__key">
+                      {{ row.key.text }}
+                    </dt>
+                    <dd class="govuk-summary-list__actions">
+                      <a class="govuk-link" href="{{ row.actions.items[0].href }}">
+                        {{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.REMOVE_DOC') }}<span class="govuk-visually-hidden">
+                  {{ row.key.text }}</span>
+                      </a>
+                    </dd>
+                  </div>
+                </dl>
+                {% endfor %}
             {% endif %}
-            <div class="govuk-button-group">
-              {{ govukButton({
-                text: t('COMMON.BUTTONS.CONTINUE')
-              }) }}
-              <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+            <div class="govuk-button-group govuk-!-margin-top-8">
+              {{ addButton(t, 'CONTINUE', cancelUrl) }}
             </div>
           </form>
         </div>

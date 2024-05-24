@@ -17,6 +17,7 @@ import {getClaimById} from 'modules/utilityService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
+import {removeAllUploadedDocuments} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const wantToUploadDocumentsController = Router();
 const viewPath = 'features/generalApplication/want-to-upload-documents';
@@ -59,6 +60,7 @@ wantToUploadDocumentsController.post(GA_WANT_TO_UPLOAD_DOCUMENTS, (async (req: A
       if (req.body.option == YesNo.YES) {
         redirectUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS);
       } else if (req.body.option == YesNo.NO) {
+        await removeAllUploadedDocuments(redisKey, claim);
         redirectUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS);
       }
       await saveIfPartyWantsToUploadDoc(redisKey, req.body.option);
