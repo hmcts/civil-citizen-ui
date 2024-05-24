@@ -1,7 +1,7 @@
 {
   "COMMON": {
     "HOME": "Hafan",
-    "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
+    "UPLOAD_DATE": "Uwchlwythwyd [{{ uploadDate }}]",
     "UPLOAD_FILE": "Llwytho ffeil i fyny",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
     "DOCUMENTS_UPLOADED": "Dogfennau wedi’u llwytho",
@@ -45,7 +45,7 @@
     "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
     "TELEPHONE_MEDIATION": "Cyfryngu dros y ffôn",
     "AVAILABILITY_FOR_MEDIATION": "Pryd rydych ar gael ar gyfer cyfryngu",
-    "MEDIATION": "Mediation",
+    "MEDIATION": "Cyfryngu",
     "GIVE_DETAILS": "Rhowch fanylion",
     "GO_TO_HOMEPAGE": "Ewch i’r dudalen hafan",
     "JOB_TITLE": "Teitl swydd",
@@ -385,13 +385,13 @@
   },
   "PAGES": {
     "VIEW_MEDIATION_DOCUMENTS": {
-      "CLAIMANT_TABLE_TITLE": "Claimant mediation documents",
-      "DEFENDANT_TABLE_TITLE": "Defendant mediation documents",
-      "PAGE_TITLE": "View mediation documents"
+      "CLAIMANT_TABLE_TITLE": "Dogfennau cyfryngu’r Hawlydd",
+      "DEFENDANT_TABLE_TITLE": "Dogfennau cyfryngu’r Diffynnydd",
+      "PAGE_TITLE": "Gweld dogfennau cyfryngu"
     },
     "VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT": {
-      "PAGE_TITLE": "View mediation settlement agreement",
-      "DOCUMENT_TABLE_TITLE": "Mediation Settlement Agreement"
+      "PAGE_TITLE": "Gweld cytundeb setlo o ran cyfryngu",
+      "DOCUMENT_TABLE_TITLE": "Cytundeb setlo o ran cyfryngu"
     },
     "MEDIATION": {
       "CONFIRMATION_PAGE": {
