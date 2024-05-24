@@ -66,12 +66,12 @@ export const mapperMediationDocumentsToDocumentView = (documentTitle: string, me
   }
 };
 
-export function getDocumentId(systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[], documentType: DocumentType, defendantOrClaimant?: string): string {
+export function getDocumentId(systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[], documentType: DocumentType, stitchedDoc?: string): string {
   let documentId;
   if (systemGeneratedCaseDocuments?.length > 0) {
     systemGeneratedCaseDocuments.forEach(doc => {
       if (doc.value.documentType == documentType) {
-        if (doc.value.documentName.startsWith(defendantOrClaimant)) {
+        if (doc.value.documentName.startsWith(stitchedDoc)) {
           documentId = documentIdExtractor(doc.value?.documentLink?.document_binary_url);
         }
       }
