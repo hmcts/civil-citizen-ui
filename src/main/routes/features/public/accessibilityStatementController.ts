@@ -7,7 +7,7 @@ const accessibilityStatementViewPath = 'features/public/accessibility-statement'
 accessibilityStatementController.get(ACCESSIBILITY_STATEMENT_URL, (req, res) => {
   res.render(
     accessibilityStatementViewPath,
-    { dashboardUrl: DASHBOARD_URL }
+    { dashboardUrl: DASHBOARD_URL },
   );
 });
 

@@ -3,9 +3,9 @@ import {app} from '../../../../../main/app';
 import {ACCESSIBILITY_STATEMENT_URL} from 'routes/urls';
 import {t} from 'i18next';
 
-describe("Accessibility Statement page", () => {
+describe('Accessibility Statement page', () => {
   describe('on GET', () => {
-    it("should show page content", async () => {
+    it('should show page content', async () => {
       await request(app)
         .get(ACCESSIBILITY_STATEMENT_URL)
         .expect((res) => {
