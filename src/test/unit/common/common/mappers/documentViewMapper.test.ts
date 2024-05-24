@@ -12,7 +12,7 @@ import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {MEDIATION_AGREEMENT_MOCK} from '../../../../utils/mocks/Mediation/mediationAgreementMock';
 import {Claim} from 'models/claim';
-import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
 
 describe('Test of Document View Mapper', () => {
@@ -55,7 +55,7 @@ describe('Test of Document View Mapper', () => {
         new DocumentLinkInformation(
           CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
             .replace(':documentId',
-              getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)),
+              getDocumentId(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE, 'Stitched')),
           'defendant-response-000MC001.pdf'))));
     //When
     const result = mapperDefendantResponseToDocumentView(
@@ -69,5 +69,44 @@ describe('Test of Document View Mapper', () => {
     expect(expected).toEqual(result);
   });
 
+  it('should map defendant response(stitched document) to Document View', () => {
+    //Given
+    const claim = new Claim();
+    claim.legacyCaseReference = '000MC001';
+    claim.respondent1ResponseDate = new Date();
+    claim.systemGeneratedCaseDocuments = [
+      {
+        value: {
+          documentLink: {
+            document_binary_url: '/543/binary',
+          },
+          documentName: 'Stitched document',
+          documentType: DocumentType.DEFENDANT_DEFENCE,
+        },
+      },
+    ] as SystemGeneratedCaseDocuments[];
+    const claimId = '1234';
+    const fileName = 'PAGES.VIEW_RESPONSE_TO_THE_CLAIM.DOCUMENT_LABEL';
+
+    const expected = new DocumentsViewComponent('PAGES.VIEW_RESPONSE_TO_THE_CLAIM.TABLE_TITLE', Array.of(
+      new DocumentInformation(
+        fileName,
+        formatDateToFullDate(claim.respondent1ResponseDate, 'lang'),
+        new DocumentLinkInformation(
+          CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
+            .replace(':documentId',
+              getDocumentId(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE, 'Stitched')),
+          'defendant-response-000MC001.pdf'))));
+    //When
+    const result = mapperDefendantResponseToDocumentView(
+      'PAGES.VIEW_RESPONSE_TO_THE_CLAIM.TABLE_TITLE',
+      'PAGES.VIEW_RESPONSE_TO_THE_CLAIM.DOCUMENT_LABEL',
+      claim,
+      claimId,
+      'en',
+    );
+    //Then
+    expect(expected).toEqual(result);
+  });
 });
 
