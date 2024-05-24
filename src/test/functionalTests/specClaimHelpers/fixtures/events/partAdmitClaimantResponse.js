@@ -21,7 +21,7 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          unavailableDates: null,
+          
           flags: null,
         },
         applicant1: {
@@ -43,7 +43,7 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          unavailableDates: null,
+          
         },
         respondent2: null,
         partAdmitPaidValuePounds: '500.00',
@@ -169,7 +169,7 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          unavailableDates: null,
+          
           flags: null,
         },
         applicant1: {
@@ -191,7 +191,7 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          unavailableDates: null,
+          
         },
         respondent2: null,
         partAdmitPaidValuePounds: null,
@@ -331,7 +331,7 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          unavailableDates: null,
+          
           flags: null,
         },
         applicant1: {
@@ -353,7 +353,7 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          unavailableDates: null,
+          
         },
         respondent2: null,
         partAdmitPaidValuePounds: null,
@@ -430,7 +430,7 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          unavailableDates: null,
+          
           flags: null,
         },
         applicant1: {
@@ -452,7 +452,7 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          unavailableDates: null,
+          
         },
         respondent2: null,
         partAdmitPaidValuePounds: null,
