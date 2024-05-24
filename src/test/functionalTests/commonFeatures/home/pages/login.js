@@ -1,5 +1,9 @@
 const I = actor();
 const config = require('../../../../config');
+const cuiCookies = require('../../../specClaimHelpers/fixtures/cookies/cuiCookies');
+const cmcCookies = require('../../../specClaimHelpers/fixtures/cookies/cmcCookies');
+const idamCookies = require('../../../specClaimHelpers/fixtures/cookies/idamCookies');
+const generateExuiCookies = require('../../../specClaimHelpers/fixtures/cookies/exuiCookies');
 
 const fields = {
   username: 'input[id="username"]',
@@ -15,10 +19,20 @@ const buttons = {
 
 class LoginPage {
   async openCitizenLogin() {
+    await I.clearCookie();
+    await I.setCookie([...idamCookies, ...cuiCookies]);
     await I.amOnPage('/');
   }
 
+  async openOCMC() {
+    await I.clearCookie();
+    await I.setCookie([...idamCookies, ...cmcCookies]);
+    await I.amOnPage('https://moneyclaims.aat.platform.hmcts.net');
+  }
+
   async openManageCase() {
+    await I.clearCookie();
+    await I.setCookie(idamCookies);
     await I.amOnPage(config.url.manageCase);
   }
 
@@ -41,7 +55,13 @@ class LoginPage {
     await this.#login(email, password, '/dashboard');
   }
 
-  async caseWorkerLogin(email, password) {
+  async ocmcLogin(email, password) {
+    await this.#login(email, password, '/eligibility');
+  }
+
+  async caseworkerLogin(email, password) {
+    const exuiCookies = await generateExuiCookies({email, password});
+    await I.setCookie(exuiCookies); 
     await this.#login(email, password, '/work/my-work/list');
   }
 }

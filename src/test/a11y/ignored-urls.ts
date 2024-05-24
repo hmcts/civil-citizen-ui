@@ -60,6 +60,6 @@ export const IGNORED_URLS = [
   urls.BASE_GENERAL_APPLICATION_URL,
   urls.DASHBOARD_CLAIMANT_URL,
   //TODO: remove this once finished the page
-  urls.VIEW_ORDERS_AND_NOTICES_URL,
   urls.VIEW_THE_HEARING_URL,
+  urls.BASE_GENERAL_APPLICATION_RESPONSE_URL,
 ];

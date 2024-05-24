@@ -211,7 +211,19 @@ describe('dashboardInterpolationService', () => {
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params);
 
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
-    const sizeExpected = '/case/123/view-documents/f1c7d590-8d3f-49c2-8ee7-6420ab711801 target="_blank"';
+    const sizeExpected = '/case/123/view-orders-and-notices';
+
+    expect(textReplacedDynamic).toEqual(sizeExpected);
+  });
+
+  it('should replace placeholders for view the evidence upload documents', () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    const textToReplaceUrl = '{VIEW_EVIDENCE_UPLOAD_DOCUMENTS}';
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined);
+
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const sizeExpected = '/case/123/evidence-upload-documents';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });

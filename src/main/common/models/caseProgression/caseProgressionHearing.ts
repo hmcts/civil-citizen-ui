@@ -9,6 +9,7 @@ import {DocumentType} from 'models/document/documentType';
 import {CaseDocumentInfoExtractor} from 'services/features/caseProgression/SystemDocumentInfoExtractor';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 import {PaymentDetails} from 'models/PaymentDetails';
+import { getNumberOfDaysBetweenTwoDays } from 'common/utils/dateUtils';
 
 export class HearingLocation {
   value: {
@@ -73,5 +74,11 @@ export class CaseProgressionHearing {
 
   getHearingDurationFormatted(lng: string): string {
     return HearingDurationFormatter.formatHearingDuration(this.hearingDuration, lng);
+  }
+
+  getDurationOfDaysForHearing(): number {
+    if (this.hearingDate) {
+      return getNumberOfDaysBetweenTwoDays(new Date(), this.hearingDate);
+    }
   }
 }
