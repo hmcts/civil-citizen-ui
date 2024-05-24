@@ -1,12 +1,12 @@
 import {
   mapperDefendantResponseToDocumentView,
   mapperMediationAgreementToDocumentView,
+  getDocumentId,
 } from 'common/mappers/documentViewMapper';
 import {
   DocumentInformation,
   DocumentLinkInformation,
   DocumentsViewComponent,
-  getDocumentId,
 } from 'form/models/documents/DocumentsViewComponent';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
