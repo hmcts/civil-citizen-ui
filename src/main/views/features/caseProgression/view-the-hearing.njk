@@ -3,7 +3,7 @@
 {% from "../../macro/page-information.njk" import pageInformation %}
 {% from "../../macro/dashboard-accordion.njk" import dashboardAccordion %}
 {% from "../dashboard/claim-summary-content.njk" import claimSummaryContent %}
-
+{% set pageTitle = t('PAGES.PAGES.DASHBOARD.JUDGEMENTS.VIEW_THE_JUDGEMENT') %}
 {% block nestedContent %}
 
   {{ pageInformation(t,pageCaption, pageTitle, claimId, claimAmount)}}
