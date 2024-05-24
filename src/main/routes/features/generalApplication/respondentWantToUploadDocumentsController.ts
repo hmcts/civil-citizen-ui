@@ -9,7 +9,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {getCancelUrl, getRespondToApplicationCaption, saveRespondentWantToUploadDoc,}
+import {getCancelUrl, getRespondToApplicationCaption, saveRespondentWantToUploadDoc}
   from 'services/features/generalApplication/generalApplicationService';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';

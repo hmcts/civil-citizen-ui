@@ -7,13 +7,13 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
-import {getCancelUrl, getRespondToApplicationCaption,}
+import {getCancelUrl, getRespondToApplicationCaption}
   from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {getSummaryList, removeDocumentFromRedis, uploadSelectedFile,}
+import {getSummaryList, removeDocumentFromRedis, uploadSelectedFile}
   from 'services/features/generalApplication/response/respondentUploadEvidenceDocumentsService';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
 import { UploadGAFiles } from 'common/models/generalApplication/UploadGAFiles';
@@ -102,5 +102,4 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT, 
     next(error);
   }
 }) as RequestHandler);
-
 export default respondentUploadEvidenceDocumentsController;
