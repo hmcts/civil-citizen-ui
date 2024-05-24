@@ -1,4 +1,5 @@
 import * as urls from '../../main/routes/urls';
+import {CONFIRM_YOU_HAVE_BEEN_PAID_URL} from "../../main/routes/urls";
 
 export const IGNORED_URLS = [
   urls.SIGN_IN_URL,
@@ -62,4 +63,5 @@ export const IGNORED_URLS = [
   //TODO: remove this once finished the page
   urls.VIEW_THE_HEARING_URL,
   urls.BASE_GENERAL_APPLICATION_RESPONSE_URL,
+  urls.CONFIRM_YOU_HAVE_BEEN_PAID_URL, //TODO: remove this once finished the page
 ];
