@@ -48,7 +48,26 @@ describe('General Application - upload n245 form', () => {
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.TITLE'));
         });
     });
-
+    it('should remove the file upon click', async () => {
+      const mockCaseDocument: CaseDocument = <CaseDocument>{
+        createdBy: 'test',
+        documentLink: { document_url: 'http://test', document_binary_url: 'http://test/binary', document_filename: 'test.png' },
+        documentName: 'test.text',
+        documentType: null,
+        documentSize: 12345,
+        createdDatetime: new Date(),
+      };
+      claim.generalApplication.uploadN245Form.caseDocument = mockCaseDocument;
+      mockDataFromStore.mockResolvedValue(claim);
+      await request(app)
+        .get(`${GA_UPLOAD_N245_FORM_URL}?action=REMOVE_DOC`)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.VARY_JUDGMENT'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.TITLE'));
+          expect(claim.generalApplication.uploadN245Form).toBeUndefined();
+        });
+    });
     it('should return http 500 when has error in the get method', async () => {
       mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
