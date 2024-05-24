@@ -77,7 +77,6 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
       await getSummaryList(summarySection, redisKey, claimId);
     } else {
       const errors = translateErrors(form.getAllErrors(), t);
-      console.log(errors);
       req.session.fileUpload = JSON.stringify(errors);
     }
   } catch(error) {
