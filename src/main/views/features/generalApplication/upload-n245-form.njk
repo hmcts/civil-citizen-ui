@@ -10,29 +10,24 @@
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.PAGE_TITLE') }}
 {% endblock %}
-{% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
-      {% set errors = "" %}
-      {% set  idValue = "selectedFile" %}
-      {% if form.hasErrors() %}
-        {{ errorSummary(form.getAllErrors(), t) }}
-        {% set errors = translateErrors(form.getAllErrors(),t)[0] %}
-        {% set idValue = errors.fieldName %}
-      {% endif %}
-      {% set uploadFileLabel %}
-      <strong>{{ t('COMMON.UPLOAD_FILE_LABEL') }}</strong>
-      {% endset %}
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          {{ headingWithCaption(t,'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.VARY_JUDGMENT','PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.TITLE' ) }}
-          {% for content in contentList %}
-            {{ itemContent(content,t) }}
-          {% endfor %}
-          <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
-            {{ csrfProtection(csrf) }}
-            <div class="govuk-inset-text">
-              {{ govukFileUpload({
+{% block nestedContent %}
+  {% set errors = "" %}
+  {% set  idValue = "selectedFile" %}
+  {% if form.hasErrors() %}
+    {% set errors = translateErrors(form.getAllErrors(),t)[0] %}
+    {% set idValue = errors.fieldName %}
+  {% endif %}
+  {% set uploadFileLabel %}
+  <strong>{{ t('COMMON.UPLOAD_FILE_LABEL') }}</strong>
+  {% endset %}
+  {{ headingWithCaption(t,'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.VARY_JUDGMENT','PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.TITLE' ) }}
+  {% for content in contentList %}
+    {{ itemContent(content,t) }}
+  {% endfor %}
+  <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
+    {{ csrfProtection(csrf) }}
+    <div class="govuk-inset-text">
+      {{ govukFileUpload({
                   id: idValue,
                   name: "selectedFile",
                   label: {
@@ -42,40 +37,33 @@
                      text: t(errors.text)
                   } if errors
               }) }}
-              {{ govukButton({
+      {{ govukButton({
                           id: 'uploadFileButton',
                           name: 'action',
                           value: 'uploadButton',
                           text:  t('COMMON.UPLOAD_FILE'),
                            classes: "govuk-button--secondary govuk-!-margin-bottom-0"
                 }) }}
-            </div>
-            {% if documentName %}
-              <h2 class="govuk-heading-m">Uploaded files</h2>
-              <div class="govuk-section-break--s govuk-section-break--visible"></div>
-              <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                  <dt class="govuk-summary-list__key">
-                    {{ documentName }}
-                  </dt>
-                  <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="{{ currentUrl }}?action=REMOVE_DOC">
-                      Remove document<span class="govuk-visually-hidden">
-                        {{ documentName }}</span>
-                    </a>
-                  </dd>
-                </div>
-              </dl>
-            {% endif %}
-            <div class="govuk-button-group">
-              {{ addButton(t, 'CONTINUE', cancelUrl) }}
-            </div>
-          </form>
+    </div>
+    {% if documentName %}
+      <h2 class="govuk-heading-m">Uploaded files</h2>
+      <div class="govuk-section-break--s govuk-section-break--visible"></div>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            {{ documentName }}
+          </dt>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="{{ currentUrl }}?action=REMOVE_DOC">
+              Remove document<span class="govuk-visually-hidden">
+                {{ documentName }}</span>
+            </a>
+          </dd>
         </div>
-        <div class="govuk-grid-column-one-third">
-          {{ contactUsForHelp(t) }}
-        </div>
-      </div>
-    </main>
-  </div>
+      </dl>
+    {% endif %}
+    <div class="govuk-button-group">
+      {{ addButton(t, 'CONTINUE', cancelUrl) }}
+    </div>
+  </form>
 {% endblock %}
