@@ -425,7 +425,7 @@
       "PARAGRAPH_NON_ACCESIBLE_1": "Non-accessible content",
       "PARAGRAPH_NON_ACCESIBLE_2": "The content listed below is non-accessible for the following reasons.",
       "PARAGRAPH_NON_ACCESIBLE_3": "Non-compliance with the accessibility regulations",
-      "PARAGRAPH_NON_ACCESIBLE_4": "Online Civil Money Claims (OCMC) digital service has been tested for accessibility, and does meet the WCAG 2.2 AA requirement. However some error messages are not accessible because:",
+      "PARAGRAPH_NON_ACCESIBLE_4": "Online Civil Money Claims (OCMC) digital service has been tested for accessibility and does meet the WCAG 2.2 AA requirement. However, some error messages are not accessible because:",
       "PARAGRAPH_NON_ACCESIBLE_5": "Screen reader users might have difficulty navigating error messages as some error messages are not specific to the field where the error was made. This fails WCAG 2.2 [3.3.1] success criterion (Error Identification). We plan to fix this by late 2024.",
       "PARAGRAPH_PREPARATION_1": "Preparation of this accessibility statement",
       "PARAGRAPH_PREPARATION_2": "This statement was prepared on 20 May 2024.  It was last reviewed on 15 March 2024.",
