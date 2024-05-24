@@ -171,7 +171,7 @@ export class Claim {
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
   defendantResponseDocuments: SystemGeneratedCaseDocuments[];
-  judgmentPaidInFull?: CuiJudgmentPaidInFull;
+  joJudgmentPaidInFull?: CuiJudgmentPaidInFull;
   // Index signature to allow dynamic property access
   [key: string]: any;
 

@@ -1,10 +1,15 @@
 import {Claim} from 'models/claim';
-import {CCDJudgmentPaidInFull} from 'models/judgmentOnline/ccdJudgmentPaidInFull';
+import {CCDJudgmentPaidInFull, JoJudgmentPaidInFull} from 'models/judgmentOnline/ccdJudgmentPaidInFull';
 
-export const toCCDjudgmentPaidInFull = (claim: Claim): CCDJudgmentPaidInFull => {
-
+export const toCCDjudgmentPaidInFull = (claim: Claim) : CCDJudgmentPaidInFull => {
   return {
-    dateOfFullPaymentMade: claim.judgmentPaidInFull ? claim.judgmentPaidInFull.dateOfFullPaymentMade : null,
-    confirmFullPaymentMade: claim.judgmentPaidInFull?.confirmFullPaymentMade ? ['CONFIRMED'] : null,
+    joJudgmentPaidInFull: toCCDjudgmentPaidInFullDetails(claim),
+  };
+};
+
+export const toCCDjudgmentPaidInFullDetails = (claim: Claim) : JoJudgmentPaidInFull => {
+  return {
+    dateOfFullPaymentMade: claim.joJudgmentPaidInFull ? claim.joJudgmentPaidInFull.dateOfFullPaymentMade : null,
+    confirmFullPaymentMade: claim.joJudgmentPaidInFull?.confirmFullPaymentMade ? ['CONFIRMED'] : null,
   };
 };

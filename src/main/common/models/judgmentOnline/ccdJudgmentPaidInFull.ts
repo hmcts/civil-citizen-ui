@@ -1,7 +1,10 @@
 import {ClaimUpdate} from 'models/events/eventDto';
 
 export interface CCDJudgmentPaidInFull extends ClaimUpdate {
+    joJudgmentPaidInFull?: JoJudgmentPaidInFull;
+}
 
-    dateOfFullPaymentMade: Date,
-    confirmFullPaymentMade: string[],
+export interface JoJudgmentPaidInFull {
+  dateOfFullPaymentMade: Date,
+  confirmFullPaymentMade: string[],
 }

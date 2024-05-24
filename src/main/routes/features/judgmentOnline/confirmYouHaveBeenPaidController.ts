@@ -76,7 +76,7 @@ confirmYouHaveBeenPaidController.post(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (re
       const judgmentPaidInFull = new CuiJudgmentPaidInFull;
       judgmentPaidInFull.dateOfFullPaymentMade = DateConverter.convertToDate(year, month, day);
       judgmentPaidInFull.confirmFullPaymentMade = confirmed;
-      claim.judgmentPaidInFull = judgmentPaidInFull;
+      claim.joJudgmentPaidInFull = judgmentPaidInFull;
       const claimUpdate = toCCDjudgmentPaidInFull(claim);
       await civilServiceClient.submitJudgmentPaidInFull(claimId, claimUpdate, req);
       res.redirect(constructResponseUrlWithIdParams(claim.id, CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL));
