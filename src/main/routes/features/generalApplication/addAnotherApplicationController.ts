@@ -2,7 +2,7 @@ import { NextFunction, Response, Router } from 'express';
 import { AppRequest } from 'common/models/AppRequest';
 import { GA_ADD_ANOTHER_APPLICATION_URL } from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
-import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
+import { getCancelUrl, getLast } from 'services/features/generalApplication/generalApplicationService';
 import { selectedApplicationType } from 'common/models/generalApplication/applicationType';
 import { GenericForm } from 'common/form/models/genericForm';
 import { GenericYesNo } from 'common/form/models/genericYesNo';
@@ -16,7 +16,7 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Gen
   const redisKey = generateRedisKey(req);
   const claim = await getClaimById(redisKey, req, true);
   const cancelUrl = await getCancelUrl(req.params.id, claim);
-  const applicationType = selectedApplicationType[claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option];
+  const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
   if (!form) {
     form = new GenericForm(new GenericYesNo(''));
   }
