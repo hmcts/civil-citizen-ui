@@ -8,9 +8,5 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 export const checkIfClaimFeeHasChanged = async (claimId: string, claim: Claim, req: AppRequest) => {
   const newClaimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount, req);
   const oldClaimFee = claim.claimFee?.calculatedAmountInPence;
-  if (oldClaimFee !== newClaimFeeData?.calculatedAmountInPence) {
-    return true;
-  } else {
-    return false;
-  }
+  return oldClaimFee !== newClaimFeeData?.calculatedAmountInPence;
 };
