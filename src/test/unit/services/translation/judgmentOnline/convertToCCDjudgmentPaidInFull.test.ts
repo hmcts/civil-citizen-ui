@@ -11,19 +11,21 @@ describe('should convert Judgment Paid In Full to CCD', () => {
     const judgmentPaidInFullClaim = new CuiJudgmentPaidInFull;
     judgmentPaidInFullClaim.dateOfFullPaymentMade = new Date(2022, 10, 11);
     judgmentPaidInFullClaim.confirmFullPaymentMade = true;
-    claim.judgmentPaidInFull = judgmentPaidInFullClaim;
+    claim.joJudgmentPaidInFull = judgmentPaidInFullClaim;
 
     // When
     const converted = toCCDjudgmentPaidInFull(claim);
 
     // Then
     const judgmentPaidInFullCCD: CCDJudgmentPaidInFull = {
-      dateOfFullPaymentMade: new Date(2022, 10, 11),
-      confirmFullPaymentMade: ['CONFIRMED'],
+      joJudgmentPaidInFull: {
+        dateOfFullPaymentMade: new Date(2022, 10, 11),
+        confirmFullPaymentMade: ['CONFIRMED'],
+      },
     };
 
-    expect(judgmentPaidInFullCCD.dateOfFullPaymentMade).toEqual(converted.dateOfFullPaymentMade);
-    expect(judgmentPaidInFullCCD.confirmFullPaymentMade).toEqual(converted.confirmFullPaymentMade);
+    expect(judgmentPaidInFullCCD.joJudgmentPaidInFull.dateOfFullPaymentMade).toEqual(converted.joJudgmentPaidInFull.dateOfFullPaymentMade);
+    expect(judgmentPaidInFullCCD.joJudgmentPaidInFull.confirmFullPaymentMade).toEqual(converted.joJudgmentPaidInFull.confirmFullPaymentMade);
   });
 
   it('should handle null values', () => {
@@ -32,31 +34,33 @@ describe('should convert Judgment Paid In Full to CCD', () => {
     const judgmentPaidInFullClaim = new CuiJudgmentPaidInFull;
     judgmentPaidInFullClaim.dateOfFullPaymentMade = null;
     judgmentPaidInFullClaim.confirmFullPaymentMade = null;
-    claim.judgmentPaidInFull = judgmentPaidInFullClaim;
+    claim.joJudgmentPaidInFull = judgmentPaidInFullClaim;
 
     // When
     const converted = toCCDjudgmentPaidInFull(claim);
 
     // Then
     const judgmentPaidInFullCCD: CCDJudgmentPaidInFull = {
-      dateOfFullPaymentMade: null,
-      confirmFullPaymentMade: null,
+      joJudgmentPaidInFull: {
+        dateOfFullPaymentMade: null,
+        confirmFullPaymentMade: null,
+      },
     };
 
-    expect(judgmentPaidInFullCCD.dateOfFullPaymentMade).toEqual(converted.dateOfFullPaymentMade);
-    expect(judgmentPaidInFullCCD.confirmFullPaymentMade).toEqual(converted.confirmFullPaymentMade);
+    expect(judgmentPaidInFullCCD.joJudgmentPaidInFull.dateOfFullPaymentMade).toEqual(converted.joJudgmentPaidInFull.dateOfFullPaymentMade);
+    expect(judgmentPaidInFullCCD.joJudgmentPaidInFull.confirmFullPaymentMade).toEqual(converted.joJudgmentPaidInFull.confirmFullPaymentMade);
   });
 
   it('should handle null values for judgmentPaidInFull', () => {
     // Given
     const claim = new Claim();
-    claim.judgmentPaidInFull = null;
+    claim.joJudgmentPaidInFull = null;
 
     // When
     const converted = toCCDjudgmentPaidInFull(claim);
 
     // Then
-    expect(converted.dateOfFullPaymentMade).toBeNull();
-    expect(converted.confirmFullPaymentMade).toBeNull();
+    expect(converted.joJudgmentPaidInFull.dateOfFullPaymentMade).toBeNull();
+    expect(converted.joJudgmentPaidInFull.confirmFullPaymentMade).toBeNull();
   });
 });
