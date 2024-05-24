@@ -313,7 +313,12 @@ import hearingArrangementController from './features/generalApplication/hearingA
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 import respondentRequestChangeInformationController
   from 'routes/features/generalApplication/respondentRequestChangeInformationController';
-
+import respondentHearingPreferenceController
+  from 'routes/features/generalApplication/respondentHearingPreferenceController';
+import respondentWantToUploadDocumentsController
+  from 'routes/features/generalApplication/respondentWantToUploadDocumentsController';
+import respondentUploadEvidenceDocumentsController
+  from 'routes/features/generalApplication/respondentUploadEvidenceDocmentsController';
 export default [
   homeController,
   dashboardController,
@@ -586,4 +591,7 @@ export default [
   hearingArrangementController,
   hearingContactDetailsController,
   respondentRequestChangeInformationController,
+  respondentHearingPreferenceController,
+  respondentWantToUploadDocumentsController,
+  respondentUploadEvidenceDocumentsController,
 ];

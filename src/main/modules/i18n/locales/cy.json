@@ -3,6 +3,7 @@
     "HOME": "Hafan",
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Llwytho ffeil i fyny",
+    "UPLOAD_FILE_LABEL":"Upload a file",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
     "DOCUMENTS_UPLOADED": "Dogfennau wedi’u llwytho",
     "CASE_REFERENCE_NUMBER": "Cyfeirnod eich achos",
@@ -2311,6 +2312,26 @@
         "SENT_TO_JUDGE": "Their application and your response will then be sent to a judge.",
         "TITLE": "Respond to a request for a change to the case",
         "WHAT_TO_DO_NEXT": "What to do next"
+      },
+      "RESPONDENT_WANT_TO_UPLOAD_DOC": {
+        "PAGE_TITLE": "Do you want to upload documents to support your response?",
+        "TITLE": "Do you want to upload documents to support your response? (Optional)"
+      },
+      "HEARING_PREFERENCE": {
+        "TITLE": "Application hearing preferences",
+        "CONTENT_1": "We need to ask for your hearing preferences as a judge usually requires a hearing before making a decision on an application.",
+        "CONTENT_2": "This hearing is only to discuss the application."
+      },
+      "UPLOAD_DOCUMENTS": {
+        "TITLE": "Upload documents to support your application",
+        "LIST_TITLE": "Upload files",
+        "MSG1": "You should only upload documents that are relevant to your application.",
+        "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",
+        "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF."
+      },
+      "RESPONDENT_UPLOAD_DOCUMENTS": {
+        "TITLE": "Upload documents",
+        "MSG1": "You should only upload documents that are relevant to your application response."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -4111,7 +4132,9 @@
       "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
       "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
       "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
-      "ENTER_VALID_EMAIL": "You need to enter a valid email address"
+      "ENTER_VALID_EMAIL": "You need to enter a valid email address",
+      "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your response. Choose Yes or No.",
+      "NEED_TO_UPLOAD": "You need to upload at least one file"
     }
   }
 }

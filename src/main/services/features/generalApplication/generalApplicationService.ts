@@ -176,3 +176,20 @@ export const saveHearingContactDetails = async (claimId: string, hearingContactD
     throw error;
   }
 };
+
+export const saveRespondentWantToUploadDoc = async (claimId: string, claim: Claim, wantToUploadDocuments: YesNo): Promise<void> => {
+  try {
+    const generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = {
+      ...generalApplication,
+      gaResponse: {
+        ...generalApplication.gaResponse,
+        wantToUploadDocuments,
+      },
+    };
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};

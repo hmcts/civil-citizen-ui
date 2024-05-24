@@ -10,6 +10,7 @@ import {
   saveRespondentAgreeToOrder,
   saveHearingArrangement,
   saveHearingContactDetails,
+  saveRespondentWantToUploadDoc,
 } from 'services/features/generalApplication/generalApplicationService';
 import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -334,6 +335,31 @@ describe('General Application service', () => {
       });
       //Then
       await expect(saveHearingContactDetails('123', hearingContactDetails)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+
+  describe('Save Respondent support to upload document', () => {
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    it('should save respondent support to upload document', async () => {
+      //Given
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      //When
+      await saveRespondentWantToUploadDoc('123',claim, YesNo.NO);
+      //Then
+      expect(spy).toBeCalled();
+    });
+    it('should throw error when draft store throws error', async () => {
+      //Given
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      //When
+      mockSaveClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      //Then
+      await expect(saveRespondentWantToUploadDoc('123',claim, YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
