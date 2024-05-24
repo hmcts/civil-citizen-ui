@@ -24,7 +24,7 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          unavailableDates: null,
+          
         },
         respondent1: {
           type: 'INDIVIDUAL',
@@ -43,7 +43,7 @@ module.exports = {
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
           partyPhone: '07123456789',
-          unavailableDates: null,
+          
           flags: null,
         },
         partAdmitPaidValuePounds: null,
