@@ -39,7 +39,6 @@ const file = {
   buffer: Buffer.from('Test file content'),
 };
 
-
 describe('General Application - Want to upload documents to support hearing', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
