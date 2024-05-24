@@ -13,9 +13,10 @@ const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(claim: Claim, req: AppRequest, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const applicationType = selectedApplicationType[claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option];
+  const applicationTypes = claim.generalApplication?.applicationTypes;
+  const applicationType = selectedApplicationType[applicationTypes[applicationTypes.length - 1]?.option];
   const applicationCostsContent = await getApplicationCostsContent(
-    claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option, claim.generalApplication?.agreementFromOtherParty,
+    applicationTypes, claim.generalApplication?.agreementFromOtherParty,
     claim.generalApplication?.informOtherParties?.option as YesNo, lang, req);
   res.render(viewPath, { backLinkUrl, applicationType, applicationCostsContent });
 }

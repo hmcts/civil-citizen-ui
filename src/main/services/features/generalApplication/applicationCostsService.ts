@@ -1,5 +1,5 @@
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import { ApplicationType, ApplicationTypeOption } from 'models/generalApplication/applicationType';
 import {t} from 'i18next';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
@@ -14,10 +14,11 @@ interface ContentParagraph {
   variables?: object;
 }
 
-export const getApplicationCostsContent = async (applicationTypeOption: ApplicationTypeOption, withConsent: YesNo, withNotice: YesNo, lang: string, req: AppRequest) => {
-  const gaFee = await civilServiceClient.getGeneralApplicationFee(applicationTypeOption, withConsent, withNotice, req);
+export const getApplicationCostsContent = async (applicationTypes: ApplicationType[], withConsent: YesNo, withNotice: YesNo, lang: string, req: AppRequest) => {
+  const gaFee = await civilServiceClient.getGeneralApplicationFee(feeRequestBody(applicationTypes, withConsent, withNotice), req);
   const pageSectionBuilder = new PageSectionBuilder();
   const selectedApplicationTypeContent = getSelectedApplicationTypeContent(lang, gaFee);
+  const applicationTypeOption = applicationTypes[applicationTypes.length - 1].option;
   if (applicationTypeOption in selectedApplicationTypeContent) {
     const content = selectedApplicationTypeContent[applicationTypeOption];
     content.forEach(contentParagraph => pageSectionBuilder.addParagraph(contentParagraph.text, contentParagraph.variables));
@@ -74,3 +75,12 @@ const getSelectedApplicationTypeContent = (lang: string, gaFee: number) : Partia
     ],
   };
 };
+
+const feeRequestBody = (applicationTypes: ApplicationType[], withConsent: YesNo, withNotice: YesNo): { applicationTypes: ApplicationTypeOption[], withConsent: boolean, withNotice: boolean } => {
+  const selectedApplicationTypes = applicationTypes.map(applicationType => applicationType.option);
+  return {
+    applicationTypes: selectedApplicationTypes,
+    withConsent: withConsent === YesNo.YES ,
+    withNotice: withNotice === YesNo.YES 
+  }
+}

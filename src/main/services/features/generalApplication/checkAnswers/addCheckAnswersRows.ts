@@ -19,7 +19,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 export const addApplicationTypesRows = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
-  const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: lng});
+  const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', { lng: lng });
   const rows: SummaryRow[] = [];
   if (claim.generalApplication?.applicationTypes) {
     claim.generalApplication?.applicationTypes?.forEach((applicationType, index, arr) => {
@@ -27,7 +27,7 @@ export const addApplicationTypesRows = (claimId: string, claim: Claim, lang: str
       const href = `${constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)}?index=${index}`;
       rows.push(
         summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {lng}), t(applicationTypeDisplay, {lng}),
-          href, changeLabel(lang), undefined, index, arr.length),
+          href, changeLabel(), undefined, index, arr.length),
       );
     });
   }

@@ -54,7 +54,7 @@ import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
-import {YesNo} from 'form/models/yesNo';
+import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -193,30 +193,39 @@ export class CivilServiceClient {
     }
   }
 
-  async getGeneralApplicationFee(applicationTypeOption: string, withConsent: YesNo, withNotice: YesNo, req: AppRequest): Promise<number> {
-    const gaFeeData = await this.getGeneralApplicationFeeData(applicationTypeOption, withConsent, withNotice, req);
-    return convertToPoundsFilter(gaFeeData?.calculatedAmountInPence.toString());
-  }
-
-  async getGeneralApplicationFeeData(applicationTypeOption: string, withConsent: YesNo, withNotice: YesNo, req: AppRequest): Promise<ClaimFeeData> {
-    const config = this.getConfig(req);
+  async getGeneralApplicationFee(feeRequestBody: { applicationTypes: ApplicationTypeOption[], withConsent: boolean, withNotice: boolean }, req: AppRequest): Promise<number> {
     try {
-      let feeUrl = `${CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL}/${applicationTypeOption}`;
-      if (withConsent) {
-        feeUrl += `?withConsent=${withConsent === YesNo.YES ? 'true' : 'false'}`;
-        if (withNotice) {
-          feeUrl += `&withNotice=${withNotice === YesNo.YES ? 'true' : 'false'}`;
-        }
-      } else if (withNotice) {
-        feeUrl += `?withNotice=${withNotice === YesNo.YES ? 'true' : 'false'}`;
-      }
-      const response: AxiosResponse<object> = await this.client.get(feeUrl, config);
-      return response.data;
+      const config = this.getConfig(req);
+      //const gaFeeData = await this.getGeneralApplicationFeeData(applicationTypeOption, withConsent, withNotice, req);
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL, feeRequestBody, config);
+      const gaFeeData = response.data as ClaimFeeData
+      console.debug(gaFeeData);
+      return convertToPoundsFilter(gaFeeData?.calculatedAmountInPence.toString());
     } catch (err: unknown) {
       logger.error('Error when getting claim fee data');
       throw err;
     }
   }
+
+  // async getGeneralApplicationFeeData(applicationTypeOption: string, withConsent: YesNo, withNotice: YesNo, req: AppRequest): Promise<ClaimFeeData> {
+  //   const config = this.getConfig(req);
+  //   try {
+  //     let feeUrl = `${CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL}/${applicationTypeOption}`;
+  //     if (withConsent) {
+  //       feeUrl += `?withConsent=${withConsent === YesNo.YES ? 'true' : 'false'}`;
+  //       if (withNotice) {
+  //         feeUrl += `&withNotice=${withNotice === YesNo.YES ? 'true' : 'false'}`;
+  //       }
+  //     } else if (withNotice) {
+  //       feeUrl += `?withNotice=${withNotice === YesNo.YES ? 'true' : 'false'}`;
+  //     }
+  //     const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL, config);
+  //     return response.data;
+  //   } catch (err: unknown) {
+  //     logger.error('Error when getting claim fee data');
+  //     throw err;
+  //   }
+  // }
 
   async verifyPin(req: AppRequest, pin: string, caseReference: string): Promise<Claim> {
     try {
