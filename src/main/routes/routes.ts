@@ -312,6 +312,8 @@ import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNotic
 import unavailableHearingDatesController from 'routes/features/generalApplication/unavailableHearingDatesController';
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
+import respondentRequestChangeInformationController
+  from 'routes/features/generalApplication/respondentRequestChangeInformationController';
 
 export default [
   homeController,
@@ -585,4 +587,5 @@ export default [
   unavailableHearingDatesController,
   hearingArrangementController,
   hearingContactDetailsController,
+  respondentRequestChangeInformationController,
 ];
