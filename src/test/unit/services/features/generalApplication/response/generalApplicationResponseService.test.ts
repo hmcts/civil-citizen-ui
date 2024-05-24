@@ -8,11 +8,13 @@ import {
   saveRespondentHearingArrangement,
   saveRespondentHearingContactDetails,
   saveRespondentHearingSupport,
+  saveRespondentUnavailableDates,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 import {Response} from 'models/generalApplication/response/response';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
+import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -158,6 +160,43 @@ describe('General Application Response service', () => {
       //Then
       await expect(saveRespondentHearingSupport('123',
         new HearingSupport([]))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+
+  describe('Save respondent unavailable hearing dates', () => {
+    it('should save unavailable hearing dates selected', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.generalApplication = new GeneralApplication();
+        return claim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      //When
+      await saveRespondentUnavailableDates('123', claim, new UnavailableDatesGaHearing());
+      //Then
+      expect(spy).toBeCalled();
+    });
+
+    it('should throw error when draft store throws error', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      //When
+      mockSaveClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      //Then
+      await expect(saveRespondentUnavailableDates('123', claim, new UnavailableDatesGaHearing())).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });

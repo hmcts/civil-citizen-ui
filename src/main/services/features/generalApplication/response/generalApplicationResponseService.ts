@@ -9,6 +9,7 @@ import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 import {Response} from 'models/generalApplication/response/response';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
+import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -62,6 +63,21 @@ export const saveRespondentHearingSupport = async (claimId: string, hearingSuppo
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.response = Object.assign(new Response(), claim.generalApplication.response);
     claim.generalApplication.hearingSupport = hearingSupport;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveRespondentUnavailableDates = async (claimId: string, claim: Claim, unavailableDates: UnavailableDatesGaHearing): Promise<void> => {
+  try {
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.response = Object.assign(new Response(), claim.generalApplication.response);
+    while (unavailableDates?.items?.length > 0 && !unavailableDates.items[unavailableDates.items.length - 1].type) {
+      unavailableDates?.items.pop();
+    }
+    claim.generalApplication.response.unavailableDatesHearing = unavailableDates;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
