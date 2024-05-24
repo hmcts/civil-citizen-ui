@@ -19,7 +19,3 @@ export const whatToExpectUrl = 'https://www.gov.uk/guidance/what-to-expect-comin
 export const representYourselfUrl = 'https://www.gov.uk/represent-yourself-in-court';
 export const findLegalAdviceUrl = 'https://www.gov.uk/find-legal-advice';
 export const findCourtTribunalUrl = 'https://www.gov.uk/find-court-tribunal';
-export const moneyClaimsUrl = 'https://www.moneyclaims.service.gov.uk';
-export const abilityNetUrl = 'https://mcmw.abilitynet.org.uk';
-export const equalityUrl = 'https://www.equalityadvisoryservice.com';
-export const complianceUrl = 'https://www.w3.org/TR/WCAG22';
