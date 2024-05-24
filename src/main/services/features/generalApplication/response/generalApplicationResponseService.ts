@@ -7,7 +7,7 @@ import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
-import {Response} from 'models/generalApplication/response/response';
+import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 
@@ -17,7 +17,7 @@ const logger = Logger.getLogger('claimantResponseService');
 export const saveRespondentAgreeToOrder = async (claimId: string, claim: Claim, agreeToOrder: YesNo): Promise<void> => {
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.response = Object.assign(new Response(), claim.generalApplication.response);
+    claim.generalApplication.response = Object.assign(new GaResponse(), claim.generalApplication.response);
     claim.generalApplication.response.agreeToOrder = agreeToOrder;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
@@ -35,7 +35,7 @@ export const saveRespondentHearingArrangement = async (claimId: string, hearingA
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.response = Object.assign(new Response(), claim.generalApplication.response);
+    claim.generalApplication.response = Object.assign(new GaResponse(), claim.generalApplication.response);
     claim.generalApplication.response.hearingArrangement = hearingArrangement;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
@@ -48,7 +48,7 @@ export const saveRespondentHearingContactDetails = async (claimId: string, heari
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.response = Object.assign(new Response(), claim.generalApplication.response);
+    claim.generalApplication.response = Object.assign(new GaResponse(), claim.generalApplication.response);
     claim.generalApplication.response.hearingContactDetails = hearingContactDetails;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
@@ -61,7 +61,7 @@ export const saveRespondentHearingSupport = async (claimId: string, hearingSuppo
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.response = Object.assign(new Response(), claim.generalApplication.response);
+    claim.generalApplication.response = Object.assign(new GaResponse(), claim.generalApplication.response);
     claim.generalApplication.hearingSupport = hearingSupport;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
@@ -73,7 +73,7 @@ export const saveRespondentHearingSupport = async (claimId: string, hearingSuppo
 export const saveRespondentUnavailableDates = async (claimId: string, claim: Claim, unavailableDates: UnavailableDatesGaHearing): Promise<void> => {
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.response = Object.assign(new Response(), claim.generalApplication.response);
+    claim.generalApplication.response = Object.assign(new GaResponse(), claim.generalApplication.response);
     while (unavailableDates?.items?.length > 0 && !unavailableDates.items[unavailableDates.items.length - 1].type) {
       unavailableDates?.items.pop();
     }

@@ -12,7 +12,7 @@ import {
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
-import {Response} from 'models/generalApplication/response/response';
+import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 
@@ -36,7 +36,7 @@ describe('General Application Response service', () => {
 
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
-      claim.generalApplication.response = new Response();
+      claim.generalApplication.response = new GaResponse();
 
       //When
       await saveRespondentAgreeToOrder('123',claim, YesNo.NO);
@@ -66,7 +66,7 @@ describe('General Application Response service', () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
         claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.response = new Response();
+        claim.generalApplication.response = new GaResponse();
         return claim;
       });
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
@@ -100,7 +100,7 @@ describe('General Application Response service', () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
         claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.response = new Response();
+        claim.generalApplication.response = new GaResponse();
         return claim;
       });
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');

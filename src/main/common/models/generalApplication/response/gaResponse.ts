@@ -4,7 +4,7 @@ import {YesNo} from 'form/models/yesNo';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 
-export class Response {
+export class GaResponse {
   hearingArrangement?: HearingArrangement;
   hearingContactDetails?: HearingContactDetails;
   hearingSupport?: HearingSupport;

@@ -7,7 +7,7 @@ import {OrderJudge} from './orderJudge';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
-import {Response} from './response/response';
+import {GaResponse} from './response/gaResponse';
 
 export class GeneralApplication {
 
@@ -21,7 +21,7 @@ export class GeneralApplication {
   unavailableDatesHearing?: UnavailableDatesGaHearing;
   hearingArrangement?: HearingArrangement;
   hearingContactDetails?: HearingContactDetails;
-  response?: Response;
+  response?: GaResponse;
   constructor(
     applicationType?: ApplicationType,
     agreementFromOtherParty?: YesNo,
@@ -31,7 +31,7 @@ export class GeneralApplication {
     unavailableDatesHearing?: UnavailableDatesGaHearing,
     hearingArrangement?: HearingArrangement,
     hearingContactDetails?: HearingContactDetails,
-    response?: Response,
+    response?: GaResponse,
   ) {
     this.applicationType = applicationType;
     this.agreementFromOtherParty = agreementFromOtherParty;
