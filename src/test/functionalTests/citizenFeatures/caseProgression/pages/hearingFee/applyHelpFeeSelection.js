@@ -13,20 +13,26 @@ class ApplyHelpFeeSelection {
     I.click(nextAction);
   }
 
-  verifyPageContent() {
+  verifyPageContent(caseNumber, claimAmount) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
     this.verifyHeadingDetails();
+    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     this.verifyPageText();
     contactUs.verifyContactUs();
   }
 
   verifyBreadcrumbs() {
-    I.see('Back', '//*[@id="main-content"]/div/main/div/div[1]/div[1]/a');
+    I.see('Back', '//a[@class="govuk-back-link"]');
+  }
+
+  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    // I.see('Case number: ' + caseNumber, 'p');
+    I.see('Claim amount: ' + claimAmount, 'p');
   }
 
   verifyHeadingDetails() {
-    I.see('Hearing fee', 'span');
+    I.see('Hearing', 'span');
     I.see('Pay hearing fee', 'h1');
   }
 
