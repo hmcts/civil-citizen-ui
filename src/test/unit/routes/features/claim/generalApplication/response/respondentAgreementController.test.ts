@@ -2,19 +2,19 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import { GA_RESPONDENT_AGREEMENT_URL } from 'routes/urls';
-import { app } from '../../../../../../main/app';
+import { app } from '../../../../../../../main/app';
 import * as draftService from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
-import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
+import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 describe('General Application - inform other parties', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

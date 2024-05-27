@@ -3,7 +3,6 @@ export const BASE_CLAIM_URL = '/claim';
 export const BASE_ELIGIBILITY_URL = '/eligibility';
 export const BASE_FIRST_CONTACT_URL = '/first-contact';
 export const BASE_GENERAL_APPLICATION_URL = `${BASE_CASE_URL}/general-application`;
-export const BASE_GENERAL_APPLICATION_RESPONSE_URL = `${BASE_GENERAL_APPLICATION_URL}/response`;
 export const APPLICATION_TYPE_URL = `${BASE_GENERAL_APPLICATION_URL}/application-type`;
 export const GA_CLAIM_APPLICATION_COST_URL = `${BASE_GENERAL_APPLICATION_URL}/claim-application-cost`;
 export const PAYING_FOR_APPLICATION_URL = `${BASE_GENERAL_APPLICATION_URL}/paying-for-application`;

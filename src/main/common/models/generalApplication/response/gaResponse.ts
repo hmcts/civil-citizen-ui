@@ -1,6 +1,6 @@
 import { RespondentAgreement } from './respondentAgreement';
 
-export class Response {
+export class GaResponse {
   respondentAgreement?: RespondentAgreement;
 
   constructor(respondentAgreement?: RespondentAgreement) {
