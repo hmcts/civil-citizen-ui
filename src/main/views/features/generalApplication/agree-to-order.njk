@@ -11,16 +11,7 @@
   {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.TITLE') }}
 {% endblock %}
 
-{% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
-      {% if form.hasErrors() %}
-        <div class="govuk-grid-row">
-          {{ errorSummary(form.getErrors(), t) }}
-        </div>
-      {% endif %}
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+{% block nestedContent %}
           {{headingWithCaption(t,caption,'PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.TITLE' )}}
            <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.MADE_AWARE') }}</p>
           <form method="post" novalidate autocomplete="off">
@@ -30,12 +21,5 @@
                {{ addButton(t, 'CONTINUE', cancelUrl) }}
             </div>
           </form>
-        </div>
-        <div class="govuk-grid-column-one-third">
-          {{ contactUsForHelp(t) }}
-        </div>
-      </div>
-    </main>
-  </div>
 {% endblock %}
 

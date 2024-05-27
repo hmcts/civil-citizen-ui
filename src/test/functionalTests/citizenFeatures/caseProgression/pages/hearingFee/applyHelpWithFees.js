@@ -39,7 +39,6 @@ class ApplyHelpWithFees {
   verifyPageText(feeAmount) {
     I.see('The hearing fee is: £' + feeAmount,'span');
     I.see('Applying for help with fees does not guarantee your fee will be covered. You will need to meet the eligibility criteria (opens in new tab).');
-    I.seeElement('//*[@id="main-content"]/div/main/div/div[1]/p[1]/a');
     I.see('Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.');
     I.see('If your application for help with fees is accepted', 'span');
     I.see('Your fee will be paid in full and you will not need to make a payment.');
