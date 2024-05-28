@@ -31,8 +31,12 @@ const getSupportLinks = (lng: string) => {
 
 function renderView(form: GenericForm<DateYouHaveBeenPaidForm>, res: Response, lang: string, cancelUrl: string) {
   const [iWantToTitle, iWantToLinks] = getSupportLinks(lang);
+  const dashboardUrl = cancelUrl;
+
   res.render(
     confirmYouHaveBeenPaidViewPath, {
+      pageTitle: 'PAGES.CONFIRM_YOU_HAVE_BEEN_PAID.PAGE_TITLE',
+      dashboardUrl,
       form,
       iWantToTitle,
       iWantToLinks,

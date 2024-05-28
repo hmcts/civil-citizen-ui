@@ -3,17 +3,23 @@ import {app} from '../../../../../../main/app';
 
 import {
   FIRST_CONTACT_CLAIM_REFERENCE_URL,
+  DASHBOARD_URL,
   FIRST_CONTACT_PIN_URL,
 } from '../../../../../../main/routes/urls';
 import { t } from 'i18next';
 import { Session } from 'express-session';
 import { AppSession } from 'common/models/AppRequest';
+import nock from 'nock';
+import config from 'config';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 
 describe('Respond to Claim - Claim Reference Controller', () => {
   const validClaimNumberV1 = '123MC123';
+  const validClaimNumberV2 = '123DC123';
+  const civilServiceUrl = config.get<string>('services.civilService.url');
+  const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
   describe('on GET', () => {
     it('should display page successfully', async () => {
@@ -52,6 +58,30 @@ describe('Respond to Claim - Claim Reference Controller', () => {
 
     it('should redirect and set cookie value', async () => {
       app.request.cookies = {firstContact: {foo: 'blah'}};
+      await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV2}).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toBe(FIRST_CONTACT_PIN_URL);
+        expect((app.request.session as AppSession).firstContact.claimReference).toBe(validClaimNumberV2);
+      });
+    });
+
+    it('should redirect and set cookie value for OCMC case when case ia already linked', async () => {
+      app.request.cookies = {firstContact: {foo: 'blah'}};
+      nock(civilServiceUrl)
+        .get('/assignment/reference/' + validClaimNumberV1 + '/ocmc')
+        .reply(200, 'true');
+      await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV1}).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toBe(ocmcBaseUrl + DASHBOARD_URL);
+        expect((app.request.session as AppSession).firstContact.claimReference).toBe(validClaimNumberV1);
+      });
+    });
+
+    it('should redirect and set cookie value for OCMC case when case ia not linked', async () => {
+      app.request.cookies = {firstContact: {foo: 'blah'}};
+      nock(civilServiceUrl)
+        .get('/assignment/reference/' + validClaimNumberV1 + '/ocmc')
+        .reply(200, 'false');
       await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV1}).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(FIRST_CONTACT_PIN_URL);
@@ -60,8 +90,8 @@ describe('Respond to Claim - Claim Reference Controller', () => {
     });
 
     it('should redirect and update cookie value', async () => {
-      app.request.cookies = {eligibility: {foo: 'blah', claimReference: validClaimNumberV1}};
-      await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV1}).expect((res) => {
+      app.request.cookies = {eligibility: {foo: 'blah', claimReference: validClaimNumberV2}};
+      await request(app).post(FIRST_CONTACT_CLAIM_REFERENCE_URL).send({claimReferenceValue: validClaimNumberV2}).expect((res) => {
         expect(res.status).toBe(302);
         expect(app.request.cookies.eligibility.foo).toBe('blah');
       });

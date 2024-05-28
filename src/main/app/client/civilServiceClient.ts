@@ -8,6 +8,7 @@ import {
   CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
+  CIVIL_SERVICE_CHECK_OCMC_DEFENDENT_LINKED_URL,
   CIVIL_SERVICE_CLAIM_AMOUNT_URL,
   CIVIL_SERVICE_COURT_DECISION,
   CIVIL_SERVICE_COURT_LOCATIONS,
@@ -244,6 +245,20 @@ export class CivilServiceClient {
       return response.data as string;
     } catch (err: unknown) {
       logger.error('Error when verifying OCMC pin');
+      throw err;
+    }
+  }
+
+  async isOcmcDefendantLinked(caseReference: string): Promise<boolean> {
+    try {
+      const response = await this.client.get(CIVIL_SERVICE_CHECK_OCMC_DEFENDENT_LINKED_URL //nosonar
+        .replace(':caseReference', caseReference), {headers: {'Content-Type': 'application/json'}});// no-sonar
+      if (!response.data) {
+        return false;
+      }
+      return response.data as boolean;
+    } catch (err: unknown) {
+      logger.error(`Error when checking a claim ${caseReference} is linked to a defendant`);
       throw err;
     }
   }
