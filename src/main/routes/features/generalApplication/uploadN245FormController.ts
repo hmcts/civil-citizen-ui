@@ -18,6 +18,7 @@ const removeDoc = 'REMOVE_DOC';
 const fileSize = Infinity;
 const selectedFile = 'selectedFile';
 const uploadButton = 'uploadButton';
+const pageTitle = `PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.PAGE_TITLE`;
 const upload = multer({
   limits: {
     fileSize: fileSize,
@@ -47,6 +48,7 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, (async (req: AppRequest, r
       cancelUrl,
       backLinkUrl,
       contentList,
+      pageTitle,
     });
   } catch (error) {
     next(error);
@@ -72,6 +74,7 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFil
         cancelUrl,
         backLinkUrl,
         contentList,
+        pageTitle,
       });
     }
     const uploadedN245Details = claim.generalApplication?.uploadN245Form || new UploadGAFiles();
