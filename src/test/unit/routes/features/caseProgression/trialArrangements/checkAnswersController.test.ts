@@ -81,7 +81,7 @@ describe('Trial Arrangements check answers - On GET', () => {
     const htmlDocument = dom.window.document;
     const header = getElementsByXPath("//h1[@class='govuk-heading-l']", htmlDocument);
     const isCaseReady = getElementsByXPath(
-      "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'A yw’r achos yn barod ar gyfer treial neu wrandawiad?')]]", htmlDocument);
+      "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'A yw’r achos yn barod ar gyfer treial?')]]", htmlDocument);
     const hasAnythingChanged = getElementsByXPath(
       "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'A oes unrhyw newidiadau i’r cymorth o ran anghenion mynediad neu fregusrwydd i unrhyw un sy’n mynychu gwrandawiad llys?')]]", htmlDocument);
     const otherInformation = getElementsByXPath(

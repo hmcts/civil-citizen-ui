@@ -39,7 +39,7 @@ describe('Is case ready - On GET', () => {
     //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Is the case ready for trial or hearing?');
+        expect(res.text).toContain('Is the case ready for trial?');
       });
   });
 
@@ -52,7 +52,7 @@ describe('Is case ready - On GET', () => {
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('A yw’r achos yn barod ar gyfer treial neu wrandawiad?');
+        expect(res.text).toContain('A yw’r achos yn barod ar gyfer treial?');
       });
   });
 

@@ -76,7 +76,7 @@
     },
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Ychwanegu digwyddiad arall",
-      "BACK": "Yn ol",
+      "BACK": "Yn ôl",
       "BACK_TO_CASE_DETAILS": "Yn ôl i fanylion yr achos",
       "CHANGE": "Newid",
       "CONTINUE": "Parhau",
@@ -2463,14 +2463,14 @@
           "KEEP_CONTACT_DETAILS_UP_TO_DATE": "Cadwch eich manylion cyswllt a manylion cyswllt unrhyw un yr hoffech ddibynnu arnynt yn y llys yn gyfredol. Gallwch ddiweddaru manylion cyswllt drwy ffonio'r llys ar 0300 303 5174."
         },
         "FINALISE_TRIAL_ARRANGEMENTS": {
-          "TITLE": "Cwblhau trefniadau eich treial neu drefniadau eich gwrandawiad",
+          "TITLE": "Cwblhau trefniadau eich treial",
           "FINALISE_TRIAL_ARRANGEMENTS_BUTTON": "Cadarnhau trefniadau’r treial",
           "DUE_BY": "Rhaid gwneud hyn erbyn: Hanner nos, {{ finalisingTrialArrangementsDeadline }}",
           "IF_THERE_ARE_CHANGES_BEGINNING": "Os oes newidiadau i drefniadau eich treial, dylech roi gwybod i ni erbyn",
           "IF_THERE_ARE_CHANGES_END": "hanner nos, {{ finalisingTrialArrangementsDeadline }}",
           "DIRECTIONS_QUESTIONNAIRE": "holiadur cyfarwyddiadau",
           "YOU_MAY_WISH_TO_REVIEW": "Efallai yr hoffech adolygu’r cyfarwyddiadau gwreiddiol a ddarparwyd gennych yn y",
-          "UNDER_NOTICES_AND_ORDERS": "o dan 'Hysbysiadau a gorchmynion' cyn cadarnhau trefniadau eich treial."
+          "UNDER_NOTICES_AND_ORDERS": "o dan 'Gorchmynion a hysbysiadau' cyn cadarnhau trefniadau eich treial."
         },
         "BUNDLE": {
           "TITLE": "Mae’r Bwndel yn gyflawn ac yn barod i'w weld",
@@ -2486,8 +2486,8 @@
         "VIEW_TRIAL_ARRANGEMENTS": {
           "TITLE_OTHER_PARTY": "Mae'r parti arall wedi cadarnhau eu trefniadau treial",
           "TITLE_YOU": "Rydych wedi cadarnhau trefniadau'r treial",
-          "YOU_CAN_VIEW_YOUR_TRIAL_ARRANGEMENTS": "Gallwch weld eich trefniadau treial o dan 'Hysbysiadau a gorchmynion'.",
-          "YOU_CAN_VIEW_OTHER_PARTY": "Gallwch weld trefniadau treial y parti arall o dan 'Hysbysiadau a gorchmynion'.",
+          "YOU_CAN_VIEW_YOUR_TRIAL_ARRANGEMENTS": "Gallwch weld eich trefniadau treial o dan 'Gorchmynion a hysbysiadau'.",
+          "YOU_CAN_VIEW_OTHER_PARTY": "Gallwch weld trefniadau treial y parti arall o dan 'Gorchmynion a hysbysiadau'.",
           "VIEW_TRIAL_ARRANGEMENTS_BUTTON": "Gweld trefniadau’r treial"
         }
       },
@@ -3354,11 +3354,11 @@
       "TOTAL_AMOUNT": "Cyfanswm swm y llog"
     },
     "TRIAL_DURATION_TRIAL_ARRANGEMENTS": {
-      "TITLE": "Cwblhau trefniadau eich treial neu drefniadau eich gwrandawiad",
-      "TRIAL_DURATION_TITLE": "Hyd y gwrandawiad",
-      "TRIAL_DURATION_PARAGRAPH": "Hyd y gwrandawiad a ddyrannwyd yn wreiddiol yw <span class=\"govuk-body govuk-!-font-weight-bold\">{{ hearingDuration }}</span>.",
+      "TITLE": "Cwblhau trefniadau eich treial",
+      "TRIAL_DURATION_TITLE": "Hyd y treial",
+      "TRIAL_DURATION_PARAGRAPH": "Hyd y treial a ddyrannwyd yn wreiddiol yw <span class=\"govuk-body govuk-!-font-weight-bold\">{{ hearingDuration }}</span>.",
       "REQUIRE_LESS_TIME": "Os oes angen llai o amser arnoch, nodwch eich rhesymau yn y blwch 'Gwybodaeth Arall' isod.",
-      "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">Os ydych yn credu y bydd angen mwy o amser arnoch ar gyfer y gwrandawiad, bydd angen i chi gysylltu â’r parti arall a gwneud cais i’r llys</span> </br> </br> Ni chynyddir yr amser a ddyrennir i’r gwrandawiad neu’r treial nes ceir y cais, telir y ffi, a gwneir gorchymyn.",
+      "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">Os ydych yn credu y bydd angen mwy o amser arnoch ar gyfer y treial, bydd angen i chi gysylltu â’r parti arall a gwneud cais i’r llys</span> </br> </br> Ni chynyddir yr amser a ddyrennir i’r treial nes ceir y cais, telir y ffi, a gwneir gorchymyn.",
       "OTHER_INFORMATION_TITLE": "Gwybodaeth arall",
       "OTHER_INFORMATION_INPUT_LABEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">A oes unrhyw beth arall y mae angen i’r llys ei wybod (dewisol)?</span>",
       "OTHER_INFORMATION_INPUT_HINT": "Er enghraifft, mae angen i dyst adael y llys erbyn 3pm oherwydd cyfrifoldebau gofal."
@@ -3499,17 +3499,17 @@
       "YEAR": "Year"
     },
     "IS_CASE_READY": {
-      "PAGE_TITLE": "Cwblhau trefniadau eich treial neu drefniadau eich gwrandawiad",
+      "PAGE_TITLE": "Cwblhau trefniadau eich treial",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
-      "IS_CASE_READY": "A yw’r achos yn barod ar gyfer treial neu wrandawiad?",
+      "IS_CASE_READY": "A yw’r achos yn barod ar gyfer treial?",
       "YOU_ARE_REMINDED": "Fe’ch atgoffir y bydd yr wybodaeth hon yn cael ei rhannu â phob parti arall",
       "YOU_WILL_STILL": "Bydd dal angen i chi barhau a darparu rhywfaint o wybodaeth am drefniadau’r treial.",
-      "YOU_WILL_NEED": "Bydd angen i chi wneud cais i’r llys os nad yw’r achos hwn yn barod ar gyfer treial neu wrandawiad.",
-      "THE_TRIAL_OR": "Bydd y treial neu’r gwrandawiad yn mynd yn ei flaen fel y trefnwyd ar y dyddiad penodedig oni bai bod barnwr yn gwneud gorchymyn sy'n newid dyddiad y gwrandawiad. Os ydych eisiau i ddyddiad y treial gael ei newid (neu unrhyw orchymyn arall i wneud yr achos yn barod ar gyfer treial) bydd angen i chi wneud cais i’r llys."
+      "YOU_WILL_NEED": "Bydd angen i chi wneud cais i’r llys os nad yw’r achos hwn yn barod ar gyfer treial.",
+      "THE_TRIAL_OR": "Bydd y treial yn mynd yn ei flaen fel y trefnwyd ar y dyddiad penodedig oni bai bod barnwr yn gwneud gorchymyn sy'n newid dyddiad y treial. Os ydych eisiau i ddyddiad y treial gael ei newid (neu unrhyw orchymyn arall i wneud yr achos yn barod ar gyfer treial) bydd angen i chi wneud cais i’r llys."
     },
     "HAS_ANYTHING_CHANGED": {
-      "FINALISE": "Cwblhau trefniadau eich treial neu drefniadau eich gwrandawiad",
+      "FINALISE": "Cwblhau trefniadau eich treial",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "HAS_ANYTHING": "A oes unrhyw beth wedi newid i’r cymorth neu’r addasiadau rydych yn dymuno i’r llys a’r barnwr eu hystyried ar eich rhan neu i dyst a fydd yn rhoi tystiolaeth ar eich rhan?",
       "YOU_CAN": "Gallwch wirio eich atebion blaenorol yn yr ",
@@ -3623,45 +3623,45 @@
       "START_NOW": "Dechreuwch nawr"
     },
     "FINALISE_TRIAL_ARRANGEMENTS": {
-      "PAGE_TITLE": "Cwblhau trefniadau eich treial neu drefniadau eich gwrandawiad",
-      "TITLE": "Cwblhau trefniadau eich treial neu drefniadau eich gwrandawiad",
+      "PAGE_TITLE": "Cwblhau trefniadau eich treial",
+      "TITLE": "Cwblhau trefniadau eich treial",
       "CASE_REFERENCE": "Claim number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "YOU_HAVE_UNTIL_DATE": "Mae gennych tan {{ hearingDueDate }} i ddarparu’r wybodaeth hon.",
-      "YOU_SHOULD_FINALISE": "Dylech gwblhau trefniadau eich treial neu drefniadau eich gwrandawiad i sicrhau bod gan y llys yr wybodaeth angenrheidiol er mwyn i’r treial neu’r gwrandawiad fynd rhagddo mewn ffordd addas.",
-      "IS_THE_CASE_READY_FOR_TRIAL": "A yw’r achos yn barod ar gyfer treial neu wrandawiad?",
-      "WE_ARE_ASKING_YOU": "Rydym yn gofyn i chi gadarnhau bod yr achos yn barod ar gyfer y treial neu’r gwrandawiad. Mae hyn yn golygu eich bod wedi cymryd yr holl gamau sy’n ofynnol ohonoch yn y ",
+      "YOU_SHOULD_FINALISE": "Dylech gwblhau trefniadau eich treial i sicrhau bod gan y llys yr wybodaeth angenrheidiol er mwyn i’r treial fynd rhagddo mewn ffordd addas.",
+      "IS_THE_CASE_READY_FOR_TRIAL": "A yw’r achos yn barod ar gyfer treial?",
+      "WE_ARE_ASKING_YOU": "Rydym yn gofyn i chi gadarnhau bod yr achos yn barod ar gyfer y treial. Mae hyn yn golygu eich bod wedi cymryd yr holl gamau sy’n ofynnol ohonoch yn y ",
       "DIRECTIONS_ORDER": "gorchymyn cyfarwyddiadau",
       "YOU_HAVE_RECEIVED": "a gawsoch.",
       "IF_YOUR_CASE_NOT_READY": "Os nad yw eich achos yn barod ac nad ydych yn credu y bydd yn barod erbyn y dyddiad terfyn ar gyfer cwblhau trefniadau eich treial, efallai y byddwch am ohirio'r treial. I wneud hyn, bydd angen i chi wneud cais i’r llys.",
-      "IF_YOU_NEED_TO_MAKE_APPLICATION": "<p class=\"govuk-body\"><strong>Os oes angen i chi wneud cais, rhaid i chi gwblhau a chyflwyno trefniadau eich treial yn gyntaf. </strong>Dim ond unwaith y bydd hyn wedi’i wneud y dylech wneud cais. Bydd dolen i wneud cais yn ymddangos unwaith y byddwch wedi cwblhau trefniadau eich treial.</p><p class=\"govuk-body\">Os byddwch yn gwneud cais, nodwch y bydd y gwrandawiad yn mynd yn ei flaen fel y cynlluniwyd nes bydd y cais yn cael ei adolygu gan farnwr a bod gorchymyn wedi ei wneud yn newid dyddiad y gwrandawiad.</p>",
-      "HEARING_ADJUSTMENTS_AND_DURATION": "Addasiadau a hyd y gwrandawiad",
+      "IF_YOU_NEED_TO_MAKE_APPLICATION": "<p class=\"govuk-body\"><strong>Os oes angen i chi wneud cais, rhaid i chi gwblhau a chyflwyno trefniadau eich treial yn gyntaf. </strong>Dim ond unwaith y bydd hyn wedi’i wneud y dylech wneud cais. Bydd dolen i wneud cais yn ymddangos unwaith y byddwch wedi cwblhau trefniadau eich treial.</p><p class=\"govuk-body\">Os byddwch yn gwneud cais, nodwch y bydd y treial yn mynd yn ei flaen fel y cynlluniwyd nes bydd y cais yn cael ei adolygu gan farnwr a bod gorchymyn wedi ei wneud yn newid dyddiad y treial.</p>",
+      "HEARING_ADJUSTMENTS_AND_DURATION": "Addasiadau a hyd y treial",
       "YOU_WILL_BE_ASKED": "Gofynnir i chi nodi a oes unrhyw newidiadau i’r cymorth neu’r addasiadau a nodwyd gennych yn flaenorol yn eich ",
       "DIRECTIONS_QUESTIONNAIRE": "holiadur cyfarwyddiadau.",
       "YOU_SHOULD_REVIEW": "Dylech adolygu hyn i weld a yw eich amgylchiadau wedi newid.",
-      "WE_WILL_REMIND_YOU": "Byddwn yn eich atgoffa o’r amser a neilltuwyd ar gyfer y treial neu’r gwrandawiad. Os ydych yn teimlo nad oes angen cymaint â hynny o amser, gallwch nodi pam yn y blwch ‘gwybodaeth arall'.",
+      "WE_WILL_REMIND_YOU": "Byddwn yn eich atgoffa o’r amser a neilltuwyd ar gyfer y treial. Os ydych yn teimlo nad oes angen cymaint â hynny o amser, gallwch nodi pam yn y blwch 'gwybodaeth arall'.",
       "IF_YOU_FEEL_THAT": "Os ydych yn teimlo bod arnoch angen mwy o amser, bydd angen i chi gysylltu â’r parti arall a gwneud cais i’r llys.",
       "YOU_SHOULD_ONLY_MAKE_APPLICATION": "Os ydych angen gwneud cais, rhaid i chi gwblhau a chyflwyno trefniadau eich treial yn gyntaf. Dim ond unwaith y bydd hyn wedi’i wneud y dylech wneud cais.",
       "OTHER_INFORMATION_TITLE": "Gwybodaeth arall",
-      "OTHER_INFORMATION_TEXT": "Byddwch yn cael cyfle i ddarparu unrhyw wybodaeth arall sy’n berthnasol i’r gwrandawiad, er enghraifft os yw unrhyw barti ar gael ar amser penodol yn unig.",
-      "START_NOW": "Dechrau Nawr’",
+      "OTHER_INFORMATION_TEXT": "Byddwch yn cael cyfle i ddarparu unrhyw wybodaeth arall sy’n berthnasol i’r treial, er enghraifft os yw unrhyw barti ar gael ar amser penodol yn unig.",
+      "START_NOW": "Dechrau nawr",
       "ARE_THERE_ANY_CHANGES": "A oes unrhyw newidiadau i’r cymorth o ran anghenion mynediad neu fregusrwydd i unrhyw un sy’n mynychu gwrandawiad llys?",
       "CONFIRMATION": {
-        "PAGE_TITLE": "Cwblhau trefniadau eich treial neu drefniadau eich gwrandawiad",
-        "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "Rydych wedi dweud nad yw’r achos hwn yn barod ar gyfer treial neu wrandawiad",
+        "PAGE_TITLE": "Cwblhau trefniadau eich treial",
+        "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "Rydych wedi dweud nad yw’r achos hwn yn barod ar gyfer treial",
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
-        "YOU_WILL_NEED_TO_CALL": "Ar gyfer unrhyw newidiadau i’r gofynion hygyrchedd rhwng nawr a dyddiad y gwrandawiad, bydd angen i chi ffonio 0300 303 5174.",
-        "NOTICES_AND_ORDERS": "Hysbysiadau a gorchmynion",
+        "YOU_WILL_NEED_TO_CALL": "Ar gyfer unrhyw newidiadau i’r gofynion hygyrchedd rhwng nawr a dyddiad y treial, bydd angen i chi ffonio 0300 303 5174.",
+        "NOTICES_AND_ORDERS": "Gorchmynion a hysbysiadau",
         "YOU_CAN_VIEW_TRIAL_ARRANGEMENTS": "Gallwch weld trefniadau eich treial chi a’r parti arall o dan",
         "IN_THE_CASE_DETAILS": "yn adran manylion yr achos.",
-        "TRIAL_OR_HEARING_WILL_GO_AHEAD_AS_PLANNED": "Bydd y treial neu’r gwrandawiad yn mynd yn ei flaen fel y trefnwyd ar y dyddiad penodedig oni bai bod barnwr yn gwneud gorchymyn sy’n newid dyddiad y gwrandawiad.",
+        "TRIAL_OR_HEARING_WILL_GO_AHEAD_AS_PLANNED": "Bydd y treial yn mynd yn ei flaen fel y trefnwyd ar y dyddiad penodedig oni bai bod barnwr yn gwneud gorchymyn sy’n newid dyddiad y treial.",
         "MAKE_AN_APPLICATION": "wneud cais",
         "IF_YOU_WANT_THE_DATE_OF_THE_HEARING": "Os ydych am i ddyddiad y treial gael ei newid (neu unrhyw orchymyn arall i wneud yr achos yn barod ar gyfer treial) bydd angen i chi",
         "TO_THE_COURT_AND_PAY": "i’r llys a thalu’r ffi briodol.",
-        "YOU_SAID_CASE_READY_FOR_TRIAL_OR_HEARING": "Rydych wedi dweud bod yr achos hwn yn barod ar gyfer treial neu wrandawiad",
-        "IF_THERE_ARE_ANY_CHANGES_TO_THE_ARRANGEMENTS": "Os oes unrhyw newidiadau i’r trefniadau rhwng nawr a dyddiad y gwrandawiad, bydd angen i chi",
+        "YOU_SAID_CASE_READY_FOR_TRIAL_OR_HEARING": "Rydych wedi dweud bod yr achos hwn yn barod ar gyfer treial",
+        "IF_THERE_ARE_ANY_CHANGES_TO_THE_ARRANGEMENTS": "Os oes unrhyw newidiadau i’r trefniadau rhwng nawr a dyddiad y treial, bydd angen i chi",
         "AS_SOON_AS_POSSIBLE_AND_PAY": "as soon as possible and pay the appropriate fee.",
-        "YOU_WILL_NEED_TO_PHONE": "Ar gyfer unrhyw newidiadau i’r gofynion hygyrchedd rhwng nawr a dyddiad y gwrandawiad, bydd angen i chi ffonio 0300 303 5174."
+        "YOU_WILL_NEED_TO_PHONE": "Ar gyfer unrhyw newidiadau i’r gofynion hygyrchedd rhwng nawr a dyddiad y treial, bydd angen i chi ffonio 0300 303 5174."
       }
     },
     "PAY_HEARING_FEE": {

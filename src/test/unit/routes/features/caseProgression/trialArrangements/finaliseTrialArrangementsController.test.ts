@@ -92,7 +92,7 @@ describe('"finalise trial arrangements" page test', () => {
       //Then
         .expect((res: { status: unknown; text: unknown; }) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Finalise your trial or hearing arrangements');
+          expect(res.text).toContain('Finalise your trial arrangements');
         });
     });
 
@@ -112,7 +112,7 @@ describe('"finalise trial arrangements" page test', () => {
         //Then
         .expect((res: { status: unknown; text: unknown; }) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Cwblhau trefniadau eich treial neu drefniadau eich gwrandawiad');
+          expect(res.text).toContain('Cwblhau trefniadau eich treial');
         });
     });
 
