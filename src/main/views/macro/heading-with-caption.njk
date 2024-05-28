@@ -1,0 +1,6 @@
+{% macro headingWithCaption(t,caption,headingTitle ) %}
+    <h1 class="govuk-heading-l">
+      <span class="govuk-caption-l">{{t(caption)}}</span>
+       {{ t(headingTitle) }}
+    </h1>
+{% endmacro %}

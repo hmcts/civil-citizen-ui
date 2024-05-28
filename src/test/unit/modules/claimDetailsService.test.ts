@@ -5,6 +5,7 @@ import {Claim} from '../../../main/common/models/claim';
 import {createClaimWithBasicRespondentDetails} from '../../utils/mockClaimForCheckAnswers';
 import {Party} from '../../../main/common/models/party';
 import {ResponseType} from '../../../main/common/form/models/responseType';
+import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
 
 describe('Claim Details service', () => {
   const mockClaim = require('../../utils/mocks/civilClaimResponseMock.json');
@@ -13,15 +14,27 @@ describe('Claim Details service', () => {
 
     it('should return total claim amount including fees and interest', () => {
       //when
-      const totalAmount = getTotalAmountWithInterestAndFees(caseData);
+      const claim = {
+        totalClaimAmount: 110,
+        hasInterest: () => true,
+        interest: { interestClaimOptions: InterestClaimOptionsType.BREAK_DOWN_INTEREST, totalInterest: { amount: 90 } },
+        claimFee: {
+          code: 'FEE0204',
+          version: 4,
+          calculatedAmountInPence: 7000,
+        },
+      };
+
+      const totalAmount = getTotalAmountWithInterestAndFees(claim as Claim);
       //Then
-      expect(totalAmount).toEqual(caseData.totalClaimAmount + caseData.totalInterest + convertToPoundsFilter(caseData.claimFee.calculatedAmountInPence));
+      expect(totalAmount).toEqual(claim.totalClaimAmount + claim.interest.totalInterest.amount + convertToPoundsFilter(claim.claimFee.calculatedAmountInPence));
     });
 
     it('should return total claim amount including fees', () => {
       //when
       const claimWithoutInterest = deepCopy(caseData);
       claimWithoutInterest.totalInterest = 0;
+      claimWithoutInterest['hasInterest'] = () => false;
       const totalAmount = getTotalAmountWithInterestAndFees(claimWithoutInterest);
       //Then
       expect(totalAmount).toEqual(caseData.totalClaimAmount + convertToPoundsFilter(caseData.claimFee.calculatedAmountInPence));

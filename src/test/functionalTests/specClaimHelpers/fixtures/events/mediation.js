@@ -16,13 +16,25 @@ module.exports = {
       },
     };
   },
-  
-  mediationUnSuccessfulPayload: () => {
+
+  mediationUnSuccessfulPayload: (carmEnabled = false) => {
     return {
       event: 'MEDIATION_UNSUCCESSFUL',
-      caseData: {
-        unsuccessfulMediationReason: 'PARTY_WITHDRAWS',
-      },
-    };  
+      caseData: mediationUnsuccessfulPayload(carmEnabled),
+    };
   },
+};
+
+const mediationUnsuccessfulPayload = (carmEnabled) => {
+  let payload;
+  if (carmEnabled) {
+    payload = {
+      mediationUnsuccessfulReasonsMultiSelect: ['PARTY_WITHDRAWS', 'APPOINTMENT_NOT_ASSIGNED', 'NOT_CONTACTABLE_CLAIMANT_TWO'],
+    };
+  } else {
+    payload = {
+      unsuccessfulMediationReason: 'PARTY_WITHDRAWS',
+    };
+  }
+  return payload;
 };

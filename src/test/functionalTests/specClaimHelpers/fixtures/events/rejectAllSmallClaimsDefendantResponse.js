@@ -86,14 +86,14 @@ module.exports = {
     };
   },
 
-  rejectAllAlreadypaidWithIndividual: (totalClaimAmount) => {
+  rejectAllAlreadypaidNotFullWithIndividual: (totalClaimAmount) => {
     return {
       'event': 'DEFENDANT_RESPONSE_CUI',
       'caseDataUpdate': {
         'respondent1ClaimResponseTypeForSpec': 'FULL_DEFENCE',
         'defenceAdmitPartPaymentTimeRouteRequired': 'IMMEDIATELY',
         'respondToClaimAdmitPartLRspec': {
-          
+
         },
         'responseClaimMediationSpecRequired': 'No',
         'specAoSApplicantCorrespondenceAddressRequired': 'Yes',
@@ -103,7 +103,7 @@ module.exports = {
           'individualFirstName': 'John',
           'individualLastName': 'Doe',
           'individualTitle': 'Sir',
-          'partyEmail': 'claimantcitizen-s696s79@gmail.com',
+          'partyEmail': 'civilmoneyclaimsdemo@gmail.com',
           'partyPhone': '07800000000',
           'primaryAddress': {
             'AddressLine1': 'TestAddressLine1',
@@ -140,12 +140,12 @@ module.exports = {
           'respondent1ResponseLanguage': 'ENGLISH',
         },
         'respondent1LiPFinancialDetails': {
-          
+
         },
         'detailsOfWhyDoesYouDisputeTheClaim': 'hy do you disagree with the claim amount',
         'specClaimResponseTimelineList': 'MANUAL',
         'specResponseTimelineOfEvents': [
-          
+
         ],
         'specResponselistYourEvidenceList': [
           {
@@ -164,18 +164,18 @@ module.exports = {
           'howWasThisAmountPaidOther': 'cheque',
         },
         'respondent1DQHomeDetails': {
-          
+
         },
         'respondent1PartnerAndDependent': {
           'howManyChildrenByAgeGroup': {
-            
+
           },
         },
         'specDefendant1SelfEmploymentDetails': {
-          
+
         },
         'respondToClaimAdmitPartUnemployedLRspec': {
-          
+
         },
         'respondent1DQLanguage': {
           'court': 'ENGLISH',
@@ -189,10 +189,10 @@ module.exports = {
           'otherPartyPreferredSite': '',
           'responseCourtCode': '',
           'responseCourtLocations': [
-            
+
           ],
           'caseLocation': {
-            
+
           },
         },
         'respondent1DQWitnesses': {
@@ -214,7 +214,127 @@ module.exports = {
           'unavailableDatesRequired': 'No',
         },
         'respondent1DQExperts': {
-          
+
+        },
+      },
+    };
+  },
+
+  rejectAllAlreadypaidInFullWithIndividual: (totalClaimAmount) => {
+    return {
+      'event': 'DEFENDANT_RESPONSE_CUI',
+      'caseDataUpdate': {
+        'respondent1ClaimResponseTypeForSpec': 'FULL_DEFENCE',
+        'defenceAdmitPartPaymentTimeRouteRequired': 'IMMEDIATELY',
+        'respondToClaimAdmitPartLRspec': {
+
+        },
+        'responseClaimMediationSpecRequired': 'No',
+        'specAoSApplicantCorrespondenceAddressRequired': 'Yes',
+        'totalClaimAmount': totalClaimAmount,
+        'respondent1': {
+          'individualDateOfBirth': '2000-02-01',
+          'individualFirstName': 'John',
+          'individualLastName': 'Doe',
+          'individualTitle': 'Sir',
+          'partyEmail': 'civilmoneyclaimsdemo@gmail.com',
+          'partyPhone': '07800000000',
+          'primaryAddress': {
+            'AddressLine1': 'TestAddressLine1',
+            'AddressLine2': 'TestAddressLine2',
+            'AddressLine3': 'TestAddressLine3',
+            'PostCode': 'IG61JD',
+            'PostTown': 'TestCity',
+          },
+          'soleTraderDateOfBirth': null,
+          'type': 'INDIVIDUAL',
+        },
+        'respondent1LiPResponse': {
+          'timelineComment': '',
+          'evidenceComment': '',
+          'respondent1MediationLiPResponse': {
+            'mediationDisagreementLiP': 'No',
+            'noMediationReasonLiP': 'NOT_SURE',
+            'noMediationOtherReasonLiP': '',
+          },
+          'respondent1DQExtraDetails': {
+            'wantPhoneOrVideoHearing': 'No',
+            'whyPhoneOrVideoHearing': '',
+            'giveEvidenceYourSelf': 'No',
+            'determinationWithoutHearingRequired': 'Yes',
+            'determinationWithoutHearingReason': '',
+            'considerClaimantDocumentsDetails': '',
+            'respondent1DQLiPExpert': {
+              'expertCanStillExamineDetails': '',
+            },
+          },
+          'respondent1DQHearingSupportLip': {
+            'supportRequirementLip': 'No',
+          },
+          'respondent1ResponseLanguage': 'ENGLISH',
+        },
+        'respondent1LiPFinancialDetails': {
+
+        },
+        'defenceRouteRequired': 'HAS_PAID_THE_AMOUNT_CLAIMED',
+        'respondToClaim': {
+          'howMuchWasPaid': totalClaimAmount + '00',
+          'howWasThisAmountPaid': 'OTHER',
+          'whenWasThisAmountPaid': '2023-03-02T00:00:00.000Z',
+          'howWasThisAmountPaidOther': 'cheque',
+        },
+        'respondent1DQHomeDetails': {
+
+        },
+        'respondent1PartnerAndDependent': {
+          'howManyChildrenByAgeGroup': {
+
+          },
+        },
+        'specDefendant1SelfEmploymentDetails': {
+
+        },
+        'respondToClaimAdmitPartUnemployedLRspec': {
+
+        },
+        'respondent1DQLanguage': {
+          'court': 'ENGLISH',
+          'documents': 'ENGLISH',
+        },
+        'respondent1DQVulnerabilityQuestions': {
+          'vulnerabilityAdjustmentsRequired': 'No',
+        },
+        'respondent1DQRequestedCourt': {
+          'requestHearingAtSpecificCourt': 'No',
+          'otherPartyPreferredSite': '',
+          'responseCourtCode': '',
+          'responseCourtLocations': [
+
+          ],
+          'caseLocation': {
+
+          },
+        },
+        'respondent1DQWitnesses': {
+          'witnessesToAppear': 'No',
+          'details': [
+            {
+              'value': {
+                'name': '',
+                'firstName': '',
+                'lastName': '',
+                'emailAddress': '',
+                'phoneNumber': '',
+                'reasonForWitness': '',
+              },
+            },
+          ],
+        },
+        'respondent1DQHearingSmallClaim': {
+          'unavailableDatesRequired': 'No',
+        },
+        'respondent1DQExperts': {
+
         },
       },
     };

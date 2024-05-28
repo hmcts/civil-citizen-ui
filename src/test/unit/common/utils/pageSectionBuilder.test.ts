@@ -291,4 +291,25 @@ describe('PageSectionBuilder tests', ()=> {
     //Then
     expect(addWarningResult).toEqual([addWarningResultExpected]);
   });
+
+  it('should add button with cancel link', ()=> {
+    //Given
+    const buttonExpected = ({
+      type: ClaimSummaryType.BUTTON_WITH_CANCEL_LINK,
+      data: {
+        text: 'text',
+        href: 'href',
+        isStartButton: false,
+        cancelHref: 'cancelHref',
+      },
+    });
+
+    //When
+    const buttonBuilt = new PageSectionBuilder()
+      .addButtonWithCancelLink(buttonExpected.data.text,buttonExpected.data.href, false, buttonExpected.data.cancelHref )
+      .build();
+
+    //Then
+    expect(buttonBuilt).toEqual([buttonExpected]);
+  });
 });

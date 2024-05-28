@@ -4,8 +4,8 @@ import config from 'config';
 import {
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
-  CIVIL_SERVICE_CLAIMANT, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
-  CIVIL_SERVICE_FEES_RANGES,
+  CIVIL_SERVICE_CLAIMANT, CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_FEES_RANGES, CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL,
   CIVIL_SERVICE_SUBMIT_EVENT,
   CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
 } from 'client/civilServiceUrls';
@@ -31,12 +31,40 @@ import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {AppRequest} from 'common/models/AppRequest';
 import {req} from '../../../utils/UserDetails';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {YesNo} from 'form/models/yesNo';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');
 const appReq = <AppRequest>req;
 appReq.params = {id: '12345'};
+appReq.session = {
+  user: {
+    accessToken: '54321',
+    id: '1',
+    email: 'test@user.com',
+    givenName: 'Test',
+    familyName: 'User',
+    roles: undefined,
+  },
+  id: 'id',
+  cookie: undefined,
+  regenerate: undefined,
+  reload: undefined,
+  resetMaxAge: undefined,
+  save: undefined,
+  touch: undefined,
+  destroy: undefined,
+  lang: undefined,
+  previousUrl: undefined,
+  claimId: '12345',
+  taskLists: undefined,
+  assignClaimURL: undefined,
+  claimIssueTasklist: false,
+  firstContact: undefined,
+  issuedAt: 150,
+};
 const ccdClaim : CCDClaim = {
   legacyCaseReference : '000MC003',
   applicant1 : {
@@ -607,40 +635,40 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.getClaimAmountFee(100, appReq)).rejects.toThrow('error');
     });
   });
-  describe('getClaimFeeData', () => {
+  describe('getGeneralApplicationFeeData', () => {
     const mockData = {
       calculatedAmountInPence: 123,
       code: 'code',
       version: 1,
     };
 
-    it('should get claim fee data', async () => {
+    it('should get ga app fee data', async () => {
       //Given
       const mockGet = jest.fn().mockResolvedValue({data: mockData});
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
 
       //When
-      const feeResponse: ClaimFeeData = await civilServiceClient.getClaimFeeData(100, appReq);
+      const feeResponse: ClaimFeeData = await civilServiceClient.getGeneralApplicationFeeData(ApplicationTypeOption.STRIKE_OUT, YesNo.YES, YesNo.NO, appReq);
 
       //Then
       expect(feeResponse).toEqual(mockData);
     });
 
-    it('should get claim fee amount', async () => {
+    it('should get ga app fee amount', async () => {
       //Given
       const mockGet = jest.fn().mockResolvedValue({data: mockData});
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
 
       //When
-      const feeAmount: number = await civilServiceClient.getClaimAmountFee(100, appReq);
+      const feeAmount: number = await civilServiceClient.getGeneralApplicationFee(ApplicationTypeOption.STRIKE_OUT, YesNo.NO, YesNo.YES, appReq);
 
       //Then
       expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
     });
 
-    it('should throw error on get claim fee data', async () => {
+    it('should throw error on get ga app fee data', async () => {
       //Given
       const mockGet = jest.fn().mockImplementation(() => {
         throw new Error('error');
@@ -649,7 +677,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
 
       //Then
-      await expect(civilServiceClient.getClaimAmountFee(100, appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.getGeneralApplicationFee(ApplicationTypeOption.STRIKE_OUT, undefined, YesNo.YES, appReq)).rejects.toThrow('error');
     });
   });
   describe('verifyOcmcPin', () => {
@@ -719,7 +747,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //When
-      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference, FeeType.HEARING, appReq);
+      const paymentInformationResponse: PaymentInformation = await civilServiceClient.getFeePaymentStatus('1', mockHearingFeePaymentRedirectInfo.paymentReference, FeeType.HEARING, appReq);
 
       //Then
       expect(paymentInformationResponse).toEqual(mockHearingFeePaymentRedirectInfo);
@@ -734,7 +762,342 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
 
       //Then
-      await expect(civilServiceClient.getFeePaymentStatus(mockHearingFeePaymentRedirectInfo.paymentReference,  FeeType.HEARING , appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.getFeePaymentStatus('1', mockHearingFeePaymentRedirectInfo.paymentReference,  FeeType.HEARING , appReq)).rejects.toThrow('error');
+    });
+  });
+
+  describe('getDashboard', () => {
+    const mockNotificationInfo = [
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+        'titleEn': 'title_en',
+        'titleCy': 'title_cy',
+        'descriptionEn': 'description_en',
+        'descriptionCy': 'description_cy',
+        'notificationAction': undefined,
+        'timeToLive': undefined,
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'undefined',
+        'notificationAction': {
+          'id': 1,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User',
+          'createdAt': new Date(100000),
+        },
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'Click',
+        'notificationAction': {
+          'id': 2,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User',
+          'createdAt': new Date(100000),
+        },
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'Session',
+        'notificationAction': {
+          'id': 3,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User',
+          'createdAt': new Date(100000),
+        },
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'Session',
+        'notificationAction': {
+          'id': 4,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User',
+          'createdAt': new Date(200000),
+        },
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'Session',
+        'notificationAction': {
+          'id': 5,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User 2',
+          'createdAt': new Date(100000),
+        },
+      },
+    ];
+    const mockNotificationInfoExpected = [
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+        'titleEn': 'title_en',
+        'titleCy': 'title_cy',
+        'descriptionEn': 'description_en',
+        'descriptionCy': 'description_cy',
+        'notificationAction': undefined,
+        'timeToLive': undefined,
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'undefined',
+        'notificationAction': {
+          'id': 1,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User',
+          'createdAt': new Date(100000),
+        },
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'Session',
+        'notificationAction': {
+          'id': 4,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User',
+          'createdAt': new Date(200000),
+        },
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'Session',
+        'notificationAction': {
+          'id': 5,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User 2',
+          'createdAt': new Date(100000),
+        },
+      },
+    ];
+    const mockExpectedDashboardInfo=
+      [{
+        'categoryEn': 'Hearing',
+        'categoryCy': 'Hearing Welsh',
+        tasks: [{
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+          'statusCy': 'Action needed in Welsh',
+          'statusEn': 'Action needed',
+          'statusColour' : 'govuk-tag--red',
+          'taskNameEn': 'task_name_en',
+          'hintTextEn': 'hint_text_en',
+          'taskNameCy': 'task_name_cy',
+          'hintTextCy': 'hint_text_cy',
+        }, {
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+          'statusCy': 'Action needed in Welsh',
+          'statusEn': 'Action needed',
+          'statusColour' : 'govuk-tag--red',
+          'taskNameEn': 'task_name_en',
+          'hintTextEn': 'hint_text_en',
+          'taskNameCy': 'task_name_cy',
+          'hintTextCy': 'hint_text_cy',
+        }],
+      },{
+        'categoryEn': 'Claim',
+        'categoryCy': 'Claim Welsh',
+        tasks:[{
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
+          'statusCy': 'Action needed in Welsh',
+          'statusEn': 'Action needed',
+          'statusColour' : 'govuk-tag--red',
+          'taskNameEn': 'task_name_en2',
+          'hintTextEn': 'hint_text_en2',
+          'taskNameCy': 'task_name_cy2',
+          'hintTextCy': 'hint_text_cy2',
+        },
+        {
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
+          'statusCy': 'Action needed in Welsh',
+          'statusEn': 'Action needed',
+          'statusColour' : 'govuk-tag--red',
+          'taskNameEn': 'task_name_en2',
+          'hintTextEn': 'hint_text_en2',
+          'taskNameCy': 'task_name_cy2',
+          'hintTextCy': 'hint_text_cy2',
+        }],
+      }];
+    const mockDashboardInfo =[
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+        'reference': '123',
+        'currentStatusEn': 'Action needed',
+        'currentStatusCy': 'Action needed in Welsh',
+        'taskNameEn': 'task_name_en',
+        'hintTextEn': 'hint_text_en',
+        'taskNameCy': 'task_name_cy',
+        'hintTextCy': 'hint_text_cy',
+        'updatedBy': 'Test',
+        'categoryEn': 'Hearing',
+        'categoryCy': 'Hearing Welsh',
+        'role': 'claimant',
+        'taskOrder': 10,
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'reference': '123',
+        'currentStatusEn': 'Action needed',
+        'currentStatusCy': 'Action needed in Welsh',
+        'taskNameEn': 'task_name_en',
+        'hintTextEn': 'hint_text_en',
+        'taskNameCy': 'task_name_cy',
+        'hintTextCy': 'hint_text_cy',
+        'updatedBy': 'Test',
+        'categoryEn': 'Hearing',
+        'categoryCy': 'Hearing Welsh',
+        'role': 'claimant',
+        'taskOrder': 10,
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
+        'reference': '123',
+        'currentStatusEn': 'Action needed',
+        'currentStatusCy': 'Action needed in Welsh',
+        'taskNameEn': 'task_name_en2',
+        'hintTextEn': 'hint_text_en2',
+        'taskNameCy': 'task_name_cy2',
+        'hintTextCy': 'hint_text_cy2',
+        'updatedBy': 'Test2',
+        'categoryEn': 'Claim',
+        'categoryCy': 'Claim Welsh',
+        'role': 'claimant',
+        'taskOrder': 10,
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
+        'reference': '123',
+        'currentStatusEn': 'Action needed',
+        'currentStatusCy': 'Action needed in Welsh',
+        'taskNameEn': 'task_name_en2',
+        'hintTextEn': 'hint_text_en2',
+        'taskNameCy': 'task_name_cy2',
+        'hintTextCy': 'hint_text_cy2',
+        'updatedBy': 'Test2',
+        'categoryEn': 'Claim',
+        'categoryCy': 'Claim Welsh',
+        'role': 'claimant',
+        'taskOrder': 10,
+      },
+    ];
+    it('should get notification List', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: mockNotificationInfo});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const notificationResponse = await civilServiceClient.retrieveNotification('123','claimant', appReq);
+
+      //Then
+      expect(notificationResponse.items).toEqual(mockNotificationInfoExpected);
+    });
+
+    it('should get dashboard Task List', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: mockDashboardInfo});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const taskListResponse = await civilServiceClient.retrieveDashboard('123','claimant' , appReq);
+
+      //Then
+      expect(taskListResponse.items).toEqual(mockExpectedDashboardInfo);
+    });
+  });
+
+  describe('postScenario', () => {
+
+    it('should call civil service api to start scenario for dashboard', async () => {
+      //Given
+      const mockPost = jest.fn().mockResolvedValue({data:{}});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      await civilServiceClient.createDashboard(appReq);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL
+        .replace(':scenarioRef', 'Scenario.AAA6.ClaimIssue.ClaimSubmit.Required')
+        .replace(':redisKey', '1'));
+    });
+
+    it('should throw error when there is an error calling civil service to start scenario for dashboard', async () => {
+      const mockPost = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.createDashboard(appReq)).rejects.toThrow('error');
+    });
+  });
+
+  describe('putScenario', () => {
+
+    it('should call dashboard-notifications endpoint for recording notification', async () => {
+      //Given
+      const mockPut = jest.fn().mockResolvedValue({data:{}});
+      mockedAxios.create.mockReturnValueOnce({put: mockPut} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //When
+      await civilServiceClient.recordClick('123', appReq);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockPut.mock.calls[0][0]).toEqual(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '123'));
+    });
+
+    it('should throw error when there is an error calling civil service to record click', async () => {
+      const mockPut = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({put: mockPut} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.recordClick('123', appReq)).rejects.toThrow('error');
     });
   });
 });

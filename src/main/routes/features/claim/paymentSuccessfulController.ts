@@ -10,17 +10,20 @@ import {
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import config from 'config';
 const paymentSuccessfulController: Router = Router();
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const paymentSuccessfulViewPath  = 'features/claim/payment-successful';
 
-async function renderView(res: Response, req:  AppRequest | Request, claimId: string, redirectUrl: string) {
+async function renderView(res: Response, req:  AppRequest | Request, claimId: string, redirectUrl: string, calculatedAmountInPence: string) {
   const claim: Claim = await getClaimById(claimId, req, true);
-
   res.render(paymentSuccessfulViewPath,
     {
       paymentSuccessfulPanel: getPaymentSuccessfulPanelContent(claim),
-      paymentSuccessfulBody: getPaymentSuccessfulBodyContent(claim),
+      paymentSuccessfulBody: getPaymentSuccessfulBodyContent(claim, calculatedAmountInPence),
       paymentSuccessfulButton: getPaymentSuccessfulButtonContent(redirectUrl),
     });
 }
@@ -29,7 +32,9 @@ paymentSuccessfulController.get(PAY_HEARING_FEE_SUCCESSFUL_URL, (async (req, res
   try {
     const claimId = req.params.id;
     const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-    await renderView(res, req, claimId, redirectUrl);
+    const ccdClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    const calculatedAmountInPence = ccdClaim.caseProgressionHearing?.hearingFeeInformation?.hearingFee?.calculatedAmountInPence;
+    await renderView(res, req, claimId, redirectUrl, calculatedAmountInPence);
   }catch (error) {
     next(error);
   }

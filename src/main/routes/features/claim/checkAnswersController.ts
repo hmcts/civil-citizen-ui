@@ -46,7 +46,6 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
       const userId = req.session?.user?.id;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getCaseDataFromStore(userId);
-      console.log('claim info',claim);
       const form = new GenericForm(getStatementOfTruth(claim));
       renderView(res, form, claim, userId, lang);
     } catch (error) {

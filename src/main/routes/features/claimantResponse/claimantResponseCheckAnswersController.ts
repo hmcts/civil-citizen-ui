@@ -55,10 +55,9 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     const claim = await getCaseDataFromStore(redisKey);
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     if (form.hasErrors()) {
-      const claim = await getCaseDataFromStore(req.params.id);
+      const claim = await getCaseDataFromStore(redisKey);
       await renderView(<AppRequest>req, res, form, claim, carmEnabled);
     } else {
-      const redisKey = generateRedisKey(req as unknown as AppRequest);
       await saveStatementOfTruth(redisKey, form.model);
       await submitClaimantResponse(<AppRequest>req);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_CONFIRMATION_URL));

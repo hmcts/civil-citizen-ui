@@ -5,6 +5,7 @@ import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {CLAIM_EVIDENCE_URL} from 'routes/urls';
 import {EvidenceItem} from 'form/models/evidence/evidenceItem';
+import {convertToEvidenceTypeToTranslationKey} from 'models/evidence/evidenceType';
 
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
@@ -16,7 +17,8 @@ export const addEvidence = (claim: Claim, claimSection: SummarySection, claimId:
     const evidence: EvidenceItem[] = claim.claimDetails.evidence.evidenceItem;
     for (const element of evidence) {
       claimSection.summaryList.rows.push(
-        summaryRow(element.type, element.description, CLAIM_EVIDENCE_URL, changeLabel(lng)),
+        summaryRow(t(convertToEvidenceTypeToTranslationKey(element.type), {lng: getLng(lng)}),
+          element.description, CLAIM_EVIDENCE_URL, changeLabel(lng)),
       );
     }
   }

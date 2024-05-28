@@ -20,6 +20,7 @@ nodejs:
     OAUTH_CLIENT_REDIRECT: https://civil-citizen-ui-staging.aat.platform.hmcts.net/oauth2/callback
     IDAM_SIGN_OUT_REDIRECT_URL: https://civil-citizen-ui-staging.aat.platform.hmcts.net/dashboard
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-java
+    LAUNCH_DARKLY_ENV: service-staging
 
 civil-service:
   enabled: true
@@ -115,9 +116,7 @@ civil-service:
       CMC_DB_USERNAME: ${POSTGRES_USER}
       CMC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       REFERENCE_DATABASE_MIGRATION: true
-      FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
-      FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
-      FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       POLLING_EVENT_EMITTER_ENABLED: false
       STITCHING_API_ENABLED: false
       DOCUMENT_MANAGEMENT_SECURED: true
@@ -316,7 +315,8 @@ ccd:
         DEFINITION_STORE_IDAM_KEY: ${CCD_DEFINITION_STORE_S2S_SECRET}
         IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
         RELEASE_REVISION: "{{ .Release.Revision }}"
-        DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 35
+        DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 60
+        WELSH_TRANSLATION_ENABLED: false
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
         ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 12000
@@ -388,3 +388,40 @@ camunda-bpm:
       S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
       CAMUNDA_DB_CONN_OPTIONS: ""
       RELEASE_REVISION: "{{ .Release.Revision }}"
+
+civil-general-applications:
+  enabled: true
+  java:
+    ingressHost: civil-cui-general-applications.aat.platform.hmcts.net
+    releaseNameOverride: ${SERVICE_NAME}-general-applications
+    image: 'hmctspublic.azurecr.io/civil/general-applications:latest'
+    imagePullPolicy: Always
+    keyVaults:
+      civil:
+        resourceGroup: civil
+        secrets:
+          - civil-idam-client-secret
+          - microservicekey-civil-service
+          - system-update-user-username
+          - system-update-user-password
+          - cross-access-user-username
+          - cross-access-user-password
+          - prd-admin-user-username
+          - prd-admin-user-password
+          - name: AppInsightsInstrumentationKeyGeneralApplications
+            alias: azure.application-insights.instrumentation-key
+          - docmosis-api-key
+          - gov-notify-api-key
+          - sendgrid-api-key
+          - robotics-notification-sender
+          - robotics-notification-recipient
+          - name: launch-darkly-sdk-key
+            alias: LAUNCH_DARKLY_SDK_KEY
+          - robotics-notification-multipartyrecipient
+      civil-gen-apps:
+        resourceGroup: civil
+        secrets:
+          - microservicekey-civil-general-applications
+    environment:
+      LAUNCH_DARKLY_ENV: service-staging
+      PAY_CALLBACK_URL: https://civil-cui-general-applications.aat.platform.hmcts.net/service-request-update

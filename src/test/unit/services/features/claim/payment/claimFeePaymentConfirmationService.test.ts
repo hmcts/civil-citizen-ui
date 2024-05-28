@@ -6,7 +6,6 @@ import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PAY_CLAIM_FEE_SUCCESSFUL_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL, DASHBOARD_URL} from 'routes/urls';
-import {Claim} from 'common/models/claim';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/courtLocationCache');
@@ -29,14 +28,12 @@ describe('Claim Fee PaymentConfirmation Service', () => {
     };
 
     jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
-    const submitClaimAfterPaymentEvent = jest.spyOn(CivilServiceClient.prototype, 'submitClaimAfterPayment').mockResolvedValueOnce({} as Claim);
 
     //when
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, mockedAppRequest);
 
     //Then
-    expect(submitClaimAfterPaymentEvent).toBeCalledTimes(1);
-    expect(actualPaymentRedirectUrl).toBe(PAY_CLAIM_FEE_SUCCESSFUL_URL);
+    expect(actualPaymentRedirectUrl).toBe(`${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=en`);
   });
 
   it('should return to Payment Unsuccessful page when payment has failed', async () => {

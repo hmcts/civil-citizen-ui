@@ -169,6 +169,7 @@ export const enum TestMessages {
   CLAIMANT_REJECTION_REASON = 'Enter why you rejected repayment plan',
   VALID_ENTER_AT_LEAST_ONE_UPLOAD ='You must select at least one type of document',
   VALID_ENTER_DATE_DOC_ISSUED = 'Enter the date the document was issued or message was sent',
+  VALID_ENTER_DATE_WITNESS_SUMMARY = 'Date summary was written is required',
   VALID_REAL_DAY = 'Day of Date must be a valid day',
   VALID_REAL_MONTH = 'Month of Date must be a valid month',
   VALID_REAL_YEAR = 'Year of Date must be a valid year',
@@ -179,5 +180,8 @@ export const enum TestMessages {
   ENTER_CONTACT_PERSON = 'Enter contact person',
   FULL_NAME_TOO_LONG = 'Full name must be no longer than 70 characters',
   MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION = 'Mediation upload documents confirmation',
-  MEDIATION_CHECK_YOUR_ANSWERS = 'Check your answers'
+  MEDIATION_CHECK_YOUR_ANSWERS = 'Check your answers',
+  VIEW_MEDIATION_SETTLEMENT_AGREEMENT = 'View mediation settlement agreement',
+  VIEW_MEDIATION_DOCUMENTS = 'View mediation documents',
+
 }

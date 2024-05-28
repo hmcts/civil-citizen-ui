@@ -79,7 +79,8 @@
       }) }}
       {{ govukButton({
         text: t('PAGES.OTHER_WITNESSES.REMOVE_WITNESS'),
-        classes: "govuk-button--secondary remove-row govuk-visually-hidden" if removeButton.hidden else "govuk-button--secondary remove-row"
+        classes: "govuk-button--secondary remove-row govuk-visually-hidden" if removeButton.hidden else "govuk-button--secondary remove-row",
+        type: "button"
       }) }}
     </div>
   </div>

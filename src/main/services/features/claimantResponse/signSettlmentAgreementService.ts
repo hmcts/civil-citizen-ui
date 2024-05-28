@@ -17,10 +17,12 @@ export const getPaymentText = (claim: Claim, req: Request): object => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   let data: object;
   if (claim.hasCourtAcceptedClaimantsPlan()) {
-    if (claim.getSuggestedPaymentIntentionOptionFromClaimant() == PaymentOptionType.BY_SET_DATE) {
+    if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.BY_SET_DATE) {
       data = getTextForPayByDate(claim, lang, true);
-    } else if (claim.getSuggestedPaymentIntentionOptionFromClaimant() == PaymentOptionType.INSTALMENTS) {
+    } else if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.INSTALMENTS) {
       data = getTextForPayByInstallments(claim, lang, true);
+    } else if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.IMMEDIATELY) {
+      data = getTextForPayByImmediately(claim, lang);
     }
   } else {
     if (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate()) {
@@ -61,5 +63,20 @@ function getTextForPayByInstallments(claim: Claim, lang: string, isClaimantPlanA
       frequency: isClaimantPlanAccepted ? convertFrequencyToTextForRepaymentPlan(getRepaymentFrequencyForClaimantPlan(claim), lang) : convertFrequencyToTextForRepaymentPlan(getRepaymentFrequency(claim), lang).toLowerCase(),
     }),
     completionDate: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', {finalRepaymentDate:  isClaimantPlanAccepted ?formatDateToFullDate(getFinalPaymentDateForClaimantPlan(claim),lang):formatDateToFullDate(getFinalPaymentDate(claim), lang)}),
+  };
+}
+
+function getTextForPayByImmediately(claim: Claim, lang: string){
+  const date = claim.claimantResponse.suggestedImmediatePaymentDeadLine as unknown as PaymentDate;
+  const paymentDate = date as unknown as Date;
+  return {
+    paymentText: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THE_AGREEMENT.IMMEDIATE_PLAN', {
+      lng: lang,
+      fullName: claim.getDefendantFullName(),
+      amount: getAmount(claim),
+      claimant: claim.getClaimantFullName(),
+      paymentDate: formatDateToFullDate(paymentDate, lang),
+    }),
+    completionDate: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', { finalRepaymentDate: formatDateToFullDate(paymentDate, lang) }),
   };
 }

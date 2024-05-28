@@ -45,11 +45,17 @@ module.exports = {
         } else {
           return rejectAllSmallClaims.rejectAllDisputeAllWithIndividual(totalClaimAmount);
         }
-      case config.defenceType.rejectAllAlreadyPaidWithIndividual:
+      case config.defenceType.rejectAllAlreadyPaidNotFullWithIndividual:
         if (claimType === 'FastTrack') {
-          return rejectAllFastTrack.rejectAllAlreadypaidWithIndividual(totalClaimAmount);
+          return rejectAllFastTrack.rejectAllAlreadypaidNotFullWithIndividual(totalClaimAmount);
         } else {
-          return rejectAllSmallClaims.rejectAllAlreadypaidWithIndividual(totalClaimAmount);
+          return rejectAllSmallClaims.rejectAllAlreadypaidNotFullWithIndividual(totalClaimAmount);
+        }
+      case config.defenceType.rejectAllAlreadyPaidInFullWithIndividual:
+        if (claimType === 'FastTrack') {
+          return rejectAllFastTrack.rejectAllAlreadypaidInFullWithIndividual(totalClaimAmount);
+        } else {
+          return rejectAllSmallClaims.rejectAllAlreadypaidInFullWithIndividual(totalClaimAmount);
         }
     }
   },

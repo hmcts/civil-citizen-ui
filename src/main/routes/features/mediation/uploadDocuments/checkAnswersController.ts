@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION,
-  MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND,
+  MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND, MEDIATION_UPLOAD_DOCUMENTS, CANCEL_URL,
 } from 'routes/urls';
 
 import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -46,7 +46,15 @@ function renderView(uploadDocuments: UploadDocuments, res: Response, form: Gener
   const bottomPageContents = getBottomElements();
 
   res.render(checkAnswersViewPath, {
-    form, topPageContents, summarySections, bottomPageContents});
+    form,
+    topPageContents,
+    summarySections,
+    bottomPageContents,
+    backLinkUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS),
+    cancelUrl: CANCEL_URL
+      .replace(':id', claimId)
+      .replace(':propertyName', 'mediationUploadDocuments'),
+  });
 }
 
 mediationDocumentUploadCheckAnswerController.get(MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND, (async (req: AppRequest, res: Response, next: NextFunction) => {

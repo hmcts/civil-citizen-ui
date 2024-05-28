@@ -15,6 +15,21 @@ export class PageSectionBuilder {
     this._claimSummarySections.push(startButtonSection);
     return this;
   }
+
+  addStartButtonWithLink(title: string, href: string, cancelHref: string) {
+    const startButtonSection = ({
+      type: ClaimSummaryType.BUTTON_WITH_CANCEL_LINK,
+      data: {
+        text: title,
+        href: href,
+        isStartButton: true,
+        cancelHref: cancelHref,
+      },
+    });
+    this._claimSummarySections.push(startButtonSection);
+    return this;
+  }
+
   addMainTitle(mainTitle: string, variables?: unknown) {
     const mainTitleSection = ({
       type: ClaimSummaryType.MAINTITLE,

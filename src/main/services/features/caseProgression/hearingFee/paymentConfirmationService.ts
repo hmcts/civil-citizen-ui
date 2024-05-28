@@ -26,7 +26,7 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const paymentInfo = claim.caseProgression.hearing.paymentInformation;
 
-    const paymentStatus = await getFeePaymentStatus(paymentInfo.paymentReference, FeeType.HEARING, req);
+    const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo.paymentReference, FeeType.HEARING, req);
     paymentInfo.status = paymentStatus.status;
     paymentInfo.errorCode = paymentStatus.errorCode;
     paymentInfo.errorDescription = paymentStatus.errorDescription;

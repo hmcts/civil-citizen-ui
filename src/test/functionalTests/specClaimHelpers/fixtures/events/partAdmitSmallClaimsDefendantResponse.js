@@ -6,7 +6,7 @@ module.exports = {
         'respondent1ClaimResponseTypeForSpec': 'PART_ADMISSION',
         'defenceAdmitPartPaymentTimeRouteRequired': 'IMMEDIATELY',
         'respondToClaimAdmitPartLRspec': {
-          
+
         },
         'responseClaimMediationSpecRequired': 'Yes',
         'specAoSApplicantCorrespondenceAddressRequired': 'Yes',
@@ -16,7 +16,7 @@ module.exports = {
           'individualFirstName': 'John',
           'individualLastName': 'Doe',
           'individualTitle': 'Sir',
-          'partyEmail': 'claimantcitizen-8c8nabs@gmail.com',
+          'partyEmail': 'civilmoneyclaimsdemo@gmail.com',
           'partyPhone': '07800000000',
           'primaryAddress': {
             'AddressLine1': 'TestAddressLine1',
@@ -86,7 +86,7 @@ module.exports = {
           'respondent1ResponseLanguage': 'ENGLISH',
         },
         'respondent1LiPFinancialDetails': {
-          
+
         },
         'respondToAdmittedClaim': {
           'howMuchWasPaid': 70000,
@@ -115,18 +115,18 @@ module.exports = {
           },
         ],
         'respondent1DQHomeDetails': {
-          
+
         },
         'respondent1PartnerAndDependent': {
           'howManyChildrenByAgeGroup': {
-            
+
           },
         },
         'specDefendant1SelfEmploymentDetails': {
-          
+
         },
         'respondToClaimAdmitPartUnemployedLRspec': {
-          
+
         },
         'respondent1DQLanguage': {
           'court': 'ENGLISH',
@@ -142,7 +142,7 @@ module.exports = {
           'responseCourtCode': '',
           'reasonForHearingAtSpecificCourt': 'Tell us why you want the hearing to be held at this court',
           'responseCourtLocations': [
-            
+
           ],
           'caseLocation': {
             'region': 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
@@ -187,7 +187,7 @@ module.exports = {
           ],
         },
         'respondent1DQExperts': {
-          
+
         },
       },
     };
@@ -210,7 +210,7 @@ module.exports = {
           'individualFirstName': 'John',
           'individualLastName': 'Doe',
           'individualTitle': 'Sir',
-          'partyEmail': 'claimantcitizen-s696s79@gmail.com',
+          'partyEmail': 'civilmoneyclaimsdemo@gmail.com',
           'partyPhone': '07800000000',
           'primaryAddress': {
             'AddressLine1': 'TestAddressLine1',
@@ -256,12 +256,12 @@ module.exports = {
           'respondent1ResponseLanguage': 'ENGLISH',
         },
         'respondent1LiPFinancialDetails': {
-          
+
         },
         'specDefenceAdmittedRequired': 'No',
         'respondToAdmittedClaimOwingAmountPounds': '200',
         'respondToAdmittedClaimOwingAmount': '20000',
-        'detailsOfWhyDoesYouDisputeTheClaim': 'disagree with the claim amount - not interested The total amount claimed is £1500. This includes the claim fee and any interest.',
+        'detailsOfWhyDoesYouDisputeTheClaim': 'Test reason',
         'specClaimResponseTimelineList': 'MANUAL',
         'specResponseTimelineOfEvents': [
           {
@@ -281,18 +281,18 @@ module.exports = {
           },
         ],
         'respondent1DQHomeDetails': {
-          
+
         },
         'respondent1PartnerAndDependent': {
           'howManyChildrenByAgeGroup': {
-            
+
           },
         },
         'specDefendant1SelfEmploymentDetails': {
-          
+
         },
         'respondToClaimAdmitPartUnemployedLRspec': {
-          
+
         },
         'respondent1DQLanguage': {
           'court': 'WELSH',
@@ -306,10 +306,10 @@ module.exports = {
           'otherPartyPreferredSite': '',
           'responseCourtCode': '',
           'responseCourtLocations': [
-            
+
           ],
           'caseLocation': {
-            
+
           },
         },
         'respondent1DQWitnesses': {
@@ -369,7 +369,7 @@ module.exports = {
           'individualFirstName': 'John',
           'individualLastName': 'Doe',
           'individualTitle': 'Sir',
-          'partyEmail': 'claimantcitizen-s696s79@gmail.com',
+          'partyEmail': 'civilmoneyclaimsdemo@gmail.com',
           'partyPhone': '07800000000',
           'primaryAddress': {
             'AddressLine1': 'TestAddressLine1',
@@ -406,7 +406,7 @@ module.exports = {
           'respondent1ResponseLanguage': 'ENGLISH',
         },
         'respondent1LiPFinancialDetails': {
-          
+
         },
         'specDefenceAdmittedRequired': 'No',
         'respondToAdmittedClaimOwingAmountPounds': '456',
@@ -414,10 +414,10 @@ module.exports = {
         'detailsOfWhyDoesYouDisputeTheClaim': 'disagree with the claim amount?',
         'specClaimResponseTimelineList': 'MANUAL',
         'specResponseTimelineOfEvents': [
-          
+
         ],
         'specResponselistYourEvidenceList': [
-          
+
         ],
         'disabilityPremiumPayments': 'No',
         'respondent1DQHomeDetails': {
@@ -428,7 +428,7 @@ module.exports = {
           'liveWithPartnerRequired': 'No',
           'haveAnyChildrenRequired': 'No',
           'howManyChildrenByAgeGroup': {
-            
+
           },
           'supportedAnyoneFinancialRequired': 'No',
         },
@@ -447,14 +447,14 @@ module.exports = {
           ],
         },
         'specDefendant1SelfEmploymentDetails': {
-          
+
         },
         'respondToClaimAdmitPartUnemployedLRspec': {
-          
+
         },
         'respondent1CourtOrderPaymentOption': 'No',
         'respondent1CourtOrderDetails': [
-          
+
         ],
         'respondent1LoanCreditOption': 'No',
         'responseToClaimAdmitPartWhyNotPayLRspec': 'Briefly explain why you can\'t pay immediately\r\n',
@@ -491,10 +491,10 @@ module.exports = {
           'otherPartyPreferredSite': '',
           'responseCourtCode': '',
           'responseCourtLocations': [
-            
+
           ],
           'caseLocation': {
-            
+
           },
         },
         'respondent1DQWitnesses': {
@@ -516,7 +516,7 @@ module.exports = {
           'unavailableDatesRequired': 'No',
         },
         'respondent1DQExperts': {
-          
+
         },
       },
     };
@@ -534,7 +534,7 @@ module.exports = {
           'firstRepaymentDate': '2025-12-12T00:00:00.000Z',
         },
         'respondToClaimAdmitPartLRspec': {
-          
+
         },
         'responseClaimMediationSpecRequired': 'No',
         'specAoSApplicantCorrespondenceAddressRequired': 'Yes',
@@ -544,7 +544,7 @@ module.exports = {
           'individualFirstName': 'John',
           'individualLastName': 'Doe',
           'individualTitle': 'Sir',
-          'partyEmail': 'claimantcitizen-s696s79@gmail.com',
+          'partyEmail': 'civilmoneyclaimsdemo@gmail.com',
           'partyPhone': '07800000000',
           'primaryAddress': {
             'AddressLine1': 'TestAddressLine1',
@@ -590,17 +590,17 @@ module.exports = {
         'detailsOfWhyDoesYouDisputeTheClaim': 'disagree with the claim amount 1345 is original',
         'specClaimResponseTimelineList': 'MANUAL',
         'specResponseTimelineOfEvents': [
-          
+
         ],
         'specResponselistYourEvidenceList': [
-          
+
         ],
         'respondent1BankAccountList': [
           {
             'value': {
               'accountType': 'SAVINGS',
               'jointAccount': 'Yes',
-              'balance': 300000,
+              'balance': 300,
             },
           },
         ],
@@ -638,10 +638,10 @@ module.exports = {
           ],
         },
         'specDefendant1SelfEmploymentDetails': {
-          
+
         },
         'respondToClaimAdmitPartUnemployedLRspec': {
-          
+
         },
         'respondent1CourtOrderPaymentOption': 'Yes',
         'respondent1CourtOrderDetails': [
@@ -696,10 +696,10 @@ module.exports = {
           'otherPartyPreferredSite': '',
           'responseCourtCode': '',
           'responseCourtLocations': [
-            
+
           ],
           'caseLocation': {
-            
+
           },
         },
         'respondent1DQWitnesses': {
@@ -721,7 +721,7 @@ module.exports = {
           'unavailableDatesRequired': 'No',
         },
         'respondent1DQExperts': {
-          
+
         },
       },
     };

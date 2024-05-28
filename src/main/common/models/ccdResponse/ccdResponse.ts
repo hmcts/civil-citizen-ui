@@ -26,7 +26,7 @@ import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLoca
 import {CCDWitnesses} from 'models/ccdResponse/ccdWitnesses';
 import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {CCDFastClaimHearing} from 'models/ccdResponse/ccdFastClaimHearing';
-import {CCDExpert} from 'models/ccdResponse/ccdExpert';
+import {CCDDQSupportRequirements,CCDExpert} from 'models/ccdResponse/ccdExpert';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 
@@ -81,5 +81,6 @@ export interface CCDResponse extends ClaimUpdate {
   respondent1DQHearingSmallClaim?: CCDSmallClaimHearing;
   respondent1DQHearingFastClaim?: CCDFastClaimHearing;
   respondent1DQExperts?: CCDExpert;
+  respondent1DQHearingSupport?: CCDDQSupportRequirements;
   responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
 }

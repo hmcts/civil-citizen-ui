@@ -1,8 +1,12 @@
 import {CCDTimeLineOfEvents, CCDTimeLineOfEventsItem} from 'models/ccdResponse/ccdTimeLineOfEvents';
 import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
 import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
+import {Claim} from 'models/claim';
 
-export const toCCDResponseTimelineOfEvents = (events: DefendantTimeline): CCDTimeLineOfEvents [] => {
+export const toCCDResponseTimelineOfEvents = (claim: Claim): CCDTimeLineOfEvents [] => {
+  const events: DefendantTimeline = claim.isPartialAdmission()
+    ? claim.partialAdmission?.timeline
+    : claim.rejectAllOfClaim?.timeline;
   const ccdEvents: CCDTimeLineOfEvents[] = [];
 
   const timelineRows: TimelineRow [] = events?.rows;

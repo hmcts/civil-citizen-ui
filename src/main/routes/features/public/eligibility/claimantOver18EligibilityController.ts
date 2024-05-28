@@ -1,6 +1,8 @@
 import {Response, Router} from 'express';
 import {
-  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, ELIGIBILITY_CLAIMANT_AGE_URL, ELIGIBILITY_APPLY_HELP_WITH_FEES_URL,
+  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
+  ELIGIBILITY_CLAIMANT_AGE_URL,
+  ELIGIBILITY_HELP_WITH_FEES_URL,
 } from '../../../../routes/urls';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
@@ -33,7 +35,7 @@ claimantOver18EligibilityController.post(ELIGIBILITY_CLAIMANT_AGE_URL, (req, res
     cookie.claimantOver18 = genericYesNoForm.model.option;
     res.cookie('eligibility', cookie);
     genericYesNoForm.model.option === YesNo.YES
-      ? res.redirect(ELIGIBILITY_APPLY_HELP_WITH_FEES_URL)
+      ? res.redirect(ELIGIBILITY_HELP_WITH_FEES_URL)
       : res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18_CLAIMANT));
   }
 });

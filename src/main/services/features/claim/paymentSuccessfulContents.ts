@@ -8,12 +8,12 @@ export const getPaymentSuccessfulPanelContent = (claim : Claim) => {
     .build();
 };
 
-export const getPaymentSuccessfulBodyContent = (claim : Claim) => {
+export const getPaymentSuccessfulBodyContent = (claim : Claim, calculatedAmountInPence : string) => {
   return new PaymentSuccessfulSectionBuilder()
     .addParagraph('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.CONFIRMATION')
     .addTitle('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.PAYMENT_SUMMARY')
     .addSummary(currencyFormatWithNoTrailingZeros(convertToPoundsFilter(
-      claim.caseProgressionHearing.hearingFeeInformation.hearingFee.calculatedAmountInPence)),
+      calculatedAmountInPence)),
     'COMMON.MICRO_TEXT.HEARING_FEE')
     .build();
 };

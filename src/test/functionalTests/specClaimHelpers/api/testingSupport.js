@@ -2,11 +2,38 @@ const config = require('../../../config');
 const idamHelper = require('./idamHelper');
 const restHelper = require('./restHelper');
 const {retry} = require('./retryHelper');
+const totp = require('totp-generator');
 
 let incidentMessage;
 
 const MAX_RETRIES = 50;
 const RETRY_TIMEOUT_MS = 10000;
+
+const checkToggleEnabled = async (toggle) => {
+  const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+
+  return await restHelper.request(
+    `${config.url.civilService}/testing-support/feature-toggle/${toggle}`,
+    {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`,
+    }, null, 'GET')
+    .then(async response =>  {
+      if (response.status === 200) {
+        const json = await response.json();
+        console.log('Toggle..', toggle, '...and value is..', json.toggleEnabled);
+        return json.toggleEnabled;
+      } else {
+        throw new Error(`Error when checking toggle occurred with status : ${response.status}`);
+      }
+    },
+    );
+};
+
+const isDashboardServiceToggleEnabled = async () => {
+  let toggleValue =  await checkToggleEnabled('dashboard-service');
+  return toggleValue;
+};
 
 module.exports = {
   waitForFinishedBusinessProcess: async (caseId, user = '') => {
@@ -131,23 +158,26 @@ module.exports = {
       );
   },
 
-  checkToggleEnabled: async (toggle) => {
-    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+  updateCaseData: async (caseId, caseData, user = config.applicantSolicitorUser) => {
+    const authToken = await idamHelper.accessToken(user);
+    const s2sAuth = await restHelper.retriedRequest(
+      `${config.url.authProviderApi}/lease`,
+      {'Content-Type': 'application/json'},
+      {
+        microservice: config.s2s.microservice,
+        oneTimePassword: totp(config.s2s.secret),
+      })
+      .then(response => response.text());
 
-    return await restHelper.request(
-      `${config.url.civilService}/testing-support/feature-toggle/${toggle}`,
+    await restHelper.retriedRequest(
+      `${config.url.civilService}/testing-support/case/${caseId}`,
       {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${authToken}`,
-      }, null, 'GET')
-      .then(async response =>  {
-        if (response.status === 200) {
-          const json = await response.json();
-          return json.toggleEnabled;
-        } else {
-          throw new Error(`Error when checking toggle occurred with status : ${response.status}`);
-        }
-      },
-      );
+        'ServiceAuthorization': s2sAuth,
+      }, caseData, 'PUT');
   },
+
+  checkToggleEnabled,
+  isDashboardServiceToggleEnabled,
 };

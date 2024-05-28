@@ -1,7 +1,7 @@
 import {Application, NextFunction, Request, Response} from 'express';
 import config from 'config';
 import {AppRequest} from 'models/AppRequest';
-import {getUserDetails} from '../../app/auth/user/oidc';
+import {getOidcResponse, getSessionIssueTime, getUserDetails} from '../../app/auth/user/oidc';
 import {
   ASSIGN_CLAIM_URL,
   BASE_ELIGIBILITY_URL,
@@ -67,7 +67,11 @@ export class OidcMiddleware {
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       if (typeof req.query.code === 'string') {
-        req.session.user = app.locals.user = await getUserDetails(redirectUri, req.query.code);
+        
+        const responseData = await getOidcResponse(redirectUri, req.query.code);
+        req.session.user = app.locals.user = getUserDetails(responseData);
+        req.session.issuedAt = getSessionIssueTime(responseData);
+        
         if (app.locals.assignClaimURL || req.session.assignClaimURL) {
           const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
           return res.redirect(assignClaimUrlWithClaimId);
