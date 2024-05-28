@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 
 import {
-  GA_HEARING_ARRANGEMENTS,
+  GA_HEARING_ARRANGEMENTS_GUIDANCE,
   GA_UPLOAD_DOCUMENTS,
   GA_WANT_TO_UPLOAD_DOCUMENTS,
 } from 'routes/urls';
@@ -12,10 +12,10 @@ import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
 
-const hearingArrangementsController = Router();
-const viewPath = 'features/generalApplication/hearing_arrangements';
+const hearingArrangementsGuidanceController = Router();
+const viewPath = 'features/generalApplication/hearing_arrangements_guidance';
 
-hearingArrangementsController.get(GA_HEARING_ARRANGEMENTS, (async (req: AppRequest, res: Response, next: NextFunction) => {
+hearingArrangementsGuidanceController.get(GA_HEARING_ARRANGEMENTS_GUIDANCE, (async (req: AppRequest, res: Response, next: NextFunction) => {
   const claimId = req.params.id;
   const claim = await getClaimById(claimId, req, true);
   const backLinkUrl = getBackLinkUrl(claim, claimId);
@@ -33,4 +33,4 @@ function getBackLinkUrl(claim: Claim, claimId: string) : string {
     : constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS);
 }
 
-export default hearingArrangementsController;
+export default hearingArrangementsGuidanceController;

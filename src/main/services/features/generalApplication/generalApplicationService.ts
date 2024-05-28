@@ -97,12 +97,11 @@ export const saveApplicationCosts = async (claimId: string, applicationCosts: Ye
   }
 };
 
-export const saveIfPartyWantsToUploadDoc = async (claimId: string, wantToSaveDoc: YesNo): Promise<void> => {
+export const saveIfPartyWantsToUploadDoc = async (redisKey: string, wantToSaveDoc: YesNo): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(claimId, true);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    const claim = await getCaseDataFromStore(redisKey, true);
     claim.generalApplication.wantToUploadDocuments = wantToSaveDoc;
-    await saveDraftClaim(claimId, claim);
+    await saveDraftClaim(redisKey, claim);
   } catch (error) {
     logger.error(error);
     throw error;

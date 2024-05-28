@@ -1,6 +1,6 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  GA_HEARING_ARRANGEMENTS,
+  GA_HEARING_ARRANGEMENTS_GUIDANCE,
   GA_UPLOAD_DOCUMENTS,
   GA_WANT_TO_UPLOAD_DOCUMENTS,
 } from 'routes/urls';
@@ -61,7 +61,7 @@ wantToUploadDocumentsController.post(GA_WANT_TO_UPLOAD_DOCUMENTS, (async (req: A
         redirectUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS);
       } else if (req.body.option == YesNo.NO) {
         await removeAllUploadedDocuments(redisKey, claim);
-        redirectUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS);
+        redirectUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE);
       }
       await saveIfPartyWantsToUploadDoc(redisKey, req.body.option);
       res.redirect(redirectUrl);

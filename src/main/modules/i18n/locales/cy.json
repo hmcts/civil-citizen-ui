@@ -2231,7 +2231,7 @@
         "TITLE": "Application from the other parties",
         "VARY_JUDGMENT": "vary a judgment"
       },
-      "APPLICATION_HEARING_ARRANGEMENTS": {
+      "APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE": {
         "MSG1": "You may need to attend an application hearing so that a judge can consider the application with you and the other parties and decide what the next steps should be.",
         "MSG2": "This hearing is not to discuss the claim. This is a separate hearing to discuss the application.",
         "TITLE": "Application hearing arrangements"

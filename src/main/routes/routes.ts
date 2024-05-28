@@ -313,7 +313,7 @@ import hearingArrangementController from './features/generalApplication/hearingA
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 import respondentRequestChangeInformationController
   from 'routes/features/generalApplication/respondentRequestChangeInformationController';
-import hearingArrangementsController from 'routes/features/generalApplication/hearingArrangementsController';
+import hearingArrangementsGuidanceController from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
 import wantToUploadDocumentsController from 'routes/features/generalApplication/wantToUploadDocuments';
 import uploadEvidenceDocumentsForApplicationController from 'routes/features/generalApplication/uploadEvidenceDocumentForApplication';
 
@@ -589,7 +589,7 @@ export default [
   hearingArrangementController,
   hearingContactDetailsController,
   respondentRequestChangeInformationController,
-  hearingArrangementsController,
+  hearingArrangementsGuidanceController,
   wantToUploadDocumentsController,
   uploadEvidenceDocumentsForApplicationController,
 ];

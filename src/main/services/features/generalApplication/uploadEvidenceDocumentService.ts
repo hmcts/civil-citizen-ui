@@ -4,7 +4,6 @@ import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GA_UPLOAD_DOCUMENTS} from 'routes/urls';
-import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {Claim} from 'models/claim';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'models/AppRequest';
@@ -24,39 +23,38 @@ export const getSummaryList = async (formattedSummary: SummarySection, redisKey:
   let index = 0;
   claim?.generalApplication?.uploadEvidenceForApplication?.forEach((uploadDocument: UploadGAFiles) => {
     index= index+ 1;
-    return formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS+'?id='+index), 'Remove document'));
+    formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS+'?id='+index), 'Remove document'));
   });
-  return undefined;
 };
 
-export const saveDocumentsToUploaded = async (claimId: string, uploadDocument: UploadGAFiles): Promise<void> => {
+export const saveDocumentsToUploaded = async (redisKey: string, uploadDocument: UploadGAFiles): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(claimId, true);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
-    await saveDraftClaim(claimId, claim);
+    const claim = await getCaseDataFromStore(redisKey, true);
+    claim?.generalApplication?.uploadEvidenceForApplication.push(uploadDocument);
+    await saveDraftClaim(redisKey, claim);
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-export const removeSelectedDocument = async (claimId: string, claim: Claim, index: number) : Promise<void> => {
+export const removeSelectedDocument = async (redisKey: string, index: number) : Promise<void> => {
   try {
+    const claim = await getCaseDataFromStore(redisKey, true);
     claim?.generalApplication?.uploadEvidenceForApplication?.splice(index, 1);
-    await saveDraftClaim(claimId, claim);
+    await saveDraftClaim(redisKey, claim);
   } catch(error) {
     logger.error(error);
     throw error;
   }
 };
 
-export const removeAllUploadedDocuments = async (claimId: string, claim: Claim) : Promise<void> => {
+export const removeAllUploadedDocuments = async (redisKey: string, claim: Claim) : Promise<void> => {
   try {
     if(claim?.generalApplication?.uploadEvidenceForApplication) {
       claim.generalApplication.uploadEvidenceForApplication = [];
     }
-    await saveDraftClaim(claimId, claim);
+    await saveDraftClaim(redisKey, claim);
   } catch(error) {
     logger.error(error);
     throw error;

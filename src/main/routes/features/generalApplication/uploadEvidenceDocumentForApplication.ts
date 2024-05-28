@@ -1,6 +1,6 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  GA_HEARING_ARRANGEMENTS,
+  GA_HEARING_ARRANGEMENTS_GUIDANCE,
   GA_UPLOAD_DOCUMENTS, GA_WANT_TO_UPLOAD_DOCUMENTS,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
@@ -64,7 +64,7 @@ uploadEvidenceDocumentsForApplicationController.get(GA_UPLOAD_DOCUMENTS, (async 
     }
     if (req.query?.id) {
       const index = req.query.id;
-      await removeSelectedDocument(redisKey, claim, Number(index)-1);
+      await removeSelectedDocument(redisKey, Number(index)-1);
     }
     await getSummaryList(formattedSummary, redisKey, claimId);
     await renderView(form, claim, claimId, res, formattedSummary);
@@ -97,7 +97,7 @@ uploadEvidenceDocumentsForApplicationController.post(GA_UPLOAD_DOCUMENTS, upload
       await getSummaryList(formattedSummary, redisKey, claimId);
       return await renderView(form, claim, claimId, res, formattedSummary);
     } else {
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS));
+      res.redirect(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE));
     }
   } catch (error) {
     next(error);

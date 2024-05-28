@@ -2,7 +2,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_HEARING_ARRANGEMENTS, GA_UPLOAD_DOCUMENTS, GA_WANT_TO_UPLOAD_DOCUMENTS} from 'routes/urls';
+import {GA_HEARING_ARRANGEMENTS_GUIDANCE, GA_UPLOAD_DOCUMENTS, GA_WANT_TO_UPLOAD_DOCUMENTS} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
@@ -101,7 +101,7 @@ describe('General Application - Want to upload documents to support hearing', ()
         .send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_HEARING_ARRANGEMENTS);
+          expect(res.text).toContain(GA_HEARING_ARRANGEMENTS_GUIDANCE);
           expect(mockClaim.generalApplication.uploadEvidenceForApplication).toEqual([]);
         });
     });

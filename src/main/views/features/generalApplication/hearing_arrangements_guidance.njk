@@ -9,14 +9,10 @@
   {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.HEARING_APPLICATION.TITLE') }}
 {% endblock %}
 
-{% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-          {{ headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.TITLE') }}
-          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.MSG1') }}</p>
-          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.MSG2') }}</p>
+{% block nestedContent %}
+          {{ headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE.TITLE') }}
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE.MSG1') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE.MSG2') }}</p>
           <form method="post" novalidate>
             <div class="govuk-button-group">
               {{ csrfProtection(csrf) }}
@@ -25,11 +21,4 @@
               }) }}
             </div>
           </form>
-        </div>
-        <div class="govuk-grid-column-one-third">
-          {{ contactUsForHelp(t) }}
-        </div>
-      </div>
-    </main>
-  </div>
 {% endblock %}
