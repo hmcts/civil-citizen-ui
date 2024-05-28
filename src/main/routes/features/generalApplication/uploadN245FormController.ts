@@ -18,7 +18,7 @@ const removeDoc = 'REMOVE_DOC';
 const fileSize = Infinity;
 const selectedFile = 'selectedFile';
 const uploadButton = 'uploadButton';
-const pageTitle = `PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.PAGE_TITLE`;
+const pageTitle = 'PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.PAGE_TITLE';
 const upload = multer({
   limits: {
     fileSize: fileSize,
