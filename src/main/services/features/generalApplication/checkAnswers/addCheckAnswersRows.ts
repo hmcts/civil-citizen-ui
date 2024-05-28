@@ -136,7 +136,7 @@ export const addHearingArrangementsRows = (claimId: string, claim: Claim, lang: 
   return rows;
 };
 
-export const addContactDetailsRows = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
+export const addHearingContactDetailsRows = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: lng});
   const rows: SummaryRow[] = [];
