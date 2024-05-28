@@ -12,8 +12,8 @@ import {Application} from 'models/application';
 import {submitApplication} from 'services/features/generalApplication/submitApplication';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/modules/utilityService');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/modules/utilityService');
 
 const mockGetClaim = utilityService.getClaimById as jest.Mock;
 const application = new Application();
