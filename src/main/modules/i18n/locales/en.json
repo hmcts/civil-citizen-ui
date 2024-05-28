@@ -1501,6 +1501,8 @@
       "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
       "CLAIM_STATUS": "Status",
       "CLAIMANT_TITLE": "Claims you've made",
+      "CLAIMS_YOU_HAVE_MADE_HIDDEN_TEXT": "Claims you’ve made Page {{ pageNo }}",
+      "CLAIM_MADE_AGAINST_HIDDEN_TEXT": "Claims made against you Page {{ pageNo }} ",
       "DEADLINE": "Deadline",
       "DEFENDANT_NAME": "Defendant name",
       "DEFENDANT_TITLE": "Claims made against you",
