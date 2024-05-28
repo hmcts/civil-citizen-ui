@@ -49,7 +49,8 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getCaseDataFromStore(userId);
       const form = new GenericForm(getStatementOfTruth(claim));
-      renderView(res, form, claim, userId, lang);
+      const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
+      renderView(res, form, claim, userId, lang, isCarmEnabled);
     } catch (error) {
       next(error);
     }
