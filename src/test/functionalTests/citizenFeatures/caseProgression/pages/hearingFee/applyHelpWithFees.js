@@ -13,27 +13,32 @@ class ApplyHelpWithFees {
     I.click(nextAction);
   }
 
-  verifyPageContent(feeAmount) {
+  verifyPageContent(feeAmount, caseNumber, claimAmount) {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
     this.verifyHeadingDetails();
+    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     this.verifyPageText(feeAmount);
     contactUs.verifyContactUs();
   }
 
   verifyBreadcrumbs() {
-    I.see('Back', '//*[@id="main-content"]/div/main/div/div[1]/div[1]/a');
+    I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
   verifyHeadingDetails() {
-    I.see('Hearing fee', 'span');
+    I.see('Hearing', 'span');
     I.see('Help with fees', 'h1');
+  }
+
+  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    // I.see('Case number: ' + caseNumber, 'p');
+    I.see('Claim amount: ' + claimAmount, 'p');
   }
 
   verifyPageText(feeAmount) {
     I.see('The hearing fee is: £' + feeAmount,'span');
     I.see('Applying for help with fees does not guarantee your fee will be covered. You will need to meet the eligibility criteria (opens in new tab).');
-    I.seeElement('//*[@id="main-content"]/div/main/div/div[1]/p[1]/a');
     I.see('Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.');
     I.see('If your application for help with fees is accepted', 'span');
     I.see('Your fee will be paid in full and you will not need to make a payment.');

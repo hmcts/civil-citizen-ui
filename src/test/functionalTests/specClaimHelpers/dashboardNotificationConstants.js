@@ -191,6 +191,43 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.CP.StrikeOut.HearingFeeUnpaid.TrialReady.Claimant
+  claimStruckOut: () => {
+    return {
+      title: 'The claim has been struck out',
+      content: 'This is because the hearing fee was not paid by 10 November 2023 as stated in the hearing notice.',
+      nextSteps: 'hearing notice.',
+    };
+  },
+
+  //Notice.AAA6.CP.OrderMade.Claimant
+  orderMade: () => {
+    return {
+      title: 'An order has been made',
+      content: 'The judge has made an order on your claim. View the order.',
+      nextSteps: 'View the order',
+    };
+  },
+
+  //Notice.AAA6.CP.Hearing.Scheduled.Claimant
+  hearingScheduled: (hearingDate) => {
+    return {
+      title: 'A hearing has been scheduled',
+      content: `Your hearing has been scheduled for ${hearingDate} at Central London County Court. Please keep your contact details and anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050. View the hearing notice.`,
+      nextSteps: 'View the hearing notice',
+    };
+  },
+
+  //Notice.AAA6.CP.HearingFee.Required.Claimant
+  payTheHearingFeeClaimant: (amount, deadline) => {
+    return {
+      title: 'You must pay the hearing fee',
+      content: `You must either pay the hearing fee of £${amount} or apply for help with fees. You must do this by ${deadline}. If you do not take one of these actions, your claim will be struck out.`,
+      nextSteps: 'pay the hearing fee',
+      nextSteps2: 'apply for help with fees',
+    };
+  },
+
   //Notice.AAA6.ClaimantIntent.GoToHearing.Claimant
   goToHearingClaimant: () => {
     return {
@@ -203,9 +240,8 @@ module.exports = {
   goToHearingPartAdmitDefendant: (amount) => {
     return {
       title: 'Wait for the court to review the case',
-      content: ['Miss Jane Doe wants to proceed to court.',
-        `They rejected your admission of £${amount}.`,
-        'If the case goes to a hearing we will contact you with further details.'],
+      content: ['Miss Jane Doe wants to proceed with the claim.',
+        `They rejected your admission of £${amount}.`],
       nextSteps: 'View your response',
       nextSteps2: 'View the claimant\'s hearing requirements',
     };
