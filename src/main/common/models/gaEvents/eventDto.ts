@@ -8,7 +8,7 @@ import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/
 
 export interface EventDto {
   event: ApplicationEvent,
-  generalApplicationUpdate?: CCDGeneralApplication;
+  caseDataUpdate?: CCDGeneralApplication;
 }
 
 export interface CCDGeneralApplication {

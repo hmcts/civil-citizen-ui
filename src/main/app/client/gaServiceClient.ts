@@ -42,7 +42,7 @@ export class GaServiceClient {
     const userId = req.session?.user?.id;
     const data: EventDto = {
       event: event,
-      generalApplicationUpdate: updatedApplication,
+      caseDataUpdate: updatedApplication,
     };
     try {
       const response = await this.client.post(GA_SERVICE_SUBMIT_EVENT // no-sonar
