@@ -3,6 +3,7 @@
 {% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/button.njk" import addButton %}
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
 
 {% block nestedContent %}
@@ -27,11 +28,6 @@
     {{ yesNoRadioButton(t, 'option', 'option', '', 
           form, 
           t('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TEXT_REVIEW'),{noHtml:noHtml}) }}
-    <div class="govuk-button-group">
-      {{ govukButton({
-        text: t('COMMON.BUTTONS.CONTINUE')
-      }) }}
-      <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
-    </div>
+    {{ addButton(t, 'CONTINUE', cancelUrl) }}
   </form>
 {% endblock %}
