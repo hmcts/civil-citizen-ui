@@ -82,6 +82,7 @@ import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uplo
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import {GeneralApplication} from './generalApplication/GeneralApplication';
+import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -170,6 +171,7 @@ export class Claim {
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
   defendantResponseDocuments: SystemGeneratedCaseDocuments[];
+  judgmentOnline?: JudgmentOnline;
   // Index signature to allow dynamic property access
   [key: string]: any;
 

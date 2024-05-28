@@ -1,20 +1,20 @@
 import {CuiJudgmentPaidInFull} from 'models/judgmentOnline/cuiJudgmentPaidInFull';
 import {toCCDjudgmentPaidInFull} from 'services/translation/judgmentOnline/convertToCCDjudgmentPaidInFull';
-import {Claim} from 'models/claim';
 import {CCDJudgmentPaidInFull} from 'models/judgmentOnline/ccdJudgmentPaidInFull';
+import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 
 describe('should convert Judgment Paid In Full to CCD', () => {
 
   it('should map all values properly', () => {
     // Given
-    const claim = new Claim();
+    const judgmentOnline = new JudgmentOnline();
     const judgmentPaidInFullClaim = new CuiJudgmentPaidInFull;
     judgmentPaidInFullClaim.dateOfFullPaymentMade = new Date(2022, 10, 11);
     judgmentPaidInFullClaim.confirmFullPaymentMade = true;
-    claim.joJudgmentPaidInFull = judgmentPaidInFullClaim;
+    judgmentOnline.joJudgmentPaidInFull = judgmentPaidInFullClaim;
 
     // When
-    const converted = toCCDjudgmentPaidInFull(claim);
+    const converted = toCCDjudgmentPaidInFull(judgmentOnline);
 
     // Then
     const judgmentPaidInFullCCD: CCDJudgmentPaidInFull = {
@@ -30,14 +30,14 @@ describe('should convert Judgment Paid In Full to CCD', () => {
 
   it('should handle null values', () => {
     // Given
-    const claim = new Claim();
+    const judgmentOnline = new JudgmentOnline();
     const judgmentPaidInFullClaim = new CuiJudgmentPaidInFull;
     judgmentPaidInFullClaim.dateOfFullPaymentMade = null;
     judgmentPaidInFullClaim.confirmFullPaymentMade = null;
-    claim.joJudgmentPaidInFull = judgmentPaidInFullClaim;
+    judgmentOnline.joJudgmentPaidInFull = judgmentPaidInFullClaim;
 
     // When
-    const converted = toCCDjudgmentPaidInFull(claim);
+    const converted = toCCDjudgmentPaidInFull(judgmentOnline);
 
     // Then
     const judgmentPaidInFullCCD: CCDJudgmentPaidInFull = {
@@ -53,11 +53,11 @@ describe('should convert Judgment Paid In Full to CCD', () => {
 
   it('should handle null values for judgmentPaidInFull', () => {
     // Given
-    const claim = new Claim();
-    claim.joJudgmentPaidInFull = null;
+    const judgmentOnline = new JudgmentOnline();
+    judgmentOnline.joJudgmentPaidInFull = null;
 
     // When
-    const converted = toCCDjudgmentPaidInFull(claim);
+    const converted = toCCDjudgmentPaidInFull(judgmentOnline);
 
     // Then
     expect(converted.joJudgmentPaidInFull.dateOfFullPaymentMade).toBeNull();
