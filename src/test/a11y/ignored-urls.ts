@@ -1,5 +1,4 @@
 import * as urls from '../../main/routes/urls';
-import {CONFIRM_YOU_HAVE_BEEN_PAID_URL} from "../../main/routes/urls";
 
 export const IGNORED_URLS = [
   urls.SIGN_IN_URL,
