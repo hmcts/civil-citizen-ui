@@ -258,4 +258,15 @@ describe('dashboardInterpolationService', () => {
     });
   });
 
+  it('should replace placeholders for upload mediation document', () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    const textToReplaceUrl = '{VIEW_MEDIATION_DOCUMENTS}';
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined);
+
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const textExpected = '/case/123/mediation/view-mediation-documents';
+
+    expect(textReplacedDynamic).toEqual(textExpected);
+  });
 });
