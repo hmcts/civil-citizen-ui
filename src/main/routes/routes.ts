@@ -313,6 +313,8 @@ import unavailableHearingDatesController from 'routes/features/generalApplicatio
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 import gaCheckAnswersController from 'routes/features/generalApplication/checkAnswersController';
+import respondentRequestChangeInformationController
+  from 'routes/features/generalApplication/respondentRequestChangeInformationController';
 
 export default [
   homeController,
@@ -587,4 +589,5 @@ export default [
   hearingArrangementController,
   hearingContactDetailsController,
   gaCheckAnswersController,
+  respondentRequestChangeInformationController,
 ];

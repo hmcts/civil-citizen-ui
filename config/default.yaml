@@ -7,6 +7,8 @@ services:
   civilService:
     url: 'http://localhost:4000'
     microservice: 'civil_service'
+  gaService:
+    url: 'http://localhost:4550'
   postcodeLookup:
     ordnanceSurveyApiKey:
   launchDarkly:

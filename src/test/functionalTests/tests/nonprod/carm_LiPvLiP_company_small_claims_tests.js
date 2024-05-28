@@ -116,7 +116,7 @@ Scenario('LiP claimant uploads mediation documents', async ({api}) => {
     await UploadDocSteps.UploadDocuments('Documents referred to in the statement');
     await UploadDocSteps.ClickContinue();
     await UploadDocSteps.CheckAndSendMediationDocs('Claimant');
-    await UploadDocSteps.VerifyConfirmationPage();
+    await UploadDocSteps.VerifyConfirmationPage(claimRef);
     await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-carm');
@@ -131,7 +131,7 @@ Scenario('LiP defendant uploads mediation documents', async ({api}) => {
     await UploadDocSteps.UploadDocuments('Your statement');
     await UploadDocSteps.ClickContinue();
     await UploadDocSteps.CheckAndSendMediationDocs('Defendant');
-    await UploadDocSteps.VerifyConfirmationPage();
+    await UploadDocSteps.VerifyConfirmationPage(claimRef);
     await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-carm');

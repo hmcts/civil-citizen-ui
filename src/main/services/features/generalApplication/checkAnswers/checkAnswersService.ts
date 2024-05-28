@@ -1,7 +1,7 @@
 import {Claim} from 'models/claim';
 import {
   addApplicationTypesRows,
-  addAskForCostsRow, addContactDetailsRows, addHearingArrangementsRows, addHearingSupportRows,
+  addAskForCostsRow, addHearingContactDetailsRows, addHearingArrangementsRows, addHearingSupportRows,
   addInformOtherPartiesRow, addOrderJudgeRows,
   addOtherPartiesAgreedRow, addRequestingReasonRows, addUnavailableDatesRows,
 } from './addCheckAnswersRows';
@@ -16,7 +16,7 @@ const buildSummarySections = (claimId: string, claim: Claim, lang: string ): Sum
     ...addOrderJudgeRows(claimId, claim, lang),
     ...addRequestingReasonRows(claimId, claim, lang),
     ...addHearingArrangementsRows(claimId, claim, lang),
-    ...addContactDetailsRows(claimId, claim, lang),
+    ...addHearingContactDetailsRows(claimId, claim, lang),
     ...addUnavailableDatesRows(claimId, claim, lang),
     ...addHearingSupportRows(claimId, claim, lang),
   ];
