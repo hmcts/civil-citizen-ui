@@ -119,7 +119,7 @@ const content = {
     uponCompletion: {
       en: 'You should only make an application once this has been completed.',
       cy: 'Dim ond unwaith y bydd hyn wedi’i wneud y dylech wneud cais.',
-    }
+    },
   },
   other: {
     title: {
