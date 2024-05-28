@@ -15,6 +15,8 @@ import config from 'config';
 import {DateConverter} from 'common/utils/dateConverter';
 import {CuiJudgmentPaidInFull} from 'models/judgmentOnline/cuiJudgmentPaidInFull';
 import {toCCDjudgmentPaidInFull} from 'services/translation/judgmentOnline/convertToCCDjudgmentPaidInFull';
+import {JoClaim} from 'models/judgmentOnline/joClaim';
+import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 
 const confirmYouHaveBeenPaidViewPath = 'features/judgmentOnline/confirm-you-have-been-paid';
 const confirmYouHaveBeenPaidController = Router();
@@ -51,7 +53,8 @@ confirmYouHaveBeenPaidController.get(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req
     const claim = await getClaimById(claimId, req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const isClaimant = claim.isClaimant();
-    const cancelUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claim.id);
+    await deleteDraftClaimFromStore(claimId);
+    const cancelUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
 
     const form = new GenericForm(new DateYouHaveBeenPaidForm());
     if (isClaimant) {
@@ -70,20 +73,20 @@ confirmYouHaveBeenPaidController.post(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (re
     const form = new GenericForm(new DateYouHaveBeenPaidForm(year, month, day, confirmed));
     await form.validate();
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const cancelUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claim.id);
+    const cancelUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
 
     if (form.hasErrors()) {
       renderView(form, res, lang, cancelUrl);
     } else {
+      const joClaim = new JoClaim();
       const judgmentPaidInFull = new CuiJudgmentPaidInFull;
       judgmentPaidInFull.dateOfFullPaymentMade = DateConverter.convertToDate(year, month, day);
       judgmentPaidInFull.confirmFullPaymentMade = confirmed;
-      claim.joJudgmentPaidInFull = judgmentPaidInFull;
-      const claimUpdate = toCCDjudgmentPaidInFull(claim);
+      joClaim.joJudgmentPaidInFull = judgmentPaidInFull;
+      const claimUpdate = toCCDjudgmentPaidInFull(joClaim);
       await civilServiceClient.submitJudgmentPaidInFull(claimId, claimUpdate, req);
-      res.redirect(constructResponseUrlWithIdParams(claim.id, CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL));
     }
   } catch (error) {
     next(error);
