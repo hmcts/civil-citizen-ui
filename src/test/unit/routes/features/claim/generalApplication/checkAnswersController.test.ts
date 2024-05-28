@@ -67,7 +67,7 @@ describe('General Application - Check your answers', () => {
   describe('on POST', () => {
     it('should send the value and redirect', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockSubmitApplication.mockImplementation(() => {});
+      mockSubmitApplication.mockImplementation(() => ({id: '123'}));
       await request(app)
         .post(GA_CHECK_ANSWERS_URL)
         .send({signed: 'yes', name: 'Mr Applicant'})

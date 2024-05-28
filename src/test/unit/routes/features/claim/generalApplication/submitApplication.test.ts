@@ -18,7 +18,6 @@ jest.mock('../../../../../../main/modules/utilityService');
 const mockGetClaim = utilityService.getClaimById as jest.Mock;
 const application = new Application();
 
-
 describe('Submit application to ccd', () => {
 
   beforeEach(() => {
