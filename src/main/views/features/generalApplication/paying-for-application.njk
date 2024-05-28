@@ -9,11 +9,7 @@
   {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.PAYMENT_FOR_APPLICATION.TITLE') }}
 {% endblock %}
 
-{% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+{% block nestedContent %}
           {{ headingWithCaption(t, applicationType, 'PAGES.GENERAL_APPLICATION.PAYMENT_FOR_APPLICATION.TITLE') }}
           <h1 class="govuk-heading-s govuk-!-margin-bottom-0">{{ t('PAGES.GENERAL_APPLICATION.PAYMENT_FOR_APPLICATION.APPLICATION_FEE') }}</h1>
           <p class="govuk-body">£{{ applicationFee }}</p>
@@ -28,11 +24,4 @@
               <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </div>
           </form>
-        </div>
-        <div class="govuk-grid-column-one-third">
-          {{ contactUsForHelp(t) }}
-        </div>
-      </div>
-    </main>
-  </div>
 {% endblock %}
