@@ -1,4 +1,4 @@
-import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   GA_HEARING_ARRANGEMENTS,
   GA_UPLOAD_DOCUMENTS,
