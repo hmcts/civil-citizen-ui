@@ -1,22 +1,23 @@
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../main/app';
 import request from 'supertest';
 import {Claim} from 'models/claim';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import * as utilityService from 'modules/utilityService';
 import * as ccdTranslationService from 'services/translation/generalApplication/ccdTranslation';
-import {req} from '../../../../../utils/UserDetails';
+import {req} from '../../../../utils/UserDetails';
 import {AppRequest} from 'models/AppRequest';
 import {GaServiceClient} from 'client/gaServiceClient';
 import {Application} from 'models/application';
 import {submitApplication} from 'services/features/generalApplication/submitApplication';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/modules/utilityService');
 
 const mockGetClaim = utilityService.getClaimById as jest.Mock;
 const application = new Application();
+request(app);
 
 describe('Submit application to ccd', () => {
 
@@ -29,7 +30,6 @@ describe('Submit application to ccd', () => {
   });
 
   it('should submit claim successfully when there are no errors', async () => {
-    request(app);
     const ccdTranslationServiceMock = jest
       .spyOn(ccdTranslationService, 'translateDraftApplicationToCCD');
 
