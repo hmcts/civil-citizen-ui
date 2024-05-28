@@ -53,7 +53,7 @@ export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
   return true;
 }
 export async function isDashboardServiceEnabled(): Promise<boolean> {
-  return true;;
+  return true;
 }
 export async function isCARMEnabled(): Promise<boolean> {
   return await getFlagValue('carm') as boolean;
