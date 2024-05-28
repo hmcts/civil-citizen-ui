@@ -45,10 +45,11 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
 
 export const getNotifications = async (claimId: string, claim: Claim, caseRole: ClaimantOrDefendant, req: AppRequest): Promise<DashboardNotificationList> => {
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
+  const lng = req.query.lang ? req.query.lang : req.cookies.lang;
   if (dashboardNotifications) {
     dashboardNotifications.items.forEach((notification) => {
-      notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification);
-      notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification);
+      notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng);
+      notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng);
     });
     return dashboardNotifications;
   } else {
