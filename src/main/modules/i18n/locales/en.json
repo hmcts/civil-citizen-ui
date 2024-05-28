@@ -1501,6 +1501,8 @@
       "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
       "CLAIM_STATUS": "Status",
       "CLAIMANT_TITLE": "Claims you've made",
+      "CLAIMS_YOU_HAVE_MADE_HIDDEN_TEXT": "Claims you’ve made Page {{ pageNo }}",
+      "CLAIM_MADE_AGAINST_HIDDEN_TEXT": "Claims made against you Page {{ pageNo }} ",
       "DEADLINE": "Deadline",
       "DEFENDANT_NAME": "Defendant name",
       "DEFENDANT_TITLE": "Claims made against you",
@@ -2299,6 +2301,18 @@
         "PREFERRED_EMAIL_ADDRESS": "Preferred email address",
         "PREFERRED_TELEPHONE_NUMBER": "Preferred telephone number",
         "TITLE": "Contact Details"
+      },
+      "RESPONDENT_INFORMATION": {
+        "CLICK_RESPOND": "Click 'respond to application' to let the court know whether or not you agree with their request.",
+        "HEADER": "Respond to an application",
+        "INCLUDE_APPLICATION": "They will have included information about what change they'd like and why in their application. They may have also uploaded documents to support their request.",
+        "OTHER_PARTY_REQUEST": "The other parties have requested a change to the case. The 'other parties' are the other side or sides involved in your claim.",
+        "PAGE_TITLE": "Respond to a request for a change to the case",
+        "REQUEST_BY_APPLICATION": "They requested a change by making an application.",
+        "REVIEW_APPLICATION": "Review their application and any documents that they've uploaded on the next screen",
+        "SENT_TO_JUDGE": "Their application and your response will then be sent to a judge.",
+        "TITLE": "Respond to a request for a change to the case",
+        "WHAT_TO_DO_NEXT": "What to do next"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {

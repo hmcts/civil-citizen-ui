@@ -60,14 +60,7 @@
 }) }}
 {% endset -%}
 
-{% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
-      {% if form.hasErrors() %}
-        {{ errorSummary(errors, t) }}
-      {% endif %}
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+{% block nestedContent %}
           {{ headingWithCaption(t, applicationType, headingTitle) }}
           <p class="govuk-body govuk-!-font-weight-bold">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.IF_YOU_NEED') }}</p>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.NEED_TO_ARRANGE') }}</p>
@@ -134,11 +127,4 @@
               <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </div>
           </form>
-        </div>
-        <div class="govuk-grid-column-one-third">
-          {{ contactUsForHelp(t) }}
-        </div>
-      </div>
-    </main>
-  </div>
 {% endblock %}
