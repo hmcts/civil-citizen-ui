@@ -45,11 +45,11 @@ wantToUploadDocumentsController.get(GA_WANT_TO_UPLOAD_DOCUMENTS, (async (req: Ap
   }
 }) as RequestHandler);
 
-wantToUploadDocumentsController.post(GA_WANT_TO_UPLOAD_DOCUMENTS, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+wantToUploadDocumentsController.post(GA_WANT_TO_UPLOAD_DOCUMENTS, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const redisKey = generateRedisKey(<AppRequest>req);
+    const redisKey = generateRedisKey(req);
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION'));
     await form.validate();
 
