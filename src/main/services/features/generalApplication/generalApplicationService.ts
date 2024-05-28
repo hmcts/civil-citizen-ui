@@ -217,3 +217,9 @@ export const saveStatementOfTruth = async (claimId: string, statementOfTruth: St
     throw error;
   }
 };
+
+export const getListOfNotAllowedAdditionalAppType = () => {
+  return [ApplicationTypeOption.SET_ASIDE_JUDGEMENT, 
+    ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, 
+    ApplicationTypeOption.SETTLE_BY_CONSENT];
+};

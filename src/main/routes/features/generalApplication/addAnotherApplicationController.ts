@@ -37,13 +37,12 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, async (req:
       await renderView(req, res, form);
     } else {
       const claimId = req.params.id;
-      const redirectUrl = APPLICATION_TYPE_URL.replace(':id', claimId)
+      const redirectUrl = APPLICATION_TYPE_URL.replace(':id', claimId);
       res.redirect(redirectUrl);
     }
   } catch (error) {
     next(error);
   }
 });
-
 
 export default addAnotherApplicationController;

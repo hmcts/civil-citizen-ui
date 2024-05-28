@@ -3,11 +3,13 @@ import {APPLICATION_TYPE_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
-import {saveApplicationType} from 'services/features/generalApplication/generalApplicationService';
+import {getListOfNotAllowedAdditionalAppType, saveApplicationType} from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import { FormValidationError } from 'common/form/validationErrors/formValidationError';
 import { GenericYesNo } from 'common/form/models/genericYesNo';
+import { Claim } from 'common/models/claim';
+import { ValidationError } from 'class-validator';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
@@ -37,10 +39,9 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
 
 applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
+    const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    console.log(claim);
     let applicationType = null;
 
     if (req.body.option === ApplicationTypeOption.OTHER) {
@@ -52,21 +53,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const form = new GenericForm(applicationType);
     form.validateSync();
 
-    if(claim.generalApplication?.applicationTypes?.length > 0 && getListOfNotAllowedAdditionalApp().includes(applicationType.option)) {
-      const errorMessage = additionalApplicationErrorMessages[applicationType.option];
-
-      const validationError = new FormValidationError({
-        target: new GenericYesNo(req.body.optionOther, ''),
-        value: req.body.option,
-        constraints: {
-          additionalApplicationError :errorMessage,
-        },
-        property: 'option',
-      });
-  
-      form.errors.push(validationError);
-
-    }
+    validateAdditionalApplicationtType(claim,form.errors,applicationType,req as AppRequest);
 
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl,isOtherSelected: applicationType.isOtherSelected() });
@@ -83,17 +70,29 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
   }
 }) as RequestHandler);
 
-function getListOfNotAllowedAdditionalApp() : ApplicationTypeOption[] {
-  var notAllowedList : ApplicationTypeOption[]; 
-  notAllowedList = [ApplicationTypeOption.SET_ASIDE_JUDGEMENT,ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT,ApplicationTypeOption.SETTLE_BY_CONSENT] ;
-  return notAllowedList;
-}
-
 export const additionalApplicationErrorMessages: Partial<{ [key in ApplicationTypeOption]: string; }> = {
   [ApplicationTypeOption.SETTLE_BY_CONSENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING',
   [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT',
   [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT',
 };
 
+function validateAdditionalApplicationtType(claim : Claim, errors : ValidationError[],applicationType : ApplicationType,req: AppRequest) {
+ 
+  if(claim.generalApplication?.applicationTypes?.length > 0 && getListOfNotAllowedAdditionalAppType().includes(applicationType.option)) {
+    const errorMessage = additionalApplicationErrorMessages[applicationType.option];
+
+    const validationError = new FormValidationError({
+      target: new GenericYesNo(req.body.optionOther, ''),
+      value: req.body.option,
+      constraints: {
+        additionalApplicationError : errorMessage,
+      },
+      property: 'option',
+    });
+
+    errors.push(validationError);
+
+  }
+}
 
 export default applicationTypeController;
