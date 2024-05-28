@@ -11,9 +11,6 @@
 {% endblock %}
 
 {% block nestedContent %}
-      {% if form.hasErrors() %}
-        {{ errorSummary(form.getAllErrors(), t) }}
-      {% endif %}
           {{headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.APPLICATION_REASON.WHY_REQUESTING' )}}
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.THE_INFORMATION') }}</p>
           {% for content in contentList %}
