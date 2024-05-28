@@ -15,6 +15,7 @@ export interface CCDGeneralApplication {
   generalAppType: CcdGeneralApplicationTypes;
   generalAppConsentOrder: YesNoUpperCamelCase;
   generalAppInformOtherParty: CcdGeneralApplicationInformOtherParty;
+  generalAppAskForCosts: YesNoUpperCamelCase;
   generalAppDetailsOfOrder: string;
   generalAppReasonsOfOrder: string;
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;

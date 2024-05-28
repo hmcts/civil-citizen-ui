@@ -32,6 +32,7 @@ export const translateDraftApplicationToCCD = (
     generalAppType: toCCDGeneralApplicationTypes(application.applicationTypes),
     generalAppConsentOrder: toCCDYesNo(application.agreementFromOtherParty),
     generalAppInformOtherParty: toCCDInformOtherParty(application.informOtherParties),
+    generalAppAskForCosts: toCCDYesNo(application.applicationCosts),
     generalAppDetailsOfOrder: toCCDDetailsOfOrder(application.orderJudges),
     generalAppReasonsOfOrder: toCCDReasonsOfOrder(application.requestingReasons),
     generalAppHearingDetails: toCCDGeneralAppHearingDetails(application.hearingArrangement, application.hearingContactDetails,
