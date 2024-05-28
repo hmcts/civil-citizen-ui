@@ -16,14 +16,7 @@
   <p class="govuk-body govuk-!-margin-bottom-2">{{ t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.ASK_YOUR_COSTS_BACK_YES') }}</p>
 {% endset -%}
 
-{% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
-      {% if form.hasErrors() %}
-        {{ errorSummary(form.getErrors(), t) }}
-      {% endif %}
-      <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
+{% block nestedContent %}
           {{ headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.TITLE') }}
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.JUDGE_MAKE_DECISION') }}</p>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.CLAIM_APPLICATION_COST.IF_APPLICATION_SUCCESS') }}</p>
@@ -46,11 +39,4 @@
               <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </div>
           </form>
-        </div>
-        <div class="govuk-grid-column-one-third">
-            {{ contactUsForHelp(t) }}
-        </div>
-      </div>
-    </main>
-  </div>
 {% endblock %}
