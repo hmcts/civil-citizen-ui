@@ -20,19 +20,19 @@ const uploadYourDocumentsConfirmation = new UploadYourDocumentsConfirmation();
 const buttons = {
   startNow: {
     en: 'Start now',
-    cy: 'Iaith',
+    cy: 'Dechrau nawr',
   },
   continue: {
     en: 'Continue',
-    cy: 'Mae\'n rhaid ichi ddewis pa iaith yr hoffech ei defnyddio i ymateb i\'r hawliad hwn.',
+    cy: 'Parhau',
   },
   submit: {
     en: 'Submit',
-    cy: 'SubmitCY',
+    cy: 'Cyflwyno',
   },
   viewDocuments: {
     en: 'View documents',
-    cy: 'View documentsCY',
+    cy: 'Gweld y dogfennau',
   },
 };
 
