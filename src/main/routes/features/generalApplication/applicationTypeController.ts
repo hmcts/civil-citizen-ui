@@ -88,6 +88,6 @@ function validateAdditionalApplicationtType(claim : Claim, errors : ValidationEr
 
     errors.push(validationError);
   }
-};
+}
 
 export default applicationTypeController;
