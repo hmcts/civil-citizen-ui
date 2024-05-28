@@ -18,7 +18,7 @@ export const getUploadFormContent = (lng: string) => {
   const uploadItHere = t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.UPLOAD_HERE', { lng });
   const linkForN245Form = `<a href="${formN245Url}" target="_blank">${t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.COMPLETE_N245_FORM', { lng })}</a>`;
   return new UploadDocumentsSectionBuilder()
-    .addRawHtml(`<p class="govuk-body ">${uploadItHere.replace('LINK_FOR_N245_FORM', linkForN245Form)}</p>`)
+    .addRawHtml(`<p class="govuk-body">${uploadItHere.replace('LINK_FOR_N245_FORM', linkForN245Form)}</p>`)
     .addParagraph('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.OFFER_OF_PAYMENT')
     .addParagraph('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.INCOME_AND_EXPENSE')
     .addParagraph('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.WAYS_TO_COMPLETE')
@@ -43,7 +43,7 @@ export const uploadSelectedFile = async (req: AppRequest, claim: Claim): Promise
   const form = new GenericForm(uploadedN245Details);
   form.validateSync();
   if (!form.hasErrors()) {
-    uploadedN245Details.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
+    uploadedN245Details.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
     saveN245Form(redisKey, claim, uploadedN245Details);
   }
   const documentName = uploadedN245Details.caseDocument?.documentName || claim.generalApplication?.uploadN245Form?.caseDocument?.documentName;
