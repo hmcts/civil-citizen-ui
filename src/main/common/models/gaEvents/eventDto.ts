@@ -2,7 +2,7 @@ import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {CcdGeneralApplicationTypes} from 'models/ccdGeneralApplication/ccdGeneralApplicationTypes';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {
-  CcdGeneralApplicationInformOtherParty
+  CcdGeneralApplicationInformOtherParty,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationInformOtherParty';
 import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 

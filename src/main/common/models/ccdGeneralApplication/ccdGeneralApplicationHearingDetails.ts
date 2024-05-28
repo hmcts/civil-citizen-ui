@@ -1,6 +1,6 @@
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {
-  CcdGeneralApplicationUnavailableHearingDatesElement
+  CcdGeneralApplicationUnavailableHearingDatesElement,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationUnavailableHearingDates';
 import {CcdSupportRequirement} from 'models/ccdGeneralApplication/ccdSupportRequirement';
 

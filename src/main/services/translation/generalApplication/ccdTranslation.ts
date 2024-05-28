@@ -1,4 +1,3 @@
-import { AppRequest } from 'models/AppRequest';
 import { GeneralApplication } from 'models/generalApplication/GeneralApplication';
 import { CCDGeneralApplication } from 'models/gaEvents/eventDto';
 import { OrderJudge } from 'models/generalApplication/orderJudge';
@@ -20,7 +19,7 @@ import {
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 import {
-  CcdGeneralApplicationUnavailableHearingDatesElement
+  CcdGeneralApplicationUnavailableHearingDatesElement,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationUnavailableHearingDates';
 import {DateTime} from 'luxon';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
@@ -28,7 +27,6 @@ import {CcdSupportRequirement} from 'models/ccdGeneralApplication/ccdSupportRequ
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
-  req: AppRequest,
 ): CCDGeneralApplication => {
   return {
     generalAppType: toCCDGeneralApplicationTypes(application.applicationTypes),
@@ -44,16 +42,16 @@ export const translateDraftApplicationToCCD = (
 const toCCDGeneralApplicationTypes = (applicationTypes: ApplicationType[]): CcdGeneralApplicationTypes => {
   return {
     types: applicationTypes?.map(applicationType => applicationType.option),
-  }
-}
+  };
+};
 
 const toCCDInformOtherParty = (informOtherParty: InformOtherParties): CcdGeneralApplicationInformOtherParty => {
   return informOtherParty
-  ? {
-    isWithNotice: toCCDYesNo(informOtherParty.option as YesNo),
-    reasonsForWithoutNotice: (informOtherParty.reasonForCourtNotInformingOtherParties),
-  }
-  : undefined;
+    ? {
+      isWithNotice: toCCDYesNo(informOtherParty.option as YesNo),
+      reasonsForWithoutNotice: (informOtherParty.reasonForCourtNotInformingOtherParties),
+    }
+    : undefined;
 };
 
 const toCCDDetailsOfOrder = (orderJudges: OrderJudge[]): string => {
@@ -65,26 +63,26 @@ const toCCDReasonsOfOrder = (requestingReasons: RequestingReason[]): string => {
 };
 
 const toCCDGeneralAppHearingDetails = (hearingArrangement: HearingArrangement, hearingContactDetails: HearingContactDetails,
-                                       unavailableHearingDates: UnavailableDatesGaHearing, hearingSupport: HearingSupport): CcdGeneralApplicationHearingDetails => {
+  unavailableHearingDates: UnavailableDatesGaHearing, hearingSupport: HearingSupport): CcdGeneralApplicationHearingDetails => {
   return (hearingArrangement && hearingContactDetails)
-  ? {
-    HearingPreferencesPreferredType: toCCDHearingPreferencesPreferredType(hearingArrangement.option),
-    ReasonForPreferredHearingType:  hearingArrangement.reasonForPreferredHearingType,
-    HearingPreferredLocation: {
-      value: {
-        label: hearingArrangement.courtLocation,
-      }
-    },
-    HearingDetailsTelephoneNumber: hearingContactDetails.telephoneNumber,
-    HearingDetailsEmailID: hearingContactDetails.emailAddress,
-    unavailableTrialRequiredYesOrNo: toUnavailableHearingDatesYesNo(unavailableHearingDates),
-    generalAppUnavailableDates: toCCDUnavailableHearingDates(unavailableHearingDates),
-    SupportRequirement: toCCDSupportRequirements(hearingSupport),
-    SupportRequirementSignLanguage: hearingSupport?.signLanguageInterpreter?.content,
-    SupportRequirementLanguageInterpreter: hearingSupport?.languageInterpreter?.content,
-    SupportRequirementOther: hearingSupport?.otherSupport?.content,
-  }
-  : undefined;
+    ? {
+      HearingPreferencesPreferredType: toCCDHearingPreferencesPreferredType(hearingArrangement.option),
+      ReasonForPreferredHearingType:  hearingArrangement.reasonForPreferredHearingType,
+      HearingPreferredLocation: {
+        value: {
+          label: hearingArrangement.courtLocation,
+        },
+      },
+      HearingDetailsTelephoneNumber: hearingContactDetails.telephoneNumber,
+      HearingDetailsEmailID: hearingContactDetails.emailAddress,
+      unavailableTrialRequiredYesOrNo: toUnavailableHearingDatesYesNo(unavailableHearingDates),
+      generalAppUnavailableDates: toCCDUnavailableHearingDates(unavailableHearingDates),
+      SupportRequirement: toCCDSupportRequirements(hearingSupport),
+      SupportRequirementSignLanguage: hearingSupport?.signLanguageInterpreter?.content,
+      SupportRequirementLanguageInterpreter: hearingSupport?.languageInterpreter?.content,
+      SupportRequirementOther: hearingSupport?.otherSupport?.content,
+    }
+    : undefined;
 };
 
 const toCCDHearingPreferencesPreferredType = (hearingTypeOption: HearingTypeOptions): CcdHearingType => {
@@ -97,7 +95,7 @@ const toCCDHearingPreferencesPreferredType = (hearingTypeOption: HearingTypeOpti
       return CcdHearingType.VIDEO;
     default:
       return undefined;
-  };
+  }
 };
 
 const toUnavailableHearingDatesYesNo = (unavailableHearingDates: UnavailableDatesGaHearing): YesNoUpperCamelCase => {
@@ -113,7 +111,7 @@ const toCCDUnavailableHearingDates = (unavailableHearingDates: UnavailableDatesG
         unavailableTrialDateFrom: DateTime.fromJSDate(new Date(unavailableDatePeriod.from)).toFormat('yyyy-MM-dd'),
         unavailableTrialDateTo: unavailableDatePeriod.until ? DateTime.fromJSDate(new Date(unavailableDatePeriod.until)).toFormat('yyyy-MM-dd') : undefined,
       },
-    }
+    };
   });
 };
 

@@ -15,7 +15,7 @@ export const submitApplication = async (req: AppRequest): Promise<Application> =
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    let ccdApplication = translateDraftApplicationToCCD(claim.generalApplication, req);
+    const ccdApplication = translateDraftApplicationToCCD(claim.generalApplication);
     return await gaServiceClient.submitDraftApplication(ccdApplication, req);
   } catch (err) {
     logger.error(err);
