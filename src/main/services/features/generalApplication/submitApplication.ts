@@ -8,7 +8,7 @@ import {getClaimById} from 'modules/utilityService';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
 
-const gaServiceApiBaseUrl = config.get<string>('services.gaService.url');
+const gaServiceApiBaseUrl = config.get<string>('services.civilGeneralApplications.url');
 const gaServiceClient: GaServiceClient = new GaServiceClient(gaServiceApiBaseUrl);
 
 export const submitApplication = async (req: AppRequest): Promise<Application> => {
