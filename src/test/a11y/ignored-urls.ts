@@ -63,6 +63,6 @@ export const IGNORED_URLS = [
   urls.VIEW_THE_HEARING_URL,
   urls.BASE_GENERAL_APPLICATION_RESPONSE_URL,
   //TODO: remove this once CIV-9453 merged
-  urls.GA_HEARING_ARRANGEMENTS_GUIDANCE,
+  urls.GA_WANT_TO_UPLOAD_DOCUMENTS,
   urls.CONFIRM_YOU_HAVE_BEEN_PAID_URL, //TODO: remove this once finished the page
 ];

@@ -1,5 +1,5 @@
 import { NextFunction, RequestHandler, Response, Router } from 'express';
-import { GA_HEARING_ARRANGEMENTS_GUIDANCE, GA_UPLOAD_N245_FORM_URL } from 'routes/urls';
+import { GA_UPLOAD_N245_FORM_URL, GA_WANT_TO_UPLOAD_DOCUMENTS } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
@@ -90,7 +90,7 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFil
         contentList,
       });
     } else {
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE)); 
+      res.redirect(constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS)); 
     }
   } catch (error) {
     next(error);
