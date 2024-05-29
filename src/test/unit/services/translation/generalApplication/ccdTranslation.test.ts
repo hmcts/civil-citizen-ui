@@ -128,7 +128,7 @@ describe('translate draft application to ccd', () => {
           createdDatetime: new Date(),
         },
         fileUpload: undefined,
-      }
+      },
     ];
     //When
     const ccdGeneralApplication = translateDraftApplicationToCCD(application);
@@ -141,7 +141,7 @@ describe('translate draft application to ccd', () => {
           document_filename: 'test',
           document_url: 'url',
         },
-      }
+      },
     ]);
   });
 });

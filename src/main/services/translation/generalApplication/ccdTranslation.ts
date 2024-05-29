@@ -84,8 +84,8 @@ const toCCDEvidenceDocuments = (wantToUpload: YesNo, uploadDocuments: UploadGAFi
           document_binary_url: uploadDocument?.caseDocument?.documentLink?.document_url,
           document_filename: uploadDocument?.caseDocument?.documentLink?.document_filename,
           category_id: uploadDocument?.caseDocument?.documentLink?.category_id,
-        }
-      }
+        },
+      };
     })
     : undefined;
 };

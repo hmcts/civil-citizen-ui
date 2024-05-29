@@ -6,7 +6,7 @@ import {
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationInformOtherParty';
 import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {
-  CcdGeneralApplicationEvidenceDocument
+  CcdGeneralApplicationEvidenceDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
 
 export interface EventDto {
