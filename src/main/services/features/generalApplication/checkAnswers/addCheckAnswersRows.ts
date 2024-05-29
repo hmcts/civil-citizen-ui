@@ -208,17 +208,15 @@ export const addUnavailableDatesRows = (claimId: string, claim: Claim, lang: str
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   const rows: SummaryRow[] = [];
   if (claim.generalApplication?.unavailableDatesHearing) {
-    let unavailableDatesHtml = '';
+    let unavailableDatesHtml = '<ul class="no-list-style">';
     claim.generalApplication.unavailableDatesHearing.items.forEach((value, index) => {
-      if (index > 0) {
-        unavailableDatesHtml += '<br>';
-      }
       if (value.type === UnavailableDateType.SINGLE_DATE) {
-        unavailableDatesHtml += formatDateToFullDate(value.from, lang);
+        unavailableDatesHtml += `<li>${formatDateToFullDate(value.from, lang)}</li>`;
       } else if (value.type === UnavailableDateType.LONGER_PERIOD) {
-        unavailableDatesHtml += formatDateToFullDate(value.from, lang) + ' - ' + formatDateToFullDate(value.until, lang);
+        unavailableDatesHtml += `<li>${formatDateToFullDate(value.from, lang)} - ${formatDateToFullDate(value.until, lang)}</li>`;
       }
     });
+    unavailableDatesHtml += '</ul>';
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND', {lng}),
         unavailableDatesHtml.length > 0 ? unavailableDatesHtml : t('COMMON.NO', {lng}),
@@ -233,37 +231,26 @@ export const addHearingSupportRows = (claimId: string, claim: Claim, lang: strin
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   const rows: SummaryRow[] = [];
   if (claim.generalApplication?.hearingSupport) {
-    let supportHtml = '';
+    let supportHtml = '<ul class="no-list-style">';
     if (claim.generalApplication.hearingSupport.stepFreeAccess?.selected) {
-      supportHtml += t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS', {lng});
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS', {lng})}</li>`;
     }
     if (claim.generalApplication.hearingSupport.hearingLoop?.selected) {
-      if (supportHtml.length > 0) {
-        supportHtml += '<br>';
-      }
-      supportHtml += t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP', {lng});
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP', {lng})}</li>`;
     }
     if (claim.generalApplication.hearingSupport.signLanguageInterpreter?.selected) {
-      if (supportHtml.length > 0) {
-        supportHtml += '<br>';
-      }
-      supportHtml += t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng});
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})}</li>`;
     }
     if (claim.generalApplication.hearingSupport.languageInterpreter?.selected) {
-      if (supportHtml.length > 0) {
-        supportHtml += '<br>';
-      }
-      supportHtml += t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng});
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})}</li>`;
     }
     if (claim.generalApplication.hearingSupport.otherSupport?.selected) {
-      if (supportHtml.length > 0) {
-        supportHtml += '<br>';
-      }
-      supportHtml += t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng});
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})}</li>`;
     }
+    supportHtml += '</ul>';
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
-        supportHtml.length > 0 ? supportHtml : t('COMMON.NO', {lng}),
+        supportHtml.includes('<li>') ? supportHtml : t('COMMON.NO', {lng}),
         constructResponseUrlWithIdParams(claimId, GA_HEARING_SUPPORT_URL), changeLabel()),
     );
   }
