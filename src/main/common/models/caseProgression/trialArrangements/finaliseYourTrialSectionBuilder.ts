@@ -28,20 +28,6 @@ export class FinaliseYourTrialSectionBuilder extends UploadYourDocumentsSectionB
     return this;
   }
 
-  addCustomInsetText(text: string, text1: string, text2: string, variables?: any) {
-    const insetSection = ({
-      type: ClaimSummaryType.INSET_TEXT,
-      data: {
-        text1: text,
-        text2: text1,
-        text3: text2,
-        variables: variables,
-      },
-    });
-    this._claimSummarySections.push(insetSection);
-    return this;
-  }
-
   addStartButtonWithLink(title: string, href: string, cancelHref: string) {
     const startButtonSection = ({
       type: ClaimSummaryType.BUTTON_WITH_CANCEL_LINK,
