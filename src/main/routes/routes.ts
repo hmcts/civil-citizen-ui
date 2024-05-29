@@ -312,8 +312,13 @@ import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNotic
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 import applicationPaymentUnsuccessfulController from './features/generalApplication/applicationPaymentUnsuccessfulController';
+import flightDetailsController from './features/claim/airlines/flightDetailsController';
+import delayedFlightController from './features/claim/airlines/delayedFlightController';
 import respondentRequestChangeInformationController
   from 'routes/features/generalApplication/respondentRequestChangeInformationController';
+import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
+import confirmYouHaveBeenPaidConfirmController
+  from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
 
 export default [
   homeController,
@@ -587,5 +592,9 @@ export default [
   hearingArrangementController,
   hearingContactDetailsController,
   applicationPaymentUnsuccessfulController,
+  flightDetailsController,
+  delayedFlightController,
   respondentRequestChangeInformationController,
+  confirmYouHaveBeenPaidController,
+  confirmYouHaveBeenPaidConfirmController,
 ];

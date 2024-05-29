@@ -1766,6 +1766,15 @@
       "PAGE_TITLE": "Tystiolaeth y diffynnydd ei hun",
       "TITLE": "A ydych eisiau rhoi tystiolaeth eich hun?"
     },
+    "DELAYED_FLIGHT": {
+      "CLAIMING_FOR_DELAYED": "A ydych yn hawlio am oedi wrth hedfan?"
+    },
+    "FLIGHT_DETAILS": {
+      "AIRLINE": "Cwmni hedfan",
+      "FLIGHT_DETAILS": "Rhowch fanylion y daith hedfan",
+      "FLIGHT_NUMBER": "Rhif Hedfan",
+      "SCHEDULED_DATE": "Dyddiad hedfan a drefnwyd"
+    },
     "DEPENDANTS": {
       "GROUP11": "11 i 15",
       "GROUP16": "16 i 19",
@@ -3688,6 +3697,22 @@
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
         "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
       }
+    },
+    "CONFIRM_YOU_HAVE_BEEN_PAID": {
+      "PAGE_TITLE": "Confirm that you've been paid",
+      "TITLE": "Confirm that you've been paid",
+      "ENTER_THE_DATE": "Enter the date that you were paid the full amount that was specified on the judgment",
+      "HINT": "If you've been paid in installments, enter the date of the final payment you received. For example, 16 4 2021",
+      "CONFIRM": "I confirm that I've been paid the full amount that was specified on the judgment. Once you've confirmed this, it cannot be changed.",
+      "JUDGMENT_LINK": "View the judgment made against the defendant",
+      "CHECK_ERROR_MESSAGE": "Please confirm you've been paid the full amount"
+    },
+    "CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM": {
+      "PAGE_TITLE": "Confirm that you've been paid - Confirmation",
+      "YOU_CONFIRMED": "You've confirmed that you've been paid",
+      "WHAT_NEXT": "What happens next",
+      "NO_FURTHER": "There's no further action you need to take.",
+      "CLOSE_AND_RETURN": "Close and return to case details"
     }
   },
   "FOOTER": {
@@ -3732,6 +3757,15 @@
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
     "DETAILS_REQUIRED": "Rhowch fanylion",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod manylion yr anghenion ar gyfer y gwrandawiad ar y dudalen hon yn wir",
+    "DELAYED_FLIGHT": {
+      "CLAIMING_FOR_DELAY_REQUIRED": "Mae angen dewis opsiwn ar gyfer A ydych yn hawlio am oedi wrth hedfan"
+    },
+    "FLIGHT_DETAILS": {
+      "AIRLINE_REQUIRED": "Mae angen manylion y cwmni hedfan",
+      "DATE_FLIGHT_PAST": "Rhaid i'r dyddiad hedfan a drefnwyd fod heddiw neu yn y gorffennol",
+      "DATE_FLIGHT_REQUIRED": "Mae angen dyddiad hedfan",
+      "FLIGHT_NUMBER_REQUIRED": "Mae angen rhif hedfan"
+    },
     "ENTER_A_DEBT": "Rhowch fanylion y ddyled",
     "ENTER_AN_EXPLANATION": "Rhowch esboniad pam na allwch dalu nawr",
     "ENTER_AT_LEAST_ONE_DEBT": "Rhowch fanylion o leiaf un ddyled",
