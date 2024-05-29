@@ -29,7 +29,6 @@ export interface AppSession extends Session {
   claimIssueTasklist: boolean;
   firstContact: FirstContact;
   issuedAt: number;
-
 }
 
 export interface UserDetails {
