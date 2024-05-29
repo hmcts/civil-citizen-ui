@@ -5,14 +5,13 @@ import {summaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GA_RESPONDENT_UPLOAD_DOCUMENT} from 'routes/urls';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import {Claim} from 'models/claim';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'models/AppRequest';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import { FormValidationError } from 'form/validationErrors/formValidationError';
-import { t } from 'i18next';
+import {FormValidationError} from 'form/validationErrors/formValidationError';
+import {t} from 'i18next';
 import {GaResponse} from 'models/generalApplication/response/response';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -43,10 +42,11 @@ export const saveDocumentsToUploaded = async (claimId: string, uploadDocument: U
   }
 };
 
-export const removeDocumentFromRedis = async (claimId: string, claim: Claim, index: number) : Promise<void> => {
+export const removeDocumentFromRedis = async (redisKey: string, index: number) : Promise<void> => {
   try {
+    const claim = await getCaseDataFromStore(redisKey, true);
     claim?.generalApplication?.gaResponse?.uploadEvidenceDocuments?.splice(index, 1);
-    await saveDraftClaim(claimId, claim);
+    await saveDraftClaim(redisKey, claim);
   } catch(error) {
     logger.error(error);
     throw error;
