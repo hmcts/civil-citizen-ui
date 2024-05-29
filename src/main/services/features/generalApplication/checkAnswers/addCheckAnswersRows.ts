@@ -1,35 +1,59 @@
-import {Claim} from 'models/claim';
-import {getLng} from 'common/utils/languageToggleUtils';
-import {t} from 'i18next';
-import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
+import { Claim } from 'models/claim';
+import { getLng } from 'common/utils/languageToggleUtils';
+import { t } from 'i18next';
+import { SummaryRow, summaryRow } from 'models/summaryList/summaryList';
 import {
   APPLICATION_TYPE_URL,
   GA_AGREEMENT_FROM_OTHER_PARTY,
   GA_CLAIM_APPLICATION_COST_URL,
-  GA_HEARING_ARRANGEMENT_URL, GA_HEARING_CONTACT_DETAILS_URL, GA_HEARING_SUPPORT_URL,
-  GA_REQUESTING_REASON_URL, GA_UNAVAILABLE_HEARING_DATES_URL,
+  GA_HEARING_ARRANGEMENT_URL,
+  GA_HEARING_CONTACT_DETAILS_URL,
+  GA_HEARING_SUPPORT_URL,
+  GA_REQUESTING_REASON_URL,
+  GA_UNAVAILABLE_HEARING_DATES_URL,
+  GA_WANT_TO_UPLOAD_DOCUMENTS,
   INFORM_OTHER_PARTIES,
   ORDER_JUDGE_URL,
 } from 'routes/urls';
-import {selectedApplicationType} from 'models/generalApplication/applicationType';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
-import {UnavailableDateType} from 'models/generalApplication/unavailableDatesGaHearing';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
+import { selectedApplicationType } from 'models/generalApplication/applicationType';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
+import { UnavailableDateType } from 'models/generalApplication/unavailableDatesGaHearing';
+import { formatDateToFullDate } from 'common/utils/dateUtils';
 
-export const addApplicationTypesRows = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
+export const addApplicationTypesRows = (
+  claimId: string,
+  claim: Claim,
+  lang: string,
+): SummaryRow[] => {
   const lng = getLng(lang);
-  const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: lng});
+  const changeLabel = (lang: string): string =>
+    t('COMMON.BUTTONS.CHANGE', { lng: lng });
   const rows: SummaryRow[] = [];
   if (claim.generalApplication?.applicationTypes) {
-    claim.generalApplication?.applicationTypes?.forEach((applicationType, index, arr) => {
-      const applicationTypeDisplay = selectedApplicationType[applicationType.option];
-      const href = `${constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)}?index=${index}`;
-      rows.push(
-        summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {lng}), t(applicationTypeDisplay, {lng}),
-          href, changeLabel(lang), undefined, index, arr.length),
-      );
-    });
+    claim.generalApplication?.applicationTypes?.forEach(
+      (applicationType, index, arr) => {
+        const applicationTypeDisplay =
+          selectedApplicationType[applicationType.option];
+        const href = `${constructResponseUrlWithIdParams(
+          claimId,
+          APPLICATION_TYPE_URL,
+        )}?index=${index}`;
+        rows.push(
+          summaryRow(
+            t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {
+              lng,
+            }),
+            t(applicationTypeDisplay, { lng }),
+            href,
+            changeLabel(lang),
+            undefined,
+            index,
+            arr.length,
+          ),
+        );
+      },
+    );
   }
   return rows;
 };
@@ -104,6 +128,30 @@ export const addRequestingReasonRows = (claimId: string, claim: Claim, lang: str
           href, changeLabel(lang), undefined, index, arr.length),
       );
     });
+  }
+  return rows;
+};
+
+export const addDocumentUploadRow = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: lng});
+  const rows: SummaryRow[] = [];
+  if (claim.generalApplication?.wantToUploadDocuments) {
+    const href = `${constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS)}`;
+    let rowValue: string;
+    if (claim.generalApplication.wantToUploadDocuments === YesNo.YES) {
+      rowValue = `<p class="summaryListBorderBottom govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION.YES', {lng: lang})}</p>`;
+      rowValue += '<ul class="summaryListValueList">';
+      claim.generalApplication.uploadEvidenceForApplication.forEach(uploadGAFile => {
+        rowValue += `<li>${uploadGAFile.caseDocument.documentName}</li>`;
+      });
+      rowValue += '</ul>';
+    } else {
+      rowValue = t('COMMON.VARIATION.NO', {lng: lang});
+    }
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS', {lng}), rowValue, href, changeLabel(lang)),
+    );
   }
   return rows;
 };

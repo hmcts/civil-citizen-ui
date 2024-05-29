@@ -23,6 +23,7 @@ import { InformOtherParties } from 'models/generalApplication/informOtherParties
 import {OrderJudge} from 'models/generalApplication/orderJudge';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -71,6 +72,16 @@ describe('Check Answers service', () => {
         new RequestingReason('test2'),
         new RequestingReason('test3'),
       ];
+      generalApplication.uploadEvidenceForApplication = [new UploadGAFiles()];
+      generalApplication.uploadEvidenceForApplication[0].caseDocument = {
+        createdBy: '',
+        createdDatetime: undefined,
+        documentLink: undefined,
+        documentName: 'test.pdf',
+        documentSize: 0,
+        documentType: undefined
+
+      };
       generalApplication.hearingContactDetails = new HearingContactDetails();
       generalApplication.hearingContactDetails.emailAddress = 'a@b.com';
       generalApplication.hearingContactDetails.telephoneNumber = '12345';
@@ -78,7 +89,9 @@ describe('Check Answers service', () => {
 
     it('should give correct row count for multiple application types', () => {
       const result = getSummarySections('12345', claim, 'en');
-      expect(result).toHaveLength(19);
+      expect(result).toHaveLength(20);
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
     });
 
     it('should give correct row count for single application type', () => {
@@ -86,7 +99,9 @@ describe('Check Answers service', () => {
       generalApplication.orderJudges = [new OrderJudge('test1')];
       generalApplication.requestingReasons = [new RequestingReason('test1')];
       const result = getSummarySections('12345', claim, 'en');
-      expect(result).toHaveLength(13);
+      expect(result).toHaveLength(14);
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED');
     });
   });
 });
