@@ -55,7 +55,6 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res
       await renderView(claimId, claim, form, req, res);
     } else {
       await saveStatementOfTruth(redisKey, statementOfTruth);
-      //const submittedApplication =
       await submitApplication(<AppRequest>req);
       res.redirect('test'); // TODO: redirect
     }
