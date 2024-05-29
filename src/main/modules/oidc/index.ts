@@ -67,10 +67,11 @@ export class OidcMiddleware {
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       if (typeof req.query.code === 'string') {
+        
         const responseData = await getOidcResponse(redirectUri, req.query.code);
         req.session.user = app.locals.user = getUserDetails(responseData);
         req.session.issuedAt = getSessionIssueTime(responseData);
-
+        
         if (app.locals.assignClaimURL || req.session.assignClaimURL) {
           const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
           return res.redirect(assignClaimUrlWithClaimId);
