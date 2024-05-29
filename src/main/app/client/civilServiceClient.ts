@@ -71,6 +71,7 @@ export class CivilServiceClient {
   client: AxiosInstance;
 
   constructor(baseURL: string, isDocumentInstance?: boolean) {
+    console.log('civil service base url' + baseURL); //nosonar
     if (isDocumentInstance) {
       this.client = Axios.create({
         baseURL,

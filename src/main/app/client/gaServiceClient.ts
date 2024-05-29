@@ -19,6 +19,7 @@ export class GaServiceClient {
   client: AxiosInstance;
 
   constructor(baseURL: string) {
+    console.log('GA service base url' + baseURL); //nosonar
     this.client = Axios.create({
       baseURL,
     });
