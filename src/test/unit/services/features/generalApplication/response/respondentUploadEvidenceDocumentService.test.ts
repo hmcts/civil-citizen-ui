@@ -6,11 +6,11 @@ import {
   saveDocumentsToUploaded,
 } from 'services/features/generalApplication/response/respondentUploadEvidenceDocumentsService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {CaseDocument} from 'models/document/caseDocument';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {summarySection} from 'models/summaryList/summarySections';
 import {GaResponse} from 'models/generalApplication/response/response';
+import {UploadGAFiles} from 'models/generalApplication/UploadGAFiles';
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 jest.mock('../../../../../../main/modules/draft-store');
