@@ -25,10 +25,9 @@ import {UploadGAFiles} from 'common/models/generalApplication/UploadGAFiles';
 
 const respondentUploadEvidenceDocumentsController = Router();
 const viewPath = 'features/generalApplication/respondent-upload-documents';
-const fileSize = Infinity;
 const upload = multer({
   limits: {
-    fileSize: fileSize,
+    fileSize: Infinity,
   },
 });
 
@@ -61,9 +60,7 @@ respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT, (
         summaryRows: [],
       });
     if (req?.session?.fileUpload) {
-      const parsedData = JSON.parse(req?.session?.fileUpload);
-      form = new GenericForm(uploadEvidenceDocuments, parsedData);
-      req.session.fileUpload = undefined;
+      form = parseFileUploadToForm(req, uploadEvidenceDocuments);
     }
     if (req.query?.id) {
       const index = req.query.id;
@@ -107,4 +104,10 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT, 
     next(error);
   }
 }) as RequestHandler);
+
+function parseFileUploadToForm (req : AppRequest, uploadEvidenceDocuments: UploadGAFiles) : GenericForm<UploadGAFiles>{
+  const parsedData = JSON.parse(req?.session?.fileUpload);
+  req.session.fileUpload = undefined;
+  return new GenericForm(uploadEvidenceDocuments, parsedData);
+}
 export default respondentUploadEvidenceDocumentsController;

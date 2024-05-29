@@ -14,8 +14,6 @@
   <form method="post" novalidate>
     {{ csrfProtection(csrf) }}
     {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO'}) }}
-    <div class="govuk-button-group">
-      {{ addButton(t, 'CONTINUE', cancelUrl) }}
-    </div>
+    {{ addButton(t, 'CONTINUE', cancelUrl) }}
   </form>
 {% endblock %}
