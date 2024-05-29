@@ -20,10 +20,10 @@ import {
   UnavailableDateType,
 } from 'models/generalApplication/unavailableDatesGaHearing';
 import { InformOtherParties } from 'models/generalApplication/informOtherParties';
-import {OrderJudge} from 'models/generalApplication/orderJudge';
-import {RequestingReason} from 'models/generalApplication/requestingReason';
-import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
-import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import { OrderJudge } from 'models/generalApplication/orderJudge';
+import { RequestingReason } from 'models/generalApplication/requestingReason';
+import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
+import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -72,6 +72,7 @@ describe('Check Answers service', () => {
         new RequestingReason('test2'),
         new RequestingReason('test3'),
       ];
+      generalApplication.wantToUploadDocuments = YesNo.YES;
       generalApplication.uploadEvidenceForApplication = [new UploadGAFiles()];
       generalApplication.uploadEvidenceForApplication[0].caseDocument = {
         createdBy: '',

@@ -5,6 +5,9 @@ import {
   CcdGeneralApplicationInformOtherParty,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationInformOtherParty';
 import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
+import {
+  CcdGeneralApplicationEvidenceDocument
+} from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
 
 export interface EventDto {
   event: ApplicationEvent,
@@ -18,5 +21,6 @@ export interface CCDGeneralApplication {
   generalAppAskForCosts: YesNoUpperCamelCase;
   generalAppDetailsOfOrder: string;
   generalAppReasonsOfOrder: string;
+  generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[],
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
 }
