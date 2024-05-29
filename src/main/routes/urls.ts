@@ -319,3 +319,6 @@ export const GA_HEARING_ARRANGEMENT_URL = `${BASE_GENERAL_APPLICATION_URL}/heari
 export const GA_HEARING_CONTACT_DETAILS_URL = `${BASE_GENERAL_APPLICATION_URL}/hearing-contact-details`;
 export const GA_CHECK_ANSWERS_URL = `${BASE_GENERAL_APPLICATION_URL}/check-and-send`;
 export const GA_RESPONDENT_INFORMATION_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_URL}/respondent-information`;
+export const GA_HEARING_ARRANGEMENTS_GUIDANCE =`${BASE_GENERAL_APPLICATION_URL}/hearing-arrangements-guidance`;
+export const GA_WANT_TO_UPLOAD_DOCUMENTS = `${BASE_GENERAL_APPLICATION_URL}/want-to-upload-documents`;
+export const GA_UPLOAD_DOCUMENTS = `${BASE_GENERAL_APPLICATION_URL}/upload-documents`;

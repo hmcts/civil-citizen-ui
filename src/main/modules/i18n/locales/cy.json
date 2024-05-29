@@ -1501,6 +1501,8 @@
       "CLAIM_PROMPT": "I weld eich cais neu symud eich cais ymlaen cliciwch ar rif eich hawliad. Rhestrir yr hawliadau mwyaf diweddar gyntaf.",
       "CLAIM_STATUS": "Statws",
       "CLAIMANT_TITLE": "Hawliadau rydych chi wedi'u gwneud",
+      "CLAIMS_YOU_HAVE_MADE_HIDDEN_TEXT": "Hawliadau a wnaed gennych Tudalen {{ pageNo }}",
+      "CLAIM_MADE_AGAINST_HIDDEN_TEXT": "Hawliadau a wnaed yn eich erbyn Tudalen {{ pageNo }} ",
       "DEADLINE": "Dyddiad cau",
       "DEFENDANT_NAME": "Enw'r diffynnydd",
       "DEFENDANT_TITLE": "Hawliadau a wnaed yn eich erbyn",
@@ -2246,6 +2248,11 @@
         "TITLE": "Application from the other parties",
         "VARY_JUDGMENT": "vary a judgment"
       },
+      "APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE": {
+        "MSG1": "You may need to attend an application hearing so that a judge can consider the application with you and the other parties and decide what the next steps should be.",
+        "MSG2": "This hearing is not to discuss the claim. This is a separate hearing to discuss the application.",
+        "TITLE": "Application hearing arrangements"
+      },
       "GA_PAYMENT_SUCCESSFUL" : {
         "APPLICATION_SUBMITTED": "Application Submitted",
         "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_1": "If you have not provided a valid reason, a judge may order that the other parties should be informed. If this happens, you'll need to pay an additional fee and your application may also be delayed.",
@@ -2295,6 +2302,18 @@
         "OTHER_PARTIES": "The other parties will be able to see your answer to this question and respond to it.",
         "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application.",
         "TITLE": "Application costs"
+      },
+      "WANT_TO_UPLOAD_DOCUMENTS": {
+        "MSG1": "If you've selected multiple applications, you should upload documents that relate to all of them.",
+        "TITLE": "Do you want to upload documents to support your application? (Optional)"
+      },
+      "UPLOAD_DOCUMENTS": {
+        "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "LIST_TITLE": "Uploaded files",
+        "MSG1": "You should only upload documents that are relevant to your application.",
+        "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",
+        "REMOVE_DOC": "Remove document",
+        "TITLE": "Upload documents to support your application"
       },
       "ADD_ANOTHER_APPLICATION": {
         "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
@@ -4148,19 +4167,20 @@
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
+      "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
       "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No",
       "ENTER_REQUESTING_REASON": "You need to enter your reasons for requesting this order",
       "EXPLAIN_DO_NOT_WANT_COURT":"You need to explain why you do not want the court to inform the other parties.",
       "ENTER_ORDER_JUDGE": "You need to enter the order you want the judge to make",
+      "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
+      "ENTER_VALID_EMAIL": "You need to enter a valid email address",
       "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
       "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
       "WANT_TO_ADD_ANOTHER_APPLICATION":"You need to tell us if you want to add another application. Choose option: Yes or No",
-      "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
-      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
-      "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
-      "ENTER_VALID_EMAIL": "You need to enter a valid email address"
+      "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
+      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing"
     }
   }
 }

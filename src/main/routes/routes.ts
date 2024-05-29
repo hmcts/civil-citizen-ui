@@ -315,6 +315,9 @@ import hearingContactDetailsController from './features/generalApplication/heari
 import gaCheckAnswersController from 'routes/features/generalApplication/checkAnswersController';
 import respondentRequestChangeInformationController
   from 'routes/features/generalApplication/respondentRequestChangeInformationController';
+import hearingArrangementsGuidanceController from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
+import wantToUploadDocumentsController from 'routes/features/generalApplication/wantToUploadDocuments';
+import uploadEvidenceDocumentsForApplicationController from 'routes/features/generalApplication/uploadEvidenceDocumentForApplication';
 
 export default [
   homeController,
@@ -590,4 +593,7 @@ export default [
   hearingContactDetailsController,
   gaCheckAnswersController,
   respondentRequestChangeInformationController,
+  hearingArrangementsGuidanceController,
+  wantToUploadDocumentsController,
+  uploadEvidenceDocumentsForApplicationController,
 ];
