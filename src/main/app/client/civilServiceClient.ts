@@ -414,8 +414,8 @@ export class CivilServiceClient {
     }
   }
 
-  async assignDefendantToClaim(claimId: string, req: AppRequest): Promise<void> {
-    await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId), {}, // nosonar
+  async assignDefendantToClaim(claimId: string, req: AppRequest, pin:string): Promise<void> {
+    await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId), { pin: pin }, // nosonar
       { headers: { 'Authorization': `Bearer ${req.session?.user?.accessToken}` } })
       .catch((err) => {
         logger.error('Error when assigning defendant to claim');
