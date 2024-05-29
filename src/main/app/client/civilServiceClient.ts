@@ -205,7 +205,6 @@ export class CivilServiceClient {
     }
   }
 
-
   async verifyPin(req: AppRequest, pin: string, caseReference: string): Promise<Claim> {
     try {
       const response = await this.client.post(CIVIL_SERVICE_VALIDATE_PIN_URL //nosonar

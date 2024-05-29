@@ -7,7 +7,7 @@ describe('Application costs service', () => {
       calculatedAmountInPence: 1000,
       code: 'Fe123',
       version: 0,
-    }
+    };
     //When
     const content = getApplicationCostsContent([{ option: ApplicationTypeOption.EXTEND_TIME, isOtherSelected: () => false }], gaFeeData, 'en');
     //Then
@@ -22,7 +22,7 @@ describe('Application costs service', () => {
       calculatedAmountInPence: 1400,
       code: 'Fe124',
       version: 0,
-    }
+    };
     //When
     const content = getApplicationCostsContent([{ option: ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, isOtherSelected: () => false }], gaFeeData, 'en');
     //Then

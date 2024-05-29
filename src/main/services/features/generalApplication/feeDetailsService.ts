@@ -13,7 +13,7 @@ export interface GAFeeRequestBody {
   withConsent: boolean,
   withNotice: boolean,
   hearingDate: string
-};
+}
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -25,22 +25,17 @@ const feeRequestBody = (gaDetails: GeneralApplication, hearingDate: Date): GAFee
     withConsent: gaDetails?.agreementFromOtherParty === YesNo.YES,
     withNotice: gaDetails?.informOtherParties?.option === YesNo.YES,
     hearingDate: hearingDate ? convertDateToStringFormat(hearingDate) : null,
-  }
-}
-
+  };
+};
 
 export const gaApplicationFeeDetails = async (claim: Claim, req: AppRequest): Promise<ClaimFeeData> => {
-  try {
-    const feeRequestDetails = feeRequestBody(claim.generalApplication, claim?.caseProgressionHearing?.hearingDate);
-    const gaFeeData = await civilServiceClient.getGeneralApplicationFee(feeRequestDetails, req);
-    if (gaFeeData) {
-      claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-      claim.generalApplication.applicationFee = gaFeeData;
-      saveDraftClaim(generateRedisKey(req), claim);
-      console.debug(gaFeeData);
-      return gaFeeData;
-    }
-  } catch (error) {
-    throw error;
+  const feeRequestDetails = feeRequestBody(claim.generalApplication, claim?.caseProgressionHearing?.hearingDate);
+  const gaFeeData = await civilServiceClient.getGeneralApplicationFee(feeRequestDetails, req);
+  if (gaFeeData) {
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.applicationFee = gaFeeData;
+    saveDraftClaim(generateRedisKey(req), claim);
+    console.debug(gaFeeData);
+    return gaFeeData;
   }
-}
+};

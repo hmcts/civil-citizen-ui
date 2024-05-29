@@ -27,7 +27,7 @@ export class GeneralApplication {
   wantToUploadDocuments?: YesNo;
   uploadEvidenceForApplication?: UploadGAFiles[];
   statementOfTruth?: StatementOfTruthForm;
-  applicationFee?: ClaimFeeData
+  applicationFee?: ClaimFeeData;
 
   constructor(
     applicationType?: ApplicationType,

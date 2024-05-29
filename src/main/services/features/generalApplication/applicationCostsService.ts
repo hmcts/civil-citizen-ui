@@ -11,7 +11,7 @@ interface ContentParagraph {
 
 export const getApplicationCostsContent = (applicationTypes: ApplicationType[], gaFeeData: ClaimFeeData, lang: string) => {
   const pageSectionBuilder = new PageSectionBuilder();
-  const gaFee = convertToPoundsFilter(gaFeeData?.calculatedAmountInPence.toString())
+  const gaFee = convertToPoundsFilter(gaFeeData?.calculatedAmountInPence.toString());
   const selectedApplicationTypeContent = getSelectedApplicationTypeContent(lang, gaFee);
   const applicationTypeOption = applicationTypes[applicationTypes.length - 1].option;
   if (applicationTypeOption in selectedApplicationTypeContent) {

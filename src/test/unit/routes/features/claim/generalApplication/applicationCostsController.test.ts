@@ -53,7 +53,7 @@ describe('General Application - Application costs', () => {
         calculatedAmountInPence: 1400,
         code: 'Fe124',
         version: 0,
-      })
+      });
       await request(app)
         .get(GA_APPLICATION_COSTS_URL)
         .expect((res) => {
