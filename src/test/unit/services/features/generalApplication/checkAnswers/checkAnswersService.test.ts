@@ -79,8 +79,7 @@ describe('Check Answers service', () => {
         documentLink: undefined,
         documentName: 'test.pdf',
         documentSize: 0,
-        documentType: undefined
-
+        documentType: undefined,
       };
       generalApplication.hearingContactDetails = new HearingContactDetails();
       generalApplication.hearingContactDetails.emailAddress = 'a@b.com';
