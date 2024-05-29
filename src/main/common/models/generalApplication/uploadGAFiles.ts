@@ -7,9 +7,11 @@ export class UploadGAFiles {
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '')
   @IsNotEmpty({ message: 'ERRORS.GENERAL_APPLICATION.UPLOAD_FILE_MESSAGE' })
     fileUpload: FileUpload;
-  caseDocument: CaseDocument;
+    caseDocument: CaseDocument;
 
   constructor(fileUpload?: FileUpload) {
     this.fileUpload = fileUpload;
   }
+
 }
+
