@@ -41,7 +41,6 @@ class hearingFeeSteps {
     applyHelpWithFeesReferenceNumber.addHelpWithFeesReference();
     applyHelpWithFeesReferenceNumber.nextAction('Continue');
     applyHelpWithFeesConfirmation.verifyPageContent();
-    applyHelpWithFeesConfirmation.nextAction('Close and return to case overview');
   }
 
   async payHearingFeeJourney(claimRef, feeAmount, dueDate, caseNumber, claimAmount) {
@@ -58,7 +57,6 @@ class hearingFeeSteps {
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
     paymentSuccessful.verifyPageContent(feeAmount);
-    paymentSuccessful.nextAction('Close and return to case overview');
   }
 }
 
