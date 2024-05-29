@@ -245,7 +245,7 @@ class CreateClaimOCMC {
   async inputEvidenceList() {
     I.waitForContent('If your case goes to a court hearing, and is not settled, you will need to provide evidence.', 60);
     this.clickNextAction(paths.buttons.save_and_continue);
-    I.click("I don't want to answer these questions");
+    I.click('I don\'t want to answer these questions');
   }
 
   async verifyCheckYourAnswers() {
