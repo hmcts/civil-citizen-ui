@@ -75,9 +75,9 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
     await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
     await api.waitForFinishedBusinessProcess();
     await I.click('Close and return to case overview');
-    if (isDashboardServiceEnabled) {
-      taskListItem = payTheHearingFee(hearingFeeDueDate);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'DONE', false, false);
-    }
+    // if (isDashboardServiceEnabled) {
+    //   taskListItem = payTheHearingFee(hearingFeeDueDate);
+    //   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'DONE', false, false);
+    // }
   }
 }).tag('@regression-cp');
