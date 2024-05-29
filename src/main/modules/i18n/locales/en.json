@@ -1765,6 +1765,15 @@
       "PAGE_TITLE": "Defendant yourself evidence",
       "TITLE": "Do you want to give evidence yourself?"
     },
+    "DELAYED_FLIGHT": {
+      "CLAIMING_FOR_DELAYED": "Are you claiming for a delayed flight?"
+    },
+    "FLIGHT_DETAILS": {
+      "AIRLINE": "Airline",
+      "FLIGHT_DETAILS": "Enter flight details",
+      "FLIGHT_NUMBER": "Flight number",
+      "SCHEDULED_DATE": "Scheduled date of flight"
+    },
     "DEPENDANTS": {
       "GROUP11": "11 to 15",
       "GROUP16": "16 to 19",
@@ -3742,6 +3751,15 @@
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
     "DETAILS_REQUIRED": "Enter details",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
+    "DELAYED_FLIGHT": {
+      "CLAIMING_FOR_DELAY_REQUIRED": "'Are you claiming for a delayed flight?' is required"
+    },
+    "FLIGHT_DETAILS": {
+      "AIRLINE_REQUIRED": "Airline is required",
+      "DATE_FLIGHT_PAST": "Scheduled date of flight must be today or in the past",
+      "DATE_FLIGHT_REQUIRED": "Date of flight is required",
+      "FLIGHT_NUMBER_REQUIRED": "Flight number is required"
+    },
     "ENTER_A_DEBT": "Enter a debt",
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can’t pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
