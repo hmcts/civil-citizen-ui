@@ -152,8 +152,8 @@
   float: right;
 }
 
-@mixin bottom-bordered($govukColor, $width, $margin, $padding) {
-  border-bottom: $width solid $govukColor;
+@mixin bottom-bordered($govuk-color, $width, $margin, $padding) {
+  border-bottom: $width solid $govuk-color;
   @if margin != null {
     margin: $margin;
   }
@@ -162,8 +162,8 @@
   }
 }
 
-@mixin top-bordered($govukColor, $width, $margin, $padding) {
-  border-top: $width solid $govukColor;
+@mixin top-bordered($govuk-color, $width, $margin, $padding) {
+  border-top: $width solid $govuk-color;
   @if margin != null {
     margin: $margin;
   }
