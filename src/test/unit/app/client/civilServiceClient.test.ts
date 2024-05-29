@@ -395,7 +395,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      await civilServiceClient.assignDefendantToClaim(claimId, appReq);
+      await civilServiceClient.assignDefendantToClaim(claimId, appReq, '123');
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
@@ -408,7 +408,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.assignDefendantToClaim('1', appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.assignDefendantToClaim('1', appReq, '123')).rejects.toThrow('error');
     });
   });
 
