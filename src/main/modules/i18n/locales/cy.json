@@ -2288,7 +2288,7 @@
       },
       "UPLOAD_N245_FORM": {
         "COMPLETE_N245_FORM":"complete the N245 Form",
-        "FILE_FORMAT": "the file is in a JPG, PNG, SVG, GIF, DOC, DOCX or PDF format.",
+        "FILE_FORMAT": "the file is in a DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
         "FILE_SIZE": "the file size is no more than 100MB",
         "FILL_ONLINE": "fill out the interactive form online, save it to your device and then upload it here",
         "INCOME_AND_EXPENSE": "We'll ask for information about your income and expenses to divide whether these instalments are affordable for you. So it may be useful to have documents like you bank statements to hand.",
