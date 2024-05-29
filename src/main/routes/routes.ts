@@ -310,6 +310,7 @@ import addAnotherApplicationController from './features/generalApplication/addAn
 import orderJudgeController from './features/generalApplication/orderJudgeController';
 import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNoticesController';
 import uploadN245FormController from 'routes/features/generalApplication/uploadN245FormController';
+import unavailableHearingDatesController from 'routes/features/generalApplication/unavailableHearingDatesController';
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 import flightDetailsController from './features/claim/airlines/flightDetailsController';
@@ -590,6 +591,7 @@ export default [
   orderJudgeController,
   ordersAndNoticesController,
   uploadN245FormController,
+  unavailableHearingDatesController,
   hearingArrangementController,
   hearingContactDetailsController,
   flightDetailsController,

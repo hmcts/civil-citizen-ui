@@ -21,6 +21,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {OrderJudge} from 'common/models/generalApplication/orderJudge';
 import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
+import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 
@@ -130,6 +131,20 @@ export const saveRespondentAgreeToOrder = async (claimId: string, claim: Claim, 
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.respondentAgreeToOrder = respondentAgreeToOrder;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveUnavailableDates = async (claimId: string, claim: Claim, unavailableDates: UnavailableDatesGaHearing): Promise<void> => {
+  try {
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    while (unavailableDates?.items?.length > 0 && !unavailableDates.items[unavailableDates.items.length - 1].type) {
+      unavailableDates?.items.pop();
+    }
+    claim.generalApplication.unavailableDatesHearing = unavailableDates;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
