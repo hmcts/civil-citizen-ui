@@ -315,6 +315,9 @@ import flightDetailsController from './features/claim/airlines/flightDetailsCont
 import delayedFlightController from './features/claim/airlines/delayedFlightController';
 import respondentRequestChangeInformationController 
   from 'routes/features/generalApplication/respondentRequestChangeInformationController';
+import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
+import confirmYouHaveBeenPaidConfirmController
+  from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
 
 export default [
   homeController,
@@ -590,4 +593,6 @@ export default [
   flightDetailsController,
   delayedFlightController,
   respondentRequestChangeInformationController,
+  confirmYouHaveBeenPaidController,
+  confirmYouHaveBeenPaidConfirmController,
 ];
