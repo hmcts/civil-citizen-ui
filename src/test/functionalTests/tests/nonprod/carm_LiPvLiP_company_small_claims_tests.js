@@ -90,7 +90,7 @@ Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
 Scenario('Caseworker perform mediation unsuccessful', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     // Take Mediation Unsuccessful
-    await api.mediationUnsuccessful(config.caseWorker, true);
+    await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE', 'NOT_CONTACTABLE_DEFENDANT_ONE']);
     await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-carm');
@@ -116,7 +116,7 @@ Scenario('LiP claimant uploads mediation documents', async ({api}) => {
     await UploadDocSteps.UploadDocuments('Documents referred to in the statement');
     await UploadDocSteps.ClickContinue();
     await UploadDocSteps.CheckAndSendMediationDocs('Claimant');
-    await UploadDocSteps.VerifyConfirmationPage();
+    await UploadDocSteps.VerifyConfirmationPage(claimRef);
     await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-carm');
@@ -131,7 +131,7 @@ Scenario('LiP defendant uploads mediation documents', async ({api}) => {
     await UploadDocSteps.UploadDocuments('Your statement');
     await UploadDocSteps.ClickContinue();
     await UploadDocSteps.CheckAndSendMediationDocs('Defendant');
-    await UploadDocSteps.VerifyConfirmationPage();
+    await UploadDocSteps.VerifyConfirmationPage(claimRef);
     await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-carm');

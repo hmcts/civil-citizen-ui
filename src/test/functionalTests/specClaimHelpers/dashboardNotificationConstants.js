@@ -29,7 +29,7 @@ module.exports = {
   claimIsSettledDefendant: (amount, date) => {
     return {
       title: 'The claim is settled',
-      content: `The claimant has confirmed that you paid £${amount} on ${date}.`,
+      content: `Miss Jane Doe has confirmed that you paid £${amount} on ${date}.`,
     };
   },
 
@@ -191,6 +191,43 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.CP.StrikeOut.HearingFeeUnpaid.TrialReady.Claimant
+  claimStruckOut: () => {
+    return {
+      title: 'The claim has been struck out',
+      content: 'This is because the hearing fee was not paid by 10 November 2023 as stated in the hearing notice.',
+      nextSteps: 'hearing notice.',
+    };
+  },
+
+  //Notice.AAA6.CP.OrderMade.Claimant
+  orderMade: () => {
+    return {
+      title: 'An order has been made',
+      content: 'The judge has made an order on your claim. View the order.',
+      nextSteps: 'View the order',
+    };
+  },
+
+  //Notice.AAA6.CP.Hearing.Scheduled.Claimant
+  hearingScheduled: (hearingDate) => {
+    return {
+      title: 'A hearing has been scheduled',
+      content: `Your hearing has been scheduled for ${hearingDate} at Central London County Court. Please keep your contact details and anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050. View the hearing notice.`,
+      nextSteps: 'View the hearing notice',
+    };
+  },
+
+  //Notice.AAA6.CP.HearingFee.Required.Claimant
+  payTheHearingFeeClaimant: (amount, deadline) => {
+    return {
+      title: 'You must pay the hearing fee',
+      content: `You must either pay the hearing fee of £${amount} or apply for help with fees. You must do this by ${deadline}. If you do not take one of these actions, your claim will be struck out.`,
+      nextSteps: 'pay the hearing fee',
+      nextSteps2: 'apply for help with fees',
+    };
+  },
+
   //Notice.AAA6.ClaimantIntent.GoToHearing.Claimant
   goToHearingClaimant: () => {
     return {
@@ -203,9 +240,8 @@ module.exports = {
   goToHearingPartAdmitDefendant: (amount) => {
     return {
       title: 'Wait for the court to review the case',
-      content: ['Miss Jane Doe wants to proceed to court.',
-        `They rejected your admission of £${amount}.`,
-        'If the case goes to a hearing we will contact you with further details.'],
+      content: ['Miss Jane Doe wants to proceed with the claim.',
+        `They rejected your admission of £${amount}.`],
       nextSteps: 'View your response',
       nextSteps2: 'View the claimant\'s hearing requirements',
     };
@@ -215,7 +251,7 @@ module.exports = {
   judgmentRequestedClaimantDisagrees: () => {
     return {
       title: 'Miss Jane Doe has requested a County Court Judgment against you',
-      content: ['The claimant rejected your repayment plan and an alternative plan proposed by the court based on your financial details. They asked a judge to make a new plan.',
+      content: ['Miss Jane Doe rejected your repayment plan and an alternative plan proposed by the court based on your financial details. They asked a judge to make a new plan.',
         'When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
         'If you pay the debt within one month of the date of judgment, the County Court Judgment (CCJ) is removed from the public register. You can pay £15 to apply for a certificate (opens in new tab) that confirms this.'],
       nextSteps: 'Contact Miss Jane Doe if you need their payment details.',
@@ -227,7 +263,7 @@ module.exports = {
   judgmentRequestedCourtAgrees: () => {
     return {
       title: 'Miss Jane Doe has requested a County Court Judgment against you',
-      content: ['The claimant rejected your repayment plan and has proposed a new plan, which the court agreed with, based on the financial details you provided.',
+      content: ['Miss Jane Doe rejected your repayment plan and has proposed a new plan, which the court agreed with, based on the financial details you provided.',
         'When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
         'If you pay the debt within one month of the date of judgment, the County Court Judgment (CCJ) is removed from the public register. You can pay £15 to apply for a certificate (opens in new tab) that confirms this.'],
       nextSteps: 'Contact Miss Jane Doe if you need their payment details.',
@@ -239,8 +275,8 @@ module.exports = {
   claimantAskDefendantToSignSettlementDefendant: () => {
     return {
       title: 'Settlement agreement',
-      content: ['The claimant has accepted your plan and asked you to sign a settlement agreement. You must respond by',
-        'If you do not respond by then, or reject the agreement, they can request a County Court Judgment.'],
+      content: ['Miss Jane Doe has accepted your offer and asked you to sign a settlement agreement. You must respond by',
+        'If you do not respond by then, or reject the agreement, they can request a County Court Judgment (CCJ).'],
       nextSteps: 'View the repayment plan',
       nextSteps2: 'View your response',
     };
@@ -250,9 +286,9 @@ module.exports = {
   claimantAskDefendantToSignSettlementCourtPlanDefendant: () => {
     return {
       title: 'Settlement agreement',
-      content: ['The claimant has rejected your plan and asked you to sign a settlement agreement.',
-        'The claimant proposed a repayment plan, and the court then responded with an alternative plan that was accepted.',
-        'If you do not respond by then, or reject the agreement, they can request a County Court Judgment.'],
+      content: ['Miss Jane Doe has rejected your offer and asked you to sign a settlement agreement.',
+        'Miss Jane Doe proposed a repayment plan, and the court then responded with an alternative plan that was accepted.',
+        'If you do not respond by then, or reject the agreement, they can request a County Court Judgment (CCJ).'],
       nextSteps: 'View the repayment plan',
       nextSteps2: 'View your response',
     };
@@ -291,8 +327,8 @@ module.exports = {
   defendantRejectsSettlementDefendant: () => {
     return {
       title: 'Settlement agreement',
-      content: ['You have rejected the settlement agreement.',
-        'The claimant can request a County Court Judgment (CCJ), which would order you to repay the money in line with the agreement. The court believes you can afford this.',
+      content: [
+        'Miss Jane Doe can request a County Court Judgment (CCJ), which would order you to repay the money in line with the agreement. The court believes you can afford this.',
         'If the claimant requests a CCJ then you can ask a judge to consider changing the plan, based on your financial details.'],
     };
   },
