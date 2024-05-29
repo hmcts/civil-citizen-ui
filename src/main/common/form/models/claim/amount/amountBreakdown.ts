@@ -3,6 +3,7 @@ import { ValidateNested} from 'class-validator';
 import {ClaimAmountBreakup} from '../../claimDetails';
 import {AtLeastOneRowIsPopulated} from '../../../validators/atLeastOneRowIsPopulated';
 import {MAX_CLAIM_AMOUNT_TOTAL} from '../../../validators/validationConstraints';
+import {isMintiEnabled} from '../../../../../app/auth/launchdarkly/launchDarklyClient';
 
 const MIN_ROWS = 4;
 
@@ -23,8 +24,13 @@ export class AmountBreakdown {
     return populatedRows;
   }
 
-  public isValidTotal() {
-    return this.totalAmount <= MAX_CLAIM_AMOUNT_TOTAL;
+  public async isValidTotal() {
+    const mintiEnabled = await isMintiEnabled();
+    if (!mintiEnabled) {
+      return this.totalAmount <= MAX_CLAIM_AMOUNT_TOTAL;
+    } else {
+      return true;
+    }
   }
 
   public static emptyForm(): AmountBreakdown {
