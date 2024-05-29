@@ -58,7 +58,6 @@ class hearingFeeSteps {
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
     paymentSuccessful.verifyPageContent(feeAmount);
-    paymentSuccessful.nextAction('Close and return to case overview');
   }
 }
 
