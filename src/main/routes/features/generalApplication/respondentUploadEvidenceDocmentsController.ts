@@ -7,16 +7,21 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
-import {getCancelUrl, getRespondToApplicationCaption}
-  from 'services/features/generalApplication/generalApplicationService';
+import {
+  getCancelUrl,
+  getRespondToApplicationCaption,
+} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {getSummaryList, removeDocumentFromRedis, uploadSelectedFile}
-  from 'services/features/generalApplication/response/respondentUploadEvidenceDocumentsService';
+import {
+  getSummaryList,
+  removeDocumentFromRedis,
+  uploadSelectedFile,
+} from 'services/features/generalApplication/response/respondentUploadEvidenceDocumentsService';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
-import { UploadGAFiles } from 'common/models/generalApplication/UploadGAFiles';
+import {UploadGAFiles} from 'common/models/generalApplication/UploadGAFiles';
 
 const respondentUploadEvidenceDocumentsController = Router();
 const viewPath = 'features/generalApplication/respondent-upload-documents';
@@ -62,7 +67,7 @@ respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT, (
     }
     if (req.query?.id) {
       const index = req.query.id;
-      await removeDocumentFromRedis(claim.id, claim, Number(index)-1);
+      await removeDocumentFromRedis(redisKey, Number(index)-1);
     }
     await getSummaryList(formattedSummary, redisKey, claimId);
     await renderView(req, form, claim, claimId, res, formattedSummary);
