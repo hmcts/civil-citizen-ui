@@ -193,39 +193,17 @@ export class CivilServiceClient {
     }
   }
 
-  async getGeneralApplicationFee(feeRequestBody: { applicationTypes: ApplicationTypeOption[], withConsent: boolean, withNotice: boolean }, req: AppRequest): Promise<number> {
+  async getGeneralApplicationFee(feeRequestBody: { applicationTypes: ApplicationTypeOption[], withConsent: boolean, withNotice: boolean }, req: AppRequest): Promise<ClaimFeeData> {
     try {
       const config = this.getConfig(req);
-      //const gaFeeData = await this.getGeneralApplicationFeeData(applicationTypeOption, withConsent, withNotice, req);
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL, feeRequestBody, config);
-      const gaFeeData = response.data as ClaimFeeData
-      console.debug(gaFeeData);
-      return convertToPoundsFilter(gaFeeData?.calculatedAmountInPence.toString());
+      return response.data;
     } catch (err: unknown) {
       logger.error('Error when getting claim fee data');
       throw err;
     }
   }
 
-  // async getGeneralApplicationFeeData(applicationTypeOption: string, withConsent: YesNo, withNotice: YesNo, req: AppRequest): Promise<ClaimFeeData> {
-  //   const config = this.getConfig(req);
-  //   try {
-  //     let feeUrl = `${CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL}/${applicationTypeOption}`;
-  //     if (withConsent) {
-  //       feeUrl += `?withConsent=${withConsent === YesNo.YES ? 'true' : 'false'}`;
-  //       if (withNotice) {
-  //         feeUrl += `&withNotice=${withNotice === YesNo.YES ? 'true' : 'false'}`;
-  //       }
-  //     } else if (withNotice) {
-  //       feeUrl += `?withNotice=${withNotice === YesNo.YES ? 'true' : 'false'}`;
-  //     }
-  //     const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL, config);
-  //     return response.data;
-  //   } catch (err: unknown) {
-  //     logger.error('Error when getting claim fee data');
-  //     throw err;
-  //   }
-  // }
 
   async verifyPin(req: AppRequest, pin: string, caseReference: string): Promise<Claim> {
     try {

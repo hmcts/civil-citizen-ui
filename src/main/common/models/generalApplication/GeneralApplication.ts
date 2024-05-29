@@ -8,6 +8,7 @@ import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDa
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
+import { ClaimFeeData } from '../civilClaimResponse';
 
 export class GeneralApplication {
 
@@ -23,6 +24,7 @@ export class GeneralApplication {
   hearingArrangement?: HearingArrangement;
   hearingContactDetails?: HearingContactDetails;
   statementOfTruth?: StatementOfTruthForm;
+  applicationFee?: ClaimFeeData
 
   constructor(
     applicationType?: ApplicationType,

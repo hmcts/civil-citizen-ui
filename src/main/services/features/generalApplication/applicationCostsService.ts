@@ -1,22 +1,17 @@
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import { ApplicationType, ApplicationTypeOption } from 'models/generalApplication/applicationType';
 import {t} from 'i18next';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import {AppRequest} from 'models/AppRequest';
-import config from 'config';
-import {YesNo} from 'form/models/yesNo';
-
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+import { ClaimFeeData } from 'common/models/civilClaimResponse';
+import { convertToPoundsFilter } from 'common/utils/currencyFormat';
 
 interface ContentParagraph {
   text?: string;
   variables?: object;
 }
 
-export const getApplicationCostsContent = async (applicationTypes: ApplicationType[], withConsent: YesNo, withNotice: YesNo, lang: string, req: AppRequest) => {
-  const gaFee = await civilServiceClient.getGeneralApplicationFee(feeRequestBody(applicationTypes, withConsent, withNotice), req);
+export const getApplicationCostsContent = (applicationTypes: ApplicationType[], gaFeeData: ClaimFeeData, lang: string) => {
   const pageSectionBuilder = new PageSectionBuilder();
+  const gaFee = convertToPoundsFilter(gaFeeData?.calculatedAmountInPence.toString())
   const selectedApplicationTypeContent = getSelectedApplicationTypeContent(lang, gaFee);
   const applicationTypeOption = applicationTypes[applicationTypes.length - 1].option;
   if (applicationTypeOption in selectedApplicationTypeContent) {
@@ -76,11 +71,3 @@ const getSelectedApplicationTypeContent = (lang: string, gaFee: number) : Partia
   };
 };
 
-const feeRequestBody = (applicationTypes: ApplicationType[], withConsent: YesNo, withNotice: YesNo): { applicationTypes: ApplicationTypeOption[], withConsent: boolean, withNotice: boolean } => {
-  const selectedApplicationTypes = applicationTypes.map(applicationType => applicationType.option);
-  return {
-    applicationTypes: selectedApplicationTypes,
-    withConsent: withConsent === YesNo.YES ,
-    withNotice: withNotice === YesNo.YES 
-  }
-}

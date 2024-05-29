@@ -12,12 +12,14 @@ import * as utilityService from 'modules/utilityService';
 import config from 'config';
 import nock from 'nock';
 import {isGaForLipsEnabled} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/modules/utilityService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/services/features/generalApplication/applicationCostsService');
+jest.mock('../../../../../../main/services/features/generalApplication/feeDetailsService');
 
 const mockGetClaim = utilityService.getClaimById as jest.Mock;
 
@@ -47,6 +49,11 @@ describe('General Application - Application costs', () => {
 
   describe('on GET', () => {
     it('should return page', async () => {
+      (gaApplicationFeeDetails as jest.Mock).mockResolvedValueOnce({
+        calculatedAmountInPence: 1400,
+        code: 'Fe124',
+        version: 0,
+      })
       await request(app)
         .get(GA_APPLICATION_COSTS_URL)
         .expect((res) => {
