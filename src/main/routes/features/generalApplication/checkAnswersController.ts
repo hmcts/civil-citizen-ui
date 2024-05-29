@@ -14,6 +14,7 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {getSummarySections} from 'services/features/generalApplication/checkAnswers/checkAnswersService';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {t} from 'i18next';
+import {submitApplication} from 'services/features/generalApplication/submitApplication';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -54,7 +55,8 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res
       await renderView(claimId, claim, form, req, res);
     } else {
       await saveStatementOfTruth(redisKey, statementOfTruth);
-      res.redirect('test'); // TODO: submit application and redirect
+      await submitApplication(<AppRequest>req);
+      res.redirect('test'); // TODO: redirect
     }
   } catch (error) {
     next(error);

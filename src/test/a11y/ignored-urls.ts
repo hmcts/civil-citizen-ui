@@ -61,4 +61,6 @@ export const IGNORED_URLS = [
   urls.DASHBOARD_CLAIMANT_URL,
   //TODO: remove this once finished the page
   urls.VIEW_THE_HEARING_URL,
+  urls.BASE_GENERAL_APPLICATION_RESPONSE_URL,
+  urls.CONFIRM_YOU_HAVE_BEEN_PAID_URL, //TODO: remove this once finished the page
 ];

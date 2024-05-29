@@ -2,7 +2,6 @@
 {% from "../../dashboard/item-content.njk" import itemContent %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
-{% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 
 {% block pageTitle %}
@@ -10,9 +9,6 @@
 {% endblock %}
 
 {% block nestedContent %}
-      {% if form.hasErrors() %}
-        {{ errorSummary(form.getAllErrors(), t) }}
-      {% endif %}
       {% for content in applyHelpFeeReferenceContents %}
         {{ itemContent(content,t) }}
       {% endfor %}

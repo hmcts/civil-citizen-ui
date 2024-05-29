@@ -1,11 +1,12 @@
-import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {APPLICATION_TYPE_URL} from 'routes/urls';
-import {GenericForm} from 'common/form/models/genericForm';
-import {AppRequest} from 'common/models/AppRequest';
-import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
-import {saveApplicationType} from 'services/features/generalApplication/generalApplicationService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {getClaimById} from 'modules/utilityService';
+import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
+import { APPLICATION_TYPE_URL } from 'routes/urls';
+import { GenericForm } from 'common/form/models/genericForm';
+import { AppRequest } from 'common/models/AppRequest';
+import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
+import { getByIndex, saveApplicationType } from 'services/features/generalApplication/generalApplicationService';
+import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import { getClaimById } from 'modules/utilityService';
+import { queryParamNumber } from 'common/utils/requestUtils';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
@@ -16,10 +17,8 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const queryApplicationTypeIndex = req.query.index;
-    const applicationTypeOption  = queryApplicationTypeIndex
-      ? claim.generalApplication?.applicationTypes[parseInt(queryApplicationTypeIndex as string)]?.option
-      : undefined;
+    const applicationIndex = queryParamNumber(req, 'index');
+    const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
     res.render(viewPath, {
@@ -49,11 +48,8 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl });
     } else {
-      const queryApplicationTypeIndex = req.query.index;
-      const applicationTypeIndex = queryApplicationTypeIndex
-        ? parseInt(queryApplicationTypeIndex as string)
-        : undefined;
-      await saveApplicationType(redisKey, applicationType, applicationTypeIndex);
+      const applicationIndex = queryParamNumber(req, 'index');
+      await saveApplicationType(redisKey, applicationType, applicationIndex);
       res.redirect('test'); // TODO: add url
     }
   } catch (error) {

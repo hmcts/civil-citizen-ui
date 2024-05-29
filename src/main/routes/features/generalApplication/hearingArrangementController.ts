@@ -3,7 +3,7 @@ import {GA_HEARING_ARRANGEMENT_URL, GA_HEARING_CONTACT_DETAILS_URL} from 'routes
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
-import {getCancelUrl, saveHearingArrangement } from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl, getLast, saveHearingArrangement } from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
@@ -16,7 +16,7 @@ const viewPath = 'features/generalApplication/hearing-arrangement';
 const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingArrangement>, req: AppRequest | Request, res: Response): Promise<void> {
-  const applicationType = selectedApplicationType[claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option];
+  const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
   const cancelUrl = await getCancelUrl(claimId, claim);
   const courtLocations = await getListOfCourtLocations(<AppRequest> req);
   res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationType, courtLocations });

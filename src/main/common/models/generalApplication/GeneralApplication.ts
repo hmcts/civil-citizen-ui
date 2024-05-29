@@ -9,6 +9,7 @@ import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import { ClaimFeeData } from '../civilClaimResponse';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 
 export class GeneralApplication {
 
@@ -23,6 +24,8 @@ export class GeneralApplication {
   unavailableDatesHearing?: UnavailableDatesGaHearing;
   hearingArrangement?: HearingArrangement;
   hearingContactDetails?: HearingContactDetails;
+  wantToUploadDocuments?: YesNo;
+  uploadEvidenceForApplication?: UploadGAFiles[];
   statementOfTruth?: StatementOfTruthForm;
   applicationFee?: ClaimFeeData
 
@@ -36,6 +39,7 @@ export class GeneralApplication {
     unavailableDatesHearing?: UnavailableDatesGaHearing,
     hearingArrangement?: HearingArrangement,
     hearingContactDetails?: HearingContactDetails,
+    uploadEvidenceForApplication?: UploadGAFiles,
     statementOfTruth?: StatementOfTruthForm,
   ) {
     this.applicationTypes = applicationType ? [applicationType] : [];
@@ -47,6 +51,7 @@ export class GeneralApplication {
     this.unavailableDatesHearing = unavailableDatesHearing;
     this.hearingArrangement = hearingArrangement;
     this.hearingContactDetails = hearingContactDetails;
+    this.uploadEvidenceForApplication = uploadEvidenceForApplication ? [uploadEvidenceForApplication] : [];
     this.statementOfTruth = statementOfTruth;
   }
 }

@@ -313,6 +313,11 @@ import unavailableHearingDatesController from 'routes/features/generalApplicatio
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 import gaCheckAnswersController from 'routes/features/generalApplication/checkAnswersController';
+import respondentRequestChangeInformationController
+  from 'routes/features/generalApplication/respondentRequestChangeInformationController';
+import hearingArrangementsGuidanceController from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
+import wantToUploadDocumentsController from 'routes/features/generalApplication/wantToUploadDocuments';
+import uploadEvidenceDocumentsForApplicationController from 'routes/features/generalApplication/uploadEvidenceDocumentForApplication';
 
 export default [
   homeController,
@@ -587,4 +592,8 @@ export default [
   hearingArrangementController,
   hearingContactDetailsController,
   gaCheckAnswersController,
+  respondentRequestChangeInformationController,
+  hearingArrangementsGuidanceController,
+  wantToUploadDocumentsController,
+  uploadEvidenceDocumentsForApplicationController,
 ];

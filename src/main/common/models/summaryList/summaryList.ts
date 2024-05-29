@@ -44,8 +44,8 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
     },
   };
   if (multivalueIndex < multiValueTotalRows - 1) {
-    row.classes = 'summaryListNoBorderBottom';
-    row.value.classes = 'summaryListBorderBottom';
+    row.classes = 'no-border-bottom';
+    row.value.classes = 'govuk-border-colour-border-bottom-1';
   }
   if (multivalueIndex > 0) {
     row.key.classes = 'govuk-visually-hidden';
@@ -62,7 +62,7 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
       ],
     };
     if (multivalueIndex < multiValueTotalRows - 1) {
-      row.actions.classes = 'summaryListBorderBottom';
+      row.actions.classes = 'govuk-border-colour-border-bottom-1';
     }
   }
   return row;

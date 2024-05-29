@@ -1,42 +1,38 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import { getCaseDataFromStore, saveDraftClaim } from 'modules/draft-store/draftStoreService';
+import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import {
   ApplicationType,
   ApplicationTypeOption,
   selectedApplicationType,
 } from 'common/models/generalApplication/applicationType';
-import {HearingSupport} from 'models/generalApplication/hearingSupport';
-import {Claim} from 'models/claim';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
-import {YesNo} from 'common/form/models/yesNo';
-import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
-import {AppRequest} from 'common/models/AppRequest';
-import {FormValidationError} from 'common/form/validationErrors/formValidationError';
-import {GenericYesNo} from 'common/form/models/genericYesNo';
-import {ValidationError} from 'class-validator';
-import {InformOtherParties} from 'common/models/generalApplication/informOtherParties';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {t} from 'i18next';
-import {getLng} from 'common/utils/languageToggleUtils';
-import {RequestingReason} from 'models/generalApplication/requestingReason';
-import {OrderJudge} from 'common/models/generalApplication/orderJudge';
-import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
-import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
-import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
-import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
+import { HearingSupport } from 'models/generalApplication/hearingSupport';
+import { Claim } from 'models/claim';
+import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
+import { YesNo } from 'common/form/models/yesNo';
+import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import { AppRequest } from 'common/models/AppRequest';
+import { FormValidationError } from 'common/form/validationErrors/formValidationError';
+import { GenericYesNo } from 'common/form/models/genericYesNo';
+import { ValidationError } from 'class-validator';
+import { InformOtherParties } from 'common/models/generalApplication/informOtherParties';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { t } from 'i18next';
+import { getLng } from 'common/utils/languageToggleUtils';
+import { RequestingReason } from 'models/generalApplication/requestingReason';
+import { OrderJudge } from 'common/models/generalApplication/orderJudge';
+import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
+import { HearingArrangement } from 'models/generalApplication/hearingArrangement';
+import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
+import { StatementOfTruthForm } from 'models/generalApplication/statementOfTruthForm';
 
-const {Logger} = require('@hmcts/nodejs-logging');
+const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 
 export const saveApplicationType = async (claimId: string, applicationType: ApplicationType, index?: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    if (index >= 0 && index < claim.generalApplication.applicationTypes.length) {
-      claim.generalApplication.applicationTypes[index] = applicationType;
-    } else {
-      claim.generalApplication.applicationTypes.push(applicationType);
-    }
+    updateByIndexOrAppend(claim.generalApplication?.applicationTypes, applicationType, index);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -60,11 +56,8 @@ export const saveOrderJudge = async (claimId: string, orderJudge: OrderJudge, in
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    if (index >= 0 && index < claim.generalApplication.orderJudges.length) {
-      claim.generalApplication.orderJudges[index] = orderJudge;
-    } else {
-      claim.generalApplication.orderJudges.push(orderJudge);
-    }
+    const orderJudges = claim.generalApplication?.orderJudges || [];
+    updateByIndexOrAppend(orderJudges, orderJudge, index);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -107,6 +100,17 @@ export const saveApplicationCosts = async (claimId: string, applicationCosts: Ye
   }
 };
 
+export const saveIfPartyWantsToUploadDoc = async (redisKey: string, wantToSaveDoc: YesNo): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(redisKey, true);
+    claim.generalApplication.wantToUploadDocuments = wantToSaveDoc;
+    await saveDraftClaim(redisKey, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
   if (claim.isClaimant()) {
     const isDashboardEnabled = await isDashboardServiceEnabled();
@@ -118,15 +122,15 @@ export const getCancelUrl = async (claimId: string, claim: Claim): Promise<strin
   return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 };
 
-export function validateNoConsentOption(req: AppRequest, errors : ValidationError[], applicationTypeOption : string) {
+export function validateNoConsentOption(req: AppRequest, errors: ValidationError[], applicationTypeOption: string) {
 
-  if(req.body.option === YesNo.NO && applicationTypeOption === ApplicationTypeOption.SETTLE_BY_CONSENT) {
+  if (req.body.option === YesNo.NO && applicationTypeOption === ApplicationTypeOption.SETTLE_BY_CONSENT) {
 
     const validationError = new FormValidationError({
       target: new GenericYesNo(req.body.option, ''),
       value: req.body.option,
       constraints: {
-        shouldNotBeNoForSettleByConsent :'ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED',
+        shouldNotBeNoForSettleByConsent: 'ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED',
       },
       property: 'option',
     });
@@ -160,21 +164,17 @@ export const saveUnavailableDates = async (claimId: string, claim: Claim, unavai
   }
 };
 
-export function getRespondToApplicationCaption(claim: Claim, lng: string) : string {
+export function getRespondToApplicationCaption(claim: Claim, lng: string): string {
   const applicationType =
-    t(selectedApplicationType[claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option], {lng: getLng(lng)}).toLowerCase();
-  return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', { lng: getLng(lng), applicationType});
+    t(selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option], { lng: getLng(lng) }).toLowerCase();
+  return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', { lng: getLng(lng), applicationType });
 }
 
 export const saveRequestingReason = async (claimId: string, requestingReason: RequestingReason, index?: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    if (index >= 0 && index < claim.generalApplication.requestingReasons.length) {
-      claim.generalApplication.requestingReasons[index] = requestingReason;
-    } else {
-      claim.generalApplication.requestingReasons.push(requestingReason);
-    }
+    updateByIndexOrAppend(claim.generalApplication?.requestingReasons, requestingReason, index);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -215,5 +215,27 @@ export const saveStatementOfTruth = async (claimId: string, statementOfTruth: St
   } catch (error) {
     logger.error(error);
     throw error;
+  }
+};
+
+export const getByIndexOrLast = <T>(array: T[] | undefined, index: number | undefined): T | undefined =>
+  getByIndex(array, index)
+  || ((array?.length)
+    ? (array[array.length - 1])
+    : undefined);
+
+export const getByIndex = <T>(array: T[] | undefined, index: number | undefined): T | undefined =>
+  (array?.length && index >= 0 && index < array.length)
+    ? array[index]
+    : undefined;
+
+export const getLast = <T>(array: T[] | undefined): T | undefined =>
+  (array?.length) ? array[array.length - 1] : undefined;
+
+export const updateByIndexOrAppend = <T>(array: T[], newElem: T, index: number | undefined): void => {
+  if (index >= 0 && index < array.length) {
+    array[index] = newElem;
+  } else {
+    array.push(newElem);
   }
 };

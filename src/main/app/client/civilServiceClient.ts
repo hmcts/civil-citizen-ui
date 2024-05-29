@@ -8,6 +8,7 @@ import {
   CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
+  CIVIL_SERVICE_CHECK_OCMC_DEFENDENT_LINKED_URL,
   CIVIL_SERVICE_CLAIM_AMOUNT_URL,
   CIVIL_SERVICE_COURT_DECISION,
   CIVIL_SERVICE_COURT_LOCATIONS,
@@ -235,6 +236,20 @@ export class CivilServiceClient {
     }
   }
 
+  async isOcmcDefendantLinked(caseReference: string): Promise<boolean> {
+    try {
+      const response = await this.client.get(CIVIL_SERVICE_CHECK_OCMC_DEFENDENT_LINKED_URL //nosonar
+        .replace(':caseReference', caseReference), {headers: {'Content-Type': 'application/json'}});// no-sonar
+      if (!response.data) {
+        return false;
+      }
+      return response.data as boolean;
+    } catch (err: unknown) {
+      logger.error(`Error when checking a claim ${caseReference} is linked to a defendant`);
+      throw err;
+    }
+  }
+
   async uploadDocument(req: AppRequest, file: FileUpload): Promise<CaseDocument> {
     try {
       const formData = new FormData();
@@ -374,8 +389,8 @@ export class CivilServiceClient {
     }
   }
 
-  async assignDefendantToClaim(claimId: string, req: AppRequest): Promise<void> {
-    await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId), {}, // nosonar
+  async assignDefendantToClaim(claimId: string, req: AppRequest, pin:string): Promise<void> {
+    await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId), { pin: pin }, // nosonar
       { headers: { 'Authorization': `Bearer ${req.session?.user?.accessToken}` } })
       .catch((err) => {
         logger.error('Error when assigning defendant to claim');
