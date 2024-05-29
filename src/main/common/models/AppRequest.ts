@@ -30,7 +30,6 @@ export interface AppSession extends Session {
   firstContact: FirstContact;
   fileUpload: string;
   issuedAt: number;
-
 }
 
 export interface UserDetails {
