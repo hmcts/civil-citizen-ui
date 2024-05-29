@@ -140,8 +140,8 @@ export const addDocumentUploadRow = (claimId: string, claim: Claim, lang: string
     const href = `${constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS)}`;
     let rowValue: string;
     if (claim.generalApplication.wantToUploadDocuments === YesNo.YES) {
-      rowValue = `<p class="summaryListBorderBottom govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION.YES', {lng: lang})}</p>`;
-      rowValue += '<ul class="summaryListValueList">';
+      rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION.YES', {lng: lang})}</p>`;
+      rowValue += '<ul class="no-list-style">';
       claim.generalApplication.uploadEvidenceForApplication.forEach(uploadGAFile => {
         rowValue += `<li>${uploadGAFile.caseDocument.documentName}</li>`;
       });
