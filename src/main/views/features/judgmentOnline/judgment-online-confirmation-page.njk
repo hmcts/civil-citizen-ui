@@ -1,28 +1,17 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
-{% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../dashboard/item-content.njk" import itemContent %}
-{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 
-{% block pageTitle %}
-  {{ setPageTitle(t,pageTitle) }}
-{% endblock %}
+{% set pageTitle = t(pageTitle) %}
 
-{% block content %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      {{ govukPanel({
-        titleText: t(panel.titleText),
-        html: ""
-      }) }}
-      {% for item in content %}
-        {{ itemContent(item,t) }}
-      {% endfor %}
-    </div>
+{% block nestedContent %}
 
-    <div class="govuk-grid-column-one-third">
-        {{ contactUsForHelp(t) }}
-    </div>
-  </div>
+  {{ govukPanel({
+    titleText: t(panel.titleText),
+    html: ""
+  }) }}
+  {% for item in content %}
+    {{ itemContent(item,t) }}
+  {% endfor %}
 
 {% endblock %}

@@ -202,7 +202,7 @@ describe('Confirm you have been paid - on POST', () => {
     app.locals.draftStoreClient = mockRedisFailure;
     //When
     await testSession
-      .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
+      .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1234'))
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(500);
