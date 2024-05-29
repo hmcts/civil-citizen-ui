@@ -1558,6 +1558,8 @@
       "CLAIM_PROMPT": "I weld eich cais neu symud eich cais ymlaen cliciwch ar rif eich hawliad. Rhestrir yr hawliadau mwyaf diweddar gyntaf.",
       "CLAIM_STATUS": "Statws",
       "CLAIMANT_TITLE": "Hawliadau rydych chi wedi'u gwneud",
+      "CLAIMS_YOU_HAVE_MADE_HIDDEN_TEXT": "Hawliadau a wnaed gennych Tudalen {{ pageNo }}",
+      "CLAIM_MADE_AGAINST_HIDDEN_TEXT": "Hawliadau a wnaed yn eich erbyn Tudalen {{ pageNo }} ",
       "DEADLINE": "Dyddiad cau",
       "DEFENDANT_NAME": "Enw'r diffynnydd",
       "DEFENDANT_TITLE": "Hawliadau a wnaed yn eich erbyn",
