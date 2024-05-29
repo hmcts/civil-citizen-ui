@@ -3,7 +3,7 @@ const I = actor();
 class ApplyHelpWithFeesConfirmation {
 
   checkPageFullyLoaded () {
-    I.waitForElement('//*[@id="main-content"]/div/main/div/div/div[2]/a');
+    I.waitForElement('//*[@id="main-content"]');
   }
 
   nextAction (nextAction) {

@@ -10,10 +10,6 @@
 {% set pageTitle = t('PAGES.EVIDENCE.PAGE_TITLE') %}
 
 {% block nestedContent %}
-    {% if form != null and form.hasErrors() %}
-    {{ errorSummary(form.getAllErrors(), t) }}
-    {% endif %}
-
     {% set rowNumberToShowRemoveButton = 2 %}
     {% set witnessContentLength = witnessContent.length %}
     {% set isRemoveButtonHidden = witnessContentLength < rowNumberToShowRemoveButton %}

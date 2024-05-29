@@ -1,0 +1,78 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/support-links.njk" import supportLinks %}
+{% from "../../macro/button.njk" import addButton %}
+
+{% set pageTitle = t(pageTitle) %}
+
+{% block nestedContent %}
+
+  {% set titleH1 = t('PAGES.CONFIRM_YOU_HAVE_BEEN_PAID.TITLE') %}
+  {% set titleH2 = t('PAGES.CONFIRM_YOU_HAVE_BEEN_PAID.ENTER_THE_DATE') %}
+  {% set paragraph = t('PAGES.CONFIRM_YOU_HAVE_BEEN_PAID.HINT') %}
+
+  <form method="post" novalidate>
+    {{ csrfProtection(csrf) }}
+    <h1 class="govuk-heading-l">{{ titleH1 }}</h1>
+
+    {{ govukDateInput({
+      id: "date",
+      hint: {
+        text: paragraph
+      },
+      fieldset: {
+        legend: {
+          text: titleH2,
+          isPageHeading: true,
+          classes: "govuk-fieldset__legend--m"
+        }
+      },
+      items: [
+        {
+          classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
+          id: "day",
+          label: t('COMMON.DAY'),
+          name: "day",
+          value: form.model.day,
+          max: 31
+        },
+        {
+          classes:"govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
+          id: "month",
+          label: t('COMMON.MONTH'),
+          name: "month",
+          value: form.model.month,
+          max: 12
+        },
+        {
+          classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
+          id: "year",
+          label: t('COMMON.YEAR'),
+          name: "year",
+          value: form.model.year,
+          max: 9999
+        }
+      ]
+    }) }}
+
+    {{ govukCheckboxes({
+      idPrefix: 'confirmed',
+      name: 'confirmed',
+      items: [
+        {
+          value: true,
+          html: t('PAGES.CONFIRM_YOU_HAVE_BEEN_PAID.CONFIRM'),
+          checked: true if form.model.confirmed
+        }
+      ],
+      errorMessage: {
+        text:t(form.errorFor('confirmed'))
+      } if form.hasFieldError('confirmed')
+    }) }}
+
+    {{ addButton(t, 'SUBMIT',cancelUrl) }}
+  </form>
+
+{% endblock %}
