@@ -1765,6 +1765,15 @@
       "PAGE_TITLE": "Defendant yourself evidence",
       "TITLE": "Do you want to give evidence yourself?"
     },
+    "DELAYED_FLIGHT": {
+      "CLAIMING_FOR_DELAYED": "Are you claiming for a delayed flight?"
+    },
+    "FLIGHT_DETAILS": {
+      "AIRLINE": "Airline",
+      "FLIGHT_DETAILS": "Enter flight details",
+      "FLIGHT_NUMBER": "Flight number",
+      "SCHEDULED_DATE": "Scheduled date of flight"
+    },
     "DEPENDANTS": {
       "GROUP11": "11 to 15",
       "GROUP16": "16 to 19",
@@ -3699,6 +3708,22 @@
         "WHAT_HAPPENS_NEXT": "What happens next",
         "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
       }
+    },
+    "CONFIRM_YOU_HAVE_BEEN_PAID": {
+      "PAGE_TITLE": "Confirm that you've been paid",
+      "TITLE": "Confirm that you've been paid",
+      "ENTER_THE_DATE": "Enter the date that you were paid the full amount that was specified on the judgment",
+      "HINT": "If you've been paid in installments, enter the date of the final payment you received. For example, 16 4 2021",
+      "CONFIRM": "I confirm that I've been paid the full amount that was specified on the judgment. Once you've confirmed this, it cannot be changed.",
+      "JUDGMENT_LINK": "View the judgment made against the defendant",
+      "CHECK_ERROR_MESSAGE": "Please confirm you've been paid the full amount"
+    },
+    "CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM": {
+      "PAGE_TITLE": "Confirm that you've been paid - Confirmation",
+      "YOU_CONFIRMED": "You've confirmed that you've been paid",
+      "WHAT_NEXT": "What happens next",
+      "NO_FURTHER": "There's no further action you need to take.",
+      "CLOSE_AND_RETURN": "Close and return to case details"
     }
   },
   "FOOTER":{
@@ -3743,6 +3768,15 @@
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
     "DETAILS_REQUIRED": "Enter details",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
+    "DELAYED_FLIGHT": {
+      "CLAIMING_FOR_DELAY_REQUIRED": "'Are you claiming for a delayed flight?' is required"
+    },
+    "FLIGHT_DETAILS": {
+      "AIRLINE_REQUIRED": "Airline is required",
+      "DATE_FLIGHT_PAST": "Scheduled date of flight must be today or in the past",
+      "DATE_FLIGHT_REQUIRED": "Date of flight is required",
+      "FLIGHT_NUMBER_REQUIRED": "Flight number is required"
+    },
     "ENTER_A_DEBT": "Enter a debt",
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can’t pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
