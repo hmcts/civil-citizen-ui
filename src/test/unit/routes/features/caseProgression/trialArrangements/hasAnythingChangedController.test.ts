@@ -11,9 +11,11 @@ const session = require('supertest-session');
 import {YesNo} from 'form/models/yesNo';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
+import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;
@@ -23,6 +25,7 @@ const testSession = session(app);
 describe('Has anything changed - On GET', () => {
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -77,6 +80,7 @@ describe('Has anything changed - On GET', () => {
 describe('Has anything changed - on POST', () => {
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 
   it('should display error when neither Yes nor No were selected', async () => {

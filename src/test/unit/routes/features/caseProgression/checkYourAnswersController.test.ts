@@ -9,9 +9,12 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {SummarySection, SummarySections} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
+import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/caseProgression/checkYourAnswers/checkAnswersService');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+
 const mockSummarySections = checkAnswersService.getSummarySections as jest.Mock;
 mockSummarySections.mockReturnValue({} as SummarySections);
 const mockDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
@@ -48,6 +51,9 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
     nock(civilServiceUrl)
       .get('/cases/claimant/123')
       .reply(200, {data: civilClaimResponse });
+  });
+  beforeEach(()=> {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 
   describe('On Get', () => {

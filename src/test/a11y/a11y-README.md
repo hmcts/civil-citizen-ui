@@ -46,7 +46,7 @@ The names of the file use the url, and follow the format:
 
 As an example
 ```bash
-case/:id/apply-help-with-fees
+case/:id/case-progression/apply-help-with-fees
 ```
 becomes
 ```bash
