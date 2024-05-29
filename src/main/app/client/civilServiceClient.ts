@@ -54,7 +54,7 @@ import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
-import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
+import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -193,7 +193,7 @@ export class CivilServiceClient {
     }
   }
 
-  async getGeneralApplicationFee(feeRequestBody: { applicationTypes: ApplicationTypeOption[], withConsent: boolean, withNotice: boolean }, req: AppRequest): Promise<ClaimFeeData> {
+  async getGeneralApplicationFee(feeRequestBody: GAFeeRequestBody, req: AppRequest): Promise<ClaimFeeData> {
     try {
       const config = this.getConfig(req);
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL, feeRequestBody, config);

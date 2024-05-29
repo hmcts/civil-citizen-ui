@@ -4,28 +4,35 @@ import { AppRequest } from 'common/models/AppRequest';
 import { ClaimFeeData } from 'common/models/civilClaimResponse';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
+import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
+import { convertDateToStringFormat } from 'common/utils/dateUtils';
 import config from 'config';
 import { generateRedisKey, saveDraftClaim } from 'modules/draft-store/draftStoreService';
+export interface GAFeeRequestBody {
+  applicationTypes: ApplicationTypeOption[],
+  withConsent: boolean,
+  withNotice: boolean,
+  hearingDate: string
+};
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-const feeRequestBody = (applicationTypes: ApplicationType[], withConsent: YesNo, withNotice: YesNo): { applicationTypes: ApplicationTypeOption[], withConsent: boolean, withNotice: boolean } => {
-  const selectedApplicationTypes = applicationTypes.map(applicationType => applicationType.option);
+const feeRequestBody = (gaDetails: GeneralApplication, hearingDate: Date): GAFeeRequestBody => {
+  const selectedApplicationTypes = gaDetails.applicationTypes.map(applicationType => applicationType.option);
   return {
     applicationTypes: selectedApplicationTypes,
-    withConsent: withConsent === YesNo.YES,
-    withNotice: withNotice === YesNo.YES
+    withConsent: gaDetails?.agreementFromOtherParty === YesNo.YES,
+    withNotice: gaDetails?.informOtherParties?.option === YesNo.YES,
+    hearingDate: hearingDate ? convertDateToStringFormat(hearingDate) : null,
   }
 }
 
 
 export const gaApplicationFeeDetails = async (claim: Claim, req: AppRequest): Promise<ClaimFeeData> => {
   try {
-    const gaDetails = claim.generalApplication;
-    const gaFeeData = await civilServiceClient.getGeneralApplicationFee(feeRequestBody(gaDetails?.applicationTypes, gaDetails.agreementFromOtherParty, gaDetails?.informOtherParties?.option as YesNo), req);
-
+    const feeRequestDetails = feeRequestBody(claim.generalApplication, claim?.caseProgressionHearing?.hearingDate);
+    const gaFeeData = await civilServiceClient.getGeneralApplicationFee(feeRequestDetails, req);
     if (gaFeeData) {
       claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       claim.generalApplication.applicationFee = gaFeeData;
