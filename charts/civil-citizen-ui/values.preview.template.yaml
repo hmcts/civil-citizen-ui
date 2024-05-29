@@ -23,6 +23,7 @@ nodejs:
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
     IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
     LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
+    CIVIL_GENERAL_APPLICATIONS_URL: http://${SERVICE_NAME}-general-applications
 
 civil-service:
   enabled: true
