@@ -1,5 +1,5 @@
 import {DateTime} from 'luxon';
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {Claim} from 'models/claim';
@@ -23,6 +23,7 @@ import {toCCDHelpWithFees} from 'services/translation/response/convertToCCDHelpW
 import {toCCDLanguage} from 'models/ccdResponse/ccdWelshLanguageRequirements';
 import {toCCDMediationCarm} from 'services/translation/response/convertToCCDMediationCarm';
 import { FeeType } from 'common/form/models/helpWithFees/feeType';
+import {toCCDFlightDetails} from '../response/convertToCCDFlightDetails';
 
 export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClaim => {
   return {
@@ -60,6 +61,8 @@ export const translateDraftClaimToCCD = (claim: Claim, req: AppRequest): CCDClai
     res1MediationNonAttendanceDocs: [],
     app1MediationDocumentsReferred: [],
     app1MediationNonAttendanceDocs: [],
+    isFlightDelayClaim: claim.delayedFlight?.option === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+    flightDelayDetails: claim.delayedFlight?.option === YesNo.YES ? toCCDFlightDetails(claim.flightDetails) : undefined,
   };
 };
 export const translateDraftClaimToCCDR2 = (claim: Claim, req: AppRequest): CCDClaim => {

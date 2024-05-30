@@ -28,6 +28,7 @@ import {
   VIEW_ORDERS_AND_NOTICES_URL,
   EVIDENCE_UPLOAD_DOCUMENTS_URL,
   VIEW_MEDIATION_DOCUMENTS,
+  CONFIRM_YOU_HAVE_BEEN_PAID_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -39,10 +40,11 @@ import {documentIdExtractor} from 'common/utils/stringUtils';
 import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
 import { t } from 'i18next';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {getLng} from 'common/utils/languageToggleUtils';
 
-export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim, claimId: string, notification?: DashboardNotification): string => {
+export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim, claimId: string, notification?: DashboardNotification, lng?: string): string => {
 
-  const valuesMap = setDashboardValues(claim, claimId, notification);
+  const valuesMap = setDashboardValues(claim, claimId, notification, lng);
   valuesMap.forEach((value: string, key: string) => {
     textToReplace = textToReplace?.replace(key, value);
   });
@@ -50,7 +52,7 @@ export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim
   return textToReplace;
 };
 
-const setDashboardValues = (claim: Claim, claimId: string, notification?: DashboardNotification): Map<string, string> => {
+const setDashboardValues = (claim: Claim, claimId: string, notification?: DashboardNotification, lng?: string): Map<string, string> => {
 
   const valuesMap: Map<string, string> = new Map<string, string>();
   const daysLeftToRespond = claim?.respondent1ResponseDeadline ? getNumberOfDaysBetweenTwoDays(new Date(), claim.respondent1ResponseDeadline).toString() : '';
@@ -95,7 +97,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{civilMoneyClaimsTelephone}', civilMoneyClaimsTelephone);
   valuesMap.set('{civilMoneyClaimsTelephoneWelshSpeaker}', civilMoneyClaimsTelephoneWelshSpeaker);
   valuesMap.set('{cmcCourtEmailId}', cmcCourtEmailId);
-  valuesMap.set('{cmcCourtAddress}', getSendFinancialDetailsAddress());
+  valuesMap.set('{cmcCourtAddress}', getSendFinancialDetailsAddress(getLng(lng)));
   valuesMap.set('{fullAdmitPayImmediatelyPaymentAmount}', getTotalAmountWithInterestAndFees(claim).toString());
   valuesMap.set('{TELL_US_IT_IS_SETTLED}', DATE_PAID_URL.replace(':id', claimId));
   valuesMap.set('{DOWNLOAD_SETTLEMENT_AGREEMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT)));
@@ -109,6 +111,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{VIEW_EVIDENCE_UPLOAD_DOCUMENTS}', EVIDENCE_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
   valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', '#');
   valuesMap.set('{VIEW_MEDIATION_DOCUMENTS}', VIEW_MEDIATION_DOCUMENTS.replace(':id', claimId));
+  valuesMap.set('{CONFIRM_YOU_HAVE_BEEN_PAID_URL}', CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', claimId));
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
@@ -155,11 +158,11 @@ function getSettlementAgreementDocumentId(claim:Claim) : string {
   return getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT, 'claimant');
 }
 
-function getSendFinancialDetailsAddress() : string {
-  return `<p class='govuk-body'>${t('COMMON.POSTAL_ADDRESS.BUILDING')}<br>
-    ${t('COMMON.POSTAL_ADDRESS.PO_BOX')}<br>
-    ${t('COMMON.POSTAL_ADDRESS.CITY')}<br>
-    ${t('COMMON.POSTAL_ADDRESS.POSTCODE')}</p>`;
+function getSendFinancialDetailsAddress(lng: string) : string {
+  return `<p class='govuk-body'>${t('COMMON.POSTAL_ADDRESS.BUILDING', {lng})}<br>
+    ${t('COMMON.POSTAL_ADDRESS.PO_BOX', {lng})}<br>
+    ${t('COMMON.POSTAL_ADDRESS.CITY', {lng})}<br>
+    ${t('COMMON.POSTAL_ADDRESS.POSTCODE', {lng})}</p>`;
 }
 
 function getDocumentIdFromParams (notification: DashboardNotification): string {
