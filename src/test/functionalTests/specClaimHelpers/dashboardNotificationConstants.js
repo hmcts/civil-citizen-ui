@@ -362,4 +362,14 @@ module.exports = {
       nextSteps: 'Explain why you did not attend your appointment.',
     };
   },
+
+  // CIV-11625
+  // Notice.AAA6.ClaimantIntent.Mediation.CARM.Claimant
+  mediationCARMClaimantDefendant: () => {
+    return {
+      title: 'Your claim is now going to mediation',
+      content: ['Your claim is now going to mediation. You will be contacted within 28 days with details of your appointment.',
+        'If you do not attend your mediation appointment, the judge may issue a penalty.'],
+    };
+  },
 };

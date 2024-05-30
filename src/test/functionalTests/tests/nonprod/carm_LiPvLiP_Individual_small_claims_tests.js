@@ -3,17 +3,19 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ClaimantResponseSteps = require('../../citizenFeatures/response/steps/lipClaimantResponseSteps');
-const { defendantResponseFullAdmitPayBySetDateClaimant } = require('../../specClaimHelpers/dashboardNotificationConstants');
+const { defendantResponseFullAdmitPayBySetDateClaimant, mediationCARMClaimantDefendant} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {
+  verifyNotificationTitleAndContent,
+  verifyTasklistLinkAndState
+} = require("../../specClaimHelpers/e2e/dashboardHelper");
+const {viewMediationDocuments, uploadMediationDocuments, viewMediationSettlementAgreement} = require("../../specClaimHelpers/dashboardTasklistConstants");
 
 const claimType = 'SmallClaims';
 const partAdmit = 'partial-admission';
 const dontWantMoreTime = 'dontWantMoreTime';
 
 const carmEnabled = true;
-let claimRef;
-let caseData;
-let claimNumber;
-let securityCode;
+let claimRef, caseData, claimNumber, securityCode, taskListItem;
 
 Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Individual');
 
@@ -71,4 +73,16 @@ Scenario('LiP Claimant response with Part admit', async ({api}) => {
     await ClaimantResponseSteps.submitClaimantResponse();
     await api.waitForFinishedBusinessProcess();
   }
+}).tag('@regression-carm');
+
+Scenario('Verify Mediation status before Unsuccessful mediation', async () => {
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  const notification = mediationCARMClaimantDefendant();
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+  taskListItem = viewMediationDocuments();
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'NOT AVAILABLE YET');
+  taskListItem = uploadMediationDocuments();
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'NOT AVAILABLE YET');
+  taskListItem = viewMediationSettlementAgreement();
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'NOT AVAILABLE YET');
 }).tag('@regression-carm');
