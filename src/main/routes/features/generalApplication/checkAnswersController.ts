@@ -3,7 +3,7 @@ import {GA_CHECK_ANSWERS_URL, GENERAL_APPLICATION_CONFIRM_URL} from 'routes/urls
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
-import {getCancelUrl, saveStatementOfTruth,} from 'services/features/generalApplication/generalApplicationService';
+import { getCancelUrl, saveStatementOfTruth } from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
