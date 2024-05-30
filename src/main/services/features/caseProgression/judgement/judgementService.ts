@@ -69,8 +69,8 @@ function getButton(claimId: string, claim: Claim, lang: string, redirectUrl: str
 
 function getJudgementDocument(claim: Claim): CaseDocument {
   const documentTypes = {
-    claimant: [DocumentType.JUDGMENT_BY_ADMISSION_CLAIMANT, DocumentType.JUDGMENT_BY_DETERMINATION_CLAIMANT, DocumentType.DEFAULT_JUDGMENT_CLAIMANT1, DocumentType.DEFAULT_JUDGMENT_CLAIMANT2],
-    defendant: [DocumentType.JUDGMENT_BY_ADMISSION_DEFENDANT, DocumentType.JUDGMENT_BY_DETERMINATION_DEFENDANT, DocumentType.DEFAULT_JUDGMENT_DEFENDANT1, DocumentType.DEFAULT_JUDGMENT_DEFENDANT2],
+    claimant: [DocumentType.DEFAULT_JUDGMENT, DocumentType.JUDGMENT_BY_ADMISSION_CLAIMANT, DocumentType.JUDGMENT_BY_DETERMINATION_CLAIMANT, DocumentType.DEFAULT_JUDGMENT_CLAIMANT1, DocumentType.DEFAULT_JUDGMENT_CLAIMANT2],
+    defendant: [DocumentType.DEFAULT_JUDGMENT, DocumentType.JUDGMENT_BY_ADMISSION_DEFENDANT, DocumentType.JUDGMENT_BY_DETERMINATION_DEFENDANT, DocumentType.DEFAULT_JUDGMENT_DEFENDANT1, DocumentType.DEFAULT_JUDGMENT_DEFENDANT2],
   };
 
   let judgementDocument;
