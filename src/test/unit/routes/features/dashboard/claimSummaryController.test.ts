@@ -14,6 +14,8 @@ import {t} from 'i18next';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {CCDBundle} from 'models/caseProgression/bundles/ccdBundle';
 import {CaseRole} from 'form/models/caseRoles';
+import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -21,6 +23,10 @@ const citizenRoleToken: string = config.get('citizenRoleToken');
 const testSession = session(app);
 const isCaseProgressionV1EnableMock = isCaseProgressionV1Enable as jest.Mock;
 const getLatestUpdateContentMock = getLatestUpdateContent as jest.Mock;
+const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.Mock;
+const isCarmEnabledForCaseMock = isCarmEnabledForCase as jest.Mock;
+const isDashboardServiceEnabledMock = launchDarklyClient.isDashboardServiceEnabled as jest.Mock;
+const isCUIReleaseTwoEnabledMock = launchDarklyClient.isCUIReleaseTwoEnabled as jest.Mock;
 
 jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
@@ -32,6 +38,15 @@ jest.mock('services/features/dashboard/claimSummary/latestUpdateService');
 jest.mock('services/features/dashboard/claimSummaryService');
 jest.mock('services/caseDocuments/documentService');
 jest.mock('services/features/caseProgression/bundles/bundlesService');
+jest.mock('common/utils/carmToggleUtils.ts');
+
+jest.mock('services/dashboard/dashboardService', () => ({
+  getNotifications: jest.fn(),
+  getDashboardForm: jest.fn(),
+  getHelpSupportTitle: jest.fn(),
+  getHelpSupportLinks: jest.fn(),
+  extractOrderDocumentIdFromNotification : jest.fn(),
+}));
 
 export const USER_DETAILS = {
   accessToken: citizenRoleToken,
@@ -40,7 +55,12 @@ export const USER_DETAILS = {
 
 describe('Claim Summary Controller Defendant', () => {
   const civilServiceUrl = config.get<string>('services.civilService.url');
+  const idamUrl: string = config.get('idamUrl');
+
   beforeAll((done) => {
+    nock(idamUrl)
+      .post('/o/token')
+      .reply(200, {id_token: citizenRoleToken});
     testSession
       .get('/oauth2/callback')
       .query('code=ABC')
@@ -295,6 +315,35 @@ describe('Claim Summary Controller Defendant', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('This claim has been struck out because the claimant has not paid the hearing fee as instructed in the hearing notice');
+        });
+    });
+
+    it('should new dashboard when carm is on and claim is small', async () => {
+      //given
+      const smallClaim = {
+        ...claim,
+        state: CaseState.AWAITING_APPLICANT_INTENTION,
+        case_data: {
+          ...claim.case_data,
+        },
+      };
+      isDashboardServiceEnabledMock.mockResolvedValue(true);
+      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
+      isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
+      isCarmEnabledForCaseMock.mockResolvedValue(true);
+      //when
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, smallClaim);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+      //then
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Case number: ');
         });
     });
   });

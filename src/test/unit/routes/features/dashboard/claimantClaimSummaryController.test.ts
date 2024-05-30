@@ -23,6 +23,7 @@ jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/dashboard/dashboardService', () => ({
   getNotifications: jest.fn(),
   getDashboardForm: jest.fn(),
+  extractOrderDocumentIdFromNotification: jest.fn(),
 }));
 
 describe('claimant Dashboard Controller', () => {

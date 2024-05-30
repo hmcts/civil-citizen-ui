@@ -14,7 +14,7 @@ import {
 import {DocumentUploadSections} from 'models/caseProgression/documentUploadSections';
 import {SummarySections} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
-import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
+import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {Party} from 'models/party';
 import {PartyDetails} from 'form/models/partyDetails';
 import {t} from 'i18next';
@@ -28,6 +28,8 @@ import {
 } from '../../../../../utils/caseProgression/mockEvidenceUploadSections';
 import {createCCDClaimForUploadedDocuments} from '../../../../../utils/caseProgression/mockCCDClaimForEvidenceUpload';
 import {CaseRole} from 'form/models/caseRoles';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
 
 jest.mock('i18next');
 jest.mock('client/civilServiceClient');
@@ -91,9 +93,10 @@ describe('checkAnswersServiceTest', () => {
       const topElementsActual = getTopElements(claim);
       //then
       const topElementsExpected = [
-        {type: ClaimSummaryType.MAINTITLE, data: {text: 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_TITLE'}} as ClaimSummarySection,
-        {type: ClaimSummaryType.LEAD_PARAGRAPH, data: {text: 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CASE_REFERENCE_NUMBER', variables:{caseNumber: claim.id}}},
-        {type: ClaimSummaryType.LEAD_PARAGRAPH, data: {text: 'COMMON.PARTIES', variables:{claimantName: claim.getClaimantFullName(), defendantName: claim.getDefendantFullName()}}},
+        {type: ClaimSummaryType.MICRO_TEXT, data: {text: 'PAGES.DASHBOARD.HEARINGS.HEARING'}},
+        {type: ClaimSummaryType.MAINTITLE, data: {text: 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_TITLE'}},
+        {type: ClaimSummaryType.LEAD_PARAGRAPH, data: {text: 'COMMON.CASE_NUMBER_PARAM', variables:{claimId:caseNumberPrettify( claim.id)}, classes:'govuk-!-margin-bottom-1'}},
+        {type: ClaimSummaryType.LEAD_PARAGRAPH, data: {text: 'COMMON.CLAIM_AMOUNT_WITH_VALUE', variables:{claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)}}},
         {type: ClaimSummaryType.INSET_TEXT, data: {html: 'PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_WARNING_FULL'}},
       ];
       expect(topElementsActual).toEqual(topElementsExpected);

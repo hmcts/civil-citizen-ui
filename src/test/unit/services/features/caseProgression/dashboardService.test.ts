@@ -2,7 +2,11 @@ import {Claim} from 'models/claim';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 import {FIXED_DATE} from '../../../../utils/dateUtils';
-import {getDashboardForm, getNotifications} from 'services/dashboard/dashboardService';
+import {
+  extractOrderDocumentIdFromNotification,
+  getDashboardForm,
+  getNotifications,
+} from 'services/dashboard/dashboardService';
 import {CaseRole} from 'form/models/caseRoles';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {AppRequest} from 'common/models/AppRequest';
@@ -16,6 +20,7 @@ import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
+import {DashboardTaskStatus} from 'models/dashboard/taskList/dashboardTaskStatus';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -165,7 +170,7 @@ describe('dashboardService', () => {
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 12345;
         //When
-        const claimantNotifications: DashboardNotificationList = await getNotifications('1234567890', claim, ClaimantOrDefendant.DEFENDANT, appReq);
+        const claimantNotifications: DashboardNotificationList = await getNotifications('1234567890', claim, ClaimantOrDefendant.DEFENDANT, appReq, 'en');
 
         //Then
         expect(claimantNotifications.items).toEqual(mockNotificationInfo);
@@ -191,6 +196,68 @@ describe('dashboardService', () => {
 
         //Then
         expect(claimantDashboard.items).toEqual(mockExpectedDashboardInfo);
+
+      });
+
+      it('should exclude mediation section when carm is off', async () => {
+        //Given
+        const mockGet = jest.fn().mockResolvedValue({
+          data: Array.of(
+            new CivilServiceDashboardTask(
+              'test',
+              'test',
+              'test',
+              'test',
+              'test',
+              DashboardTaskStatus.COMPLETE,
+              'test',
+              'test',
+              'test'),
+          ),
+        });
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+
+        const dashboard = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('Mediation', 'Mediation', [])
+            , new DashboardTaskList('test', 'test', []),
+          ));
+
+        const dashboardExpected = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('test', 'test', []),
+          ));
+
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
+
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        //When
+        const claimantDashboard = await getDashboardForm(
+          ClaimantOrDefendant.DEFENDANT
+          , claim
+          , '1234567890'
+          , appReq
+          , false);
+
+        //Then
+        expect(claimantDashboard).toEqual(dashboardExpected);
+      });
+
+      it('ExtractDocumentFromNotificationList', async () => {
+        //Given
+        const notificationList: DashboardNotificationList = new DashboardNotificationList();
+        const params: Map<string, object> = new Map<string, object>();
+        params.set('orderDocument', new Object('http://dm-store:8080/documents/f1c7d590-8d3f-49c2-8ee7-6420ab711801/binary'));
+        const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params);
+        notificationList.items = new Array(dashboardNotification);
+        //When
+        const documentId = extractOrderDocumentIdFromNotification(notificationList);
+
+        //Then
+        expect(documentId).toEqual(undefined);
 
       });
     });

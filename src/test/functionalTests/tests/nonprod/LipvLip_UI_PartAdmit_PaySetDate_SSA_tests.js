@@ -10,7 +10,7 @@ const bySetDate = 'bySetDate';
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 let claimNumber, claimRef;
 
-Feature('Create Lip v Lip claim -  Part Admit By Defendant and Accepted Repayment Plan By Claimant');
+Feature('Create Lip v Lip claim -  Part Admit By Defendant and Accepted Repayment Plan By Claimant').tag('@r2-regression').tag('@nightly');
 
 Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
   //await CreateLipvLipClaimSteps.EligibilityCheckSteps();
@@ -36,15 +36,15 @@ Scenario('Create Claim by claimant', async ({api}) => {
     console.log('The value of the Claim Number :', claimNumber);
     console.log('The value of the Security Code :', securityCode);
   }
-}).retry(1).tag('@regression-r2');
+}).retry(1);
 
 Scenario('Assign case to defendant', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await api.assignToLipDefendant(claimRef);
   }
-}).tag('@regression-r2');
+});
 
-Scenario('Defendant responds with part admit', async ({api}) => {
+Scenario('Defendant responds with part admit', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
@@ -63,10 +63,10 @@ Scenario('Defendant responds with part admit', async ({api}) => {
     await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
     await ResponseSteps.EnterDQForSmallClaims(claimRef);
     await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-    await ResponseSteps.SignOut();
+    await I.click('Sign out');
     await api.waitForFinishedBusinessProcess();
   }
-}).retry(1).tag('@regression-r2');
+}).retry(1);
 
 Scenario('Claimant responds as Accepted Repayment Plan By Claimant', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -74,4 +74,4 @@ Scenario('Claimant responds as Accepted Repayment Plan By Claimant', async ({api
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfSettlementAndRepayment(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
   }
-}).retry(1).tag('@regression-r2');
+}).retry(1);

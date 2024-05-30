@@ -74,8 +74,15 @@ const createNewCivilClaimResponse = (claimId: string) => {
   return storedClaimResponse;
 };
 
-export const deleteDraftClaimFromStore = async (claimId: string): Promise<void> => {
-  await app.locals.draftStoreClient.del(claimId);
+export const deleteDraftClaimFromStore = async (claimId: string, field?: string): Promise<void> => {
+  await app.locals.draftStoreClient.del(claimId, field);
+};
+
+export const deleteFieldDraftClaimFromStore = async (claimId: string, claim: Claim, propertyName: string): Promise<void> => {
+  if (Object.prototype.hasOwnProperty.call(claim, propertyName)) {
+    delete claim[propertyName];
+    await saveDraftClaim(claimId, claim);
+  }
 };
 
 export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {

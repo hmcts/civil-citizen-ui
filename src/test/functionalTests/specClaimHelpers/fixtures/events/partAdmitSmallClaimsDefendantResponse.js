@@ -16,7 +16,7 @@ module.exports = {
           'individualFirstName': 'John',
           'individualLastName': 'Doe',
           'individualTitle': 'Sir',
-          'partyEmail': 'claimantcitizen-8c8nabs@gmail.com',
+          'partyEmail': 'civilmoneyclaimsdemo@gmail.com',
           'partyPhone': '07800000000',
           'primaryAddress': {
             'AddressLine1': 'TestAddressLine1',
@@ -600,7 +600,7 @@ module.exports = {
             'value': {
               'accountType': 'SAVINGS',
               'jointAccount': 'Yes',
-              'balance': 300000,
+              'balance': 300,
             },
           },
         ],

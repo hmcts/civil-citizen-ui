@@ -8,6 +8,8 @@ import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {FullAdmission} from 'models/fullAdmission';
 import {YesNo} from 'form/models/yesNo';
+import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
+import {ClaimantResponse} from 'models/claimantResponse';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -28,7 +30,6 @@ describe('Claimant response confirmation controller', () => {
     mockClaim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
     return mockClaim;
   }
-
   describe('on GET', () => {
     it('should return accept settlement agreement confirmation', async () => {
       // Given
@@ -42,6 +43,46 @@ describe('Claimant response confirmation controller', () => {
       expect(res.text).toContain("You've both signed a settlement agreement");
     });
 
+    it('In favour claimant-should return accept settlement agreement confirmation', async () => {
+      // Given
+      const mockClaim = new Claim();
+      mockClaim.claimantResponse= new ClaimantResponse();
+      mockClaim.claimantResponse.courtDecision =
+          RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+      mockClaim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+      mockClaim.claimantResponse.suggestedPaymentIntention.paymentOption =
+          PaymentOptionType.IMMEDIATELY;
+      mockClaim.claimantResponse.suggestedImmediatePaymentDeadLine = new Date();
+      mockClaim.defendantSignedSettlementAgreement = YesNo.YES;
+
+      mockGetCaseData.mockImplementation(() => mockClaim);
+      // When
+      const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
+      // Then
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("You've both signed a settlement agreement");
+    });
+
+    it('In favour claimant-should return accept settlement agreement confirmation', async () => {
+      // Given
+      const mockClaim = new Claim();
+      mockClaim.claimantResponse= new ClaimantResponse();
+      mockClaim.claimantResponse.courtDecision =
+          RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+      mockClaim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+      mockClaim.claimantResponse.suggestedPaymentIntention.paymentOption =
+          PaymentOptionType.BY_SET_DATE;
+      mockClaim.claimantResponse.suggestedPaymentIntention.paymentDate = new Date();
+      mockClaim.defendantSignedSettlementAgreement = YesNo.YES;
+
+      mockGetCaseData.mockImplementation(() => mockClaim);
+      // When
+      const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
+      // Then
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("You've both signed a settlement agreement");
+    });
+    
     it('should return reject settlement agreement confirmation', async () => {
       // Given
       const mockClaim = getMockClaim();

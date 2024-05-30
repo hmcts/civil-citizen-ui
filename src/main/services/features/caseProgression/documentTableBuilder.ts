@@ -82,7 +82,7 @@ function getTableRows(rows: UploadDocumentTypes[], claim: Claim, isClaimant: boo
   return tableRows;
 }
 
-function orderDocumentNewestToOldest(documentsWithDates: UploadDocumentTypes[]): UploadDocumentTypes[] {
+export function orderDocumentNewestToOldest(documentsWithDates: UploadDocumentTypes[]): UploadDocumentTypes[] {
 
   documentsWithDates.sort((a: UploadDocumentTypes, b: UploadDocumentTypes) => {
     return +b.caseDocument?.createdDatetime - +a.caseDocument?.createdDatetime;

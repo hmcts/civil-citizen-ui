@@ -1,7 +1,12 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {AppRequest} from 'common/models/AppRequest';
 
-import {MEDIATION_TYPE_OF_DOCUMENTS, MEDIATION_UPLOAD_DOCUMENTS, START_MEDIATION_UPLOAD_FILES} from 'routes/urls';
+import {
+  CANCEL_URL,
+  MEDIATION_TYPE_OF_DOCUMENTS,
+  MEDIATION_UPLOAD_DOCUMENTS,
+  START_MEDIATION_UPLOAD_FILES,
+} from 'routes/urls';
 
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
@@ -45,6 +50,9 @@ async function renderView(form: GenericForm<TypeOfDocumentsForm>, res: Response,
     claimId: caseNumberPrettify(claimId),
     partyInformation: partyInformation(claim),
     backLinkUrl : constructResponseUrlWithIdParams(claimId, START_MEDIATION_UPLOAD_FILES),
+    cancelUrl: CANCEL_URL
+      .replace(':id', claimId)
+      .replace(':propertyName', 'mediationUploadDocuments'),
   });
 }
 

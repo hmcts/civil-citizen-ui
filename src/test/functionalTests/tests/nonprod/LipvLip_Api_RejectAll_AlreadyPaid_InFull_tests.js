@@ -22,6 +22,7 @@ Scenario('Response with RejectAll-AlreadyPaid-InFull Small claims and Claimant s
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllAlreadyPaidInFullWithIndividual);
     await api.waitForFinishedBusinessProcess();
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    // One of the step in the below method is commented until https://tools.hmcts.net/jira/browse/CIV-13496 is fixed
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceAlreadyPaidInFull(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
   }
@@ -41,4 +42,4 @@ Scenario('Response with RejectAll-AlreadyPaid-InFull Fast Track and Claimant pro
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnRejectionOfFullDefenceAlreadyPaidInFull(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+}).tag('@r2-regression').tag('@nightly');

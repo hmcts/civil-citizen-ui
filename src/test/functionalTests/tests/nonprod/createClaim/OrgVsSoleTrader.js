@@ -9,7 +9,7 @@ const { payClaimFee, hwfSubmission } = require('../../../specClaimHelpers/dashbo
 
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115, claimantPartyType = 'Org';
 
-Feature('Create Lip v Lip claim - Org vs Sole trader @claimCreation').tag('@regression-r2');
+Feature('Create Lip v Lip claim - Org vs Sole trader @claimCreation').tag('@nightly-regression-r2');
 
 Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

@@ -16,7 +16,7 @@ import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTrut
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Interest} from 'form/models/interest/interest';
-import {Document, ServedDocumentFiles} from 'models/document/document';
+import {Document, ResponseDocument, ServedDocumentFiles} from 'models/document/document';
 import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
 import {ResponseDeadline} from 'models/responseDeadline';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
@@ -83,6 +83,7 @@ import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uplo
 import { FeeType } from 'common/form/models/helpWithFees/feeType';
 import {PaymentDetails} from 'models/PaymentDetails';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
+import {CCDFlightDelayDetails} from './airlines/flights';
 
 export class CivilClaimResponse {
   id: string;
@@ -112,6 +113,7 @@ export interface CCDClaim extends ClaimUpdate {
   totalClaimAmount?: number;
   respondent1ResponseDeadline?: Date;
   claimDetails?: ClaimDetails;
+  claimIssuedPaymentDetails?: ClaimIssuedPaymentDetails;
   respondent1?: CCDParty;
   hwfFeeType?: FeeType;
   statementOfMeans?: StatementOfMeans;
@@ -293,6 +295,10 @@ export interface CCDClaim extends ClaimUpdate {
   res1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   claimIssuedHwfDetails?: CCDHelpWithFeesDetails;
   mediationSettlementAgreedAt?: Date;
+  defendantResponseDocuments?: SystemGeneratedCaseDocuments[];
+  applicant1DefenceResponseDocumentSpec?: ResponseDocument;
+  isFlightDelayClaim?: string;
+  flightDelayDetails?: CCDFlightDelayDetails; 
 }
 
 export interface ClaimFeeData {
@@ -304,4 +310,9 @@ export interface ClaimFeeData {
 export interface IdamUserDetails {
   email: string;
   id: string;
+}
+
+interface ClaimIssuedPaymentDetails {
+  status?: string;
+  reference?: string;
 }

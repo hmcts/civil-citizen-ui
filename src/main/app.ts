@@ -6,10 +6,10 @@ import * as path from 'path';
 import session from 'express-session';
 import 'express-async-errors';
 
+import {AppInsights} from 'modules/appinsights';
 import {Helmet} from 'modules/helmet';
 import {Nunjucks} from 'modules/nunjucks';
 import {PropertiesVolume} from 'modules/properties-volume';
-import {AppInsights} from 'modules/appinsights';
 import {I18Next} from 'modules/i18n';
 import {HealthCheck} from 'modules/health';
 import {OidcMiddleware} from 'modules/oidc';
@@ -21,6 +21,7 @@ import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
 import {getRedisStoreForSession} from 'modules/utilityService';
 import {
   BASE_CLAIM_URL,
+  BASE_GENERAL_APPLICATION_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL,
@@ -34,6 +35,7 @@ import { createOSPlacesClientInstance } from 'modules/ordance-survey-key/ordance
 import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragement/trialArrangementsGuard';
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 import {ErrorHandler} from 'modules/error';
+import { isGAForLiPEnabled } from 'routes/guards/generalAplicationGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -55,6 +57,7 @@ I18Next.enableFor(app);
 const logger = Logger.getLogger('app');
 
 new PropertiesVolume().enableFor(app);
+new AppInsights().enable();
 
 logger.info('Creating new draftStoreClient');
 new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
@@ -80,7 +83,6 @@ app.use(session({
 
 app.enable('trust proxy');
 
-new AppInsights().enable();
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
@@ -88,6 +90,7 @@ new OidcMiddleware().enableFor(app);
 
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
+app.use(BASE_GENERAL_APPLICATION_URL, isGAForLiPEnabled);
 app.use(BASE_CLAIM_URL, claimIssueTaskListGuard);
 app.use([CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   HAS_ANYTHING_CHANGED_URL,

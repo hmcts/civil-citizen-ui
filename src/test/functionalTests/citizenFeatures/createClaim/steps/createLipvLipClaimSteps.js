@@ -1,9 +1,13 @@
 const I = actor();
 const EligibilityCheck = require('../pages/eligibilityCheck');
+const EligibilityCheckOCMC = require('../pages/eligibilityCheckOCMC');
 const CreateClaim = require('../pages/createClaim');
+const CreateClaimOCMC = require('../pages/createClaimOCMC');
 
 const eligibilityCheck = new EligibilityCheck();
+const eligibilityCheckOCMC = new EligibilityCheckOCMC();
 const createClaim = new CreateClaim();
+const createClaimOCMC = new CreateClaimOCMC();
 
 const paths = {
   links: {
@@ -40,6 +44,8 @@ class CreateClaimSteps {
     await eligibilityCheck.eligibilityDefendantAge();
     await eligibilityCheck.eligibilityClaimantAgeValidations();
     await eligibilityCheck.eligibilityClaimantAge();
+    await eligibilityCheck.eligibilityForHWF();
+    await eligibilityCheck.eligibilityInfoAboutHWF();
     await eligibilityCheck.eligibilityApplyForHWF();
     await eligibilityCheck.eligibilityHWFReferenceValidations();
     await eligibilityCheck.eligibilityHWFReference();
@@ -56,8 +62,59 @@ class CreateClaimSteps {
     await eligibilityCheck.eligibilityGovtDept();
     await eligibilityCheck.eligibilityDefendantAge();
     await eligibilityCheck.eligibilityClaimantAge();
+    await eligibilityCheck.eligibilityForHWF();
+    await eligibilityCheck.eligibilityInfoAboutHWF();
     await eligibilityCheck.eligibilityApplyForHWF();
     await eligibilityCheck.eligibilityHWFReference();
+  }
+  async EligibilityCheckStepsForClaimCreationOCMC() {
+    await eligibilityCheckOCMC.open();
+    await eligibilityCheckOCMC.eligibilityClaimValue();
+    await eligibilityCheckOCMC.eligibilitySingleDefendant();
+    await eligibilityCheckOCMC.eligibilityDefendantAddress();
+    await eligibilityCheckOCMC.eligibilityClaimType();
+    await eligibilityCheckOCMC.eligibilityClaimantAddress();
+    await eligibilityCheckOCMC.eligibilityTenancyDeposit();
+    await eligibilityCheckOCMC.eligibilityGovtDept();
+    await eligibilityCheckOCMC.eligibilityDefendantAge();
+    await eligibilityCheckOCMC.eligibilityClaimantAge();
+    await eligibilityCheckOCMC.eligibilityHWFReference();
+  }
+
+  async CreateClaimCreationOCMC() {
+    I.click('Resolving this dispute');
+    await createClaimOCMC.verifyTryToResolveTheDispute();
+    I.click('Completing your claim');
+    await createClaimOCMC.verifyCompletingYourClaim();
+    I.click('Your details');
+    await createClaimOCMC.verifyAboutYouAndThisClaimForClaimant();
+    await createClaimOCMC.verifyEnterYourDetails();
+    await createClaimOCMC.inputEnterYourDetails(true);
+    await createClaimOCMC.verifyDateOfBirth();
+    await createClaimOCMC.inputDateOfBirth();
+    await createClaimOCMC.verifyAndInputPhoneNumber();
+    I.click('Their details');
+    await createClaimOCMC.verifyAboutYouAndThisClaimForDefendant();
+    await createClaimOCMC.verifyEnterDefendantsDetails();
+    await createClaimOCMC.inputEnterYourDetails(false);
+    await createClaimOCMC.verifyTheirEmailAddress();
+    await createClaimOCMC.verifyTheirPhoneNumber();
+    I.click('Claim amount');
+    await createClaimOCMC.verifyClaimAmount();
+    await createClaimOCMC.inputClaimAmount();
+    await createClaimOCMC.verifyAndInputDoYouWantToClaimInterest();
+    await createClaimOCMC.verifyAndInputHelpWithFees();
+    await createClaimOCMC.verifyClaimAmountSummary();
+    I.click('Claim details');
+    await createClaimOCMC.verifyAndInputClaimDetails();
+    await createClaimOCMC.inputClaimDetailsTimeline();
+    await createClaimOCMC.inputEvidenceList();
+    I.click('Check and submit your claim');
+    await createClaimOCMC.verifyCheckYourAnswers();
+    await createClaimOCMC.payClaimFee();
+    const caseReference = await createClaimOCMC.verifyClaimSubmitted();
+    console.log('The created Case Reference : ', caseReference);
+    return caseReference;
   }
 
   async CreateClaimCreation(claimInterestFlag) {
@@ -143,7 +200,7 @@ class CreateClaimSteps {
     await createClaim.fillSoleTraderDefendantDetails();
   }
 
-  async addOrgClaimant() {  
+  async addOrgClaimant() {
     await I.amOnPage('/claim/claimant-party-type-selection');
     await createClaim.fillOrgClaimantDetails();
   }
@@ -174,6 +231,10 @@ class CreateClaimSteps {
     caseRef = caseRef.replace(/-/g, '');
     console.log('The value of the claim reference : ', caseRef);
     return caseRef;
+  }
+
+  async CheckOCMCcasePreview(claimRef) {
+    I.waitForContent(claimRef, 60);
   }
 }
 

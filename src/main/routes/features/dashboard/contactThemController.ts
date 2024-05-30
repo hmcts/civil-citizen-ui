@@ -1,11 +1,11 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CITIZEN_CONTACT_THEM_URL, CLAIM_DETAILS_URL} from '../../urls';
+import { CITIZEN_CONTACT_THEM_URL, CLAIM_DETAILS_URL } from '../../urls';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getAddress, getSolicitorName} from 'services/features/response/contactThem/contactThemService';
 import {getClaimById} from 'modules/utilityService';
 import {t} from 'i18next';
-import {isCUIReleaseTwoEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import { isCUIReleaseTwoEnabled } from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const citizenContactThemViewPath = 'features/dashboard/contact-them';
 const contactThemController = Router();
@@ -14,12 +14,12 @@ async function renderView(res: Response, claim: Claim, claimantDetailsUrl: strin
 
   const party = claim?.isClaimant() ? claim?.respondent1 : claim?.applicant1;
   const otherPartyName = claim?.isClaimant() ? claim?.getDefendantFullName() : claim?.getClaimantFullName();
-  const otherParty = claim?.isClaimant() ? t('PAGES.CONTACT_THEM.DEFENDANT', {lng}) : t('PAGES.CONTACT_THEM.CLAIMANT', {lng});
+  const otherParty = claim?.isClaimant() ? t('PAGES.CONTACT_THEM.DEFENDANT', { lng }) : t('PAGES.CONTACT_THEM.CLAIMANT', { lng });
 
   const address = getAddress(party);
 
   const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
-  const showInR1= !isReleaseTwoEnabled;
+  const showInR1 = !isReleaseTwoEnabled;
   res.render(citizenContactThemViewPath, {
     claim,
     claimantDetailsUrl,

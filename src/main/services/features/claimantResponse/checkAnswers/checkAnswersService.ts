@@ -25,7 +25,8 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmA
       : null;
   };
   const getJudgmentRequestSection = () => {
-    return claim.claimantResponse?.isCCJRequested
+    const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+    return claimantResponse.isCCJRequested
       ? buildJudgmentRequestSection(claim, claimId, lang, claimFee)
       : null;
   };
@@ -73,6 +74,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmA
 
 export const getSummarySections = (claimId: string, claim: Claim, lang?: string, claimFee?: number, carmApplicable = false): SummarySections => {
   const lng = getLng(lang);
+  claim.claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   return buildSummarySections(claim, claimId, lng, carmApplicable, claimFee);
 };
 

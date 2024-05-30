@@ -1,0 +1,17 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "./cancelLink.njk" import cancelLink %}
+
+{% macro addButton(t, type, cancelUrl) %}
+
+<div class="govuk-button-group">
+    {{ govukButton({
+        text: t('COMMON.BUTTONS.' + type)
+    }) }}
+
+    {% if cancelUrl %}
+        {{ cancelLink(cancelUrl, t) }}
+    {% endif %}
+
+</div>
+
+{% endmacro %}

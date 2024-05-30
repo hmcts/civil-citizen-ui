@@ -708,7 +708,7 @@ module.exports = {
             'value': {
               'accountType': 'CURRENT',
               'jointAccount': 'Yes',
-              'balance': 56000,
+              'balance': 56,
             },
           },
         ],
@@ -749,7 +749,7 @@ module.exports = {
           {
             'value': {
               'type': 'PENSION',
-              'amount': 56700,
+              'amount': 5670,
               'frequency': 'ONCE_ONE_WEEK',
             },
           },

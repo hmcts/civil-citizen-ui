@@ -6,7 +6,7 @@ import {StatementOfMeans} from './statementOfMeans';
 import {PartyType} from './partyType';
 import {FullAdmission} from './fullAdmission';
 import {PartialAdmission} from './partialAdmission';
-import {DefendantEvidence} from './evidence/evidence';
+import {ClaimantEvidence, DefendantEvidence} from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
@@ -81,6 +81,9 @@ import {BusinessProcess} from 'models/businessProcess';
 import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
+import {GeneralApplication} from './generalApplication/GeneralApplication';
+import {FlightDetails} from './flightDetails';
+import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -111,6 +114,7 @@ export class Claim {
   issueDate?: Date;
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
+  specParticularsOfClaimDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
@@ -164,6 +168,15 @@ export class Claim {
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
+  generalApplication?: GeneralApplication;
+  orderDocumentId?: string;
+  claimantEvidence: ClaimantEvidence;
+  defendantResponseDocuments: SystemGeneratedCaseDocuments[];
+  delayedFlight?: GenericYesNo;
+  flightDetails?: FlightDetails;
+  judgmentOnline?: JudgmentOnline;
+  // Index signature to allow dynamic property access
+  [key: string]: any;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -466,6 +479,8 @@ export class Claim {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
         if (documentType == DocumentType.DIRECTIONS_QUESTIONNAIRE) {
           return document.value.documentType === documentType && document.value.documentName.startsWith(claimantOrDefendant);
+        } else if (documentType == DocumentType.SEALED_CLAIM && claimantOrDefendant == DirectionQuestionnaireType.DEFENDANT) {
+          return document.value.documentType === documentType && document.value.documentName.includes('_response_');
         }
         return document?.value.documentType === documentType;
       });

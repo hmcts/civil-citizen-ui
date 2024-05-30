@@ -1,4 +1,5 @@
 import {
+  CANCEL_URL,
   MEDIATION_TYPE_OF_DOCUMENTS,
   MEDIATION_UPLOAD_DOCUMENTS,
   MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND,
@@ -106,6 +107,9 @@ function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:Uploa
     sectionTitle: 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.SECTION_TITLE',
     partyInformation: partyInformation(claim),
     backLinkUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_TYPE_OF_DOCUMENTS),
+    cancelUrl: CANCEL_URL
+      .replace(':id', claimId)
+      .replace(':propertyName', 'mediationUploadDocuments'),
   });
 }
 

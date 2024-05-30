@@ -3,11 +3,12 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import config from 'config';
 import * as UtilityService from 'modules/utilityService';
+import * as DraftStoreService from 'modules/draft-store/draftStoreService';
 import * as ApplyHelpFeeSelectionService from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
 import {Claim} from 'models/claim';
 import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
-import {DASHBOARD_NOTIFICATION_REDIRECT} from 'routes/urls';
+import {DASHBOARD_NOTIFICATION_REDIRECT, DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT} from 'routes/urls';
 import {CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL} from 'client/civilServiceUrls';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -57,7 +58,7 @@ describe('Notification Redirect Controller - Get', () => {
       //then
       .expect((res: Response) => {
         expect(res.status).toBe(302);
-        expect(res.text).toBe('Found. Redirecting to /#');
+        expect(res.text).toBe('Found. Redirecting to /case/123/view-orders-and-notices');
       });
 
   });
@@ -71,6 +72,8 @@ describe('Notification Redirect Controller - Get', () => {
       .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
       .reply(200, {});
 
+    jest.spyOn(DraftStoreService, 'saveDraftClaim').mockReturnValueOnce(Promise.resolve());
+    jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(claim));
     jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(claim));
     jest.spyOn(ApplyHelpFeeSelectionService, 'getRedirectUrl').mockReturnValueOnce(Promise.resolve('https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960'));
 
@@ -87,4 +90,79 @@ describe('Notification Redirect Controller - Get', () => {
       });
   });
 
+  it('Redirect to view document page with document Id', async () => {
+    //given
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.systemGeneratedCaseDocuments = [
+      {
+        id: '789',
+        value: {
+          documentLink: {
+            document_url: 'url',
+            document_filename: 'name',
+            document_binary_url: '/456/binary',
+          },
+          documentType: DocumentType.SEALED_CLAIM,
+        },
+      },
+    ] as SystemGeneratedCaseDocuments[];
+
+    nock(civilServiceUrl)
+      .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
+      .reply(200, {});
+
+    jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(claim));
+
+    //when
+    await request(app)
+      .get(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT
+        .replace(':id', '123')
+        .replace(':locationName', 'VIEW_ORDERS_AND_NOTICES')
+        .replace(':notificationId', '321')
+        .replace(':documentId', '1234'))
+      //then
+      .expect((res: Response) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toBe('Found. Redirecting to /case/123/view-orders-and-notices');
+      });
+  });
+
+  it('Redirect to view document order with document Id', async () => {
+    //given
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.systemGeneratedCaseDocuments = [
+      {
+        id: '789',
+        value: {
+          documentLink: {
+            document_url: 'url',
+            document_filename: 'name',
+            document_binary_url: '/456/binary',
+          },
+          documentType: DocumentType.SEALED_CLAIM,
+        },
+      },
+    ] as SystemGeneratedCaseDocuments[];
+
+    nock(civilServiceUrl)
+      .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
+      .reply(200, {});
+
+    jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(claim));
+
+    //when
+    await request(app)
+      .get(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT
+        .replace(':id', '123')
+        .replace(':locationName', 'VIEW_FINAL_ORDER')
+        .replace(':notificationId', '321')
+        .replace(':documentId', '1234'))
+      //then
+      .expect((res: Response) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toBe('Found. Redirecting to /case/123/view-documents/1234');
+      });
+  });
 });

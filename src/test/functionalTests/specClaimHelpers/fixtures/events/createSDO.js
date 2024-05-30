@@ -1,5 +1,5 @@
 module.exports = {
-  judgementSumSelectedYesAssignToSmallClaimsYes: () => {
+  judgementSumSelectedYesAssignToSmallClaimsYes: (document) => {
     return {
       event: 'CREATE_SDO',
       caseData: {
@@ -84,11 +84,22 @@ module.exports = {
         smallClaimsMethodInPerson: {
           value: { code: '192280'},
         },
+        sdoOrderDocument: {
+          documentLink: {
+            document_url: document.document_url,
+            document_binary_url: document.document_binary_url,
+            document_filename: 'small_claims_sdo_000MC037.pdf',
+            category_id: 'sdo',
+          },
+          documentName: 'small_claims_sdo_000MC037.pdf',
+          documentType: 'SDO_ORDER',
+          createdBy: 'Civil',
+        },
       },
     };
   },
 
-  judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing: () => {
+  judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing: (document) => {
     return {
       event: 'CREATE_SDO',
       caseData: {
@@ -217,6 +228,17 @@ module.exports = {
         },
         disposalHearingNotes: null,
         disposalHearingFinalDisposalHearing: null,
+        sdoOrderDocument: {
+          documentLink: {
+            document_url: document.document_url,
+            document_binary_url: document.document_binary_url,
+            document_filename: 'disposal_hearing_sdo_000MC038.pdf',
+            category_id: 'sdo',
+          },
+          documentName: 'disposal_hearing_sdo_000MC038.pdf',
+          documentType: 'SDO_ORDER',
+          createdBy: 'Civil',
+        },
       },
     };
   },

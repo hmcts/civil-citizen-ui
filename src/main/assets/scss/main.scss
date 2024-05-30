@@ -245,3 +245,15 @@
   table-layout: fixed;
   width: 100%;
 }
+
+// sass-lint:disable nesting-depth
+.dashboard-notification {
+  .govuk-notification-banner {
+    .govuk-notification-banner__content {
+      .govuk-body {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
