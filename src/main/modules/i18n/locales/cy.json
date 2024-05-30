@@ -2370,6 +2370,12 @@
         "SENT_TO_JUDGE": "Their application and your response will then be sent to a judge.",
         "TITLE": "Respond to a request for a change to the case",
         "WHAT_TO_DO_NEXT": "What to do next"
+      },
+      "RESPONDENT_AGREEMENT": {
+        "DISAGREE_EXPLANATION": "Explain why you disagree with the application",
+        "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
+        "TEXT_REVIEW": "Make sure you've reviewed the full application. If you disagree with any part of the application, select 'No' and explain why.",
+        "TITLE": "Do you agree that the court should make the order that the other parties have requested?"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -4213,6 +4219,10 @@
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
       "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
+      "RESPONDENT_AGREEMENT": {
+        "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
+        "EXPLAIN_WHY_DISAGREE_APPLICATION": "You need to explain why you disagree with the application" 
+      },
       "WANT_TO_ADD_ANOTHER_APPLICATION":"You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
       "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing"
