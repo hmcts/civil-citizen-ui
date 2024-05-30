@@ -92,6 +92,43 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({api}
   }
 }).tag('@regression-carm');
 
+Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({api}) => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'DefendantCompany');
+    console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
+    await api.setCaseId(claimRef);
+    await api.waitForFinishedBusinessProcess();
+    caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+    claimNumber = caseData.legacyCaseReference;
+    securityCode = caseData.respondent1PinToPostLRspec.accessCode;
+    console.log('claim number', claimNumber);
+    console.log('Security code', securityCode);
+    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllSmallClaimsCarm, 'DefendantCompany');
+    await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, true, 'IN_MEDIATION');
+    await api.mediationUnsuccessful(mediationAdmin, true, ['PARTY_WITHDRAWS', 'APPOINTMENT_NOT_ASSIGNED', 'APPOINTMENT_NO_AGREEMENT']);
+
+    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    const notification = mediationUnsuccessfulNOTClaimant1NonContactable();
+    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+    taskListItem = viewMediationDocuments();
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'INACTIVE');
+    taskListItem = uploadMediationDocuments();
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'INACTIVE');
+    taskListItem = viewMediationSettlementAgreement();
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'INACTIVE');
+
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    const defNotification = mediationUnsuccessfulNOTClaimant1NonContactable();
+    await verifyNotificationTitleAndContent(claimNumber, defNotification.title, defNotification.content);
+    taskListItem = viewMediationDocuments();
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'INACTIVE');
+    taskListItem = uploadMediationDocuments();
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'INACTIVE');
+    taskListItem = viewMediationSettlementAgreement();
+    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'INACTIVE');
+  }
+}).tag('@regression-carm');
+
 // LiP Individual vs LiP Sole Trader
 Scenario('LiP vs LiP Successful Mediation', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
