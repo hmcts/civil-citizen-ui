@@ -5,35 +5,35 @@ import {
   ApplicationTypeOption,
   selectedApplicationType,
 } from 'common/models/generalApplication/applicationType';
-import {HearingSupport} from 'models/generalApplication/hearingSupport';
-import {Claim} from 'models/claim';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
-import {YesNo} from 'common/form/models/yesNo';
-import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
-import {AppRequest} from 'common/models/AppRequest';
-import {FormValidationError} from 'common/form/validationErrors/formValidationError';
-import {GenericYesNo} from 'common/form/models/genericYesNo';
-import {ValidationError} from 'class-validator';
-import {InformOtherParties} from 'common/models/generalApplication/informOtherParties';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {t} from 'i18next';
-import {getLng} from 'common/utils/languageToggleUtils';
-import {RequestingReason} from 'models/generalApplication/requestingReason';
-import {OrderJudge} from 'common/models/generalApplication/orderJudge';
-import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
-import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
-import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
-import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
+import { HearingSupport } from 'models/generalApplication/hearingSupport';
+import { Claim } from 'models/claim';
+import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
+import { YesNo } from 'common/form/models/yesNo';
+import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import { AppRequest } from 'common/models/AppRequest';
+import { FormValidationError } from 'common/form/validationErrors/formValidationError';
+import { GenericYesNo } from 'common/form/models/genericYesNo';
+import { ValidationError } from 'class-validator';
+import { InformOtherParties } from 'common/models/generalApplication/informOtherParties';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { t } from 'i18next';
+import { getLng } from 'common/utils/languageToggleUtils';
+import { RequestingReason } from 'models/generalApplication/requestingReason';
+import { OrderJudge } from 'common/models/generalApplication/orderJudge';
+import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
+import { HearingArrangement } from 'models/generalApplication/hearingArrangement';
+import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
+import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 
-const {Logger} = require('@hmcts/nodejs-logging');
+const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 
 export const saveApplicationType = async (claimId: string, applicationType: ApplicationType): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.applicationType = applicationType;
+    updateByIndexOrAppend(claim.generalApplication?.applicationTypes, applicationType, index);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -71,11 +71,12 @@ export const saveRespondentAgreement = async (redisKey: string, respondentAgreem
   }
 };
 
-export const saveOrderJudge = async (claimId: string, orderJudge: OrderJudge): Promise<void> => {
+export const saveOrderJudge = async (claimId: string, orderJudge: OrderJudge, index: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.orderJudge = orderJudge;
+    const orderJudges = claim.generalApplication?.orderJudges || [];
+    updateByIndexOrAppend(orderJudges, orderJudge, index);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -169,7 +170,7 @@ export const saveRespondentAgreeToOrder = async (claimId: string, claim: Claim, 
 };
 
 export function getRespondToApplicationCaption(claim: Claim, lng: string): string {
-  const applicationType = t(selectedApplicationType[claim.generalApplication?.applicationType?.option], { lng: getLng(lng) }).toLowerCase();
+  const applicationType = t(selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option], { lng: getLng(lng) }).toLowerCase();
   return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', { lng: getLng(lng), interpolation: { escapeValue: false }, applicationType });
 }
 
@@ -187,11 +188,11 @@ export const saveUnavailableDates = async (claimId: string, claim: Claim, unavai
   }
 };
 
-export const saveRequestingReason = async (claimId: string, requestingReason: RequestingReason): Promise<void> => {
+export const saveRequestingReason = async (claimId: string, requestingReason: RequestingReason, index?: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.requestingReason = requestingReason;
+    updateByIndexOrAppend(claim.generalApplication?.requestingReasons, requestingReason, index);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -231,5 +232,27 @@ export const saveHearingContactDetails = async (claimId: string, hearingContactD
   } catch (error) {
     logger.error(error);
     throw error;
+  }
+};
+
+export const getByIndexOrLast = <T>(array: T[] | undefined, index: number | undefined): T | undefined =>
+  getByIndex(array, index)
+  || ((array?.length)
+    ? (array[array.length - 1])
+    : undefined);
+
+export const getByIndex = <T>(array: T[] | undefined, index: number | undefined): T | undefined =>
+  (array?.length && index >= 0 && index < array.length)
+    ? array[index]
+    : undefined;
+
+export const getLast = <T>(array: T[] | undefined): T | undefined =>
+  (array?.length) ? array[array.length - 1] : undefined;
+
+export const updateByIndexOrAppend = <T>(array: T[], newElem: T, index: number | undefined): void => {
+  if (index >= 0 && index < array.length) {
+    array[index] = newElem;
+  } else {
+    array.push(newElem);
   }
 };

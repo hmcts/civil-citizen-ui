@@ -1,25 +1,29 @@
-import { YesNo } from 'common/form/models/yesNo';
-import { ApplicationType } from './applicationType';
-import { InformOtherParties } from './informOtherParties';
-import { HearingSupport } from 'models/generalApplication/hearingSupport';
-import { RequestingReason } from 'models/generalApplication/requestingReason';
-import { OrderJudge } from './orderJudge';
-import { HearingArrangement } from 'models/generalApplication/hearingArrangement';
-import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
-import { GaResponse } from './response/gaResponse';
-import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
-import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
+import {YesNo} from 'common/form/models/yesNo';
+import {ApplicationType} from './applicationType';
+import {InformOtherParties} from './informOtherParties';
+import {HearingSupport} from 'models/generalApplication/hearingSupport';
+import {RequestingReason} from 'models/generalApplication/requestingReason';
+import {OrderJudge} from './orderJudge';
+import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
+import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
+import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
+import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
+import {ClaimFeeData} from '../civilClaimResponse';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import {GaResponse} from './response/gaResponse';
+import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 
 export class GeneralApplication {
 
-  applicationType?: ApplicationType;
+  applicationTypes?: ApplicationType[];
   informOtherParties?: InformOtherParties;
   hearingSupport?: HearingSupport;
   agreementFromOtherParty?: YesNo;
   applicationCosts?: YesNo;
   respondentAgreeToOrder?: YesNo;
-  requestingReason?: RequestingReason;
-  orderJudge?: OrderJudge;
+  requestingReasons?: RequestingReason[];
+  orderJudges?: OrderJudge[];
   uploadN245Form?: UploadGAFiles;
   unavailableDatesHearing?: UnavailableDatesGaHearing;
   hearingArrangement?: HearingArrangement;
@@ -27,6 +31,8 @@ export class GeneralApplication {
   response?: GaResponse;
   wantToUploadDocuments?: YesNo;
   uploadEvidenceForApplication?: UploadGAFiles[];
+  statementOfTruth?: StatementOfTruthForm;
+  applicationFee?: ClaimFeeData;
 
   constructor(
     applicationType?: ApplicationType,
@@ -39,18 +45,20 @@ export class GeneralApplication {
     hearingArrangement?: HearingArrangement,
     hearingContactDetails?: HearingContactDetails,
     response?: GaResponse,
-    uploadEvidenceForApplication?: UploadGAFiles, 
+    uploadEvidenceForApplication?: UploadGAFiles,
+    statementOfTruth?: StatementOfTruthForm, 
   ) {
-    this.applicationType = applicationType;
+    this.applicationTypes = applicationType ? [applicationType] : [];
     this.agreementFromOtherParty = agreementFromOtherParty;
     this.applicationCosts = applicationCosts;
     this.respondentAgreeToOrder = respondentAgreeToOrder;
-    this.requestingReason = requestingReason;
-    this.orderJudge = orderJudge;
+    this.requestingReasons = requestingReason ? [requestingReason] : [];
+    this.orderJudges = orderJudge ? [orderJudge] : [];
     this.unavailableDatesHearing = unavailableDatesHearing;
     this.hearingArrangement = hearingArrangement;
     this.hearingContactDetails = hearingContactDetails;
     this.response = response;
+    this.statementOfTruth = statementOfTruth;
     this.uploadEvidenceForApplication = uploadEvidenceForApplication ? [uploadEvidenceForApplication] : [];  
   }
 }
