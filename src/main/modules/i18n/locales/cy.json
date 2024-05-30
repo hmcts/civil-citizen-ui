@@ -3405,7 +3405,7 @@
       "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">Os ydych yn credu y bydd angen mwy o amser arnoch ar gyfer y treial, bydd angen i chi gysylltu â’r parti arall a gwneud cais i’r llys.</span> </br> </br> Ni chynyddir yr amser a ddyrennir i’r treial nes ceir y cais, telir y ffi, a gwneir gorchymyn.",
       "OTHER_INFORMATION_TITLE": "Gwybodaeth arall",
       "OTHER_INFORMATION_INPUT_LABEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">A oes unrhyw beth arall y mae angen i’r llys ei wybod (dewisol)?</span>",
-      "OTHER_INFORMATION_INPUT_HINT": "Er enghraifft, mae angen i dyst adael y llys erbyn 3pm oherwydd cyfrifoldebau gofal."
+      "OTHER_INFORMATION_INPUT_HINT": "Er enghraifft, mae tyst angen gadael y llys erbyn 3pm oherwydd cyfrifoldebau gofal."
     },
     "TRIED_TO_SETTLE": {
       "BOTH_PARTIES": "Rhaid i’r ddau barti gymryd camau penodol cyn mynd i’r llys.",
