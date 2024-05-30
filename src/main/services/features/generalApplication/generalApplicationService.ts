@@ -1,10 +1,6 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
-import {
-  ApplicationType,
-  ApplicationTypeOption,
-  selectedApplicationType,
-} from 'common/models/generalApplication/applicationType';
+import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
