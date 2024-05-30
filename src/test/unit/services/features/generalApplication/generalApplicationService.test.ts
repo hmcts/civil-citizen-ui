@@ -10,7 +10,7 @@ import {
   saveRespondentAgreeToOrder,
   saveRespondentAgreement,
   saveHearingArrangement,
-  saveHearingContactDetails,
+  saveHearingContactDetails, saveUnavailableDates,
 } from 'services/features/generalApplication/generalApplicationService';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../utils/errorMessageTestConstants';
@@ -24,6 +24,8 @@ import { RequestingReason } from 'models/generalApplication/requestingReason';
 import { HearingArrangement, HearingTypeOptions } from 'models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
+import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
+import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -160,6 +162,43 @@ describe('General Application service', () => {
       });
       //Then
       await expect(saveApplicationCosts('123', YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+
+  describe('Save Unavailable hearing dates', () => {
+    it('should save unavailable hearing dates selected', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.generalApplication = new GeneralApplication();
+        return claim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      //When
+      await saveUnavailableDates('123', claim, new UnavailableDatesGaHearing());
+      //Then
+      expect(spy).toBeCalled();
+    });
+
+    it('should throw error when draft store throws error', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      //When
+      mockSaveClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      //Then
+      await expect(saveUnavailableDates('123', claim, new UnavailableDatesGaHearing())).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
@@ -350,7 +389,10 @@ describe('General Application service', () => {
       const respondentAgreement = new RespondentAgreement(YesNo.YES);
 
       await saveRespondentAgreement('123', respondentAgreement);
-      await expect(spy).toBeCalledWith('123', { generalApplication: { response: { respondentAgreement } } });
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.response = new GaResponse(respondentAgreement);
+      await expect(spy).toBeCalledWith('123', claim);
     });
 
     it('saves respondent agreement when no response stored', async () => {
