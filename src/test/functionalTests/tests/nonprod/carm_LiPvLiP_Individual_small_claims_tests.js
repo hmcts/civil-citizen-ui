@@ -6,9 +6,9 @@ const ClaimantResponseSteps = require('../../citizenFeatures/response/steps/lipC
 const { defendantResponseFullAdmitPayBySetDateClaimant, mediationCARMClaimantDefendant} = require('../../specClaimHelpers/dashboardNotificationConstants');
 const {
   verifyNotificationTitleAndContent,
-  verifyTasklistLinkAndState
-} = require("../../specClaimHelpers/e2e/dashboardHelper");
-const {viewMediationDocuments, uploadMediationDocuments, viewMediationSettlementAgreement} = require("../../specClaimHelpers/dashboardTasklistConstants");
+  verifyTasklistLinkAndState,
+} = require('../../specClaimHelpers/e2e/dashboardHelper');
+const {viewMediationDocuments, uploadMediationDocuments, viewMediationSettlementAgreement} = require('../../specClaimHelpers/dashboardTasklistConstants');
 
 const claimType = 'SmallClaims';
 const partAdmit = 'partial-admission';

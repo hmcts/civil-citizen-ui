@@ -1,20 +1,20 @@
 const config = require('../../../config');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const LoginSteps = require("../../commonFeatures/home/steps/login");
+const LoginSteps = require('../../commonFeatures/home/steps/login');
 const {
   mediationUnsuccessfulNOTClaimant1NonContactable,
   mediationUnsuccessfulClaimant1NonAttendance,
-  mediationSuccessful
-} = require("../../specClaimHelpers/dashboardNotificationConstants");
+  mediationSuccessful,
+} = require('../../specClaimHelpers/dashboardNotificationConstants');
 const {
   verifyNotificationTitleAndContent,
-  verifyTasklistLinkAndState
-} = require("../../specClaimHelpers/e2e/dashboardHelper");
+  verifyTasklistLinkAndState,
+} = require('../../specClaimHelpers/e2e/dashboardHelper');
 const {
   viewMediationDocuments,
   uploadMediationDocuments,
-  viewMediationSettlementAgreement
-} = require("../../specClaimHelpers/dashboardTasklistConstants");
+  viewMediationSettlementAgreement,
+} = require('../../specClaimHelpers/dashboardTasklistConstants');
 
 const claimType = 'SmallClaims';
 const carmEnabled = true;
