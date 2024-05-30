@@ -312,9 +312,10 @@ import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNotic
 import unavailableHearingDatesController from 'routes/features/generalApplication/unavailableHearingDatesController';
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
+import applicationPaymentUnsuccessfulController from './features/generalApplication/applicationPaymentUnsuccessfulController';
 import flightDetailsController from './features/claim/airlines/flightDetailsController';
 import delayedFlightController from './features/claim/airlines/delayedFlightController';
-import respondentRequestChangeInformationController 
+import respondentRequestChangeInformationController
   from 'routes/features/generalApplication/respondentRequestChangeInformationController';
 import hearingArrangementsGuidanceController from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
 import wantToUploadDocumentsController from 'routes/features/generalApplication/wantToUploadDocuments';
@@ -595,6 +596,7 @@ export default [
   unavailableHearingDatesController,
   hearingArrangementController,
   hearingContactDetailsController,
+  applicationPaymentUnsuccessfulController,
   flightDetailsController,
   delayedFlightController,
   respondentRequestChangeInformationController,
