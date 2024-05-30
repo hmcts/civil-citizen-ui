@@ -104,7 +104,7 @@ export class Nunjucks {
         }
         if(key?.text)
           return ({...key, text: t(key?.text)});
-      });
+      }).filter(item => item);
     };
 
     const nextMonth = new Date();

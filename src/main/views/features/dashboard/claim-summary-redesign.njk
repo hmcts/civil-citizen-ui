@@ -23,6 +23,7 @@
         {% endif %}
 
         <div class="border-small-top"></div>
+         <div class="dashboard-notification">
           {% for notification in dashboardNotifications.items %}
               {{ govukNotificationBanner({
                  titleText: notification.titleCy if lang=="cy" else notification.titleEn,
@@ -30,6 +31,7 @@
                  classes: "govuk-!-margin-bottom-4"
                })  }}
           {% endfor %}
+         </div>
           {% for taskList in dashboardTaskList.items %}
             <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
               <h2 class="app-task-list__section">
