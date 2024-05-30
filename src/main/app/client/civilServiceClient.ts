@@ -57,6 +57,7 @@ import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceD
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
+import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -358,6 +359,10 @@ export class CivilServiceClient {
 
   async submitJudgmentPaidInFull(claimId: string, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.JUDGMENT_PAID_IN_FULL, claimId, updatedClaim, req);
+  }
+
+  async submitInitiateGeneralApplicationEvent(claimId: string, updatedApplication: CCDGeneralApplication, req?: AppRequest):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.JUDGMENT_PAID_IN_FULL, claimId, updatedApplication, req);
   }
 
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {

@@ -8,13 +8,14 @@ import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/
 import {
   CcdGeneralApplicationEvidenceDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
+import {ClaimUpdate} from 'models/events/eventDto';
 
 export interface EventDto {
   event: ApplicationEvent,
   caseDataUpdate?: CCDGeneralApplication;
 }
 
-export interface CCDGeneralApplication {
+export interface CCDGeneralApplication extends ClaimUpdate {
   generalAppType: CcdGeneralApplicationTypes;
   generalAppConsentOrder: YesNoUpperCamelCase;
   generalAppInformOtherParty: CcdGeneralApplicationInformOtherParty;
