@@ -58,6 +58,7 @@ export const IGNORED_URLS = [
   urls.CANCEL_URL,
   urls.VIEW_MEDIATION_DOCUMENTS,
   urls.BASE_GENERAL_APPLICATION_URL,
+  urls.BASE_GENERAL_APPLICATION_RESPONSE_URL,
   urls.DASHBOARD_CLAIMANT_URL,
   //TODO: remove this once finished the page
   urls.VIEW_THE_HEARING_URL,
