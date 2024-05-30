@@ -1,0 +1,15 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "../dashboard/item-content.njk" import itemContent %}
+{% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.RESPONDENT_INFORMATION.PAGE_TITLE') }}
+{% endblock %}
+
+{% block nestedContent %}
+  {{headingWithCaption(t,'PAGES.GENERAL_APPLICATION.RESPONDENT_INFORMATION.HEADER','PAGES.GENERAL_APPLICATION.RESPONDENT_INFORMATION.TITLE' )}}
+    {% for content in contentList %}
+      {{ itemContent(content,t) }}
+    {% endfor %}
+{% endblock %}

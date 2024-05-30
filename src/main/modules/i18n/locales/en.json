@@ -81,6 +81,7 @@
       "CHANGE": "Change",
       "CONTINUE": "Continue",
       "CANCEL": "Cancel",
+      "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Go back and try payment again",
       "GO_TO_ACCOUNT": "Go to your account",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
@@ -1501,6 +1502,8 @@
       "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
       "CLAIM_STATUS": "Status",
       "CLAIMANT_TITLE": "Claims you've made",
+      "CLAIMS_YOU_HAVE_MADE_HIDDEN_TEXT": "Claims you’ve made Page {{ pageNo }}",
+      "CLAIM_MADE_AGAINST_HIDDEN_TEXT": "Claims made against you Page {{ pageNo }} ",
       "DEADLINE": "Deadline",
       "DEFENDANT_NAME": "Defendant name",
       "DEFENDANT_TITLE": "Claims made against you",
@@ -2159,6 +2162,11 @@
         "YOU_CAN": "You can:",
         "UPLOAD_NEW_VERSION": "upload a new version of this document with any amends underlined. We'll ask if you want to upload documents to support your application later on"
       },
+      "PAYMENT_UNSUCCESSFUL": {
+        "CONTACT_YOUR_BANK": "Contact your bank for more details. No money has been taken from your account.",
+        "TITLE": "Unsuccessful payment",
+        "YOUR_PAYMENT_HAS_FAILED": "Your payment has failed"
+      },
       "SELECTED_APPLICATION_TYPE": {
         "CANCEL_JUDGMENT": "Set aside (remove) a judgment",
         "CHANGE_CLAIM": "Make a change to your claim or defence that you've submitted",
@@ -2238,6 +2246,11 @@
         "TITLE": "Application from the other parties",
         "VARY_JUDGMENT": "vary a judgment"
       },
+      "APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE": {
+        "MSG1": "You may need to attend an application hearing so that a judge can consider the application with you and the other parties and decide what the next steps should be.",
+        "MSG2": "This hearing is not to discuss the claim. This is a separate hearing to discuss the application.",
+        "TITLE": "Application hearing arrangements"
+      },
       "GA_PAYMENT_SUCCESSFUL" : {
         "APPLICATION_SUBMITTED":"Application Submitted",
         "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_1": "If you have not provided a valid reason, a judge may order that the other parties should be informed. If this happens, you'll need to pay an additional fee and your application may also be delayed.",
@@ -2288,6 +2301,18 @@
         "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application.",
         "TITLE": "Application costs"
       },
+      "WANT_TO_UPLOAD_DOCUMENTS": {
+        "MSG1": "If you've selected multiple applications, you should upload documents that relate to all of them.",
+        "TITLE": "Do you want to upload documents to support your application? (Optional)"
+      },
+      "UPLOAD_DOCUMENTS": {
+        "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "LIST_TITLE": "Uploaded files",
+        "MSG1": "You should only upload documents that are relevant to your application.",
+        "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",
+        "REMOVE_DOC": "Remove document",
+        "TITLE": "Upload documents to support your application"
+      },
       "ADD_ANOTHER_APPLICATION": {
         "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
         "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
@@ -2308,6 +2333,30 @@
         "PREFERRED_EMAIL_ADDRESS": "Preferred email address",
         "PREFERRED_TELEPHONE_NUMBER": "Preferred telephone number",
         "TITLE": "Contact Details"
+      },
+      "UNAVAILABLE_HEARING_DATES": {
+        "ADD_ANOTHER_DATE": "Add another date or date range",
+        "ENTER_UNAVAILABLE": "Enter unavailable date",
+        "FROM": "From",
+        "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
+        "LONGER_PERIOD": "A longer period of time",
+        "PAGE_TITLE": "Unavailable hearing dates",
+        "SELECT": "Select a date or dates you cannot attend a hearing",
+        "SINGLE_DATE": "A single date",
+        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
+        "TO": "To"
+      },
+      "RESPONDENT_INFORMATION": {
+        "CLICK_RESPOND": "Click 'respond to application' to let the court know whether or not you agree with their request.",
+        "HEADER": "Respond to an application",
+        "INCLUDE_APPLICATION": "They will have included information about what change they'd like and why in their application. They may have also uploaded documents to support their request.",
+        "OTHER_PARTY_REQUEST": "The other parties have requested a change to the case. The 'other parties' are the other side or sides involved in your claim.",
+        "PAGE_TITLE": "Respond to a request for a change to the case",
+        "REQUEST_BY_APPLICATION": "They requested a change by making an application.",
+        "REVIEW_APPLICATION": "Review their application and any documents that they've uploaded on the next screen",
+        "SENT_TO_JUDGE": "Their application and your response will then be sent to a judge.",
+        "TITLE": "Respond to a request for a change to the case",
+        "WHAT_TO_DO_NEXT": "What to do next"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -3677,6 +3726,22 @@
         "WHAT_HAPPENS_NEXT": "What happens next",
         "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
       }
+    },
+    "CONFIRM_YOU_HAVE_BEEN_PAID": {
+      "PAGE_TITLE": "Confirm that you've been paid",
+      "TITLE": "Confirm that you've been paid",
+      "ENTER_THE_DATE": "Enter the date that you were paid the full amount that was specified on the judgment",
+      "HINT": "If you've been paid in installments, enter the date of the final payment you received. For example, 16 4 2021",
+      "CONFIRM": "I confirm that I've been paid the full amount that was specified on the judgment. Once you've confirmed this, it cannot be changed.",
+      "JUDGMENT_LINK": "View the judgment made against the defendant",
+      "CHECK_ERROR_MESSAGE": "Please confirm you've been paid the full amount"
+    },
+    "CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM": {
+      "PAGE_TITLE": "Confirm that you've been paid - Confirmation",
+      "YOU_CONFIRMED": "You've confirmed that you've been paid",
+      "WHAT_NEXT": "What happens next",
+      "NO_FURTHER": "There's no further action you need to take.",
+      "CLOSE_AND_RETURN": "Close and return to case details"
     }
   },
   "FOOTER":{
@@ -3744,36 +3809,52 @@
     "ENTER_DATE_YOU_ARE_UNAVAILABILITY_CARM": "Enter the date you are unavailable",
     "ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates they are unavailable",
     "CARM_ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates you are unavailable",
+    "GA_ENTER_DATES_FOR_UNAVAILABILITY": "Enter the dates you are unavailable",
     "ENTER_DATE_FOR_UNAVAILABILITY": "Enter the date they are unavailable",
     "ENTER_DATE_FOR_UNAVAILABILITY_FROM": "Enter the date they are unavailable from",
     "ENTER_DATE_FOR_UNAVAILABILITY_TO": "Enter the date they are unavailable to",
     "CARM_ENTER_DATE_FOR_UNAVAILABILITY": "Enter the date you are unavailable",
+    "GA_ENTER_DATE_FOR_UNAVAILABILITY": "Enter the date you are unavailable",
     "CARM_ENTER_DATE_FOR_UNAVAILABILITY_FROM": "Enter the date you are unavailable from",
+    "GA_ENTER_DATE_FOR_UNAVAILABILITY_FROM": "Enter the date you are unavailable from",
     "CARM_ENTER_DATE_FOR_UNAVAILABILITY_TO": "Enter the date you are unavailable to",
+    "GA_ENTER_DATE_FOR_UNAVAILABILITY_TO": "Enter the date you are unavailable to",
     "ENTER_DAY_FOR_UNAVAILABILITY_FROM": "Date they are unavailable from must include a day",
     "ENTER_DAY_FOR_UNAVAILABILITY": "Date they are unavailable must include a day",
     "ENTER_DAY_FOR_UNAVAILABILITY_TO": "Date they are unavailable to must include a day",
     "CARM_ENTER_DAY_FOR_UNAVAILABILITY_FROM": "Date you are unavailable from must include a day",
+    "GA_ENTER_DAY_FOR_UNAVAILABILITY_FROM": "Date you are unavailable from must include a day",
     "CARM_ENTER_DAY_FOR_UNAVAILABILITY": "Date you are unavailable must include a day",
+    "GA_ENTER_DAY_FOR_UNAVAILABILITY": "Date you are unavailable must include a day",
     "CARM_ENTER_DAY_FOR_UNAVAILABILITY_TO": "Date you are unavailable to must include a day",
+    "GA_ENTER_DAY_FOR_UNAVAILABILITY_TO": "Date you are unavailable to must include a day",
     "ENTER_MONTH_FOR_UNAVAILABILITY": "Date they are unavailable must include a month",
     "ENTER_MONTH_FOR_UNAVAILABILITY_FROM": "Date they are unavailable from must include a month",
     "ENTER_MONTH_FOR_UNAVAILABILITY_TO": "Date they are unavailable to must include a month",
     "CARM_ENTER_MONTH_FOR_UNAVAILABILITY": "Date you are unavailable must include a month",
+    "GA_ENTER_MONTH_FOR_UNAVAILABILITY": "Date you are unavailable must include a month",
     "CARM_ENTER_MONTH_FOR_UNAVAILABILITY_FROM": "Date you are unavailable from must include a month",
+    "GA_ENTER_MONTH_FOR_UNAVAILABILITY_FROM": "Date you are unavailable from must include a month",
     "CARM_ENTER_MONTH_FOR_UNAVAILABILITY_TO": "Date you are unavailable to must include a month",
+    "GA_ENTER_MONTH_FOR_UNAVAILABILITY_TO": "Date you are unavailable to must include a month",
     "ENTER_YEAR_FOR_UNAVAILABILITY": "Date they are unavailable must include a year",
     "ENTER_YEAR_FOR_UNAVAILABILITY_FROM": "Date they are unavailable from must include a year",
     "ENTER_YEAR_FOR_UNAVAILABILITY_TO": "Date they are unavailable to must include a year",
     "CARM_ENTER_YEAR_FOR_UNAVAILABILITY": "Date you are unavailable must include a year",
+    "GA_ENTER_YEAR_FOR_UNAVAILABILITY": "Date you are unavailable must include a year",
     "CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM": "Date you are unavailable from must include a year",
+    "GA_ENTER_YEAR_FOR_UNAVAILABILITY_FROM": "Date you are unavailable from must include a year",
     "CARM_ENTER_YEAR_FOR_UNAVAILABILITY_TO": "Date you are unavailable to must include a year",
+    "GA_ENTER_YEAR_FOR_UNAVAILABILITY_TO": "Date you are unavailable to must include a year",
     "ENTER_UNAVAILABILITY_DATE_IN_FUTURE": "Date they are unavailable must be today or in the future",
     "ENTER_UNAVAILABILITY_DATE_IN_FUTURE_FROM": "Date they are unavailable from must be today or in the future",
     "ENTER_UNAVAILABILITY_DATE_IN_FUTURE_TO": "Date they are unavailable to must be today or in the future",
     "CARM_ENTER_UNAVAILABILITY_DATE_IN_FUTURE": "Date you are unavailable must be today or in the future",
+    "GA_ENTER_UNAVAILABILITY_DATE_IN_FUTURE": "Date you are unavailable must be today or in the future",
     "CARM_ENTER_UNAVAILABILITY_DATE_IN_FUTURE_FROM": "Date you are unavailable from must be today or in the future",
+    "GA_ENTER_UNAVAILABILITY_DATE_IN_FUTURE_FROM": "Date you are unavailable from must be today or in the future",
     "CARM_ENTER_UNAVAILABILITY_DATE_IN_FUTURE_TO": "Date you are unavailable to must be today or in the future",
+    "GA_ENTER_UNAVAILABILITY_DATE_IN_FUTURE_TO": "Date you are unavailable to must be today or in the future",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS": "Date they are unavailable must be in the next 12 months",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_FROM": "Date they are unavailable from must be in the next 12 months",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_12_MOINTHS_TO": "Date they are unavailable to must be in the next 12 months",
@@ -3781,10 +3862,14 @@
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_FROM": "Date they are unavailable from must be in the next 3 months",
     "ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO": "Date they are unavailable to must be in the next 3 months",
     "CARM_ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS": "Date you are unavailable must be in the next 3 months",
+    "GA_ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS": "Date you are unavailable must be in the next 3 months",
     "CARM_ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_FROM": "Date you are unavailable from must be in the next 3 months",
+    "GA_ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_FROM": "Date you are unavailable from must be in the next 3 months",
     "CARM_ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO": "Date you are unavailable to must be in the next 3 months",
+    "GA_ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO": "Date you are unavailable to must be in the next 3 months",
     "ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Date they are unavailable from must be before the date they are unavailable to",
     "CARM_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Date you are unavailable from must be before the date you are unavailable to",
+    "GA_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Date you are unavailable from must be before the date you are unavailable to",
     "ENTER_VALID_EMAIL": "Enter a valid email address",
     "ENTER_VALID_EMAIL_EVIDENCE": "Enter an email address in the correct format, like name@example.com",
     "ENTER_SECURITY_CODE": "Enter your security code",
@@ -4105,19 +4190,20 @@
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
+      "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
       "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No",
       "ENTER_REQUESTING_REASON": "You need to enter your reasons for requesting this order",
       "EXPLAIN_DO_NOT_WANT_COURT":"You need to explain why you do not want the court to inform the other parties.",
       "ENTER_ORDER_JUDGE": "You need to enter the order you want the judge to make",
+      "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
+      "ENTER_VALID_EMAIL": "You need to enter a valid email address",
       "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
       "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
       "WANT_TO_ADD_ANOTHER_APPLICATION":"You need to tell us if you want to add another application. Choose option: Yes or No",
-      "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
-      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
-      "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
-      "ENTER_VALID_EMAIL": "You need to enter a valid email address"
+      "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
+      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing"
     }
   }
 }
