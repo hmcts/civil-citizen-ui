@@ -1,7 +1,7 @@
 import {app} from '../../../../../main/app';
 import config from 'config';
 import {CaseRole} from 'form/models/caseRoles';
-import {VIEW_THE_JUDGEMENT_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
+import {VIEW_THE_JUDGMENT_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
 import request from 'supertest';
@@ -38,11 +38,11 @@ describe('View the judgement Controller', () => {
         .mockResolvedValueOnce(claim);
 
       //when
-      await request(app).get(VIEW_THE_JUDGEMENT_URL.replace(':id', claim.id))
+      await request(app).get(VIEW_THE_JUDGMENT_URL.replace(':id', claim.id))
         //then
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('View the judgement');
+          expect(res.text).toContain('View the judgment');
           expect(res.text).toContain(DASHBOARD_CLAIMANT_URL.replace(':id', claim.id));
         });
     });
@@ -56,11 +56,11 @@ describe('View the judgement Controller', () => {
         .mockResolvedValueOnce(claim);
 
       //when
-      await request(app).get(VIEW_THE_JUDGEMENT_URL.replace(':id', claim.id))
+      await request(app).get(VIEW_THE_JUDGMENT_URL.replace(':id', claim.id))
         //then
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('View the judgement');
+          expect(res.text).toContain('View the judgment');
           expect(res.text).toContain(DEFENDANT_SUMMARY_URL.replace(':id', claim.id));
         });
     });
