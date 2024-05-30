@@ -38,7 +38,7 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, async (req:
       await renderView(req, res, form);
     } else {
       const claimId = req.params.id;
-      const redirectUrl =  constructResponseUrlWithIdParams(claimId,APPLICATION_TYPE_URL);
+      const redirectUrl = constructResponseUrlWithIdParams(claimId,APPLICATION_TYPE_URL);
       res.redirect(redirectUrl);
     }
   } catch (error) {
