@@ -35,6 +35,7 @@ export const OLD_DASHBOARD_CLAIMANT_URL = `${DASHBOARD_URL}/:id/claimant`;
 export const CITIZEN_PHONE_NUMBER_URL = `${BASE_CASE_RESPONSE_URL}/your-phone`;
 export const ROOT_URL = '/';
 export const HOME_URL = '/home';
+export const ACCESSIBILITY_STATEMENT_URL = '/accessibility-statement';
 export const DOB_URL = `${BASE_CASE_RESPONSE_URL}/your-dob`;
 export const AGE_ELIGIBILITY_URL = `${BASE_CASE_RESPONSE_URL}/eligibility/under-18`;
 export const SEND_RESPONSE_BY_EMAIL_URL = `${BASE_CASE_RESPONSE_URL}/eligibility/send-your-response-by-email`;
