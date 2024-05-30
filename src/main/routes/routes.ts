@@ -293,6 +293,7 @@ import cancelController from 'routes/common/cancelController';
 import evidenceUploadDocumentsController from 'routes/features/caseProgression/evidenceUploadDocumentsController';
 import viewMediationDocuments from 'routes/features/document/mediation/viewMediationDocumentsController';
 import applicationTypeController from './features/generalApplication/applicationTypeController';
+import respondentAgreementController from './features/generalApplication/response/respondentAgreementController';
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
 import claimFeeMakePaymentAgainController
@@ -313,11 +314,19 @@ import unavailableHearingDatesController from 'routes/features/generalApplicatio
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 import gaCheckAnswersController from 'routes/features/generalApplication/checkAnswersController';
+import applicationPaymentUnsuccessfulController from './features/generalApplication/applicationPaymentUnsuccessfulController';
+import applicationResponseConfirmationController
+  from 'routes/features/generalApplication/response/applicationResponseConfirmationController';
+import flightDetailsController from './features/claim/airlines/flightDetailsController';
+import delayedFlightController from './features/claim/airlines/delayedFlightController';
 import respondentRequestChangeInformationController
   from 'routes/features/generalApplication/respondentRequestChangeInformationController';
 import hearingArrangementsGuidanceController from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
 import wantToUploadDocumentsController from 'routes/features/generalApplication/wantToUploadDocuments';
 import uploadEvidenceDocumentsForApplicationController from 'routes/features/generalApplication/uploadEvidenceDocumentForApplication';
+import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
+import confirmYouHaveBeenPaidConfirmController
+  from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
 
 export default [
   homeController,
@@ -573,6 +582,7 @@ export default [
   evidenceUploadDocumentsController,
   viewMediationDocuments,
   applicationTypeController,
+  respondentAgreementController,
   viewTheHearingController,
   viewResponseToClaimController,
   hearingSupportController,
@@ -592,8 +602,14 @@ export default [
   hearingArrangementController,
   hearingContactDetailsController,
   gaCheckAnswersController,
+  applicationPaymentUnsuccessfulController,
+  flightDetailsController,
+  delayedFlightController,
   respondentRequestChangeInformationController,
   hearingArrangementsGuidanceController,
   wantToUploadDocumentsController,
   uploadEvidenceDocumentsForApplicationController,
+  applicationResponseConfirmationController,
+  confirmYouHaveBeenPaidController,
+  confirmYouHaveBeenPaidConfirmController,
 ];
