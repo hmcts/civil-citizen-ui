@@ -3402,7 +3402,7 @@
       "TRIAL_DURATION_TITLE": "Hyd y treial",
       "TRIAL_DURATION_PARAGRAPH": "Hyd y treial a ddyrannwyd yn wreiddiol yw <span class=\"govuk-body govuk-!-font-weight-bold\">{{ hearingDuration }}</span>.",
       "REQUIRE_LESS_TIME": "Os oes angen llai o amser arnoch, nodwch eich rhesymau yn y blwch 'Gwybodaeth Arall' isod.",
-      "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">Os ydych yn credu y bydd angen mwy o amser arnoch ar gyfer y treial, bydd angen i chi gysylltu â’r parti arall a gwneud cais i’r llys</span> </br> </br> Ni chynyddir yr amser a ddyrennir i’r treial nes ceir y cais, telir y ffi, a gwneir gorchymyn.",
+      "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">Os ydych yn credu y bydd angen mwy o amser arnoch ar gyfer y treial, bydd angen i chi gysylltu â’r parti arall a gwneud cais i’r llys.</span> </br> </br> Ni chynyddir yr amser a ddyrennir i’r treial nes ceir y cais, telir y ffi, a gwneir gorchymyn.",
       "OTHER_INFORMATION_TITLE": "Gwybodaeth arall",
       "OTHER_INFORMATION_INPUT_LABEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">A oes unrhyw beth arall y mae angen i’r llys ei wybod (dewisol)?</span>",
       "OTHER_INFORMATION_INPUT_HINT": "Er enghraifft, mae angen i dyst adael y llys erbyn 3pm oherwydd cyfrifoldebau gofal."
