@@ -2168,6 +2168,15 @@
         "TITLE": "Unsuccessful payment",
         "YOUR_PAYMENT_HAS_FAILED": "Your payment has failed"
       },
+      "RESPONSE_CONFIRMATION": {
+        "APPLICATION_HEARING": "As a judge usually requires a hearing before making a decision on an application, you'll likely receive a hearing notice with details about when the application hearing will take place.",
+        "CLOSE_AND_RETURN": "Close and return to case details",
+        "JUDGE_WILL_CONSIDER": "A judge will consider the application and your response.",
+        "NEXT_STEPS": "What happens next",
+        "NOTIFICATION": "You'll receive a notification letting you know if an application hearing has been scheduled or if there are any other updates.",
+        "REVIEW": "You can review the application and your response under 'View all applications' on the case dashboard.",
+        "TITLE": "You've responded to the application"
+      },
       "SELECTED_APPLICATION_TYPE": {
         "CANCEL_JUDGMENT": "Set aside (remove) a judgment",
         "CHANGE_CLAIM": "Make a change to your claim or defence that you've submitted",

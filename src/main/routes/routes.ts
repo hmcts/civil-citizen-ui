@@ -314,6 +314,8 @@ import unavailableHearingDatesController from 'routes/features/generalApplicatio
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 import applicationPaymentUnsuccessfulController from './features/generalApplication/applicationPaymentUnsuccessfulController';
+import applicationResponseConfirmationController
+  from 'routes/features/generalApplication/response/applicationResponseConfirmationController';
 import flightDetailsController from './features/claim/airlines/flightDetailsController';
 import delayedFlightController from './features/claim/airlines/delayedFlightController';
 import respondentRequestChangeInformationController
@@ -605,6 +607,7 @@ export default [
   hearingArrangementsGuidanceController,
   wantToUploadDocumentsController,
   uploadEvidenceDocumentsForApplicationController,
+  applicationResponseConfirmationController,
   confirmYouHaveBeenPaidController,
   confirmYouHaveBeenPaidConfirmController,
 ];
