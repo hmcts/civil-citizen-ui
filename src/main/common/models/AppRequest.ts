@@ -28,6 +28,7 @@ export interface AppSession extends Session {
   assignClaimURL: string;
   claimIssueTasklist: boolean;
   firstContact: FirstContact;
+  fileUpload: string;
   issuedAt: number;
 }
 

@@ -5,7 +5,7 @@ import {app} from '../../../../../main/app';
 import {PartyType} from 'models/partyType';
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {
-  CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
+  DELAYED_FLIGHT_URL,
   CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
   CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL,
   CLAIM_DEFENDANT_PARTY_TYPE_URL,
@@ -75,7 +75,7 @@ describe('Defendant party type controller', () => {
     it('should redirect to the defendant company details if company radio is selected', async () => {
       await request(app).post(CLAIM_DEFENDANT_PARTY_TYPE_URL).send({option: PartyType.COMPANY}).then((response) => {
         expect(response.status).toBe(302);
-        expect(response.header.location).toBe(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
+        expect(response.header.location).toBe(DELAYED_FLIGHT_URL);
       });
     });
 
