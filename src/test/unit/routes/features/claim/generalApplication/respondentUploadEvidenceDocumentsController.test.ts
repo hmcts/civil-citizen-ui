@@ -11,8 +11,8 @@ import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/
 import {Claim} from 'common/models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {isGaForLipsEnabled} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {GaResponse} from 'models/generalApplication/response/response';
-import {UploadGAFiles} from 'models/generalApplication/UploadGAFiles';
+import {GaResponse} from 'models/generalApplication/response/gaResponse';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {CaseDocument} from 'common/models/document/caseDocument';
 import {YesNo} from 'common/form/models/yesNo';
 import {Session} from 'express-session';

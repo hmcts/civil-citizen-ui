@@ -1,5 +1,5 @@
 import {YesNo} from 'form/models/yesNo';
-import {UploadGAFiles} from 'models/generalApplication/UploadGAFiles';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 
 export class GaResponse {
   wantToUploadDocuments?: YesNo;

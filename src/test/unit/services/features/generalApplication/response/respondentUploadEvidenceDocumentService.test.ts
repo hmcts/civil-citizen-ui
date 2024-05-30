@@ -9,8 +9,8 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {CaseDocument} from 'models/document/caseDocument';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {summarySection} from 'models/summaryList/summarySections';
-import {GaResponse} from 'models/generalApplication/response/response';
-import {UploadGAFiles} from 'models/generalApplication/UploadGAFiles';
+import {GaResponse} from 'models/generalApplication/response/gaResponse';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 jest.mock('../../../../../../main/modules/draft-store');
