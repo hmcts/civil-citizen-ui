@@ -150,13 +150,13 @@ describe('Citizen Details Section', () => {
   });
   it('should return your Company details summary sections when flight delayed yes', async () => {
     //Given
-    const claim2 = createClaimWithIndividualDetails();
-    claim2.respondent1.type = PartyType.COMPANY;
-    claim2.delayedFlight = new GenericYesNo(YesNo.YES);
-    claim2.flightDetails = new FlightDetails('test', '123', '2023', '1', '1');
-    claim2.respondent1.partyDetails.contactPerson = CONTACT_PERSON;
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.type = PartyType.COMPANY;
+    claim.delayedFlight = new GenericYesNo(YesNo.YES);
+    claim.flightDetails = new FlightDetails('test', '123', '2023', '1', '1');
+    claim.respondent1.partyDetails.contactPerson = CONTACT_PERSON;
     //When
-    const summarySections = await getSummarySections(CLAIM_ID, claim2, 'en');
+    const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe('Nice organisation');
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].value.html).toBe('The Post Man');
@@ -164,6 +164,19 @@ describe('Citizen Details Section', () => {
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[5].value.html).toBe('test');
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[6].value.html).toBe('123');
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[7].value.html).toBe('1 January 2023');
+  });
+  it('should return your Company details summary sections when flight delayed no', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.type = PartyType.COMPANY;
+    claim.delayedFlight = new GenericYesNo(YesNo.NO);
+    claim.respondent1.partyDetails.contactPerson = CONTACT_PERSON;
+    //When
+    const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe('Nice organisation');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].value.html).toBe('The Post Man');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].value.html).toBe('COMMON.VARIATION.YES');
   });
   
   it('should return your Organisation details summary sections', async () => {
