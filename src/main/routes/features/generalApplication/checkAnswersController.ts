@@ -17,6 +17,8 @@ import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
 const backLinkUrl = 'test'; // TODO: add url
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('gaCheckAnswersController');
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, req: AppRequest, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
@@ -72,6 +74,7 @@ function getRedirectUrl(claimId: string, claim: Claim): string {
 function hearingMoreThan14DaysInFuture(claim: Claim): boolean {
   const today = new Date();
   const hearingDate = claim.caseProgressionHearing?.hearingDate;
+  logger.info(`Hearing date: ${hearingDate}`);
   const future = hearingDate && getNumberOfDaysBetweenTwoDays(today, hearingDate) > 14;
   return future;
 }
