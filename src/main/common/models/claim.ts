@@ -505,6 +505,14 @@ export class Claim {
     return this.respondent1?.type === PartyType.COMPANY || this.respondent1?.type === PartyType.ORGANISATION;
   }
 
+  isCompany(): boolean {
+    return this.respondent1?.type === PartyType.COMPANY;
+  }
+
+  isOrganisation(): boolean {
+    return this.respondent1?.type === PartyType.ORGANISATION;
+  }
+
   isClaimantBusiness(): boolean {
     return this.applicant1?.type === PartyType.COMPANY || this.applicant1?.type === PartyType.ORGANISATION;
   }
@@ -572,12 +580,21 @@ export class Claim {
   }
 
   isDefendantDetailsCompleted(): boolean {
-    return (
-      !!this.respondent1?.type &&
+    return !!this.respondent1?.type && 
       !!this.respondent1?.partyDetails?.primaryAddress &&
-      ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) ||
-        (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName))
-    );
+      (
+        (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName) ||
+        (this.isOrganisation() && !!this.respondent1?.partyDetails?.partyName) ||
+        (this.isCompany() && this.isAirlineComplete() && !!this.respondent1?.partyDetails?.partyName)
+      );
+  }
+
+  isAirlineComplete(): boolean {
+    return this.delayedFlight?.option === YesNo.NO || 
+      (this.delayedFlight?.option === YesNo.YES && 
+        !!this.flightDetails?.airline && 
+        !!this.flightDetails?.flightNumber &&
+        !!this.flightDetails?.flightDate);
   }
 
   isClaimantDetailsCompleted(): boolean {
