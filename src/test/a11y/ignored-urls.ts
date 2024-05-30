@@ -64,4 +64,5 @@ export const IGNORED_URLS = [
   urls.VIEW_THE_HEARING_URL,
   urls.BASE_GENERAL_APPLICATION_RESPONSE_URL,
   urls.VIEW_THE_JUDGEMENT_URL, //TODO: remove this once finished the page
+  urls.REQUEST_FOR_CONSIDERATION, //TODO: remove this once finished the page
 ];
