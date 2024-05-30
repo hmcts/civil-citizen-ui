@@ -71,7 +71,8 @@ export function buildNextStepsSection(claim: Claim, lang: string, carmApplicable
     return sendFinancialDetails;
   }
 
-  if ((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && claimantResponse.isSignASettlementAgreement) {
+  if (((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && claimantResponse.isSignASettlementAgreement)
+    || (claim.claimantResponse.isClaimantAcceptedPaymentPlan && claimantResponse.isSignASettlementAgreement)) {
     return SignSettlementAgreementNextSteps;
   }
   if (claim.responseStatus === ClaimResponseStatus.RC_DISPUTE && claimantResponse.isClaimantNotIntendedToProceed) {
