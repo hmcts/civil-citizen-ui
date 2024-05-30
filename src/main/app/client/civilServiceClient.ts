@@ -10,6 +10,7 @@ import {
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_CHECK_OCMC_DEFENDENT_LINKED_URL,
   CIVIL_SERVICE_CLAIM_AMOUNT_URL,
+  CIVIL_SERVICE_AIRLINES_URL,
   CIVIL_SERVICE_COURT_DECISION,
   CIVIL_SERVICE_COURT_LOCATIONS,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
@@ -215,6 +216,17 @@ export class CivilServiceClient {
       return response.data;
     } catch (err: unknown) {
       logger.error('Error when getting claim fee data');
+      throw err;
+    }
+  }
+
+  async getAirlines(req: AppRequest): Promise<any> {
+    const config = this.getConfig(req);
+    try {
+      const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_AIRLINES_URL}`, config);
+      return response.data;
+    } catch (err: unknown) {
+      logger.error('Error when getting airline list');
       throw err;
     }
   }
