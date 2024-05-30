@@ -1,6 +1,6 @@
 import {
   DASHBOARD_CLAIMANT_URL,
-  DEFENDANT_SUMMARY_URL, VIEW_ORDERS_AND_NOTICES_URL, VIEW_THE_JUDGEMENT_URL,
+  DEFENDANT_SUMMARY_URL, VIEW_ORDERS_AND_NOTICES_URL, VIEW_THE_JUDGMENT_URL,
 } from 'routes/urls';
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {AppRequest} from 'models/AppRequest';
@@ -14,7 +14,7 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const judgementViewPath = 'features/caseProgression/view-the-judgement';
 
-viewTheJudgementController.get(VIEW_THE_JUDGEMENT_URL, (async (req:Request, res:Response, next: NextFunction) => {
+viewTheJudgementController.get(VIEW_THE_JUDGMENT_URL, (async (req:Request, res:Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -28,8 +28,8 @@ viewTheJudgementController.get(VIEW_THE_JUDGEMENT_URL, (async (req:Request, res:
 
     res.render(judgementViewPath,
       {judgementSections,
-        pageCaption: 'PAGES.DASHBOARD.JUDGEMENTS.THE_JUDGEMENT',
-        pageTitle: 'PAGES.DASHBOARD.JUDGEMENTS.VIEW_THE_JUDGEMENT',
+        pageCaption: 'PAGES.DASHBOARD.JUDGMENTS.THE_JUDGMENT',
+        pageTitle: 'PAGES.DASHBOARD.JUDGMENTS.VIEW_THE_JUDGMENT',
         link: VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId),
         claimId: caseNumberPrettify(claimId),
         claimAmount: claim.totalClaimAmount,
