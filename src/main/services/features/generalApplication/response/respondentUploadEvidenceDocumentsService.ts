@@ -1,6 +1,6 @@
 import {SummarySection} from 'models/summaryList/summarySections';
 import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {UploadGAFiles} from 'models/generalApplication/UploadGAFiles';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GA_RESPONDENT_UPLOAD_DOCUMENT} from 'routes/urls';
