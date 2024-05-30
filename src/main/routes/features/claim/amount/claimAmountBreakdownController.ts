@@ -11,6 +11,7 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
 import {NotEligibleReason} from 'form/models/eligibility/NotEligibleReason';
+import {isMintiEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 
 const claimAmountBreakdownController = Router();
 const viewPath = 'features/claim/amount/claim-amount-breakdown';
@@ -30,10 +31,11 @@ claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, (async (req: AppRequest, re
 }) as RequestHandler).post(CLAIM_AMOUNT_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const form = new GenericForm(AmountBreakdown.fromObject(req.body));
+    const mintiEnabled = await isMintiEnabled();
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
-    } else if (await form.model.isValidTotal()) {
+    } else if (form.model.isValidTotal(mintiEnabled)) {
       await saveAndRedirectToNextPage(<AppRequest>req, res, form.model);
     } else {
       res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000));
