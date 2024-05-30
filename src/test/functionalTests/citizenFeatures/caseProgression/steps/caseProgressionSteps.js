@@ -17,9 +17,28 @@ const uploadYourDocument = new UploadYourDocument();
 const checkYourAnswers = new CheckYourAnswers();
 const uploadYourDocumentsConfirmation = new UploadYourDocumentsConfirmation();
 
+const buttons = {
+  startNow: {
+    en: 'Start now',
+    cy: 'Dechrau nawr',
+  },
+  continue: {
+    en: 'Continue',
+    cy: 'Parhau',
+  },
+  submit: {
+    en: 'Submit',
+    cy: 'Cyflwyno',
+  },
+  viewDocuments: {
+    en: 'View documents',
+    cy: 'Gweld y dogfennau',
+  },
+};
+
 class CaseProgressionSteps {
 
-  initiateUploadEvidenceJourney(claimRef, claimType, partyType) {
+  initiateUploadEvidenceJourney(claimRef, claimType, partyType, language = 'en') {
     console.log('The value of the Claim Reference : '+claimRef);
     let partiesOnTheCase;
     if (partyType === 'LiPvLiP') {
@@ -29,23 +48,23 @@ class CaseProgressionSteps {
       partiesOnTheCase = 'Test Inc v Sir John Doe';
       latestUpdateTab.nextAction('Upload documents');
     }
-    uploadYourDocumentsIntroduction.verifyPageContent(partiesOnTheCase);
-    uploadYourDocumentsIntroduction.nextAction('Start now');
+    uploadYourDocumentsIntroduction.verifyPageContent(language);
+    uploadYourDocumentsIntroduction.nextAction(buttons.startNow[language]);
     whatTypeOfDocumentsDoYouWantToUpload.verifyPageContent(claimType, partiesOnTheCase);
     whatTypeOfDocumentsDoYouWantToUpload.checkAllDocumentUploadOptions(claimType);
-    whatTypeOfDocumentsDoYouWantToUpload.nextAction('Continue');
+    whatTypeOfDocumentsDoYouWantToUpload.nextAction(buttons.continue[language]);
     uploadYourDocument.verifyPageContent(claimType);
     if (claimType === 'FastTrack') {
       uploadYourDocument.inputDataForFastTrackSections(claimType);
     } else {
       uploadYourDocument.inputDataForSmallClaimsSections(claimType);
     }
-    uploadYourDocument.nextAction('Continue');
-    checkYourAnswers.verifyPageContent(claimType, partiesOnTheCase, partyType);
+    uploadYourDocument.nextAction(buttons.continue[language]);
+    checkYourAnswers.verifyPageContent(claimType, partyType);
     checkYourAnswers.clickConfirm();
-    checkYourAnswers.nextAction('Submit');
+    checkYourAnswers.nextAction(buttons.submit[language]);
     uploadYourDocumentsConfirmation.verifyPageContent();
-    uploadYourDocumentsConfirmation.nextAction('View documents');
+    uploadYourDocumentsConfirmation.nextAction(buttons.viewDocuments[language]);
     if (partyType !== 'LiPvLiP') {
       documentsTab.verifyLatestUpdatePageContent(claimType);
     }
