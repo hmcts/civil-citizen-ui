@@ -27,7 +27,7 @@ export class AmountBreakdown {
     if (mintiEnabled) {
       return true;
     }
-      return this.totalAmount <= MAX_CLAIM_AMOUNT_TOTAL;
+    return this.totalAmount <= MAX_CLAIM_AMOUNT_TOTAL;
   }
 
   public static emptyForm(): AmountBreakdown {
