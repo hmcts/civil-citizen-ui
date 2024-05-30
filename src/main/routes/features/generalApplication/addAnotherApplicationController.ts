@@ -7,6 +7,7 @@ import { selectedApplicationType } from 'common/models/generalApplication/applic
 import { GenericForm } from 'common/form/models/genericForm';
 import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 
 const addAnotherApplicationController = Router();
 const viewPath = 'features/generalApplication/add-another-application';
@@ -37,7 +38,7 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, async (req:
       await renderView(req, res, form);
     } else {
       const claimId = req.params.id;
-      const redirectUrl = APPLICATION_TYPE_URL.replace(':id', claimId);
+      const redirectUrl =  constructResponseUrlWithIdParams(claimId,APPLICATION_TYPE_URL);
       res.redirect(redirectUrl);
     }
   } catch (error) {

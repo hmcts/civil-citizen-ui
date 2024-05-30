@@ -234,3 +234,9 @@ export const getListOfNotAllowedAdditionalAppType = () => {
     ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, 
     ApplicationTypeOption.SETTLE_BY_CONSENT];
 };
+
+export const additionalApplicationErrorMessages: Partial<{ [key in ApplicationTypeOption]: string; }> = {
+  [ApplicationTypeOption.SETTLE_BY_CONSENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING',
+  [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT',
+  [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT',
+};

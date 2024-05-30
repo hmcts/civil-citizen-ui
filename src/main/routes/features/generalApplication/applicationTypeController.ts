@@ -3,7 +3,7 @@ import { APPLICATION_TYPE_URL } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
-import { getByIndex, getListOfNotAllowedAdditionalAppType, saveApplicationType } from 'services/features/generalApplication/generalApplicationService';
+import { additionalApplicationErrorMessages, getByIndex, getListOfNotAllowedAdditionalAppType, saveApplicationType } from 'services/features/generalApplication/generalApplicationService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { queryParamNumber } from 'common/utils/requestUtils';
@@ -65,12 +65,6 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     next(error);
   }
 }) as RequestHandler);
-
-export const additionalApplicationErrorMessages: Partial<{ [key in ApplicationTypeOption]: string; }> = {
-  [ApplicationTypeOption.SETTLE_BY_CONSENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING',
-  [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT',
-  [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT',
-};
 
 function validateAdditionalApplicationtType(claim : Claim, errors : ValidationError[],applicationType : ApplicationType,req: AppRequest) {
  
