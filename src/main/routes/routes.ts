@@ -309,16 +309,27 @@ import requestingReasonController from 'routes/features/generalApplication/reque
 import addAnotherApplicationController from './features/generalApplication/addAnotherApplicationController';
 import orderJudgeController from './features/generalApplication/orderJudgeController';
 import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNoticesController';
+import unavailableHearingDatesController from 'routes/features/generalApplication/unavailableHearingDatesController';
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
+import applicationPaymentUnsuccessfulController from './features/generalApplication/applicationPaymentUnsuccessfulController';
+import flightDetailsController from './features/claim/airlines/flightDetailsController';
+import delayedFlightController from './features/claim/airlines/delayedFlightController';
 import respondentRequestChangeInformationController
   from 'routes/features/generalApplication/respondentRequestChangeInformationController';
+import hearingArrangementsGuidanceController from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
+import wantToUploadDocumentsController from 'routes/features/generalApplication/wantToUploadDocuments';
+import uploadEvidenceDocumentsForApplicationController from 'routes/features/generalApplication/uploadEvidenceDocumentForApplication';
+import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
+import confirmYouHaveBeenPaidConfirmController
+  from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
 import respondentHearingPreferenceController
   from 'routes/features/generalApplication/respondentHearingPreferenceController';
 import respondentWantToUploadDocumentsController
   from 'routes/features/generalApplication/respondentWantToUploadDocumentsController';
 import respondentUploadEvidenceDocumentsController
   from 'routes/features/generalApplication/respondentUploadEvidenceDocmentsController';
+
 export default [
   homeController,
   dashboardController,
@@ -588,9 +599,18 @@ export default [
   addAnotherApplicationController,
   orderJudgeController,
   ordersAndNoticesController,
+  unavailableHearingDatesController,
   hearingArrangementController,
   hearingContactDetailsController,
+  applicationPaymentUnsuccessfulController,
+  flightDetailsController,
+  delayedFlightController,
   respondentRequestChangeInformationController,
+  hearingArrangementsGuidanceController,
+  wantToUploadDocumentsController,
+  uploadEvidenceDocumentsForApplicationController,
+  confirmYouHaveBeenPaidController,
+  confirmYouHaveBeenPaidConfirmController,
   respondentHearingPreferenceController,
   respondentWantToUploadDocumentsController,
   respondentUploadEvidenceDocumentsController,

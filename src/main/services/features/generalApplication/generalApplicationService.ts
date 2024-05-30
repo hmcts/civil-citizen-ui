@@ -20,6 +20,7 @@ import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {OrderJudge} from 'common/models/generalApplication/orderJudge';
+import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 
@@ -97,6 +98,17 @@ export const saveApplicationCosts = async (claimId: string, applicationCosts: Ye
   }
 };
 
+export const saveIfPartyWantsToUploadDoc = async (redisKey: string, wantToSaveDoc: YesNo): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(redisKey, true);
+    claim.generalApplication.wantToUploadDocuments = wantToSaveDoc;
+    await saveDraftClaim(redisKey, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
   if (claim.isClaimant()) {
     const isDashboardEnabled = await isDashboardServiceEnabled();
@@ -129,6 +141,20 @@ export const saveRespondentAgreeToOrder = async (claimId: string, claim: Claim, 
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.respondentAgreeToOrder = respondentAgreeToOrder;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveUnavailableDates = async (claimId: string, claim: Claim, unavailableDates: UnavailableDatesGaHearing): Promise<void> => {
+  try {
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    while (unavailableDates?.items?.length > 0 && !unavailableDates.items[unavailableDates.items.length - 1].type) {
+      unavailableDates?.items.pop();
+    }
+    claim.generalApplication.unavailableDatesHearing = unavailableDates;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
