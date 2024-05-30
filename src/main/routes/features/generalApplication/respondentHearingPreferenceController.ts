@@ -15,7 +15,7 @@ respondentHearingPreferenceController.get(GA_RESPONDENT_HEARING_PREFERENCE, (asy
     const claim = await getClaimById(claimId, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const applicationType: string = getRespondToApplicationCaption(claim, lang);
-    const continueLinkUrl = constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT);
+    const continueLinkUrl = constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT); // TODO: add url
 
     res.render(viewPath, {applicationType, backLinkUrl, continueLinkUrl});
   } catch (error) {

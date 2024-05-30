@@ -1,6 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  GA_RESPONDENT_HEARING_PREFERENCE,
   GA_RESPONDENT_UPLOAD_DOCUMENT,
   GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT,
 } from 'routes/urls';
@@ -94,11 +93,12 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT, 
     const uploadGaDoc = new UploadGAFiles();
     const form = new GenericForm(uploadGaDoc);
     form.validateSync();
-    if (form.hasFieldError('fileUpload') && claim.generalApplication?.gaResponse?.uploadEvidenceDocuments.length === 0) {
+    if (form.hasFieldError('fileUpload') && (claim.generalApplication?.gaResponse?.uploadEvidenceDocuments === undefined ||
+        claim.generalApplication?.gaResponse?.uploadEvidenceDocuments?.length === 0)) {
       await getSummaryList(formattedSummary, redisKey, claimId);
       return await renderView(req, form, claim, claimId, res, formattedSummary);
     } else {
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_HEARING_PREFERENCE));// TODO: add url
+      res.redirect(constructResponseUrlWithIdParams(claimId, '/test'));// TODO: add url
     }
   } catch (error) {
     next(error);

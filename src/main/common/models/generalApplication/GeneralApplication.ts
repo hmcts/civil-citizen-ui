@@ -8,7 +8,7 @@ import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDa
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import {GaResponse} from './response/response';
+import {GaResponse} from './response/gaResponse';
 
 export class GeneralApplication {
 

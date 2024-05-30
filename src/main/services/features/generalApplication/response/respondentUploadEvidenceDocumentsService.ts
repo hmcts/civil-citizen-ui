@@ -12,7 +12,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {FormValidationError} from 'form/validationErrors/formValidationError';
 import {t} from 'i18next';
-import {GaResponse} from 'models/generalApplication/response/response';
+import {GaResponse} from 'models/generalApplication/response/gaResponse';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');

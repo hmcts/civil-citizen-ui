@@ -37,7 +37,7 @@ const file = {
   buffer: Buffer.from('Test file content'),
 };
 
-describe('General Application - Respondent GA upload documents ', () => {
+describe('General Application - Respondent GA upload evidence documents ', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   const mockDataFromStore = jest.spyOn(draftService, 'getCaseDataFromStore');
@@ -58,7 +58,7 @@ describe('General Application - Respondent GA upload documents ', () => {
     mockDataFromStore.mockResolvedValue(claim);
   });
 
-  describe('General Application - upload evidence docs to support application', () => {
+  describe('General Application - Respondent upload evidence docs to support application', () => {
     it('should return upload document page', async () => {
       await request(app)
         .get(GA_RESPONDENT_UPLOAD_DOCUMENT)
