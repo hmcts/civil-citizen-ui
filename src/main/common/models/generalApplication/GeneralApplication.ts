@@ -7,6 +7,7 @@ import {OrderJudge} from './orderJudge';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {GaResponse} from './response/gaResponse';
 
 export class GeneralApplication {
@@ -21,6 +22,8 @@ export class GeneralApplication {
   unavailableDatesHearing?: UnavailableDatesGaHearing;
   hearingArrangement?: HearingArrangement;
   hearingContactDetails?: HearingContactDetails;
+  wantToUploadDocuments?: YesNo;
+  uploadEvidenceForApplication?: UploadGAFiles[];
   response?: GaResponse;
   constructor(
     applicationType?: ApplicationType,
@@ -32,6 +35,7 @@ export class GeneralApplication {
     hearingArrangement?: HearingArrangement,
     hearingContactDetails?: HearingContactDetails,
     response?: GaResponse,
+    uploadEvidenceForApplication?: UploadGAFiles,
   ) {
     this.applicationType = applicationType;
     this.agreementFromOtherParty = agreementFromOtherParty;
@@ -42,5 +46,6 @@ export class GeneralApplication {
     this.hearingArrangement = hearingArrangement;
     this.hearingContactDetails = hearingContactDetails;
     this.response = response;
+    this.uploadEvidenceForApplication = uploadEvidenceForApplication ? [uploadEvidenceForApplication] : [];
   }
 }

@@ -5,10 +5,10 @@ import {
   saveAgreementFromOtherParty,
   saveApplicationCosts,
   saveApplicationType,
-  saveHearingArrangement,
-  saveHearingContactDetails,
   saveHearingSupport,
   saveRequestingReason,
+  saveHearingArrangement,
+  saveHearingContactDetails,
   saveUnavailableDates,
 } from 'services/features/generalApplication/generalApplicationService';
 import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
