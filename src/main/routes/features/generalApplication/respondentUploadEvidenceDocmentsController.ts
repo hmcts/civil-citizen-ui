@@ -20,7 +20,7 @@ import {
   uploadSelectedFile,
 } from 'services/features/generalApplication/response/respondentUploadEvidenceDocumentsService';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
-import {UploadGAFiles} from 'common/models/generalApplication/UploadGAFiles';
+import {UploadGAFiles} from 'common/models/generalApplication/uploadGAFiles';
 
 const respondentUploadEvidenceDocumentsController = Router();
 const viewPath = 'features/generalApplication/respondent-upload-documents';
