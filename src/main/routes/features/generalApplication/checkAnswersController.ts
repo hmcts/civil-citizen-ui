@@ -11,7 +11,6 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {getSummarySections} from 'services/features/generalApplication/checkAnswers/checkAnswersService';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {t} from 'i18next';
-import {submitApplication} from 'services/features/generalApplication/submitApplication';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 
@@ -54,8 +53,7 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res
       await renderView(claimId, claim, form, req, res);
     } else {
       await saveStatementOfTruth(redisKey, statementOfTruth);
-      await submitApplication(<AppRequest>req);
-      res.redirect(getRedirectUrl(claimId, claim)); // TODO: redirect
+      res.redirect(getRedirectUrl(claimId, claim));
     }
   } catch (error) {
     next(error);
