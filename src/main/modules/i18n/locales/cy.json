@@ -1168,11 +1168,11 @@
       "PAGE_TITLE": "Gwiriwch eich atebion cyn cyflwyno eich hawliad",
       "TITLE": "Gwiriwch eich atebion cyn cyflwyno eich hawliad",
       "REFERENCE_NUMBER": "Cyfeirnod",
-      "WHEN_DID_IT_START": "When did it start?",
+      "WHEN_DID_IT_START": "Pryd ddechreuodd o?",
       "TYPE": {
-        "WHAT_TYPE_IS_IT": "What type is it?",
-        "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
-        "STANDARD_BREATHING_SPACE": "Standard breathing space"
+        "WHAT_TYPE_IS_IT": "Pa fath ydy o?",
+        "MENTAL_HEALTH_CRISIS_MORATORIUM": "Moratoriwm argyfwng iechyd meddwl",
+        "STANDARD_BREATHING_SPACE": "Lle i anadlu safonol"
       },
       "EXPECTED_END_DATE": "Dyddiad gorffen disgwyliedig"
     },
