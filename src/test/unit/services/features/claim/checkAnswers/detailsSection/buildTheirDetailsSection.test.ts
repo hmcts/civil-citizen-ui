@@ -153,10 +153,8 @@ describe('Citizen Details Section', () => {
     const claim = createClaimWithIndividualDetails();
     claim.delayedFlight = new GenericYesNo(YesNo.YES);
     claim.flightDetails = new FlightDetails('test', '123', '2023', '1', '1');
-    if (claim.respondent1) {
-      claim.respondent1.type = PartyType.COMPANY;
-      claim.respondent1.partyDetails.contactPerson = CONTACT_PERSON;
-    }
+    claim.respondent1.type = PartyType.COMPANY;
+    claim.respondent1.partyDetails.contactPerson = CONTACT_PERSON;
     //When
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
     //Then
@@ -167,6 +165,7 @@ describe('Citizen Details Section', () => {
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[6].value.html).toBe('123');
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[7].value.html).toBe('1 January 2023');
   });
+  
   it('should return your Organisation details summary sections', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();
