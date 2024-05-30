@@ -1,29 +1,23 @@
-import { getCaseDataFromStore, saveDraftClaim } from 'modules/draft-store/draftStoreService';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import {
-  ApplicationType,
-  ApplicationTypeOption,
-  selectedApplicationType,
-} from 'common/models/generalApplication/applicationType';
-import { HearingSupport } from 'models/generalApplication/hearingSupport';
-import { Claim } from 'models/claim';
-import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
-import { YesNo } from 'common/form/models/yesNo';
-import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
-import { AppRequest } from 'common/models/AppRequest';
-import { FormValidationError } from 'common/form/validationErrors/formValidationError';
-import { GenericYesNo } from 'common/form/models/genericYesNo';
-import { ValidationError } from 'class-validator';
-import { InformOtherParties } from 'common/models/generalApplication/informOtherParties';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { t } from 'i18next';
-import { getLng } from 'common/utils/languageToggleUtils';
-import { RequestingReason } from 'models/generalApplication/requestingReason';
-import { OrderJudge } from 'common/models/generalApplication/orderJudge';
-import { HearingArrangement } from 'models/generalApplication/hearingArrangement';
-import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
-import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {HearingSupport} from 'models/generalApplication/hearingSupport';
+import {Claim} from 'models/claim';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {YesNo} from 'common/form/models/yesNo';
+import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {AppRequest} from 'common/models/AppRequest';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {ValidationError} from 'class-validator';
+import {InformOtherParties} from 'common/models/generalApplication/informOtherParties';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {RequestingReason} from 'models/generalApplication/requestingReason';
+import {OrderJudge} from 'common/models/generalApplication/orderJudge';
+import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
+import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
+import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
+import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');

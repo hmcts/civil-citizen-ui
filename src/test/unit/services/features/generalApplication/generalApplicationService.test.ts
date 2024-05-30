@@ -1,31 +1,30 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import { Claim } from 'models/claim';
+import {Claim} from 'models/claim';
 import {
   getCancelUrl,
   saveAgreementFromOtherParty,
   saveApplicationCosts,
   saveApplicationType,
+  saveHearingArrangement,
+  saveHearingContactDetails,
   saveHearingSupport,
   saveRequestingReason,
   saveRespondentAgreement,
-  saveHearingArrangement,
-  saveHearingContactDetails,
   saveUnavailableDates,
 } from 'services/features/generalApplication/generalApplicationService';
-import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
-import { TestMessages } from '../../../../utils/errorMessageTestConstants';
-import { YesNo } from 'common/form/models/yesNo';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
-import { CaseRole } from 'common/form/models/caseRoles';
-import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
-import { HearingSupport, SupportType } from 'models/generalApplication/hearingSupport';
-import { RequestingReason } from 'models/generalApplication/requestingReason';
-import { HearingArrangement, HearingTypeOptions } from 'models/generalApplication/hearingArrangement';
-import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
-import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
-import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
+import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {YesNo} from 'common/form/models/yesNo';
+import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {CaseRole} from 'common/form/models/caseRoles';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
+import {RequestingReason} from 'models/generalApplication/requestingReason';
+import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
+import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
+import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
+import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -357,7 +356,7 @@ describe('General Application service', () => {
       await saveRespondentAgreement('123', respondentAgreement);
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
-      claim.generalApplication.response = new GaResponse(respondentAgreement);
+      claim.generalApplication.response = { respondentAgreement };
       await expect(spy).toBeCalledWith('123', claim);
     });
 
