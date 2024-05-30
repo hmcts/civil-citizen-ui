@@ -175,7 +175,7 @@ describe('General Application - upload evidence docs to support application', ()
         .post(GA_UPLOAD_DOCUMENTS)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain("You need to choose a file before clicking");
+          expect(res.text).toContain('You need to choose a file before clicking');
         });
     });
     it('should save the file and display', async () => {
