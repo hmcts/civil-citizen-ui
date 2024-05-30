@@ -351,4 +351,15 @@ module.exports = {
         'When a judge has made a decision, we’ll post a copy of the judgment to you.'],
     };
   },
+
+  // Notice.AAA6.MediationUnsuccessful.Claimant1NonAttendance.CARM.Claimant
+  // CIV-13157
+  mediationUnsuccessfulClaimant1NonAttendance: () => {
+    return {
+      title: 'You did not attend mediation',
+      content: ['You did not attend your mediation appointment, and the judge may issue a penalty against you.',
+        'Your case will not be reviewed by the court.'],
+      nextSteps: 'Explain why you did not attend your appointment.',
+    };
+  },
 };
