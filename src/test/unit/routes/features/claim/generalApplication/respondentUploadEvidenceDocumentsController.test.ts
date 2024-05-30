@@ -53,8 +53,8 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
     claim = new Claim();
     claim.generalApplication = new GeneralApplication();
     claim.generalApplication.applicationType = new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT);
-    claim.generalApplication.gaResponse = new GaResponse();
-    claim.generalApplication.gaResponse.wantToUploadDocuments = YesNo.YES;
+    claim.generalApplication.response = new GaResponse();
+    claim.generalApplication.response.wantToUploadDocuments = YesNo.YES;
     mockDataFromStore.mockResolvedValue(claim);
   });
 
@@ -72,8 +72,8 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
       const document = new UploadGAFiles();
       document.caseDocument = mockCaseDocument;
       document.fileUpload = file;
-      claim.generalApplication.gaResponse.uploadEvidenceDocuments.push(document) ;
-      claim.generalApplication.gaResponse.uploadEvidenceDocuments.push(document) ;
+      claim.generalApplication.response.uploadEvidenceDocuments.push(document) ;
+      claim.generalApplication.response.uploadEvidenceDocuments.push(document) ;
       mockDataFromStore.mockResolvedValue(claim);
 
       await request(app)
@@ -81,7 +81,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_DOCUMENTS.TITLE'));
-          expect(claim.generalApplication.gaResponse.uploadEvidenceDocuments.length).toEqual(1);
+          expect(claim.generalApplication.response.uploadEvidenceDocuments.length).toEqual(1);
         });
     });
     it('should return page with errors when file to be uploaded has unsupported file type', async () => {

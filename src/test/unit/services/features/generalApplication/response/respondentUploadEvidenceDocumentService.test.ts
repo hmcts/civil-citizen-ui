@@ -73,12 +73,12 @@ describe('Upload Respondent Evidence Document service', () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.gaResponse = new GaResponse();
+        claim.generalApplication.response = new GaResponse();
         const uploadDocument = new UploadGAFiles();
         uploadDocument.caseDocument = mockCaseDocument;
         uploadDocument.fileUpload = file;
-        claim.generalApplication.gaResponse.uploadEvidenceDocuments.push(uploadDocument);
-        claim.generalApplication.gaResponse.uploadEvidenceDocuments.push(uploadDocument);
+        claim.generalApplication.response.uploadEvidenceDocuments.push(uploadDocument);
+        claim.generalApplication.response.uploadEvidenceDocuments.push(uploadDocument);
         return claim;
       });
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
@@ -89,7 +89,7 @@ describe('Upload Respondent Evidence Document service', () => {
       await removeDocumentFromRedis('123',0);
       //Then
       expect(spy).toBeCalled();
-      expect(claim.generalApplication.gaResponse.uploadEvidenceDocuments.length).toEqual(1);
+      expect(claim.generalApplication.response.uploadEvidenceDocuments.length).toEqual(1);
     });
   });
   describe('Get SummaryList', () => {
@@ -98,12 +98,12 @@ describe('Upload Respondent Evidence Document service', () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
         claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.gaResponse = new GaResponse();
+        claim.generalApplication.response = new GaResponse();
         const uploadDocument = new UploadGAFiles();
         uploadDocument.caseDocument = mockCaseDocument;
         uploadDocument.fileUpload = file;
-        claim.generalApplication.gaResponse.uploadEvidenceDocuments.push(uploadDocument);
-        claim.generalApplication.gaResponse.uploadEvidenceDocuments.push(uploadDocument);
+        claim.generalApplication.response.uploadEvidenceDocuments.push(uploadDocument);
+        claim.generalApplication.response.uploadEvidenceDocuments.push(uploadDocument);
         return claim;
       });
       const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;

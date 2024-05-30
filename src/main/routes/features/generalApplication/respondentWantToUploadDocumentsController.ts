@@ -35,7 +35,7 @@ respondentWantToUploadDocumentsController.get(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUM
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const form = new GenericForm(new GenericYesNo(claim.generalApplication?.gaResponse?.wantToUploadDocuments));
+    const form = new GenericForm(new GenericYesNo(claim.generalApplication?.response?.wantToUploadDocuments));
     await renderView(req, form, claim, claimId, res);
   } catch (error) {
     next(error);

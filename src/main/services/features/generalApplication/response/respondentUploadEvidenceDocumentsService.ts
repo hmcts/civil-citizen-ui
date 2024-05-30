@@ -22,7 +22,7 @@ const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceCli
 export const getSummaryList = async (formattedSummary: SummarySection, redisKey: string, claimId: string): Promise<void> => {
   const claim = await getCaseDataFromStore(redisKey);
   let index = 0;
-  claim?.generalApplication?.gaResponse?.uploadEvidenceDocuments?.forEach((uploadDocument: UploadGAFiles) => {
+  claim?.generalApplication?.response?.uploadEvidenceDocuments?.forEach((uploadDocument: UploadGAFiles) => {
     index= index+ 1;
     return formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_UPLOAD_DOCUMENT+'?id='+index), 'Remove document'));
   });
@@ -33,8 +33,8 @@ export const saveDocumentsToUploaded = async (claimId: string, uploadDocument: U
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.gaResponse = Object.assign(new GaResponse(), claim.generalApplication.gaResponse);
-    claim.generalApplication.gaResponse.uploadEvidenceDocuments.push(uploadDocument);
+    claim.generalApplication.response = Object.assign(new GaResponse(), claim.generalApplication.response);
+    claim.generalApplication.response.uploadEvidenceDocuments.push(uploadDocument);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -45,7 +45,7 @@ export const saveDocumentsToUploaded = async (claimId: string, uploadDocument: U
 export const removeDocumentFromRedis = async (redisKey: string, index: number) : Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(redisKey, true);
-    claim?.generalApplication?.gaResponse?.uploadEvidenceDocuments?.splice(index, 1);
+    claim?.generalApplication?.response?.uploadEvidenceDocuments?.splice(index, 1);
     await saveDraftClaim(redisKey, claim);
   } catch(error) {
     logger.error(error);

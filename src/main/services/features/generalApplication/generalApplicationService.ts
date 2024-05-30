@@ -227,8 +227,8 @@ export const saveRespondentWantToUploadDoc = async (claimId: string, claim: Clai
     const generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication = {
       ...generalApplication,
-      gaResponse: {
-        ...generalApplication.gaResponse,
+      response: {
+        ...generalApplication.response,
         wantToUploadDocuments,
       },
     };
