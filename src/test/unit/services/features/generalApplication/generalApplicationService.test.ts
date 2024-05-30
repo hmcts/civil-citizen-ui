@@ -1,5 +1,5 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
+import { Claim } from 'models/claim';
 import {
   getCancelUrl,
   saveAgreementFromOtherParty,
@@ -8,20 +8,24 @@ import {
   saveHearingSupport,
   saveRequestingReason,
   saveRespondentAgreeToOrder,
+  saveRespondentAgreement,
   saveHearingArrangement,
-  saveHearingContactDetails,
+  saveHearingContactDetails, saveUnavailableDates,
 } from 'services/features/generalApplication/generalApplicationService';
-import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {YesNo} from 'common/form/models/yesNo';
-import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
-import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
-import {CaseRole} from 'common/form/models/caseRoles';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
-import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
-import {RequestingReason} from 'models/generalApplication/requestingReason';
-import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
-import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
+import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
+import { TestMessages } from '../../../../utils/errorMessageTestConstants';
+import { YesNo } from 'common/form/models/yesNo';
+import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
+import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import { CaseRole } from 'common/form/models/caseRoles';
+import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
+import { HearingSupport, SupportType } from 'models/generalApplication/hearingSupport';
+import { RequestingReason } from 'models/generalApplication/requestingReason';
+import { HearingArrangement, HearingTypeOptions } from 'models/generalApplication/hearingArrangement';
+import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
+import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
+import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
+import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -33,6 +37,7 @@ describe('General Application service', () => {
   describe('Save application type', () => {
     it('should save application type successfully', async () => {
       //Given
+      mockGetCaseData.mockResolvedValue(new Claim());
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
       });
@@ -71,7 +76,7 @@ describe('General Application service', () => {
       claim.generalApplication = new GeneralApplication();
 
       //When
-      await saveAgreementFromOtherParty('123',claim, YesNo.NO);
+      await saveAgreementFromOtherParty('123', claim, YesNo.NO);
       //Then
       expect(spy).toBeCalled();
     });
@@ -87,7 +92,7 @@ describe('General Application service', () => {
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
       //Then
-      await expect(saveAgreementFromOtherParty('123',claim, YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveAgreementFromOtherParty('123', claim, YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
@@ -160,6 +165,43 @@ describe('General Application service', () => {
     });
   });
 
+  describe('Save Unavailable hearing dates', () => {
+    it('should save unavailable hearing dates selected', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.generalApplication = new GeneralApplication();
+        return claim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      //When
+      await saveUnavailableDates('123', claim, new UnavailableDatesGaHearing());
+      //Then
+      expect(spy).toBeCalled();
+    });
+
+    it('should throw error when draft store throws error', async () => {
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      //When
+      mockSaveClaim.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      //Then
+      await expect(saveUnavailableDates('123', claim, new UnavailableDatesGaHearing())).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+
   describe('Get cancel button url', () => {
     it('should return claimant new dashboard url when user is claimant and dashboard feature flag is enabled', async () => {
       //Given
@@ -171,9 +213,9 @@ describe('General Application service', () => {
       claim.generalApplication = new GeneralApplication();
 
       //When
-      const cancelUrl = await getCancelUrl('123',claim);
+      const cancelUrl = await getCancelUrl('123', claim);
       //Then
-      expect(cancelUrl).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id','123'));
+      expect(cancelUrl).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id', '123'));
     });
 
     it('should return claimant old dashboard url when user is claimant and dashboard feature flag is disabled', async () => {
@@ -186,9 +228,9 @@ describe('General Application service', () => {
       claim.generalApplication = new GeneralApplication();
 
       //When
-      const cancelUrl = await getCancelUrl('123',claim);
+      const cancelUrl = await getCancelUrl('123', claim);
       //Then
-      expect(cancelUrl).toEqual(OLD_DASHBOARD_CLAIMANT_URL.replace(':id','123'));
+      expect(cancelUrl).toEqual(OLD_DASHBOARD_CLAIMANT_URL.replace(':id', '123'));
     });
 
     it('should return defendant dashboard url when user is defendent', async () => {
@@ -201,9 +243,9 @@ describe('General Application service', () => {
       claim.generalApplication = new GeneralApplication();
 
       //When
-      const cancelUrl = await getCancelUrl('123',claim);
+      const cancelUrl = await getCancelUrl('123', claim);
       //Then
-      expect(cancelUrl).toEqual(DEFENDANT_SUMMARY_URL.replace(':id','123'));
+      expect(cancelUrl).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '123'));
     });
   });
 
@@ -221,7 +263,7 @@ describe('General Application service', () => {
       claim.generalApplication = new GeneralApplication();
 
       //When
-      await saveRespondentAgreeToOrder('123',claim, YesNo.NO);
+      await saveRespondentAgreeToOrder('123', claim, YesNo.NO);
       //Then
       expect(spy).toBeCalled();
     });
@@ -237,7 +279,7 @@ describe('General Application service', () => {
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
       //Then
-      await expect(saveRespondentAgreeToOrder('123',claim, YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveRespondentAgreeToOrder('123', claim, YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
@@ -334,6 +376,59 @@ describe('General Application service', () => {
       });
       //Then
       await expect(saveHearingContactDetails('123', hearingContactDetails)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+
+  describe('Save respondent agreement', () => {
+    it('saves respondent agreement when no general agreement stored', async () => {
+      mockGetCaseData.mockResolvedValue(new Claim());
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+
+      const respondentAgreement = new RespondentAgreement(YesNo.YES);
+
+      await saveRespondentAgreement('123', respondentAgreement);
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.response = new GaResponse(respondentAgreement);
+      await expect(spy).toBeCalledWith('123', claim);
+    });
+
+    it('saves respondent agreement when no response stored', async () => {
+      // Given
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+      mockGetCaseData.mockResolvedValue(claim);
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      const respondentAgreement = new RespondentAgreement(YesNo.YES);
+      // When
+      await saveRespondentAgreement('123', respondentAgreement);
+
+      // Then
+      claim.generalApplication.response = { respondentAgreement };
+      await expect(spy).toBeCalledWith('123', claim);
+    });
+
+    it('overwrites respondent agreement', async () => {
+      // Given
+      const claim = new Claim();
+      const generalApplication = new GeneralApplication();
+      generalApplication.response = { respondentAgreement: new RespondentAgreement(YesNo.YES) };
+      claim.generalApplication = generalApplication;
+      mockGetCaseData.mockResolvedValue(claim);
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      // When
+      const respondentAgreement = new RespondentAgreement(YesNo.NO, 'reason for disagreement');
+      await saveRespondentAgreement('123', respondentAgreement);
+
+      // Then
+      claim.generalApplication.response = { respondentAgreement };
+      await expect(spy).toBeCalledWith('123', claim);
     });
   });
 });
