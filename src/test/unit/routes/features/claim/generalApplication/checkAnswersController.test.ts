@@ -11,19 +11,17 @@ import { Claim } from 'common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {getSummarySections} from 'services/features/generalApplication/checkAnswers/checkAnswersService';
-import {submitApplication} from 'services/features/generalApplication/submitApplication';
+import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/features/generalApplication/checkAnswers/checkAnswersService');
-jest.mock('../../../../../../main/services/features/generalApplication/submitApplication');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('modules/draft-store/courtLocationCache');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;
 const mockedSummaryRows = getSummarySections as jest.Mock;
-const mockSubmitApplication = submitApplication as jest.Mock;
 
 const mockClaim = new Claim();
 mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
@@ -67,7 +65,21 @@ describe('General Application - Check your answers', () => {
   describe('on POST', () => {
     it('should send the value and redirect', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockSubmitApplication.mockImplementation(() => ({id: '123'}));
+      await request(app)
+        .post(GA_CHECK_ANSWERS_URL)
+        .send({signed: 'yes', name: 'Mr Applicant'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
+
+    it('should redirect to confirmation page if adjourn hearing and more than 14 days', async () => {
+      const now = new Date();
+      const futureDate = new Date(now);
+      futureDate.setDate(now.getDate() + 16);
+      mockClaim.caseProgressionHearing = new CaseProgressionHearing();
+      mockClaim.caseProgressionHearing.hearingDate = futureDate;
+      mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(GA_CHECK_ANSWERS_URL)
         .send({signed: 'yes', name: 'Mr Applicant'})

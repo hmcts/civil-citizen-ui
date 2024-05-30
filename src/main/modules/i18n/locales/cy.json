@@ -76,11 +76,12 @@
     },
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Ychwanegu digwyddiad arall",
-      "BACK": "Yn ol",
+      "BACK": "Yn ôl",
       "BACK_TO_CASE_DETAILS": "Yn ôl i fanylion yr achos",
       "CHANGE": "Newid",
       "CONTINUE": "Parhau",
       "CANCEL": "Canslo",
+      "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Go back and try payment again",
       "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
       "I_CONFIRM_IVE_READ_THIS": "Cadarnhaf fy mod wedi darllen hwn",
       "RESPOND_TO_CLAIM": "Ymateb i'r hawliad",
@@ -427,7 +428,7 @@
         "PAGE_TITLE": "Uwchlwytho eich dogfennau",
         "YOU_DID_NOT_ATTEND": "Ni wnaethoch fynychu eich apwyntiad cyfryngu. Gall y barnwr orchymyn i chi dalu costau neu gall ddyfarnu yn awtomatig o blaid y parti arall.",
         "IF_YOU_WERE_UNABLE": "Os nad oeddech yn gallu mynd i’r apwyntiad cyfryngu oherwydd amgylchiadau eithriadol, gallwch esbonio pam gyda thystiolaeth ategol, megis nodyn gan feddyg neu ffotograffau o ddogfennau perthnasol. Weithiau gelwir hyn yn ffeilio cynrychiolaeth. Os yw’r barnwr yn derbyn eich rhesymau dros beidio â mynychu, ni fyddwch yn cael cosb.",
-        "YOU_CANNOT_WITHDRAW": "Ni allwch dynnu dogfen yn ôl ar ôl i chi ei chyflwyno., Os ydych chi am ychwanegu mwy o wybodaeth at rywbeth rydych chi eisoes wedi’i gyflwyno, gallwch chi lwytho'r ddogfen eto. Dylech ychwanegu rhif fersiwn at yr enw, er enghraifft ‘fersiwn2'.",
+        "YOU_CANNOT_WITHDRAW": "Ni allwch dynnu dogfen yn ôl ar ôl i chi ei chyflwyno. Os ydych chi am ychwanegu mwy o wybodaeth at rywbeth rydych chi eisoes wedi’i gyflwyno, gallwch chi lwytho'r ddogfen eto. Dylech ychwanegu rhif fersiwn at yr enw, er enghraifft 'fersiwn2'.",
         "THE_OTHER_PARTIES": "Bydd y partïon eraill yn gallu gweld y dogfennau rydych chi wedi’u llwytho, a byddwch chi’n gallu gweld eu dogfennau nhw.",
 
         "DEADLINES_FOR_UPLOADING_TITLE": "Dyddiadau cau ar gyfer llwytho dogfennau",
@@ -1093,7 +1094,7 @@
       "LATEST_UPDATE": "Yr wybodaeth ddiweddaraf",
       "UPDATES": "Diweddariadau",
       "VIEW_CLAIM": "Gweld yr hawliad",
-      "WITNESS_EVIDENCE": "tystiolaeth tystion",
+      "WITNESS_EVIDENCE": "Tystiolaeth tyst",
       "ORDERS": "Gorchmynion",
       "RESPONSE_DEADLINE": "Dyddiad cau ar gyfer ymateb:",
       "TOTAL_CLAIM_AMOUNT": "Cyfanswm swm yr hawliad:",
@@ -1501,6 +1502,8 @@
       "CLAIM_PROMPT": "I weld eich cais neu symud eich cais ymlaen cliciwch ar rif eich hawliad. Rhestrir yr hawliadau mwyaf diweddar gyntaf.",
       "CLAIM_STATUS": "Statws",
       "CLAIMANT_TITLE": "Hawliadau rydych chi wedi'u gwneud",
+      "CLAIMS_YOU_HAVE_MADE_HIDDEN_TEXT": "Hawliadau a wnaed gennych Tudalen {{ pageNo }}",
+      "CLAIM_MADE_AGAINST_HIDDEN_TEXT": "Hawliadau a wnaed yn eich erbyn Tudalen {{ pageNo }} ",
       "DEADLINE": "Dyddiad cau",
       "DEFENDANT_NAME": "Enw'r diffynnydd",
       "DEFENDANT_TITLE": "Hawliadau a wnaed yn eich erbyn",
@@ -1762,6 +1765,15 @@
     "DEFENDANT_YOURSELF_EVIDENCE": {
       "PAGE_TITLE": "Tystiolaeth y diffynnydd ei hun",
       "TITLE": "A ydych eisiau rhoi tystiolaeth eich hun?"
+    },
+    "DELAYED_FLIGHT": {
+      "CLAIMING_FOR_DELAYED": "A ydych yn hawlio am oedi wrth hedfan?"
+    },
+    "FLIGHT_DETAILS": {
+      "AIRLINE": "Cwmni hedfan",
+      "FLIGHT_DETAILS": "Rhowch fanylion y daith hedfan",
+      "FLIGHT_NUMBER": "Rhif Hedfan",
+      "SCHEDULED_DATE": "Dyddiad hedfan a drefnwyd"
     },
     "DEPENDANTS": {
       "GROUP11": "11 i 15",
@@ -2117,6 +2129,7 @@
         "PREFERRED_COURT_LOCATION": "Preferred court location",
         "PREFERRED_EMAIL": "Preferred email",
         "PREFERRED_TELEPHONE": "Preferred telephone number",
+        "UPLOAD_DOCUMENTS": "Do you want to upload documents to support your application?",
         "WHAT_ORDER": "What order do you want the judge to make?",
         "WHY_PREFER": "Why would you prefer this type of hearing?",
         "WHY_REQUESTING": "Why are you requesting this order?"
@@ -2166,6 +2179,20 @@
         "YOU_CAN_ALSO_ALTER": "You can also alter any of the other text if you need to.",
         "YOU_CAN": "You can:",
         "UPLOAD_NEW_VERSION": "upload a new version of this document with any amends underlined. We'll ask if you want to upload documents to support your application later on"
+      },
+      "PAYMENT_UNSUCCESSFUL": {
+        "CONTACT_YOUR_BANK": "Contact your bank for more details. No money has been taken from your account.",
+        "TITLE": "Unsuccessful payment",
+        "YOUR_PAYMENT_HAS_FAILED": "Your payment has failed"
+      },
+      "RESPONSE_CONFIRMATION": {
+        "APPLICATION_HEARING": "As a judge usually requires a hearing before making a decision on an application, you'll likely receive a hearing notice with details about when the application hearing will take place.",
+        "CLOSE_AND_RETURN": "Close and return to case details",
+        "JUDGE_WILL_CONSIDER": "A judge will consider the application and your response.",
+        "NEXT_STEPS": "What happens next",
+        "NOTIFICATION": "You'll receive a notification letting you know if an application hearing has been scheduled or if there are any other updates.",
+        "REVIEW": "You can review the application and your response under 'View all applications' on the case dashboard.",
+        "TITLE": "You've responded to the application"
       },
       "SELECTED_APPLICATION_TYPE": {
         "CANCEL_JUDGMENT": "Set aside (remove) a judgment",
@@ -2246,6 +2273,11 @@
         "TITLE": "Application from the other parties",
         "VARY_JUDGMENT": "vary a judgment"
       },
+      "APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE": {
+        "MSG1": "You may need to attend an application hearing so that a judge can consider the application with you and the other parties and decide what the next steps should be.",
+        "MSG2": "This hearing is not to discuss the claim. This is a separate hearing to discuss the application.",
+        "TITLE": "Application hearing arrangements"
+      },
       "GA_PAYMENT_SUCCESSFUL" : {
         "APPLICATION_SUBMITTED": "Application Submitted",
         "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_1": "If you have not provided a valid reason, a judge may order that the other parties should be informed. If this happens, you'll need to pay an additional fee and your application may also be delayed.",
@@ -2296,6 +2328,18 @@
         "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application.",
         "TITLE": "Application costs"
       },
+      "WANT_TO_UPLOAD_DOCUMENTS": {
+        "MSG1": "If you've selected multiple applications, you should upload documents that relate to all of them.",
+        "TITLE": "Do you want to upload documents to support your application? (Optional)"
+      },
+      "UPLOAD_DOCUMENTS": {
+        "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "LIST_TITLE": "Uploaded files",
+        "MSG1": "You should only upload documents that are relevant to your application.",
+        "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",
+        "REMOVE_DOC": "Remove document",
+        "TITLE": "Upload documents to support your application"
+      },
       "ADD_ANOTHER_APPLICATION": {
         "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
         "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
@@ -2340,6 +2384,12 @@
         "SENT_TO_JUDGE": "Their application and your response will then be sent to a judge.",
         "TITLE": "Respond to a request for a change to the case",
         "WHAT_TO_DO_NEXT": "What to do next"
+      },
+      "RESPONDENT_AGREEMENT": {
+        "DISAGREE_EXPLANATION": "Explain why you disagree with the application",
+        "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
+        "TEXT_REVIEW": "Make sure you've reviewed the full application. If you disagree with any part of the application, select 'No' and explain why.",
+        "TITLE": "Do you agree that the court should make the order that the other parties have requested?"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -2490,14 +2540,14 @@
           "KEEP_CONTACT_DETAILS_UP_TO_DATE": "Cadwch eich manylion cyswllt a manylion cyswllt unrhyw un yr hoffech ddibynnu arnynt yn y llys yn gyfredol. Gallwch ddiweddaru manylion cyswllt drwy ffonio'r llys ar 0300 303 5174."
         },
         "FINALISE_TRIAL_ARRANGEMENTS": {
-          "TITLE": "Cadarnhau’r trefniadau ar gyfer eich treial sydd ar y gweill",
+          "TITLE": "Cwblhau trefniadau eich treial",
           "FINALISE_TRIAL_ARRANGEMENTS_BUTTON": "Cadarnhau trefniadau’r treial",
           "DUE_BY": "Rhaid gwneud hyn erbyn: Hanner nos, {{ finalisingTrialArrangementsDeadline }}",
           "IF_THERE_ARE_CHANGES_BEGINNING": "Os oes newidiadau i drefniadau eich treial, dylech roi gwybod i ni erbyn",
           "IF_THERE_ARE_CHANGES_END": "hanner nos, {{ finalisingTrialArrangementsDeadline }}",
           "DIRECTIONS_QUESTIONNAIRE": "holiadur cyfarwyddiadau",
           "YOU_MAY_WISH_TO_REVIEW": "Efallai yr hoffech adolygu’r cyfarwyddiadau gwreiddiol a ddarparwyd gennych yn y",
-          "UNDER_NOTICES_AND_ORDERS": "o dan 'Hysbysiadau a gorchmynion' cyn cadarnhau trefniadau eich treial."
+          "UNDER_NOTICES_AND_ORDERS": "o dan 'Gorchmynion a hysbysiadau' cyn cadarnhau trefniadau eich treial."
         },
         "BUNDLE": {
           "TITLE": "Mae’r Bwndel yn gyflawn ac yn barod i'w weld",
@@ -2513,8 +2563,8 @@
         "VIEW_TRIAL_ARRANGEMENTS": {
           "TITLE_OTHER_PARTY": "Mae'r parti arall wedi cadarnhau eu trefniadau treial",
           "TITLE_YOU": "Rydych wedi cadarnhau trefniadau'r treial",
-          "YOU_CAN_VIEW_YOUR_TRIAL_ARRANGEMENTS": "Gallwch weld eich trefniadau treial o dan 'Hysbysiadau a gorchmynion'.",
-          "YOU_CAN_VIEW_OTHER_PARTY": "Gallwch weld trefniadau treial y parti arall o dan 'Hysbysiadau a gorchmynion'.",
+          "YOU_CAN_VIEW_YOUR_TRIAL_ARRANGEMENTS": "Gallwch weld eich trefniadau treial o dan 'Gorchmynion a hysbysiadau'.",
+          "YOU_CAN_VIEW_OTHER_PARTY": "Gallwch weld trefniadau treial y parti arall o dan 'Gorchmynion a hysbysiadau'.",
           "VIEW_TRIAL_ARRANGEMENTS_BUTTON": "Gweld trefniadau’r treial"
         }
       },
@@ -2531,7 +2581,7 @@
         "FOLLOW_INSTRUCTIONS_IN": "Please follow the instructions sent in the ",
         "FOUND_UNDER_NOTICES_AND_ORDERS": "which can be found under 'Notices and orders'.",
         "SDO": "standard directions order ",
-        "TITLE": "Llwytho dogfennau",
+        "TITLE": "Uwchlwytho dogfennau",
         "YOU_CAN_UPLOAD_AND_SUBMIT_DOCUMENTS": "You can upload and submit any documents which support your claim. These can include any communications, paperwork and statements from expert and witnesses."
       },
       "GET_CONTACT_DETAILS": "Cael manylion cyswllt {{ claimantName }}.",
@@ -2595,7 +2645,7 @@
     },
     "UPLOAD_EVIDENCE_DOCUMENTS": {
       "ANSWERS_TO_QUESTIONS": "Atebion i’r cwestiynau a ofynnwyd gan y parti arall",
-      "ANSWERS_TO_QUESTIONS_HINT": "Atebion eich arbenigwr i'r cwestiynau a ofynnwyd gan y parti arall",
+      "ANSWERS_TO_QUESTIONS_HINT": "Atebion eich arbenigwr i gwestiynau a ofynnwyd gan y parti arall",
       "CASE_REFERENCE_NUMBER": "Cyfeirnod yr achos: {{ caseNumber }}",
       "CASE_SUMMARY": "Crynodeb o’r achos",
       "CASE_SUMMARY_HINT": "Trosolwg o’ch achos cyfan",
@@ -2605,20 +2655,20 @@
       "CHECK_YOUR_ANSWERS_CONFIRMATION": "Cadarnhad",
       "CHECK_YOUR_ANSWERS_CORRECT": "Rwy’n cadarnhau bod y dogfennau’n gywir ac rwy’n deall na allaf dynnu dogfennau yn ôl ar ôl i mi eu cyflwyno.",
       "CHECK_YOUR_ANSWERS_VALIDATION": "Dywedwch wrthym os ydych chi’n cadarnhau bod y dogfennau’n gywir.",
-      "CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED": "Dogfen wedi’i llwytho",
+      "CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED": "Dogfen wedi’i huwchlwytho",
       "COSTS": "Costau",
-      "COSTS_HINT": "Rhestr fanwl o’r costau yr ydych wedi’u talu wrth wneud  yr hawliad neu amddiffyn yr hawliad, er enghraifft llungopïo, cael copïau o gontractau. Cofiwch gynnwys derbynebau",
-      "DISCLOSURE": "Datgeliad",
+      "COSTS_HINT": "Rhestr fanwl o’r costau yr ydych wedi’u talu wrth wneud neu amddiffyn yr hawliad, er enghraifft llungopïo, cael copïau o gontractau. Cofiwch gynnwys derbynebau",
+      "DISCLOSURE": "Datgelu",
       "DISCLOSURE_LIST": "Rhestr ddatgelu",
       "DISCLOSURE_LIST_HINT": "Rhestr o’r dogfennau y mae’n rhaid i chi eu dangos i’r partïon eraill",
       "DOCUMENTARY_EVIDENCE_HEARING": "Tystiolaeth ddogfennol ar gyfer y gwrandawiad",
-      "DOCUMENTARY_EVIDENCE_HEARING_HINT": "Dogfennau yr hoffech ddibynnu arnynt yn y gwrandawiad, yn cynnwys negeseuon e-bost, derbynebau, anfonebau, contractau a lluniau. Nid oes angen i chi ychwanegu dogfennau yr ydych eisoes wedi’u hychwanegu o dan ‘tystiolaeth tystion’",
+      "DOCUMENTARY_EVIDENCE_HEARING_HINT": "Dogfennau yr hoffech ddibynnu arnynt yn y gwrandawiad, gan gynnwys negeseuon e-bost, derbynebau, anfonebau, contractau a lluniau. Nid oes angen i chi ychwanegu dogfennau rydych eisoes wedi’u hychwanegu o dan ‘tystiolaeth tyst’",
       "DOCUMENTARY_EVIDENCE_TRIAL": "Tystiolaeth ddogfennol ar gyfer y treial",
-      "DOCUMENTARY_EVIDENCE_TRIAL_HINT": "Dogfennau yr hoffech ddibynnu arnynt yn y treial, yn cynnwys negeseuon e-bost, derbynebau, anfonebau, contractau a lluniau. Nid oes angen i chi ychwanegu dogfennau yr ydych eisoes wedi’u hychwanegu o dan ‘tystiolaeth tystion’",
+      "DOCUMENTARY_EVIDENCE_TRIAL_HINT": "Dogfennau yr hoffech ddibynnu arnynt yn y treial, yn cynnwys negeseuon e-bost, derbynebau, anfonebau, contractau a lluniau. Nid oes angen i chi ychwanegu dogfennau rydych eisoes wedi’u hychwanegu o dan ‘tystiolaeth tyst’",
       "DOCUMENTS_FOR_DISCLOSURE": "Dogfennau i’w datgelu",
       "DOCUMENTS_FOR_DISCLOSURE_HINT": "Gwybodaeth wedi’i recordio y mae’n rhaid i chi ei dangos i’r partïon eraill - er enghraifft, contractau, anfonebau, derbynebau, negeseuon e-bost, negeseuon testun, lluniau, negeseuon cyfryngau cymdeithasol",
       "DOCUMENTS_REFERRED_TO_STATEMENT": "Dogfennau y cyfeirir atynt yn y datganiad",
-      "DOCUMENTS_REFERRED_TO_STATEMENT_HINT": "Dogfennau rydych chi neu'ch tyst yn cyfeirio atynt yn y datganiad, gan gynnwys negeseuon e-bost, derbynebau, anfonebau, contractau a lluniau",
+      "DOCUMENTS_REFERRED_TO_STATEMENT_HINT": "Dogfennau rydych chi neu’ch tyst yn cyfeirio atynt yn y datganiad, gan gynnwys negeseuon e-bost, derbynebau, anfonebau, contractau a lluniau",
       "EXPERT_EVIDENCE": "Tystiolaeth arbenigol",
       "EXPERT_REPORT": "Adroddiad arbenigol",
       "EXPERTS_REPORT": "Adroddiad yr arbenigwr",
@@ -2627,15 +2677,15 @@
       "JOINT_STATEMENT_OF_EXPERTS": "Datganiad ar y cyd arbenigwyr",
       "JOINT_STATEMENT_OF_EXPERTS_HINT": "Datganiad gan yr arbenigwyr ar gyfer y ddau barti yn nodi'r ffeithiau yn yr achos y maent yn cytuno arnynt neu'n anghytuno arnynt. Mae hyn ond yn berthnasol os ydych chi a'r parti arall yn trefnu cyfarfod ar gyfer eich arbenigwyr. Bydd yr arbenigwyr yn ysgrifennu'r datganiad hwn ar ôl eu trafodaeth",
       "LEGAL_AUTHORITIES": "Awdurdodau cyfreithiol",
-      "LEGAL_AUTHORITIES_HINT": "Gallwch ddefnyddio awdurdodau cyfreithiol i gefnogi eich achos. Deddfau Seneddol yw’r rhain, Rheolau - er enghraifft, Rheolau Trefniadaeth Sifil - neu achosion llys eraill sydd wedi penderfynu pwynt sy'n berthnasol i'ch achos. Copïwch a phastiwch y darnau perthnasol o Ddeddfau, Rheolau neu achosion i ddogfen i’w llwytho",
+      "LEGAL_AUTHORITIES_HINT": "Gallwch ddefnyddio ‘awdurdodau cyfreithiol’ i gefnogi eich achos. Deddfau Seneddol yw’r rhain, Rheolau - er enghraifft, Rheolau Trefniadaeth Sifil - neu achosion llys eraill sydd wedi penderfynu pwynt sy’n berthnasol i’ch achos chi. Copïwch a gludwch y darnau perthnasol o Ddeddfau, Rheolau neu achosion i ddogfen i’w huwchlwytho",
       "NOTICE_OF_INTENTION": "Hysbysiad o’r bwriad i ddibynnu ar dystiolaeth achlust",
-      "NOTICE_OF_INTENTION_HINT": "Hysbysiad i ddweud wrth y partïon eraill eich bod yn bwriadu dibynnu ar dystiolaeth achlust yn y treial. Os yw'r dystiolaeth mewn datganiad tyst ac nad yw'r tyst yn mynd i fod yn y llys, rhaid i chi ddweud pam",
-      "QUESTIONS_FOR_OTHER_PARTY": "Cwestiynau i arbenigwr y parti arall neu gyd-arbenigwyr",
+      "NOTICE_OF_INTENTION_HINT": "Hysbysiad i ddweud wrth y partïon eraill eich bod yn bwriadu dibynnu ar dystiolaeth achlust yn y treial. Os yw’r dystiolaeth mewn datganiad tyst ac nad yw’r tyst yn mynd i fod yn y llys, rhaid i chi ddweud pam",
+      "QUESTIONS_FOR_OTHER_PARTY": "Cwestiynau i arbenigwr y parti arall neu gyd arbenigwyr",
       "QUESTIONS_FOR_OTHER_PARTY_HINT": "Cwestiynau ysgrifenedig am adroddiad arbenigwr neu ddatganiad ar y cyd arbenigwyr",
-      "SELECT_THE_TYPE_OF_DOCUMENT": "Dewiswch y mathau o ddogfennau sy'n berthnasol i'ch achos. Efallai na fydd angen i chi lwytho dogfennau ar gyfer pob categori.",
+      "SELECT_THE_TYPE_OF_DOCUMENT": "Dewiswch y mathau o ddogfennau sy'n berthnasol i'ch achos. Efallai na fydd angen i chi uwchlwytho dogfennau ar gyfer pob categori.",
       "SKELETON_ARGUMENT": "Dadl fframwaith",
-      "SKELETON_ARGUMENT_HINT": "Crynodeb o’r achos, y meysydd sy’n destun anghydfod a’r rhesymau pam rydych chi'n meddwl y dylid datrys yr anghydfodau hynny o'ch plaid",
-      "TITLE": "Pa fath o ddogfennau yr ydych chi eisiau eu llwytho?",
+      "SKELETON_ARGUMENT_HINT": "Crynodeb o’r achos, y meysydd sy’n destun anghydfod a’r rhesymau dros pam rydych chi’n meddwl y dylid datrys yr anghydfodau hynny o’ch plaid",
+      "TITLE": "Pa fath o ddogfennau ydych chi eisiau eu huwchlwytho?",
       "TRIAL": "Dogfennau’r treial",
       "WITNESS_EVIDENCE": "Tystiolaeth tyst",
       "WITNESS_STATEMENT": "Datganiad tyst",
@@ -2647,17 +2697,16 @@
       "YOUR_STATEMENT_HINT": "Datganiad ysgrifenedig o'r hyn yr ydych am ei ddweud wrth y llys"
     },
     "EVIDENCE_DOCUMENTS_UPLOADED": {
-      "TITLE": "Dogfennau wedi’u llwytho",
+      "TITLE": "Dogfennau wedi’u huwchlwytho",
       "CASE_REFERENCE_NUMBER": "Cyfeirnod eich achos",
       "VIEW_DOCUMENTS": "Gweld y dogfennau",
-      "UPLOAD_MORE_DOCUMENTS_START": "You can",
-      "UPLOAD_MORE_DOCUMENTS_MID": "upload more documents",
-      "UPLOAD_MORE_DOCUMENTS_END": "now or come back later. You can view your documents and the other party's documents."
+      "UPLOAD_MORE_DOCUMENTS_START": "Gallwch ",
+      "UPLOAD_MORE_DOCUMENTS_MID": "uwchlwytho mwy o ddogfennau",
+      "UPLOAD_MORE_DOCUMENTS_END": "nawr neu ddychwelyd yn hwyrach ymlaen. Gallwch weld eich dogfennau chi a dogfennau’r parti arall."
     },
     "EVIDENCE_UPLOAD_CANCEL": {
-      "HEADING": "Llwytho Dogfen",
-      "TITLE": "Canslo llwytho’r ddogfen",
-      "CASE_REFERENCE": "Cyfeirnod yr achos: {{ claimId }}",
+      "HEADING": "Gwrandawiad",
+      "TITLE": "Canslo uwchlwytho’r ddogfen",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "WARNING_CANCEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">Rhybudd</span> </br> Os byddwch yn canslo, byddwch yn colli’r holl wybodaeth a’r dogfennau nad ydych wedi eu cyflwyno.",
       "ARE_YOU_SURE": "Ydych chi’n siŵr eich bod eisiau canslo?"
@@ -3381,14 +3430,14 @@
       "TOTAL_AMOUNT": "Cyfanswm swm y llog"
     },
     "TRIAL_DURATION_TRIAL_ARRANGEMENTS": {
-      "TITLE": "Cadarnhau trefniadau eich treial",
+      "TITLE": "Cwblhau trefniadau eich treial",
       "TRIAL_DURATION_TITLE": "Hyd y treial",
       "TRIAL_DURATION_PARAGRAPH": "Hyd y treial a ddyrannwyd yn wreiddiol yw <span class=\"govuk-body govuk-!-font-weight-bold\">{{ hearingDuration }}</span>.",
       "REQUIRE_LESS_TIME": "Os oes angen llai o amser arnoch, nodwch eich rhesymau yn y blwch 'Gwybodaeth Arall' isod.",
-      "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">Os ydych yn credu y bydd angen mwy o amser arnoch ar gyfer y treial, bydd angen i chi gysylltu â’r parti arall a gwneud cais i’r llys.</span> </br> </br> Ni chynyddir yr amser a ddyrennir ar gyfer y treial nes derbynnir cais, bod y ffi wedi ei thalu a bod gorchymyn wedi ei wneud.",
+      "REQUIRE_MORE_TIME": "<span class=\"govuk-body govuk-!-font-weight-bold\">Os ydych yn credu y bydd angen mwy o amser arnoch ar gyfer y treial, bydd angen i chi gysylltu â’r parti arall a gwneud cais i’r llys.</span> </br> </br> Ni chynyddir yr amser a ddyrennir i’r treial nes ceir y cais, telir y ffi, a gwneir gorchymyn.",
       "OTHER_INFORMATION_TITLE": "Gwybodaeth arall",
       "OTHER_INFORMATION_INPUT_LABEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">A oes unrhyw beth arall y mae angen i’r llys ei wybod (dewisol)?</span>",
-      "OTHER_INFORMATION_INPUT_HINT": "Er enghraifft, mae angen i dyst adael y llys erbyn 3pm oherwydd cyfrifoldebau gofal."
+      "OTHER_INFORMATION_INPUT_HINT": "Er enghraifft, mae tyst angen gadael y llys erbyn 3pm oherwydd cyfrifoldebau gofal."
     },
     "TRIED_TO_SETTLE": {
       "BOTH_PARTIES": "Rhaid i’r ddau barti gymryd camau penodol cyn mynd i’r llys.",
@@ -3460,59 +3509,59 @@
       "UNEMPLOYED": "Di-waith"
     },
     "UPLOAD_DOCUMENTS": {
-      "ADD": "Ychwanegu un arall",
-      "DATE": "Y dyddiad yr ysgrifenwyd y datganiad",
+      "ADD": "Ychwanegu ffeil arall",
+      "DATE": "Dyddiad ysgrifennu’r datganiad",
       "DATE_EXAMPLE": "Er enghraifft, 27 9 2022",
       "DAY": "Diwrnod",
       "FORMAT": "Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.",
       "NAME": "Eich enw",
       "MONTH": "Mis",
       "NO_UPLOAD": "Nid oes ffeiliau wedi cael eu llwytho",
-      "PAGE_TITLE": "Llwytho dogfennau",
+      "PAGE_TITLE": "Uwchlwytho dogfennau",
       "REMOVE_SECTION": "Dileu’r adran",
       "STATEMENT": "Eich datganiad",
       "SUBTITLE": "Fformatau derbyniol ar gyfer cyflwyno dogfennau",
-      "TITLE": "Llwytho dogfennau",
+      "TITLE": "Uwchlwytho dogfennau",
       "TYPE_OF_DOCUMENT": "Math o ddogfen",
-      "UPLOAD": "Llwytho ffeil",
+      "UPLOAD": "Uwchlwytho ffeil",
       "TYPE_OF_DOCUMENT_EXAMPLE": "Er enghraifft, contract, anfoneb, derbyneb, e-bost, neges destun, llun, neges ar y cyfryngau cymdeithasol",
-      "DOCUMENT_ISSUE_DATE": "Dyddiad y cyhoeddwyd y ddogfen neu’r dyddiad yr anfonwyd y neges",
+      "DOCUMENT_ISSUE_DATE": "Dyddiad cyhoeddi’r ddogfen neu ddyddiad anfon y neges",
       "TRIAL": {
         "TITLE": "Dogfennau’r treial",
         "CASE_SUMMARY": "Crynodeb o’r achos",
-        "SKELETON": "Dadleuon fframwaith",
+        "SKELETON": "Dadl fframwaith",
         "LEGAL": "Awdurdodau cyfreithiol",
         "COSTS": "Costau",
         "DOCUMENTARY": "Tystiolaeth ddogfennol ar gyfer y treial"
       },
       "DISCLOSURE": {
-        "TITLE": "Datgeliad",
+        "TITLE": "Datgelu",
         "DISCLOSURE_DOCUMENTS": "Dogfennau i'w datgelu",
         "DISCLOSURE_LIST": "Rhestr ddatgelu"
       },
       "WITNESS": {
-        "DATE_STATEMENT": "Y dyddiad yr ysgrifenwyd y datganiad",
-        "DATE_SUMMARY": "Date summary was written",
+        "DATE_STATEMENT": "Dyddiad ysgrifennu’r datganiad",
+        "DATE_SUMMARY": "Dyddiad ysgrifennu’r crynodeb",
         "DOCUMENT": "Dogfennau y cyfeirir atynt yn y datganiad",
-        "NOTICE": "Notice of intention to rely on hearsay evidence",
-        "STATEMENT": "Witness statement",
-        "SUMMARY": "Witness summary",
+        "NOTICE": "Hysbysiad o’r bwriad i ddibynnu ar dystiolaeth achlust",
+        "STATEMENT": "Datganiad tyst",
+        "SUMMARY": "Crynodeb tyst",
         "TITLE": "Tystiolaeth tystion",
         "TYPE_OF_DOCUMENT": "Math o ddogfen",
         "TYPE_OF_DOCUMENT_HINT": "Er enghraifft, contract, anfoneb, derbyneb, e-bost, neges destun, llun, neges ar y cyfryngau cymdeithasol",
         "YOUR_STATEMENT": "Eich datganiad",
         "YOUR_NAME": "Eich enw",
-        "WITNESS_NAME": "Witness's name"
+        "WITNESS_NAME": "Enw’r tyst"
       },
       "EXPERT": {
         "TITLE": "Tystiolaeth arbenigol",
         "EXPERT_REPORT": "Adroddiad yr Arbenigwr",
         "EXPERT_NAME": "Enw’r arbenigwr",
         "FIELD_EXPERTISE": "Maes arbenigedd",
-        "DATE_REPORT_WAS": "Y dyddiad yr ysgrifennwyd yr adroddiad",
+        "DATE_REPORT_WAS": "Dyddiad ysgrifennu’r adroddiad",
         "JOINT_STATEMENT": "Datganiad ar y cyd yr arbenigwyr",
         "EXPERTS_NAMES": "Enwau’r arbenigwyr",
-        "QUESTIONS_FOR_OTHER": "Cwestiynau i arbenigwr y parti arall neu gyd-arbenigwr y parti arall",
+        "QUESTIONS_FOR_OTHER": "Cwestiynau i arbenigwr y parti arall neu gyd-arbenigwyr",
         "OTHER_PARTY_NAME": "Enw’r parti arall",
         "NAME_DOCUMENT_YOU": "Enw’r ddogfen y mae gennych gwestiynau amdani",
         "ANSWERS_TO_QUESTIONS": "Atebion i’r cwestiynau a ofynnwyd gan y parti arall",
@@ -3521,29 +3570,28 @@
       },
       "HEARING": {
         "TITLE": "Dogfennau’r gwrandawiad",
-        "DOCUMENTARY": "Documentary evidence for the hearing"
+        "DOCUMENTARY": "Tystiolaeth ddogfennol ar gyfer y gwrandawiad"
       },
-      "YEAR": "Year"
+      "YEAR": "Blwyddyn"
     },
     "IS_CASE_READY": {
-      "PAGE_TITLE": "Cadarnhau trefniadau eich treial",
+      "PAGE_TITLE": "Cwblhau trefniadau eich treial",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
-      "IS_CASE_READY": "Is the case ready for trial?",
-      "YOU_ARE_REMINDED": "You are reminded that this information will be shared with all other parties",
-      "YOU_WILL_STILL": "You will still need to continue and provide some information on trial arrangements.",
-      "YOU_WILL_NEED": "You will need to make an application to the court if this case is not ready for the trial.",
-      "THE_TRIAL_OR": "The trial will go ahead as planned on the specified date unless a judge makes an order changing the date of the trial. If you want the date of the trial to be changed (or any other order to make the case ready for trial) you will need to make an application to the court."
+      "IS_CASE_READY": "A yw’r achos yn barod ar gyfer treial?",
+      "YOU_ARE_REMINDED": "Fe’ch atgoffir y bydd yr wybodaeth hon yn cael ei rhannu â phob parti arall",
+      "YOU_WILL_STILL": "Bydd dal angen i chi barhau a darparu rhywfaint o wybodaeth am drefniadau’r treial.",
+      "YOU_WILL_NEED": "Bydd angen i chi wneud cais i’r llys os nad yw’r achos hwn yn barod ar gyfer treial.",
+      "THE_TRIAL_OR": "Bydd y treial yn mynd yn ei flaen fel y trefnwyd ar y dyddiad penodedig oni bai bod barnwr yn gwneud gorchymyn sy'n newid dyddiad y treial. Os ydych eisiau i ddyddiad y treial gael ei newid (neu unrhyw orchymyn arall i wneud yr achos yn barod ar gyfer treial) bydd angen i chi wneud cais i’r llys."
     },
     "HAS_ANYTHING_CHANGED": {
-      "PAGE_TITLE": "Has anything changed to the support",
-      "FINALISE": "Cadarnhau trefniadau eich treial",
+      "FINALISE": "Cwblhau trefniadau eich treial",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
-      "HAS_ANYTHING": "Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?",
-      "YOU_CAN": "You can check your previous answers in the ",
-      "DIRECTIONS": "directions questionnaire.",
-      "WHAT_SUPPORT": "What support do you, experts or witnesses need?",
-      "FOR_EXAMPLE": "For example, a witness requires a courtroom with step-free access."
+      "HAS_ANYTHING": "A oes unrhyw beth wedi newid i’r cymorth neu’r addasiadau rydych yn dymuno i’r llys a’r barnwr eu hystyried ar eich rhan neu i dyst a fydd yn rhoi tystiolaeth ar eich rhan?",
+      "YOU_CAN": "Gallwch wirio eich atebion blaenorol yn yr ",
+      "DIRECTIONS": "holiadur cyfarwyddiadau.",
+      "WHAT_SUPPORT": "Pa gymorth sydd ei angen arnoch chi, eich arbenigwyr neu dystion?",
+      "FOR_EXAMPLE": "Er enghraifft, mae tyst angen ystafell llys heb risiau."
     },
     "ORDERS_AND_NOTICES": {
       "CCJ_REQUEST": "Cais am Ddyfarniad Llys Sirol",
@@ -3637,62 +3685,59 @@
       "TITLE": "Uwchlwytho eich dogfennau",
       "CASE_REFERENCE": "Cyfeirnod yr achos: {{ caseId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
-      "CHECK_THE_ORDER": "Check the order the court sent you for what documents you need to upload for your case.",
-      "YOU_CANNOT_WITHDRAW": "You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example 'version2'.",
-      "THE_OTHER_PARTIES": "The other parties will be able to see the documents you have uploaded, and you will be able to see their documents.",
-      "DEADLINES_FOR_UPLOADING": "Deadlines for uploading documents",
-      "CHECK_THE_ORDER_DEADLINES": "Check the order the court sent you for the deadlines for uploading your documents.",
-      "AFTER_THE_DEADLINE": "After the deadline, you will have to ",
-      "APPLY_TO_THE_COURT": "wneud cais i’r llys",
-      "IF_YOU_WANT_ANY": " if you want any new document to be used at the trial or hearing.",
-      "YOU_DO_NOT_HAVE": "You do not have to upload all your documents at once. You can return to upload them later.",
-      "BEFORE_YOU_UPLOAD_YOUR": "Before you upload your documents",
-      "BEFORE_YOU_UPLOAD_THE": "Before you upload the document, give it a name that tells the court what it is, for example 'Witness statement by Jane Smith'.",
+      "CHECK_THE_ORDER": "Gwiriwch y gorchymyn a anfonwyd atoch gan y llys am ba ddogfennau y mae angen i chi eu huwchlwytho ar gyfer eich achos.",
+      "YOU_CANNOT_WITHDRAW": "Ni allwch dynnu dogfen yn ôl ar ôl i chi ei chyflwyno. Os ydych eisiau ychwanegu mwy o wybodaeth at rywbeth rydych eisoes wedi’i gyflwyno, gallwch uwchlwytho'r ddogfen eto. Dylech ychwanegu rhif fersiwn at yr enw, er enghraifft ‘fersiwn2’.",
+      "THE_OTHER_PARTIES": "Bydd y partïon eraill yn gallu gweld y dogfennau rydych chi wedi’u huwchlwytho, a byddwch chi’n gallu gweld eu dogfennau nhw.",
+      "DEADLINES_FOR_UPLOADING": "Dyddiadau cau ar gyfer uwchlwytho dogfennau",
+      "CHECK_THE_ORDER_DEADLINES": "Gwiriwch y gorchymyn a anfonwyd atoch gan y llys am y dyddiadau cau ar gyfer uwchlwytho eich dogfennau.",
+      "AFTER_THE_DEADLINE": "Ar ôl y dyddiad cau, bydd rhaid ichi wneud ",
+      "APPLY_TO_THE_COURT": "cais i’r llys",
+      "IF_YOU_WANT_ANY": "os ydych am i unrhyw ddogfen newydd gael ei defnyddio yn y treial neu’r gwrandawiad.",
+      "YOU_DO_NOT_HAVE": "Nid oes rhaid i chi uwchlwytho eich holl ddogfennau gyda’i gilydd. Gallwch ddychwelyd i’w huwchlwytho yn hwyrach ymlaen.",
+      "BEFORE_YOU_UPLOAD_YOUR": "Cyn i chi uwchlwytho eich dogfennau",
+      "BEFORE_YOU_UPLOAD_THE": "Cyn i chi uwchlwytho’r ddogfen, rhowch enw iddi sy’n dweud wrth y llys beth ydyw, er enghraifft ‘Datganiad tyst gan Jane Smith’.",
       "START_NOW": "Dechreuwch nawr"
     },
     "FINALISE_TRIAL_ARRANGEMENTS": {
-      "PAGE_TITLE": "Trial arrangements",
-      "TITLE": "Cadarnhau trefniadau eich treial",
+      "PAGE_TITLE": "Cwblhau trefniadau eich treial",
+      "TITLE": "Cwblhau trefniadau eich treial",
       "CASE_REFERENCE": "Claim number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
-      "YOU_HAVE_UNTIL_DATE": "You have until {{ hearingDueDate }} to provide this information.",
-      "YOU_SHOULD_FINALISE": "You should finalise your trial arrangements to ensure the court has the necessary information for the trial to proceed in a suitable way.",
-      "IS_THE_CASE_READY_FOR_TRIAL": "Is the case ready for trial?",
-      "WE_ARE_ASKING_YOU": "We are asking you to confirm the case is ready for the trial. This means you have taken all the action required of you in the ",
-      "DIRECTIONS_ORDER": "directions order",
-      "YOU_HAVE_RECEIVED": "that you have received.",
-      "IF_YOUR_CASE_NOT_READY": "If your case is not ready and you do not think it will be ready by the deadline for finalising your trial arrangements, you may wish to postpone or adjourn the trial. To do this, you will need to make an application to the court.",
-      "IF_YOU_NEED_TO_MAKE_APPLICATION": "If you need to make an application, you must complete and submit your trial arrangements first.",
-      "YOU_SHOULD_ONLY_MAKE_AN_APPLICATION": "You should only make an application once this has been completed. There will be a link to make an application once you have finalised your trial arrangements.",
-      "IF_YOU_MAKE_APPLICATION": "If you make an application, please note the trial will go ahead as planned until the application is reviewed by a judge and an order made changing the date of the trial.",
-      "HEARING_ADJUSTMENTS_AND_DURATION": "Trial adjustments and duration",
-      "YOU_WILL_BE_ASKED": "You will be asked to specify if there are any changes to the support or adjustments you previously specified in your ",
-      "DIRECTIONS_QUESTIONNAIRE": "directions questionnaire.",
-      "YOU_SHOULD_REVIEW": "You should review this to identify if your circumstances have changed.",
-      "WE_WILL_REMIND_YOU": "We will remind you of the time allocated for the trial. If you feel less time is needed, you can specify why in the 'other information' box.",
-      "IF_YOU_FEEL_THAT": "If you feel that more time will be required, you will need to liaise with the other party and make an application to the court.",
-      "YOU_SHOULD_ONLY_MAKE_APPLICATION": "If you need to make an application, you must complete and submit your trial arrangements first. You should only make an application once this has been completed.",
+      "YOU_HAVE_UNTIL_DATE": "Mae gennych tan {{ hearingDueDate }} i ddarparu’r wybodaeth hon.",
+      "YOU_SHOULD_FINALISE": "Dylech gwblhau trefniadau eich treial i sicrhau bod gan y llys yr wybodaeth angenrheidiol er mwyn i’r treial fynd rhagddo mewn ffordd addas.",
+      "IS_THE_CASE_READY_FOR_TRIAL": "A yw’r achos yn barod ar gyfer treial?",
+      "WE_ARE_ASKING_YOU": "Rydym yn gofyn i chi gadarnhau bod yr achos yn barod ar gyfer y treial. Mae hyn yn golygu eich bod wedi cymryd yr holl gamau sy’n ofynnol ohonoch yn y ",
+      "DIRECTIONS_ORDER": "gorchymyn cyfarwyddiadau",
+      "YOU_HAVE_RECEIVED": "a gawsoch.",
+      "IF_YOUR_CASE_NOT_READY": "Os nad yw eich achos yn barod ac nad ydych yn credu y bydd yn barod erbyn y dyddiad terfyn ar gyfer cwblhau trefniadau eich treial, efallai y byddwch am ohirio'r treial. I wneud hyn, bydd angen i chi wneud cais i’r llys.",
+      "IF_YOU_NEED_TO_MAKE_APPLICATION": "<p class=\"govuk-body\"><strong>Os oes angen i chi wneud cais, rhaid i chi gwblhau a chyflwyno trefniadau eich treial yn gyntaf. </strong>Dim ond unwaith y bydd hyn wedi’i wneud y dylech wneud cais. Bydd dolen i wneud cais yn ymddangos unwaith y byddwch wedi cwblhau trefniadau eich treial.</p><p class=\"govuk-body\">Os byddwch yn gwneud cais, nodwch y bydd y treial yn mynd yn ei flaen fel y cynlluniwyd nes bydd y cais yn cael ei adolygu gan farnwr a bod gorchymyn wedi ei wneud yn newid dyddiad y treial.</p>",
+      "HEARING_ADJUSTMENTS_AND_DURATION": "Addasiadau a hyd y treial",
+      "YOU_WILL_BE_ASKED": "Gofynnir i chi nodi a oes unrhyw newidiadau i’r cymorth neu’r addasiadau a nodwyd gennych yn flaenorol yn eich ",
+      "DIRECTIONS_QUESTIONNAIRE": "holiadur cyfarwyddiadau.",
+      "YOU_SHOULD_REVIEW": "Dylech adolygu hyn i weld a yw eich amgylchiadau wedi newid.",
+      "WE_WILL_REMIND_YOU": "Byddwn yn eich atgoffa o’r amser a neilltuwyd ar gyfer y treial. Os ydych yn teimlo nad oes angen cymaint â hynny o amser, gallwch nodi pam yn y blwch 'gwybodaeth arall'.",
+      "IF_YOU_FEEL_THAT": "Os ydych yn teimlo bod arnoch angen mwy o amser, bydd angen i chi gysylltu â’r parti arall a gwneud cais i’r llys.",
+      "YOU_SHOULD_ONLY_MAKE_APPLICATION": "Os ydych angen gwneud cais, rhaid i chi gwblhau a chyflwyno trefniadau eich treial yn gyntaf. Dim ond unwaith y bydd hyn wedi’i wneud y dylech wneud cais.",
       "OTHER_INFORMATION_TITLE": "Gwybodaeth arall",
-      "OTHER_INFORMATION_TEXT": "You will be given the opportunity to provide any other information relevant to the trial, for example if any party is only available at a specific time.",
-      "START_NOW": "Start now",
-      "ARE_THERE_ANY_CHANGES": "Are there any changes to support with access needs or vulnerability for anyone attending a court hearing?",
+      "OTHER_INFORMATION_TEXT": "Byddwch yn cael cyfle i ddarparu unrhyw wybodaeth arall sy’n berthnasol i’r treial, er enghraifft os yw unrhyw barti ar gael ar amser penodol yn unig.",
+      "START_NOW": "Dechrau nawr",
+      "ARE_THERE_ANY_CHANGES": "A oes unrhyw newidiadau i’r cymorth o ran anghenion mynediad neu fregusrwydd i unrhyw un sy’n mynychu gwrandawiad llys?",
       "CONFIRMATION": {
-        "PAGE_TITLE": "Trial Arrangements Confirmation",
-        "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "You have said this case is not ready for trial",
-        "RETURN_TO_CASE_DETAILS": "Return to case details",
+        "PAGE_TITLE": "Cwblhau trefniadau eich treial",
+        "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "Rydych wedi dweud nad yw’r achos hwn yn barod ar gyfer treial",
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
-        "YOU_WILL_NEED_TO_CALL": "For any changes to accessibility requirements between now and the trial date you will need to call 0300 123 7050.",
-        "NOTICES_AND_ORDERS": "Hysbysiadau a gorchmynion",
-        "YOU_CAN_VIEW_TRIAL_ARRANGEMENTS": "You can view your and the other party's trial arrangements under",
-        "IN_THE_CASE_DETAILS": "in the case details.",
-        "TRIAL_OR_HEARING_WILL_GO_AHEAD_AS_PLANNED": "The trial will go ahead as planned on the specified date unless a judge makes an order changing the date of the trial.",
-        "MAKE_AN_APPLICATION": "make an application",
-        "IF_YOU_WANT_THE_DATE_OF_THE_HEARING": "If you want the date of the trial to be changed (or any other order to make the case ready for trial) you will need to",
-        "TO_THE_COURT_AND_PAY": "to the court and pay the appropriate fee.",
-        "YOU_SAID_CASE_READY_FOR_TRIAL_OR_HEARING": "You have said this case is ready for trial",
-        "IF_THERE_ARE_ANY_CHANGES_TO_THE_ARRANGEMENTS": "If there are any changes to the arrangements between now and the trial date you will need to",
-        "AS_SOON_AS_POSSIBLE_AND_PAY": "as soon as possible and pay the appropriate fee.",
-        "YOU_WILL_NEED_TO_PHONE": "For any changes to accessibility requirements between now and the trial date you will need to phone the court on 0300 123 7050."
+        "YOU_WILL_NEED_TO_CALL": "Ar gyfer unrhyw newidiadau i’r gofynion hygyrchedd rhwng nawr a dyddiad y treial, bydd angen i chi ffonio 0300 303 5174.",
+        "NOTICES_AND_ORDERS": "Gorchmynion a hysbysiadau",
+        "YOU_CAN_VIEW_TRIAL_ARRANGEMENTS": "Gallwch weld trefniadau eich treial chi a’r parti arall o dan",
+        "IN_THE_CASE_DETAILS": "yn adran manylion yr achos.",
+        "TRIAL_OR_HEARING_WILL_GO_AHEAD_AS_PLANNED": "Bydd y treial yn mynd yn ei flaen fel y trefnwyd ar y dyddiad penodedig oni bai bod barnwr yn gwneud gorchymyn sy’n newid dyddiad y treial.",
+        "MAKE_AN_APPLICATION": "wneud cais",
+        "IF_YOU_WANT_THE_DATE_OF_THE_HEARING": "Os ydych am i ddyddiad y treial gael ei newid (neu unrhyw orchymyn arall i wneud yr achos yn barod ar gyfer treial) bydd angen i chi",
+        "TO_THE_COURT_AND_PAY": "i’r llys a thalu’r ffi briodol.",
+        "YOU_SAID_CASE_READY_FOR_TRIAL_OR_HEARING": "Rydych wedi dweud bod yr achos hwn yn barod ar gyfer treial",
+        "IF_THERE_ARE_ANY_CHANGES_TO_THE_ARRANGEMENTS": "Os oes unrhyw newidiadau i’r trefniadau rhwng nawr a dyddiad y treial, bydd angen i chi",
+        "AS_SOON_AS_POSSIBLE_AND_PAY": "i’r llys a thalu’r ffi briodol.",
+        "YOU_WILL_NEED_TO_PHONE": "Ar gyfer unrhyw newidiadau i’r gofynion hygyrchedd rhwng nawr a dyddiad y treial, bydd angen i chi ffonio 0300 303 5174."
       }
     },
     "PAY_HEARING_FEE": {
@@ -3709,6 +3754,22 @@
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
         "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
       }
+    },
+    "CONFIRM_YOU_HAVE_BEEN_PAID": {
+      "PAGE_TITLE": "Confirm that you've been paid",
+      "TITLE": "Confirm that you've been paid",
+      "ENTER_THE_DATE": "Enter the date that you were paid the full amount that was specified on the judgment",
+      "HINT": "If you've been paid in installments, enter the date of the final payment you received. For example, 16 4 2021",
+      "CONFIRM": "I confirm that I've been paid the full amount that was specified on the judgment. Once you've confirmed this, it cannot be changed.",
+      "JUDGMENT_LINK": "View the judgment made against the defendant",
+      "CHECK_ERROR_MESSAGE": "Please confirm you've been paid the full amount"
+    },
+    "CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM": {
+      "PAGE_TITLE": "Confirm that you've been paid - Confirmation",
+      "YOU_CONFIRMED": "You've confirmed that you've been paid",
+      "WHAT_NEXT": "What happens next",
+      "NO_FURTHER": "There's no further action you need to take.",
+      "CLOSE_AND_RETURN": "Close and return to case details"
     }
   },
   "FOOTER": {
@@ -3753,6 +3814,15 @@
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
     "DETAILS_REQUIRED": "Rhowch fanylion",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod manylion yr anghenion ar gyfer y gwrandawiad ar y dudalen hon yn wir",
+    "DELAYED_FLIGHT": {
+      "CLAIMING_FOR_DELAY_REQUIRED": "Mae angen dewis opsiwn ar gyfer A ydych yn hawlio am oedi wrth hedfan"
+    },
+    "FLIGHT_DETAILS": {
+      "AIRLINE_REQUIRED": "Mae angen manylion y cwmni hedfan",
+      "DATE_FLIGHT_PAST": "Rhaid i'r dyddiad hedfan a drefnwyd fod heddiw neu yn y gorffennol",
+      "DATE_FLIGHT_REQUIRED": "Mae angen dyddiad hedfan",
+      "FLIGHT_NUMBER_REQUIRED": "Mae angen rhif hedfan"
+    },
     "ENTER_A_DEBT": "Rhowch fanylion y ddyled",
     "ENTER_AN_EXPLANATION": "Rhowch esboniad pam na allwch dalu nawr",
     "ENTER_AT_LEAST_ONE_DEBT": "Rhowch fanylion o leiaf un ddyled",
@@ -4145,25 +4215,30 @@
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cafodd y datganiad ei ysgrifennu neu ei gynhyrchu",
     "GENERAL_APPLICATION": {
+      "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
+      "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application.",
+      "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
+      "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
       "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No",
       "ENTER_REQUESTING_REASON": "You need to enter your reasons for requesting this order",
       "EXPLAIN_DO_NOT_WANT_COURT":"You need to explain why you do not want the court to inform the other parties.",
       "ENTER_ORDER_JUDGE": "You need to enter the order you want the judge to make",
+      "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
+      "ENTER_VALID_EMAIL": "You need to enter a valid email address",
       "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
       "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
+      "RESPONDENT_AGREEMENT": {
+        "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
+        "EXPLAIN_WHY_DISAGREE_APPLICATION": "You need to explain why you disagree with the application"
+      },
       "WANT_TO_ADD_ANOTHER_APPLICATION":"You need to tell us if you want to add another application. Choose option: Yes or No",
-      "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
-      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
-      "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
-      "ENTER_VALID_EMAIL": "You need to enter a valid email address",
-      "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
-      "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
-      "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application."
+      "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
+      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing"
     }
   }
 }

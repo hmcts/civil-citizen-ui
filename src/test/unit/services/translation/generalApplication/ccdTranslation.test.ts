@@ -107,4 +107,41 @@ describe('translate draft application to ccd', () => {
       unavailableTrialRequiredYesOrNo: 'Yes',
     });
   });
+
+  it('should translate evidence documents to ccd', () => {
+    //Given
+    const application = new GeneralApplication();
+    application.wantToUploadDocuments = YesNo.YES;
+    application.uploadEvidenceForApplication = [
+      {
+        caseDocument: {
+          createdBy: undefined,
+          documentLink: {
+            document_url: 'url',
+            document_filename: 'test',
+            document_binary_url: 'binary',
+            category_id: 'category',
+          },
+          documentName: undefined,
+          documentType: undefined,
+          documentSize: 0,
+          createdDatetime: new Date(),
+        },
+        fileUpload: undefined,
+      },
+    ];
+    //When
+    const ccdGeneralApplication = translateDraftApplicationToCCD(application);
+    //Then
+    expect(ccdGeneralApplication.generalAppEvidenceDocument).toEqual([
+      {
+        value: {
+          category_id: 'category',
+          document_binary_url: 'url',
+          document_filename: 'test',
+          document_url: 'url',
+        },
+      },
+    ]);
+  });
 });

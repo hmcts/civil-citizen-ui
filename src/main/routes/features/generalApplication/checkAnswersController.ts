@@ -1,12 +1,9 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {GA_CHECK_ANSWERS_URL} from 'routes/urls';
+import {GA_CHECK_ANSWERS_URL, GENERAL_APPLICATION_CONFIRM_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
-import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
-import {
-  getCancelUrl,
-  saveStatementOfTruth,
-} from 'services/features/generalApplication/generalApplicationService';
+import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {getCancelUrl, saveStatementOfTruth} from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
@@ -14,7 +11,8 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {getSummarySections} from 'services/features/generalApplication/checkAnswers/checkAnswersService';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {t} from 'i18next';
-import {submitApplication} from 'services/features/generalApplication/submitApplication';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -55,13 +53,27 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res
       await renderView(claimId, claim, form, req, res);
     } else {
       await saveStatementOfTruth(redisKey, statementOfTruth);
-      //const submittedApplication =
-      await submitApplication(<AppRequest>req);
-      res.redirect('test'); // TODO: redirect
+      res.redirect(getRedirectUrl(claimId, claim));
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
+
+function getRedirectUrl(claimId: string, claim: Claim): string {
+  if (claim.generalApplication?.applicationTypes?.length === 1 && claim.generalApplication.applicationTypes[0].option === ApplicationTypeOption.ADJOURN_HEARING
+    && hearingMoreThan14DaysInFuture(claim)) {
+    return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL);
+  } else {
+    return 'test'; // TODO: correct URL
+  }
+}
+
+function hearingMoreThan14DaysInFuture(claim: Claim): boolean {
+  const today = new Date();
+  const hearingDate = claim.caseProgressionHearing?.hearingDate;
+  const future = hearingDate && getNumberOfDaysBetweenTwoDays(today, hearingDate) > 14;
+  return future;
+}
 
 export default gaCheckAnswersController;

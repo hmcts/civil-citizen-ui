@@ -81,6 +81,7 @@
       "CHANGE": "Change",
       "CONTINUE": "Continue",
       "CANCEL": "Cancel",
+      "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Go back and try payment again",
       "GO_TO_ACCOUNT": "Go to your account",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
       "RESPOND_TO_CLAIM": "Respond to claim",
@@ -1501,6 +1502,8 @@
       "CLAIM_PROMPT": "To view or progress your claim click on your claim number. Most recently created claims are listed first.",
       "CLAIM_STATUS": "Status",
       "CLAIMANT_TITLE": "Claims you've made",
+      "CLAIMS_YOU_HAVE_MADE_HIDDEN_TEXT": "Claims you’ve made Page {{ pageNo }}",
+      "CLAIM_MADE_AGAINST_HIDDEN_TEXT": "Claims made against you Page {{ pageNo }} ",
       "DEADLINE": "Deadline",
       "DEFENDANT_NAME": "Defendant name",
       "DEFENDANT_TITLE": "Claims made against you",
@@ -1762,6 +1765,15 @@
     "DEFENDANT_YOURSELF_EVIDENCE": {
       "PAGE_TITLE": "Defendant yourself evidence",
       "TITLE": "Do you want to give evidence yourself?"
+    },
+    "DELAYED_FLIGHT": {
+      "CLAIMING_FOR_DELAYED": "Are you claiming for a delayed flight?"
+    },
+    "FLIGHT_DETAILS": {
+      "AIRLINE": "Airline",
+      "FLIGHT_DETAILS": "Enter flight details",
+      "FLIGHT_NUMBER": "Flight number",
+      "SCHEDULED_DATE": "Scheduled date of flight"
     },
     "DEPENDANTS": {
       "GROUP11": "11 to 15",
@@ -2117,6 +2129,7 @@
         "PREFERRED_COURT_LOCATION": "Preferred court location",
         "PREFERRED_EMAIL": "Preferred email",
         "PREFERRED_TELEPHONE": "Preferred telephone number",
+        "UPLOAD_DOCUMENTS": "Do you want to upload documents to support your application?",
         "WHAT_ORDER": "What order do you want the judge to make?",
         "WHY_PREFER": "Why would you prefer this type of hearing?",
         "WHY_REQUESTING": "Why are you requesting this order?"
@@ -2166,6 +2179,20 @@
         "YOU_CAN_ALSO_ALTER": "You can also alter any of the other text if you need to.",
         "YOU_CAN": "You can:",
         "UPLOAD_NEW_VERSION": "upload a new version of this document with any amends underlined. We'll ask if you want to upload documents to support your application later on"
+      },
+      "PAYMENT_UNSUCCESSFUL": {
+        "CONTACT_YOUR_BANK": "Contact your bank for more details. No money has been taken from your account.",
+        "TITLE": "Unsuccessful payment",
+        "YOUR_PAYMENT_HAS_FAILED": "Your payment has failed"
+      },
+      "RESPONSE_CONFIRMATION": {
+        "APPLICATION_HEARING": "As a judge usually requires a hearing before making a decision on an application, you'll likely receive a hearing notice with details about when the application hearing will take place.",
+        "CLOSE_AND_RETURN": "Close and return to case details",
+        "JUDGE_WILL_CONSIDER": "A judge will consider the application and your response.",
+        "NEXT_STEPS": "What happens next",
+        "NOTIFICATION": "You'll receive a notification letting you know if an application hearing has been scheduled or if there are any other updates.",
+        "REVIEW": "You can review the application and your response under 'View all applications' on the case dashboard.",
+        "TITLE": "You've responded to the application"
       },
       "SELECTED_APPLICATION_TYPE": {
         "CANCEL_JUDGMENT": "Set aside (remove) a judgment",
@@ -2246,6 +2273,11 @@
         "TITLE": "Application from the other parties",
         "VARY_JUDGMENT": "vary a judgment"
       },
+      "APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE": {
+        "MSG1": "You may need to attend an application hearing so that a judge can consider the application with you and the other parties and decide what the next steps should be.",
+        "MSG2": "This hearing is not to discuss the claim. This is a separate hearing to discuss the application.",
+        "TITLE": "Application hearing arrangements"
+      },
       "GA_PAYMENT_SUCCESSFUL" : {
         "APPLICATION_SUBMITTED":"Application Submitted",
         "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_1": "If you have not provided a valid reason, a judge may order that the other parties should be informed. If this happens, you'll need to pay an additional fee and your application may also be delayed.",
@@ -2296,6 +2328,18 @@
         "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application.",
         "TITLE": "Application costs"
       },
+      "WANT_TO_UPLOAD_DOCUMENTS": {
+        "MSG1": "If you've selected multiple applications, you should upload documents that relate to all of them.",
+        "TITLE": "Do you want to upload documents to support your application? (Optional)"
+      },
+      "UPLOAD_DOCUMENTS": {
+        "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "LIST_TITLE": "Uploaded files",
+        "MSG1": "You should only upload documents that are relevant to your application.",
+        "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",
+        "REMOVE_DOC": "Remove document",
+        "TITLE": "Upload documents to support your application"
+      },
       "ADD_ANOTHER_APPLICATION": {
         "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
         "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
@@ -2340,6 +2384,12 @@
         "SENT_TO_JUDGE": "Their application and your response will then be sent to a judge.",
         "TITLE": "Respond to a request for a change to the case",
         "WHAT_TO_DO_NEXT": "What to do next"
+      },
+      "RESPONDENT_AGREEMENT": {
+        "DISAGREE_EXPLANATION": "Explain why you disagree with the application",
+        "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
+        "TEXT_REVIEW": "Make sure you've reviewed the full application. If you disagree with any part of the application, select 'No' and explain why.",
+        "TITLE": "Do you agree that the court should make the order that the other parties have requested?"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -2497,7 +2547,7 @@
           "IF_THERE_ARE_CHANGES_END": "midnight, {{ finalisingTrialArrangementsDeadline }}",
           "DIRECTIONS_QUESTIONNAIRE": "directions questionnaire",
           "YOU_MAY_WISH_TO_REVIEW": "You may wish to review the original directions you supplied in the",
-          "UNDER_NOTICES_AND_ORDERS": "under ‘Notices and orders’ prior to finalising your trial arrangements."
+          "UNDER_NOTICES_AND_ORDERS": "under ‘Orders  and notices’ prior to finalising your trial arrangements."
         },
         "BUNDLE": {
           "TITLE": "Bundle is complete and ready to view",
@@ -2655,9 +2705,8 @@
       "UPLOAD_MORE_DOCUMENTS_END": "now or come back later. You can view your documents and the other party's documents."
     },
     "EVIDENCE_UPLOAD_CANCEL": {
-      "HEADING": "Document upload",
+      "HEADING": "Gwrandawiad",
       "TITLE": "Cancel document upload",
-      "CASE_REFERENCE": "Case reference: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "WARNING_CANCEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">Warning</span> </br> If you cancel, you will lose all unsubmitted information and documents.",
       "ARE_YOU_SURE": "Are you sure you want to cancel?"
@@ -3381,7 +3430,7 @@
       "TOTAL_AMOUNT": "Total interest amount"
     },
     "TRIAL_DURATION_TRIAL_ARRANGEMENTS": {
-      "TITLE": "Finalise your trial or hearing arrangements",
+      "TITLE": "Finalise your trial arrangements",
       "TRIAL_DURATION_TITLE": "Trial duration",
       "TRIAL_DURATION_PARAGRAPH": "The trial duration originally allocated is <span class=\"govuk-body govuk-!-font-weight-bold\">{{ hearingDuration }}</span>.",
       "REQUIRE_LESS_TIME": "If you require less time please set out your reasons in the 'Other information' box below.",
@@ -3526,18 +3575,17 @@
       "YEAR": "Year"
     },
     "IS_CASE_READY": {
-      "PAGE_TITLE": "Finalise your trial or hearing arrangements",
+      "PAGE_TITLE": "Finalise your trial arrangements",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
-      "IS_CASE_READY": "Is the case ready for trial or hearing?",
+      "IS_CASE_READY": "Is the case ready for trial?",
       "YOU_ARE_REMINDED": "You are reminded that this information will be shared with all other parties",
       "YOU_WILL_STILL": "You will still need to continue and provide some information on trial arrangements.",
       "YOU_WILL_NEED": "You will need to make an application to the court if this case is not ready for the trial.",
       "THE_TRIAL_OR": "The trial will go ahead as planned on the specified date unless a judge makes an order changing the date of the trial. If you want the date of the trial to be changed (or any other order to make the case ready for trial) you will need to make an application to the court."
     },
     "HAS_ANYTHING_CHANGED": {
-      "PAGE_TITLE": "Has anything changed to the support",
-      "FINALISE": "Finalise your trial or hearing arrangements",
+      "FINALISE": "Finalise your trial arrangements",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "HAS_ANYTHING": "Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?",
       "YOU_CAN": "You can check your previous answers in the ",
@@ -3651,8 +3699,8 @@
       "START_NOW": "Start now"
     },
     "FINALISE_TRIAL_ARRANGEMENTS": {
-      "PAGE_TITLE": "Trial arrangements",
-      "TITLE": "Finalise your trial or hearing arrangements",
+      "PAGE_TITLE": "Finalise your trial arrangements",
+      "TITLE": "Finalise your trial arrangements",
       "CASE_REFERENCE": "Case number: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "YOU_HAVE_UNTIL_DATE": "You have until {{ hearingDueDate }} to provide this information.",
@@ -3662,9 +3710,7 @@
       "DIRECTIONS_ORDER": "directions order",
       "YOU_HAVE_RECEIVED": "that you have received.",
       "IF_YOUR_CASE_NOT_READY": "If your case is not ready and you do not think it will be ready by the deadline for finalising your trial arrangements, you may wish to postpone or adjourn the trial. To do this, you will need to make an application to the court.",
-      "IF_YOU_NEED_TO_MAKE_APPLICATION": "If you need to make an application, you must complete and submit your trial arrangements first.",
-      "YOU_SHOULD_ONLY_MAKE_AN_APPLICATION": "You should only make an application once this has been completed. There will be a link to make an application once you have finalised your trial arrangements.",
-      "IF_YOU_MAKE_APPLICATION": "If you make an application, please note the trial will go ahead as planned until the application is reviewed by a judge and an order made changing the date of the trial.",
+      "IF_YOU_NEED_TO_MAKE_APPLICATION": "<p class=\"govuk-body\"><strong>If you need to make an application, you must complete and submit your trial arrangements first.</strong> You should only make an application once this has been completed. There will be a link to make an application once you have finalised your trial arrangements.</p><p class=\"govuk-body\">If you make an application, please note the trial will go ahead as planned until the application is reviewed by a judge and an order made changing the date of the trial.</p>",
       "HEARING_ADJUSTMENTS_AND_DURATION": "Trial adjustments and duration",
       "YOU_WILL_BE_ASKED": "You will be asked to specify if there are any changes to the support or adjustments you previously specified in your ",
       "DIRECTIONS_QUESTIONNAIRE": "directions questionnaire.",
@@ -3679,10 +3725,9 @@
       "CONFIRMATION": {
         "PAGE_TITLE": "Trial Arrangements Confirmation",
         "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "You have said this case is not ready for trial",
-        "RETURN_TO_CASE_DETAILS": "Return to case details",
         "WHAT_HAPPENS_NEXT": "What happens next",
         "YOU_WILL_NEED_TO_CALL": "For any changes to accessibility requirements between now and the trial date you will need to call 0300 123 7050.",
-        "NOTICES_AND_ORDERS": "Notices and orders",
+        "NOTICES_AND_ORDERS": "Orders  and notices",
         "YOU_CAN_VIEW_TRIAL_ARRANGEMENTS": "You can view your and the other party's trial arrangements under",
         "IN_THE_CASE_DETAILS": "in the case details.",
         "TRIAL_OR_HEARING_WILL_GO_AHEAD_AS_PLANNED": "The trial will go ahead as planned on the specified date unless a judge makes an order changing the date of the trial.",
@@ -3709,6 +3754,22 @@
         "WHAT_HAPPENS_NEXT": "What happens next",
         "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
       }
+    },
+    "CONFIRM_YOU_HAVE_BEEN_PAID": {
+      "PAGE_TITLE": "Confirm that you've been paid",
+      "TITLE": "Confirm that you've been paid",
+      "ENTER_THE_DATE": "Enter the date that you were paid the full amount that was specified on the judgment",
+      "HINT": "If you've been paid in installments, enter the date of the final payment you received. For example, 16 4 2021",
+      "CONFIRM": "I confirm that I've been paid the full amount that was specified on the judgment. Once you've confirmed this, it cannot be changed.",
+      "JUDGMENT_LINK": "View the judgment made against the defendant",
+      "CHECK_ERROR_MESSAGE": "Please confirm you've been paid the full amount"
+    },
+    "CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM": {
+      "PAGE_TITLE": "Confirm that you've been paid - Confirmation",
+      "YOU_CONFIRMED": "You've confirmed that you've been paid",
+      "WHAT_NEXT": "What happens next",
+      "NO_FURTHER": "There's no further action you need to take.",
+      "CLOSE_AND_RETURN": "Close and return to case details"
     }
   },
   "FOOTER":{
@@ -3753,6 +3814,15 @@
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
     "DETAILS_REQUIRED": "Enter details",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
+    "DELAYED_FLIGHT": {
+      "CLAIMING_FOR_DELAY_REQUIRED": "'Are you claiming for a delayed flight?' is required"
+    },
+    "FLIGHT_DETAILS": {
+      "AIRLINE_REQUIRED": "Airline is required",
+      "DATE_FLIGHT_PAST": "Scheduled date of flight must be today or in the past",
+      "DATE_FLIGHT_REQUIRED": "Date of flight is required",
+      "FLIGHT_NUMBER_REQUIRED": "Flight number is required"
+    },
     "ENTER_A_DEBT": "Enter a debt",
     "ENTER_AN_EXPLANATION": "Enter an explanation of why you can’t pay now",
     "ENTER_AT_LEAST_ONE_DEBT": "Enter at least one debt",
@@ -4145,25 +4215,30 @@
     "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced",
     "GENERAL_APPLICATION": {
+      "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
+      "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application.",
+      "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
+      "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
       "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No",
       "ENTER_REQUESTING_REASON": "You need to enter your reasons for requesting this order",
       "EXPLAIN_DO_NOT_WANT_COURT":"You need to explain why you do not want the court to inform the other parties.",
       "ENTER_ORDER_JUDGE": "You need to enter the order you want the judge to make",
+      "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
+      "ENTER_VALID_EMAIL": "You need to enter a valid email address",
       "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
       "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
+      "RESPONDENT_AGREEMENT": {
+        "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
+        "EXPLAIN_WHY_DISAGREE_APPLICATION": "You need to explain why you disagree with the application"
+      },
       "WANT_TO_ADD_ANOTHER_APPLICATION":"You need to tell us if you want to add another application. Choose option: Yes or No",
-      "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
-      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
-      "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
-      "ENTER_VALID_EMAIL": "You need to enter a valid email address",
-      "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
-      "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
-      "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application."
+      "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
+      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing"
     }
   }
 }
