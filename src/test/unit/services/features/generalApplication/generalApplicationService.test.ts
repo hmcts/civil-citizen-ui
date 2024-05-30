@@ -8,6 +8,7 @@ import {
   saveHearingSupport,
   saveRequestingReason,
   saveRespondentAgreeToOrder,
+  saveRespondentAgreement,
   saveHearingArrangement,
   saveHearingContactDetails, saveUnavailableDates,
   getByIndexOrLast,
@@ -26,6 +27,8 @@ import { RequestingReason } from 'models/generalApplication/requestingReason';
 import { HearingArrangement, HearingTypeOptions } from 'models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
+import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
+import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -37,6 +40,7 @@ describe('General Application service', () => {
   describe('Save application type', () => {
     it('should save application type successfully', async () => {
       //Given
+      mockGetCaseData.mockResolvedValue(new Claim());
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
       });
@@ -423,5 +427,58 @@ describe('General Application service', () => {
         updateByIndexOrAppend(list, 9, index);
         expect(list).toEqual(expected);
       });
+  });
+
+  describe('Save respondent agreement', () => {
+    it('saves respondent agreement when no general agreement stored', async () => {
+      mockGetCaseData.mockResolvedValue(new Claim());
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+
+      const respondentAgreement = new RespondentAgreement(YesNo.YES);
+
+      await saveRespondentAgreement('123', respondentAgreement);
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.response = new GaResponse(respondentAgreement);
+      await expect(spy).toBeCalledWith('123', claim);
+    });
+
+    it('saves respondent agreement when no response stored', async () => {
+      // Given
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+      mockGetCaseData.mockResolvedValue(claim);
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      const respondentAgreement = new RespondentAgreement(YesNo.YES);
+      // When
+      await saveRespondentAgreement('123', respondentAgreement);
+
+      // Then
+      claim.generalApplication.response = { respondentAgreement };
+      await expect(spy).toBeCalledWith('123', claim);
+    });
+
+    it('overwrites respondent agreement', async () => {
+      // Given
+      const claim = new Claim();
+      const generalApplication = new GeneralApplication();
+      generalApplication.response = { respondentAgreement: new RespondentAgreement(YesNo.YES) };
+      claim.generalApplication = generalApplication;
+      mockGetCaseData.mockResolvedValue(claim);
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      // When
+      const respondentAgreement = new RespondentAgreement(YesNo.NO, 'reason for disagreement');
+      await saveRespondentAgreement('123', respondentAgreement);
+
+      // Then
+      claim.generalApplication.response = { respondentAgreement };
+      await expect(spy).toBeCalledWith('123', claim);
+    });
   });
 });

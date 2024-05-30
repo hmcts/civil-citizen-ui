@@ -24,6 +24,7 @@ import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailable
 import { HearingArrangement } from 'models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
 import { StatementOfTruthForm } from 'models/generalApplication/statementOfTruthForm';
+import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -45,6 +46,24 @@ export const saveInformOtherParties = async (redisKey: string, informOtherPartie
     const claim = await getCaseDataFromStore(redisKey);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.informOtherParties = informOtherParties;
+    await saveDraftClaim(redisKey, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveRespondentAgreement = async (redisKey: string, respondentAgreement: RespondentAgreement): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(redisKey);
+    const generalApplication = claim.generalApplication || new GeneralApplication();
+    claim.generalApplication = {
+      ...generalApplication,
+      response: {
+        ...generalApplication.response,
+        respondentAgreement,
+      },
+    };
     await saveDraftClaim(redisKey, claim);
   } catch (error) {
     logger.error(error);
@@ -150,6 +169,11 @@ export const saveRespondentAgreeToOrder = async (claimId: string, claim: Claim, 
   }
 };
 
+export function getRespondToApplicationCaption(claim: Claim, lng: string): string {
+  const applicationType = t(selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option], { lng: getLng(lng) }).toLowerCase();
+  return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', { lng: getLng(lng), interpolation: { escapeValue: false }, applicationType });
+}
+
 export const saveUnavailableDates = async (claimId: string, claim: Claim, unavailableDates: UnavailableDatesGaHearing): Promise<void> => {
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
@@ -163,12 +187,6 @@ export const saveUnavailableDates = async (claimId: string, claim: Claim, unavai
     throw error;
   }
 };
-
-export function getRespondToApplicationCaption(claim: Claim, lng: string): string {
-  const applicationType =
-    t(selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option], { lng: getLng(lng) }).toLowerCase();
-  return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', { lng: getLng(lng), applicationType });
-}
 
 export const saveRequestingReason = async (claimId: string, requestingReason: RequestingReason, index?: number): Promise<void> => {
   try {

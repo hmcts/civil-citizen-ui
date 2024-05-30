@@ -293,6 +293,7 @@ import cancelController from 'routes/common/cancelController';
 import evidenceUploadDocumentsController from 'routes/features/caseProgression/evidenceUploadDocumentsController';
 import viewMediationDocuments from 'routes/features/document/mediation/viewMediationDocumentsController';
 import applicationTypeController from './features/generalApplication/applicationTypeController';
+import respondentAgreementController from './features/generalApplication/response/respondentAgreementController';
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
 import claimFeeMakePaymentAgainController
@@ -314,6 +315,8 @@ import hearingArrangementController from './features/generalApplication/hearingA
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 import gaCheckAnswersController from 'routes/features/generalApplication/checkAnswersController';
 import applicationPaymentUnsuccessfulController from './features/generalApplication/applicationPaymentUnsuccessfulController';
+import applicationResponseConfirmationController
+  from 'routes/features/generalApplication/response/applicationResponseConfirmationController';
 import flightDetailsController from './features/claim/airlines/flightDetailsController';
 import delayedFlightController from './features/claim/airlines/delayedFlightController';
 import respondentRequestChangeInformationController
@@ -579,6 +582,7 @@ export default [
   evidenceUploadDocumentsController,
   viewMediationDocuments,
   applicationTypeController,
+  respondentAgreementController,
   viewTheHearingController,
   viewResponseToClaimController,
   hearingSupportController,
@@ -605,6 +609,7 @@ export default [
   hearingArrangementsGuidanceController,
   wantToUploadDocumentsController,
   uploadEvidenceDocumentsForApplicationController,
+  applicationResponseConfirmationController,
   confirmYouHaveBeenPaidController,
   confirmYouHaveBeenPaidConfirmController,
 ];

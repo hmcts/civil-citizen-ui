@@ -2185,6 +2185,15 @@
         "TITLE": "Unsuccessful payment",
         "YOUR_PAYMENT_HAS_FAILED": "Your payment has failed"
       },
+      "RESPONSE_CONFIRMATION": {
+        "APPLICATION_HEARING": "As a judge usually requires a hearing before making a decision on an application, you'll likely receive a hearing notice with details about when the application hearing will take place.",
+        "CLOSE_AND_RETURN": "Close and return to case details",
+        "JUDGE_WILL_CONSIDER": "A judge will consider the application and your response.",
+        "NEXT_STEPS": "What happens next",
+        "NOTIFICATION": "You'll receive a notification letting you know if an application hearing has been scheduled or if there are any other updates.",
+        "REVIEW": "You can review the application and your response under 'View all applications' on the case dashboard.",
+        "TITLE": "You've responded to the application"
+      },
       "SELECTED_APPLICATION_TYPE": {
         "CANCEL_JUDGMENT": "Set aside (remove) a judgment",
         "CHANGE_CLAIM": "Make a change to your claim or defence that you've submitted",
@@ -2375,6 +2384,12 @@
         "SENT_TO_JUDGE": "Their application and your response will then be sent to a judge.",
         "TITLE": "Respond to a request for a change to the case",
         "WHAT_TO_DO_NEXT": "What to do next"
+      },
+      "RESPONDENT_AGREEMENT": {
+        "DISAGREE_EXPLANATION": "Explain why you disagree with the application",
+        "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
+        "TEXT_REVIEW": "Make sure you've reviewed the full application. If you disagree with any part of the application, select 'No' and explain why.",
+        "TITLE": "Do you agree that the court should make the order that the other parties have requested?"       
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -2690,9 +2705,8 @@
       "UPLOAD_MORE_DOCUMENTS_END": "now or come back later. You can view your documents and the other party's documents."
     },
     "EVIDENCE_UPLOAD_CANCEL": {
-      "HEADING": "Document upload",
+      "HEADING": "Gwrandawiad",
       "TITLE": "Cancel document upload",
-      "CASE_REFERENCE": "Case reference: {{ claimId }}",
       "PARTIES": "{{ claimantName }} v {{ defendantName }}",
       "WARNING_CANCEL": "<span class=\"govuk-body govuk-!-font-weight-bold\">Warning</span> </br> If you cancel, you will lose all unsubmitted information and documents.",
       "ARE_YOU_SURE": "Are you sure you want to cancel?"
@@ -4219,6 +4233,10 @@
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
       "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
+      "RESPONDENT_AGREEMENT": {
+        "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
+        "EXPLAIN_WHY_DISAGREE_APPLICATION": "You need to explain why you disagree with the application" 
+      },
       "WANT_TO_ADD_ANOTHER_APPLICATION":"You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
       "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing"
