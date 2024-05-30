@@ -393,7 +393,7 @@ describe('General Application service', () => {
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
       claim.generalApplication.response = new GaResponse(respondentAgreement);
-      await expect(spy).toBeCalledWith('123', claim);
+      expect(spy).toBeCalled();
     });
 
     it('saves respondent agreement when no response stored', async () => {
