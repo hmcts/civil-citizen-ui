@@ -1,13 +1,14 @@
-import {YesNo} from 'common/form/models/yesNo';
-import {ApplicationType} from './applicationType';
+import { YesNo } from 'common/form/models/yesNo';
+import { ApplicationType } from './applicationType';
 import { InformOtherParties } from './informOtherParties';
-import {HearingSupport} from 'models/generalApplication/hearingSupport';
-import {RequestingReason} from 'models/generalApplication/requestingReason';
-import {OrderJudge} from './orderJudge';
-import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
-import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
-import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
-import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import { HearingSupport } from 'models/generalApplication/hearingSupport';
+import { RequestingReason } from 'models/generalApplication/requestingReason';
+import { OrderJudge } from './orderJudge';
+import { HearingArrangement } from 'models/generalApplication/hearingArrangement';
+import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
+import { GaResponse } from './response/gaResponse';
+import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
+import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
 
 export class GeneralApplication {
 
@@ -22,6 +23,7 @@ export class GeneralApplication {
   unavailableDatesHearing?: UnavailableDatesGaHearing;
   hearingArrangement?: HearingArrangement;
   hearingContactDetails?: HearingContactDetails;
+  response?: GaResponse;
   wantToUploadDocuments?: YesNo;
   uploadEvidenceForApplication?: UploadGAFiles[];
 
@@ -35,6 +37,7 @@ export class GeneralApplication {
     unavailableDatesHearing?: UnavailableDatesGaHearing,
     hearingArrangement?: HearingArrangement,
     hearingContactDetails?: HearingContactDetails,
+    response?: GaResponse,
     uploadEvidenceForApplication?: UploadGAFiles, 
   ) {
     this.applicationType = applicationType;
@@ -46,6 +49,7 @@ export class GeneralApplication {
     this.unavailableDatesHearing = unavailableDatesHearing;
     this.hearingArrangement = hearingArrangement;
     this.hearingContactDetails = hearingContactDetails;
+    this.response = response;
     this.uploadEvidenceForApplication = uploadEvidenceForApplication ? [uploadEvidenceForApplication] : [];  
   }
 }

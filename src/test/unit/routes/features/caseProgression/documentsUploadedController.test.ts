@@ -29,9 +29,25 @@ describe('Documents uploaded controller', () => {
         new Promise((resolve) => resolve(claim)),
       );
     await request(app).get(CP_EVIDENCE_UPLOAD_SUBMISSION_URL.replace(':id', '1645882162449409'))
+      .query({lang: 'en'})
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Documents uploaded');
+      });
+  });
+
+  it('should render the page successfully in Welsh if queried with cy', async () => {
+    const claim = Object.assign(new Claim(), civilClaimDocumentUploaded.case_data);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockReturnValue(
+        new Promise((resolve) => resolve(claim)),
+      );
+    await request(app).get(CP_EVIDENCE_UPLOAD_SUBMISSION_URL.replace(':id', '1645882162449409'))
+      .query({lang: 'cy'})
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Dogfennau wedi’u huwchlwytho');
       });
   });
 
@@ -48,9 +64,30 @@ describe('Documents uploaded controller', () => {
     caseData.caseProgression = new CaseProgression();
 
     await request(app).get(CP_EVIDENCE_UPLOAD_SUBMISSION_URL.replace(':id', mockClaimId))
+      .query({lang: 'en'})
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Documents uploaded');
+      });
+  });
+
+  it('should render the page successfully in Welsh on claimant request with cy query', async () => {
+    const claim = Object.assign(new Claim(), civilClaimDocumentUploaded.case_data);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockReturnValue(
+        new Promise((resolve) => resolve(claim)),
+      );
+    app.locals.draftStoreClient = mockCivilClaim;
+    const mockClaimId = '1645882162449409';
+    const caseData = new Claim();
+    caseData.caseProgression = new CaseProgression();
+
+    await request(app).get(CP_EVIDENCE_UPLOAD_SUBMISSION_URL.replace(':id', mockClaimId))
+      .query({lang: 'cy'})
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Dogfennau wedi’u huwchlwytho');
       });
   });
 
