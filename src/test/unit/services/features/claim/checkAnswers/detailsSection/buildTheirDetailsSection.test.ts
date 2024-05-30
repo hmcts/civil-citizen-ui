@@ -164,6 +164,7 @@ describe('Citizen Details Section', () => {
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[5].value.html).toBe('test');
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[6].value.html).toBe('123');
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[7].value.html).toBe('1 January 2023');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[8].value.html).toBe('077777777779');
   });
   it('should return your Company details summary sections when flight delayed no', async () => {
     //Given
@@ -176,7 +177,8 @@ describe('Citizen Details Section', () => {
     //Then
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe('Nice organisation');
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].value.html).toBe('The Post Man');
-    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].value.html).toBe('COMMON.VARIATION.YES');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].value.html).toBe('COMMON.VARIATION.NO');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[5].value.html).toBe('077777777779');
   });
   
   it('should return your Organisation details summary sections', async () => {
