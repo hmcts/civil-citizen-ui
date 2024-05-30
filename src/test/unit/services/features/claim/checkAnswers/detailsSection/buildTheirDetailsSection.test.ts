@@ -148,6 +148,30 @@ describe('Citizen Details Section', () => {
     //Then
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].value.html).toBe('Business name');
   });
+  it('should return your Company details summary sections', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    if (claim.respondent1) {
+      claim.respondent1.type = PartyType.COMPANY;
+      claim.respondent1.partyDetails.contactPerson = CONTACT_PERSON;
+    }
+    //When
+    const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe('Nice organisation');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].value.html).toBe('The Post Man');
+  });
+  it('should return your Organisation details summary sections', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    if (claim.respondent1) {
+      claim.respondent1.type = PartyType.ORGANISATION;
+    }
+    //When
+    const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe('Nice organisation');
+  });
   it('should return your Company details summary sections when flight delayed yes', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();
@@ -179,17 +203,5 @@ describe('Citizen Details Section', () => {
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].value.html).toBe('The Post Man');
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].value.html).toBe('COMMON.VARIATION.NO');
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[5].value.html).toBe('077777777779');
-  });
-  
-  it('should return your Organisation details summary sections', async () => {
-    //Given
-    const claim = createClaimWithIndividualDetails();
-    if (claim.respondent1) {
-      claim.respondent1.type = PartyType.ORGANISATION;
-    }
-    //When
-    const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
-    //Then
-    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe('Nice organisation');
   });
 });
