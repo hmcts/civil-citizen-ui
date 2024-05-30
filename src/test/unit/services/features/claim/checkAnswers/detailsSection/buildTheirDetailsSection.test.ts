@@ -135,7 +135,7 @@ describe('Citizen Details Section', () => {
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[3].value.html).toBe(formatDateToFullDate(new Date(2000, 1, 1)));
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].value.html).toBe(EMAIL_ADDRESS);
   });
-  it('should return your Company details summary sections', async () => {
+  it('should return your Sole trander details summary sections', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();
     if (claim.respondent1) {
