@@ -88,7 +88,7 @@ describe('Claimant Response Confirmation service', () => {
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed();
     claim.claimantResponse.chooseHowToProceed.option = ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
     // When
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, lang, false, new Date());
     // Then
     expect(claimantResponseConfirmationContent[0].data?.title).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE');
     expect(claimantResponseConfirmationContent[0].data?.html).toContain('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.CLAIM_NUMBER');
