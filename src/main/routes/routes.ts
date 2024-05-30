@@ -293,6 +293,7 @@ import cancelController from 'routes/common/cancelController';
 import evidenceUploadDocumentsController from 'routes/features/caseProgression/evidenceUploadDocumentsController';
 import viewMediationDocuments from 'routes/features/document/mediation/viewMediationDocumentsController';
 import applicationTypeController from './features/generalApplication/applicationTypeController';
+import respondentAgreementController from './features/generalApplication/response/respondentAgreementController';
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
 import claimFeeMakePaymentAgainController
@@ -581,6 +582,7 @@ export default [
   evidenceUploadDocumentsController,
   viewMediationDocuments,
   applicationTypeController,
+  respondentAgreementController,
   viewTheHearingController,
   viewResponseToClaimController,
   hearingSupportController,
