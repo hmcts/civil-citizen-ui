@@ -31,7 +31,7 @@ Scenario('LR vs LiP Unsuccessful Mediation with Upload Documents', async ({api, 
     await api.uploadMediationDocumentsCui(config.defendantCitizenUser, claimRef);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+}).tag('@regression-carm');
 
 // LiP Sole Trader vs LR Company
 Scenario('LiP vs LR Unsuccessful Mediation with Upload Documents', async ({api, noc}) => {
@@ -48,4 +48,4 @@ Scenario('LiP vs LR Unsuccessful Mediation with Upload Documents', async ({api, 
     await api.uploadMediationDocumentsExui(config.defendantSolicitorUser);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+}).tag('@regression-carm');

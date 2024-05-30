@@ -28,7 +28,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({api}
     await api.uploadMediationDocumentsCui(config.defendantCitizenUser, claimRef);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+}).tag('@regression-carm');
 
 // LiP Individual vs LiP Sole Trader
 Scenario('LiP vs LiP Successful Mediation', async ({api}) => {
@@ -40,4 +40,4 @@ Scenario('LiP vs LiP Successful Mediation', async ({api}) => {
     await api.mediationSuccessful(mediationAdmin, true);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+}).tag('@regression-carm');
