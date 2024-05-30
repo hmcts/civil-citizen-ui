@@ -1,25 +1,25 @@
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {t} from 'i18next';
 import {GA_RESPONDENT_UPLOAD_DOCUMENT} from 'routes/urls';
 import * as draftService from 'modules/draft-store/draftStoreService';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import {Claim} from 'common/models/claim';
+import {Claim} from 'models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {isGaForLipsEnabled} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {isGaForLipsEnabled} from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import {CaseDocument} from 'common/models/document/caseDocument';
-import {YesNo} from 'common/form/models/yesNo';
+import {CaseDocument} from 'models/document/caseDocument';
+import {YesNo} from 'form/models/yesNo';
 import {Session} from 'express-session';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const mockCaseDocument: CaseDocument = <CaseDocument>{
   createdBy: 'test',

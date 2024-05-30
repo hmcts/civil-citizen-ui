@@ -327,11 +327,11 @@ import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/con
 import confirmYouHaveBeenPaidConfirmController
   from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
 import respondentHearingPreferenceController
-  from 'routes/features/generalApplication/respondentHearingPreferenceController';
+  from 'routes/features/generalApplication/response/respondentHearingPreferenceController';
 import respondentWantToUploadDocumentsController
-  from 'routes/features/generalApplication/respondentWantToUploadDocumentsController';
+  from 'routes/features/generalApplication/response/respondentWantToUploadDocumentsController';
 import respondentUploadEvidenceDocumentsController
-  from 'routes/features/generalApplication/respondentUploadEvidenceDocmentsController';
+  from 'routes/features/generalApplication/response/respondentUploadEvidenceDocmentsController';
 
 export default [
   homeController,

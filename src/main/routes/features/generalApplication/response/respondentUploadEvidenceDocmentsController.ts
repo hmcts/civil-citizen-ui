@@ -20,10 +20,10 @@ import {
   uploadSelectedFile,
 } from 'services/features/generalApplication/response/respondentUploadEvidenceDocumentsService';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
-import {UploadGAFiles} from 'common/models/generalApplication/uploadGAFiles';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 
 const respondentUploadEvidenceDocumentsController = Router();
-const viewPath = 'features/generalApplication/respondent-upload-documents';
+const viewPath = 'features/generalApplication/response/respondent-upload-documents';
 const upload = multer({
   limits: {
     fileSize: Infinity,

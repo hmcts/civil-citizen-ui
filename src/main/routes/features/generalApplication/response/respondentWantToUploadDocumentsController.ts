@@ -4,8 +4,8 @@ import {
   GA_RESPONDENT_HEARING_PREFERENCE,
   GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT,
 } from 'routes/urls';
-import {GenericForm} from 'common/form/models/genericForm';
-import {AppRequest} from 'common/models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
@@ -16,7 +16,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
 
 const respondentWantToUploadDocumentsController = Router();
-const viewPath = 'features/generalApplication/respondent-want-to-upload-documents';
+const viewPath = 'features/generalApplication/response/respondent-want-to-upload-documents';
 
 async function renderView(req: AppRequest | Request, form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;

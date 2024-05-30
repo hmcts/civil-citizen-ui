@@ -1,22 +1,22 @@
-import {app} from '../../../../../../main/app';
+import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import { Claim } from 'common/models/claim';
+import { Claim } from 'models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {isGaForLipsEnabled} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {isGaForLipsEnabled} from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;

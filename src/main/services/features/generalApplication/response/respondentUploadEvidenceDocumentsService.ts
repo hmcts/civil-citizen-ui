@@ -10,9 +10,9 @@ import {AppRequest} from 'models/AppRequest';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {FormValidationError} from 'form/validationErrors/formValidationError';
 import {t} from 'i18next';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
+import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -73,22 +73,4 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
     logger.error(error);
     throw error;
   }
-};
-
-const translateErrors = (keys: FormValidationError[], t: (key: string) => string, formatValues?: { keyError: string, keyToReplace: string, valueToReplace: string }[]) => {
-  return keys.map((key) => {
-    if (formatValues) {
-      const formatValue = formatValues.find(v => v.keyError === key.text);
-      if (formatValue) {
-        const translation = t(key.text);
-        const replaced = translation.replace(formatValue.keyToReplace, formatValue.valueToReplace);
-        return ({ ...key, text: replaced });
-      }
-    }
-    if (key?.target) {
-      key.target = {};
-    }
-    if (key?.text)
-      return ({ ...key, text: t(key?.text) });
-  }).filter(item => item);
 };
