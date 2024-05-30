@@ -83,7 +83,8 @@ import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails'
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import {GeneralApplication} from './generalApplication/GeneralApplication';
 import {FlightDetails} from './flightDetails';
-import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
+import {isNonDivergentClaim, JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
+import {isJudgmentOnlineLive} from '../../app/auth/launchdarkly/launchDarklyClient';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -713,6 +714,11 @@ export class Claim {
 
   isCCJComplete() {
     return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option;
+  }
+
+  async isCCJCompleteForJo() {
+    const isJudgmentOnlineLiveOn = await isJudgmentOnlineLive();
+    return this.ccdState === CaseState.All_FINAL_ORDERS_ISSUED && this.claimantResponse?.ccjRequest?.paidAmount?.option && isJudgmentOnlineLiveOn && isNonDivergentClaim();
   }
 
   getHowTheInterestCalculatedReason(): string {

@@ -8,6 +8,12 @@
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% import "external-urls.njk" as externalURLs %}
 
+{% if isJudgmentOnline %}
+  {% set processYourRequest = 'PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST_JO' %}
+{% else %}
+  {% set processYourRequest = 'PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST' %}
+{% endif %}
+
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.CCJ_CONFIRMATION.PAGE_TITLE') }}
 {% endblock %}
@@ -19,7 +25,7 @@
         titleText:t('PAGES.CCJ_CONFIRMATION.TITLE')
       }) }}
       <br>
-      <p class="govuk-body">{{ t('PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST', { defendantName: defendantName }) }}</p>
+      <p class="govuk-body">{{ t(processYourRequest, { defendantName: defendantName }) }}</p>
       <p class="govuk-body">{{ t('PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST_1') }}</p>
       <p class="govuk-body">{{ t('PAGES.CCJ_CONFIRMATION.UPDATES') }}</p>
       {{ govukInsetText({
