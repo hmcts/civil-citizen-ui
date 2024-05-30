@@ -95,7 +95,7 @@ function getJudgementDocument(claim: Claim): CaseDocument {
   }
 
   const defaultJudgmentDocuments = claim.defaultJudgmentDocuments;
-  if (judgementDocument && defaultJudgmentDocuments && defaultJudgmentDocuments.length > 0) {
+  if (judgementDocument === undefined && defaultJudgmentDocuments && defaultJudgmentDocuments.length > 0) {
     findJudgementDocument(defaultJudgmentDocuments);
   }
 
