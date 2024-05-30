@@ -170,7 +170,7 @@ export const saveRespondentAgreeToOrder = async (claimId: string, claim: Claim, 
 export function getRespondToApplicationCaption(claim: Claim, lng: string): string {
   const applicationType = t(selectedApplicationType[claim.generalApplication?.applicationType?.option], { lng: getLng(lng) }).toLowerCase();
   return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', { lng: getLng(lng), interpolation: { escapeValue: false }, applicationType });
-};
+}
 
 export const saveUnavailableDates = async (claimId: string, claim: Claim, unavailableDates: UnavailableDatesGaHearing): Promise<void> => {
   try {
