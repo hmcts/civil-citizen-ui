@@ -63,6 +63,7 @@ appReq.session = {
   assignClaimURL: undefined,
   claimIssueTasklist: false,
   firstContact: undefined,
+  fileUpload: undefined,
   issuedAt: 150,
 };
 const ccdClaim : CCDClaim = {
