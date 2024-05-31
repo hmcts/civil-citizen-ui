@@ -35,7 +35,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => {
+Scenario('Apply for Help with Fees Journey - Small Claims', async ({I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
@@ -55,7 +55,6 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
       await I.click(notification.nextSteps2);
     }
     await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, claimRef, claimAmount);
-    await api.waitForFinishedBusinessProcess();
     await I.click('Close and return to case overview');
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);

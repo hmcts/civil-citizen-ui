@@ -35,7 +35,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
+Scenario('Apply for Help with Fees Journey - Fast Track', async ({I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
