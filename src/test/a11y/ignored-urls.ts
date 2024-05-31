@@ -63,4 +63,8 @@ export const IGNORED_URLS = [
   //TODO: remove this once finished the page
   urls.VIEW_THE_HEARING_URL,
   urls.BASE_GENERAL_APPLICATION_RESPONSE_URL,
+  //TODO: remove this once finished the page
+  urls.VIEW_THE_JUDGMENT_URL,
+  //TODO: remove this once finished the page
+  urls.GENERAL_APPLICATION_CONFIRM_URL,
 ];
