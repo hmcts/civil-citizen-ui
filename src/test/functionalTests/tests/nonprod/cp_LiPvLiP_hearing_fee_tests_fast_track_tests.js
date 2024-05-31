@@ -55,7 +55,6 @@ Scenario('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
       await I.click(notification.nextSteps2);
     }
     await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, claimRef, claimAmount);
-    await api.waitForFinishedBusinessProcess();
     await I.click('Close and return to case overview');
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);
@@ -73,7 +72,6 @@ Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I}) => {
       await I.click(notification.nextSteps);
     }
     await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
-    // await api.waitForFinishedBusinessProcess();
     await I.click('Close and return to case overview');
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);

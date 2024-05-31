@@ -42,6 +42,7 @@ class hearingFeeSteps {
     applyHelpWithFeesReferenceNumber.addHelpWithFeesReference();
     applyHelpWithFeesReferenceNumber.nextAction('Continue');
     applyHelpWithFeesConfirmation.verifyPageContent();
+    await waitForFinishedBusinessProcess();
   }
 
   async payHearingFeeJourney(claimRef, feeAmount, dueDate, caseNumber, claimAmount) {
