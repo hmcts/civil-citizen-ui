@@ -2,7 +2,7 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "../../macro/statement-of-truth.njk" import statementOfTruth %}
+{% from "../../macro/ga-statement-of-truth.njk" import statementOfTruth %}
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% set submitText = t('COMMON.BUTTONS.SUBMIT_CLAIM') %}
-{% set labelHtml = t('PAGES.CHECK_YOUR_ANSWER.CLAIM_CHECKBOX')
+{% set labelHtml = t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.STATEMENT_OF_TRUTH.CHECKBOX')
                     + '<p class="govuk-!-margin-top-2">'
                     + t('PAGES.CHECK_YOUR_ANSWER.CLAIM_CHECKBOX_PROCEEDINGS')
                     +'</p>' %}
