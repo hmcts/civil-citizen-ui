@@ -274,7 +274,7 @@ export const validateAdditionalApplicationtType = (claim : Claim, errors : Valid
 
     errors.push(validationError);
   }
-}
+};
 
 export const getListOfNotAllowedAdditionalAppType = () => {
   return [ApplicationTypeOption.SET_ASIDE_JUDGEMENT, 

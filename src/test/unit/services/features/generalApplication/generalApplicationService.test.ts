@@ -496,12 +496,12 @@ describe('General Application service', () => {
       const body = {
         optionOther: 'test',
         option: 'testOption', 
-      }
+      };
       //When
       validateAdditionalApplicationtType(claim, errors, applicationType,body);
       
       //Then
-      const error : ValidationError = errors[0]
+      const error : ValidationError = errors[0];
       expect(errors.length).toBe(1);
       expect(error.constraints['additionalApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING');
     });
