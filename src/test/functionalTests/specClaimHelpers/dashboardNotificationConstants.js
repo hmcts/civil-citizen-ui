@@ -309,7 +309,7 @@ module.exports = {
     return {
       title: 'Settlement agreement',
       content: ['You have accepted the settlement agreement.',
-        'The claimant cannot request a County Court Judgment, unless you break the terms of the agreement.'],
+        'The claimant cannot request a County Court Judgment (CCJ), unless you break the terms of the agreement.'],
     };
   },
 
