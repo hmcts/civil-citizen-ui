@@ -64,7 +64,7 @@ Scenario('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
   }
 }).tag('@regression-cp');
 
-Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
+Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {

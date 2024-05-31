@@ -64,7 +64,7 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
   }
 }).tag('@regression-cp');
 
-Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
+Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
