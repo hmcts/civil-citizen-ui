@@ -33,7 +33,7 @@ describe('General Application - upload n245 form', () => {
   beforeEach(() => {
     claim = new Claim();
     claim.generalApplication = new GeneralApplication();
-    claim.generalApplication.applicationType = new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT);
+    claim.generalApplication.applicationTypes.push(new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT));
     claim.generalApplication.uploadN245Form = new UploadGAFiles();
     mockDataFromStore.mockResolvedValue(claim);
   });
