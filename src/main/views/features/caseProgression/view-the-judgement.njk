@@ -1,0 +1,18 @@
+{% extends "../../claim-details-tpl-dashboard.njk" %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/page-information.njk" import pageInformation %}
+{% from "../../macro/dashboard-accordion.njk" import dashboardAccordion %}
+{% from "../dashboard/claim-summary-content.njk" import claimSummaryContent %}
+
+{% block nestedContent %}
+
+  {{ pageInformation(t,pageCaption, pageTitle, claimId, claimAmount)}}
+
+  {% for judgementSection in judgementSections %}
+    {{ claimSummaryContent({
+      contentSections: judgementSection.contentSections,
+      hasDivider: judgementSection.hasDivider
+    }, t) }}
+  {% endfor %}
+  {{ dashboardAccordion(t,link, '', t('PAGES.DASHBOARD.JUDGMENT_ACCORDION_CONTENT'), '') }}
+{% endblock %}

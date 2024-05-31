@@ -28,7 +28,6 @@ import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
-import {CaseDocument} from 'common/models/document/caseDocument';
 import {Document} from 'common/models/document/document';
 import {
   SystemGeneratedCaseDocumentsWithSEALEDCLAIMAndSDOMock,
@@ -37,6 +36,7 @@ import {
 import {ClaimantResponse} from 'models/claimantResponse';
 import {Mediation} from 'models/mediation/mediation';
 import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -716,7 +716,7 @@ describe('Latest Update Content Builder', () => {
     it('should have build default judgement submitted section', () => {
       // Given
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
-      claim.defaultJudgmentDocuments = [<CaseDocument>{}];
+      claim.defaultJudgmentDocuments = [<SystemGeneratedCaseDocuments>{}];
       claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);

@@ -24,7 +24,7 @@ const claimId = claim.id;
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const testSession = session(app);
 
-describe('Confirm you have been paid - On GET', () => {
+describe('Confirm you have been paid', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
@@ -33,181 +33,186 @@ describe('Confirm you have been paid - On GET', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
+  describe('Confirm you have been paid - On GET', () => {
 
-  it('should render page successfully if cookie has correct values', async () => {
+    it('should render page successfully if cookie has correct values', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaim;
-    //When
-    await testSession
-      .get(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', claimId))
+      app.locals.draftStoreClient = mockCivilClaim;
+      //When
+      await testSession
+        .get(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', claimId))
       //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_PAGE_TITLE);
-        expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_ENTER_THE_DATE);
-        expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_HINT);
-        expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM);
-        expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_JUDGMENT_LINK);
-      });
-  });
+        .expect((res: { status: unknown; text: unknown; }) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_PAGE_TITLE);
+          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_ENTER_THE_DATE);
+          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_HINT);
+          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM);
+          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_JUDGMENT_LINK);
+        });
+    });
 
-  it('should return "Something went wrong" page when claim does not exist', async () => {
+    it('should return "Something went wrong" page when claim does not exist', async () => {
     //Given
-    app.locals.draftStoreClient = mockRedisFailure;
-    //When
-    await testSession
-      .get(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1111'))
+      app.locals.draftStoreClient = mockRedisFailure;
+      //When
+      await testSession
+        .get(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1111'))
       //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
+        .expect((res: { status: unknown; text: unknown; }) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
 
-  it('should return "Something went wrong" page when the logged-in user is the defendant', async () => {
+    it('should return "Something went wrong" page when the logged-in user is the defendant', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
-    //When
-    await testSession
-      .get(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
+      app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
+      //When
+      await testSession
+        .get(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
       //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
-});
-
-describe('Confirm you have been paid - on POST', () => {
-
-  beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaim;
+        .expect((res: { status: unknown; text: unknown; }) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
   });
 
-  it('should redirect to the Confirm you have been paid Confirmation page', async () => {
+  describe('Confirm you have been paid - on POST', () => {
+
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockCivilClaim;
+    });
+
+    it('should redirect to the Confirm you have been paid Confirmation page', async () => {
     //Given
-    const CivilServiceClientServiceMock = jest
-      .spyOn(CivilServiceClient.prototype, 'submitJudgmentPaidInFull')
-      .mockReturnValue(
-        new Promise((resolve) => resolve(claim),
-        ),
-      );
-    const today = new Date();
-    nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
-      .reply(200, claimId);
+      const CivilServiceClientServiceMock = jest
+        .spyOn(CivilServiceClient.prototype, 'submitJudgmentPaidInFull')
+        .mockReturnValue(
+          new Promise((resolve) => resolve(claim),
+          ),
+        );
+      const today = new Date();
+      nock(civilServiceUrl)
+        .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
+        .reply(200, claimId);
 
-    //When
-    await testSession
-      .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-      .send({ day:today.getDate(), month:today.getMonth(), year: today.getFullYear(), confirmed:true })
+      //When
+      const month = today.getMonth() <12 ? today.getMonth() + 1 : 1;
+      await testSession
+        .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
+        .send({ day:28, month:month, year: today.getFullYear()-1, confirmed:true })
       //Then
-      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL.replace(':id', '1645882162449409'));
-        expect(CivilServiceClientServiceMock).toBeCalled();
-      });
-  });
+        .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL.replace(':id', '1645882162449409'));
+          expect(CivilServiceClientServiceMock).toBeCalled();
+        });
+    });
 
-  it('should validate checkbox when not checked', async () => {
+    it('should validate checkbox when not checked', async () => {
     //Given
-    nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
-      .reply(200, claimId);
+      nock(civilServiceUrl)
+        .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
+        .reply(200, claimId);
 
-    //When
-    await testSession
-      .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-      .send({ day:2, month:3, year: 2024, confirm:false })
+      //When
+      await testSession
+        .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
+        .send({ day:2, month:3, year: 2024, confirm:false })
       //Then
-      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_CHECK_ERROR_MESSAGE);
-      });
-  });
+        .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_CHECK_ERROR_MESSAGE);
+        });
+    });
 
-  it('should show error if date is in the future', async () => {
+    it('should show error if date is in the future', async () => {
     //Given
-    const today = new Date();
-    nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
-      .reply(200, claimId);
+      const today = new Date();
+      nock(civilServiceUrl)
+        .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
+        .reply(200, claimId);
 
-    //When
-    await testSession
-      .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-      .send({ day:today.getDate() + 1, month:today.getMonth() + 1, year: today.getFullYear(), confirmed:true })
+      const month = today.getMonth() <12 ? today.getMonth() + 1 : 1;
+
+      //When
+      await testSession
+        .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
+        .send({ day:28, month:month, year: today.getFullYear()+1, confirmed:true })
       //Then
-      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.ERRORS_CORRECT_DATE_NOT_IN_FUTURE);
-      });
-  });
+        .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ERRORS_CORRECT_DATE_NOT_IN_FUTURE);
+        });
+    });
 
-  it('should show errors if date not present', async () => {
+    it('should show errors if date not present', async () => {
     //Given
-    nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
-      .reply(200, claimId);
+      nock(civilServiceUrl)
+        .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
+        .reply(200, claimId);
 
-    //When
-    await testSession
-      .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-      .send({ confirmed:true })
+      //When
+      await testSession
+        .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
+        .send({ confirmed:true })
       //Then
-      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.VALID_DAY);
-        expect(res.text).toContain(TestMessages.VALID_MONTH);
-        expect(res.text).toContain(TestMessages.VALID_YEAR);
-      });
-  });
+        .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.VALID_DAY);
+          expect(res.text).toContain(TestMessages.VALID_MONTH);
+          expect(res.text).toContain(TestMessages.VALID_YEAR);
+        });
+    });
 
-  it('should show errors if year is not correct', async () => {
+    it('should show errors if year is not correct', async () => {
     //Given
-    nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
-      .reply(200, claimId);
+      nock(civilServiceUrl)
+        .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
+        .reply(200, claimId);
 
-    //When
-    await testSession
-      .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-      .send({ day:2, month:3, year: 202, confirmed:true })
+      //When
+      await testSession
+        .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
+        .send({ day:2, month:3, year: 202, confirmed:true })
       //Then
-      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.VALID_FOUR_DIGIT_YEAR);
-      });
-  });
+        .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.VALID_FOUR_DIGIT_YEAR);
+        });
+    });
 
-  it('should show errors if date is not valid', async () => {
+    it('should show errors if date is not valid', async () => {
     //Given
-    nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
-      .reply(200, claimId);
+      nock(civilServiceUrl)
+        .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
+        .reply(200, claimId);
 
-    //When
-    await testSession
-      .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-      .send({ day:null, month:2, year:1998, confirmed:true })
+      //When
+      await testSession
+        .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
+        .send({ day:null, month:2, year:1998, confirmed:true })
       //Then
-      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.ERRORS_VALID_DATE);
-      });
-  });
+        .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ERRORS_VALID_DATE);
+        });
+    });
 
-  it('should return "Something went wrong" page when claim does not exist', async () => {
+    it('should return "Something went wrong" page when claim does not exist', async () => {
     //Given
-    app.locals.draftStoreClient = mockRedisFailure;
-    //When
-    await testSession
-      .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1234'))
+      app.locals.draftStoreClient = mockRedisFailure;
+      //When
+      await testSession
+        .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1234'))
       //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
+        .expect((res: { status: unknown; text: unknown; }) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
 
+  });
 });
