@@ -20,6 +20,7 @@ export class GeneralApplication {
   respondentAgreeToOrder?: YesNo;
   requestingReason?: RequestingReason;
   orderJudge?: OrderJudge;
+  uploadN245Form?: UploadGAFiles;
   unavailableDatesHearing?: UnavailableDatesGaHearing;
   hearingArrangement?: HearingArrangement;
   hearingContactDetails?: HearingContactDetails;
