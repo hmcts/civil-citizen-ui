@@ -296,6 +296,7 @@ import applicationTypeController from './features/generalApplication/application
 import respondentAgreementController from './features/generalApplication/response/respondentAgreementController';
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
+import viewTheJudgementController from 'routes/features/caseProgression/viewTheJudgementController';
 import claimFeeMakePaymentAgainController
   from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
 import informOtherPartiesController from './features/generalApplication/informOtherPartiesController';
@@ -584,6 +585,7 @@ export default [
   respondentAgreementController,
   viewTheHearingController,
   viewResponseToClaimController,
+  viewTheJudgementController,
   hearingSupportController,
   claimFeeMakePaymentAgainController,
   agreementFromOtherPartyController,
