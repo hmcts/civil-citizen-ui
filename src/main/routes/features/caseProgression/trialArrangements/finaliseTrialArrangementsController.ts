@@ -18,12 +18,13 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 finaliseTrialArrangementsController.get([CP_FINALISE_TRIAL_ARRANGEMENTS_URL], (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     await saveDraftClaim(claimId, claim);
 
     const dashboardUrl = claim.caseRole === CaseRole.CLAIMANT ? constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL) : constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 
-    res.render(finalizeTrialArrangementsViewPath, {finaliseYourTrialContents:getFinaliseTrialArrangementContents(claimId, claim),dashboardUrl});
+    res.render(finalizeTrialArrangementsViewPath, {finaliseYourTrialContents:getFinaliseTrialArrangementContents(claimId, claim, lang),dashboardUrl});
   } catch (error) {
     next(error);
   }

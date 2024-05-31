@@ -293,8 +293,10 @@ import cancelController from 'routes/common/cancelController';
 import evidenceUploadDocumentsController from 'routes/features/caseProgression/evidenceUploadDocumentsController';
 import viewMediationDocuments from 'routes/features/document/mediation/viewMediationDocumentsController';
 import applicationTypeController from './features/generalApplication/applicationTypeController';
+import respondentAgreementController from './features/generalApplication/response/respondentAgreementController';
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
+import viewTheJudgementController from 'routes/features/caseProgression/viewTheJudgementController';
 import claimFeeMakePaymentAgainController
   from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
 import informOtherPartiesController from './features/generalApplication/informOtherPartiesController';
@@ -313,6 +315,8 @@ import unavailableHearingDatesController from 'routes/features/generalApplicatio
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 import applicationPaymentUnsuccessfulController from './features/generalApplication/applicationPaymentUnsuccessfulController';
+import applicationResponseConfirmationController
+  from 'routes/features/generalApplication/response/applicationResponseConfirmationController';
 import flightDetailsController from './features/claim/airlines/flightDetailsController';
 import delayedFlightController from './features/claim/airlines/delayedFlightController';
 import respondentRequestChangeInformationController
@@ -578,8 +582,10 @@ export default [
   evidenceUploadDocumentsController,
   viewMediationDocuments,
   applicationTypeController,
+  respondentAgreementController,
   viewTheHearingController,
   viewResponseToClaimController,
+  viewTheJudgementController,
   hearingSupportController,
   claimFeeMakePaymentAgainController,
   agreementFromOtherPartyController,
@@ -603,6 +609,7 @@ export default [
   hearingArrangementsGuidanceController,
   wantToUploadDocumentsController,
   uploadEvidenceDocumentsForApplicationController,
+  applicationResponseConfirmationController,
   confirmYouHaveBeenPaidController,
   confirmYouHaveBeenPaidConfirmController,
 ];
