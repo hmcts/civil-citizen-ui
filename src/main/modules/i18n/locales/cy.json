@@ -494,35 +494,35 @@
     },
     "APPLY_HELP_WITH_FEES": {
       "START": {
-        "ACCEPTED_FULLY_TITLE": "If your application for help with fees is accepted",
-        "ACCEPTED_FULLY": "Your fee will be paid in full and you will not need to make a payment.",
-        "ACCEPTED_PARTIALLY_TITLE": "If your application for help with fees is partially accepted",
-        "ACCEPTED_PARTIALLY": "Some of the fee will be paid, but you'll need to pay the remaining balance. You can pay by phone.",
-        "CONTINUE_APPLICATION": "Do you want to continue to apply for help with fees?",
-        "ELIGIBILITY": "Applying for help with fees does not guarantee your fee will be covered. You will need to meet the ",
-        "ELIGIBILITY_LINK": "eligibility criteria (opens in new tab).",
+        "ACCEPTED_FULLY_TITLE": "Os derbynnir eich cais am help i dalu ffioedd",
+        "ACCEPTED_FULLY": "Bydd eich ffi yn cael ei thalu’n llawn ac ni fydd angen i chi wneud taliad.",
+        "ACCEPTED_PARTIALLY_TITLE": "Os derbynnir eich cais am help i dalu ffioedd yn rhannol",
+        "ACCEPTED_PARTIALLY": "Bydd rhywfaint o'r ffi yn cael ei thalu, ond bydd angen i chi dalu'r balans sy'n weddill. Gallwch dalu dros y ffôn.",
+        "CONTINUE_APPLICATION": "Ydych chi eisiau parhau i wneud cais am Help i Dalu Ffioedd?",
+        "ELIGIBILITY": "Nid yw gwneud cais am help i dalu ffioedd yn gwarantu na fydd rhaid i chi dalu’r ffi. Bydd angen i chi fodloni’r ",
+        "ELIGIBILITY_LINK": "meini prawf cymhwysedd (yn agor mewn tab newydd).",
         "HEARING_FEE": "Ffi’r Gwrandawiad",
-        "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The hearing fee is: £{{ feeAmount }}</span>",
-        "RECEIVE_DECISION": "Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.",
-        "REJECTED_TITLE": "If your application for help with fees is rejected",
-        "REJECTED": "You'll need to pay the full balance. You can make the card payment online, or by phone.",
+        "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">Ffi’r Gwrandawiad yw: £{{ feeAmount }}</span>",
+        "RECEIVE_DECISION": "Ar ôl i chi wneud cais am help i dalu ffioedd, dylech gael penderfyniad gan Wasanaeth Llysoedd a Thribiwnlysoedd EF (GLlTEF) o fewn 5 i 10 diwrnod gwaith.",
+        "REJECTED_TITLE": "Os gwrthodir eich cais am help i dalu ffioedd",
+        "REJECTED": "Bydd angen i chi dalu’r balans llawn. Gallwch wneud taliad ar-lein gyda cherdyn, neu dalu dros y ffôn.",
         "TITLE" : "Help i Dalu Ffioedd"
       },
       "REFERENCE_NUMBER": {
-        "TITLE_YES": "Enter your help with fees reference number",
-        "SUBTITLE_YES": "You'll only have this reference number if you've applied for help with fees. Do not submit a number that has already been used for a previous application.",
-        "HINT_YES" : "For example, HWF-A1B-23C",
-        "TITLE_NO": "Next steps",
-        "PARAGRAPH_NO": "You must apply for help with fees before submitting your application.",
-        "QUESTION_TITLE": "Do you have a help with fees reference number?",
+        "TITLE_YES": "Rhowch eich cyfeirnod Help i Dalu Ffioedd",
+        "SUBTITLE_YES": "Dim ond os gwnaethoch gais am Help i Dalu Ffioedd y bydd gennych chi gyfeirnod.’ Peidiwch â rhoi rhif sydd eisoes wedi'i ddefnyddio ar gyfer cais blaenorol.",
+        "HINT_YES" : "Er enghraifft, HWF-A1B-23C",
+        "TITLE_NO": "Y camau nesaf",
+        "PARAGRAPH_NO": "Mae’n rhaid i chi wneud cais am Help i Dalu Ffioedd cyn i chi gyflwyno’ch cais.",
+        "QUESTION_TITLE": "A oes gennych chi gyfeirnod Help i Dalu Ffioedd?",
         "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
         "LIST_ITEMS": {
-          "FIRST": "Go to ",
-          "FIRST_LINK": "apply for help with fees (opens in a new tab).",
-          "SECOND": "When you are asked to enter a court or tribunal number, enter 'hearing fee' followed by short explanation, for example 'hearing fee for small claims' or 'hearing fee for fast track.",
-          "THIRD": "Complete the help with fees application.",
-          "FOURTH": "Return here to your online money claims account.",
-          "FIFTH": "Complete the hearing fee payment by entering your help with fees reference number."
+          "FIRST": "Ewch ",
+          "FIRST_LINK": "i ‘gwneud cais am help i dalu ffioedd’ (yn agor mewn tab newydd).",
+          "SECOND": "Pan ofynnir i chi nodi rhif llys neu dribiwnlys, rhowch 'ffi’r gwrandawiad' ac yna esboniad byr, er enghraifft 'ffi gwrandawiad hawliadau bychain' neu 'ffi gwrandawiad trac cyflym'.",
+          "THIRD": "Cwblhewch y cais am help i dalu ffioedd.",
+          "FOURTH": "Dychwelwch yma i'ch cyfrif hawliadau am arian ar-lein.",
+          "FIFTH": "Cwblhewch y cais am help i dalu ffioedd trwy roi eich cyfeirnod help i dalu ffioedd."
         }
       }
     },
@@ -1515,7 +1515,7 @@
         "CREATED": "Crëwyd ar ",
         "HEARING": "Gwrandawiad",
         "HEARING_NOTICE": "Hysbysiad o wrandawiad",
-        "PAY_FEE": "Pay the hearing fee",
+        "PAY_FEE": "Talu ffi’r gwrandawiad",
         "PAY_FEE_DEADLINE": "Deadline is 12am on {{ hearingDueDate }}",
         "TITLE": "Gwrandawiadau",
         "UPLOAD_DOCUMENTS": "Upload hearing documents",
@@ -1536,7 +1536,7 @@
         "HEARINGS": {
           "PAY_FEE": "of £{{ feeAmount }} by {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
           "TEXT_BEFORE": "You must ",
-          "TEXT": "pay the hearing fee "
+          "TEXT": "talu ffi’r gwrandawiad "
         },
         "HELP_WITH_FEES": {
           "TITLE": "We're reviewing your help with fees application",
@@ -2464,9 +2464,9 @@
         "HEARING_FEE": {
           "APPLY_HELP_FEE_SELECTION": {
             "LINK_BEFORE": "Os ydych ar incwm isel, os nad oes gennych lawer o gynilion neu os ydych yn hawlio budd-daliadau, efallai y gallwch gael ",
-            "LINK_TEXT": "Help i Dalu Ffioedd (yn agor mewn tab newydd).",
+            "LINK_TEXT": "help i dalu ffioedd (agor mewn tab newydd).",
             "PARAGRAPH": "Os ydych yn bodloni'r meini prawf, efallai y cewch gymorth i dalu rhywfaint neu'r cyfan o'r ffi.",
-            "QUESTION_TITLE": "Ydych chi eisiau gwneud cais am Help i Dalu Ffioedd?",
+            "QUESTION_TITLE": "Ydych chi eisiau gwneud cais am help i dalu ffioedd?",
             "TITLE": "Talu ffi’r gwrandawiad"
           },
           "PAYMENT": {
@@ -2477,27 +2477,27 @@
               "PAYMENT_BY_CARD": "Talu gyda cherdyn",
               "PAYMENT_BY_CARD_PARAGRAPH_PART_1": "Gallwch geisio",
               "PAYMENT_BY_CARD_PARAGRAPH_CARD_PAYMENT_URL": "gwneud taliad",
-              "PAYMENT_BY_CARD_PARAGRAPH_PART_2": "eto gyda cherdyn.",
+              "PAYMENT_BY_CARD_PARAGRAPH_PART_2": "gyda cherdyn eto.",
               "PAYMENT_BY_PHONE": "Talu dros y ffôn",
               "PAYMENT_BY_PHONE_PARAGRAPH_1": "Gallwch dalu dros y ffôn drwy ein ffonio ar 0300 303 5174. Dyfynnwch eich cyfeirnod achos sef {{ claimId }}.",
               "PAYMENT_BY_PHONE_PARAGRAPH_2": "Mae'r llinellau ar agor o ddydd Llun i ddydd Iau 9am - 5pm, dydd Gwener 9am - 4.30pm.",
-              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Cyn cysylltu â ni ",
-              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "dewch o hyd i wybodaeth am gost galwadau (yn agor mewn tab newydd).",
+              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Cyn cysylltu â ni darllenwch fwy am",
+              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "gost galwadau (yn agor mewn tab newydd).",
               "RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd at drosolwg o’r achos"
             },
             "SUCCESSFUL": {
-              "PAGE_TITLE": "Your payment was ",
-              "PAGE_TITLE2": "successful",
-              "PAYMENT_IS": "Your payment reference number is",
-              "PAYMENT_SUMMARY": "Payment summary",
-              "CONFIRMATION": "You'll receive a confirmation email in the next hour.",
-              "PAYMENT_FOR": "Payment for",
-              "TOTAL_AMOUNT": "Total amount"
+              "PAGE_TITLE": "Roedd eich taliad yn ",
+              "PAGE_TITLE2": "llwyddiannus",
+              "PAYMENT_IS": "Cyfeirnod eich taliad yw ",
+              "PAYMENT_SUMMARY": "Crynodeb o’r taliad",
+              "CONFIRMATION": "Byddwch yn cael e-bost cadarnhau yn yr awr nesaf.",
+              "PAYMENT_FOR": "Taliad ar gyfer",
+              "TOTAL_AMOUNT": "Cyfanswm"
             }
           },
           "PAID_NOTIFICATION_TITLE": "Hearing fee has been paid",
           "PAID_NOTIFICATION_SUBTITLE": "The hearing fee has been paid in full.",
-          "PAID_TASK": "Pay the hearing fee"
+          "PAID_TASK": "Talu ffi’r gwrandawiad"
         },
         "TRIAL_HEARING_CONTENT": {
           "YOUR_TRIAL_TITLE": "Mae treial wedi'i drefnu ar gyfer eich achos",
@@ -2512,10 +2512,10 @@
         },
         "PAY_HEARING_FEE": {
           "APPLY_HELP_WITH_FEES": {
-            "LINK":"Gwneud cais am Help i Dalu Ffioedd (yn agor mewn ffenestr newydd)",
+            "LINK":"Gwneud cais am Help i Dalu Ffioedd (yn agor mewn tab newydd)",
             "PAGE_TITLE": "Help i Dalu Ffioedd",
-            "PARAGRAPH_IF": "Os oes gennych eisoes gyfeirnod Help i Dalu Ffioedd ar gyfer ffi cychwyn yr hawliad neu unrhyw ffioedd gwneud cais, ni ddylech ddefnyddio'r cyfeirnod hwnnw ar gyfer y cais hwn.",
-            "PARAGRAPH_INSTEAD": "Yn hytrach, dylech wneud cais am Help i Dalu Ffioedd newydd a fydd yn rhoi cyfeirnod newydd i chi.  Gwnewch nodyn o'r rhif hwn a'i gadw'n ddiogel gan y byddwch ei angen yn nes ymlaen yn y broses.",
+            "PARAGRAPH_IF": "Os oes gennych gyfeirnod help i dalu ffioedd yn barod ar gyfer ffi cychwyn yr hawliad neu unrhyw ffioedd gwneud cais, ni ddylech ddefnyddio’r cyfeirnod hwnnw ar gyfer y cais hwn.",
+            "PARAGRAPH_INSTEAD": "Yn hytrach, dylech wneud cais am help i dalu ffioedd newydd a fydd yn rhoi cyfeirnod newydd i chi.  Gwnewch nodyn o'r rhif hwn a'i gadw'n ddiogel gan y byddwch ei angen yn nes ymlaen yn y broses.",
             "PARAGRAPH_DURING": "Yn ystod eich cais, gofynnir i chi am rif eich ffurflen llys neu dribiwnlys.  Rhowch 'ffi’r gwrandawiad' ac yna esboniad byr, er enghraifft 'ffi gwrandawiad hawliadau bychain' neu 'ffi gwrandawiad trac cyflym'.",
             "PARAGRAPH_ONCE": "Unwaith y byddwch wedi gwneud eich cais, dychwelwch i'r dudalen hon a chliciwch ar ‘parhau’ i symud ymlaen.",
             "TITLE": "Gwneud cais am help i dalu ffioedd"
@@ -3731,17 +3731,17 @@
     },
     "PAY_HEARING_FEE": {
       "START_PAGE": {
-        "PAGE_TITLE": "Pay the hearing fee",
+        "PAGE_TITLE": "Talu ffi’r gwrandawiad",
         "TITLE": "Talu ffi’r gwrandawiad",
-        "YOU_MUST_PAY": "You must pay a fee of £{{ hearingFee }} by {{ hearingFeePaymentDeadline }}.",
-        "IF_YOU_DO_NOT_PAY": "If you do not pay by this date, your case may be struck out."
+        "YOU_MUST_PAY": "Rhaid i chi dalu ffi o £{{ hearingFee }} erbyn {{ hearingDueDate }}.",
+        "IF_YOU_DO_NOT_PAY": "Os na fyddwch yn talu erbyn y dyddiad hwn, gall eich achos gael ei ddileu."
       },
       "CONFIRMATION_PAGE": {
         "TITLE": "Confirmation of your hearing fee payment",
-        "CONFIRMATION_TITLE.HEARING": "Your application for help with the hearing fee is complete ",
-        "REFERENCE_NUMBER": "Your reference number",
+        "CONFIRMATION_TITLE.HEARING": "Mae eich ceisiadau am help i dalu ffioedd gwrandawiad’ yn gyflawn",
+        "REFERENCE_NUMBER": "Eich cyfeirnod yw ",
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
-        "YOU_WILL_RECEIVE": "You'll receive a decision on your application within 5 to 10 working days."
+        "YOU_WILL_RECEIVE": "Byddwch yn cael penderfyniad ar eich cais o fewn 5 i 10 diwrnod gwaith."
       }
     },
     "CONFIRM_YOU_HAVE_BEEN_PAID": {
