@@ -41,7 +41,7 @@ Scenario('Case progression journey - Small Claims - Verify latest Update page fo
       await ResponseSteps.SignOut();
       await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
       await I.click(claimNumber);
-      await I.dontSee(notification.title);
+      await I.dontSee(notification.content);
     } else {
       CaseProgressionSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
     }
