@@ -149,6 +149,7 @@ Scenario('LiP defendant uploads mediation documents', async ({api}) => {
     await UploadDocSteps.ClickContinue();
     await UploadDocSteps.CheckAndSendMediationDocs('Defendant');
     await UploadDocSteps.VerifyConfirmationPage(claimRef);
+    await ClaimantResponseSteps.ClickAndViewDocs();
     await api.waitForFinishedBusinessProcess();
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     taskListItem = viewMediationDocuments();
