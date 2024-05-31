@@ -8,7 +8,8 @@ export const ccjConfirmationGuard = (req: Request, res: Response, next: NextFunc
   (async () => {
     try {
       const claim = await getClaimById(req.params.id, <AppRequest>req, true);
-      if (claim.isCCJComplete() || await claim.isCCJCompleteForJo()) {
+      const isCCJCompleteForJo = await claim.isCCJCompleteForJo();
+      if (claim.isCCJComplete() || isCCJCompleteForJo) {
         next();
       } else {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, DASHBOARD_CLAIMANT_URL));

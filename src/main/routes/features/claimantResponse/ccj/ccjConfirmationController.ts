@@ -9,7 +9,7 @@ ccjConfirmationController.get(CCJ_CONFIRMATION_URL, ccjConfirmationGuard, (async
   try {
     const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     const defendantName = claim.getDefendantFullName();
-    const isJudgmentOnline = await claim.isCCJCompleteForJo(); //TODO spec check needed?
+    const isJudgmentOnline = await claim.isCCJCompleteForJo();
     res.render('features/claimantResponse/ccj/ccj-confirmation', {defendantName, isJudgmentOnline});
   } catch (error) {
     next(error);
