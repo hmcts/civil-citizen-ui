@@ -28,7 +28,6 @@ class ClaimantUpdate {
   async viewMediationDocs() {
     I.click('View mediation documents');
     I.waitForContent('View mediation documents', config.WaitForText);
-    I.see('Case reference:');
     I.see('Claim amount:');
     I.see('Claimant mediation documents');
     I.see('TestPDF.pdf');

@@ -37,7 +37,7 @@ module.exports = {
     civilService: process.env.CIVIL_SERVICE_URL || 'http://civil-service-demo.service.core-compute-demo.internal',
     waTaskMgmtApi: process.env.WA_TASK_MGMT_URL || 'http://wa-task-management-api-demo.service.core-compute-demo.internal',
     generalApplication: process.env.CIVIL_GENERAL_APPLICATIONS_URL || 'http://civil-general-applications-demo.service.core-compute-demo.internal',
-    caseAssignmentService: process.env.AAC_API_URL || 'http://localhost:4454',
+    caseAssignmentService: process.env.AAC_API_URL || 'http://aac-manage-case-assignment-demo.service.core-compute-demo.internal',
   },
   getDomain: (url) => new URL(url).host,
   s2s: {

@@ -22,7 +22,7 @@ let claimRef, caseData, claimNumber, securityCode, taskListItem;
 
 let mediationAdmin = config.localMediationTests ? config.hearingCenterAdminLocal : config.caseWorker;
 
-Feature('LiP - CARM - Mediation Journey');
+Feature('LiP - CARM - Mediation Journey @nightly @carm');
 
 Before(async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -90,7 +90,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({api}
     taskListItem = viewMediationSettlementAgreement();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'INACTIVE');
   }
-}).tag('@regression-carm');
+});
 
 Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -127,7 +127,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({api}) =
     taskListItem = viewMediationSettlementAgreement();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'INACTIVE');
   }
-}).tag('@regression-carm');
+});
 
 // LiP Individual vs LiP Sole Trader
 Scenario('LiP vs LiP Successful Mediation', async ({api}) => {
@@ -166,4 +166,4 @@ Scenario('LiP vs LiP Successful Mediation', async ({api}) => {
     taskListItem = viewMediationSettlementAgreement();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'AVAILABLE');
   }
-}).tag('@regression-carm');
+});

@@ -15,7 +15,7 @@ const dontWantMoreTime = 'dontWantMoreTime';
 const carmEnabled = true;
 let claimRef, caseData, claimNumber, securityCode, taskListItem;
 
-Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Company');
+Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Company @carm');
 
 Before(async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -62,7 +62,7 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
     await ResponseSteps.VerifyConfirmationPage('RejectsAndLessThanClaimAmount');
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-carm');
+}).tag('@regression-carm').tag('@nightly');
 
 Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -84,7 +84,7 @@ Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
     await ClaimantResponseSteps.verifyEditedEmailDetails();
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-carm');
+}).tag('@regression-carm').tag('@nightly');
 
 Scenario('Caseworker perform mediation unsuccessful', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -92,7 +92,7 @@ Scenario('Caseworker perform mediation unsuccessful', async ({api}) => {
     await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE', 'NOT_CONTACTABLE_DEFENDANT_ONE']);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-carm');
+}).tag('@regression-carm').tag('@nightly');
 
 Scenario('LiP claimant uploads mediation documents', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -130,7 +130,7 @@ Scenario('LiP claimant uploads mediation documents', async ({api}) => {
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'IN PROGRESS');
     await ClaimantResponseSteps.ViewMediationDocs();
   }
-}).tag('@regression-carm');
+}).tag('@regression-carm').tag('@nightly');
 
 Scenario('LiP defendant uploads mediation documents', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -161,4 +161,4 @@ Scenario('LiP defendant uploads mediation documents', async ({api}) => {
     taskListItem = uploadMediationDocuments();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'IN PROGRESS');
   }
-}).tag('@regression-carm');
+}).tag('@regression-carm').tag('@nightly');

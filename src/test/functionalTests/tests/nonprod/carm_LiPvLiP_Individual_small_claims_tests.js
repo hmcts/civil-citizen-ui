@@ -17,7 +17,7 @@ const dontWantMoreTime = 'dontWantMoreTime';
 const carmEnabled = true;
 let claimRef, caseData, claimNumber, securityCode, taskListItem;
 
-Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Individual');
+Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Individual @nightly @carm');
 
 Before(async () => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
@@ -56,7 +56,7 @@ Scenario('LiP Defendant response with Part admit', async ({api}) => {
     await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
     await ResponseSteps.VerifyConfirmationPage('PartAdmitAndPayImmediately');
   }
-}).tag('@regression-carm');
+});
 
 Scenario('LiP Claimant response with Part admit', async ({api}) => {
   if (['preview', 'demo'  ].includes(config.runningEnv)) {
@@ -73,7 +73,7 @@ Scenario('LiP Claimant response with Part admit', async ({api}) => {
     await ClaimantResponseSteps.submitClaimantResponse();
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-carm');
+});
 
 Scenario('Verify Mediation status before Unsuccessful mediation', async () => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -85,4 +85,4 @@ Scenario('Verify Mediation status before Unsuccessful mediation', async () => {
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'NOT AVAILABLE YET');
   taskListItem = viewMediationSettlementAgreement();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'NOT AVAILABLE YET');
-}).tag('@regression-carm');
+});
