@@ -174,10 +174,8 @@ export class Claim {
   defendantResponseDocuments: SystemGeneratedCaseDocuments[];
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
-<<<<<<<<< Temporary merge branch 1
-=========
   judgmentOnline?: JudgmentOnline;
->>>>>>>>> Temporary merge branch 2
+  
   // Index signature to allow dynamic property access
   [key: string]: any;
 
