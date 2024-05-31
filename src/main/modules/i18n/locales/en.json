@@ -2066,6 +2066,22 @@
       "REACHING_SETTLEMENT": "Reaching a settlement"
     },
     "GENERAL_APPLICATION": {
+      "ACCEPT_DEFENDANT_OFFER": {
+        "TITLE": "Do you accept the defendant's offer?",
+        "THE_COURT": "The court will make an order for the payment that was suggested by the defendant.",
+        "N245": "The defendant's offer will be set out in the <a href='test'>N245 form</a> that they completed. You should read this before responding.",
+        "PROPOSE_PAYMENT_PLAN": "Propose payment plan",
+        
+        "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
+        "PROPOSED_INSTALMENTS": "Proposed instalments per month",
+        "ENTER_AMOUNT": "Enter the amount in £",
+        "WHY_NOT_ACCEPT": "Why do you not accept the defendant's offer?",
+
+        "PROPOSE_IN_FULL": "I'll propose payment in full by a set date",
+        "PROPOSED_SET_DATE": "Proposed set date",
+        "WHY_NOT_ACCEPT_2": "Why you do not accept the defendant's offer?"
+        
+      },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
         "RESPOND_TO": "Respond to an application to {{applicationType}}",

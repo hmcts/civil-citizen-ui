@@ -327,6 +327,7 @@ import uploadEvidenceDocumentsForApplicationController from 'routes/features/gen
 import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
 import confirmYouHaveBeenPaidConfirmController
   from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
+import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
 
 export default [
   homeController,
@@ -612,4 +613,5 @@ export default [
   applicationResponseConfirmationController,
   confirmYouHaveBeenPaidController,
   confirmYouHaveBeenPaidConfirmController,
+  acceptDefendantOfferController,
 ];

@@ -310,6 +310,7 @@ export const VIEW_THE_HEARING_URL = `${BASE_CASE_URL}/view-the-hearing`;
 export const VIEW_ORDERS_AND_NOTICES_URL = `${BASE_CASE_URL}/view-orders-and-notices`;
 export const VIEW_RESPONSE_TO_CLAIM = `${BASE_CASE_URL}/view-response-to-claim`;
 export const VIEW_MEDIATION_DOCUMENTS = `${MEDIATION_URL}/view-mediation-documents`;
+export const GA_ACCEPT_DEFENDANT_OFFER_URL = `${BASE_GENERAL_APPLICATION_URL}/accept-defendant-offer`;
 export const GA_HEARING_SUPPORT_URL = `${BASE_GENERAL_APPLICATION_URL}/hearing-support`;
 export const GA_AGREEMENT_FROM_OTHER_PARTY = `${BASE_GENERAL_APPLICATION_URL}/agreement-from-other-party`;
 export const GA_PAYMENT_SUCCESSFUL_URL = `${BASE_GENERAL_APPLICATION_URL}/payment-successful`;
