@@ -27,7 +27,7 @@ import { RespondentAgreement } from 'common/models/generalApplication/response/r
 import { StatementOfTruthForm } from 'models/generalApplication/statementOfTruthForm';
 import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
 
-const { Logger } = require('@hmcts/nodejs-logging');
+const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 
 export const saveApplicationType = async (claimId: string, applicationType: ApplicationType, index?: number): Promise<void> => {
