@@ -1495,6 +1495,7 @@
       "ACCORDION_TITLE": "If you cannot find a document you are looking for in this section",
       "ACCORDION_CONTENT": "This is the main active hearing on the case. Older hearings and case documents can be found in",
       "ACCORDION_ORDERS": "orders and notices",
+      "JUDGMENT_ACCORDION_CONTENT": "This is the active judgment on your case. Older judgments are in",
       "ACTIONS": "Actions",
       "ACTION_PROMPT": "You need to respond before ",
       "CLAIMANT_NAME": "Claimant name",
@@ -1522,6 +1523,11 @@
         "VIEW_DOCUMENTS": "View documents",
         "VIEW_HEARINGS": "View hearings",
         "VIEW_THE_HEARING": "View the hearing"
+      },
+      "JUDGMENTS": {
+        "THE_JUDGMENT": "The judgment",
+        "JUDGMENT": "Judgment",
+        "VIEW_THE_JUDGMENT": "View the judgment"
       },
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
       "NEXT": "Next",

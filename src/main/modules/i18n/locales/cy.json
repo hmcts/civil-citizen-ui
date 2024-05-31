@@ -1495,6 +1495,7 @@
       "ACCORDION_TITLE": "Os na allwch ddod o hyd i ddogfen rydych yn chwilio amdani yn yr adran hon",
       "ACCORDION_CONTENT": "Dyma'r prif wrandawiad gweithredol ar yr achos. Gellir dod o hyd i wrandawiadau hŷn a dogfennau achos mewn",
       "ACCORDION_ORDERS": "gorchmynion a hysbysiadau",
+      "JUDGMENT_ACCORDION_CONTENT": "This is the active judgment on your case. Older judgments are in",
       "ACTIONS": "Camau gweithredu",
       "ACTION_PROMPT": "Mae angen i chi ymateb cyn ",
       "CLAIMANT_NAME": "Enw’r hawlydd",
@@ -1522,6 +1523,11 @@
         "VIEW_DOCUMENTS": "Gweld y dogfennau",
         "VIEW_HEARINGS": "View hearings",
         "VIEW_THE_HEARING": "Gweld y gwrandawiad"
+      },
+      "JUDGMENTS": {
+        "THE_JUDGMENT": "The judgment",
+        "JUDGMENT": "Judgment",
+        "VIEW_THE_JUDGMENT": "View the judgment"
       },
       "MAKE_A_NEW_CLAIM": "Gwneud hawliad newydd am arian",
       "NEXT": "Nesaf",
