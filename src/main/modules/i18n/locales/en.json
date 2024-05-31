@@ -519,7 +519,7 @@
         "LIST_ITEMS": {
           "FIRST": "Go to ",
           "FIRST_LINK": "apply for help with fees (opens in a new tab).",
-          "SECOND": "When you are asked to enter a court or tribunal number, enter 'hearing fee' followed by short explanation, for example 'hearing fee for small claims' or 'hearing fee for fast track.",
+          "SECOND": "When you are asked to enter a court or tribunal number, enter 'hearing fee' followed by short explanation, for example 'hearing fee for small claims' or 'hearing fee for fast track'.",
           "THIRD": "Complete the help with fees application.",
           "FOURTH": "Return here to your online money claims account.",
           "FIFTH": "Complete the hearing fee payment by entering your help with fees reference number."
@@ -1495,6 +1495,7 @@
       "ACCORDION_TITLE": "If you cannot find a document you are looking for in this section",
       "ACCORDION_CONTENT": "This is the main active hearing on the case. Older hearings and case documents can be found in",
       "ACCORDION_ORDERS": "orders and notices",
+      "JUDGMENT_ACCORDION_CONTENT": "This is the active judgment on your case. Older judgments are in",
       "ACTIONS": "Actions",
       "ACTION_PROMPT": "You need to respond before ",
       "CLAIMANT_NAME": "Claimant name",
@@ -1522,6 +1523,11 @@
         "VIEW_DOCUMENTS": "View documents",
         "VIEW_HEARINGS": "View hearings",
         "VIEW_THE_HEARING": "View the hearing"
+      },
+      "JUDGMENTS": {
+        "THE_JUDGMENT": "The judgment",
+        "JUDGMENT": "Judgment",
+        "VIEW_THE_JUDGMENT": "View the judgment"
       },
       "MAKE_A_NEW_CLAIM": "Make a new money claim",
       "NEXT": "Next",
@@ -2371,7 +2377,7 @@
         "DISAGREE_EXPLANATION": "Explain why you disagree with the application",
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
         "TEXT_REVIEW": "Make sure you've reviewed the full application. If you disagree with any part of the application, select 'No' and explain why.",
-        "TITLE": "Do you agree that the court should make the order that the other parties have requested?"       
+        "TITLE": "Do you agree that the court should make the order that the other parties have requested?"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -4213,7 +4219,7 @@
       "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
       "RESPONDENT_AGREEMENT": {
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
-        "EXPLAIN_WHY_DISAGREE_APPLICATION": "You need to explain why you disagree with the application" 
+        "EXPLAIN_WHY_DISAGREE_APPLICATION": "You need to explain why you disagree with the application"
       },
       "WANT_TO_ADD_ANOTHER_APPLICATION":"You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
