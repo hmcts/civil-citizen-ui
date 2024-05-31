@@ -20,10 +20,11 @@ const paymentSuccessfulViewPath  = 'features/claim/payment-successful';
 
 async function renderView(res: Response, req:  AppRequest | Request, claimId: string, redirectUrl: string, calculatedAmountInPence: string) {
   const claim: Claim = await getClaimById(claimId, req, true);
+  const lng = req.query.lang ? req.query.lang : req.cookies.lang;
   res.render(paymentSuccessfulViewPath,
     {
-      paymentSuccessfulPanel: getPaymentSuccessfulPanelContent(claim),
-      paymentSuccessfulBody: getPaymentSuccessfulBodyContent(claim, calculatedAmountInPence),
+      paymentSuccessfulPanel: getPaymentSuccessfulPanelContent(claim,lng),
+      paymentSuccessfulBody: getPaymentSuccessfulBodyContent(claim, calculatedAmountInPence,lng),
       paymentSuccessfulButton: getPaymentSuccessfulButtonContent(redirectUrl),
     });
 }
