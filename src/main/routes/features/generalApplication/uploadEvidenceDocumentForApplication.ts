@@ -8,7 +8,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
 import {selectedApplicationType} from 'models/generalApplication/applicationType';
 import {
-  getCancelUrl,
+  getCancelUrl, getLast,
 } from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -31,7 +31,7 @@ const upload = multer({
 });
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
-  const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
+  const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
   const cancelUrl = await getCancelUrl(claimId, claim);
   const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS);
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS);
