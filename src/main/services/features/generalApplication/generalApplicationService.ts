@@ -24,12 +24,13 @@ import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailable
 import { HearingArrangement } from 'models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
+import { StatementOfTruthForm } from 'models/generalApplication/statementOfTruthForm';
+import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 
-export const saveApplicationType = async (claimId: string, applicationType: ApplicationType): Promise<void> => {
+export const saveApplicationType = async (claimId: string, applicationType: ApplicationType, index?: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
@@ -228,6 +229,18 @@ export const saveHearingContactDetails = async (claimId: string, hearingContactD
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.hearingContactDetails = hearingContactDetails;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveStatementOfTruth = async (claimId: string, statementOfTruth: StatementOfTruthForm): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.statementOfTruth = statementOfTruth;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
