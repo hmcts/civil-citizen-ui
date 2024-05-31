@@ -3,14 +3,10 @@ import { APPLICATION_TYPE_URL } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
-import { additionalApplicationErrorMessages, getByIndex, getListOfNotAllowedAdditionalAppType, saveApplicationType } from 'services/features/generalApplication/generalApplicationService';
+import {getByIndex, saveApplicationType, validateAdditionalApplicationtType } from 'services/features/generalApplication/generalApplicationService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { queryParamNumber } from 'common/utils/requestUtils';
-import { GenericYesNo } from 'common/form/models/genericYesNo';
-import { FormValidationError } from 'common/form/validationErrors/formValidationError';
-import { Claim } from 'common/models/claim';
-import { ValidationError } from 'class-validator';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
@@ -52,7 +48,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const form = new GenericForm(applicationType);
     form.validateSync();
 
-    validateAdditionalApplicationtType(claim,form.errors,applicationType,req as AppRequest);
+    validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
 
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() });
@@ -65,23 +61,5 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     next(error);
   }
 }) as RequestHandler);
-
-function validateAdditionalApplicationtType(claim : Claim, errors : ValidationError[],applicationType : ApplicationType,req: AppRequest) {
- 
-  if(claim.generalApplication?.applicationTypes?.length > 0 && getListOfNotAllowedAdditionalAppType().includes(applicationType.option)) {
-    const errorMessage = additionalApplicationErrorMessages[applicationType.option];
-
-    const validationError = new FormValidationError({
-      target: new GenericYesNo(req.body.optionOther, ''),
-      value: req.body.option,
-      constraints: {
-        additionalApplicationError : errorMessage,
-      },
-      property: 'option',
-    });
-
-    errors.push(validationError);
-  }
-}
 
 export default applicationTypeController;

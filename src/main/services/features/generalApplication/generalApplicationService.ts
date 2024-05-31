@@ -258,6 +258,24 @@ export const updateByIndexOrAppend = <T>(array: T[], newElem: T, index: number |
   }
 };
 
+export const validateAdditionalApplicationtType = (claim : Claim, errors : ValidationError[], applicationType : ApplicationType,body : any) => {
+ 
+  if(claim.generalApplication?.applicationTypes?.length > 0 && getListOfNotAllowedAdditionalAppType().includes(applicationType.option)) {
+    const errorMessage = additionalApplicationErrorMessages[applicationType.option];
+
+    const validationError = new FormValidationError({
+      target: new GenericYesNo(body.optionOther, ''),
+      value: body.option,
+      constraints: {
+        additionalApplicationError : errorMessage,
+      },
+      property: 'option',
+    });
+
+    errors.push(validationError);
+  }
+}
+
 export const getListOfNotAllowedAdditionalAppType = () => {
   return [ApplicationTypeOption.SET_ASIDE_JUDGEMENT, 
     ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, 
