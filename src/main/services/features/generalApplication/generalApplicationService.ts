@@ -5,27 +5,28 @@ import {
   ApplicationTypeOption,
   selectedApplicationType,
 } from 'common/models/generalApplication/applicationType';
-import { HearingSupport } from 'models/generalApplication/hearingSupport';
-import { Claim } from 'models/claim';
-import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
-import { YesNo } from 'common/form/models/yesNo';
-import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
-import { AppRequest } from 'common/models/AppRequest';
-import { FormValidationError } from 'common/form/validationErrors/formValidationError';
-import { GenericYesNo } from 'common/form/models/genericYesNo';
-import { ValidationError } from 'class-validator';
-import { InformOtherParties } from 'common/models/generalApplication/informOtherParties';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { t } from 'i18next';
-import { getLng } from 'common/utils/languageToggleUtils';
-import { RequestingReason } from 'models/generalApplication/requestingReason';
-import { OrderJudge } from 'common/models/generalApplication/orderJudge';
-import { HearingArrangement } from 'models/generalApplication/hearingArrangement';
-import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
+import {HearingSupport} from 'models/generalApplication/hearingSupport';
+import {Claim} from 'models/claim';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {YesNo} from 'common/form/models/yesNo';
+import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {AppRequest} from 'common/models/AppRequest';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {ValidationError} from 'class-validator';
+import {InformOtherParties} from 'common/models/generalApplication/informOtherParties';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {t} from 'i18next';
+import {getLng} from 'common/utils/languageToggleUtils';
+import {RequestingReason} from 'models/generalApplication/requestingReason';
+import {OrderJudge} from 'common/models/generalApplication/orderJudge';
+import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
+import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
+import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
+import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 
-const { Logger } = require('@hmcts/nodejs-logging');
+const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 
 export const saveApplicationType = async (claimId: string, applicationType: ApplicationType): Promise<void> => {
@@ -193,6 +194,17 @@ export const saveRequestingReason = async (claimId: string, requestingReason: Re
     claim.generalApplication.requestingReason = requestingReason;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveN245Form = async (redisKey: string, claim: Claim, fileDetails: UploadGAFiles): Promise<void> => {
+  try {
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.uploadN245Form = fileDetails;
+    await saveDraftClaim(redisKey, claim);
+  }catch (error) {
     logger.error(error);
     throw error;
   }
