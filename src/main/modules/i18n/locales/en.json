@@ -160,8 +160,10 @@
       "ROW_TYPE": "Type"
     },
     "HEADER": {
+      "BETA": "BETA",
       "MONEY_CLAIMS": "Money Claims",
       "MY_ACCOUNT": "My account",
+      "NEW_SERVICE": "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>feedback</a> will help us to improve it.",
       "SIGN_IN": "Sign in",
       "SIGN_OUT": "Sign out"
     },
@@ -664,6 +666,8 @@
       "INSET": "The court will review your suggestion and may reject it if it's more than the defendant can afford."
     },
     "CHECK_YOUR_ANSWER": {
+      "AIRLINE": "Airline",
+      "ARE_YOU_CLAIMING_DELAYED_FLIGHT": "Are you claiming for a delayed flight?",
       "BANK_BALANCE": "Balance",
       "BY_INSTALMENTS":"By instalments",
       "CARER_CREDIT_DO_YOU_CLAIM": "Do you claim Carer’s Allowance or Carer’s Credit?",
@@ -682,6 +686,8 @@
       "CHILDREN_BETWEEN_16_TO_19": "16 to 19",
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Number of children aged 16 to 19 full-time education or training",
       "CLAIM_AMOUNT_BREAKDOWN": "Claim amount breakdown",
+      "CLAIM_CHECKBOX": "I believe that the facts stated in this claim are true.",
+      "CLAIM_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "CLAIM_INTEREST": "Claim Interest",
       "CLAIMANT_INTENT_PAGE_TITLE": "Claimant intent check your answers",
       "COMPLETION_DATE_CYA": "Completion date",
@@ -732,6 +738,7 @@
       "EVIDENCE_TITLE": "Your evidence (optional)",
       "EXPENSES_REGULAR": "Regular expenses",
       "EXPERT_WITNESSES_SUPPORT": "Do you, your experts or witnesses need support to attend a hearing?",
+      "FLIGHT_NUMBER": "Flight Number",
       "FREE_TELEPHONE_CONTACT_NAME": "Contact name",
       "FREE_TELEPHONE_CONTACT_NUMBER": "Contact number",
       "FREE_TELEPHONE_MEDIATION": "Will you try free mediation?",
@@ -788,8 +795,6 @@
       "REASON_TITLE": "Why you believe you’re owed the money:",
       "REGULAR_PAYMENTS": "Regular payments of",
       "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
-      "CLAIM_CHECKBOX": "I believe that the facts stated in this claim are true.",
-      "CLAIM_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "REASON_FOR_REJECTING": "Reason for rejecting their response",
       "REPAYMENT_IN_FULL":"Repayment in full by {{ paymentDate }}",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
@@ -808,6 +813,7 @@
       "REQUEST_EXTRA_4WEEKS": "Do you want an extra 4 weeks to try to settle the claim?",
       "REQUEST_A_CCJ": "Issue a County Court Judgment (CCJ)",
       "SAME_ADDRESS": "Same as address",
+      "SCHEDULED_DATE_OF_FLIGHT": "Scheduled date of flight",
       "SETTLEMENT_AGREEMENT": "Settlement agreement",
       "SIGN_A_SETTLEMENT_AGREEMENT": "Sign a settlement agreement",
       "SIGN_SETTLEMENT": "Sign a settlement agreement",
@@ -2132,8 +2138,8 @@
       "APPLICATION_COSTS": {
         "ADJOURN_HEARING": "change a hearing date",
         "AMEND_A_STMT_OF_CASE": "make a change to your claim or defence",
-        "HEARING_LESS_THAN": "If the hearing is less than 14 days away, the fee above applies.",
-        "HEARING_MORE_THAN": "If the hearing is more than 14 days away from the date you make this application, you will not need to pay a fee. If you add another application, you'll still have to pay the fee for this additional application.",
+        "HEARING_LESS_THAN": "If the hearing date is less than 14 days away or you have not agreed to it in advance with the other party, the fee above applies.",
+        "HEARING_MORE_THAN": "If the hearing date is more than 14 days away from the date you make this application and you have agreed to this with the other party, you will not need to pay the fee. If you add another application you'll still have to pay the fee for this additional application.",
         "EXTEND_TIME": "extend time",
         "FEE_NEED_TO_BE_PAID": "This fee will need to be paid once you've created the application. If you're eligible, you may be able to apply for help with fees.",
         "MAKE_AN_APPLICATION": "Make an application",
@@ -2178,6 +2184,29 @@
         "SUMMARY_JUDGMENT": "You should explain why you do not believe the other parties' claim will succeed. You'll have the option to upload documents to support your reasons on the next screen.",
         "THE_INFORMATION": "The information you enter on this page will be seen by the other parties.",
         "VARY_JUDGMENT": "You should explain why you want to vary the judgment. You'll have the option to upload documents to support your reasons on the next screen.",
+        "WHY_REQUESTING": "Why are you requesting this order?"
+      },
+      "CHECK_YOUR_ANSWER": {
+        "APPLICATION_TYPE": "Application type",
+        "ASK_FOR_COSTS": "Do you want to ask for your costs back?",
+        "CHOOSE_PREFERRED_TYPE": "Choose your preferred type of hearing",
+        "DATES_CANNOT_ATTEND": "Dates when you cannot attend a hearing",
+        "INFORM_OTHER_PARTIES": "Do you want the court to inform the other parties?",
+        "NAME": "Name",
+        "NEED_ADJUSTMENTS": "Do you need any adjustments or support to attend a hearing?",
+        "NONE": "None",
+        "PARTIES_AGREED": "Have the other parties agreed?",
+        "PREFERRED_COURT_LOCATION": "Preferred court location",
+        "PREFERRED_EMAIL": "Preferred email",
+        "PREFERRED_TELEPHONE": "Preferred telephone number",
+        "STATEMENT_OF_TRUTH": {
+          "APPLICATION": "The information on this page forms your application.",
+          "CHECKBOX": "I believe that the facts stated in this form are true.",
+          "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
+        },
+        "UPLOAD_DOCUMENTS": "Do you want to upload documents to support your application?",
+        "WHAT_ORDER": "What order do you want the judge to make?",
+        "WHY_PREFER": "Why would you prefer this type of hearing?",
         "WHY_REQUESTING": "Why are you requesting this order?"
       },
       "PAYMENT_FOR_APPLICATION": {
@@ -4276,6 +4305,9 @@
     "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced",
     "GENERAL_APPLICATION": {
+      "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
+      "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application.",
+      "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",

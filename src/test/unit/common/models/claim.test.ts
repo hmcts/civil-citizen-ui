@@ -44,6 +44,8 @@ import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncom
 import {Mediation} from 'models/mediation/mediation';
 import {CompanyTelephoneNumber} from 'form/models/mediation/companyTelephoneNumber';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {FlightDetails} from 'common/models/flightDetails';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -1286,6 +1288,131 @@ describe('Documents', () => {
       claim.respondent1.type = PartyType.ORGANISATION;
       //When
       const result = claim.isBusiness();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isCompany', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isCompany();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with company type', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.COMPANY;
+      //When
+      const result = claim.isCompany();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+  describe('isOrganisation', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isOrganisation();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with company type', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.ORGANISATION;
+      //When
+      const result = claim.isOrganisation();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+  describe('isDefendantDetailsCompleted', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isDefendantDetailsCompleted();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.COMPANY;
+      claim.respondent1.partyDetails = new PartyDetails({
+        partyName: 'Test Company',
+        primaryAddress: 'test',
+      });
+      claim.delayedFlight = new GenericYesNo(YesNo.NO);
+      //When
+      const result = claim.isDefendantDetailsCompleted();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.COMPANY;
+      claim.respondent1.partyDetails = new PartyDetails({
+        partyName: 'Test Company',
+        primaryAddress: 'test',
+      });
+      claim.delayedFlight = new GenericYesNo(YesNo.YES);
+      claim.flightDetails = new FlightDetails('test', '123', '1', '1', '2023');
+      //When
+      const result = claim.isDefendantDetailsCompleted();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.ORGANISATION;
+      claim.respondent1.partyDetails = new PartyDetails({
+        partyName: 'Test Company',
+        primaryAddress: 'test',
+      });
+      claim.delayedFlight = new GenericYesNo(YesNo.YES);
+      claim.flightDetails = new FlightDetails('test', '123', '1', '1', '2023');
+      //When
+      const result = claim.isDefendantDetailsCompleted();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+  
+  describe('isAirlineComplete', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isAirlineComplete();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true when NO', () => {
+      //Given
+      claim.delayedFlight = new GenericYesNo(YesNo.NO);
+      //When
+      const result = claim.isAirlineComplete();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return false when YES and no details', () => {
+      //Given
+      claim.delayedFlight = new GenericYesNo(YesNo.YES);
+      //When
+      const result = claim.isAirlineComplete();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true when YES and has details', () => {
+      //Given
+      claim.delayedFlight = new GenericYesNo(YesNo.YES);
+      claim.flightDetails = new FlightDetails('test','123', '1', '2023', '1');
+      //When
+      const result = claim.isAirlineComplete();
       //Then
       expect(result).toBe(true);
     });

@@ -315,6 +315,7 @@ import uploadN245FormController from 'routes/features/generalApplication/uploadN
 import unavailableHearingDatesController from 'routes/features/generalApplication/unavailableHearingDatesController';
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
+import gaCheckAnswersController from 'routes/features/generalApplication/checkAnswersController';
 import applicationPaymentUnsuccessfulController from './features/generalApplication/applicationPaymentUnsuccessfulController';
 import applicationResponseConfirmationController
   from 'routes/features/generalApplication/response/applicationResponseConfirmationController';
@@ -605,6 +606,7 @@ export default [
   unavailableHearingDatesController,
   hearingArrangementController,
   hearingContactDetailsController,
+  gaCheckAnswersController,
   applicationPaymentUnsuccessfulController,
   flightDetailsController,
   delayedFlightController,
