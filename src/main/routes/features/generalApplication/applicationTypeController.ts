@@ -3,7 +3,7 @@ import { APPLICATION_TYPE_URL } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
-import {getByIndex, saveApplicationType, validateAdditionalApplicationtType } from 'services/features/generalApplication/generalApplicationService';
+import { getByIndex, saveApplicationType, validateAdditionalApplicationtType } from 'services/features/generalApplication/generalApplicationService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { queryParamNumber } from 'common/utils/requestUtils';
@@ -47,7 +47,6 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
 
     const form = new GenericForm(applicationType);
     form.validateSync();
-
     validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
 
     if (form.hasErrors()) {

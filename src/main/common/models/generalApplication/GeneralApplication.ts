@@ -1,6 +1,6 @@
-import { YesNo } from 'common/form/models/yesNo';
-import { ApplicationType } from './applicationType';
-import { InformOtherParties } from './informOtherParties';
+import {YesNo} from 'common/form/models/yesNo';
+import {ApplicationType} from './applicationType';
+import {InformOtherParties} from './informOtherParties';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {OrderJudge} from './orderJudge';
@@ -8,8 +8,9 @@ import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDa
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
+import {ClaimFeeData} from '../civilClaimResponse';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import { GaResponse } from './response/gaResponse';
+import {GaResponse} from 'models/generalApplication/response/gaResponse';
 
 export class GeneralApplication {
 
@@ -21,6 +22,7 @@ export class GeneralApplication {
   respondentAgreeToOrder?: YesNo;
   requestingReasons?: RequestingReason[];
   orderJudges?: OrderJudge[];
+  uploadN245Form?: UploadGAFiles;
   unavailableDatesHearing?: UnavailableDatesGaHearing;
   hearingArrangement?: HearingArrangement;
   hearingContactDetails?: HearingContactDetails;
@@ -28,6 +30,7 @@ export class GeneralApplication {
   wantToUploadDocuments?: YesNo;
   uploadEvidenceForApplication?: UploadGAFiles[];
   statementOfTruth?: StatementOfTruthForm;
+  applicationFee?: ClaimFeeData;
 
   constructor(
     applicationType?: ApplicationType,
@@ -39,9 +42,9 @@ export class GeneralApplication {
     unavailableDatesHearing?: UnavailableDatesGaHearing,
     hearingArrangement?: HearingArrangement,
     hearingContactDetails?: HearingContactDetails,
+    response?: GaResponse,
     uploadEvidenceForApplication?: UploadGAFiles,
     statementOfTruth?: StatementOfTruthForm,
-    response?: GaResponse,
   ) {
     this.applicationTypes = applicationType ? [applicationType] : [];
     this.agreementFromOtherParty = agreementFromOtherParty;
@@ -52,8 +55,8 @@ export class GeneralApplication {
     this.unavailableDatesHearing = unavailableDatesHearing;
     this.hearingArrangement = hearingArrangement;
     this.hearingContactDetails = hearingContactDetails;
-    this.uploadEvidenceForApplication = uploadEvidenceForApplication ? [uploadEvidenceForApplication] : [];
-    this.statementOfTruth = statementOfTruth;
     this.response = response;
+    this.statementOfTruth = statementOfTruth;
+    this.uploadEvidenceForApplication = uploadEvidenceForApplication ? [uploadEvidenceForApplication] : [];
   }
 }

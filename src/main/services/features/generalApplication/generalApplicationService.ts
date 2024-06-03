@@ -23,10 +23,11 @@ import { OrderJudge } from 'common/models/generalApplication/orderJudge';
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 import { HearingArrangement } from 'models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
-import { StatementOfTruthForm } from 'models/generalApplication/statementOfTruthForm';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
+import { StatementOfTruthForm } from 'models/generalApplication/statementOfTruthForm';
+import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
 
-const { Logger } = require('@hmcts/nodejs-logging');
+const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 
 export const saveApplicationType = async (claimId: string, applicationType: ApplicationType, index?: number): Promise<void> => {
@@ -200,6 +201,17 @@ export const saveRequestingReason = async (claimId: string, requestingReason: Re
   }
 };
 
+export const saveN245Form = async (redisKey: string, claim: Claim, fileDetails: UploadGAFiles): Promise<void> => {
+  try {
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.uploadN245Form = fileDetails;
+    await saveDraftClaim(redisKey, claim);
+  }catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 export const saveHearingArrangement = async (claimId: string, hearingArrangement: HearingArrangement): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
@@ -259,7 +271,7 @@ export const updateByIndexOrAppend = <T>(array: T[], newElem: T, index: number |
 };
 
 export const validateAdditionalApplicationtType = (claim : Claim, errors : ValidationError[], applicationType : ApplicationType,body : any) => {
- 
+
   if(claim.generalApplication?.applicationTypes?.length > 0 && getListOfNotAllowedAdditionalAppType().includes(applicationType.option)) {
     const errorMessage = additionalApplicationErrorMessages[applicationType.option];
 

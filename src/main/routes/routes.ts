@@ -311,6 +311,7 @@ import requestingReasonController from 'routes/features/generalApplication/reque
 import addAnotherApplicationController from './features/generalApplication/addAnotherApplicationController';
 import orderJudgeController from './features/generalApplication/orderJudgeController';
 import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNoticesController';
+import uploadN245FormController from 'routes/features/generalApplication/uploadN245FormController';
 import unavailableHearingDatesController from 'routes/features/generalApplication/unavailableHearingDatesController';
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
@@ -322,6 +323,7 @@ import flightDetailsController from './features/claim/airlines/flightDetailsCont
 import delayedFlightController from './features/claim/airlines/delayedFlightController';
 import respondentRequestChangeInformationController
   from 'routes/features/generalApplication/respondentRequestChangeInformationController';
+import accessibilityStatementController from './features/public/accessibilityStatementController';
 import hearingArrangementsGuidanceController from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
 import wantToUploadDocumentsController from 'routes/features/generalApplication/wantToUploadDocuments';
 import uploadEvidenceDocumentsForApplicationController from 'routes/features/generalApplication/uploadEvidenceDocumentForApplication';
@@ -600,6 +602,7 @@ export default [
   addAnotherApplicationController,
   orderJudgeController,
   ordersAndNoticesController,
+  uploadN245FormController,
   unavailableHearingDatesController,
   hearingArrangementController,
   hearingContactDetailsController,
@@ -608,6 +611,7 @@ export default [
   flightDetailsController,
   delayedFlightController,
   respondentRequestChangeInformationController,
+  accessibilityStatementController,
   hearingArrangementsGuidanceController,
   wantToUploadDocumentsController,
   uploadEvidenceDocumentsForApplicationController,
