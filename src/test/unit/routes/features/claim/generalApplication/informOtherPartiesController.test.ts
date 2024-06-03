@@ -31,7 +31,7 @@ describe('General Application - inform other parties', () => {
   beforeEach(() => {
     claim = new Claim();
     claim.generalApplication = new GeneralApplication();
-    claim.generalApplication.applicationType = new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM);
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM)];
     claim.generalApplication.informOtherParties = new InformOtherParties();
     mockDataFromStore.mockResolvedValue(claim);
   });
