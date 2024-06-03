@@ -39,8 +39,8 @@ describe('General Application - application hearing arrangements', () => {
         .get(GA_HEARING_ARRANGEMENTS_GUIDANCE)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.TITLE'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE.TITLE'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION'));
         });
     });
 

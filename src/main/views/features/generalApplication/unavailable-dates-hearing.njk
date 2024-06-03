@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block nestedContent %}
-  {{ headingWithCaption(t, applicationType, headingTitle) }}
+  {{ headingWithCaption(t, 'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION', headingTitle) }}
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.IMPORTANT_EVENTS') }}</p>
   <form method="post" novalidate>
     {{ csrfProtection(csrf) }}

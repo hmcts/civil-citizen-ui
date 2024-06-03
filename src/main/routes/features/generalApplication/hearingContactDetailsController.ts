@@ -2,8 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GA_HEARING_ARRANGEMENT_URL, GA_HEARING_CONTACT_DETAILS_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
-import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
-import {getCancelUrl, getLast, saveHearingContactDetails} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl, saveHearingContactDetails} from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
@@ -14,10 +13,9 @@ const hearingContactDetailsController = Router();
 const viewPath = 'features/generalApplication/hearing-contact-details';
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingContactDetails>, res: Response): Promise<void> {
-  const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
   const cancelUrl = await getCancelUrl(claimId, claim);
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL);
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationType });
+  res.render(viewPath, { form, cancelUrl, backLinkUrl });
 }
 
 hearingContactDetailsController.get(GA_HEARING_CONTACT_DETAILS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

@@ -2131,6 +2131,9 @@
       "REACHING_SETTLEMENT": "Reaching a settlement"
     },
     "GENERAL_APPLICATION": {
+      "COMMON": {
+        "MAKE_AN_APPLICATION": "Make an application"
+      },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
         "RESPOND_TO": "Respond to an application to {{applicationType}}",

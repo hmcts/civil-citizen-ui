@@ -2,7 +2,7 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {GA_CHECK_ANSWERS_URL, GENERAL_APPLICATION_CONFIRM_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
-import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {getCancelUrl, saveStatementOfTruth} from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
@@ -10,7 +10,6 @@ import {Claim} from 'models/claim';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {getSummarySections} from 'services/features/generalApplication/checkAnswers/checkAnswersService';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
-import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 
@@ -25,10 +24,7 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
   const claimIdPrettified = caseNumberPrettify(claimId);
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const summaryRows = getSummarySections(claimId, claim, lang);
-  const applicationTypeTitle = claim.generalApplication?.applicationTypes?.length === 1
-    ? selectedApplicationType[claim.generalApplication.applicationTypes[0].option]
-    : t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CAPTION', {lng: lang});
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationTypeTitle, claimIdPrettified, claim, summaryRows });
+  res.render(viewPath, { form, cancelUrl, backLinkUrl, claimIdPrettified, claim, summaryRows });
 }
 
 gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

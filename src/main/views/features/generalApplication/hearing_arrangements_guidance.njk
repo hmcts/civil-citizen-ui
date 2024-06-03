@@ -5,11 +5,11 @@
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.HEARING_APPLICATION.TITLE') }}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE.TITLE') }}
 {% endblock %}
 
 {% block nestedContent %}
-          {{ headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE.TITLE') }}
+          {{ headingWithCaption(t,'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION','PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE.TITLE') }}
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE.MSG1') }}</p>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE.MSG2') }}</p>
           <form method="post" novalidate>
