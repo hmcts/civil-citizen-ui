@@ -10,7 +10,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
 import {selectedApplicationType} from 'models/generalApplication/applicationType';
 import {
-  getCancelUrl,
+  getCancelUrl, getLast,
   saveIfPartyWantsToUploadDoc,
 } from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
@@ -24,7 +24,7 @@ const viewPath = 'features/generalApplication/want-to-upload-documents';
 const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response): Promise<void> {
-  const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
+  const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
   const cancelUrl = await getCancelUrl(claimId, claim);
   res.render(viewPath, {
     form,
