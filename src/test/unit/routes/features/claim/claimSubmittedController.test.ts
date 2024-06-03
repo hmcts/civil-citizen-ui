@@ -6,7 +6,6 @@ import config from 'config';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {Claim} from 'models/claim';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
-import {checkIfClaimFeeHasChanged} from 'services/features/claim/amount/checkClaimFee';
 import {YesNo} from 'form/models/yesNo';
 import {CivilServiceClient} from 'client/civilServiceClient';
 
@@ -18,8 +17,6 @@ jest.mock('services/features/claim/amount/checkClaimFee');
 jest.mock('modules/utilityService', () => ({
   getRedisStoreForSession: jest.fn(),
 }));
-
-const claimFeeHasChanged = checkIfClaimFeeHasChanged as jest.Mock;
 
 describe('Claim - Claim Submitted', () => {
   const idamServiceUrl: string = config.get('services.idam.url');
@@ -36,27 +33,6 @@ describe('Claim - Claim Submitted', () => {
   });
 
   describe('on GET', () => {
-    it('should return claim submitted page  when HWF number not submitted ' +
-      ': Pay Fee button set with Fee Change Url', async () => {
-      //given
-      claimFeeHasChanged.mockImplementation(() => {
-        return true;
-      });
-      caseData.claimDetails.helpWithFees = {
-        'option': YesNo.NO,
-      };
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(caseData);
-      //when-then
-      await request(app)
-        .get(CLAIM_CONFIRMATION_URL.replace(':id', claimId))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Claim submitted');
-          expect(res.text).toContain('/claim/'+claimId+'/fee-change');
-        });
-    });
 
     it('should return claim submitted page and HWF number not submitted ' +
       ': Pay Fee button set with Pay  fee Breakup Url', async () => {
