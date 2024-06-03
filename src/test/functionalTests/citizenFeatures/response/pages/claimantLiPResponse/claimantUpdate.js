@@ -4,6 +4,11 @@ const config = require('../../../../../config');
 const { isDashboardServiceToggleEnabled } = require('../../../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent} = require('../../../../specClaimHelpers/e2e/dashboardHelper');
 
+const selectors = {
+  titleClass: '.govuk-notification-banner__title',
+  contentClass: 'div.govuk-notification-banner__content',
+};
+
 class ClaimantUpdate {
   async respondToClaim(claimRef, notification) {
     console.log('notification..', notification);
@@ -19,6 +24,8 @@ class ClaimantUpdate {
   }
 
   async startUploadDocs() {
+    I.waitForVisible(selectors.titleClass, config.WaitForText);
+    I.waitForVisible(selectors.contentClass, config.WaitForText);
     I.click('Upload mediation documents');
     I.waitForContent('Upload your documents', config.WaitForText);
     I.see('Deadlines for uploading documents');
@@ -26,6 +33,8 @@ class ClaimantUpdate {
   }
 
   async viewMediationDocs() {
+    I.waitForVisible(selectors.titleClass, config.WaitForText);
+    I.waitForVisible(selectors.contentClass, config.WaitForText);
     I.click('View mediation documents');
     I.waitForContent('View mediation documents', config.WaitForText);
     I.see('Claim amount:');
@@ -34,6 +43,7 @@ class ClaimantUpdate {
   }
 
   async clickAndViewDocs() {
+    I.waitForContent('Documents uploaded', config.WaitForText);
     I.click('View documents');
     I.waitForContent('View mediation documents', config.WaitForText);
     I.see('Claim amount:');
