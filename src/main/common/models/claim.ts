@@ -581,7 +581,8 @@ export class Claim {
   }
 
   isDefendantDetailsCompleted(): boolean {
-    return !!this.respondent1?.type &&
+    return !!this.respondent1?.type && 
+      !!this.respondent1?.partyDetails?.primaryAddress &&
       (
         (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName) ||
         (this.isOrganisation() && !!this.respondent1?.partyDetails?.partyName) ||
