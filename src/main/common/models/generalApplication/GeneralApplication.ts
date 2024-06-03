@@ -9,6 +9,7 @@ import { HearingContactDetails } from 'models/generalApplication/hearingContactD
 import { GaResponse } from './response/gaResponse';
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
+import { PaymentInformation } from '../feePayment/paymentInformation';
 
 export class GeneralApplication {
 
@@ -26,6 +27,7 @@ export class GeneralApplication {
   response?: GaResponse;
   wantToUploadDocuments?: YesNo;
   uploadEvidenceForApplication?: UploadGAFiles[];
+  generalAppPaymentDetails : PaymentInformation;
 
   constructor(
     applicationType?: ApplicationType,
