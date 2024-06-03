@@ -333,7 +333,6 @@ import confirmYouHaveBeenPaidConfirmController
 import submitGeneralApplicationConfirmationController
   from 'routes/features/generalApplication/submitGeneralApplicationConfirmationController';
 
-
 export default [
   homeController,
   dashboardController,
