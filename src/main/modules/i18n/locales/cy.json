@@ -160,8 +160,10 @@
       "ROW_TYPE": "Math"
     },
     "HEADER": {
+      "BETA": "BETA",
       "MONEY_CLAIMS": "Hawliadau am Arian",
       "MY_ACCOUNT": "Fy nghyfrif",
+      "NEW_SERVICE": "Gwasanaeth newydd yw hwn – bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>adborth</a> yn ein helpu i’w wella.",
       "SIGN_IN": "Mewngofnodi",
       "SIGN_OUT": "Allgofnodi"
     },
@@ -664,6 +666,8 @@
       "INSET": "Bydd y llys yn adolygu eich awgrym a gall ei wrthod os yw'n fwy nag y gall y diffynnydd ei fforddio."
     },
     "CHECK_YOUR_ANSWER": {
+      "AIRLINE": "Cwmni hedfan",
+      "ARE_YOU_CLAIMING_DELAYED_FLIGHT": "A ydych yn hawlio am oedi wrth hedfan?",
       "BANK_BALANCE": "Cydbwysedd",
       "BY_INSTALMENTS":"By instalments",
       "CARER_CREDIT_DO_YOU_CLAIM": "Ydych chi'n hawlio Lwfans Gofalwr neu Gredyd Gofalwr?",
@@ -682,6 +686,8 @@
       "CHILDREN_BETWEEN_16_TO_19": "16 i 19",
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Nifer y plant 16 i 19 oed sy'n derbyn addysg neu hyfforddiant amser llawn",
       "CLAIM_AMOUNT_BREAKDOWN": "Dadansoddiad o'r swm a hawliwyd",
+      "CLAIM_CHECKBOX": "I believe that the facts stated in this claim are true.",
+      "CLAIM_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "CLAIM_INTEREST": "Hawlio llog",
       "CLAIMANT_INTENT_PAGE_TITLE": "Bwriad yr Hawlydd - gwirio eich atebion",
       "COMPLETION_DATE_CYA": "Dyddiad cwblhau",
@@ -732,6 +738,7 @@
       "EVIDENCE_TITLE": "Eich tystiolaeth (dewisol)",
       "EXPENSES_REGULAR": "Treuliau rheolaidd",
       "EXPERT_WITNESSES_SUPPORT": "Ydych chi, eich arbenigwyr neu'ch tystion angen cymorth i fynychu gwrandawiad?",
+      "FLIGHT_NUMBER": "Rhif Hedfan",
       "FREE_TELEPHONE_CONTACT_NAME": "Enw cyswllt",
       "FREE_TELEPHONE_CONTACT_NUMBER": "Rhif cyswllt",
       "FREE_TELEPHONE_MEDIATION": "Ydych chi’n fodlon rhoi cynnig ar gyfryngu am ddim?",
@@ -788,8 +795,6 @@
       "REASON_TITLE": "Pam rydych chi'n credu bod yr arian yn ddyledus i chi:",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
       "RESPONSE_CHECKBOX": "Credaf fod y ffeithiau a nodir yn yr ymateb hwn yn wir.",
-      "CLAIM_CHECKBOX": "Rwy'n credu bod y ffeithiau a nodir yn yr honiadau hyn yn wir.",
-      "CLAIM_CHECKBOX_PROCEEDINGS": "Rwy'n deall y gellir cyflwyno gweithredoedd am anffyddineb y llys yn erbyn unrhyw un sy'n gwneud, neu'n achosi i'w wneud, datganiad ffug mewn dogfen a gadarnhawyd gan ddatganiad o wirionedd heb gred onest yn ei wirionedd.",
       "REASON_FOR_REJECTING": "Rheswm dros wrthod eu hymateb",
       "REPAYMENT_IN_FULL":"Ad-dalu’n llawn erbyn {{ paymentDate }}",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "Deallaf y gellir dwyn achos dirmyg llys yn erbyn unrhyw un sy’n gwneud datganiad anwir, neu sy’n achosi i ddatganiad anwir gael ei wneud mewn dogfen a ddilysir gan ddatganiad gwirionedd heb gredu’n onest ei fod yn wir.",
@@ -808,6 +813,7 @@
       "REQUEST_EXTRA_4WEEKS": "Ydych chi eisiau 4 wythnos ychwanegol i geisio setlo'r hawliad?",
       "REQUEST_A_CCJ": "Cyhoeddi Dyfarniad y Llys Sirol (CCJ)",
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
+      "SCHEDULED_DATE_OF_FLIGHT": "Dyddiad hedfan a drefnwyd",
       "SETTLEMENT_AGREEMENT": "Cytundeb setlo",
       "SIGN_A_SETTLEMENT_AGREEMENT": "Arwyddo cytundeb setlo",
       "SIGN_SETTLEMENT": "Arwyddo cytundeb setlo",
@@ -1162,11 +1168,11 @@
       "PAGE_TITLE": "Gwiriwch eich atebion cyn cyflwyno eich hawliad",
       "TITLE": "Gwiriwch eich atebion cyn cyflwyno eich hawliad",
       "REFERENCE_NUMBER": "Cyfeirnod",
-      "WHEN_DID_IT_START": "When did it start?",
+      "WHEN_DID_IT_START": "Pryd ddechreuodd o?",
       "TYPE": {
-        "WHAT_TYPE_IS_IT": "What type is it?",
-        "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
-        "STANDARD_BREATHING_SPACE": "Standard breathing space"
+        "WHAT_TYPE_IS_IT": "Pa fath ydy o?",
+        "MENTAL_HEALTH_CRISIS_MORATORIUM": "Moratoriwm argyfwng iechyd meddwl",
+        "STANDARD_BREATHING_SPACE": "Lle i anadlu safonol"
       },
       "EXPECTED_END_DATE": "Dyddiad gorffen disgwyliedig"
     },
@@ -2132,8 +2138,8 @@
       "APPLICATION_COSTS": {
         "ADJOURN_HEARING": "change a hearing date",
         "AMEND_A_STMT_OF_CASE": "make a change to your claim or defence",
-        "HEARING_LESS_THAN": "If the hearing is less than 14 days away, the fee above applies.",
-        "HEARING_MORE_THAN": "If the hearing is more than 14 days away from the date you make this application, you will not need to pay a fee. If you add another application, you'll still have to pay the fee for this additional application.",
+        "HEARING_LESS_THAN": "If the hearing date is less than 14 days away or you have not agreed to it in advance with the other party, the fee above applies.",
+        "HEARING_MORE_THAN": "If the hearing date is more than 14 days away from the date you make this application and you have agreed to this with the other party, you will not need to pay the fee. If you add another application you'll still have to pay the fee for this additional application.",
         "EXTEND_TIME": "extend time",
         "FEE_NEED_TO_BE_PAID": "This fee will need to be paid once you've created the application. If you're eligible, you may be able to apply for help with fees.",
         "MAKE_AN_APPLICATION": "Make an application",
@@ -2178,6 +2184,29 @@
         "SUMMARY_JUDGMENT": "You should explain why you do not believe the other parties' claim will succeed. You'll have the option to upload documents to support your reasons on the next screen.",
         "THE_INFORMATION": "The information you enter on this page will be seen by the other parties.",
         "VARY_JUDGMENT": "You should explain why you want to vary the judgment. You'll have the option to upload documents to support your reasons on the next screen.",
+        "WHY_REQUESTING": "Why are you requesting this order?"
+      },
+      "CHECK_YOUR_ANSWER": {
+        "APPLICATION_TYPE": "Application type",
+        "ASK_FOR_COSTS": "Do you want to ask for your costs back?",
+        "CHOOSE_PREFERRED_TYPE": "Choose your preferred type of hearing",
+        "DATES_CANNOT_ATTEND": "Dates when you cannot attend a hearing",
+        "INFORM_OTHER_PARTIES": "Do you want the court to inform the other parties?",
+        "NAME": "Name",
+        "NEED_ADJUSTMENTS": "Do you need any adjustments or support to attend a hearing?",
+        "NONE": "None",
+        "PARTIES_AGREED": "Have the other parties agreed?",
+        "PREFERRED_COURT_LOCATION": "Preferred court location",
+        "PREFERRED_EMAIL": "Preferred email",
+        "PREFERRED_TELEPHONE": "Preferred telephone number",
+        "STATEMENT_OF_TRUTH": {
+          "APPLICATION": "The information on this page forms your application.",
+          "CHECKBOX": "I believe that the facts stated in this form are true.",
+          "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
+        },
+        "UPLOAD_DOCUMENTS": "Do you want to upload documents to support your application?",
+        "WHAT_ORDER": "What order do you want the judge to make?",
+        "WHY_PREFER": "Why would you prefer this type of hearing?",
         "WHY_REQUESTING": "Why are you requesting this order?"
       },
       "PAYMENT_FOR_APPLICATION": {
