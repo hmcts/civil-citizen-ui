@@ -33,7 +33,7 @@ describe('Claim fee unsuccessful payment confirmation', () => {
 
   describe('on GET', () => {
     it('should return unsuccessful payment page', async () => {
-      claim.generalApplication.applicationType = new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM);
+      claim.generalApplication.applicationTypes.push(new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM));
       mockDataFromStore.mockResolvedValueOnce(claim);
       await request(app)
         .get(GA_PAYMENT_UNSUCCESSFUL_URL)
