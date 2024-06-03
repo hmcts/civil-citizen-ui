@@ -10,6 +10,7 @@ import {HearingContactDetails} from 'models/generalApplication/hearingContactDet
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
+import {getLast} from 'services/features/generalApplication/generalApplicationService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -27,7 +28,7 @@ export const saveRespondentAgreeToOrder = async (claimId: string, claim: Claim, 
 };
 
 export function getRespondToApplicationCaption(claim: Claim, lng: string) : string {
-  const applicationType = t(selectedApplicationType[claim.generalApplication?.applicationType?.option], {lng: getLng(lng)}).toLowerCase();
+  const applicationType = t(selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option], {lng: getLng(lng)}).toLowerCase();
   return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', { lng: getLng(lng), applicationType});
 }
 
