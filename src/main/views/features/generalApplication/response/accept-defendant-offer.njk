@@ -4,6 +4,7 @@
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/button.njk" import addButton %}
+{% from "../../../macro/external-link.njk" import externalLink %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
@@ -12,10 +13,10 @@
 
 {% block nestedContent %}
 
-  {% set byInstalmentsHtml %}
+{% set byInstalmentsHtml %}
     {{ govukInput({
-      id: 'amount',
-      name: 'amount',
+      id: 'amountPerMonth',
+      name: 'amountPerMonth',
       type: "number",
       autocomplete: "number",
       label: {
@@ -29,34 +30,36 @@
         text: "£"
       },
       classes: "govuk-!-width-one-half",
-      value: '' + form.model.amount,
-      errorMessage: { text: t(instalmentAmountError) } if t(instalmentAmountError)
+      value: '' + form.model.amountPerMonth,
+      errorMessage: { 
+        text:  t(form.errorFor('amountPerMonth')) 
+      } if form.hasFieldError('amountPerMonth')
     }) }}
     {{ govukTextarea({
-      name: "text",
-      id: "text",
+      name: "reasonProposedInstalment",
+      id: "reasonProposedInstalment",
       label: {
         text: t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT'),
         classes: "govuk-!-font-weight-bold"
       },
-      value: form.model.text,
+      value: form.model.reasonProposedInstalment,
       classes:"govuk-!-width-three-quarters",
       errorMessage: {
-        text: t(form.errorFor('text'))
-      } if form.hasFieldError('text')
+        text: t(form.errorFor('reasonProposedInstalment'))
+      } if form.hasFieldError('reasonProposedInstalment')
     }) }}
   {% endset %}
   
   {% set bySetDateHtml %}
     <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.PROPOSED_SET_DATE') }}</h3>
     {{ govukDateInput({
-      id: "date",
+      id: "proposedSetDate",
+      name: "proposedSetDate",
       type: "number",
       inputmode: "numeric",
-      name: "date",
       hint: {
         text: t('COMMON.DATE_EXAMPLE', {
-          date: today.getDate() + ' ' + (today.getMonth() + 1) + ' ' + (today.getFullYear() - 18)
+          date: today.getDate() + ' ' + (today.getMonth() + 1) + ' ' + (today.getFullYear() + 1)
         })
       },
       items: [
@@ -88,41 +91,42 @@
     }) }}
 
     {{ govukTextarea({
-      name: "text",
-      id: "text",
+      name: "reasonProposedSetDate",
+      id: "reasonProposedSetDate",
       label: {
         text: t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT_2'),
         classes: "govuk-!-font-weight-bold"
       },
-      value: form.model.text,
+      value: form.model.reasonProposedSetDate,
       classes:"govuk-!-width-three-quarters",
       errorMessage: {
-        text: t(form.errorFor('text'))
-      } if form.hasFieldError('text')
+        text: t(form.errorFor('reasonProposedSetDate'))
+      } if form.hasFieldError('reasonProposedSetDate')
     }) }}
   {% endset %}
 
   {% set yesHtml %}
     <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.THE_COURT') }}</p>
   {% endset %}
+
   {% set noHtml %}
   <h3 class="govuk-heading-s">{{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.PROPOSE_PAYMENT_PLAN') }}</h3>
     {{ govukRadios({
       idPrefix: "type",
-      name: "proposedPaymentPlan",
+      name: "type",
       items: [
         {
-          value: ProposedPaymentPlan.ACCEPT_INSTALMENTS,
+          value: ProposedPaymentPlanOption.ACCEPT_INSTALMENTS,
           text: t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.ACCEPT_ISNTALMENTS'),
-          checked: true if form.model.type == ProposedPaymentPlan.ACCEPT_INSTALMENTS,
+          checked: true if form.model.type == ProposedPaymentPlanOption.ACCEPT_INSTALMENTS,
           conditional: {
             html: byInstalmentsHtml
           }
         },
         {
-          value: ProposedPaymentPlan.PROPOSE_BY_SET_DATE,
+          value: ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE,
           text: t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.PROPOSE_IN_FULL'),
-          checked: true if form.model.type == ProposedPaymentPlan.PROPOSE_BY_SET_DATE,
+          checked: true if form.model.type == ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE,
           conditional: {
             html: bySetDateHtml
           }
@@ -133,13 +137,44 @@
       } if form.hasFieldError('type')
     }) }}
   {% endset %}
-
+  
   <form method="post" novalidate>
-      {{ csrfProtection(csrf) }}
-      <span class="govuk-caption-l">{{ t(applicationType) }}</span>
-      {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'), form, t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245'), {yesHtml: yesHtml, noHtml: noHtml}) }}
-      <div class="govuk-button-group">
-          {{ addButton(t, 'CONTINUE', cancelUrl) }}
-      </div>
+    {{ csrfProtection(csrf) }}
+    <span class="govuk-caption-l">{{ t(applicationType) }}</span>
+    <h1 class="govuk-fieldset__legend--l">{{t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE') }}</h1>
+    <p class="govuk-body">
+      {{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245_BEFORE') }}
+      {{ externalLink(t, 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245', externalURLs.formN245Url, false) }}
+      {{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245_AFTER') }}
+    </p>
+    {{ yesNoRadioButton(t, 'option', 'option', null, form, null, {yesHtml: yesHtml, noHtml: noHtml}) }}
+    {# {{ govukRadios({
+      idPrefix: "acceptDefendantOffer",
+      name: "option",
+      items: [
+        {
+          value: YesNo.YES,
+          checked: true if form.model.option=="yes" else false,
+          html: "<span>" + t('COMMON.VARIATION.YES') + "</span>",
+          conditional:{
+            html: yesHtml
+          }
+        },
+        {
+          value: YesNo.NO,
+          checked: true if form.model.option=="no" else false,
+          html: "<span>" + t('COMMON.VARIATION.NO') + "</span>",
+          conditional:{
+            html: noHtml
+          }
+        }
+      ],
+      errorMessage: {
+        html: t(form.errorFor('option'))
+      } if form.hasFieldError('option')
+    }) }} #}
+    <div class="govuk-button-group">
+        {{ addButton(t, 'CONTINUE', cancelUrl) }}
+    </div>
   </form>
 {% endblock %}

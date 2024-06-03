@@ -30,18 +30,40 @@ acceptDefendantOfferController.get(GA_ACCEPT_DEFENDANT_OFFER_URL, async (req: Ap
     const lang = req.query.lang || req.cookies.lang;
     const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
-    const respondentAgreement = claim.generalApplication?.response?.acceptDefendantOffer || new AcceptDefendantOffer();
-    const form = new GenericForm(respondentAgreement);
+    const acceptDefendantOffer = claim.generalApplication?.response?.acceptDefendantOffer || new AcceptDefendantOffer();
+    console.log(acceptDefendantOffer);
+    const form = new GenericForm(acceptDefendantOffer);
     renderView(claimId, claim, form, lang, res)
   } catch (error) {
     next(error);
   }
 });
 
-acceptDefendantOfferController.post(GA_ACCEPT_DEFENDANT_OFFER_URL, (async (req: AppRequest<AcceptDefendantOffer>, res: Response, next: NextFunction) => {
+acceptDefendantOfferController.post(GA_ACCEPT_DEFENDANT_OFFER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const { option } = req.body;
-    const respondentAgreement = new AcceptDefendantOffer(option);
+    console.log('BODY: ', req.body);
+    
+    const { 
+      option, 
+      type,
+      amountPerMonth,
+      reasonProposedInstalment,
+      year,
+      month,
+      day,
+      reasonProposedSetDate,
+    } = req.body;
+     
+    const respondentAgreement = new AcceptDefendantOffer(
+      option, 
+      type, 
+      amountPerMonth,
+      reasonProposedInstalment,
+      year,
+      month,
+      day,
+      reasonProposedSetDate,
+    );
     const form = new GenericForm(respondentAgreement);
     await form.validate();
     if (form.hasErrors()) {
