@@ -11,7 +11,6 @@ import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
 import {YesNo} from 'form/models/yesNo';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
-import * as launchDarkly from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
@@ -23,6 +22,8 @@ jest.mock('modules/utilityService', () => ({
 const MOCK_REQUEST = {params: {id: '123'}} as unknown as Request;
 const MOCK_RESPONSE = {redirect: jest.fn()} as unknown as Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
+jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
+  isJudgmentOnlineLive: jest.fn().mockReturnValueOnce(false).mockReturnValueOnce(true).mockReturnValue(false)}));
 
 describe('CCJ Guard', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -38,6 +39,7 @@ describe('CCJ Guard', () => {
   });
   it('should access ccj confirmation page', async () => {
     //Given
+    // jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
     const claim = new Claim();
     claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
     claim.claimantResponse = new ClaimantResponse();
@@ -51,7 +53,7 @@ describe('CCJ Guard', () => {
   });
   it('should access ccj confirmation page for JO', async () => {
     //Given
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+    // jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
     const claim = new Claim();
     claim.ccdState = CaseState.All_FINAL_ORDERS_ISSUED;
     claim.claimantResponse = new ClaimantResponse();
