@@ -45,7 +45,7 @@
                 <li class="govuk-body">{{t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.LIST_ITEMS.FIFTH')}}</li>
               </ol>
             {% endset %}
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, noHtml: noHtml}) }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, noHtml: noHtml, yes: 'COMMON.YES', no: 'COMMON.NO'}) }}
             {% for content in applyHelpFeeReferenceButtonContents %}
               {{ itemContent(content,t) }}
             {% endfor %}
