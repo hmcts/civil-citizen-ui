@@ -330,4 +330,4 @@ export const VIEW_THE_JUDGMENT_URL = `${BASE_CASE_URL}/view-the-judgment`;
 export const GA_RESPONSE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_URL}/confirmation`;
 export const CONFIRM_YOU_HAVE_BEEN_PAID_URL = `${BASE_JUDGMENT_ONLINE_URL}/confirm-you-have-been-paid`;
 export const CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL = `${BASE_JUDGMENT_ONLINE_URL}/confirm-you-have-been-paid/confirmation`;
-export const DQ_MULTITRACK_NON_ELETRONIC_DOCUMENTS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/non-eletronic-documents`;
+export const DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/disclosure-non-electronic-documents`;

@@ -19,3 +19,4 @@ export const whatToExpectUrl = 'https://www.gov.uk/guidance/what-to-expect-comin
 export const representYourselfUrl = 'https://www.gov.uk/represent-yourself-in-court';
 export const findLegalAdviceUrl = 'https://www.gov.uk/find-legal-advice';
 export const findCourtTribunalUrl = 'https://www.gov.uk/find-court-tribunal';
+export const disclosureOfDocumentsUrl = 'https://www.justice.gov.uk/courts/procedure-rules/civil/standard-directions/general/disclosure-of-documents';

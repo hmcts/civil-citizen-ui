@@ -1,0 +1,16 @@
+{% from "../features/dashboard/item-content.njk" import itemContent %}
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% macro createSummaryDetails (summaryDetails, t) %}
+{% set html %}
+  {% for item in summaryDetails.content %}
+        {{ itemContent(item, t) }}
+  {% endfor %}
+{% endset %}
+  {{ govukDetails({
+    summaryText: t(summaryDetails.title),
+    html: html
+  }) }}
+
+{% endmacro %}
