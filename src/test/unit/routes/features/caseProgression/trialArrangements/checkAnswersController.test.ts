@@ -7,7 +7,6 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 const session = require('supertest-session');
-import {t} from 'i18next';
 import {getElementsByXPath} from '../../../../../utils/xpathExtractor';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -36,7 +35,7 @@ describe('Trial Arrangements check answers - On GET', () => {
   beforeEach(()=> {
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
-  it('should render page successfully with all sections and summary rows', async () => {
+  it('should render page successfully in English with all sections and summary rows', async () => {
     //Given
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
     //When
@@ -45,7 +44,7 @@ describe('Trial Arrangements check answers - On GET', () => {
     //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.CHECK_YOUR_ANSWER.TITLE'));
+        expect(res.text).toContain('Check your answers');
         expect(res.text).toContain('Case number: 1692 7957 9336 1508');
         expect(res.text).toContain('Claim amount:');
       });
@@ -59,11 +58,44 @@ describe('Trial Arrangements check answers - On GET', () => {
     const otherInformation = getElementsByXPath(
       "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Other information')]]", htmlDocument);
     expect(header.length).toBe(1);
-    expect(header[0].textContent).toBe(t('PAGES.CHECK_YOUR_ANSWER.TITLE'));
+    expect(header[0].textContent).toBe('Check your answers');
     expect(isCaseReady.length).toBe(1);
     expect(isCaseReady[0].textContent).toContain('Yes');
     expect(hasAnythingChanged.length).toBe(1);
     expect(hasAnythingChanged[0].textContent).toContain('Yes');
+    expect(hasAnythingChanged[0].textContent).toContain('Changed');
+    expect(otherInformation.length).toBe(1);
+    expect(otherInformation[0].textContent).toContain('Other Information');
+  });
+
+  it('should render page successfully in Welsh with all sections and summary rows if Welsh query', async () => {
+    //Given
+    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    //When
+    const response = await testSession
+      .get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS.replace(':id', claimId)).query({lang: 'cy'})
+      //Then
+      .expect((res: { status: unknown; text: unknown; }) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Gwiriwch eich atebion');
+        expect(res.text).toContain('Rhif yr achos: 1692 7957 9336 1508');
+        expect(res.text).toContain('Swm yr hawliad:');
+      });
+    const dom = new JSDOM(response.text);
+    const htmlDocument = dom.window.document;
+    const header = getElementsByXPath("//h1[@class='govuk-heading-l']", htmlDocument);
+    const isCaseReady = getElementsByXPath(
+      "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'A yw’r achos yn barod ar gyfer treial?')]]", htmlDocument);
+    const hasAnythingChanged = getElementsByXPath(
+      "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'A oes unrhyw newidiadau i’r cymorth o ran anghenion mynediad neu fregusrwydd i unrhyw un sy’n mynychu gwrandawiad llys?')]]", htmlDocument);
+    const otherInformation = getElementsByXPath(
+      "//dd[@class='govuk-summary-list__value' and preceding-sibling::dt[contains(text(),'Gwybodaeth arall')]]", htmlDocument);
+    expect(header.length).toBe(1);
+    expect(header[0].textContent).toBe('Gwiriwch eich atebion');
+    expect(isCaseReady.length).toBe(1);
+    expect(isCaseReady[0].textContent).toContain('Ydy');
+    expect(hasAnythingChanged.length).toBe(1);
+    expect(hasAnythingChanged[0].textContent).toContain('Oes');
     expect(hasAnythingChanged[0].textContent).toContain('Changed');
     expect(otherInformation.length).toBe(1);
     expect(otherInformation[0].textContent).toContain('Other Information');

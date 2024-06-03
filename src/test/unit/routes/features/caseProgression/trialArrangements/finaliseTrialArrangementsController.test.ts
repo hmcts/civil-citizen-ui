@@ -2,7 +2,6 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../main/app';
 import {CP_FINALISE_TRIAL_ARRANGEMENTS_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
-import {t} from 'i18next';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import Module from 'module';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -81,7 +80,7 @@ describe('"finalise trial arrangements" page test', () => {
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   describe('on GET', () => {
-    it('should return expected page when claim exists', async () => {
+    it('should return expected page in English when claim exists', async () => {
       //Given
       app.locals.draftStoreClient = mockCivilClaimFastTrack;
       nock(civilServiceUrl)
@@ -96,7 +95,27 @@ describe('"finalise trial arrangements" page test', () => {
       //Then
         .expect((res: { status: unknown; text: unknown; }) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.TITLE'));
+          expect(res.text).toContain('Finalise your trial arrangements');
+        });
+    });
+
+    it('should return expected page in Welsh when claim exists with Welsh cookie', async () => {
+      //Given
+      app.request.cookies = {lang: 'cy'};
+      app.locals.draftStoreClient = mockCivilClaimFastTrack;
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claim);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+      //When
+      await testSession
+        .get(CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId))
+        //Then
+        .expect((res: { status: unknown; text: unknown; }) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Cwblhau trefniadau eich treial');
         });
     });
 
@@ -118,6 +137,7 @@ describe('"finalise trial arrangements" page test', () => {
 
     it('should return "Something went wrong" page when claim does not exist', async () => {
       //Given
+      app.request.cookies = {lang: 'en'};
       app.locals.draftStoreClient = mockRedisFailure;
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + '1111')

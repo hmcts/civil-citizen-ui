@@ -6,10 +6,10 @@ import * as path from 'path';
 import session from 'express-session';
 import 'express-async-errors';
 
+import {AppInsights} from 'modules/appinsights';
 import {Helmet} from 'modules/helmet';
 import {Nunjucks} from 'modules/nunjucks';
 import {PropertiesVolume} from 'modules/properties-volume';
-import {AppInsights} from 'modules/appinsights';
 import {I18Next} from 'modules/i18n';
 import {HealthCheck} from 'modules/health';
 import {OidcMiddleware} from 'modules/oidc';
@@ -59,6 +59,7 @@ I18Next.enableFor(app);
 const logger = Logger.getLogger('app');
 
 new PropertiesVolume().enableFor(app);
+new AppInsights().enable();
 
 logger.info('Creating new draftStoreClient');
 new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
@@ -84,7 +85,6 @@ app.use(session({
 
 app.enable('trust proxy');
 
-new AppInsights().enable();
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);

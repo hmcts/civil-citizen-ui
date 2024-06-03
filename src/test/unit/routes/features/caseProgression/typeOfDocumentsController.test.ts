@@ -37,18 +37,37 @@ describe('Upload document- type of documents controller', () => {
   describe('on GET', () => {
     it('should render page successfully if cookie has correct values', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(typeOfDocumentUrl).expect((res) => {
+      await request(app).get(typeOfDocumentUrl).query({lang: 'en'}).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TITLE'));
-        expect(res.text).toContain(t('PAGES.DASHBOARD.HEARINGS.HEARING'));
+        expect(res.text).toContain('What types of documents do you want to upload?');
+        expect(res.text).toContain('Hearing');
+      });
+    });
+
+    it('should render page successfully in Welsh if cookie has correct values and query gives cy', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app).get(typeOfDocumentUrl).query({lang: 'cy'}).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Pa fath o ddogfennau ydych chi eisiau eu huwchlwytho?');
+        expect(res.text).toContain('Gwrandawiad');
       });
     });
 
     it('should render page successfully on defendant request if cookie has correct values', async () => {
       app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
-      await request(app).get(typeOfDocumentUrl).expect((res) => {
+      await request(app).get(typeOfDocumentUrl).query({lang: 'en'}).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TITLE'));
+        expect(res.text).toContain('What types of documents do you want to upload?');
+        expect(res.text).toContain('Hearing');
+      });
+    });
+
+    it('should render page successfully  in Welsh on defendant request if cookie has correct values and query gives cy', async () => {
+      app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
+      await request(app).get(typeOfDocumentUrl).query({lang: 'cy'}).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Pa fath o ddogfennau ydych chi eisiau eu huwchlwytho?');
+        expect(res.text).toContain('Gwrandawiad');
       });
     });
 

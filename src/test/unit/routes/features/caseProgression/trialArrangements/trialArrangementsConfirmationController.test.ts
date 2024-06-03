@@ -3,7 +3,6 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
-import {t} from 'i18next';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Claim} from 'models/claim';
 import * as utilityService from 'modules/utilityService';
@@ -41,7 +40,7 @@ describe('Confirm trial arrangements - On GET', () => {
   beforeEach(()=> {
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
-  it('should render page successfully with IsCaseReady yes', async () => {
+  it('should render page successfully in English with IsCaseReady yes', async () => {
     mockGetClaimById.mockImplementation(async () => {
       claim.caseProgression.defendantTrialArrangements.isCaseReady = YesNo.YES;
       claim.totalClaimAmount = 15000;
@@ -49,11 +48,11 @@ describe('Confirm trial arrangements - On GET', () => {
     });
     await request(app).get(confirmationUrl).expect((res) => {
       expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.WHAT_HAPPENS_NEXT'));
+      expect(res.text).toContain('What happens next');
     });
   });
 
-  it('should render page successfully with IsCaseReady No', async () => {
+  it('should render page successfully in English with IsCaseReady No', async () => {
     mockGetClaimById.mockImplementation(async () => {
       claim.caseProgression.defendantTrialArrangements.isCaseReady = YesNo.NO;
       claim.totalClaimAmount = 15000;
@@ -61,7 +60,31 @@ describe('Confirm trial arrangements - On GET', () => {
     });
     await request(app).get(confirmationUrl).expect((res) => {
       expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.WHAT_HAPPENS_NEXT'));
+      expect(res.text).toContain('What happens next');
+    });
+  });
+
+  it('should render page successfully in Welsh with IsCaseReady yes and query cy', async () => {
+    mockGetClaimById.mockImplementation(async () => {
+      claim.caseProgression.defendantTrialArrangements.isCaseReady = YesNo.YES;
+      claim.totalClaimAmount = 15000;
+      return claim;
+    });
+    await request(app).get(confirmationUrl).query({lang: 'cy'}).expect((res) => {
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('Beth fydd yn digwydd nesaf');
+    });
+  });
+
+  it('should render page successfully in Welsh with IsCaseReady No  and query cy', async () => {
+    mockGetClaimById.mockImplementation(async () => {
+      claim.caseProgression.defendantTrialArrangements.isCaseReady = YesNo.NO;
+      claim.totalClaimAmount = 15000;
+      return claim;
+    });
+    await request(app).get(confirmationUrl).query({lang: 'cy'}).expect((res) => {
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('Beth fydd yn digwydd nesaf');
     });
   });
 
@@ -81,7 +104,7 @@ describe('Confirm trial arrangements - On GET', () => {
     mockGetClaimById.mockImplementation(async () => {
       throw new Error(TestMessages.REDIS_FAILURE);
     });
-    await request(app).get(confirmationUrl).expect((res) => {
+    await request(app).get(confirmationUrl).query({lang: 'en'}).expect((res) => {
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
     });

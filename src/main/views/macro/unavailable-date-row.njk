@@ -2,7 +2,7 @@
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% macro unavailableDateRow(unavailableDate, index, errorFor, t, removeButton, today, isCarm) %}
+{% macro unavailableDateRow(unavailableDate, legend, index, errorFor, t, removeButton, today, isCarm) %}
 
   {% set exampleDate = today.getDate() + ' ' + (today.getMonth() + 1)+ ' ' + (today.getFullYear() + 1) %}
 
@@ -150,6 +150,12 @@
         {{ govukRadios({
           id: 'items-' +index+ '-type',
           name: 'items[' +index+ '][type]',
+          fieldset: {
+            legend: {
+              text: t(legend),
+              classes: "govuk-fieldset__legend--s"
+            }
+          } if legend is defined,
           items: [
                   {
                     id: 'items-' +index+ '-single-date',
@@ -181,13 +187,15 @@
           {{ govukButton({
             text: t('COMMON.REMOVE_CARM') if isCarm else t('COMMON.REMOVE') ,
             classes: "govuk-button--secondary remove-row govuk-visually-hidden",
-            type: "button"
+            type: "button" if not removeButton.noJs
           }) }}
         {% else %}
           {{ govukButton({
             text: t('COMMON.REMOVE_CARM') if isCarm else t('COMMON.REMOVE') ,
             classes: "govuk-button--secondary remove-row",
-            type: "button"
+            name: 'action',
+            value: 'remove-unavailableDates' + index,
+            type: "button" if not removeButton.noJs
           }) }}
         {% endif %}
       {% endif %}

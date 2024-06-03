@@ -2,7 +2,6 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../main/app';
 import {UPLOAD_YOUR_DOCUMENTS_URL} from 'routes/urls';
-import {t} from 'i18next';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import Module from 'module';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -57,12 +56,29 @@ describe('"upload your documents" page test', () => {
         .reply(200, claim);
       //When
       await testSession
-        .get(UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', claimId))
+        .get(UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', claimId)).query({lang:'en'})
       //Then
         .expect((res: { status: unknown; text: unknown; }) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE'));
-          expect(res.text).toContain(t('PAGES.DASHBOARD.HEARINGS.HEARING'));
+          expect(res.text).toContain('Upload your documents');
+          expect(res.text).toContain('Hearing');
+        });
+    });
+
+    it('should return expected page when claim exists', async () => {
+      //Given
+      app.locals.draftStoreClient = mockCivilClaim;
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claim);
+      //When
+      await testSession
+        .get(UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', claimId)).query({lang:'cy'})
+        //Then
+        .expect((res: { status: unknown; text: unknown; }) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Uwchlwytho eich dogfennau');
+          expect(res.text).toContain('Gwrandawiad');
         });
     });
 
@@ -74,7 +90,7 @@ describe('"upload your documents" page test', () => {
         .reply(404, null);
       //When
       await testSession
-        .get(UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', '1111'))
+        .get(UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', '1111')).query({lang:'en'})
         //Then
         .expect((res: { status: unknown; text: unknown; }) => {
           expect(res.status).toBe(500);
