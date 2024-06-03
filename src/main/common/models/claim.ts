@@ -591,14 +591,6 @@ export class Claim {
   }
 
   isAirlineComplete(): boolean {
-    return this.delayedFlight?.option === YesNo.NO || 
-      (this.delayedFlight?.option === YesNo.YES && 
-        !!this.flightDetails?.airline && 
-        !!this.flightDetails?.flightNumber &&
-        !!this.flightDetails?.flightDate);
-  }
-
-  isAirlineComplete(): boolean {
     return this.delayedFlight?.option === YesNo.NO ||
       (this.delayedFlight?.option === YesNo.YES &&
         !!this.flightDetails?.airline &&
