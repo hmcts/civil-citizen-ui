@@ -11,6 +11,9 @@ import {
   saveRespondentAgreement,
   saveHearingArrangement,
   saveHearingContactDetails, saveUnavailableDates,
+  getByIndexOrLast,
+  getByIndex,
+  updateByIndexOrAppend,
 } from 'services/features/generalApplication/generalApplicationService';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../utils/errorMessageTestConstants';
@@ -23,8 +26,8 @@ import { HearingSupport, SupportType } from 'models/generalApplication/hearingSu
 import { RequestingReason } from 'models/generalApplication/requestingReason';
 import { HearingArrangement, HearingTypeOptions } from 'models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
-import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
+import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -377,6 +380,53 @@ describe('General Application service', () => {
       //Then
       await expect(saveHearingContactDetails('123', hearingContactDetails)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
+  });
+
+  describe('Get by index or last', () => {
+    it.each`
+      list           | index              | expected
+      ${[1, 2, 3]}   | ${0}               | ${1}
+      ${[1, 2, 3]}   | ${2}               | ${3}
+      ${[1, 2, 3]}   | ${3}               | ${3}
+      ${[1, 2, 3]}   | ${undefined}       | ${3}
+      ${[]}          | ${0}               | ${undefined}
+      ${undefined}   | ${0}               | ${undefined}
+      ${undefined}   | ${undefined}       | ${undefined}
+      `('should return $expected when retrieving index $index from $list',
+      ({ list, index, expected }) => {
+        expect(getByIndexOrLast(list, index)).toEqual(expected);
+      });
+  });
+
+  describe('Get by index', () => {
+    it.each`
+      list           | index              | expected
+      ${[1, 2, 3]}   | ${0}               | ${1}
+      ${[1, 2, 3]}   | ${2}               | ${3}
+      ${[1, 2, 3]}   | ${3}               | ${undefined}
+      ${[1, 2, 3]}   | ${undefined}       | ${undefined}
+      ${[]}          | ${0}               | ${undefined}
+      ${undefined}   | ${0}               | ${undefined}
+      ${undefined}   | ${undefined}       | ${undefined}
+      `('should return $expected when retrieving index $index from $list',
+      ({ list, index, expected }) => {
+        expect(getByIndex(list, index)).toEqual(expected);
+      });
+  });
+
+  describe('Update by index or append', () => {
+    it.each`
+    list           | index              | expected
+    ${[1, 2, 3]}   | ${0}               | ${[9, 2, 3]}
+    ${[1, 2, 3]}   | ${2}               | ${[1, 2, 9]}
+    ${[1, 2, 3]}   | ${3}               | ${[1, 2, 3, 9]}
+    ${[1, 2, 3]}   | ${undefined}       | ${[1, 2, 3, 9]}
+    ${[]}          | ${0}               | ${[9]}
+    `('should return $expected when retrieving index $index from $list',
+      ({ list, index, expected }) => {
+        updateByIndexOrAppend(list, 9, index);
+        expect(list).toEqual(expected);
+      });
   });
 
   describe('Save respondent agreement', () => {
