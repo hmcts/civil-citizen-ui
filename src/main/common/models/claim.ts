@@ -134,7 +134,7 @@ export class Claim {
   takenOfflineDate?: Date;
   mediationAgreement?: MediationAgreement;
   unsuccessfulMediationReason?: string;
-  defaultJudgmentDocuments?: CaseDocument[];
+  defaultJudgmentDocuments?: SystemGeneratedCaseDocuments[];
   ccjJudgmentStatement?: string;
   lastModifiedDate?: Date;
   applicant1AcceptAdmitAmountPaidSpec?: string;
@@ -510,6 +510,10 @@ export class Claim {
     return this.respondent1?.type === PartyType.COMPANY;
   }
 
+  isOrganisation(): boolean {
+    return this.respondent1?.type === PartyType.ORGANISATION;
+  }
+
   isClaimantBusiness(): boolean {
     return this.applicant1?.type === PartyType.COMPANY || this.applicant1?.type === PartyType.ORGANISATION;
   }
@@ -577,14 +581,21 @@ export class Claim {
   }
 
   isDefendantDetailsCompleted(): boolean {
-    return (
-      !!this.respondent1?.type &&
-      !!this.respondent1?.partyDetails?.primaryAddress &&
-      ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) ||
-        (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName))
-    );
+    return !!this.respondent1?.type &&
+      (
+        (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName) ||
+        (this.isOrganisation() && !!this.respondent1?.partyDetails?.partyName) ||
+        (this.isCompany() && this.isAirlineComplete() && !!this.respondent1?.partyDetails?.partyName)
+      );
   }
 
+  isAirlineComplete(): boolean {
+    return this.delayedFlight?.option === YesNo.NO ||
+      (this.delayedFlight?.option === YesNo.YES &&
+        !!this.flightDetails?.airline &&
+        !!this.flightDetails?.flightNumber &&
+        !!this.flightDetails?.flightDate);
+  }
   isClaimantDetailsCompleted(): boolean {
     return (
       !!this.applicant1?.type &&
@@ -879,7 +890,7 @@ export class Claim {
     return threeWeeksBefore.toLocaleDateString('en-GB', options);
   }
 
-  private threeWeeksBeforeHearingDate() {
+  threeWeeksBeforeHearingDate() {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
     const dateAtStartOfDay = new Date(hearingDateTime - threeWeeksMilli).setHours(0, 0, 0, 0);
