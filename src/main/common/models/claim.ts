@@ -134,7 +134,7 @@ export class Claim {
   takenOfflineDate?: Date;
   mediationAgreement?: MediationAgreement;
   unsuccessfulMediationReason?: string;
-  defaultJudgmentDocuments?: CaseDocument[];
+  defaultJudgmentDocuments?: SystemGeneratedCaseDocuments[];
   ccjJudgmentStatement?: string;
   lastModifiedDate?: Date;
   applicant1AcceptAdmitAmountPaidSpec?: string;
@@ -175,6 +175,7 @@ export class Claim {
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
   judgmentOnline?: JudgmentOnline;
+
   // Index signature to allow dynamic property access
   [key: string]: any;
 
@@ -597,6 +598,13 @@ export class Claim {
         !!this.flightDetails?.flightDate);
   }
 
+  isAirlineComplete(): boolean {
+    return this.delayedFlight?.option === YesNo.NO ||
+      (this.delayedFlight?.option === YesNo.YES &&
+        !!this.flightDetails?.airline &&
+        !!this.flightDetails?.flightNumber &&
+        !!this.flightDetails?.flightDate);
+  }
   isClaimantDetailsCompleted(): boolean {
     return (
       !!this.applicant1?.type &&
@@ -891,7 +899,7 @@ export class Claim {
     return threeWeeksBefore.toLocaleDateString('en-GB', options);
   }
 
-  private threeWeeksBeforeHearingDate() {
+  threeWeeksBeforeHearingDate() {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
     const dateAtStartOfDay = new Date(hearingDateTime - threeWeeksMilli).setHours(0, 0, 0, 0);
