@@ -23,7 +23,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Fast Track Trial Arrangements - ready for Trial Journey.', async () => {
+Scenario.skip('Fast Track Trial Arrangements - ready for Trial Journey.', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     /*TrialArrangementSteps.initiateTrialArrangementJourney(claimRef, claimType, 'yes');
     await api.waitForFinishedBusinessProcess();

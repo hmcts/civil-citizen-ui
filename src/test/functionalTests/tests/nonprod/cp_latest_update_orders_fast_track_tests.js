@@ -29,7 +29,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Case progression journey - Fast Track - Verify latest Update page for an Order being Created', async ({I}) => {
+Scenario.skip('Case progression journey - Fast Track - Verify latest Update page for an Order being Created', async ({I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {

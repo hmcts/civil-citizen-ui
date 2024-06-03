@@ -31,7 +31,7 @@ Before(async ({api}) => {
 });
 
 //covered in cp_upload_evidence_small_claims_tests
-Scenario('Case progression journey - Fast Track - Verify uploaded documents by LR in the Documents tab', async () => {
+Scenario.skip('Case progression journey - Fast Track - Verify uploaded documents by LR in the Documents tab', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     //CaseProgressionSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);
   }

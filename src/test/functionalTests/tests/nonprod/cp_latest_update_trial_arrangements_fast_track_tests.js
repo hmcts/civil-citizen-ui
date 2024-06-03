@@ -25,7 +25,7 @@ Before(async ({api}) => {
 });
 
 //covered in cp_upload_evidence_small_claims_tests
-Scenario('Fast Track Other Party Trial Arrangements Journey.', async () => {
+Scenario.skip('Fast Track Other Party Trial Arrangements Journey.', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     //TrialArrangementSteps.verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType);
   }

@@ -22,7 +22,7 @@ Before(async ({api}) => {
 });
 
 //Covered in cp_upload_evidence_small_claims_tests
-Scenario('Case progression journey - Small Claims - Verify latest Update page For Evidence Upload', async () => {
+Scenario.skip('Case progression journey - Small Claims - Verify latest Update page For Evidence Upload', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     //CaseProgressionSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType);
   }

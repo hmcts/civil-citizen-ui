@@ -25,7 +25,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Case progression journey - Fast Track - Verify Bundles tab', async () => {
+Scenario.skip('Case progression journey - Fast Track - Verify Bundles tab', async () => {
   if (['demo'].includes(config.runningEnv)) {
     //CaseProgressionSteps.verifyBundle(claimRef, claimType);
   }

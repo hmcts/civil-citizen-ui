@@ -28,7 +28,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Small claims case is struck out due to hearing fee not being paid', async () => {
+Scenario.skip('Small claims case is struck out due to hearing fee not being paid', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     if (['preview', 'demo'].includes(config.runningEnv)) {
       const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();

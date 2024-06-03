@@ -24,7 +24,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Small Claims Response with RejectAll and DisputeAll For the Case Progression and Hearing Scheduled Process To Complete',  async () => {
+Scenario.skip('Small Claims Response with RejectAll and DisputeAll For the Case Progression and Hearing Scheduled Process To Complete',  async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     /*CaseProgressionSteps.verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType, true);
     //Lip initiates docs

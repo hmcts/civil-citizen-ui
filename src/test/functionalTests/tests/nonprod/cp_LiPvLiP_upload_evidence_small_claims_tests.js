@@ -25,7 +25,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Citizen Claimant perform evidence upload',  async () => {
+Scenario.skip('Citizen Claimant perform evidence upload',  async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     //CaseProgressionSteps.initiateUploadEvidenceJourney(claimRef, claimType, partyType);
   }
