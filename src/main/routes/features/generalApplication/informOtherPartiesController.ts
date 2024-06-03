@@ -6,7 +6,7 @@ import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { NextFunction, RequestHandler, Response, Router } from 'express';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { GA_AGREEMENT_FROM_OTHER_PARTY, INFORM_OTHER_PARTIES } from 'routes/urls';
-import { getCancelUrl, saveInformOtherParties } from 'services/features/generalApplication/generalApplicationService';
+import { getCancelUrl, getLast, saveInformOtherParties } from 'services/features/generalApplication/generalApplicationService';
 
 const viewPath = 'features/generalApplication/inform-other-parties';
 const informOtherPartiesController = Router();
@@ -23,7 +23,7 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Inf
   res.render(viewPath, {
     cancelUrl,
     backLinkUrl,
-    applicationType: selectedApplicationType[claim.generalApplication?.applicationType?.option],
+    applicationType: selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option],
     form,
   });
 };
