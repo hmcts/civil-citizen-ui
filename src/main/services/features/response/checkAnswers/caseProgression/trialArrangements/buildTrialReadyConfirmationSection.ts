@@ -26,7 +26,7 @@ export const buildIsCaseReadyForTrialOrHearing = (claim: Claim, claimId: string,
   });
 
   trialReadySummarySections.summaryList.rows.push(summaryRow(t('PAGES.IS_CASE_READY.IS_CASE_READY', { lng: getLng(lang) }),
-    t(`COMMON.${trialArrangements.isCaseReady.toUpperCase()}`, { lng: getLng(lang) }),
+    t(`COMMON.VARIATION_4.${trialArrangements.isCaseReady.toUpperCase()}`, { lng: getLng(lang) }),
     constructResponseUrlWithIdParams(claimId, IS_CASE_READY_URL), changeLabel(lang)));
 
   trialReadySummarySections.summaryList.rows.push(summaryRow(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.ARE_THERE_ANY_CHANGES', { lng: getLng(lang) }),

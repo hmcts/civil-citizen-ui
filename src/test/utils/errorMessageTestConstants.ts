@@ -167,7 +167,7 @@ export const enum TestMessages {
   INTEREST_START_DATE = 'Enter the date you want to claim interest from',
   REASON_EXPLANATION = 'Briefly explain your claim',
   CLAIMANT_REJECTION_REASON = 'Enter why you rejected repayment plan',
-  VALID_ENTER_AT_LEAST_ONE_UPLOAD ='You must select at least one type of document',
+  VALID_ENTER_AT_LEAST_ONE_UPLOAD = 'You must select at least one type of document',
   VALID_ENTER_DATE_DOC_ISSUED = 'Enter the date the document was issued or message was sent',
   VALID_ENTER_DATE_WITNESS_SUMMARY = 'Date summary was written is required',
   VALID_REAL_DAY = 'Day of Date must be a valid day',
@@ -183,5 +183,19 @@ export const enum TestMessages {
   MEDIATION_CHECK_YOUR_ANSWERS = 'Check your answers',
   VIEW_MEDIATION_SETTLEMENT_AGREEMENT = 'View mediation settlement agreement',
   VIEW_MEDIATION_DOCUMENTS = 'View mediation documents',
+  // Judgment Online
+  CONFIRM_YOU_HAVE_BEEN_PAID_PAGE_TITLE = 'Confirm that you&#39;ve been paid',
+  CONFIRM_YOU_HAVE_BEEN_PAID_ENTER_THE_DATE = 'Enter the date that you were paid the full amount that was specified on the judgment',
+  CONFIRM_YOU_HAVE_BEEN_PAID_HINT = 'If you&#39;ve been paid in installments, enter the date of the final payment you received. For example, 16 4 2021',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM = 'I confirm that I\'ve been paid the full amount that was specified on the judgment. Once you\'ve confirmed this, it cannot be changed.',
+  CONFIRM_YOU_HAVE_BEEN_PAID_JUDGMENT_LINK = 'View the judgment made against the defendant',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CHECK_ERROR_MESSAGE = 'Please confirm you&#39;ve been paid the full amount',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_PAGE_TITLE = 'Confirm that you&#39;ve been paid - Confirmation',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_YOU_CONFIRMED = 'You&#39;ve confirmed that you&#39;ve been paid',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_WHAT_NEXT = 'What happens next',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_NO_FURTHER = 'There&#39;s no further action you need to take.',
+  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_CLOSE_AND_RETURN = 'Close and return to case details',
+  ERRORS_CORRECT_DATE_NOT_IN_FUTURE = 'Correct the date. You can’t use a future date.',
+  ERRORS_VALID_DATE = 'Please enter a valid date',
 
 }
