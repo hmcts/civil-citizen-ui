@@ -1,20 +1,23 @@
-import {CaseRole} from 'common/form/models/caseRoles';
-import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
-import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
-import {Request, Response, NextFunction} from 'express';
-import {Claim} from 'models/claim';
-import {getClaimById} from 'modules/utilityService';
-import {orderJudgeGuard} from 'routes/guards/orderJudgeGuard';
+import { CaseRole } from 'common/form/models/caseRoles';
+import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
+import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
+import { Request, Response, NextFunction } from 'express';
+import { Claim } from 'models/claim';
+import * as utilityService from 'modules/utilityService';
+import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
+import { orderJudgeGuard } from 'routes/guards/orderJudgeGuard';
 
-const mockClaim = getClaimById as jest.Mock;
-const MOCK_REQUEST = { params: { id: '123' } } as unknown as Request;
-const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
-const MOCK_NEXT = jest.fn() as NextFunction;
-
-jest.mock('modules/utilityService', () => ({
+jest.mock('../../../../main/modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
 }));
+jest.mock('../../../../main/services/features/generalApplication/generalApplicationService', () => ({
+  getByIndexOrLast: jest.fn(),
+}));
+
+const MOCK_REQUEST = { params: { id: '123' }, query: {} } as unknown as Request;
+const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
+const MOCK_NEXT = jest.fn() as NextFunction;
 
 describe('Order Judge Guard', () => {
   beforeEach(() => {
@@ -22,27 +25,27 @@ describe('Order Judge Guard', () => {
   });
   it('should load order judge page', async () => {
     //Given
-    mockClaim.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.caseRole = CaseRole.CLAIMANT;
-      const applicationType = new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT);
-      claim.generalApplication = new GeneralApplication(applicationType);
-      return claim;
-    });
+    const claim = new Claim();
+    claim.caseRole = CaseRole.CLAIMANT;
+    const applicationType = new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT);
+    claim.generalApplication = new GeneralApplication(applicationType);
+    jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
+    jest.spyOn(generalApplicationService, 'getByIndexOrLast').mockReturnValue(applicationType);
+
+    //When
     await orderJudgeGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+
     //Then
     expect(MOCK_NEXT).toHaveBeenCalled();
-    //When
   });
   it('should not load order judge page', async () => {
     //Given
-    mockClaim.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.caseRole = CaseRole.DEFENDANT;
-      const applicationType = new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT);
-      claim.generalApplication = new GeneralApplication(applicationType);
-      return claim;
-    });
+    const claim = new Claim();
+    claim.caseRole = CaseRole.DEFENDANT;
+    const applicationType = new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT);
+    claim.generalApplication = new GeneralApplication(applicationType);
+    jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
+    jest.spyOn(generalApplicationService, 'getByIndexOrLast').mockReturnValue(applicationType);
     //When
     await orderJudgeGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
@@ -51,9 +54,7 @@ describe('Order Judge Guard', () => {
   it('should throw error', async () => {
     //Given
     const error = new Error('Error');
-    mockClaim.mockImplementation(() => {
-      throw error;
-    });
+    jest.spyOn(utilityService, 'getClaimById').mockRejectedValue(error);
     //When
     await orderJudgeGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then

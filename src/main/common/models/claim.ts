@@ -175,6 +175,7 @@ export class Claim {
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
   judgmentOnline?: JudgmentOnline;
+
   // Index signature to allow dynamic property access
   [key: string]: any;
 
@@ -505,6 +506,14 @@ export class Claim {
     return this.respondent1?.type === PartyType.COMPANY || this.respondent1?.type === PartyType.ORGANISATION;
   }
 
+  isCompany(): boolean {
+    return this.respondent1?.type === PartyType.COMPANY;
+  }
+
+  isOrganisation(): boolean {
+    return this.respondent1?.type === PartyType.ORGANISATION;
+  }
+
   isClaimantBusiness(): boolean {
     return this.applicant1?.type === PartyType.COMPANY || this.applicant1?.type === PartyType.ORGANISATION;
   }
@@ -572,14 +581,21 @@ export class Claim {
   }
 
   isDefendantDetailsCompleted(): boolean {
-    return (
-      !!this.respondent1?.type &&
-      !!this.respondent1?.partyDetails?.primaryAddress &&
-      ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) ||
-        (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName))
-    );
+    return !!this.respondent1?.type &&
+      (
+        (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName) ||
+        (this.isOrganisation() && !!this.respondent1?.partyDetails?.partyName) ||
+        (this.isCompany() && this.isAirlineComplete() && !!this.respondent1?.partyDetails?.partyName)
+      );
   }
 
+  isAirlineComplete(): boolean {
+    return this.delayedFlight?.option === YesNo.NO ||
+      (this.delayedFlight?.option === YesNo.YES &&
+        !!this.flightDetails?.airline &&
+        !!this.flightDetails?.flightNumber &&
+        !!this.flightDetails?.flightDate);
+  }
   isClaimantDetailsCompleted(): boolean {
     return (
       !!this.applicant1?.type &&
@@ -874,7 +890,7 @@ export class Claim {
     return threeWeeksBefore.toLocaleDateString('en-GB', options);
   }
 
-  threeWeeksBeforeHearingDate(): Date {
+  threeWeeksBeforeHearingDate() {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
     const dateAtStartOfDay = new Date(hearingDateTime - threeWeeksMilli).setHours(0, 0, 0, 0);
