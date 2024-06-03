@@ -315,6 +315,7 @@ import uploadN245FormController from 'routes/features/generalApplication/uploadN
 import unavailableHearingDatesController from 'routes/features/generalApplication/unavailableHearingDatesController';
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
+import gaCheckAnswersController from 'routes/features/generalApplication/checkAnswersController';
 import applicationPaymentUnsuccessfulController from './features/generalApplication/applicationPaymentUnsuccessfulController';
 import applicationResponseConfirmationController
   from 'routes/features/generalApplication/response/applicationResponseConfirmationController';
@@ -322,6 +323,7 @@ import flightDetailsController from './features/claim/airlines/flightDetailsCont
 import delayedFlightController from './features/claim/airlines/delayedFlightController';
 import respondentRequestChangeInformationController
   from 'routes/features/generalApplication/respondentRequestChangeInformationController';
+import accessibilityStatementController from './features/public/accessibilityStatementController';
 import hearingArrangementsGuidanceController from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
 import wantToUploadDocumentsController from 'routes/features/generalApplication/wantToUploadDocuments';
 import uploadEvidenceDocumentsForApplicationController from 'routes/features/generalApplication/uploadEvidenceDocumentForApplication';
@@ -604,10 +606,12 @@ export default [
   unavailableHearingDatesController,
   hearingArrangementController,
   hearingContactDetailsController,
+  gaCheckAnswersController,
   applicationPaymentUnsuccessfulController,
   flightDetailsController,
   delayedFlightController,
   respondentRequestChangeInformationController,
+  accessibilityStatementController,
   hearingArrangementsGuidanceController,
   wantToUploadDocumentsController,
   uploadEvidenceDocumentsForApplicationController,

@@ -52,7 +52,7 @@ describe('General Application - upload evidence docs to support application', ()
     claim = new Claim();
     claim.id ='id';
     claim.generalApplication = new GeneralApplication();
-    claim.generalApplication.applicationType = new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT);
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT)];
     mockDataFromStore.mockResolvedValue(claim);
   });
 
