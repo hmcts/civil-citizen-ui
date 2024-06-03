@@ -18,7 +18,10 @@ import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
-import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {
+  isCaseProgressionV1Enable,
+  isDashboardServiceEnabled,
+} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -95,7 +98,7 @@ describe('Cancel document upload', () => {
         .reply(200, claimId);
       await testSession
         .get(CP_UPLOAD_DOCUMENTS_URL.replace(':id', '1111'));
-
+      (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(true);
       //When
       await testSession
         .post(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', '1111'))
@@ -103,7 +106,7 @@ describe('Cancel document upload', () => {
       //Then
         .expect((res: {status: unknown, header: {location: unknown}}) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CP_UPLOAD_DOCUMENTS_URL.replace(':id', '1111'));
+          expect(res.header.location).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id', '1111'));
         });
     });
 
