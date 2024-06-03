@@ -330,3 +330,6 @@ export const VIEW_THE_JUDGMENT_URL = `${BASE_CASE_URL}/view-the-judgment`;
 export const GA_RESPONSE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_URL}/confirmation`;
 export const CONFIRM_YOU_HAVE_BEEN_PAID_URL = `${BASE_JUDGMENT_ONLINE_URL}/confirm-you-have-been-paid`;
 export const CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL = `${BASE_JUDGMENT_ONLINE_URL}/confirm-you-have-been-paid/confirmation`;
+export const APPLICATION_FEE_PAYMENT_CONFIRMATION_URL='/general-app-payment-confirmation/:id';
+export const APPLICATION_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID='/general-app-payment-confirmation/:id/:uniqueId/confirmation';
+
