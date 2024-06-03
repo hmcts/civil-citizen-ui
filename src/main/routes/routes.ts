@@ -327,6 +327,8 @@ import uploadEvidenceDocumentsForApplicationController from 'routes/features/gen
 import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
 import confirmYouHaveBeenPaidConfirmController
   from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
+import multiTrackDisclosureNonElectronicDocuments
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocumentsController';
 
 export default [
   homeController,
@@ -612,4 +614,5 @@ export default [
   applicationResponseConfirmationController,
   confirmYouHaveBeenPaidController,
   confirmYouHaveBeenPaidConfirmController,
+  multiTrackDisclosureNonElectronicDocuments,
 ];
