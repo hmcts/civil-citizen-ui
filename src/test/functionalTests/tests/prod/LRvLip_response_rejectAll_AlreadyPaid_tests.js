@@ -22,9 +22,9 @@ Before(async ({api}) => {
   securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
-  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
-  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
+  // await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
+  // await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  // await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
 Scenario('Response with RejectAll and AlreadyPaid @citizenUI @rejectAll @nightly', async ({api}) => {

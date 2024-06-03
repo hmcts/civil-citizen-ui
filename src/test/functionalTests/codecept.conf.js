@@ -9,9 +9,9 @@ process.env.PLAYWRIGHT_SERVICE_RUN_ID = process.env.PLAYWRIGHT_SERVICE_RUN_ID ||
 exports.config = {
 
   async teardown() {
-    console.log('Current worker has finished running tests so we should clean up the user roles');
-    await unAssignAllUsers();
-    await deleteAllIdamTestUsers();
+    // console.log('Current worker has finished running tests so we should clean up the user roles');
+    // await unAssignAllUsers();
+    // await deleteAllIdamTestUsers();
   },
   tests: '../functionalTests/tests/**/*.js',
   output: process.env.REPORT_DIR || 'test-results/functional',
