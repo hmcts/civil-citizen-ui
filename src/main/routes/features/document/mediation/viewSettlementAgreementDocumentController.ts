@@ -18,7 +18,7 @@ const renderView = (res: Response, claimId: string, claim: Claim, lang: string):
 
   const documentsSection = mapperMediationAgreementToDocumentView(
     'PAGES.VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.DOCUMENT_TABLE_TITLE',
-    claim.mediationAgreement, claim.mediationSettlementAgreedAt,
+    claim.mediationAgreement, claim.mediationAgreement.documentUploadedDatetime,
     claimId,
     lang);
 
