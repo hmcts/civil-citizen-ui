@@ -54,7 +54,7 @@ describe('General Application - Want to upload documents to support hearing', ()
   describe('on GET', () => {
     it('should return want to upload document page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockClaim.generalApplication.applicationType = new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT);
+      mockClaim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT)];
       await request(app)
         .get(GA_WANT_TO_UPLOAD_DOCUMENTS)
         .expect((res) => {
