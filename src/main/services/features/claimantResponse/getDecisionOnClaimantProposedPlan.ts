@@ -14,6 +14,8 @@ import {
 import {toCCDClaimantProposedPlan} from 'models/claimantResponse/ClaimantProposedPlan';
 import { saveClaimantResponse } from './claimantResponseService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import {getRespondentToImmediateSettlementAgreementDeadLine}
+  from 'services/features/claimantResponse/signSettlmentAgreementService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -45,6 +47,6 @@ export const getDecisionOnClaimantProposedPlan = async (req: AppRequest, claimId
 };
 
 const getClaimantSuggestedImmediatePaymentDeadLineDate = async (req: AppRequest, claim:Claim): Promise<void> => {
-  const immediatePaymentDeadLine =  await civilServiceClient.calculateExtendedResponseDeadline(new Date(Date.now()), 5, req);
+  const immediatePaymentDeadLine = await getRespondentToImmediateSettlementAgreementDeadLine(req,claim );
   await saveClaimantResponse(generateRedisKey(req), immediatePaymentDeadLine, 'suggestedImmediatePaymentDeadLine');
 };

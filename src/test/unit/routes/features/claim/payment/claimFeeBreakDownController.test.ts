@@ -2,14 +2,20 @@ import request from 'supertest';
 import express from 'express';
 import {app} from '../../../../../../main/app';
 import claimFeeBreakDownController from 'routes/features/claim/payment/claimFeeBreakDownController';
-import { CLAIM_FEE_BREAKUP} from 'routes/urls';
+import {CLAIM_FEE_BREAKUP} from 'routes/urls';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import { InterestClaimOptionsType } from 'common/form/models/claim/interest/interestClaimOptionsType';
+import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
 import {getClaimById} from 'modules/utilityService';
+
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
+}));
+jest.mock('routes/guards/claimFeePaymentGuard', () => ({
+  claimFeePaymentGuard: jest.fn((req, res, next) => {
+    next();
+  }),
 }));
 
 describe('on GET', () => {
