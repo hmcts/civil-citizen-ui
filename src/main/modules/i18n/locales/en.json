@@ -1645,6 +1645,7 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post.",
         "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline.",
+        "SDO_ORDER_LEGAL_ADVISER_STATUS": "Send us more details before the hearing",
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case."
       },
