@@ -9,7 +9,8 @@ import {
   getSummarySections,
   getTopElements, saveUploadedDocuments,
 } from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
-import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {//deleteDraftClaimFromStore,
+  getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
@@ -65,7 +66,7 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
       renderView(res, form, claim, claimId, isSmallClaims, lang);
     } else {
       await saveUploadedDocuments(claim, <AppRequest>req);
-      await deleteDraftClaimFromStore(claimId);
+      // await deleteDraftClaimFromStore(claimId);
       res.redirect(constructResponseUrlWithIdParams(claim.id, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
     }
   } catch (error) {
