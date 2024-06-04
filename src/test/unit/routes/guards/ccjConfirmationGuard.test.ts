@@ -6,11 +6,7 @@ import config from 'config';
 import nock from 'nock';
 import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
-import {CaseState} from 'form/models/claimDetails';
-import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
 import {YesNo} from 'form/models/yesNo';
-import {ClaimantResponse} from 'models/claimantResponse';
-import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
@@ -22,8 +18,6 @@ jest.mock('modules/utilityService', () => ({
 const MOCK_REQUEST = {params: {id: '123'}} as unknown as Request;
 const MOCK_RESPONSE = {redirect: jest.fn()} as unknown as Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
-jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
-  isJudgmentOnlineLive: jest.fn().mockReturnValueOnce(false).mockReturnValueOnce(true).mockReturnValue(false)}));
 
 describe('CCJ Guard', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -39,13 +33,10 @@ describe('CCJ Guard', () => {
   });
   it('should access ccj confirmation page', async () => {
     //Given
-    // jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
     const claim = new Claim();
-    claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
-    claim.claimantResponse = new ClaimantResponse();
-    claim.claimantResponse.ccjRequest = new CCJRequest();
-    claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 1000, 9000);
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+    jest.spyOn(claim, 'isCCJComplete').mockReturnValueOnce(YesNo.YES);
+    jest.spyOn(claim, 'isCCJCompleteForJo').mockResolvedValueOnce(Promise.resolve(false));
     //When
     await ccjConfirmationGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
@@ -53,13 +44,10 @@ describe('CCJ Guard', () => {
   });
   it('should access ccj confirmation page for JO', async () => {
     //Given
-    // jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
     const claim = new Claim();
-    claim.ccdState = CaseState.All_FINAL_ORDERS_ISSUED;
-    claim.claimantResponse = new ClaimantResponse();
-    claim.claimantResponse.ccjRequest = new CCJRequest();
-    claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 1000, 9000);
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+    jest.spyOn(claim, 'isCCJComplete').mockReturnValueOnce(YesNo.NO);
+    jest.spyOn(claim, 'isCCJCompleteForJo').mockResolvedValueOnce(Promise.resolve(true));
     //When
     await ccjConfirmationGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
@@ -67,7 +55,10 @@ describe('CCJ Guard', () => {
   });
   it('should redirect if ccj is not completed', async () => {
     //Given
-    (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+    const claim = new Claim();
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+    jest.spyOn(claim, 'isCCJComplete').mockReturnValueOnce(YesNo.NO);
+    jest.spyOn(claim, 'isCCJCompleteForJo').mockResolvedValueOnce(false);
     //When
     await ccjConfirmationGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
