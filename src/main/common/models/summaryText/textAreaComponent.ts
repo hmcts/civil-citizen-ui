@@ -1,7 +1,7 @@
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 
-export class SummaryTextContentBuilder extends PageSectionBuilder {
+export class TextAreaComponentContentBuilder extends PageSectionBuilder {
 
   addTitle(title: string, variables?: any, classes?: string) {
     const titleSection = ({
@@ -17,7 +17,7 @@ export class SummaryTextContentBuilder extends PageSectionBuilder {
   }
 }
 
-export class SummaryText {
+export class TextAreaComponent {
   title : string;
   content : ClaimSummarySection[];
 

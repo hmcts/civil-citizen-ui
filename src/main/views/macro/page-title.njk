@@ -4,3 +4,7 @@
     {{ dynamicTitle }}
   {% endblock %}
 {% endmacro %}
+
+{% macro createPageTitle(title, t) %}
+  <h1 class="govuk-heading-l">{{ t(title) }}</h1>
+{% endmacro %}
