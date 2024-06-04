@@ -13,6 +13,7 @@ import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthFo
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
+import {submitApplication} from 'services/features/generalApplication/submitApplication';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -55,6 +56,7 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res
       await renderView(claimId, claim, form, req, res);
     } else {
       await saveStatementOfTruth(redisKey, statementOfTruth);
+      await submitApplication(req);
       res.redirect(getRedirectUrl(claimId, claim));
     }
   } catch (error) {

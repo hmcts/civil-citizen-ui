@@ -24,13 +24,16 @@ import { HearingSupport } from 'models/generalApplication/hearingSupport';
 import { CcdSupportRequirement } from 'models/ccdGeneralApplication/ccdSupportRequirement';
 import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
 import { CcdGeneralApplicationEvidenceDocument } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
+import {
+  CcdGeneralApplicationRespondentAgreement
+} from 'models/ccdGeneralApplication/ccdGeneralApplicationRespondentAgreement';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
 ): CCDGeneralApplication => {
   return {
     generalAppType: toCCDGeneralApplicationTypes(application.applicationTypes),
-    generalAppConsentOrder: toCCDYesNo(application.agreementFromOtherParty),
+    generalAppRespondentAgreement: toCCDRespondentAgreement(application.agreementFromOtherParty),
     generalAppInformOtherParty: toCCDInformOtherParty(
       application.informOtherParties,
     ),
@@ -57,6 +60,15 @@ const toCCDGeneralApplicationTypes = (applicationTypes: ApplicationType[]): CcdG
     types: applicationTypes?.map(applicationType => applicationType.option),
   };
 };
+
+const toCCDRespondentAgreement = (agreementFromOtherParty: YesNo): CcdGeneralApplicationRespondentAgreement => {
+  return agreementFromOtherParty
+    ? {
+      hasAgreed: toCCDYesNo(agreementFromOtherParty),
+    }
+    : undefined;
+};
+
 
 const toCCDInformOtherParty = (informOtherParty: InformOtherParties): CcdGeneralApplicationInformOtherParty => {
   return informOtherParty

@@ -362,7 +362,7 @@ export class CivilServiceClient {
   }
 
   async submitInitiateGeneralApplicationEvent(claimId: string, updatedApplication: CCDGeneralApplication, req?: AppRequest):  Promise<Claim> {
-    return this.submitEvent(CaseEvent.JUDGMENT_PAID_IN_FULL, claimId, updatedApplication, req);
+    return this.submitEvent(CaseEvent.INITIATE_GENERAL_APPLICATION, claimId, updatedApplication, req);
   }
 
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {

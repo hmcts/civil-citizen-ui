@@ -9,6 +9,9 @@ import {
   CcdGeneralApplicationEvidenceDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
 import {ClaimUpdate} from 'models/events/eventDto';
+import {
+  CcdGeneralApplicationRespondentAgreement
+} from 'models/ccdGeneralApplication/ccdGeneralApplicationRespondentAgreement';
 
 export interface EventDto {
   event: ApplicationEvent,
@@ -17,11 +20,11 @@ export interface EventDto {
 
 export interface CCDGeneralApplication extends ClaimUpdate {
   generalAppType: CcdGeneralApplicationTypes;
-  generalAppConsentOrder: YesNoUpperCamelCase;
+  generalAppRespondentAgreement: CcdGeneralApplicationRespondentAgreement;
   generalAppInformOtherParty: CcdGeneralApplicationInformOtherParty;
   generalAppAskForCosts: YesNoUpperCamelCase;
   generalAppDetailsOfOrder: string;
   generalAppReasonsOfOrder: string;
-  generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[],
+  generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
 }
