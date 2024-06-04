@@ -31,7 +31,6 @@ acceptDefendantOfferController.get(GA_ACCEPT_DEFENDANT_OFFER_URL, async (req: Ap
     const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
     const acceptDefendantOffer = claim.generalApplication?.response?.acceptDefendantOffer || new AcceptDefendantOffer();
-    console.log(acceptDefendantOffer);
     const form = new GenericForm(acceptDefendantOffer);
     renderView(claimId, claim, form, lang, res)
   } catch (error) {
