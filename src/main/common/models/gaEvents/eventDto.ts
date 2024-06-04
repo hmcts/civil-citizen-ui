@@ -10,10 +10,10 @@ import {
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
 import {ClaimUpdate} from 'models/events/eventDto';
 import {
-  CcdGeneralApplicationRespondentAgreement
+  CcdGeneralApplicationRespondentAgreement,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationRespondentAgreement';
 import {
-  CcdGeneralApplicationStatementOfTruth
+  CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
 
 export interface EventDto {

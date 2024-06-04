@@ -25,11 +25,11 @@ import { CcdSupportRequirement } from 'models/ccdGeneralApplication/ccdSupportRe
 import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
 import { CcdGeneralApplicationEvidenceDocument } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
 import {
-  CcdGeneralApplicationRespondentAgreement
+  CcdGeneralApplicationRespondentAgreement,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationRespondentAgreement';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {
-  CcdGeneralApplicationStatementOfTruth
+  CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
 
 export const translateDraftApplicationToCCD = (
@@ -73,7 +73,6 @@ const toCCDRespondentAgreement = (agreementFromOtherParty: YesNo): CcdGeneralApp
     }
     : undefined;
 };
-
 
 const toCCDInformOtherParty = (informOtherParty: InformOtherParties): CcdGeneralApplicationInformOtherParty => {
   return informOtherParty
@@ -183,5 +182,5 @@ const toCCDSupportRequirements = (hearingSupport: HearingSupport): CcdSupportReq
 const toCCDStatementOfTruth = (statementOfTruth: StatementOfTruthForm): CcdGeneralApplicationStatementOfTruth => {
   return {
     name: statementOfTruth?.name,
-  }
+  };
 };
