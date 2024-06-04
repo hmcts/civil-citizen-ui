@@ -41,11 +41,9 @@ acceptDefendantOfferController.get(GA_ACCEPT_DEFENDANT_OFFER_URL, async (req: Ap
 
 acceptDefendantOfferController.post(GA_ACCEPT_DEFENDANT_OFFER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    console.log('BODY: ', req.body);
-     
     const acceptDefendantOffer = new AcceptDefendantOffer(
-      req.body.option, 
-      req.body.type, 
+      req.body.option,
+      req.body.type,
       req.body.amountPerMonth,
       req.body.reasonProposedInstalment,
       req.body.year,
@@ -53,10 +51,7 @@ acceptDefendantOfferController.post(GA_ACCEPT_DEFENDANT_OFFER_URL, (async (req: 
       req.body.day,
       req.body.reasonProposedSetDate,
     );
-    console.log('acceptDefendantOffer: ', acceptDefendantOffer);
-
     const form = new GenericForm(acceptDefendantOffer);
-    console.log('form: ', form);
     await form.validate();
     if (form.hasErrors()) {
       const claimId = req.params.id;

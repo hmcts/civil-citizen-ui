@@ -24,6 +24,8 @@ import { HearingArrangement } from 'models/generalApplication/hearingArrangement
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
+import { AcceptDefendantOffer, ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
+import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -63,6 +65,38 @@ export const saveRespondentAgreement = async (redisKey: string, respondentAgreem
         respondentAgreement,
       },
     };
+    await saveDraftClaim(redisKey, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveAcceptDefendantOffer = async (redisKey: string, acceptDefendantOffer: AcceptDefendantOffer): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(redisKey);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.response = Object.assign(new GaResponse(), claim.generalApplication.response);
+    if (acceptDefendantOffer.option === YesNo.YES) {
+      delete acceptDefendantOffer.type;
+      delete acceptDefendantOffer.amountPerMonth;
+      delete acceptDefendantOffer.reasonProposedInstalment;
+      delete acceptDefendantOffer.day;
+      delete acceptDefendantOffer.month;
+      delete acceptDefendantOffer.year;
+      delete acceptDefendantOffer.reasonProposedSetDate;
+    } else {
+      if (acceptDefendantOffer.type === ProposedPaymentPlanOption.ACCEPT_INSTALMENTS) {
+        delete acceptDefendantOffer.day;
+        delete acceptDefendantOffer.month;
+        delete acceptDefendantOffer.year;
+        delete acceptDefendantOffer.reasonProposedSetDate;
+      } else {
+        delete acceptDefendantOffer.amountPerMonth;
+        delete acceptDefendantOffer.reasonProposedInstalment;
+      }
+    }
+    claim.generalApplication.response.acceptDefendantOffer = Object.assign(new AcceptDefendantOffer(), acceptDefendantOffer);
     await saveDraftClaim(redisKey, claim);
   } catch (error) {
     logger.error(error);
@@ -221,3 +255,4 @@ export const saveHearingContactDetails = async (claimId: string, hearingContactD
     throw error;
   }
 };
+

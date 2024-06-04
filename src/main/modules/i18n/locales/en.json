@@ -2069,7 +2069,6 @@
       "ACCEPT_DEFENDANT_OFFER": {
         "TITLE": "Do you accept the defendant's offer?",
         "THE_COURT": "The court will make an order for the payment that was suggested by the defendant.",
-        "N245_X": "The defendant's offer will be set out in the <a href='{{ formN245Url }}'>N245 form</a> that they completed. You should read this before responding.",
         "N245_BEFORE": "The defendant's offer will be set out in the ",
         "N245": "N245 form",
         "N245_AFTER": " that they completed. You should read this before responding.",

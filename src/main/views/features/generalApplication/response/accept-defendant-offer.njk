@@ -10,6 +10,7 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% import "external-urls.njk" as externalURLs %}
 
 {% block nestedContent %}
 
@@ -59,15 +60,12 @@
       inputmode: "numeric",
       hint: {
         text: t('COMMON.DATE_EXAMPLE', {
-          date: today.getDate() + ' ' + (today.getMonth() + 1) + ' ' + (today.getFullYear())
+          date: today.getDate() + ' ' + (today.getMonth() + 2) + ' ' + (today.getFullYear())
         })
       },
       errorMessage: {
-        html: '<p class="govuk-error-message">' + t(form.errorFor('proposedSetDate')) + '</p>' +
-        '<p class="govuk-error-message">' + t(form.errorFor('day')) + '</p>' +
-        '<p class="govuk-error-message">' + t(form.errorFor('month')) + '</p>' +
-        '<p class="govuk-error-message">' + t(form.errorFor('year')) + '</p>'
-      } if (form.hasFieldError('proposedSetDate') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year')),
+        html: '<p class="govuk-error-message">' + t(form.errorFor('proposedSetDate')) + '</p>'
+      } if (form.hasFieldError('proposedSetDate')),
       items: [
         {
           classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
@@ -154,31 +152,6 @@
       {{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245_AFTER') }}
     </p>
     {{ yesNoRadioButton(t, 'option', 'option', null, form, null, {yesHtml: yesHtml, noHtml: noHtml}) }}
-    {# {{ govukRadios({
-      idPrefix: "acceptDefendantOffer",
-      name: "option",
-      items: [
-        {
-          value: YesNo.YES,
-          checked: true if form.model.option=="yes" else false,
-          html: "<span>" + t('COMMON.VARIATION.YES') + "</span>",
-          conditional:{
-            html: yesHtml
-          }
-        },
-        {
-          value: YesNo.NO,
-          checked: true if form.model.option=="no" else false,
-          html: "<span>" + t('COMMON.VARIATION.NO') + "</span>",
-          conditional:{
-            html: noHtml
-          }
-        }
-      ],
-      errorMessage: {
-        html: t(form.errorFor('option'))
-      } if form.hasFieldError('option')
-    }) }} #}
     <div class="govuk-button-group">
         {{ addButton(t, 'CONTINUE', cancelUrl) }}
     </div>
