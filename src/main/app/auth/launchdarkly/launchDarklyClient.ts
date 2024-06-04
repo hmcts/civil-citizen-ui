@@ -61,3 +61,7 @@ export async function isCARMEnabled(): Promise<boolean> {
 export async function isGaForLipsEnabled(): Promise<boolean> {
   return await getFlagValue('GaForLips') as boolean;
 }
+
+export async function isMintiEnabled(): Promise<boolean> {
+  return await getFlagValue('minti') as boolean;
+}
