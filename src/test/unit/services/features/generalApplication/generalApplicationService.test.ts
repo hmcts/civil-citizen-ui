@@ -1,33 +1,35 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {
-  getByIndex,
-  getByIndexOrLast,
   getCancelUrl,
   saveAgreementFromOtherParty,
   saveApplicationCosts,
   saveApplicationType,
-  saveHearingArrangement,
-  saveHearingContactDetails,
   saveHearingSupport,
   saveRequestingReason,
   saveRespondentAgreement,
+  saveHearingArrangement,
+  saveHearingContactDetails,
   saveUnavailableDates,
+  getByIndexOrLast,
+  getByIndex,
   updateByIndexOrAppend,
+  validateAdditionalApplicationtType,
 } from 'services/features/generalApplication/generalApplicationService';
-import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {YesNo} from 'common/form/models/yesNo';
-import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
-import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
-import {CaseRole} from 'common/form/models/caseRoles';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
-import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
-import {RequestingReason} from 'models/generalApplication/requestingReason';
-import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
-import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
-import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
-import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
+import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
+import { TestMessages } from '../../../../utils/errorMessageTestConstants';
+import { YesNo } from 'common/form/models/yesNo';
+import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
+import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import { CaseRole } from 'common/form/models/caseRoles';
+import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
+import { HearingSupport, SupportType } from 'models/generalApplication/hearingSupport';
+import { RequestingReason } from 'models/generalApplication/requestingReason';
+import { HearingArrangement, HearingTypeOptions } from 'models/generalApplication/hearingArrangement';
+import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
+import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
+import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
+import { ValidationError } from 'class-validator';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -444,6 +446,29 @@ describe('General Application service', () => {
       // Then
       claim.generalApplication.response = { respondentAgreement };
       await expect(spy).toBeCalledWith('123', claim);
+    });
+  });
+
+  describe('Validate additional application type', () => {
+    it('should return error message if additional application type is in excluded list', () => {
+
+      //Given
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM)];
+      const errors : ValidationError[] = [];
+      const applicationType = new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT);
+      const body = {
+        optionOther: 'test',
+        option: 'testOption',
+      };
+      //When
+      validateAdditionalApplicationtType(claim, errors, applicationType,body);
+
+      //Then
+      const error : ValidationError = errors[0];
+      expect(errors.length).toBe(1);
+      expect(error.constraints['additionalApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING');
     });
   });
 });
