@@ -35,7 +35,7 @@ hearingDurationController.get(TRIAL_ARRANGEMENTS_HEARING_DURATION, (async (req, 
     const form = new GenericForm(getOtherInformationForm(claim));
     const cancelUrl = constructResponseUrlWithIdParams(claimId, CANCEL_TRIAL_ARRANGEMENTS);
     res.render(hearingDurationViewPath, {form: form,
-      hearingDurationContents: getHearingDurationAndOtherInformation(claimId, claim, lng),
+      hearingDurationContents: getHearingDurationAndOtherInformation(claimId,claim, lng),
       backLinkUrl, cancelUrl});
   } catch (error) {
     next(error);

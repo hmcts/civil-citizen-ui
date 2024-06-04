@@ -5,10 +5,9 @@ const partAdmitSmallClaims = require('./partAdmitSmallClaimsDefendantResponse');
 const partAdmitFastTrack = require('./partAdmitFastTrackDefendantResponse');
 const rejectAllSmallClaims = require('./rejectAllSmallClaimsDefendantResponse');
 const rejectAllFastTrack = require('./rejectAllFastTrackDefendantResponse');
-const rejectAllSmallClaimsCarm = require('./defendantResponseCarm');
 
 module.exports = {
-  createDefendantResponse: (totalClaimAmount, responseType, claimType, partyType) => {
+  createDefendantResponse: (totalClaimAmount, responseType, claimType) => {
     switch (responseType) {
       case config.defenceType.admitAllPayImmediateWithIndividual:
         return admitAllDefendantResponse.admitAllPayImmediateWithIndividual(totalClaimAmount);
@@ -57,16 +56,6 @@ module.exports = {
           return rejectAllFastTrack.rejectAllAlreadypaidInFullWithIndividual(totalClaimAmount);
         } else {
           return rejectAllSmallClaims.rejectAllAlreadypaidInFullWithIndividual(totalClaimAmount);
-        }
-      case config.defenceType.rejectAllSmallClaimsCarm:
-        if (partyType === 'DefendantCompany') {
-          return rejectAllSmallClaimsCarm.citizenDefendantResponseCarmCompany(totalClaimAmount);
-        } else if (partyType === 'DefendantSoleTrader') {
-          return rejectAllSmallClaimsCarm.citizenDefendantResponseCarmSoleTrader(totalClaimAmount);
-        } else if (partyType === 'DefendantOrganisation') {
-          return rejectAllSmallClaimsCarm.citizenDefendantResponseCarmOrganisation(totalClaimAmount);
-        } else if (partyType === 'SoleTraderVCompany') {
-          return rejectAllSmallClaimsCarm.LrDefendantResponseCarmCompany(totalClaimAmount);
         }
     }
   },

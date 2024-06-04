@@ -1,5 +1,6 @@
 import {FinaliseYourTrialSectionBuilder} from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
+import {t} from 'i18next';
 
 describe('FinaliseYourTrialSectionBuilder tests', ()=> {
   it('should create mainTitle', ()=> {
@@ -38,6 +39,25 @@ describe('FinaliseYourTrialSectionBuilder tests', ()=> {
 
     //Then
     expect(leadParagraphBuilt).toEqual([leadParagraphExpected]);
+  });
+
+  it('should add Inset Text', ()=> {
+    //Given
+    const insetTextExpected = ({
+      type: ClaimSummaryType.INSET_TEXT,
+      data: {
+        html: '<STRONG>'+ t('text') +'</STRONG>' + t('text1') +'<P>' + t('text2') +'</P>',
+        variables: 'variables',
+      },
+    });
+
+    //When
+    const insetTextBuilt = new FinaliseYourTrialSectionBuilder()
+      .addCustomInsetText('text', 'text1', 'text2', 'variables')
+      .build();
+
+    //Then
+    expect(insetTextBuilt).toEqual([insetTextExpected]);
   });
 
   it('should add warning text', ()=> {

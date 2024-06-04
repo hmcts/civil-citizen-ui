@@ -8,6 +8,9 @@
 {% set pageTitle = t('TITLE') %}
 
 {% block nestedContent %}
+    {% if form.hasErrors() %}
+    {{ errorSummary(form.getAllErrors(), t) }}
+    {% endif %}
          <form method="post" novalidate>
           {{ csrfProtection(csrf) }}
            {% for content in typeOfDocumentsContents %}

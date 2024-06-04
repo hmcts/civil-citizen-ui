@@ -2,6 +2,7 @@
 {% from "../../dashboard/item-content.njk" import itemContent %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "../../../macro/button.njk" import addButton %}
 
@@ -20,6 +21,9 @@
 {% endblock %}
 
 {% block nestedContent %}
+      {% if form.hasErrors() %}
+        {{ errorSummary(form.getAllErrors(), t) }}
+      {% endif %}
           {% for content in isCaseReadyContents %}
             {{ itemContent(content,t) }}
           {% endfor %}
@@ -27,7 +31,7 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
 
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, yes: 'COMMON.VARIATION_4.YES', no: 'COMMON.VARIATION_4.NO', noHtml: noHtml}) }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO', noHtml: noHtml}) }}
 
       {{ addButton(t, 'CONTINUE',cancelUrl) }}
 {% endblock %}

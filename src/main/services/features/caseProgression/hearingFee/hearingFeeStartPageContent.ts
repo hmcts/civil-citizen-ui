@@ -1,22 +1,17 @@
 import {DASHBOARD_CLAIMANT_URL, HEARING_FEE_APPLY_HELP_FEE_SELECTION} from 'routes/urls';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {caseNumberPrettify} from 'common/utils/stringUtils';
-import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
-import {t} from 'i18next';
-export const getHearingFeeStartPageContent = (claimId: string, lng:string, totalClaimAmount:number,hearingFeeInformation: HearingFeeInformation) => {
+export const getHearingFeeStartPageContent = (claimId: string, lang:string, hearingFeeInformation: HearingFeeInformation) => {
 
   const nextPageUrl = HEARING_FEE_APPLY_HELP_FEE_SELECTION.replace(':id', claimId);
   const dashBoardClaimantUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
   return new PageSectionBuilder()
-    .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
+    .addMicroText('COMMON.MICRO_TEXT.HEARING_FEE')
     .addMainTitle('PAGES.PAY_HEARING_FEE.START_PAGE.TITLE')
-    .addLeadParagraph('COMMON.CASE_NUMBER', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
-    .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(totalClaimAmount)})
-    .addParagraph(t('PAGES.PAY_HEARING_FEE.START_PAGE.YOU_MUST_PAY',{lng}), {
+    .addParagraph('PAGES.PAY_HEARING_FEE.START_PAGE.YOU_MUST_PAY', {
       hearingFee: hearingFeeInformation.getHearingFeeFormatted(),
-      hearingDueDate:hearingFeeInformation.getHearingDueDateFormatted(lng),
+      hearingDueDate:hearingFeeInformation.getHearingDueDateFormatted(lang),
     })
-    .addParagraph(t('PAGES.PAY_HEARING_FEE.START_PAGE.IF_YOU_DO_NOT_PAY', {lng}))
+    .addParagraph('PAGES.PAY_HEARING_FEE.START_PAGE.IF_YOU_DO_NOT_PAY')
     .addButtonWithCancelLink('COMMON.BUTTONS.START_NOW', nextPageUrl,true, dashBoardClaimantUrl).build();
 };

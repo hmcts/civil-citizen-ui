@@ -1,12 +1,11 @@
-import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
-import { APPLICATION_TYPE_URL } from 'routes/urls';
-import { GenericForm } from 'common/form/models/genericForm';
-import { AppRequest } from 'common/models/AppRequest';
-import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
-import { getByIndex, saveApplicationType, validateAdditionalApplicationtType } from 'services/features/generalApplication/generalApplicationService';
-import { generateRedisKey } from 'modules/draft-store/draftStoreService';
-import { getClaimById } from 'modules/utilityService';
-import { queryParamNumber } from 'common/utils/requestUtils';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {APPLICATION_TYPE_URL} from 'routes/urls';
+import {GenericForm} from 'common/form/models/genericForm';
+import {AppRequest} from 'common/models/AppRequest';
+import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {saveApplicationType} from 'services/features/generalApplication/generalApplicationService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
@@ -17,9 +16,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const applicationIndex = queryParamNumber(req, 'index');
-    const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
-    const applicationType = new ApplicationType(applicationTypeOption);
+    const applicationType = new ApplicationType(claim.generalApplication?.applicationType?.option);
     const form = new GenericForm(applicationType);
     res.render(viewPath, {
       form,
@@ -35,10 +32,8 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
 applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
-    const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req, true);
     let applicationType = null;
-
+    
     if (req.body.option === ApplicationTypeOption.OTHER) {
       applicationType = new ApplicationType(req.body.optionOther);
     } else {
@@ -46,14 +41,11 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     }
 
     const form = new GenericForm(applicationType);
-    form.validateSync();
-    validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
-
+    await form.validate();
     if (form.hasErrors()) {
-      res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() });
+      res.render(viewPath, { form, cancelUrl, backLinkUrl });
     } else {
-      const applicationIndex = queryParamNumber(req, 'index');
-      await saveApplicationType(redisKey, applicationType, applicationIndex);
+      await saveApplicationType(redisKey, applicationType);
       res.redirect('test'); // TODO: add url
     }
   } catch (error) {

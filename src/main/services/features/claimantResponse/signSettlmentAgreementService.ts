@@ -7,18 +7,11 @@ import {
   getPaymentAmount, getPaymentAmountClaimantPlan,
   getRepaymentFrequency, getRepaymentFrequencyForClaimantPlan,
 } from 'common/utils/repaymentUtils';
-import {addDaysToDate, formatDateToFullDate} from 'common/utils/dateUtils';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'common/models/claim';
 import {t} from 'i18next';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
-import config from 'config';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import {AppRequest} from 'models/AppRequest';
-import {ClaimantResponse} from 'models/claimantResponse';
-
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 export const getPaymentText = (claim: Claim, req: Request): object => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -87,20 +80,3 @@ function getTextForPayByImmediately(claim: Claim, lang: string){
     completionDate: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.COMPLETION_DATE.DATE', { finalRepaymentDate: formatDateToFullDate(paymentDate, lang) }),
   };
 }
-
-export const getRespondToSettlementAgreementDeadline = async (req: AppRequest, claim: Claim): Promise<Date> => {
-  const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
-  if (claimantResponse.isSignASettlementAgreement) {
-    if (claim.hasCourtAcceptedClaimantsPlan() && claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.IMMEDIATELY) {
-      return await getRespondentToImmediateSettlementAgreementDeadLine(req, claim);
-    }
-    return await civilServiceClient.calculateExtendedResponseDeadline(new Date(Date.now()), 7, req);
-  }
-  return undefined;
-};
-
-export const getRespondentToImmediateSettlementAgreementDeadLine = async (req: AppRequest, claim: Claim): Promise<Date> => {
-  const localDateTime = new Date(Date.now());
-  const paymentDate = localDateTime.getHours() >= 16 ? addDaysToDate(localDateTime, 1) : localDateTime;
-  return await civilServiceClient.calculateExtendedResponseDeadline(paymentDate, 5, req);
-};

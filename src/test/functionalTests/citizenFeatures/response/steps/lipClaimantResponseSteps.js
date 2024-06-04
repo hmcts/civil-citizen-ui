@@ -15,16 +15,8 @@ class ClaimantResponseSteps {
     await claimantUpdate.respondToClaim(claimRef, notification);
   }
 
-  async StartUploadDocs() {
-    await claimantUpdate.startUploadDocs();
-  }
-
-  async ViewMediationDocs() {
-    await claimantUpdate.viewMediationDocs();
-  }
-
-  async ClickAndViewDocs() {
-    await claimantUpdate.clickAndViewDocs();
+  async StartUploadDocs(claimRef) {
+    await claimantUpdate.startUploadDocs(claimRef);
   }
 
   async verifyDefendantResponse(claimRef) {

@@ -13,11 +13,10 @@ class ApplyHelpWithFeesReferenceNumber {
     I.click(nextAction);
   }
 
-  verifyPageContent(caseNumber, claimAmount) {
+  verifyPageContent() {
     this.checkPageFullyLoaded();
     this.verifyBreadcrumbs();
     this.verifyHeadingDetails();
-    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     this.verifyPageText();
     this.verifyYesOptionContent();
     this.verifyNoOptionContent();
@@ -25,17 +24,12 @@ class ApplyHelpWithFeesReferenceNumber {
   }
 
   verifyBreadcrumbs() {
-    I.see('Back', '//a[@class="govuk-back-link"]');
+    I.see('Back', '//*[@id="main-content"]/div/main/div/div[1]/div[1]/a');
   }
 
   verifyHeadingDetails() {
-    I.see('Hearing', 'span');
+    I.see('Hearing fee', 'span');
     I.see('Help with fees', 'h1');
-  }
-
-  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    // I.see('Case number: ' + caseNumber, 'p');
-    I.see('Claim amount: ' + claimAmount, 'p');
   }
 
   verifyPageText() {
@@ -57,7 +51,7 @@ class ApplyHelpWithFeesReferenceNumber {
     I.see('You must apply for help with fees before submitting your application.');
     I.see('Go to');
     I.see('apply for help with fees (opens in a new tab).', '[href=\'https://www.gov.uk/get-help-with-court-fees\']');
-    I.see('When you are asked to enter a court or tribunal number, enter \'hearing fee\' followed by short explanation, for example \'hearing fee for small claims\' or \'hearing fee for fast track\'.');
+    I.see('When you are asked to enter a court or tribunal number, enter \'hearing fee\' followed by short explanation, for example \'hearing fee for small claims\' or \'hearing fee for fast track.');
     I.see('Complete the help with fees application.');
     I.see('Return here to your online money claims account.');
     I.see('Complete the hearing fee payment by entering your help with fees reference number.');

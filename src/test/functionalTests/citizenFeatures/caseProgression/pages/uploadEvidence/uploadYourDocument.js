@@ -5,264 +5,19 @@ const I = actor();
 const contactUs = new ContactUs();
 
 //const stringUtils = new StringUtilsComponent();
-let language = 'en';
-
-const content = {
-  title: {
-    en: 'Upload documents',
-    cy: 'Uwchlwytho dogfennau',
-  },
-  day: {
-    en: 'Day',
-    cy: 'Diwrnod',
-  },
-  month: {
-    en: 'Month',
-    cy: 'Mis',
-  },
-  year: {
-    en: 'Year',
-    cy: 'Blwyddyn',
-  },
-  uploadFile: {
-    en: 'Upload a file',
-    cy: 'Uwchlwytho ffeil',
-  },
-  acceptableDocuments: {
-    title: {
-      en: 'Acceptable documents formats',
-      cy: 'Fformatau derbyniol ar gyfer cyflwyno dogfennau',
-    },
-    hint: {
-      en: 'Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.',
-      cy: 'Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho\'r mathau canlynol o ffeiliau: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.',
-    },
-  },
-  disclosure: {
-    title: {
-      en: 'Disclosure',
-      cy: 'Datgelu',
-    },
-    documents: {
-      title: {
-        en: 'Documents for disclosure',
-        cy: 'Dogfennau i’w datgelu',
-      },
-      documentType: {
-        en: 'Type of document',
-        cy: 'Math o ddogfen',
-      },
-      documentTypeHint: {
-        en: 'For example, contract, invoice, receipt, email, text message, photo, social media message',
-        cy: 'Er enghraifft, contract, anfoneb, derbynneb, neges e-bost, neges testun, llun, neges ar gyfryngau cymdeithasol',
-      },
-      dateTitle: {
-        en: 'Date document was issued or message was sent',
-        cy: 'Dyddiad cyhoeddi’r ddogfen neu ddyddiad anfon y neges',
-      },
-      dateHint: {
-        en: 'For example, 27 9 2022',
-        cy: 'Er enghraifft, 27 9 2022',
-      },
-    },
-    list: {
-      title: {
-        en: 'Disclosure list',
-        cy: 'Rhestr ddatgelu',
-      },
-    },
-  },
-  witness: {
-    title: {
-      en: 'Witness evidence',
-      cy: 'Tystiolaeth tyst',
-    },
-    witnessName: {
-      en: 'Witness\'s name',
-      cy: 'Enw’r tyst',
-    },
-    statement: {
-      title: {
-        en: 'Witness statement',
-        cy: 'Datganiad tyst',
-      },
-      dateTitle: {
-        en: 'Date statement was written',
-        cy: 'Dyddiad ysgrifennu’r datganiad',
-      },
-    },
-    summary: {
-      title: {
-        en: 'Witness summary',
-        cy: 'Crynodeb tyst',
-      },
-      dateTitle: {
-        en: 'Date summary was written',
-        cy: 'Dyddiad ysgrifennu’r crynodeb',
-      },
-    },
-    noticeIntention: {
-      title: {
-        en: 'Notice of intention to rely on hearsay evidence',
-        cy: 'Hysbysiad o’r bwriad i ddibynnu ar dystiolaeth achlust',
-      },
-    },
-    documentsReferred: {
-      title:  {
-        en: 'Documents referred to in the statement',
-        cy: 'Dogfennau y cyfeirir atynt yn y datganiad',
-      },
-      dateTitle: {
-        en: 'Date document was issued or message was sent',
-        cy: 'Dyddiad cyhoeddi’r ddogfen neu ddyddiad anfon y neges',
-      },
-    },
-  },
-  expert: {
-    title: {
-      en: 'Expert evidence',
-      cy: 'Tystiolaeth arbenigol',
-    },
-    report: {
-      title: {
-        en: 'Expert\'s report',
-        cy: 'Adroddiad yr arbenigwr',
-      },
-      name: {
-        en: 'Expert\'s name',
-        cy: 'Enw’r arbenigwr',
-      },
-      expertise: {
-        en: 'Field of expertise',
-        cy: 'Maes arbenigedd',
-      },
-      dateTitle: {
-        en: 'Date report was written',
-        cy: 'Dyddiad ysgrifennu’r adroddiad',
-      },
-      dateTitleHint: {
-        en: 'For example, 27 9 2022',
-        cy: 'Er enghraifft, 27 9 2022',
-      },
-    },
-    jointStatement: {
-      title: {
-        en: 'Joint statement of experts',
-        cy: 'Datganiad ar y cyd yr arbenigwyr',
-      },
-      names: {
-        en: 'Experts\' names',
-        cy: 'Enwau’r arbenigwyr',
-      },
-      expertise: {
-        en: 'Field of expertise',
-        cy: 'Maes arbenigedd',
-      },
-      dateTitle: {
-        en: 'Date statement was written',
-        cy: 'Dyddiad ysgrifennu’r datganiad',
-      },
-    },
-    questions: {
-      title: {
-        en: 'Questions for other party\'s expert or joint expert',
-        cy: 'Cwestiynau i arbenigwr y parti arall neu gyd-arbenigwyr',
-      },
-      partyName: {
-        en: 'Other party\'s name',
-        cy: 'Enw’r parti arall',
-      },
-      documentName: {
-        en: 'Name of document you have questions about',
-        cy: 'Enw’r ddogfen y mae gennych gwestiynau amdani',
-      },
-    },
-    answers: {
-      title: {
-        en: 'Answers to questions asked by other party',
-        cy: 'Atebion i’r cwestiynau a ofynnwyd gan y parti arall',
-      },
-      documentName: {
-        en: 'Name of document with other party\'s questions',
-        cy: 'Enw’r ddogfen gyda chwestiynau’r parti arall',
-      },
-    },
-  },
-  trial: {
-    title: {
-      en: 'Trial documents',
-      cy: 'Dogfennau’r treial',
-    },
-    summary: {
-      en: 'Case summary',
-      cy: 'Crynodeb o’r achos',
-    },
-    authority: {
-      en: 'Legal authorities',
-      cy: 'Awdurdodau cyfreithiol',
-    },
-    skeleton: {
-      en: 'Skeleton argument',
-      cy: 'Dadl fframwaith',
-    },
-    costs: {
-      en: 'Costs',
-      cy: 'Costau',
-    },
-    documentaryEvidence: {
-      en: 'Documentary evidence for trial',
-      cy: 'Tystiolaeth ddogfennol ar gyfer y treial',
-    },
-  },
-  hearing: {
-    title: {
-      en: 'Hearing documents',
-      cy: 'Dogfennau’r gwrandawiad',
-    },
-    documentaryEvidence: {
-      title: {
-        en: 'Documentary evidence for the hearing',
-        cy: 'Tystiolaeth ddogfennol ar gyfer y gwrandawiad',
-      },
-      documentType: {
-        en: 'Type of document',
-        cy: 'Math o ddogfen',
-      },
-      documentTypeHint: {
-        en: 'For example, contract, invoice, receipt, email, text message, photo, social media message',
-        cy: 'Er enghraifft, contract, anfoneb, derbynneb, neges e-bost, neges testun, llun, neges ar gyfryngau cymdeithasol',
-      },
-      dateTitle: {
-        en: 'Date document was issued or message was sent',
-        cy: 'Dyddiad cyhoeddi’r ddogfen neu ddyddiad anfon y neges',
-      },
-    },
-    authorities: {
-      en: 'Legal authorities',
-      cy: 'Awdurdodau cyfreithiol',
-    },
-  },
-  buttons: {
-    cancel: {
-      en: 'Cancel',
-      cy: 'Canslo',
-    },
-  },
-};
 
 class UploadYourDocument {
 
-  checkPageFullyLoaded(languageChosen = 'en') {
-    language = languageChosen;
-    I.waitForElement(`//a[.='${content.buttons.cancel[language]}']`);
+  checkPageFullyLoaded() {
+    I.waitForElement('//a[.=\'Cancel\']');
   }
 
   nextAction(nextAction) {
     I.click(nextAction);
   }
 
-  verifyPageContent(claimType, languageChosen = 'en') {
-    this.checkPageFullyLoaded(languageChosen);
+  verifyPageContent(claimType) {
+    this.checkPageFullyLoaded();
     this.verifyHeadingDetails();
     this.verifyAcceptableDocumentsFormatsSectionContent();
     if (claimType === 'FastTrack') {
@@ -270,16 +25,16 @@ class UploadYourDocument {
     } else if (claimType === 'SmallClaims') {
       this.verifyAllSmallClaimsSectionContent(claimType);
     }
-    contactUs.verifyContactUs(language);
+    contactUs.verifyContactUs();
   }
 
   verifyHeadingDetails() {
-    I.see(content.title[language], 'h1');
+    I.see('Upload documents', 'h1');
   }
 
   verifyAcceptableDocumentsFormatsSectionContent() {
-    I.see(content.acceptableDocuments.title[language], 'h2');
-    I.see(content.acceptableDocuments.hint[language]);
+    I.see('Acceptable documents formats', 'h2');
+    I.see('Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.');
   }
 
   verifyAllFastTrackSectionContent(claimType) {
@@ -296,84 +51,84 @@ class UploadYourDocument {
   }
 
   verifyDisclosureSectionContent() {
-    I.see(content.disclosure.title[language], 'h2');
-    I.see(content.disclosure.documents.title[language], 'h3');
-    I.see(content.disclosure.documents.documentType[language]);
-    I.see(content.disclosure.documents.documentTypeHint[language]);
-    I.see(content.disclosure.documents.dateTitle[language]);
-    I.see(content.disclosure.documents.dateHint[language]);
-    I.see(content.day[language]);
-    I.see(content.month[language]);
-    I.see(content.year[language]);
-    I.see(content.uploadFile[language]);
-    I.see(content.disclosure.list.title[language]);
+    I.see('Disclosure', 'h2');
+    I.see('Documents for disclosure', 'h3');
+    I.see('Type of document');
+    I.see('For example, contract, invoice, receipt, email, text message, photo, social media message');
+    I.see('Date document was issued or message was sent');
+    I.see('For example, 27 9 2022');
+    I.see('Day');
+    I.see('Month');
+    I.see('Year');
+    I.see('Upload a file');
+    I.see('Disclosure list');
   }
 
   verifyWitnessSectionContent(claimType) {
-    I.see(content.witness.title[language], 'h2');
-    I.see(content.witness.statement.title[language], 'h3');
-    I.see(content.witness.witnessName[language]);
-    I.see(content.witness.statement.dateTitle[language]);
-    I.see(content.witness.summary.title[language]);
-    I.see(content.witness.witnessName[language]);
-    I.see(content.witness.summary.dateTitle[language]);
+    I.see('Witness evidence', 'h2');
+    I.see('Witness statement', 'h3');
+    I.see('Witness\'s name');
+    I.see('Date statement was written');
+    I.see('Witness summary');
+    I.see('Witness\'s name');
+    I.see('Date summary was written');
     if (claimType === 'FastTrack') {
-      I.see(content.witness.noticeIntention.title[language]);
+      I.see('Notice of intention to rely on hearsay evidence');
     }
-    I.see(content.witness.documentsReferred.title[language]);
-    I.see(content.witness.documentsReferred.dateTitle[language]);
+    I.see('Documents referred to in the statement');
+    I.see('Date document was issued or message was sent');
   }
 
   verifyExpertSectionContentForFastTrack() {
-    I.see(content.expert.title[language], 'h2');
-    I.see(content.expert.report.title[language], 'h3');
-    I.see(content.expert.report.name[language]);
-    I.see(content.expert.report.expertise[language]);
-    I.see(content.expert.report.dateTitle[language]);
-    I.see(content.expert.jointStatement.title[language]);
-    I.see(content.expert.jointStatement.names[language]);
-    I.see(content.expert.jointStatement.expertise[language]);
-    I.see(content.expert.jointStatement.dateTitle[language]);
-    I.see(content.expert.questions.title[language]);
-    I.see(content.expert.questions.partyName[language]);
-    I.see(content.expert.questions.documentName[language]);
-    I.see(content.expert.answers.title[language], 'h3');
-    I.see(content.expert.answers.documentName[language]);
+    I.see('Expert evidence', 'h2');
+    I.see('Expert\'s report', 'h3');
+    I.see('Expert\'s name');
+    I.see('Field of expertise');
+    I.see('Date report was written');
+    I.see('Joint statement of experts');
+    I.see('Experts\' names');
+    I.see('Field of expertise');
+    I.see('Date statement was written');
+    I.see('Questions for other party\'s expert or joint expert');
+    I.see('Other party\'s name');
+    I.see('Name of document you have questions about');
+    I.see('Answers to questions asked by other party', 'h3');
+    I.see('Name of document with other party\'s questions');
   }
 
   verifyExpertSectionContentForSmallClaims() {
-    I.see(content.expert.title[language], 'h2');
-    I.see(content.expert.report.title[language], 'h3');
-    I.see(content.expert.report.name[language]);
-    I.see(content.expert.report.expertise[language]);
-    I.see(content.expert.report.dateTitle[language]);
-    I.see(content.expert.report.dateTitleHint[language]);
-    I.see(content.day[language]);
-    I.see(content.month[language]);
-    I.see(content.year[language]);
-    I.see(content.uploadFile[language]);
-    I.see(content.expert.jointStatement.title[language]);
-    I.see(content.expert.jointStatement.names[language]);
-    I.see(content.expert.jointStatement.expertise[language]);
-    I.see(content.expert.jointStatement.dateTitle[language]);
+    I.see('Expert evidence', 'h2');
+    I.see('Expert\'s report', 'h3');
+    I.see('Expert\'s name');
+    I.see('Field of expertise');
+    I.see('Date report was written');
+    I.see('For example, 27 9 2022');
+    I.see('Day');
+    I.see('Month');
+    I.see('Year');
+    I.see('Upload a file');
+    I.see('Joint statement of experts');
+    I.see('Experts\' names');
+    I.see('Field of expertise');
+    I.see('Date statement was written');
   }
 
   verifyTrialDocumentsSectionContent() {
-    I.see(content.trial.title[language], 'h2');
-    I.see(content.trial.summary[language], 'h3');
-    I.see(content.trial.skeleton[language], 'h3');
-    I.see(content.trial.authority[language], 'h3');
-    I.see(content.trial.costs[language], 'h3');
-    I.see(content.trial.documentaryEvidence[language], 'h3');
+    I.see('Trial documents', 'h2');
+    I.see('Case summary', 'h3');
+    I.see('Skeleton argument', 'h3');
+    I.see('Legal authorities', 'h3');
+    I.see('Costs', 'h3');
+    I.see('Documentary evidence for trial', 'h3');
   }
 
   verifyHearingDocumentsSectionContent() {
-    I.see(content.hearing.title[language], 'h2');
-    I.see(content.hearing.documentaryEvidence.title[language], 'h3');
-    I.see(content.hearing.documentaryEvidence.documentType[language]);
-    I.see(content.hearing.documentaryEvidence.documentTypeHint[language]);
-    I.see(content.hearing.documentaryEvidence.dateTitle[language]);
-    I.see(content.hearing.authorities[language]);
+    I.see('Hearing documents', 'h2');
+    I.see('Documentary evidence for the hearing', 'h3');
+    I.see('Type of document');
+    I.see('For example, contract, invoice, receipt, email, text message, photo, social media message');
+    I.see('Date document was issued or message was sent');
+    I.see('Legal authorities');
   }
 
   inputDataForFastTrackSections() {

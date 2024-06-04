@@ -12,12 +12,19 @@
   {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.TITLE') }}
 {% endblock %}
 
-{% block nestedContent %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if form.hasErrors() %}
+        {{ errorSummary(form.getErrors(), t) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
           {{headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.TITLE' )}}
 
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.PAY_APPLICATION_FEE') }}</p>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.APPLICATION_FEE_AMOUNT') }}</p>
-
+         
           <h5 class="govuk-heading-s">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.GETTING_AGREEMENT') }}</h5>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.GETTING_AGREEMENT_PARA_1') }}</p>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.GETTING_AGREEMENT_PARA_2') }}</p>
@@ -41,4 +48,11 @@
               <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </div>
           </form>
+        </div>
+        <div class="govuk-grid-column-one-third">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
 {% endblock %}

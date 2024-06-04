@@ -7,9 +7,4 @@ module.exports = {
       events.ADD_OR_AMEND_CLAIM_DOCUMENTS,
     ],
   },
-  defendant_solicitor: {
-    AWAITING_RESPONDENT_ACKNOWLEDGEMENT: [
-      events.DEFENDANT_RESPONSE_SPEC,
-    ],
-  },
 };

@@ -7,7 +7,6 @@ import {claimantResponseConfirmationGuard} from 'routes/guards/claimantResponseC
 import {AppRequest} from 'common/models/AppRequest';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
-import {getRespondToSettlementAgreementDeadline} from 'services/features/claimantResponse/signSettlmentAgreementService';
 
 const claimantResponseConfirmationController = Router();
 
@@ -17,8 +16,7 @@ claimantResponseConfirmationController.get(CLAIMANT_RESPONSE_CONFIRMATION_URL, c
     await deleteDraftClaimFromStore(generateRedisKey(req));
     const claim = await getClaimById(req.params.id, req, true);
     const carmApplicable = await isCarmEnabledForCase(claim.submittedDate);
-    const respondToSettlementAgreementDeadLine = await getRespondToSettlementAgreementDeadline(req, claim);
-    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, getLng(lang), carmApplicable, respondToSettlementAgreementDeadLine);
+    const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, getLng(lang), carmApplicable);
     res.render('features/claimantResponse/claimant-response-confirmation', {
       claimantResponseConfirmationContent,
     });

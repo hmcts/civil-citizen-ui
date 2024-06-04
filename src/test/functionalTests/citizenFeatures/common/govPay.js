@@ -2,8 +2,9 @@ const I = actor();
 
 class GovPay {
 
-  async addValidCardDetails(feeAmount) {
-    I.waitForContent(feeAmount, 60);
+  addValidCardDetails(feeAmount) {
+    I.waitForElement('//*[@id="submit-card-details"]');
+    I.see(feeAmount);
     I.fillField('//*[@id="card-no"]', '4444333322221111');
     I.fillField('//*[@id="expiry-month"]', '12');
     I.fillField('//*[@id="expiry-year"]', '32');
@@ -13,7 +14,7 @@ class GovPay {
     I.fillField('//*[@id="address-city"]', 'London');
     I.fillField('//*[@id="address-postcode"]', 'N65BQ');
     I.fillField('//*[@id="email"]', 'test@mailinator.com');
-    await I.click('Continue');
+    I.click('Continue');
   }
 
   confirmPayment() {

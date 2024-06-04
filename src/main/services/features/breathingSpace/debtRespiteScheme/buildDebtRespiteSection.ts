@@ -17,10 +17,10 @@ const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: 
 export const buildDebtRespiteSection = (breathingSpace: BreathingSpace, claimId: string, lang: string ): SummarySection => {
   const lng = getLng(lang);
   const referenceNumber = breathingSpace?.debtRespiteReferenceNumber?.referenceNumber;
-  const debtRespiteStartDate = (breathingSpace?.debtRespiteStartDate?.date)? formatDateToFullDate(breathingSpace?.debtRespiteStartDate?.date, lng):'';
-  const debtRespiteEndDate = (breathingSpace.debtRespiteEndDate?.date)? formatDateToFullDate(breathingSpace?.debtRespiteEndDate?.date, lng):'';
+  const debtRespiteStartDate = (breathingSpace?.debtRespiteStartDate?.date)? formatDateToFullDate(breathingSpace?.debtRespiteStartDate?.date):'';
+  const debtRespiteEndDate = (breathingSpace.debtRespiteEndDate?.date)? formatDateToFullDate(breathingSpace?.debtRespiteEndDate?.date):'';
   const debtRespiteOption = (breathingSpace?.debtRespiteOption?.type === DebtRespiteOptionType.STANDARD )?
-    t('PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE.STANDARD',  { lng }) :t('PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE.MENTAL_HEALTH',  { lng });
+    t('PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE.STANDARD') :t('PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE.MENTAL_HEALTH');
 
   return summarySection({
     title: '',

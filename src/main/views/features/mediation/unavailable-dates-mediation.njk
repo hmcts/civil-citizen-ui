@@ -40,9 +40,9 @@
                     {{ csrfProtection(csrf) }}
 
                     {% for unavailableDate in form.model.items %}
-                      {{ unavailableDateRow(unavailableDate, none, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today, true) }}
+                      {{ unavailableDateRow(unavailableDate, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today, true) }}
                     {% else %}
-                      {{ unavailableDateRow(unavailableDate, none, 0, form.errorFor, t, {hidden:true}, today, true) }}
+                      {{ unavailableDateRow(unavailableDate, 0, form.errorFor, t, {hidden:true}, today, true) }}
                     {% endfor %}
 
                     <div class="govuk-!-margin-top-6">

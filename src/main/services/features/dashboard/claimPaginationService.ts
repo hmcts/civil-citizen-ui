@@ -13,7 +13,6 @@ function buildPaginationListArgs(totalPages: number, currentPage: number, lang: 
   for (let i = 1; i <= totalPages; i++) {
     items.push({
       number: i,
-      visuallyHiddenText: `${t(buildVisualText(page), { lng: lang, pageNo: i })}`,
       current: currentPage === i,
       href: otherPages ? `${DASHBOARD_URL}?lang=${lang}&${page}=${i}&${otherPages}` : `${DASHBOARD_URL}?lang=${lang}&${page}=${i}`,
     });
@@ -30,11 +29,3 @@ function buildPaginationListArgs(totalPages: number, currentPage: number, lang: 
     items,
   };
 }
-
-const buildVisualText = (pageName: string): string => {
-  if (pageName === 'defendantPage') {
-    return 'PAGES.DASHBOARD.CLAIM_MADE_AGAINST_HIDDEN_TEXT';
-
-  }
-  return 'PAGES.DASHBOARD.CLAIMS_YOU_HAVE_MADE_HIDDEN_TEXT';
-};

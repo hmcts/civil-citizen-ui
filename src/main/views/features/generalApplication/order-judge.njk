@@ -12,9 +12,16 @@
   {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.ORDER_JUDGE.TITLE') }}
 {% endblock %}
 
-{% block nestedContent %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if form.hasErrors() %}
+        {{ errorSummary(form.getErrors(), t) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
           {{ headingWithCaption(t, applicationType, 'PAGES.GENERAL_APPLICATION.ORDER_JUDGE.TITLE') }}
-
+          
           {% for content in contentList %}
             {{ itemContent(content,t) }}
           {% endfor %}
@@ -48,4 +55,11 @@
               <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </div>
           </form>
+        </div>
+        <div class="govuk-grid-column-one-third">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
 {% endblock %}

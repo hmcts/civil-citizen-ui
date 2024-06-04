@@ -49,7 +49,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
       const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
-      const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest, lang);
+      const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest, isCarmApplicable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(lang);

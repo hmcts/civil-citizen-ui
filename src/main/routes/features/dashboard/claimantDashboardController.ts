@@ -53,7 +53,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       }
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
-      const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req, lng);
+      const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(claim, claimId, lng);

@@ -17,44 +17,32 @@ const checkYourAnswers = new CheckYourAnswers();
 const trialArrangementConfirmation = new TrialArrangementsConfirmation();
 //const noticesAndOrders =  new NoticesAndOrders();
 
-const buttons = {
-  startNow: {
-    en: 'Start now',
-    cy: 'Dechrau nawr',
-  },
-  continue: {
-    en: 'Continue',
-    cy: 'Parhau',
-  },
-  submit: {
-    en: 'Submit',
-    cy: 'Cyflwyno',
-  },
-};
-
 class TrialArrangementSteps {
 
-  initiateTrialArrangementJourney(claimRef, claimType, readyForTrial, partyType, language = 'en') {
+  initiateTrialArrangementJourney(claimRef, claimType, readyForTrial, partyType) {
     console.log('The value of the Claim Reference : ' + claimRef);
+    let partiesOnTheCase;
     if (partyType === 'LiPvLiP') {
+      partiesOnTheCase = 'Miss Jane Doe v Sir John Doe';
       I.amOnPage('/case/' + claimRef + '/case-progression/finalise-trial-arrangements');
     } else {
+      partiesOnTheCase = 'Test Inc v Sir John Doe';
       latestUpdateTab.open(claimRef, claimType, true, false, true);
       latestUpdateTab.nextAction('Finalise trial arrangements');
     }
-    trialArrangementsIntroduction.verifyPageContent();
-    trialArrangementsIntroduction.nextAction(buttons.startNow[language]);
-    isYourCaseReadyForTrial.verifyPageContent();
+    trialArrangementsIntroduction.verifyPageContent(partiesOnTheCase);
+    trialArrangementsIntroduction.nextAction('Start now');
+    isYourCaseReadyForTrial.verifyPageContent(partiesOnTheCase);
     isYourCaseReadyForTrial.inputDataForIsThisCaseReadyForTrialPage(readyForTrial);
-    isYourCaseReadyForTrial.nextAction(buttons.continue[language]);
-    hasAnythingChanged.verifyPageContent();
+    isYourCaseReadyForTrial.nextAction('Continue');
+    hasAnythingChanged.verifyPageContent(partiesOnTheCase);
     hasAnythingChanged.inputDataForHasAnythingChangedSection();
-    hasAnythingChanged.nextAction(buttons.continue[language]);
-    trialDuration.verifyPageContent();
+    hasAnythingChanged.nextAction('Continue');
+    trialDuration.verifyPageContent(partiesOnTheCase);
     trialDuration.inputDataForTrialDurationOtherInformation();
-    trialDuration.nextAction(buttons.continue[language]);
-    checkYourAnswers.verifyPageContent();
-    checkYourAnswers.nextAction(buttons.submit[language]);
+    trialDuration.nextAction('Continue');
+    checkYourAnswers.verifyPageContent(partiesOnTheCase);
+    checkYourAnswers.nextAction('Submit');
   }
 
   verifyTrialArrangementsMade() {

@@ -11,29 +11,15 @@ module.exports = {
       await I.amOnPage('/dashboard');
       await I.click(claimNumber);
     }
-    console.log('Title to be verified ..', title);
-    //await I.waitForContent(title);
+    await I.waitForContent(title);
     await I.waitForVisible(selectors.titleClass, 60);
     await I.waitForVisible(selectors.contentClass, 60);
     if (Array.isArray(content)) {
       for (let i = 0; i < content.length; i++) {
-        //await I.see(content[i]);
-        console.log('content to be verified ..', content[i]);
+        await I.see(content[i]);
       }
     } else {
-      //await I.see(content);
-      console.log('content to be verified ..', content);
-    }
-  },
-
-  verifyTasklistLinkAndState: async (tasklist, locator, status, isLinkFlag= false, isDeadlinePresent= false, deadline) => {
-    await I.see(tasklist, locator);
-    await I.see(status, locator);
-    if (isLinkFlag === true) {
-      I.seeElement(`//a[contains(@class, "govuk-link")][normalize-space(.)="${tasklist}"]`);
-    }
-    if (isDeadlinePresent === true) {
-      await I.see(deadline, locator);
+      await I.see(content);
     }
   },
 };

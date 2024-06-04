@@ -9,7 +9,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {Claim} from 'models/claim';
-import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -31,7 +30,7 @@ describe('Apply for help with fees', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(caseData);
-      app.request.cookies = {lang: 'en'};
+
       app.locals.draftStoreClient = mockCivilClaimHearingFee;
       await request(app)
         .get(PAY_HEARING_FEE_SUCCESSFUL_URL)
@@ -40,40 +39,8 @@ describe('Apply for help with fees', () => {
           expect(res.text).toContain('Hearing fee');
         });
     });
-    it('should return resolving successful payment page in english', async () => {
-      const caseData = Object.assign(new Claim(), claim.case_data);
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(caseData);
-      app.locals.draftStoreClient = mockCivilClaimHearingFee;
-      await request(app)
-        .get(PAY_HEARING_FEE_SUCCESSFUL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAGE_TITLE',{lng:'en'}));
-          expect(res.text).toContain(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_IS',{lng:'en'}));
-          expect(res.text).toContain(t('COMMON.MICRO_TEXT.HEARING_FEE',{lng:'cy'}));
-        });
-    });
-    it('should return resolving successful payment page in welsh', async () => {
-      const caseData = Object.assign(new Claim(), claim.case_data);
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(caseData);
-      app.request.cookies = {lang: 'cy'};
-      app.locals.draftStoreClient = mockCivilClaimHearingFee;
-      await request(app)
-        .get(PAY_HEARING_FEE_SUCCESSFUL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.CONFIRMATION',{lng:'cy'}));
-          expect(res.text).toContain(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.PAYMENT_SUMMARY',{lng:'cy'}));
-          expect(res.text).toContain(t('COMMON.MICRO_TEXT.HEARING_FEE',{lng:'cy'}));
-        });
-    });
 
     it('should return error if there is no case progression data', async () => {
-      app.request.cookies = {lang: 'en'};
       app.locals.draftStoreClient = mockCivilClaimApplicantCompanyType;
 
       spyDel.mockImplementation(() => {return null;});

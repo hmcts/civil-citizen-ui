@@ -10,7 +10,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 
 export const getSummarySections = (claimId: string, breathingSpace: BreathingSpace, lang?: string): SummarySection => {
   const lng = getLng(lang);
-  const breathingSpaceLiftedDate = breathingSpace.debtRespiteLiftDate?.date ? formatDateToFullDate(breathingSpace?.debtRespiteLiftDate?.date, lng) : '';
+  const breathingSpaceLiftedDate = breathingSpace.debtRespiteLiftDate?.date ? formatDateToFullDate(breathingSpace?.debtRespiteLiftDate?.date) : '';
   return summarySection(
     {
       title: '',

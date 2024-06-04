@@ -79,7 +79,14 @@
 
 {% endset %}
 
-{% block nestedContent %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if form.hasErrors() %}
+        {{ errorSummary(form.getErrors(), t) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-caption-l">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CAPTION') }}</h1>
           <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE') }}</h1>
 
@@ -166,4 +173,13 @@
               <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </div>
           </form>
+        </div>
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-three-thirds">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
 {% endblock %}

@@ -15,7 +15,6 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 
 import {getClaimById} from 'modules/utilityService';
-import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -62,7 +61,6 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
           claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM));
       break;
     case 'PAY_HEARING_FEE_URL':
-      await saveDraftClaim(generateRedisKey(req), claim, true);
       redirectUrl = getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), req);
       break;
     case 'VIEW_FINAL_ORDER':

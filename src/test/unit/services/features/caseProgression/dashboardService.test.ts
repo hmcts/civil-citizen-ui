@@ -170,7 +170,7 @@ describe('dashboardService', () => {
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 12345;
         //When
-        const claimantNotifications: DashboardNotificationList = await getNotifications('1234567890', claim, ClaimantOrDefendant.DEFENDANT, appReq, 'en');
+        const claimantNotifications: DashboardNotificationList = await getNotifications('1234567890', claim, ClaimantOrDefendant.DEFENDANT, appReq);
 
         //Then
         expect(claimantNotifications.items).toEqual(mockNotificationInfo);

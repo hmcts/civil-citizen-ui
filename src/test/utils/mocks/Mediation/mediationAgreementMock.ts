@@ -13,7 +13,6 @@ export const MEDIATION_AGREEMENT_MOCK = (): CivilClaimResponse => {
         'name': 'test',
         'document': MOCK_MEDIATION_AGREEMENT_DOCUMENT,
         'documentType': DocumentType.MEDIATION_AGREEMENT,
-        'documentUploadedDatetime': new Date('11-04-2024'),
       },
     };
   return civilClaimResponse;

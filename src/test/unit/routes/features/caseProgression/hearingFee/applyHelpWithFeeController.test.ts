@@ -5,7 +5,6 @@ import config from 'config';
 import {
   APPLY_HELP_WITH_FEES_REFERENCE, APPLY_HELP_WITH_FEES_START,
 } from 'routes/urls';
-import {mockCivilClaimHearingFee} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -22,13 +21,12 @@ describe('Apply for help with fees', () => {
 
   describe('on GET', () => {
     it('should return resolving apply help fees page', async () => {
-      app.locals.draftStoreClient = mockCivilClaimHearingFee;
       await request(app)
         .get(APPLY_HELP_WITH_FEES_START)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Apply for Help with Fees (open in a new window)');
-          expect(res.text).toContain('Hearing');
+          expect(res.text).toContain('Hearing fee');
           expect(res.text).toContain('Apply for help with fees');
           expect(res.text).toContain('If you already have a help with fees reference number in relation to the claim issue fee or any application fees, you should not use this reference number for this application.');
           expect(res.text).toContain('Instead, you should make a new help');

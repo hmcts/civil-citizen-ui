@@ -4,7 +4,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {getCancelUrl, getLast, saveApplicationCosts} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl, saveApplicationCosts} from 'services/features/generalApplication/generalApplicationService';
 import {selectedApplicationType} from 'models/generalApplication/applicationType';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
@@ -14,7 +14,7 @@ const viewPath = 'features/generalApplication/claim-application-cost';
 const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response): Promise<void> {
-  const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
+  const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
   const cancelUrl = await getCancelUrl(claimId, claim);
   res.render(viewPath, {
     form,

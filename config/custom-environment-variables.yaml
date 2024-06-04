@@ -41,8 +41,7 @@ services:
     courtEmailId: CIVILMONEYCLAIMS_COURT_EMAIL_ID
     welshspeaker:
       telephone: CIVILMONEYCLAIMS_WELSHSPEAKER_TELEPHONE
-  generalApplication:
-    url: CIVIL_GENERAL_APPLICATIONS_URL
+  generalApplication: CIVIL_GENERAL_APPLICATIONS_URL
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY

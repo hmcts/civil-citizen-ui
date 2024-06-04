@@ -6,7 +6,7 @@
 {% from "./macro/cookie-banner.njk" import cookieBanner %}
 {% from "./macro/back.njk" import back %}
 
-{% set bannerText = t('COMMON.HEADER.NEW_SERVICE') %}
+{% set bannerText = "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>feedback</a> will help us to improve it." %}
 {% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=en'>English</a>"%}
 {% extends "govuk/template.njk" %}
 {% block head %}
@@ -36,7 +36,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 {% block beforeContent %}
 {{ govukPhaseBanner({
         tag: {
-          text: t('COMMON.HEADER.BETA')
+          text: "beta"
         },
         html: bannerText + languageToggle
       }) }}
@@ -57,9 +57,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 {% block footer %}
 {% if developmentMode != 'production' %}
 {{ govukFooter({
-    contentLicence: {
-      html: t('FOOTER.ALL_CONTENT', { link: 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/' })
-    },
     meta: {
       items: [
         {
@@ -79,7 +76,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           text: t("FOOTER.CONTACT_US_URL")
         },
         {
-          href: urls.ACCESSIBILITY_STATEMENT_URL,
+          href: AccessibilityStatementUrl,
           text: t("FOOTER.ACCESSIBILITY_STATEMENT_URL")
         },
         {
@@ -93,9 +90,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       ]
     }
   }) }} {% else %} {{ govukFooter({
-    contentLicence: {
-      html: t('FOOTER.ALL_CONTENT', { link: 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/' })
-    },
     meta: {
       items: [
         {
@@ -115,7 +109,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           text: t("FOOTER.CONTACT_US_URL")
         },
         {
-          href: urls.ACCESSIBILITY_STATEMENT_URL,
+          href: AccessibilityStatementUrl,
           text: t("FOOTER.ACCESSIBILITY_STATEMENT_URL")
         },
         {

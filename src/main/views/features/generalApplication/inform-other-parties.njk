@@ -8,18 +8,25 @@
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
 
-{% block nestedContent %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if form.hasErrors() %}
+        {{ errorSummary(form.getErrors(), t) }}
+      {% endif %}
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
           {{ headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.INFORM_OTHER_PARTIES_HEADER' ) }}
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.COURT_SEND_OTHER_PARTIES') }}</p>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.SOME_CIRCUMSTANCES') }}</p>
           <h1 class="govuk-heading-m">{{  t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.DO_NOT_WANT_COURT') }}</h1>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.PROVIDE_A_REASON') }}</p>
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.JUDGE_ORDERS_OTHER_PARTIES') }}</p>
-
+         
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-
+            
             {% set noHtml %}
               {{ govukTextarea({
                 name: "reasonForCourtNotInformingOtherParties",
@@ -42,4 +49,11 @@
               <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </div>
           </form>
+        </div>
+      <div class="govuk-grid-column-one-third">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
 {% endblock %}

@@ -4,13 +4,13 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const ResponseToDefenceLipVsLipSteps = require('../../citizenFeatures/createClaim/steps/responseToDefenceLipvLipSteps');
 const {isDashboardServiceToggleEnabled} = require('../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../specClaimHelpers/e2e/dashboardHelper');
-const {goToHearingClaimant, goToHearingPartAdmitDefendant, judgmentRequestedClaimantDisagrees, claimantRejectPlanJudgeNewPlan} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const {goToHearingPartAdmit, judgmentRequestedClaimantDisagrees} = require('../../specClaimHelpers/dashboardNotificationConstants');
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType, caseData, claimNumber;
 
-Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track ').tag('@r2-regression').tag('@nightly');
+Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track ');
 
 Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject @citizenUI @partAdmit @nightly - @api', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -28,20 +28,14 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject 
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.claimantRejectForDefRespPartAdmitInstallmentsPayment(claimRef, '1345', 'small');
     await api.waitForFinishedBusinessProcess();
-
-    if (isDashboardServiceEnabled) {
-      const notification = goToHearingClaimant();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-    }
-
     if (isDashboardServiceEnabled) {
       await I.click('Sign out');
       await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-      const notification = goToHearingPartAdmitDefendant(1345);
+      const notification = goToHearingPartAdmit(1345);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
-});
+}).tag('@regression-r2');
 
 Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -56,7 +50,7 @@ Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject @c
     await ResponseToDefenceLipVsLipSteps.claimantRejectForDefRespPartAdmitInstallmentsPayment(claimRef, '1236', 'fast');
     await api.waitForFinishedBusinessProcess();
   }
-});
+}).tag('"regression-r2');
 
 Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept @citizenUI @partAdmit @nightly - @api', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -75,10 +69,11 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept 
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitInstallmentsPayment(claimRef, '1345', claimNumber);
     await api.waitForFinishedBusinessProcess();
 
-    if (isDashboardServiceEnabled) {
-      const notification = claimantRejectPlanJudgeNewPlan();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-    }
+    // CIV-13483 test to be put in here
+    // if (isDashboardServiceEnabled) {
+    //   const notification = ();
+    //   await verifyNotificationTitleAndContent
+    // }
 
     if (isDashboardServiceEnabled) {
       await I.click('Sign out');
@@ -87,7 +82,7 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantAccept 
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
-});
+}).tag('@regression-r2');
 
 Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantAccept @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -104,4 +99,4 @@ Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantAccept @c
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitInstallmentsPayment(claimRef, '1236', claimNumber);
     await api.waitForFinishedBusinessProcess();
   }
-});
+}).tag('@regression-r2');

@@ -138,7 +138,7 @@ describe('Response Deadline Options Controller', () => {
           .expect((res) => {
             expect(res.status).toBe(200);
             expect(res.text).toContain('Terfyn amser ar gyfer ymateb');
-            expect(res.text).toContain('Roedd yna broblem');
+            expect(res.text).toContain('Roedd problem');
           });
       });
 
@@ -160,7 +160,7 @@ describe('Response Deadline Options Controller', () => {
           .expect((res) => {
             expect(res.status).toBe(200);
             expect(res.text).toContain('Terfyn amser ar gyfer ymateb');
-            expect(res.text).toContain('Roedd yna broblem');
+            expect(res.text).toContain('Roedd problem');
           });
       });
 

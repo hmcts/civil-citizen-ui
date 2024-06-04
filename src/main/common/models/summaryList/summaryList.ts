@@ -7,7 +7,6 @@ export interface SummaryRow {
   key: Key;
   value: Value;
   actions?: Actions;
-  classes?: string;
 }
 
 export interface Key {
@@ -19,7 +18,6 @@ export interface Key {
 export interface Value {
   text?: string;
   html?: string;
-  classes?: string;
 }
 
 interface Actions {
@@ -34,7 +32,7 @@ interface Item {
   html?: string;
 }
 
-export function summaryRow(key?: string, value?: string, href?: string, hrefText?: string, hiddentText?: string, multivalueIndex?: number, multiValueTotalRows?: number): SummaryRow {
+export function summaryRow(key?: string, value?: string, href?: string, hrefText?: string, hiddentText?: string): SummaryRow {
   const row: SummaryRow = {
     key: {
       text: key,
@@ -43,13 +41,6 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
       html: value,
     },
   };
-  if (multivalueIndex < multiValueTotalRows - 1) {
-    row.classes = 'no-border-bottom';
-    row.value.classes = 'govuk-border-colour-border-bottom-1';
-  }
-  if (multivalueIndex > 0) {
-    row.key.classes = 'govuk-visually-hidden';
-  }
   if (href) {
     const accessibilityText = hiddentText ? `${key} (${hiddentText})` : `${key}`;
     row.actions = {
@@ -61,9 +52,6 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
         },
       ],
     };
-    if (multivalueIndex < multiValueTotalRows - 1) {
-      row.actions.classes = 'govuk-border-colour-border-bottom-1';
-    }
   }
   return row;
 }

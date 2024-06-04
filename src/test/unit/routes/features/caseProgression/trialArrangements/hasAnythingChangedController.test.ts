@@ -33,7 +33,7 @@ describe('Has anything changed - On GET', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
-  it('should render page successfully in English', async () => {
+  it('should render page successfully if cookie has correct values', async () => {
     //Given
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
     //When
@@ -42,20 +42,7 @@ describe('Has anything changed - On GET', () => {
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?');
-      });
-  });
-
-  it('should render page successfully in Welsh if query has Welsh values', async () => {
-    //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
-    //When
-    await testSession
-      .get(HAS_ANYTHING_CHANGED_URL.replace(':id', claimId)).query({lang: 'cy'})
-      //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('A oes unrhyw beth wedi newid i’r cymorth neu’r addasiadau rydych yn dymuno i’r llys a’r barnwr eu hystyried ar eich rhan neu i dyst a fydd yn rhoi tystiolaeth ar eich rhan?');
+        expect(res.text).toContain(t('PAGES.HAS_ANYTHING_CHANGED.PAGE_TITLE'));
       });
   });
 
@@ -77,7 +64,7 @@ describe('Has anything changed - On GET', () => {
     app.locals.draftStoreClient = mockRedisFailure;
     //When
     await testSession
-      .get(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111')).query({lang: 'en'})
+      .get(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(500);

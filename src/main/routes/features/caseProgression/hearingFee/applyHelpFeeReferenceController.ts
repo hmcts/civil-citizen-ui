@@ -17,26 +17,26 @@ import {
 } from 'services/features/caseProgression/hearingFee/applyHelpFeeReferenceContents';
 import {YesNo} from 'form/models/yesNo';
 import {triggerNotifyEvent} from 'services/features/caseProgression/hearingFee/hearingFeeService';
-import {getClaimById} from 'modules/utilityService';
 
 const applyHelpFeeReferenceViewPath  = 'features/caseProgression/hearingFee/apply-help-fee-reference';
 const applyHelpFeeReferenceController: Router = Router();
 const helpFeeReferenceNumberForm = 'helpFeeReferenceNumberForm';
 
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<ApplyHelpFeesReferenceForm>, claimId: string, redirectUrl: string) {
-  const claim: Claim = await getClaimById(claimId, req, true);
+  const redisClaimId = generateRedisKey(<AppRequest>req);
+  const claim: Claim = await getCaseDataFromStore(redisClaimId);
   if (!form.hasErrors()) {
     form = claim.caseProgression?.helpFeeReferenceNumberForm ? new GenericForm(claim.caseProgression.helpFeeReferenceNumberForm) : form;
   }
-  const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, APPLY_HELP_WITH_FEES_START);
+  const startApplyHelpFee = constructResponseUrlWithIdParams(req.params.id, APPLY_HELP_WITH_FEES_START);
   const genericHelpFeeUrl : string = GENERIC_HELP_FEES_URL;
   res.render(applyHelpFeeReferenceViewPath,
     {
       redirectUrl,
       form,
-      backLinkUrl,
+      startApplyHelpFee,
       genericHelpFeeUrl,
-      applyHelpFeeReferenceContents: getApplyHelpFeeReferenceContents(claimId,claim.totalClaimAmount),
+      applyHelpFeeReferenceContents: getApplyHelpFeeReferenceContents(),
       applyHelpFeeReferenceButtonContents: getButtonsContents(claimId),
     });
 }

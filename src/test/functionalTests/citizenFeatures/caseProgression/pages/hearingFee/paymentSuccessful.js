@@ -3,7 +3,7 @@ const I = actor();
 class PaymentSuccessful {
 
   checkPageFullyLoaded () {
-    I.waitForElement('//*[@id="main-content"]');
+    I.waitForElement('//*[@id="main-content"]/div/main/div/div/div[2]/div/a');
   }
 
   nextAction (nextAction) {

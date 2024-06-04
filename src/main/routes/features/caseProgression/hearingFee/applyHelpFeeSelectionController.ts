@@ -35,13 +35,13 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
       form = new GenericForm(claim.caseProgression.hearingFeeHelpSelection);
     }
   }
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, PAY_HEARING_FEE_URL);
+  const startPayHearingFee = constructResponseUrlWithIdParams(req.params.id, PAY_HEARING_FEE_URL);
   res.render(applyHelpFeeSelectionViewPath,
     {
       redirectUrl,
       form,
-      backLinkUrl,
-      applyHelpFeeSelectionContents: getApplyHelpFeeSelectionContents(lng,claimId,claim.totalClaimAmount),
+      startPayHearingFee,
+      applyHelpFeeSelectionContents: getApplyHelpFeeSelectionContents(lng),
       applyHelpFeeSelectionButtonContents: getButtonsContents(claimId),
     });
 }

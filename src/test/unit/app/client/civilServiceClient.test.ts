@@ -31,7 +31,6 @@ import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {AppRequest} from 'common/models/AppRequest';
 import {req} from '../../../utils/UserDetails';
-import { ApplicationTypeOption } from 'models/generalApplication/applicationType';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -62,7 +61,6 @@ appReq.session = {
   assignClaimURL: undefined,
   claimIssueTasklist: false,
   firstContact: undefined,
-  fileUpload: undefined,
   issuedAt: 150,
 };
 const ccdClaim : CCDClaim = {
@@ -395,7 +393,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //When
-      await civilServiceClient.assignDefendantToClaim(claimId, appReq, '123');
+      await civilServiceClient.assignDefendantToClaim(claimId, appReq);
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
@@ -408,7 +406,7 @@ describe('Civil Service Client', () => {
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.assignDefendantToClaim('1', appReq, '123')).rejects.toThrow('error');
+      await expect(civilServiceClient.assignDefendantToClaim('1', appReq)).rejects.toThrow('error');
     });
   });
 
@@ -622,32 +620,7 @@ describe('Civil Service Client', () => {
       //Then
       expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
     });
-    describe('getAirlines', () => {
-      const mockData = [
-        {airline: 'airline 1', epimsID: '1'}, 
-        {airline: 'airline 2', epimsID: '2'},
-      ];
-      it('should get airline list', async () => {
-        //Given
-        const mockGet = jest.fn().mockResolvedValue({data: mockData});
-        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
-        const civilServiceClient = new CivilServiceClient(baseUrl, true);
-        //When
-        const airlines = await civilServiceClient.getAirlines(appReq);
-        //Then
-        expect(airlines).toEqual(mockData);
-      });
-      it('should throw error when there is an error with api', async () => {
-        //Given
-        const mockGet = jest.fn().mockImplementation(() => {
-          throw new Error('error');
-        });
-        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
-        const civilServiceClient = new CivilServiceClient(baseUrl);
-        //Then
-        await expect(civilServiceClient.getAirlines(appReq)).rejects.toThrow('error');
-      });
-    });
+
     it('should throw error on get claim fee data', async () => {
       //Given
       const mockGet = jest.fn().mockImplementation(() => {
@@ -660,33 +633,49 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.getClaimAmountFee(100, appReq)).rejects.toThrow('error');
     });
   });
-  describe('getGeneralApplicationFeeData', () => {
+  describe('getClaimFeeData', () => {
     const mockData = {
       calculatedAmountInPence: 123,
       code: 'code',
       version: 1,
     };
 
-    it('should get ga app fee amount', async () => {
+    it('should get claim fee data', async () => {
       //Given
-      const mockPost = jest.fn().mockResolvedValue({ data: mockData });
-      mockedAxios.create.mockReturnValueOnce({ post: mockPost } as unknown as AxiosInstance);
+      const mockGet = jest.fn().mockResolvedValue({data: mockData});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
       //When
-      const feeAmount = await civilServiceClient.getGeneralApplicationFee({ applicationTypes: [ApplicationTypeOption.STRIKE_OUT], withConsent: false, withNotice: true, hearingDate: null }, appReq);
+      const feeResponse: ClaimFeeData = await civilServiceClient.getClaimFeeData(100, appReq);
+
       //Then
-      expect(feeAmount).toEqual(mockData);
+      expect(feeResponse).toEqual(mockData);
     });
 
-    it('should throw error on get ga app fee data', async () => {
+    it('should get claim fee amount', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: mockData});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
+      //When
+      const feeAmount: number = await civilServiceClient.getClaimAmountFee(100, appReq);
+
+      //Then
+      expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
+    });
+
+    it('should throw error on get claim fee data', async () => {
       //Given
       const mockGet = jest.fn().mockImplementation(() => {
         throw new Error('error');
       });
-      mockedAxios.create.mockReturnValueOnce({ post: mockGet } as unknown as AxiosInstance);
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
       //Then
-      await expect(civilServiceClient.getGeneralApplicationFee({ applicationTypes: undefined, withConsent: undefined, withNotice: true, hearingDate: null }, appReq)).rejects.toThrow('error');
+      await expect(civilServiceClient.getClaimAmountFee(100, appReq)).rejects.toThrow('error');
     });
   });
   describe('verifyOcmcPin', () => {

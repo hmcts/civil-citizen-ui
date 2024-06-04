@@ -1,11 +1,11 @@
 import {t} from 'i18next';
 import {ClaimSummaryType} from 'common/form/models/claimSummarySection';
 import {Claim} from 'common/models/claim';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {addDaysBefore4pm, formatDateToFullDate} from 'common/utils/dateUtils';
 
-export const getSignSettlementAgreementNextSteps = (claim: Claim, lang: string, respondToSettlementAgreementDeadLine ?: Date) => {
+export const getSignSettlementAgreementNextSteps = (claim: Claim, lang: string) => {
   const defendantName = claim?.getDefendantFullName();
-  const respondByDate = formatDateToFullDate(respondToSettlementAgreementDeadLine, lang);
+  const respondByDate = formatDateToFullDate(addDaysBefore4pm(new Date(), 7), lang);
   return [
     {
       type: ClaimSummaryType.TITLE,

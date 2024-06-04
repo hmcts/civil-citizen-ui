@@ -1,5 +1,5 @@
-import {AppRequest} from 'common/models/AppRequest';
-import {NextFunction, RequestHandler, Response, Router} from 'express';
+import { AppRequest } from 'common/models/AppRequest';
+import {NextFunction,RequestHandler, Response, Router} from 'express';
 import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {CLAIM_FEE_BREAKUP} from 'routes/urls';
 import {YesNo} from 'common/form/models/yesNo';
@@ -8,12 +8,11 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {getFeePaymentRedirectInformation} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {getClaimById} from 'modules/utilityService';
-import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 
 const claimFeeBreakDownController = Router();
 const viewPath = 'features/claim/payment/claim-fee-breakdown';
 
-claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
+claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claim = await getClaimById(req.params.id, req, true);
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);

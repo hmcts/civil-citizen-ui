@@ -20,7 +20,7 @@
     {% endif %}
 
     <div class="govuk-grid-row">
-      <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
+      <form method="post" action={{ currentUrl }}?_csrf={{csrf}} enctype='multipart/form-data' novalidate>
         {{ csrfProtection(csrf) }}
         <div id="content"></div>
 
