@@ -2067,23 +2067,19 @@
     },
     "GENERAL_APPLICATION": {
       "ACCEPT_DEFENDANT_OFFER": {
-        "TITLE": "Do you accept the defendant's offer?",
-        "THE_COURT": "The court will make an order for the payment that was suggested by the defendant.",
-        "N245_BEFORE": "The defendant's offer will be set out in the ",
+        "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
+        "ENTER_AMOUNT": "Enter the amount in £",
         "N245": "N245 form",
         "N245_AFTER": " that they completed. You should read this before responding.",
-        
-        "PROPOSE_PAYMENT_PLAN": "Propose payment plan",
-        
-        "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
-        "PROPOSED_INSTALMENTS": "Proposed instalments per month",
-        "ENTER_AMOUNT": "Enter the amount in £",
-        "WHY_NOT_ACCEPT": "Why do you not accept the defendant's offer?",
-
+        "N245_BEFORE": "The defendant's offer will be set out in the ",
         "PROPOSE_IN_FULL": "I'll propose payment in full by a set date",
+        "PROPOSE_PAYMENT_PLAN": "Propose payment plan",
+        "PROPOSED_INSTALMENTS": "Proposed instalments per month",
         "PROPOSED_SET_DATE": "Proposed set date",
+        "THE_COURT": "The court will make an order for the payment that was suggested by the defendant.",
+        "TITLE": "Do you accept the defendant's offer?",
+        "WHY_NOT_ACCEPT": "Why do you not accept the defendant's offer?",
         "WHY_NOT_ACCEPT_2": "Why you do not accept the defendant's offer?"
-        
       },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
@@ -4225,9 +4221,9 @@
       "ACCEPT_DEFENDANT_OFFER": {
         "ERROR_ACCEPT": "You need to tell us if you accept the defendant's offer. Choose option: Yes or No",
         "ERROR_CHOOSE": "You need to propose a payment plan. Choose either instalments per month or payment in full by a set date.",
-        "ERROR_INSTALMENT": "You need to enter your proposed instalment per month.",
         "ERROR_NOT_ACCEPT": "You need to tell us why you do not accept the defendant's offer.",
         "ERROR_IN_FULL": "You need to tell us the date you propose payment in full by.",
+        "ERROR_INSTALMENT": "You need to enter your proposed instalment per month.",
         "FUTURE_DATE": "You need to enter a date in the future."
       },
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
