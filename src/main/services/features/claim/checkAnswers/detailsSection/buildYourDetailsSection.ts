@@ -1,8 +1,8 @@
-import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
-import {Claim} from '../../../../../common/models/claim';
-import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
+import {SummarySection, summarySection} from 'models/summaryList/summarySections';
+import {Claim} from 'models/claim';
+import {summaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
-import {getLng} from '../../../../../common/utils/languageToggleUtils';
+import {getLng} from 'common/utils/languageToggleUtils';
 import {
   CLAIMANT_COMPANY_DETAILS_URL,
   CLAIMANT_DOB_URL,
@@ -10,10 +10,10 @@ import {
   CLAIMANT_ORGANISATION_DETAILS_URL,
   CLAIMANT_PHONE_NUMBER_URL,
   CLAIMANT_SOLE_TRADER_DETAILS_URL,
-} from '../../../../../../main/routes/urls';
-import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
-import {PartyType} from '../../../../../common/models/partyType';
-import {Address} from '../../../../../common/form/models/address';
+} from 'routes/urls';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {PartyType} from 'models/partyType';
+import {Address} from 'form/models/address';
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
@@ -21,7 +21,7 @@ const addressToString = (address: Address) => {
   return address?.addressLine1 + '<br>' + address?.city + '<br>' + address?.postCode;
 };
 
-export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string): SummarySection => {
+export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string, isCarmEnabled = false): SummarySection => {
 
   let yourDetailsHref = CLAIMANT_COMPANY_DETAILS_URL;
   switch (claim.applicant1?.type) {
@@ -55,6 +55,6 @@ export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: str
   if (!claim.isClaimantBusiness() && claim.applicant1?.dateOfBirth?.date) {
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng}), formatDateToFullDate(claim.applicant1.dateOfBirth.date, lng), CLAIMANT_DOB_URL, changeLabel(lng), title));
   }
-  yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng}), claim.applicant1?.partyPhone?.phone, CLAIMANT_PHONE_NUMBER_URL, changeLabel(lng), title));
+  yourDetailsSection.summaryList.rows.push(summaryRow(t(isCarmEnabled? 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER_NOT_OPTIONAL' : 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng}), claim.applicant1?.partyPhone?.phone, CLAIMANT_PHONE_NUMBER_URL, changeLabel(lng), title));
   return yourDetailsSection;
 };

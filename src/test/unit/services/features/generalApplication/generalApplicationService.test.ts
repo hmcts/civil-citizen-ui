@@ -14,6 +14,7 @@ import {
   getByIndexOrLast,
   getByIndex,
   updateByIndexOrAppend,
+  validateAdditionalApplicationtType,
 } from 'services/features/generalApplication/generalApplicationService';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../utils/errorMessageTestConstants';
@@ -29,6 +30,7 @@ import { HearingContactDetails } from 'models/generalApplication/hearingContactD
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
+import { ValidationError } from 'class-validator';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -479,6 +481,29 @@ describe('General Application service', () => {
       // Then
       claim.generalApplication.response = { respondentAgreement };
       await expect(spy).toBeCalledWith('123', claim);
+    });
+  });
+
+  describe('Validate additional application type', () => {
+    it('should return error message if additional application type is in excluded list', () => {
+
+      //Given
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM)];
+      const errors : ValidationError[] = [];
+      const applicationType = new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT);   
+      const body = {
+        optionOther: 'test',
+        option: 'testOption', 
+      };
+      //When
+      validateAdditionalApplicationtType(claim, errors, applicationType,body);
+
+      //Then
+      const error : ValidationError = errors[0];
+      expect(errors.length).toBe(1);
+      expect(error.constraints['additionalApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING');
     });
   });
 });
