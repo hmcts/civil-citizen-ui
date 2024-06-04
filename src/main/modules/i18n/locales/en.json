@@ -2485,10 +2485,10 @@
         "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}",
         "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
         "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
-        "TITLE": "Application created",
         "PAGE_TITLE": "Application created",
         "PAY_FEE_BUTTON": "Pay application fee",
         "RETURN_CASE_DETAILS": "Close and return to case details",
+        "TITLE": "Application created",
         "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge."
       }
     },
