@@ -12,6 +12,9 @@ import {ClaimUpdate} from 'models/events/eventDto';
 import {
   CcdGeneralApplicationRespondentAgreement
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationRespondentAgreement';
+import {
+  CcdGeneralApplicationStatementOfTruth
+} from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
 
 export interface EventDto {
   event: ApplicationEvent,
@@ -27,4 +30,5 @@ export interface CCDGeneralApplication extends ClaimUpdate {
   generalAppReasonsOfOrder: string;
   generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
+  generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
 }
