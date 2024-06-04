@@ -13,7 +13,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   DisclosureNonElectronicDocument,
 } from 'models/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocument';
-import {getWaitIsDisclosureTextAreaInformation} from 'services/commons/textAreaInformations';
+import {getWhatIsDisclosureDetailContent} from 'services/commons/detailContents';
 
 const multiTrackDisclosureNonElectronicDocuments = Router();
 const disclosureNonElectronicDocumentsViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/disclosure-non-electronic-documents';
@@ -21,11 +21,11 @@ const DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE = 'PAGES.DISCLOSURE_NON_ELECTRONI
 
 function renderView(disclosureNonElectronicDocument: GenericForm<DisclosureNonElectronicDocument>, res: Response): void {
   const form = disclosureNonElectronicDocument;
-  const whatIsDisclosureSummarySection = getWaitIsDisclosureTextAreaInformation();
+  const whatIsDisclosureDetailsContent = getWhatIsDisclosureDetailContent();
 
   res.render(disclosureNonElectronicDocumentsViewPath, {
     form,
-    whatIsDisclosureSummarySection,
+    whatIsDisclosureDetailsContent,
     pageTitle: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}PAGE_TITLE`,
     backLinkUrl: constructResponseUrlWithIdParams('claimId', START_MEDIATION_UPLOAD_FILES),
   });

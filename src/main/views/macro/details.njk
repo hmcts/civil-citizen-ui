@@ -1,14 +1,14 @@
 {% from "../features/dashboard/item-content.njk" import itemContent %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
-{% macro createSummaryDetails (summaryDetails, t) %}
+{% macro createDetails (details, t) %}
 {% set html %}
-  {% for item in summaryDetails.content %}
+  {% for item in details.content %}
         {{ itemContent(item, t) }}
   {% endfor %}
 {% endset %}
   {{ govukDetails({
-    summaryText: t(summaryDetails.title),
+    summaryText: t(details.title),
     html: html
   }) }}
 

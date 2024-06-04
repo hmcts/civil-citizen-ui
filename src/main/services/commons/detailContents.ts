@@ -1,9 +1,9 @@
-import {TextAreaComponent, TextAreaComponentContentBuilder} from 'models/summaryText/textAreaComponent';
+import {DetailsComponent, DetailsComponentContentBuilder} from 'models/summaryText/detailsComponent';
 import {disclosureOfDocumentsUrl} from 'common/utils/externalURLs';
 
-export const  getWaitIsDisclosureTextAreaInformation = () => {
+export const  getWhatIsDisclosureDetailContent = () => {
   const DISCLOSURE_NON_ELECTRONIC_DOCUMENTS = 'DISCLOSURE_NON_ELECTRONIC_DOCUMENTS.TEXT_AREA.';
-  return new TextAreaComponent(`${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS}TITLE`, new TextAreaComponentContentBuilder()
+  return new DetailsComponent(`${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS}TITLE`, new DetailsComponentContentBuilder()
     .addParagraph(`${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS}PARAGRAPH1`)
     .addParagraph(`${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS}PARAGRAPH2`)
     .addParagraph(`${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS}PARAGRAPH3`)

@@ -384,6 +384,20 @@
       "TITLE": "Eich gofynion ar gyfer gwrandawiad"
     }
   },
+  "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : {
+    "TEXT_AREA": {
+      "TITLE": "Beth yw Datgeliad?",
+      "PARAGRAPH1": "Mae'n ofynnol i chi rannu (datgelu) yr holl ddogfennau sy'n berthnasol i'r hawliad gyda'r holl bartïon dan sylw.",
+      "PARAGRAPH2": "Mae hyn yn cynnwys yr holl ddogfennau ffisegol ac electronig, megis anfonebau a chontractau, yn ogystal â delweddau, fideos, negeseuon testun, a negeseuon cyfryngau cymdeithasol.",
+      "PARAGRAPH3": "Rhaid i chi ddatgelu'r holl ddogfennau perthnasol, hyd yn oed os nad ydych yn bwriadu dibynnu arnynt yn ystod gwrandawiad neu os ydynt yn niweidiol i'ch cais.",
+      "PARAGRAPH4": "Bydd rhestr o ddyblu gan y partïon eraill ar gael i chi, a gallwch ofyn am gopïau o unrhyw un o'r dogfennau hyn. Gall y partïon eraill sy'n ymwneud â'r hawliad hefyd ofyn am weld ac archwilio copïau o ddogfennau rydych chi'n eu datgelu.",
+      "URL" : {
+        "BEFORE": "Darganfyddwch fwy o wybodaeth am ",
+        "TEXT": "ddatgelu dogfennau",
+        "AFTER": "."
+      }
+    }
+  },
   "PAGES": {
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : {
       "PAGE_TITLE": "Datgelu dogfennau nad ydynt yn electronig",
