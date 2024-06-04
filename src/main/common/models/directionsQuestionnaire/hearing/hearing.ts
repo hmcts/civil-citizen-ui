@@ -1,4 +1,4 @@
-import {GenericYesNo} from '../../../form/models/genericYesNo';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {DeterminationWithoutHearing} from './determinationWithoutHearing';
 import {ConsiderClaimantDocuments} from './considerClaimantDocuments';
 import {WhyUnavailableForHearing} from './whyUnavailableForHearing';
@@ -18,4 +18,5 @@ export class Hearing {
   supportRequiredList?: SupportRequiredList;
   specificCourtLocation?: SpecificCourtLocation;
   unavailableDatesForHearing?: UnavailableDates;
+  disclosureNonElectronicDocument?: string;
 }

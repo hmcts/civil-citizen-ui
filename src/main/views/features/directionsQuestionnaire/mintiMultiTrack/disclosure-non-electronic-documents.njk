@@ -27,7 +27,7 @@
                         {{ csrfProtection(csrf) }}
                         {{ createPageTitle(pageTitle,t) }}
                         {{ createDetails( whatIsDisclosureDetailsContent ,t) }}
-                        {{ createTextArea("disclosureNonElectronicDocuments", form ,t) }}
+                        {{ createTextArea("disclosureNonElectronicDocuments", form.model.disclosureNonElectronicDocuments, form ,t) }}
                         {{ addButton(t, 'SAVE_AND_CONTINUE') }}
                         {{ contactUsForHelp(t) }}
                     </form>

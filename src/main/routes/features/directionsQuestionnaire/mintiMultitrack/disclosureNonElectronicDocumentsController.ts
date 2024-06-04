@@ -1,10 +1,11 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  DQ_DEFENDANT_WITNESSES_URL,
-  DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL, START_MEDIATION_UPLOAD_FILES,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
+  DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
 } from 'routes/urls';
 import {
+  getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
@@ -27,17 +28,16 @@ function renderView(disclosureNonElectronicDocument: GenericForm<DisclosureNonEl
     form,
     whatIsDisclosureDetailsContent,
     pageTitle: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}PAGE_TITLE`,
-    backLinkUrl: constructResponseUrlWithIdParams('claimId', START_MEDIATION_UPLOAD_FILES),
+    backLinkUrl: constructResponseUrlWithIdParams('claimId', 'todo'),
   });
 }
 
 multiTrackDisclosureNonElectronicDocuments.get(DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL, (async (req, res, next: NextFunction) => {
   try {
-    //const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
-    //const disclosureNonElectronicDocument = directionQuestionnaire.vulnerabilityQuestions?.vulnerability ?
-    //  directionQuestionnaire.vulnerabilityQuestions.vulnerability : new DisclosureNonElectronicDocument();
-
-    renderView(new GenericForm(new DisclosureNonElectronicDocument()) , res);
+    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const disclosureNonElectronicDocument = directionQuestionnaire.hearing?.disclosureNonElectronicDocument ?
+      new DisclosureNonElectronicDocument(directionQuestionnaire.hearing.disclosureNonElectronicDocument) : new DisclosureNonElectronicDocument();
+    renderView(new GenericForm(disclosureNonElectronicDocument) , res);
   } catch (error) {
     next(error);
   }
@@ -51,8 +51,12 @@ multiTrackDisclosureNonElectronicDocuments.post(DQ_MULTITRACK_DISCLOSURE_NON_ELE
     if (disclosureNonElectronicDocumentForm.hasErrors()) {
       renderView(disclosureNonElectronicDocumentForm, res);
     } else {
-      await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), disclosureNonElectronicDocumentForm.model.disclosureNonElectronicDocuments, 'dqPropertyName');
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_WITNESSES_URL));
+      await saveDirectionQuestionnaire(
+        generateRedisKey(<AppRequest>req),
+        disclosureNonElectronicDocumentForm.model.disclosureNonElectronicDocuments,
+        'disclosureNonElectronicDocument',
+        'hearing');
+      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL));
     }
 
   } catch (error) {

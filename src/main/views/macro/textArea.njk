@@ -1,11 +1,11 @@
 {% from "../features/dashboard/item-content.njk" import itemContent %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 
-{% macro createTextArea (field, form, t) %}
+{% macro createTextArea (field, value, form, t) %}
   {{ govukTextarea({
     name: field,
     id: field,
-    value: form.model.value,
+    value: value,
     label: {
       classes: "govuk-label--m",
       text: t(form.model.title)
