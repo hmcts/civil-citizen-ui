@@ -32,7 +32,7 @@ acceptDefendantOfferController.get(GA_ACCEPT_DEFENDANT_OFFER_URL, async (req: Ap
     const claim = await getCaseDataFromStore(redisKey);
     const acceptDefendantOffer = claim.generalApplication?.response?.acceptDefendantOffer || new AcceptDefendantOffer();
     const form = new GenericForm(acceptDefendantOffer);
-    renderView(claimId, claim, form, lang, res)
+    renderView(claimId, claim, form, lang, res);
   } catch (error) {
     next(error);
   }

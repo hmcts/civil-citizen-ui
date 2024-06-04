@@ -25,11 +25,11 @@ export class AcceptDefendantOffer {
   @IsDate({message: 'ERRORS.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.ERROR_IN_FULL'})
     proposedSetDate?: Date;
 
-    year: number;
+  year: number;
 
-    month: number;
+  month: number;
 
-    day: number;
+  day: number;
 
   @ValidateIf(o => o.option === YesNo.NO && o.type === ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE)
   @IsNotEmpty({ message: 'ERRORS.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.ERROR_NOT_ACCEPT' })
