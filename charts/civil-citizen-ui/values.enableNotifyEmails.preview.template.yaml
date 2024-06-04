@@ -137,3 +137,59 @@ civil-service:
         username: ${POSTGRES_USER}
         password: ${POSTGRES_PASSWORD}
         postgresPassword: ${POSTGRES_PASSWORD}
+
+civil-general-applications:
+  enabled: true
+  java:
+    image: 'hmctspublic.azurecr.io/civil/general-applications:latest'
+    releaseNameOverride: ${SERVICE_NAME}-general-applications
+    ingressHost: ${SERVICE_NAME}-general-applications.preview.platform.hmcts.net
+    imagePullPolicy: Always
+    keyVaults:
+      civil:
+        resourceGroup: civil
+        secrets:
+          - civil-idam-client-secret
+          - system-update-user-username
+          - system-update-user-password
+          - cross-access-user-username
+          - cross-access-user-password
+          - prd-admin-user-username
+          - prd-admin-user-password
+          - name: AppInsightsInstrumentationKeyGeneralApplications
+            alias: azure.application-insights.instrumentation-key
+          - docmosis-api-key
+          - name: gov-notify-guest-list-api-key
+            alias: GOV_NOTIFY_API_KEY
+          - sendgrid-api-key
+          - robotics-notification-sender
+          - robotics-notification-recipient
+          - name: launch-darkly-sdk-key-non-prod
+            alias: launch-darkly-sdk-key
+          - robotics-notification-multipartyrecipient
+      civil-gen-apps:
+        resourceGroup: civil
+        secrets:
+          - microservicekey-civil-general-applications
+    environment:
+      CORE_CASE_DATA_API_URL: https://ccd-data-store-api-${SERVICE_NAME}.preview.platform.hmcts.net
+      OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
+      CMC_DB_HOST: ${SERVICE_NAME}-postgresql
+      CMC_DB_USERNAME: ${POSTGRES_USER}
+      CMC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
+      REFERENCE_DATABASE_MIGRATION: false
+      FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
+      GENAPP_LRD_URL: http://rd-location-ref-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      PAY_CALLBACK_URL: https://${SERVICE_NAME}-general-applications.preview.platform.hmcts.net/service-request-update
+      TESTING_SUPPORT_ENABLED: true
+      POLLING_EVENT_EMITTER_ENABLED: false
+      CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
+      DOCUMENT_MANAGEMENT_SECURED: true
+      RD_PROFESSIONAL_API_URL: http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      RD_COMMONDATA_API_URL: http://rd-commondata-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      RELEASE_REVISION: "{{ .Release.Revision }}"
+      GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
