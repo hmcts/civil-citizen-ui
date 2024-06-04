@@ -1,5 +1,5 @@
 {% macro setPageTitle(t, title) %}
-  {% set dynamicTitle = t('COMMON.PAGE_TITLE_PART1') + ' - ' + t(title) if title else t('COMMON.PAGE_TITLE_PART1') + " - " + t('COMMON.PAGE_TITLE_PART2') %}
+  {% set dynamicTitle = t(title) + ' - ' + t('COMMON.PAGE_TITLE_PART1') if title else t('COMMON.PAGE_TITLE_PART1') + " - " + t('COMMON.PAGE_TITLE_PART2') %}
   {% block pageTitle %}
     {{ dynamicTitle }}
   {% endblock %}
