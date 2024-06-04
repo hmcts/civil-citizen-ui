@@ -40,6 +40,13 @@ module.exports = {
     };
   },
 
+  listElementWithCode: (code, string) => {
+    return {
+      code: code,
+      label: string,
+    };
+  },
+
   buildAddress: postFixLineOne => {
     return {
       AddressLine1: `${address.buildingAndStreet.lineOne + ' - ' + postFixLineOne}`,

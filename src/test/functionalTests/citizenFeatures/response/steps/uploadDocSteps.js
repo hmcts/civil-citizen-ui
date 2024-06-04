@@ -42,8 +42,8 @@ class UploadMediationDocSteps {
     await cya.checkAndSendMediationDocs(type);
   }
 
-  async VerifyConfirmationPage(claimRef) {
-    await confirmation.verifyConfirmationPage(claimRef);
+  async VerifyConfirmationPage() {
+    await confirmation.verifyConfirmationPage();
   }
 }
 

@@ -297,6 +297,7 @@ import applicationTypeController from './features/generalApplication/application
 import respondentAgreementController from './features/generalApplication/response/respondentAgreementController';
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
+import viewTheJudgementController from 'routes/features/caseProgression/viewTheJudgementController';
 import claimFeeMakePaymentAgainController
   from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
 import informOtherPartiesController from './features/generalApplication/informOtherPartiesController';
@@ -311,9 +312,11 @@ import requestingReasonController from 'routes/features/generalApplication/reque
 import addAnotherApplicationController from './features/generalApplication/addAnotherApplicationController';
 import orderJudgeController from './features/generalApplication/orderJudgeController';
 import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNoticesController';
+import uploadN245FormController from 'routes/features/generalApplication/uploadN245FormController';
 import unavailableHearingDatesController from 'routes/features/generalApplication/unavailableHearingDatesController';
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
+import gaCheckAnswersController from 'routes/features/generalApplication/checkAnswersController';
 import applicationPaymentUnsuccessfulController from './features/generalApplication/applicationPaymentUnsuccessfulController';
 import applicationResponseConfirmationController
   from 'routes/features/generalApplication/response/applicationResponseConfirmationController';
@@ -321,6 +324,7 @@ import flightDetailsController from './features/claim/airlines/flightDetailsCont
 import delayedFlightController from './features/claim/airlines/delayedFlightController';
 import respondentRequestChangeInformationController
   from 'routes/features/generalApplication/respondentRequestChangeInformationController';
+import accessibilityStatementController from './features/public/accessibilityStatementController';
 import hearingArrangementsGuidanceController from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
 import wantToUploadDocumentsController from 'routes/features/generalApplication/wantToUploadDocuments';
 import uploadEvidenceDocumentsForApplicationController from 'routes/features/generalApplication/uploadEvidenceDocumentForApplication';
@@ -586,6 +590,7 @@ export default [
   respondentAgreementController,
   viewTheHearingController,
   viewResponseToClaimController,
+  viewTheJudgementController,
   hearingSupportController,
   claimFeeMakePaymentAgainController,
   agreementFromOtherPartyController,
@@ -599,13 +604,16 @@ export default [
   addAnotherApplicationController,
   orderJudgeController,
   ordersAndNoticesController,
+  uploadN245FormController,
   unavailableHearingDatesController,
   hearingArrangementController,
   hearingContactDetailsController,
+  gaCheckAnswersController,
   applicationPaymentUnsuccessfulController,
   flightDetailsController,
   delayedFlightController,
   respondentRequestChangeInformationController,
+  accessibilityStatementController,
   hearingArrangementsGuidanceController,
   wantToUploadDocumentsController,
   uploadEvidenceDocumentsForApplicationController,

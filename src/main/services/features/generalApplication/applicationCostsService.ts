@@ -1,23 +1,19 @@
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import { ApplicationType, ApplicationTypeOption } from 'models/generalApplication/applicationType';
 import {t} from 'i18next';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import {AppRequest} from 'models/AppRequest';
-import config from 'config';
-import {YesNo} from 'form/models/yesNo';
-
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+import { ClaimFeeData } from 'common/models/civilClaimResponse';
+import { convertToPoundsFilter } from 'common/utils/currencyFormat';
 
 interface ContentParagraph {
   text?: string;
   variables?: object;
 }
 
-export const getApplicationCostsContent = async (applicationTypeOption: ApplicationTypeOption, withConsent: YesNo, withNotice: YesNo, lang: string, req: AppRequest) => {
-  const gaFee = await civilServiceClient.getGeneralApplicationFee(applicationTypeOption, withConsent, withNotice, req);
+export const getApplicationCostsContent = (applicationTypes: ApplicationType[], gaFeeData: ClaimFeeData, lang: string) => {
   const pageSectionBuilder = new PageSectionBuilder();
+  const gaFee = convertToPoundsFilter(gaFeeData?.calculatedAmountInPence.toString());
   const selectedApplicationTypeContent = getSelectedApplicationTypeContent(lang, gaFee);
+  const applicationTypeOption = applicationTypes[applicationTypes.length - 1].option;
   if (applicationTypeOption in selectedApplicationTypeContent) {
     const content = selectedApplicationTypeContent[applicationTypeOption];
     content.forEach(contentParagraph => pageSectionBuilder.addParagraph(contentParagraph.text, contentParagraph.variables));
@@ -74,3 +70,4 @@ const getSelectedApplicationTypeContent = (lang: string, gaFee: number) : Partia
     ],
   };
 };
+
