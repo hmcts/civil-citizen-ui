@@ -1,12 +1,13 @@
 import { NextFunction, Response, Router } from 'express';
 import { AppRequest } from 'common/models/AppRequest';
-import { GA_ADD_ANOTHER_APPLICATION_URL } from 'routes/urls';
+import { APPLICATION_TYPE_URL, GA_ADD_ANOTHER_APPLICATION_URL } from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
-import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
+import { getCancelUrl, getLast } from 'services/features/generalApplication/generalApplicationService';
 import { selectedApplicationType } from 'common/models/generalApplication/applicationType';
 import { GenericForm } from 'common/form/models/genericForm';
 import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 
 const addAnotherApplicationController = Router();
 const viewPath = 'features/generalApplication/add-another-application';
@@ -16,7 +17,7 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Gen
   const redisKey = generateRedisKey(req);
   const claim = await getClaimById(redisKey, req, true);
   const cancelUrl = await getCancelUrl(req.params.id, claim);
-  const applicationType = selectedApplicationType[claim.generalApplication?.applicationType?.option];
+  const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
   if (!form) {
     form = new GenericForm(new GenericYesNo(''));
   }
@@ -36,7 +37,9 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, async (req:
     if (form.hasErrors()) {
       await renderView(req, res, form);
     } else {
-      res.redirect('test');
+      const claimId = req.params.id;
+      const redirectUrl = constructResponseUrlWithIdParams(claimId,APPLICATION_TYPE_URL);
+      res.redirect(redirectUrl);
     }
   } catch (error) {
     next(error);

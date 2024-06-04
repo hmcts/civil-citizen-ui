@@ -2,7 +2,6 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../main/app';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
-import {t} from 'i18next';
 import {CP_CHECK_ANSWERS_URL} from 'routes/urls';
 import * as checkAnswersService from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -66,7 +65,26 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         //Then
         .expect((res: { status: unknown; text: unknown; }) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.CHECK_YOUR_ANSWER.TITLE'));
+          expect(res.text).toContain('Check your answers');
+        });
+    });
+
+    it('should render page successfully in Welsh with all sections and summary rows', async () => {
+      //Given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      mockDraftStore.mockReturnValueOnce(claim);
+      mockSummarySections.mockImplementation(() => {
+        return {sections: [] as SummarySection[]} as SummarySections;
+      });
+
+      //When
+      await testSession
+        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'cy'})
+        //Then
+        .expect((res: { status: unknown; text: unknown; }) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Gwiriwch eich atebion');
         });
     });
 
@@ -85,7 +103,26 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         //Then
         .expect((res: { status: unknown; text: unknown; }) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.CHECK_YOUR_ANSWER.TITLE'));
+          expect(res.text).toContain('Check your answers');
+        });
+    });
+
+    it('should render page successfully with all sections and summary rows when is claimant request', async () => {
+      //Given
+      const claimantClaim: Claim = new Claim();
+      Object.assign(claimantClaim, civilClaimResponseClaimant.case_data);
+
+      mockSummarySections.mockImplementation(() => {
+        return {sections: [] as SummarySection[]} as SummarySections;
+      });
+      mockDraftStore.mockReturnValueOnce(claimantClaim);
+      //When
+      await testSession
+        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'cy'})
+        //Then
+        .expect((res: { status: unknown; text: unknown; }) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Gwiriwch eich atebion');
         });
     });
 
@@ -98,7 +135,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
 
       //when
       await testSession
-        .get(CP_CHECK_ANSWERS_URL)
+        .get(CP_CHECK_ANSWERS_URL).query({lang:'en'})
         //then
         .expect((res: Response) => {
           expect(res.status).toBe(500);
@@ -115,10 +152,24 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       mockDraftStore.mockReturnValueOnce(claim);
 
       //when
-      await testSession.post(CP_CHECK_ANSWERS_URL).expect((res: { status: unknown; text: unknown; }) => {
+      await testSession.post(CP_CHECK_ANSWERS_URL).query({lang: 'en'}).expect((res: { status: unknown; text: unknown; }) => {
         //then
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('Check your answers'));
+        expect(res.text).toContain('Check your answers');
+      });
+    });
+
+    test('If the right form is missing, send back to check your answers page.', async () => {
+      //given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      mockDraftStore.mockReturnValueOnce(claim);
+
+      //when
+      await testSession.post(CP_CHECK_ANSWERS_URL).query({lang: 'cy'}).expect((res: { status: unknown; text: unknown; }) => {
+        //then
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Gwiriwch eich atebion');
       });
     });
 

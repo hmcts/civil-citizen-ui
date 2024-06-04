@@ -293,20 +293,43 @@ import cancelController from 'routes/common/cancelController';
 import evidenceUploadDocumentsController from 'routes/features/caseProgression/evidenceUploadDocumentsController';
 import viewMediationDocuments from 'routes/features/document/mediation/viewMediationDocumentsController';
 import applicationTypeController from './features/generalApplication/applicationTypeController';
+import respondentAgreementController from './features/generalApplication/response/respondentAgreementController';
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
+import viewTheJudgementController from 'routes/features/caseProgression/viewTheJudgementController';
 import claimFeeMakePaymentAgainController
   from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
 import informOtherPartiesController from './features/generalApplication/informOtherPartiesController';
 import hearingSupportController from './features/generalApplication/hearingSupportController';
 import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
+import applicationFeePaymentSuccessfulController from './features/generalApplication/applicationFeePaymentSuccessfulController';
 import claimApplicationCostController from './features/generalApplication/claimApplicationCostController';
 import respondentAgreeToOrderController from 'routes/features/generalApplication/respondentAgreeToOrderController';
 import payingForApplicationController from './features/generalApplication/payingForApplicationController';
+import applicationCostsController from './features/generalApplication/applicationCostsController';
 import requestingReasonController from 'routes/features/generalApplication/requestingReasonController';
 import addAnotherApplicationController from './features/generalApplication/addAnotherApplicationController';
 import orderJudgeController from './features/generalApplication/orderJudgeController';
 import ordersAndNoticesController from 'routes/features/dashboard/ordersAndNoticesController';
+import uploadN245FormController from 'routes/features/generalApplication/uploadN245FormController';
+import unavailableHearingDatesController from 'routes/features/generalApplication/unavailableHearingDatesController';
+import hearingArrangementController from './features/generalApplication/hearingArrangementController';
+import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
+import gaCheckAnswersController from 'routes/features/generalApplication/checkAnswersController';
+import applicationPaymentUnsuccessfulController from './features/generalApplication/applicationPaymentUnsuccessfulController';
+import applicationResponseConfirmationController
+  from 'routes/features/generalApplication/response/applicationResponseConfirmationController';
+import flightDetailsController from './features/claim/airlines/flightDetailsController';
+import delayedFlightController from './features/claim/airlines/delayedFlightController';
+import respondentRequestChangeInformationController
+  from 'routes/features/generalApplication/respondentRequestChangeInformationController';
+import accessibilityStatementController from './features/public/accessibilityStatementController';
+import hearingArrangementsGuidanceController from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
+import wantToUploadDocumentsController from 'routes/features/generalApplication/wantToUploadDocuments';
+import uploadEvidenceDocumentsForApplicationController from 'routes/features/generalApplication/uploadEvidenceDocumentForApplication';
+import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
+import confirmYouHaveBeenPaidConfirmController
+  from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
 
 export default [
   homeController,
@@ -562,17 +585,37 @@ export default [
   evidenceUploadDocumentsController,
   viewMediationDocuments,
   applicationTypeController,
+  respondentAgreementController,
   viewTheHearingController,
   viewResponseToClaimController,
+  viewTheJudgementController,
   hearingSupportController,
   claimFeeMakePaymentAgainController,
   agreementFromOtherPartyController,
+  applicationFeePaymentSuccessfulController,
   informOtherPartiesController,
   claimApplicationCostController,
   respondentAgreeToOrderController,
   payingForApplicationController,
+  applicationCostsController,
   requestingReasonController,
   addAnotherApplicationController,
   orderJudgeController,
   ordersAndNoticesController,
+  uploadN245FormController,
+  unavailableHearingDatesController,
+  hearingArrangementController,
+  hearingContactDetailsController,
+  gaCheckAnswersController,
+  applicationPaymentUnsuccessfulController,
+  flightDetailsController,
+  delayedFlightController,
+  respondentRequestChangeInformationController,
+  accessibilityStatementController,
+  hearingArrangementsGuidanceController,
+  wantToUploadDocumentsController,
+  uploadEvidenceDocumentsForApplicationController,
+  applicationResponseConfirmationController,
+  confirmYouHaveBeenPaidController,
+  confirmYouHaveBeenPaidConfirmController,
 ];
