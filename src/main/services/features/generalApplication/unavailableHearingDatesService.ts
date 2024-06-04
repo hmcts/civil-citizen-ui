@@ -2,6 +2,9 @@ import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavai
 import {UnavailableDatePeriodGaHearing, UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 
 export const getUnavailableDatesForHearingForm = (reqBody: Record<string, []>): UnavailableDatesGaHearing => {
+  if (!reqBody.items) {
+    return new UnavailableDatesGaHearing([]);
+  }
   const unavailableDatePeriodHearing  = reqBody.items.map((item: any): UnavailableDatePeriodGaHearing => {
     if (item.type === UnavailableDateType.SINGLE_DATE) {
       return new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE, item.single.start);

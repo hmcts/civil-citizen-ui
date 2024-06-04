@@ -2,7 +2,7 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL,
   CONFIRM_YOU_HAVE_BEEN_PAID_URL,
-  DASHBOARD_CLAIMANT_URL, VIEW_THE_JUDGEMENT_URL,
+  DASHBOARD_CLAIMANT_URL, VIEW_THE_JUDGMENT_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'models/AppRequest';
@@ -26,7 +26,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 const getSupportLinks = (lng: string, claimId: string) => {
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks = [
-    { text: t('PAGES.CONFIRM_YOU_HAVE_BEEN_PAID.JUDGMENT_LINK', { lng }), url: VIEW_THE_JUDGEMENT_URL.replace(':id', claimId) },
+    { text: t('PAGES.CONFIRM_YOU_HAVE_BEEN_PAID.JUDGMENT_LINK', { lng }), url: VIEW_THE_JUDGMENT_URL.replace(':id', claimId) },
   ];
   return [iWantToTitle, iWantToLinks] as const;
 };
