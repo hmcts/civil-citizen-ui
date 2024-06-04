@@ -52,7 +52,7 @@ module.exports = {
   },
 
   //Notice.AAA6.ClaimIssue.HWF.Requested
-  hwfSubmission:() => {
+  hwfSubmission: () => {
     return {
       title: 'We\'re reviewing your help with fees application',
       content: 'You\'ve applied for help with the claim fee. You\'ll receive an update in 5 to 10 working days.',
@@ -134,7 +134,7 @@ module.exports = {
   defendantResponseFullAdmitPayInstalments: (amount, instalmentAmount, date) => {
     return {
       title: 'Response to the claim',
-      content: [`You have offered to pay £${amount} in instalments of £${instalmentAmount} every month.`, `You have offered to do this starting from ${date}`,  'We will contact you when the claimant responds to your offer.'],
+      content: [`You have offered to pay £${amount} in instalments of £${instalmentAmount} every month.`, `You have offered to do this starting from ${date}`, 'We will contact you when the claimant responds to your offer.'],
       nextSteps: 'View your response',
     };
   },
@@ -163,7 +163,7 @@ module.exports = {
   defendantResponseFullAdmitPayBySetDateClaimant: (amount) => {
     return {
       title: 'Response to the claim',
-      content: ['Sir John Doe has offered to pay',  `£${amount} by`],
+      content: ['Sir John Doe has offered to pay', `£${amount} by`],
       nextSteps: 'View and respond',
     };
   },
@@ -349,6 +349,48 @@ module.exports = {
       title: 'You requested a County Court Judgment against Sir John Doe',
       content: ['You rejected the repayment plan.',
         'When a judge has made a decision, we’ll post a copy of the judgment to you.'],
+    };
+  },
+
+  // Notice.AAA6.MediationUnsuccessful.Claimant1NonAttendance.CARM.Claimant
+  // CIV-13157
+  mediationUnsuccessfulClaimant1NonAttendance: () => {
+    return {
+      title: 'You did not attend mediation',
+      content: ['You did not attend your mediation appointment, and the judge may issue a penalty against you.',
+        'Your case will not be reviewed by the court.'],
+      nextSteps: 'Explain why you did not attend your appointment.',
+    };
+  },
+
+  // CIV-11625
+  // Notice.AAA6.ClaimantIntent.Mediation.CARM.Claimant
+  mediationCARMClaimantDefendant: () => {
+    return {
+      title: 'Your claim is now going to mediation',
+      content: ['Your claim is now going to mediation. You will be contacted within 28 days with details of your appointment.',
+        'If you do not attend your mediation appointment, the judge may issue a penalty.'],
+    };
+  },
+
+  // CIV-13154 and 13155
+  // Notice.AAA6.MediationUnsuccessful.NOTClaimant1NonContactable.CARM.Claimant
+  mediationUnsuccessfulNOTClaimant1NonContactable: () => {
+    return {
+      title: 'Mediation appointment unsuccessful',
+      content: ['You were not able to resolve this claim using mediation.',
+        'This case will now be reviewed by the court.'],
+    };
+  },
+
+  // CIV-13149 and 13152
+  // Notice.AAA6.MediationSuccessful.CARM.Claimant
+  mediationSuccessful: () => {
+    return {
+      title: 'Mediation appointment successful',
+      content: ['Both parties attended mediation and an agreement was reached.',
+        'This case is now settled and no further action is needed.',
+        'You can view your mediation agreement here.'],
     };
   },
 };
