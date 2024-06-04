@@ -52,7 +52,7 @@ describe('General Application - upload evidence docs to support application', ()
     claim = new Claim();
     claim.id ='id';
     claim.generalApplication = new GeneralApplication();
-    claim.generalApplication.applicationType = new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT);
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT)];
     mockDataFromStore.mockResolvedValue(claim);
   });
 
@@ -175,7 +175,7 @@ describe('General Application - upload evidence docs to support application', ()
         .post(GA_UPLOAD_DOCUMENTS)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_CHOOSE_THE_FILE'));
+          expect(res.text).toContain('You need to choose a file before clicking');
         });
     });
     it('should save the file and display', async () => {

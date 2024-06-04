@@ -34,5 +34,26 @@ module.exports = {
       title: 'View orders and notices',
     };
   },
+
+  uploadMediationDocuments: () => {
+    return {
+      locator: '//li[contains(@class, \'app-task-list__item\') and .//a[contains(text(), \'Upload mediation documents\')]]',
+      title: 'Upload mediation documents',
+    };
+  },
+
+  viewMediationDocuments: () => {
+    return {
+      locator: '//li[contains(@class, \'app-task-list__item\') and .//a[contains(text(), \'View mediation documents\')]]',
+      title: 'View mediation documents',
+    };
+  },
+
+  viewMediationSettlementAgreement: () => {
+    return {
+      locator: '//li[contains(@class, \'app-task-list__item\') and .//a[contains(text(), \'View mediation settlement agreement\')]]',
+      title: 'View mediation settlement agreement',
+    };
+  },
 };
 
