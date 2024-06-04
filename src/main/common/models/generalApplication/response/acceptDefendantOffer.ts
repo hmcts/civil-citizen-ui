@@ -2,7 +2,8 @@ import { IsDate, IsNotEmpty, Max, Min, Validate, ValidateIf } from 'class-valida
 import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { YesNo } from 'common/form/models/yesNo';
 import { OptionalDateFourDigitValidator } from 'common/form/validators/optionalDateFourDigitValidator';
-import { OptionalDateInPastValidator } from 'common/form/validators/optionalDateInPastValidator';
+// import { OptionalDateInPastValidator } from 'common/form/validators/optionalDateInPastValidator';
+import { OptionalDateNotInPastValidator } from 'common/form/validators/optionalDateNotInPastValidator';
 import { DateConverter } from 'common/utils/dateConverter';
 
 export class AcceptDefendantOffer {
@@ -24,10 +25,10 @@ export class AcceptDefendantOffer {
     
     // @ValidateIf(o => (o.day && o.month && o.year && o.day <32 && o.month<13 && o.year > 999))
     // @ValidateIf(o => (o.day <32 && o.month<13 && o.year > 999))
-  @ValidateIf(o => o.type === ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE && o.day <32 && o.month<13 && o.year > 999)
-  @IsDate({message: 'ERRORS.VALID_DATE'})
-  @Validate(OptionalDateInPastValidator, {message: 'ERRORS.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.FUTURE_DATE'})
+  @ValidateIf(o => o.type === ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE && !o.day && !o.month && !o.year)
   @IsNotEmpty({ message: 'ERRORS.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.ERROR_IN_FULL' })
+  @IsDate({message: 'ERRORS.VALID_DATE'})
+  @Validate(OptionalDateNotInPastValidator, {message: 'ERRORS.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.FUTURE_DATE'})
     proposedSetDate?: Date;
 
   @ValidateIf(o => o.type === ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE)
@@ -64,6 +65,9 @@ export class AcceptDefendantOffer {
     this.amountPerMonth = amountPerMonth;
     this.reasonProposedInstalment = reasonProposedInstalment;
     this.reasonProposedSetDate = reasonProposedSetDate;
+    this.day = Number(day);
+    this.month = Number(month);
+    this.year = Number(year);
     this.proposedSetDate = DateConverter.convertToDate(year, month, day);
   }
 }
