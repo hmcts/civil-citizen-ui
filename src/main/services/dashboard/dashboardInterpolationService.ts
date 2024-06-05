@@ -27,6 +27,7 @@ import {
   UPLOAD_YOUR_DOCUMENTS_URL,
   VIEW_ORDERS_AND_NOTICES_URL,
   EVIDENCE_UPLOAD_DOCUMENTS_URL,
+  REQUEST_FOR_CONSIDERATION,
   VIEW_MEDIATION_DOCUMENTS,
   CONFIRM_YOU_HAVE_BEEN_PAID_URL,
 } from 'routes/urls';
@@ -109,6 +110,8 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{VIEW_MEDIATION_SETTLEMENT_AGREEMENT}', VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.replace(':id', claimId));
   valuesMap.set('{UPLOAD_MEDIATION_DOCUMENTS}', START_MEDIATION_UPLOAD_FILES.replace(':id', claimId));
   valuesMap.set('{VIEW_EVIDENCE_UPLOAD_DOCUMENTS}', EVIDENCE_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+  valuesMap.set('{REQUEST_FOR_RECONSIDERATION}', REQUEST_FOR_CONSIDERATION.replace(':id', claimId));
+  valuesMap.set('{VIEW_SDO_DOCUMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER)));
   valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', '#');
   valuesMap.set('{VIEW_MEDIATION_DOCUMENTS}', VIEW_MEDIATION_DOCUMENTS.replace(':id', claimId));
   valuesMap.set('{CONFIRM_YOU_HAVE_BEEN_PAID_URL}', CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', claimId));

@@ -66,6 +66,14 @@ export const generateExpertAndWitnessList = (caseData: Claim, lang: string): Nam
       },
     ];
     nameList = nameList.concat(mySelfItem);
+  } else if (caseData.applicant1?.type === PartyType.INDIVIDUAL && caseData.isClaimantIntentionPending()) {
+    const mySelfItem = [
+      {
+        value: caseData.applicant1.partyDetails?.firstName + ' ' + caseData.applicant1.partyDetails?.lastName,
+        text: caseData.applicant1.partyDetails?.firstName + ' ' + caseData.applicant1.partyDetails?.lastName,
+      },
+    ];
+    nameList = nameList.concat(mySelfItem);
   }
   if (witnesses?.length) {
     nameList = nameList.concat(witnesses);
