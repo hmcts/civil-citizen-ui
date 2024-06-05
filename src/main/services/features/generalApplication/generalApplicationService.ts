@@ -270,7 +270,6 @@ export const saveHearingContactDetails = async (claimId: string, hearingContactD
   }
 };
 
-
 export const saveStatementOfTruth = async (claimId: string, statementOfTruth: StatementOfTruthForm): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
