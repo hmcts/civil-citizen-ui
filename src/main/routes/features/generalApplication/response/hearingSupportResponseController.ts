@@ -19,9 +19,9 @@ const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingSupport>,  req: AppRequest | Request, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const applicationType = getRespondToApplicationCaption(claim,lang);
+  const caption = getRespondToApplicationCaption(claim,lang);
   const cancelUrl = await getCancelUrl(claimId, claim);
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationType, headingTitle: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE') });
+  res.render(viewPath, { form, cancelUrl, backLinkUrl, caption, headingTitle: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE') });
 }
 
 hearingSupportResponseController.get(GA_RESPONSE_HEARING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

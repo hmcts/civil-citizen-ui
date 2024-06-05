@@ -28,6 +28,10 @@ export const saveRespondentAgreeToOrder = async (claimId: string, claim: Claim, 
 };
 
 export function getRespondToApplicationCaption(claim: Claim, lng: string) : string {
+  console.log(claim);
+  if (claim.generalApplication?.applicationTypes?.length > 1) {
+    return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO_MULTIPLE', { lng: getLng(lng) });
+  }
   const applicationType = t(selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option], {lng: getLng(lng)}).toLowerCase();
   return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', { lng: getLng(lng), applicationType});
 }

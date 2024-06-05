@@ -2134,6 +2134,7 @@
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
         "RESPOND_TO": "Respond to an application to {{applicationType}}",
+        "RESPOND_TO_MULTIPLE": "Respond to an application",
         "TITLE": "The other parties have said that you've agreed to the order they've requested. Is this correct?"
       },
       "APPLICATION_COSTS": {

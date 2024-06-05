@@ -20,10 +20,10 @@ const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingArrangement>, req: AppRequest | Request, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const applicationType = getRespondToApplicationCaption(claim,lang);
+  const caption = getRespondToApplicationCaption(claim,lang);
   const cancelUrl = await getCancelUrl(claimId, claim);
   const courtLocations = await getListOfCourtLocations(<AppRequest> req);
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationType, courtLocations });
+  res.render(viewPath, { form, cancelUrl, backLinkUrl, caption, courtLocations });
 }
 
 hearingArrangementResponseController.get(GA_RESPONSE_HEARING_ARRANGEMENT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
