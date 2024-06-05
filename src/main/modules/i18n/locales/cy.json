@@ -4222,7 +4222,6 @@
         "ERROR_ACCEPT": "You need to tell us if you accept the defendant's offer. Choose option: Yes or No",
         "ERROR_CHOOSE": "You need to propose a payment plan. Choose either instalments per month or payment in full by a set date.",
         "ERROR_NOT_ACCEPT": "You need to tell us why you do not accept the defendant's offer.",
-        "ERROR_IN_FULL": "You need to tell us the date you propose payment in full by.",
         "ERROR_INSTALMENT": "You need to enter your proposed instalment per month.",
         "FUTURE_DATE": "You need to enter a date in the future."
       },

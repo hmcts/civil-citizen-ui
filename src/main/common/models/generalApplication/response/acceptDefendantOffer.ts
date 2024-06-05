@@ -1,5 +1,6 @@
-import { IsDate, IsNotEmpty, Validate, ValidateIf } from 'class-validator';
+import { IsDate, IsNotEmpty, Max, Min, Validate, ValidateIf } from 'class-validator';
 import { YesNo } from 'common/form/models/yesNo';
+import { OptionalDateFourDigitValidator } from 'common/form/validators/optionalDateFourDigitValidator';
 import { OptionalDateNotInPastValidator } from 'common/form/validators/optionalDateNotInPastValidator';
 import { DateConverter } from 'common/utils/dateConverter';
 
@@ -20,16 +21,25 @@ export class AcceptDefendantOffer {
   @IsNotEmpty({ message: 'ERRORS.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.ERROR_NOT_ACCEPT' })
     reasonProposedInstalment?: string;
     
-  @ValidateIf(o => o.option === YesNo.NO && o.type === ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE)
+  @ValidateIf(o => o.option === YesNo.NO && o.type === ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE && o.day <32 && o.month<13 && o.year > 999)
   @Validate(OptionalDateNotInPastValidator, {message: 'ERRORS.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.FUTURE_DATE'})
-  @IsDate({message: 'ERRORS.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.ERROR_IN_FULL'})
+  @IsDate({message: 'ERRORS.VALID_DATE'})
     proposedSetDate?: Date;
 
-  year: number;
+  @ValidateIf(o => o.option === YesNo.NO && o.type === ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE)
+  @Min(1872,{message:'ERRORS.VALID_YEAR'})
+  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
+    year: number;
 
-  month: number;
+  @ValidateIf(o => o.option === YesNo.NO && o.type === ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE)
+  @Min(1,{message:'ERRORS.VALID_MONTH'})
+  @Max(12,{message:'ERRORS.VALID_MONTH'})
+    month: number;
 
-  day: number;
+  @ValidateIf(o => o.option === YesNo.NO && o.type === ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE)
+  @Min(1,{message:'ERRORS.VALID_DAY'})
+  @Max(31,{message:'ERRORS.VALID_DAY'})
+    day: number;
 
   @ValidateIf(o => o.option === YesNo.NO && o.type === ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE)
   @IsNotEmpty({ message: 'ERRORS.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.ERROR_NOT_ACCEPT' })
