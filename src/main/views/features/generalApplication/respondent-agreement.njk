@@ -1,0 +1,33 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/button.njk" import addButton %}
+{% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
+
+{% block nestedContent %}
+{{ headingWithCaption(t,caption,'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE' ) }}
+  <form method="post" novalidate>
+    {{ csrfProtection(csrf) }}
+    
+    {% set noHtml %}
+      {{ govukTextarea({
+        name: "reasonForDisagreement",
+        id: "reasonForDisagreement",
+        value: form.model.reasonForDisagreement,
+        label: {
+          text:t('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.DISAGREE_EXPLANATION')
+        },
+        errorMessage: {
+        text: t(form.errorFor('reasonForDisagreement'))
+      } if form.hasFieldError('reasonForDisagreement')
+      }) }}
+    {% endset %}
+
+    {{ yesNoRadioButton(t, 'option', 'option', '', 
+          form, 
+          t('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TEXT_REVIEW'),{noHtml:noHtml}) }}
+    {{ addButton(t, 'CONTINUE', cancelUrl) }}
+  </form>
+{% endblock %}
