@@ -42,6 +42,7 @@ class hearingFeeSteps {
     applyHelpWithFeesReferenceNumber.addHelpWithFeesReference();
     applyHelpWithFeesReferenceNumber.nextAction('Continue');
     applyHelpWithFeesConfirmation.verifyPageContent();
+    applyHelpWithFeesConfirmation.nextAction('Close and return to case overview');
     await waitForFinishedBusinessProcess();
   }
 
@@ -58,8 +59,8 @@ class hearingFeeSteps {
     }
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
-    await waitForFinishedBusinessProcess();
     paymentSuccessful.verifyPageContent(feeAmount);
+    paymentSuccessful.nextAction('Close and return to case overview');
   }
 }
 

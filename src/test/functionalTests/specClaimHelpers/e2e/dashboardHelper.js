@@ -1,5 +1,7 @@
 const I = actor();
 
+const {waitForFinishedBusinessProcess} = require('../api/steps');
+
 const selectors = {
   titleClass: '.govuk-notification-banner__title',
   contentClass: 'div.govuk-notification-banner__content',
@@ -22,8 +24,11 @@ module.exports = {
       await I.see(content);
     }
   },
-
   verifyTasklistLinkAndState: async (tasklist, locator, status, isLinkFlag= false, isDeadlinePresent= false, deadline) => {
+   if (I.dontSee(status, locator)) {
+     await I.refreshPage();
+     await waitForFinishedBusinessProcess();
+   }
     await I.see(tasklist, locator);
     await I.see(status, locator);
     if (isLinkFlag === true) {
@@ -32,5 +37,5 @@ module.exports = {
     if (isDeadlinePresent === true) {
       await I.see(deadline, locator);
     }
-  },
+  }
 };
