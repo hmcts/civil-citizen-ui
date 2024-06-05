@@ -1,9 +1,14 @@
-const createLiPClaimForCompany = (user, userId, totalClaimAmount) => {
+const createLipClaimSoleTraderVCompany = (user, userId, totalClaimAmount) => {
   const eventDto = {
     event: 'CREATE_LIP_CLAIM',
     caseDataUpdate: {
       applicant1: {
-        companyName: 'Test Company Claimant',
+        companyName: undefined,
+        individualDateOfBirth: '1995-08-28',
+        individualFirstName: 'Jane',
+        individualLastName: 'Doe',
+        individualTitle: 'Miss',
+        organisationName: undefined,
         partyEmail: user.email,
         partyPhone: '07446777177',
         primaryAddress: {
@@ -13,7 +18,12 @@ const createLiPClaimForCompany = (user, userId, totalClaimAmount) => {
           PostCode: 'S12eu',
           PostTown: 'sheffield',
         },
-        type: 'COMPANY',
+        soleTraderDateOfBirth: '1993-08-28',
+        soleTraderFirstName: 'person',
+        soleTraderLastName: 'defendant',
+        soleTraderTitle: 'mr',
+        soleTraderTradingAs: 'Sole Trader Business',
+        type: 'INDIVIDUAL',
       },
       respondent1: {
         companyName: 'Test Company Defendant',
@@ -135,5 +145,5 @@ const createLiPClaimForCompany = (user, userId, totalClaimAmount) => {
   };
   return eventDto;
 };
-
-module.exports = createLiPClaimForCompany;
+  
+module.exports = createLipClaimSoleTraderVCompany;
