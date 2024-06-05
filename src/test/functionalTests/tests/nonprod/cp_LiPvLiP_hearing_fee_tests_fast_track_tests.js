@@ -6,7 +6,7 @@ const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/D
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent, verifyTasklistLinkAndState } = require('../../specClaimHelpers/e2e/dashboardHelper');
-const { hearingScheduled, payTheHearingFeeClaimant } = require('../../specClaimHelpers/dashboardNotificationConstants');
+const { hearingScheduled, payTheHearingFeeClaimant, hearingFeePaidFull } = require('../../specClaimHelpers/dashboardNotificationConstants');
 const { viewHearings, payTheHearingFee } = require('../../specClaimHelpers/dashboardTasklistConstants');
 
 const claimType = 'FastTrack';
@@ -74,6 +74,8 @@ Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I}) => {
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'DONE', false, false);
+      notification = hearingFeePaidFull();
+      await verifyNotificationTitleAndContent(claimRef, notification.title, notification.content);
     }
   }
 }).tag('@regression-cp');

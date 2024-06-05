@@ -13,25 +13,25 @@ module.exports = {
       await I.amOnPage('/dashboard');
       await I.click(claimNumber);
     }
-    console.log('Title to be verified ..', title);
-    //await I.waitForContent(title);
+    await I.waitForContent(title);
     await I.waitForVisible(selectors.titleClass, 60);
     await I.waitForVisible(selectors.contentClass, 60);
     if (Array.isArray(content)) {
       for (let i = 0; i < content.length; i++) {
-        //await I.see(content[i]);
-        console.log('content to be verified ..', content[i]);
+        await I.see(content[i]);
       }
     } else {
-      //await I.see(content);
-      console.log('content to be verified ..', content);
+      await I.see(content);
     }
   },
+
   verifyTasklistLinkAndState: async (tasklist, locator, status, isLinkFlag= false, isDeadlinePresent= false, deadline) => {
-   if (I.dontSee(status, locator)) {
-     await I.refreshPage();
-     await waitForFinishedBusinessProcess();
-   }
+    //Step to check if status is already updated, if not it will refresh the page
+    const actualStatus = await I.grabTextFrom(locator);
+    if (!actualStatus.toLowerCase().includes(status.toLowerCase())) {
+      await I.refreshPage();
+      await waitForFinishedBusinessProcess();
+    }
     await I.see(tasklist, locator);
     await I.see(status, locator);
     if (isLinkFlag === true) {
@@ -40,5 +40,5 @@ module.exports = {
     if (isDeadlinePresent === true) {
       await I.see(deadline, locator);
     }
-  }
+  },
 };
