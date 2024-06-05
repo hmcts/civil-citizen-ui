@@ -1645,6 +1645,7 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
         "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post.",
         "SDO_ORDER_STATUS": "Mae’r llys wedi cyhoeddi gorchymyn; ni ellir parhau â’r hawliad hwn ar-lein a bydd yn rhaid defnyddio ffurflenni papur.",
+        "SDO_ORDER_LEGAL_ADVISER_STATUS": "Anfonwch fwy o fanylion atom cyn y gwrandawiad",
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "Mae'r dogfennau'n cael eu cyfieithu.",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos."
       },
@@ -2480,6 +2481,18 @@
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
         "TEXT_REVIEW": "Make sure you've reviewed the full application. If you disagree with any part of the application, select 'No' and explain why.",
         "TITLE": "Do you agree that the court should make the order that the other parties have requested?"
+      },
+      "UNAVAILABLE_HEARING_DATES": {
+        "ADD_ANOTHER_DATE": "Add another date or date range",
+        "ENTER_UNAVAILABLE": "Enter unavailable date",
+        "FROM": "From",
+        "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
+        "LONGER_PERIOD": "A longer period of time",
+        "PAGE_TITLE": "Unavailable hearing dates",
+        "SELECT": "Select a date or dates you cannot attend a hearing",
+        "SINGLE_DATE": "A single date",
+        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
+        "TO": "To"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -4305,6 +4318,9 @@
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cafodd y datganiad ei ysgrifennu neu ei gynhyrchu",
     "GENERAL_APPLICATION": {
+      "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
+      "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application.",
+      "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",

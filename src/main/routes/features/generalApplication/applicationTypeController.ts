@@ -57,11 +57,13 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     }
 
     const form = new GenericForm(applicationType);
-    await form.validate();
+    form.validateSync();
+    validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
     const cancelUrl = await getCancelUrl( req.params.id, claim);
     const backLinkUrl = await getBackLinkUrl(req.params.id, claim, cancelUrl);
+
     if (form.hasErrors()) {
-      res.render(viewPath, { form, cancelUrl, backLinkUrl });
+      res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() });
     } else {
       const applicationIndex = queryParamNumber(req, 'index');
       await saveApplicationType(redisKey, applicationType, applicationIndex);
