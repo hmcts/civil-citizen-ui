@@ -3,13 +3,14 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
+import {isJudgmentOnlineLive} from '../../app/auth/launchdarkly/launchDarklyClient';
 
 export const ccjConfirmationGuard = (req: Request, res: Response, next: NextFunction) => {
   (async () => {
     try {
       const claim = await getClaimById(req.params.id, <AppRequest>req, true);
-      const isCCJCompleteForJo = await claim.isCCJCompleteForJo();
-      if (claim.isCCJComplete() || isCCJCompleteForJo) {
+      const isJudgmentOnlineLiveOn = await isJudgmentOnlineLive();
+      if (claim.isCCJComplete(isJudgmentOnlineLiveOn)) {
         next();
       } else {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, DASHBOARD_CLAIMANT_URL));

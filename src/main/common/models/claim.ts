@@ -84,7 +84,6 @@ import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directi
 import {GeneralApplication} from './generalApplication/GeneralApplication';
 import {FlightDetails} from './flightDetails';
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
-import {isJudgmentOnlineLive} from '../../app/auth/launchdarkly/launchDarklyClient';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -712,13 +711,9 @@ export class Claim {
     return this.claimantResponse?.ccjRequest?.paidAmount?.option === YesNo.YES;
   }
 
-  isCCJComplete() {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option;
-  }
-
-  async isCCJCompleteForJo() {
-    const isJudgmentOnlineLiveOn = await isJudgmentOnlineLive();
-    return this.ccdState === CaseState.All_FINAL_ORDERS_ISSUED && this.claimantResponse?.ccjRequest?.paidAmount?.option && isJudgmentOnlineLiveOn;
+  isCCJComplete(isJudgmentOnlineLive = false) {
+    const caseState = isJudgmentOnlineLive ? CaseState.All_FINAL_ORDERS_ISSUED : CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+    return this.ccdState === caseState && this.claimantResponse?.ccjRequest?.paidAmount?.option && isJudgmentOnlineLive;
   }
 
   getHowTheInterestCalculatedReason(): string {
