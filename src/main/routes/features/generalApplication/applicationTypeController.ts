@@ -3,7 +3,7 @@ import { APPLICATION_TYPE_URL } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
-import { getByIndex, saveApplicationType } from 'services/features/generalApplication/generalApplicationService';
+import { getByIndex, saveApplicationType, validateAdditionalApplicationtType } from 'services/features/generalApplication/generalApplicationService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { queryParamNumber } from 'common/utils/requestUtils';
@@ -35,6 +35,8 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
 applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
+    const claimId = req.params.id;
+    const claim = await getClaimById(claimId, req, true);
     let applicationType = null;
 
     if (req.body.option === ApplicationTypeOption.OTHER) {
@@ -44,9 +46,11 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     }
 
     const form = new GenericForm(applicationType);
-    await form.validate();
+    form.validateSync();
+    validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
+
     if (form.hasErrors()) {
-      res.render(viewPath, { form, cancelUrl, backLinkUrl });
+      res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() });
     } else {
       const applicationIndex = queryParamNumber(req, 'index');
       await saveApplicationType(redisKey, applicationType, applicationIndex);
