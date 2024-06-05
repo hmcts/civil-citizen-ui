@@ -13,6 +13,7 @@ import {selectedApplicationType} from 'models/generalApplication/applicationType
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {claimApplicationCostGuard} from "routes/guards/generalApplication/claimApplicationCostGuard";
 
 const claimApplicationCostController = Router();
 const viewPath = 'features/generalApplication/claim-application-cost';
@@ -29,7 +30,7 @@ async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId
   });
 }
 
-claimApplicationCostController.get(GA_CLAIM_APPLICATION_COST_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+claimApplicationCostController.get(GA_CLAIM_APPLICATION_COST_URL, [claimApplicationCostGuard], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
@@ -40,7 +41,7 @@ claimApplicationCostController.get(GA_CLAIM_APPLICATION_COST_URL, (async (req: A
   }
 }) as RequestHandler);
 
-claimApplicationCostController.post(GA_CLAIM_APPLICATION_COST_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+claimApplicationCostController.post(GA_CLAIM_APPLICATION_COST_URL, [claimApplicationCostGuard], (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
@@ -52,19 +53,11 @@ claimApplicationCostController.post(GA_CLAIM_APPLICATION_COST_URL, (async (req: 
       await renderView(form, claim, claimId, res);
     } else {
       await saveApplicationCosts(redisKey, req.body.option);
-      res.redirect(getRedirectUrl(claimId, claim));
+      res.redirect(constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL));
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
-
-function getRedirectUrl(claimId: string, claim: Claim) {
-  /*const applicationType = getLast(claim.generalApplication?.applicationTypes)?.option;
-  if (applicationType === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) {
-    return constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS);
-  }*/
-  return constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL);
-}
 
 export default claimApplicationCostController;

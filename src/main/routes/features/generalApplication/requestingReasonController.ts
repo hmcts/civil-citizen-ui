@@ -2,26 +2,29 @@ import { NextFunction, Request, RequestHandler, Response, Router } from 'express
 import {
   GA_ADD_ANOTHER_APPLICATION_URL,
   GA_REQUESTING_REASON_URL,
-  GA_WANT_TO_UPLOAD_DOCUMENTS, ORDER_JUDGE_URL,
+  ORDER_JUDGE_URL,
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
-import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { RequestingReason } from 'models/generalApplication/requestingReason';
-import { getByIndex, getByIndexOrLast, saveRequestingReason } from 'services/features/generalApplication/generalApplicationService';
+import {
+  getByIndex,
+  getByIndexOrLast,
+  getCancelUrl,
+  saveRequestingReason
+} from 'services/features/generalApplication/generalApplicationService';
 import { buildRequestingReasonPageContent } from 'services/features/generalApplication/requestingReasonPageBuilder';
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
+import {requestingReasonControllerGuard} from 'routes/guards/generalApplication/requestReasonControllerGuard';
 
 const requestingReasonController = Router();
 const viewPath = 'features/generalApplication/requesting-reason';
-const cancelUrl = 'test'; // TODO: add url
-const options = [ApplicationTypeOption.SETTLE_BY_CONSENT, ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT];
 
-requestingReasonController.get(GA_REQUESTING_REASON_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+requestingReasonController.get(GA_REQUESTING_REASON_URL, [requestingReasonControllerGuard],  (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -34,6 +37,7 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, (async (req: AppRequest
     const applicationType = selectedApplicationType[applicationTypeOption];
     const contentList = buildRequestingReasonPageContent(applicationTypeOption, lng);
     const backLinkUrl = constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL);
+    const cancelUrl = await getCancelUrl(req.params.id, claim);
     const form = new GenericForm(requestingReason);
     res.render(viewPath, {
       form,
@@ -47,7 +51,7 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, (async (req: AppRequest
   }
 }) as RequestHandler);
 
-requestingReasonController.post(GA_REQUESTING_REASON_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+requestingReasonController.post(GA_REQUESTING_REASON_URL, [requestingReasonControllerGuard], (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -58,7 +62,7 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, (async (req: AppReques
     const applicationTypeOption = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const contentList = buildRequestingReasonPageContent(applicationTypeOption, lng);
     const backLinkUrl = constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL);
-
+    const cancelUrl = await getCancelUrl(req.params.id, claim);
     const form = new GenericForm(requestingReason);
     await form.validate();
     if (form.hasErrors()) {
@@ -71,18 +75,11 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, (async (req: AppReques
       });
     } else {
       await saveRequestingReason(redisKey, requestingReason, applicationIndex);
-      res.redirect(getRedirectUrl(claimId, claim, applicationTypeOption));
+      res.redirect(constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL));
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-function getRedirectUrl(claimId: string, claim: Claim, applicationTypeOption: ApplicationTypeOption): string {
-  if (options.indexOf(applicationTypeOption) !== -1) {
-    return constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS);
-  } else {
-    return constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL);
-  }
-}
 export default requestingReasonController;

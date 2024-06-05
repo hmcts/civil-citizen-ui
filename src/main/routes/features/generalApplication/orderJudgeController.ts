@@ -1,5 +1,5 @@
 
-import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
+import { NextFunction, RequestHandler, Response, Router } from 'express';
 import {GA_CLAIM_APPLICATION_COST_URL, GA_REQUESTING_REASON_URL, ORDER_JUDGE_URL} from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
@@ -9,7 +9,7 @@ import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { OrderJudge } from 'common/models/generalApplication/orderJudge';
 import { buildPageContent } from 'services/features/generalApplication/orderJudgePageBuilder';
-import { orderJudgeGuard } from 'routes/guards/orderJudgeGuard';
+import { orderJudgeGuard } from 'routes/guards/generalApplication/orderJudgeGuard';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -44,7 +44,7 @@ orderJudgeController.get(ORDER_JUDGE_URL, [orderJudgeGuard], (async (req: AppReq
   }
 }) as RequestHandler);
 
-orderJudgeController.post(ORDER_JUDGE_URL, [orderJudgeGuard], (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+orderJudgeController.post(ORDER_JUDGE_URL, [orderJudgeGuard], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;

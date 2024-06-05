@@ -12,11 +12,10 @@ import { getClaimById } from 'modules/utilityService';
 import { getCancelUrl, getLast, saveAgreementFromOtherParty, validateNoConsentOption} from 'services/features/generalApplication/generalApplicationService';
 import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {agreementFromOtherPartyGuard} from "routes/guards/generalApplication/agreementFromOtherPartyGuard";
+import {agreementFromOtherPartyGuard} from 'routes/guards/generalApplication/agreementFromOtherPartyGuard';
 
 const agreementFromOtherPartyController = Router();
 const viewPath = 'features/generalApplication/agreement-from-other-party';
-//const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT];
 
 agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY, [agreementFromOtherPartyGuard], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -57,7 +56,6 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY, [agreement
       res.render(viewPath, { form, applicationType,cancelUrl, backLinkUrl });
     } else {
       await saveAgreementFromOtherParty(redisKey, claim, req.body.option);
-      //res.redirect(getRedirectUrl(req.body.option, req.params.id, applicationTypeOption));
       res.redirect(constructResponseUrlWithIdParams(req.params.id, INFORM_OTHER_PARTIES));
     }
   } catch (error) {
@@ -66,8 +64,7 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY, [agreement
 }) as RequestHandler);
 
 function getBackLinkUrl(req: AppRequest) : string {
-  const claimId = req.params.id;
-  return APPLICATION_TYPE_URL.replace(':id', claimId);
+  return constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL);
 }
 
 export default agreementFromOtherPartyController;

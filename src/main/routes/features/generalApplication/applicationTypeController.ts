@@ -66,22 +66,11 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
       const applicationIndex = queryParamNumber(req, 'index');
       await saveApplicationType(redisKey, applicationType, applicationIndex);
     }
-   // const redirectUrl = await getRedirectUrl(applicationType.option, req.params.id, claim);
     res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_AGREEMENT_FROM_OTHER_PARTY));
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
-
-/*async function getRedirectUrl(applicationType: ApplicationTypeOption, claimId: string, claim: Claim): Promise<string> {
-  if (claim?.generalApplication?.applicationTypes?.length >= 1) {
-    return constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL);
-  } else if (applicationType === ApplicationTypeOption.SETTLE_BY_CONSENT) {
-    return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL);
-  } else {
-    return constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY);
-  }
-}*/
 
 async function getBackLinkUrl(claimId: string, claim: Claim, cancelUrl: string) {
   if (!claim?.generalApplication?.applicationTypes) {

@@ -14,6 +14,7 @@ import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {addAnotherApplicationGuard} from 'routes/guards/generalApplication/addAnotherApplicationGuard';
 
 const addAnotherApplicationController = Router();
 const viewPath = 'features/generalApplication/add-another-application';
@@ -30,13 +31,13 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Gen
   res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationType });
 };
 
-addAnotherApplicationController.get(GA_ADD_ANOTHER_APPLICATION_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+addAnotherApplicationController.get(GA_ADD_ANOTHER_APPLICATION_URL, [addAnotherApplicationGuard], async (req: AppRequest, res: Response, next: NextFunction) => {
   renderView(req, res).catch((error) => {
     next(error);
   });
 });
 
-addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, [addAnotherApplicationGuard], async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.WANT_TO_ADD_ANOTHER_APPLICATION'));
     await form.validate();
@@ -52,7 +53,7 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, async (req:
 });
 
 function getRedirectUrl(claimId: string, option: YesNo): string {
-  if (option == YesNo.YES) {
+  if (option === YesNo.YES) {
     return constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL);
   } else {
     return constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS);
