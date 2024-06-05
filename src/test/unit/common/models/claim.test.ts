@@ -1525,14 +1525,14 @@ describe('Documents', () => {
       //Given
       claim.totalClaimAmount = 10000;
       //when Then
-      expect(claim.claimType).toEqual(claimType.SMALL_CLAIM);
+      expect(claim.claimTrackType).toEqual(claimType.SMALL_CLAIM);
       expect(claim.isFastTrackClaim).toBe(false);
     });
     it('Its a fast track claim', () => {
       //Given
       claim.totalClaimAmount = 11000;
       //when Then
-      expect(claim.claimType).toEqual(claimType.FAST_TRACK_CLAIM);
+      expect(claim.claimTrackType).toEqual(claimType.FAST_TRACK_CLAIM);
       expect(claim.isFastTrackClaim).toBe(true);
     });
   });
