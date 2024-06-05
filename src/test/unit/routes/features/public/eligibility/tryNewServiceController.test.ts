@@ -42,21 +42,6 @@ describe('Try the new online service', () => {
     it.each([
       [BASE_ELIGIBILITY_URL],
       [MAKE_CLAIM],
-    ])('should return redirect to bilingual preference page if eligibilty and user session is already present and url is %s', async (url ) => {
-      app.request.cookies = {eligibilityCompleted:  true};
-      app.request.session = { user : {id: 123}} as any;
-      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
-      await request(app)
-        .get(url)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL);
-        });
-    });
-
-    it.each([
-      [BASE_ELIGIBILITY_URL],
-      [MAKE_CLAIM],
     ])('should return known claim amount page when minti enabled', async (url) => {
       jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
       jest.spyOn(launchDarkly, 'isMintiEnabled').mockResolvedValueOnce(true);
@@ -79,6 +64,21 @@ describe('Try the new online service', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.text).toContain(ELIGIBILITY_CLAIM_VALUE_URL);
+        });
+    });
+
+    it.each([
+      [BASE_ELIGIBILITY_URL],
+      [MAKE_CLAIM],
+    ])('should return redirect to bilingual preference page if eligibilty and user session is already present and url is %s', async (url ) => {
+      app.request.cookies = {eligibilityCompleted:  true};
+      app.request.session = { user : {id: 123}} as any;
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+      await request(app)
+        .get(url)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL);
         });
     });
   });
