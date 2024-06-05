@@ -48,7 +48,7 @@ describe('Try the new online service', () => {
       await request(app)
         .get(url)
         .expect((res) => {
-          expect(res.status).toBe(302);
+          expect(res.status).toBe(200);
           expect(res.text).toContain(ELIGIBILITY_KNOWN_CLAIM_AMOUNT_URL);
         });
     });
@@ -62,7 +62,7 @@ describe('Try the new online service', () => {
       await request(app)
         .get(url)
         .expect((res) => {
-          expect(res.status).toBe(302);
+          expect(res.status).toBe(200);
           expect(res.text).toContain(ELIGIBILITY_CLAIM_VALUE_URL);
         });
     });
