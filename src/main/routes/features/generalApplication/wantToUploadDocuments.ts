@@ -1,6 +1,8 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
+  GA_ADD_ANOTHER_APPLICATION_URL, GA_APPLICATION_COSTS_URL,
   GA_HEARING_ARRANGEMENTS_GUIDANCE,
+  GA_REQUESTING_REASON_URL,
   GA_UPLOAD_DOCUMENTS,
   GA_WANT_TO_UPLOAD_DOCUMENTS,
 } from 'routes/urls';
@@ -8,9 +10,10 @@ import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
-import {selectedApplicationType} from 'models/generalApplication/applicationType';
+import {ApplicationTypeOption, selectedApplicationType} from 'models/generalApplication/applicationType';
 import {
-  getCancelUrl, getLast,
+  getCancelUrl,
+  getLast,
   saveIfPartyWantsToUploadDoc,
 } from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
@@ -21,10 +24,22 @@ import {removeAllUploadedDocuments} from 'services/features/generalApplication/u
 
 const wantToUploadDocumentsController = Router();
 const viewPath = 'features/generalApplication/want-to-upload-documents';
-const backLinkUrl = 'test'; // TODO: add url
+const options = [ApplicationTypeOption.SETTLE_BY_CONSENT, ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT];
+
+function getBackLinkUrl(claim: Claim, claimId: string, applicationType: ApplicationTypeOption) {
+  if (options.indexOf(applicationType) !== -1 && claim.isClaimant()) {
+    return constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL);
+  } else if(applicationType === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT && !claim.isClaimant()) {
+    return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL);
+  }
+  return constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL);
+
+}
 
 async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response): Promise<void> {
-  const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
+  const selectedAppType = getLast(claim.generalApplication?.applicationTypes)?.option
+  const applicationType = selectedApplicationType[selectedAppType];
+  const backLinkUrl = getBackLinkUrl(claim, claimId, selectedAppType);
   const cancelUrl = await getCancelUrl(claimId, claim);
   res.render(viewPath, {
     form,

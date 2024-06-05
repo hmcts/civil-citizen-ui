@@ -1,5 +1,9 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {GA_CLAIM_APPLICATION_COST_URL} from 'routes/urls';
+import {
+  GA_APPLICATION_COSTS_URL,
+  GA_CLAIM_APPLICATION_COST_URL,
+  ORDER_JUDGE_URL
+} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
@@ -8,14 +12,15 @@ import {getCancelUrl, getLast, saveApplicationCosts} from 'services/features/gen
 import {selectedApplicationType} from 'models/generalApplication/applicationType';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const claimApplicationCostController = Router();
 const viewPath = 'features/generalApplication/claim-application-cost';
-const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response): Promise<void> {
   const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
   const cancelUrl = await getCancelUrl(claimId, claim);
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL);
   res.render(viewPath, {
     form,
     cancelUrl,
@@ -47,10 +52,19 @@ claimApplicationCostController.post(GA_CLAIM_APPLICATION_COST_URL, (async (req: 
       await renderView(form, claim, claimId, res);
     } else {
       await saveApplicationCosts(redisKey, req.body.option);
-      res.redirect('test'); // TODO: add url
+      res.redirect(getRedirectUrl(claimId, claim));
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
+
+function getRedirectUrl(claimId: string, claim: Claim) {
+  /*const applicationType = getLast(claim.generalApplication?.applicationTypes)?.option;
+  if (applicationType === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) {
+    return constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS);
+  }*/
+  return constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL);
+}
+
 export default claimApplicationCostController;

@@ -1,6 +1,6 @@
 
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
-import { ORDER_JUDGE_URL } from 'routes/urls';
+import {GA_CLAIM_APPLICATION_COST_URL, GA_REQUESTING_REASON_URL, ORDER_JUDGE_URL} from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
 import { selectedApplicationType } from 'common/models/generalApplication/applicationType';
@@ -12,10 +12,10 @@ import { buildPageContent } from 'services/features/generalApplication/orderJudg
 import { orderJudgeGuard } from 'routes/guards/orderJudgeGuard';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { queryParamNumber } from 'common/utils/requestUtils';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const orderJudgeController = Router();
 const viewPath = 'features/generalApplication/order-judge';
-const backLinkUrl = 'test'; // TODO: add url
 
 orderJudgeController.get(ORDER_JUDGE_URL, [orderJudgeGuard], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -28,6 +28,7 @@ orderJudgeController.get(ORDER_JUDGE_URL, [orderJudgeGuard], (async (req: AppReq
     const applicationTypeOption = getByIndexOrLast(applicationTypes, applicationTypeIndex)?.option;
     const orderJudge = getByIndex(orderJudges, applicationTypeIndex) || new OrderJudge();
     const { contentList, hintText } = buildPageContent(applicationTypeOption, lng);
+    const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_CLAIM_APPLICATION_COST_URL);
 
     const form = new GenericForm(orderJudge);
     res.render(viewPath, {
@@ -52,6 +53,7 @@ orderJudgeController.post(ORDER_JUDGE_URL, [orderJudgeGuard], (async (req: AppRe
     const redisKey = generateRedisKey(<AppRequest>req);
     const orderJudge = Object.assign(new OrderJudge(), req.body);
     const index = queryParamNumber(req, 'index');
+    const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_CLAIM_APPLICATION_COST_URL);
 
     const form = new GenericForm(orderJudge);
     await form.validate();
@@ -69,7 +71,7 @@ orderJudgeController.post(ORDER_JUDGE_URL, [orderJudgeGuard], (async (req: AppRe
       });
     } else {
       await saveOrderJudge(redisKey, orderJudge, index);
-      res.redirect('test'); // TODO: add url
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_REQUESTING_REASON_URL));
     }
   } catch (error) {
     next(error);

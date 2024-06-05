@@ -1,18 +1,25 @@
 import { NextFunction, Response, Router } from 'express';
 import { AppRequest } from 'common/models/AppRequest';
-import { GA_ADD_ANOTHER_APPLICATION_URL } from 'routes/urls';
+import {
+  APPLICATION_TYPE_URL,
+  GA_ADD_ANOTHER_APPLICATION_URL,
+  GA_REQUESTING_REASON_URL,
+  GA_WANT_TO_UPLOAD_DOCUMENTS
+} from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
 import { getCancelUrl, getLast } from 'services/features/generalApplication/generalApplicationService';
-import { selectedApplicationType } from 'common/models/generalApplication/applicationType';
+import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import { GenericForm } from 'common/form/models/genericForm';
 import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import {YesNo} from 'form/models/yesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const addAnotherApplicationController = Router();
 const viewPath = 'features/generalApplication/add-another-application';
 
 const renderView = async (req: AppRequest, res: Response, form?: GenericForm<GenericYesNo>): Promise<void> => {
-  const backLinkUrl = '/test';
+  const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_REQUESTING_REASON_URL);
   const redisKey = generateRedisKey(req);
   const claim = await getClaimById(redisKey, req, true);
   const cancelUrl = await getCancelUrl(req.params.id, claim);
@@ -36,11 +43,19 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, async (req:
     if (form.hasErrors()) {
       await renderView(req, res, form);
     } else {
-      res.redirect('test');
+      res.redirect(getRedirectUrl(req.params.id, req.body.option));
     }
+
   } catch (error) {
     next(error);
   }
 });
 
+function getRedirectUrl(claimId: string, option: YesNo): string {
+  if (option == YesNo.YES) {
+    return constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL);
+  } else {
+    return constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS);
+  }
+}
 export default addAnotherApplicationController;

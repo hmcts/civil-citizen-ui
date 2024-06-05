@@ -5,8 +5,9 @@ import { InformOtherParties } from 'common/models/generalApplication/informOther
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { NextFunction, RequestHandler, Response, Router } from 'express';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
-import { GA_AGREEMENT_FROM_OTHER_PARTY, INFORM_OTHER_PARTIES } from 'routes/urls';
+import {GA_AGREEMENT_FROM_OTHER_PARTY, GA_APPLICATION_COSTS_URL, INFORM_OTHER_PARTIES} from 'routes/urls';
 import { getCancelUrl, getLast, saveInformOtherParties } from 'services/features/generalApplication/generalApplicationService';
+import {informOtherPartiesGuard} from 'routes/guards/generalApplication/informOtherPartiesGuard';
 
 const viewPath = 'features/generalApplication/inform-other-parties';
 const informOtherPartiesController = Router();
@@ -28,14 +29,14 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Inf
   });
 };
 
-informOtherPartiesController.get(INFORM_OTHER_PARTIES, (req: AppRequest, res: Response, next: NextFunction) => {
+informOtherPartiesController.get(INFORM_OTHER_PARTIES, [informOtherPartiesGuard],(req: AppRequest, res: Response, next: NextFunction) => {
   renderView(req, res).catch((error) => {
     next(error);
   });
 
 });
 
-informOtherPartiesController.post(INFORM_OTHER_PARTIES, (async (req: AppRequest, res: Response, next: NextFunction) => {
+informOtherPartiesController.post(INFORM_OTHER_PARTIES, [informOtherPartiesGuard], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const informOtherParties = new InformOtherParties(req.body.option, req.body?.reasonForCourtNotInformingOtherParties);
     const form = new GenericForm(informOtherParties);
@@ -44,7 +45,7 @@ informOtherPartiesController.post(INFORM_OTHER_PARTIES, (async (req: AppRequest,
       return await renderView(req, res, form);
     }
     await saveInformOtherParties(generateRedisKey(req), informOtherParties);
-    res.redirect('test'); // TODO: add url
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_COSTS_URL));
   } catch (error) {
     next(error);
   }
