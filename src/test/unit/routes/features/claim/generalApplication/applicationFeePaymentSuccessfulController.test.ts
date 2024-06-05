@@ -36,7 +36,7 @@ describe('Claim fee payment confirmation', () => {
 
   describe('on GET', () => {
     it('should return resolving successful payment page', async () => {
-      claim.generalApplication.applicationType = new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM);
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM)];
       mockDataFromStore.mockResolvedValueOnce(claim);
       await request(app)
         .get(GA_PAYMENT_SUCCESSFUL_URL)
@@ -51,7 +51,7 @@ describe('Claim fee payment confirmation', () => {
 
     });
     it('should return resolving successful application submitted', async () => {
-      claim.generalApplication.applicationType = new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING);
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING)];
       claim.caseProgressionHearing.hearingDate = new Date('2026-01-01');
       mockDataFromStore.mockResolvedValueOnce(claim);
       await request(app)

@@ -14,7 +14,7 @@ jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/services/features/claim/details/claimDetailsService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
-describe('General Application - Application type', () => {
+describe('General Application - Hearing support', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
