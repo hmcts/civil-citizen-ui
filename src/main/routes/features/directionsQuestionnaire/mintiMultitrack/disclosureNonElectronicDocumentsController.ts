@@ -28,6 +28,7 @@ function renderView(disclosureNonElectronicDocument: GenericForm<DisclosureNonEl
     form,
     whatIsDisclosureDetailsContent,
     pageTitle: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}PAGE_TITLE`,
+    //TODO ADD THE BACK URL
     backLinkUrl: constructResponseUrlWithIdParams('claimId', 'todo'),
   });
 }
