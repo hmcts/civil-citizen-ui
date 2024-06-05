@@ -3,6 +3,7 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
   DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
@@ -81,7 +82,7 @@ describe('Disclosure Non Electronic Documents Controller', () => {
     });
   });
 
-  describe('on POST - claimant response', () => {
+  describe('on POST - disclosure non eletronic documents', () => {
     beforeEach(() => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
@@ -92,8 +93,22 @@ describe('Disclosure Non Electronic Documents Controller', () => {
       });
     });
 
-    it('should redirect to task list with single date', async () => {
-      console.log('test');
+    it('should redirect to claim documents to be considered page', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send({disclosureNonElectronicDocuments: 'test'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.get('location')).toBe(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL);
+        });
+    });
+
+    it('should validate the field is empty ', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
     });
 
     it('should return http 500 when has error', async () => {
@@ -103,7 +118,7 @@ describe('Disclosure Non Electronic Documents Controller', () => {
       });
       await request(app)
         .post(CONTROLLER_URL)
-        .send({option: 'no'})
+        .send({disclosureNonElectronicDocuments: 'test'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
