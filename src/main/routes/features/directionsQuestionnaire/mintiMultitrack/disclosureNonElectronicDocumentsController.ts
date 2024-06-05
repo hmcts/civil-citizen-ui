@@ -27,7 +27,8 @@ function renderView(disclosureNonElectronicDocument: GenericForm<DisclosureNonEl
   res.render(disclosureNonElectronicDocumentsViewPath, {
     form,
     whatIsDisclosureDetailsContent,
-    pageTitle: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}PAGE_TITLE`,
+    pageTitle: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}TEXT_AREA.LABEL`,
+    title: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}PAGE_TITLE`,
     //TODO ADD THE BACK URL
     backLinkUrl: constructResponseUrlWithIdParams('claimId', 'todo'),
   });

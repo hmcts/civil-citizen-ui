@@ -25,7 +25,7 @@
                 <div class="govuk-!-margin-bottom-8">
                     <form method="post" novalidate>
                         {{ csrfProtection(csrf) }}
-                        {{ createPageTitle(pageTitle,t) }}
+                        {{ createPageTitle(title,t) }}
                         {{ createDetails( whatIsDisclosureDetailsContent ,t) }}
                         {{ createTextArea("disclosureNonElectronicDocuments", form.model.disclosureNonElectronicDocuments, form ,t) }}
                         {{ addButton(t, 'SAVE_AND_CONTINUE') }}
