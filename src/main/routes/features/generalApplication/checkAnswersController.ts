@@ -4,7 +4,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import {getCancelUrl, saveStatementOfTruth} from 'services/features/generalApplication/generalApplicationService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
@@ -57,6 +57,7 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res
     } else {
       await saveStatementOfTruth(redisKey, statementOfTruth);
       await submitApplication(req);
+      await deleteDraftClaimFromStore(claimId);
       res.redirect(getRedirectUrl(claimId, claim));
     }
   } catch (error) {
