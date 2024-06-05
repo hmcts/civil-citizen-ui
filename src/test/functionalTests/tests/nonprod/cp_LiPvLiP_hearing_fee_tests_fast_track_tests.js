@@ -55,7 +55,6 @@ Scenario('Apply for Help with Fees Journey - Fast Track', async ({I}) => {
       await I.click(notification.nextSteps2);
     }
     await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, claimRef, claimAmount);
-    await I.click('Close and return to case overview');
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'IN PROGRESS', false, true, taskListItem.deadline);
