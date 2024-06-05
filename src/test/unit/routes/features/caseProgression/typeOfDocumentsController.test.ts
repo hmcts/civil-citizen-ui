@@ -13,7 +13,6 @@ import {app} from '../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import express from 'express';
-import {t} from 'i18next';
 import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
