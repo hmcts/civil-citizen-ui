@@ -11,6 +11,10 @@ import {
   saveRespondentAgreement,
   saveHearingArrangement,
   saveHearingContactDetails, saveUnavailableDates,
+  getByIndexOrLast,
+  getByIndex,
+  updateByIndexOrAppend,
+  validateAdditionalApplicationtType,
   saveAcceptDefendantOffer,
 } from 'services/features/generalApplication/generalApplicationService';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
@@ -24,9 +28,10 @@ import { HearingSupport, SupportType } from 'models/generalApplication/hearingSu
 import { RequestingReason } from 'models/generalApplication/requestingReason';
 import { HearingArrangement, HearingTypeOptions } from 'models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
-import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
+import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
+import { ValidationError } from 'class-validator';
 import { AcceptDefendantOffer } from 'common/models/generalApplication/response/acceptDefendantOffer';
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -381,6 +386,53 @@ describe('General Application service', () => {
     });
   });
 
+  describe('Get by index or last', () => {
+    it.each`
+      list           | index              | expected
+      ${[1, 2, 3]}   | ${0}               | ${1}
+      ${[1, 2, 3]}   | ${2}               | ${3}
+      ${[1, 2, 3]}   | ${3}               | ${3}
+      ${[1, 2, 3]}   | ${undefined}       | ${3}
+      ${[]}          | ${0}               | ${undefined}
+      ${undefined}   | ${0}               | ${undefined}
+      ${undefined}   | ${undefined}       | ${undefined}
+      `('should return $expected when retrieving index $index from $list',
+      ({ list, index, expected }) => {
+        expect(getByIndexOrLast(list, index)).toEqual(expected);
+      });
+  });
+
+  describe('Get by index', () => {
+    it.each`
+      list           | index              | expected
+      ${[1, 2, 3]}   | ${0}               | ${1}
+      ${[1, 2, 3]}   | ${2}               | ${3}
+      ${[1, 2, 3]}   | ${3}               | ${undefined}
+      ${[1, 2, 3]}   | ${undefined}       | ${undefined}
+      ${[]}          | ${0}               | ${undefined}
+      ${undefined}   | ${0}               | ${undefined}
+      ${undefined}   | ${undefined}       | ${undefined}
+      `('should return $expected when retrieving index $index from $list',
+      ({ list, index, expected }) => {
+        expect(getByIndex(list, index)).toEqual(expected);
+      });
+  });
+
+  describe('Update by index or append', () => {
+    it.each`
+    list           | index              | expected
+    ${[1, 2, 3]}   | ${0}               | ${[9, 2, 3]}
+    ${[1, 2, 3]}   | ${2}               | ${[1, 2, 9]}
+    ${[1, 2, 3]}   | ${3}               | ${[1, 2, 3, 9]}
+    ${[1, 2, 3]}   | ${undefined}       | ${[1, 2, 3, 9]}
+    ${[]}          | ${0}               | ${[9]}
+    `('should return $expected when retrieving index $index from $list',
+      ({ list, index, expected }) => {
+        updateByIndexOrAppend(list, 9, index);
+        expect(list).toEqual(expected);
+      });
+  });
+
   describe('Save respondent agreement', () => {
     it('saves respondent agreement when no general agreement stored', async () => {
       mockGetCaseData.mockResolvedValue(new Claim());
@@ -431,6 +483,29 @@ describe('General Application service', () => {
       // Then
       claim.generalApplication.response = { respondentAgreement };
       await expect(spy).toBeCalledWith('123', claim);
+    });
+  });
+
+  describe('Validate additional application type', () => {
+    it('should return error message if additional application type is in excluded list', () => {
+
+      //Given
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM)];
+      const errors : ValidationError[] = [];
+      const applicationType = new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT);   
+      const body = {
+        optionOther: 'test',
+        option: 'testOption', 
+      };
+      //When
+      validateAdditionalApplicationtType(claim, errors, applicationType,body);
+
+      //Then
+      const error : ValidationError = errors[0];
+      expect(errors.length).toBe(1);
+      expect(error.constraints['additionalApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING');
     });
   });
 });

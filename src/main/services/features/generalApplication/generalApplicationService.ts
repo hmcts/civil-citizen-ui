@@ -20,21 +20,23 @@ import { t } from 'i18next';
 import { getLng } from 'common/utils/languageToggleUtils';
 import { RequestingReason } from 'models/generalApplication/requestingReason';
 import { OrderJudge } from 'common/models/generalApplication/orderJudge';
+import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 import { HearingArrangement } from 'models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 import { AcceptDefendantOffer, ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
+import { StatementOfTruthForm } from 'models/generalApplication/statementOfTruthForm';
+import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
 
-const { Logger } = require('@hmcts/nodejs-logging');
+const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 
-export const saveApplicationType = async (claimId: string, applicationType: ApplicationType): Promise<void> => {
+export const saveApplicationType = async (claimId: string, applicationType: ApplicationType, index?: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.applicationType = applicationType;
+    updateByIndexOrAppend(claim.generalApplication?.applicationTypes, applicationType, index);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -104,11 +106,12 @@ export const saveAcceptDefendantOffer = async (redisKey: string, acceptDefendant
   }
 };
 
-export const saveOrderJudge = async (claimId: string, orderJudge: OrderJudge): Promise<void> => {
+export const saveOrderJudge = async (claimId: string, orderJudge: OrderJudge, index: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.orderJudge = orderJudge;
+    const orderJudges = claim.generalApplication?.orderJudges || [];
+    updateByIndexOrAppend(orderJudges, orderJudge, index);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -202,7 +205,7 @@ export const saveRespondentAgreeToOrder = async (claimId: string, claim: Claim, 
 };
 
 export function getRespondToApplicationCaption(claim: Claim, lng: string): string {
-  const applicationType = t(selectedApplicationType[claim.generalApplication?.applicationType?.option], { lng: getLng(lng) }).toLowerCase();
+  const applicationType = t(selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option], { lng: getLng(lng) }).toLowerCase();
   return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', { lng: getLng(lng), interpolation: { escapeValue: false }, applicationType });
 }
 
@@ -220,13 +223,24 @@ export const saveUnavailableDates = async (claimId: string, claim: Claim, unavai
   }
 };
 
-export const saveRequestingReason = async (claimId: string, requestingReason: RequestingReason): Promise<void> => {
+export const saveRequestingReason = async (claimId: string, requestingReason: RequestingReason, index?: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.requestingReason = requestingReason;
+    updateByIndexOrAppend(claim.generalApplication?.requestingReasons, requestingReason, index);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveN245Form = async (redisKey: string, claim: Claim, fileDetails: UploadGAFiles): Promise<void> => {
+  try {
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.uploadN245Form = fileDetails;
+    await saveDraftClaim(redisKey, claim);
+  }catch (error) {
     logger.error(error);
     throw error;
   }
@@ -256,3 +270,67 @@ export const saveHearingContactDetails = async (claimId: string, hearingContactD
   }
 };
 
+
+export const saveStatementOfTruth = async (claimId: string, statementOfTruth: StatementOfTruthForm): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.statementOfTruth = statementOfTruth;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const getByIndexOrLast = <T>(array: T[] | undefined, index: number | undefined): T | undefined =>
+  getByIndex(array, index)
+  || ((array?.length)
+    ? (array[array.length - 1])
+    : undefined);
+
+export const getByIndex = <T>(array: T[] | undefined, index: number | undefined): T | undefined =>
+  (array?.length && index >= 0 && index < array.length)
+    ? array[index]
+    : undefined;
+
+export const getLast = <T>(array: T[] | undefined): T | undefined =>
+  (array?.length) ? array[array.length - 1] : undefined;
+
+export const updateByIndexOrAppend = <T>(array: T[], newElem: T, index: number | undefined): void => {
+  if (index >= 0 && index < array.length) {
+    array[index] = newElem;
+  } else {
+    array.push(newElem);
+  }
+};
+
+export const validateAdditionalApplicationtType = (claim : Claim, errors : ValidationError[], applicationType : ApplicationType,body : any) => {
+
+  if(claim.generalApplication?.applicationTypes?.length > 0 && getListOfNotAllowedAdditionalAppType().includes(applicationType.option)) {
+    const errorMessage = additionalApplicationErrorMessages[applicationType.option];
+
+    const validationError = new FormValidationError({
+      target: new GenericYesNo(body.optionOther, ''),
+      value: body.option,
+      constraints: {
+        additionalApplicationError : errorMessage,
+      },
+      property: 'option',
+    });
+
+    errors.push(validationError);
+  }
+};
+
+export const getListOfNotAllowedAdditionalAppType = () => {
+  return [ApplicationTypeOption.SET_ASIDE_JUDGEMENT, 
+    ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, 
+    ApplicationTypeOption.SETTLE_BY_CONSENT];
+};
+
+export const additionalApplicationErrorMessages: Partial<{ [key in ApplicationTypeOption]: string; }> = {
+  [ApplicationTypeOption.SETTLE_BY_CONSENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING',
+  [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT',
+  [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT',
+};
