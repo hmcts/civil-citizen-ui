@@ -3,12 +3,13 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 export const getGeneralApplicationConfirmationContent = (claimId: string, claim: Claim, lng: string) => {
   const applicationFee = convertToPoundsFilter(claim.generalApplication?.applicationFee?.calculatedAmountInPence?.toString());
   const dashboardUrl = claim.isClaimant()
-    ? DASHBOARD_CLAIMANT_URL.replace(':id', claimId)
-    : DEFENDANT_SUMMARY_URL.replace(':id', claimId);
+    ? constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)
+    : constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 
   return new PageSectionBuilder()
     .addTitle('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT')
