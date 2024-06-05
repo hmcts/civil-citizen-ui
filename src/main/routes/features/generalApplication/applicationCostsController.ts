@@ -3,7 +3,7 @@ import {
   GA_AGREEMENT_FROM_OTHER_PARTY,
   GA_APPLICATION_COSTS_URL,
   GA_CLAIM_APPLICATION_COST_URL,
-  GA_UPLOAD_N245_FORM_URL, INFORM_OTHER_PARTIES
+  GA_UPLOAD_N245_FORM_URL, INFORM_OTHER_PARTIES,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';

@@ -20,7 +20,6 @@ export const informOtherPartiesGuard = async (req: AppRequest, res: Response, ne
     } else {
       next();
     }
-
   } catch (error) {
     next(error);
   }

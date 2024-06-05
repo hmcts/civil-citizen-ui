@@ -7,7 +7,7 @@ import * as utilityService from 'modules/utilityService';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
 import {AppRequest} from 'models/AppRequest';
 import {informOtherPartiesGuard} from 'routes/guards/generalApplication/informOtherPartiesGuard';
-import {YesNo} from "form/models/yesNo";
+import {YesNo} from 'form/models/yesNo';
 
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),

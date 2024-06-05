@@ -4,7 +4,7 @@ import {
   APPLICATION_TYPE_URL,
   GA_ADD_ANOTHER_APPLICATION_URL,
   GA_REQUESTING_REASON_URL,
-  GA_WANT_TO_UPLOAD_DOCUMENTS
+  GA_WANT_TO_UPLOAD_DOCUMENTS,
 } from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
 import { getCancelUrl, getLast } from 'services/features/generalApplication/generalApplicationService';

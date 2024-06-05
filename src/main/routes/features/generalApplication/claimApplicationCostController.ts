@@ -2,7 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   GA_APPLICATION_COSTS_URL,
   GA_CLAIM_APPLICATION_COST_URL,
-  ORDER_JUDGE_URL
+  ORDER_JUDGE_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
@@ -13,7 +13,7 @@ import {selectedApplicationType} from 'models/generalApplication/applicationType
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {claimApplicationCostGuard} from "routes/guards/generalApplication/claimApplicationCostGuard";
+import {claimApplicationCostGuard} from 'routes/guards/generalApplication/claimApplicationCostGuard';
 
 const claimApplicationCostController = Router();
 const viewPath = 'features/generalApplication/claim-application-cost';

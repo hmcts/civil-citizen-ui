@@ -19,7 +19,6 @@ export const agreementFromOtherPartyGuard = async (req: AppRequest, res: Respons
     } else {
       next();
     }
-
   } catch (error) {
     next(error);
   }

@@ -37,7 +37,7 @@ function getBackLinkUrl(claim: Claim, claimId: string, applicationType: Applicat
 }
 
 async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response): Promise<void> {
-  const selectedAppType = getLast(claim.generalApplication?.applicationTypes)?.option
+  const selectedAppType = getLast(claim.generalApplication?.applicationTypes)?.option;
   const applicationType = selectedApplicationType[selectedAppType];
   const backLinkUrl = getBackLinkUrl(claim, claimId, selectedAppType);
   const cancelUrl = await getCancelUrl(claimId, claim);

@@ -12,7 +12,7 @@ import {
 import {
   getByIndex,
   getCancelUrl,
-  saveApplicationType
+  saveApplicationType,
 } from 'services/features/generalApplication/generalApplicationService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';

@@ -2,7 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   GA_HEARING_ARRANGEMENT_URL,
   GA_HEARING_ARRANGEMENTS_GUIDANCE,
-  GA_HEARING_CONTACT_DETAILS_URL
+  GA_HEARING_CONTACT_DETAILS_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
