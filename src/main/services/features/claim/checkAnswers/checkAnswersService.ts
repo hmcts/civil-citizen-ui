@@ -15,11 +15,11 @@ import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/state
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
-const buildSummarySections = (claim: Claim, claimId: string, lang: string ): SummarySections => {
+const buildSummarySections = (claim: Claim, claimId: string, lang: string, isCarmEnabled = false): SummarySections => {
 
   return {
     sections: [
-      buildYourDetailsSection(claim, claimId, lang),
+      buildYourDetailsSection(claim, claimId, lang, isCarmEnabled),
       buildTheirDetailsSection(claim, claimId, lang),
       buildClaimAmountSection(claim, lang),
       buildClaimSection(claim, claimId, lang),
@@ -27,8 +27,8 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string ): Sum
   };
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, lang?: string ): SummarySections => {
-  return buildSummarySections(claim, claimId, lang);
+export const getSummarySections = (claimId: string, claim: Claim, lang?: string, isCarmEnabled = false ): SummarySections => {
+  return buildSummarySections(claim, claimId, lang, isCarmEnabled);
 };
 export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | QualifiedStatementOfTruth => {
   switch (getSignatureType(claim)) {
