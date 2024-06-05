@@ -38,7 +38,7 @@ export async function getFlagValue(
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
-  return true;
+  return false;
 }
 
 export async function isServiceShuttered(): Promise<boolean> {
