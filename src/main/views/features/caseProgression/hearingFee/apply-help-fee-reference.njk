@@ -2,7 +2,6 @@
 {% from "../../dashboard/item-content.njk" import itemContent %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
-{% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 
 {% block pageTitle %}
@@ -10,9 +9,6 @@
 {% endblock %}
 
 {% block nestedContent %}
-      {% if form.hasErrors() %}
-        {{ errorSummary(form.getAllErrors(), t) }}
-      {% endif %}
       {% for content in applyHelpFeeReferenceContents %}
         {{ itemContent(content,t) }}
       {% endfor %}
@@ -49,7 +45,7 @@
                 <li class="govuk-body">{{t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.LIST_ITEMS.FIFTH')}}</li>
               </ol>
             {% endset %}
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, noHtml: noHtml}) }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, noHtml: noHtml, yes: 'COMMON.YES', no: 'COMMON.NO'}) }}
             {% for content in applyHelpFeeReferenceButtonContents %}
               {{ itemContent(content,t) }}
             {% endfor %}

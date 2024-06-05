@@ -3,22 +3,18 @@
 {% from "../../dashboard/item-content.njk" import itemContent %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
-{% from "../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.TITLE') }}
 {% endblock %}
 
 {% block nestedContent %}
-      {% if form.hasErrors() %}
-        {{ errorSummary(form.getAllErrors(), t) }}
-      {% endif %}
           {% for content in applyHelpFeeSelectionContents %}
             {{ itemContent(content,t) }}
           {% endfor %}
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml}) }}
+            {{ yesNoRadioButton(t,'option','option','',form,'',{yesHtml: yesHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
             {% for content in applyHelpFeeSelectionButtonContents %}
               {{ itemContent(content,t) }}
             {% endfor %}

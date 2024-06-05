@@ -6,8 +6,7 @@
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
 {% from "../../macro/support-links.njk" import supportLinks %}
 
-{% block content %}
-
+{% block nestedContent %}
         {% set claimantName = claim.getClaimantFullName() %}
         {% set defendantName = claim.getDefendantFullName() %}
         {% if claimantName and defendantName %}
@@ -22,63 +21,44 @@
         {% if claimAmountFormatted %}
           <p class="govuk-body-m">{{  t('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: claimAmountFormatted}) }}</p>
         {% endif %}
-      <div class="govuk-grid-row">
-        {# Left side #}
-        <div class="govuk-grid-column-two-thirds">
-          <div class="border-small-top"></div>
-            {% for notification in dashboardNotifications.items %}
-                {{ govukNotificationBanner({
-                   titleText: notification.titleCy if lang=="cy" else notification.titleEn,
-                   html: notification.descriptionCy if lang=="cy" else notification.descriptionEn,
-                   classes: "govuk-!-margin-bottom-4"
-                 })  }}
-            {% endfor %}
-            {% for taskList in dashboardTaskList.items %}
-              <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
-                <h2 class="app-task-list__section">
-                   {% if lang=="cy"%} {{ taskList.categoryCy }} {% else %} {{ taskList.categoryEn}} {% endif %}
-                </h2>
-                <ol class="app-task-list app-task-list__items">
-                  {% for task in taskList.tasks %}
-                    <li class="app-task-list__item">
-                      <div class="row">
-                        <div class="column">
-                            <span class="app-task-list__task-name">
-                              {% if lang=="cy"%} {{ task.taskNameCy | safe}} {% else %} {{ task.taskNameEn | safe}} {% endif %}
-                            </span>
-                        </div>
-                        <div class="column">
-                          <strong class="govuk-tag app-task-list__tag {{ task.statusColour}}">
-                            {% if lang=="cy"%}{{ task.statusCy }} {% else %} {{ task.statusEn }} {% endif %}
-                          </strong>
-                        </div>
-                        {% if task.hintTextEn %}
-                          <br/>
-                          <span class="govuk-body-s"> {% if lang=="cy"%} {{ task.hintTextCy }} {% else %} {{ task.hintTextEn }} {% endif %} </span>
-                        {% endif %}
+
+        <div class="border-small-top"></div>
+         <div class="dashboard-notification">
+          {% for notification in dashboardNotifications.items %}
+              {{ govukNotificationBanner({
+                 titleText: notification.titleCy if lang=="cy" else notification.titleEn,
+                 html: notification.descriptionCy if lang=="cy" else notification.descriptionEn,
+                 classes: "govuk-!-margin-bottom-4"
+               })  }}
+          {% endfor %}
+         </div>
+          {% for taskList in dashboardTaskList.items %}
+            <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
+              <h2 class="app-task-list__section">
+                 {% if lang=="cy"%} {{ taskList.categoryCy }} {% else %} {{ taskList.categoryEn}} {% endif %}
+              </h2>
+              <ol class="app-task-list app-task-list__items">
+                {% for task in taskList.tasks %}
+                  <li class="app-task-list__item">
+                    <div class="row">
+                      <div class="column">
+                          <span class="app-task-list__task-name">
+                            {% if lang=="cy"%} {{ task.taskNameCy | safe}} {% else %} {{ task.taskNameEn | safe}} {% endif %}
+                          </span>
                       </div>
-                    </li>
-                  {% endfor %}
-                </ol>
-              </div>
-            {% endfor %}
-          </div>
-
-        {# TODO: Right side #}
-        <div class="govuk-grid-column-one-third">
-          <div class="border-small-top"></div>
-          {% if iWantToLinks.length %}
-            <div class="govuk-!-margin-bottom-8">
-              {{ supportLinks(t, iWantToTitle, iWantToLinks) }}
+                      <div class="column">
+                        <strong class="govuk-tag app-task-list__tag {{ task.statusColour}}">
+                          {% if lang=="cy"%}{{ task.statusCy }} {% else %} {{ task.statusEn }} {% endif %}
+                        </strong>
+                      </div>
+                      {% if task.hintTextEn %}
+                        <br/>
+                        <span class="govuk-body-s"> {% if lang=="cy"%} {{ task.hintTextCy }} {% else %} {{ task.hintTextEn }} {% endif %} </span>
+                      {% endif %}
+                    </div>
+                  </li>
+                {% endfor %}
+              </ol>
             </div>
-          {% endif %}
-          {% if helpSupportLinks.length %}
-            {{ supportLinks(t, helpSupportTitle, helpSupportLinks) }}
-          {% endif %}
-          <div class="govuk-!-padding-top-8">
-            {{ contactUsForHelp(t) }}
-          </div>
-        </div>
-      </div>
-
+          {% endfor %}
 {% endblock %}
