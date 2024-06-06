@@ -297,12 +297,12 @@ import respondentAgreementController from './features/generalApplication/respons
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
 import viewTheJudgementController from 'routes/features/caseProgression/viewTheJudgementController';
-import claimFeeMakePaymentAgainController
-  from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
+import claimFeeMakePaymentAgainController from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
 import informOtherPartiesController from './features/generalApplication/informOtherPartiesController';
 import hearingSupportController from './features/generalApplication/hearingSupportController';
 import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
-import applicationFeePaymentSuccessfulController from './features/generalApplication/applicationFeePaymentSuccessfulController';
+import applicationFeePaymentSuccessfulController
+  from './features/generalApplication/applicationFeePaymentSuccessfulController';
 import claimApplicationCostController from './features/generalApplication/claimApplicationCostController';
 import respondentAgreeToOrderController from 'routes/features/generalApplication/respondentAgreeToOrderController';
 import payingForApplicationController from './features/generalApplication/payingForApplicationController';
@@ -316,7 +316,8 @@ import unavailableHearingDatesController from 'routes/features/generalApplicatio
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 import gaCheckAnswersController from 'routes/features/generalApplication/checkAnswersController';
-import applicationPaymentUnsuccessfulController from './features/generalApplication/applicationPaymentUnsuccessfulController';
+import applicationPaymentUnsuccessfulController
+  from './features/generalApplication/applicationPaymentUnsuccessfulController';
 import applicationResponseConfirmationController
   from 'routes/features/generalApplication/response/applicationResponseConfirmationController';
 import flightDetailsController from './features/claim/airlines/flightDetailsController';
@@ -324,12 +325,15 @@ import delayedFlightController from './features/claim/airlines/delayedFlightCont
 import respondentRequestChangeInformationController
   from 'routes/features/generalApplication/respondentRequestChangeInformationController';
 import accessibilityStatementController from './features/public/accessibilityStatementController';
-import hearingArrangementsGuidanceController from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
+import hearingArrangementsGuidanceController
+  from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
 import wantToUploadDocumentsController from 'routes/features/generalApplication/wantToUploadDocuments';
-import uploadEvidenceDocumentsForApplicationController from 'routes/features/generalApplication/uploadEvidenceDocumentForApplication';
+import uploadEvidenceDocumentsForApplicationController
+  from 'routes/features/generalApplication/uploadEvidenceDocumentForApplication';
 import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
 import confirmYouHaveBeenPaidConfirmController
   from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
+import viewMyApplicationsController from 'routes/features/generalApplication/viewMyApplicationsController';
 
 export default [
   homeController,
@@ -618,4 +622,5 @@ export default [
   applicationResponseConfirmationController,
   confirmYouHaveBeenPaidController,
   confirmYouHaveBeenPaidConfirmController,
+  viewMyApplicationsController,
 ];

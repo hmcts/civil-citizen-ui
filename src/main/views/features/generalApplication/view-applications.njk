@@ -1,0 +1,38 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/accordion/macro.njk" import govukAccordion %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.ORDER_JUDGE.TITLE') }}
+{% endblock %}
+
+{% block nestedContent %}
+          <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TITLE') }}</h1>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REVIEW') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.SUBMITTED') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.EITHER_PARTIES') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_SECTIONS') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_1')}}<a href="testUrl">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_2') }}</a>{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_3') }}</p>
+
+          {{ govukAccordion({
+            id: "accordion-default",
+            items: [
+              {
+                heading: {
+                  text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION')
+                },
+                content: {
+                  html: '<p class="govuk-body">Application details submitted by the applicant.</p>'
+                }
+              },
+              {
+                heading: {
+                  text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE')
+                },
+                content: {
+                  html: '<p class="govuk-body">Response from the other parties</p>'
+                }
+              }
+            ]
+          }) }}
+{% endblock %}
