@@ -228,7 +228,7 @@ export const saveStatementOfTruth = async (claimId: string, statementOfTruth: St
 
 export const getDynamicHeaderForMultipleApplications = (claim: Claim): string => {
   const applicationTypes = claim.generalApplication?.applicationTypes;
-  return (applicationTypes?.length == 1) 
+  return (applicationTypes?.length === 1) 
     ? selectedApplicationType[applicationTypes[0].option] 
     : 'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION';
 };
