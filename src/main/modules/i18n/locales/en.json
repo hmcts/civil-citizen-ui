@@ -2489,6 +2489,18 @@
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
         "TEXT_REVIEW": "Make sure you've reviewed the full application. If you disagree with any part of the application, select 'No' and explain why.",
         "TITLE": "Do you agree that the court should make the order that the other parties have requested?"
+      },
+      "UNAVAILABLE_HEARING_DATES": {
+        "ADD_ANOTHER_DATE": "Add another date or date range",
+        "ENTER_UNAVAILABLE": "Enter unavailable date",
+        "FROM": "From",
+        "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
+        "LONGER_PERIOD": "A longer period of time",
+        "PAGE_TITLE": "Unavailable hearing dates",
+        "SELECT": "Select a date or dates you cannot attend a hearing",
+        "SINGLE_DATE": "A single date",
+        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
+        "TO": "To"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
