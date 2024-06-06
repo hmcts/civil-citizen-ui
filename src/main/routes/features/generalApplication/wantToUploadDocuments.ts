@@ -8,7 +8,7 @@ import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
-import {getCancelUrl, saveIfPartyWantsToUploadDoc} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl, getDynamicHeaderForMultipleApplications, saveIfPartyWantsToUploadDoc} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -25,6 +25,7 @@ async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId
     form,
     cancelUrl,
     backLinkUrl,
+    headerTitle: getDynamicHeaderForMultipleApplications(claim),
   });
 }
 

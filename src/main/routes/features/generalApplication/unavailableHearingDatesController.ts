@@ -2,7 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GA_UNAVAILABLE_HEARING_DATES_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
-import {getCancelUrl, saveUnavailableDates} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl, getDynamicHeaderForMultipleApplications, saveUnavailableDates} from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {t} from 'i18next';
@@ -21,7 +21,9 @@ const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<UnavailableDatesGaHearing>, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, headingTitle: t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.TITLE') });
+  res.render(viewPath, { form, cancelUrl, backLinkUrl, 
+    headerTitle: getDynamicHeaderForMultipleApplications(claim),
+    headingTitle: t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.TITLE') });
 }
 
 unavailableHearingDatesController.get(GA_UNAVAILABLE_HEARING_DATES_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

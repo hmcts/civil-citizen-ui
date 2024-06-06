@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block nestedContent %}
-          {{ headingWithCaption(t, 'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION','PAGES.GENERAL_APPLICATION.WANT_TO_UPLOAD_DOCUMENTS.TITLE') }}
+          {{ headingWithCaption(t, headerTitle, 'PAGES.GENERAL_APPLICATION.WANT_TO_UPLOAD_DOCUMENTS.TITLE') }}
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.WANT_TO_UPLOAD_DOCUMENTS.MSG1') }}</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}

@@ -63,7 +63,7 @@ describe('General Application - upload evidence docs to support application', ()
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.TITLE'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT'));
         });
     });
 

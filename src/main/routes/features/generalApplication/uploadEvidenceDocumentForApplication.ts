@@ -6,7 +6,7 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
-import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl, getDynamicHeaderForMultipleApplications} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
@@ -36,6 +36,7 @@ async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimI
     formattedSummary,
     cancelUrl,
     backLinkUrl,
+    headerTitle: getDynamicHeaderForMultipleApplications(claim),
     currentUrl,
   });
 }

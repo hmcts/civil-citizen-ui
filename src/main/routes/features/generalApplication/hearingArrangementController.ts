@@ -2,7 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GA_HEARING_ARRANGEMENT_URL, GA_HEARING_CONTACT_DETAILS_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
-import {getCancelUrl, saveHearingArrangement } from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl, getDynamicHeaderForMultipleApplications, saveHearingArrangement } from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
@@ -17,7 +17,8 @@ const backLinkUrl = 'test'; // TODO: add url
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingArrangement>, req: AppRequest | Request, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const courtLocations = await getListOfCourtLocations(<AppRequest> req);
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, courtLocations });
+  const headerTitle = getDynamicHeaderForMultipleApplications(claim);
+  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, courtLocations });
 }
 
 hearingArrangementController.get(GA_HEARING_ARRANGEMENT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

@@ -18,7 +18,7 @@
     {% set errors = translateErrors(form.getAllErrors(),t)[0] %}
     {% set idValue = errors.fieldName %}
   {% endif %}
-      {{ headingWithCaption(t, 'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION', 'PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.TITLE') }}
+      {{ headingWithCaption(t, headerTitle, 'PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.TITLE') }}
       <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.MSG1') }}</p>
       <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.NAME_DOCUMENT') }}</p>
       <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.DOCUMENT_TYPE_SIZE') }}</p>

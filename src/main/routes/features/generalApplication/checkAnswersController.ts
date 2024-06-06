@@ -3,7 +3,7 @@ import {GA_CHECK_ANSWERS_URL, GENERAL_APPLICATION_CONFIRM_URL} from 'routes/urls
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
-import {getCancelUrl, saveStatementOfTruth} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl, getDynamicHeaderForMultipleApplications, saveStatementOfTruth} from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
@@ -24,7 +24,8 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
   const claimIdPrettified = caseNumberPrettify(claimId);
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const summaryRows = getSummarySections(claimId, claim, lang);
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, claimIdPrettified, claim, summaryRows });
+  const headerTitle = getDynamicHeaderForMultipleApplications(claim);
+  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, summaryRows });
 }
 
 gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
