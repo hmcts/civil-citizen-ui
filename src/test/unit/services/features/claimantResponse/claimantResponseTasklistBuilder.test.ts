@@ -996,6 +996,47 @@ describe('Claimant Response Task List builder', () => {
       expect(yourResponse.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
       expect(yourResponse.tasks[3]).toBeUndefined();
     });
+    it('should display haveYouBeenPaidTask and freeTelephoneMediationTas as second for when claimant doesn`t accept defendant payment for Lip v Lr case', () => {
+      //Given
+      claim.claimantResponse = {
+        hasDefendantPaidYou: new GenericYesNo(YesNo.NO),
+      } as ClaimantResponse;
+      claim.isDefendantAgreedForMediation = jest.fn().mockReturnValue(false);
+      claim.isDefendantLrAgreedForMediation = jest.fn().mockReturnValue(true);
+      //When
+      const yourResponse = buildYourResponseSection(claim, claimId, lang, false);
+      //Then
+      expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
+      expect(yourResponse.tasks.length).toBe(2);
+      expect(yourResponse.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(yourResponse.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(yourResponse.tasks[1].url).toEqual(freeMediationUrl);
+      expect(yourResponse.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(yourResponse.tasks[2]).toBeUndefined();
+    });
+    it('should display haveYouBeenPaidTask, settleClaimForPaidAmountTask and freeTelephoneMediationTask as third task for when claimant accept defendant payment but not settle the claim for Lip v Lr case', () => {
+      //Given
+      claim.claimantResponse = {
+        hasDefendantPaidYou: new GenericYesNo(YesNo.YES),
+        hasPartPaymentBeenAccepted: new GenericYesNo(YesNo.NO),
+        rejectionReason: {
+          text: 'test',
+        },
+      } as ClaimantResponse;
+      claim.isDefendantAgreedForMediation = jest.fn().mockReturnValue(false);
+      claim.isDefendantLrAgreedForMediation = jest.fn().mockReturnValue(true);
+      //When
+      const yourResponse = buildYourResponseSection(claim, claimId, lang, false);
+      //Then
+      expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
+      expect(yourResponse.tasks.length).toBe(3);
+      expect(yourResponse.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(yourResponse.tasks[1].status).toEqual(TaskStatus.COMPLETE);
+      expect(yourResponse.tasks[2].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(yourResponse.tasks[2].url).toEqual(freeMediationUrl);
+      expect(yourResponse.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(yourResponse.tasks[3]).toBeUndefined();
+    });
   });
 
   describe('Your response section', () => {
