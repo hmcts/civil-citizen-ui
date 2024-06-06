@@ -18,7 +18,7 @@ submitGeneralApplicationConfirmationController.get(GENERAL_APPLICATION_CONFIRM_U
     const claim = await getClaimById(claimId, req, true);
     res.render(submitGeneralApplicationConfirmationViewPath, {
       confirmationTitle : t('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.TITLE', {lng}),
-      confirmationContent: getGeneralApplicationConfirmationContent(claimId, claim, lng),
+      confirmationContent: await getGeneralApplicationConfirmationContent(claimId, claim, lng),
     });
   }catch (error) {
     next(error);
