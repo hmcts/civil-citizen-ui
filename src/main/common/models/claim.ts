@@ -172,6 +172,7 @@ export class Claim {
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
   defendantResponseDocuments: SystemGeneratedCaseDocuments[];
+  responseClaimMediationSpecRequired?: YesNo;
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
   judgmentOnline?: JudgmentOnline;
@@ -581,7 +582,8 @@ export class Claim {
   }
 
   isDefendantDetailsCompleted(): boolean {
-    return !!this.respondent1?.type &&
+    return !!this.respondent1?.type && 
+      !!this.respondent1?.partyDetails?.primaryAddress &&
       (
         (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName) ||
         (this.isOrganisation() && !!this.respondent1?.partyDetails?.partyName) ||
@@ -872,6 +874,11 @@ export class Claim {
     return this.mediation?.canWeUse
       && this.mediation?.companyTelephoneNumber
       && (Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0);
+  }
+
+  isDefendantLrAgreedForMediation() {
+    return this.isLRDefendant()
+      && this.responseClaimMediationSpecRequired === YesNo.YES;
   }
 
   isClaimantRejectedPaymentPlan() {
