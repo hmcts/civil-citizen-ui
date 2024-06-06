@@ -6,7 +6,7 @@ const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/D
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent, verifyTasklistLinkAndState } = require('../../specClaimHelpers/e2e/dashboardHelper');
-const { hearingScheduled, payTheHearingFeeClaimant } = require('../../specClaimHelpers/dashboardNotificationConstants');
+const { hearingScheduled, payTheHearingFeeClaimant, hearingFeePaidFull} = require('../../specClaimHelpers/dashboardNotificationConstants');
 const { viewHearings, payTheHearingFee } = require('../../specClaimHelpers/dashboardTasklistConstants');
 
 const claimType = 'SmallClaims';
@@ -35,7 +35,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Apply for Help with Fees Journey - Small Claims', async ({I}) => {
+Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
@@ -55,6 +55,7 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I}) => {
       await I.click(notification.nextSteps2);
     }
     await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, claimRef, claimAmount);
+    await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'IN PROGRESS', false, true, taskListItem.deadline);
@@ -62,7 +63,7 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I}) => {
   }
 }).tag('@regression-cp');
 
-Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I}) => {
+Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
@@ -71,9 +72,12 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I}) => {
       await I.click(notification.nextSteps);
     }
     await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
+    await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'DONE', false, false);
+      notification = hearingFeePaidFull();
+      await verifyNotificationTitleAndContent(claimRef, notification.title, notification.content);
     }
   }
 }).tag('@regression-cp');

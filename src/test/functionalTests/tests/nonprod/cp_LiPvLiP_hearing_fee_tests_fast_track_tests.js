@@ -35,7 +35,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario('Apply for Help with Fees Journey - Fast Track', async ({I}) => {
+Scenario('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
@@ -55,6 +55,7 @@ Scenario('Apply for Help with Fees Journey - Fast Track', async ({I}) => {
       await I.click(notification.nextSteps2);
     }
     await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, claimRef, claimAmount);
+    await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'IN PROGRESS', false, true, taskListItem.deadline);
@@ -62,7 +63,7 @@ Scenario('Apply for Help with Fees Journey - Fast Track', async ({I}) => {
   }
 }).tag('@regression-cp');
 
-Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I}) => {
+Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
@@ -71,6 +72,7 @@ Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I}) => {
       await I.click(notification.nextSteps);
     }
     await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
+    await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'DONE', false, false);

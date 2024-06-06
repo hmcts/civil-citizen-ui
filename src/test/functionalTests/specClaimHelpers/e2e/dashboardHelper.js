@@ -29,8 +29,9 @@ module.exports = {
     //Step to check if status is already updated, if not it will refresh the page
     const actualStatus = await I.grabTextFrom(locator);
     if (!actualStatus.toLowerCase().includes(status.toLowerCase())) {
-      await I.refreshPage();
+      await I.wait(3);
       await waitForFinishedBusinessProcess();
+      await I.refreshPage();
     }
     await I.see(tasklist, locator);
     await I.see(status, locator);
