@@ -8,6 +8,7 @@ import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/
 import {
   CcdGeneralApplicationEvidenceDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
+import {CCDHelpWithFees} from 'form/models/claimDetails';
 
 export interface EventDto {
   event: ApplicationEvent,
@@ -23,4 +24,5 @@ export interface CCDGeneralApplication {
   generalAppReasonsOfOrder: string;
   generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[],
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
+  generalAppHelpWithFees: CCDHelpWithFees;
 }

@@ -26,9 +26,16 @@ payHearingFeeConfirmationController.get(HEARING_FEE_CONFIRMATION_URL, (async (re
     const redisClaimId = generateRedisKey(<AppRequest>req);
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const claimId = req.params.id;
+    let confirmationTitle = t(`PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.CONFIRMATION_TITLE.${FeeType.HEARING}`, {lng});
+    let referenceNumber= claim.caseProgression?.helpFeeReferenceNumberForm?.referenceNumber;
+    
+    if(claim.generalApplication?.feeTypeHelpRequested === FeeType.GENERAL_APPLICATION ){
+      confirmationTitle = t(`PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONFIRMATION_PAGE.TITLE.${FeeType.GENERAL_APPLICATION}`, {lng});
+      referenceNumber = claim.generalApplication?.helpFeeReferenceNumberForm?.referenceNumber;
+    }
     res.render(payHearingFeeStartScreenViewPath, {
-      confirmationTitle : t(`PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.CONFIRMATION_TITLE.${FeeType.HEARING}`, {lng}),
-      referenceNumber: claim.caseProgression.helpFeeReferenceNumberForm.referenceNumber,
+      confirmationTitle : confirmationTitle,
+      referenceNumber: referenceNumber,
       confirmationContent: getHearingFeeConfirmationContent(claimId, lng),
     });
   }catch (error) {

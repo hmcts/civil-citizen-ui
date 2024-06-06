@@ -335,3 +335,8 @@ export const GA_RESPONSE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_RESPONSE
 export const CONFIRM_YOU_HAVE_BEEN_PAID_URL = `${BASE_JUDGMENT_ONLINE_URL}/confirm-you-have-been-paid`;
 export const CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL = `${BASE_JUDGMENT_ONLINE_URL}/confirm-you-have-been-paid/confirmation`;
 export const GENERAL_APPLICATION_CONFIRM_URL = `${BASE_GENERAL_APPLICATION_URL}/submit-general-application-confirmation`;
+export const GA_APPLY_HELP_WITH_FEE_SELECTION = `${BASE_GENERAL_APPLICATION_URL}/apply-help-fee-selection`;
+export const GA_APPLY_HELP_WITH_FEES_START = `${BASE_GENERAL_APPLICATION_URL}/apply-help-with-fees/start`;
+export const GA_APPLY_HELP_WITH_FEE_REFERENCE = `${BASE_GENERAL_APPLICATION_URL}/apply-help-with-fees/reference-number`;
+export const GA_APPLY_HELP_WITH_FEES = `${BASE_GENERAL_APPLICATION_URL}/apply-help-with-fees`;
+

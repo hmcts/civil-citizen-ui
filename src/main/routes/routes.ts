@@ -330,6 +330,13 @@ import uploadEvidenceDocumentsForApplicationController from 'routes/features/gen
 import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
 import confirmYouHaveBeenPaidConfirmController
   from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
+import helpWithApplicationFeeController
+  from 'routes/features/generalApplication/applicationFee/helpWithApplicationFeeController';
+import helpWithFeesContentController
+  from 'routes/features/generalApplication/applicationFee/helpWithFeesContentController';
+import helpWithApplicationFeeReferenceController
+  from 'routes/features/generalApplication/applicationFee/helpWithApplicationFeeReferenceController';
+import helpWithApplicationFeeContinueController from './features/generalApplication/applicationFee/helpWithApplicationFeeContinueController';
 
 export default [
   homeController,
@@ -618,4 +625,8 @@ export default [
   applicationResponseConfirmationController,
   confirmYouHaveBeenPaidController,
   confirmYouHaveBeenPaidConfirmController,
+  helpWithApplicationFeeController,
+  helpWithFeesContentController,
+  helpWithApplicationFeeReferenceController,
+  helpWithApplicationFeeContinueController,
 ];

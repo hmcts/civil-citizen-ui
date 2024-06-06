@@ -24,6 +24,8 @@ import { HearingSupport } from 'models/generalApplication/hearingSupport';
 import { CcdSupportRequirement } from 'models/ccdGeneralApplication/ccdSupportRequirement';
 import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
 import { CcdGeneralApplicationEvidenceDocument } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
+import {CCDHelpWithFees} from 'form/models/claimDetails';
+import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
@@ -49,6 +51,7 @@ export const translateDraftApplicationToCCD = (
       application.unavailableDatesHearing,
       application.hearingSupport,
     ),
+    generalAppHelpWithFees: toCCDGeneralAppHelpWithFees(application.helpFeeReferenceNumberForm),
   };
 };
 
@@ -88,6 +91,14 @@ const toCCDEvidenceDocuments = (wantToUpload: YesNo, uploadDocuments: UploadGAFi
       };
     })
     : undefined;
+};
+
+const toCCDGeneralAppHelpWithFees = (helpWithFees: ApplyHelpFeesReferenceForm | undefined): CCDHelpWithFees => {
+  if (!helpWithFees) return undefined;
+  return {
+    helpWithFee: toCCDYesNo(helpWithFees.option),
+    helpWithFeesReferenceNumber: helpWithFees.referenceNumber,
+  };
 };
 
 const toCCDGeneralAppHearingDetails = (hearingArrangement: HearingArrangement, hearingContactDetails: HearingContactDetails,
