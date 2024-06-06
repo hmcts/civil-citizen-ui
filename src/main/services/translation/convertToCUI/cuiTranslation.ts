@@ -33,7 +33,7 @@ import { TotalInterest } from 'common/form/models/interest/totalInterest';
 import {toCUIClaimantMediation} from 'services/translation/convertToCUI/convertToCUIClaimantMediation';
 import { RepaymentPlan } from 'common/models/repaymentPlan';
 
-export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
+export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim, isMintiEnabled = false): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaimObj);
   const ccdClaim: CCDClaim = {...ccdClaimObj};
   const claimantResponse: ClaimantResponse = new ClaimantResponse();
@@ -51,7 +51,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.claimBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim.respondent1LiPResponse?.respondent1ResponseLanguage);
   claim.claimantBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim.claimantBilingualLanguagePreference);
   claim.rejectAllOfClaim = toCUIRejectAllOfClaim(ccdClaim);
-  claim.directionQuestionnaire = toCUIDQs(ccdClaim);
+  claim.directionQuestionnaire = toCUIDQs(ccdClaim, isMintiEnabled);
   claim.sdoOrderDocument = ccdClaim.systemGeneratedCaseDocuments?.find((documents) => documents.value.documentType === DocumentType.SDO_ORDER);
   claim.caseProgressionHearing = toCUICaseProgressionHearing(ccdClaim);
   claim.caseProgression = toCUICaseProgression(ccdClaim);

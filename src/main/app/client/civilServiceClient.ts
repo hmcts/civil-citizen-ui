@@ -57,12 +57,13 @@ import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceD
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
+import {isMintiEnabled} from "../auth/launchdarkly/launchDarklyClient";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
-const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
-  const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
+const convertCaseToClaim = (caseDetails: CivilClaimResponse, isMintiEnabled = false): Claim => {
+  const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data, isMintiEnabled);
   claim.ccdState = caseDetails.state;
   claim.id = caseDetails.id;
   claim.lastModifiedDate = caseDetails.last_modified;
@@ -150,7 +151,10 @@ export class CivilServiceClient {
       const caseDetails: CivilClaimResponse = response.data;
 
       caseDetails.case_data.caseRole = await this.getUserCaseRoles(claimId, req);
-      return convertCaseToClaim(caseDetails);
+      //check if minti is enabled
+      const mintiFlag = await isMintiEnabled();
+      // claimType = cha
+      return convertCaseToClaim(caseDetails, mintiFlag);
     } catch (err: unknown) {
       logger.error('Error when retrieving claim details');
       throw err;
