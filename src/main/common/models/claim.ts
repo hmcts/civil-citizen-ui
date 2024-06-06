@@ -730,7 +730,11 @@ export class Claim {
   }
 
   isCCJComplete() {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option;
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined;
+  }
+
+  isCCJCompleteForJo(isJudgmentOnlineLiveOn: boolean) {
+    return this.ccdState === CaseState.All_FINAL_ORDERS_ISSUED && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined && isJudgmentOnlineLiveOn;
   }
 
   getHowTheInterestCalculatedReason(): string {
@@ -765,16 +769,16 @@ export class Claim {
     return party?.partyDetails?.partyName;
   }
 
-  get claimType(): string {
+  get claimTrackType(): string {
     return analyseClaimType(this.totalClaimAmount);
   }
 
   get isFastTrackClaim(): boolean {
-    return this.claimType === claimType.FAST_TRACK_CLAIM;
+    return this.claimTrackType === claimType.FAST_TRACK_CLAIM;
   }
 
   get isSmallClaimsTrackDQ(): boolean {
-    return this.claimType === claimType.SMALL_CLAIM;
+    return this.claimTrackType === claimType.SMALL_CLAIM;
   }
 
   hasSdoOrderDocument(): boolean {
