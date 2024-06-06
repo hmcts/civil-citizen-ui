@@ -9,7 +9,6 @@ export enum claimType {
 }
 
 export function analyseClaimType(totalClaimAmount: number, isMintEnabled = false): claimType {
-  totalClaimAmount = 100001;
   if (isMintEnabled){
     if (totalClaimAmount > MULTI_TRACK) {
       return claimType.MULTI_TRACK;

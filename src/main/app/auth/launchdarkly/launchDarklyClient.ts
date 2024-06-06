@@ -50,7 +50,7 @@ export async function isPcqShutterOn(): Promise<boolean> {
 }
 
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
-  return true; //await getFlagValue('cuiReleaseTwoEnabled') as boolean;
+  return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
 }
 export async function isDashboardServiceEnabled(): Promise<boolean> {
   return await getFlagValue('dashboard-service') as boolean;
@@ -63,5 +63,5 @@ export async function isGaForLipsEnabled(): Promise<boolean> {
 }
 
 export async function isMintiEnabled(): Promise<boolean> {
-  return true;
+  return await getFlagValue('minti') as boolean;
 }
