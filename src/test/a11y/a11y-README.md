@@ -50,7 +50,7 @@ case/:id/case-progression/apply-help-with-fees
 ```
 becomes
 ```bash
-mock-case-1645882162449409-apply-help-with-fees.html
+mock-case-1645882162449409-case-progression-apply-help-with-fees.html
 ```
 
 ### 2. Scraper
