@@ -2131,6 +2131,14 @@
       "REACHING_SETTLEMENT": "Reaching a settlement"
     },
     "GENERAL_APPLICATION": {
+      "SUMMARY": {
+        "STATUS": "Status",
+        "DETAILS": "Details",
+        "TITLE": "All applications",
+        "APP_REQUESTED": "An application is a request for a change to the case.",
+        "THESE_ARE_APPS": "These are the applications that have been made by you or the other parties. The 'other parties' are the other side or sides involved in your claim.",
+        "THE_STATUS_CHANGE": "The status of an application will change as it progresses. An application with a 'To do' status means you need to take action. For example, paying an application fee or responding."
+      },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
         "RESPOND_TO": "Respond to an application to {{applicationType}}",
