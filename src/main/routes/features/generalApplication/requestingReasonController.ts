@@ -24,7 +24,7 @@ import {requestingReasonControllerGuard} from 'routes/guards/generalApplication/
 const requestingReasonController = Router();
 const viewPath = 'features/generalApplication/requesting-reason';
 
-requestingReasonController.get(GA_REQUESTING_REASON_URL, [requestingReasonControllerGuard],  (async (req: AppRequest, res: Response, next: NextFunction) => {
+requestingReasonController.get(GA_REQUESTING_REASON_URL, requestingReasonControllerGuard,  (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -51,7 +51,7 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, [requestingReasonContro
   }
 }) as RequestHandler);
 
-requestingReasonController.post(GA_REQUESTING_REASON_URL, [requestingReasonControllerGuard], (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+requestingReasonController.post(GA_REQUESTING_REASON_URL, requestingReasonControllerGuard, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;

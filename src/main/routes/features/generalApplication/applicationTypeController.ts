@@ -1,7 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
 import {
   APPLICATION_TYPE_URL, GA_ADD_ANOTHER_APPLICATION_URL,
-  GA_AGREEMENT_FROM_OTHER_PARTY,
+  GA_AGREEMENT_FROM_OTHER_PARTY_URL,
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
@@ -67,7 +67,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     } else {
       const applicationIndex = queryParamNumber(req, 'index');
       await saveApplicationType(redisKey, applicationType, applicationIndex);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_AGREEMENT_FROM_OTHER_PARTY));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_AGREEMENT_FROM_OTHER_PARTY_URL));
     }
   } catch (error) {
     next(error);
@@ -75,10 +75,8 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
 }) as RequestHandler);
 
 async function getBackLinkUrl(claimId: string, claim: Claim, cancelUrl: string) {
-  if (!claim?.generalApplication?.applicationTypes) {
-    return cancelUrl;
-  }
-  return constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL);
+  return (!claim?.generalApplication?.applicationTypes) ? cancelUrl
+    : constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL);
 }
 
 export default applicationTypeController;

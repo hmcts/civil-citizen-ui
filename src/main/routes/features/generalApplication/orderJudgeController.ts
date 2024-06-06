@@ -17,7 +17,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 const orderJudgeController = Router();
 const viewPath = 'features/generalApplication/order-judge';
 
-orderJudgeController.get(ORDER_JUDGE_URL, [orderJudgeGuard], (async (req: AppRequest, res: Response, next: NextFunction) => {
+orderJudgeController.get(ORDER_JUDGE_URL, orderJudgeGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -44,7 +44,7 @@ orderJudgeController.get(ORDER_JUDGE_URL, [orderJudgeGuard], (async (req: AppReq
   }
 }) as RequestHandler);
 
-orderJudgeController.post(ORDER_JUDGE_URL, [orderJudgeGuard], (async (req: AppRequest, res: Response, next: NextFunction) => {
+orderJudgeController.post(ORDER_JUDGE_URL, orderJudgeGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;

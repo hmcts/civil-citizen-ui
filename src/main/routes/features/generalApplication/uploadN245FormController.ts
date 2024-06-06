@@ -2,7 +2,7 @@ import { NextFunction, RequestHandler, Response, Router } from 'express';
 import {
   GA_APPLICATION_COSTS_URL,
   GA_UPLOAD_N245_FORM_URL,
-  GA_WANT_TO_UPLOAD_DOCUMENTS,
+  GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
@@ -29,7 +29,7 @@ const upload = multer({
   },
 });
 
-uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, [uploadN245FormControllerGuard], (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -60,7 +60,7 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, [uploadN245FormControllerG
   }
 }) as RequestHandler);
 
-uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFile), [uploadN245FormControllerGuard], (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFile), uploadN245FormControllerGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -96,7 +96,7 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFil
         contentList,
       });
     } else {
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS));
+      res.redirect(constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL));
     }
   } catch (error) {
     next(error);

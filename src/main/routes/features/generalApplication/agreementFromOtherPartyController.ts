@@ -1,8 +1,8 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   APPLICATION_TYPE_URL,
-  GA_AGREEMENT_FROM_OTHER_PARTY,
-  INFORM_OTHER_PARTIES,
+  GA_AGREEMENT_FROM_OTHER_PARTY_URL,
+  INFORM_OTHER_PARTIES_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
@@ -17,7 +17,7 @@ import {agreementFromOtherPartyGuard} from 'routes/guards/generalApplication/agr
 const agreementFromOtherPartyController = Router();
 const viewPath = 'features/generalApplication/agreement-from-other-party';
 
-agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY, [agreementFromOtherPartyGuard], (async (req: AppRequest, res: Response, next: NextFunction) => {
+agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreementFromOtherPartyGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const backLinkUrl = getBackLinkUrl(<AppRequest>req);
     const redisKey = generateRedisKey(<AppRequest>req);
@@ -37,7 +37,7 @@ agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY, [agreementF
   }
 }) as RequestHandler);
 
-agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY, [agreementFromOtherPartyGuard], (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreementFromOtherPartyGuard, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
 
     const backLinkUrl = getBackLinkUrl(<AppRequest>req);
@@ -56,7 +56,7 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY, [agreement
       res.render(viewPath, { form, applicationType,cancelUrl, backLinkUrl });
     } else {
       await saveAgreementFromOtherParty(redisKey, claim, req.body.option);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, INFORM_OTHER_PARTIES));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, INFORM_OTHER_PARTIES_URL));
     }
   } catch (error) {
     next(error);

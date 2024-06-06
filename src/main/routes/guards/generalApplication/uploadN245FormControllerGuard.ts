@@ -5,7 +5,7 @@ import {getClaimById} from 'modules/utilityService';
 import {getByIndexOrLast} from 'services/features/generalApplication/generalApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {GA_WANT_TO_UPLOAD_DOCUMENTS} from 'routes/urls';
+import {GA_WANT_TO_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
 
 export const uploadN245FormControllerGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -15,7 +15,7 @@ export const uploadN245FormControllerGuard = async (req: Request, res: Response,
     if (!claim.isClaimant() && applicationType === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) {
       next();
     } else {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_WANT_TO_UPLOAD_DOCUMENTS));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_WANT_TO_UPLOAD_DOCUMENTS_URL));
     }
   } catch (error) {
     next(error);

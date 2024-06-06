@@ -2,7 +2,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_AGREEMENT_FROM_OTHER_PARTY} from 'routes/urls';
+import {GA_AGREEMENT_FROM_OTHER_PARTY_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
@@ -42,7 +42,7 @@ describe('General Application - Application type', () => {
     it('should return page', async () => {
 
       await request(app)
-        .get(GA_AGREEMENT_FROM_OTHER_PARTY)
+        .get(GA_AGREEMENT_FROM_OTHER_PARTY_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.TITLE'));
@@ -56,7 +56,7 @@ describe('General Application - Application type', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .get(GA_AGREEMENT_FROM_OTHER_PARTY)
+        .get(GA_AGREEMENT_FROM_OTHER_PARTY_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -68,7 +68,7 @@ describe('General Application - Application type', () => {
     it('should save the value and redirect', async () => {
 
       await request(app)
-        .post(GA_AGREEMENT_FROM_OTHER_PARTY)
+        .post(GA_AGREEMENT_FROM_OTHER_PARTY_URL)
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -78,7 +78,7 @@ describe('General Application - Application type', () => {
     it('should return errors on no input', async () => {
 
       await request(app)
-        .post(GA_AGREEMENT_FROM_OTHER_PARTY)
+        .post(GA_AGREEMENT_FROM_OTHER_PARTY_URL)
         .send({option: null})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -92,7 +92,7 @@ describe('General Application - Application type', () => {
       });
 
       await request(app)
-        .post(GA_AGREEMENT_FROM_OTHER_PARTY)
+        .post(GA_AGREEMENT_FROM_OTHER_PARTY_URL)
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(500);

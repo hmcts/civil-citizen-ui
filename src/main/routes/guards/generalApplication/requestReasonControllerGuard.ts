@@ -5,7 +5,7 @@ import {getClaimById} from 'modules/utilityService';
 import {getByIndexOrLast} from 'services/features/generalApplication/generalApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {GA_WANT_TO_UPLOAD_DOCUMENTS} from 'routes/urls';
+import {GA_WANT_TO_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
 
 const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.SETTLE_BY_CONSENT];
 export const requestingReasonControllerGuard = async (req: Request, res: Response, next: NextFunction) => {
@@ -14,7 +14,7 @@ export const requestingReasonControllerGuard = async (req: Request, res: Respons
     const applicationIndex = queryParamNumber(req, 'index');
     const applicationType = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     if (options.indexOf(applicationType) !== -1) {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_WANT_TO_UPLOAD_DOCUMENTS));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_WANT_TO_UPLOAD_DOCUMENTS_URL));
     } else {
       next();
     }
