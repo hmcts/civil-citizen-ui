@@ -41,7 +41,7 @@ applicationCostsController.get(GA_APPLICATION_COSTS_URL, (async (req: AppRequest
 }) as RequestHandler);
 
 function getRedirectUrl(claimId: string, claim: Claim, option: ApplicationTypeOption) {
-  if(!claim.isClaimant() && option.indexOf(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) !== -1) {
+  if(!claim.isClaimant() && option === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) {
     return constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL);
   } else {
     return constructResponseUrlWithIdParams(claimId, GA_CLAIM_APPLICATION_COST_URL);
