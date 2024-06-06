@@ -172,6 +172,7 @@ export class Claim {
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
   defendantResponseDocuments: SystemGeneratedCaseDocuments[];
+  responseClaimMediationSpecRequired?: YesNo;
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
   judgmentOnline?: JudgmentOnline;
@@ -729,7 +730,11 @@ export class Claim {
   }
 
   isCCJComplete() {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option;
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined;
+  }
+
+  isCCJCompleteForJo(isJudgmentOnlineLiveOn: boolean) {
+    return this.ccdState === CaseState.All_FINAL_ORDERS_ISSUED && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined && isJudgmentOnlineLiveOn;
   }
 
   getHowTheInterestCalculatedReason(): string {
@@ -873,6 +878,11 @@ export class Claim {
     return this.mediation?.canWeUse
       && this.mediation?.companyTelephoneNumber
       && (Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0);
+  }
+
+  isDefendantLrAgreedForMediation() {
+    return this.isLRDefendant()
+      && this.responseClaimMediationSpecRequired === YesNo.YES;
   }
 
   isClaimantRejectedPaymentPlan() {
