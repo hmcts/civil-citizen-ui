@@ -14,6 +14,7 @@ import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { getCancelUrl, saveN245Form } from 'services/features/generalApplication/generalApplicationService';
 import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
 import { getUploadFormContent, uploadSelectedFile } from 'services/features/generalApplication/uploadN245FormService';
+import {uploadN245FormControllerGuard} from 'routes/guards/generalApplication/uploadN245FormControllerGuard';
 
 const uploadN245FormController = Router();
 const viewPath = 'features/generalApplication/upload-n245-form';
@@ -28,7 +29,7 @@ const upload = multer({
   },
 });
 
-uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, [uploadN245FormControllerGuard], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -59,7 +60,7 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, (async (req: AppRequest, r
   }
 }) as RequestHandler);
 
-uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFile), (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFile), [uploadN245FormControllerGuard], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
