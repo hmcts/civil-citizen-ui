@@ -6,10 +6,10 @@ import {ClaimFeeData} from 'models/civilClaimResponse';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 export const getApplyHelpWithApplicationFeeContents = (lng: string) => {
-  const linkBefore = `PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.LINK_BEFORE`;
+  const linkBefore = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.LINK_BEFORE';
   const linkParagraph = `<p class="govuk-body govuk-!-margin-bottom-1">${t(linkBefore, {lng})}
         <a target="_blank" class="govuk-link" rel="noopener noreferrer" href="https://www.gov.uk/get-help-with-court-fees">
-        ${t(`PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.LINK_TEXT`, {lng})}</a></p>`;
+        ${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.LINK_TEXT', {lng})}</a></p>`;
   return new PageSectionBuilder()
     .addMicroText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING')
     .addMainTitle('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.TITLE')
@@ -44,5 +44,3 @@ export const getHelpWithApplicationFeeContinueContent = (gaFeeData: ClaimFeeData
     .addTitle('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION')
     .build();
 };
-
-

@@ -1,5 +1,5 @@
 import {
-  getHelpWithApplicationFeeReferenceContents, getButtonsContents
+  getHelpWithApplicationFeeReferenceContents, getButtonsContents,
 } from 'services/features/generalApplication/applicationFee/helpWithFeeReferenceContents';
 
 describe('Help with Application fee content', () => {

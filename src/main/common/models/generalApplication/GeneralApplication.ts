@@ -52,7 +52,7 @@ export class GeneralApplication {
     applyHelpWithFees?: YesNo,
     helpWithFeesRequested?: string,
     feeTypeHelpRequested?: FeeType,
-    helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm
+    helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm,
   ) {
     this.applicationTypes = applicationType ? [applicationType] : [];
     this.agreementFromOtherParty = agreementFromOtherParty;

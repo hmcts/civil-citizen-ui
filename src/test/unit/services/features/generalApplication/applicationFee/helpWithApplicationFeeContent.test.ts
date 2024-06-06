@@ -2,7 +2,7 @@ import {t} from 'i18next';
 import {
   getApplyHelpWithApplicationFeeContents,
   getButtonsContents,
-  getHelpWithApplicationFeeContinueContent
+  getHelpWithApplicationFeeContinueContent,
 } from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 
