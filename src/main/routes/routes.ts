@@ -330,6 +330,11 @@ import uploadEvidenceDocumentsForApplicationController from 'routes/features/gen
 import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
 import confirmYouHaveBeenPaidConfirmController
   from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
+import requestForReviewController
+  from 'routes/features/caseProgression/requestForReconsideration/requestForReviewController';
+import requestForReconsiderationCheckAnswersController from './features/caseProgression/requestForReconsideration/checkAnswersController';
+import requestForReconsiderationConfirmationController
+  from 'routes/features/caseProgression/requestForReconsideration/confirmationController';
 
 export default [
   homeController,
@@ -618,4 +623,7 @@ export default [
   applicationResponseConfirmationController,
   confirmYouHaveBeenPaidController,
   confirmYouHaveBeenPaidConfirmController,
+  requestForReviewController,
+  requestForReconsiderationCheckAnswersController,
+  requestForReconsiderationConfirmationController,
 ];

@@ -56,6 +56,8 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
       caseProgression.helpFeeReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, ccdClaim.hearingHelpFeesReferenceNumber);
     }
 
+    caseProgression.requestForReconsiderationDeadline = ccdClaim.requestForReconsiderationDeadline;
+
     return caseProgression;
   }
 };
