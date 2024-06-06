@@ -330,13 +330,22 @@ import uploadEvidenceDocumentsForApplicationController from 'routes/features/gen
 import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
 import confirmYouHaveBeenPaidConfirmController
   from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
+import hearingArrangementResponseController
+  from 'routes/features/generalApplication/response/hearingArrangementResponseController';
+import hearingContactDetailsResponseController
+  from 'routes/features/generalApplication/response/hearingContactDetailsResponseController';
+import hearingSupportResponseController
+  from 'routes/features/generalApplication/response/hearingSupportResponseController';
+import unavailableHearingDatesResponseController
+  from 'routes/features/generalApplication/response/unavailableHearingDatesResponseController';
 import helpWithApplicationFeeController
   from 'routes/features/generalApplication/applicationFee/helpWithApplicationFeeController';
 import helpWithFeesContentController
   from 'routes/features/generalApplication/applicationFee/helpWithFeesContentController';
 import helpWithApplicationFeeReferenceController
   from 'routes/features/generalApplication/applicationFee/helpWithApplicationFeeReferenceController';
-import helpWithApplicationFeeContinueController from './features/generalApplication/applicationFee/helpWithApplicationFeeContinueController';
+import helpWithApplicationFeeContinueController
+  from './features/generalApplication/applicationFee/helpWithApplicationFeeContinueController';
 
 export default [
   homeController,
@@ -625,6 +634,10 @@ export default [
   applicationResponseConfirmationController,
   confirmYouHaveBeenPaidController,
   confirmYouHaveBeenPaidConfirmController,
+  hearingArrangementResponseController,
+  hearingContactDetailsResponseController,
+  hearingSupportResponseController,
+  unavailableHearingDatesResponseController,
   helpWithApplicationFeeController,
   helpWithFeesContentController,
   helpWithApplicationFeeReferenceController,
