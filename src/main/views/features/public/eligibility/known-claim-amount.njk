@@ -1,5 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../macro/button.njk" import addButton %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
@@ -24,9 +24,7 @@
             {{ csrfProtection(csrf) }}
             {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline'}) }}
             <div class="govuk-form-group">
-              {{ govukButton({
-                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
-              }) }}
+              {{ addButton(t, 'SAVE_AND_CONTINUE_CARM') }}
               {{ contactUsForHelp(t) }}
             </div>
           </form>
