@@ -36,7 +36,7 @@ Scenario('Small claims case is struck out due to hearing fee not being paid', as
         const notification = claimStruckOut();
         await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
         taskListItem = uploadHearingDocuments();
-        await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'INACTIVE');
+        await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
       } else {
         CaseProgressionSteps.verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType);
       }
