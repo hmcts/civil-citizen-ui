@@ -1,5 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {GA_CHECK_ANSWERS_URL, GENERAL_APPLICATION_CONFIRM_URL} from 'routes/urls';
+import {GA_CHECK_ANSWERS_URL, GENERAL_APPLICATION_CONFIRM_URL, PAYING_FOR_APPLICATION_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
@@ -17,7 +17,6 @@ import {submitApplication} from 'services/features/generalApplication/submitAppl
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
-const backLinkUrl = 'test'; // TODO: add url
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('gaCheckAnswersController');
 
@@ -29,6 +28,7 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
   const applicationTypeTitle = claim.generalApplication?.applicationTypes?.length === 1
     ? selectedApplicationType[claim.generalApplication.applicationTypes[0].option]
     : t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CAPTION', {lng: lang});
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, PAYING_FOR_APPLICATION_URL);
   res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationTypeTitle, claimIdPrettified, claim, summaryRows });
 }
 
