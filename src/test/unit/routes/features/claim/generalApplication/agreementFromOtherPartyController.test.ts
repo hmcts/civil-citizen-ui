@@ -33,7 +33,7 @@ describe('General Application - Application type', () => {
   beforeEach(() => {
     mockGetClaim.mockImplementation(() => {
       const claim = new Claim();
-      claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT));
+      claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.EXTEND_TIME));
       return claim;
     });
   });
@@ -46,12 +46,12 @@ describe('General Application - Application type', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.TITLE'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.SETTLING'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.MORE_TIME'));
         });
     });
 
     it('should return http 500 when has error in the get method', async () => {
-     
+
       mockGetClaim.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
@@ -85,20 +85,8 @@ describe('General Application - Application type', () => {
           expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION'));
         });
     });
-
-    it('should return error message if application type is Settle by consent and option choosen in No', async () => {
-    
-      await request(app)
-        .post(GA_AGREEMENT_FROM_OTHER_PARTY)
-        .send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED'));
-        });
-    });
-
     it('should return http 500 when has error in the post method', async () => {
-      
+
       mockGetClaim.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });

@@ -1,5 +1,5 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {GA_UNAVAILABLE_HEARING_DATES_URL} from 'routes/urls';
+import {GA_HEARING_CONTACT_DETAILS_URL, GA_HEARING_SUPPORT_URL, GA_UNAVAILABLE_HEARING_DATES_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
@@ -15,14 +15,15 @@ import {
 import {
   getUnavailableDatesForHearingForm,
 } from 'services/features/generalApplication/unavailableHearingDatesService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const unavailableHearingDatesController = Router();
 const viewPath = 'features/generalApplication/unavailable-dates-hearing';
-const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<UnavailableDatesGaHearing>, res: Response): Promise<void> {
   const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
   const cancelUrl = await getCancelUrl(claimId, claim);
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL);
   res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationType, headingTitle: t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.TITLE') });
 }
 
@@ -59,7 +60,7 @@ unavailableHearingDatesController.post(GA_UNAVAILABLE_HEARING_DATES_URL, (async 
         await renderView(claimId, claim, form, res);
       } else {
         await saveUnavailableDates(redisKey, claim, unavailableDatesForHearing);
-        res.redirect('test'); // TODO: add url
+        res.redirect(constructResponseUrlWithIdParams(claimId, GA_HEARING_SUPPORT_URL));
       }
     }
   } catch (error) {
