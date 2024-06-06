@@ -49,9 +49,9 @@ Scenario('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
       notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       taskListItem = viewHearings();
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'AVAILABLE', true);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
       taskListItem = payTheHearingFee(hearingFeeDueDate);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'ACTION NEEDED', true, true, taskListItem.deadline);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true, true, taskListItem.deadline);
       await I.click(notification.nextSteps2);
     }
     await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, claimRef, claimAmount);
@@ -59,7 +59,7 @@ Scenario('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
     await I.click('Close and return to case overview');
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'IN PROGRESS', false, true, taskListItem.deadline);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
     }
   }
 }).tag('@regression-cp');
@@ -77,7 +77,7 @@ Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
     await I.click('Close and return to case overview');
     // if (isDashboardServiceEnabled) {
     //   taskListItem = payTheHearingFee(hearingFeeDueDate);
-    //   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'DONE', false, false);
+    //   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
     // }
   }
 }).tag('@regression-cp');
