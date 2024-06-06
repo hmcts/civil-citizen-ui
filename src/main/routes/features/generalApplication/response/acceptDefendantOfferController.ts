@@ -3,10 +3,11 @@ import { AppRequest } from 'common/models/AppRequest';
 import { GenericForm } from 'common/form/models/genericForm';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { GA_ACCEPT_DEFENDANT_OFFER_URL } from 'routes/urls';
-import { getCancelUrl, getLast, getRespondToApplicationCaption, saveAcceptDefendantOffer } from 'services/features/generalApplication/generalApplicationService';
+import { getCancelUrl, getLast, saveAcceptDefendantOffer } from 'services/features/generalApplication/generalApplicationService';
 import { Claim } from 'common/models/claim';
 import { AcceptDefendantOffer } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { selectedApplicationType } from 'common/models/generalApplication/applicationType';
+import { getRespondToApplicationCaption } from 'services/features/generalApplication/response/generalApplicationResponseService';
 
 const acceptDefendantOfferController = Router();
 const viewPath = 'features/generalApplication/response/accept-defendant-offer';
