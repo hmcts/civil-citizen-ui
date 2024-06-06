@@ -74,10 +74,10 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
     await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
-      notification = hearingFeePaidFull();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       taskListItem = payTheHearingFee(hearingFeeDueDate);
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'DONE', false, false);
+      notification = hearingFeePaidFull();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
 }).tag('@regression-cp');
