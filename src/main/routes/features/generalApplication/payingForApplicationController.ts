@@ -16,7 +16,7 @@ payingForApplicationController.get(PAYING_FOR_APPLICATION_URL, (async (req: AppR
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
-    const applicationFee = convertToPoundsFilter(claim.generalApplication.applicationFee.calculatedAmountInPence);
+    const applicationFee = convertToPoundsFilter(claim?.generalApplication?.applicationFee?.calculatedAmountInPence);
     const nextPageUrl = constructResponseUrlWithIdParams(claimId, GA_CHECK_ANSWERS_URL);
     const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_SUPPORT_URL);
     res.render(viewPath, {applicationType, applicationFee, cancelUrl, backLinkUrl, nextPageUrl});

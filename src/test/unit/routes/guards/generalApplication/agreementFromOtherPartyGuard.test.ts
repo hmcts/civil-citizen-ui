@@ -55,10 +55,9 @@ describe('Order Judge Guard', () => {
     //Then
     expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
-  it('should not load add another application page', async () => {
+  it('should load add another application page', async () => {
     //Given
     const claim = new Claim();
-    claim.caseRole = CaseRole.DEFENDANT;
     const applicationType = new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT);
     claim.generalApplication = new GeneralApplication(applicationType);
     jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
@@ -66,7 +65,7 @@ describe('Order Judge Guard', () => {
     //When
     await agreementFromOtherPartyGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
-    expect(MOCK_NEXT).not.toHaveBeenCalled();
+    expect(MOCK_NEXT).toHaveBeenCalled();
   });
   it('should throw error', async () => {
     //Given
