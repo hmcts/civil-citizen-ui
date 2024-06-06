@@ -57,7 +57,7 @@ import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceD
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
-import {isMintiEnabled} from "../auth/launchdarkly/launchDarklyClient";
+import {isMintiEnabled} from '../auth/launchdarkly/launchDarklyClient';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -69,6 +69,8 @@ const convertCaseToClaim = (caseDetails: CivilClaimResponse, isMintiEnabled = fa
   claim.lastModifiedDate = caseDetails.last_modified;
   return claim;
 };
+
+const getMintiFlag = async () => await isMintiEnabled();
 
 export class CivilServiceClient {
   client: AxiosInstance;
@@ -152,8 +154,7 @@ export class CivilServiceClient {
 
       caseDetails.case_data.caseRole = await this.getUserCaseRoles(claimId, req);
       //check if minti is enabled
-      const mintiFlag = await isMintiEnabled();
-      // claimType = cha
+      const mintiFlag = await getMintiFlag();
       return convertCaseToClaim(caseDetails, mintiFlag);
     } catch (err: unknown) {
       logger.error('Error when retrieving claim details');
@@ -229,7 +230,8 @@ export class CivilServiceClient {
         return new Claim();
       }
       const caseDetails: CivilClaimResponse = response.data;
-      return convertCaseToClaim(caseDetails);
+      const mintiFlag = await getMintiFlag();
+      return convertCaseToClaim(caseDetails, mintiFlag);
 
     } catch (err: unknown) {
       logger.error('Error when verifying pin');
@@ -376,7 +378,8 @@ export class CivilServiceClient {
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
       const claimResponse = response.data as CivilClaimResponse;
-      return convertCaseToClaim(claimResponse);
+      const mintiFlag = await getMintiFlag();
+      return convertCaseToClaim(claimResponse, mintiFlag);
     } catch (err: unknown) {
       logger.error(`Error when submitting event ${event}`);
       throw err;

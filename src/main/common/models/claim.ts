@@ -49,7 +49,7 @@ import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders'
 import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
 import {Debts} from 'form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
-import {analyseClaimType, claimType} from 'common/form/models/claimType';
+import {claimType} from 'common/form/models/claimType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
@@ -175,6 +175,7 @@ export class Claim {
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
   judgmentOnline?: JudgmentOnline;
+  claimType?: string;
 
   // Index signature to allow dynamic property access
   [key: string]: any;
@@ -581,7 +582,7 @@ export class Claim {
   }
 
   isDefendantDetailsCompleted(): boolean {
-    return !!this.respondent1?.type && 
+    return !!this.respondent1?.type &&
       !!this.respondent1?.partyDetails?.primaryAddress &&
       (
         (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName) ||
@@ -762,10 +763,6 @@ export class Claim {
       }
     }
     return party?.partyDetails?.partyName;
-  }
-
-  get claimType(): string {
-    return analyseClaimType(this.totalClaimAmount);
   }
 
   get isFastTrackClaim(): boolean {

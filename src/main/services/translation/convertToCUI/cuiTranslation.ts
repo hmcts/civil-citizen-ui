@@ -97,6 +97,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim, isMintiEna
   claim.claimantResponse.mediationCarm = toCUIMediationCarm(ccdClaim.applicant1LiPResponseCarm);
   claim.claimantResponse.suggestedImmediatePaymentDeadLine = ccdClaim.applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec;
   claim.claimantResponse.applicant1DefenceResponseDocumentSpec = ccdClaim.applicant1DefenceResponseDocumentSpec;
+  claim.claimType = ccdClaim.claimType;
   return claim;
 };
 
