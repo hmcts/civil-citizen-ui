@@ -5,7 +5,7 @@ export const MULTI_TRACK = 100000;
 export enum claimType {
   SMALL_CLAIM = 'SMALL_CLAIM',
   FAST_TRACK_CLAIM = 'FAST_TRACK_CLAIM',
-  MULTI_TRACK = 'MULTI_TRACK_CLAIM',
+  MULTI_TRACK = 'MULTI_CLAIM',
 }
 
 export function analyseClaimType(totalClaimAmount: number, isMintEnabled = false): claimType {
