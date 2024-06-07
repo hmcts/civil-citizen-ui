@@ -1,10 +1,11 @@
 import {IsNotEmpty, IsIn, Validate, ValidateIf} from 'class-validator';
-import {AccountBalanceValidator} from '../../../form/validators/accountBalanceValidator';
-import {BankAccountTypeValues} from '../../../form/models/bankAndSavings/bankAccountTypeValues';
+
+import {AccountBalanceValidator} from 'form/validators/accountBalanceValidator';
+import {BankAccountTypeValues} from 'form/models/bankAndSavings/bankAccountTypeValues';
 
 export class BankAccount {
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsIn(Object.values(BankAccountTypeValues), {message: 'ERRORS.TYPE_OF_ACCOUNT_REQUIRED'})
+  @IsIn(Object.values(BankAccountTypeValues).splice(1,4), {message: 'ERRORS.TYPE_OF_ACCOUNT_REQUIRED'})
     typeOfAccount?: string;
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
@@ -17,7 +18,7 @@ export class BankAccount {
     balance?: string;
 
   constructor(typeOfAccount?: string, joint?: string, balance?: string) {
-    this.typeOfAccount = typeOfAccount;
+    this.typeOfAccount = typeOfAccount === BankAccountTypeValues.CHOOSE ?'': typeOfAccount;
     this.joint = joint;
     this.balance = balance;
   }
