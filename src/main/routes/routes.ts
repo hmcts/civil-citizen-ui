@@ -346,6 +346,8 @@ import helpWithApplicationFeeReferenceController
   from 'routes/features/generalApplication/applicationFee/helpWithApplicationFeeReferenceController';
 import helpWithApplicationFeeContinueController
   from './features/generalApplication/applicationFee/helpWithApplicationFeeContinueController';
+import payApplicationFeeConfirmationController
+  from 'routes/features/generalApplication/applicationFee/payApplicationFeeConfirmationController';
 
 export default [
   homeController,
@@ -642,4 +644,5 @@ export default [
   helpWithFeesContentController,
   helpWithApplicationFeeReferenceController,
   helpWithApplicationFeeContinueController,
+  payApplicationFeeConfirmationController,
 ];

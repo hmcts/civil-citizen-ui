@@ -56,7 +56,7 @@ describe('General Application - Do you want to continue to apply for Help with F
     });
 
     it('should return Do you want to apply for help with fees option selection', async () => {
-      mockClaim.generalApplication.helpWithFeesRequested = new GenericYesNo(YesNo.YES);
+      mockClaim.generalApplication.helpWithFeesRequested = YesNo.YES;
       mockGetCaseData.mockImplementation(async () => mockClaim);
       jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
       await request(app)

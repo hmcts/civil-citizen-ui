@@ -1,5 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {GA_CHECK_ANSWERS_URL, GENERAL_APPLICATION_CONFIRM_URL, HEARING_FEE_CONFIRMATION_URL} from 'routes/urls';
+import {GA_CHECK_ANSWERS_URL, GENERAL_APPLICATION_CONFIRM_URL, GA_APPLICATION_FEE_CONFIRMATION_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
@@ -67,7 +67,7 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res
 
 function getRedirectUrl(claimId: string, claim: Claim): string {
   if(claim.generalApplication?.helpFeeReferenceNumberForm?.referenceNumber) {
-    return constructResponseUrlWithIdParams(claimId, HEARING_FEE_CONFIRMATION_URL);
+    return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_FEE_CONFIRMATION_URL);
   }
   if (claim.generalApplication?.applicationTypes?.length === 1 && claim.generalApplication.applicationTypes[0].option === ApplicationTypeOption.ADJOURN_HEARING
     && hearingMoreThan14DaysInFuture(claim)) {

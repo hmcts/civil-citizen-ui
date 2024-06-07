@@ -2503,7 +2503,7 @@
         "APPLY_HELP_WITH_FEE_CONTENT_PAGE_TITLE": "Apply for help with fees",
         "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
         "CONFIRMATION_PAGE": {
-          "TITLE.GENERAL_APPLICATION": "Your application for help with the application fee is complete"
+          "TITLE": "Your application for help with the application fee is complete"
         },
         "REFERENCE_NUMBER": {
           "QUESTION_TITLE": "Do you have a help with fees reference number?",
