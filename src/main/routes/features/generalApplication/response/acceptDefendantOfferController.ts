@@ -3,10 +3,9 @@ import { AppRequest } from 'common/models/AppRequest';
 import { GenericForm } from 'common/form/models/genericForm';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { GA_ACCEPT_DEFENDANT_OFFER_URL } from 'routes/urls';
-import { getCancelUrl, getLast, saveAcceptDefendantOffer } from 'services/features/generalApplication/generalApplicationService';
+import { getCancelUrl, saveAcceptDefendantOffer } from 'services/features/generalApplication/generalApplicationService';
 import { Claim } from 'common/models/claim';
 import { AcceptDefendantOffer } from 'common/models/generalApplication/response/acceptDefendantOffer';
-import { selectedApplicationType } from 'common/models/generalApplication/applicationType';
 import { getRespondToApplicationCaption } from 'services/features/generalApplication/response/generalApplicationResponseService';
 
 const acceptDefendantOfferController = Router();
@@ -15,12 +14,10 @@ const viewPath = 'features/generalApplication/response/accept-defendant-offer';
 const renderView = async (claimId: string, claim: Claim, form: GenericForm<AcceptDefendantOffer>, lng: string, res: Response): Promise<void> => {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const backLinkUrl = 'test'; // TODO: add url
-  const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
   res.render(viewPath, {
     cancelUrl,
     caption: getRespondToApplicationCaption(claim, lng),
     backLinkUrl,
-    applicationType,
     form,
   });
 };

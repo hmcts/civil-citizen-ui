@@ -34,7 +34,7 @@ describe('General Application - Accept defendant offer', () => {
   beforeEach(() => {
     claim = new Claim();
     claim.generalApplication = new GeneralApplication();
-    claim.generalApplication.applicationTypes.push(new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM));
+    claim.generalApplication.applicationTypes.push(new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT));
     claim.generalApplication.response = {respondentAgreement: new RespondentAgreement()};
     mockDataFromStore.mockResolvedValue(claim);
   });

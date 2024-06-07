@@ -5,11 +5,13 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/button.njk" import addButton %}
 {% from "../../../macro/external-link.njk" import externalLink %}
+{% from "../../../macro/heading-with-caption.njk" import headingWithCaption %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+
 {% import "external-urls.njk" as externalURLs %}
 
 {% block nestedContent %}
@@ -147,8 +149,7 @@
   
   <form method="post" novalidate>
     {{ csrfProtection(csrf) }}
-    <span class="govuk-caption-l">{{ t(applicationType) }}</span>
-    <h1 class="govuk-fieldset__legend--l">{{t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE') }}</h1>
+    {{ headingWithCaption(t, 'PAGES.GENERAL_APPLICATION.RESPONDENT_INFORMATION.HEADER', 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE') }}
     <p class="govuk-body">
       {{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245_BEFORE') }}
       {{ externalLink(t, 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245', externalURLs.formN245Url, false) }}
