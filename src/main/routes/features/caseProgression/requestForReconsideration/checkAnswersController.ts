@@ -12,13 +12,16 @@ import {
 } from 'services/features/caseProgression/requestForReconsideration/requestForReviewService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getCaseInfoContents} from 'services/features/caseProgression/requestForReconsideration/requestForReviewService';
-//import config from 'config';
-//import {CivilServiceClient} from 'client/civilServiceClient';
+import {
+  translateDraftRequestForReconsiderationToCCD,
+} from 'services/translation/caseProgression/requestForReconsideration/convertToCCDRequestForReconsideration';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const checkAnswersViewPath = 'features/caseProgression/requestForReconsideration/check-answers';
 const requestForReconsiderationCheckAnswersController = Router();
-//const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-//const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderView(res: Response, claim: Claim, claimId: string, lang: string) {
   let dashboardUrl;
@@ -49,9 +52,9 @@ requestForReconsiderationCheckAnswersController.get(REQUEST_FOR_RECONSIDERATION_
 requestForReconsiderationCheckAnswersController.post(REQUEST_FOR_RECONSIDERATION_CYA, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    //const claim = await getCaseDataFromStore(claimId);
-    //const trialReadyCCD = translateDraftTrialArrangementsToCCD(claim);
-    //await civilServiceClient.submitTrialArrangement(claimId, trialReadyCCD, req);
+    const claim = await getCaseDataFromStore(claimId);
+    const requestForReconsiderationCCD = translateDraftRequestForReconsiderationToCCD(claim);
+    await civilServiceClient.submitRequestForReconsideration(claimId, requestForReconsiderationCCD, req);
     await deleteDraftClaimFromStore(claimId);
     res.redirect(constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_CONFIRMATION));
   } catch (error) {
