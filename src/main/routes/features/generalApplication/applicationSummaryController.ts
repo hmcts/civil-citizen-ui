@@ -5,10 +5,11 @@ import { GA_APPLICATION_SUMMARY_URL } from 'routes/urls';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import config from 'config';
 import { GeneralApplicationClient } from 'client/generalApplicationClient';
+// import { PageSectionBuilder } from 'common/utils/pageSectionBuilder';
 // import { Claim } from 'common/models/claim';
 
 const applicationSummaryController = Router();
-const viewPath = 'features/generalApplication/application-summary';
+const viewPath = 'features/generalApplication/applications-summary';
 
 const civilServiceApiBaseUrl = config.get<string>('services.generalApplication.url');
 const civilServiceClient: GeneralApplicationClient = new GeneralApplicationClient(civilServiceApiBaseUrl);
@@ -21,12 +22,23 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
     const claim = await getCaseDataFromStore(redisKey);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = 'test'; // TODO: add url
-    const applications = civilServiceClient.getApplications(req);
+    const applications = await civilServiceClient.getApplications(req);
     console.log('applications: ', applications);
+
+    const applicationsRows: any[] = [];
+    applications.forEach(application => {
+      applicationsRows.push(application.id)
+    });
+
+    // const applicationsRows = new PageSectionBuilder()
+    //   .addTitle('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.WHAT_HAPPENS_NEXT')
+    //   .addParagraph('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.YOU_WILL_RECEIVE')
+    //   .build();
     
     res.render(viewPath, {
       cancelUrl,
       backLinkUrl,
+      applicationsRows,
     });
   } catch (error) {
     next(error);

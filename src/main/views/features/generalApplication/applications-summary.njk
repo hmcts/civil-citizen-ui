@@ -6,6 +6,7 @@
 {% from "../../macro/button.njk" import addButton %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
 {% block nestedContent %}
   <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.SUMMARY.TITLE') }}</h1>
@@ -13,12 +14,28 @@
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SUMMARY.THESE_ARE_APPS') }}</p>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SUMMARY.THE_STATUS_CHANGE') }}</p>
 
+
+  {% for section in summarySections.sections %}
+    {% if section.summaryList.rows %}
+      <div class="govuk-!-margin-bottom-9">
+        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+        <div class="govuk-form-group">
+          {{ govukSummaryList({
+            rows: section.summaryList.rows
+          }) }}
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+
   {{ govukTable({
     head: [
       { text: 'Application X' },
       { text: t('PAGES.GENERAL_APPLICATION.SUMMARY.DETAILS') },
       { text: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATUS') }
     ],
-    rows: fees
+    rows: {
+      html: applicationsRows
+    }
   }) }}
 {% endblock %}

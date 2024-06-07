@@ -1,10 +1,11 @@
 import Axios, {AxiosInstance} from 'axios';
 import {AppRequest} from 'models/AppRequest';
-import {
-  CIVIL_GENERAL_APPLICATIONS_URL,
-} from './generalApplicationUrls';
+// import {
+//   CIVIL_GENERAL_APPLICATIONS_URL,
+// } from './generalApplicationUrls';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {Application} from 'models/generalApplication/application';
+// import {Application} from 'models/generalApplication/application';
+import { CaseState } from 'common/form/models/claimDetails';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('generalApplicationClient');
@@ -36,15 +37,19 @@ export class GeneralApplicationClient {
   }
 
   async getApplications(req: AppRequest): Promise<ApplicationResponse[]> {
-    const config = this.getConfig(req);
-    let applications: ApplicationResponse[] = [];
+    // const config = this.getConfig(req);
+    // let applications: ApplicationResponse[] = [];
     try {
-      const response = await this.client.post(CIVIL_GENERAL_APPLICATIONS_URL, {match_all: {}}, config);
-      applications = response.data.cases.map((application: ApplicationResponse) => {
-        const caseData = Object.assign(new Application(), application.case_data);
-        return new ApplicationResponse(application.id, caseData, application.state, application.last_modified);
-      });
-      return applications;
+      // const response = await this.client.post(CIVIL_GENERAL_APPLICATIONS_URL, {match_all: {}}, config);
+      // applications = response.data?.cases?.map((application: ApplicationResponse) => {
+      //   const caseData = Object.assign(new Application(), application.case_data);
+      //   return new ApplicationResponse(application.id, caseData, application.state, application.last_modified);
+      // });
+      // return applications;
+      return [
+        new ApplicationResponse('123', {legacyCaseReference: 'ABC'}, CaseState.CASE_ISSUED, new Date()),
+        new ApplicationResponse('456', {legacyCaseReference: 'XYZ'}, CaseState.AWAITING_APPLICANT_INTENTION, new Date())
+      ]
     } catch (err) {
       logger.error('Error when getApplications');
       throw err;
