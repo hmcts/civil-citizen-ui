@@ -1,0 +1,45 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
+
+{% block nestedContent %}
+          {{ headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.INFORM_OTHER_PARTIES_HEADER' ) }}
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.COURT_SEND_OTHER_PARTIES') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.SOME_CIRCUMSTANCES') }}</p>
+          <h1 class="govuk-heading-m">{{  t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.DO_NOT_WANT_COURT') }}</h1>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.PROVIDE_A_REASON') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.JUDGE_ORDERS_OTHER_PARTIES') }}</p>
+
+
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+
+            {% set noHtml %}
+              {{ govukTextarea({
+                name: "reasonForCourtNotInformingOtherParties",
+                id: "reasonForCourtNotInformingOtherParties",
+                value: form.model.reasonForCourtNotInformingOtherParties,
+                label: {
+                  text:t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT')
+                },
+                errorMessage: {
+                text: t(form.errorFor('reasonForCourtNotInformingOtherParties'))
+              } if form.hasFieldError('reasonForCourtNotInformingOtherParties')
+              }) }}
+            {% endset %}
+
+            {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.SHOULD_COURT_INFORM_PARTIES'), form, t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.SELECTING_MULTIPLE_APPLICATIONS'),{noHtml:noHtml}) }}
+            <div class="govuk-button-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.CONTINUE')
+              }) }}
+              <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+            </div>
+          </form>
+{% endblock %}

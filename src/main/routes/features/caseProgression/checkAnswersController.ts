@@ -1,5 +1,9 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {CP_CHECK_ANSWERS_URL, CP_EVIDENCE_UPLOAD_CANCEL, CP_EVIDENCE_UPLOAD_SUBMISSION_URL} from '../../urls';
+import {
+  CP_CHECK_ANSWERS_URL,
+  CP_EVIDENCE_UPLOAD_CANCEL,
+  CP_EVIDENCE_UPLOAD_SUBMISSION_URL, CP_UPLOAD_DOCUMENTS_URL,
+} from '../../urls';
 import {
   getBottomElements,
   getSummarySections,
@@ -23,6 +27,7 @@ function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionFor
   const topPageContents = getTopElements(claim);
   let summarySections: DocumentUploadSections;
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
 
   if(isClaimant) {
     summarySections = getSummarySections(claim.caseProgression.claimantDocuments, claimId, isSmallClaims, lang);
@@ -33,7 +38,7 @@ function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionFor
   const cancelUrl = constructResponseUrlWithIdParams(claim.id, CP_EVIDENCE_UPLOAD_CANCEL);
 
   res.render(checkAnswersViewPath, {
-    form, topPageContents, summarySections, bottomPageContents, isSmallClaims, cancelUrl,
+    form, topPageContents, summarySections, bottomPageContents, isSmallClaims, cancelUrl, backLinkUrl,
   });
 }
 

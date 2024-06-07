@@ -1,0 +1,34 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "../../macro/button.njk" import addButton %}
+{% from "../dashboard/item-content.njk" import itemContent %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.APPLICATION_REASON.WHY_REQUESTING') }}
+{% endblock %}
+
+{% block nestedContent %}
+          {{headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.APPLICATION_REASON.WHY_REQUESTING' )}}
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.THE_INFORMATION') }}</p>
+          {% for content in contentList %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            <h1 class="govuk-heading-s">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.ENTER_REASONS') }}</h1>
+            {{ govukTextarea({
+              name: "text",
+              id: "text",
+              value: form.model.text,
+              errorMessage: {
+                html: t(form.errorFor("text"))
+              } if form.hasFieldError("text")
+            }) }}
+            <div class="govuk-button-group">
+              {{ addButton(t, 'CONTINUE', cancelUrl) }}
+            </div>
+          </form>
+{% endblock %}

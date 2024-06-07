@@ -1,0 +1,30 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../dashboard/item-content.njk" import itemContent %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container govuk-!-padding-top-9">
+    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+      <div class="govuk-grid-row govuk-!-margin-top-0">
+        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+          {{ csrfProtection(csrf) }}
+          {% for content in gaPaymentSuccessfulPanel %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
+          {% for content in gaPaymentSuccessfulBody %}
+            {{ itemContent(content,t)  }}
+          {% endfor %}
+          <div class="govuk-width-container govuk-!-padding-top-5">
+          {% for content in gaPaymentSuccessfulButton %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

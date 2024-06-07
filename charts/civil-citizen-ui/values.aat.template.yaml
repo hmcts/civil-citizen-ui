@@ -388,3 +388,40 @@ camunda-bpm:
       S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
       CAMUNDA_DB_CONN_OPTIONS: ""
       RELEASE_REVISION: "{{ .Release.Revision }}"
+
+civil-general-applications:
+  enabled: true
+  java:
+    ingressHost: civil-cui-general-applications.aat.platform.hmcts.net
+    releaseNameOverride: ${SERVICE_NAME}-general-applications
+    image: 'hmctspublic.azurecr.io/civil/general-applications:latest'
+    imagePullPolicy: Always
+    keyVaults:
+      civil:
+        resourceGroup: civil
+        secrets:
+          - civil-idam-client-secret
+          - microservicekey-civil-service
+          - system-update-user-username
+          - system-update-user-password
+          - cross-access-user-username
+          - cross-access-user-password
+          - prd-admin-user-username
+          - prd-admin-user-password
+          - name: AppInsightsInstrumentationKeyGeneralApplications
+            alias: azure.application-insights.instrumentation-key
+          - docmosis-api-key
+          - gov-notify-api-key
+          - sendgrid-api-key
+          - robotics-notification-sender
+          - robotics-notification-recipient
+          - name: launch-darkly-sdk-key
+            alias: LAUNCH_DARKLY_SDK_KEY
+          - robotics-notification-multipartyrecipient
+      civil-gen-apps:
+        resourceGroup: civil
+        secrets:
+          - microservicekey-civil-general-applications
+    environment:
+      LAUNCH_DARKLY_ENV: service-staging
+      PAY_CALLBACK_URL: https://civil-cui-general-applications.aat.platform.hmcts.net/service-request-update

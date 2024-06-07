@@ -19,6 +19,8 @@ import { CivilServiceClient } from 'client/civilServiceClient';
 import {t} from 'i18next';
 import {applicationNoticeUrl, getDebtRespiteUrl} from 'common/utils/externalURLs';
 import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -28,6 +30,8 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId =  req.params.id;
+    let claimIdPrettified;
+    let claimAmountFormatted;
     const isDashboardEnabled = await isDashboardServiceEnabled();
     if (isDashboardEnabled){
       const lng = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -35,7 +39,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       let caseRole: ClaimantOrDefendant;
       let dashboardId;
 
-      if(claimId == 'draft') {
+      if(claimId === 'draft') {
         caseRole = ClaimantOrDefendant.CLAIMANT;
         const userId = (<AppRequest>req)?.session?.user?.id.toString();
         claim = await getClaimById(userId, req);
@@ -44,10 +48,12 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
         caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
         dashboardId = claimId;
+        claimIdPrettified = caseNumberPrettify(claimId);
+        claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
       }
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
-      const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req);
+      const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req, lng);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(claim, claimId, lng);
@@ -57,6 +63,8 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       res.render(claimantDashboardViewPath, {
         claim: claim,
         claimId,
+        claimIdPrettified,
+        claimAmountFormatted,
         dashboardTaskList: dashboard,
         dashboardNotifications,
         iWantToTitle,

@@ -1,6 +1,4 @@
 export const legacyServiceUrl = 'https://www.moneyclaim.gov.uk/web/mcol/welcome';
-export const n1FormUrl = 'https://formfinder.hmctsformfinder.justice.gov.uk/n1-eng.pdf';
-export const n510Url = 'https://formfinder.hmctsformfinder.justice.gov.uk/n510-eng.pdf';
 export const citizensAdviceUrl = 'https://www.citizensadvice.org.uk/about-us/how-we-provide-advice/advice/';
 export const citizenAdviceContactUsUrl = 'https://www.citizensadvice.org.uk/about-us/contact-us/contact-us/contact-us/';
 export const governmentDepartmentsUrl = 'https://www.gov.uk/government/publications/serve-the-treasury-solicitor-with-legal-proceedings';
@@ -21,3 +19,4 @@ export const whatToExpectUrl = 'https://www.gov.uk/guidance/what-to-expect-comin
 export const representYourselfUrl = 'https://www.gov.uk/represent-yourself-in-court';
 export const findLegalAdviceUrl = 'https://www.gov.uk/find-legal-advice';
 export const findCourtTribunalUrl = 'https://www.gov.uk/find-court-tribunal';
+export const formN245Url = 'https://www.gov.uk/government/publications/form-n245-application-for-suspension-of-a-warrant-and-or-variation-of-an-order';

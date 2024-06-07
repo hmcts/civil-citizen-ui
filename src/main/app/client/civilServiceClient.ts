@@ -8,7 +8,9 @@ import {
   CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
+  CIVIL_SERVICE_CHECK_OCMC_DEFENDENT_LINKED_URL,
   CIVIL_SERVICE_CLAIM_AMOUNT_URL,
+  CIVIL_SERVICE_AIRLINES_URL,
   CIVIL_SERVICE_COURT_DECISION,
   CIVIL_SERVICE_COURT_LOCATIONS,
   CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
@@ -23,9 +25,8 @@ import {
   CIVIL_SERVICE_VALIDATE_PIN_URL,
   CIVIL_SERVICE_DASHBOARD_TASKLIST_URL,
   CIVIL_SERVICE_NOTIFICATION_LIST_URL,
-  CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL,
-  CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL,
-  CIVIL_SERVICE_UPDATE_TASK_STATUS_URL,
+  CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL, CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL,
+  CIVIL_SERVICE_UPDATE_TASK_STATUS_URL, CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -55,6 +56,8 @@ import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
+import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
+import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -193,6 +196,28 @@ export class CivilServiceClient {
     }
   }
 
+  async getGeneralApplicationFee(feeRequestBody: GAFeeRequestBody, req: AppRequest): Promise<ClaimFeeData> {
+    try {
+      const config = this.getConfig(req);
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL, feeRequestBody, config);
+      return response.data;
+    } catch (err: unknown) {
+      logger.error('Error when getting claim fee data');
+      throw err;
+    }
+  }
+
+  async getAirlines(req: AppRequest): Promise<any> {
+    const config = this.getConfig(req);
+    try {
+      const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_AIRLINES_URL}`, config);
+      return response.data;
+    } catch (err: unknown) {
+      logger.error('Error when getting airline list');
+      throw err;
+    }
+  }
+
   async verifyPin(req: AppRequest, pin: string, caseReference: string): Promise<Claim> {
     try {
       const response = await this.client.post(CIVIL_SERVICE_VALIDATE_PIN_URL //nosonar
@@ -219,6 +244,20 @@ export class CivilServiceClient {
       return response.data as string;
     } catch (err: unknown) {
       logger.error('Error when verifying OCMC pin');
+      throw err;
+    }
+  }
+
+  async isOcmcDefendantLinked(caseReference: string): Promise<boolean> {
+    try {
+      const response = await this.client.get(CIVIL_SERVICE_CHECK_OCMC_DEFENDENT_LINKED_URL //nosonar
+        .replace(':caseReference', caseReference), {headers: {'Content-Type': 'application/json'}});// no-sonar
+      if (!response.data) {
+        return false;
+      }
+      return response.data as boolean;
+    } catch (err: unknown) {
+      logger.error(`Error when checking a claim ${caseReference} is linked to a defendant`);
       throw err;
     }
   }
@@ -318,6 +357,14 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.CREATE_SERVICE_REQUEST_CUI, claimId, {}, req);
   }
 
+  async submitJudgmentPaidInFull(claimId: string, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.JUDGMENT_PAID_IN_FULL, claimId, updatedClaim, req);
+  }
+
+  async submitInitiateGeneralApplicationEvent(claimId: string, updatedApplication: CCDGeneralApplication, req?: AppRequest):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.INITIATE_GENERAL_APPLICATION, claimId, updatedApplication, req);
+  }
+
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
@@ -362,8 +409,8 @@ export class CivilServiceClient {
     }
   }
 
-  async assignDefendantToClaim(claimId: string, req: AppRequest): Promise<void> {
-    await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId), {}, // nosonar
+  async assignDefendantToClaim(claimId: string, req: AppRequest, pin:string): Promise<void> {
+    await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId), { pin: pin }, // nosonar
       { headers: { 'Authorization': `Bearer ${req.session?.user?.accessToken}` } })
       .catch((err) => {
         logger.error('Error when assigning defendant to claim');
