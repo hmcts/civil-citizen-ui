@@ -13,6 +13,7 @@ import { getApplicationCostsContent } from 'services/features/generalApplication
 import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
+import {getLast} from 'services/features/generalApplication/generalApplicationService';
 
 const applicationCostsController = Router();
 const viewPath = 'features/generalApplication/application-costs';
