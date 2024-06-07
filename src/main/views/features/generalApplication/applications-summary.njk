@@ -4,8 +4,7 @@
 {% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% from "../../macro/button.njk" import addButton %}
-{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
-{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "../../macro/generalApplication/application-summary.njk" import applicationSummary %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
 {% block nestedContent %}
@@ -14,28 +13,8 @@
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SUMMARY.THESE_ARE_APPS') }}</p>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SUMMARY.THE_STATUS_CHANGE') }}</p>
 
-
-  {% for section in summarySections.sections %}
-    {% if section.summaryList.rows %}
-      <div class="govuk-!-margin-bottom-9">
-        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
-        <div class="govuk-form-group">
-          {{ govukSummaryList({
-            rows: section.summaryList.rows
-          }) }}
-        </div>
-      </div>
-    {% endif %}
+  {% for application in applicationsRows %}
+    {{ applicationSummary(t, application, loop.index) }}
   {% endfor %}
 
-  {{ govukTable({
-    head: [
-      { text: 'Application X' },
-      { text: t('PAGES.GENERAL_APPLICATION.SUMMARY.DETAILS') },
-      { text: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATUS') }
-    ],
-    rows: {
-      html: applicationsRows
-    }
-  }) }}
 {% endblock %}

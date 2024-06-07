@@ -1,12 +1,12 @@
+import config from 'config';
 import { NextFunction, Response, Router } from 'express';
 import { AppRequest } from 'common/models/AppRequest';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { GA_APPLICATION_SUMMARY_URL } from 'routes/urls';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
-import config from 'config';
 import { GeneralApplicationClient } from 'client/generalApplicationClient';
-// import { PageSectionBuilder } from 'common/utils/pageSectionBuilder';
-// import { Claim } from 'common/models/claim';
+// import { t } from 'i18next';
+// import { ApplicationTypeOption, selectedApplicationType } from 'common/models/generalApplication/applicationType';
 
 const applicationSummaryController = Router();
 const viewPath = 'features/generalApplication/applications-summary';
@@ -17,7 +17,7 @@ const civilServiceClient: GeneralApplicationClient = new GeneralApplicationClien
 applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    // const lang = req.query.lang || req.cookies.lang;
+    // const lng = req.query.lang || req.cookies.lang;
     const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
     const cancelUrl = await getCancelUrl(claimId, claim);
@@ -27,13 +27,20 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
 
     const applicationsRows: any[] = [];
     applications.forEach(application => {
-      applicationsRows.push(application.id)
-    });
+      
+      // const types = application.generalAppType.types.map((type: ApplicationTypeOption) => {
+      //     return t(selectedApplicationType[type], {lng})
+      // });
+      // console.log('types: ', types);
 
-    // const applicationsRows = new PageSectionBuilder()
-    //   .addTitle('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.WHAT_HAPPENS_NEXT')
-    //   .addParagraph('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.YOU_WILL_RECEIVE')
-    //   .build();
+
+      applicationsRows.push({
+        status: application.state,
+        types: application.applicationTypes,
+        id: application.id,
+        createdDate: application.createdDate,
+      })
+    });
     
     res.render(viewPath, {
       cancelUrl,
@@ -44,25 +51,5 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
     next(error);
   }
 });
-
-// applicationSummaryController.post(GA_APPLICATION_SUMMARY_URL, (async (req: AppRequest<RespondentAgreement>, res: Response, next: NextFunction) => {
-//   try {
-//     const { option, reasonForDisagreement } = req.body;
-//     const respondentAgreement = new RespondentAgreement(option, reasonForDisagreement);
-//     const form = new GenericForm(respondentAgreement);
-//     await form.validate();
-//     if (form.hasErrors()) {
-//       const claimId = req.params.id;
-//       const redisKey = generateRedisKey(req);
-//       const claim = await getCaseDataFromStore(redisKey);
-//       // const lang = req.query.lang || req.cookies.lang;
-//       return await renderView(claimId, claim, res);
-//     }
-//     await saveRespondentAgreement(generateRedisKey(req), respondentAgreement);
-//     res.redirect('test'); // TODO: add url
-//   } catch (error) {
-//     next(error);
-//   }
-// }) as RequestHandler);
 
 export default applicationSummaryController;

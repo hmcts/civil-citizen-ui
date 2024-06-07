@@ -2133,6 +2133,11 @@
     "GENERAL_APPLICATION": {
       "SUMMARY": {
         "STATUS": "Status",
+        "APPLICATION": "Application",
+        "APPLICATION_TYPE": "Application type",
+        "APPLICATION_ID": "Application ID",
+        "SUBMITTED_ON": "Submitted on",
+        "VIEW_APPLICATION": "View application",
         "DETAILS": "Details",
         "TITLE": "All applications",
         "APP_REQUESTED": "An application is a request for a change to the case.",

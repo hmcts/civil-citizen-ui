@@ -1,0 +1,47 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+
+{% macro applicationSummary(t, application, index) %}
+  <table class="govuk-table">
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+        <th scope="col" class="govuk-table__header">{{ t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION') + ' ' + index }}</th>
+        <th scope="col" class="govuk-table__header">{{ t('PAGES.GENERAL_APPLICATION.SUMMARY.DETAILS') }}</th>
+        <th scope="col" class="govuk-table__header govuk-!-text-align-right">{{ t('PAGES.GENERAL_APPLICATION.SUMMARY.STATUS') }}</th>
+      </tr>
+    </thead>
+    <tbody class="govuk-table__body govuk-body-s">
+      <tr class="govuk-table__row">
+        <td class="govuk-table__cell no-border-bottom">{{ t('PAGES.GENERAL_APPLICATION.SUMMARY.STATUS') }}</td>
+        <td class="govuk-table__cell no-border-bottom">{{ application.status }}</td>
+        <td class="govuk-table__cell no-border-bottom govuk-!-text-align-right">
+          {{govukTag({
+            text: application.status,
+            classes: 'app-task-list__tag ' + task.statusColor
+          })}}
+        </td>
+      </tr>
+      <tr class="govuk-table__row">
+        <td class="govuk-table__cell no-border-bottom">{{ t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_TYPE') }}</td>
+        <td class="govuk-table__cell no-border-bottom">{{ application.type }}</td>
+      </tr>
+        <tr class="govuk-table__row">
+        <td class="govuk-table__cell no-border-bottom">{{ t('PAGES.GENERAL_APPLICATION.SUMMARY.APPLICATION_ID') }}</td>
+        <td class="govuk-table__cell no-border-bottom">{{ application.id }}</td>
+      </tr>
+        <tr class="govuk-table__row govuk-!-text-align-right">
+        <td class="govuk-table__cell no-border-bottom">{{ t('PAGES.GENERAL_APPLICATION.SUMMARY.SUBMITTED_ON') }}</td>
+        <td class="govuk-table__cell no-border-bottom">{{ application.createdDate | dateTime }}</td>
+      </tr>
+      </tr>
+        <tr class="govuk-table__row">
+        <td class="govuk-table__cell"><a href="">{{ t('PAGES.GENERAL_APPLICATION.SUMMARY.VIEW_APPLICATION') }}<a/></td>
+        <td class="govuk-table__cell"></td>
+        <td class="govuk-table__cell"></td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+{% endmacro %}
