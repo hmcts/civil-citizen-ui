@@ -13,7 +13,7 @@ import {toCUIPartialAdmission, toCUIRepaymentPlanFrequency} from './convertToCUI
 import {toCUICaseProgressionHearing} from 'services/translation/convertToCUI/convertToCaseProgressionHearing';
 import {DocumentType} from 'models/document/documentType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
-import {toCUIGenericYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
+import {toCUIGenericYesNo, toCUIYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {
   toCUICCJRequest,
@@ -66,6 +66,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim, isMintiEna
   claim.app1MediationDocumentsReferred = ccdClaim.app1MediationDocumentsReferred;
   claim.app1MediationNonAttendanceDocs = ccdClaim.app1MediationNonAttendanceDocs;
   claim.defendantResponseDocuments = ccdClaim.defendantResponseDocuments;
+  claim.responseClaimMediationSpecRequired = toCUIYesNo(ccdClaim.responseClaimMediationSpecRequired);
 
   if (claim.isFullAdmission()) {
     translateFullAdmission(claim, ccdClaim, claimantResponse);
