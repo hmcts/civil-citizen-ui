@@ -330,6 +330,14 @@ import uploadEvidenceDocumentsForApplicationController from 'routes/features/gen
 import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
 import confirmYouHaveBeenPaidConfirmController
   from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
+import hearingArrangementResponseController
+  from 'routes/features/generalApplication/response/hearingArrangementResponseController';
+import hearingContactDetailsResponseController
+  from 'routes/features/generalApplication/response/hearingContactDetailsResponseController';
+import hearingSupportResponseController
+  from 'routes/features/generalApplication/response/hearingSupportResponseController';
+import unavailableHearingDatesResponseController
+  from 'routes/features/generalApplication/response/unavailableHearingDatesResponseController';
 import multiTrackDisclosureNonElectronicDocuments
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocumentsController';
 
@@ -620,5 +628,9 @@ export default [
   applicationResponseConfirmationController,
   confirmYouHaveBeenPaidController,
   confirmYouHaveBeenPaidConfirmController,
+  hearingArrangementResponseController,
+  hearingContactDetailsResponseController,
+  hearingSupportResponseController,
+  unavailableHearingDatesResponseController,
   multiTrackDisclosureNonElectronicDocuments,
 ];
