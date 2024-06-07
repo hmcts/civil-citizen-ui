@@ -635,7 +635,8 @@
       "POSTAL_RESPONSE": "Os derbynnir ymateb drwy'r post cyn cyhoeddi'r dyfarniad bydd eich cais yn cael ei wrthod.",
       "TITLE": "Cais am Ddyfarniad Llys Sirol",
       "UPDATES": "Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru wrth i’r hawliad hwn fynd rhagddo a bydd unrhyw ddiweddariadau pellach drwy'r post.",
-      "NO_LONGER_RESPONSE": "Ni all {{ defendantName }} ymateb i'ch hawliad ar-lein mwyach."
+      "NO_LONGER_RESPONSE": "Ni all {{ defendantName }} ymateb i'ch hawliad ar-lein mwyach.",
+      "PROCESS_YOUR_REQUEST_JO": "We’ll process your request and you will receive notifications by email, you will be able to view the judgment via your dashboard and we’ll also post a copy of the judgment to {{ defendantName }}. We aim to do this within 10 working days."
     },
     "CCJ_DEFENDANT_DOB": {
       "PAGE_TITLE": "Ydych chi'n gwybod dyddiad geni'r diffynnydd?",
