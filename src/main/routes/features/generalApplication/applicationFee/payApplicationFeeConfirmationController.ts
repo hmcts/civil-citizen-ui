@@ -27,7 +27,7 @@ payApplicationFeeConfirmationController.get(GA_APPLICATION_FEE_CONFIRMATION_URL,
     const claimId = req.params.id;
 
     res.render(payApplicationFeeConfirmationScreenViewPath, {
-      confirmationTitle : t(`PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONFIRMATION_PAGE.TITLE`, {lng}),
+      confirmationTitle : t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONFIRMATION_PAGE.TITLE', {lng}),
       referenceNumber: claim.generalApplication?.helpFeeReferenceNumberForm?.referenceNumber,
       confirmationContent: getApplicationFeeConfirmationContent(claimId, lng),
     });
