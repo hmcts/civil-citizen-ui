@@ -94,9 +94,7 @@ const getSupportLinks = (claim: Claim, claimId: string, lng: string) => {
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
     claim.ccdState === CaseState.IN_MEDIATION ||
     claim.ccdState === CaseState.JUDICIAL_REFERRAL ||
-    claim.ccdState === CaseState.PENDING_CASE_ISSUED ||
-    claim.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM ||
-    claim.ccdState === CaseState.CASE_SETTLED;
+    claim.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM,
 
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks = [];
