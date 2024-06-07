@@ -194,4 +194,4 @@ const toCCDGeneralAppHelpWithFees = (helpWithFees: ApplyHelpFeesReferenceForm | 
     helpWithFee: toCCDYesNo(helpWithFees.option),
     helpWithFeesReferenceNumber: helpWithFees.referenceNumber,
   };
-}
+};
