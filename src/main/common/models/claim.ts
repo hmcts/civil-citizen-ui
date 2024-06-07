@@ -82,6 +82,8 @@ import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uplo
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import {GeneralApplication} from './generalApplication/GeneralApplication';
+import {FlightDetails} from './flightDetails';
+import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -112,6 +114,7 @@ export class Claim {
   issueDate?: Date;
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
+  specParticularsOfClaimDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
@@ -131,7 +134,7 @@ export class Claim {
   takenOfflineDate?: Date;
   mediationAgreement?: MediationAgreement;
   unsuccessfulMediationReason?: string;
-  defaultJudgmentDocuments?: CaseDocument[];
+  defaultJudgmentDocuments?: SystemGeneratedCaseDocuments[];
   ccjJudgmentStatement?: string;
   lastModifiedDate?: Date;
   applicant1AcceptAdmitAmountPaidSpec?: string;
@@ -168,6 +171,12 @@ export class Claim {
   generalApplication?: GeneralApplication;
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
+  defendantResponseDocuments: SystemGeneratedCaseDocuments[];
+  responseClaimMediationSpecRequired?: YesNo;
+  delayedFlight?: GenericYesNo;
+  flightDetails?: FlightDetails;
+  judgmentOnline?: JudgmentOnline;
+
   // Index signature to allow dynamic property access
   [key: string]: any;
 
@@ -472,6 +481,8 @@ export class Claim {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
         if (documentType == DocumentType.DIRECTIONS_QUESTIONNAIRE) {
           return document.value.documentType === documentType && document.value.documentName.startsWith(claimantOrDefendant);
+        } else if (documentType == DocumentType.SEALED_CLAIM && claimantOrDefendant == DirectionQuestionnaireType.DEFENDANT) {
+          return document.value.documentType === documentType && document.value.documentName.includes('_response_');
         }
         return document?.value.documentType === documentType;
       });
@@ -494,6 +505,14 @@ export class Claim {
 
   isBusiness(): boolean {
     return this.respondent1?.type === PartyType.COMPANY || this.respondent1?.type === PartyType.ORGANISATION;
+  }
+
+  isCompany(): boolean {
+    return this.respondent1?.type === PartyType.COMPANY;
+  }
+
+  isOrganisation(): boolean {
+    return this.respondent1?.type === PartyType.ORGANISATION;
   }
 
   isClaimantBusiness(): boolean {
@@ -563,14 +582,22 @@ export class Claim {
   }
 
   isDefendantDetailsCompleted(): boolean {
-    return (
-      !!this.respondent1?.type &&
+    return !!this.respondent1?.type && 
       !!this.respondent1?.partyDetails?.primaryAddress &&
-      ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) ||
-        (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName))
-    );
+      (
+        (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName) ||
+        (this.isOrganisation() && !!this.respondent1?.partyDetails?.partyName) ||
+        (this.isCompany() && this.isAirlineComplete() && !!this.respondent1?.partyDetails?.partyName)
+      );
   }
 
+  isAirlineComplete(): boolean {
+    return this.delayedFlight?.option === YesNo.NO ||
+      (this.delayedFlight?.option === YesNo.YES &&
+        !!this.flightDetails?.airline &&
+        !!this.flightDetails?.flightNumber &&
+        !!this.flightDetails?.flightDate);
+  }
   isClaimantDetailsCompleted(): boolean {
     return (
       !!this.applicant1?.type &&
@@ -703,7 +730,11 @@ export class Claim {
   }
 
   isCCJComplete() {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option;
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined;
+  }
+
+  isCCJCompleteForJo(isJudgmentOnlineLiveOn: boolean) {
+    return this.ccdState === CaseState.All_FINAL_ORDERS_ISSUED && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined && isJudgmentOnlineLiveOn;
   }
 
   getHowTheInterestCalculatedReason(): string {
@@ -738,16 +769,16 @@ export class Claim {
     return party?.partyDetails?.partyName;
   }
 
-  get claimType(): string {
+  get claimTrackType(): string {
     return analyseClaimType(this.totalClaimAmount);
   }
 
   get isFastTrackClaim(): boolean {
-    return this.claimType === claimType.FAST_TRACK_CLAIM;
+    return this.claimTrackType === claimType.FAST_TRACK_CLAIM;
   }
 
   get isSmallClaimsTrackDQ(): boolean {
-    return this.claimType === claimType.SMALL_CLAIM;
+    return this.claimTrackType === claimType.SMALL_CLAIM;
   }
 
   hasSdoOrderDocument(): boolean {
@@ -849,6 +880,11 @@ export class Claim {
       && (Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0);
   }
 
+  isDefendantLrAgreedForMediation() {
+    return this.isLRDefendant()
+      && this.responseClaimMediationSpecRequired === YesNo.YES;
+  }
+
   isClaimantRejectedPaymentPlan() {
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
   }
@@ -865,7 +901,7 @@ export class Claim {
     return threeWeeksBefore.toLocaleDateString('en-GB', options);
   }
 
-  private threeWeeksBeforeHearingDate() {
+  threeWeeksBeforeHearingDate() {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
     const dateAtStartOfDay = new Date(hearingDateTime - threeWeeksMilli).setHours(0, 0, 0, 0);

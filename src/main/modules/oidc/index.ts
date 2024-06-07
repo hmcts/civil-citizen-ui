@@ -14,6 +14,7 @@ import {
   SIGN_IN_URL,
   SIGN_OUT_URL,
   UNAUTHORISED_URL,
+  ACCESSIBILITY_STATEMENT_URL,
 } from 'routes/urls';
 
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
@@ -34,6 +35,10 @@ const requestIsForDownloadPdf = (req: Request): boolean => {
 
 const isEligibilityPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(BASE_ELIGIBILITY_URL);
+};
+
+const isAccessibilityStatementPage = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(ACCESSIBILITY_STATEMENT_URL);
 };
 
 const isMakeClaimPage = (requestUrl: string): boolean => {
@@ -67,10 +72,11 @@ export class OidcMiddleware {
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       if (typeof req.query.code === 'string') {
+        
         const responseData = await getOidcResponse(redirectUri, req.query.code);
         req.session.user = app.locals.user = getUserDetails(responseData);
         req.session.issuedAt = getSessionIssueTime(responseData);
-
+        
         if (app.locals.assignClaimURL || req.session.assignClaimURL) {
           const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
           return res.redirect(assignClaimUrlWithClaimId);
@@ -112,7 +118,7 @@ export class OidcMiddleware {
           return next();
         }
       }
-      if (requestIsForPinAndPost(req) || requestIsForDownloadPdf(req) || isEligibilityPage(req.originalUrl) || isMakeClaimPage(req.originalUrl) || isTestingSupportDraftUrl(req.originalUrl)) {
+      if (requestIsForPinAndPost(req) || requestIsForDownloadPdf(req) || isEligibilityPage(req.originalUrl) || isMakeClaimPage(req.originalUrl) || isTestingSupportDraftUrl(req.originalUrl) || isAccessibilityStatementPage(req.originalUrl)) {
         return next();
       }
       if (requestIsForAssigningClaimForDefendant(req) ) {

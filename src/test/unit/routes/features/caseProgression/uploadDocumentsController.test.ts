@@ -17,7 +17,6 @@ import {getExpertContent} from 'services/features/caseProgression/expertService'
 const getDisclosureContentMock = DisclosureService.getDisclosureContent as jest.Mock;
 const getWitnessContentMock = WitnessService.getWitnessContent as jest.Mock;
 const getExpertContentMock = getExpertContent as jest.Mock;
-import {t} from 'i18next';
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {getNextYearValue} from '../../../../utils/dateUtils';
 import express from 'express';
@@ -73,12 +72,31 @@ describe('Upload document- upload document controller', () => {
 
     const spyDisclosure = jest.spyOn(DisclosureService, 'getDisclosureContent');
 
-    await request(app).get(CP_UPLOAD_DOCUMENTS_URL).expect((res) => {
+    await request(app).get(CP_UPLOAD_DOCUMENTS_URL).query({lang: 'en'}).expect((res) => {
       expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.UPLOAD_DOCUMENTS.TITLE'));
-      expect(res.text).toContain(t('PAGES.DASHBOARD.HEARINGS.HEARING'));
+      expect(res.text).toContain('Upload documents');
+      expect(res.text).toContain('Hearing');
       expect(res.text).not.toContain('Disclosure');
       expect(res.text).not.toContain('Witness');
+      expect(spyDisclosure).toHaveBeenCalledWith(claim, null);
+    });
+  });
+
+  it('should render page successfully in Welsh if cookie has correct values and query cy', async () => {
+    app.locals.draftStoreClient = mockCivilClaim;
+
+    const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
+    const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
+
+    const spyDisclosure = jest.spyOn(DisclosureService, 'getDisclosureContent');
+
+    await request(app).get(CP_UPLOAD_DOCUMENTS_URL).query({lang: 'cy'}).expect((res) => {
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('Uwchlwytho dogfennau');
+      expect(res.text).toContain('Gwrandawiad');
+      expect(res.text).not.toContain('Datgelu');
+      expect(res.text).not.toContain('Tystiolaeth tystion');
       expect(spyDisclosure).toHaveBeenCalledWith(claim, null);
     });
   });
@@ -115,9 +133,10 @@ describe('Upload document- upload document controller', () => {
 
     const spyDisclosure = jest.spyOn(DisclosureService, 'getDisclosureContent');
 
-    await request(app).get(CP_UPLOAD_DOCUMENTS_URL).expect((res) => {
+    await request(app).get(CP_UPLOAD_DOCUMENTS_URL).query({lang:'en'}).expect((res) => {
       expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.UPLOAD_DOCUMENTS.TITLE'));
+      expect(res.text).toContain('Upload documents');
+      expect(res.text).toContain('Hearing');
       expect(res.text).toContain('Disclosure');
       expect(res.text).not.toContain('Witness');
       expect(spyDisclosure).toHaveBeenCalledWith(claim, formWithDisclosure);
@@ -132,16 +151,32 @@ describe('Upload document- upload document controller', () => {
 
     await request(app).get(CP_UPLOAD_DOCUMENTS_URL).expect((res) => {
       expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.UPLOAD_DOCUMENTS.TITLE'));
+      expect(res.text).toContain('Upload documents');
+      expect(res.text).toContain('Hearing');
       expect(res.text).toContain('Disclosure');
       expect(res.text).not.toContain('Witness');
+    });
+  });
+
+  it('should render page successfully in Welsh with uploaded document section if document available in redis on claimant request', async () => {
+    app.locals.draftStoreClient = mockCivilClaimDocumentClaimantUploaded;
+
+    const civilClaimDocumentClaimantUploaded = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedClaimantMock.json');
+    civilClaimDocumentClaimantUploaded.case_data.id = civilClaimDocumentClaimantUploaded.id;
+
+    await request(app).get(CP_UPLOAD_DOCUMENTS_URL).query({lang: 'cy'}).expect((res) => {
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('Uwchlwytho dogfennau');
+      expect(res.text).toContain('Gwrandawiad');
+      expect(res.text).toContain('Datgelu');
+      expect(res.text).not.toContain('Tystiolaeth tystion');
     });
   });
 
   it('should return 500 error page for redis failure', async () => {
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
-      .get(CP_UPLOAD_DOCUMENTS_URL)
+      .get(CP_UPLOAD_DOCUMENTS_URL).query({lang: 'en'})
       .expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -347,6 +382,29 @@ describe('on POST', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_WITNESS_NAME);
         expect(res.text).toContain(TestMessages.VALID_ENTER_DATE_DOC_ISSUED);
+      });
+  });
+
+  it('should display witness summary validation error when invalid', async () => {
+    const model = {
+      'witnessSummary': [{
+        'witnessName': '',
+        'dateInputFields': {
+          'dateDay': '',
+          'dateMonth': '',
+          'dateYear': '',
+        },
+        'fileUpload': '',
+      }],
+    };
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send(model)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_WITNESS_NAME);
+        expect(res.text).toContain(TestMessages.VALID_ENTER_DATE_WITNESS_SUMMARY);
       });
   });
 

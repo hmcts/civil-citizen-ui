@@ -12,6 +12,7 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {CaseRole} from 'form/models/caseRoles';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
@@ -25,7 +26,7 @@ export const buildIsCaseReadyForTrialOrHearing = (claim: Claim, claimId: string,
   });
 
   trialReadySummarySections.summaryList.rows.push(summaryRow(t('PAGES.IS_CASE_READY.IS_CASE_READY', { lng: getLng(lang) }),
-    t(`COMMON.${trialArrangements.isCaseReady.toUpperCase()}`, { lng: getLng(lang) }),
+    t(`COMMON.VARIATION_4.${trialArrangements.isCaseReady.toUpperCase()}`, { lng: getLng(lang) }),
     constructResponseUrlWithIdParams(claimId, IS_CASE_READY_URL), changeLabel(lang)));
 
   trialReadySummarySections.summaryList.rows.push(summaryRow(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.ARE_THERE_ANY_CHANGES', { lng: getLng(lang) }),
@@ -45,11 +46,9 @@ export const buildIsCaseReadyForTrialOrHearing = (claim: Claim, claimId: string,
 
 export const buildCaseInfoContents = (claim: Claim, claimId: string): ClaimSummarySection[] => {
   return new PageSectionBuilder()
-    .addLeadParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CASE_REFERENCE',
-      {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
-    .addLeadParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.PARTIES', {
-      claimantName: claim.getClaimantFullName(),
-      defendantName: claim.getDefendantFullName(),
-    })
+    .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
+    .addMainTitle('PAGES.CHECK_YOUR_ANSWER.TITLE')
+    .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
+    .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
     ._claimSummarySections;
 };
