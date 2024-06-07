@@ -49,7 +49,7 @@ import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders'
 import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
 import {Debts} from 'form/models/statementOfMeans/debts/debts';
 import {ClaimBilingualLanguagePreference} from './claimBilingualLanguagePreference';
-import {claimType} from 'common/form/models/claimType';
+import {analyseClaimType, claimType} from 'common/form/models/claimType';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
@@ -766,11 +766,13 @@ export class Claim {
   }
 
   get isFastTrackClaim(): boolean {
-    return this.claimType === claimType.FAST_TRACK_CLAIM;
+    const claimTypeResult = analyseClaimType(this.totalClaimAmount);
+    return claimTypeResult === claimType.FAST_TRACK_CLAIM;
   }
 
   get isSmallClaimsTrackDQ(): boolean {
-    return this.claimType === claimType.SMALL_CLAIM;
+    const claimTypeResult = analyseClaimType(this.totalClaimAmount);
+    return claimTypeResult === claimType.SMALL_CLAIM;
   }
 
   hasSdoOrderDocument(): boolean {
