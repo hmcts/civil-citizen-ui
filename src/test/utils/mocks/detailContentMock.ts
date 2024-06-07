@@ -1,7 +1,7 @@
 import {DetailsComponent, DetailsComponentContentBuilder} from 'models/summaryText/detailsComponent';
 import {disclosureOfDocumentsUrl} from 'common/utils/externalURLs';
 
-export const  getWhatIsDisclosureDetailContent = () => {
+export const  getWhatIsDisclosureDetailContentMock = () => {
   const DISCLOSURE_NON_ELECTRONIC_DOCUMENTS = 'DISCLOSURE_NON_ELECTRONIC_DOCUMENTS.DETAILS.';
   return new DetailsComponent(`${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS}TITLE`, new DetailsComponentContentBuilder()
     .addParagraph(`${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS}PARAGRAPH1`)

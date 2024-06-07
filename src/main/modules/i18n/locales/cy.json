@@ -388,7 +388,7 @@
     }
   },
   "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : {
-    "TEXT_AREA": {
+    "DETAILS": {
       "TITLE": "Beth yw Datgeliad?",
       "PARAGRAPH1": "Mae'n ofynnol i chi rannu (datgelu) yr holl ddogfennau sy'n berthnasol i'r hawliad gyda'r holl bartïon dan sylw.",
       "PARAGRAPH2": "Mae hyn yn cynnwys yr holl ddogfennau ffisegol ac electronig, megis anfonebau a chontractau, yn ogystal â delweddau, fideos, negeseuon testun, a negeseuon cyfryngau cymdeithasol.",
@@ -396,7 +396,7 @@
       "PARAGRAPH4": "Bydd rhestr o ddyblu gan y partïon eraill ar gael i chi, a gallwch ofyn am gopïau o unrhyw un o'r dogfennau hyn. Gall y partïon eraill sy'n ymwneud â'r hawliad hefyd ofyn am weld ac archwilio copïau o ddogfennau rydych chi'n eu datgelu.",
       "URL" : {
         "BEFORE": "Darganfyddwch fwy o wybodaeth am ",
-        "TEXT": "ddatgelu dogfennau",
+        "TEXT": "ddatgelu dogfennau (yn agor mewn tab newydd)",
         "AFTER": "."
       }
     }

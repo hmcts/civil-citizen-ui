@@ -388,7 +388,7 @@
     }
   },
   "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS": {
-    "TEXT_AREA": {
+    "DETAILS": {
       "TITLE": "What is Disclosure?",
       "PARAGRAPH1": "You are required to share (disclose) all documents which are relevant to the claim with all parties involved.",
       "PARAGRAPH2": "This includes all physical and electronic documents, such as invoices and contracts, as well as images, videos, text messages, and social media messages.",
@@ -396,7 +396,7 @@
       "PARAGRAPH4": "A list of documents from the other parties will be made available to you, and you can ask for copies of any of these documents. The other parties involved in the claim can also ask to see and inspect copies of documents you disclose.",
       "URL": {
         "BEFORE": "Find more information about ",
-        "TEXT": "disclosure of documents",
+        "TEXT": "disclosure of documents (opens in a new tab)",
         "AFTER": "."
       }
     }

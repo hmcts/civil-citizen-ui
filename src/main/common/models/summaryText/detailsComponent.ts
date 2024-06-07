@@ -3,7 +3,7 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 
 export class DetailsComponentContentBuilder extends PageSectionBuilder {
 
-  addTitle(title: string, variables?: any, classes?: string) {
+  addTitle(title: string, variables?: any, classes ='') {
     const titleSection = ({
       type: ClaimSummaryType.PARAGRAPH,
       data: {
