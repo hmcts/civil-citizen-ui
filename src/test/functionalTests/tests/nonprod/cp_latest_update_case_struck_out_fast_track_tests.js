@@ -35,9 +35,9 @@ Scenario('Fast Track case is struck out due to hearing fee not being paid', asyn
       const notification = claimStruckOut();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       taskListItem = addTrialArrangements();
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'INACTIVE');
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
       taskListItem = uploadHearingDocuments();
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'INACTIVE');
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
     } else {
       CaseProgressionSteps.verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType);
     }
