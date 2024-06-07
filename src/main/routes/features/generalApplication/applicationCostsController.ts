@@ -6,6 +6,7 @@ import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import { getApplicationCostsContent } from 'services/features/generalApplication/applicationCostsService';
 import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
+import {getLast} from 'services/features/generalApplication/generalApplicationService';
 
 const applicationCostsController = Router();
 const viewPath = 'features/generalApplication/application-costs';
@@ -14,7 +15,7 @@ const backLinkUrl = 'test'; // TODO: add url
 async function renderView(claim: Claim, req: AppRequest, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const applicationTypes = claim.generalApplication?.applicationTypes;
-  const applicationType = selectedApplicationType[applicationTypes[applicationTypes.length - 1]?.option];
+  const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
   const gaFeeData = await gaApplicationFeeDetails(claim, req);
   const applicationCostsContent = getApplicationCostsContent(applicationTypes, gaFeeData, lang);
   res.render(viewPath, { backLinkUrl, applicationType, applicationCostsContent });
