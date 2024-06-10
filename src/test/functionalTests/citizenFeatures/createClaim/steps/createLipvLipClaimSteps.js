@@ -53,7 +53,7 @@ class CreateClaimSteps {
 
   async EligibilityCheckStepsForClaimCreation() {
     await eligibilityCheck.open();
-    await eligibilityCheck.eligibilityClaimValue();
+    await eligibilityCheck.eligibilityKnownClaimAmount();
     await eligibilityCheck.eligibilitySingleDefendant();
     await eligibilityCheck.eligibilityDefendantAddress();
     await eligibilityCheck.eligibilityClaimType();
