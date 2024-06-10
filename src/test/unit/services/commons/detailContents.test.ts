@@ -1,6 +1,6 @@
 import {
   getWhatIsDifferenceDisclosureDocumentsContent,
-  getWhatIsDisclosureDetailContent
+  getWhatIsDisclosureDetailContent,
 } from 'services/commons/detailContents';
 import {
   getWhatIsDifferenceDisclosureDocumentsContentMock,
