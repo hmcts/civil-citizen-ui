@@ -1,6 +1,6 @@
 import Axios, {AxiosInstance} from 'axios';
 import {AppRequest} from 'models/AppRequest';
-import {CIVIL_GENERAL_APPLICATIONS_URL,} from './generalApplicationUrls';
+import {CIVIL_GENERAL_APPLICATIONS_URL} from './generalApplicationUrls';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {Application} from 'models/generalApplication/application';
 

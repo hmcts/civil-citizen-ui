@@ -6,7 +6,7 @@ import {selectedApplicationType} from 'common/models/generalApplication/applicat
 import {
   getCancelUrl,
   getLast,
-  saveHearingArrangement
+  saveHearingArrangement,
 } from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
