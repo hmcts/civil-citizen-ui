@@ -6,6 +6,7 @@ import {GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_FEES, GA_APPLY_HELP
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import { Claim } from 'common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
@@ -51,12 +52,13 @@ describe('General Application - Do you want to continue to apply for Help with F
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Application fee');
-          expect(res.text).toContain('Pay application fee');
+          expect(res.text).toContain('Help with fees');
         });
     });
 
     it('should return Do you want to apply for help with fees option selection', async () => {
-      mockClaim.generalApplication.helpWithFeesRequested = YesNo.YES;
+      mockClaim.generalApplication.helpWithFees = new GaHelpWithFees();
+      mockClaim.generalApplication.helpWithFees.helpWithFeesRequested = YesNo.YES;
       mockGetCaseData.mockImplementation(async () => mockClaim);
       jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
       await request(app)
@@ -64,7 +66,7 @@ describe('General Application - Do you want to continue to apply for Help with F
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Application fee');
-          expect(res.text).toContain('Pay application fee');
+          expect(res.text).toContain('Help with fees');
         });
     });
 

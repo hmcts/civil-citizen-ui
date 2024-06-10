@@ -11,42 +11,39 @@ import {getClaimById} from 'modules/utilityService';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
-import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {t} from 'i18next';
 import {Claim} from 'models/claim';
 import {gaApplicationFeeDetails} from 'services/features/generalApplication/feeDetailsService';
-import {
-  getButtonsContents,getHelpWithApplicationFeeContinueContent,
-} from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
+import {getButtonsContents, getHelpApplicationFeeContinuePageContents}
+  from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
+import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
 
 const helpWithApplicationFeeContinueController = Router();
 const applyHelpWithFeesViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee-continue';
+const hwfPropertyName = 'helpWithFeesRequested';
 
-async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, lng: string) {
+async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string) {
   const claim: Claim = await getClaimById(claimId, req, true);
   const gaFeeData = await gaApplicationFeeDetails(claim, <AppRequest>req);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
   const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_APPLY_HELP_WITH_FEE_SELECTION);
-  const feeType = claim.generalApplication?.feeTypeHelpRequested;
   if (!form) {
-    const option = claim.generalApplication?.helpWithFeesRequested;
-    form = new GenericForm(new GenericYesNo(option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
+    form = new GenericForm(new GenericYesNo(claim.generalApplication?.helpWithFees?.helpWithFeesRequested));
   }
   res.render(applyHelpWithFeesViewPath,{
     form,
-    applyHelpWithFeeContinueContents : getHelpWithApplicationFeeContinueContent(gaFeeData),
-    applyHelpWithFeeContinueButtonContents: getButtonsContents(claimId),
-    cancelUrl,
     backLinkUrl,
-    feeType,
+    cancelUrl,
+    applyHelpWithFeeContinueContents : getHelpApplicationFeeContinuePageContents(gaFeeData),
+    applyHelpWithFeeContinueButtonContents: getButtonsContents(claimId),
   });
 }
 
 helpWithApplicationFeeContinueController.get(GA_APPLY_HELP_WITH_FEES, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    await renderView(res, req, null, claimId, lng);
+    await renderView(res, req, null, claimId);
   } catch (error) {
     next(error);
   }
@@ -55,27 +52,24 @@ helpWithApplicationFeeContinueController.get(GA_APPLY_HELP_WITH_FEES, (async (re
 helpWithApplicationFeeContinueController.post(GA_APPLY_HELP_WITH_FEES, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, <AppRequest>req, true);
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const option = req.body.option;
-    const form = new GenericForm(new GenericYesNo(option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
+    const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
     await form.validate();
     if (form.hasErrors()) {
-      await renderView(res, req, form, claimId, lng);
+      await renderView(res, req, form, claimId);
     } else {
-      let redirectUrl;
-      if (req.body.option == YesNo.YES) {
-        redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES_START);
-      } else {
-        redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
-      }
-      claim.generalApplication.helpWithFeesRequested = req.body.option;
-      const redisKey = generateRedisKey(<AppRequest>req);
-      await saveDraftClaim(redisKey, claim);
-      res.redirect(redirectUrl);
+      await saveHelpWithFeesDetails(generateRedisKey(req as unknown as AppRequest), req.body.option, hwfPropertyName);
+      res.redirect(getRedirectUrl(claimId, form.model));
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 export default helpWithApplicationFeeContinueController;
+
+function getRedirectUrl(claimId: string, isHWFContinue: GenericYesNo): string {
+  if (isHWFContinue.option === YesNo.YES) {
+    return constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES_START);
+  }
+  return constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+}

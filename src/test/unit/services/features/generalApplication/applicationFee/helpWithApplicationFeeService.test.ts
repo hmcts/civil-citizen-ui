@@ -1,4 +1,5 @@
 import * as requestModels from 'models/AppRequest';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 import {GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -15,14 +16,14 @@ const claimId = '1';
 describe('apply help with application fee selection', () => {
   it('should return test url if applyHelpWithFees option is No', async () => {
     //when
-    const actualRedirectUrl = await getRedirectUrl(claimId, YesNo.NO, mockedAppRequest);
+    const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), mockedAppRequest);
     //Then
     expect(actualRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, 'test'));
   });
 
   it('should return - Do you want to continue to apply for Help with Fees page if applyHelpWithFees option is yes', async () => {
     //when
-    const actualRedirectUrl = await getRedirectUrl(claimId, YesNo.YES, mockedAppRequest);
+    const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), mockedAppRequest);
     //Then
     expect(actualRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES));
   });

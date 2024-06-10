@@ -10,6 +10,7 @@ import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {YesNo} from 'form/models/yesNo';
 
 jest.mock('../../../../../../../main/modules/oidc');
@@ -19,7 +20,8 @@ jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockClaim = new Claim();
 mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
-mockClaim.generalApplication.helpFeeReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-176A-32B');
+mockClaim.generalApplication.helpWithFees = new GaHelpWithFees(YesNo.YES,'yes',
+  new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-176A-32B'));
 
 describe('Pay GA Application Fee Confirmation Screen Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

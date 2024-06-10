@@ -20,8 +20,7 @@ import {HearingContactDetails} from 'models/generalApplication/hearingContactDet
 import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import {FeeType} from 'form/models/helpWithFees/feeType';
-import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -280,12 +279,17 @@ export const additionalApplicationErrorMessages: Partial<{ [key in ApplicationTy
   [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT',
 };
 
-export const saveHelpApplicationFeeSelection = async (claimId: string, claim: Claim, applyHelpWithFees: YesNo): Promise<void> => {
+export const saveHelpWithFeesDetails = async (claimId: string, value: any, hwfPropertyName: string): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(claimId, true);
+    const claim: any = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.applyHelpWithFees = applyHelpWithFees;
-    claim.generalApplication.feeTypeHelpRequested = FeeType.GENERAL_APPLICATION;
+    if(claim.generalApplication.helpWithFees) {
+      claim.generalApplication.helpWithFees[hwfPropertyName] = value;
+    } else {
+      const helpWithFees: any = new GaHelpWithFees();
+      helpWithFees[hwfPropertyName] = value;
+      claim.generalApplication.helpWithFees = helpWithFees;
+    }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -293,14 +297,3 @@ export const saveHelpApplicationFeeSelection = async (claimId: string, claim: Cl
   }
 };
 
-export const saveApplicationHWFNumber = async (claimId: string, claim: Claim, helpFeeReferenceNumberForm: ApplyHelpFeesReferenceForm): Promise<void> => {
-  try {
-    const claim = await getCaseDataFromStore(claimId, true);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.helpFeeReferenceNumberForm = helpFeeReferenceNumberForm;
-    await saveDraftClaim(claimId, claim);
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
-};

@@ -1,17 +1,13 @@
 {% extends "../../../claim-details-tpl-dashboard.njk" %}
-{% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../dashboard/item-content.njk" import itemContent %}
 
 {% block pageTitle %}
-    {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.APPLY_HELP_WITH_FEE_CONTENT_PAGE_TITLE') }}
+    {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONTENT_PAGE_TITLE') }}
 {% endblock %}
 
 {% block nestedContent %}
-      <form method="post" novalidate>
-       {{ csrfProtection(csrf) }}
-       {% for content in applyHelpWithFeeContents %}
-          {{ itemContent(content,t) }}
-       {% endfor %}
-      </form>
+    {% for content in applyHelpWithFeeContents %}
+    {{ itemContent(content,t) }}
+    {% endfor %}
 {% endblock %}

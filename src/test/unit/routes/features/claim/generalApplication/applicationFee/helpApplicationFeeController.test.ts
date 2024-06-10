@@ -2,12 +2,11 @@ import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {
-  GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_FEES,
-} from 'routes/urls';
+import {GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import { Claim } from 'common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
@@ -24,7 +23,7 @@ const mockSaveCaseData = saveDraftClaim as jest.Mock;
 
 const mockClaim = new Claim();
 mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
-describe('General Application - Pay application fee', () => {
+describe('General Application - Do you want to apply for help with fees Page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   beforeAll(() => {
@@ -35,19 +34,20 @@ describe('General Application - Pay application fee', () => {
   });
 
   describe('on GET', () => {
-    it('should return Pay application fee page', async () => {
+    it('should return Do you want to apply for help with fees page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.TITLE'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_TITLE'));
         });
     });
 
     it('should return Do you want to apply for help with fees option selection', async () => {
-      mockClaim.generalApplication.applyHelpWithFees = YesNo.YES;
+      mockClaim.generalApplication.helpWithFees = new GaHelpWithFees();
+      mockClaim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
@@ -85,7 +85,7 @@ describe('General Application - Pay application fee', () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEE_SELECTION)
-        .send({option: YesNo.YES})
+        .send({option: new GenericYesNo(YesNo.YES)})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(GA_APPLY_HELP_WITH_FEES);

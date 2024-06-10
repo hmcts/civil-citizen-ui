@@ -2496,22 +2496,24 @@
         "TO": "To"
       },
       "APPLY_HELP_WITH_FEE": {
-        "TITLE": "Pay application fee",
-        "HEADING": "Application fee",
-        "CONTINUE_T0_APPLY_HWF_TITLE": "Do you want to continue to apply for Help with Fees",
-        "GENERAL_APPLICATION_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The application fee is: £{{ feeAmount }}</span>",
-        "APPLY_HELP_WITH_FEE_CONTENT_PAGE_TITLE": "Apply for help with fees",
         "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
-        "CONFIRMATION_PAGE": {
-          "TITLE": "Your application for help with the application fee is complete"
-        },
+        "CONTENT_PAGE_TITLE": "Apply for help with fees",
+        "CONTINUE_TO_APPLY_HWF_TITLE": "Do you want to continue to apply for Help with Fees",
+        "CONFIRMATION_PAGE_TITLE": "Confirmation of your application fee payment",
+        "CONFIRMATION_TITLE": "Your application for help with the application fee is complete",
+        "GENERAL_APPLICATION_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The application fee is: £{{ feeAmount }}</span>",
+        "HEADING": "Application fee",
         "REFERENCE_NUMBER": {
-          "QUESTION_TITLE": "Do you have a help with fees reference number?",
           "LIST_ITEMS": {
             "APPLICATION_FEE_SECOND": "When you are asked to enter a court or tribunal number, enter 'application fee' followed by short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
             "APPLICATION_FEE_FIFTH": "Complete the application fee payment by entering your help with fees reference number."
-          }
-        }
+          },
+          "PAGE_TITLE": "Do you have a help with fees reference number?",
+          "TITLE": "Do you have a help with fees reference number?"
+        },
+        "TITLE": "Help with fees",
+        "WANT_TO_APPLY_HWF_TITLE": "Pay application fee",
+        "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {

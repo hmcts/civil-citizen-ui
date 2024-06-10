@@ -14,7 +14,8 @@ import {
   getByIndexOrLast,
   getByIndex,
   updateByIndexOrAppend,
-  validateAdditionalApplicationtType, saveHelpApplicationFeeSelection, saveApplicationHWFNumber,
+  validateAdditionalApplicationtType,
+  saveHelpWithFeesDetails,
 } from 'services/features/generalApplication/generalApplicationService';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../utils/errorMessageTestConstants';
@@ -30,7 +31,8 @@ import { HearingContactDetails } from 'models/generalApplication/hearingContactD
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { ValidationError } from 'class-validator';
-import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import { ApplyHelpFeesReferenceForm } from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import { GaHelpWithFees } from 'models/generalApplication/gaHelpWithFees';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -479,62 +481,54 @@ describe('General Application service', () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
         claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.helpWithFees = new GaHelpWithFees();
+        claim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
         return claim;
       });
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
       mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
       //When
-      await saveHelpApplicationFeeSelection('123', claim, YesNo.YES);
+      await saveHelpWithFeesDetails('123', YesNo.YES, 'applyHelpWithFees');
       //Then
-      expect(spy).toBeCalled();
+      await expect(spy).toBeCalledWith('123', claim);
     });
 
-    it('should save help with application fee details', async () => {
+    it('should save help with application fee continue selection', async () => {
       const  claim = new Claim();
       //Given
       mockGetCaseData.mockImplementation(async () => {
         claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.helpWithFees = new GaHelpWithFees();
+        claim.generalApplication.helpWithFees.helpWithFeesRequested = YesNo.YES;
         return claim;
       });
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
       mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
-      const helpFeeReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-123-86D');
       //When
-      await saveApplicationHWFNumber('123', claim, helpFeeReferenceNumberForm);
+      await saveHelpWithFeesDetails('123', YesNo.YES, 'helpWithFeesRequested');
       //Then
-      expect(spy).toBeCalled();
+      await expect(spy).toBeCalledWith('123', claim);
     });
 
-    it('should throw error when draft store throws error', async () => {
-      //Given
+    it('should save help with application fee reference number', async () => {
       const  claim = new Claim();
+      const hwfReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-123-86D')
+      //Given
       mockGetCaseData.mockImplementation(async () => {
+        claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.helpWithFees = new GaHelpWithFees();
+        claim.generalApplication.helpWithFees.helpFeeReferenceNumberForm = hwfReferenceNumberForm;
         return claim;
       });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
       //When
-      mockSaveClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
+      await saveHelpWithFeesDetails('123', hwfReferenceNumberForm, 'helpFeeReferenceNumber');
       //Then
-      await expect(saveHelpApplicationFeeSelection('123',claim, YesNo.YES)).rejects.toThrow(TestMessages.REDIS_FAILURE);
-    });
-
-    it('should throw error when draft store throws error', async () => {
-      //Given
-      const  claim = new Claim();
-      mockGetCaseData.mockImplementation(async () => {
-        return claim;
-      });
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      //When
-      mockSaveClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(saveApplicationHWFNumber('123',claim, new ApplyHelpFeesReferenceForm())).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(spy).toBeCalledWith('123', claim);
     });
   });
 });

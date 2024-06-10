@@ -11,8 +11,7 @@ import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthFo
 import {ClaimFeeData} from '../civilClaimResponse';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
-import {FeeType} from 'form/models/helpWithFees/feeType';
-import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 
 export class GeneralApplication {
 
@@ -32,10 +31,7 @@ export class GeneralApplication {
   uploadEvidenceForApplication?: UploadGAFiles[];
   statementOfTruth?: StatementOfTruthForm;
   applicationFee?: ClaimFeeData;
-  applyHelpWithFees?: YesNo;
-  feeTypeHelpRequested?: FeeType;
-  helpWithFeesRequested: string;
-  helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm;
+  helpWithFees?: GaHelpWithFees;
 
   constructor(
     applicationType?: ApplicationType,
@@ -49,10 +45,7 @@ export class GeneralApplication {
     response?: GaResponse,
     uploadEvidenceForApplication?: UploadGAFiles,
     statementOfTruth?: StatementOfTruthForm,
-    applyHelpWithFees?: YesNo,
-    helpWithFeesRequested?: string,
-    feeTypeHelpRequested?: FeeType,
-    helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm,
+    helpWithFees?: GaHelpWithFees,
   ) {
     this.applicationTypes = applicationType ? [applicationType] : [];
     this.agreementFromOtherParty = agreementFromOtherParty;
@@ -65,9 +58,6 @@ export class GeneralApplication {
     this.response = response;
     this.statementOfTruth = statementOfTruth;
     this.uploadEvidenceForApplication = uploadEvidenceForApplication ? [uploadEvidenceForApplication] : [];
-    this.applyHelpWithFees = applyHelpWithFees;
-    this.helpWithFeesRequested = helpWithFeesRequested;
-    this.feeTypeHelpRequested = feeTypeHelpRequested;
-    this.helpFeeReferenceNumberForm =  helpFeeReferenceNumberForm;
+    this.helpWithFees = helpWithFees;
   }
 }

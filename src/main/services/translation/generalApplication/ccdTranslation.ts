@@ -59,7 +59,7 @@ export const translateDraftApplicationToCCD = (
       application.hearingSupport,
     ),
     generalAppStatementOfTruth: toCCDStatementOfTruth(application.statementOfTruth),
-    generalAppHelpWithFees: toCCDGeneralAppHelpWithFees(application.helpFeeReferenceNumberForm),
+    generalAppHelpWithFees: toCCDGeneralAppHelpWithFees(application.helpWithFees?.helpFeeReferenceNumberForm),
   };
 };
 

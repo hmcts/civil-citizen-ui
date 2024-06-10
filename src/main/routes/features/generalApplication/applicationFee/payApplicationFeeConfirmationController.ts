@@ -9,7 +9,7 @@ import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftS
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
 
-const payApplicationFeeConfirmationScreenViewPath = 'features/caseProgression/hearingFee/pay-hearing-fee-confirmation';
+const payFeeConfirmationScreenViewPath = 'features/generalApplication/applicationFee/pay-application-fee-confirmation';
 const payApplicationFeeConfirmationController = Router();
 
 const getApplicationFeeConfirmationContent = (claimId: string, lng: string) => {
@@ -26,9 +26,9 @@ payApplicationFeeConfirmationController.get(GA_APPLICATION_FEE_CONFIRMATION_URL,
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const claimId = req.params.id;
 
-    res.render(payApplicationFeeConfirmationScreenViewPath, {
-      confirmationTitle : t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONFIRMATION_PAGE.TITLE', {lng}),
-      referenceNumber: claim.generalApplication?.helpFeeReferenceNumberForm?.referenceNumber,
+    res.render(payFeeConfirmationScreenViewPath, {
+      confirmationTitle : t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONFIRMATION_TITLE', {lng}),
+      referenceNumber: claim.generalApplication?.helpWithFees?.helpFeeReferenceNumberForm?.referenceNumber,
       confirmationContent: getApplicationFeeConfirmationContent(claimId, lng),
     });
   }catch (error) {

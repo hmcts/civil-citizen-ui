@@ -2,11 +2,7 @@ import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {
-  GA_APPLY_HELP_WITH_FEE_REFERENCE,
-  GA_APPLY_HELP_WITH_FEE_SELECTION,
-  GA_CHECK_ANSWERS_URL,
-} from 'routes/urls';
+import {GA_APPLY_HELP_WITH_FEE_REFERENCE, GA_APPLY_HELP_WITH_FEE_SELECTION, GA_CHECK_ANSWERS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
@@ -17,6 +13,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 import {t} from 'i18next';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -50,7 +47,8 @@ describe('General Application - Do you have a help with fees reference number', 
 
     it('should return do you have a help with fees reference number with option marked', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockClaim.generalApplication.helpFeeReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-123-86D');
+      mockClaim.generalApplication.helpWithFees = new GaHelpWithFees();
+      mockClaim.generalApplication.helpWithFees.helpFeeReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-123-86D');
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEE_REFERENCE)
         .expect((res) => {
