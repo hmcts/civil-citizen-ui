@@ -11,7 +11,6 @@ export const PageUrls = {
   BASE_CASE_PROGRESSION_URL : '/case/:cuiCaseId/case-progression',
   BASE_CLAIMANT_RESPONSE_URL : '/case/:cuiCaseId/claimant-response',
   BASE_CCJ_URL : '/case/:cuiCaseId/ccj',
-  BASE_BREATHING_SPACE_URL : '/case/:cuiCaseId/breathing-space',
   BASE_SETTLEMENT_AGREEMENT_URL : '/case/:cuiCaseId/settlement-agreement',
   BASE_CLAIM_URL : '/claim',
   BASE_FIRST_CONTACT_URL : '/first-contact',
@@ -209,13 +208,6 @@ export const PageUrls = {
   CCJ_REPAYMENT_PLAN_DEFENDANT_URL : '/case/:cuiCaseId/ccj/repayment-plan-summary/DEFENDANT',
   CCJ_EXTENDED_PAID_AMOUNT_URL : '/case/:cuiCaseId/claimant-response/county-court-judgement/paid-amount',
   CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL : '/case/:cuiCaseId/claimant-response/county-court-judgement/paid-amount-summary',
-  BREATHING_SPACE_RESPITE_REFERENCE_NUMBER_URL : '/case/:cuiCaseId/breathing-space/respite-reference-number',
-  BREATHING_SPACE_RESPITE_START_DATE_URL : '/case/:cuiCaseId/breathing-space/respite-start',
-  BREATHING_SPACE_RESPITE_END_DATE_URL : '/case/:cuiCaseId/breathing-space/respite-end',
-  BREATHING_SPACE_RESPITE_TYPE_URL : '/case/:cuiCaseId/breathing-space/respite-type',
-  BREATHING_SPACE_RESPITE_CHECK_ANSWERS_URL : '/case/:cuiCaseId/breathing-space/check-answers',
-  BREATHING_SPACE_RESPITE_LIFTED_URL : '/case/:cuiCaseId/breathing-space/respite-lifted',
-  BREATHING_SPACE_RESPITE_LIFTED_CHECK_ANSWER_URL : '/case/:cuiCaseId/breathing-space/respite-lifted/check-answers',
 
   /**
    * Page URL's for the Case Progression Functional Pages.
