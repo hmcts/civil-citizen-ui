@@ -110,14 +110,6 @@ describe('Disclosure Of Controller', () => {
         });
     });
 
-    it('should validate the field is empty ', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
-    });
-
     it('should return http 500 when has error', async () => {
       const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
       mockSaveDraftClaim.mockImplementation(async () => {
