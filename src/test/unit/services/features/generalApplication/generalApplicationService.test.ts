@@ -514,7 +514,7 @@ describe('General Application service', () => {
 
     it('should save help with application fee reference number', async () => {
       const  claim = new Claim();
-      const hwfReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-123-86D')
+      const hwfReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-123-86D');
       //Given
       mockGetCaseData.mockImplementation(async () => {
         claim.generalApplication = new GeneralApplication();
