@@ -338,6 +338,7 @@ import hearingSupportResponseController
   from 'routes/features/generalApplication/response/hearingSupportResponseController';
 import unavailableHearingDatesResponseController
   from 'routes/features/generalApplication/response/unavailableHearingDatesResponseController';
+import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
 
 export default [
   homeController,
@@ -630,4 +631,5 @@ export default [
   hearingContactDetailsResponseController,
   hearingSupportResponseController,
   unavailableHearingDatesResponseController,
+  acceptDefendantOfferController,
 ];
