@@ -2,7 +2,6 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
   DQ_MULTITRACK_AGREEMENT_REACHED_URL,
-  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
 } from 'routes/urls';
 import {
   getDirectionQuestionnaire,
@@ -62,7 +61,8 @@ agreementReachedController.post(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req
         hasAnAgreementBeenReachedForm.model.hasAnAgreementBeenReached,
         'hasAnAgreementBeenReached',
         'hearing');
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL));
+      //TODO REDIRECTION URL
+      res.redirect(constructResponseUrlWithIdParams(claimId, 'todo'));
     }
 
   } catch (error) {

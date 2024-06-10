@@ -3945,6 +3945,7 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "HAS_AN_AGREEMENT_BEEN_REACHED" : "Indicate if agreement has been reached about what electronic documents will be disclosed",
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Give details of the issues about disclosure of non-electronic documents",
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court’s proposed repayment plan",
     "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
