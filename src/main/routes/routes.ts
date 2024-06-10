@@ -330,6 +330,15 @@ import uploadEvidenceDocumentsForApplicationController from 'routes/features/gen
 import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
 import confirmYouHaveBeenPaidConfirmController
   from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
+import hearingArrangementResponseController
+  from 'routes/features/generalApplication/response/hearingArrangementResponseController';
+import hearingContactDetailsResponseController
+  from 'routes/features/generalApplication/response/hearingContactDetailsResponseController';
+import hearingSupportResponseController
+  from 'routes/features/generalApplication/response/hearingSupportResponseController';
+import unavailableHearingDatesResponseController
+  from 'routes/features/generalApplication/response/unavailableHearingDatesResponseController';
+import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
 import requestForReviewController
   from 'routes/features/caseProgression/requestForReconsideration/requestForReviewController';
 import requestForReconsiderationCheckAnswersController from './features/caseProgression/requestForReconsideration/checkAnswersController';
@@ -623,6 +632,11 @@ export default [
   applicationResponseConfirmationController,
   confirmYouHaveBeenPaidController,
   confirmYouHaveBeenPaidConfirmController,
+  hearingArrangementResponseController,
+  hearingContactDetailsResponseController,
+  hearingSupportResponseController,
+  unavailableHearingDatesResponseController,
+  acceptDefendantOfferController,
   requestForReviewController,
   requestForReconsiderationCheckAnswersController,
   requestForReconsiderationConfirmationController,

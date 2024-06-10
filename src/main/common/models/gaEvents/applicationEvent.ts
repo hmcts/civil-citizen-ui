@@ -1,3 +1,3 @@
 export enum ApplicationEvent {
-  CREATE_LIP_APPLICATION = 'CREATE_LIP_APPLICATION',
+  // TODO: Add events here for use by GA client
 }
