@@ -340,6 +340,8 @@ import unavailableHearingDatesResponseController
   from 'routes/features/generalApplication/response/unavailableHearingDatesResponseController';
 import multiTrackDisclosureNonElectronicDocuments
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocumentsController';
+import agreementReachedController
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/agreementReachedController';
 
 export default [
   homeController,
@@ -633,4 +635,5 @@ export default [
   hearingSupportResponseController,
   unavailableHearingDatesResponseController,
   multiTrackDisclosureNonElectronicDocuments,
+  agreementReachedController,
 ];
