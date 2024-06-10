@@ -3,7 +3,7 @@ import {
   GA_CHECK_ANSWERS_URL,
   GENERAL_APPLICATION_CONFIRM_URL,
   GA_APPLICATION_FEE_CONFIRMATION_URL,
-  GA_APPLY_HELP_WITH_FEE_REFERENCE
+  GA_APPLY_HELP_WITH_FEE_REFERENCE,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
