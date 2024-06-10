@@ -16,7 +16,7 @@ import {
 import {convertToArrayOfStrings} from 'common/utils/stringUtils';
 import {
   DisclosureOfDocumentsForm,
-  DisclosureOfDocumentsTypeForm
+  DisclosureOfDocumentsTypeForm,
 } from 'models/directionsQuestionnaire/hearing/disclosureOfDocumentsForm';
 import {Claim} from 'models/claim';
 import {getDocumentOptionChecked} from 'services/features/directionsQuestionnaire/hearing/disclosureOfDocumentsService';
@@ -63,7 +63,7 @@ function renderView(disclosureOfDocuments: GenericForm<DisclosureOfDocumentsForm
 disclosureOfDocumentsController.get(DQ_DISCLOSURE_OF_DOCUMENTS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getCaseDataFromStore(redisKey)
+    const claim = await getCaseDataFromStore(redisKey);
     const disclosureOfDocuments = getDisclosureOfDocuments(claim);
     const disclosureOfDocumentsForm =
       createDisclosureOfDocumentsForm(false, false);
