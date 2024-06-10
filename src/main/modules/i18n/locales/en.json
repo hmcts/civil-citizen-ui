@@ -424,7 +424,8 @@
   },
   "PAGES": {
     "HAS_AN_AGREEMENT_BEEN_REACHED" : {
-      "PAGE_TITLE": "Disclosure of electronic documents",
+      "PAGE_TITLE": "Has an agreement been reached about disclosure of electronic documents?",
+      "TITLE": "Disclosure of electronic documents",
       "COMBO_BOX" : {
         "TITLE": "Has an agreement been reached between the parties involved in the claim about what electronic documents will be disclosed?",
         "ITEM1": {

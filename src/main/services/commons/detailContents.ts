@@ -22,7 +22,7 @@ export const  getWhatIsDisclosureDetailContent = () => {
     .build());
 };
 
-export const getHowtoAgreeDisclosureOfElectronicDocumentsContent = () => {
+export const getHowToAgreeDisclosureOfElectronicDocumentsContent = () => {
   const DISCLOSURE_NON_ELECTRONIC_DOCUMENTS = 'HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS.DETAILS.';
   return new DetailsComponent(`${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS}TITLE`, new DetailsComponentContentBuilder()
     .addParagraph(`${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS}PARAGRAPH1`)

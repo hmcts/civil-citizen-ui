@@ -20,7 +20,7 @@ export class DirectionQuestionnaire {
   welshLanguageRequirements?: WelshLanguageRequirements;
   witnesses?: Witnesses;
   confirmYourDetailsEvidence?: ConfirmYourDetailsEvidence;
-  HasAnAgreementBeenReached?:
+
   constructor(
     defendantYourselfEvidence?: GenericYesNo,
     hearing?: Hearing,

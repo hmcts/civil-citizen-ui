@@ -12,26 +12,27 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
-  DisclosureNonElectronicDocument,
-} from 'models/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocument';
-import {
-  getHowtoAgreeDisclosureOfElectronicDocumentsContent,
+  getHowToAgreeDisclosureOfElectronicDocumentsContent,
 } from 'services/commons/detailContents';
+import {HasAnAgreementBeenReached} from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReached';
+import {
+  HasAnAgreementBeenReachedOptions,
+} from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReachedOptions';
 
 const agreementReachedController = Router();
 const disclosureNonElectronicDocumentsViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/agreement-reached';
-const DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE = 'PAGES.DISCLOSURE_NON_ELECTRONIC_DOCUMENTS.';
+const HAS_AN_AGREEMENT_BEEN_REACHED_PAGE = 'PAGES.HAS_AN_AGREEMENT_BEEN_REACHED.';
 
-function renderView(disclosureNonElectronicDocument: GenericForm<DisclosureNonElectronicDocument>, res: Response): void {
+function renderView(disclosureNonElectronicDocument: GenericForm<HasAnAgreementBeenReached>, res: Response): void {
   const form = disclosureNonElectronicDocument;
-  const howtoAgreeDisclosureOfElectronicDocumentsContent = getHowtoAgreeDisclosureOfElectronicDocumentsContent();
-
+  const howToAgreeDisclosureOfElectronicDocumentsContent = getHowToAgreeDisclosureOfElectronicDocumentsContent();
 
   res.render(disclosureNonElectronicDocumentsViewPath, {
     form,
-    howtoAgreeDisclosureOfElectronicDocumentsContent,
-    pageTitle: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}TEXT_AREA.LABEL`,
-    title: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}PAGE_TITLE`,
+    howToAgreeDisclosureOfElectronicDocumentsContent,
+    hasAnAgreementBeenReachedOptions: HasAnAgreementBeenReachedOptions,
+    pageTitle: `${HAS_AN_AGREEMENT_BEEN_REACHED_PAGE}PAGE_TITLE`,
+    title: `${HAS_AN_AGREEMENT_BEEN_REACHED_PAGE}TITLE`,
     //TODO ADD THE BACK URL
     backLinkUrl: constructResponseUrlWithIdParams('claimId', 'todo'),
   });
@@ -40,9 +41,9 @@ function renderView(disclosureNonElectronicDocument: GenericForm<DisclosureNonEl
 agreementReachedController.get(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req, res, next: NextFunction) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
-    const disclosureNonElectronicDocument = directionQuestionnaire.hearing?.disclosureNonElectronicDocument ?
-      new DisclosureNonElectronicDocument(directionQuestionnaire.hearing.disclosureNonElectronicDocument) : new DisclosureNonElectronicDocument();
-    renderView(new GenericForm(disclosureNonElectronicDocument) , res);
+    const hasAnAgreementBeenReachedForm = directionQuestionnaire.hearing?.hasAnAgreementBeenReached ?
+      new HasAnAgreementBeenReached(directionQuestionnaire.hearing.hasAnAgreementBeenReached) : new HasAnAgreementBeenReached();
+    renderView(new GenericForm(hasAnAgreementBeenReachedForm) , res);
   } catch (error) {
     next(error);
   }
@@ -51,15 +52,15 @@ agreementReachedController.get(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req,
 agreementReachedController.post(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const disclosureNonElectronicDocumentForm = new GenericForm(new DisclosureNonElectronicDocument(req.body.disclosureNonElectronicDocuments));
-    disclosureNonElectronicDocumentForm.validateSync();
-    if (disclosureNonElectronicDocumentForm.hasErrors()) {
-      renderView(disclosureNonElectronicDocumentForm, res);
+    const hasAnAgreementBeenReachedForm = new GenericForm(new HasAnAgreementBeenReached(req.body.hasAnAgreementBeenReached));
+    hasAnAgreementBeenReachedForm.validateSync();
+    if (hasAnAgreementBeenReachedForm.hasErrors()) {
+      renderView(hasAnAgreementBeenReachedForm, res);
     } else {
       await saveDirectionQuestionnaire(
         generateRedisKey(<AppRequest>req),
-        disclosureNonElectronicDocumentForm.model.disclosureNonElectronicDocuments,
-        'disclosureNonElectronicDocument',
+        hasAnAgreementBeenReachedForm.model.hasAnAgreementBeenReached,
+        'hasAnAgreementBeenReached',
         'hearing');
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL));
     }

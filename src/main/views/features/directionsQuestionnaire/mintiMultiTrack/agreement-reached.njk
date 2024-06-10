@@ -26,8 +26,9 @@
                     <form method="post" novalidate>
                         {{ csrfProtection(csrf) }}
                         {{ createPageTitle(title,t) }}
-                        {{ createDetails( howtoAgreeDisclosureOfElectronicDocumentsContent ,t) }}
+                        {{ createDetails( howToAgreeDisclosureOfElectronicDocumentsContent ,t) }}
                         {{ govukRadios({
+                                         id: "hasAnAgreementBeenReached",
                                          name: "hasAnAgreementBeenReached",
                                          fieldset: {
                                            legend: {
@@ -37,19 +38,19 @@
                                          },
                                          items: [
                                            {
-                                             value: DebtRespiteOptionType.STANDARD,
+                                             value: hasAnAgreementBeenReachedOptions.YES,
                                              text: t('PAGES.HAS_AN_AGREEMENT_BEEN_REACHED.COMBO_BOX.ITEM1.TEXT'),
-                                             checked: true if form.model.hasAnAgreementBeenReached == DebtRespiteOptionType.STANDARD
+                                             checked: true if form.model.hasAnAgreementBeenReached === hasAnAgreementBeenReachedOptions.YES
                                            },
                                            {
-                                             value: DebtRespiteOptionType.MENTAL_HEALTH,
+                                             value: hasAnAgreementBeenReachedOptions.NO_BUT_AN_AGREEMENT_IS_LIKELY,
                                              text: t('PAGES.HAS_AN_AGREEMENT_BEEN_REACHED.COMBO_BOX.ITEM2.TEXT'),
-                                             checked: true if form.model.hasAnAgreementBeenReached == DebtRespiteOptionType.MENTAL_HEALTH
+                                             checked: true if form.model.hasAnAgreementBeenReached === hasAnAgreementBeenReachedOptions.NO_BUT_AN_AGREEMENT_IS_LIKELY
                                            },
                                           {
-                                            value: DebtRespiteOptionType.MENTAL_HEALTH,
+                                            value: hasAnAgreementBeenReachedOptions.NO,
                                             text: t('PAGES.HAS_AN_AGREEMENT_BEEN_REACHED.COMBO_BOX.ITEM3.TEXT'),
-                                            checked: true if form.model.hasAnAgreementBeenReached == DebtRespiteOptionType.MENTAL_HEALTH
+                                            checked: true if form.model.hasAnAgreementBeenReached === hasAnAgreementBeenReachedOptions.NO
                                           }
                                          ],
                                          errorMessage: {
