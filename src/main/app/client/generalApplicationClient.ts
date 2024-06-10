@@ -1,8 +1,6 @@
 import Axios, {AxiosInstance} from 'axios';
 import {AppRequest} from 'models/AppRequest';
-import {
-  CIVIL_GENERAL_APPLICATIONS_URL,
-} from './generalApplicationUrls';
+import {CIVIL_GENERAL_APPLICATIONS_URL,} from './generalApplicationUrls';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {Application} from 'models/generalApplication/application';
 
@@ -40,7 +38,7 @@ export class GeneralApplicationClient {
     let applications: ApplicationResponse[] = [];
     try {
       const response = await this.client.post(CIVIL_GENERAL_APPLICATIONS_URL, {match_all: {}}, config);
-      applications = response.data.cases.map((application: ApplicationResponse) => {
+      applications = response.data.cases?.map((application: ApplicationResponse) => {
         const caseData = Object.assign(new Application(), application.case_data);
         return new ApplicationResponse(application.id, caseData, application.state, application.last_modified);
       });
