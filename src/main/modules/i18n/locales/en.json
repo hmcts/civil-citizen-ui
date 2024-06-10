@@ -2132,6 +2132,17 @@
     },
     "GENERAL_APPLICATION": {
       "SUMMARY": {
+        
+
+        "AWAITING_RESPONDENT_RESPONSE": "Awaiting other parties' response",
+        "AWAITING_APPLICATION_PAYMENT": "Pay application fee",
+        "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application Submitted - Awaiting Judicial Decision",
+
+        "IN_PROGRESS": "In progress",
+        "TO_DO": "To do",
+
+        "MY_APPLICATIONS": "My applications",
+
         "STATUS": "Status",
         "APPLICATION": "Application",
         "APPLICATION_TYPE": "Application type",
