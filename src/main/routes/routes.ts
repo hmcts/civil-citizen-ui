@@ -635,5 +635,5 @@ export default [
   hearingSupportResponseController,
   unavailableHearingDatesResponseController,
   multiTrackDisclosureNonElectronicDocuments,
-  disclosureOfDocumentsController
+  disclosureOfDocumentsController,
 ];
