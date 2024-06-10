@@ -15,6 +15,7 @@ import {
   getByIndex,
   updateByIndexOrAppend,
   validateAdditionalApplicationtType,
+  saveAcceptDefendantOffer,
 } from 'services/features/generalApplication/generalApplicationService';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../utils/errorMessageTestConstants';
@@ -30,6 +31,7 @@ import { HearingContactDetails } from 'models/generalApplication/hearingContactD
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { ValidationError } from 'class-validator';
+import { AcceptDefendantOffer } from 'common/models/generalApplication/response/acceptDefendantOffer';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -471,4 +473,36 @@ describe('General Application service', () => {
       expect(error.constraints['additionalApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING');
     });
   });
+});
+
+describe('Save Accept defendant offer', () => {
+  it('should save acceptDefendantOffer successfully', async () => {
+    //Given
+    // mockGetCaseData.mockResolvedValue(new Claim());
+    mockGetCaseData.mockImplementation(async () => {
+      return new Claim();
+    });
+    const acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES);
+
+    const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+    //When
+    await saveAcceptDefendantOffer('123', acceptDefendantOffer);
+    //Then
+    expect(spy).toBeCalled();
+  });
+  it('should throw error when draft store throws error', async () => {
+    //Given
+    mockGetCaseData.mockImplementation(async () => {
+      return new Claim();
+    });
+    const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+    const acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES);
+    //When
+    mockSaveClaim.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
+    //Then
+    await expect(saveAcceptDefendantOffer('123', acceptDefendantOffer)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+  });
+  
 });
