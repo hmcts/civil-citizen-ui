@@ -340,6 +340,7 @@ import unavailableHearingDatesResponseController
   from 'routes/features/generalApplication/response/unavailableHearingDatesResponseController';
 import submitGeneralApplicationConfirmationController
   from 'routes/features/generalApplication/submitGeneralApplicationConfirmationController';
+import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
 
 export default [
   homeController,
@@ -633,4 +634,5 @@ export default [
   hearingSupportResponseController,
   unavailableHearingDatesResponseController,
   submitGeneralApplicationConfirmationController,
+  acceptDefendantOfferController,
 ];
