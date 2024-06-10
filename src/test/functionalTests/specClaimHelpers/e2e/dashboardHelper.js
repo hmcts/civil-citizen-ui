@@ -1,5 +1,7 @@
 const I = actor();
 
+const {waitForFinishedBusinessProcess} = require('../api/steps');
+
 const selectors = {
   titleClass: '.govuk-notification-banner__title',
   contentClass: 'div.govuk-notification-banner__content',
@@ -27,6 +29,13 @@ module.exports = {
   },
 
   verifyTasklistLinkAndState: async (tasklist, locator, status, isLinkFlag= false, isDeadlinePresent= false, deadline) => {
+    //Step to check if status is already updated, if not it will refresh the page
+    const actualStatus = await I.grabTextFrom(locator);
+    if (!actualStatus.toLowerCase().includes(status.toLowerCase())) {
+      await I.wait(3);
+      await waitForFinishedBusinessProcess();
+      await I.refreshPage();
+    }
     await I.see(tasklist, locator);
     await I.see(status, locator);
     if (isLinkFlag === true) {
