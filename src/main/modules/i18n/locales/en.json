@@ -1466,6 +1466,27 @@
       "PAGE_TITLE": "Are there any documents the other party has that you want the court to consider?",
       "TITLE": "Are there any documents the other party has that you want the court to consider?"
     },
+    "DISCLOSURE_OF_DOCUMENTS": {
+      "PAGE_TITLE": "Disclosure of documents",
+      "TITLE": "Disclosure of documents",
+      "CHECKBOX_TITLE": "You can ask the court to order disclosure of documents from the other parties. Do you want to request the disclosure of electronic or non-electronic documents, or both? (optional)",
+      "WHAT_IS_THE_DIFFERENCE": "What is the difference between electronic and non-electronic documents?",
+      "TITLE_1": "Electronic documents",
+      "PARAGRAPH_1.1": "Electronic documents are any documents that can be supplied in any digital or electronic format. This includes physical documents which can be supplied in an electronic format.",
+      "PARAGRAPH_1.2": "These formats include DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+      "PARAGRAPH_1.3": "For example, an invoice or contract which was a physical document, but has been scanned or photographed and can be submitted electronically is an electronic document.",
+      "TITLE_2": "Non-electronic documents",
+      "PARAGRAPH_2.1": "Non-electronic documents are physical documents which are not in a digital or electronic format. This includes electronic documents, which happen to be in a physical format.",
+      "PARAGRAPH_2.2": "For example, a print-out of an email is a non-electronic document.",
+      "TITLE_3": "More information",
+      "URL": {
+        "BEFORE": "Find more information on ",
+        "TEXT": "Practice Direction 31B (opens in new tab)",
+        "AFTER": "."
+      },
+      "ELECTRONIC_DOCS_OPTION": "Electronic documents for disclosure",
+      "NON_ELECTRONIC_DOCS_OPTION": "Non-electronic documents for disclosure"
+    },
     "CONTACT_THEM": {
       "ABOUT": "About claim",
       "CLAIMANT": "Claimant",
