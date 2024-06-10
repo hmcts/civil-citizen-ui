@@ -7,7 +7,7 @@ import {SupportRequiredList} from '../supportRequired';
 import {SpecificCourtLocation} from './specificCourtLocation';
 import {UnavailableDates} from './unavailableDates';
 import {
-  DisclosureOfDocuments
+  DisclosureOfDocuments,
 } from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 
 export class Hearing {

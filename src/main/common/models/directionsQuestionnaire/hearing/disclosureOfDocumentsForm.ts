@@ -1,6 +1,6 @@
 import {
-  TypeOfDisclosureDocument
-} from "models/directionsQuestionnaire/hearing/disclosureOfDocuments";
+  TypeOfDisclosureDocument,
+} from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 
 export class DisclosureOfDocumentsForm {
   title?: string;

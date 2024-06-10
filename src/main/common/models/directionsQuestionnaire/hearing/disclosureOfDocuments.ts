@@ -1,4 +1,4 @@
-import {DisclosureOfDocumentsForm} from "models/directionsQuestionnaire/hearing/disclosureOfDocumentsForm";
+import {DisclosureOfDocumentsForm} from 'models/directionsQuestionnaire/hearing/disclosureOfDocumentsForm';
 
 export class DisclosureOfDocuments {
   documentsTypeChosen: DisclosureDocumentType[];
