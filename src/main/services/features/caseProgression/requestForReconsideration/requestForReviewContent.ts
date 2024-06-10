@@ -16,6 +16,13 @@ export const getRequestForReviewContent = (claim: Claim) => {
     .build();
 };
 
+export const getButtonContent = () => {
+
+  return new PageSectionBuilder()
+    .addButton('COMMON.BUTTONS.SAVE_AND_CONTINUE','')
+    .build();
+};
+
 export const getClaimantOrDefendant = (claim: Claim) => {
   let party;
   if (claim?.caseRole === CaseRole.CLAIMANT) {

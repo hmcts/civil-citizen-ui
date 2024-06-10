@@ -1,9 +1,11 @@
 {% extends "../../../claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../dashboard/item-content.njk" import itemContent %}
-{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
 
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MICRO_TEXT') }}
+{% endblock %}
 
 {% block nestedContent %}
 
@@ -24,7 +26,9 @@
       } if form.hasFieldError("textArea")
     }) }}
 
-    {{ govukButton({ text: t("COMMON.BUTTONS.SAVE_AND_CONTINUE") }) }}
+    {% for content in buttonContents %}
+      {{ itemContent(content,t) }}
+    {% endfor %}
   </form>
 
 {% endblock %}

@@ -11,6 +11,7 @@ import {
 } from 'services/features/caseProgression/requestForReconsideration/requestForReviewService';
 import {RequestForReviewForm} from 'models/caseProgression/requestForReconsideration/requestForReviewForm';
 import {
+  getButtonContent,
   getNameRequestForReconsideration,
   getRequestForReviewContent,
 } from 'services/features/caseProgression/requestForReconsideration/requestForReviewContent';
@@ -34,18 +35,16 @@ requestForReviewController.get(REQUEST_FOR_RECONSIDERATION, (async (req, res, ne
 
 requestForReviewController.post(REQUEST_FOR_RECONSIDERATION,(async (req, res, next) => {
   try {
-    const textArea = req.body.textArea;
+    let textArea = req.body.textArea;
+    if (textArea == null) {
+      textArea = '';
+    }
     const form = new GenericForm(new RequestForReviewForm(textArea));
-    await form.validate();
     const claimId = req.params.id;
     const claim: Claim = await getCaseDataFromStore(req.params.id);
-    if (form.hasErrors()) {
-      await renderView(res, claimId, claim, form);
-    } else {
-      const dqPropertyName = getNameRequestForReconsideration(claim);
-      await saveCaseProgression(claimId, form.model, dqPropertyName);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, REQUEST_FOR_RECONSIDERATION_CYA));
-    }
+    const dqPropertyName = getNameRequestForReconsideration(claim);
+    await saveCaseProgression(claimId, form.model, dqPropertyName);
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, REQUEST_FOR_RECONSIDERATION_CYA));
   } catch (error) {
     next(error);
   }
@@ -59,6 +58,9 @@ async function renderView(res: Response, claimId: string, claim: Claim, form: Ge
   } else {
     dashboardUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
   }
-  res.render(requestForReviewViewPath, {form, requestForReviewContents: getRequestForReviewContent(claim), dashboardUrl});
+  res.render(requestForReviewViewPath, {
+    form,
+    requestForReviewContents: getRequestForReviewContent(claim),
+    buttonContents: getButtonContent(), dashboardUrl});
 }
 export default requestForReviewController;
