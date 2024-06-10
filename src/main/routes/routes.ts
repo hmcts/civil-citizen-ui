@@ -341,6 +341,8 @@ import unavailableHearingDatesResponseController
 import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
 import multiTrackDisclosureNonElectronicDocuments
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocumentsController';
+import disclosureOfElectronicDocumentsIssues
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureOfElectronicDocumentsIssuesController';
 
 export default [
   homeController,
@@ -635,4 +637,5 @@ export default [
   unavailableHearingDatesResponseController,
   acceptDefendantOfferController,
   multiTrackDisclosureNonElectronicDocuments,
+  disclosureOfElectronicDocumentsIssues,
 ];

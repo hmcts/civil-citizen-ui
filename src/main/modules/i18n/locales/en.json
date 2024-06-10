@@ -409,6 +409,14 @@
         "HINT": "Please give details"
       }
     },
+    "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : {
+      "PAGE_TITLE": "What are the issues about disclosure of electronic documents?",
+      "TITLE": "Disclosure of electronic documents",
+      "TEXT_AREA" : {
+        "LABEL": "What are the issues about disclosure of electronic documents?",
+        "HINT": "Please give details"
+      }
+    },
     "ACCESSIBILITY_STATEMENT": {
       "CONSIDER": "We’ll consider your request and get back to you in 10 days.",
       "EMAIL": "HMCTSforms@justice.gov.uk",
@@ -3924,6 +3932,7 @@
   },
   "ERRORS": {
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Give details of the issues about disclosure of non-electronic documents",
+    "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : "Give details of the issues about disclosure of electronic documents",
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court’s proposed repayment plan",
     "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
     "AMOUNT_INVALID_DECIMALS": "Enter a valid amount, maximum two decimal places",
