@@ -20,7 +20,6 @@
 };
 
 export const StatusColor: Record<ApplicationStatus, string> = {
-  [ApplicationStatus.IN_PROGRESS]:'govuk-tag--green',
-  [ApplicationStatus.TO_DO]:'govuk-tag--red',
+  [ApplicationStatus.IN_PROGRESS]: 'govuk-tag--green',
+  [ApplicationStatus.TO_DO]: 'govuk-tag--red',
 };
-

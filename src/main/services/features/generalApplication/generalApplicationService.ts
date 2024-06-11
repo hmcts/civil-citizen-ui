@@ -20,6 +20,7 @@ import {HearingContactDetails} from 'models/generalApplication/hearingContactDet
 import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import {ApplicationState, ApplicationStatus} from 'common/models/generalApplication/applicationSummary';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -276,4 +277,15 @@ export const additionalApplicationErrorMessages: Partial<{ [key in ApplicationTy
   [ApplicationTypeOption.SETTLE_BY_CONSENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING',
   [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT',
   [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT',
+};
+
+export const getApplicationStatus = (status: ApplicationState): ApplicationStatus => {
+  switch (status) {
+    case ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION:
+      return ApplicationStatus.IN_PROGRESS;
+    case ApplicationState.AWAITING_RESPONDENT_RESPONSE:
+      return ApplicationStatus.IN_PROGRESS;
+    case ApplicationState.AWAITING_APPLICATION_PAYMENT:
+      return ApplicationStatus.TO_DO;
+  }
 };

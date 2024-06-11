@@ -1,30 +1,28 @@
 import config from 'config';
+import { t } from 'i18next';
 import { NextFunction, Response, Router } from 'express';
 import { AppRequest } from 'common/models/AppRequest';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { GA_APPLICATION_SUMMARY_URL, GA_VIEW_APPLICATION_URL } from 'routes/urls';
-import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
+import { getApplicationStatus, getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { GeneralApplicationClient } from 'client/generalApplicationClient';
-import { t } from 'i18next';
-import { ApplicationState, ApplicationStatus, ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
+import { ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { dateTimeFilter } from 'common/utils/dateUtils';
 
 const applicationSummaryController = Router();
 const viewPath = 'features/generalApplication/applications-summary';
 
-const civilServiceApiBaseUrl = config.get<string>('services.generalApplication.url');
-const civilServiceClient: GeneralApplicationClient = new GeneralApplicationClient(civilServiceApiBaseUrl);
+const generalApplicationServiceApiBaseUrl = config.get<string>('services.generalApplication.url');
+const generalApplicationServiceClient: GeneralApplicationClient = new GeneralApplicationClient(generalApplicationServiceApiBaseUrl);
 
 applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
     const lng = req.query.lang || req.cookies.lang;
     const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
-    const cancelUrl = await getCancelUrl(claimId, claim);
-    const applications = await civilServiceClient.getApplications(req);
-    console.log('applications: ', applications);
-
+    const applications = await generalApplicationServiceClient.getApplications(req);
+    
     const applicationsRows: ApplicationSummary[] = [];
     applications.forEach(application => {
       const status = getApplicationStatus(application.state);
@@ -32,34 +30,21 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
         state: t(`PAGES.GENERAL_APPLICATION.SUMMARY.${application.state}`, {lng}),
         status: t(`PAGES.GENERAL_APPLICATION.SUMMARY.${status}`, {lng}),
         statusColor: StatusColor[status],
-        types: application.data.applicationTypes,
+        types: application.case_data?.applicationTypes,
         id: application.id,
-        createdDate: application.createdDate,
+        createdDate: dateTimeFilter(application.created_date, lng),
         applicationUrl: `${constructResponseUrlWithIdParams(application.id, GA_VIEW_APPLICATION_URL)}?applicationId=${application.id}` 
       })
     });
-    console.log('applicationsRows: ', applicationsRows);
-    
+
     res.render(viewPath, {
-      cancelUrl,
       applicationsRows,
-      dashboardUrl: getCancelUrl(claimId, claim),
+      dashboardUrl: await getCancelUrl(req.params.id, claim),
       pageTitle: 'PAGES.GENERAL_APPLICATION.SUMMARY.MY_APPLICATIONS',
     });
   } catch (error) {
     next(error);
   }
 });
-
-const getApplicationStatus = (status: ApplicationState): ApplicationStatus => {
-  switch (status) {
-    case ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION:
-      return ApplicationStatus.IN_PROGRESS;
-    case ApplicationState.AWAITING_RESPONDENT_RESPONSE:
-      return ApplicationStatus.IN_PROGRESS;
-    case ApplicationState.AWAITING_APPLICATION_PAYMENT:
-      return ApplicationStatus.TO_DO;
-  }
-};
 
 export default applicationSummaryController;

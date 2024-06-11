@@ -2131,6 +2131,30 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
     "GENERAL_APPLICATION": {
+      "SUMMARY": {
+        
+
+        "AWAITING_RESPONDENT_RESPONSE": "Awaiting other parties' response",
+        "AWAITING_APPLICATION_PAYMENT": "Pay application fee",
+        "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application Submitted - Awaiting Judicial Decision",
+
+        "IN_PROGRESS": "In progress",
+        "TO_DO": "To do",
+
+        "MY_APPLICATIONS": "My applications",
+
+        "STATUS": "Status",
+        "APPLICATION": "Application",
+        "APPLICATION_TYPE": "Application type",
+        "APPLICATION_ID": "Application ID",
+        "SUBMITTED_ON": "Submitted on",
+        "VIEW_APPLICATION": "View application",
+        "DETAILS": "Details",
+        "TITLE": "All applications",
+        "APP_REQUESTED": "An application is a request for a change to the case.",
+        "THESE_ARE_APPS": "These are the applications that have been made by you or the other parties. The 'other parties' are the other side or sides involved in your claim.",
+        "THE_STATUS_CHANGE": "The status of an application will change as it progresses. An application with a 'To do' status means you need to take action. For example, paying an application fee or responding."
+      },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
         "RESPOND_TO": "Respond to an application to {{applicationType}}",
