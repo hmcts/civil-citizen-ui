@@ -41,7 +41,6 @@ import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
 import {isCaseProgressionV1Enabled} from 'routes/guards/caseProgressionGuard';
 import config = require('config');
 
-
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
 
