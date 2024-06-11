@@ -7,7 +7,7 @@
   
   
   
-    Do you want to upload documents to support your application? (Optional) - Your money claims account
+    Your money claims account - Money Claims
   
 
 </title>
@@ -28,7 +28,7 @@
     
 
 <!-- Google Tag Manager -->
-<script nonce=rJVg/M72HJ+tBBmyOh91FQ==>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+<script nonce=ZpJTLhTKlLBcID6u2voXMQ==>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
@@ -313,18 +313,36 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     
-          
+
+
+  
+  
+
+  
+
+  
+  
+  <form method="post" novalidate>
+    
+  <input type="hidden" name="_csrf" value="yeu5YKFq-gUr-v-o4uCG6PdACVHu7ZHqJOZ8">
+
+    
     <h1 class="govuk-heading-l">
-      <span class="govuk-caption-l">Make an application</span>
-       Do you want to upload documents to support your application? (Optional)
+      <span class="govuk-caption-l">Respond to an application</span>
+       Do you accept the defendant&#39;s offer?
     </h1>
 
-          <p class="govuk-body">If you&#39;ve selected multiple applications, you should upload documents that relate to all of them.</p>
-          <form method="post" novalidate>
-            
-  <input type="hidden" name="_csrf" value="ePQGnDpl-faRfNwBEbsJHiPz2PeT7rnBCnHM">
+    <p class="govuk-body">
+      The defendant&#39;s offer will be set out in the 
+      
+  <a class="govuk-link" href=https://www.gov.uk/government/publications/form-n245-application-for-suspension-of-a-warrant-and-or-variation-of-an-order target="_blank" rel="noreferrer noopener">
+    N245 form 
+    
+  </a>
 
-            
+       that they completed. You should read this before responding.
+    </p>
+    
   
   
   
@@ -346,12 +364,18 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         
         
         <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="option" name="option" type="radio" value="yes" checked>
+          <input class="govuk-radios__input" id="option" name="option" type="radio" value="yes" data-aria-controls="conditional-option">
           <label class="govuk-label govuk-radios__label" for="option">
         <span>Yes</span>
       </label>
           
         </div>
+        
+          <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-option">
+            
+    <p class="govuk-body">The court will make an order for the payment that was suggested by the defendant.</p>
+  
+          </div>
         
         
       
@@ -361,12 +385,166 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         
         
         <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="option-2" name="option" type="radio" value="no">
+          <input class="govuk-radios__input" id="option-2" name="option" type="radio" value="no" data-aria-controls="conditional-option-2">
           <label class="govuk-label govuk-radios__label" for="option-2">
         <span>No</span>
       </label>
           
         </div>
+        
+          <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-option-2">
+            
+  <h3 class="govuk-heading-s">Propose payment plan</h3>
+    
+
+<div class="govuk-form-group">
+
+  <div class="govuk-radios"
+    data-module="govuk-radios">
+    
+      
+          
+        
+        
+        
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="type" name="type" type="radio" value="ACCEPT_INSTALMENTS" data-aria-controls="conditional-type">
+          <label class="govuk-label govuk-radios__label" for="type">
+        I&#39;ll accept certain instalments per month
+      </label>
+          
+        </div>
+        
+          <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-type">
+            
+    
+
+<div class="govuk-form-group">
+  <label class="govuk-label govuk-!-font-weight-bold" for="amountPerMonth">
+    Proposed instalments per month
+  </label>
+
+  
+  
+  <div id="amountPerMonth-hint" class="govuk-hint">
+    Enter the amount in £
+  </div>
+
+<div class="govuk-input__wrapper"><div class="govuk-input__prefix" aria-hidden="true">£</div>
+  <input class="govuk-input govuk-!-width-one-half" id="amountPerMonth" name="amountPerMonth" type="number" value="undefined" aria-describedby="amountPerMonth-hint" autocomplete="number"></div>
+
+</div>
+
+    
+
+<div class="govuk-form-group">
+  <label class="govuk-label govuk-!-font-weight-bold" for="reasonProposedInstalment">
+    Why do you not accept the defendant&#39;s offer?
+  </label>
+
+
+  <textarea class="govuk-textarea govuk-!-width-three-quarters" id="reasonProposedInstalment" name="reasonProposedInstalment" rows="5"></textarea>
+</div>
+
+  
+          </div>
+        
+        
+      
+    
+      
+        
+        
+        
+        <div class="govuk-radios__item">
+          <input class="govuk-radios__input" id="type-2" name="type" type="radio" value="PROPOSE_BY_SET_DATE" data-aria-controls="conditional-type-2">
+          <label class="govuk-label govuk-radios__label" for="type-2">
+        I&#39;ll propose payment in full by a set date
+      </label>
+          
+        </div>
+        
+          <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-type-2">
+            
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Proposed set date</h3>
+    
+
+
+
+
+  
+
+
+<div class="govuk-form-group">
+
+  <div id="proposedSetDate-hint" class="govuk-hint">
+    For example, 7 7 2024
+  </div>
+
+
+  <div class="govuk-date-input" id="proposedSetDate">
+    
+    <div class="govuk-date-input__item">
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-date-input__label" for="day">
+          Day
+        </label>
+      
+      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="day" name="day" type="text" inputmode="numeric">
+      
+      </div>
+    </div>
+  
+    <div class="govuk-date-input__item">
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-date-input__label" for="month">
+          Month
+        </label>
+      
+      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="month" name="month" type="text" inputmode="numeric">
+      
+      </div>
+    </div>
+  
+    <div class="govuk-date-input__item">
+      <div class="govuk-form-group">
+        <label class="govuk-label govuk-date-input__label" for="year">
+          Year
+        </label>
+      
+      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="year" name="year" type="text" inputmode="numeric">
+      
+      </div>
+    </div>
+  
+  </div>
+
+</div>
+
+
+    
+
+<div class="govuk-form-group">
+  <label class="govuk-label govuk-!-font-weight-bold" for="reasonProposedSetDate">
+    Why you do not accept the defendant&#39;s offer?
+  </label>
+
+
+  <textarea class="govuk-textarea govuk-!-width-three-quarters" id="reasonProposedSetDate" name="reasonProposedSetDate" rows="5"></textarea>
+</div>
+
+  
+          </div>
+        
+        
+      
+    
+  </div>
+
+</div>
+
+  
+          </div>
         
         
       
@@ -376,8 +554,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 
-            <div class="govuk-button-group">
-              
+    <div class="govuk-button-group">
+        
 
 <div class="govuk-button-group">
     
@@ -394,7 +572,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     
         
     
-      <a href="/dashboard/1717411074546061/claimantNewDesign" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >Cancel</a>
+      <a href="/dashboard/1717076177195254/claimantNewDesign" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >Cancel</a>
     
 
     
@@ -402,8 +580,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 
 
-            </div>
-          </form>
+    </div>
+  </form>
 
   </div>
   <div class="govuk-grid-column-one-third">
