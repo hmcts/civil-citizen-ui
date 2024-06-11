@@ -19,4 +19,5 @@ export class Hearing {
   specificCourtLocation?: SpecificCourtLocation;
   unavailableDatesForHearing?: UnavailableDates;
   disclosureNonElectronicDocument?: string;
+  hasClaimantDocumentsToBeConsidered?: GenericYesNo;
 }

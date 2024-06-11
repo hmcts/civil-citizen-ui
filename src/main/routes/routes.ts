@@ -343,6 +343,8 @@ import submitGeneralApplicationConfirmationController
 import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
 import multiTrackDisclosureNonElectronicDocuments
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocumentsController';
+import claimantDocsForDisclosureController
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/claimantDocsForDisclosureController';
 
 export default [
   homeController,
@@ -638,4 +640,5 @@ export default [
   submitGeneralApplicationConfirmationController,
   acceptDefendantOfferController,
   multiTrackDisclosureNonElectronicDocuments,
+  claimantDocsForDisclosureController,
 ];
