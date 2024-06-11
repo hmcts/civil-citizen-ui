@@ -15,6 +15,7 @@ import {
   getByIndex,
   updateByIndexOrAppend,
   validateAdditionalApplicationtType,
+  getApplicationStatus,
 } from 'services/features/generalApplication/generalApplicationService';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../utils/errorMessageTestConstants';
@@ -30,6 +31,7 @@ import { HearingContactDetails } from 'models/generalApplication/hearingContactD
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { ValidationError } from 'class-validator';
+import { ApplicationState, ApplicationStatus } from 'common/models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -469,6 +471,33 @@ describe('General Application service', () => {
       const error : ValidationError = errors[0];
       expect(errors.length).toBe(1);
       expect(error.constraints['additionalApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING');
+    });
+  });
+
+  describe('getApplicationStatus', () => {
+    it('should return IN_PROGRESS when APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', () => {
+      //Given
+      const applicationState = ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
+    });
+    it('should return IN_PROGRESS when AWAITING_RESPONDENT_RESPONSE', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_RESPONDENT_RESPONSE;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
+    });
+    it('should return TO_DO when AWAITING_APPLICATION_PAYMENT', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_APPLICATION_PAYMENT;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
     });
   });
 });
