@@ -1,11 +1,14 @@
-import { NextFunction, RequestHandler, Response, Router } from 'express';
-import { AppRequest } from 'common/models/AppRequest';
-import { GenericForm } from 'common/form/models/genericForm';
-import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
-import { GA_RESPONDENT_AGREEMENT_URL } from 'routes/urls';
-import { getCancelUrl, getRespondToApplicationCaption, saveRespondentAgreement } from 'services/features/generalApplication/generalApplicationService';
-import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { Claim } from 'common/models/claim';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {AppRequest} from 'common/models/AppRequest';
+import {GenericForm} from 'common/form/models/genericForm';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {GA_RESPONDENT_AGREEMENT_URL} from 'routes/urls';
+import {getCancelUrl, saveRespondentAgreement} from 'services/features/generalApplication/generalApplicationService';
+import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
+import {Claim} from 'common/models/claim';
+import {
+  getRespondToApplicationCaption,
+} from 'services/features/generalApplication/response/generalApplicationResponseService';
 
 const respondentAgreementController = Router();
 const viewPath = 'features/generalApplication/respondent-agreement';

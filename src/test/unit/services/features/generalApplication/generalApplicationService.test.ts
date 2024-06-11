@@ -1,5 +1,5 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import { Claim } from 'models/claim';
+import {Claim} from 'models/claim';
 import {
   getCancelUrl,
   saveAgreementFromOtherParty,
@@ -7,14 +7,15 @@ import {
   saveApplicationType,
   saveHearingSupport,
   saveRequestingReason,
-  saveRespondentAgreeToOrder,
   saveRespondentAgreement,
   saveHearingArrangement,
-  saveHearingContactDetails, saveUnavailableDates,
+  saveHearingContactDetails,
+  saveUnavailableDates,
   getByIndexOrLast,
   getByIndex,
   updateByIndexOrAppend,
   validateAdditionalApplicationtType,
+  saveAcceptDefendantOffer,
 } from 'services/features/generalApplication/generalApplicationService';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../utils/errorMessageTestConstants';
@@ -29,8 +30,8 @@ import { HearingArrangement, HearingTypeOptions } from 'models/generalApplicatio
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { ValidationError } from 'class-validator';
+import { AcceptDefendantOffer } from 'common/models/generalApplication/response/acceptDefendantOffer';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -254,40 +255,6 @@ describe('General Application service', () => {
     });
   });
 
-  describe('Save respondent agree to order', () => {
-    it('should save respondent agree to order', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
-
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-
-      //When
-      await saveRespondentAgreeToOrder('123', claim, YesNo.NO);
-      //Then
-      expect(spy).toBeCalled();
-    });
-
-    it('should throw error when draft store throws error', async () => {
-      //Given
-
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      //When
-      mockSaveClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-      //Then
-      await expect(saveRespondentAgreeToOrder('123', claim, YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
-    });
-  });
-
   describe('Save requesting reason', () => {
     it('should save requesting reason', async () => {
       //Given
@@ -443,7 +410,7 @@ describe('General Application service', () => {
       await saveRespondentAgreement('123', respondentAgreement);
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
-      claim.generalApplication.response = new GaResponse(respondentAgreement);
+      claim.generalApplication.response = { respondentAgreement };
       await expect(spy).toBeCalledWith('123', claim);
     });
 
@@ -492,10 +459,10 @@ describe('General Application service', () => {
       claim.generalApplication = new GeneralApplication();
       claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM)];
       const errors : ValidationError[] = [];
-      const applicationType = new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT);   
+      const applicationType = new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT);
       const body = {
         optionOther: 'test',
-        option: 'testOption', 
+        option: 'testOption',
       };
       //When
       validateAdditionalApplicationtType(claim, errors, applicationType,body);
@@ -506,4 +473,36 @@ describe('General Application service', () => {
       expect(error.constraints['additionalApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING');
     });
   });
+});
+
+describe('Save Accept defendant offer', () => {
+  it('should save acceptDefendantOffer successfully', async () => {
+    //Given
+    // mockGetCaseData.mockResolvedValue(new Claim());
+    mockGetCaseData.mockImplementation(async () => {
+      return new Claim();
+    });
+    const acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES);
+
+    const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+    //When
+    await saveAcceptDefendantOffer('123', acceptDefendantOffer);
+    //Then
+    expect(spy).toBeCalled();
+  });
+  it('should throw error when draft store throws error', async () => {
+    //Given
+    mockGetCaseData.mockImplementation(async () => {
+      return new Claim();
+    });
+    const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+    const acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES);
+    //When
+    mockSaveClaim.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
+    //Then
+    await expect(saveAcceptDefendantOffer('123', acceptDefendantOffer)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+  });
+  
 });
