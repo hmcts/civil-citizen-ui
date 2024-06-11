@@ -64,7 +64,3 @@ export async function isGaForLipsEnabled(): Promise<boolean> {
 export async function isJudgmentOnlineLive(): Promise<boolean> {
   return await getFlagValue('isJudgmentOnlineLive') as boolean;
 }
-
-export async function isMintiEnabled(): Promise<boolean> {
-  return await getFlagValue('minti') as boolean;
-}
