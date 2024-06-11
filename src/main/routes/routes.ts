@@ -338,6 +338,16 @@ import hearingSupportResponseController
   from 'routes/features/generalApplication/response/hearingSupportResponseController';
 import unavailableHearingDatesResponseController
   from 'routes/features/generalApplication/response/unavailableHearingDatesResponseController';
+import helpWithApplicationFeeController
+  from 'routes/features/generalApplication/applicationFee/helpWithApplicationFeeController';
+import helpWithFeesContentController
+  from 'routes/features/generalApplication/applicationFee/helpWithFeesContentController';
+import helpWithApplicationFeeReferenceController
+  from 'routes/features/generalApplication/applicationFee/helpWithApplicationFeeReferenceController';
+import helpWithApplicationFeeContinueController
+  from './features/generalApplication/applicationFee/helpWithApplicationFeeContinueController';
+import payApplicationFeeConfirmationController
+  from 'routes/features/generalApplication/applicationFee/payApplicationFeeConfirmationController';
 import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
 
 export default [
@@ -631,5 +641,4 @@ export default [
   hearingContactDetailsResponseController,
   hearingSupportResponseController,
   unavailableHearingDatesResponseController,
-  acceptDefendantOfferController,
 ];
