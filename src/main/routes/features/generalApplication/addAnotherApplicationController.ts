@@ -4,7 +4,7 @@ import {
   APPLICATION_TYPE_URL,
   GA_ADD_ANOTHER_APPLICATION_URL,
   GA_REQUESTING_REASON_URL,
-  GA_WANT_TO_UPLOAD_DOCUMENTS,
+  GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
 import { getCancelUrl, getLast } from 'services/features/generalApplication/generalApplicationService';
@@ -31,13 +31,13 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Gen
   res.render(viewPath, { form, cancelUrl, backLinkUrl, applicationType });
 };
 
-addAnotherApplicationController.get(GA_ADD_ANOTHER_APPLICATION_URL, [addAnotherApplicationGuard], async (req: AppRequest, res: Response, next: NextFunction) => {
+addAnotherApplicationController.get(GA_ADD_ANOTHER_APPLICATION_URL, addAnotherApplicationGuard, async (req: AppRequest, res: Response, next: NextFunction) => {
   renderView(req, res).catch((error) => {
     next(error);
   });
 });
 
-addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, [addAnotherApplicationGuard], async (req: AppRequest, res: Response, next: NextFunction) => {
+addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, addAnotherApplicationGuard, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.WANT_TO_ADD_ANOTHER_APPLICATION'));
     await form.validate();
@@ -53,10 +53,7 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, [addAnother
 });
 
 function getRedirectUrl(claimId: string, option: YesNo): string {
-  if (option === YesNo.YES) {
-    return constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL);
-  } else {
-    return constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS);
-  }
+  return (option === YesNo.YES) ? constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) :
+    constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
 }
 export default addAnotherApplicationController;

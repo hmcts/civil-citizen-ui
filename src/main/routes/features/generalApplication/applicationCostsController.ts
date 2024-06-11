@@ -1,16 +1,17 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  GA_AGREEMENT_FROM_OTHER_PARTY,
+  GA_AGREEMENT_FROM_OTHER_PARTY_URL,
   GA_APPLICATION_COSTS_URL,
   GA_CLAIM_APPLICATION_COST_URL,
-  GA_UPLOAD_N245_FORM_URL, INFORM_OTHER_PARTIES,
+  GA_UPLOAD_N245_FORM_URL,
+  INFORM_OTHER_PARTIES_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
-import { getApplicationCostsContent } from 'services/features/generalApplication/applicationCostsService';
-import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
+import {getApplicationCostsContent} from 'services/features/generalApplication/applicationCostsService';
+import {gaApplicationFeeDetails} from 'services/features/generalApplication/feeDetailsService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
 
@@ -41,18 +42,13 @@ applicationCostsController.get(GA_APPLICATION_COSTS_URL, (async (req: AppRequest
 }) as RequestHandler);
 
 function getRedirectUrl(claimId: string, claim: Claim, option: ApplicationTypeOption) {
-  if(!claim.isClaimant() && option === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) {
-    return constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL);
-  } else {
-    return constructResponseUrlWithIdParams(claimId, GA_CLAIM_APPLICATION_COST_URL);
-  }
+  return (!claim.isClaimant() && option === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) ?
+    constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL) : constructResponseUrlWithIdParams(claimId, GA_CLAIM_APPLICATION_COST_URL);
 }
 
 function getBackUrl(claimId: string, claim: Claim, applicationTypeOption: ApplicationTypeOption) {
-  if (claim.generalApplication.agreementFromOtherParty === YesNo.YES || options.indexOf(applicationTypeOption) !== -1) {
-    return constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY);
-  }
-  return constructResponseUrlWithIdParams(claimId, INFORM_OTHER_PARTIES);
+  return (claim.generalApplication.agreementFromOtherParty === YesNo.YES || options.indexOf(applicationTypeOption) !== -1) ?
+    constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL) : constructResponseUrlWithIdParams(claimId, INFORM_OTHER_PARTIES_URL);
 }
 
 export default applicationCostsController;

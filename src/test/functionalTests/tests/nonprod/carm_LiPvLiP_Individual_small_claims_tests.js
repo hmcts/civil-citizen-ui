@@ -80,9 +80,9 @@ Scenario('Verify Mediation status before Unsuccessful mediation', async () => {
   const notification = mediationCARMClaimantDefendant();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   taskListItem = viewMediationDocuments();
-  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'NOT AVAILABLE YET');
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Not available yet');
   taskListItem = uploadMediationDocuments();
-  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'NOT AVAILABLE YET');
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Not available yet');
   taskListItem = viewMediationSettlementAgreement();
-  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'NOT AVAILABLE YET');
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Not available yet');
 });

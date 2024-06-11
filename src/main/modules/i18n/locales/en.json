@@ -635,7 +635,8 @@
       "POSTAL_RESPONSE": "If a postal response is received before the judgment is issued your request will be rejected.",
       "TITLE": "County Court Judgment requested",
       "UPDATES": "Your online account will not be updated with the progress of this claim and any further updates will be by post.",
-      "NO_LONGER_RESPONSE": "{{ defendantName }} can no longer respond to your claim online."
+      "NO_LONGER_RESPONSE": "{{ defendantName }} can no longer respond to your claim online.",
+      "PROCESS_YOUR_REQUEST_JO": "We’ll process your request and you will receive notifications by email, you will be able to view the judgment via your dashboard and we’ll also post a copy of the judgment to {{ defendantName }}. We aim to do this within 10 working days."
     },
     "CCJ_DEFENDANT_DOB": {
       "PAGE_TITLE": "Do you know the defendant's date of birth?",
@@ -2131,6 +2132,21 @@
       "REACHING_SETTLEMENT": "Reaching a settlement"
     },
     "GENERAL_APPLICATION": {
+      "ACCEPT_DEFENDANT_OFFER": {
+        "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
+        "ENTER_AMOUNT": "Enter the amount in £",
+        "N245": "N245 form",
+        "N245_AFTER": " that they completed. You should read this before responding.",
+        "N245_BEFORE": "The defendant's offer will be set out in the ",
+        "PROPOSE_IN_FULL": "I'll propose payment in full by a set date",
+        "PROPOSE_PAYMENT_PLAN": "Propose payment plan",
+        "PROPOSED_INSTALMENTS": "Proposed instalments per month",
+        "PROPOSED_SET_DATE": "Proposed set date",
+        "THE_COURT": "The court will make an order for the payment that was suggested by the defendant.",
+        "TITLE": "Do you accept the defendant's offer?",
+        "WHY_NOT_ACCEPT": "Why do you not accept the defendant's offer?",
+        "WHY_NOT_ACCEPT_2": "Why you do not accept the defendant's offer?"
+      },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
         "RESPOND_TO": "Respond to an application to {{applicationType}}",
@@ -2481,6 +2497,16 @@
         "SINGLE_DATE": "A single date",
         "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
         "TO": "To"
+      },
+      "CONFIRMATION_PAGE": {
+        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}",
+        "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
+        "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
+        "PAGE_TITLE": "Application created",
+        "PAY_FEE_BUTTON": "Pay application fee",
+        "RETURN_CASE_DETAILS": "Close and return to case details",
+        "TITLE": "Application created",
+        "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge."
       },
       "VIEW_APPLICATION": {
         "APPLICATION": "Application",
@@ -4318,6 +4344,13 @@
     "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced",
     "GENERAL_APPLICATION": {
+      "ACCEPT_DEFENDANT_OFFER": {
+        "ERROR_ACCEPT": "You need to tell us if you accept the defendant's offer. Choose option: Yes or No",
+        "ERROR_CHOOSE": "You need to propose a payment plan. Choose either instalments per month or payment in full by a set date.",
+        "ERROR_NOT_ACCEPT": "You need to tell us why you do not accept the defendant's offer.",
+        "ERROR_INSTALMENT": "You need to enter your proposed instalment per month.",
+        "FUTURE_DATE": "You need to enter a date in the future."
+      },
       "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",

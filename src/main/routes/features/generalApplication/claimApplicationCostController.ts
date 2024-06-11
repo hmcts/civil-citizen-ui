@@ -30,7 +30,7 @@ async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId
   });
 }
 
-claimApplicationCostController.get(GA_CLAIM_APPLICATION_COST_URL, [claimApplicationCostGuard], (async (req: AppRequest, res: Response, next: NextFunction) => {
+claimApplicationCostController.get(GA_CLAIM_APPLICATION_COST_URL, claimApplicationCostGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
@@ -41,7 +41,7 @@ claimApplicationCostController.get(GA_CLAIM_APPLICATION_COST_URL, [claimApplicat
   }
 }) as RequestHandler);
 
-claimApplicationCostController.post(GA_CLAIM_APPLICATION_COST_URL, [claimApplicationCostGuard], (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+claimApplicationCostController.post(GA_CLAIM_APPLICATION_COST_URL, claimApplicationCostGuard, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
