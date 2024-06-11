@@ -39,8 +39,21 @@ describe('General Application - application hearing arrangements', () => {
         .get(GA_HEARING_ARRANGEMENTS_GUIDANCE)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.TITLE'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE.TITLE'));
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT'));
+        });
+    });
+
+    it('should return "Make an application" title', async () => {
+      mockGetCaseData.mockImplementation(async () => mockClaim);
+      mockClaim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT),
+        new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING)];
+      await request(app)
+        .get(GA_HEARING_ARRANGEMENTS_GUIDANCE)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE.TITLE'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION'));
         });
     });
 
