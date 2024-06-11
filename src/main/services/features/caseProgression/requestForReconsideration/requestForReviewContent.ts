@@ -5,6 +5,7 @@ import {
   FinaliseYourTrialSectionBuilder,
 } from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 export const getRequestForReviewContent = (claim: Claim) => {
   const claimantOrDefendant = getClaimantOrDefendant(claim);
@@ -37,16 +38,19 @@ export const getNameRequestForReconsideration = (claim: Claim): string => {
   return claim.caseRole == CaseRole.CLAIMANT ? 'requestForReviewClaimant' : 'requestForReviewDefendant';
 };
 
-export const getRequestForReconsiderationConfirmationContent = (claim: Claim): ClaimSummarySection[] => {
-  return getConfirmationPageSection(claim);
+export const getRequestForReconsiderationConfirmationContent = (claim: Claim, lang: string): ClaimSummarySection[] => {
+  return getConfirmationPageSection(claim, lang);
 };
 
-export function getConfirmationPageSection(claim: Claim): ClaimSummarySection[] {
+export function getConfirmationPageSection(claim: Claim, lang: string): ClaimSummarySection[] {
   const title = 'PAGES.REQUEST_FOR_RECONSIDERATION.CONFIRMATION.WHAT_HAPPENS_NEXT';
   const date = claim.caseProgression?.requestForReconsiderationDeadline;
   return new FinaliseYourTrialSectionBuilder()
     .addMainTitle(title)
-    .addParagraph('PAGES.REQUEST_FOR_RECONSIDERATION.CONFIRMATION.PARAGRAPH_1', {claimantOrDefendant:getClaimantOrDefendant(claim), date: date})
+    .addParagraph('PAGES.REQUEST_FOR_RECONSIDERATION.CONFIRMATION.PARAGRAPH_1', {
+      claimantOrDefendant:getClaimantOrDefendant(claim),
+      date: formatDateToFullDate(date, lang),
+    })
     .addParagraph('PAGES.REQUEST_FOR_RECONSIDERATION.CONFIRMATION.PARAGRAPH_2')
     .addParagraph('PAGES.REQUEST_FOR_RECONSIDERATION.CONFIRMATION.PARAGRAPH_3')
     .build();

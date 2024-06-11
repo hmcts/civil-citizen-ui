@@ -23,13 +23,13 @@ requestForReconsiderationConfirmationController.get([REQUEST_FOR_RECONSIDERATION
   try {
     const claimId = req.params.id;
     const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const dashboardUrl = claim.caseRole === CaseRole.CLAIMANT
       ? constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)
       : constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
     const requestForReconsiderationDoc = '/#'; //TODO: placeholder for request for reconsideration document
     res.render(requestForReconsiderationConfirmationViewPath, {
-      confirmationContents:getRequestForReconsiderationConfirmationContent(claim),
+      confirmationContents:getRequestForReconsiderationConfirmationContent(claim, lang),
       requestForReconsiderationDoc: requestForReconsiderationDoc,
       dashboardUrl});
   } catch (error) {

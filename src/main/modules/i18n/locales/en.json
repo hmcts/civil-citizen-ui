@@ -3725,7 +3725,7 @@
       "CONFIRMATION": {
         "WHAT_HAPPENS_NEXT": "What happens next",
         "PARAGRAPH_1": "We’ll tell {{ claimantOrDefendant }} you’ve made the request. They will have until {{ date }} to add comments of their own.",
-        "PARAGRAPH_2": "A judge will then review the order and any comments, and you will be contacted if the judge makes a new order",
+        "PARAGRAPH_2": "A judge will then review the order and any comments, and you will be contacted if the judge makes a new order.",
         "PARAGRAPH_3": "Continue doing what the current order asks of you unless you’re informed a judge has made a new order.",
         "PANEL_TEXT": "You’ve asked the court to review order",
         "PANEL_LINK": "Download request for review of  order (PDF)"

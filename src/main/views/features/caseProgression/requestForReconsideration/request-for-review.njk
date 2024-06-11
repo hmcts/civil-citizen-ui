@@ -3,10 +3,6 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../dashboard/item-content.njk" import itemContent %}
 
-{% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MICRO_TEXT') }}
-{% endblock %}
-
 {% block nestedContent %}
 
   {% for content in requestForReviewContents %}

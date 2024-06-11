@@ -58,9 +58,10 @@ async function renderView(res: Response, claimId: string, claim: Claim, form: Ge
   } else {
     dashboardUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
   }
+  const pageTitle = 'PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MICRO_TEXT';
   res.render(requestForReviewViewPath, {
     form,
     requestForReviewContents: getRequestForReviewContent(claim),
-    buttonContents: getButtonContent(), dashboardUrl});
+    buttonContents: getButtonContent(), dashboardUrl, pageTitle});
 }
 export default requestForReviewController;
