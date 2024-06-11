@@ -1,5 +1,4 @@
 import * as bodyParser from 'body-parser';
-import config = require('config');
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import * as path from 'path';
@@ -22,22 +21,25 @@ import {getRedisStoreForSession} from 'modules/utilityService';
 import {
   BASE_CASE_PROGRESSION_URL,
   BASE_CLAIM_URL,
+  BASE_CLAIMANT_RESPONSE_URL,
+  BASE_GENERAL_APPLICATION_RESPONSE_URL,
   BASE_GENERAL_APPLICATION_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
-  HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL,
+  HAS_ANYTHING_CHANGED_URL,
+  IS_CASE_READY_URL,
   STATEMENT_OF_MEANS_URL,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
 import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
-import {BASE_CLAIMANT_RESPONSE_URL} from 'routes/urls';
 import {claimantIntentGuard} from 'routes/guards/claimantIntentGuard';
-import { createOSPlacesClientInstance } from 'modules/ordance-survey-key/ordanceSurveyKey';
+import {createOSPlacesClientInstance} from 'modules/ordance-survey-key/ordanceSurveyKey';
 import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragement/trialArrangementsGuard';
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 import {ErrorHandler} from 'modules/error';
-import { isGAForLiPEnabled } from 'routes/guards/generalAplicationGuard';
+import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
 import {isCaseProgressionV1Enabled} from 'routes/guards/caseProgressionGuard';
+import config = require('config');
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -92,7 +94,7 @@ new OidcMiddleware().enableFor(app);
 
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
-app.use(BASE_GENERAL_APPLICATION_URL, isGAForLiPEnabled);
+app.use([BASE_GENERAL_APPLICATION_URL, BASE_GENERAL_APPLICATION_RESPONSE_URL], isGAForLiPEnabled);
 app.use(BASE_CLAIM_URL, claimIssueTaskListGuard);
 app.use(BASE_CASE_PROGRESSION_URL, isCaseProgressionV1Enabled);
 app.use([CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
