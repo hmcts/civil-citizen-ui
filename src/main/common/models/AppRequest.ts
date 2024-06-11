@@ -46,4 +46,3 @@ export interface UserDetails {
 export interface Dashboard {
   taskIdHearingUploadDocuments: string;
 }
-
