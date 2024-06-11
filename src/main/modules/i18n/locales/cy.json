@@ -2135,6 +2135,9 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
     "GENERAL_APPLICATION": {
+      "COMMON": {
+        "MAKE_AN_APPLICATION": "Make an application"
+      },
       "ACCEPT_DEFENDANT_OFFER": {
         "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
         "ENTER_AMOUNT": "Enter the amount in £",
@@ -2471,18 +2474,6 @@
         "PREFERRED_TELEPHONE_NUMBER": "Preferred telephone number",
         "TITLE": "Contact Details"
       },
-      "UNAVAILABLE_HEARING_DATES": {
-        "ADD_ANOTHER_DATE": "Add another date or date range",
-        "ENTER_UNAVAILABLE": "Enter unavailable date",
-        "FROM": "From",
-        "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
-        "LONGER_PERIOD": "A longer period of time",
-        "PAGE_TITLE": "Unavailable hearing dates",
-        "SELECT": "Select a date or dates you cannot attend a hearing",
-        "SINGLE_DATE": "A single date",
-        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
-        "TO": "To"
-      },
       "RESPONDENT_INFORMATION": {
         "CLICK_RESPOND": "Click 'respond to application' to let the court know whether or not you agree with their request.",
         "HEADER": "Respond to an application",
@@ -2512,6 +2503,16 @@
         "SINGLE_DATE": "A single date",
         "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
         "TO": "To"
+      },
+      "CONFIRMATION_PAGE": {
+        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}",
+        "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
+        "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
+        "PAGE_TITLE": "Application created",
+        "PAY_FEE_BUTTON": "Pay application fee",
+        "RETURN_CASE_DETAILS": "Close and return to case details",
+        "TITLE": "Application created",
+        "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {

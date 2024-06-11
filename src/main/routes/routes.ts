@@ -338,6 +338,8 @@ import hearingSupportResponseController
   from 'routes/features/generalApplication/response/hearingSupportResponseController';
 import unavailableHearingDatesResponseController
   from 'routes/features/generalApplication/response/unavailableHearingDatesResponseController';
+import submitGeneralApplicationConfirmationController
+  from 'routes/features/generalApplication/submitGeneralApplicationConfirmationController';
 import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
 import requestForReviewController
   from 'routes/features/caseProgression/requestForReconsideration/requestForReviewController';
@@ -636,6 +638,7 @@ export default [
   hearingContactDetailsResponseController,
   hearingSupportResponseController,
   unavailableHearingDatesResponseController,
+  submitGeneralApplicationConfirmationController,
   acceptDefendantOfferController,
   requestForReviewController,
   requestForReconsiderationCheckAnswersController,
