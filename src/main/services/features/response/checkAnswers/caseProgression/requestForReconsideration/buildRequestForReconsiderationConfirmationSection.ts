@@ -16,7 +16,9 @@ import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
 export const buildRequestForReconsideration = (claim: Claim, claimId: string, lang: string ): SummarySection => {
-  const requestForReview = claim.caseRole == CaseRole.CLAIMANT ? claim.caseProgression.requestForReviewClaimant : claim.caseProgression.requestForReviewDefendant;
+  const requestForReview = claim.caseRole == CaseRole.CLAIMANT
+    ? claim.caseProgression.requestForReviewClaimant
+    : claim.caseProgression.requestForReviewDefendant;
 
   const requestForReviewSummarySections = summarySection({
     title: null,

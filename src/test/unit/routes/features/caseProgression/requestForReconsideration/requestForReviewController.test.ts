@@ -52,7 +52,7 @@ describe('Request for Review - On GET', () => {
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Sut a pham ydych chi eisiau i\'r gorchymyn gael ei newid?');
+        expect(res.text).toContain('Cais i adolygu’r gorchymyn');
       });
   });
 
@@ -85,7 +85,7 @@ describe('Request for Review - on POST', () => {
     //When
     await testSession
       .post(REQUEST_FOR_RECONSIDERATION.replace(':id', '1111'))
-      .send({textArea: "Changes requested"})
+      .send({textArea: 'Changes requested'})
       //Then
       .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
         expect(res.status).toBe(302);
