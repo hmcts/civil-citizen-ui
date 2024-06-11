@@ -6,13 +6,17 @@ import {
 } from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
-export const getRequestForReviewContent = (claim: Claim) => {
+export const getRequestForReviewContent = (claim: Claim, claimId: string) => {
   const claimantOrDefendant = getClaimantOrDefendant(claim);
 
   return new PageSectionBuilder()
     .addMicroText('PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MICRO_TEXT')
     .addMainTitle('PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MAIN_TITLE')
+    .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
+    .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
     .addLeadParagraph('PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.PARAGRAPH', {claimantOrDefendant: claimantOrDefendant})
     .build();
 };

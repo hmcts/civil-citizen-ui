@@ -61,7 +61,7 @@ async function renderView(res: Response, claimId: string, claim: Claim, form: Ge
   const pageTitle = 'PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MICRO_TEXT';
   res.render(requestForReviewViewPath, {
     form,
-    requestForReviewContents: getRequestForReviewContent(claim),
+    requestForReviewContents: getRequestForReviewContent(claim, claimId),
     buttonContents: getButtonContent(), dashboardUrl, pageTitle});
 }
 export default requestForReviewController;
