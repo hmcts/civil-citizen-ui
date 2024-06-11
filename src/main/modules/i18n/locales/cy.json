@@ -417,6 +417,14 @@
         "HINT": "Rhowch fanylion"
       }
     },
+    "CLAIMANT_DOCUMENTS_CONSIDERED_DETAILS" : {
+      "PAGE_TITLE": "Beth yw'r dogfennau sydd gan yr hawlwyr rydych chi am i'r llys eu hystyried?",
+      "TITLE": "Dogfennau hawlydd i'w hystyried",
+      "TEXT_AREA" : {
+        "LABEL": "Beth yw'r dogfennau sydd gan yr hawlwyr rydych chi am i'r llys eu hystyried?",
+        "HINT": "Rhowch fanylion"
+      }
+    },
     "ACCESSIBILITY_STATEMENT": {
       "CONSIDER": "We’ll consider your request and get back to you in 10 days.",
       "EMAIL": "HMCTSforms@justice.gov.uk",
@@ -3959,6 +3967,7 @@
   "ERRORS": {
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau nad ydynt yn electronig",
     "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau electronig",
+    "CLAIMANT_DOCUMENTS_CONSIDERED" : "Rhowch fanylion y dogfennau sydd gan yr hawlwyr yr ydych am i'r llys eu hystyried",
     "ACCEPT_REPAYMENT_PLAN": "Dewiswch dderbyn y cynllun ad-dalu hwn i dderbyn cynllun ad-dalu arfaethedig y llys",
     "ADDRESS_NOT_FOUND": "Ni allwn ddod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
     "AMOUNT_INVALID_DECIMALS": "Rhowch swm, dim mwy na dau le degol",
