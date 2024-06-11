@@ -1,0 +1,163 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+{% from "../../../macro/button.njk" import addButton %}
+{% from "../../../macro/external-link.njk" import externalLink %}
+{% from "../../../macro/heading-with-caption.njk" import headingWithCaption %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+
+{% import "external-urls.njk" as externalURLs %}
+
+{% block nestedContent %}
+
+{% set byInstalmentsHtml %}
+    {{ govukInput({
+      id: 'amountPerMonth',
+      name: 'amountPerMonth',
+      type: "number",
+      autocomplete: "number",
+      label: {
+        text: t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.PROPOSED_INSTALMENTS'),
+        classes: 'govuk-!-font-weight-bold'
+      },
+      hint: {
+        text: t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.ENTER_AMOUNT')
+      },
+      prefix: {
+        text: "£"
+      },
+      classes: "govuk-!-width-one-half",
+      value: '' + form.model.amountPerMonth,
+      errorMessage: { 
+        text:  t(form.errorFor('amountPerMonth')) 
+      } if form.hasFieldError('amountPerMonth')
+    }) }}
+    {{ govukTextarea({
+      name: "reasonProposedInstalment",
+      id: "reasonProposedInstalment",
+      label: {
+        text: t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT'),
+        classes: "govuk-!-font-weight-bold"
+      },
+      value: form.model.reasonProposedInstalment,
+      classes:"govuk-!-width-three-quarters",
+      errorMessage: {
+        text: t(form.errorFor('reasonProposedInstalment'))
+      } if form.hasFieldError('reasonProposedInstalment')
+    }) }}
+  {% endset %}
+  
+  {% set bySetDateHtml %}
+    <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.PROPOSED_SET_DATE') }}</h3>
+    {{ govukDateInput({
+      id: "proposedSetDate",
+      name: "proposedSetDate",
+      type: "number",
+      inputmode: "numeric",
+      hint: {
+        text: t('COMMON.DATE_EXAMPLE', {
+          date: today.getDate() + ' ' + (today.getMonth() + 2) + ' ' + (today.getFullYear())
+        })
+      },
+      errorMessage: {
+        html: '<p class="govuk-error-message">' + t(form.errorFor('proposedSetDate')) + '</p>' +
+        '<p class="govuk-error-message">' + t(form.errorFor('day')) + '</p>' +
+        '<p class="govuk-error-message">' + t(form.errorFor('month')) + '</p>' +
+        '<p class="govuk-error-message">' + t(form.errorFor('year')) + '</p>'
+      } if (form.hasFieldError('proposedSetDate') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year')),
+      items: [
+        {
+          classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
+          id: "day",
+          label: t('COMMON.DAY'),
+          name: "day",
+          value: form.model.day,
+          max: 31
+        },
+        {
+          classes:"govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
+          id: "month",
+          label: t('COMMON.MONTH'),
+          name: "month",
+          value: form.model.month,
+          max: 12
+        },
+        {
+          classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
+          id: "year",
+          label: t('COMMON.YEAR'),
+          name: "year",
+          value: form.model.year,
+          max: 9999
+        }
+      ]
+    }) }}
+
+    {{ govukTextarea({
+      name: "reasonProposedSetDate",
+      id: "reasonProposedSetDate",
+      label: {
+        text: t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT_2'),
+        classes: "govuk-!-font-weight-bold"
+      },
+      value: form.model.reasonProposedSetDate,
+      classes:"govuk-!-width-three-quarters",
+      errorMessage: {
+        text: t(form.errorFor('reasonProposedSetDate'))
+      } if form.hasFieldError('reasonProposedSetDate')
+    }) }}
+  {% endset %}
+
+  {% set yesHtml %}
+    <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.THE_COURT') }}</p>
+  {% endset %}
+
+  {% set noHtml %}
+  <h3 class="govuk-heading-s">{{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.PROPOSE_PAYMENT_PLAN') }}</h3>
+    {{ govukRadios({
+      idPrefix: "type",
+      name: "type",
+      items: [
+        {
+          value: ProposedPaymentPlanOption.ACCEPT_INSTALMENTS,
+          text: t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.ACCEPT_ISNTALMENTS'),
+          checked: true if form.model.type == ProposedPaymentPlanOption.ACCEPT_INSTALMENTS,
+          conditional: {
+            html: byInstalmentsHtml
+          }
+        },
+        {
+          value: ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE,
+          text: t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.PROPOSE_IN_FULL'),
+          checked: true if form.model.type == ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE,
+          conditional: {
+            html: bySetDateHtml
+          }
+        }
+      ],
+      errorMessage: {
+        text: t(form.errorFor('type'))
+      } if form.hasFieldError('type')
+    }) }}
+  {% endset %}
+  
+  <form method="post" novalidate>
+    {{ csrfProtection(csrf) }}
+    {{ headingWithCaption(t, 'PAGES.GENERAL_APPLICATION.RESPONDENT_INFORMATION.HEADER', 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE') }}
+    <p class="govuk-body">
+      {{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245_BEFORE') }}
+      {{ externalLink(t, 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245', externalURLs.formN245Url, false) }}
+      {{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.N245_AFTER') }}
+    </p>
+    {{ yesNoRadioButton(t, 'option', 'option', null, form, null, {yesHtml: yesHtml, noHtml: noHtml}) }}
+    <div class="govuk-button-group">
+        {{ addButton(t, 'CONTINUE', cancelUrl) }}
+    </div>
+  </form>
+{% endblock %}

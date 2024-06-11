@@ -8,11 +8,7 @@ import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
-import {selectedApplicationType} from 'models/generalApplication/applicationType';
-import {
-  getCancelUrl, getLast,
-  saveIfPartyWantsToUploadDoc,
-} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl, getDynamicHeaderForMultipleApplications, saveIfPartyWantsToUploadDoc} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -24,13 +20,12 @@ const viewPath = 'features/generalApplication/want-to-upload-documents';
 const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response): Promise<void> {
-  const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
   const cancelUrl = await getCancelUrl(claimId, claim);
   res.render(viewPath, {
     form,
     cancelUrl,
     backLinkUrl,
-    applicationType,
+    headerTitle: getDynamicHeaderForMultipleApplications(claim),
   });
 }
 
