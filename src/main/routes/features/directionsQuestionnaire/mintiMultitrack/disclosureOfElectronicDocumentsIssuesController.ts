@@ -12,7 +12,7 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
-  DisclosureOfElectronicDocumentsIssues
+  DisclosureOfElectronicDocumentsIssues,
 } from 'models/directionsQuestionnaire/mintiMultitrack/DisclosureOfElectronicDocumentsIssues';
 
 const disclosureOfElectronicDocumentsIssues = Router();
