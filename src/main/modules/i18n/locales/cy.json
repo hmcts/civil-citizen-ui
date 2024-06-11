@@ -1473,7 +1473,7 @@
       "WHAT_IS_THE_DIFFERENCE": "Beth yw'r gwahaniaeth rhwng dogfennau electronig ac anelectronig?",
       "TITLE_1": "Dogfennau electronig",
       "PARAGRAPH_1.1": "Dogfennau electronig yw unrhyw ddogfennau y gellir eu darparu mewn unrhyw fformat digidol neu electronig. Mae hyn yn cynnwys dogfennau ffisegol y gellir eu darparu mewn fformat electronig.",
-      "PARAGRAPH_1.2": "Mae fformatau yn cynnwys DOC/DOCX (Word), XLS / XLSM (Excel), PPT / PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG / JPEG, PNG, BMP, TIF / TIFF.",
+      "PARAGRAPH_1.2": "Mae fformatau yn cynnwys DOC/DOCX (Word), XLS / XLSX (Excel), PPT / PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG / JPEG, PNG, BMP, TIF / TIFF.",
       "PARAGRAPH_1.3": "Er enghraifft, mae anfoneb neu gyswllt a oedd yn ddogfen gorfforol, ond sydd wedi'i sganio neu ei ffotograffio a gellir ei chyflwyno'n electronig yn ddogfen electronig.",
       "TITLE_2": "Dogfennau nad ydynt yn electronig",
       "PARAGRAPH_2.1": "Mae dogfennau nad ydynt yn rhai eletronic yn ddogfennau ffisegol nad ydynt mewn fformat digidol nac electronig. Mae hyn yn cynnwys dogfennau electronig, sy'n digwydd bod mewn fformat ffisegol.",

@@ -1473,7 +1473,7 @@
       "WHAT_IS_THE_DIFFERENCE": "What is the difference between electronic and non-electronic documents?",
       "TITLE_1": "Electronic documents",
       "PARAGRAPH_1.1": "Electronic documents are any documents that can be supplied in any digital or electronic format. This includes physical documents which can be supplied in an electronic format.",
-      "PARAGRAPH_1.2": "These formats include DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+      "PARAGRAPH_1.2": "These formats include DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
       "PARAGRAPH_1.3": "For example, an invoice or contract which was a physical document, but has been scanned or photographed and can be submitted electronically is an electronic document.",
       "TITLE_2": "Non-electronic documents",
       "PARAGRAPH_2.1": "Non-electronic documents are physical documents which are not in a digital or electronic format. This includes electronic documents, which happen to be in a physical format.",
