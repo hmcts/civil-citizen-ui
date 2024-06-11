@@ -52,15 +52,8 @@ export const formatDateToFullDate = (date: Date, lang?: string): string => {
   return dateTime.toLocaleString(DateTime.DATE_FULL, {locale: localeValue});
 };
 
-export function dateTimeFilter(value: string, lang?: string): string {
-  // const dateTime = convertDateToLuxonDate(date);
-
+export function dateTimeFormat(value: string, lang?: string): string {
   const language = lang === 'cy' ? 'cy' : 'en-gb';
-  // return dateTime
-  //   .toFormat("d LLLL yyyy, h:mm:ss a")
-  //   .
-  //   .toLocaleString(DateTime.DATE_FULL, {locale: localeValue})
-
   const date = DateTime.fromISO(value);
   return date.setLocale(language).toFormat("d LLLL yyyy, h:mm:ss a");
 }

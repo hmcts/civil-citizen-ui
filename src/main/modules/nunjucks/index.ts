@@ -119,7 +119,6 @@ export class Nunjucks {
     nunjucksEnv.addFilter('addDays', addDaysFilter);
     nunjucksEnv.addFilter('addDaysTranslated', addDaysFilterTranslated);
     nunjucksEnv.addFilter('date', dateFilter);
-    // nunjucksEnv.addFilter('dateTime', dateTimeFilter);
     nunjucksEnv.addFilter('formatDate', formatDate);
     nunjucksEnv.addGlobal('t', t);
     nunjucksEnv.addGlobal('translateErrors', translateErrors);

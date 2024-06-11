@@ -8,7 +8,7 @@ import { getApplicationStatus, getCancelUrl } from 'services/features/generalApp
 import { GeneralApplicationClient } from 'client/generalApplicationClient';
 import { ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { dateTimeFilter } from 'common/utils/dateUtils';
+import { dateTimeFormat } from 'common/utils/dateUtils';
 
 const applicationSummaryController = Router();
 const viewPath = 'features/generalApplication/applications-summary';
@@ -32,7 +32,7 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
         statusColor: StatusColor[status],
         types: application.case_data?.applicationTypes,
         id: application.id,
-        createdDate: dateTimeFilter(application.created_date, lng),
+        createdDate: dateTimeFormat(application.created_date, lng),
         applicationUrl: `${constructResponseUrlWithIdParams(application.id, GA_VIEW_APPLICATION_URL)}?applicationId=${application.id}` 
       })
     });
