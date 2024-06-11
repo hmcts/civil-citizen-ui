@@ -65,6 +65,12 @@ class EligibilityCheck {
     await I.amOnPage('/eligibility/claim-value');
   }
 
+  async eligibilityKnownClaimAmount() {
+    await I.waitForContent('Do you know the amount you are claiming?');
+    await I.click('Yes');
+    await I.click('Save and continue');
+  }
+
   async eligibilityClaimValue() {
     await I.waitForContent('Total amount you\'re claiming');
     await I.click(fields.lessthan25000);
