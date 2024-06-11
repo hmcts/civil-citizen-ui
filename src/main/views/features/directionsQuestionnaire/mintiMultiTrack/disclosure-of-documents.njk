@@ -1,3 +1,5 @@
+import {TypeOfDisclosureDocument} from "models/directionsQuestionnaire/hearing/disclosureOfDocuments";
+
 {% extends "claim-details-tpl.njk" %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
@@ -13,27 +15,11 @@
 {% endblock %}
 
 {% block content %}
-{% set checkboxItems = [] %}
-{% for item in form.model.documentsTypeForm %}
-{% set checkboxItems = (checkboxItems.push(
-    {
-      text: t(item.text),
-      value: item.value,
-      checked: item.checked,
-      hint: {
-        text: t(item.hint)
-      }
-    }), checkboxItems) %}
-{% endfor %}
 
 {% set html %}
   {{ createDetails( whatIsDifferenceContent ,t) }}
 {% endset %}
-{% if form.hasErrors() %}
-<div class="govuk-grid-row">
-    {{ errorSummary(form.getErrors(), t) }}
-</div>
-{% endif %}
+
 <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
         <div class="govuk-grid-row">
@@ -50,20 +36,28 @@
                                             name: 'documentsTypeForm',
                                             fieldset: {
                                               legend: {
-                                                text: t(form.model.title),
+                                                text: t('PAGES.DISCLOSURE_OF_DOCUMENTS.CHECKBOX_TITLE'),
                                                 isPageHeading: false,
                                                 classes: "govuk-fieldset__legend--m"
                                               }
                                           },
-                          hint: {
-                            html: html
-                          },
-                          items: checkboxItems,
-                          errorMessage: {
-                            text:t(form.errorFor('documentsTypeForm'))
-                          } if form.hasErrors()
-                        })
-                        }}
+                                        hint: {
+                                          html: html
+                                        },
+                                        items: [
+                              {
+                                value: typeOfDisclosureDocument.ELECTRONIC,
+                                text: t('PAGES.DISCLOSURE_OF_DOCUMENTS.ELECTRONIC_DOCS_OPTION'),
+                                checked: form.hasField(typeOfDisclosureDocument.ELECTRONIC)
+
+                              },
+                              {
+                                value: typeOfDisclosureDocument.NON_ELECTRONIC,
+                                text: t('PAGES.DISCLOSURE_OF_DOCUMENTS.NON_ELECTRONIC_DOCS_OPTION'),
+                                checked: form.hasField(typeOfDisclosureDocument.NON_ELECTRONIC)
+                              }
+                                ]
+                         }) }}
                         {{ addButton(t, 'SAVE_AND_CONTINUE') }}
                         {{ contactUsForHelp(t) }}
                     </form>

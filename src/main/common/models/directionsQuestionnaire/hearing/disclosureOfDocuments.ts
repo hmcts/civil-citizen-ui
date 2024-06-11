@@ -1,29 +1,12 @@
-import {DisclosureOfDocumentsForm} from 'models/directionsQuestionnaire/hearing/disclosureOfDocumentsForm';
-
 export class DisclosureOfDocuments {
-  documentsTypeChosen: DisclosureDocumentType[];
+  documentsTypeChosen: string[];
 
-  constructor(documentsTypeChosen?: DisclosureDocumentType[]) {
+  constructor(documentsTypeChosen?: string[]) {
     this.documentsTypeChosen = documentsTypeChosen;
   }
 
-  mapDisclosureOfDocumentsFormToDisclosureOfDocuments(documentsTypeForm: DisclosureOfDocumentsForm): this {
-    const arrayOfTypeOfDocumentsForm = documentsTypeForm.documentsTypeForm;
-    const checkedObject = arrayOfTypeOfDocumentsForm.filter(item => item.checked === true);
-
-    this.documentsTypeChosen = checkedObject.map((item) =>
-      new DisclosureDocumentType(item.type, item.checked));
-    return this;
-  }
-}
-
-export class DisclosureDocumentType {
-  documentType: TypeOfDisclosureDocument;
-  checked: boolean;
-
-  constructor(documentType: TypeOfDisclosureDocument, checked: boolean) {
-    this.documentType = documentType;
-    this.checked = checked;
+  hasField(disclosureDocumentType: TypeOfDisclosureDocument) {
+    return this.documentsTypeChosen?.includes(disclosureDocumentType);
   }
 }
 
