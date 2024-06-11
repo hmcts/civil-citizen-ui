@@ -330,6 +330,7 @@ export const GA_RESPONDENT_AGREEMENT_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_
 export const GA_HEARING_ARRANGEMENTS_GUIDANCE_URL =`${BASE_GENERAL_APPLICATION_URL}/hearing-arrangements-guidance`;
 export const GA_WANT_TO_UPLOAD_DOCUMENTS_URL = `${BASE_GENERAL_APPLICATION_URL}/want-to-upload-documents`;
 export const GA_UPLOAD_DOCUMENTS_URL = `${BASE_GENERAL_APPLICATION_URL}/upload-documents`;
+export const GA_ACCEPT_DEFENDANT_OFFER_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_URL}/accept-defendant-offer`;
 export const VIEW_THE_JUDGMENT_URL = `${BASE_CASE_URL}/view-the-judgment`;
 export const GA_RESPONSE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_URL}/confirmation`;
 export const CONFIRM_YOU_HAVE_BEEN_PAID_URL = `${BASE_JUDGMENT_ONLINE_URL}/confirm-you-have-been-paid`;
