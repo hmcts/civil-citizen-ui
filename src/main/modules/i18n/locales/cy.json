@@ -402,6 +402,10 @@
     }
   },
   "PAGES": {
+    "CLAIMANT_DOCS_FOR_DISCLOSURE" : {
+      "PAGE_TITLE": "A oes unrhyw ddogfennau sydd gan yr hawlwyr yr hoffech i'r llys eu hystyried?",
+      "TITLE": "Dogfennau hawlydd i'w hystyried"
+    },
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : {
       "PAGE_TITLE": "Datgelu dogfennau nad ydynt yn electronig",
       "TEXT_AREA" : {
@@ -3933,6 +3937,7 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Nodwch os oes unrhyw ddogfennau sydd gan yr hawlwyr eich bod am i'r llys eu hystyried",
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau nad ydynt yn electronig",
     "ACCEPT_REPAYMENT_PLAN": "Dewiswch dderbyn y cynllun ad-dalu hwn i dderbyn cynllun ad-dalu arfaethedig y llys",
     "ADDRESS_NOT_FOUND": "Ni allwn ddod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",

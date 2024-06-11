@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
 } from 'routes/urls';
 import {
   getDirectionQuestionnaire,
@@ -10,35 +10,31 @@ import {
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {
-  DisclosureNonElectronicDocument,
-} from 'models/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocument';
-import {getWhatIsDisclosureDetailContent} from 'services/commons/detailContents';
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 const claimantDocsForDisclosureController = Router();
-const disclosureNonElectronicDocumentsViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/disclosure-non-electronic-documents';
-const DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE = 'PAGES.DISCLOSURE_NON_ELECTRONIC_DOCUMENTS.';
+const hasClaimantDocumentsToBeConsideredViewPath = 'features/common/yes-no-common-page';
+const DISCLOSURCLAIMANT_DOCS_FOR_DISCLOSURE_PAGE = 'PAGES.CLAIMANT_DOCS_FOR_DISCLOSURE.';
 
-function renderView(disclosureNonElectronicDocument: GenericForm<DisclosureNonElectronicDocument>, res: Response): void {
-  const form = disclosureNonElectronicDocument;
-  const whatIsDisclosureDetailsContent = getWhatIsDisclosureDetailContent();
-
-  res.render(disclosureNonElectronicDocumentsViewPath, {
+function renderView(hasClaimantDocumentsToBeConsidered: GenericForm<GenericYesNo>, claimId: string, res: Response): void {
+  const form = hasClaimantDocumentsToBeConsidered;
+  res.render(hasClaimantDocumentsToBeConsideredViewPath, {
     form,
-    whatIsDisclosureDetailsContent,
-    pageTitle: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}TEXT_AREA.LABEL`,
-    title: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}PAGE_TITLE`,
-    //TODO ADD THE BACK URL
-    backLinkUrl: constructResponseUrlWithIdParams('claimId', 'todo'),
+    pageTitle: `${DISCLOSURCLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}PAGE_TITLE`,
+    title: `${DISCLOSURCLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}TITLE`,
+    componentText: `${DISCLOSURCLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}PAGE_TITLE`,
+    backLinkUrl: constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL),
+    saveContinueButtonLabel: 'SAVE_AND_CONTINUE_CARM',
   });
 }
 
 claimantDocsForDisclosureController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL, (async (req, res, next: NextFunction) => {
   try {
+    const claimId = req.params.id;
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
-    const disclosureNonElectronicDocument = directionQuestionnaire.hearing?.disclosureNonElectronicDocument ?
-      new DisclosureNonElectronicDocument(directionQuestionnaire.hearing.disclosureNonElectronicDocument) : new DisclosureNonElectronicDocument();
-    renderView(new GenericForm(disclosureNonElectronicDocument) , res);
+    const hasClaimantDocumentsToBeConsidered = directionQuestionnaire.hearing?.hasClaimantDocumentsToBeConsidered ?
+      new GenericYesNo(directionQuestionnaire.hearing?.hasClaimantDocumentsToBeConsidered?.option) : new GenericYesNo();
+    renderView(new GenericForm(hasClaimantDocumentsToBeConsidered), claimId , res);
   } catch (error) {
     next(error);
   }
@@ -47,17 +43,18 @@ claimantDocsForDisclosureController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_C
 claimantDocsForDisclosureController.post(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const disclosureNonElectronicDocumentForm = new GenericForm(new DisclosureNonElectronicDocument(req.body.disclosureNonElectronicDocuments));
-    disclosureNonElectronicDocumentForm.validateSync();
-    if (disclosureNonElectronicDocumentForm.hasErrors()) {
-      renderView(disclosureNonElectronicDocumentForm, res);
+    const hasClaimantDocumentsToBeConsideredForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.CLAIMANT_DOCS_FOR_DISCLOSURE'));
+    hasClaimantDocumentsToBeConsideredForm.validateSync();
+    if (hasClaimantDocumentsToBeConsideredForm.hasErrors()) {
+      renderView(hasClaimantDocumentsToBeConsideredForm, claimId, res);
     } else {
       await saveDirectionQuestionnaire(
         generateRedisKey(<AppRequest>req),
-        disclosureNonElectronicDocumentForm.model.disclosureNonElectronicDocuments,
-        'disclosureNonElectronicDocument',
+        hasClaimantDocumentsToBeConsideredForm.model,
+        'hasClaimantDocumentsToBeConsidered',
         'hearing');
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL));
+      //TODO add the url.
+      res.redirect(constructResponseUrlWithIdParams(claimId, 'todo'));
     }
 
   } catch (error) {

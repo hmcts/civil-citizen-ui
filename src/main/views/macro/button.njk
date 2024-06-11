@@ -1,7 +1,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "./cancelLink.njk" import cancelLink %}
 
-{% macro addButton(t, type, cancelUrl) %}
+{% macro addButton(t, type = 'SAVE_AND_CONTINUE', cancelUrl = false) %}
 
 <div class="govuk-button-group">
     {{ govukButton({

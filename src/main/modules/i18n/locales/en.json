@@ -402,6 +402,10 @@
     }
   },
   "PAGES": {
+    "CLAIMANT_DOCS_FOR_DISCLOSURE" : {
+      "PAGE_TITLE": "Are there any documents the claimants have that you want the court to consider?",
+      "TITLE": "Claimant documents to be considered"
+    },
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : {
       "PAGE_TITLE": "Disclosure of non-electronic documents",
       "TEXT_AREA" : {
@@ -3933,6 +3937,7 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Indicate if there are any documents the claimants have that you want the court to consider",
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Give details of the issues about disclosure of non-electronic documents",
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court’s proposed repayment plan",
     "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
