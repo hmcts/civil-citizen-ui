@@ -17,10 +17,13 @@ import {
 
 const disclosureOfElectronicDocumentsIssues = Router();
 const disclosureOfElectronicDocumentsIssuesViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/disclosure-of-electronic-documents-issues';
+const DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_PAGE = 'PAGES.DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES.';
 
 function renderView(form: GenericForm<DisclosureOfElectronicDocumentsIssues>, res: Response): void {
   res.render(disclosureOfElectronicDocumentsIssuesViewPath, {
     form,
+    pageTitle: `${DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_PAGE}PAGE_TITLE`,
+    title: `${DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_PAGE}TITLE`,
     //TODO ADD THE BACK URL
     backLinkUrl: constructResponseUrlWithIdParams('claimId', 'todo'),
   });

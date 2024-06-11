@@ -9,7 +9,7 @@
 {% from "../../../macro/textArea.njk" import createTextArea %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES.PAGE_TITLE') }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% block content %}
@@ -25,7 +25,7 @@
                 <div class="govuk-!-margin-bottom-8">
                     <form method="post" novalidate>
                         {{ csrfProtection(csrf) }}
-                        <h1 class="govuk-heading-l">{{ t('PAGES.DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES.TITLE') }}</h1>
+                        {{ createPageTitle(title,t) }}
                         {{ createTextArea("disclosureOfElectronicDocumentsIssues", form.model.disclosureOfElectronicDocumentsIssues, form ,t) }}
                         {{ addButton(t, 'SAVE_AND_CONTINUE') }}
                         {{ contactUsForHelp(t) }}
