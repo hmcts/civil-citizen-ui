@@ -12,8 +12,8 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
-  ClaimantDocumentsConsideredDetails
-} from "models/directionsQuestionnaire/mintiMultitrack/claimantDocumentsConsideredDetails";
+  ClaimantDocumentsConsideredDetails,
+} from 'models/directionsQuestionnaire/mintiMultitrack/claimantDocumentsConsideredDetails';
 
 const claimantDocumentsConsideredDetailsController = Router();
 const claimantDocumentsConsideredDetailsViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/claimant-documents-considered-details';

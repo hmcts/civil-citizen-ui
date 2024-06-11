@@ -6,7 +6,7 @@ export class ClaimantDocumentsConsideredDetails {
   hint = 'PAGES.CLAIMANT_DOCUMENTS_CONSIDERED_DETAILS.TEXT_AREA.HINT';
 
   @IsNotEmpty({message: 'ERRORS.CLAIMANT_DOCUMENTS_CONSIDERED'})
-  claimantDocumentsConsideredDetails?: string;
+    claimantDocumentsConsideredDetails?: string;
 
   constructor(claimantDocumentsConsideredDetails?: string) {
     this.claimantDocumentsConsideredDetails = claimantDocumentsConsideredDetails;
