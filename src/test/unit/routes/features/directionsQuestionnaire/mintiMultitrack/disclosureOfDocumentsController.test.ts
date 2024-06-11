@@ -14,8 +14,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {
-  DisclosureDocumentType, DisclosureOfDocuments,
-  TypeOfDisclosureDocument,
+  DisclosureOfDocuments,
 } from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -60,7 +59,7 @@ describe('Disclosure Of Controller', () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = getClaim();
         const documentsChosen = [];
-        documentsChosen.push(new DisclosureDocumentType(TypeOfDisclosureDocument.ELECTRONIC, true));
+        documentsChosen.push('ELECTRONIC_DOCUMENTS');
         claim.directionQuestionnaire = new DirectionQuestionnaire();
         claim.directionQuestionnaire.hearing = new Hearing();
         claim.directionQuestionnaire.hearing.disclosureOfDocuments = new DisclosureOfDocuments(documentsChosen);
@@ -100,7 +99,7 @@ describe('Disclosure Of Controller', () => {
 
     it('should redirect to claim documents to be considered page', async () => {
       const documentsChosen = [];
-      documentsChosen.push(new DisclosureDocumentType(TypeOfDisclosureDocument.ELECTRONIC, true));
+      documentsChosen.push('ELECTRONIC_DOCUMENTS');
       await request(app)
         .post(CONTROLLER_URL)
         .send({disclosureOfDocuments: documentsChosen})
@@ -116,7 +115,7 @@ describe('Disclosure Of Controller', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       const documentsChosen = [];
-      documentsChosen.push(new DisclosureDocumentType(TypeOfDisclosureDocument.ELECTRONIC, true));
+      documentsChosen.push('ELECTRONIC_DOCUMENTS');
       await request(app)
         .post(CONTROLLER_URL)
         .send({disclosureOfDocuments: documentsChosen})
