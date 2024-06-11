@@ -4,7 +4,7 @@ module.exports = {
   draftClaim: () => {
     return {
       title: 'This claim has not been submitted',
-      content: 'Your claim is saved as a draft. Continue with claim.',
+      content: 'Your claim is saved as a draft. Continue with claim',
     };
   },
 
@@ -225,6 +225,14 @@ module.exports = {
       content: `You must either pay the hearing fee of £${amount} or apply for help with fees. You must do this by ${deadline}. If you do not take one of these actions, your claim will be struck out.`,
       nextSteps: 'pay the hearing fee',
       nextSteps2: 'apply for help with fees',
+    };
+  },
+
+  //Notice.AAA6.CP.HearingFee.Paid.Claimant
+  hearingFeePaidFull: () => {
+    return {
+      title: 'The hearing fee has been paid',
+      content: 'The hearing fee has been paid in full.',
     };
   },
 
