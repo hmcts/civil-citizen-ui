@@ -409,6 +409,14 @@
         "HINT": "Rhowch fanylion"
       }
     },
+    "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : {
+      "PAGE_TITLE": "Beth yw'r materion sy'n ymwneud â datgelu dogfennau electronig",
+      "TITLE": "Datgelu dogfennau electronig",
+      "TEXT_AREA" : {
+        "LABEL": "Beth yw'r materion sy'n ymwneud â datgelu dogfennau electronig",
+        "HINT": "Rhowch fanylion"
+      }
+    },
     "ACCESSIBILITY_STATEMENT": {
       "CONSIDER": "We’ll consider your request and get back to you in 10 days.",
       "EMAIL": "HMCTSforms@justice.gov.uk",
@@ -1988,6 +1996,10 @@
       "TITLE": "Y cyfanswm yr ydych yn ei hawlio",
       "25000_OR_LESS": "£25,000 neu lai"
     },
+    "ELIGIBILITY_KNOWN_CLAIM_AMOUNT": {
+      "PAGE_TITLE": "Do you know the amount you are claiming?",
+      "TITLE": "Ydych chi'n gwybod faint rydych chi'n hawlio amdano?"
+    },
     "ELIGIBILITY_OVER_18_CLAIMANT": {
       "PAGE_TITLE": "Ydych chi'n 18 oed neu'n hŷn?",
       "TITLE": "Ydych chi'n 18 oed neu'n hŷn?"
@@ -2174,6 +2186,9 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
     "GENERAL_APPLICATION": {
+      "COMMON": {
+        "MAKE_AN_APPLICATION": "Make an application"
+      },
       "ACCEPT_DEFENDANT_OFFER": {
         "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
         "ENTER_AMOUNT": "Enter the amount in £",
@@ -2509,18 +2524,6 @@
         "PREFERRED_EMAIL_ADDRESS": "Preferred email address",
         "PREFERRED_TELEPHONE_NUMBER": "Preferred telephone number",
         "TITLE": "Contact Details"
-      },
-      "UNAVAILABLE_HEARING_DATES": {
-        "ADD_ANOTHER_DATE": "Add another date or date range",
-        "ENTER_UNAVAILABLE": "Enter unavailable date",
-        "FROM": "From",
-        "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
-        "LONGER_PERIOD": "A longer period of time",
-        "PAGE_TITLE": "Unavailable hearing dates",
-        "SELECT": "Select a date or dates you cannot attend a hearing",
-        "SINGLE_DATE": "A single date",
-        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
-        "TO": "To"
       },
       "RESPONDENT_INFORMATION": {
         "CLICK_RESPOND": "Click 'respond to application' to let the court know whether or not you agree with their request.",
@@ -3955,6 +3958,7 @@
   },
   "ERRORS": {
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau nad ydynt yn electronig",
+    "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau electronig",
     "ACCEPT_REPAYMENT_PLAN": "Dewiswch dderbyn y cynllun ad-dalu hwn i dderbyn cynllun ad-dalu arfaethedig y llys",
     "ADDRESS_NOT_FOUND": "Ni allwn ddod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
     "AMOUNT_INVALID_DECIMALS": "Rhowch swm, dim mwy na dau le degol",
@@ -4158,6 +4162,7 @@
     "INVALID_AMOUNT": "Swm annilys",
     "HOW_YOU_CALCULATED_AMOUNT": "Rhaid i chi ddweud wrthym sut y cyfrifoch chi'r swm",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
+    "KNOWN_CLAIM_AMOUNT": "Nodwch os ydych chi'n gwybod faint rydych chi'n hawlio amdano",
     "NAME_REQUIRED": "Nodwch enw os gwelwch yn dda",
     "NO_LANGUAGE_ENTERED": "Rhowch yr iaith sydd angen ei chyfieithu",
     "NO_OTHER_SUPPORT": "Dywedwch wrthym pa gymorth arall sydd ei angen arnynt",

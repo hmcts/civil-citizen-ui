@@ -23,4 +23,5 @@ export class Hearing {
   unavailableDatesForHearing?: UnavailableDates;
   disclosureOfDocuments?: DisclosureOfDocuments;
   disclosureNonElectronicDocument?: string;
+  disclosureOfElectronicDocumentsIssues?: string;
 }

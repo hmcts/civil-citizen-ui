@@ -86,6 +86,7 @@ import agreedResponseDeadlineController from './features/response/responseDeadli
 import determinationWithoutHearingController
   from './features/directionsQuestionnaire/hearing/determinationWithoutHearingController';
 import totalAmountEligibilityController from './features/public/eligibility/totalAmountController';
+import knownClaimAmountController from './features/public/eligibility/knownClaimAmountController';
 import claimTypeController from './features/public/eligibility/claimTypeController';
 import notEligibleController from './features/public/eligibility/notEligibleController';
 import claimantAddressEligibilityController from './features/public/eligibility/claimantAddressEligibilityController';
@@ -345,6 +346,8 @@ import multiTrackDisclosureNonElectronicDocuments
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocumentsController';
 import disclosureOfDocumentsController
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureOfDocumentsController';
+import disclosureOfElectronicDocumentsIssues
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureOfElectronicDocumentsIssuesController';
 
 export default [
   homeController,
@@ -428,6 +431,7 @@ export default [
   newDeadlineResponseController,
   determinationWithoutHearingController,
   totalAmountEligibilityController,
+  knownClaimAmountController,
   claimTypeController,
   notEligibleController,
   claimantAddressEligibilityController,
@@ -641,4 +645,5 @@ export default [
   acceptDefendantOfferController,
   multiTrackDisclosureNonElectronicDocuments,
   disclosureOfDocumentsController,
+  disclosureOfElectronicDocumentsIssues,
 ];

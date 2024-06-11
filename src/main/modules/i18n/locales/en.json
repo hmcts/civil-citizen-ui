@@ -409,6 +409,14 @@
         "HINT": "Please give details"
       }
     },
+    "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : {
+      "PAGE_TITLE": "What are the issues about disclosure of electronic documents?",
+      "TITLE": "Disclosure of electronic documents",
+      "TEXT_AREA" : {
+        "LABEL": "What are the issues about disclosure of electronic documents?",
+        "HINT": "Please give details"
+      }
+    },
     "ACCESSIBILITY_STATEMENT": {
       "CONSIDER": "We’ll consider your request and get back to you in 10 days.",
       "EMAIL": "HMCTSforms@justice.gov.uk",
@@ -1988,6 +1996,10 @@
       "TITLE": "Total amount you're claiming",
       "25000_OR_LESS": "£25,000 or less"
     },
+    "ELIGIBILITY_KNOWN_CLAIM_AMOUNT": {
+      "PAGE_TITLE": "Do you know the amount you are claiming?",
+      "TITLE": "Do you know the amount you are claiming?"
+    },
     "ELIGIBILITY_OVER_18_CLAIMANT": {
       "PAGE_TITLE": "Are you 18 or over?",
       "TITLE": "Are you 18 or over?"
@@ -2174,6 +2186,9 @@
       "REACHING_SETTLEMENT": "Reaching a settlement"
     },
     "GENERAL_APPLICATION": {
+      "COMMON": {
+        "MAKE_AN_APPLICATION": "Make an application"
+      },
       "ACCEPT_DEFENDANT_OFFER": {
         "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
         "ENTER_AMOUNT": "Enter the amount in £",
@@ -2509,18 +2524,6 @@
         "PREFERRED_EMAIL_ADDRESS": "Preferred email address",
         "PREFERRED_TELEPHONE_NUMBER": "Preferred telephone number",
         "TITLE": "Contact Details"
-      },
-      "UNAVAILABLE_HEARING_DATES": {
-        "ADD_ANOTHER_DATE": "Add another date or date range",
-        "ENTER_UNAVAILABLE": "Enter unavailable date",
-        "FROM": "From",
-        "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
-        "LONGER_PERIOD": "A longer period of time",
-        "PAGE_TITLE": "Unavailable hearing dates",
-        "SELECT": "Select a date or dates you cannot attend a hearing",
-        "SINGLE_DATE": "A single date",
-        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
-        "TO": "To"
       },
       "RESPONDENT_INFORMATION": {
         "CLICK_RESPOND": "Click 'respond to application' to let the court know whether or not you agree with their request.",
@@ -3955,6 +3958,7 @@
   },
   "ERRORS": {
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Give details of the issues about disclosure of non-electronic documents",
+    "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : "Give details of the issues about disclosure of electronic documents",
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court’s proposed repayment plan",
     "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
     "AMOUNT_INVALID_DECIMALS": "Enter a valid amount, maximum two decimal places",
@@ -4158,6 +4162,7 @@
     "INVALID_AMOUNT": "Invalid amount",
     "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Enter a job title",
+    "KNOWN_CLAIM_AMOUNT": "Indicate if you know the amount you are claiming for",
     "NAME_REQUIRED": "Please enter a name",
     "NO_LANGUAGE_ENTERED": "Enter the language that needs to be interpreted",
     "NO_OTHER_SUPPORT": "Tell us what other support they need",
