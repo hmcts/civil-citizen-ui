@@ -11,6 +11,7 @@
 
 {% block nestedContent %}
   {{ headingWithCaption(t, caption, headingTitle) }}
+  {{ headingWithCaption(t, headerTitle, headingTitle) }}
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.IMPORTANT_EVENTS') }}</p>
   <form method="post" novalidate>
     {{ csrfProtection(csrf) }}

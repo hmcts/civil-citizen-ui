@@ -20,6 +20,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           {{ headingWithCaption(t, caption, 'PAGES.GENERAL_APPLICATION.HEARING_CONTACT_DETAILS.TITLE') }}
+          {{ headingWithCaption(t, headerTitle, 'PAGES.GENERAL_APPLICATION.HEARING_CONTACT_DETAILS.TITLE') }}
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {{ govukInput({
