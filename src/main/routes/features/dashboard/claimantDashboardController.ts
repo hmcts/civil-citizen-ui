@@ -57,14 +57,10 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(claim, claimId, lng);
-      if (dashboard.items[2]?.tasks[2]?.taskNameEn == '<a>Upload hearing documents</a>'){
+      if (dashboard.items[2]?.tasks[2]?.taskNameEn.search(t('PAGES.DASHBOARD.HEARINGS.UPLOAD_DOCUMENTS'))){
         req.session.dashboard = {taskIdHearingUploadDocuments:undefined};
         req.session.dashboard.taskIdHearingUploadDocuments = dashboard.items[2]?.tasks[2]?.id;
       }
-      //TODO remove the console logs
-      console.log('TASKID: ',req.session.dashboard.taskIdHearingUploadDocuments);
-      console.log('TASKID: ',dashboard.items[2]?.tasks[2]?.id);
-      console.log('Task Name En: ',dashboard.items[2]?.tasks[2]?.taskNameEn);
 
       res.render(claimantDashboardViewPath, {
         claim: claim,

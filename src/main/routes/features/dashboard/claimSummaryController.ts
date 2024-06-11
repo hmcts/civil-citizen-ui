@@ -1,4 +1,4 @@
-import {NextFunction, RequestHandler, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import config from 'config';
 import {AppRequest} from 'models/AppRequest';
 import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
@@ -37,7 +37,7 @@ const claimSummaryController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFunction) => {
+claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
 
     const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
@@ -56,8 +56,10 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
 
-      await civilServiceClient.updateTaskStatus(dashboardTaskList.items[2].tasks[2].id, <AppRequest>req);
-
+      if (dashboardTaskList.items[2]?.tasks[1]?.taskNameEn.search(t('PAGES.DASHBOARD.HEARINGS.UPLOAD_DOCUMENTS'))){
+        req.session.dashboard = {taskIdHearingUploadDocuments:undefined};
+        req.session.dashboard.taskIdHearingUploadDocuments = dashboardTaskList.items[2]?.tasks[1]?.id;
+      }
       res.render(claimSummaryRedesignViewPath,
         {
           claim,

@@ -68,7 +68,9 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
       renderView(res, form, claim, claimId, isSmallClaims, lang);
     } else {
       await saveUploadedDocuments(claim, <AppRequest>req);
-      await civilServiceClient.updateTaskStatus((<AppRequest>req)?.session.dashboard.taskIdHearingUploadDocuments, <AppRequest>req);
+      if((<AppRequest>req)?.session?.dashboard?.taskIdHearingUploadDocuments){
+        await civilServiceClient.updateTaskStatus((<AppRequest>req)?.session?.dashboard?.taskIdHearingUploadDocuments, <AppRequest>req);
+      }
       await deleteDraftClaimFromStore(claimId);
       res.redirect(constructResponseUrlWithIdParams(claim.id, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
     }
