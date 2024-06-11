@@ -15,6 +15,7 @@ import {
   getByIndex,
   updateByIndexOrAppend,
   validateAdditionalApplicationtType,
+  getDynamicHeaderForMultipleApplications,
   saveAcceptDefendantOffer,
 } from 'services/features/generalApplication/generalApplicationService';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
@@ -349,6 +350,26 @@ describe('General Application service', () => {
       //Then
       await expect(saveHearingContactDetails('123', hearingContactDetails)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
+  });
+
+  describe('getDynamicHeaderForMultipleApplications', () => {
+    it.each`
+      selectedApplicationTypes                                                      | expectedHeader
+      ${[]}                                                                         | ${'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION'}
+      ${undefined}                                                                  | ${'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION'}
+      ${[ApplicationTypeOption.ADJOURN_HEARING]}                                    | ${'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING'}
+      ${[ApplicationTypeOption.ADJOURN_HEARING, ApplicationTypeOption.EXTEND_TIME]} | ${'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION'}
+    `('should return $expected when selected types are $selectedApplicationTypes',
+      ({ selectedApplicationTypes, expectedHeader}) => {
+        //When
+        const claim = new Claim();
+        claim.generalApplication = new GeneralApplication();
+        if (selectedApplicationTypes) {
+          claim.generalApplication.applicationTypes = selectedApplicationTypes.map((at: ApplicationTypeOption) => new ApplicationType(at));
+        }
+        //Then
+        expect(getDynamicHeaderForMultipleApplications(claim)).toEqual(expectedHeader);
+      });
   });
 
   describe('Get by index or last', () => {
