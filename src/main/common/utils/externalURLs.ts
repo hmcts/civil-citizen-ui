@@ -21,3 +21,4 @@ export const findLegalAdviceUrl = 'https://www.gov.uk/find-legal-advice';
 export const findCourtTribunalUrl = 'https://www.gov.uk/find-court-tribunal';
 export const formN245Url = 'https://www.gov.uk/government/publications/form-n245-application-for-suspension-of-a-warrant-and-or-variation-of-an-order';
 export const disclosureOfDocumentsUrl = 'https://www.justice.gov.uk/courts/procedure-rules/civil/standard-directions/general/disclosure-of-documents';
+export const practiceDirection31bUrl = 'https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part31/pd_part31b#31.1';

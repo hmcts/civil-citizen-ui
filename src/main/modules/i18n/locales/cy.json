@@ -1474,6 +1474,27 @@
       "PAGE_TITLE": "A oes yna unrhyw ddogfennau sydd gan yr hawlydd yr ydych eisiau i’r llys eu hystyried?",
       "TITLE": "A oes yna unrhyw ddogfennau sydd gan yr hawlydd yr ydych eisiau i’r llys eu hystyried?"
     },
+    "DISCLOSURE_OF_DOCUMENTS": {
+      "PAGE_TITLE": "Datgelu dogfennau",
+      "TITLE": "Datgelu dogfennau",
+      "CHECKBOX_TITLE": "Gallwch ofyn i'r llys orchymyn datgelu dogfennau gan y partïon eraill. Ydych chi am ofyn am y datgeliad neu ddogfennau electronig neu anelectronig, neu'r ddau? (dewisol)",
+      "WHAT_IS_THE_DIFFERENCE": "Beth yw'r gwahaniaeth rhwng dogfennau electronig ac anelectronig?",
+      "TITLE_1": "Dogfennau electronig",
+      "PARAGRAPH_1.1": "Dogfennau electronig yw unrhyw ddogfennau y gellir eu darparu mewn unrhyw fformat digidol neu electronig. Mae hyn yn cynnwys dogfennau ffisegol y gellir eu darparu mewn fformat electronig.",
+      "PARAGRAPH_1.2": "Mae fformatau yn cynnwys DOC/DOCX (Word), XLS / XLSX (Excel), PPT / PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG / JPEG, PNG, BMP, TIF / TIFF.",
+      "PARAGRAPH_1.3": "Er enghraifft, mae anfoneb neu gyswllt a oedd yn ddogfen gorfforol, ond sydd wedi'i sganio neu ei ffotograffio a gellir ei chyflwyno'n electronig yn ddogfen electronig.",
+      "TITLE_2": "Dogfennau nad ydynt yn electronig",
+      "PARAGRAPH_2.1": "Mae dogfennau nad ydynt yn rhai eletronic yn ddogfennau ffisegol nad ydynt mewn fformat digidol nac electronig. Mae hyn yn cynnwys dogfennau electronig, sy'n digwydd bod mewn fformat ffisegol.",
+      "PARAGRAPH_2.2": "Er enghraifft, mae print allan o e-bost yn ddogfen anelectronig.",
+      "TITLE_3": "Mwy o wybodaeth",
+      "URL": {
+        "BEFORE": "Darganfyddwch fwy am ",
+        "TEXT": "Practice Direction 31B (opens in new tab)",
+        "AFTER": "."
+      },
+      "ELECTRONIC_DOCS_OPTION": "Dogfennau electronig i'w datgelu",
+      "NON_ELECTRONIC_DOCS_OPTION": "Dogfennau nad ydynt yn electronig i'w datgelu"
+    },
     "CONTACT_THEM": {
       "ABOUT": "Ynghylch yr Hawliad",
       "CLAIMANT": "Hawlydd",
