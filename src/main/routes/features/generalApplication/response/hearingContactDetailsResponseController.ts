@@ -18,10 +18,10 @@ const viewPath = 'features/generalApplication/hearing-contact-details';
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingContactDetails>, req: AppRequest | Request, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const caption = getRespondToApplicationCaption(claim,lang);
+  const headerTitle = getRespondToApplicationCaption(claim,lang);
   const cancelUrl = await getCancelUrl(claimId, claim);
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_RESPONSE_HEARING_ARRANGEMENT_URL);
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, caption });
+  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle });
 }
 
 hearingContactDetailsResponseController.get(GA_RESPONSE_HEARING_CONTACT_DETAILS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
