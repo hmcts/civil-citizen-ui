@@ -3,7 +3,7 @@ const EligibilityCheck = require('../pages/eligibilityCheck');
 const EligibilityCheckOCMC = require('../pages/eligibilityCheckOCMC');
 const CreateClaim = require('../pages/createClaim');
 const CreateClaimOCMC = require('../pages/createClaimOCMC');
-const {isMintiToggleEnabled} = require("../../../specClaimHelpers/api/testingSupport");
+const {isMintiToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
 
 const eligibilityCheck = new EligibilityCheck();
 const eligibilityCheckOCMC = new EligibilityCheckOCMC();
