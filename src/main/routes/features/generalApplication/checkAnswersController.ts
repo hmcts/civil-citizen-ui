@@ -26,7 +26,7 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const summaryRows = getSummarySections(claimId, claim, lang);
   const headerTitle = getDynamicHeaderForMultipleApplications(claim);
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, summaryRows });
+  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdTitle: 'COMMON.CASE_NUMBER', claimIdPrettified, claim, summaryRows });
 }
 
 gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

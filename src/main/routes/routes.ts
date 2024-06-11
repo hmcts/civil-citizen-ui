@@ -331,6 +331,7 @@ import uploadEvidenceDocumentsForApplicationController from 'routes/features/gen
 import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
 import confirmYouHaveBeenPaidConfirmController
   from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
+import gaCheckAnswersResponseController from 'routes/features/generalApplication/response/checkAnswersResponseController';
 import hearingArrangementResponseController
   from 'routes/features/generalApplication/response/hearingArrangementResponseController';
 import hearingContactDetailsResponseController
@@ -631,6 +632,7 @@ export default [
   applicationResponseConfirmationController,
   confirmYouHaveBeenPaidController,
   confirmYouHaveBeenPaidConfirmController,
+  gaCheckAnswersResponseController,
   hearingArrangementResponseController,
   hearingContactDetailsResponseController,
   hearingSupportResponseController,
