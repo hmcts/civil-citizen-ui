@@ -176,6 +176,7 @@ export class Claim {
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
   judgmentOnline?: JudgmentOnline;
+  claimType?: string;
 
   // Index signature to allow dynamic property access
   [key: string]: any;
@@ -582,7 +583,7 @@ export class Claim {
   }
 
   isDefendantDetailsCompleted(): boolean {
-    return !!this.respondent1?.type && 
+    return !!this.respondent1?.type &&
       !!this.respondent1?.partyDetails?.primaryAddress &&
       (
         (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName) ||
@@ -769,16 +770,14 @@ export class Claim {
     return party?.partyDetails?.partyName;
   }
 
-  get claimTrackType(): string {
-    return analyseClaimType(this.totalClaimAmount);
-  }
-
   get isFastTrackClaim(): boolean {
-    return this.claimTrackType === claimType.FAST_TRACK_CLAIM;
+    const claimTypeResult = analyseClaimType(this.totalClaimAmount);
+    return claimTypeResult === claimType.FAST_TRACK_CLAIM;
   }
 
   get isSmallClaimsTrackDQ(): boolean {
-    return this.claimTrackType === claimType.SMALL_CLAIM;
+    const claimTypeResult = analyseClaimType(this.totalClaimAmount);
+    return claimTypeResult === claimType.SMALL_CLAIM;
   }
 
   hasSdoOrderDocument(): boolean {
