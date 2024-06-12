@@ -64,6 +64,7 @@ appReq.session = {
   firstContact: undefined,
   fileUpload: undefined,
   issuedAt: 150,
+  dashboard: undefined,
 };
 const ccdClaim : CCDClaim = {
   legacyCaseReference : '000MC003',
@@ -624,7 +625,7 @@ describe('Civil Service Client', () => {
     });
     describe('getAirlines', () => {
       const mockData = [
-        {airline: 'airline 1', epimsID: '1'}, 
+        {airline: 'airline 1', epimsID: '1'},
         {airline: 'airline 2', epimsID: '2'},
       ];
       it('should get airline list', async () => {
