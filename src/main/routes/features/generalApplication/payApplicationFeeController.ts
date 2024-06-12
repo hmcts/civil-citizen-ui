@@ -1,5 +1,9 @@
 import { NextFunction, RequestHandler, Response, Router } from 'express';
-import { GA_PAY_APPLICATION_FEE } from 'routes/urls';
+import {
+  GA_PAY_APPLICATION_FEE,
+  GA_PAYMENT_SUCCESSFUL_URL,
+  GA_PAYMENT_UNSUCCESSFUL_URL,
+} from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
 import {
@@ -11,13 +15,17 @@ import { getClaimById } from 'modules/utilityService';
 import { t } from 'i18next';
 import { Claim } from 'models/claim';
 import { GenericYesNo } from 'form/models/genericYesNo';
-import { getFeePaymentRedirectInformation } from 'services/features/feePayment/feePaymentService';
-import { FeeType } from 'form/models/helpWithFees/feeType';
 import { YesNo } from 'form/models/yesNo';
+import {
+  getGaFeePaymentRedirectInformation, getGaFeePaymentStatus
+} from 'services/features/generalApplication/generalApplicationFeePaymentService';
 
 const payApplicationFeeController = Router();
 const viewPath = 'features/generalApplication/pay-application-fee';
 const backLinkUrl = 'test'; // TODO: add url
+const success = 'Success';
+const failed = 'Failed';
+const paymentCancelledByUser = 'Payment was cancelled by the user';
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<GenericYesNo>, res: Response): Promise<void> {
   const caption = 'PAGES.GENERAL_APPLICATION.PAY_APPLICATION_FEE.APPLICATION_FEE';
@@ -39,6 +47,7 @@ payApplicationFeeController.get(GA_PAY_APPLICATION_FEE, (async (req: AppRequest,
 payApplicationFeeController.post(GA_PAY_APPLICATION_FEE, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const generalApplicationId = req.params.gaId;
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.HELP_WITH_FEES_EMPTY_OPTION'));
@@ -48,8 +57,17 @@ payApplicationFeeController.post(GA_PAY_APPLICATION_FEE, (async (req: AppRequest
     } else {
       await saveApplyHelpWithFees(redisKey, claim, req.body.option);
       if (claim.generalApplication?.applyHelpWithFees === YesNo.NO) {
-        const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.GENERALAPPLICATION, req);
-        res.redirect(paymentRedirectInformation?.nextUrl);
+        const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+        const paymentStatus = await getGaFeePaymentStatus(generalApplicationId, paymentRedirectInformation.paymentReference, req);
+        paymentRedirectInformation.status = paymentStatus.status;
+        paymentRedirectInformation.errorCode = paymentStatus.errorCode;
+        paymentRedirectInformation.errorDescription = paymentStatus.errorDescription;
+        if (paymentStatus.status === success) {
+          return GA_PAYMENT_SUCCESSFUL_URL;
+        } else if (paymentStatus.status === failed && paymentStatus.errorDescription !== paymentCancelledByUser) {
+          return GA_PAYMENT_UNSUCCESSFUL_URL;
+        }
+        return GA_PAY_APPLICATION_FEE;
       } else {
         res.redirect('test'); // TODO: add url
       }
