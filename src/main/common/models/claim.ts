@@ -495,6 +495,10 @@ export class Claim {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
 
+  isCaseIssuedPending(): boolean {
+    return this.ccdState === CaseState.PENDING_CASE_ISSUED;
+  }
+
   isClaimantIntentionPending(): boolean {
     return this.ccdState === CaseState.AWAITING_APPLICANT_INTENTION;
   }
@@ -582,7 +586,7 @@ export class Claim {
   }
 
   isDefendantDetailsCompleted(): boolean {
-    return !!this.respondent1?.type && 
+    return !!this.respondent1?.type &&
       !!this.respondent1?.partyDetails?.primaryAddress &&
       (
         (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName) ||

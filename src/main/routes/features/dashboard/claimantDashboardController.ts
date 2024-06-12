@@ -99,7 +99,7 @@ const getSupportLinks = (claim: Claim, claimId: string, lng: string) => {
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks = [];
 
-  if (claim.isDefendantNotResponded()) {
+  if (!claim.isCaseIssuedPending()) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }), url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) });
   }
   if (showTellUsEndedLink) {
