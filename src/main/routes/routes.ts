@@ -86,6 +86,7 @@ import agreedResponseDeadlineController from './features/response/responseDeadli
 import determinationWithoutHearingController
   from './features/directionsQuestionnaire/hearing/determinationWithoutHearingController';
 import totalAmountEligibilityController from './features/public/eligibility/totalAmountController';
+import knownClaimAmountController from './features/public/eligibility/knownClaimAmountController';
 import claimTypeController from './features/public/eligibility/claimTypeController';
 import notEligibleController from './features/public/eligibility/notEligibleController';
 import claimantAddressEligibilityController from './features/public/eligibility/claimantAddressEligibilityController';
@@ -331,6 +332,9 @@ import hearingSupportResponseController
   from 'routes/features/generalApplication/response/hearingSupportResponseController';
 import unavailableHearingDatesResponseController
   from 'routes/features/generalApplication/response/unavailableHearingDatesResponseController';
+import submitGeneralApplicationConfirmationController
+  from 'routes/features/generalApplication/submitGeneralApplicationConfirmationController';
+import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
 
 export default [
   homeController,
@@ -414,6 +418,7 @@ export default [
   newDeadlineResponseController,
   determinationWithoutHearingController,
   totalAmountEligibilityController,
+  knownClaimAmountController,
   claimTypeController,
   notEligibleController,
   claimantAddressEligibilityController,
@@ -615,4 +620,6 @@ export default [
   hearingContactDetailsResponseController,
   hearingSupportResponseController,
   unavailableHearingDatesResponseController,
+  submitGeneralApplicationConfirmationController,
+  acceptDefendantOfferController,
 ];

@@ -1901,6 +1901,10 @@
       "TITLE": "Total amount you're claiming",
       "25000_OR_LESS": "£25,000 or less"
     },
+    "ELIGIBILITY_KNOWN_CLAIM_AMOUNT": {
+      "PAGE_TITLE": "Do you know the amount you are claiming?",
+      "TITLE": "Do you know the amount you are claiming?"
+    },
     "ELIGIBILITY_OVER_18_CLAIMANT": {
       "PAGE_TITLE": "Are you 18 or over?",
       "TITLE": "Are you 18 or over?"
@@ -2087,6 +2091,24 @@
       "REACHING_SETTLEMENT": "Reaching a settlement"
     },
     "GENERAL_APPLICATION": {
+      "COMMON": {
+        "MAKE_AN_APPLICATION": "Make an application"
+      },
+      "ACCEPT_DEFENDANT_OFFER": {
+        "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
+        "ENTER_AMOUNT": "Enter the amount in £",
+        "N245": "N245 form",
+        "N245_AFTER": " that they completed. You should read this before responding.",
+        "N245_BEFORE": "The defendant's offer will be set out in the ",
+        "PROPOSE_IN_FULL": "I'll propose payment in full by a set date",
+        "PROPOSE_PAYMENT_PLAN": "Propose payment plan",
+        "PROPOSED_INSTALMENTS": "Proposed instalments per month",
+        "PROPOSED_SET_DATE": "Proposed set date",
+        "THE_COURT": "The court will make an order for the payment that was suggested by the defendant.",
+        "TITLE": "Do you accept the defendant's offer?",
+        "WHY_NOT_ACCEPT": "Why do you not accept the defendant's offer?",
+        "WHY_NOT_ACCEPT_2": "Why you do not accept the defendant's offer?"
+      },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
         "RESPOND_TO": "Respond to an application to {{applicationType}}",
@@ -2408,18 +2430,6 @@
         "PREFERRED_TELEPHONE_NUMBER": "Preferred telephone number",
         "TITLE": "Contact Details"
       },
-      "UNAVAILABLE_HEARING_DATES": {
-        "ADD_ANOTHER_DATE": "Add another date or date range",
-        "ENTER_UNAVAILABLE": "Enter unavailable date",
-        "FROM": "From",
-        "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
-        "LONGER_PERIOD": "A longer period of time",
-        "PAGE_TITLE": "Unavailable hearing dates",
-        "SELECT": "Select a date or dates you cannot attend a hearing",
-        "SINGLE_DATE": "A single date",
-        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
-        "TO": "To"
-      },
       "RESPONDENT_INFORMATION": {
         "CLICK_RESPOND": "Click 'respond to application' to let the court know whether or not you agree with their request.",
         "HEADER": "Respond to an application",
@@ -2449,6 +2459,16 @@
         "SINGLE_DATE": "A single date",
         "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
         "TO": "To"
+      },
+      "CONFIRMATION_PAGE": {
+        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}",
+        "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
+        "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
+        "PAGE_TITLE": "Application created",
+        "PAY_FEE_BUTTON": "Pay application fee",
+        "RETURN_CASE_DETAILS": "Close and return to case details",
+        "TITLE": "Application created",
+        "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -2787,7 +2807,7 @@
       "TITLE_WITH_PERSON": "Is {{ contactPerson }} the right person for the mediation service to call?"
     },
     "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
-      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TITLE": "Who will be attending the mediation appointment?",
       "PAGE_TEXT": "Is {{ partyContactPerson }} the person who will be attending the mediation appointment?"
     },
     "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
@@ -4045,6 +4065,7 @@
     "INVALID_AMOUNT": "Invalid amount",
     "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Enter a job title",
+    "KNOWN_CLAIM_AMOUNT": "Indicate if you know the amount you are claiming for",
     "NAME_REQUIRED": "Please enter a name",
     "NO_LANGUAGE_ENTERED": "Enter the language that needs to be interpreted",
     "NO_OTHER_SUPPORT": "Tell us what other support they need",
@@ -4272,6 +4293,13 @@
     "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced",
     "GENERAL_APPLICATION": {
+      "ACCEPT_DEFENDANT_OFFER": {
+        "ERROR_ACCEPT": "You need to tell us if you accept the defendant's offer. Choose option: Yes or No",
+        "ERROR_CHOOSE": "You need to propose a payment plan. Choose either instalments per month or payment in full by a set date.",
+        "ERROR_NOT_ACCEPT": "You need to tell us why you do not accept the defendant's offer.",
+        "ERROR_INSTALMENT": "You need to enter your proposed instalment per month.",
+        "FUTURE_DATE": "You need to enter a date in the future."
+      },
       "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
