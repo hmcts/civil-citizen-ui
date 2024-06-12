@@ -647,4 +647,9 @@ export default [
   unavailableHearingDatesResponseController,
   submitGeneralApplicationConfirmationController,
   acceptDefendantOfferController,
+  helpWithApplicationFeeController,
+  helpWithFeesContentController,
+  helpWithApplicationFeeReferenceController,
+  helpWithApplicationFeeContinueController,
+  payApplicationFeeConfirmationController,
 ];
