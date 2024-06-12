@@ -1,11 +1,10 @@
 import Axios, {AxiosInstance} from 'axios';
 import {AppRequest} from 'models/AppRequest';
-// import {
-//   CIVIL_GENERAL_APPLICATIONS_URL,
-// } from './generalApplicationUrls';
-// import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-// import {Application} from 'models/generalApplication/application';
-// import { CaseState } from 'common/form/models/claimDetails';
+import {
+  CIVIL_GENERAL_APPLICATIONS_URL,
+} from './generalApplicationUrls';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {Application} from 'models/generalApplication/application';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('generalApplicationClient');
@@ -37,20 +36,17 @@ export class GeneralApplicationClient {
   }
 
   async getApplications(req: AppRequest): Promise<any[]> {
-    // const config = this.getConfig(req);
-    // let applications: ApplicationResponse[] = [];
+    const config = this.getConfig(req);
+    let applications: ApplicationResponse[] = [];
     try {
-      // const response = await this.client.post(CIVIL_GENERAL_APPLICATIONS_URL, {match_all: {}}, config);
-      // applications = response.data?.cases?.map((application: ApplicationResponse) => {
-      //   const caseData = Object.assign(new Application(), application.case_data);
-      //   return new ApplicationResponse(application.id, caseData, application.state, application.last_modified, application.created_date);
-      // });
-      // return applications;
-      return [mock1, mock2, test]
-      // return [
-      //   new ApplicationResponse('123', {legacyCaseReference: 'ABC'}, CaseState.CASE_ISSUED, new Date()),
-      //   new ApplicationResponse('456', {legacyCaseReference: 'XYZ'}, CaseState.AWAITING_APPLICANT_INTENTION, new Date())
-      // ]
+      const response = await this.client.post(CIVIL_GENERAL_APPLICATIONS_URL, {match_all: {}}, config);
+      applications = response.data?.cases?.map((application: ApplicationResponse) => {
+        const caseData = Object.assign(new Application(), application.case_data);
+        return new ApplicationResponse(application.id, caseData, application.state, application.last_modified, application.created_date);
+      });
+      return applications;
+      // return [mock1, mock2, test]
+     
     } catch (err) {
       logger.error('Error when getApplications');
       throw err;
@@ -58,30 +54,30 @@ export class GeneralApplicationClient {
   }
 }
 
-const mock1 = {
-  id: '1234567890',
-  case_data: {
-    applicationTypes: 'Adjourn a hearing', 
-  },
-  state: 'AWAITING_RESPONDENT_RESPONSE',
-  last_modified: '2024-05-29T14:39:28.483971',
-  created_date: '2024-05-29T14:39:28.483971',
-};
+// const mock1 = {
+//   id: '1234567890',
+//   case_data: {
+//     applicationTypes: 'Adjourn a hearing', 
+//   },
+//   state: 'AWAITING_RESPONDENT_RESPONSE',
+//   last_modified: '2024-05-29T14:39:28.483971',
+//   created_date: '2024-05-29T14:39:28.483971',
+// };
 
-const mock2 = {
-  id: '4564564564564564', 
-  created_date: '2024-05-29T14:39:28.483971', 
-  state: 'AWAITING_APPLICATION_PAYMENT', 
-  case_data:{
-    applicationTypes: 'Adjourn a hearing', 
-  },
-};
+// const mock2 = {
+//   id: '4564564564564564', 
+//   created_date: '2024-05-29T14:39:28.483971', 
+//   state: 'AWAITING_APPLICATION_PAYMENT', 
+//   case_data:{
+//     applicationTypes: 'Adjourn a hearing', 
+//   },
+// };
 
-const test = {
-  id: 1716993568476294,
-  created_date: "2024-05-29T14:39:28.483971",
-  state: "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION",
-  case_data: {
-    applicationTypes: "Adjourn a hearing",
-  },
-};
+// const test = {
+//   id: 1716993568476294,
+//   created_date: "2024-05-29T14:39:28.483971",
+//   state: "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION",
+//   case_data: {
+//     applicationTypes: "Adjourn a hearing",
+//   },
+// };

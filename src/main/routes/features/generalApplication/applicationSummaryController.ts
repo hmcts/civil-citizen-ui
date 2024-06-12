@@ -27,7 +27,7 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
     applications.forEach(application => {
       const status = getApplicationStatus(application.state);
       applicationsRows.push({
-        state: t(`PAGES.GENERAL_APPLICATION.SUMMARY.${application.state}`, {lng}),
+        state: t(`PAGES.GENERAL_APPLICATION.SUMMARY.STATES.${application.state}`, {lng}),
         status: t(`PAGES.GENERAL_APPLICATION.SUMMARY.${status}`, {lng}),
         statusColor: StatusColor[status],
         types: application.case_data?.applicationTypes,

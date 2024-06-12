@@ -6,7 +6,7 @@
   {% set tagStatus %}
     {{govukTag({
       text: application.status,
-      classes: 'app-task-list__tag ' + application.statusColor
+      classes: 'ga-summary-tag app-task-list__tag ' + application.statusColor
     })}}
   {% endset %}
 

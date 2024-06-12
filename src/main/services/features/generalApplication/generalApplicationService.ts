@@ -287,5 +287,7 @@ export const getApplicationStatus = (status: ApplicationState): ApplicationStatu
       return ApplicationStatus.IN_PROGRESS;
     case ApplicationState.AWAITING_APPLICATION_PAYMENT:
       return ApplicationStatus.TO_DO;
+    default:
+      return ApplicationStatus.TO_DO;
   }
 };
