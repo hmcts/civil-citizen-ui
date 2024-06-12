@@ -58,7 +58,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(claim, claimId, lng);
-      const hearing = dashboard.items[2].tasks;
+      const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
       hearing.forEach((task) => {
         if (task.taskNameEn.search(HearingUploadDocuments)>0){
           req.session.dashboard = {taskIdHearingUploadDocuments:undefined};
