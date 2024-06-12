@@ -16,6 +16,11 @@ import {CCDBundle} from 'models/caseProgression/bundles/ccdBundle';
 import {CaseRole} from 'form/models/caseRoles';
 import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
+import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
+import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
+import {Dashboard} from 'models/dashboard/dashboard';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -27,7 +32,79 @@ const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.
 const isCarmEnabledForCaseMock = isCarmEnabledForCase as jest.Mock;
 const isDashboardServiceEnabledMock = launchDarklyClient.isDashboardServiceEnabled as jest.Mock;
 const isCUIReleaseTwoEnabledMock = launchDarklyClient.isCUIReleaseTwoEnabled as jest.Mock;
-
+const mockExpectedDashboardInfo=
+  [{
+    'categoryEn': 'Hearing',
+    'categoryCy': 'Hearing Welsh',
+    tasks: [{
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+      'status': 'ACTION_NEEDED',
+      'taskNameEn': 'task_name_en',
+      'hintTextEn': 'hint_text_en',
+      'taskNameCy': 'task_name_cy',
+      'hintTextCy': 'hint_text_cy',
+    }, {
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+      'status': 'ACTION_NEEDED',
+      'taskNameEn': 'task_name_en',
+      'hintTextEn': 'hint_text_en',
+      'taskNameCy': 'task_name_cy',
+      'hintTextCy': 'hint_text_cy',
+    }],
+  },
+  {
+    'categoryEn': 'Hearing',
+    'categoryCy': 'Hearing Welsh',
+    tasks: [{
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+      'status': 'ACTION_NEEDED',
+      'taskNameEn': 'task_name_en',
+      'hintTextEn': 'hint_text_en',
+      'taskNameCy': 'task_name_cy',
+      'hintTextCy': 'hint_text_cy',
+    }, {
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+      'status': 'ACTION_NEEDED',
+      'taskNameEn': 'task_name_en',
+      'hintTextEn': 'hint_text_en',
+      'taskNameCy': 'task_name_cy',
+      'hintTextCy': 'hint_text_cy',
+    }],
+  },
+  {
+    'categoryEn': 'Claim',
+    'categoryCy': 'Claim Welsh',
+    tasks:[{
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
+      'statusEn': 'ACTION_NEEDED',
+      'statusCy': 'ACTION_NEEDED',
+      'statusColour': 'govuk-red',
+      'taskNameEn': 'task_name_en2',
+      'hintTextEn': 'hint_text_en2',
+      'taskNameCy': 'task_name_cy2',
+      'hintTextCy': 'hint_text_cy2',
+    },
+    {
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
+      'statusEn': 'ACTION_NEEDED',
+      'statusCy': 'ACTION_NEEDED',
+      'statusColour': 'govuk-red',
+      'taskNameEn': 'task_name_en2',
+      'hintTextEn': 'hint_text_en2',
+      'taskNameCy': 'task_name_cy2',
+      'hintTextCy': 'hint_text_cy2',
+    },
+    {
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
+      'statusEn': 'ACTION_NEEDED',
+      'statusCy': 'ACTION_NEEDED',
+      'statusColour': 'govuk-red',
+      'taskNameEn': 'Upload hearing documents',
+      'hintTextEn': 'hint_text_en2',
+      'taskNameCy': 'task_name_cy2',
+      'hintTextCy': 'hint_text_cy2',
+    }] as DashboardTask[],
+  }] as DashboardTaskList[];
 jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
@@ -331,6 +408,37 @@ describe('Claim Summary Controller Defendant', () => {
       isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
       isCarmEnabledForCaseMock.mockResolvedValue(true);
+      //when
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, smallClaim);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+      //then
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Case number: ');
+        });
+    });
+    it('should new dashboard when we have hearing task list', async () => {
+      //given
+      const smallClaim = {
+        ...claim,
+        state: CaseState.AWAITING_APPLICANT_INTENTION,
+        case_data: {
+          ...claim.case_data,
+        },
+      };
+      isDashboardServiceEnabledMock.mockResolvedValue(true);
+      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
+      isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
+      isCarmEnabledForCaseMock.mockResolvedValue(true);
+      const dashboard = new Dashboard(mockExpectedDashboardInfo);
+
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
       //when
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)

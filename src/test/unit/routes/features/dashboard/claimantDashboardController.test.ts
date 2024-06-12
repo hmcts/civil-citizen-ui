@@ -20,7 +20,84 @@ import {t} from 'i18next';
 import * as UtilityService from 'modules/utilityService';
 import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
+import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
+import {Dashboard} from 'models/dashboard/dashboard';
 const isCarmEnabledForCaseMock = isCarmEnabledForCase as jest.Mock;
+
+const mockExpectedDashboardInfo=
+  [{
+    'categoryEn': 'Hearing',
+    'categoryCy': 'Hearing Welsh',
+    tasks: [{
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+      'status': 'ACTION_NEEDED',
+      'taskNameEn': 'task_name_en',
+      'hintTextEn': 'hint_text_en',
+      'taskNameCy': 'task_name_cy',
+      'hintTextCy': 'hint_text_cy',
+    }, {
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+      'status': 'ACTION_NEEDED',
+      'taskNameEn': 'task_name_en',
+      'hintTextEn': 'hint_text_en',
+      'taskNameCy': 'task_name_cy',
+      'hintTextCy': 'hint_text_cy',
+    }],
+  },
+  {
+    'categoryEn': 'Hearing',
+    'categoryCy': 'Hearing Welsh',
+    tasks: [{
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+      'status': 'ACTION_NEEDED',
+      'taskNameEn': 'task_name_en',
+      'hintTextEn': 'hint_text_en',
+      'taskNameCy': 'task_name_cy',
+      'hintTextCy': 'hint_text_cy',
+    }, {
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+      'status': 'ACTION_NEEDED',
+      'taskNameEn': 'task_name_en',
+      'hintTextEn': 'hint_text_en',
+      'taskNameCy': 'task_name_cy',
+      'hintTextCy': 'hint_text_cy',
+    }],
+  },
+  {
+    'categoryEn': 'Claim',
+    'categoryCy': 'Claim Welsh',
+    tasks:[{
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
+      'statusEn': 'ACTION_NEEDED',
+      'statusCy': 'ACTION_NEEDED',
+      'statusColour': 'govuk-red',
+      'taskNameEn': 'task_name_en2',
+      'hintTextEn': 'hint_text_en2',
+      'taskNameCy': 'task_name_cy2',
+      'hintTextCy': 'hint_text_cy2',
+    },
+    {
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
+      'statusEn': 'ACTION_NEEDED',
+      'statusCy': 'ACTION_NEEDED',
+      'statusColour': 'govuk-red',
+      'taskNameEn': 'task_name_en2',
+      'hintTextEn': 'hint_text_en2',
+      'taskNameCy': 'task_name_cy2',
+      'hintTextCy': 'hint_text_cy2',
+    },
+    {
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
+      'statusEn': 'ACTION_NEEDED',
+      'statusCy': 'ACTION_NEEDED',
+      'statusColour': 'govuk-red',
+      'taskNameEn': 'Upload hearing documents',
+      'hintTextEn': 'hint_text_en2',
+      'taskNameCy': 'task_name_cy2',
+      'hintTextCy': 'hint_text_cy2',
+    }] as DashboardTask[],
+  }] as DashboardTaskList[];
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -105,6 +182,34 @@ describe('claimant Dashboard Controller', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       claim.caseProgression = new CaseProgression();
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(data);
+      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Mr. Jan Clark v Version 1');
+        expect(res.text).toContain('Case number: ');
+      });
+    });
+
+    it('should return defendant dashboard page with claimant and small claims with task list info', async () => {
+
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.INDIVIDUAL;
+      claim.respondent1.partyDetails = new PartyDetails({
+        individualTitle:'Mr',
+        individualFirstName:'Jon',
+        individualLastName:'Doe',
+      });
+      claim.totalClaimAmount=500;
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.caseProgression = new CaseProgression();
+      const data = Object.assign(claim, civilClaimResponseMock.case_data);
+      const dashboard = new Dashboard(mockExpectedDashboardInfo);
+
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(data);
