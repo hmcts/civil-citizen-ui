@@ -12,7 +12,7 @@ import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 
-const claimantDocsForDisclosureController = Router();
+const claimantDocumentsTobeConsideredController = Router();
 const hasClaimantDocumentsToBeConsideredViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/claimant-documents-to-be-considered';
 const DISCLOSURCLAIMANT_DOCS_FOR_DISCLOSURE_PAGE = 'PAGES.CLAIMANT_DOCS_FOR_DISCLOSURE.';
 
@@ -28,7 +28,7 @@ function renderView(hasClaimantDocumentsToBeConsidered: GenericForm<GenericYesNo
   });
 }
 
-claimantDocsForDisclosureController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL, (async (req, res, next: NextFunction) => {
+claimantDocumentsTobeConsideredController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
@@ -40,7 +40,7 @@ claimantDocsForDisclosureController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_C
   }
 }) as RequestHandler);
 
-claimantDocsForDisclosureController.post(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL, (async (req: Request, res: Response, next: NextFunction) => {
+claimantDocumentsTobeConsideredController.post(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const hasClaimantDocumentsToBeConsideredForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.CLAIMANT_DOCS_FOR_DISCLOSURE'));
@@ -62,4 +62,4 @@ claimantDocsForDisclosureController.post(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_
   }
 }) as RequestHandler);
 
-export default claimantDocsForDisclosureController;
+export default claimantDocumentsTobeConsideredController;
