@@ -23,5 +23,4 @@ export const formN245Url = 'https://www.gov.uk/government/publications/form-n245
 export const disclosureOfDocumentsUrl = 'https://www.justice.gov.uk/courts/procedure-rules/civil/standard-directions/general/disclosure-of-documents';
 export const practiceDirection31bUrl = 'https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part31/pd_part31b#31.1';
 export const electronicDocumentQuestionnaireUrl = 'https://www.gov.uk/government/publications/form-n264-electronic-documents-questionnaire-civil-procedure-rules-practice-direction-31b';
-export const firstPracticeDirection31Url = 'https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part31/pd_part31b#31.1';
-export const firstPracticeDirection10Url = 'https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part31/pd_part31b#10.1';
+export const practiceDirection31b10Url = 'https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part31/pd_part31b#10.1';

@@ -2,8 +2,7 @@ import {DetailsComponent, DetailsComponentContentBuilder} from 'models/summaryTe
 import {
   disclosureOfDocumentsUrl,
   electronicDocumentQuestionnaireUrl,
-  firstPracticeDirection10Url,
-  firstPracticeDirection31Url,
+  practiceDirection31b10Url,
   practiceDirection31bUrl,
 } from 'common/utils/externalURLs';
 
@@ -43,7 +42,6 @@ export const  getWhatIsDifferenceDisclosureDocumentsContent = () => {
     .build());
 };
 
-
 export const getHowToAgreeDisclosureOfElectronicDocumentsContent = () => {
   const HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS = 'HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS.DETAILS.';
   return new DetailsComponent(`${HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS}TITLE`, new DetailsComponentContentBuilder()
@@ -55,13 +53,13 @@ export const getHowToAgreeDisclosureOfElectronicDocumentsContent = () => {
       null,
       true)
     .addLink(`${HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS}URL2.TEXT`,
-      firstPracticeDirection31Url,
+      practiceDirection31b10Url,
       `${HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS}URL2.BEFORE`,
       `${HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS}URL2.AFTER`,
       null,
       true)
     .addLink(`${HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS}URL3.TEXT`,
-      firstPracticeDirection10Url,
+      practiceDirection31bUrl,
       `${HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS}URL3.BEFORE`,
       `${HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS}URL3.AFTER`,
       null,

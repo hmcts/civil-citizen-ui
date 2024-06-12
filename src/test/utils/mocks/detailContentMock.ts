@@ -1,8 +1,7 @@
 import {DetailsComponent, DetailsComponentContentBuilder} from 'models/summaryText/detailsComponent';
 import {
   disclosureOfDocumentsUrl, practiceDirection31bUrl,
-  electronicDocumentQuestionnaireUrl, firstPracticeDirection10Url,
-  firstPracticeDirection31Url,
+  electronicDocumentQuestionnaireUrl, practiceDirection31b10Url,
 } from 'common/utils/externalURLs';
 
 export const  getWhatIsDisclosureDetailContentMock = () => {
@@ -52,13 +51,13 @@ export const getHowToAgreeDisclosureOfElectronicDocumentsContent = () => {
       null,
       true)
     .addLink(`${HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS}URL2.TEXT`,
-      firstPracticeDirection31Url,
+      practiceDirection31b10Url,
       `${HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS}URL2.BEFORE`,
       `${HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS}URL2.AFTER`,
       null,
       true)
     .addLink(`${HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS}URL3.TEXT`,
-      firstPracticeDirection10Url,
+      practiceDirection31bUrl,
       `${HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS}URL3.BEFORE`,
       `${HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS}URL3.AFTER`,
       null,
