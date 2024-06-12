@@ -3927,8 +3927,7 @@
       "WHAT_NEXT": "What happens next",
       "NO_FURTHER": "There's no further action you need to take.",
       "CLOSE_AND_RETURN": "Close and return to case details"
-    }
-  },
+    },
   "FOOTER": {
     "ACCESSIBILITY_STATEMENT_URL": "Datganiad hygyrchedd",
     "ALL_CONTENT": "Mae'r holl gynnwys ar gael o dan y <a href='{{ link }}' rel='license'>Drwydded Llywodraeth Agored v3.0</a>, oni nodir yn wahanol",
