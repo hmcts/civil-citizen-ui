@@ -401,15 +401,68 @@
       }
     }
   },
+  "HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS": {
+    "DETAILS": {
+      "TITLE": "Sut i gytuno i ddatgelu dogfennau electronig",
+      "PARAGRAPH1": "Gall partïon gytuno ymlaen llaw pa ddogfennau electronig a ddatgelir gan yr holl bartïon sy'n ymwneud â'r hawliad.",
+      "URL1": {
+        "BEFORE": "Gellir gwneud hyn drwy ddefnyddio'r ",
+        "TEXT": "Holiadur Dogfennau Electronig ar Gov.uk (yn agor mewn tab newydd)",
+        "AFTER": "."
+      },
+      "URL2": {
+        "BEFORE": "Mae mwy o wybodaeth am yr Holiadur Dogfennau Electronig ym mharagraff 10 o ",
+        "TEXT": "Gyfarwyddyd Ymarfer 31B (opens in a new tab)",
+        "AFTER": "."
+      },
+      "URL3": {
+        "BEFORE": "Gallwch hefyd ddarparu hyn yn ddigidol fel y nodir ym mharagraff 31 o ",
+        "TEXT": "Gyfarwyddyd Ymarfer 31B (opens in a new tab)",
+        "AFTER": "."
+      }
+    }
+  },
   "PAGES": {
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : {
       "PAGE_TITLE": "A oes unrhyw ddogfennau sydd gan yr hawlwyr yr hoffech i'r llys eu hystyried?",
       "TITLE": "Dogfennau hawlydd i'w hystyried"
     },
+    "HAS_AN_AGREEMENT_BEEN_REACHED" : {
+      "PAGE_TITLE": "A ddaethpwyd i gytundeb ynghylch datgelu dogfennau electronig?",
+      "TITLE": "Datgelu dogfennau electronig",
+      "COMBO_BOX" : {
+        "TITLE": "A gytunwyd rhwng y partïon sy'n ymwneud â'r hawliad ynghylch pa ddogfennau electronig fydd yn cael eu datgelu?",
+        "ITEM1": {
+          "TEXT": "Ie"
+        },
+        "ITEM2": {
+          "TEXT": "Na, ond mae'n debygol y bydd cytundeb"
+        },
+        "ITEM3": {
+          "TEXT": "Na"
+        }
+      }
+    },
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : {
       "PAGE_TITLE": "Datgelu dogfennau nad ydynt yn electronig",
       "TEXT_AREA" : {
         "LABEL": "Pa ddogfennau nad ydynt yn electronig sy'n cael eu cynnig i'w datgelu?",
+        "HINT": "Rhowch fanylion"
+      }
+    },
+    "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : {
+      "PAGE_TITLE": "Beth yw'r materion sy'n ymwneud â datgelu dogfennau electronig",
+      "TITLE": "Datgelu dogfennau electronig",
+      "TEXT_AREA" : {
+        "LABEL": "Beth yw'r materion sy'n ymwneud â datgelu dogfennau electronig",
+        "HINT": "Rhowch fanylion"
+      }
+    },
+    "CLAIMANT_DOCUMENTS_CONSIDERED_DETAILS" : {
+      "PAGE_TITLE": "Beth yw'r dogfennau sydd gan yr hawlwyr rydych chi am i'r llys eu hystyried?",
+      "TITLE": "Dogfennau hawlydd i'w hystyried",
+      "TEXT_AREA" : {
+        "LABEL": "Beth yw'r dogfennau sydd gan yr hawlwyr rydych chi am i'r llys eu hystyried?",
         "HINT": "Rhowch fanylion"
       }
     },
@@ -1470,6 +1523,27 @@
       "PAGE_TITLE": "A oes yna unrhyw ddogfennau sydd gan yr hawlydd yr ydych eisiau i’r llys eu hystyried?",
       "TITLE": "A oes yna unrhyw ddogfennau sydd gan yr hawlydd yr ydych eisiau i’r llys eu hystyried?"
     },
+    "DISCLOSURE_OF_DOCUMENTS": {
+      "PAGE_TITLE": "Datgelu dogfennau",
+      "TITLE": "Datgelu dogfennau",
+      "CHECKBOX_TITLE": "Gallwch ofyn i'r llys orchymyn datgelu dogfennau gan y partïon eraill. Ydych chi am ofyn am y datgeliad neu ddogfennau electronig neu anelectronig, neu'r ddau? (dewisol)",
+      "WHAT_IS_THE_DIFFERENCE": "Beth yw'r gwahaniaeth rhwng dogfennau electronig ac anelectronig?",
+      "TITLE_1": "Dogfennau electronig",
+      "PARAGRAPH_1.1": "Dogfennau electronig yw unrhyw ddogfennau y gellir eu darparu mewn unrhyw fformat digidol neu electronig. Mae hyn yn cynnwys dogfennau ffisegol y gellir eu darparu mewn fformat electronig.",
+      "PARAGRAPH_1.2": "Mae fformatau yn cynnwys DOC/DOCX (Word), XLS / XLSX (Excel), PPT / PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG / JPEG, PNG, BMP, TIF / TIFF.",
+      "PARAGRAPH_1.3": "Er enghraifft, mae anfoneb neu gyswllt a oedd yn ddogfen gorfforol, ond sydd wedi'i sganio neu ei ffotograffio a gellir ei chyflwyno'n electronig yn ddogfen electronig.",
+      "TITLE_2": "Dogfennau nad ydynt yn electronig",
+      "PARAGRAPH_2.1": "Mae dogfennau nad ydynt yn rhai eletronic yn ddogfennau ffisegol nad ydynt mewn fformat digidol nac electronig. Mae hyn yn cynnwys dogfennau electronig, sy'n digwydd bod mewn fformat ffisegol.",
+      "PARAGRAPH_2.2": "Er enghraifft, mae print allan o e-bost yn ddogfen anelectronig.",
+      "TITLE_3": "Mwy o wybodaeth",
+      "URL": {
+        "BEFORE": "Darganfyddwch fwy am ",
+        "TEXT": "Cyfarwyddyd Ymarfer 31B (yn agor mewn tab newydd)",
+        "AFTER": "."
+      },
+      "ELECTRONIC_DOCS_OPTION": "Dogfennau electronig i'w datgelu",
+      "NON_ELECTRONIC_DOCS_OPTION": "Dogfennau nad ydynt yn electronig i'w datgelu"
+    },
     "CONTACT_THEM": {
       "ABOUT": "Ynghylch yr Hawliad",
       "CLAIMANT": "Hawlydd",
@@ -1971,6 +2045,10 @@
       "TITLE": "Y cyfanswm yr ydych yn ei hawlio",
       "25000_OR_LESS": "£25,000 neu lai"
     },
+    "ELIGIBILITY_KNOWN_CLAIM_AMOUNT": {
+      "PAGE_TITLE": "Do you know the amount you are claiming?",
+      "TITLE": "Ydych chi'n gwybod faint rydych chi'n hawlio amdano?"
+    },
     "ELIGIBILITY_OVER_18_CLAIMANT": {
       "PAGE_TITLE": "Ydych chi'n 18 oed neu'n hŷn?",
       "TITLE": "Ydych chi'n 18 oed neu'n hŷn?"
@@ -2157,6 +2235,9 @@
       "REACHING_SETTLEMENT": "Setlo’r anghydfod"
     },
     "GENERAL_APPLICATION": {
+      "COMMON": {
+        "MAKE_AN_APPLICATION": "Make an application"
+      },
       "ACCEPT_DEFENDANT_OFFER": {
         "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
         "ENTER_AMOUNT": "Enter the amount in £",
@@ -2492,18 +2573,6 @@
         "PREFERRED_EMAIL_ADDRESS": "Preferred email address",
         "PREFERRED_TELEPHONE_NUMBER": "Preferred telephone number",
         "TITLE": "Contact Details"
-      },
-      "UNAVAILABLE_HEARING_DATES": {
-        "ADD_ANOTHER_DATE": "Add another date or date range",
-        "ENTER_UNAVAILABLE": "Enter unavailable date",
-        "FROM": "From",
-        "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
-        "LONGER_PERIOD": "A longer period of time",
-        "PAGE_TITLE": "Unavailable hearing dates",
-        "SELECT": "Select a date or dates you cannot attend a hearing",
-        "SINGLE_DATE": "A single date",
-        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
-        "TO": "To"
       },
       "RESPONDENT_INFORMATION": {
         "CLICK_RESPOND": "Click 'respond to application' to let the court know whether or not you agree with their request.",
@@ -2882,7 +2951,7 @@
       "TITLE_WITH_PERSON": "Ai {{ contactPerson }} yw'r un y dylai'r gwasanaeth cyfryngu ei ffonio?"
     },
     "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
-      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TITLE": "Who will be attending the mediation appointment?",
       "PAGE_TEXT": "Ai {{ partyContactPerson }} yw’r unigolyn a fydd yn mynychu’r apwyntiad cyfryngu?"
     },
     "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
@@ -3938,7 +4007,10 @@
   },
   "ERRORS": {
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Nodwch os oes unrhyw ddogfennau sydd gan yr hawlwyr eich bod am i'r llys eu hystyried",
+    "HAS_AN_AGREEMENT_BEEN_REACHED" : "Nodi a daethpwyd i gytundeb ynghylch pa ddogfennau electronig a fydd yn cael eu datgelu",
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau nad ydynt yn electronig",
+    "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau electronig",
+    "CLAIMANT_DOCUMENTS_CONSIDERED" : "Rhowch fanylion y dogfennau sydd gan yr hawlwyr yr ydych am i'r llys eu hystyried",
     "ACCEPT_REPAYMENT_PLAN": "Dewiswch dderbyn y cynllun ad-dalu hwn i dderbyn cynllun ad-dalu arfaethedig y llys",
     "ADDRESS_NOT_FOUND": "Ni allwn ddod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
     "AMOUNT_INVALID_DECIMALS": "Rhowch swm, dim mwy na dau le degol",
@@ -4142,6 +4214,7 @@
     "INVALID_AMOUNT": "Swm annilys",
     "HOW_YOU_CALCULATED_AMOUNT": "Rhaid i chi ddweud wrthym sut y cyfrifoch chi'r swm",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
+    "KNOWN_CLAIM_AMOUNT": "Nodwch os ydych chi'n gwybod faint rydych chi'n hawlio amdano",
     "NAME_REQUIRED": "Nodwch enw os gwelwch yn dda",
     "NO_LANGUAGE_ENTERED": "Rhowch yr iaith sydd angen ei chyfieithu",
     "NO_OTHER_SUPPORT": "Dywedwch wrthym pa gymorth arall sydd ei angen arnynt",

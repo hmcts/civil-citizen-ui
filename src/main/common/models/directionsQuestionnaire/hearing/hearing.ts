@@ -6,6 +6,9 @@ import {PhoneOrVideoHearing} from './phoneOrVideoHearing';
 import {SupportRequiredList} from '../supportRequired';
 import {SpecificCourtLocation} from './specificCourtLocation';
 import {UnavailableDates} from './unavailableDates';
+import {
+  DisclosureOfDocuments,
+} from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 
 export class Hearing {
   triedToSettle?: GenericYesNo;
@@ -18,6 +21,10 @@ export class Hearing {
   supportRequiredList?: SupportRequiredList;
   specificCourtLocation?: SpecificCourtLocation;
   unavailableDatesForHearing?: UnavailableDates;
+  disclosureOfDocuments?: DisclosureOfDocuments;
   disclosureNonElectronicDocument?: string;
+  disclosureOfElectronicDocumentsIssues?: string;
+  claimantDocumentsConsideredDetails?: string;
+  hasAnAgreementBeenReached?: string;
   hasClaimantDocumentsToBeConsidered?: GenericYesNo;
 }
