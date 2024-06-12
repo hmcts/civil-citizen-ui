@@ -1,30 +1,21 @@
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
-import {
-  GA_ADD_ANOTHER_APPLICATION_URL,
-  GA_REQUESTING_REASON_URL,
-  ORDER_JUDGE_URL,
-} from 'routes/urls';
+import { GA_REQUESTING_REASON_URL } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
-import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import { selectedApplicationType } from 'common/models/generalApplication/applicationType';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { RequestingReason } from 'models/generalApplication/requestingReason';
-import {
-  getByIndex,
-  getByIndexOrLast,
-  getCancelUrl,
-  saveRequestingReason,
-} from 'services/features/generalApplication/generalApplicationService';
+import { getByIndex, getByIndexOrLast, saveRequestingReason } from 'services/features/generalApplication/generalApplicationService';
 import { buildRequestingReasonPageContent } from 'services/features/generalApplication/requestingReasonPageBuilder';
 import { queryParamNumber } from 'common/utils/requestUtils';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {requestingReasonControllerGuard} from 'routes/guards/generalApplication/requestReasonControllerGuard';
 
 const requestingReasonController = Router();
 const viewPath = 'features/generalApplication/requesting-reason';
+const cancelUrl = 'test'; // TODO: add url
+const backLinkUrl = 'test'; // TODO: add url
 
-requestingReasonController.get(GA_REQUESTING_REASON_URL, requestingReasonControllerGuard,  (async (req: AppRequest, res: Response, next: NextFunction) => {
+requestingReasonController.get(GA_REQUESTING_REASON_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -36,8 +27,6 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, requestingReasonControl
     const requestingReason = new RequestingReason(requestingReasonText);
     const applicationType = selectedApplicationType[applicationTypeOption];
     const contentList = buildRequestingReasonPageContent(applicationTypeOption, lng);
-    const backLinkUrl = constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL);
-    const cancelUrl = await getCancelUrl(req.params.id, claim);
     const form = new GenericForm(requestingReason);
     res.render(viewPath, {
       form,
@@ -51,7 +40,7 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, requestingReasonControl
   }
 }) as RequestHandler);
 
-requestingReasonController.post(GA_REQUESTING_REASON_URL, requestingReasonControllerGuard, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+requestingReasonController.post(GA_REQUESTING_REASON_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -61,8 +50,7 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, requestingReasonContro
     const applicationIndex = queryParamNumber(req, 'index');
     const applicationTypeOption = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const contentList = buildRequestingReasonPageContent(applicationTypeOption, lng);
-    const backLinkUrl = constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL);
-    const cancelUrl = await getCancelUrl(req.params.id, claim);
+
     const form = new GenericForm(requestingReason);
     await form.validate();
     if (form.hasErrors()) {
@@ -75,7 +63,7 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, requestingReasonContro
       });
     } else {
       await saveRequestingReason(redisKey, requestingReason, applicationIndex);
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL));
+      res.redirect('test'); // TODO: add url
     }
   } catch (error) {
     next(error);

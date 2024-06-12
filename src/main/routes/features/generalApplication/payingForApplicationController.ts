@@ -1,11 +1,12 @@
-import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {GA_CHECK_ANSWERS_URL, GA_HEARING_SUPPORT_URL, PAYING_FOR_APPLICATION_URL} from 'routes/urls';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {PAYING_FOR_APPLICATION_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {getCancelUrl, getDynamicHeaderForMultipleApplications} from 'services/features/generalApplication/generalApplicationService';
 
 const payingForApplicationController = Router();
 const viewPath = 'features/generalApplication/paying-for-application';
+const backLinkUrl = 'test'; // TODO: add url
 
 payingForApplicationController.get(PAYING_FOR_APPLICATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -18,6 +19,10 @@ payingForApplicationController.get(PAYING_FOR_APPLICATION_URL, (async (req: AppR
   } catch (error) {
     next(error);
   }
+}) as RequestHandler);
+
+payingForApplicationController.post(PAYING_FOR_APPLICATION_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+  res.redirect('test'); // TODO: add url
 }) as RequestHandler);
 
 export default payingForApplicationController;

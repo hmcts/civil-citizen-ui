@@ -1,9 +1,5 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {
-  GA_HEARING_ARRANGEMENT_URL,
-  GA_HEARING_ARRANGEMENTS_GUIDANCE_URL,
-  GA_HEARING_CONTACT_DETAILS_URL,
-} from 'routes/urls';
+import {GA_HEARING_ARRANGEMENT_URL, GA_HEARING_CONTACT_DETAILS_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getCancelUrl, getDynamicHeaderForMultipleApplications, saveHearingArrangement } from 'services/features/generalApplication/generalApplicationService';
@@ -16,6 +12,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const hearingArrangementController = Router();
 const viewPath = 'features/generalApplication/hearing-arrangement';
+const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingArrangement>, req: AppRequest | Request, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);

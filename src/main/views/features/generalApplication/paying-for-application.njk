@@ -19,8 +19,7 @@
             {{ csrfProtection(csrf) }}
             <div class="govuk-button-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.CONTINUE'),
-                href: nextPageUrl
+                text: t('COMMON.BUTTONS.CONTINUE')
               }) }}
               <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
             </div>
