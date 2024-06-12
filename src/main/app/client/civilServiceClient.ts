@@ -57,6 +57,7 @@ import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceD
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
+import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -201,7 +202,7 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL, feeRequestBody, config);
       return response.data;
     } catch (err: unknown) {
-      logger.error('Error when getting claim fee data');
+      logger.error('Error when getting general application fee data');
       throw err;
     }
   }
@@ -358,6 +359,10 @@ export class CivilServiceClient {
 
   async submitJudgmentPaidInFull(claimId: string, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.JUDGMENT_PAID_IN_FULL, claimId, updatedClaim, req);
+  }
+
+  async submitInitiateGeneralApplicationEvent(claimId: string, updatedApplication: CCDGeneralApplication, req?: AppRequest):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.INITIATE_GENERAL_APPLICATION, claimId, updatedApplication, req);
   }
 
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {

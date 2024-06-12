@@ -1,5 +1,9 @@
 import { NextFunction, RequestHandler, Response, Router } from 'express';
-import { GA_UPLOAD_N245_FORM_URL, GA_WANT_TO_UPLOAD_DOCUMENTS } from 'routes/urls';
+import {
+  GA_APPLICATION_COSTS_URL,
+  GA_UPLOAD_N245_FORM_URL,
+  GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
+} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
@@ -10,10 +14,10 @@ import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { getCancelUrl, saveN245Form } from 'services/features/generalApplication/generalApplicationService';
 import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
 import { getUploadFormContent, uploadSelectedFile } from 'services/features/generalApplication/uploadN245FormService';
+import {uploadN245FormControllerGuard} from 'routes/guards/generalApplication/uploadN245FormControllerGuard';
 
 const uploadN245FormController = Router();
 const viewPath = 'features/generalApplication/upload-n245-form';
-const backLinkUrl = 'test'; // TODO: add url
 const removeDoc = 'REMOVE_DOC';
 const fileSize = Infinity;
 const selectedFile = 'selectedFile';
@@ -25,7 +29,7 @@ const upload = multer({
   },
 });
 
-uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -37,6 +41,7 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, (async (req: AppRequest, r
     const cancelUrl = await getCancelUrl(claimId, claim);
     const form = new GenericForm(uploadedN245Details);
     const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL);
+    const backLinkUrl = getBackLinkUrl(claimId);
     if (req.query?.action === removeDoc) {
       saveN245Form(redisKey, claim, undefined);
       documentName = undefined;
@@ -55,7 +60,7 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, (async (req: AppRequest, r
   }
 }) as RequestHandler);
 
-uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFile), (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFile), uploadN245FormControllerGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -64,6 +69,7 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFil
     const claim: Claim = await getCaseDataFromStore(redisKey);
     const contentList = getUploadFormContent(lng);
     const cancelUrl = await getCancelUrl(claimId, claim);
+    const backLinkUrl = getBackLinkUrl(claimId);
     if (req.body.action === uploadButton) {
       const { form, documentName } = await uploadSelectedFile(req, claim);
       return res.render(viewPath, {
@@ -90,11 +96,15 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, upload.single(selectedFil
         contentList,
       });
     } else {
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS)); 
+      res.redirect(constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL));
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
+
+function getBackLinkUrl(claimId: string) {
+  return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL);
+}
 
 export default uploadN245FormController;
