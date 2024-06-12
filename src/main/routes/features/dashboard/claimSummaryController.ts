@@ -36,6 +36,7 @@ const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign'
 const claimSummaryController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+const HearingUploadDocuments = 'Upload hearing documents';
 
 claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -56,10 +57,13 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
 
-      if (dashboardTaskList.items[2]?.tasks[1]?.taskNameEn.search(t('PAGES.DASHBOARD.HEARINGS.UPLOAD_DOCUMENTS'))){
-        req.session.dashboard = {taskIdHearingUploadDocuments:undefined};
-        req.session.dashboard.taskIdHearingUploadDocuments = dashboardTaskList.items[2]?.tasks[1]?.id;
-      }
+      const hearing = dashboardTaskList.items[2].tasks;
+      hearing.forEach((task) => {
+        if (task.taskNameEn.search(HearingUploadDocuments)>0){
+          req.session.dashboard = {taskIdHearingUploadDocuments:undefined};
+          req.session.dashboard.taskIdHearingUploadDocuments = task.id;
+        }
+      });
       res.render(claimSummaryRedesignViewPath,
         {
           claim,
