@@ -8,6 +8,7 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {SummarySection, SummarySections} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
 
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/caseProgression/checkYourAnswers/checkAnswersService');
@@ -68,7 +69,24 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
           expect(res.text).toContain('Check your answers');
         });
     });
+    it('should render page successfully update task list status', async () => {
+      //Given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      mockDraftStore.mockReturnValueOnce(claim);
+      mockSummarySections.mockImplementation(() => {
+        return {sections: [] as SummarySection[]} as SummarySections;
+      });
 
+      //When
+      await testSession
+        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'en'})
+        //Then
+        .expect((res: { status: unknown; text: unknown; }) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Check your answers');
+        });
+    });
     it('should render page successfully in Welsh with all sections and summary rows', async () => {
       //Given
       const claim: Claim = new Claim();
@@ -172,7 +190,21 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         expect(res.text).toContain('Gwiriwch eich atebion');
       });
     });
+    test('Submit the task list update', async () => {
+      //given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      mockDraftStore.mockReturnValueOnce(claim);
+      const appRequest:AppRequest=undefined;
+      //when
+      await testSession.post(CP_CHECK_ANSWERS_URL)
+        .send(appRequest.session.dashboard.taskIdHearingUploadDocuments='111')
+        .expect((res: { status: unknown; text: unknown; }) => {
+        //then
+          expect(res.status).toBe(200);
 
+        });
+    });
     test('If the form is not missing, redirect to new page', async () => {
       //given
       app.locals.draftStoreClient = mockCivilClaim;

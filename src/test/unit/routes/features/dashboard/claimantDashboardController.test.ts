@@ -92,18 +92,20 @@ const mockExpectedDashboardInfo=
       'statusEn': 'ACTION_NEEDED',
       'statusCy': 'ACTION_NEEDED',
       'statusColour': 'govuk-red',
-      'taskNameEn': 'Upload hearing documents',
+      'taskNameEn': 'Hearings Upload hearing documents',
       'hintTextEn': 'hint_text_en2',
       'taskNameCy': 'task_name_cy2',
       'hintTextCy': 'hint_text_cy2',
     }] as DashboardTask[],
   }] as DashboardTaskList[];
+const dashboard = new Dashboard(mockExpectedDashboardInfo);
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+
 jest.mock('services/dashboard/dashboardService', () => ({
   getNotifications: jest.fn(),
-  getDashboardForm: jest.fn(),
+  getDashboardForm: jest.fn(()=>dashboard),
   getHelpSupportTitle: jest.fn(()=>t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT')),
   getHelpSupportLinks: jest.fn(()=>HELP_SUPPORT_LINKS),
   extractOrderDocumentIdFromNotification: jest.fn(),
@@ -207,9 +209,7 @@ describe('claimant Dashboard Controller', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       claim.caseProgression = new CaseProgression();
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
-      const dashboard = new Dashboard(mockExpectedDashboardInfo);
 
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(data);

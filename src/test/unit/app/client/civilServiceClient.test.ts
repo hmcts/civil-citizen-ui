@@ -6,7 +6,7 @@ import {
   CIVIL_SERVICE_CASES_URL,
   CIVIL_SERVICE_CLAIMANT, CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL, CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL,
   CIVIL_SERVICE_FEES_RANGES, CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL,
-  CIVIL_SERVICE_SUBMIT_EVENT,
+  CIVIL_SERVICE_SUBMIT_EVENT, CIVIL_SERVICE_UPDATE_TASK_STATUS_URL,
   CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
 } from 'client/civilServiceUrls';
 import {PartyType} from 'common/models/partyType';
@@ -1052,6 +1052,20 @@ describe('Civil Service Client', () => {
 
       //Then
       expect(taskListResponse.items).toEqual(mockExpectedDashboardInfo);
+    });
+    it('should update dashboard Task List', async () => {
+      //Given
+      const mockPut = jest.fn().mockResolvedValue({data:{}});
+      mockedAxios.create.mockReturnValueOnce({put: mockPut} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      await civilServiceClient.updateTaskStatus('123', appReq);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockPut.mock.calls[0][0]).toEqual(CIVIL_SERVICE_UPDATE_TASK_STATUS_URL.replace(':taskItemId', '123'));
     });
   });
 

@@ -18,7 +18,6 @@ import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/
 import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
-import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {Dashboard} from 'models/dashboard/dashboard';
 import {CivilServiceClient} from 'client/civilServiceClient';
 
@@ -99,7 +98,7 @@ const mockExpectedDashboardInfo=
       'statusEn': 'ACTION_NEEDED',
       'statusCy': 'ACTION_NEEDED',
       'statusColour': 'govuk-red',
-      'taskNameEn': 'Upload hearing documents',
+      'taskNameEn': 'Hearings Upload hearing documents',
       'hintTextEn': 'hint_text_en2',
       'taskNameCy': 'task_name_cy2',
       'hintTextCy': 'hint_text_cy2',
