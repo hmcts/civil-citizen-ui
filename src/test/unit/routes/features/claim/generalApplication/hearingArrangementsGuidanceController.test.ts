@@ -49,7 +49,7 @@ describe('General Application - application hearing arrangements', () => {
       mockClaim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT),
         new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING)];
       await request(app)
-        .get(GA_HEARING_ARRANGEMENTS_GUIDANCE)
+        .get(GA_HEARING_ARRANGEMENTS_GUIDANCE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE.TITLE'));
