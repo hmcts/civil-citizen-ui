@@ -350,6 +350,8 @@ import disclosureOfElectronicDocumentsIssues
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureOfElectronicDocumentsIssuesController';
 import claimantDocumentsConsideredDetailsController
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/claimantDocumentsConsideredDetailsController';
+import agreementReachedController
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/agreementReachedController';
 
 export default [
   homeController,
@@ -649,4 +651,5 @@ export default [
   disclosureOfDocumentsController,
   disclosureOfElectronicDocumentsIssues,
   claimantDocumentsConsideredDetailsController,
+  agreementReachedController,
 ];

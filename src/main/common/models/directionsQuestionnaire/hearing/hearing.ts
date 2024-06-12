@@ -25,4 +25,5 @@ export class Hearing {
   disclosureNonElectronicDocument?: string;
   disclosureOfElectronicDocumentsIssues?: string;
   claimantDocumentsConsideredDetails?: string;
+  hasAnAgreementBeenReached?: string;
 }

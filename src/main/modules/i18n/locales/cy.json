@@ -401,7 +401,44 @@
       }
     }
   },
+  "HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS": {
+    "DETAILS": {
+      "TITLE": "Sut i gytuno i ddatgelu dogfennau electronig",
+      "PARAGRAPH1": "Gall partïon gytuno ymlaen llaw pa ddogfennau electronig a ddatgelir gan yr holl bartïon sy'n ymwneud â'r hawliad.",
+      "URL1": {
+        "BEFORE": "Gellir gwneud hyn drwy ddefnyddio'r ",
+        "TEXT": "Holiadur Dogfennau Electronig ar Gov.uk (yn agor mewn tab newydd)",
+        "AFTER": "."
+      },
+      "URL2": {
+        "BEFORE": "Mae mwy o wybodaeth am yr Holiadur Dogfennau Electronig ym mharagraff 10 o ",
+        "TEXT": "Gyfarwyddyd Ymarfer 31B (opens in a new tab)",
+        "AFTER": "."
+      },
+      "URL3": {
+        "BEFORE": "Gallwch hefyd ddarparu hyn yn ddigidol fel y nodir ym mharagraff 31 o ",
+        "TEXT": "Gyfarwyddyd Ymarfer 31B (opens in a new tab)",
+        "AFTER": "."
+      }
+    }
+  },
   "PAGES": {
+    "HAS_AN_AGREEMENT_BEEN_REACHED" : {
+      "PAGE_TITLE": "A ddaethpwyd i gytundeb ynghylch datgelu dogfennau electronig?",
+      "TITLE": "Datgelu dogfennau electronig",
+      "COMBO_BOX" : {
+        "TITLE": "A gytunwyd rhwng y partïon sy'n ymwneud â'r hawliad ynghylch pa ddogfennau electronig fydd yn cael eu datgelu?",
+        "ITEM1": {
+          "TEXT": "Ie"
+        },
+        "ITEM2": {
+          "TEXT": "Na, ond mae'n debygol y bydd cytundeb"
+        },
+        "ITEM3": {
+          "TEXT": "Na"
+        }
+      }
+    },
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : {
       "PAGE_TITLE": "Datgelu dogfennau nad ydynt yn electronig",
       "TEXT_AREA" : {
@@ -3965,6 +4002,7 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "HAS_AN_AGREEMENT_BEEN_REACHED" : "Nodi a daethpwyd i gytundeb ynghylch pa ddogfennau electronig a fydd yn cael eu datgelu",
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau nad ydynt yn electronig",
     "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau electronig",
     "CLAIMANT_DOCUMENTS_CONSIDERED" : "Rhowch fanylion y dogfennau sydd gan yr hawlwyr yr ydych am i'r llys eu hystyried",
