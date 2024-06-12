@@ -1,11 +1,11 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "./cancelLink.njk" import cancelLink %}
 
-{% macro addButton(t, type, cancelUrl = false) %}
+{% macro addButton(t, type, cancelUrl) %}
 
 <div class="govuk-button-group">
     {{ govukButton({
-        text: t('COMMON.BUTTONS.' + type if type else 'COMMON.BUTTONS.SAVE_AND_CONTINUE')
+        text: t('COMMON.BUTTONS.' + type)
     }) }}
 
     {% if cancelUrl %}

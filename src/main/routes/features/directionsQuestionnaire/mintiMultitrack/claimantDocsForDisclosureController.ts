@@ -13,7 +13,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 
 const claimantDocsForDisclosureController = Router();
-const hasClaimantDocumentsToBeConsideredViewPath = 'features/common/yes-no-common-page';
+const hasClaimantDocumentsToBeConsideredViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/claimant-documents-to-be-considered';
 const DISCLOSURCLAIMANT_DOCS_FOR_DISCLOSURE_PAGE = 'PAGES.CLAIMANT_DOCS_FOR_DISCLOSURE.';
 
 function renderView(hasClaimantDocumentsToBeConsidered: GenericForm<GenericYesNo>, claimId: string, res: Response): void {
