@@ -1,5 +1,9 @@
 import {RequestHandler, Response, Router} from 'express';
-import {DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL, DQ_REQUEST_EXTRA_4WEEKS_URL} from '../../urls';
+import {
+  DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL,
+  DQ_DISCLOSURE_OF_DOCUMENTS_URL,
+  DQ_REQUEST_EXTRA_4WEEKS_URL,
+} from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -8,8 +12,9 @@ import {
   getGenericOptionFormDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
+import {claimType} from 'form/models/claimType';
 
 const requestExtra4WeeksController = Router();
 const dqPropertyName = 'requestExtra4weeks';
@@ -37,7 +42,13 @@ requestExtra4WeeksController.post(DQ_REQUEST_EXTRA_4WEEKS_URL, (async (req, res,
       renderView(form, res);
     } else {
       await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), form.model, dqPropertyName, dqParentName);
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL));
+      const redisKey = generateRedisKey(<AppRequest>req);
+      const claim = await getCaseDataFromStore(redisKey);
+      if (claim.claimType === claimType.MULTI_TRACK) {
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DISCLOSURE_OF_DOCUMENTS_URL));
+      } else {
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL));
+      }
     }
   } catch (error) {
     next(error);
