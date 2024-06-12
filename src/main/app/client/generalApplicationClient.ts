@@ -35,7 +35,7 @@ export class GeneralApplicationClient {
     };
   }
 
-  async getApplications(req: AppRequest): Promise<any[]> {
+  async getApplications(req: AppRequest): Promise<ApplicationResponse[]> {
     const config = this.getConfig(req);
     let applications: ApplicationResponse[] = [];
     try {
