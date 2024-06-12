@@ -6,6 +6,7 @@ const ApplyHelpWithFeesReferenceNumber = require ('../pages/hearingFee/applyHelp
 const ApplyHelpWithFeesConfirmation = require ('../pages/hearingFee/applyHelpWithFeesConfirmation');
 const PaymentSuccessful = require ('../pages/hearingFee/paymentSuccessful');
 const GovPay = require ('../../common/govPay');
+const {waitForFinishedBusinessProcess} = require('../../../specClaimHelpers/api/steps');
 const { isDashboardServiceToggleEnabled } = require('../../../specClaimHelpers/api/testingSupport');
 
 const I = actor(); // eslint-disable-line no-unused-vars
@@ -41,6 +42,8 @@ class hearingFeeSteps {
     applyHelpWithFeesReferenceNumber.addHelpWithFeesReference();
     applyHelpWithFeesReferenceNumber.nextAction('Continue');
     applyHelpWithFeesConfirmation.verifyPageContent();
+    applyHelpWithFeesConfirmation.nextAction('Close and return to case overview');
+    await waitForFinishedBusinessProcess();
   }
 
   async payHearingFeeJourney(claimRef, feeAmount, dueDate, caseNumber, claimAmount) {
@@ -57,6 +60,7 @@ class hearingFeeSteps {
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
     paymentSuccessful.verifyPageContent(feeAmount);
+    paymentSuccessful.nextAction('Close and return to case overview');
   }
 }
 
