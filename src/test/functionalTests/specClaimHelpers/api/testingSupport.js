@@ -35,6 +35,10 @@ const isDashboardServiceToggleEnabled = async () => {
   return toggleValue;
 };
 
+const isMintiToggleEnabled = async () => {
+  return await checkToggleEnabled('minti');
+};
+
 module.exports = {
   waitForFinishedBusinessProcess: async (caseId, user = '') => {
     const authToken = await idamHelper.accessToken(user ? user : config.applicantSolicitorUser);
@@ -194,4 +198,5 @@ module.exports = {
 
   checkToggleEnabled,
   isDashboardServiceToggleEnabled,
+  isMintiToggleEnabled,
 };
