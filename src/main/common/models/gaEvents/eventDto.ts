@@ -8,27 +8,19 @@ import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/
 import {
   CcdGeneralApplicationEvidenceDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
-import {ClaimUpdate} from 'models/events/eventDto';
-import {
-  CcdGeneralApplicationRespondentAgreement,
-} from 'models/ccdGeneralApplication/ccdGeneralApplicationRespondentAgreement';
-import {
-  CcdGeneralApplicationStatementOfTruth,
-} from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
 
 export interface EventDto {
   event: ApplicationEvent,
   caseDataUpdate?: CCDGeneralApplication;
 }
 
-export interface CCDGeneralApplication extends ClaimUpdate {
+export interface CCDGeneralApplication {
   generalAppType: CcdGeneralApplicationTypes;
-  generalAppRespondentAgreement: CcdGeneralApplicationRespondentAgreement;
+  generalAppConsentOrder: YesNoUpperCamelCase;
   generalAppInformOtherParty: CcdGeneralApplicationInformOtherParty;
   generalAppAskForCosts: YesNoUpperCamelCase;
   generalAppDetailsOfOrder: string;
   generalAppReasonsOfOrder: string;
-  generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
+  generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[],
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
-  generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
 }

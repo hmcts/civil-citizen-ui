@@ -7,21 +7,23 @@ import * as utilityService from 'modules/utilityService';
 import * as ccdTranslationService from 'services/translation/generalApplication/ccdTranslation';
 import {req} from '../../../../utils/UserDetails';
 import {AppRequest} from 'models/AppRequest';
+import {GaServiceClient} from 'client/gaServiceClient';
+import {Application} from 'models/application';
 import {submitApplication} from 'services/features/generalApplication/submitApplication';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/utilityService');
 
 const mockGetClaim = utilityService.getClaimById as jest.Mock;
+const application = new Application();
 request(app);
 
 describe('Submit application to ccd', () => {
-  const claim = new Claim();
 
   beforeEach(() => {
     mockGetClaim.mockImplementation(() => {
+      const claim = new Claim();
       claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT));
       return claim;
     });
@@ -31,10 +33,10 @@ describe('Submit application to ccd', () => {
     const ccdTranslationServiceMock = jest
       .spyOn(ccdTranslationService, 'translateDraftApplicationToCCD');
 
-    const CivilServiceClientServiceMock = jest
-      .spyOn(CivilServiceClient.prototype, 'submitInitiateGeneralApplicationEvent')
+    const GaServiceClientServiceMock = jest
+      .spyOn(GaServiceClient.prototype, 'submitDraftApplication')
       .mockReturnValue(
-        new Promise((resolve) => resolve(claim),
+        new Promise((resolve) => resolve(application),
         ),
       );
     (req as AppRequest).params = {id: '123'};
@@ -43,11 +45,11 @@ describe('Submit application to ccd', () => {
     const result = await submitApplication(req as AppRequest);
 
     //then
-    expect(result).toBe(claim);
+    expect(result).toBe(application);
     expect(ccdTranslationServiceMock).toBeCalled();
-    expect(CivilServiceClientServiceMock).toBeCalled();
-  });
+    expect(GaServiceClientServiceMock).toBeCalled();
 
+  });
   it('should return http 500 when has error in the get method', async () => {
     mockGetClaim.mockImplementation(() => {
       throw new Error(TestMessages.REDIS_FAILURE);

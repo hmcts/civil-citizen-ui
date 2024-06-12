@@ -24,20 +24,13 @@ import { HearingSupport } from 'models/generalApplication/hearingSupport';
 import { CcdSupportRequirement } from 'models/ccdGeneralApplication/ccdSupportRequirement';
 import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
 import { CcdGeneralApplicationEvidenceDocument } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
-import {
-  CcdGeneralApplicationRespondentAgreement,
-} from 'models/ccdGeneralApplication/ccdGeneralApplicationRespondentAgreement';
-import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
-import {
-  CcdGeneralApplicationStatementOfTruth,
-} from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
 ): CCDGeneralApplication => {
   return {
     generalAppType: toCCDGeneralApplicationTypes(application.applicationTypes),
-    generalAppRespondentAgreement: toCCDRespondentAgreement(application.agreementFromOtherParty),
+    generalAppConsentOrder: toCCDYesNo(application.agreementFromOtherParty),
     generalAppInformOtherParty: toCCDInformOtherParty(
       application.informOtherParties,
     ),
@@ -56,7 +49,6 @@ export const translateDraftApplicationToCCD = (
       application.unavailableDatesHearing,
       application.hearingSupport,
     ),
-    generalAppStatementOfTruth: toCCDStatementOfTruth(application.statementOfTruth),
   };
 };
 
@@ -64,14 +56,6 @@ const toCCDGeneralApplicationTypes = (applicationTypes: ApplicationType[]): CcdG
   return {
     types: applicationTypes?.map(applicationType => applicationType.option),
   };
-};
-
-const toCCDRespondentAgreement = (agreementFromOtherParty: YesNo): CcdGeneralApplicationRespondentAgreement => {
-  return agreementFromOtherParty
-    ? {
-      hasAgreed: toCCDYesNo(agreementFromOtherParty),
-    }
-    : undefined;
 };
 
 const toCCDInformOtherParty = (informOtherParty: InformOtherParties): CcdGeneralApplicationInformOtherParty => {
@@ -177,10 +161,4 @@ const toCCDSupportRequirements = (hearingSupport: HearingSupport): CcdSupportReq
     ccdSupportRequirement.push(CcdSupportRequirement.OTHER_SUPPORT);
   }
   return ccdSupportRequirement;
-};
-
-const toCCDStatementOfTruth = (statementOfTruth: StatementOfTruthForm): CcdGeneralApplicationStatementOfTruth => {
-  return {
-    name: statementOfTruth?.name,
-  };
 };

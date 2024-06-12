@@ -2,9 +2,9 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {GA_CHECK_ANSWERS_URL, GENERAL_APPLICATION_CONFIRM_URL, PAYING_FOR_APPLICATION_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
-import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
-import {getCancelUrl, getDynamicHeaderForMultipleApplications, saveStatementOfTruth} from 'services/features/generalApplication/generalApplicationService';
-import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {getCancelUrl, saveStatementOfTruth} from 'services/features/generalApplication/generalApplicationService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
@@ -12,7 +12,6 @@ import {getSummarySections} from 'services/features/generalApplication/checkAnsw
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
-import {submitApplication} from 'services/features/generalApplication/submitApplication';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -52,8 +51,6 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res
       await renderView(claimId, claim, form, req, res);
     } else {
       await saveStatementOfTruth(redisKey, statementOfTruth);
-      await submitApplication(req);
-      await deleteDraftClaimFromStore(claimId);
       res.redirect(getRedirectUrl(claimId, claim));
     }
   } catch (error) {
