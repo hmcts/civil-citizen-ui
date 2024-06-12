@@ -1,6 +1,6 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
-import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {ApplicationType, ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
@@ -20,6 +20,8 @@ import {HearingContactDetails} from 'models/generalApplication/hearingContactDet
 import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import { AcceptDefendantOffer, ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
+import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import {ApplicationState, ApplicationStatus} from 'common/models/generalApplication/applicationSummary';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -60,6 +62,38 @@ export const saveRespondentAgreement = async (redisKey: string, respondentAgreem
         respondentAgreement,
       },
     };
+    await saveDraftClaim(redisKey, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveAcceptDefendantOffer = async (redisKey: string, acceptDefendantOffer: AcceptDefendantOffer): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(redisKey);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.response = Object.assign(new GaResponse(), claim.generalApplication.response);
+    if (acceptDefendantOffer.option === YesNo.YES) {
+      delete acceptDefendantOffer.type;
+      delete acceptDefendantOffer.amountPerMonth;
+      delete acceptDefendantOffer.reasonProposedInstalment;
+      delete acceptDefendantOffer.day;
+      delete acceptDefendantOffer.month;
+      delete acceptDefendantOffer.year;
+      delete acceptDefendantOffer.reasonProposedSetDate;
+    } else {
+      if (acceptDefendantOffer.type === ProposedPaymentPlanOption.ACCEPT_INSTALMENTS) {
+        delete acceptDefendantOffer.day;
+        delete acceptDefendantOffer.month;
+        delete acceptDefendantOffer.year;
+        delete acceptDefendantOffer.reasonProposedSetDate;
+      } else {
+        delete acceptDefendantOffer.amountPerMonth;
+        delete acceptDefendantOffer.reasonProposedInstalment;
+      }
+    }
+    claim.generalApplication.response.acceptDefendantOffer = Object.assign(new AcceptDefendantOffer(), acceptDefendantOffer);
     await saveDraftClaim(redisKey, claim);
   } catch (error) {
     logger.error(error);
@@ -225,6 +259,13 @@ export const saveStatementOfTruth = async (claimId: string, statementOfTruth: St
     logger.error(error);
     throw error;
   }
+};
+
+export const getDynamicHeaderForMultipleApplications = (claim: Claim): string => {
+  const applicationTypes = claim.generalApplication?.applicationTypes;
+  return (applicationTypes?.length === 1) 
+    ? selectedApplicationType[applicationTypes[0].option] 
+    : 'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION';
 };
 
 export const getByIndexOrLast = <T>(array: T[] | undefined, index: number | undefined): T | undefined =>

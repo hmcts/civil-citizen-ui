@@ -15,6 +15,8 @@ import {
   getByIndex,
   updateByIndexOrAppend,
   validateAdditionalApplicationtType,
+  getDynamicHeaderForMultipleApplications,
+  saveAcceptDefendantOffer,
   getApplicationStatus,
 } from 'services/features/generalApplication/generalApplicationService';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
@@ -31,6 +33,7 @@ import { HearingContactDetails } from 'models/generalApplication/hearingContactD
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { ValidationError } from 'class-validator';
+import { AcceptDefendantOffer } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { ApplicationState, ApplicationStatus } from 'common/models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -351,6 +354,26 @@ describe('General Application service', () => {
     });
   });
 
+  describe('getDynamicHeaderForMultipleApplications', () => {
+    it.each`
+      selectedApplicationTypes                                                      | expectedHeader
+      ${[]}                                                                         | ${'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION'}
+      ${undefined}                                                                  | ${'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION'}
+      ${[ApplicationTypeOption.ADJOURN_HEARING]}                                    | ${'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING'}
+      ${[ApplicationTypeOption.ADJOURN_HEARING, ApplicationTypeOption.EXTEND_TIME]} | ${'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION'}
+    `('should return $expected when selected types are $selectedApplicationTypes',
+      ({ selectedApplicationTypes, expectedHeader}) => {
+        //When
+        const claim = new Claim();
+        claim.generalApplication = new GeneralApplication();
+        if (selectedApplicationTypes) {
+          claim.generalApplication.applicationTypes = selectedApplicationTypes.map((at: ApplicationTypeOption) => new ApplicationType(at));
+        }
+        //Then
+        expect(getDynamicHeaderForMultipleApplications(claim)).toEqual(expectedHeader);
+      });
+  });
+
   describe('Get by index or last', () => {
     it.each`
       list           | index              | expected
@@ -500,4 +523,36 @@ describe('General Application service', () => {
       expect(status).toBe(ApplicationStatus.TO_DO);
     });
   });
+});
+
+describe('Save Accept defendant offer', () => {
+  it('should save acceptDefendantOffer successfully', async () => {
+    //Given
+    // mockGetCaseData.mockResolvedValue(new Claim());
+    mockGetCaseData.mockImplementation(async () => {
+      return new Claim();
+    });
+    const acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES);
+
+    const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+    //When
+    await saveAcceptDefendantOffer('123', acceptDefendantOffer);
+    //Then
+    expect(spy).toBeCalled();
+  });
+  it('should throw error when draft store throws error', async () => {
+    //Given
+    mockGetCaseData.mockImplementation(async () => {
+      return new Claim();
+    });
+    const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+    const acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES);
+    //When
+    mockSaveClaim.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
+    //Then
+    await expect(saveAcceptDefendantOffer('123', acceptDefendantOffer)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+  });
+  
 });

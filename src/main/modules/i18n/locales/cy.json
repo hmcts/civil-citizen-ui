@@ -635,7 +635,8 @@
       "POSTAL_RESPONSE": "Os derbynnir ymateb drwy'r post cyn cyhoeddi'r dyfarniad bydd eich cais yn cael ei wrthod.",
       "TITLE": "Cais am Ddyfarniad Llys Sirol",
       "UPDATES": "Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru wrth i’r hawliad hwn fynd rhagddo a bydd unrhyw ddiweddariadau pellach drwy'r post.",
-      "NO_LONGER_RESPONSE": "Ni all {{ defendantName }} ymateb i'ch hawliad ar-lein mwyach."
+      "NO_LONGER_RESPONSE": "Ni all {{ defendantName }} ymateb i'ch hawliad ar-lein mwyach.",
+      "PROCESS_YOUR_REQUEST_JO": "We’ll process your request and you will receive notifications by email, you will be able to view the judgment via your dashboard and we’ll also post a copy of the judgment to {{ defendantName }}. We aim to do this within 10 working days."
     },
     "CCJ_DEFENDANT_DOB": {
       "PAGE_TITLE": "Ydych chi'n gwybod dyddiad geni'r diffynnydd?",
@@ -1945,6 +1946,10 @@
       "TITLE": "Y cyfanswm yr ydych yn ei hawlio",
       "25000_OR_LESS": "£25,000 neu lai"
     },
+    "ELIGIBILITY_KNOWN_CLAIM_AMOUNT": {
+      "PAGE_TITLE": "Do you know the amount you are claiming?",
+      "TITLE": "Ydych chi'n gwybod faint rydych chi'n hawlio amdano?"
+    },
     "ELIGIBILITY_OVER_18_CLAIMANT": {
       "PAGE_TITLE": "Ydych chi'n 18 oed neu'n hŷn?",
       "TITLE": "Ydych chi'n 18 oed neu'n hŷn?"
@@ -2166,6 +2171,24 @@
         "TITLE": "All applications",
         "TO_DO": "To do",
         "VIEW_APPLICATION": "View application"
+      },
+      "COMMON": {
+        "MAKE_AN_APPLICATION": "Make an application"
+      },
+      "ACCEPT_DEFENDANT_OFFER": {
+        "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
+        "ENTER_AMOUNT": "Enter the amount in £",
+        "N245": "N245 form",
+        "N245_AFTER": " that they completed. You should read this before responding.",
+        "N245_BEFORE": "The defendant's offer will be set out in the ",
+        "PROPOSE_IN_FULL": "I'll propose payment in full by a set date",
+        "PROPOSE_PAYMENT_PLAN": "Propose payment plan",
+        "PROPOSED_INSTALMENTS": "Proposed instalments per month",
+        "PROPOSED_SET_DATE": "Proposed set date",
+        "THE_COURT": "The court will make an order for the payment that was suggested by the defendant.",
+        "TITLE": "Do you accept the defendant's offer?",
+        "WHY_NOT_ACCEPT": "Why do you not accept the defendant's offer?",
+        "WHY_NOT_ACCEPT_2": "Why you do not accept the defendant's offer?"
       },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
@@ -2488,18 +2511,6 @@
         "PREFERRED_TELEPHONE_NUMBER": "Preferred telephone number",
         "TITLE": "Contact Details"
       },
-      "UNAVAILABLE_HEARING_DATES": {
-        "ADD_ANOTHER_DATE": "Add another date or date range",
-        "ENTER_UNAVAILABLE": "Enter unavailable date",
-        "FROM": "From",
-        "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
-        "LONGER_PERIOD": "A longer period of time",
-        "PAGE_TITLE": "Unavailable hearing dates",
-        "SELECT": "Select a date or dates you cannot attend a hearing",
-        "SINGLE_DATE": "A single date",
-        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
-        "TO": "To"
-      },
       "RESPONDENT_INFORMATION": {
         "CLICK_RESPOND": "Click 'respond to application' to let the court know whether or not you agree with their request.",
         "HEADER": "Respond to an application",
@@ -2529,6 +2540,16 @@
         "SINGLE_DATE": "A single date",
         "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
         "TO": "To"
+      },
+      "CONFIRMATION_PAGE": {
+        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}",
+        "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
+        "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
+        "PAGE_TITLE": "Application created",
+        "PAY_FEE_BUTTON": "Pay application fee",
+        "RETURN_CASE_DETAILS": "Close and return to case details",
+        "TITLE": "Application created",
+        "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -2867,7 +2888,7 @@
       "TITLE_WITH_PERSON": "Ai {{ contactPerson }} yw'r un y dylai'r gwasanaeth cyfryngu ei ffonio?"
     },
     "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
-      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TITLE": "Who will be attending the mediation appointment?",
       "PAGE_TEXT": "Ai {{ partyContactPerson }} yw’r unigolyn a fydd yn mynychu’r apwyntiad cyfryngu?"
     },
     "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
@@ -4125,6 +4146,7 @@
     "INVALID_AMOUNT": "Swm annilys",
     "HOW_YOU_CALCULATED_AMOUNT": "Rhaid i chi ddweud wrthym sut y cyfrifoch chi'r swm",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
+    "KNOWN_CLAIM_AMOUNT": "Nodwch os ydych chi'n gwybod faint rydych chi'n hawlio amdano",
     "NAME_REQUIRED": "Nodwch enw os gwelwch yn dda",
     "NO_LANGUAGE_ENTERED": "Rhowch yr iaith sydd angen ei chyfieithu",
     "NO_OTHER_SUPPORT": "Dywedwch wrthym pa gymorth arall sydd ei angen arnynt",
@@ -4354,6 +4376,13 @@
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cafodd y datganiad ei ysgrifennu neu ei gynhyrchu",
     "GENERAL_APPLICATION": {
+      "ACCEPT_DEFENDANT_OFFER": {
+        "ERROR_ACCEPT": "You need to tell us if you accept the defendant's offer. Choose option: Yes or No",
+        "ERROR_CHOOSE": "You need to propose a payment plan. Choose either instalments per month or payment in full by a set date.",
+        "ERROR_NOT_ACCEPT": "You need to tell us why you do not accept the defendant's offer.",
+        "ERROR_INSTALMENT": "You need to enter your proposed instalment per month.",
+        "FUTURE_DATE": "You need to enter a date in the future."
+      },
       "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
