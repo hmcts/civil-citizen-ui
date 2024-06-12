@@ -112,7 +112,7 @@ describe('claimant Documents to be considered Controller', () => {
     it('should redirect when hasAnAgreementBeenReachedOptions is yes ', async () => {
       await request(app)
         .post(CONTROLLER_URL)
-        .send({hasClaimantDocumentsToBeConsidered: YesNo.YES})
+        .send({option: YesNo.YES})
         .expect((res) => {
           expect(res.status).toBe(302);
           //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
@@ -123,7 +123,7 @@ describe('claimant Documents to be considered Controller', () => {
     it('should redirect when hasAnAgreementBeenReachedOptions is NO', async () => {
       await request(app)
         .post(CONTROLLER_URL)
-        .send({hasClaimantDocumentsToBeConsidered: YesNo.YES})
+        .send({option: YesNo.YES})
         .expect((res) => {
           expect(res.status).toBe(302);
           //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
@@ -146,7 +146,7 @@ describe('claimant Documents to be considered Controller', () => {
       });
       await request(app)
         .post(CONTROLLER_URL)
-        .send({hasAnAgreementBeenReached: 'test'})
+        .send({option: YesNo.YES})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

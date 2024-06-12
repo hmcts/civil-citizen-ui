@@ -14,17 +14,15 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 
 const claimantDocumentsTobeConsideredController = Router();
 const hasClaimantDocumentsToBeConsideredViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/claimant-documents-to-be-considered';
-const DISCLOSURCLAIMANT_DOCS_FOR_DISCLOSURE_PAGE = 'PAGES.CLAIMANT_DOCS_FOR_DISCLOSURE.';
+const CLAIMANT_DOCS_FOR_DISCLOSURE_PAGE = 'PAGES.CLAIMANT_DOCS_FOR_DISCLOSURE.';
 
 function renderView(hasClaimantDocumentsToBeConsidered: GenericForm<GenericYesNo>, claimId: string, res: Response): void {
   const form = hasClaimantDocumentsToBeConsidered;
   res.render(hasClaimantDocumentsToBeConsideredViewPath, {
     form,
-    pageTitle: `${DISCLOSURCLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}PAGE_TITLE`,
-    title: `${DISCLOSURCLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}TITLE`,
-    componentText: `${DISCLOSURCLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}PAGE_TITLE`,
+    pageTitle: `${CLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}PAGE_TITLE`,
+    title: `${CLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}TITLE`,
     backLinkUrl: constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL),
-    saveContinueButtonLabel: 'SAVE_AND_CONTINUE_CARM',
   });
 }
 
