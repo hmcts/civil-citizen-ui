@@ -201,7 +201,7 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL, feeRequestBody, config);
       return response.data;
     } catch (err: unknown) {
-      logger.error('Error when getting claim fee data');
+      logger.error('Error when getting general application fee data');
       throw err;
     }
   }

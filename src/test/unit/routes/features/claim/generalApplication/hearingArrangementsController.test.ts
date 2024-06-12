@@ -2,7 +2,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_HEARING_ARRANGEMENTS_GUIDANCE, GA_WANT_TO_UPLOAD_DOCUMENTS} from 'routes/urls';
+import {GA_HEARING_ARRANGEMENTS_GUIDANCE_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
@@ -36,7 +36,7 @@ describe('General Application - application hearing arrangements', () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       mockClaim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT)];
       await request(app)
-        .get(GA_HEARING_ARRANGEMENTS_GUIDANCE)
+        .get(GA_HEARING_ARRANGEMENTS_GUIDANCE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE.TITLE'));
@@ -62,7 +62,7 @@ describe('General Application - application hearing arrangements', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .get(GA_WANT_TO_UPLOAD_DOCUMENTS)
+        .get(GA_WANT_TO_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

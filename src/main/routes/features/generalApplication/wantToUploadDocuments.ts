@@ -1,18 +1,16 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  GA_HEARING_ARRANGEMENTS_GUIDANCE,
-  GA_UPLOAD_DOCUMENTS,
-  GA_WANT_TO_UPLOAD_DOCUMENTS,
+  GA_ADD_ANOTHER_APPLICATION_URL, GA_APPLICATION_COSTS_URL,
+  GA_HEARING_ARRANGEMENTS_GUIDANCE_URL,
+  GA_REQUESTING_REASON_URL,
+  GA_UPLOAD_DOCUMENTS_URL,
+  GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
-import {selectedApplicationType} from 'models/generalApplication/applicationType';
-import {
-  getCancelUrl, getLast,
-  saveIfPartyWantsToUploadDoc,
-} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl, getDynamicHeaderForMultipleApplications, saveIfPartyWantsToUploadDoc} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -21,10 +19,19 @@ import {removeAllUploadedDocuments} from 'services/features/generalApplication/u
 
 const wantToUploadDocumentsController = Router();
 const viewPath = 'features/generalApplication/want-to-upload-documents';
-const backLinkUrl = 'test'; // TODO: add url
+const options = [ApplicationTypeOption.SETTLE_BY_CONSENT, ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT];
+
+function getBackLinkUrl(claim: Claim, claimId: string, applicationType: ApplicationTypeOption) {
+  if (options.indexOf(applicationType) !== -1 && claim.isClaimant()) {
+    return constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL);
+  } else if(applicationType === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT && !claim.isClaimant()) {
+    return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL);
+  }
+  return constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL);
+
+}
 
 async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response): Promise<void> {
-  const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
   const cancelUrl = await getCancelUrl(claimId, claim);
   res.render(viewPath, {
     form,
@@ -34,7 +41,7 @@ async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId
   });
 }
 
-wantToUploadDocumentsController.get(GA_WANT_TO_UPLOAD_DOCUMENTS, (async (req: AppRequest, res: Response, next: NextFunction) => {
+wantToUploadDocumentsController.get(GA_WANT_TO_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
@@ -45,7 +52,7 @@ wantToUploadDocumentsController.get(GA_WANT_TO_UPLOAD_DOCUMENTS, (async (req: Ap
   }
 }) as RequestHandler);
 
-wantToUploadDocumentsController.post(GA_WANT_TO_UPLOAD_DOCUMENTS, (async (req: AppRequest, res: Response, next: NextFunction) => {
+wantToUploadDocumentsController.post(GA_WANT_TO_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
@@ -58,10 +65,10 @@ wantToUploadDocumentsController.post(GA_WANT_TO_UPLOAD_DOCUMENTS, (async (req: A
     } else {
       let redirectUrl;
       if (req.body.option == YesNo.YES) {
-        redirectUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS);
+        redirectUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL);
       } else if (req.body.option == YesNo.NO) {
         await removeAllUploadedDocuments(redisKey, claim);
-        redirectUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE);
+        redirectUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL);
       }
       await saveIfPartyWantsToUploadDoc(redisKey, req.body.option);
       res.redirect(redirectUrl);
