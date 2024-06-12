@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL,
-  REQUEST_FOR_RECONSIDERATION, REQUEST_FOR_RECONSIDERATION_CYA,
+  REQUEST_FOR_RECONSIDERATION_URL, REQUEST_FOR_RECONSIDERATION_CYA_URL,
 } from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
@@ -22,7 +22,7 @@ import {saveCaseProgression} from 'services/features/caseProgression/caseProgres
 const requestForReviewViewPath = 'features/caseProgression/requestForReconsideration/request-for-review.njk';
 const requestForReviewController = Router();
 
-requestForReviewController.get(REQUEST_FOR_RECONSIDERATION, (async (req, res, next: NextFunction) => {
+requestForReviewController.get(REQUEST_FOR_RECONSIDERATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
@@ -33,7 +33,7 @@ requestForReviewController.get(REQUEST_FOR_RECONSIDERATION, (async (req, res, ne
   }
 }) as RequestHandler);
 
-requestForReviewController.post(REQUEST_FOR_RECONSIDERATION,(async (req, res, next) => {
+requestForReviewController.post(REQUEST_FOR_RECONSIDERATION_URL,(async (req, res, next) => {
   try {
     let textArea = req.body.textArea;
     if (textArea == null) {
@@ -44,7 +44,7 @@ requestForReviewController.post(REQUEST_FOR_RECONSIDERATION,(async (req, res, ne
     const claim: Claim = await getCaseDataFromStore(req.params.id);
     const dqPropertyName = getNameRequestForReconsideration(claim);
     await saveCaseProgression(claimId, form.model, dqPropertyName);
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, REQUEST_FOR_RECONSIDERATION_CYA));
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, REQUEST_FOR_RECONSIDERATION_CYA_URL));
   } catch (error) {
     next(error);
   }

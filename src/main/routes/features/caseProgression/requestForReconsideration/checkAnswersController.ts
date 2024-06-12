@@ -3,9 +3,9 @@ import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-sto
 import {Claim} from 'common/models/claim';
 import {AppRequest} from 'common/models/AppRequest';
 import {
-  REQUEST_FOR_RECONSIDERATION, REQUEST_FOR_RECONSIDERATION_CANCEL,
-  REQUEST_FOR_RECONSIDERATION_CONFIRMATION,
-  REQUEST_FOR_RECONSIDERATION_CYA,
+  REQUEST_FOR_RECONSIDERATION_URL, REQUEST_FOR_RECONSIDERATION_CANCEL_URL,
+  REQUEST_FOR_RECONSIDERATION_CONFIRMATION_URL,
+  REQUEST_FOR_RECONSIDERATION_CYA_URL,
 } from 'routes/urls';
 import {
   getSummarySections,
@@ -25,15 +25,15 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 function renderView(res: Response, claim: Claim, claimId: string, lang: string) {
   const caseInfoContents = getCaseInfoContents(claimId, claim);
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION);
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_URL);
   const summarySections = getSummarySections(claimId, claim, lang);
-  const cancelUrl = REQUEST_FOR_RECONSIDERATION_CANCEL
+  const cancelUrl = REQUEST_FOR_RECONSIDERATION_CANCEL_URL
     .replace(':id', claimId)
     .replace(':propertyName', 'caseProgression');
   res.render(checkAnswersViewPath, {summarySections, caseInfoContents, backLinkUrl, cancelUrl});
 }
 
-requestForReconsiderationCheckAnswersController.get(REQUEST_FOR_RECONSIDERATION_CYA,
+requestForReconsiderationCheckAnswersController.get(REQUEST_FOR_RECONSIDERATION_CYA_URL,
   (  async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
@@ -45,14 +45,14 @@ requestForReconsiderationCheckAnswersController.get(REQUEST_FOR_RECONSIDERATION_
     }
   })as RequestHandler);
 
-requestForReconsiderationCheckAnswersController.post(REQUEST_FOR_RECONSIDERATION_CYA, (async (req: AppRequest, res: Response, next: NextFunction) => {
+requestForReconsiderationCheckAnswersController.post(REQUEST_FOR_RECONSIDERATION_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(claimId);
     const requestForReconsiderationCCD = translateDraftRequestForReconsiderationToCCD(claim);
     await civilServiceClient.submitRequestForReconsideration(claimId, requestForReconsiderationCCD, req);
     await deleteDraftClaimFromStore(claimId);
-    res.redirect(constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_CONFIRMATION));
+    res.redirect(constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_CONFIRMATION_URL));
   } catch (error) {
     next(error);
   }

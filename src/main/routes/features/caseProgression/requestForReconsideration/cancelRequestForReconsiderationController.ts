@@ -1,7 +1,7 @@
 import {
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
-  REQUEST_FOR_RECONSIDERATION_CANCEL,
+  REQUEST_FOR_RECONSIDERATION_CANCEL_URL,
 } from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {RequestHandler, Router} from 'express';
@@ -12,7 +12,7 @@ import {getClaimById} from 'modules/utilityService';
 
 const cancelRequestForReconsiderationController = Router();
 
-cancelRequestForReconsiderationController.get(REQUEST_FOR_RECONSIDERATION_CANCEL, (async (req, res, next) => {
+cancelRequestForReconsiderationController.get(REQUEST_FOR_RECONSIDERATION_CANCEL_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
     const propertyName = req.params.propertyName;

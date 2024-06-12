@@ -5,7 +5,7 @@ import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {
-  REQUEST_FOR_RECONSIDERATION,
+  REQUEST_FOR_RECONSIDERATION_URL,
 } from 'routes/urls';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
@@ -27,7 +27,7 @@ export const buildRequestForReconsideration = (claim: Claim, claimId: string, la
 
   requestForReviewSummarySections.summaryList.rows.push(summaryRow(t('PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MAIN_TITLE', { lng: getLng(lang) }),
     '<p>' + t(`${requestForReview.textArea}`, { lng: getLng(lang) })
-    + '</p>', constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION), changeLabel(lang)));
+    + '</p>', constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_URL), changeLabel(lang)));
 
   return requestForReviewSummarySections;
 };

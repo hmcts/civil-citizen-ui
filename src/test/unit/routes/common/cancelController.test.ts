@@ -3,7 +3,7 @@ import {app} from '../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, REQUEST_FOR_RECONSIDERATION_CANCEL,
+  DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, REQUEST_FOR_RECONSIDERATION_CANCEL_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
@@ -16,7 +16,7 @@ jest.mock('../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../main/modules/utilityService');
 const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 
-const CONTROLLER_URL = REQUEST_FOR_RECONSIDERATION_CANCEL;
+const CONTROLLER_URL = REQUEST_FOR_RECONSIDERATION_CANCEL_URL;
 
 describe('Cancel controller ', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

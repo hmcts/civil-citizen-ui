@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../main/app';
 import {
-  REQUEST_FOR_RECONSIDERATION_CONFIRMATION,
+  REQUEST_FOR_RECONSIDERATION_CONFIRMATION_URL,
 } from 'routes/urls';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import Module from 'module';
@@ -57,7 +57,7 @@ describe('Request for reconsideration page test', () => {
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //When
       await testSession
-        .get(REQUEST_FOR_RECONSIDERATION_CONFIRMATION.replace(':id', claimId))
+        .get(REQUEST_FOR_RECONSIDERATION_CONFIRMATION_URL.replace(':id', claimId))
         //Then
         .expect((res: { status: unknown; text: unknown; }) => {
           expect(res.status).toBe(200);
@@ -77,7 +77,7 @@ describe('Request for reconsideration page test', () => {
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       //When
       await testSession
-        .get(REQUEST_FOR_RECONSIDERATION_CONFIRMATION.replace(':id', claimId))
+        .get(REQUEST_FOR_RECONSIDERATION_CONFIRMATION_URL.replace(':id', claimId))
         //Then
         .expect((res: { status: unknown; text: unknown; }) => {
           expect(res.status).toBe(200);

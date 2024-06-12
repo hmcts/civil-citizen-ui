@@ -2,7 +2,7 @@ import {NextFunction, RequestHandler, Router} from 'express';
 import {
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
-  REQUEST_FOR_RECONSIDERATION_CONFIRMATION,
+  REQUEST_FOR_RECONSIDERATION_CONFIRMATION_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
@@ -19,7 +19,7 @@ const requestForReconsiderationConfirmationController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-requestForReconsiderationConfirmationController.get([REQUEST_FOR_RECONSIDERATION_CONFIRMATION], (async (req, res, next: NextFunction) => {
+requestForReconsiderationConfirmationController.get(REQUEST_FOR_RECONSIDERATION_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);

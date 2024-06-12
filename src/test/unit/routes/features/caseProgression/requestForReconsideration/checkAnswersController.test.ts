@@ -1,7 +1,7 @@
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {
-  REQUEST_FOR_RECONSIDERATION_CONFIRMATION,
-  REQUEST_FOR_RECONSIDERATION_CYA,
+  REQUEST_FOR_RECONSIDERATION_CONFIRMATION_URL,
+  REQUEST_FOR_RECONSIDERATION_CYA_URL,
 } from 'routes/urls';
 import {app} from '../../../../../../main/app';
 import config from 'config';
@@ -35,7 +35,7 @@ describe('Request for Reconsideration check answers - On GET', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     //When
     await testSession
-      .get(REQUEST_FOR_RECONSIDERATION_CYA.replace(':id', claimId)).query({lang: 'en'})
+      .get(REQUEST_FOR_RECONSIDERATION_CYA_URL.replace(':id', claimId)).query({lang: 'en'})
     //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
@@ -50,7 +50,7 @@ describe('Request for Reconsideration check answers - On GET', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     //When
     await testSession
-      .get(REQUEST_FOR_RECONSIDERATION_CYA.replace(':id', claimId)).query({lang: 'cy'})
+      .get(REQUEST_FOR_RECONSIDERATION_CYA_URL.replace(':id', claimId)).query({lang: 'cy'})
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
@@ -67,7 +67,7 @@ describe('Request for Reconsideration check answers - On GET', () => {
       });
 
     await session(app)
-      .get(REQUEST_FOR_RECONSIDERATION_CYA)
+      .get(REQUEST_FOR_RECONSIDERATION_CYA_URL)
       .expect((res: Response) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -89,10 +89,10 @@ describe('Request for Reconsideration - on POST', () => {
       );
 
     await session(app)
-      .post(REQUEST_FOR_RECONSIDERATION_CYA.replace(':id', claimId))
+      .post(REQUEST_FOR_RECONSIDERATION_CYA_URL.replace(':id', claimId))
       .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(REQUEST_FOR_RECONSIDERATION_CONFIRMATION.replace(':id', claimId));
+        expect(res.header.location).toEqual(REQUEST_FOR_RECONSIDERATION_CONFIRMATION_URL.replace(':id', claimId));
         expect(CivilServiceClientServiceMock).toBeCalled();
       });
   });

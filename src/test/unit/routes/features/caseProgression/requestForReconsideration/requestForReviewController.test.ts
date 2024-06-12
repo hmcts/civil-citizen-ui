@@ -3,7 +3,7 @@ import {
   mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
 import {
-  REQUEST_FOR_RECONSIDERATION, REQUEST_FOR_RECONSIDERATION_CYA,
+  REQUEST_FOR_RECONSIDERATION_URL, REQUEST_FOR_RECONSIDERATION_CYA_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../../main/app';
@@ -35,7 +35,7 @@ describe('Request for Review - On GET', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     //When
     await testSession
-      .get(REQUEST_FOR_RECONSIDERATION.replace(':id', claimId))
+      .get(REQUEST_FOR_RECONSIDERATION_URL.replace(':id', claimId))
     //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
@@ -48,7 +48,7 @@ describe('Request for Review - On GET', () => {
     app.locals.draftStoreClient = mockCivilClaim;
     //When
     await testSession
-      .get(REQUEST_FOR_RECONSIDERATION.replace(':id', claimId)).query({lang: 'cy'})
+      .get(REQUEST_FOR_RECONSIDERATION_URL.replace(':id', claimId)).query({lang: 'cy'})
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
@@ -61,7 +61,7 @@ describe('Request for Review - On GET', () => {
     app.locals.draftStoreClient = mockRedisFailure;
     //When
     await testSession
-      .get(REQUEST_FOR_RECONSIDERATION.replace(':id', '1111')).query({lang: 'en'})
+      .get(REQUEST_FOR_RECONSIDERATION_URL.replace(':id', '1111')).query({lang: 'en'})
     //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(500);
@@ -84,12 +84,12 @@ describe('Request for Review - on POST', () => {
 
     //When
     await testSession
-      .post(REQUEST_FOR_RECONSIDERATION.replace(':id', '1111'))
+      .post(REQUEST_FOR_RECONSIDERATION_URL.replace(':id', '1111'))
       .send({textArea: 'Changes requested'})
       //Then
       .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(REQUEST_FOR_RECONSIDERATION_CYA.replace(':id', '1111'));
+        expect(res.header.location).toEqual(REQUEST_FOR_RECONSIDERATION_CYA_URL.replace(':id', '1111'));
       });
   });
 });
