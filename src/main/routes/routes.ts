@@ -346,6 +346,8 @@ import requestForReviewController
 import requestForReconsiderationCheckAnswersController from './features/caseProgression/requestForReconsideration/checkAnswersController';
 import requestForReconsiderationConfirmationController
   from 'routes/features/caseProgression/requestForReconsideration/confirmationController';
+import cancelRequestForReconsiderationController
+  from 'routes/features/caseProgression/requestForReconsideration/cancelRequestForReconsiderationController';
 
 export default [
   homeController,
@@ -643,4 +645,5 @@ export default [
   requestForReviewController,
   requestForReconsiderationCheckAnswersController,
   requestForReconsiderationConfirmationController,
+  cancelRequestForReconsiderationController,
 ];

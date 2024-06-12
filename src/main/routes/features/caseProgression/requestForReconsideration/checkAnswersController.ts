@@ -3,7 +3,7 @@ import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-sto
 import {Claim} from 'common/models/claim';
 import {AppRequest} from 'common/models/AppRequest';
 import {
-  DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, REQUEST_FOR_RECONSIDERATION,
+  REQUEST_FOR_RECONSIDERATION, REQUEST_FOR_RECONSIDERATION_CANCEL,
   REQUEST_FOR_RECONSIDERATION_CONFIRMATION,
   REQUEST_FOR_RECONSIDERATION_CYA,
 } from 'routes/urls';
@@ -24,16 +24,12 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderView(res: Response, claim: Claim, claimId: string, lang: string) {
-  let dashboardUrl;
-  if (claim.isClaimant()) {
-    dashboardUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-  } else {
-    dashboardUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
-  }
   const caseInfoContents = getCaseInfoContents(claimId, claim);
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION);
   const summarySections = getSummarySections(claimId, claim, lang);
-  const cancelUrl = constructResponseUrlWithIdParams(claimId, dashboardUrl);
+  const cancelUrl = REQUEST_FOR_RECONSIDERATION_CANCEL
+    .replace(':id', claimId)
+    .replace(':propertyName', 'caseProgression');
   res.render(checkAnswersViewPath, {summarySections, caseInfoContents, backLinkUrl, cancelUrl});
 }
 
