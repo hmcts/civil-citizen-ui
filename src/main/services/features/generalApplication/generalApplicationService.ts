@@ -188,22 +188,6 @@ export function validateNoConsentOption(req: AppRequest, errors: ValidationError
   }
 }
 
-export const saveRespondentAgreeToOrder = async (claimId: string, claim: Claim, respondentAgreeToOrder: YesNo): Promise<void> => {
-  try {
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.respondentAgreeToOrder = respondentAgreeToOrder;
-    await saveDraftClaim(claimId, claim);
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
-};
-
-export function getRespondToApplicationCaption(claim: Claim, lng: string): string {
-  const applicationType = t(selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option], { lng: getLng(lng) }).toLowerCase();
-  return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', { lng: getLng(lng), interpolation: { escapeValue: false }, applicationType });
-}
-
 export const saveUnavailableDates = async (claimId: string, claim: Claim, unavailableDates: UnavailableDatesGaHearing): Promise<void> => {
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);

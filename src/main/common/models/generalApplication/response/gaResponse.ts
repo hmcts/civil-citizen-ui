@@ -7,6 +7,11 @@ import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDa
 import {AcceptDefendantOffer} from './acceptDefendantOffer';
 
 export class GaResponse {
+  hearingArrangement?: HearingArrangement;
+  hearingContactDetails?: HearingContactDetails;
+  hearingSupport?: HearingSupport;
+  unavailableDatesHearing?: UnavailableDatesGaHearing;
+  agreeToOrder?: YesNo;
   respondentAgreement?: RespondentAgreement;
   acceptDefendantOffer?: AcceptDefendantOffer;
 
