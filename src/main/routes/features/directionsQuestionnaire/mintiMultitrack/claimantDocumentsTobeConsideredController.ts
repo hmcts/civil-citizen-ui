@@ -22,6 +22,7 @@ function renderView(hasClaimantDocumentsToBeConsidered: GenericForm<GenericYesNo
     form,
     pageTitle: `${CLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}PAGE_TITLE`,
     title: `${CLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}TITLE`,
+    componentText: `${CLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}PAGE_TITLE`,
     backLinkUrl: constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL),
   });
 }
