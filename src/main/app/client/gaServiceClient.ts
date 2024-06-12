@@ -33,6 +33,10 @@ export class GaServiceClient {
     };
   }
 
+  async submitDraftApplication(generalApplication: CCDGeneralApplication, req: AppRequest):  Promise<Application> {
+    return this.submitEvent(ApplicationEvent.CREATE_LIP_APPLICATION, 'draft', generalApplication, req);
+  }
+
   async submitEvent(event: ApplicationEvent, claimId: string, updatedApplication?: CCDGeneralApplication, req?: AppRequest): Promise<Application> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
