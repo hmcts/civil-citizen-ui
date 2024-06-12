@@ -4,15 +4,15 @@ import { t } from 'i18next';
 import { SummaryRow, summaryRow } from 'models/summaryList/summaryList';
 import {
   APPLICATION_TYPE_URL,
-  GA_AGREEMENT_FROM_OTHER_PARTY_URL,
+  GA_AGREEMENT_FROM_OTHER_PARTY,
   GA_CLAIM_APPLICATION_COST_URL,
   GA_HEARING_ARRANGEMENT_URL,
   GA_HEARING_CONTACT_DETAILS_URL,
   GA_HEARING_SUPPORT_URL,
   GA_REQUESTING_REASON_URL,
   GA_UNAVAILABLE_HEARING_DATES_URL,
-  GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
-  INFORM_OTHER_PARTIES_URL,
+  GA_WANT_TO_UPLOAD_DOCUMENTS,
+  INFORM_OTHER_PARTIES,
   ORDER_JUDGE_URL,
 } from 'routes/urls';
 import { selectedApplicationType } from 'models/generalApplication/applicationType';
@@ -66,7 +66,7 @@ export const addOtherPartiesAgreedRow = (claimId: string, claim: Claim, lang: st
     const partiesAgreed = (claim.generalApplication?.agreementFromOtherParty === YesNo.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED', {lng}), t(`COMMON.VARIATION.${partiesAgreed}`, {lng}),
-        constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY_URL), changeLabel()),
+        constructResponseUrlWithIdParams(claimId, GA_AGREEMENT_FROM_OTHER_PARTY), changeLabel()),
     );
   }
   return rows;
@@ -80,7 +80,7 @@ export const addInformOtherPartiesRow = (claimId: string, claim: Claim, lang: st
     const informOtherParties = (claim.generalApplication?.informOtherParties.option === YesNo.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES', {lng}), t(`COMMON.VARIATION.${informOtherParties}`, {lng}),
-        constructResponseUrlWithIdParams(claimId, INFORM_OTHER_PARTIES_URL), changeLabel()),
+        constructResponseUrlWithIdParams(claimId, INFORM_OTHER_PARTIES), changeLabel()),
     );
   }
   return rows;
@@ -137,7 +137,7 @@ export const addDocumentUploadRow = (claimId: string, claim: Claim, lang: string
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   const rows: SummaryRow[] = [];
   if (claim.generalApplication?.wantToUploadDocuments) {
-    const href = `${constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL)}`;
+    const href = `${constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS)}`;
     let rowValue: string;
     if (claim.generalApplication.wantToUploadDocuments === YesNo.YES) {
       rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION.YES', {lng})}</p>`;
