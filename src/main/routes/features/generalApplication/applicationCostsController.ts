@@ -13,7 +13,6 @@ import { getApplicationCostsContent } from 'services/features/generalApplication
 import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
-import {getLast} from 'services/features/generalApplication/generalApplicationService';
 
 const applicationCostsController = Router();
 const viewPath = 'features/generalApplication/application-costs';
@@ -22,8 +21,8 @@ const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, Applicati
 async function renderView(claim: Claim, req: AppRequest, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const applicationTypes = claim.generalApplication?.applicationTypes;
-  const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
   const selectedAppType = applicationTypes[applicationTypes.length - 1]?.option;
+  const applicationType = selectedApplicationType[selectedAppType];
   const gaFeeData = await gaApplicationFeeDetails(claim, req);
   const nextPageUrl = getRedirectUrl(req.params.id, claim, selectedAppType);
   const applicationCostsContent = getApplicationCostsContent(applicationTypes, gaFeeData, lang);
