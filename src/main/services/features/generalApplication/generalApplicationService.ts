@@ -160,6 +160,18 @@ export const saveIfPartyWantsToUploadDoc = async (redisKey: string, wantToSaveDo
   }
 };
 
+export const saveApplyHelpWithFees = async (claimId: string, claim: Claim, applyHelpWithFees: YesNo): Promise<void> => {
+  try {
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.applyHelpWithFees = applyHelpWithFees;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
   if (claim.isClaimant()) {
     const isDashboardEnabled = await isDashboardServiceEnabled();
@@ -263,8 +275,8 @@ export const saveStatementOfTruth = async (claimId: string, statementOfTruth: St
 
 export const getDynamicHeaderForMultipleApplications = (claim: Claim): string => {
   const applicationTypes = claim.generalApplication?.applicationTypes;
-  return (applicationTypes?.length === 1) 
-    ? selectedApplicationType[applicationTypes[0].option] 
+  return (applicationTypes?.length === 1)
+    ? selectedApplicationType[applicationTypes[0].option]
     : 'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION';
 };
 
@@ -309,8 +321,8 @@ export const validateAdditionalApplicationtType = (claim : Claim, errors : Valid
 };
 
 export const getListOfNotAllowedAdditionalAppType = () => {
-  return [ApplicationTypeOption.SET_ASIDE_JUDGEMENT, 
-    ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, 
+  return [ApplicationTypeOption.SET_ASIDE_JUDGEMENT,
+    ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT,
     ApplicationTypeOption.SETTLE_BY_CONSENT];
 };
 

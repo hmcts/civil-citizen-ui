@@ -32,6 +32,7 @@ export class GeneralApplication {
   statementOfTruth?: StatementOfTruthForm;
   applicationFee?: ClaimFeeData;
   helpWithFees?: GaHelpWithFees;
+  applyHelpWithFees?: YesNo;
 
   constructor(
     applicationType?: ApplicationType,

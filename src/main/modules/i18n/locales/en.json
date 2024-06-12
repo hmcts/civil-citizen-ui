@@ -2413,6 +2413,14 @@
         },
         "TITLE": "Adjustments or support to attend a hearing"
       },
+      "PAY_APPLICATION_FEE": {
+        "APPLICATION_FEE": "Application fee",
+        "HELP_WITH_FEES": "help with fees (opens in new tab)",
+        "LOW_INCOME": "If you're on a low income, have limited savings or are claiming benefits, you may be able to get",
+        "MEET_CRITERIA": "If you meet the criteria, you may get support to pay some or all of the fee.",
+        "TITLE": "Pay application fee",
+        "WANT_TO_APPLY": "Do you want to apply for help with fees?"
+      },
       "CLAIM_APPLICATION_COST": {
         "ASK_YOUR_COSTS_BACK": "Do you want to ask for your costs back?",
         "ASK_YOUR_COSTS_BACK_YES": "If you know the details of the costs you want to claim back, you can upload a document with a description of these when we ask if you want to upload documents to support your application later on.",
@@ -4385,6 +4393,7 @@
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
+      "HELP_WITH_FEES_EMPTY_OPTION": "You need to tell us if you want to apply for help with fees. Choose option: Yes or No",
       "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
       "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No",
       "ENTER_ORDER_JUDGE": "You need to enter the order you want the judge to make",
