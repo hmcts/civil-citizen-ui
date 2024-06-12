@@ -4,6 +4,7 @@ import {
   electronicDocumentQuestionnaireUrl,
   firstPracticeDirection10Url,
   firstPracticeDirection31Url,
+  practiceDirection31bUrl,
 } from 'common/utils/externalURLs';
 
 export const  getWhatIsDisclosureDetailContent = () => {
@@ -21,6 +22,27 @@ export const  getWhatIsDisclosureDetailContent = () => {
       true)
     .build());
 };
+
+export const  getWhatIsDifferenceDisclosureDocumentsContent = () => {
+  const DISCLOSURE_OF_DOCUMENTS = 'PAGES.DISCLOSURE_OF_DOCUMENTS.';
+  return new DetailsComponent(`${DISCLOSURE_OF_DOCUMENTS}WHAT_IS_THE_DIFFERENCE`, new DetailsComponentContentBuilder()
+    .addTitle(`${DISCLOSURE_OF_DOCUMENTS}TITLE_1`)
+    .addParagraph(`${DISCLOSURE_OF_DOCUMENTS}PARAGRAPH_1.1`)
+    .addParagraph(`${DISCLOSURE_OF_DOCUMENTS}PARAGRAPH_1.2`)
+    .addParagraph(`${DISCLOSURE_OF_DOCUMENTS}PARAGRAPH_1.3`)
+    .addTitle(`${DISCLOSURE_OF_DOCUMENTS}TITLE_2`)
+    .addParagraph(`${DISCLOSURE_OF_DOCUMENTS}PARAGRAPH_2.1`)
+    .addParagraph(`${DISCLOSURE_OF_DOCUMENTS}PARAGRAPH_2.2`)
+    .addTitle(`${DISCLOSURE_OF_DOCUMENTS}TITLE_3`)
+    .addLink(`${DISCLOSURE_OF_DOCUMENTS}URL.TEXT`,
+      practiceDirection31bUrl,
+      `${DISCLOSURE_OF_DOCUMENTS}URL.BEFORE`,
+      `${DISCLOSURE_OF_DOCUMENTS}URL.AFTER`,
+      null,
+      true)
+    .build());
+};
+
 
 export const getHowToAgreeDisclosureOfElectronicDocumentsContent = () => {
   const HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS = 'HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS.DETAILS.';
