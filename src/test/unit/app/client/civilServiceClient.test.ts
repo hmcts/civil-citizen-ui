@@ -387,6 +387,15 @@ describe('Civil Service Client', () => {
       expect(locations[1].label).toBe(courtLocations[1].label);
       expect(locations[1].code).toBe(courtLocations[1].code);
     });
+    it('should return error', async () => {
+      //Given
+      const mockGet = jest.fn().mockRejectedValueOnce({ status: 404 });
+
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //Then
+      await expect(civilServiceClient.getCourtLocations(appReq)).rejects.toEqual({'status': 404});
+    });
   });
   describe('assignDefendantToClaim', ()=> {
     it('should call civil service api to assign a logged in user to a claim successfully', async () => {
@@ -1122,6 +1131,72 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.recordClick('123', appReq)).rejects.toThrow('error');
+    });
+  });
+
+  describe('Throw errors', ()=> {
+    it('should throw error isOcmcDefendantLinked ', async () => {
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.isOcmcDefendantLinked('123')).rejects.toThrow('error');
+    });
+    it('should throw error getFeeRanges ', async () => {
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.getFeeRanges(appReq)).rejects.toThrow('error');
+    });
+    it('should throw error getHearingAmount ', async () => {
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.getHearingAmount(123,appReq)).rejects.toThrow('error');
+    });
+    it('should throw error getClaimsForClaimant ', async () => {
+      const mockGet = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.getClaimsForClaimant(appReq)).rejects.toThrow('error');
+    });
+    it('should throw error verifyOcmcPin ', async () => {
+      const mockPost = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.verifyOcmcPin('1','123')).rejects.toThrow('error');
+    });
+    it('should throw error retrieveByDefendantId ', async () => {
+      const mockPost = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.retrieveByDefendantId(appReq)).rejects.toThrow('error');
+    });
+    it('should throw error retrieveByDefendantId ', async () => {
+      const mockPut = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({put: mockPut} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.updateTaskStatus('123',appReq)).rejects.toThrow('error');
     });
   });
 });

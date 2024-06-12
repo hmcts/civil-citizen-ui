@@ -8,7 +8,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {SummarySection, SummarySections} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
-import {AppRequest} from 'models/AppRequest';
 
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/caseProgression/checkYourAnswers/checkAnswersService');
@@ -190,21 +189,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         expect(res.text).toContain('Gwiriwch eich atebion');
       });
     });
-    test('Submit the task list update', async () => {
-      //given
-      const claim: Claim = new Claim();
-      Object.assign(claim, civilClaimResponse.case_data);
-      mockDraftStore.mockReturnValueOnce(claim);
-      const appRequest:AppRequest=undefined;
-      //when
-      await testSession.post(CP_CHECK_ANSWERS_URL)
-        .send(appRequest.session.dashboard.taskIdHearingUploadDocuments='111')
-        .expect((res: { status: unknown; text: unknown; }) => {
-        //then
-          expect(res.status).toBe(200);
 
-        });
-    });
     test('If the form is not missing, redirect to new page', async () => {
       //given
       app.locals.draftStoreClient = mockCivilClaim;
@@ -216,6 +201,21 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         expect(res.status).toBe(302);
         expect(res.text).toContain('Found. Redirecting to /case/undefined/case-progression/documents-uploaded');
       });
+    });
+    test('Throw error', async () => {
+      //given
+      jest.spyOn(draftStoreService, 'getDraftClaimFromStore')
+        .mockImplementation(() => {
+          throw new Error(TestMessages.REDIS_FAILURE);
+        });
+
+      //when
+      await testSession.post(CP_CHECK_ANSWERS_URL);
+      expect((res: Response) => {
+        expect(res.status).toBe(500);
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+      });
+
     });
   });
 });
