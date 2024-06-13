@@ -1,19 +1,19 @@
 import {ApplicationUpdate} from 'models/generalApplication/events/eventDto';
-import {CaseState} from 'form/models/claimDetails';
+import { ApplicationState } from './applicationSummary';
 
 export class ApplicationResponse {
   id: string;
   case_data: CCDApplication;
-  state: CaseState;
-  last_modified: Date;
-  created_date: Date;
+  state: ApplicationState;
+  last_modified: string;
+  created_date: string;
 
   constructor(
     id?: string,
     case_data?: CCDApplication,
-    state?: CaseState,
-    last_modified?: Date,
-    created_date?: Date,
+    state?: ApplicationState,
+    last_modified?: string,
+    created_date?: string,
   ) {
     this.id = id;
     this.case_data = case_data;
@@ -24,5 +24,6 @@ export class ApplicationResponse {
 }
 
 export interface CCDApplication extends ApplicationUpdate {
+  applicationTypes: string;
   legacyCaseReference?: string;
 }
