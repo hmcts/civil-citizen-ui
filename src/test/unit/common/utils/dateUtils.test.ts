@@ -168,7 +168,7 @@ describe('isDateOnOrAfterSpecificDate', () => {
   });
 });
 
-describe('isDateOnOrAfterSpecificDate', () => {
+describe('dateTimeFormat', () => {
   it('should return date formatted in en', () => {
     const date = '2024-05-29T14:39:28.483971';
     const result = dateTimeFormat(date, 'en');
