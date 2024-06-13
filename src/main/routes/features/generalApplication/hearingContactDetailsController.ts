@@ -1,5 +1,9 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {GA_HEARING_ARRANGEMENT_URL, GA_HEARING_CONTACT_DETAILS_URL} from 'routes/urls';
+import {
+  GA_HEARING_ARRANGEMENT_URL,
+  GA_HEARING_CONTACT_DETAILS_URL,
+  GA_UNAVAILABLE_HEARING_DATES_URL,
+} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getCancelUrl, getDynamicHeaderForMultipleApplications, saveHearingContactDetails} from 'services/features/generalApplication/generalApplicationService';
@@ -43,7 +47,7 @@ hearingContactDetailsController.post(GA_HEARING_CONTACT_DETAILS_URL, (async (req
       await renderView(claimId, claim, form, res);
     } else {
       await saveHearingContactDetails(redisKey, hearingContactDetails);
-      res.redirect('test'); // TODO: add url
+      res.redirect(constructResponseUrlWithIdParams(claimId, GA_UNAVAILABLE_HEARING_DATES_URL));
     }
   } catch (error) {
     next(error);
