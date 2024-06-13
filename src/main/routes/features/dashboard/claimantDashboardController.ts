@@ -3,9 +3,9 @@ import {DASHBOARD_CLAIMANT_URL, DATE_PAID_URL, OLD_DASHBOARD_CLAIMANT_URL} from 
 import {
   extractOrderDocumentIdFromNotification,
   getDashboardForm,
-  getNotifications,
   getHelpSupportLinks,
   getHelpSupportTitle,
+  getNotifications,
 } from 'services/dashboard/dashboardService';
 import {Claim} from 'models/claim';
 import {CaseState} from 'common/form/models/claimDetails';
@@ -15,7 +15,7 @@ import {ClaimantOrDefendant} from 'models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isDashboardServiceEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
-import { CivilServiceClient } from 'client/civilServiceClient';
+import {CivilServiceClient} from 'client/civilServiceClient';
 import {t} from 'i18next';
 import {applicationNoticeUrl, getDebtRespiteUrl} from 'common/utils/externalURLs';
 import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
@@ -91,7 +91,10 @@ const getSupportLinks = (claim: Claim, claimId: string, lng: string) => {
     claim.ccdState === CaseState.DECISION_OUTCOME;
 
   const showGetDebtRespiteLink = claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
-    claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION;
+    claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
+    claim.ccdState === CaseState.IN_MEDIATION ||
+    claim.ccdState === CaseState.JUDICIAL_REFERRAL ||
+    claim.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
 
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks = [];
@@ -102,7 +105,7 @@ const getSupportLinks = (claim: Claim, claimId: string, lng: string) => {
   if (showTellUsEndedLink) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_ENDED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
   }
-  if (showGetDebtRespiteLink) {
+  if (showGetDebtRespiteLink && claim.isClaimant()) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }), url: getDebtRespiteUrl });
   }
 
