@@ -26,4 +26,5 @@ export class Hearing {
   disclosureOfElectronicDocumentsIssues?: string;
   claimantDocumentsConsideredDetails?: string;
   hasAnAgreementBeenReached?: string;
+  hasClaimantDocumentsToBeConsidered?: GenericYesNo;
 }
