@@ -19,7 +19,6 @@ import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/l
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {Dashboard} from 'models/dashboard/dashboard';
-import {CivilServiceClient} from 'client/civilServiceClient';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -104,6 +103,7 @@ const mockExpectedDashboardInfo=
       'hintTextCy': 'hint_text_cy2',
     }] as DashboardTask[],
   }] as DashboardTaskList[];
+const dashboard = new Dashboard(mockExpectedDashboardInfo);
 jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
@@ -118,7 +118,7 @@ jest.mock('common/utils/carmToggleUtils.ts');
 
 jest.mock('services/dashboard/dashboardService', () => ({
   getNotifications: jest.fn(),
-  getDashboardForm: jest.fn(),
+  getDashboardForm: jest.fn(()=>dashboard),
   getHelpSupportTitle: jest.fn(),
   getHelpSupportLinks: jest.fn(),
   extractOrderDocumentIdFromNotification : jest.fn(),
@@ -435,9 +435,6 @@ describe('Claim Summary Controller Defendant', () => {
       isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
       isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
       isCarmEnabledForCaseMock.mockResolvedValue(true);
-      const dashboard = new Dashboard(mockExpectedDashboardInfo);
-
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
       //when
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
