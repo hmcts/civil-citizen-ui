@@ -809,6 +809,40 @@ describe('Civil Service Client', () => {
       //Then
       expect(redirectUrl).toEqual('https://redirectUrl');
     });
+    it('should get null for undefined data', async () => {
+      const mockResponse: AxiosResponse = {
+        config: undefined, headers: undefined, statusText: 'OK',
+        status: 200,
+        data: undefined,
+      };
+      //Given
+      const mockPost = jest.fn().mockResolvedValue(mockResponse);
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const redirectUrl: string = await civilServiceClient.verifyOcmcPin('100010000', '604MC498');
+
+      //Then
+      expect(redirectUrl).toEqual(null);
+    });
+    it('should get new Claim for undefined data', async () => {
+      const mockResponse: AxiosResponse = {
+        config: undefined, headers: undefined, statusText: 'OK',
+        status: 200,
+        data: undefined,
+      };
+      //Given
+      const mockPost = jest.fn().mockResolvedValue(mockResponse);
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const claim = await civilServiceClient.verifyPin(appReq, '604MC498','100010000');
+
+      //Then
+      expect(claim).toEqual(new Claim());
+    });
   });
 
   describe('getFeePaymentRedirectInformation', () => {
