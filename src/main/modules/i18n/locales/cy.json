@@ -423,6 +423,10 @@
     }
   },
   "PAGES": {
+    "CLAIMANT_DOCS_FOR_DISCLOSURE" : {
+      "PAGE_TITLE": "A oes unrhyw ddogfennau sydd gan yr hawlwyr yr hoffech i'r llys eu hystyried?",
+      "TITLE": "Dogfennau hawlydd i'w hystyried"
+    },
     "HAS_AN_AGREEMENT_BEEN_REACHED" : {
       "PAGE_TITLE": "A ddaethpwyd i gytundeb ynghylch datgelu dogfennau electronig?",
       "TITLE": "Datgelu dogfennau electronig",
@@ -4003,6 +4007,7 @@
   },
   "ERRORS": {
     "HAS_AN_AGREEMENT_BEEN_REACHED" : "Nodi a daethpwyd i gytundeb ynghylch pa ddogfennau electronig a fydd yn cael eu datgelu",
+    "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Nodwch os oes unrhyw ddogfennau sydd gan yr hawlwyr eich bod am i'r llys eu hystyried",
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau nad ydynt yn electronig",
     "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau electronig",
     "CLAIMANT_DOCUMENTS_CONSIDERED" : "Rhowch fanylion y dogfennau sydd gan yr hawlwyr yr ydych am i'r llys eu hystyried",
