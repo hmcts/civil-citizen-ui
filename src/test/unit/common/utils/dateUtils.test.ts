@@ -170,12 +170,12 @@ describe('isDateOnOrAfterSpecificDate', () => {
 
 describe('dateTimeFormat', () => {
   it('should return date formatted in en', () => {
-    const date = '2024-05-29T14:39:28.483971';
+    const date = '2024-05-29 14:39:28.123';
     const result = dateTimeFormat(date, 'en');
     expect(result).toBe('29 May 2024, 2:39:28 pm');
   });
   it('should return date formatted in cy', () => {
-    const date = '2024-05-29T14:39:28.483971';
+    const date = '2024-05-29 14:39:28.123';
     const result = dateTimeFormat(date, 'cy');
     expect(result).toBe('29 Mai 2024, 2:39:28 yh');
   });
