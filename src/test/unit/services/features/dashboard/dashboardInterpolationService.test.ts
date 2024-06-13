@@ -184,7 +184,7 @@ describe('dashboardInterpolationService', () => {
     const textToReplaceUrl = '{APPLY_HELP_WITH_FEES_START}';
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined);
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
-    const sizeExpected = '/case/123/apply-help-with-fees/start';
+    const sizeExpected = '/case/123/case-progression/apply-help-with-fees/start';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
