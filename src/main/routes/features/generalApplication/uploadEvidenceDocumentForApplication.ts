@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  GA_HEARING_ARRANGEMENTS_GUIDANCE,
-  GA_UPLOAD_DOCUMENTS, GA_WANT_TO_UPLOAD_DOCUMENTS,
+  GA_HEARING_ARRANGEMENTS_GUIDANCE_URL,
+  GA_UPLOAD_DOCUMENTS_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
@@ -29,8 +29,8 @@ const upload = multer({
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS);
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS);
+  const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL);
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
   res.render(viewPath, {
     form,
     formattedSummary,
@@ -41,7 +41,7 @@ async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimI
   });
 }
 
-uploadEvidenceDocumentsForApplicationController.get(GA_UPLOAD_DOCUMENTS, (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadEvidenceDocumentsForApplicationController.get(GA_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
@@ -69,12 +69,12 @@ uploadEvidenceDocumentsForApplicationController.get(GA_UPLOAD_DOCUMENTS, (async 
   }
 }) as RequestHandler);
 
-uploadEvidenceDocumentsForApplicationController.post(GA_UPLOAD_DOCUMENTS, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadEvidenceDocumentsForApplicationController.post(GA_UPLOAD_DOCUMENTS_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
-    const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS);
+    const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL);
 
     const formattedSummary = summarySection(
       {
@@ -93,7 +93,7 @@ uploadEvidenceDocumentsForApplicationController.post(GA_UPLOAD_DOCUMENTS, upload
       await getSummaryList(formattedSummary, redisKey, claimId);
       return await renderView(form, claim, claimId, res, formattedSummary);
     } else {
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE));
+      res.redirect(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL));
     }
   } catch (error) {
     next(error);
