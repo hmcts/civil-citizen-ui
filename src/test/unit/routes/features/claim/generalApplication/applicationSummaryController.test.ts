@@ -10,6 +10,7 @@ import { isGaForLipsEnabled } from '../../../../../../main/app/auth/launchdarkly
 import { GeneralApplicationClient } from 'client/generalApplicationClient';
 import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { decode } from 'punycode';
+import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -34,7 +35,7 @@ describe('General Application - Application costs', () => {
       case_data: {
         applicationTypes: 'Adjourn a hearing', 
       },
-      state: 'AWAITING_RESPONDENT_RESPONSE',
+      state: ApplicationState.AWAITING_RESPONDENT_RESPONSE,
       last_modified: '2024-05-29T14:39:28.483971',
       created_date: '2024-05-29T14:39:28.483971',
     };
