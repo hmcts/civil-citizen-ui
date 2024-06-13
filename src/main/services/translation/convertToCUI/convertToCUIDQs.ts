@@ -9,9 +9,9 @@ import {toCUIGenericYesNo} from 'services/translation/convertToCUI/convertToCUIY
 import {toCUIExperts} from './convertToCUIExperts';
 import {analyseClaimType} from 'common/form/models/claimType';
 
-export const toCUIDQs = (ccdClaim: CCDClaim): DirectionQuestionnaire => {
+export const toCUIDQs = (ccdClaim: CCDClaim, isMintiEnabled = false): DirectionQuestionnaire => {
   if (ccdClaim) {
-    ccdClaim.claimType = analyseClaimType(ccdClaim.totalClaimAmount);
+    ccdClaim.claimType = analyseClaimType(ccdClaim.totalClaimAmount, isMintiEnabled);
     const dq : DirectionQuestionnaire = new DirectionQuestionnaire();
     dq.welshLanguageRequirements = toCUIWelshLanguageRequirements(ccdClaim.respondent1DQLanguage);
     dq.vulnerabilityQuestions = toCUIVulnerability(ccdClaim.respondent1DQVulnerabilityQuestions);
