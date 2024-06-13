@@ -9,12 +9,13 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {Claim} from 'models/claim';
+import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 const spyDel = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails');
-
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 describe('Apply for help with fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -24,7 +25,9 @@ describe('Apply for help with fees', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-
+  beforeEach(()=> {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+  });
   describe('on GET', () => {
     it('should return resolving successful payment page', async () => {
       const caseData = Object.assign(new Claim(), claim.case_data);
