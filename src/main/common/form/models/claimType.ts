@@ -8,12 +8,14 @@ export enum claimType {
   MULTI_TRACK = 'MULTI_CLAIM',
 }
 
-export function analyseClaimType(totalClaimAmount: number, isMintEnabled = false): claimType {
-  if (isMintEnabled){
-    if (totalClaimAmount > MULTI_TRACK) {
+export function analyseClaimType(totalClaimAmount: number, isMintiEnabled = false): claimType {
+  if (isMintiEnabled) {
+     if (totalClaimAmount > MULTI_TRACK) {
       return claimType.MULTI_TRACK;
     }
-  } else if (totalClaimAmount <= SMALL_CLAIM_AMOUNT) {
+  }
+
+  if (totalClaimAmount <= SMALL_CLAIM_AMOUNT) {
     return claimType.SMALL_CLAIM;
   } else if (totalClaimAmount < FAST_TRACK_CLAIM_AMOUNT) {
     return claimType.FAST_TRACK_CLAIM;

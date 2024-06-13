@@ -21,4 +21,11 @@ describe('Testing of claimType class', () => {
     // Then
     expect(result).toBe(claimType.MULTI_TRACK);
   });
+
+  test('should analyseClaimType as small track when minti on', () => {
+    // when
+    const result =  analyseClaimType(1000, true );
+    // Then
+    expect(result).toBe(claimType.SMALL_CLAIM);
+  });
 });
