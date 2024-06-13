@@ -2234,10 +2234,13 @@
         "WHY_REQUESTING": "Why are you requesting this order?"
       },
       "CHECK_YOUR_ANSWER_RESPONSE": {
+        "APPLICATION": "The information on this page forms your response to the application.",
+        "CHECKBOX": " believe that the facts stated in this response form are true.",
         "CLAIM_REFERENCE": "Claim reference: ",
         "PREFERRED_LOCATION": "Preferred location",
         "RESPOND_TO_AN_APPLICATION": "Respond to an application",
-        "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
+        "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months",
+        "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
       },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Application fee to pay:",

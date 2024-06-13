@@ -13,7 +13,7 @@ import { getRespondToApplicationCaption, saveRespondentStatementOfTruth } from '
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 
 const gaCheckAnswersResponseController = Router();
-const viewPath = 'features/generalApplication/check-answers';
+const viewPath = 'features/generalApplication/response/check-answers';
 const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, req: AppRequest, res: Response): Promise<void> {
