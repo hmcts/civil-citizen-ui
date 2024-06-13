@@ -58,10 +58,12 @@ payApplicationFeeController.post(GA_PAY_APPLICATION_FEE, (async (req: AppRequest
       await saveApplyHelpWithFees(redisKey, claim, req.body.option);
       if (claim.generalApplication?.applyHelpWithFees === YesNo.NO) {
         const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+        claim.generalApplication.generalAppPaymentDetails = paymentRedirectInformation;
         const paymentStatus = await getGaFeePaymentStatus(generalApplicationId, paymentRedirectInformation.paymentReference, req);
         paymentRedirectInformation.status = paymentStatus.status;
         paymentRedirectInformation.errorCode = paymentStatus.errorCode;
         paymentRedirectInformation.errorDescription = paymentStatus.errorDescription;
+        console.log(paymentStatus);
         if (paymentStatus.status === success) {
           return GA_PAYMENT_SUCCESSFUL_URL;
         } else if (paymentStatus.status === failed && paymentStatus.errorDescription !== paymentCancelledByUser) {
