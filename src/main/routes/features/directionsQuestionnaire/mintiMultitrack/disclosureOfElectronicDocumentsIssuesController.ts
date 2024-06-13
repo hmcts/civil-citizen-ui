@@ -1,7 +1,6 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
   DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL,
 } from 'routes/urls';
 import {
@@ -53,7 +52,7 @@ disclosureOfElectronicDocumentsIssues.post(DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONI
         disclosureOfElectronicDocumentsIssuesForm.model.disclosureOfElectronicDocumentsIssues,
         'disclosureOfElectronicDocumentsIssues',
         'hearing');
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_EVIDENCE_URL)); //TODO update back link
+      res.redirect(constructResponseUrlWithIdParams(claimId, 'todo'));
     }
 
   } catch (error) {

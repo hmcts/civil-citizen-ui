@@ -1,7 +1,8 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  DQ_MULTITRACK_AGREEMENT_REACHED_URL,
+  DQ_DISCLOSURE_OF_DOCUMENTS_URL,
+  DQ_MULTITRACK_AGREEMENT_REACHED_URL, DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL,
 } from 'routes/urls';
 import {
   getDirectionQuestionnaire,
@@ -22,7 +23,7 @@ const agreementReachedController = Router();
 const disclosureNonElectronicDocumentsViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/agreement-reached';
 const HAS_AN_AGREEMENT_BEEN_REACHED_PAGE = 'PAGES.HAS_AN_AGREEMENT_BEEN_REACHED.';
 
-function renderView(disclosureNonElectronicDocument: GenericForm<HasAnAgreementBeenReached>, res: Response): void {
+function renderView(disclosureNonElectronicDocument: GenericForm<HasAnAgreementBeenReached>, claimId: string, res: Response): void {
   const form = disclosureNonElectronicDocument;
   const howToAgreeDisclosureOfElectronicDocumentsContent = getHowToAgreeDisclosureOfElectronicDocumentsContent();
 
@@ -33,16 +34,18 @@ function renderView(disclosureNonElectronicDocument: GenericForm<HasAnAgreementB
     pageTitle: `${HAS_AN_AGREEMENT_BEEN_REACHED_PAGE}PAGE_TITLE`,
     title: `${HAS_AN_AGREEMENT_BEEN_REACHED_PAGE}TITLE`,
     //TODO ADD THE BACK URL
-    backLinkUrl: constructResponseUrlWithIdParams('claimId', 'todo'),
+    backLinkUrl: constructResponseUrlWithIdParams(claimId, DQ_DISCLOSURE_OF_DOCUMENTS_URL),
   });
 }
 
 agreementReachedController.get(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req, res, next: NextFunction) => {
   try {
+    const claimId = req.params.id;
+
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const hasAnAgreementBeenReachedForm = directionQuestionnaire.hearing?.hasAnAgreementBeenReached ?
       new HasAnAgreementBeenReached(directionQuestionnaire.hearing.hasAnAgreementBeenReached) : new HasAnAgreementBeenReached();
-    renderView(new GenericForm(hasAnAgreementBeenReachedForm) , res);
+    renderView(new GenericForm(hasAnAgreementBeenReachedForm), claimId,  res);
   } catch (error) {
     next(error);
   }
@@ -54,15 +57,18 @@ agreementReachedController.post(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req
     const hasAnAgreementBeenReachedForm = new GenericForm(new HasAnAgreementBeenReached(req.body.hasAnAgreementBeenReached));
     hasAnAgreementBeenReachedForm.validateSync();
     if (hasAnAgreementBeenReachedForm.hasErrors()) {
-      renderView(hasAnAgreementBeenReachedForm, res);
+      renderView(hasAnAgreementBeenReachedForm, claimId, res);
     } else {
       await saveDirectionQuestionnaire(
         generateRedisKey(<AppRequest>req),
         hasAnAgreementBeenReachedForm.model.hasAnAgreementBeenReached,
         'hasAnAgreementBeenReached',
         'hearing');
-      //TODO REDIRECTION URL
-      res.redirect(constructResponseUrlWithIdParams(claimId, 'todo'));
+      if (hasAnAgreementBeenReachedForm.model.hasAnAgreementBeenReached !== HasAnAgreementBeenReachedOptions.YES) {
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL));
+      } else {
+        res.redirect(constructResponseUrlWithIdParams(claimId, 'todo'));
+      }
     }
 
   } catch (error) {
