@@ -22,7 +22,6 @@ import {submitApplication} from 'services/features/generalApplication/submitAppl
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
-const backLinkUrl = 'test'; // TODO: add url
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('gaCheckAnswersController');
 
