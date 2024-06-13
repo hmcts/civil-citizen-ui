@@ -38,8 +38,9 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
         redirectUrl =  constructResponseUrlWithIdParams(claimId, GA_PAYMENT_SUCCESSFUL_URL);
       } else if (paymentStatus.status === failed && paymentStatus.errorDescription !== paymentCancelledByUser) {
         redirectUrl =  constructResponseUrlWithIdParams(claimId, GA_PAYMENT_UNSUCCESSFUL_URL);
+      } else {
+        redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
       }
-      redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
     } else {
       redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES);
     }
