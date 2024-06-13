@@ -10,7 +10,7 @@ export enum claimType {
 
 export function analyseClaimType(totalClaimAmount: number, isMintiEnabled = false): claimType {
   if (isMintiEnabled) {
-     if (totalClaimAmount > MULTI_TRACK) {
+    if (totalClaimAmount > MULTI_TRACK) {
       return claimType.MULTI_TRACK;
     }
   }
@@ -22,3 +22,5 @@ export function analyseClaimType(totalClaimAmount: number, isMintiEnabled = fals
   }
 }
 
+export const isMultiTrack = (totalClaimAmount: number, isMintEnabled = false): boolean =>
+  analyseClaimType(totalClaimAmount, isMintEnabled) === claimType.MULTI_TRACK;
