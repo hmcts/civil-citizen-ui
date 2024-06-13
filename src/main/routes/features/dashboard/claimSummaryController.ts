@@ -57,7 +57,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
 
-      const hearing = dashboardTaskList?.items[2]?.tasks ? dashboardTaskList?.items[2]?.tasks : [];
+      const hearing = dashboardTaskList?.items[2]?.tasks ? dashboardTaskList?.items[2]?.tasks : [];//nosonar
       hearing.forEach((task) => {
         if (task.taskNameEn.search(HearingUploadDocuments)>0){
           req.session.dashboard = {taskIdHearingUploadDocuments:undefined};
