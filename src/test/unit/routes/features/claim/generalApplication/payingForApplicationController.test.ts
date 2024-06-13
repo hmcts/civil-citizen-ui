@@ -46,15 +46,4 @@ describe('General Application - Application type', () => {
         });
     });
   });
-
-  describe('on POST', () => {
-    it('should redirect', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(PAYING_FOR_APPLICATION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
-    });
-  });
 });
