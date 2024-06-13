@@ -160,18 +160,6 @@ export const saveIfPartyWantsToUploadDoc = async (redisKey: string, wantToSaveDo
   }
 };
 
-export const saveApplyHelpWithFees = async (claimId: string, claim: Claim, applyHelpWithFees: YesNo): Promise<void> => {
-  try {
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.applyHelpWithFees = applyHelpWithFees;
-    await saveDraftClaim(claimId, claim);
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
-};
-
-
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
   if (claim.isClaimant()) {
     const isDashboardEnabled = await isDashboardServiceEnabled();

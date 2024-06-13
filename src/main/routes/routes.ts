@@ -352,7 +352,6 @@ import payApplicationFeeConfirmationController
 import submitGeneralApplicationConfirmationController
   from 'routes/features/generalApplication/submitGeneralApplicationConfirmationController';
 import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
-import payApplicationFeeController from 'routes/features/generalApplication/payApplicationFeeController';
 
 export default [
   homeController,
@@ -648,7 +647,6 @@ export default [
   unavailableHearingDatesResponseController,
   submitGeneralApplicationConfirmationController,
   acceptDefendantOfferController,
-  payApplicationFeeController,
   helpWithApplicationFeeController,
   helpWithFeesContentController,
   helpWithApplicationFeeReferenceController,
