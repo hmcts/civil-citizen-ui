@@ -2233,6 +2233,17 @@
         "WHY_PREFER": "Why would you prefer this type of hearing?",
         "WHY_REQUESTING": "Why are you requesting this order?"
       },
+      "CHECK_YOUR_ANSWER_RESPONSE": {
+        "CLAIM_REFERENCE": "Claim reference: ",
+        "PREFERRED_LOCATION": "Preferred location",
+        "RESPOND_TO_AN_APPLICATION": "Respond to an application",
+        "STATEMENT_OF_TRUTH": {
+          "APPLICATION": "The information on this page forms your response to the application.",
+          "CHECKBOX": "I believe that the facts stated in this response form are true.",
+          "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
+        },
+        "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
+      },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Application fee to pay:",
         "TITLE": "Paying for your application",
