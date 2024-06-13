@@ -55,7 +55,7 @@ export const formatDateToFullDate = (date: Date, lang?: string): string => {
 export function dateTimeFormat(value: string, lang?: string): string {
   const language = lang === 'cy' ? 'cy' : 'en-gb';
   const date = DateTime.fromISO(value);
-  return date.setLocale(language).toFormat("d LLLL yyyy, h:mm:ss a");
+  return date.setLocale(language).toFormat('d LLLL yyyy, h:mm:ss a');
 }
 
 export const getNumberOfDaysBetweenTwoDays = (startDay: Date | string, endDay: Date | string) => {

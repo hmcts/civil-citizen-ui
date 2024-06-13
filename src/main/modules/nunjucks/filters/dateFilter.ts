@@ -16,19 +16,6 @@ export function dateFilter(value: string): string {
 }
 
 /**
- * This filter should be used when you want to display long format from date format "d LLLL yyyy, h:mm:ss a"
- * usage (in njk):
- * {{myDateVar | formatDate}}
- * output:
- *   12 June 2024, 4:00:00 PM
- * @param value
- */
-export function dateTimeFilter(value: string): string {
-  const date = DateTime.fromISO(value);
-  return date.toFormat("d LLLL yyyy, h:mm:ss a");
-}
-
-/**
  * This filter should be used when you want to display long format from date format dd-MM-yyyy
  * usage (in njk):
  * {{myDateVar | formatDate}}

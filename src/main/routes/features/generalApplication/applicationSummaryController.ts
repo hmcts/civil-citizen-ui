@@ -33,8 +33,8 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
         types: application.case_data?.applicationTypes,
         id: application.id,
         createdDate: dateTimeFormat(application.created_date, lng),
-        applicationUrl: `${constructResponseUrlWithIdParams(application.id, GA_VIEW_APPLICATION_URL)}?applicationId=${application.id}` 
-      })
+        applicationUrl: `${constructResponseUrlWithIdParams(application.id, GA_VIEW_APPLICATION_URL)}?applicationId=${application.id}`,
+      });
     });
 
     res.render(viewPath, {
