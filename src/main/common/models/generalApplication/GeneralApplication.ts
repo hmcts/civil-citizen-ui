@@ -12,6 +12,7 @@ import {ClaimFeeData} from '../civilClaimResponse';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
 
 export class GeneralApplication {
 
@@ -33,6 +34,7 @@ export class GeneralApplication {
   applicationFee?: ClaimFeeData;
   helpWithFees?: GaHelpWithFees;
   applyHelpWithFees?: YesNo;
+  generalAppPaymentDetails : PaymentInformation;
 
   constructor(
     applicationType?: ApplicationType,
