@@ -2873,7 +2873,7 @@
       "TITLE_WITH_PERSON": "Ai {{ contactPerson }} yw'r un y dylai'r gwasanaeth cyfryngu ei ffonio?"
     },
     "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
-      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TITLE": "Who will be attending the mediation appointment?",
       "PAGE_TEXT": "Ai {{ partyContactPerson }} yw’r unigolyn a fydd yn mynychu’r apwyntiad cyfryngu?"
     },
     "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
