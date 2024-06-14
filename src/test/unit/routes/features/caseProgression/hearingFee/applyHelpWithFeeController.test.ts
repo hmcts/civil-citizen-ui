@@ -6,9 +6,11 @@ import {
   APPLY_HELP_WITH_FEES_REFERENCE, APPLY_HELP_WITH_FEES_START,
 } from 'routes/urls';
 import {mockCivilClaimHearingFee} from '../../../../../utils/mockDraftStore';
+import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 describe('Apply for help with fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -19,7 +21,9 @@ describe('Apply for help with fees', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-
+  beforeEach(()=> {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+  });
   describe('on GET', () => {
     it('should return resolving apply help fees page', async () => {
       app.locals.draftStoreClient = mockCivilClaimHearingFee;
