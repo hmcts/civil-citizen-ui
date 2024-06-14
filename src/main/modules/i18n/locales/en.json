@@ -608,22 +608,6 @@
       "TITLE": "Language",
       "WELSH_AND_ENGLISH": "Welsh"
     },
-    "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
-      "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
-      "PAGE_TITLE": "Date for lifting debt respite scheme (breathing space)",
-      "TITLE": "Date for lifting debt respite scheme (breathing space)"
-    },
-    "BREATHING_SPACE_DEBT_RESPITE_START": {
-      "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
-      "PAGE_TITLE": "When did it start?",
-      "TITLE": "When did it start?"
-    },
-    "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
-      "MENTAL_HEALTH": "Mental health crisis moratorium",
-      "PAGE_TITLE": "What type is it?",
-      "STANDARD": "Standard breathing space",
-      "TITLE": "What type is it?"
-    },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
     },
@@ -1165,25 +1149,6 @@
       "TOTAL_CLAIM_AMOUNT": "Total claim amount:",
       "TRIAL_DOCUMENTS": "trial documents"
     },
-    "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
-      "PAGE_TITLE": "Check your answers before submitting",
-      "TITLE": "Check your answers before submitting",
-      "REFERENCE_NUMBER": "Reference number",
-      "WHEN_DID_IT_START": "When did it start?",
-      "TYPE": {
-        "WHAT_TYPE_IS_IT": "What type is it?",
-        "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
-        "STANDARD_BREATHING_SPACE": "Standard breathing space"
-      },
-      "EXPECTED_END_DATE": "Expected end date"
-    },
-    "CLAIMANT_LIFT_BREATHING_SPACE_CHECK_ANSWER": {
-      "PAGE_TITLE": "Lift the debt respite scheme (breathing space)",
-      "TITLE": "Lift the debt respite scheme (breathing space)",
-      "DATE_LIFTED": " Date lifted",
-      "CYA_HEADER": "Are you sure you want to lift the debt respite scheme?",
-      "CYA_HEADER_TEXT": "Once the debt respite scheme is lifted you will not be able to change this."
-    },
     "CLAIMANT_DOB": {
       "PAGE_TITLE": "Your date of birth",
       "TITLE": "What is your date of birth?"
@@ -1715,16 +1680,6 @@
       "MONTHLY_PAYMENTS_IN_POUNDS": "Monthly payments, in pounds",
       "TITLE": "Do you have loans or credit card debts?",
       "TOTAL_OWED_IN_POUNDS": "Total owed, in pounds"
-    },
-    "DEBT_RESPITE_REF_NUMBER": {
-      "ENTER_REFERENCE": "Enter the reference number (optional):",
-      "PAGE_TITLE": "Debt Respite Scheme reference number",
-      "TITLE": "Do you have a Debt Respite Scheme reference number?"
-    },
-    "DEBT_RESPITE_END_DATE": {
-      "PAGE_TITLE": "Expected end date",
-      "THIS_IS_THE": "This is the end date that it is due to finish (optional)",
-      "TITLE": "Expected end date"
     },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Trading as (If you know it)",
@@ -4293,8 +4248,6 @@
       "RENT": "Enter a valid Rent amount, maximum two decimal places",
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
-    "VALID_DEBT_RESPITE_END_DATE": "Expected end date must not be before today’s date",
-    "VALID_DEBT_RESPITE_OPTION": "You must select the Type before continuing",
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",
