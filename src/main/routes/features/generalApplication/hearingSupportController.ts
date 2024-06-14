@@ -1,5 +1,5 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {GA_HEARING_SUPPORT_URL} from 'routes/urls';
+import {GA_HEARING_SUPPORT_URL, GA_UNAVAILABLE_HEARING_DATES_URL, PAYING_FOR_APPLICATION_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getCancelUrl, getDynamicHeaderForMultipleApplications, saveHearingSupport} from 'services/features/generalApplication/generalApplicationService';
@@ -8,17 +8,18 @@ import {getClaimById} from 'modules/utilityService';
 import {t} from 'i18next';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const hearingSupportController = Router();
 const viewPath = 'features/generalApplication/hearing-support';
-const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingSupport>, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
-  res.render(viewPath, { 
-    form, 
-    cancelUrl, 
-    backLinkUrl, 
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_UNAVAILABLE_HEARING_DATES_URL);
+  res.render(viewPath, {
+    form,
+    cancelUrl,
+    backLinkUrl,
     headerTitle: getDynamicHeaderForMultipleApplications(claim),
     headingTitle: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE') });
 }
@@ -49,7 +50,7 @@ hearingSupportController.post(GA_HEARING_SUPPORT_URL, (async (req: AppRequest | 
       await renderView(claimId, claim, form, res);
     } else {
       await saveHearingSupport(redisKey, hearingSupport);
-      res.redirect('test'); // TODO: add url
+      res.redirect(constructResponseUrlWithIdParams(claimId, PAYING_FOR_APPLICATION_URL));
     }
   } catch (error) {
     next(error);
