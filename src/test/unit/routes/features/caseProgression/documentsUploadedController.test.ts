@@ -8,8 +8,12 @@ import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import civilClaimDocumentUploaded from '../../../../utils/mocks/civilClaimResponseMock.json';
+import {
+  isCaseProgressionV1Enable,
+} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 describe('Documents uploaded controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -20,7 +24,9 @@ describe('Documents uploaded controller', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-
+  beforeEach(() => {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+  });
   it('should render the page successfully', async () => {
     const claim = Object.assign(new Claim(), civilClaimDocumentUploaded.case_data);
     jest
@@ -97,6 +103,7 @@ describe('Documents uploaded controller', () => {
     jest
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
       .mockRejectedValueOnce(error);
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
     const mockClaimId = '1645882162449409';
     const caseData = new Claim();
     caseData.caseProgression = new CaseProgression();

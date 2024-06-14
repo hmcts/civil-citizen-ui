@@ -1,17 +1,23 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {APPLICATION_TYPE_URL, GA_AGREEMENT_FROM_OTHER_PARTY} from 'routes/urls';
+import {
+  APPLICATION_TYPE_URL,
+  GA_AGREEMENT_FROM_OTHER_PARTY_URL,
+  INFORM_OTHER_PARTIES_URL,
+} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { getCancelUrl, getLast, saveAgreementFromOtherParty, validateNoConsentOption} from 'services/features/generalApplication/generalApplicationService';
-import { selectedApplicationType } from 'common/models/generalApplication/applicationType';
+import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {agreementFromOtherPartyGuard} from 'routes/guards/generalApplication/agreementFromOtherPartyGuard';
 
 const agreementFromOtherPartyController = Router();
 const viewPath = 'features/generalApplication/agreement-from-other-party';
 
-agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY, (async (req: AppRequest, res: Response, next: NextFunction) => {
+agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreementFromOtherPartyGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const backLinkUrl = getBackLinkUrl(<AppRequest>req);
     const redisKey = generateRedisKey(<AppRequest>req);
@@ -31,7 +37,7 @@ agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY, (async (req
   }
 }) as RequestHandler);
 
-agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreementFromOtherPartyGuard, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
 
     const backLinkUrl = getBackLinkUrl(<AppRequest>req);
@@ -46,12 +52,11 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY, (async (re
 
     // Validate No option for application type Settle by Consent
     validateNoConsentOption(<AppRequest>req, form.errors,applicationTypeOption);
-
     if (form.hasErrors()) {
       res.render(viewPath, { form, applicationType,cancelUrl, backLinkUrl });
     } else {
       await saveAgreementFromOtherParty(redisKey, claim, req.body.option);
-      res.redirect('test');
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, INFORM_OTHER_PARTIES_URL));
     }
   } catch (error) {
     next(error);
@@ -59,8 +64,7 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY, (async (re
 }) as RequestHandler);
 
 function getBackLinkUrl(req: AppRequest) : string {
-  const claimId = req.params.id;
-  return APPLICATION_TYPE_URL.replace(':id', claimId);
+  return constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL);
 }
 
 export default agreementFromOtherPartyController;
