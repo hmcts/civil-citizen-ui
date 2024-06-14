@@ -24,7 +24,7 @@ describe('apply help with application fee selection', () => {
 
   it('should return - Do you want to continue to apply for Help with Fees page if applyHelpWithFees option is yes', async () => {
     //when
-    const actualRedirectUrl = await getRedirectUrl(claimId, new Claim(), new GenericYesNo(YesNo.YES), mockedAppRequest);
+    const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), mockedAppRequest);
     //Then
     expect(actualRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES));
   });
