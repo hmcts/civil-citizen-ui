@@ -4,7 +4,7 @@ import {
   GA_APPLY_HELP_WITH_FEE_SELECTION,
   GA_APPLY_HELP_WITH_FEES,
   GA_PAYMENT_SUCCESSFUL_URL,
-  GA_PAYMENT_UNSUCCESSFUL_URL
+  GA_PAYMENT_UNSUCCESSFUL_URL,
 } from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
