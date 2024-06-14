@@ -3,15 +3,31 @@ import {YesNo} from 'form/models/yesNo';
 import {GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
+import {Claim} from 'models/claim';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import config from 'config';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {Response} from 'express';
+import {
+  getGaFeePaymentRedirectInformation
+} from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, req: AppRequest): Promise<string> => {
+export const getRedirectUrl = async (claimId: string, claim: Claim, applyHelpWithFees: GenericYesNo, req: AppRequest, res: Response): Promise<string> => {
   try{
     let redirectUrl;
     if (applyHelpWithFees.option === YesNo.NO) {
-      redirectUrl = 'test'; // TODO: add url
+      const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+      const ccdGeneralApplications = ccdClaim.generalApplications;
+      const generalApplicationId = ccdGeneralApplications[ccdGeneralApplications.length-1].value.caseLink.CaseReference;
+      const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+      claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
+      await saveDraftClaim(claim.id, claim, true);
+      res.redirect(paymentRedirectInformation?.nextUrl);
     } else {
       redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES);
     }
