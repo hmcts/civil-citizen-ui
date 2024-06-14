@@ -5,7 +5,6 @@ import {
   GENERAL_APPLICATION_CONFIRM_URL,
   GA_APPLICATION_FEE_CONFIRMATION_URL,
   GA_APPLY_HELP_WITH_FEE_REFERENCE,
-  PAYING_FOR_APPLICATION_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
