@@ -10,16 +10,18 @@ import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {
   getGaFeePaymentRedirectInformation,
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
+import {getClaimById} from 'modules/utilityService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getRedirectUrl = async (claimId: string, claim: Claim, applyHelpWithFees: GenericYesNo, req: AppRequest): Promise<string> => {
-  try{
+export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, req: AppRequest): Promise<string> => {
+  try {
     let redirectUrl;
     if (applyHelpWithFees.option === YesNo.NO) {
+      const claim: Claim = await getClaimById(claimId, req, true);
       const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
       const ccdGeneralApplications = ccdClaim.generalApplications;
       const generalApplicationId = ccdGeneralApplications[ccdGeneralApplications.length-1].value.caseLink.CaseReference;
