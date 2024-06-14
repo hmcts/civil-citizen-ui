@@ -8,8 +8,9 @@ export const trackHistory =async (req: AppRequest, res: Response, next: NextFunc
       if (!req.session.history) {
         req.session.history = [];
       }
-
-      if (req.session.history.length === 0 || req.session.history[req.session.history.length - 1] !== req.originalUrl) {
+      //removing lang from originalUrl
+      const cleanUrl = req.originalUrl.split('?')[0];
+      if (req.session.history.length === 0 || req.session.history[req.session.history.length - 1] !== cleanUrl) {
         req.session.history.push(req.originalUrl);
       }
     }

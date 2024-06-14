@@ -70,10 +70,14 @@ disclosureOfDocumentsController.post(DQ_DISCLOSURE_OF_DOCUMENTS_URL, (async (req
     await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), disclosureOfDocuments, dqPropertyName, dqParentName);
     if (!disclosureOfDocuments.documentsTypeChosen){
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL));
-    } else {
+    } else if (disclosureOfDocuments.hasField(TypeOfDisclosureDocument.ELECTRONIC) || disclosureOfDocuments.documentsTypeChosen.length === 2) {
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_AGREEMENT_REACHED_URL));
-    }
 
+    } else if (disclosureOfDocuments.hasField(TypeOfDisclosureDocument.NON_ELECTRONIC)) {
+      //TODO ADD NON ELECTRONIC URL
+      res.redirect(constructResponseUrlWithIdParams(claimId, 'TODO'));
+
+    }
   } catch (error) {
     next(error);
   }
