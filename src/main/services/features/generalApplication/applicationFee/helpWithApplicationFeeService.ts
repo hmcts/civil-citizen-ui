@@ -7,7 +7,6 @@ import {Claim} from 'models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {Response} from 'express';
 import {
   getGaFeePaymentRedirectInformation,
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
@@ -17,7 +16,7 @@ const logger = Logger.getLogger('applicationFeeHelpSelectionService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getRedirectUrl = async (claimId: string, claim: Claim, applyHelpWithFees: GenericYesNo, req: AppRequest, res: Response): Promise<string> => {
+export const getRedirectUrl = async (claimId: string, claim: Claim, applyHelpWithFees: GenericYesNo, req: AppRequest): Promise<string> => {
   try{
     let redirectUrl;
     if (applyHelpWithFees.option === YesNo.NO) {
@@ -27,7 +26,7 @@ export const getRedirectUrl = async (claimId: string, claim: Claim, applyHelpWit
       const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       await saveDraftClaim(claim.id, claim, true);
-      res.redirect(paymentRedirectInformation?.nextUrl);
+      redirectUrl = paymentRedirectInformation?.nextUrl;
     } else {
       redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES);
     }

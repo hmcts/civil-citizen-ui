@@ -56,7 +56,7 @@ helpWithApplicationFeeController.post(GA_APPLY_HELP_WITH_FEE_SELECTION, (async (
     } else {
       const redisKey = generateRedisKey(<AppRequest>req);
       await saveHelpWithFeesDetails(redisKey, req.body.option, hwfPropertyName);
-      const redirectUrl = await getRedirectUrl(claimId, claim, form.model, <AppRequest>req, res);
+      const redirectUrl = await getRedirectUrl(claimId, claim, form.model, <AppRequest>req);
       res.redirect(redirectUrl);
     }
   }catch (error) {
