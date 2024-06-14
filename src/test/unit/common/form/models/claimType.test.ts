@@ -1,4 +1,4 @@
-import {analyseClaimType, claimType, isMultiTrack} from 'form/models/claimType';
+import {analyseClaimType, claimType, isIntermediateTrack, isMultiTrack} from 'form/models/claimType';
 
 describe('Testing of claimType class', () => {
   test('should analyseClaimType as small claim', () => {
@@ -22,6 +22,13 @@ describe('Testing of claimType class', () => {
     expect(result).toBe(claimType.MULTI_TRACK);
   });
 
+  test('should analyseClaimType as intermediate track', () => {
+    // when
+    const result =  analyseClaimType(26000, true );
+    // Then
+    expect(result).toBe(claimType.INTERMEDIATE_TRACK_CLAIM);
+  });
+
   test('should analyseClaimType as small track when minti on', () => {
     // when
     const result =  analyseClaimType(1000, true );
@@ -29,16 +36,30 @@ describe('Testing of claimType class', () => {
     expect(result).toBe(claimType.SMALL_CLAIM);
   });
 
-  test('should if is multiTrack when minti on', () => {
+  test('should return true if is multiTrack when minti on', () => {
     // when
     const result =  isMultiTrack(150000, true );
     // Then
     expect(result).toBe(true);
   });
 
-  test('should if is not multiTrack when minti on', () => {
+  test('should return false if is not multiTrack when minti on', () => {
     // when
     const result =  isMultiTrack(1000, true );
+    // Then
+    expect(result).toBe(false);
+  });
+
+  test('should return true if is intermediate track when minti on', () => {
+    // when
+    const result =  isIntermediateTrack(100000, true );
+    // Then
+    expect(result).toBe(true);
+  });
+
+  test('should return false if is not intermediate track when minti on', () => {
+    // when
+    const result =  isIntermediateTrack(10000, true );
     // Then
     expect(result).toBe(false);
   });
