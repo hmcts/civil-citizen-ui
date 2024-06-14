@@ -46,7 +46,7 @@ export const toCUIHearing = (ccdClaim: CCDClaim) : Hearing => {
         items: toCUISupportItems(ccdClaim.respondent1LiPResponse.respondent1DQHearingSupportLip.requirementsLip),
       };
     }
-    if (ccdClaim.claimType === claimType.SMALL_CLAIM) {
+    if (ccdClaim.responseClaimTrack === claimType.SMALL_CLAIM) {
       if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails) {
         hearing.determinationWithoutHearing = {
           option: toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.determinationWithoutHearingRequired),

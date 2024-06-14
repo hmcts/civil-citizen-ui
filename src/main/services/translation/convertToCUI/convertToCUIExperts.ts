@@ -25,7 +25,7 @@ import {
 export const toCUIExperts = (ccdClaim: CCDClaim): Experts => {
   if (ccdClaim) {
     const experts: Experts = new Experts();
-    if (ccdClaim.claimType === claimType.SMALL_CLAIM) {
+    if (ccdClaim.responseClaimTrack === claimType.SMALL_CLAIM) {
       if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.respondent1DQLiPExpert?.caseNeedsAnExpert) {
         experts.expertRequired = toCUIBoolean(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.respondent1DQLiPExpert?.caseNeedsAnExpert);
       }
