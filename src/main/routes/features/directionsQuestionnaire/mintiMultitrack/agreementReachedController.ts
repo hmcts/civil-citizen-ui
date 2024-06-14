@@ -2,7 +2,8 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
   BACK_URL,
-  DQ_MULTITRACK_AGREEMENT_REACHED_URL, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL,
+  DQ_MULTITRACK_AGREEMENT_REACHED_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
   DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL,
 } from 'routes/urls';
 import {
@@ -67,7 +68,7 @@ agreementReachedController.post(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req
       if (hasAnAgreementBeenReachedForm.model.hasAnAgreementBeenReached !== HasAnAgreementBeenReachedOptions.YES) {
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL));
       } else {
-        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL));
       }
     }
 
