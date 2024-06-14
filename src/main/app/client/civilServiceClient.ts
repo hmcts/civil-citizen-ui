@@ -58,13 +58,12 @@ import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
-import {isMintiEnabledForCase} from 'common/utils/mintiToggleUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
-const convertCaseToClaim = (caseDetails: CivilClaimResponse, isMintiEnabled = false): Claim => {
-  const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data, isMintiEnabled);
+const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
+  const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
   claim.ccdState = caseDetails.state;
   claim.id = caseDetails.id;
   claim.lastModifiedDate = caseDetails.last_modified;
@@ -152,9 +151,7 @@ export class CivilServiceClient {
       const caseDetails: CivilClaimResponse = response.data;
 
       caseDetails.case_data.caseRole = await this.getUserCaseRoles(claimId, req);
-      //check if minti is enabled
-      const mintiFlag = await isMintiEnabledForCase(caseDetails.case_data.submittedDate);
-      return convertCaseToClaim(caseDetails, mintiFlag);
+      return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
       logger.error('Error when retrieving claim details');
       throw err;
@@ -229,8 +226,7 @@ export class CivilServiceClient {
         return new Claim();
       }
       const caseDetails: CivilClaimResponse = response.data;
-      const mintiFlag = await isMintiEnabledForCase(caseDetails.case_data.submittedDate);
-      return convertCaseToClaim(caseDetails, mintiFlag);
+      return convertCaseToClaim(caseDetails);
 
     } catch (err: unknown) {
       logger.error('Error when verifying pin');
@@ -381,8 +377,7 @@ export class CivilServiceClient {
         .replace(':submitterId', userId)
         .replace(':caseId', claimId), data, config);// nosonar
       const claimResponse = response.data as CivilClaimResponse;
-      const mintiFlag = await isMintiEnabledForCase(claimResponse.case_data.submittedDate);
-      return convertCaseToClaim(claimResponse, mintiFlag);
+      return convertCaseToClaim(claimResponse);
     } catch (err: unknown) {
       logger.error(`Error when submitting event ${event}`);
       throw err;
