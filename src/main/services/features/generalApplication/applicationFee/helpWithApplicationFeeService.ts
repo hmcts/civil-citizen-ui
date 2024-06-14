@@ -28,7 +28,8 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     let redirectUrl;
     if (applyHelpWithFees.option === YesNo.NO) {
       const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-      const generalApplicationId = ccdClaim.generalApplications[0].value.caseLink.CaseReference;
+      const ccdGeneralApplications = ccdClaim.generalApplications;
+      const generalApplicationId = ccdGeneralApplications[ccdGeneralApplications.length-1].value.caseLink.CaseReference;
       const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
       const paymentStatus = await getGaFeePaymentStatus(generalApplicationId, paymentRedirectInformation.paymentReference, req);
       paymentRedirectInformation.status = paymentStatus.status;
