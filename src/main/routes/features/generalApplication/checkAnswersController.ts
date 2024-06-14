@@ -1,4 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
+
 import {
   GA_CHECK_ANSWERS_URL,
   GENERAL_APPLICATION_CONFIRM_URL,
