@@ -4,7 +4,6 @@ import {YesNo} from 'form/models/yesNo';
 import {GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRedirectUrl} from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeService';
-import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
