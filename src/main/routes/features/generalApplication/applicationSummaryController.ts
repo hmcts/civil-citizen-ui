@@ -19,9 +19,10 @@ const generalApplicationServiceClient: GeneralApplicationClient = new GeneralApp
 applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang || req.cookies.lang;
+    const claimId = req.params.id;
     const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
-    const applications = await generalApplicationServiceClient.getApplications(req);
+    const applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req);
     
     const applicationsRows: ApplicationSummary[] = [];
     applications.forEach(application => {
@@ -39,7 +40,7 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
 
     res.render(viewPath, {
       applicationsRows,
-      dashboardUrl: await getCancelUrl(req.params.id, claim),
+      dashboardUrl: await getCancelUrl(claimId, claim),
       pageTitle: 'PAGES.GENERAL_APPLICATION.SUMMARY.MY_APPLICATIONS',
     });
   } catch (error) {
