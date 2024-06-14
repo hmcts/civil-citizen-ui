@@ -25,15 +25,18 @@ import {Claim} from 'models/claim';
 import {DateInputFields, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {FileUpload} from 'models/caseProgression/fileUpload';
+import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 const getTrialContentMock = getTrialContent as jest.Mock;
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('services/features/caseProgression/disclosureService');
 jest.mock('services/features/caseProgression/witnessService');
 jest.mock('services/features/caseProgression/expertService');
 jest.mock('services/features/caseProgression/trialService');
+
 const caseDoc = '{"documentLink":{"document_url":"http://test","document_binary_url":"http://test/binary","document_filename":"test.png","document_hash":"test"},"documentName":"test.png","documentSize":86349,"createdDatetime":"2023-06-27T11:32:29","createdBy":"test"}';
 
 describe('Upload document- upload document controller', () => {
@@ -52,6 +55,7 @@ describe('Upload document- upload document controller', () => {
       }
       return [];
     });
+
     getWitnessContentMock.mockImplementation((claim: Claim, form: GenericForm<UploadDocumentsUserForm>) => {
       if(form && claim.caseProgression?.defendantDocuments?.witnessStatement)
       {
@@ -62,10 +66,11 @@ describe('Upload document- upload document controller', () => {
     getExpertContentMock.mockReturnValue([]);
     getTrialContentMock.mockReturnValue([]);
   });
-
+  beforeEach(()=> {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+  });
   it('should render page successfully if cookie has correct values', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
-
     const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
     civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
     const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
@@ -103,7 +108,6 @@ describe('Upload document- upload document controller', () => {
 
   it('should render page successfully with uploaded document section if document available in redis', async () => {
     app.locals.draftStoreClient = mockCivilClaimDocumentUploaded;
-
     const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedMock.json');
     civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
     const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
@@ -145,7 +149,6 @@ describe('Upload document- upload document controller', () => {
 
   it('should render page successfully with uploaded document section if document available in redis on claimant request', async () => {
     app.locals.draftStoreClient = mockCivilClaimDocumentClaimantUploaded;
-
     const civilClaimDocumentClaimantUploaded = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedClaimantMock.json');
     civilClaimDocumentClaimantUploaded.case_data.id = civilClaimDocumentClaimantUploaded.id;
 
@@ -188,6 +191,7 @@ describe('on POST', () => {
   const mockFutureYear = getNextYearValue().toString();
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaim;
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   it('should display documentForDisclosure validation error when invalid', async () => {
     const documentForDisclosureModel = {

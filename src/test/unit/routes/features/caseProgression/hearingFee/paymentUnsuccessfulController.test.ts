@@ -9,9 +9,11 @@ import config from 'config';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {app} from '../../../../../../main/app';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 describe('Hearing Fees - Payment Unsuccessful', () => {
   const idamServiceUrl: string = config.get('services.idam.url');
@@ -22,7 +24,9 @@ describe('Hearing Fees - Payment Unsuccessful', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-
+  beforeEach(()=> {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+  });
   describe('on GET', () => {
     it('should return hearing fees payment unsuccessful page', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
@@ -48,6 +52,7 @@ describe('Hearing Fees - Payment Unsuccessful', () => {
 
   describe('on POST', () => {
     it('should redirect to claimant dashboard', async () => {
+
       await request(app)
         .post(PAY_HEARING_FEE_UNSUCCESSFUL_URL)
         .send()
