@@ -25,6 +25,13 @@ import {
   BASE_GENERAL_APPLICATION_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
+  DQ_DISCLOSURE_OF_DOCUMENTS_URL,
+  DQ_MULTITRACK_AGREEMENT_REACHED_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
+  DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
+  DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL,
+  DQ_REQUEST_EXTRA_4WEEKS_URL,
   HAS_ANYTHING_CHANGED_URL,
   IS_CASE_READY_URL,
   STATEMENT_OF_MEANS_URL,
@@ -38,12 +45,13 @@ import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 import {ErrorHandler} from 'modules/error';
 import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
 import config = require('config');
+import {trackHistory} from 'routes/guards/trackHistory';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
 
 const env = process.env.NODE_ENV || 'development';
-const productionMode = env === 'production';
+const productionMode = false; //env === 'production';
 const developmentMode = env === 'development';
 const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();
@@ -100,6 +108,14 @@ app.use([CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   IS_CASE_READY_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL], trialArrangementsGuard);
 
+app.use([DQ_REQUEST_EXTRA_4WEEKS_URL,
+  DQ_MULTITRACK_AGREEMENT_REACHED_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
+  DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
+  DQ_DISCLOSURE_OF_DOCUMENTS_URL,
+  DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL], trackHistory);
+
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
 
@@ -130,3 +146,4 @@ app.use(routes);
 new ErrorHandler().enableFor(app);
 
 setupDev(app,developmentMode);
+

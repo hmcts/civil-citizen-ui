@@ -307,6 +307,7 @@ export const VIEW_DEFENDANT_INFO = `${DASHBOARD_URL}/:id/information-defendant`;
 export const VIEW_CLAIMANT_INFO = `${DASHBOARD_URL}/:id/information-claimant`;
 export const DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT = '/notification/:notificationId/redirectDocument/:locationName/:id/:documentId';
 export const CANCEL_URL = `${BASE_CASE_URL}/:propertyName/cancel`;
+export const BACK_URL = '/back';
 export const EVIDENCE_UPLOAD_DOCUMENTS_URL = `${BASE_CASE_URL}/evidence-upload-documents`;
 export const VIEW_THE_HEARING_URL = `${BASE_CASE_URL}/view-the-hearing`;
 export const VIEW_ORDERS_AND_NOTICES_URL = `${BASE_CASE_URL}/view-orders-and-notices`;

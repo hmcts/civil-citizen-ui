@@ -1,8 +1,8 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
+  BACK_URL,
   DQ_DISCLOSURE_OF_DOCUMENTS_URL, DQ_MULTITRACK_AGREEMENT_REACHED_URL,
   DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
-  DQ_REQUEST_EXTRA_4WEEKS_URL,
 } from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveDirectionQuestionnaire} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
@@ -39,7 +39,7 @@ const getDisclosureOfDocuments = (claim: Claim): DisclosureOfDocuments => {
   }
 };
 
-function renderView(disclosureOfDocuments: DisclosureOfDocuments, claimId: string, res: Response): void {
+function renderView(disclosureOfDocuments: DisclosureOfDocuments, res: Response): void {
   const form = disclosureOfDocuments;
   const whatIsDisclosureDetailsContent = getWhatIsDisclosureDetailContent();
   const whatIsDifferenceContent = getWhatIsDifferenceDisclosureDocumentsContent();
@@ -48,17 +48,16 @@ function renderView(disclosureOfDocuments: DisclosureOfDocuments, claimId: strin
     whatIsDifferenceContent,
     typeOfDisclosureDocument : TypeOfDisclosureDocument,
     pageTitle: `${DISCLOSURE_OF_DOCUMENTS_PAGE}PAGE_TITLE`,
-    backLinkUrl: constructResponseUrlWithIdParams(claimId, DQ_REQUEST_EXTRA_4WEEKS_URL),
+    backLinkUrl: BACK_URL,
   });
 }
 
-disclosureOfDocumentsController.get(DQ_DISCLOSURE_OF_DOCUMENTS_URL, (async (req: Request, res: Response, next: NextFunction) => {
+disclosureOfDocumentsController.get(DQ_DISCLOSURE_OF_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
     const disclosureOfDocuments = getDisclosureOfDocuments(claim);
-    renderView(disclosureOfDocuments, claimId, res);
+    renderView(disclosureOfDocuments, res);
   } catch (error) {
     next(error);
   }
@@ -69,7 +68,6 @@ disclosureOfDocumentsController.post(DQ_DISCLOSURE_OF_DOCUMENTS_URL, (async (req
     const claimId = req.params.id;
     const disclosureOfDocuments = new DisclosureOfDocuments(convertToArrayOfStrings(req.body.documentsTypeForm));
     await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), disclosureOfDocuments, dqPropertyName, dqParentName);
-
     if (!disclosureOfDocuments.documentsTypeChosen){
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL));
     } else {

@@ -1,6 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
+  BACK_URL,
   DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
   DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
 } from 'routes/urls';
@@ -29,8 +30,7 @@ function renderView(disclosureNonElectronicDocument: GenericForm<DisclosureNonEl
     whatIsDisclosureDetailsContent,
     pageTitle: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}TEXT_AREA.LABEL`,
     title: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}PAGE_TITLE`,
-    //TODO ADD THE BACK URL
-    backLinkUrl: constructResponseUrlWithIdParams('claimId', 'todo'),
+    backLinkUrl: BACK_URL,
   });
 }
 
