@@ -1,6 +1,5 @@
 const config = require('../../../config');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const LoginSteps = require('../../commonFeatures/home/steps/login');
 
 const intTrackClaimType = 'Intermediate';
 const carmEnabled = true;
