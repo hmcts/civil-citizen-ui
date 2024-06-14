@@ -9,7 +9,7 @@ import config from 'config';
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Response} from 'express';
 import {
-  getGaFeePaymentRedirectInformation
+  getGaFeePaymentRedirectInformation,
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
