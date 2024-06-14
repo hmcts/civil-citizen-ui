@@ -1,6 +1,6 @@
 import {CCDClaim} from 'common/models/civilClaimResponse';
 import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
-import {toCUIBoolean, toCUIGenericYesNo, toCUIYesNo,} from './convertToCUIYesNo';
+import {toCUIBoolean, toCUIGenericYesNo, toCUIYesNo} from './convertToCUIYesNo';
 import {analyseClaimType, claimType} from 'common/form/models/claimType';
 import {ExpertCanStillExamine} from 'common/models/directionsQuestionnaire/experts/expertCanStillExamine';
 import {YesNoNotReceived} from 'common/form/models/yesNo';
@@ -9,10 +9,10 @@ import {ReportDetail} from 'common/models/directionsQuestionnaire/experts/expert
 import {ExpertDetails} from 'common/models/directionsQuestionnaire/experts/expertDetails';
 import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
 import {
-  ExpertReportDetails
+  ExpertReportDetails,
 } from 'common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
-import {CCDLiPExpert, CCDReportDetail,} from 'common/models/ccdResponse/ccdLiPExpert';
-import {CCDExpertDetails, CCDExportReportSent,} from 'common/models/ccdResponse/ccdExpert';
+import {CCDLiPExpert, CCDReportDetail} from 'common/models/ccdResponse/ccdLiPExpert';
+import {CCDExpertDetails, CCDExportReportSent} from 'common/models/ccdResponse/ccdExpert';
 
 export const toCUIExperts = (ccdClaim: CCDClaim): Experts => {
   if (ccdClaim) {
