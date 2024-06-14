@@ -2233,6 +2233,17 @@
         "WHY_PREFER": "Why would you prefer this type of hearing?",
         "WHY_REQUESTING": "Why are you requesting this order?"
       },
+      "CHECK_YOUR_ANSWER_RESPONSE": {
+        "CLAIM_REFERENCE": "Claim reference: ",
+        "PREFERRED_LOCATION": "Preferred location",
+        "RESPOND_TO_AN_APPLICATION": "Respond to an application",
+        "STATEMENT_OF_TRUTH": {
+          "APPLICATION": "The information on this page forms your response to the application.",
+          "CHECKBOX": "I believe that the facts stated in this response form are true.",
+          "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
+        },
+        "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
+      },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Application fee to pay:",
         "TITLE": "Paying for your application",
@@ -2514,6 +2525,26 @@
         "RETURN_CASE_DETAILS": "Close and return to case details",
         "TITLE": "Application created",
         "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge."
+      },
+      "APPLY_HELP_WITH_FEE": {
+        "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
+        "CONTENT_PAGE_TITLE": "Apply for help with fees",
+        "CONTINUE_TO_APPLY_HWF_PAGE_TITLE": "Do you want to continue to apply for Help with Fees",
+        "CONFIRMATION_PAGE_TITLE": "Confirmation of your application fee payment",
+        "CONFIRMATION_TITLE": "Your application for help with the application fee is complete",
+        "GENERAL_APPLICATION_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The application fee is: £{{ feeAmount }}</span>",
+        "HEADING": "Application fee",
+        "REFERENCE_NUMBER": {
+          "LIST_ITEMS": {
+            "APPLICATION_FEE_SECOND": "When you are asked to enter a court or tribunal number, enter 'application fee' followed by short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
+            "APPLICATION_FEE_FIFTH": "Complete the application fee payment by entering your help with fees reference number."
+          },
+          "PAGE_TITLE": "Do you have a help with fees reference number?",
+          "TITLE": "Do you have a help with fees reference number?"
+        },
+        "TITLE": "Help with fees",
+        "WANT_TO_APPLY_HWF_TITLE": "Pay application fee",
+        "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
