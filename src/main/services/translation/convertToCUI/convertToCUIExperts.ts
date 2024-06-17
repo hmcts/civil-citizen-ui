@@ -21,6 +21,7 @@ import {
   CCDExpertDetails,
   CCDExportReportSent,
 } from 'common/models/ccdResponse/ccdExpert';
+import {CaseRole} from 'form/models/caseRoles';
 
 export const toCUIExperts = (ccdClaim: CCDClaim): Experts => {
   if (ccdClaim) {
@@ -30,7 +31,7 @@ export const toCUIExperts = (ccdClaim: CCDClaim): Experts => {
         experts.expertRequired = toCUIBoolean(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.respondent1DQLiPExpert?.caseNeedsAnExpert);
       }
       if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.respondent1DQLiPExpert) {
-        experts.expertReportDetails = toCUIExpertReportDetails(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.respondent1DQLiPExpert);
+        experts.expertReportDetails = toCUIExpertReportDetails(ccdClaim, ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.respondent1DQLiPExpert);
       }
       if (ccdClaim.responseClaimExpertSpecRequired) {
         experts.permissionForExpert = toCUIGenericYesNo(ccdClaim.responseClaimExpertSpecRequired);
@@ -97,8 +98,10 @@ export function toCUIExpertDetails(ccdExpertDetailsList: CCDExpertDetails[]): Ex
   return new ExpertDetailsList(convertedValue);
 }
 
-export function toCUIExpertReportDetails(ccdLipExpert: CCDLiPExpert): ExpertReportDetails {
+export function toCUIExpertReportDetails(ccdClaim: CCDClaim, ccdLipExpert: CCDLiPExpert): ExpertReportDetails {
+  ccdClaim.caseRole
   return new ExpertReportDetails(
+    ccdClaim.caseRole === CaseRole.APPLICANTSOLICITORONE || ccdClaim.caseRole === CaseRole.CLAIMANT || ccdClaim.caseRole === CaseRole.CREATOR,
     toCUIYesNo(ccdLipExpert?.expertReportRequired),
     toCUIReportDetais(ccdLipExpert?.details),
   );
