@@ -1,1 +1,2 @@
 export const CIVIL_GENERAL_APPLICATIONS_URL = '/cases/';
+export const GA_GET_APPLICATION_URL= `${CIVIL_GENERAL_APPLICATIONS_URL}:caseId`;
