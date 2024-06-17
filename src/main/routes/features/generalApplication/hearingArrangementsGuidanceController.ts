@@ -7,12 +7,12 @@ import {
   GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
-import {selectedApplicationType} from 'models/generalApplication/applicationType';
 import {getClaimById} from 'modules/utilityService';
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
-import {getCancelUrl, getLast} from 'services/features/generalApplication/generalApplicationService';
+import { getDynamicHeaderForMultipleApplications } from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 
 const hearingArrangementsGuidanceController = Router();
 const viewPath = 'features/generalApplication/hearing_arrangements_guidance';
@@ -21,11 +21,11 @@ hearingArrangementsGuidanceController.get(GA_HEARING_ARRANGEMENTS_GUIDANCE_URL, 
   const claimId = req.params.id;
   const claim = await getClaimById(claimId, req, true);
   const backLinkUrl = getBackLinkUrl(claim, claimId);
-  const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
+  const headerTitle = getDynamicHeaderForMultipleApplications(claim);
   const nextPageUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL);
   const cancelUrl = await getCancelUrl(claimId, claim);
   try {
-    res.render(viewPath, {claimId: req.params.id, applicationType, backLinkUrl, nextPageUrl, cancelUrl});
+    res.render(viewPath, {claimId: req.params.id, headerTitle, backLinkUrl, nextPageUrl, cancelUrl});
   } catch (error) {
     next(error);
   }
