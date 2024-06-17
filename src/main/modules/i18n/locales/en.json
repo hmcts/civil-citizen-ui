@@ -422,7 +422,30 @@
       }
     }
   },
+  "WHAT_ARE_FIXED_RECOVERABLE_COSTS": {
+    "TITLE": "What are Fixed Recoverable Costs?",
+    "PARA_1":  "Most civil money claims valued up to and including £100,000 are subject to the Fixed Recoverable Costs Regime (FRCs).",
+    "PARA_2":  "FRCs set limits on the amount of legal costs the successful parties can claim back from unsuccessful parties.",
+    "PARA_3":  "They provide certainty to all parties involved by setting in advance the maximum amount of costs the losing party will have to pay.",
+    "URL": {
+      "BEFORE": "For more information on limits for FRCs see ",
+      "TEXT": "Table 14 (opens in a new tab)",
+      "AFTER": "."
+    },
+    "PARA_4": "All claims subject to FRCs need to be assigned to a complexity ban from 1 to 4.",
+    "PARA_5": "Band 1 is for the least complex claims where only one issue is in dispute. For example, claims where either the amount of money being claimed or liability (legal responsibility) is in dispute.",
+    "PARA_6": "Band 2 is for most other claims where more than one issue is in dispute. For example, the amount of money being claimed and liability is in dispute.",
+    "PARA_7": "Band 3 is for more complex claims where more than one issue is in dispute. For example, noise induced hearing loss or employer liability for diseases.",
+    "PARA_8": "Band 4 is for the most complex cases with serious issues around the facts of law.",
+    "PARA_9": "You may agree the complexity banding with the other parties beforehand or say which band you think this claim falls into.",
+    "PARA_10": "However, if the Court disagrees, it has the power to assign a claim to whatever band it feels is appropriate."
+  },
   "PAGES": {
+    "SUBJECT_TO_FRC": {
+      "PAGE_TITLE": "Is the claim subject to the Fixed Recoverable Costs Regime?",
+      "TITLE": "Fixed Recoverable Costs Regime",
+      "BUTTON_TITLE": "Is the claim subject to the Fixed Recoverable Costs Regime?"
+    },
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : {
       "PAGE_TITLE": "Are there any documents the claimants have that you want the court to consider?",
       "TITLE": "Claimant documents to be considered"
@@ -3992,6 +4015,7 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "SUBJECT_TO_FRC": "Indicate if the claim is subject to the Fixed Recoverable Costs Regime",
     "HAS_AN_AGREEMENT_BEEN_REACHED" : "Indicate if agreement has been reached about what electronic documents will be disclosed",
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Indicate if there are any documents the claimants have that you want the court to consider",
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Give details of the issues about disclosure of non-electronic documents",
