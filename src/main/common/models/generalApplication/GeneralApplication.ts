@@ -11,6 +11,7 @@ import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthFo
 import {ClaimFeeData} from '../civilClaimResponse';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
+import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 
 export class GeneralApplication {
 
@@ -30,6 +31,7 @@ export class GeneralApplication {
   uploadEvidenceForApplication?: UploadGAFiles[];
   statementOfTruth?: StatementOfTruthForm;
   applicationFee?: ClaimFeeData;
+  helpWithFees?: GaHelpWithFees;
 
   constructor(
     applicationType?: ApplicationType,
@@ -43,6 +45,7 @@ export class GeneralApplication {
     response?: GaResponse,
     uploadEvidenceForApplication?: UploadGAFiles,
     statementOfTruth?: StatementOfTruthForm,
+    helpWithFees?: GaHelpWithFees,
   ) {
     this.applicationTypes = applicationType ? [applicationType] : [];
     this.agreementFromOtherParty = agreementFromOtherParty;
@@ -55,5 +58,6 @@ export class GeneralApplication {
     this.response = response;
     this.statementOfTruth = statementOfTruth;
     this.uploadEvidenceForApplication = uploadEvidenceForApplication ? [uploadEvidenceForApplication] : [];
+    this.helpWithFees = helpWithFees;
   }
 }

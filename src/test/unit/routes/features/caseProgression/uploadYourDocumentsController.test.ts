@@ -6,6 +6,7 @@ import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import Module from 'module';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -19,6 +20,7 @@ jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
 }));
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 describe('"upload your documents" page test', () => {
   const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
@@ -42,7 +44,9 @@ describe('"upload your documents" page test', () => {
         return done();
       });
   });
-
+  beforeEach(()=> {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+  });
   describe('on GET', () => {
     it('should return expected page when claim exists', async () => {
       //Given
