@@ -28,7 +28,7 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     }
 
     return paymentStatus.errorDescription !== paymentCancelledByUser ?
-    GA_PAYMENT_UNSUCCESSFUL_URL : DASHBOARD_URL;
+      GA_PAYMENT_UNSUCCESSFUL_URL : DASHBOARD_URL;
   }
   catch (error) {
     logger.error(error);

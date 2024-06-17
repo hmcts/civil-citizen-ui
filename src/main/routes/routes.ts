@@ -640,5 +640,5 @@ export default [
   helpWithApplicationFeeReferenceController,
   helpWithApplicationFeeContinueController,
   payApplicationFeeConfirmationController,
-  applicationFeePaymentConfirmationController
+  applicationFeePaymentConfirmationController,
 ];
