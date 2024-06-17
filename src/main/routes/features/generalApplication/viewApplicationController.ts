@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {GA_VIEW_APPLICATION_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
-import {getApplicationSections,} from 'services/features/generalApplication/viewApplication/viewApplicationService';
+import {getApplicationSections} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 
 const viewApplicationController = Router();
 const viewPath = 'features/generalApplication/view-applications';

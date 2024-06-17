@@ -3,7 +3,7 @@ import {GeneralApplication} from 'common/models/generalApplication/GeneralApplic
 import {
   ApplicationType,
   ApplicationTypeOption,
-  selectedApplicationType
+  selectedApplicationType,
 } from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
@@ -27,7 +27,7 @@ import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {
   AcceptDefendantOffer,
-  ProposedPaymentPlanOption
+  ProposedPaymentPlanOption,
 } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
