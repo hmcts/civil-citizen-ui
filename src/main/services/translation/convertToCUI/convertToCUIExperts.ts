@@ -99,7 +99,6 @@ export function toCUIExpertDetails(ccdExpertDetailsList: CCDExpertDetails[]): Ex
 }
 
 export function toCUIExpertReportDetails(ccdClaim: CCDClaim, ccdLipExpert: CCDLiPExpert): ExpertReportDetails {
-  ccdClaim.caseRole
   return new ExpertReportDetails(
     ccdClaim.caseRole === CaseRole.APPLICANTSOLICITORONE || ccdClaim.caseRole === CaseRole.CLAIMANT || ccdClaim.caseRole === CaseRole.CREATOR,
     toCUIYesNo(ccdLipExpert?.expertReportRequired),

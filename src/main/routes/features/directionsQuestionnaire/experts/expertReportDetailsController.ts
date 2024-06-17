@@ -3,7 +3,7 @@ import {
   DQ_EXPERT_DETAILS_URL,
   DQ_EXPERT_GUIDANCE_URL,
   DQ_EXPERT_REPORT_DETAILS_URL,
-  DQ_GIVE_EVIDENCE_YOURSELF_URL
+  DQ_GIVE_EVIDENCE_YOURSELF_URL,
 } from '../../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {
