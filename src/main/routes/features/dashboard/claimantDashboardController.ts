@@ -1,5 +1,11 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {BREATHING_SPACE_INFO, DASHBOARD_CLAIMANT_URL, DATE_PAID_URL, OLD_DASHBOARD_CLAIMANT_URL} from '../../urls';
+import {
+  APPLICATION_TYPE_URL,
+  BREATHING_SPACE_INFO,
+  DASHBOARD_CLAIMANT_URL,
+  DATE_PAID_URL,
+  OLD_DASHBOARD_CLAIMANT_URL,
+} from '../../urls';
 import {
   extractOrderDocumentIdFromNotification,
   getDashboardForm,
