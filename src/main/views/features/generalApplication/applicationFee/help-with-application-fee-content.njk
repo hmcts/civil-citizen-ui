@@ -1,0 +1,13 @@
+{% extends "../../../claim-details-tpl-dashboard.njk" %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../dashboard/item-content.njk" import itemContent %}
+
+{% block pageTitle %}
+    {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONTENT_PAGE_TITLE') }}
+{% endblock %}
+
+{% block nestedContent %}
+    {% for content in applyHelpWithFeeContents %}
+    {{ itemContent(content,t) }}
+    {% endfor %}
+{% endblock %}
