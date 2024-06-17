@@ -17,6 +17,7 @@ import {
   validateAdditionalApplicationtType,
   getDynamicHeaderForMultipleApplications,
   saveAcceptDefendantOffer,
+  saveHelpWithFeesDetails,
   getApplicationStatus,
 } from 'services/features/generalApplication/generalApplicationService';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
@@ -33,6 +34,8 @@ import { HearingContactDetails } from 'models/generalApplication/hearingContactD
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { ValidationError } from 'class-validator';
+import { ApplyHelpFeesReferenceForm } from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import { GaHelpWithFees } from 'models/generalApplication/gaHelpWithFees';
 import { AcceptDefendantOffer } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { ApplicationState, ApplicationStatus } from 'common/models/generalApplication/applicationSummary';
 
@@ -494,6 +497,63 @@ describe('General Application service', () => {
       const error : ValidationError = errors[0];
       expect(errors.length).toBe(1);
       expect(error.constraints['additionalApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING');
+    });
+  });
+
+  describe('Save help with application fee details', () => {
+    it('should save help with application fee selection', async () => {
+      const  claim = new Claim();
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.helpWithFees = new GaHelpWithFees();
+        claim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
+        return claim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      //When
+      await saveHelpWithFeesDetails('123', YesNo.YES, 'applyHelpWithFees');
+      //Then
+      await expect(spy).toBeCalledWith('123', claim);
+    });
+
+    it('should save help with application fee continue selection', async () => {
+      const  claim = new Claim();
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.helpWithFees = new GaHelpWithFees();
+        claim.generalApplication.helpWithFees.helpWithFeesRequested = YesNo.YES;
+        return claim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      //When
+      await saveHelpWithFeesDetails('123', YesNo.YES, 'helpWithFeesRequested');
+      //Then
+      await expect(spy).toBeCalledWith('123', claim);
+    });
+
+    it('should save help with application fee reference number', async () => {
+      const  claim = new Claim();
+      const hwfReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-123-86D');
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.helpWithFees = new GaHelpWithFees();
+        claim.generalApplication.helpWithFees.helpFeeReferenceNumberForm = hwfReferenceNumberForm;
+        return claim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      //When
+      await saveHelpWithFeesDetails('123', hwfReferenceNumberForm, 'helpFeeReferenceNumber');
+      //Then
+      await expect(spy).toBeCalledWith('123', claim);
     });
   });
 

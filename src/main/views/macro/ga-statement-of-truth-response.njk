@@ -1,0 +1,26 @@
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "./types-of-senior-position.njk" import typesOfSeniorPosition %}
+{% macro statementOfTruthResponse(
+  t,
+  form,
+  labelHtml
+  ) %}
+  <legend><h2 class="govuk-heading-m">{{ t('COMMON.STATEMENT_OF_TRUTH.TITLE') }}</h2></legend>
+  <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.STATEMENT_OF_TRUTH.APPLICATION') }}</p>
+  <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.STATEMENT_OF_TRUTH.WHEN_SATISFIED') }}</p>
+  {{ govukCheckboxes({
+    idPrefix: 'signed',
+    name: 'signed',
+    items: [
+      {
+        value: true,
+        html: labelHtml,
+        checked: true if form.model.signed
+      }
+    ],
+    errorMessage: {
+      text:t(form.errorFor('signed'))
+    } if form.errorFor('signed')
+  }) }}
+{% endmacro %}

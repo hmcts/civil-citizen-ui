@@ -161,7 +161,6 @@ import claimCheckAnswersController from './features/claim/checkAnswersController
 import claimantEvidenceController from './features/claim/yourDetails/claimantEvidenceController';
 import howMuchContinueClaimingController from './features/claim/interest/howMuchContinueClaimingController';
 import helpWithFeesController from './features/claim/details/helpWithFeesController';
-import debtRespiteReferenceNumberController from './features/breathingSpace/debtRespiteReferenceNumberController';
 import datePaidViewController from './features/claimantResponse/paidInFull/datePaidController';
 import claimSettledConfirmationController from './features/claimantResponse/claimSettledConfirmationController';
 import settleClaimController from './features/claimantResponse/settleClaimController';
@@ -169,13 +168,9 @@ import acceptRepaymentPlanController from './features/claimantResponse/acceptRep
 import partPaymentReceivedController from './features/claimantResponse/partPaymentReceivedController';
 import defendantDOBController from './features/claimantResponse/ccj/defendantDOBController';
 import claimantIntentionToProceedController from './features/claimantResponse/claimantIntentionToProceedController';
-import breathingSpaceCheckAnswersController from './features/breathingSpace/checkAnswersController';
 import totalAmountController from './features/claim/totalAmountController';
 import rejectionReasonController from './features/claimantResponse/rejectionReasonController';
 import specificCourtController from './features/directionsQuestionnaire/hearing/specificCourtController';
-import debtRespiteOptionController from './features/breathingSpace/debtRespiteOptionController';
-import debtStartDateController from './features/breathingSpace/debtRespiteStartDateController';
-import debtRespiteEndDateController from './features/breathingSpace/debtRespiteEndDateController';
 import reviewDefendantsResponseController from './features/claimantResponse/reviewDefendantsResponseController';
 import claimSubmittedController from './features/claim/claimSubmittedController';
 import ccjPaymentOptionController from './features/claimantResponse/ccj/ccjPaymentOptionController';
@@ -192,7 +187,6 @@ import courtProposedDateController from './features/claimantResponse/courtPropos
 import signSettlementAgreementController from './features/claimantResponse/signSettlmentAgreementController';
 import repaymentPlanAcceptedController from './features/claimantResponse/repaymentPlanAcceptedController';
 import courtProposedPlanController from './features/claimantResponse/courtProposedPlanController';
-import debtRespiteLiftedController from './features/breathingSpace/debtRespiteLiftedController';
 import claimantResponseConfirmationController from './features/claimantResponse/claimantResponseConfirmationController';
 import incompleteClaimantResponseSubmissionController
   from './features/claimantResponse/incompleteClaimantResponseSubmissionController';
@@ -236,7 +230,6 @@ import cancelTrialArrangementsController
 import respondSettlementAgreementConfirmationController
   from 'routes/features/settlementAgreement/respondSettlementAgreementConfirmationController';
 import respondSettlementAgreementController from './features/settlementAgreement/respondSettlementAgreementController';
-import breathingSpaceLiftedCheckAnswersController from './features/breathingSpace/checkAnswerControllerBSLifted';
 import repaymentPlanSummaryClaimantController
   from './features/claimantResponse/ccj/repaymentPlanSummaryClaimantController';
 import payHearingFeeStartScreenController
@@ -331,6 +324,7 @@ import uploadEvidenceDocumentsForApplicationController from 'routes/features/gen
 import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
 import confirmYouHaveBeenPaidConfirmController
   from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
+import gaCheckAnswersResponseController from 'routes/features/generalApplication/response/checkAnswersResponseController';
 import hearingArrangementResponseController
   from 'routes/features/generalApplication/response/hearingArrangementResponseController';
 import hearingContactDetailsResponseController
@@ -339,6 +333,16 @@ import hearingSupportResponseController
   from 'routes/features/generalApplication/response/hearingSupportResponseController';
 import unavailableHearingDatesResponseController
   from 'routes/features/generalApplication/response/unavailableHearingDatesResponseController';
+import helpWithApplicationFeeController
+  from 'routes/features/generalApplication/applicationFee/helpWithApplicationFeeController';
+import helpWithFeesContentController
+  from 'routes/features/generalApplication/applicationFee/helpWithFeesContentController';
+import helpWithApplicationFeeReferenceController
+  from 'routes/features/generalApplication/applicationFee/helpWithApplicationFeeReferenceController';
+import helpWithApplicationFeeContinueController
+  from './features/generalApplication/applicationFee/helpWithApplicationFeeContinueController';
+import payApplicationFeeConfirmationController
+  from 'routes/features/generalApplication/applicationFee/payApplicationFeeConfirmationController';
 import submitGeneralApplicationConfirmationController
   from 'routes/features/generalApplication/submitGeneralApplicationConfirmationController';
 import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
@@ -494,8 +498,6 @@ export default [
   claimantEvidenceController,
   howMuchContinueClaimingController,
   helpWithFeesController,
-  debtRespiteReferenceNumberController,
-  breathingSpaceCheckAnswersController,
   datePaidViewController,
   claimSettledConfirmationController,
   settleClaimController,
@@ -506,10 +508,6 @@ export default [
   totalAmountController,
   rejectionReasonController,
   specificCourtController,
-  debtRespiteOptionController,
-  debtStartDateController,
-  debtRespiteEndDateController,
-  debtRespiteLiftedController,
   reviewDefendantsResponseController,
   claimSubmittedController,
   ccjPaymentOptionController,
@@ -556,11 +554,9 @@ export default [
   trialArrangementsConfirmationController,
   claimantResponseCheckAnswersController,
   cancelTrialArrangementsController,
-  breathingSpaceLiftedCheckAnswersController,
   respondSettlementAgreementController,
   respondSettlementAgreementConfirmationController,
   respondSettlementAgreementController,
-  breathingSpaceLiftedCheckAnswersController,
   payHearingFeeStartScreenController,
   applyHelpWithFeeController,
   applyHelpFeeSelectionController,
@@ -632,11 +628,17 @@ export default [
   applicationResponseConfirmationController,
   confirmYouHaveBeenPaidController,
   confirmYouHaveBeenPaidConfirmController,
+  gaCheckAnswersResponseController,
   hearingArrangementResponseController,
   hearingContactDetailsResponseController,
   hearingSupportResponseController,
   unavailableHearingDatesResponseController,
   submitGeneralApplicationConfirmationController,
   acceptDefendantOfferController,
+  helpWithApplicationFeeController,
+  helpWithFeesContentController,
+  helpWithApplicationFeeReferenceController,
+  helpWithApplicationFeeContinueController,
+  payApplicationFeeConfirmationController,
   applicationSummaryController,
 ];
