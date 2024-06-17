@@ -74,7 +74,24 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
           expect(res.text).toContain('Check your answers');
         });
     });
+    it('should render page successfully update task list status', async () => {
+      //Given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      mockDraftStore.mockReturnValueOnce(claim);
+      mockSummarySections.mockImplementation(() => {
+        return {sections: [] as SummarySection[]} as SummarySections;
+      });
 
+      //When
+      await testSession
+        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'en'})
+        //Then
+        .expect((res: { status: unknown; text: unknown; }) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Check your answers');
+        });
+    });
     it('should render page successfully in Welsh with all sections and summary rows', async () => {
       //Given
       const claim: Claim = new Claim();
@@ -190,6 +207,21 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         expect(res.status).toBe(302);
         expect(res.text).toContain('Found. Redirecting to /case/undefined/case-progression/documents-uploaded');
       });
+    });
+    test('Throw error', async () => {
+      //given
+      jest.spyOn(draftStoreService, 'getDraftClaimFromStore')
+        .mockImplementation(() => {
+          throw new Error(TestMessages.REDIS_FAILURE);
+        });
+
+      //when
+      await testSession.post(CP_CHECK_ANSWERS_URL);
+      expect((res: Response) => {
+        expect(res.status).toBe(500);
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+      });
+
     });
   });
 });
