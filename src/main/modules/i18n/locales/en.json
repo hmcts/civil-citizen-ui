@@ -2508,6 +2508,10 @@
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "RESPONSE": "Response from the other parties",
         "REVIEW": "Review the application together with any response that has been received.",
+        "STATUS": {
+          "AWAITING_RESPONSE": "Awaiting other parties response",
+          "TITLE": "Status"
+        },
         "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
         "TITLE": "Application 1",
         "UPLOAD_DOCUMENTS_1": "You can also ",
