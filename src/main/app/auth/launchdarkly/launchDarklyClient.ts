@@ -63,7 +63,7 @@ export async function isGaForLipsEnabled(): Promise<boolean> {
 }
 
 export async function isMintiEnabled(): Promise<boolean> {
-  return true;//await getFlagValue('minti') as boolean;
+  return await getFlagValue('minti') as boolean;
 }
 
 export async function isJudgmentOnlineLive(): Promise<boolean> {
