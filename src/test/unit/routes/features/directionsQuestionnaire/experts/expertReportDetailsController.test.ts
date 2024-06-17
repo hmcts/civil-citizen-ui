@@ -10,7 +10,7 @@ import {
 import {
   mockCivilClaim,
   mockCivilClaimDefendantCaseProgression,
-  mockRedisFailure
+  mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
