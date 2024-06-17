@@ -2,7 +2,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {GaServiceClient} from 'client/gaServiceClient';
 import {
-  getGaFeePaymentRedirectInformation, getGaFeePaymentStatus
+  getGaFeePaymentRedirectInformation, getGaFeePaymentStatus,
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
 import * as requestModels from 'models/AppRequest';
 
