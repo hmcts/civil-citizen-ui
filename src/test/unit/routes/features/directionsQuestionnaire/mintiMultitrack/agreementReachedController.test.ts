@@ -4,6 +4,8 @@ import nock from 'nock';
 import config from 'config';
 import {
   DQ_MULTITRACK_AGREEMENT_REACHED_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
+  DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
@@ -101,8 +103,8 @@ describe('Agreement Reached Controller', () => {
         .send({hasAnAgreementBeenReached: HasAnAgreementBeenReachedOptions.YES})
         .expect((res) => {
           expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
+          expect(res.header.location).toBe(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL);
+
         });
     });
 
@@ -112,8 +114,7 @@ describe('Agreement Reached Controller', () => {
         .send({hasAnAgreementBeenReached: HasAnAgreementBeenReachedOptions.NO_BUT_AN_AGREEMENT_IS_LIKELY})
         .expect((res) => {
           expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
+          expect(res.header.location).toBe(DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL);
         });
     });
 
@@ -123,8 +124,7 @@ describe('Agreement Reached Controller', () => {
         .send({hasAnAgreementBeenReached: HasAnAgreementBeenReachedOptions.NO})
         .expect((res) => {
           expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
+          expect(res.header.location).toBe(DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL);
         });
     });
 
