@@ -45,7 +45,7 @@ describe('General Application - Application costs', () => {
         return new Claim();
       });
       jest
-        .spyOn(GeneralApplicationClient.prototype, 'getApplications')
+        .spyOn(GeneralApplicationClient.prototype, 'getApplicationsByCaseId')
         .mockResolvedValueOnce([applicationMock]);
 
       await request(app)
