@@ -2503,6 +2503,7 @@
       },
       "VIEW_APPLICATION": {
         "APPLICATION": "Application",
+        "APPLICATION_DETAILS": "Application details submitted by the applicant.",
         "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "RESPONSE:": "Response from the other parties",
