@@ -196,4 +196,4 @@ module.exports = {
     CASE_PROGRESSION: 'CASE_PROGRESSION',
     HEARING_READINESS: 'HEARING_READINESS',
   },
-}; 
+};
