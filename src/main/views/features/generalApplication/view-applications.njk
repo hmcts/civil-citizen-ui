@@ -1,6 +1,18 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
 {% from "govuk/components/accordion/macro.njk" import govukAccordion %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
+
+{% set applicationHtml %}
+      <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
+        <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DETAILS') }}</p>
+        <div class="govuk-form-group">
+            {{ govukSummaryList({
+               rows: summaryRows
+            }) }}
+        </div>
+      </div>
+{% endset %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.ORDER_JUDGE.TITLE') }}
@@ -22,7 +34,7 @@
                   text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION')
                 },
                 content: {
-                  html: '<p class="govuk-body">Application details submitted by the applicant.</p>'
+                  html: applicationHtml
                 }
               },
               {
