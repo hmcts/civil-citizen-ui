@@ -5,7 +5,7 @@ import {AtLeastOneRowIsPopulated} from '../../../../form/validators/atLeastOneRo
 
 export class ExpertReportDetails {
 
-  isClaimant: boolean;
+  isClaimant?: boolean;
 
   @IsDefined({message: 'ERRORS.VALID_YES_NO_SELECTION'})
     option: YesNo;
