@@ -12,5 +12,30 @@ let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest,
 Feature('Create Lip v Company claim - Individual vs Company @claimCreation').tag('@regression-r2');
 
 Scenario('Create Claim -  Individual vs Individual - small claims - no interest - no hwf', async ({I, api}) => {
-    
+    if (['preview', 'demo'].includes(config.runningEnv)) {
+        selectedHWF = false;
+        claimInterestFlag = false;
+        StandardInterest = false;
+        const defaultClaimFee = 455;
+        const defaultClaimAmount = 9000;
+        const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+        await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+        await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+        await steps.createClaimDraftViaTestingSupport();
+        await steps.addCompanyDefendant();
+        caseRef = await steps.checkAndSubmit(selectedHWF);
+        caseData = await api.retrieveCaseData(config.adminUser, caseRef);
+        legacyCaseReference = await caseData.legacyCaseReference;
+        await api.setCaseId(caseRef);
+        await api.waitForFinishedBusinessProcess();
+        if (isDashboardServiceEnabled) {
+            const notification = payClaimFee(defaultClaimFee);
+            await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
+            await I.click(notification.nextSteps);
+          } else {
+            await steps.clickPayClaimFee();
+          }
+        await steps.verifyAndPayClaimFee(defaultClaimAmount, defaultClaimFee);
+        await api.waitForFinishedBusinessProcess();
+      }
 });
