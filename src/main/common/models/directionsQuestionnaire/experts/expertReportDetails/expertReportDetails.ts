@@ -15,7 +15,7 @@ export class ExpertReportDetails {
   @AtLeastOneRowIsPopulated({message: 'ERRORS.ENTER_AT_LEAST_ONE_REPORT'})
     reportDetails?: ReportDetail[];
 
-  constructor(isClaimant: boolean, option?: YesNo, reportDetails?: ReportDetail[]) {
+  constructor(isClaimant?: boolean, option?: YesNo, reportDetails?: ReportDetail[]) {
     this.isClaimant = isClaimant;
     this.option = option;
     this.reportDetails = reportDetails;
