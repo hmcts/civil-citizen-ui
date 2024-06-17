@@ -339,3 +339,6 @@ export const GA_APPLY_HELP_WITH_FEES_START = `${BASE_GENERAL_APPLICATION_URL}/ap
 export const GA_APPLY_HELP_WITH_FEE_REFERENCE = `${BASE_GENERAL_APPLICATION_URL}/apply-help-with-fees/reference-number`;
 export const GA_APPLY_HELP_WITH_FEES = `${BASE_GENERAL_APPLICATION_URL}/apply-help-with-fees`;
 export const GA_APPLICATION_FEE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_URL}/pay-application-fee/confirmation`;
+export const APPLICATION_FEE_PAYMENT_CONFIRMATION_URL='/general-app-payment-confirmation/:id';
+export const APPLICATION_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID='/general-app-payment-confirmation/:id/:uniqueId/confirmation';
+
