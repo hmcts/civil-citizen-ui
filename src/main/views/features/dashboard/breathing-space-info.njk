@@ -1,0 +1,9 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "./item-content.njk" import itemContent %}
+{% from "../../macro/support-links.njk" import supportLinks %}
+
+{% block nestedContent %}
+          {% for content in contentList %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
+{% endblock %}

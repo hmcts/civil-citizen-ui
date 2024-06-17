@@ -1,5 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {DASHBOARD_CLAIMANT_URL, DATE_PAID_URL, OLD_DASHBOARD_CLAIMANT_URL} from '../../urls';
+import {BREATHING_SPACE_INFO, DASHBOARD_CLAIMANT_URL, DATE_PAID_URL, OLD_DASHBOARD_CLAIMANT_URL} from '../../urls';
 import {
   extractOrderDocumentIdFromNotification,
   getDashboardForm,
@@ -17,7 +17,7 @@ import {isDashboardServiceEnabled} from '../../../app/auth/launchdarkly/launchDa
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {t} from 'i18next';
-import {applicationNoticeUrl, getDebtRespiteUrl} from 'common/utils/externalURLs';
+import {applicationNoticeUrl} from 'common/utils/externalURLs';
 import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
@@ -106,7 +106,7 @@ const getSupportLinks = (claim: Claim, claimId: string, lng: string) => {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_ENDED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
   }
   if (showGetDebtRespiteLink && claim.isClaimant()) {
-    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }), url: getDebtRespiteUrl });
+    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }), url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO) });
   }
 
   const helpSupportTitle = getHelpSupportTitle(lng);
