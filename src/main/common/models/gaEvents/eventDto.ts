@@ -15,6 +15,7 @@ import {
 import {
   CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
+import {CCDHelpWithFees} from 'form/models/claimDetails';
 
 export interface EventDto {
   event: ApplicationEvent,
@@ -31,4 +32,5 @@ export interface CCDGeneralApplication extends ClaimUpdate {
   generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
   generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
+  generalAppHelpWithFees: CCDHelpWithFees;
 }

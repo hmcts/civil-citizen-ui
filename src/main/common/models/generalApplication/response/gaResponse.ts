@@ -5,6 +5,7 @@ import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {RespondentAgreement} from './respondentAgreement';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 import {AcceptDefendantOffer} from './acceptDefendantOffer';
+import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 
 export class GaResponse {
   hearingArrangement?: HearingArrangement;
@@ -14,8 +15,11 @@ export class GaResponse {
   agreeToOrder?: YesNo;
   respondentAgreement?: RespondentAgreement;
   acceptDefendantOffer?: AcceptDefendantOffer;
+  statementOfTruth?: StatementOfTruthForm;
 
-  constructor(hearingArrangement?: HearingArrangement, hearingContactDetails?: HearingContactDetails, agreeToOrder?: YesNo, hearingSupport?: HearingSupport, unavailableDatesHearing?: UnavailableDatesGaHearing, respondentAgreement?: RespondentAgreement, acceptDefendantOffer?: AcceptDefendantOffer) {
+  constructor(hearingArrangement?: HearingArrangement, hearingContactDetails?: HearingContactDetails, agreeToOrder?: YesNo, 
+    hearingSupport?: HearingSupport, unavailableDatesHearing?: UnavailableDatesGaHearing, respondentAgreement?: RespondentAgreement,
+    acceptDefendantOffer?: AcceptDefendantOffer, statementOfTruth?: StatementOfTruthForm) {
     this.hearingArrangement = hearingArrangement;
     this.hearingContactDetails = hearingContactDetails;
     this.agreeToOrder = agreeToOrder;
@@ -23,5 +27,6 @@ export class GaResponse {
     this.unavailableDatesHearing = unavailableDatesHearing;
     this.respondentAgreement = respondentAgreement;
     this.acceptDefendantOffer = acceptDefendantOffer;
+    this.statementOfTruth = statementOfTruth;
   }
 }

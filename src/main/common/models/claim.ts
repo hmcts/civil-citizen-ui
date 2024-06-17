@@ -65,7 +65,6 @@ import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
 import {CaseRole} from 'form/models/caseRoles';
 import {ChooseHowProceed} from './chooseHowProceed';
-import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {PinToPost} from './pinToPost';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {FeeType} from 'form/models/helpWithFees/feeType';
@@ -149,7 +148,6 @@ export class Claim {
   caseRole?: CaseRole;
   draftClaimCreatedAt?: Date;
   helpWithFees ?: CCDHelpWithFees;
-  enterBreathing?: CCDBreathingSpaceStartInfo;
   respondent1PinToPostLRspec: PinToPost;
   defendantSignedSettlementAgreement?: YesNo;
   courtDecision: RepaymentDecisionType;
