@@ -394,7 +394,7 @@ civil-general-applications:
   java:
     ingressHost: civil-cui-general-applications.aat.platform.hmcts.net
     releaseNameOverride: ${SERVICE_NAME}-general-applications
-    image: 'hmctspublic.azurecr.io/civil/general-applications:latest'
+    image: 'hmctspublic.azurecr.io/civil/general-applications:pr-1349'
     imagePullPolicy: Always
     keyVaults:
       civil:
