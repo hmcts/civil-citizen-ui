@@ -2,7 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   BACK_URL,
   DQ_DISCLOSURE_OF_DOCUMENTS_URL, DQ_MULTITRACK_AGREEMENT_REACHED_URL,
-  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
 } from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveDirectionQuestionnaire} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
@@ -73,8 +73,7 @@ disclosureOfDocumentsController.post(DQ_DISCLOSURE_OF_DOCUMENTS_URL, (async (req
     } else if (disclosureOfDocuments.hasField(TypeOfDisclosureDocument.ELECTRONIC) || disclosureOfDocuments.documentsTypeChosen.length === 2) {
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_AGREEMENT_REACHED_URL));
     } else if (disclosureOfDocuments.hasField(TypeOfDisclosureDocument.NON_ELECTRONIC)) {
-      //TODO ADD NON ELECTRONIC URL
-      res.redirect(constructResponseUrlWithIdParams(claimId, 'TODO'));
+      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL));
 
     }
   } catch (error) {

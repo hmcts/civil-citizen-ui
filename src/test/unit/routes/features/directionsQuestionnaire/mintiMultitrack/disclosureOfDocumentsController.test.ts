@@ -4,7 +4,9 @@ import nock from 'nock';
 import config from 'config';
 import {
   DQ_DISCLOSURE_OF_DOCUMENTS_URL,
-  DQ_MULTITRACK_AGREEMENT_REACHED_URL, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
+  DQ_MULTITRACK_AGREEMENT_REACHED_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
+  DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
@@ -134,7 +136,7 @@ describe('Disclosure Of Controller', () => {
         });
     });
 
-    it('should redirect to claim documents to be considered page when is ELECTRONIC_DOCUMENTS', async () => {
+    it('should redirect to claim documents to be considered page when is NON_ELECTRONIC_DOCUMENTS', async () => {
       const documentsChosen = [];
       documentsChosen.push('NON_ELECTRONIC_DOCUMENTS');
       await request(app)
@@ -142,7 +144,7 @@ describe('Disclosure Of Controller', () => {
         .send({documentsTypeForm: documentsChosen})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toBe('TODO');
+          expect(res.header.location).toBe(DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL);
         });
     });
 
