@@ -12,12 +12,18 @@ export function documentIdExtractor(documentBinaryUrl: string){
 }
 
 export function generalApplicationDocumentIdExtractor(documentBinaryUrl: string){
-  if (documentBinaryUrl){
-    const regex = /[^/]+$/;
-    const match = regex.exec(documentBinaryUrl);
-    return match[0];
+  try {
+    const parsedUrl = new URL(documentBinaryUrl);
+
+    const pathname = parsedUrl.pathname;
+
+    const segments = pathname.split('/');
+    const document_id = segments.pop();
+
+    return document_id || null;
+  } catch (e) {
+    return null;
   }
-  return documentBinaryUrl;
 }
 
 export function removeWhiteSpacesIfNoText(text:string): string {
