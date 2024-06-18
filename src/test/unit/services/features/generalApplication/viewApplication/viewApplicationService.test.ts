@@ -22,7 +22,7 @@ describe('View Application service', () => {
       jest.spyOn(GeneralApplicationClient.prototype, 'getApplication').mockResolvedValueOnce(application);
     });
 
-    it('should give correct row count for multiple application types', async () => {
+    it('view application content test', async () => {
       const result = await getApplicationSections(mockedAppRequest, '1718105701451856', 'en');
       expect(result).toHaveLength(13);
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
