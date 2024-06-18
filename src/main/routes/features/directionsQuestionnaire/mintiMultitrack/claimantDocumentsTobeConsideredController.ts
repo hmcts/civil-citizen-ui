@@ -12,7 +12,7 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {YesNo} from "form/models/yesNo";
+import {YesNo} from 'form/models/yesNo';
 
 const claimantDocumentsTobeConsideredController = Router();
 const hasClaimantDocumentsToBeConsideredViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/claimant-documents-to-be-considered';
