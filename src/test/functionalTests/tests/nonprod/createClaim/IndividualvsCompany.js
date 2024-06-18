@@ -8,7 +8,7 @@ let caseRef, selectedHWF;
 
 Feature('Create Lip v Company claim - Individual vs Company @claimCreation').tag('@regression-r2');
 
-Scenario('Create Claim -  Individual vs Individual - small claims - no interest - no hwf', async ({api}) => {
+Scenario('Create Claim -  Individual vs Company - small claims - no interest - no hwf - flightdelay claim', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     selectedHWF = false;
     const defaultClaimFee = 455;
@@ -16,6 +16,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
+    //Change defendant to company, and add flightdelay claim
     await steps.addCompanyDefendant();
     caseRef = await steps.checkAndSubmit(selectedHWF);
     await api.setCaseId(caseRef);
