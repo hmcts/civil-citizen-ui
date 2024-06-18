@@ -309,6 +309,7 @@ describe('claimant Dashboard Controller', () => {
     it('should show support links for claimant', async () => {
 
       const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
       claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
@@ -333,6 +334,7 @@ describe('claimant Dashboard Controller', () => {
     it('should show support links for claimant whit links hidden', async () => {
 
       const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
       claim.ccdState = CaseState.CASE_ISSUED;
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
