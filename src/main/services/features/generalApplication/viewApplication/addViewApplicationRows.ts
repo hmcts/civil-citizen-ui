@@ -182,7 +182,7 @@ export const addUnavailableDatesRows = (application: ApplicationResponse, lang: 
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppHearingDetails.generalAppUnavailableDates) {
     let unavailableDatesHtml = '<ul class="no-list-style">';
-    application.case_data.generalAppHearingDetails.generalAppUnavailableDates.forEach((value, index) => {
+    application.case_data.generalAppHearingDetails.generalAppUnavailableDates.forEach((value) => {
       if (value.value.unavailableTrialDateTo === undefined) {
         unavailableDatesHtml += `<li>${formatDateToFullDate(new Date(value.value.unavailableTrialDateFrom), lang)}</li>`;
       } else{
