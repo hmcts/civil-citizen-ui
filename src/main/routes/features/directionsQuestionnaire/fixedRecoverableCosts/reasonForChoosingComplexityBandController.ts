@@ -14,7 +14,7 @@ import {
   getWhichComplexityBandToChooseContent,
 } from 'services/commons/detailContents';
 import {ComplexityBandOptions} from 'models/directionsQuestionnaire/fixedRecoverableCosts/complexityBandOptions';
-import {ReasonForComplexityBand} from "models/directionsQuestionnaire/fixedRecoverableCosts/reasonForComplexityBand";
+import {ReasonForComplexityBand} from 'models/directionsQuestionnaire/fixedRecoverableCosts/reasonForComplexityBand';
 
 const reasonForComplexityBandController = Router();
 const reasonForComplexityBandViewPath = 'features/directionsQuestionnaire/fixedRecoverableCosts/reason-for-complexity-band';

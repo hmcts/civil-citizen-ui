@@ -11,7 +11,7 @@ import {Party} from 'models/party';
 import {CaseState} from 'form/models/claimDetails';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
-import {FixedRecoverableCosts} from "models/directionsQuestionnaire/fixedRecoverableCosts/fixedRecoverableCosts";
+import {FixedRecoverableCosts} from 'models/directionsQuestionnaire/fixedRecoverableCosts/fixedRecoverableCosts';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
