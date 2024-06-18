@@ -26,6 +26,7 @@ const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+const HearingUploadDocuments = 'Upload hearing documents';
 
 claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -57,6 +58,13 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(claim, claimId, lng);
+      const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
+      hearing.forEach((task) => {
+        if (task.taskNameEn.search(HearingUploadDocuments)>0){
+          req.session.dashboard = {taskIdHearingUploadDocuments:undefined};
+          req.session.dashboard.taskIdHearingUploadDocuments = task.id;
+        }
+      });
 
       res.render(claimantDashboardViewPath, {
         claim: claim,
