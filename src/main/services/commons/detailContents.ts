@@ -6,7 +6,7 @@ import {
   practiceDirection31b10Url,
   practiceDirection31bUrl, table14,
 } from 'common/utils/externalURLs';
-import {t} from "i18next";
+import {t} from 'i18next';
 
 export const  getWhatIsDisclosureDetailContent = () => {
   const DISCLOSURE_NON_ELECTRONIC_DOCUMENTS = 'DISCLOSURE_NON_ELECTRONIC_DOCUMENTS.DETAILS.';
