@@ -4,7 +4,7 @@ import {TestMessages} from '../../../../../../src/test/utils/errorMessageTestCon
 import {YesNo} from 'form/models/yesNo';
 import {
   getDirectionQuestionnaire,
-  getGenericOption,
+  getGenericOption, hasAnAgreementBeenReached, isTypeOfDisclosureDocumentNonElectronic,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
@@ -18,6 +18,13 @@ import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {ReportDetail} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
 import {CaseState} from 'common/form/models/claimDetails';
+import {
+  HasAnAgreementBeenReachedOptions,
+} from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReachedOptions';
+import {
+  DisclosureOfDocuments,
+  TypeOfDisclosureDocument,
+} from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -591,6 +598,74 @@ describe('Direction questionnaire Service', () => {
 
       await expect(saveDirectionQuestionnaire('claimId', mockGetCaseDataFromDraftStore, ''))
         .rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+
+  describe('hasAnAgreementBeenReached', () => {
+    it('should return true when has An Agreement Been Reached', async () => {
+      //given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.hearing = new Hearing();
+        claim.directionQuestionnaire.hearing.hasAnAgreementBeenReached = HasAnAgreementBeenReachedOptions.YES;
+        return claim;
+      });
+
+      //when
+      const result = await hasAnAgreementBeenReached('claimId');
+      //then
+      expect(result).toBe(true);
+    });
+
+    it('should return false when has An Agreement Been Reached', async () => {
+      //given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.hearing = new Hearing();
+        claim.directionQuestionnaire.hearing.hasAnAgreementBeenReached = HasAnAgreementBeenReachedOptions.NO;
+        return claim;
+      });
+
+      //when
+      const result = await hasAnAgreementBeenReached('claimId');
+      //then
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('isTypeOfDisclosureDocumentNonElectronic', () => {
+    it('should return true when is Type Of DisclosureDocument Non Electronic', async () => {
+      //given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.hearing = new Hearing();
+        claim.directionQuestionnaire.hearing.disclosureOfDocuments = new DisclosureOfDocuments(Array.of(TypeOfDisclosureDocument.NON_ELECTRONIC));
+        return claim;
+      });
+
+      //when
+      const result = await isTypeOfDisclosureDocumentNonElectronic('claimId');
+      //then
+      expect(result).toBe(true);
+    });
+
+    it('should return false when is Type Of DisclosureDocument Electronic', async () => {
+      //given
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.hearing = new Hearing();
+        claim.directionQuestionnaire.hearing.disclosureOfDocuments = new DisclosureOfDocuments(Array.of(TypeOfDisclosureDocument.ELECTRONIC));
+        return claim;
+      });
+
+      //when
+      const result = await isTypeOfDisclosureDocumentNonElectronic('claimId');
+      //then
+      expect(result).toBe(false);
     });
   });
 });

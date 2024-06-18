@@ -118,7 +118,7 @@ const isTypeOfDisclosureDocumentNonElectronic = async (claimId: string) => {
   return directionQuestionnaire.hearing
     .disclosureOfDocuments
     .documentsTypeChosen
-    .find(item => item === TypeOfDisclosureDocument.NON_ELECTRONIC);
+    .includes(TypeOfDisclosureDocument.NON_ELECTRONIC);
 };
 
 export {
