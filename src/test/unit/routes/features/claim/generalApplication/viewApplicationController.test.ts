@@ -38,7 +38,7 @@ describe('General Application - View application', () => {
         .query({applicationId: '1718105701451856'})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.TITLE'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
         });
     });
 
