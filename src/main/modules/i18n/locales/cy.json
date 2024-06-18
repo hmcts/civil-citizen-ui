@@ -423,7 +423,7 @@
     }
   },
   "WHAT_ARE_FIXED_RECOVERABLE_COSTS": {
-    "TITLE": "Beth yw Costau Adenilladwy Sefydlog?",
+    "TITLE": "Beth yw Costau Adennill Sefydlog?",
     "PARA_1":  "Rhan fwyaf o hawliadau arian sifil sydd â gwerth hyd at ac yn cynnwys £100,000 yn ddarostyngedig i’r Drefn Costau Adennill Sefydlog (FRCS).",
     "PARA_2":  "Mae FRCS yn gosod terfynau ar faint o gostau cyfreithiol y gall y partïon llwyddiannus eu hawlio yn ôl o bartïon aflwyddiannus.",
     "PARA_3":  "Yn darparu sicrwydd i’r holl bartïon dan sylw drwy bennu ymlaen llaw’r swm mwyaf o gostau y bydd y parti colli yn gorfod ei dalu.",
@@ -442,9 +442,9 @@
   },
   "PAGES": {
     "SUBJECT_TO_FRC": {
-      "PAGE_TITLE": "A yw'r hawliad yn amodol ar y Gyfundrefn Costau Adenilladwy Sefydlog?",
-      "TITLE": "Rheoliad Costau Adferadwy Penodol",
-      "BUTTON_TITLE": "A yw'r hawliad yn amodol ar y Gyfundrefn Costau Adenilladwy Sefydlog?"
+      "PAGE_TITLE": "A yw’r hawliad yn ddarostyngedig i’r Drefn Costau Adennill Sefydlog?",
+      "TITLE": "Costau Adennill Sefydlog",
+      "BUTTON_TITLE": "A yw’r hawliad yn ddarostyngedig i’r Drefn Costau Adennill Sefydlog?"
     },
     "FRC_BAND_AGREED": {
       "PAGE_TITLE": "A yw’r band cymhlethdod wedi’i gytuno gyda’r partïon eraill?",
