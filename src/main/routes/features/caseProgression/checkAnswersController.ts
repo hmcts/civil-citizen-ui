@@ -16,10 +16,13 @@ import {AppRequest} from 'common/models/AppRequest';
 import {GenericForm} from 'common/form/models/genericForm';
 import {DocumentUploadSubmissionForm} from 'form/models/caseProgression/documentUploadSubmission';
 import {DocumentUploadSections} from 'models/caseProgression/documentUploadSections';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import config from 'config';
 
 const checkAnswersViewPath = 'features/caseProgression/check-answers';
 const documentUploadCheckAnswerController = Router();
-
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, isClaimant: boolean, lang: string) {
   const topPageContents = getTopElements(claim);
   let summarySections: DocumentUploadSections;
@@ -65,6 +68,9 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
       renderView(res, form, claim, claimId, isSmallClaims, lang);
     } else {
       await saveUploadedDocuments(claim, <AppRequest>req);
+      if((<AppRequest>req).session?.dashboard?.taskIdHearingUploadDocuments){
+        await civilServiceClient.updateTaskStatus((<AppRequest>req)?.session?.dashboard?.taskIdHearingUploadDocuments, <AppRequest>req);
+      }
       await deleteDraftClaimFromStore(claimId);
       res.redirect(constructResponseUrlWithIdParams(claim.id, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
     }
