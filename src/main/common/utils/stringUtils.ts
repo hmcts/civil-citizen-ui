@@ -11,6 +11,15 @@ export function documentIdExtractor(documentBinaryUrl: string){
   return documentBinaryUrl;
 }
 
+export function generalApplicationDocumentIdExtractor(documentBinaryUrl: string){
+  if (documentBinaryUrl){
+    const regex = /[^/]+$/;
+    const match = regex.exec(documentBinaryUrl);
+    return match[0];
+  }
+  return documentBinaryUrl;
+}
+
 export function removeWhiteSpacesIfNoText(text:string): string {
   if(!text.replace(/\s/g, '').length) {
     return '';

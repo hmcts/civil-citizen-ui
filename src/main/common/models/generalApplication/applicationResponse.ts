@@ -15,6 +15,7 @@ import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/
 import {
   CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
+import {CcdGeneralApplicationAddlDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 
 export class ApplicationResponse {
   id: string;
@@ -47,6 +48,7 @@ export interface CCDApplication extends ApplicationUpdate {
   generalAppDetailsOfOrder: string;
   generalAppReasonsOfOrder: string;
   generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
+  gaAddlDoc: CcdGeneralApplicationAddlDocument[];
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
   generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
 }

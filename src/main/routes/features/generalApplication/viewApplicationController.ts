@@ -11,7 +11,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
   try {
     const applicationId = req.query.applicationId ? String(req.query.applicationId) : null;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const summaryRows =getApplicationSections(req, applicationId, lang);
+    const summaryRows = await getApplicationSections(req, applicationId, lang);
     res.render(viewPath, {backLinkUrl, summaryRows });
   } catch (error) {
     next(error);
