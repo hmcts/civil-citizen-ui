@@ -3,6 +3,8 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
+  DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL,
   DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
@@ -53,7 +55,7 @@ describe('claimant Documents to be considered Controller', () => {
         });
     });
 
-    it('should open  Claimant documents to be considered page with yes', async () => {
+    it('should open Claimant documents to be considered page with yes', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = getClaim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
@@ -115,19 +117,17 @@ describe('claimant Documents to be considered Controller', () => {
         .send({option: YesNo.YES})
         .expect((res) => {
           expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
+          expect(res.header.location).toBe(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL);
         });
     });
 
     it('should redirect when hasAnAgreementBeenReachedOptions is NO', async () => {
       await request(app)
         .post(CONTROLLER_URL)
-        .send({option: YesNo.YES})
+        .send({option: YesNo.NO})
         .expect((res) => {
           expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
+          expect(res.header.location).toBe(DQ_DEFENDANT_EXPERT_EVIDENCE_URL);
         });
     });
 
