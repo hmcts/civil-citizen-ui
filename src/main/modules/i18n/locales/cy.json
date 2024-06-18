@@ -608,22 +608,6 @@
       "TITLE": "Iaith",
       "WELSH_AND_ENGLISH": "Cymraeg"
     },
-    "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
-      "DATE_LIFT_OPTIONAL": "Dyma'r dyddiad y dywedwyd wrthych y bydd yn gorffen (dewisol):",
-      "PAGE_TITLE": "Dyddiad codi cynllun seibiant dyledion (lle i anadlu)",
-      "TITLE": "Dyddiad codi cynllun seibiant dyledion (lle i anadlu)"
-    },
-    "BREATHING_SPACE_DEBT_RESPITE_START": {
-      "DATE_START_OPTIONAL": "Dyma'r dyddiad y dechreuodd, nid y dyddiad y cawsoch hysbysiad amdano (dewisol).",
-      "PAGE_TITLE": "Pryd ddechreuodd o?",
-      "TITLE": "Pryd ddechreuodd o?"
-    },
-    "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
-      "MENTAL_HEALTH": "Moratoriwm argyfwng iechyd meddwl",
-      "PAGE_TITLE": "Pa fath ydy o?",
-      "STANDARD": "Lle i anadlu safonol",
-      "TITLE": "Pa fath ydy o?"
-    },
     "CARER": {
       "PAGE_TITLE": "Lwfans gofalwr"
     },
@@ -1165,25 +1149,6 @@
       "TOTAL_CLAIM_AMOUNT": "Cyfanswm swm yr hawliad:",
       "TRIAL_DOCUMENTS": "dogfennau’r treial"
     },
-    "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
-      "PAGE_TITLE": "Gwiriwch eich atebion cyn cyflwyno eich hawliad",
-      "TITLE": "Gwiriwch eich atebion cyn cyflwyno eich hawliad",
-      "REFERENCE_NUMBER": "Cyfeirnod",
-      "WHEN_DID_IT_START": "Pryd ddechreuodd o?",
-      "TYPE": {
-        "WHAT_TYPE_IS_IT": "Pa fath ydy o?",
-        "MENTAL_HEALTH_CRISIS_MORATORIUM": "Moratoriwm argyfwng iechyd meddwl",
-        "STANDARD_BREATHING_SPACE": "Lle i anadlu safonol"
-      },
-      "EXPECTED_END_DATE": "Dyddiad gorffen disgwyliedig"
-    },
-    "CLAIMANT_LIFT_BREATHING_SPACE_CHECK_ANSWER": {
-      "PAGE_TITLE": "Codi'r cynllun seibiant dyledion (lle i anadlu)",
-      "TITLE": "Codi'r cynllun seibiant dyledion (lle i anadlu)",
-      "DATE_LIFTED": " Dyddiad codi",
-      "CYA_HEADER": "Ydych chi’n siŵr eich bod eisiau codi’r cynllun seibiant dyledion?",
-      "CYA_HEADER_TEXT": "Unwaith y bydd y cynllun seibiant dyledion wedi’i godi, ni fyddwch yn gallu newid hyn."
-    },
     "CLAIMANT_DOB": {
       "PAGE_TITLE": "Eich dyddiad geni",
       "TITLE": "Beth yw eich dyddiad geni?"
@@ -1716,16 +1681,6 @@
       "TITLE": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
       "TOTAL_OWED_IN_POUNDS": "Y cyfanswm sy’n ddyledus, mewn punnoedd"
     },
-    "DEBT_RESPITE_REF_NUMBER": {
-      "ENTER_REFERENCE": "Rhowch y cyfeirnod (dewisol):",
-      "PAGE_TITLE": "Cyfeirnod Cynllun Seibiant Dyled",
-      "TITLE": "Oes gennych chi rif cyfeirnod Cynllun Seibiant Dyled?"
-    },
-    "DEBT_RESPITE_END_DATE": {
-      "PAGE_TITLE": "Dyddiad gorffen disgwyliedig",
-      "THIS_IS_THE": "Dyma'r dyddiad gorffen y disgwylir iddo orffen (dewisol)",
-      "TITLE": "Dyddiad gorffen disgwyliedig"
-    },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Masnachu fel (os yn hysbys)",
       "COMPANY_ADDRESS": "Cyfeiriad y Cwmni",
@@ -2233,6 +2188,17 @@
         "WHY_PREFER": "Why would you prefer this type of hearing?",
         "WHY_REQUESTING": "Why are you requesting this order?"
       },
+      "CHECK_YOUR_ANSWER_RESPONSE": {
+        "CLAIM_REFERENCE": "Claim reference: ",
+        "PREFERRED_LOCATION": "Preferred location",
+        "RESPOND_TO_AN_APPLICATION": "Respond to an application",
+        "STATEMENT_OF_TRUTH": {
+          "APPLICATION": "The information on this page forms your response to the application.",
+          "CHECKBOX": "I believe that the facts stated in this response form are true.",
+          "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
+        },
+        "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
+      },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Application fee to pay:",
         "TITLE": "Paying for your application",
@@ -2514,6 +2480,26 @@
         "RETURN_CASE_DETAILS": "Close and return to case details",
         "TITLE": "Application created",
         "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge."
+      },
+      "APPLY_HELP_WITH_FEE": {
+        "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
+        "CONTENT_PAGE_TITLE": "Apply for help with fees",
+        "CONTINUE_TO_APPLY_HWF_PAGE_TITLE": "Do you want to continue to apply for Help with Fees",
+        "CONFIRMATION_PAGE_TITLE": "Confirmation of your application fee payment",
+        "CONFIRMATION_TITLE": "Your application for help with the application fee is complete",
+        "GENERAL_APPLICATION_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The application fee is: £{{ feeAmount }}</span>",
+        "HEADING": "Application fee",
+        "REFERENCE_NUMBER": {
+          "LIST_ITEMS": {
+            "APPLICATION_FEE_SECOND": "When you are asked to enter a court or tribunal number, enter 'application fee' followed by short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
+            "APPLICATION_FEE_FIFTH": "Complete the application fee payment by entering your help with fees reference number."
+          },
+          "PAGE_TITLE": "Do you have a help with fees reference number?",
+          "TITLE": "Do you have a help with fees reference number?"
+        },
+        "TITLE": "Help with fees",
+        "WANT_TO_APPLY_HWF_TITLE": "Pay application fee",
+        "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -4262,8 +4248,6 @@
       "RENT": "Rhowch swm Rhent dilys, uchafswm dau le degol",
       "WATER": "Rhowch swm Dŵr dilys, uchafswm dau le degol"
     },
-    "VALID_DEBT_RESPITE_END_DATE": "Ni ddylai'r dyddiad gorffen disgwyliedig fod cyn dyddiad heddiw",
-    "VALID_DEBT_RESPITE_OPTION": "Rhaid dewis y Math cyn parhau",
     "VALID_DISAGREE_REASON_REQUIRED": "Dywedwch pam ydych yn anghytuno",
     "VALID_ENTER_A_DATE_BEFORE": "Rhowch ddyddiad geni cyn {{ maxDate }}",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Rhowch enw cyflogwr",
