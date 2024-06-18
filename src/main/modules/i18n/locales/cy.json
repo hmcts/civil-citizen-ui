@@ -440,6 +440,31 @@
     "PARA_9": "Efallai y byddwch yn cytuno ar y cymhlethdod y mae’r hawliad hwn yn syrthio iddo cyn neu yn dweud pa fand yr ydych chi’n meddwl bod y band hwn gyda phartïon eraill.",
     "PARA_10": "Fodd bynnag, os bydd y Llys yn anghytuno, mae ganddo’r pŵer i neilltuo hawliad i ba bynnag band y teimla sy’n briodol"
   },
+  "WHICH_COMPLEXITY_BAND_TO_CHOOSE": {
+    "TITLE": "Pa fand cymhlethdod ddylwn i ei ddefnyddio?",
+    "PARA_1_TITLE": "Band 1",
+    "PARA_1": "Unrhyw hawliad lle dim ond un mater sy’n destun anghydfod. Er enghraifft, hawliadau lle dim ond y swm o arian, neu atebolrwydd (cyfrifoldeb cyfreithiol) sy’n destun anghydfod. Enghreifftiau yn cynnwys:",
+    "PARA_1_POINT_1": "Hawliadau am anafiadau personol lle mae atebolrwydd neu’r swm o arian sy’n cael ei hawlio yn destun anghydfod.",
+    "PARA_1_POINT_2": "Damweiniau traffig ffordd heb hawliad am anafiadau personol.",
+    "PARA_1_POINT_3": "Hawliadau dyled lle mae anghytundeb dros ffeithiau’r hawliad.",
+    "PARA_2_TITLE": "Band 2",
+    "PARA_2": "Y rhan fwyaf o hawliadau lle mae mwy nag un mater yn destun anghydfod. Er enghraifft, hawliadau lle mae’r swm o arian sy’n cael ei hawlio, a’r atebolrwydd (cyfrifoldeb cyfreithiol) yn destun anghydfod. Enghreifftiau yn cynnwys:",
+    "PARA_2_POINT_1": "Hawliadau am anafiadau personol lle mae atebolrwydd a’r swm o arian sy’n cael ei hawlio yn destun anghydfod.",
+    "PARA_2_POINT_2": "Damweiniau traffig ffordd sy’n cynnwys hawliad am anafiadau personol.",
+    "PARA_3_TITLE": "Band 3",
+    "PARA_3": "Unrhyw hawliad arall lle mae mwy nag un mater yn destun anghydfod. Er enghraifft:",
+    "PARA_3_POINT_1": "Colli clyw a achosir gan sŵn.",
+    "PARA_3_POINT_2": "Atebolrwydd cyflogwr am glefydau.",
+    "PARA_4_TITLE": "Band 4",
+    "PARA_4": "Unrhyw hawliad nad yw’n addas ar gyfer bandiau 1 i 3. Er enghraifft:",
+    "PARA_4_POINT_1": "Hawliadau anafiadau personol cymhleth gyda materion difrifol o amgylch y ffeithiau neu’r gyfraith.",
+    "URL": {
+      "TITLE": "Rhagor o wybodaeth am fandiau cymhlethdod",
+      "BEFORE": "Am wybodaeth am fandiau cymhlethdod gwele",
+      "TEXT": "CPR 26.16 Table 2 (yn agor mewn tab newydd)",
+      "AFTER": "."
+    }
+  },
   "PAGES": {
     "SUBJECT_TO_FRC": {
       "PAGE_TITLE": "A yw’r hawliad yn ddarostyngedig i’r Drefn Costau Adennill Sefydlog?",
@@ -450,6 +475,25 @@
       "PAGE_TITLE": "A yw’r band cymhlethdod wedi’i gytuno gyda’r partïon eraill?",
       "TITLE": "Cytundeb y band cymhlethdod",
       "BUTTON_TITLE": "A yw’r band cymhlethdod wedi’i gytuno gyda’r partïon eraill?"
+    },
+    "CHOOSE_COMPLEXITY_BAND": {
+      "PAGE_TITLE": "Pa fand cymhlethdod ydych chi’n credu bod y hawliad hwn yn syrthio iddo?",
+      "TITLE": "Band cymhlethdod",
+      "COMBO_BOX" : {
+        "TITLE": "Pa fand cymhlethdod ydych chi’n credu bod y hawliad hwn yn syrthio iddo?",
+        "ITEM1": {
+          "TEXT": "Band 1"
+        },
+        "ITEM2": {
+          "TEXT": "Band 2"
+        },
+        "ITEM3": {
+          "TEXT": "Band 3"
+        },
+        "ITEM4": {
+          "TEXT": "Band 4"
+        }
+      }
     },
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : {
       "PAGE_TITLE": "A oes unrhyw ddogfennau sydd gan yr hawlwyr yr hoffech i'r llys eu hystyried?",
@@ -4022,6 +4066,7 @@
   "ERRORS": {
     "SUBJECT_TO_FRC": "Nodwch a yw'r hawliad yn amodol ar y Gyfundrefn Costau Adenilladwy Sefydlog",
     "FRC_BAND_AGREED": "Nodwch a yw'r band cymhlethdod wedi'i gytuno gyda'r partïon eraill",
+    "CHOOSE_COMPLEXITY_BAND": "Nodwch pa fand cymhlethdod y credwch y mae’r hawliad hwn yn perthyn iddo",
     "HAS_AN_AGREEMENT_BEEN_REACHED" : "Nodi a daethpwyd i gytundeb ynghylch pa ddogfennau electronig a fydd yn cael eu datgelu",
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Nodwch os oes unrhyw ddogfennau sydd gan yr hawlwyr eich bod am i'r llys eu hystyried",
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau nad ydynt yn electronig",

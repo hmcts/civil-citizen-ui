@@ -9,7 +9,7 @@ import {
   getNumberOfUnavailableDays,
 } from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 import {ConfirmYourDetailsEvidence} from 'form/models/confirmYourDetailsEvidence';
-import {FixedRecoverableCosts} from 'models/directionsQuestionnaire/fixedRecoverableCosts/FixedRecoverableCosts';
+import {FixedRecoverableCosts} from 'models/directionsQuestionnaire/fixedRecoverableCosts/fixedRecoverableCosts';
 
 const UNAVAILABLE_DAYS_LIMIT = 30;
 

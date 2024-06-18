@@ -1,10 +1,12 @@
 import {DetailsComponent, DetailsComponentContentBuilder} from 'models/summaryText/detailsComponent';
 import {
+  cpr26,
   disclosureOfDocumentsUrl,
   electronicDocumentQuestionnaireUrl,
   practiceDirection31b10Url,
   practiceDirection31bUrl, table14,
 } from 'common/utils/externalURLs';
+import {t} from "i18next";
 
 export const  getWhatIsDisclosureDetailContent = () => {
   const DISCLOSURE_NON_ELECTRONIC_DOCUMENTS = 'DISCLOSURE_NON_ELECTRONIC_DOCUMENTS.DETAILS.';
@@ -86,5 +88,46 @@ export const getWhatAreFixedRecoverableCostsContent = () => {
     .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_8`)
     .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_9`)
     .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_10`)
+    .build());
+};
+
+export const  getWhichComplexityBandToChooseContent = (lang: string) => {
+  const WHICH_COMPLEXITY_BAND_TO_CHOOSE = 'WHICH_COMPLEXITY_BAND_TO_CHOOSE.';
+  return new DetailsComponent(`${WHICH_COMPLEXITY_BAND_TO_CHOOSE}TITLE`, new DetailsComponentContentBuilder()
+    .addTitle(`${WHICH_COMPLEXITY_BAND_TO_CHOOSE}PARA_1_TITLE`)
+    .addParagraph(`${WHICH_COMPLEXITY_BAND_TO_CHOOSE}PARA_1`)
+    .addRawHtml(
+      `<ul class="govuk-list govuk-list--bullet govuk-!-static-padding-left-7">
+                <li>${t(WHICH_COMPLEXITY_BAND_TO_CHOOSE+'PARA_1_POINT_1', {lng: lang})}</li>
+                <li>${t(WHICH_COMPLEXITY_BAND_TO_CHOOSE+'PARA_1_POINT_2', {lng: lang})}</li>
+                <li>${t(WHICH_COMPLEXITY_BAND_TO_CHOOSE+'PARA_1_POINT_3', {lng: lang})}</li>
+            </ul>`)
+    .addTitle(`${WHICH_COMPLEXITY_BAND_TO_CHOOSE}PARA_2_TITLE`)
+    .addParagraph(`${WHICH_COMPLEXITY_BAND_TO_CHOOSE}PARA_2`)
+    .addRawHtml(
+      `<ul class="govuk-list govuk-list--bullet govuk-!-static-padding-left-7">
+                <li>${t(WHICH_COMPLEXITY_BAND_TO_CHOOSE+'PARA_2_POINT_1', {lng: lang})}</li>
+                <li>${t(WHICH_COMPLEXITY_BAND_TO_CHOOSE+'PARA_2_POINT_2', {lng: lang})}</li>
+            </ul>`)
+    .addTitle(`${WHICH_COMPLEXITY_BAND_TO_CHOOSE}PARA_3_TITLE`)
+    .addParagraph(`${WHICH_COMPLEXITY_BAND_TO_CHOOSE}PARA_3`)
+    .addRawHtml(
+      `<ul class="govuk-list govuk-list--bullet govuk-!-static-padding-left-7">
+                <li>${t(WHICH_COMPLEXITY_BAND_TO_CHOOSE+'PARA_3_POINT_1', {lng: lang})}</li>
+                <li>${t(WHICH_COMPLEXITY_BAND_TO_CHOOSE+'PARA_3_POINT_2', {lng: lang})}</li>
+            </ul>`)
+    .addTitle(`${WHICH_COMPLEXITY_BAND_TO_CHOOSE}PARA_4_TITLE`)
+    .addParagraph(`${WHICH_COMPLEXITY_BAND_TO_CHOOSE}PARA_4`)
+    .addRawHtml(
+      `<ul class="govuk-list govuk-list--bullet govuk-!-static-padding-left-7">
+                <li>${t(WHICH_COMPLEXITY_BAND_TO_CHOOSE+'PARA_4_POINT_1', {lng: lang})}</li>
+            </ul>`)
+    .addTitle(`${WHICH_COMPLEXITY_BAND_TO_CHOOSE}URL.TITLE`)
+    .addLink(`${WHICH_COMPLEXITY_BAND_TO_CHOOSE}URL.TEXT`,
+      cpr26,
+      `${WHICH_COMPLEXITY_BAND_TO_CHOOSE}URL.BEFORE`,
+      `${WHICH_COMPLEXITY_BAND_TO_CHOOSE}URL.AFTER`,
+      null,
+      true)
     .build());
 };

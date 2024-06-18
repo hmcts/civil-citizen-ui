@@ -25,3 +25,4 @@ export const practiceDirection31bUrl = 'https://www.justice.gov.uk/courts/proced
 export const electronicDocumentQuestionnaireUrl = 'https://www.gov.uk/government/publications/form-n264-electronic-documents-questionnaire-civil-procedure-rules-practice-direction-31b';
 export const practiceDirection31b10Url = 'https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part31/pd_part31b#10.1';
 export const table14 = 'https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part45-fixed-costs/practice-direction-45-fixed-costs#14';
+export const cpr26 = 'https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part26#16';
