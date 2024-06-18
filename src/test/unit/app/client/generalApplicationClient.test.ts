@@ -36,6 +36,7 @@ appReq.session = {
   firstContact: undefined,
   fileUpload: undefined,
   issuedAt: 150,
+  dashboard: undefined,
 };
 
 describe('GeneralApplication Client', () => {
