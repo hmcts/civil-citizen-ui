@@ -348,3 +348,4 @@ export const DQ_MULTITRACK_AGREEMENT_REACHED_URL = `${DIRECTIONS_QUESTIONNAIRE_U
 export const SUBJECT_TO_FRC_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/subject-to-frc`;
 export const FRC_BAND_AGREED_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/frc-band-agreed`;
 export const ASSIGN_FRC_BAND_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/assign-complexity-band`;
+export const REASON_FOR_FRC_BAND_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/reason-for-complexity-band`;

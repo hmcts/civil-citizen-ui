@@ -3,7 +3,7 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  ASSIGN_FRC_BAND_URL,
+  REASON_FOR_FRC_BAND_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
@@ -11,14 +11,13 @@ import {Party} from 'models/party';
 import {CaseState} from 'form/models/claimDetails';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
-import {FixedRecoverableCosts} from 'models/directionsQuestionnaire/fixedRecoverableCosts/fixedRecoverableCosts';
-import {ComplexityBandOptions} from 'models/directionsQuestionnaire/fixedRecoverableCosts/complexityBandOptions';
+import {FixedRecoverableCosts} from "models/directionsQuestionnaire/fixedRecoverableCosts/fixedRecoverableCosts";
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
-const CONTROLLER_URL = ASSIGN_FRC_BAND_URL;
+const CONTROLLER_URL = REASON_FOR_FRC_BAND_URL;
 
 function getClaim() {
   const claim = new Claim();
@@ -28,7 +27,7 @@ function getClaim() {
   return claim;
 }
 
-describe('Choose complexity band Controller', () => {
+describe('Reasons for choosing complexity band Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
@@ -41,7 +40,7 @@ describe('Choose complexity band Controller', () => {
   });
 
   describe('on GET', () => {
-    it('should open Choose complexity band page without value', async () => {
+    it('should open reasons for choosing complexity band page without value', async () => {
       mockGetCaseData.mockImplementation(async () => {
         return getClaim();
       });
@@ -52,12 +51,12 @@ describe('Choose complexity band Controller', () => {
         });
     });
 
-    it('should open Choose complexity band page with value', async () => {
+    it('should open reasons for choosing complexity band page with value', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = getClaim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
         claim.directionQuestionnaire.fixedRecoverableCosts = new FixedRecoverableCosts();
-        claim.directionQuestionnaire.fixedRecoverableCosts.complexityBand = ComplexityBandOptions.BAND_3;
+        claim.directionQuestionnaire.fixedRecoverableCosts.reasonsForBandSelection = 'test';
         return claim;
       });
 
@@ -92,55 +91,13 @@ describe('Choose complexity band Controller', () => {
       });
     });
 
-    it('should redirect when Choose complexity band is band 1', async () => {
+    it('should redirect to next page', async () => {
       await request(app)
         .post(CONTROLLER_URL)
-        .send({complexityBand: ComplexityBandOptions.BAND_1})
+        .send({reasonsForBandSelection: 'test'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
           expect(res.get('location')).toBe('todo');
-        });
-    });
-
-    it('should redirect when Choose complexity band is band 2', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({complexityBand: ComplexityBandOptions.BAND_2})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
-        });
-    });
-
-    it('should redirect when Choose complexity band is band 3', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({complexityBand: ComplexityBandOptions.BAND_3})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
-        });
-    });
-
-    it('should redirect when Choose complexity band is band 4', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({complexityBand: ComplexityBandOptions.BAND_4})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
-        });
-    });
-
-    it('should validate the field is empty', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
         });
     });
 
@@ -151,7 +108,7 @@ describe('Choose complexity band Controller', () => {
       });
       await request(app)
         .post(CONTROLLER_URL)
-        .send({complexityBand: ComplexityBandOptions.BAND_4})
+        .send({reasonsForBandSelection: 'test'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

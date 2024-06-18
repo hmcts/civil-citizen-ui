@@ -362,6 +362,8 @@ import subjectToFRCController from './features/directionsQuestionnaire/fixedReco
 import frcBandAgreedController
   from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/frcBandAgreedController';
 import choseComplexityBandController from './features/directionsQuestionnaire/fixedRecoverableCosts/chooseComplexityBandController';
+import reasonForComplexityBandController
+  from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/reasonForChoosingComplexityBandController';
 
 export default [
   homeController,
@@ -664,4 +666,5 @@ export default [
   subjectToFRCController,
   frcBandAgreedController,
   choseComplexityBandController,
+  reasonForComplexityBandController,
 ];

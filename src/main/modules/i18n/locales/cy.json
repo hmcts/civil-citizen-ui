@@ -495,6 +495,14 @@
         }
       }
     },
+    "COMPLEXITY_BAND_REASON": {
+      "PAGE_TITLE": "Rhesymau dros ddewis band",
+      "TITLE": "Band cymhlethdod",
+      "TEXT_AREA": {
+        "LABEL": "Rhesymau dros ddewis band",
+        "HINT": "Rhowch eich rhesymau (dewisol)"
+      }
+    },
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : {
       "PAGE_TITLE": "A oes unrhyw ddogfennau sydd gan yr hawlwyr yr hoffech i'r llys eu hystyried?",
       "TITLE": "Dogfennau hawlydd i'w hystyried"
