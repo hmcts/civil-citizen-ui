@@ -485,7 +485,7 @@ describe('Civil Service Client', () => {
       generalAppType: undefined, generalAppRespondentAgreement: undefined, generalAppDetailsOfOrder: undefined,
       generalAppReasonsOfOrder: undefined, generalAppHearingDetails: undefined, generalAppStatementOfTruth: undefined,
       generalAppEvidenceDocument: undefined,
-      generalAppHelpWithFees: undefined
+      generalAppHelpWithFees: undefined,
     };
 
     const mockResponse = new CivilClaimResponse();
