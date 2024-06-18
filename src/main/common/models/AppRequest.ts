@@ -30,6 +30,7 @@ export interface AppSession extends Session {
   firstContact: FirstContact;
   fileUpload: string;
   issuedAt: number;
+  dashboard: Dashboard;
   history?: string[];
 }
 
@@ -42,3 +43,6 @@ export interface UserDetails {
   roles: string[];
 }
 
+export interface Dashboard {
+  taskIdHearingUploadDocuments: string;
+}
