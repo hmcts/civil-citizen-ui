@@ -608,22 +608,6 @@
       "TITLE": "Language",
       "WELSH_AND_ENGLISH": "Welsh"
     },
-    "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
-      "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
-      "PAGE_TITLE": "Date for lifting debt respite scheme (breathing space)",
-      "TITLE": "Date for lifting debt respite scheme (breathing space)"
-    },
-    "BREATHING_SPACE_DEBT_RESPITE_START": {
-      "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
-      "PAGE_TITLE": "When did it start?",
-      "TITLE": "When did it start?"
-    },
-    "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
-      "MENTAL_HEALTH": "Mental health crisis moratorium",
-      "PAGE_TITLE": "What type is it?",
-      "STANDARD": "Standard breathing space",
-      "TITLE": "What type is it?"
-    },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
     },
@@ -1165,25 +1149,6 @@
       "TOTAL_CLAIM_AMOUNT": "Total claim amount:",
       "TRIAL_DOCUMENTS": "trial documents"
     },
-    "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
-      "PAGE_TITLE": "Check your answers before submitting",
-      "TITLE": "Check your answers before submitting",
-      "REFERENCE_NUMBER": "Reference number",
-      "WHEN_DID_IT_START": "When did it start?",
-      "TYPE": {
-        "WHAT_TYPE_IS_IT": "What type is it?",
-        "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
-        "STANDARD_BREATHING_SPACE": "Standard breathing space"
-      },
-      "EXPECTED_END_DATE": "Expected end date"
-    },
-    "CLAIMANT_LIFT_BREATHING_SPACE_CHECK_ANSWER": {
-      "PAGE_TITLE": "Lift the debt respite scheme (breathing space)",
-      "TITLE": "Lift the debt respite scheme (breathing space)",
-      "DATE_LIFTED": " Date lifted",
-      "CYA_HEADER": "Are you sure you want to lift the debt respite scheme?",
-      "CYA_HEADER_TEXT": "Once the debt respite scheme is lifted you will not be able to change this."
-    },
     "CLAIMANT_DOB": {
       "PAGE_TITLE": "Your date of birth",
       "TITLE": "What is your date of birth?"
@@ -1716,16 +1681,6 @@
       "TITLE": "Do you have loans or credit card debts?",
       "TOTAL_OWED_IN_POUNDS": "Total owed, in pounds"
     },
-    "DEBT_RESPITE_REF_NUMBER": {
-      "ENTER_REFERENCE": "Enter the reference number (optional):",
-      "PAGE_TITLE": "Debt Respite Scheme reference number",
-      "TITLE": "Do you have a Debt Respite Scheme reference number?"
-    },
-    "DEBT_RESPITE_END_DATE": {
-      "PAGE_TITLE": "Expected end date",
-      "THIS_IS_THE": "This is the end date that it is due to finish (optional)",
-      "TITLE": "Expected end date"
-    },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Trading as (If you know it)",
       "COMPANY_ADDRESS": "Company address",
@@ -1946,6 +1901,10 @@
       "TITLE": "Total amount you're claiming",
       "25000_OR_LESS": "£25,000 or less"
     },
+    "ELIGIBILITY_KNOWN_CLAIM_AMOUNT": {
+      "PAGE_TITLE": "Do you know the amount you are claiming?",
+      "TITLE": "Do you know the amount you are claiming?"
+    },
     "ELIGIBILITY_OVER_18_CLAIMANT": {
       "PAGE_TITLE": "Are you 18 or over?",
       "TITLE": "Are you 18 or over?"
@@ -2132,6 +2091,9 @@
       "REACHING_SETTLEMENT": "Reaching a settlement"
     },
     "GENERAL_APPLICATION": {
+      "COMMON": {
+        "MAKE_AN_APPLICATION": "Make an application"
+      },
       "ACCEPT_DEFENDANT_OFFER": {
         "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
         "ENTER_AMOUNT": "Enter the amount in £",
@@ -2225,6 +2187,17 @@
         "WHAT_ORDER": "What order do you want the judge to make?",
         "WHY_PREFER": "Why would you prefer this type of hearing?",
         "WHY_REQUESTING": "Why are you requesting this order?"
+      },
+      "CHECK_YOUR_ANSWER_RESPONSE": {
+        "CLAIM_REFERENCE": "Claim reference: ",
+        "PREFERRED_LOCATION": "Preferred location",
+        "RESPOND_TO_AN_APPLICATION": "Respond to an application",
+        "STATEMENT_OF_TRUTH": {
+          "APPLICATION": "The information on this page forms your response to the application.",
+          "CHECKBOX": "I believe that the facts stated in this response form are true.",
+          "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
+        },
+        "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
       },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Application fee to pay:",
@@ -2468,18 +2441,6 @@
         "PREFERRED_TELEPHONE_NUMBER": "Preferred telephone number",
         "TITLE": "Contact Details"
       },
-      "UNAVAILABLE_HEARING_DATES": {
-        "ADD_ANOTHER_DATE": "Add another date or date range",
-        "ENTER_UNAVAILABLE": "Enter unavailable date",
-        "FROM": "From",
-        "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
-        "LONGER_PERIOD": "A longer period of time",
-        "PAGE_TITLE": "Unavailable hearing dates",
-        "SELECT": "Select a date or dates you cannot attend a hearing",
-        "SINGLE_DATE": "A single date",
-        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
-        "TO": "To"
-      },
       "RESPONDENT_INFORMATION": {
         "CLICK_RESPOND": "Click 'respond to application' to let the court know whether or not you agree with their request.",
         "HEADER": "Respond to an application",
@@ -2519,6 +2480,26 @@
         "RETURN_CASE_DETAILS": "Close and return to case details",
         "TITLE": "Application created",
         "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge."
+      },
+      "APPLY_HELP_WITH_FEE": {
+        "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
+        "CONTENT_PAGE_TITLE": "Apply for help with fees",
+        "CONTINUE_TO_APPLY_HWF_PAGE_TITLE": "Do you want to continue to apply for Help with Fees",
+        "CONFIRMATION_PAGE_TITLE": "Confirmation of your application fee payment",
+        "CONFIRMATION_TITLE": "Your application for help with the application fee is complete",
+        "GENERAL_APPLICATION_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The application fee is: £{{ feeAmount }}</span>",
+        "HEADING": "Application fee",
+        "REFERENCE_NUMBER": {
+          "LIST_ITEMS": {
+            "APPLICATION_FEE_SECOND": "When you are asked to enter a court or tribunal number, enter 'application fee' followed by short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
+            "APPLICATION_FEE_FIFTH": "Complete the application fee payment by entering your help with fees reference number."
+          },
+          "PAGE_TITLE": "Do you have a help with fees reference number?",
+          "TITLE": "Do you have a help with fees reference number?"
+        },
+        "TITLE": "Help with fees",
+        "WANT_TO_APPLY_HWF_TITLE": "Pay application fee",
+        "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -2857,7 +2838,7 @@
       "TITLE_WITH_PERSON": "Is {{ contactPerson }} the right person for the mediation service to call?"
     },
     "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
-      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TITLE": "Who will be attending the mediation appointment?",
       "PAGE_TEXT": "Is {{ partyContactPerson }} the person who will be attending the mediation appointment?"
     },
     "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
@@ -4115,6 +4096,7 @@
     "INVALID_AMOUNT": "Invalid amount",
     "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Enter a job title",
+    "KNOWN_CLAIM_AMOUNT": "Indicate if you know the amount you are claiming for",
     "NAME_REQUIRED": "Please enter a name",
     "NO_LANGUAGE_ENTERED": "Enter the language that needs to be interpreted",
     "NO_OTHER_SUPPORT": "Tell us what other support they need",
@@ -4266,8 +4248,6 @@
       "RENT": "Enter a valid Rent amount, maximum two decimal places",
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
-    "VALID_DEBT_RESPITE_END_DATE": "Expected end date must not be before today’s date",
-    "VALID_DEBT_RESPITE_OPTION": "You must select the Type before continuing",
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",

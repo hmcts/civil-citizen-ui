@@ -26,7 +26,7 @@ import {
   CIVIL_SERVICE_DASHBOARD_TASKLIST_URL,
   CIVIL_SERVICE_NOTIFICATION_LIST_URL,
   CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL, CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL,
-  CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL,
+  CIVIL_SERVICE_UPDATE_TASK_STATUS_URL, CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -202,7 +202,7 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL, feeRequestBody, config);
       return response.data;
     } catch (err: unknown) {
-      logger.error('Error when getting claim fee data');
+      logger.error('Error when getting general application fee data');
       throw err;
     }
   }
@@ -339,14 +339,6 @@ export class CivilServiceClient {
 
   async submitClaimSettled(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.LIP_CLAIM_SETTLED,  claimId, updatedClaim, req);
-  }
-
-  async submitBreathingSpaceEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
-    return this.submitEvent(CaseEvent.ENTER_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
-  }
-
-  async submitBreathingSpaceLiftedEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
-    return this.submitEvent(CaseEvent.LIFT_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
   }
 
   async submitDefendantSignSettlementAgreementEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
@@ -553,6 +545,15 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     try {
       await this.client.put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', id), null, config);
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+  async updateTaskStatus(taskId: string, req: AppRequest): Promise<void> {
+    const config = this.getConfig(req);
+    try {
+      await this.client.put(CIVIL_SERVICE_UPDATE_TASK_STATUS_URL.replace(':taskItemId', taskId), null, config);
     } catch (err: unknown) {
       logger.error(err);
       throw err;
