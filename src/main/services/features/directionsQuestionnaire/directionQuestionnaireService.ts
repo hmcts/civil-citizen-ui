@@ -5,6 +5,10 @@ import {DirectionQuestionnaireErrorMessages} from 'form/models/directionQuestion
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {ConfirmYourDetailsEvidence} from 'form/models/confirmYourDetailsEvidence';
 import {getGenericOptionForm} from 'services/genericForm/genericFormService';
+import {
+  HasAnAgreementBeenReachedOptions,
+} from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReachedOptions';
+import {TypeOfDisclosureDocument} from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('directionQuestionnaireService');
@@ -104,6 +108,19 @@ const getConfirmYourDetailsEvidence = async (claimId: string, directionQuestionn
   }
 };
 
+const hasAnAgreementBeenReached = async (claimId: string) => {
+  const directionQuestionnaire = await getDirectionQuestionnaire(claimId);
+  return directionQuestionnaire.hearing.hasAnAgreementBeenReached === HasAnAgreementBeenReachedOptions.YES;
+};
+
+const isTypeOfDisclosureDocumentNonElectronic = async (claimId: string) => {
+  const directionQuestionnaire = await getDirectionQuestionnaire(claimId);
+  return directionQuestionnaire.hearing
+    .disclosureOfDocuments
+    .documentsTypeChosen
+    .find(item => item === TypeOfDisclosureDocument.NON_ELECTRONIC);
+};
+
 export {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
@@ -111,4 +128,6 @@ export {
   getGenericOptionFormDirectionQuestionnaire,
   getConfirmYourDetailsEvidence,
   getConfirmYourDetailsEvidenceForm,
+  hasAnAgreementBeenReached,
+  isTypeOfDisclosureDocumentNonElectronic,
 };

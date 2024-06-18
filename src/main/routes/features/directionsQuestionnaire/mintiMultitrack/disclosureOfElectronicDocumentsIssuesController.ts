@@ -1,11 +1,13 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  BACK_URL, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
+  BACK_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
+  DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
   DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL,
 } from 'routes/urls';
 import {
-  getDirectionQuestionnaire,
+  getDirectionQuestionnaire, isTypeOfDisclosureDocumentNonElectronic,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
@@ -47,14 +49,18 @@ disclosureOfElectronicDocumentsIssues.post(DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONI
     if (disclosureOfElectronicDocumentsIssuesForm.hasErrors()) {
       renderView(disclosureOfElectronicDocumentsIssuesForm, res);
     } else {
+      const redisKey = generateRedisKey(<AppRequest>req);
       await saveDirectionQuestionnaire(
-        generateRedisKey(<AppRequest>req),
+        redisKey,
         disclosureOfElectronicDocumentsIssuesForm.model.disclosureOfElectronicDocumentsIssues,
         'disclosureOfElectronicDocumentsIssues',
         'hearing');
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL));
+      if (await isTypeOfDisclosureDocumentNonElectronic(redisKey)) {
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL));
+      } else {
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL));
+      }
     }
-
   } catch (error) {
     next(error);
   }

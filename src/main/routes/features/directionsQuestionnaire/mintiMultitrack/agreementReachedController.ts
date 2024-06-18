@@ -3,11 +3,13 @@ import {GenericForm} from 'form/models/genericForm';
 import {
   BACK_URL,
   DQ_MULTITRACK_AGREEMENT_REACHED_URL,
-  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL,
+  DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
   DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL,
 } from 'routes/urls';
 import {
   getDirectionQuestionnaire,
+  isTypeOfDisclosureDocumentNonElectronic,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
@@ -60,15 +62,21 @@ agreementReachedController.post(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req
     if (hasAnAgreementBeenReachedForm.hasErrors()) {
       renderView(hasAnAgreementBeenReachedForm, claimId, res);
     } else {
+      const redisKey = generateRedisKey(<AppRequest>req);
       await saveDirectionQuestionnaire(
-        generateRedisKey(<AppRequest>req),
+        redisKey,
         hasAnAgreementBeenReachedForm.model.hasAnAgreementBeenReached,
         'hasAnAgreementBeenReached',
         'hearing');
-      if (hasAnAgreementBeenReachedForm.model.hasAnAgreementBeenReached !== HasAnAgreementBeenReachedOptions.YES) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL));
+
+      if (hasAnAgreementBeenReachedForm.model.hasAnAgreementBeenReached === HasAnAgreementBeenReachedOptions.YES) {
+        if (await isTypeOfDisclosureDocumentNonElectronic(redisKey)){
+          res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL));
+        } else {
+          res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL));
+        }
       } else {
-        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL));
       }
     }
 

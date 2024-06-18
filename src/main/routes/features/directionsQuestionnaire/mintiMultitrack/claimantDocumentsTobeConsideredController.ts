@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  BACK_URL,
+  BACK_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL,
   DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
 } from 'routes/urls';
 import {
@@ -12,6 +12,7 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
 
 const claimantDocumentsTobeConsideredController = Router();
 const hasClaimantDocumentsToBeConsideredViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/claimant-documents-to-be-considered';
@@ -53,8 +54,12 @@ claimantDocumentsTobeConsideredController.post(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_
         hasClaimantDocumentsToBeConsideredForm.model,
         'hasClaimantDocumentsToBeConsidered',
         'hearing');
-      //TODO add the url.
-      res.redirect(constructResponseUrlWithIdParams(claimId, 'todo'));
+      if (hasClaimantDocumentsToBeConsideredForm.model.option === YesNo.YES){
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL));
+      } else {
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_EVIDENCE_URL));
+      }
+
     }
 
   } catch (error) {

@@ -3,8 +3,8 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  DQ_MULTITRACK_AGREEMENT_REACHED_URL,
-  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
+  DQ_MULTITRACK_AGREEMENT_REACHED_URL, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL,
+  DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
   DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
@@ -17,6 +17,10 @@ import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQu
 import {
   HasAnAgreementBeenReachedOptions,
 } from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReachedOptions';
+import {
+  DisclosureOfDocuments,
+  TypeOfDisclosureDocument,
+} from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -97,13 +101,61 @@ describe('Agreement Reached Controller', () => {
       });
     });
 
-    it('should redirect when hasAnAgreementBeenReachedOptions is yes ', async () => {
+    it('should redirect when hasAnAgreementBeenReachedOptions is yes when DocumentNonElectronic is selected', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = getClaim();
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.hearing = new Hearing();
+        claim.directionQuestionnaire.hearing.disclosureOfDocuments = new DisclosureOfDocuments(Array.of(TypeOfDisclosureDocument.NON_ELECTRONIC));
+        return claim;
+      });
+
       await request(app)
         .post(CONTROLLER_URL)
         .send({hasAnAgreementBeenReached: HasAnAgreementBeenReachedOptions.YES})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toBe(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL);
+          expect(res.header.location).toBe(DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL);
+
+        });
+    });
+
+    it('should redirect when hasAnAgreementBeenReachedOptions is yes when DocumentElectronic is selected', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = getClaim();
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.hearing = new Hearing();
+        claim.directionQuestionnaire.hearing.disclosureOfDocuments = new DisclosureOfDocuments(Array.of(TypeOfDisclosureDocument.ELECTRONIC));
+        return claim;
+      });
+
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send({hasAnAgreementBeenReached: HasAnAgreementBeenReachedOptions.YES})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL);
+
+        });
+    });
+
+    it('should redirect when hasAnAgreementBeenReachedOptions is yes when both Documents are selected', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = getClaim();
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.hearing = new Hearing();
+        claim.directionQuestionnaire.hearing.disclosureOfDocuments = new DisclosureOfDocuments(
+          Array.of(TypeOfDisclosureDocument.ELECTRONIC,
+            TypeOfDisclosureDocument.NON_ELECTRONIC));
+        return claim;
+      });
+
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send({hasAnAgreementBeenReached: HasAnAgreementBeenReachedOptions.YES})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL);
 
         });
     });
