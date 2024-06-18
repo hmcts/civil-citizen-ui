@@ -59,3 +59,11 @@ export function getConfirmationPageSection(claim: Claim, lang: string): ClaimSum
     .addParagraph('PAGES.REQUEST_FOR_RECONSIDERATION.CONFIRMATION.PARAGRAPH_3')
     .build();
 }
+
+export function getRequestForReconsiderationDocumentForConfirmation (claim: Claim) {
+  if (claim.isClaimant()) {
+    return claim?.caseProgression?.requestForReconsiderationDocument?.documentLink.document_binary_url;
+  } else {
+    return claim?.caseProgression?.requestForReconsiderationDocumentRes?.documentLink.document_binary_url;
+  }
+}

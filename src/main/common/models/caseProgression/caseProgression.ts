@@ -7,6 +7,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import {Hearing} from 'models/caseProgression/hearing';
 import {RequestForReviewForm} from 'models/caseProgression/requestForReconsideration/requestForReviewForm';
+import {CaseDocument} from 'models/document/caseDocument';
 
 export class CaseProgression{
   claimantUploadDocuments?: UploadDocuments;
@@ -25,4 +26,6 @@ export class CaseProgression{
   requestForReviewClaimant?: RequestForReviewForm;
   requestForReviewDefendant?: RequestForReviewForm;
   requestForReconsiderationDeadline?: Date;
+  requestForReconsiderationDocument?: CaseDocument;
+  requestForReconsiderationDocumentRes?: CaseDocument;
 }

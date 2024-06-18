@@ -115,6 +115,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', '#');
   valuesMap.set('{VIEW_MEDIATION_DOCUMENTS}', VIEW_MEDIATION_DOCUMENTS.replace(':id', claimId));
   valuesMap.set('{CONFIRM_YOU_HAVE_BEEN_PAID_URL}', CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', claimId));
+  valuesMap.set('{VIEW_REQUEST_FOR_RECONSIDERATION_DOCUMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(getRequestForReconsiderationDocument(claim))));
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
@@ -188,4 +189,12 @@ export function objectToMap(obj: any): Map<string, any> {
   }
 
   return map;
+}
+
+function getRequestForReconsiderationDocument (claim: Claim) {
+  if (claim.isClaimant()) {
+    return claim?.caseProgression?.requestForReconsiderationDocumentRes?.documentLink.document_binary_url;
+  } else {
+    return claim?.caseProgression?.requestForReconsiderationDocument?.documentLink.document_binary_url;
+  }
 }
