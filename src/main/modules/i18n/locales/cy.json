@@ -446,6 +446,11 @@
       "TITLE": "Rheoliad Costau Adferadwy Penodol",
       "BUTTON_TITLE": "A yw'r hawliad yn amodol ar y Gyfundrefn Costau Adenilladwy Sefydlog?"
     },
+    "FRC_BAND_AGREED": {
+      "PAGE_TITLE": "A yw’r band cymhlethdod wedi’i gytuno gyda’r partïon eraill?",
+      "TITLE": "Cytundeb y band cymhlethdod",
+      "BUTTON_TITLE": "A yw’r band cymhlethdod wedi’i gytuno gyda’r partïon eraill?"
+    },
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : {
       "PAGE_TITLE": "A oes unrhyw ddogfennau sydd gan yr hawlwyr yr hoffech i'r llys eu hystyried?",
       "TITLE": "Dogfennau hawlydd i'w hystyried"
@@ -4016,6 +4021,7 @@
   },
   "ERRORS": {
     "SUBJECT_TO_FRC": "Nodwch a yw'r hawliad yn amodol ar y Gyfundrefn Costau Adenilladwy Sefydlog",
+    "FRC_BAND_AGREED": "Nodwch a yw'r band cymhlethdod wedi'i gytuno gyda'r partïon eraill",
     "HAS_AN_AGREEMENT_BEEN_REACHED" : "Nodi a daethpwyd i gytundeb ynghylch pa ddogfennau electronig a fydd yn cael eu datgelu",
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Nodwch os oes unrhyw ddogfennau sydd gan yr hawlwyr eich bod am i'r llys eu hystyried",
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau nad ydynt yn electronig",

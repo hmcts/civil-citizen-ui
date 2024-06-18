@@ -446,6 +446,11 @@
       "TITLE": "Fixed Recoverable Costs Regime",
       "BUTTON_TITLE": "Is the claim subject to the Fixed Recoverable Costs Regime?"
     },
+    "FRC_BAND_AGREED": {
+      "PAGE_TITLE": "Has the complexity band been agreed with the other parties?",
+      "TITLE": "Agreement of complexity band",
+      "BUTTON_TITLE": "Has the complexity band been agreed with the other parties?"
+    },
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : {
       "PAGE_TITLE": "Are there any documents the claimants have that you want the court to consider?",
       "TITLE": "Claimant documents to be considered"
@@ -4016,6 +4021,7 @@
   },
   "ERRORS": {
     "SUBJECT_TO_FRC": "Indicate if the claim is subject to the Fixed Recoverable Costs Regime",
+    "FRC_BAND_AGREED": "Indicate if the complexity band has been agreed with the other parties",
     "HAS_AN_AGREEMENT_BEEN_REACHED" : "Indicate if agreement has been reached about what electronic documents will be disclosed",
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Indicate if there are any documents the claimants have that you want the court to consider",
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Give details of the issues about disclosure of non-electronic documents",

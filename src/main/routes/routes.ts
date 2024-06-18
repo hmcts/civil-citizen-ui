@@ -359,6 +359,8 @@ import agreementReachedController
 import claimantDocumentsTobeConsideredController
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/claimantDocumentsTobeConsideredController';
 import subjectToFRCController from './features/directionsQuestionnaire/fixedRecoverableCosts/subjectToFRCController';
+import frcBandAgreedController
+  from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/frcBandAgreedController';
 
 export default [
   homeController,
@@ -659,4 +661,5 @@ export default [
   agreementReachedController,
   claimantDocumentsTobeConsideredController,
   subjectToFRCController,
+  frcBandAgreedController,
 ];
