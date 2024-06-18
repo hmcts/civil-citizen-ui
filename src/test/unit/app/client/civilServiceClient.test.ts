@@ -480,10 +480,13 @@ describe('Civil Service Client', () => {
     data.issueDate = date;
     data.respondent1ResponseDeadline = date;
     const claimUpdate:ClaimUpdate =  {issueDate: date, respondent1ResponseDeadline: date};
-    const ccdGApp:CCDGeneralApplication =  {generalAppInformOtherParty: undefined, generalAppAskForCosts: undefined
-      , generalAppType: undefined, generalAppRespondentAgreement: undefined, generalAppDetailsOfOrder: undefined
-      , generalAppReasonsOfOrder: undefined, generalAppHearingDetails: undefined, generalAppStatementOfTruth: undefined
-      , generalAppEvidenceDocument: undefined};
+    const ccdGApp:CCDGeneralApplication =  {
+      generalAppInformOtherParty: undefined, generalAppAskForCosts: undefined,
+      generalAppType: undefined, generalAppRespondentAgreement: undefined, generalAppDetailsOfOrder: undefined,
+      generalAppReasonsOfOrder: undefined, generalAppHearingDetails: undefined, generalAppStatementOfTruth: undefined,
+      generalAppEvidenceDocument: undefined,
+      generalAppHelpWithFees: undefined
+    };
 
     const mockResponse = new CivilClaimResponse();
     mockResponse.id = '1';
