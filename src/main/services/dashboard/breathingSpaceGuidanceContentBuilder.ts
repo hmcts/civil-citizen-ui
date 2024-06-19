@@ -12,7 +12,7 @@ export const getBSGuidanceContent = (lng: string) => {
   const bsGuidanceScheme = t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.MORE_INFO_PARA2', {lng});
   const linkForContactYourLocalCourt = `<a href="${findCourtTribunalUrl}" target="_blank">${t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.CONTACT_LOCAL_COURT_LINK', { lng })}</a>`;
   const linkBSGuidanceForCreditors = `<a href="${bsGuidanceForCreditors}" target="_blank">${t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.DEBT_RESPITE_GUIDANCE_SCHEME_LINK', { lng })}</a>`;
-  const mailTo = lng === 'en' ? 'mailto:contactocmc@justice.gov.uk' : 'mailto:ymholiadaucymraeg@justice.gov.uk';
+  const mailTo = 'mailto:contactocmc@justice.gov.uk';
   return new PageSectionBuilder()
     .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.PAGE_TITLE')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.SUMMARY')
@@ -29,7 +29,7 @@ export const getBSGuidanceContent = (lng: string) => {
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT_PARAGRAPH_4')
     .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.HOW_TO_CONTACT')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.HOW_TO_CONTACT_PARA1')
-    .addLink('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.EMAIL_ID', mailTo, 'PAGES.LATEST_UPDATE_CONTENT.EMAIL')
+    .addLink('PAGES.LATEST_UPDATE_CONTENT.EMAIL_ID', mailTo, 'PAGES.LATEST_UPDATE_CONTENT.EMAIL')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.POST')
     .addRawHtml(`<p class="govuk-body">${howToContactSection.replace('LINK_TO_CONTACT_YOUR_LOCAL_COURT', linkForContactYourLocalCourt)}</p>`)
     .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_HAPPENS_DURING_BS')

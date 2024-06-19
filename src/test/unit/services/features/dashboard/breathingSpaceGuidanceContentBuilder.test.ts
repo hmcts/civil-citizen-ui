@@ -78,7 +78,7 @@ describe('breathing space guidance page content builder', () => {
       {
         type: 'link',
         data: {
-          text: 'PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.EMAIL_ID',
+          text: 'PAGES.LATEST_UPDATE_CONTENT.EMAIL_ID',
           href: 'mailto:contactocmc@justice.gov.uk',
           textBefore: 'PAGES.LATEST_UPDATE_CONTENT.EMAIL',
         },
