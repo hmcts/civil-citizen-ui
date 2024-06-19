@@ -197,6 +197,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1DQExperts?: CCDExpert;
   responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
   claimType?: string;
+  responseClaimTrack?: string;
   specDefenceAdmittedRequired?: YesNoUpperCamelCase;
   respondToAdmittedClaim?: CCDRespondToClaim;
   detailsOfWhyDoesYouDisputeTheClaim?: string;
@@ -295,7 +296,7 @@ export interface CCDClaim extends ClaimUpdate {
   defendantResponseDocuments?: SystemGeneratedCaseDocuments[];
   applicant1DefenceResponseDocumentSpec?: ResponseDocument;
   isFlightDelayClaim?: string;
-  flightDelayDetails?: CCDFlightDelayDetails; 
+  flightDelayDetails?: CCDFlightDelayDetails;
 }
 
 export interface ClaimFeeData {

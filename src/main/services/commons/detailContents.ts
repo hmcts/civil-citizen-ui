@@ -3,7 +3,7 @@ import {
   disclosureOfDocumentsUrl,
   electronicDocumentQuestionnaireUrl,
   practiceDirection31b10Url,
-  practiceDirection31bUrl,
+  practiceDirection31bUrl, table14,
 } from 'common/utils/externalURLs';
 
 export const  getWhatIsDisclosureDetailContent = () => {
@@ -64,5 +64,27 @@ export const getHowToAgreeDisclosureOfElectronicDocumentsContent = () => {
       `${HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS}URL3.AFTER`,
       null,
       true)
+    .build());
+};
+
+export const getWhatAreFixedRecoverableCostsContent = () => {
+  const FIXED_RECOVERABLE_COSTS = 'WHAT_ARE_FIXED_RECOVERABLE_COSTS.';
+  return new DetailsComponent(`${FIXED_RECOVERABLE_COSTS}TITLE`, new DetailsComponentContentBuilder()
+    .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_1`)
+    .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_2`)
+    .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_3`)
+    .addLink(`${FIXED_RECOVERABLE_COSTS}URL.TEXT`,
+      table14,
+      `${FIXED_RECOVERABLE_COSTS}URL.BEFORE`,
+      `${FIXED_RECOVERABLE_COSTS}URL.AFTER`,
+      null,
+      true)
+    .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_4`)
+    .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_5`)
+    .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_6`)
+    .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_7`)
+    .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_8`)
+    .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_9`)
+    .addParagraph(`${FIXED_RECOVERABLE_COSTS}PARA_10`)
     .build());
 };
