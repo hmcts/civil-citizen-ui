@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import { INFORM_OTHER_PARTIES } from 'routes/urls';
+import { INFORM_OTHER_PARTIES_URL } from 'routes/urls';
 import { app } from '../../../../../../main/app';
 import * as draftService from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
@@ -39,7 +39,7 @@ describe('General Application - inform other parties', () => {
   describe('on GET', () => {
     it('should return page', async () => {
       await request(app)
-        .get(INFORM_OTHER_PARTIES)
+        .get(INFORM_OTHER_PARTIES_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.INFORM_OTHER_PARTIES_HEADER'));
@@ -51,7 +51,7 @@ describe('General Application - inform other parties', () => {
 
       mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
-        .get(INFORM_OTHER_PARTIES)
+        .get(INFORM_OTHER_PARTIES_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -62,7 +62,7 @@ describe('General Application - inform other parties', () => {
   describe('on POST', () => {
     it('should save the value and redirect', async () => {
       await request(app)
-        .post(INFORM_OTHER_PARTIES)
+        .post(INFORM_OTHER_PARTIES_URL)
         .send({ option: 'yes' })
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -71,7 +71,7 @@ describe('General Application - inform other parties', () => {
 
     it('should return errors on no input', async () => {
       await request(app)
-        .post(INFORM_OTHER_PARTIES)
+        .post(INFORM_OTHER_PARTIES_URL)
         .send({ option: null })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -80,7 +80,7 @@ describe('General Application - inform other parties', () => {
     });
     it('should return errors when selected no and not provided the reason', async () => {
       await request(app)
-        .post(INFORM_OTHER_PARTIES)
+        .post(INFORM_OTHER_PARTIES_URL)
         .send({ option: 'no' })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -90,7 +90,7 @@ describe('General Application - inform other parties', () => {
     it('should return http 500 when has error in the post method', async () => {
       mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
-        .post(INFORM_OTHER_PARTIES)
+        .post(INFORM_OTHER_PARTIES_URL)
         .send({ option: 'yes' })
         .expect((res) => {
           expect(res.status).toBe(500);

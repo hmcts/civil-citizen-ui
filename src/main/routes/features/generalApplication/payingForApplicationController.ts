@@ -1,29 +1,28 @@
-import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {PAYING_FOR_APPLICATION_URL} from 'routes/urls';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {GA_CHECK_ANSWERS_URL, GA_HEARING_SUPPORT_URL, PAYING_FOR_APPLICATION_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
-import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
-import {getCancelUrl, getLast} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl, getDynamicHeaderForMultipleApplications} from 'services/features/generalApplication/generalApplicationService';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const payingForApplicationController = Router();
 const viewPath = 'features/generalApplication/paying-for-application';
-const backLinkUrl = 'test'; // TODO: add url
 
 payingForApplicationController.get(PAYING_FOR_APPLICATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
-    const applicationFee = 100; //TODO: get fee from https://tools.hmcts.net/jira/browse/CIV-9442
-    res.render(viewPath, {applicationType, applicationFee, cancelUrl, backLinkUrl});
+    const headerTitle = getDynamicHeaderForMultipleApplications(claim);
+    const applicationFee = convertToPoundsFilter(claim?.generalApplication?.applicationFee?.calculatedAmountInPence);
+    const nextPageUrl = constructResponseUrlWithIdParams(claimId, GA_CHECK_ANSWERS_URL);
+    const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_HEARING_SUPPORT_URL);
+    res.render(viewPath, { applicationFee, cancelUrl, backLinkUrl, headerTitle, nextPageUrl});
+
   } catch (error) {
     next(error);
   }
-}) as RequestHandler);
-
-payingForApplicationController.post(PAYING_FOR_APPLICATION_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
-  res.redirect('test'); // TODO: add url
 }) as RequestHandler);
 
 export default payingForApplicationController;
