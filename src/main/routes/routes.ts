@@ -361,7 +361,7 @@ import claimantDocumentsTobeConsideredController
 import subjectToFRCController from './features/directionsQuestionnaire/fixedRecoverableCosts/subjectToFRCController';
 import frcBandAgreedController
   from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/frcBandAgreedController';
-import choseComplexityBandController from './features/directionsQuestionnaire/fixedRecoverableCosts/chooseComplexityBandController';
+import chooseComplexityBandController from './features/directionsQuestionnaire/fixedRecoverableCosts/chooseComplexityBandController';
 import reasonForComplexityBandController
   from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/reasonForChoosingComplexityBandController';
 
@@ -665,6 +665,6 @@ export default [
   claimantDocumentsTobeConsideredController,
   subjectToFRCController,
   frcBandAgreedController,
-  choseComplexityBandController,
+  chooseComplexityBandController,
   reasonForComplexityBandController,
 ];

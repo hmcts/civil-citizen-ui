@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  ASSIGN_FRC_BAND_URL,
+  ASSIGN_FRC_BAND_URL, REASON_FOR_FRC_BAND_URL,
 } from 'routes/urls';
 import {
   getDirectionQuestionnaire,
@@ -16,7 +16,7 @@ import {
 import {ComplexityBandOptions} from 'models/directionsQuestionnaire/fixedRecoverableCosts/complexityBandOptions';
 import {ComplexityBand} from 'models/directionsQuestionnaire/fixedRecoverableCosts/complexityBand';
 
-const choseComplexityBandController = Router();
+const chooseComplexityBandController = Router();
 const chooseComplexityBandViewPath = 'features/directionsQuestionnaire/fixedRecoverableCosts/choose-complexity-band';
 const CHOOSE_COMPLEXITY_BAND_PAGE = 'PAGES.CHOOSE_COMPLEXITY_BAND.';
 
@@ -35,7 +35,7 @@ function renderView(complexityBand: GenericForm<ComplexityBand>, lang: string, r
   });
 }
 
-choseComplexityBandController.get(ASSIGN_FRC_BAND_URL, (async (req, res, next: NextFunction) => {
+chooseComplexityBandController.get(ASSIGN_FRC_BAND_URL, (async (req, res, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
@@ -47,7 +47,7 @@ choseComplexityBandController.get(ASSIGN_FRC_BAND_URL, (async (req, res, next: N
   }
 }) as RequestHandler);
 
-choseComplexityBandController.post(ASSIGN_FRC_BAND_URL, (async (req: Request, res: Response, next: NextFunction) => {
+chooseComplexityBandController.post(ASSIGN_FRC_BAND_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -61,8 +61,7 @@ choseComplexityBandController.post(ASSIGN_FRC_BAND_URL, (async (req: Request, re
         chosenBandForm.model.complexityBand,
         'complexityBand',
         'fixedRecoverableCosts');
-      //TODO REDIRECTION URL
-      res.redirect(constructResponseUrlWithIdParams(claimId, 'todo'));
+      res.redirect(constructResponseUrlWithIdParams(claimId, REASON_FOR_FRC_BAND_URL));
     }
 
   } catch (error) {
@@ -70,4 +69,4 @@ choseComplexityBandController.post(ASSIGN_FRC_BAND_URL, (async (req: Request, re
   }
 }) as RequestHandler);
 
-export default choseComplexityBandController;
+export default chooseComplexityBandController;

@@ -3,7 +3,7 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  ASSIGN_FRC_BAND_URL,
+  ASSIGN_FRC_BAND_URL, REASON_FOR_FRC_BAND_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
@@ -98,8 +98,7 @@ describe('Choose complexity band Controller', () => {
         .send({complexityBand: ComplexityBandOptions.BAND_1})
         .expect((res) => {
           expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
+          expect(res.get('location')).toBe(REASON_FOR_FRC_BAND_URL);
         });
     });
 
@@ -109,8 +108,7 @@ describe('Choose complexity band Controller', () => {
         .send({complexityBand: ComplexityBandOptions.BAND_2})
         .expect((res) => {
           expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
+          expect(res.get('location')).toBe(REASON_FOR_FRC_BAND_URL);
         });
     });
 
@@ -120,8 +118,7 @@ describe('Choose complexity band Controller', () => {
         .send({complexityBand: ComplexityBandOptions.BAND_3})
         .expect((res) => {
           expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
+          expect(res.get('location')).toBe(REASON_FOR_FRC_BAND_URL);
         });
     });
 
@@ -131,8 +128,7 @@ describe('Choose complexity band Controller', () => {
         .send({complexityBand: ComplexityBandOptions.BAND_4})
         .expect((res) => {
           expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
+          expect(res.get('location')).toBe(REASON_FOR_FRC_BAND_URL);
         });
     });
 

@@ -13,11 +13,6 @@
 {% endblock %}
 
 {% block content %}
-{% if form.hasErrors() %}
-<div class="govuk-grid-row">
-    {{ errorSummary(form.getErrors(), t) }}
-</div>
-{% endif %}
 <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
         <div class="govuk-grid-row">

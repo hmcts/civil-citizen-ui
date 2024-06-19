@@ -50,10 +50,9 @@ reasonForComplexityBandController.get(REASON_FOR_FRC_BAND_URL, (async (req, res,
 reasonForComplexityBandController.post(REASON_FOR_FRC_BAND_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const chosenBandForm = new GenericForm(new ReasonForComplexityBand(req.body.reasonsForBandSelection));
     await saveDirectionQuestionnaire(
       generateRedisKey(<AppRequest>req),
-      chosenBandForm.model.reasonsForBandSelection,
+      req.body.reasonsForBandSelection,
       'reasonsForBandSelection',
       'fixedRecoverableCosts');
     //TODO REDIRECTION URL
