@@ -87,6 +87,7 @@ describe('translate CCDDQ to CUI DQ model', () => {
 function getCCDDataForSmallClaimUncommonFields(): CCDClaim {
   return {
     totalClaimAmount: 4555,
+    responseClaimTrack: 'SMALL_CLAIM',
     respondent1LiPResponse: <CCDRespondentLiPResponse>{
       respondent1DQExtraDetails: <CCDDQExtraDetails>{
         determinationWithoutHearingRequired: YesNoUpperCamelCase.YES,
