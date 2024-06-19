@@ -13,8 +13,10 @@ import {
   getClaimRequestForReconsideration,
 } from '../../../../../utils/mockClaimForCheckAnswers';
 import * as checkAnswersService from '../../../../../../main/services/features/caseProgression/requestForReconsideration/requestForReviewService';
+import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const claim = getClaimRequestForReconsideration();
 const claimId = '1692795793361508';
@@ -28,6 +30,9 @@ describe('Request for Reconsideration check answers - On GET', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+  });
+  beforeEach(()=> {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 
   it('should render page successfully in English with all sections and summary rows', async () => {
@@ -78,6 +83,9 @@ describe('Request for Reconsideration check answers - On GET', () => {
 describe('Request for Reconsideration - on POST', () => {
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaim;
+  });
+  beforeEach(()=> {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 
   it('should call ccd when submitted and redirected to the confirmation page', async () => {
