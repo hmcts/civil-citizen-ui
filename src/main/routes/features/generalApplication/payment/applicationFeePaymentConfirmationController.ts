@@ -1,3 +1,4 @@
+import { AppRequest } from 'common/models/AppRequest';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import {NextFunction,RequestHandler, Response, Router} from 'express';
 import {APPLICATION_FEE_PAYMENT_CONFIRMATION_URL, APPLICATION_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID} from 'routes/urls';
