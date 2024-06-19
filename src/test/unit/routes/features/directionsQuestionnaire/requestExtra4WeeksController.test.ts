@@ -2,9 +2,21 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {DQ_REQUEST_EXTRA_4WEEKS_URL, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL} from '../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {
+  DQ_REQUEST_EXTRA_4WEEKS_URL,
+  DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL,
+  DQ_DISCLOSURE_OF_DOCUMENTS_URL,
+} from 'routes/urls';
+import {
+  civilClaimResponseMock,
+  mockCivilClaim,
+  mockDraftClaim,
+  mockRedisFailure,
+} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {Claim} from 'models/claim';
+import {cloneDeep} from 'lodash';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -59,11 +71,37 @@ describe('Request extra 4 weeks to Settle Claim Controller', () => {
         });
     });
 
+    it('should redirect to consider claimant documents page if option yes is selected and minti is enabled and is intermediate track', async () => {
+      const draftClaim = cloneDeep(civilClaimResponseMock);
+      draftClaim.case_data.totalClaimAmount = 150000;
+      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
+      jest.spyOn(launchDarkly, 'isMintiEnabled').mockResolvedValueOnce(true);
+
+      await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'yes'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.get('location')).toBe(DQ_DISCLOSURE_OF_DOCUMENTS_URL);
+        });
+    });
+
     it('should redirect to consider claimant documents page page if option no is selected', async () => {
       await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL);
+        });
+    });
+
+    it('should redirect to consider claimant documents page page if option no is selected and minti is enabled and is intermediate track', async () => {
+      const draftClaim = cloneDeep(civilClaimResponseMock);
+      draftClaim.case_data.totalClaimAmount = 150000;
+      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
+      jest.spyOn(launchDarkly, 'isMintiEnabled').mockResolvedValueOnce(true);
+
+      await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'no'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.get('location')).toBe(DQ_DISCLOSURE_OF_DOCUMENTS_URL);
         });
     });
 

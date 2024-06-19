@@ -3,8 +3,10 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
   DQ_DISCLOSURE_OF_DOCUMENTS_URL,
+  DQ_MULTITRACK_AGREEMENT_REACHED_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
+  DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
@@ -97,15 +99,52 @@ describe('Disclosure Of Controller', () => {
       });
     });
 
-    it('should redirect to claim documents to be considered page', async () => {
+    it('should redirect to claim documents to be considered page when is do not have selected any of option ', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL);
+
+        });
+    });
+
+    it('should redirect to claim documents to be considered page when is just ELECTRONIC_DOCUMENTS', async () => {
       const documentsChosen = [];
       documentsChosen.push('ELECTRONIC_DOCUMENTS');
       await request(app)
         .post(CONTROLLER_URL)
-        .send({disclosureOfDocuments: documentsChosen})
+        .send({documentsTypeForm: documentsChosen})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_DEFENDANT_EXPERT_EVIDENCE_URL);
+          expect(res.header.location).toBe(DQ_MULTITRACK_AGREEMENT_REACHED_URL);
+
+        });
+    });
+
+    it('should redirect to claim documents to be considered page when NON_ELECTRONIC and ELECTRONIC_DOCUMENTS', async () => {
+      const documentsChosen = [];
+      documentsChosen.push('ELECTRONIC_DOCUMENTS');
+      documentsChosen.push('NON_ELECTRONIC');
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send({documentsTypeForm: documentsChosen})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(DQ_MULTITRACK_AGREEMENT_REACHED_URL);
+
+        });
+    });
+
+    it('should redirect to claim documents to be considered page when is NON_ELECTRONIC_DOCUMENTS', async () => {
+      const documentsChosen = [];
+      documentsChosen.push('NON_ELECTRONIC_DOCUMENTS');
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send({documentsTypeForm: documentsChosen})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL);
         });
     });
 

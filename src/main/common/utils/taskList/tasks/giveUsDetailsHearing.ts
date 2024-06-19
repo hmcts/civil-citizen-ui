@@ -12,7 +12,7 @@ import {
 
 export const getGiveUsDetailsHearingTask = (claim: Claim, claimId: string, lang: string): Task => {
   const defendantDQ = Object.assign(new DirectionQuestionnaire(), claim.directionQuestionnaire);
-  const linkUrl = claim.isSmallClaimsTrackDQ ? DETERMINATION_WITHOUT_HEARING_URL : DQ_TRIED_TO_SETTLE_CLAIM_URL;
+  const linkUrl = !claim.isSmallClaimsTrackDQ ? DQ_TRIED_TO_SETTLE_CLAIM_URL : DETERMINATION_WITHOUT_HEARING_URL;
   const isTaskCompleted = claim.isSmallClaimsTrackDQ ? defendantDQ.isSmallClaimsDQJourneyCompleted : defendantDQ.isFastTrackDQJourneyCompleted;
   return {
     description: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS', {lng: getLng(lang)}),
