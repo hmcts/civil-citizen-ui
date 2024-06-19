@@ -3,6 +3,7 @@
     "HOME": "Home",
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Upload file",
+    "UPLOAD_FILE_LABEL":"Upload a file",
     "VIEW_DOCUMENTS": "View documents",
     "DOCUMENTS_UPLOADED": "Documents uploaded",
     "CASE_REFERENCE_NUMBER": "Your case reference number",
@@ -159,8 +160,10 @@
       "ROW_TYPE": "Type"
     },
     "HEADER": {
+      "BETA": "BETA",
       "MONEY_CLAIMS": "Money Claims",
       "MY_ACCOUNT": "My account",
+      "NEW_SERVICE": "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>feedback</a> will help us to improve it.",
       "SIGN_IN": "Sign in",
       "SIGN_OUT": "Sign out"
     },
@@ -385,6 +388,63 @@
     }
   },
   "PAGES": {
+    "ACCESSIBILITY_STATEMENT": {
+      "CONSIDER": "We’ll consider your request and get back to you in 10 days.",
+      "EMAIL": "HMCTSforms@justice.gov.uk",
+      "EMAIL_TITLE": "Email",
+      "FIND_OUT": "Find out about call charges",
+      "MONDAY_TO_FRIDAY": "Monday to Friday, 8.30am to 5pm.",
+      "PAGE_TITLE": "Accessibility statement",
+      "PARAGRAPH_AS_1": "This accessibility statement applies to ",
+      "PARAGRAPH_AS_1_LINK": "https://www.moneyclaims.service.gov.uk/",
+      "PARAGRAPH_AS_2": "This service allows you to make a money claim against an individual or an organisation.",
+      "PARAGRAPH_AS_3": "This website is run by HM Courts and Tribunals Services (HMCTS). We want as many people as possible to be able to use this website. For example, you should be able to:",
+      "PARAGRAPH_AS_4": "change colours, contrast levels and fonts",
+      "PARAGRAPH_AS_5": "zoom in up to 300% without the text spilling off the screen",
+      "PARAGRAPH_AS_6": "navigate most of the website using just a keyboard",
+      "PARAGRAPH_AS_7": "navigate most of the website using speech recognition software",
+      "PARAGRAPH_AS_8": "listen to most of the website using a screen reader (including the most recent version of VoiceOver)",
+      "PARAGRAPH_AS_9": "We’ve also made the website text as simple as possible to understand.",
+      "PARAGRAPH_AS_10": " has advice on making your device easier to use if you have a disability.",
+      "PARAGRAPH_AS_10_LINK": "AbilityNet",
+      "PARAGRAPH_COMPLIANCE_1": "Compliance status",
+      "PARAGRAPH_COMPLIANCE_2": "This website is partially compliant with the ",
+      "PARAGRAPH_COMPLIANCE_3": "Web Content Accessibility Guidelines version 2.2",
+      "PARAGRAPH_COMPLIANCE_4": "AA standard, due to the non-compliances listed below.",
+      "PARAGRAPH_CONTACTING_1": "Contacting us by phone or visiting us in person",
+      "PARAGRAPH_CONTACTING_2": "We provide a text relay service for people who are D/deaf, hearing impaired or have a speech impediment.",
+      "PARAGRAPH_CONTACTING_3": "Our offices have audio induction loops, or if you contact us before your visit, we can arrange a British Sign Language (BSL) interpreter.",
+      "PARAGRAPH_CONTACTING_4": "Find out how to contact us using the contact details above.",
+      "PARAGRAPH_ENFORCEMENT_1": "Enforcement procedure",
+      "PARAGRAPH_ENFORCEMENT_2": "The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018 (the ‘accessibility regulations’). If you’re not happy with how we respond to your complaint, ",
+      "PARAGRAPH_ENFORCEMENT_3": "contact the Equality Advisory and Support Service (EASS)",
+      "PARAGRAPH_FEEDBACK_1": "Feedback and contact information",
+      "PARAGRAPH_FEEDBACK_2": "If you need information on this website in a different format like accessible PDF, large print, easy read, audio recording or braille:",
+      "PARAGRAPH_HOW_1": "How accessible this website is",
+      "PARAGRAPH_HOW_2": "We know some parts of this service are not fully accessible. The digital service is accessible and meets the Web Content Accessibility Guidelines (WCAG) 2.2 AA standard. However, some error messages are not accessible because:",
+      "PARAGRAPH_HOW_3": "Error messages are not specific to the field where the error was made.",
+      "PARAGRAPH_IMPROVE_1": "What we’re doing to improve accessibility",
+      "PARAGRAPH_IMPROVE_2": "We continually run automated accessibility testing as part of our development practices. This helps us to resolve issues before we launch new pages or features.",
+      "PARAGRAPH_IMPROVE_3": "This website will also be tested by  the Digital Accessibility Centre (DAC) in late 2024.",
+      "PARAGRAPH_NON_ACCESIBLE_1": "Non-accessible content",
+      "PARAGRAPH_NON_ACCESIBLE_2": "The content listed below is non-accessible for the following reasons.",
+      "PARAGRAPH_NON_ACCESIBLE_3": "Non-compliance with the accessibility regulations",
+      "PARAGRAPH_NON_ACCESIBLE_4": "Online Civil Money Claims (OCMC) digital service has been tested for accessibility and does meet the Web Content Accessibility Guidelines (WCAG) 2.2 AA requirement. However, some error messages are not accessible because:",
+      "PARAGRAPH_NON_ACCESIBLE_5": "Screen reader users might have difficulty navigating error messages as some error messages are not specific to the field where the error was made. This fails Web Content Accessibility Guidelines (WCAG) 2.2 [3.3.1] success criterion (Error Identification). We plan to fix this by late 2024.",
+      "PARAGRAPH_PREPARATION_1": "Preparation of this accessibility statement",
+      "PARAGRAPH_PREPARATION_2": "This statement was prepared on 24 May 2024.  It was last reviewed on 15 March 2024.",
+      "PARAGRAPH_REPORTING_1": "Reporting accessibility problems with this website",
+      "PARAGRAPH_REPORTING_2": "We’re always looking to improve the accessibility of this website. If you find any problems not listed on this page or think we’re not meeting accessibility requirements, contact:",
+      "PARAGRAPH_TECHNICAL_1": "Technical information about this website’s accessibility",
+      "PARAGRAPH_TECHNICAL_2": "HMCTS is committed to making its website accessible, in accordance with the Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018.",
+      "PARAGRAPH_TESTED_1": "How we tested this website",
+      "PARAGRAPH_TESTED_2": "This website was internally tested by the HMCTS Accessibility Team for compliance with the Web Content Accessibility Guidelines (WCAG) V2.2 level A and level AA.",
+      "PARAGRAPH_TESTED_3": "We continually run automated accessibility testing as part of our development practices. This helps us to resolve issues before we launch new pages or features.",
+      "PARAGRAPH_TESTED_4": "This website will also be tested by  the Digital Accessibility Centre (DAC) in late 2024.",
+      "TELEPHONE": "0300 123 7050",
+      "TELEPHONE_TITLE": "Telephone",
+      "TITLE": "Accessibility statement for the Online Civil Money Claims service"
+    },
     "VIEW_MEDIATION_DOCUMENTS": {
       "CLAIMANT_TABLE_TITLE": "Claimant mediation documents",
       "DEFENDANT_TABLE_TITLE": "Defendant mediation documents",
@@ -548,22 +608,6 @@
       "TITLE": "Language",
       "WELSH_AND_ENGLISH": "Welsh"
     },
-    "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
-      "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
-      "PAGE_TITLE": "Date for lifting debt respite scheme (breathing space)",
-      "TITLE": "Date for lifting debt respite scheme (breathing space)"
-    },
-    "BREATHING_SPACE_DEBT_RESPITE_START": {
-      "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
-      "PAGE_TITLE": "When did it start?",
-      "TITLE": "When did it start?"
-    },
-    "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
-      "MENTAL_HEALTH": "Mental health crisis moratorium",
-      "PAGE_TITLE": "What type is it?",
-      "STANDARD": "Standard breathing space",
-      "TITLE": "What type is it?"
-    },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
     },
@@ -575,7 +619,8 @@
       "POSTAL_RESPONSE": "If a postal response is received before the judgment is issued your request will be rejected.",
       "TITLE": "County Court Judgment requested",
       "UPDATES": "Your online account will not be updated with the progress of this claim and any further updates will be by post.",
-      "NO_LONGER_RESPONSE": "{{ defendantName }} can no longer respond to your claim online."
+      "NO_LONGER_RESPONSE": "{{ defendantName }} can no longer respond to your claim online.",
+      "PROCESS_YOUR_REQUEST_JO": "We’ll process your request and you will receive notifications by email, you will be able to view the judgment via your dashboard and we’ll also post a copy of the judgment to {{ defendantName }}. We aim to do this within 10 working days."
     },
     "CCJ_DEFENDANT_DOB": {
       "PAGE_TITLE": "Do you know the defendant's date of birth?",
@@ -606,6 +651,8 @@
       "INSET": "The court will review your suggestion and may reject it if it's more than the defendant can afford."
     },
     "CHECK_YOUR_ANSWER": {
+      "AIRLINE": "Airline",
+      "ARE_YOU_CLAIMING_DELAYED_FLIGHT": "Are you claiming for a delayed flight?",
       "BANK_BALANCE": "Balance",
       "BY_INSTALMENTS":"By instalments",
       "CARER_CREDIT_DO_YOU_CLAIM": "Do you claim Carer’s Allowance or Carer’s Credit?",
@@ -624,6 +671,8 @@
       "CHILDREN_BETWEEN_16_TO_19": "16 to 19",
       "CHILDREN_AGED_16_19_FT_EDUCATION": "Number of children aged 16 to 19 full-time education or training",
       "CLAIM_AMOUNT_BREAKDOWN": "Claim amount breakdown",
+      "CLAIM_CHECKBOX": "I believe that the facts stated in this claim are true.",
+      "CLAIM_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "CLAIM_INTEREST": "Claim Interest",
       "CLAIMANT_INTENT_PAGE_TITLE": "Claimant intent check your answers",
       "COMPLETION_DATE_CYA": "Completion date",
@@ -674,6 +723,7 @@
       "EVIDENCE_TITLE": "Your evidence (optional)",
       "EXPENSES_REGULAR": "Regular expenses",
       "EXPERT_WITNESSES_SUPPORT": "Do you, your experts or witnesses need support to attend a hearing?",
+      "FLIGHT_NUMBER": "Flight Number",
       "FREE_TELEPHONE_CONTACT_NAME": "Contact name",
       "FREE_TELEPHONE_CONTACT_NUMBER": "Contact number",
       "FREE_TELEPHONE_MEDIATION": "Will you try free mediation?",
@@ -730,8 +780,6 @@
       "REASON_TITLE": "Why you believe you’re owed the money:",
       "REGULAR_PAYMENTS": "Regular payments of",
       "RESPONSE_CHECKBOX": "I believe that the facts stated in this response are true.",
-      "CLAIM_CHECKBOX": "I believe that the facts stated in this claim are true.",
-      "CLAIM_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
       "REASON_FOR_REJECTING": "Reason for rejecting their response",
       "REPAYMENT_IN_FULL":"Repayment in full by {{ paymentDate }}",
       "RESPONSE_CHECKBOX_PROCEEDINGS": "I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.",
@@ -750,6 +798,7 @@
       "REQUEST_EXTRA_4WEEKS": "Do you want an extra 4 weeks to try to settle the claim?",
       "REQUEST_A_CCJ": "Issue a County Court Judgment (CCJ)",
       "SAME_ADDRESS": "Same as address",
+      "SCHEDULED_DATE_OF_FLIGHT": "Scheduled date of flight",
       "SETTLEMENT_AGREEMENT": "Settlement agreement",
       "SIGN_A_SETTLEMENT_AGREEMENT": "Sign a settlement agreement",
       "SIGN_SETTLEMENT": "Sign a settlement agreement",
@@ -1099,25 +1148,6 @@
       "RESPONSE_DEADLINE": "Response deadline:",
       "TOTAL_CLAIM_AMOUNT": "Total claim amount:",
       "TRIAL_DOCUMENTS": "trial documents"
-    },
-    "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
-      "PAGE_TITLE": "Check your answers before submitting",
-      "TITLE": "Check your answers before submitting",
-      "REFERENCE_NUMBER": "Reference number",
-      "WHEN_DID_IT_START": "When did it start?",
-      "TYPE": {
-        "WHAT_TYPE_IS_IT": "What type is it?",
-        "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
-        "STANDARD_BREATHING_SPACE": "Standard breathing space"
-      },
-      "EXPECTED_END_DATE": "Expected end date"
-    },
-    "CLAIMANT_LIFT_BREATHING_SPACE_CHECK_ANSWER": {
-      "PAGE_TITLE": "Lift the debt respite scheme (breathing space)",
-      "TITLE": "Lift the debt respite scheme (breathing space)",
-      "DATE_LIFTED": " Date lifted",
-      "CYA_HEADER": "Are you sure you want to lift the debt respite scheme?",
-      "CYA_HEADER_TEXT": "Once the debt respite scheme is lifted you will not be able to change this."
     },
     "CLAIMANT_DOB": {
       "PAGE_TITLE": "Your date of birth",
@@ -1581,6 +1611,7 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post.",
         "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline.",
+        "SDO_ORDER_LEGAL_ADVISER_STATUS": "Send us more details before the hearing",
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case."
       },
@@ -1649,16 +1680,6 @@
       "MONTHLY_PAYMENTS_IN_POUNDS": "Monthly payments, in pounds",
       "TITLE": "Do you have loans or credit card debts?",
       "TOTAL_OWED_IN_POUNDS": "Total owed, in pounds"
-    },
-    "DEBT_RESPITE_REF_NUMBER": {
-      "ENTER_REFERENCE": "Enter the reference number (optional):",
-      "PAGE_TITLE": "Debt Respite Scheme reference number",
-      "TITLE": "Do you have a Debt Respite Scheme reference number?"
-    },
-    "DEBT_RESPITE_END_DATE": {
-      "PAGE_TITLE": "Expected end date",
-      "THIS_IS_THE": "This is the end date that it is due to finish (optional)",
-      "TITLE": "Expected end date"
     },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Trading as (If you know it)",
@@ -1880,6 +1901,10 @@
       "TITLE": "Total amount you're claiming",
       "25000_OR_LESS": "£25,000 or less"
     },
+    "ELIGIBILITY_KNOWN_CLAIM_AMOUNT": {
+      "PAGE_TITLE": "Do you know the amount you are claiming?",
+      "TITLE": "Do you know the amount you are claiming?"
+    },
     "ELIGIBILITY_OVER_18_CLAIMANT": {
       "PAGE_TITLE": "Are you 18 or over?",
       "TITLE": "Are you 18 or over?"
@@ -2066,6 +2091,24 @@
       "REACHING_SETTLEMENT": "Reaching a settlement"
     },
     "GENERAL_APPLICATION": {
+      "COMMON": {
+        "MAKE_AN_APPLICATION": "Make an application"
+      },
+      "ACCEPT_DEFENDANT_OFFER": {
+        "ACCEPT_ISNTALMENTS": "I'll accept certain instalments per month",
+        "ENTER_AMOUNT": "Enter the amount in £",
+        "N245": "N245 form",
+        "N245_AFTER": " that they completed. You should read this before responding.",
+        "N245_BEFORE": "The defendant's offer will be set out in the ",
+        "PROPOSE_IN_FULL": "I'll propose payment in full by a set date",
+        "PROPOSE_PAYMENT_PLAN": "Propose payment plan",
+        "PROPOSED_INSTALMENTS": "Proposed instalments per month",
+        "PROPOSED_SET_DATE": "Proposed set date",
+        "THE_COURT": "The court will make an order for the payment that was suggested by the defendant.",
+        "TITLE": "Do you accept the defendant's offer?",
+        "WHY_NOT_ACCEPT": "Why do you not accept the defendant's offer?",
+        "WHY_NOT_ACCEPT_2": "Why you do not accept the defendant's offer?"
+      },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
         "RESPOND_TO": "Respond to an application to {{applicationType}}",
@@ -2074,8 +2117,8 @@
       "APPLICATION_COSTS": {
         "ADJOURN_HEARING": "change a hearing date",
         "AMEND_A_STMT_OF_CASE": "make a change to your claim or defence",
-        "HEARING_LESS_THAN": "If the hearing is less than 14 days away, the fee above applies.",
-        "HEARING_MORE_THAN": "If the hearing is more than 14 days away from the date you make this application, you will not need to pay a fee. If you add another application, you'll still have to pay the fee for this additional application.",
+        "HEARING_LESS_THAN": "If the hearing date is less than 14 days away or you have not agreed to it in advance with the other party, the fee above applies.",
+        "HEARING_MORE_THAN": "If the hearing date is more than 14 days away from the date you make this application and you have agreed to this with the other party, you will not need to pay the fee. If you add another application you'll still have to pay the fee for this additional application.",
         "EXTEND_TIME": "extend time",
         "FEE_NEED_TO_BE_PAID": "This fee will need to be paid once you've created the application. If you're eligible, you may be able to apply for help with fees.",
         "MAKE_AN_APPLICATION": "Make an application",
@@ -2121,6 +2164,40 @@
         "THE_INFORMATION": "The information you enter on this page will be seen by the other parties.",
         "VARY_JUDGMENT": "You should explain why you want to vary the judgment. You'll have the option to upload documents to support your reasons on the next screen.",
         "WHY_REQUESTING": "Why are you requesting this order?"
+      },
+      "CHECK_YOUR_ANSWER": {
+        "APPLICATION_TYPE": "Application type",
+        "ASK_FOR_COSTS": "Do you want to ask for your costs back?",
+        "CHOOSE_PREFERRED_TYPE": "Choose your preferred type of hearing",
+        "DATES_CANNOT_ATTEND": "Dates when you cannot attend a hearing",
+        "INFORM_OTHER_PARTIES": "Do you want the court to inform the other parties?",
+        "NAME": "Name",
+        "NEED_ADJUSTMENTS": "Do you need any adjustments or support to attend a hearing?",
+        "NONE": "None",
+        "PARTIES_AGREED": "Have the other parties agreed?",
+        "PREFERRED_COURT_LOCATION": "Preferred court location",
+        "PREFERRED_EMAIL": "Preferred email",
+        "PREFERRED_TELEPHONE": "Preferred telephone number",
+        "STATEMENT_OF_TRUTH": {
+          "APPLICATION": "The information on this page forms your application.",
+          "CHECKBOX": "I believe that the facts stated in this form are true.",
+          "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
+        },
+        "UPLOAD_DOCUMENTS": "Do you want to upload documents to support your application?",
+        "WHAT_ORDER": "What order do you want the judge to make?",
+        "WHY_PREFER": "Why would you prefer this type of hearing?",
+        "WHY_REQUESTING": "Why are you requesting this order?"
+      },
+      "CHECK_YOUR_ANSWER_RESPONSE": {
+        "CLAIM_REFERENCE": "Claim reference: ",
+        "PREFERRED_LOCATION": "Preferred location",
+        "RESPOND_TO_AN_APPLICATION": "Respond to an application",
+        "STATEMENT_OF_TRUTH": {
+          "APPLICATION": "The information on this page forms your response to the application.",
+          "CHECKBOX": "I believe that the facts stated in this response form are true.",
+          "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
+        },
+        "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
       },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Application fee to pay:",
@@ -2332,6 +2409,21 @@
         "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
         "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
       },
+      "UPLOAD_N245_FORM": {
+        "COMPLETE_N245_FORM":"complete the N245 Form",
+        "FILE_FORMAT": "the file is in a DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "FILE_SIZE": "the file size is no more than 100MB",
+        "FILL_ONLINE": "fill out the interactive form online, save it to your device and then upload it here",
+        "INCOME_AND_EXPENSE": "We'll ask for information about your income and expenses to divide whether these instalments are affordable for you. So it may be useful to have documents like you bank statements to hand.",
+        "NAME_THE_FORM": "you give it a name that tells the court what it is, for example 'N245 form by Jane Smith'",
+        "OFFER_OF_PAYMENT": "You should set out the new monthly instalments that you're proposing in the 'Offer of payment' section.",
+        "PAGE_TITLE": "Upload N245",
+        "PRINT_THE_FORM": "print the form, complete it by hand, scan or take a photo of it and then upload it here.",
+        "SAVE_THE_FORM": "When you save and upload your completed form, make sure:",
+        "TITLE": "Upload N245 form",
+        "UPLOAD_HERE": "You need to LINK_FOR_N245_FORM and upload it here.",
+        "WAYS_TO_COMPLETE": "There are two ways to complete the form. You can either:"
+      },
       "APPLICATION_HEARING_ARRANGEMENTS": {
         "HEARING_TYPE": {
           "PERSON_AT_COURT": "In person at the court",
@@ -2348,18 +2440,6 @@
         "PREFERRED_EMAIL_ADDRESS": "Preferred email address",
         "PREFERRED_TELEPHONE_NUMBER": "Preferred telephone number",
         "TITLE": "Contact Details"
-      },
-      "UNAVAILABLE_HEARING_DATES": {
-        "ADD_ANOTHER_DATE": "Add another date or date range",
-        "ENTER_UNAVAILABLE": "Enter unavailable date",
-        "FROM": "From",
-        "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
-        "LONGER_PERIOD": "A longer period of time",
-        "PAGE_TITLE": "Unavailable hearing dates",
-        "SELECT": "Select a date or dates you cannot attend a hearing",
-        "SINGLE_DATE": "A single date",
-        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
-        "TO": "To"
       },
       "RESPONDENT_INFORMATION": {
         "CLICK_RESPOND": "Click 'respond to application' to let the court know whether or not you agree with their request.",
@@ -2378,6 +2458,48 @@
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
         "TEXT_REVIEW": "Make sure you've reviewed the full application. If you disagree with any part of the application, select 'No' and explain why.",
         "TITLE": "Do you agree that the court should make the order that the other parties have requested?"
+      },
+      "UNAVAILABLE_HEARING_DATES": {
+        "ADD_ANOTHER_DATE": "Add another date or date range",
+        "ENTER_UNAVAILABLE": "Enter unavailable date",
+        "FROM": "From",
+        "IMPORTANT_EVENTS": "These should only be the dates of important events like medical appointments, other court hearings, or holidays you've already booked.",
+        "LONGER_PERIOD": "A longer period of time",
+        "PAGE_TITLE": "Unavailable hearing dates",
+        "SELECT": "Select a date or dates you cannot attend a hearing",
+        "SINGLE_DATE": "A single date",
+        "TITLE": "Are there any dates when you cannot attend a hearing within the next 3 months (optional)?",
+        "TO": "To"
+      },
+      "CONFIRMATION_PAGE": {
+        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}",
+        "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
+        "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
+        "PAGE_TITLE": "Application created",
+        "PAY_FEE_BUTTON": "Pay application fee",
+        "RETURN_CASE_DETAILS": "Close and return to case details",
+        "TITLE": "Application created",
+        "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge."
+      },
+      "APPLY_HELP_WITH_FEE": {
+        "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
+        "CONTENT_PAGE_TITLE": "Apply for help with fees",
+        "CONTINUE_TO_APPLY_HWF_PAGE_TITLE": "Do you want to continue to apply for Help with Fees",
+        "CONFIRMATION_PAGE_TITLE": "Confirmation of your application fee payment",
+        "CONFIRMATION_TITLE": "Your application for help with the application fee is complete",
+        "GENERAL_APPLICATION_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The application fee is: £{{ feeAmount }}</span>",
+        "HEADING": "Application fee",
+        "REFERENCE_NUMBER": {
+          "LIST_ITEMS": {
+            "APPLICATION_FEE_SECOND": "When you are asked to enter a court or tribunal number, enter 'application fee' followed by short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
+            "APPLICATION_FEE_FIFTH": "Complete the application fee payment by entering your help with fees reference number."
+          },
+          "PAGE_TITLE": "Do you have a help with fees reference number?",
+          "TITLE": "Do you have a help with fees reference number?"
+        },
+        "TITLE": "Help with fees",
+        "WANT_TO_APPLY_HWF_TITLE": "Pay application fee",
+        "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -2716,7 +2838,7 @@
       "TITLE_WITH_PERSON": "Is {{ contactPerson }} the right person for the mediation service to call?"
     },
     "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
-      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TITLE": "Who will be attending the mediation appointment?",
       "PAGE_TEXT": "Is {{ partyContactPerson }} the person who will be attending the mediation appointment?"
     },
     "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
@@ -3974,6 +4096,7 @@
     "INVALID_AMOUNT": "Invalid amount",
     "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Enter a job title",
+    "KNOWN_CLAIM_AMOUNT": "Indicate if you know the amount you are claiming for",
     "NAME_REQUIRED": "Please enter a name",
     "NO_LANGUAGE_ENTERED": "Enter the language that needs to be interpreted",
     "NO_OTHER_SUPPORT": "Tell us what other support they need",
@@ -4125,8 +4248,6 @@
       "RENT": "Enter a valid Rent amount, maximum two decimal places",
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
-    "VALID_DEBT_RESPITE_END_DATE": "Expected end date must not be before today’s date",
-    "VALID_DEBT_RESPITE_OPTION": "You must select the Type before continuing",
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",
@@ -4203,16 +4324,26 @@
     "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced",
     "GENERAL_APPLICATION": {
+      "ACCEPT_DEFENDANT_OFFER": {
+        "ERROR_ACCEPT": "You need to tell us if you accept the defendant's offer. Choose option: Yes or No",
+        "ERROR_CHOOSE": "You need to propose a payment plan. Choose either instalments per month or payment in full by a set date.",
+        "ERROR_NOT_ACCEPT": "You need to tell us why you do not accept the defendant's offer.",
+        "ERROR_INSTALMENT": "You need to enter your proposed instalment per month.",
+        "FUTURE_DATE": "You need to enter a date in the future."
+      },
+      "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
+      "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application.",
+      "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
       "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
       "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No",
-      "ENTER_REQUESTING_REASON": "You need to enter your reasons for requesting this order",
-      "EXPLAIN_DO_NOT_WANT_COURT":"You need to explain why you do not want the court to inform the other parties.",
       "ENTER_ORDER_JUDGE": "You need to enter the order you want the judge to make",
+      "ENTER_REQUESTING_REASON": "You need to enter your reasons for requesting this order",
       "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
       "ENTER_VALID_EMAIL": "You need to enter a valid email address",
+      "EXPLAIN_DO_NOT_WANT_COURT": "You need to explain why you do not want the court to inform the other parties.",
       "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
@@ -4221,7 +4352,8 @@
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
         "EXPLAIN_WHY_DISAGREE_APPLICATION": "You need to explain why you disagree with the application"
       },
-      "WANT_TO_ADD_ANOTHER_APPLICATION":"You need to tell us if you want to add another application. Choose option: Yes or No",
+      "UPLOAD_FILE_MESSAGE": "You need to choose a file before clicking 'Upload file'",
+      "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
       "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing"
     }

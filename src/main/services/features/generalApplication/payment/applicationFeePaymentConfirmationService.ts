@@ -18,7 +18,7 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
   try {
     const redisClaimId = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
-    const paymentInfo = claim.generalApplication?.generalAppPaymentDetails;
+    const paymentInfo = claim.generalApplication?.applicationFeePaymentDetails;
     const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo?.paymentReference, FeeType.APPLICATION, req);
 
     if(paymentStatus.status === success) {

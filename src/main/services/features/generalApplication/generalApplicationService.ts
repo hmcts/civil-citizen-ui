@@ -1,38 +1,37 @@
-import { getCaseDataFromStore, saveDraftClaim } from 'modules/draft-store/draftStoreService';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import {
-  ApplicationType,
-  ApplicationTypeOption,
-  selectedApplicationType,
-} from 'common/models/generalApplication/applicationType';
-import { HearingSupport } from 'models/generalApplication/hearingSupport';
-import { Claim } from 'models/claim';
-import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
-import { YesNo } from 'common/form/models/yesNo';
-import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
-import { AppRequest } from 'common/models/AppRequest';
-import { FormValidationError } from 'common/form/validationErrors/formValidationError';
-import { GenericYesNo } from 'common/form/models/genericYesNo';
-import { ValidationError } from 'class-validator';
-import { InformOtherParties } from 'common/models/generalApplication/informOtherParties';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { t } from 'i18next';
-import { getLng } from 'common/utils/languageToggleUtils';
-import { RequestingReason } from 'models/generalApplication/requestingReason';
-import { OrderJudge } from 'common/models/generalApplication/orderJudge';
-import { HearingArrangement } from 'models/generalApplication/hearingArrangement';
-import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
-import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import {ApplicationType, ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {HearingSupport} from 'models/generalApplication/hearingSupport';
+import {Claim} from 'models/claim';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {YesNo} from 'common/form/models/yesNo';
+import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {AppRequest} from 'common/models/AppRequest';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {ValidationError} from 'class-validator';
+import {InformOtherParties} from 'common/models/generalApplication/informOtherParties';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {RequestingReason} from 'models/generalApplication/requestingReason';
+import {OrderJudge} from 'common/models/generalApplication/orderJudge';
+import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
+import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
+import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
+import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
+import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
+import {AcceptDefendantOffer, ProposedPaymentPlanOption} from 'common/models/generalApplication/response/acceptDefendantOffer';
+import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
 
-const { Logger } = require('@hmcts/nodejs-logging');
+const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 
-export const saveApplicationType = async (claimId: string, applicationType: ApplicationType): Promise<void> => {
+export const saveApplicationType = async (claimId: string, applicationType: ApplicationType, index?: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.applicationType = applicationType;
+    updateByIndexOrAppend(claim.generalApplication?.applicationTypes, applicationType, index);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -70,11 +69,44 @@ export const saveRespondentAgreement = async (redisKey: string, respondentAgreem
   }
 };
 
-export const saveOrderJudge = async (claimId: string, orderJudge: OrderJudge): Promise<void> => {
+export const saveAcceptDefendantOffer = async (redisKey: string, acceptDefendantOffer: AcceptDefendantOffer): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(redisKey);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.response = Object.assign(new GaResponse(), claim.generalApplication.response);
+    if (acceptDefendantOffer.option === YesNo.YES) {
+      delete acceptDefendantOffer.type;
+      delete acceptDefendantOffer.amountPerMonth;
+      delete acceptDefendantOffer.reasonProposedInstalment;
+      delete acceptDefendantOffer.day;
+      delete acceptDefendantOffer.month;
+      delete acceptDefendantOffer.year;
+      delete acceptDefendantOffer.reasonProposedSetDate;
+    } else {
+      if (acceptDefendantOffer.type === ProposedPaymentPlanOption.ACCEPT_INSTALMENTS) {
+        delete acceptDefendantOffer.day;
+        delete acceptDefendantOffer.month;
+        delete acceptDefendantOffer.year;
+        delete acceptDefendantOffer.reasonProposedSetDate;
+      } else {
+        delete acceptDefendantOffer.amountPerMonth;
+        delete acceptDefendantOffer.reasonProposedInstalment;
+      }
+    }
+    claim.generalApplication.response.acceptDefendantOffer = Object.assign(new AcceptDefendantOffer(), acceptDefendantOffer);
+    await saveDraftClaim(redisKey, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveOrderJudge = async (claimId: string, orderJudge: OrderJudge, index: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.orderJudge = orderJudge;
+    const orderJudges = claim.generalApplication?.orderJudges || [];
+    updateByIndexOrAppend(orderJudges, orderJudge, index);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -156,22 +188,6 @@ export function validateNoConsentOption(req: AppRequest, errors: ValidationError
   }
 }
 
-export const saveRespondentAgreeToOrder = async (claimId: string, claim: Claim, respondentAgreeToOrder: YesNo): Promise<void> => {
-  try {
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.respondentAgreeToOrder = respondentAgreeToOrder;
-    await saveDraftClaim(claimId, claim);
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
-};
-
-export function getRespondToApplicationCaption(claim: Claim, lng: string): string {
-  const applicationType = t(selectedApplicationType[claim.generalApplication?.applicationType?.option], { lng: getLng(lng) }).toLowerCase();
-  return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', { lng: getLng(lng), interpolation: { escapeValue: false }, applicationType });
-}
-
 export const saveUnavailableDates = async (claimId: string, claim: Claim, unavailableDates: UnavailableDatesGaHearing): Promise<void> => {
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
@@ -186,13 +202,24 @@ export const saveUnavailableDates = async (claimId: string, claim: Claim, unavai
   }
 };
 
-export const saveRequestingReason = async (claimId: string, requestingReason: RequestingReason): Promise<void> => {
+export const saveRequestingReason = async (claimId: string, requestingReason: RequestingReason, index?: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.requestingReason = requestingReason;
+    updateByIndexOrAppend(claim.generalApplication?.requestingReasons, requestingReason, index);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveN245Form = async (redisKey: string, claim: Claim, fileDetails: UploadGAFiles): Promise<void> => {
+  try {
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.uploadN245Form = fileDetails;
+    await saveDraftClaim(redisKey, claim);
+  }catch (error) {
     logger.error(error);
     throw error;
   }
@@ -221,3 +248,93 @@ export const saveHearingContactDetails = async (claimId: string, hearingContactD
     throw error;
   }
 };
+
+export const saveStatementOfTruth = async (claimId: string, statementOfTruth: StatementOfTruthForm): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication.statementOfTruth = statementOfTruth;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const getDynamicHeaderForMultipleApplications = (claim: Claim): string => {
+  const applicationTypes = claim.generalApplication?.applicationTypes;
+  return (applicationTypes?.length === 1) 
+    ? selectedApplicationType[applicationTypes[0].option] 
+    : 'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION';
+};
+
+export const getByIndexOrLast = <T>(array: T[] | undefined, index: number | undefined): T | undefined =>
+  getByIndex(array, index)
+  || ((array?.length)
+    ? (array[array.length - 1])
+    : undefined);
+
+export const getByIndex = <T>(array: T[] | undefined, index: number | undefined): T | undefined =>
+  (array?.length && index >= 0 && index < array.length)
+    ? array[index]
+    : undefined;
+
+export const getLast = <T>(array: T[] | undefined): T | undefined =>
+  (array?.length) ? array[array.length - 1] : undefined;
+
+export const updateByIndexOrAppend = <T>(array: T[], newElem: T, index: number | undefined): void => {
+  if (index >= 0 && index < array.length) {
+    array[index] = newElem;
+  } else {
+    array.push(newElem);
+  }
+};
+
+export const validateAdditionalApplicationtType = (claim : Claim, errors : ValidationError[], applicationType : ApplicationType,body : any) => {
+
+  if(claim.generalApplication?.applicationTypes?.length > 0 && getListOfNotAllowedAdditionalAppType().includes(applicationType.option)) {
+    const errorMessage = additionalApplicationErrorMessages[applicationType.option];
+
+    const validationError = new FormValidationError({
+      target: new GenericYesNo(body.optionOther, ''),
+      value: body.option,
+      constraints: {
+        additionalApplicationError : errorMessage,
+      },
+      property: 'option',
+    });
+
+    errors.push(validationError);
+  }
+};
+
+export const getListOfNotAllowedAdditionalAppType = () => {
+  return [ApplicationTypeOption.SET_ASIDE_JUDGEMENT, 
+    ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, 
+    ApplicationTypeOption.SETTLE_BY_CONSENT];
+};
+
+export const additionalApplicationErrorMessages: Partial<{ [key in ApplicationTypeOption]: string; }> = {
+  [ApplicationTypeOption.SETTLE_BY_CONSENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING',
+  [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT',
+  [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT',
+};
+
+export const saveHelpWithFeesDetails = async (claimId: string, value: any, hwfPropertyName: string): Promise<void> => {
+  try {
+    const claim: any = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    if(claim.generalApplication.helpWithFees) {
+      claim.generalApplication.helpWithFees[hwfPropertyName] = value;
+    } else {
+      const helpWithFees: any = new GaHelpWithFees();
+      helpWithFees[hwfPropertyName] = value;
+      claim.generalApplication.helpWithFees = helpWithFees;
+    }
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+

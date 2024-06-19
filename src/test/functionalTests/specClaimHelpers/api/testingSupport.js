@@ -35,6 +35,10 @@ const isDashboardServiceToggleEnabled = async () => {
   return toggleValue;
 };
 
+const isMintiToggleEnabled = async () => {
+  return await checkToggleEnabled('minti');
+};
+
 module.exports = {
   waitForFinishedBusinessProcess: async (caseId, user = '') => {
     const authToken = await idamHelper.accessToken(user ? user : config.applicantSolicitorUser);
@@ -122,6 +126,20 @@ module.exports = {
     return await response.json();
   },
 
+  uploadDocumentUser: async (user) => {
+    const authToken = await idamHelper.accessToken(user);
+    let response = await restHelper.request(
+      `${config.url.civilService}/testing-support/upload/test-document`,
+      {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+      },
+      {},
+      'POST');
+
+    return await response.json();
+  },
+
   hearingFeeUnpaid: async (caseId) => {
     const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
     await restHelper.request(
@@ -180,4 +198,5 @@ module.exports = {
 
   checkToggleEnabled,
   isDashboardServiceToggleEnabled,
+  isMintiToggleEnabled,
 };

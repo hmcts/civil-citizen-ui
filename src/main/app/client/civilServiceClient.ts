@@ -26,7 +26,7 @@ import {
   CIVIL_SERVICE_DASHBOARD_TASKLIST_URL,
   CIVIL_SERVICE_NOTIFICATION_LIST_URL,
   CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL, CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL,
-  CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL,
+  CIVIL_SERVICE_UPDATE_TASK_STATUS_URL, CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -56,7 +56,8 @@ import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
-import {YesNo} from 'form/models/yesNo';
+import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
+import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -195,27 +196,13 @@ export class CivilServiceClient {
     }
   }
 
-  async getGeneralApplicationFee(applicationTypeOption: string, withConsent: YesNo, withNotice: YesNo, req: AppRequest): Promise<number> {
-    const gaFeeData = await this.getGeneralApplicationFeeData(applicationTypeOption, withConsent, withNotice, req);
-    return convertToPoundsFilter(gaFeeData?.calculatedAmountInPence.toString());
-  }
-
-  async getGeneralApplicationFeeData(applicationTypeOption: string, withConsent: YesNo, withNotice: YesNo, req: AppRequest): Promise<ClaimFeeData> {
-    const config = this.getConfig(req);
+  async getGeneralApplicationFee(feeRequestBody: GAFeeRequestBody, req: AppRequest): Promise<ClaimFeeData> {
     try {
-      let feeUrl = `${CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL}/${applicationTypeOption}`;
-      if (withConsent) {
-        feeUrl += `?withConsent=${withConsent === YesNo.YES ? 'true' : 'false'}`;
-        if (withNotice) {
-          feeUrl += `&withNotice=${withNotice === YesNo.YES ? 'true' : 'false'}`;
-        }
-      } else if (withNotice) {
-        feeUrl += `?withNotice=${withNotice === YesNo.YES ? 'true' : 'false'}`;
-      }
-      const response: AxiosResponse<object> = await this.client.get(feeUrl, config);
+      const config = this.getConfig(req);
+      const response: AxiosResponse<object> = await this.client.post(CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL, feeRequestBody, config);
       return response.data;
     } catch (err: unknown) {
-      logger.error('Error when getting claim fee data');
+      logger.error('Error when getting general application fee data');
       throw err;
     }
   }
@@ -354,14 +341,6 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.LIP_CLAIM_SETTLED,  claimId, updatedClaim, req);
   }
 
-  async submitBreathingSpaceEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
-    return this.submitEvent(CaseEvent.ENTER_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
-  }
-
-  async submitBreathingSpaceLiftedEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
-    return this.submitEvent(CaseEvent.LIFT_BREATHING_SPACE_LIP, claimId, updatedClaim, req);
-  }
-
   async submitDefendantSignSettlementAgreementEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, claimId, updatedClaim, req);
   }
@@ -372,6 +351,10 @@ export class CivilServiceClient {
 
   async submitJudgmentPaidInFull(claimId: string, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.JUDGMENT_PAID_IN_FULL, claimId, updatedClaim, req);
+  }
+
+  async submitInitiateGeneralApplicationEvent(claimId: string, updatedApplication: CCDGeneralApplication, req?: AppRequest):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.INITIATE_GENERAL_APPLICATION, claimId, updatedApplication, req);
   }
 
   async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
@@ -562,6 +545,15 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     try {
       await this.client.put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', id), null, config);
+    } catch (err: unknown) {
+      logger.error(err);
+      throw err;
+    }
+  }
+  async updateTaskStatus(taskId: string, req: AppRequest): Promise<void> {
+    const config = this.getConfig(req);
+    try {
+      await this.client.put(CIVIL_SERVICE_UPDATE_TASK_STATUS_URL.replace(':taskItemId', taskId), null, config);
     } catch (err: unknown) {
       logger.error(err);
       throw err;
