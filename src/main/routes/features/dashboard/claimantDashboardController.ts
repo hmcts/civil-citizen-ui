@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   APPLICATION_TYPE_URL,
-  BREATHING_SPACE_INFO,
+  BREATHING_SPACE_INFO_URL,
   DASHBOARD_CLAIMANT_URL,
   DATE_PAID_URL,
   OLD_DASHBOARD_CLAIMANT_URL,
@@ -119,7 +119,7 @@ const getSupportLinks = (claim: Claim, claimId: string, lng: string) => {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_ENDED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
   }
   if (showGetDebtRespiteLink && claim.isClaimant()) {
-    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }), url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO) });
+    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }), url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL) });
   }
 
   const helpSupportTitle = getHelpSupportTitle(lng);

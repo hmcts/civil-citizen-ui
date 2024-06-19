@@ -9,7 +9,6 @@ describe('breathing space guidance page content builder', () => {
   it('should get the content for the page', () => {
 
     const pageContent = getBSGuidanceContent('en');
-
     expect(pageContent).toMatchObject([
       {
         type: 'title',
@@ -77,15 +76,9 @@ describe('breathing space guidance page content builder', () => {
         },
       },
       {
-        type: 'p',
-        data: {
-          text: 'PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.HOW_TO_CONTACT_PARA2',
-        },
-      },
-      {
         type: 'link',
         data: {
-          text: 'PAGES.LATEST_UPDATE_CONTENT.EMAIL_ID',
+          text: 'PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.EMAIL_ID',
           href: 'mailto:contactocmc@justice.gov.uk',
           textBefore: 'PAGES.LATEST_UPDATE_CONTENT.EMAIL',
         },

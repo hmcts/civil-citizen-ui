@@ -12,11 +12,11 @@ export const getBSGuidanceContent = (lng: string) => {
   const bsGuidanceScheme = t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.MORE_INFO_PARA2', {lng});
   const linkForContactYourLocalCourt = `<a href="${findCourtTribunalUrl}" target="_blank">${t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.CONTACT_LOCAL_COURT_LINK', { lng })}</a>`;
   const linkBSGuidanceForCreditors = `<a href="${bsGuidanceForCreditors}" target="_blank">${t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.DEBT_RESPITE_GUIDANCE_SCHEME_LINK', { lng })}</a>`;
-  const mailTo = 'mailto:contactocmc@justice.gov.uk';
+  const mailTo = lng === 'en' ? 'mailto:contactocmc@justice.gov.uk' : 'mailto:ymholiadaucymraeg@justice.gov.uk';
   return new PageSectionBuilder()
-    .addTitle(t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.PAGE_TITLE', {lng}))
-    .addParagraph(t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.SUMMARY', {lng}))
-    .addTitle(t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT', {lng}))
+    .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.PAGE_TITLE')
+    .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.SUMMARY')
+    .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT_PARAGRAPH_1')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT_PARAGRAPH_2')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT_PARAGRAPH_3')
@@ -29,8 +29,7 @@ export const getBSGuidanceContent = (lng: string) => {
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT_PARAGRAPH_4')
     .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.HOW_TO_CONTACT')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.HOW_TO_CONTACT_PARA1')
-    .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.HOW_TO_CONTACT_PARA2')
-    .addLink('PAGES.LATEST_UPDATE_CONTENT.EMAIL_ID', mailTo, 'PAGES.LATEST_UPDATE_CONTENT.EMAIL')
+    .addLink('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.EMAIL_ID', mailTo, 'PAGES.LATEST_UPDATE_CONTENT.EMAIL')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.POST')
     .addRawHtml(`<p class="govuk-body">${howToContactSection.replace('LINK_TO_CONTACT_YOUR_LOCAL_COURT', linkForContactYourLocalCourt)}</p>`)
     .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_HAPPENS_DURING_BS')
@@ -44,8 +43,9 @@ export const getBSGuidanceContent = (lng: string) => {
 
 export const getSupportLinks = (lng: string) => {
   const iWantToTitle = t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.LINK_TITLE', { lng });
+  const changeText = t('PAGES.DASHBOARD.SUPPORT_LINKS.DEBT_RESPITE_SCHEME',  {lng});
   const iWantToLinks = [];
-  iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.DEBT_RESPITE_SCHEME', { lng }), url: bsCreditorsResponsibilities });
-  iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.APPLYING_TO_COURT_AS_A_CREDITOR', { lng }), url: applyingToCourtAsCreditor });
+  iWantToLinks.push({ text: changeText.replace('CH1', ':'), url: bsCreditorsResponsibilities , translated:true});
+  iWantToLinks.push({ text: 'PAGES.DASHBOARD.SUPPORT_LINKS.APPLYING_TO_COURT_AS_A_CREDITOR', url: applyingToCourtAsCreditor });
   return [iWantToTitle, iWantToLinks] as const;
 };

@@ -10,7 +10,7 @@ import {
 } from 'modules/utilityService';
 import { Claim } from 'common/models/claim';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
-import {BREATHING_SPACE_INFO} from 'routes/urls';
+import {BREATHING_SPACE_INFO_URL} from 'routes/urls';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -34,7 +34,7 @@ describe('View Defendant Information', () => {
     const caseData = Object.assign(new Claim(), claim.case_data);
     (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
     await request(app)
-      .get(BREATHING_SPACE_INFO)
+      .get(BREATHING_SPACE_INFO_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Inform the court of a breathing space');
