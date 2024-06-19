@@ -21,15 +21,15 @@ export class ApplicationResponse {
   id: string;
   case_data: CCDApplication;
   state: CaseState;
-  last_modified: Date;
-  created_date: Date;
+  last_modified: string;
+  created_date: string;
 
   constructor(
     id?: string,
     case_data?: CCDApplication,
     state?: CaseState,
-    last_modified?: Date,
-    created_date?: Date,
+    last_modified?: string,
+    created_date?: string,
   ) {
     this.id = id;
     this.case_data = case_data;
