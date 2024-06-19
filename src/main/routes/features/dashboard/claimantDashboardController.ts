@@ -13,7 +13,7 @@ import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {isDashboardServiceEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isCUIReleaseTwoEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {t} from 'i18next';
@@ -33,8 +33,8 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const claimId =  req.params.id;
     let claimIdPrettified;
     let claimAmountFormatted;
-    const isDashboardEnabled = await isDashboardServiceEnabled();
-    if (isDashboardEnabled){
+    const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
+    if (isCUIR2Enabled){
       const lng = req.query.lang ? req.query.lang : req.cookies.lang;
       let claim: Claim;
       let caseRole: ClaimantOrDefendant;
