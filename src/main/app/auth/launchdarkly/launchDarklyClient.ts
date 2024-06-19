@@ -4,7 +4,7 @@ import {init, LDClient, LDFlagValue, LDUser} from 'launchdarkly-node-server-sdk'
 let ldClient: LDClient;
 
 async function getClient(): Promise<void> {
-  const launchDarklyTestSdk = 'sdk-5dca6386-1fcd-48d5-b93a-60d13e22ee62';
+  const launchDarklyTestSdk = config.get<string>('services.launchDarkly.sdk');
 
   if (launchDarklyTestSdk) {
     const client = init(launchDarklyTestSdk);
