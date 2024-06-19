@@ -422,7 +422,35 @@
       }
     }
   },
+  "WHAT_ARE_FIXED_RECOVERABLE_COSTS": {
+    "TITLE": "Beth yw Costau Adennill Sefydlog?",
+    "PARA_1":  "Rhan fwyaf o hawliadau arian sifil sydd â gwerth hyd at ac yn cynnwys £100,000 yn ddarostyngedig i’r Drefn Costau Adennill Sefydlog (FRCS).",
+    "PARA_2":  "Mae FRCS yn gosod terfynau ar faint o gostau cyfreithiol y gall y partïon llwyddiannus eu hawlio yn ôl o bartïon aflwyddiannus.",
+    "PARA_3":  "Yn darparu sicrwydd i’r holl bartïon dan sylw drwy bennu ymlaen llaw’r swm mwyaf o gostau y bydd y parti colli yn gorfod ei dalu.",
+    "URL": {
+      "BEFORE": "Am fwy o wybodaeth am derfynau FRCS gweler ",
+      "TEXT": "Tabl 14 (yn agor mewn tab newydd)",
+      "AFTER": "."
+    },
+    "PARA_4": "Mae angen penodi pob hawliad sy’n destun FRCS i fand cymhlethdod o 1 i 4.",
+    "PARA_5": "Mae Band 1 ar gyfer y hawliadau lleiaf cymhleth lle mae dim ond un mater yn destun anghydfod. Er enghraifft, hawliadau lle mae naill ai’r swm o arian sy’n cael ei hawlio neu atebolrwydd (cyfrifoldeb cyfreithiol) yn destun anghydfod.",
+    "PARA_6": "Mae Band 2 ar gyfer y rhan fwyaf o hawliadau eraill lle mae mwy nag un mater yn destun anghydfod. Er enghraifft, mae’r swm o arian sy’n cael ei hawlio a’r atebolrwydd yn destun anghydfod.",
+    "PARA_7": "Band 3 ar gyfer hawliadau mwy cymhleth lle mwy nag un mater yn destun anghydfod. Er enghraifft, colli clyw a achosir gan sŵn neu achosion atebolrwydd cyflogwr.",
+    "PARA_8": "Band 4 ar gyfer yr achosion mwyaf cymhleth gyda materion difrifol o amgylch ffeithiau’r gyfraith.",
+    "PARA_9": "Efallai y byddwch yn cytuno ar y cymhlethdod y mae’r hawliad hwn yn syrthio iddo cyn neu yn dweud pa fand yr ydych chi’n meddwl bod y band hwn gyda phartïon eraill.",
+    "PARA_10": "Fodd bynnag, os bydd y Llys yn anghytuno, mae ganddo’r pŵer i neilltuo hawliad i ba bynnag band y teimla sy’n briodol"
+  },
   "PAGES": {
+    "SUBJECT_TO_FRC": {
+      "PAGE_TITLE": "A yw’r hawliad yn ddarostyngedig i’r Drefn Costau Adennill Sefydlog?",
+      "TITLE": "Costau Adennill Sefydlog",
+      "BUTTON_TITLE": "A yw’r hawliad yn ddarostyngedig i’r Drefn Costau Adennill Sefydlog?"
+    },
+    "FRC_BAND_AGREED": {
+      "PAGE_TITLE": "A yw’r band cymhlethdod wedi’i gytuno gyda’r partïon eraill?",
+      "TITLE": "Cytundeb y band cymhlethdod",
+      "BUTTON_TITLE": "A yw’r band cymhlethdod wedi’i gytuno gyda’r partïon eraill?"
+    },
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : {
       "PAGE_TITLE": "A oes unrhyw ddogfennau sydd gan yr hawlwyr yr hoffech i'r llys eu hystyried?",
       "TITLE": "Dogfennau hawlydd i'w hystyried"
@@ -3992,6 +4020,8 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "SUBJECT_TO_FRC": "Nodwch a yw'r hawliad yn amodol ar y Gyfundrefn Costau Adenilladwy Sefydlog",
+    "FRC_BAND_AGREED": "Nodwch a yw'r band cymhlethdod wedi'i gytuno gyda'r partïon eraill",
     "HAS_AN_AGREEMENT_BEEN_REACHED" : "Nodi a daethpwyd i gytundeb ynghylch pa ddogfennau electronig a fydd yn cael eu datgelu",
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Nodwch os oes unrhyw ddogfennau sydd gan yr hawlwyr eich bod am i'r llys eu hystyried",
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau nad ydynt yn electronig",
