@@ -1,8 +1,8 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
-  DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
+  BACK_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
 } from 'routes/urls';
 import {
   getDirectionQuestionnaire,
@@ -20,14 +20,11 @@ const claimantDocumentsConsideredDetailsViewPath = 'features/directionsQuestionn
 const DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE = 'PAGES.CLAIMANT_DOCUMENTS_CONSIDERED_DETAILS.';
 
 function renderView(details: GenericForm<ClaimantDocumentsConsideredDetails>, res: Response): void {
-  const form = details;
-
   res.render(claimantDocumentsConsideredDetailsViewPath, {
-    form,
+    form : details,
     pageTitle: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}PAGE_TITLE`,
     title: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}TITLE`,
-    //TODO ADD THE BACK URL
-    backLinkUrl: constructResponseUrlWithIdParams('claimId', DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL),
+    backLinkUrl: BACK_URL,
   });
 }
 
@@ -36,6 +33,7 @@ claimantDocumentsConsideredDetailsController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENT
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const details = directionQuestionnaire.hearing?.claimantDocumentsConsideredDetails ?
       new ClaimantDocumentsConsideredDetails(directionQuestionnaire.hearing.claimantDocumentsConsideredDetails) : new ClaimantDocumentsConsideredDetails();
+
     renderView(new GenericForm(details) , res);
   } catch (error) {
     next(error);
@@ -55,6 +53,7 @@ claimantDocumentsConsideredDetailsController.post(DQ_MULTITRACK_CLAIMANT_DOCUMEN
         form.model.claimantDocumentsConsideredDetails,
         'claimantDocumentsConsideredDetails',
         'hearing');
+
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL)); //todo change redirect url
     }
 

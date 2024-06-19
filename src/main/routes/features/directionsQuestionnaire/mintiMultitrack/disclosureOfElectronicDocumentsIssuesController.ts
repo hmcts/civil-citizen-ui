@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
+  BACK_URL, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
   DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL,
 } from 'routes/urls';
 import {
@@ -24,8 +24,7 @@ function renderView(form: GenericForm<DisclosureOfElectronicDocumentsIssues>, re
     form,
     pageTitle: `${DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_PAGE}PAGE_TITLE`,
     title: `${DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_PAGE}TITLE`,
-    //TODO ADD THE BACK URL
-    backLinkUrl: constructResponseUrlWithIdParams('claimId', 'todo'),
+    backLinkUrl: BACK_URL,
   });
 }
 
@@ -53,7 +52,7 @@ disclosureOfElectronicDocumentsIssues.post(DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONI
         disclosureOfElectronicDocumentsIssuesForm.model.disclosureOfElectronicDocumentsIssues,
         'disclosureOfElectronicDocumentsIssues',
         'hearing');
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_EVIDENCE_URL)); //TODO update back link
+      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL));
     }
 
   } catch (error) {
