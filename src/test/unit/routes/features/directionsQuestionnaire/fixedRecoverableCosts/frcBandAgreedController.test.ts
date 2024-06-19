@@ -12,7 +12,7 @@ import {CaseState} from 'form/models/claimDetails';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {YesNo} from 'form/models/yesNo';
-import {FixedRecoverableCosts} from 'models/directionsQuestionnaire/fixedRecoverableCosts/FixedRecoverableCosts';
+import {FixedRecoverableCosts} from 'models/directionsQuestionnaire/fixedRecoverableCosts/fixedRecoverableCosts';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');

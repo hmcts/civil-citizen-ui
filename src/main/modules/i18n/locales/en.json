@@ -440,6 +440,31 @@
     "PARA_9": "You may agree the complexity banding with the other parties beforehand or say which band you think this claim falls into.",
     "PARA_10": "However, if the Court disagrees, it has the power to assign a claim to whatever band it feels is appropriate."
   },
+  "WHICH_COMPLEXITY_BAND_TO_CHOOSE": {
+    "TITLE": "Which complexity band should I use?",
+    "PARA_1_TITLE": "Band 1",
+    "PARA_1": "Any claim where only one issue is in dispute. For example, claims where only the amount of money, or liability (legal responsibility) is in dispute. Examples include:",
+    "PARA_1_POINT_1": "Personal injury claims where liability or the amount of money being claimed is disputed.",
+    "PARA_1_POINT_2": "Road traffic accidents with no claim for personal injury.",
+    "PARA_1_POINT_3": "Debt claims where there is disagreement over the facts of the claim.",
+    "PARA_2_TITLE": "Band 2",
+    "PARA_2": "Most claims where more than one issue is in dispute. For example, claims where the amount of money being claimed, and liability (legal responsibility) is in dispute. Examples include:",
+    "PARA_2_POINT_1": "Personal injury claims where liability and the amount of money being claimed is disputed.",
+    "PARA_2_POINT_2": "Road traffic accidents which include a claim for personal injury.",
+    "PARA_3_TITLE": "Band 3",
+    "PARA_3": "Any other claims where more than one issue is in dispute. For example:",
+    "PARA_3_POINT_1": "Noise induced hearing loss.",
+    "PARA_3_POINT_2": "Employer liability for diseases.",
+    "PARA_4_TITLE": "Band 4",
+    "PARA_4": "Any claim which is not suitable for bands 1 to 3. For example:",
+    "PARA_4_POINT_1": "Complex personal injury claims with serious issues around the facts or law.",
+    "URL": {
+      "TITLE": "More information on complexity bands",
+      "BEFORE": "For more information on complexity bands see ",
+      "TEXT": "CPR 26.16 Table 2 (opens in a new tab)",
+      "AFTER": "."
+    }
+  },
   "PAGES": {
     "SUBJECT_TO_FRC": {
       "PAGE_TITLE": "Is the claim subject to the Fixed Recoverable Costs Regime?",
@@ -450,6 +475,33 @@
       "PAGE_TITLE": "Has the complexity band been agreed with the other parties?",
       "TITLE": "Agreement of complexity band",
       "BUTTON_TITLE": "Has the complexity band been agreed with the other parties?"
+    },
+    "CHOOSE_COMPLEXITY_BAND": {
+      "PAGE_TITLE": "Which complexity band do you believe this claim falls into?",
+      "TITLE": "Complexity band",
+      "COMBO_BOX" : {
+        "TITLE": "Which complexity band do you believe this claim falls into?",
+        "ITEM1": {
+          "TEXT": "Band 1"
+        },
+        "ITEM2": {
+          "TEXT": "Band 2"
+        },
+        "ITEM3": {
+          "TEXT": "Band 3"
+        },
+        "ITEM4": {
+          "TEXT": "Band 4"
+        }
+      }
+    },
+    "COMPLEXITY_BAND_REASON": {
+      "PAGE_TITLE": "Reasons for band selection",
+      "TITLE": "Complexity band",
+      "TEXT_AREA": {
+        "LABEL": "Reasons for band selection",
+        "HINT": "Please give your reasons (optional)"
+      }
     },
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : {
       "PAGE_TITLE": "Are there any documents the claimants have that you want the court to consider?",
@@ -4022,6 +4074,7 @@
   "ERRORS": {
     "SUBJECT_TO_FRC": "Indicate if the claim is subject to the Fixed Recoverable Costs Regime",
     "FRC_BAND_AGREED": "Indicate if the complexity band has been agreed with the other parties",
+    "CHOOSE_COMPLEXITY_BAND": "Indicate which complexity band you believe this claim falls into",
     "HAS_AN_AGREEMENT_BEEN_REACHED" : "Indicate if agreement has been reached about what electronic documents will be disclosed",
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Indicate if there are any documents the claimants have that you want the court to consider",
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Give details of the issues about disclosure of non-electronic documents",
