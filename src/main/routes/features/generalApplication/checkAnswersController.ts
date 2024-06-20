@@ -13,6 +13,7 @@ import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthFo
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {submitApplication} from 'services/features/generalApplication/submitApplication';
+import {checkYourAnswersGAGuard} from 'routes/guards/checkYourAnswersGAGuard';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -29,7 +30,7 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, summaryRows });
 }
 
-gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
@@ -41,7 +42,7 @@ gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res:
   }
 }) as RequestHandler);
 
-gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);

@@ -1,7 +1,5 @@
-import { YesNo } from 'common/form/models/yesNo';
 import {Claim} from 'common/models/claim';
-import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {NextFunction, Response} from 'express';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
@@ -14,40 +12,46 @@ export const checkYourAnswersGAGuard = async (req: AppRequest, res: Response, ne
 
     console.log(claim.generalApplication);
 
-    // claim.generalApplication.applicationType.lentgh;
-      // claim.generalApplication.agreementFromOtherParty === YesNo.YES; // IS THERE ANY REASON WHY THE OTHER PARTY SHOULD NOT BE INFORMED is bypassed
-      // claim.generalApplication.agreementFromOtherParty === YesNo.NO;
-
-      // claim.generalApplication.applicationType.option === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT ||
-      // claim.generalApplication.applicationType.option === ApplicationTypeOption.SETTLE_BY_CONSENT ||
-      // claim.generalApplication.applicationType.option === ApplicationTypeOption.CONSENT ORDER
-      // if 3 opctiones de lo anterior te saltas informOtherParties
-      
-      // claim.generalApplication.forEach(application => {
-        
-      // });
-      if (
-        claim.generalApplication?.applicationType &&
-        claim.generalApplication?.agreementFromOtherParty &&
-        (claim.generalApplication?.agreementFromOtherParty === YesNo.YES && claim.generalApplication?.informOtherParties) &&
-        (claim.generalApplication?.applicationType.option === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT 
-          && claim.generalApplication?.uploadN245Form?.fileUpload) &&
-          claim.generalApplication?.applicationCosts &&
-        (claim.generalApplication?.applicationType?.option === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT 
-          && claim.generalApplication?.orderJudge?.text) &&
-        claim.generalApplication?.requestingReason?.text &&
-        claim.generalApplication?.wantToUploadDocuments &&
-        (claim.generalApplication?.wantToUploadDocuments === YesNo.YES 
-          && claim.generalApplication?.uploadEvidenceForApplication[0]?.fileUpload) && 
-        (claim.generalApplication?.hearingArrangement?.option && claim.generalApplication?.hearingArrangement?.reasonForPreferredHearingType) &&
-        (claim.generalApplication?.hearingContactDetails?.telephoneNumber && claim.generalApplication.hearingContactDetails?.emailAddress)
-      ) {
-        next();
-      } else {
-        return res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL));
-      }
-
+    if (((claim.generalApplication.applicationTypes.length === 1 && claim.generalApplication.applicationTypes[0].option === 'SET_ASIDE_JUDGEMENT' && claim.generalApplication.applicationCosts != null) ||
+      (claim.generalApplication.applicationTypes.length === 1 && claim.generalApplication.applicationTypes[0].option === 'VARY_PAYMENT_TERMS_OF_JUDGMENT') ||
+      (claim.generalApplication.applicationTypes.length === 1 && claim.generalApplication.applicationTypes[0].option === 'RELIEF_FROM_SANCTIONS' && checkIfFieldsNotNullForMultiApplnType(claim)) ||
+      (claim.generalApplication.applicationTypes.length >= 1 && claim.generalApplication.orderJudges.length >= 1 && checkIfFieldsNotNullForMultiApplnType(claim))
+      && checkIfFieldsNotNull(claim)) ||
+      (claim.generalApplication.applicationTypes.length === 1 && claim.generalApplication.applicationTypes[0].option === 'SETTLE_BY_CONSENT' && checkIfSettlingClaimFieldsSet(claim))) {
+      next();
+    } else {
+      return res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL));
+    }
   } catch (error) {
     next(error);
   }
+
+  function checkIfSettlingClaimFieldsSet(claim: Claim) {
+    return (claim.generalApplication.wantToUploadDocuments ===  'no' || (claim.generalApplication.wantToUploadDocuments === 'yes' && claim.generalApplication.uploadEvidenceForApplication.length >= 1)) &&
+      claim.generalApplication.unavailableDatesHearing.items != null &&
+      claim.generalApplication.hearingContactDetails != null &&
+      claim.generalApplication.applicationCosts != null &&
+      claim.generalApplication.requestingReasons != null &&
+      (claim.generalApplication.hearingArrangement != null && claim.generalApplication.hearingArrangement.option.length >= 1 &&
+        claim.generalApplication.hearingArrangement.reasonForPreferredHearingType != null);
+  }
+
+  function checkIfFieldsNotNull(claim: Claim) {
+    return claim.generalApplication.agreementFromOtherParty != null &&
+      (claim.generalApplication.wantToUploadDocuments ===  'no' || (claim.generalApplication.wantToUploadDocuments === 'yes' && claim.generalApplication.uploadEvidenceForApplication.length >= 1)) &&
+      claim.generalApplication.unavailableDatesHearing.items != null &&
+      claim.generalApplication.hearingContactDetails != null &&
+      (claim.generalApplication.hearingArrangement != null && claim.generalApplication.hearingArrangement.option.length >= 1 &&
+        claim.generalApplication.hearingArrangement.reasonForPreferredHearingType != null);
+  }
+
+  /*
+  * Ask the court to reconsider an order
+  *  */
+  function checkIfFieldsNotNullForMultiApplnType(claim: Claim) {
+    return claim.generalApplication.applicationCosts != null &&
+      claim.generalApplication.requestingReasons != null &&
+      claim.generalApplication.informOtherParties.option != null;
+  }
+
 };
