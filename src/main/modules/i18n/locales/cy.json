@@ -465,6 +465,10 @@
       "AFTER": "."
     }
   },
+  "DOCUMENTS_TO_BE_CONSIDERED" : {
+    "TITLE_WITH_CLAIMANT": "Dogfennau hawlydd i'w hystyried",
+    "TITLE_WITH_DEFENDANT": "Dogfennau diffynnydd i'w hystyried"
+  },
   "PAGES": {
     "SUBJECT_TO_FRC": {
       "PAGE_TITLE": "A yw’r hawliad yn ddarostyngedig i’r Drefn Costau Adennill Sefydlog?",
@@ -503,9 +507,11 @@
         "HINT": "Rhowch eich rhesymau (dewisol)"
       }
     },
-    "CLAIMANT_DOCS_FOR_DISCLOSURE" : {
-      "PAGE_TITLE": "A oes unrhyw ddogfennau sydd gan yr hawlwyr yr hoffech i'r llys eu hystyried?",
-      "TITLE": "Dogfennau hawlydd i'w hystyried"
+    "DOCS_FOR_DISCLOSURE" : {
+      "PAGE_TITLE_WITH_CLAIMANT": "A oes unrhyw ddogfennau sydd gan yr hawlydd yr hoffech i’r llys eu hystyried?",
+      "COMPONENT_TEXT_WITH_CLAIMANT": "A oes unrhyw ddogfennau sydd gan yr hawlwyr yr hoffech i'r llys eu hystyried?",
+      "PAGE_TITLE_WITH_DEFENDANT": "A oes unrhyw ddogfennau sydd gan y diffynnydd yr hoffech i'r llys eu hystyried?",
+      "COMPONENT_TEXT_WITH_DEFENDANT": "A oes unrhyw ddogfennau sydd gan ddiffynyddion yr ydych am i'r llys eu hystyried?"
     },
     "HAS_AN_AGREEMENT_BEEN_REACHED" : {
       "PAGE_TITLE": "A ddaethpwyd i gytundeb ynghylch datgelu dogfennau electronig?",
@@ -4077,6 +4083,7 @@
     "CHOOSE_COMPLEXITY_BAND": "Nodwch pa fand cymhlethdod y credwch y mae’r hawliad hwn yn perthyn iddo",
     "HAS_AN_AGREEMENT_BEEN_REACHED" : "Nodi a daethpwyd i gytundeb ynghylch pa ddogfennau electronig a fydd yn cael eu datgelu",
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Nodwch os oes unrhyw ddogfennau sydd gan yr hawlwyr eich bod am i'r llys eu hystyried",
+    "DEFENDANT_DOCS_FOR_DISCLOSURE" : "Nodwch os oes unrhyw ddogfennau sydd gan y diffynyddion eich bod am i'r llys eu hystyried",
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau nad ydynt yn electronig",
     "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau electronig",
     "CLAIMANT_DOCUMENTS_CONSIDERED" : "Rhowch fanylion y dogfennau sydd gan yr hawlwyr yr ydych am i'r llys eu hystyried",

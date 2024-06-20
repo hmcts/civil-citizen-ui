@@ -465,6 +465,10 @@
       "AFTER": "."
     }
   },
+  "DOCUMENTS_TO_BE_CONSIDERED" : {
+    "TITLE_WITH_CLAIMANT": "Claimant documents to be considered",
+    "TITLE_WITH_DEFENDANT": "Defendant documents to be considered"
+  },
   "PAGES": {
     "SUBJECT_TO_FRC": {
       "PAGE_TITLE": "Is the claim subject to the Fixed Recoverable Costs Regime?",
@@ -503,9 +507,11 @@
         "HINT": "Please give your reasons (optional)"
       }
     },
-    "CLAIMANT_DOCS_FOR_DISCLOSURE" : {
-      "PAGE_TITLE": "Are there any documents the {{userRole}} have that you want the court to consider?",
-      "TITLE": "{{userRole}} documents to be considered"
+    "DOCS_FOR_DISCLOSURE" : {
+      "PAGE_TITLE_WITH_CLAIMANT": "Are there any documents the claimant has that you want the court to consider?",
+      "COMPONENT_TEXT_WITH_CLAIMANT": "Are there any documents the claimants have that you want the court to consider?",
+      "PAGE_TITLE_WITH_DEFENDANT": "Are there any documents the defendant has that you want the court to consider?",
+      "COMPONENT_TEXT_WITH_DEFENDANT": "Are there any documents that defendants have that you want the court to consider?"
     },
     "HAS_AN_AGREEMENT_BEEN_REACHED" : {
       "PAGE_TITLE": "Has an agreement been reached about disclosure of electronic documents?",
@@ -4077,6 +4083,7 @@
     "CHOOSE_COMPLEXITY_BAND": "Indicate which complexity band you believe this claim falls into",
     "HAS_AN_AGREEMENT_BEEN_REACHED" : "Indicate if agreement has been reached about what electronic documents will be disclosed",
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Indicate if there are any documents the claimants have that you want the court to consider",
+    "DEFENDANT_DOCS_FOR_DISCLOSURE" : "Indicate if there are any documents the defendants have that you want the court to consider",
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Give details of the issues about disclosure of non-electronic documents",
     "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : "Give details of the issues about disclosure of electronic documents",
     "CLAIMANT_DOCUMENTS_CONSIDERED" : "Give details of the documents the claimants have that you want the court to consider",

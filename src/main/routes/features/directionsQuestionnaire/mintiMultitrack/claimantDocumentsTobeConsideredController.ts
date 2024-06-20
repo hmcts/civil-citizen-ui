@@ -8,38 +8,36 @@ import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
-import {t} from 'i18next';
 
 const claimantDocumentsTobeConsideredController = Router();
 const hasClaimantDocumentsToBeConsideredViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/claimant-documents-to-be-considered';
-const CLAIMANT_DOCS_FOR_DISCLOSURE_PAGE = 'PAGES.CLAIMANT_DOCS_FOR_DISCLOSURE.';
+const CLAIMANT_DOCS_FOR_DISCLOSURE_PAGE = 'PAGES.DOCS_FOR_DISCLOSURE.';
 
-function renderView(hasClaimantDocumentsToBeConsidered: GenericForm<GenericYesNo>, claimId: string, isClaimant: boolean, lng: string, res: Response): void {
+function renderView(hasClaimantDocumentsToBeConsidered: GenericForm<GenericYesNo>, isClaimant: boolean, res: Response): void {
   const form = hasClaimantDocumentsToBeConsidered;
-  const userRoleKey = isClaimant ? 'DEFENDANT': 'CLAIMANT';
-  const userRole = t(`COMMON.${userRoleKey}`, {lng});
+  const userRoleKey = isClaimant ? 'WITH_DEFENDANT': 'WITH_CLAIMANT';
   res.render(hasClaimantDocumentsToBeConsideredViewPath, {
     form,
-    pageTitle: t(`${CLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}PAGE_TITLE`, {lng, userRole}),
-    title: t(`${CLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}TITLE`, {lng, userRole}),
-    componentText: t(`${CLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}PAGE_TITLE`, {lng, userRole}),
+    pageTitle: `${CLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}PAGE_TITLE_${userRoleKey}`,
+    title: `DOCUMENTS_TO_BE_CONSIDERED.TITLE_${userRoleKey}`,
+    componentText: `${CLAIMANT_DOCS_FOR_DISCLOSURE_PAGE}COMPONENT_TEXT_${userRoleKey}`,
     backLinkUrl: BACK_URL,
   });
 }
 
 claimantDocumentsTobeConsideredController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
+    const directionQuestionnaire = await getDirectionQuestionnaire(redisKey);
     const hasClaimantDocumentsToBeConsidered = directionQuestionnaire.hearing?.hasClaimantDocumentsToBeConsidered ?
       new GenericYesNo(directionQuestionnaire.hearing?.hasClaimantDocumentsToBeConsidered?.option) : new GenericYesNo();
-    renderView(new GenericForm(hasClaimantDocumentsToBeConsidered), claimId, false, lang, res);
+    renderView(new GenericForm(hasClaimantDocumentsToBeConsidered), claim.isClaimant(), res);
   } catch (error) {
     next(error);
   }
@@ -48,15 +46,16 @@ claimantDocumentsTobeConsideredController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_T
 claimantDocumentsTobeConsideredController.post(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-
-    const hasClaimantDocumentsToBeConsideredForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.CLAIMANT_DOCS_FOR_DISCLOSURE'));
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
+    const hasClaimantDocumentsToBeConsideredForm = new GenericForm(new GenericYesNo(req.body.option, claim.isClaimant()? 'ERRORS.DEFENDANT_DOCS_FOR_DISCLOSURE' : 'ERRORS.CLAIMANT_DOCS_FOR_DISCLOSURE'));
     hasClaimantDocumentsToBeConsideredForm.validateSync();
     if (hasClaimantDocumentsToBeConsideredForm.hasErrors()) {
-      renderView(hasClaimantDocumentsToBeConsideredForm, claimId,true, lang, res);
+
+      renderView(hasClaimantDocumentsToBeConsideredForm, claim.isClaimant(), res);
     } else {
       await saveDirectionQuestionnaire(
-        generateRedisKey(<AppRequest>req),
+        redisKey,
         hasClaimantDocumentsToBeConsideredForm.model,
         'hasClaimantDocumentsToBeConsidered',
         'hearing');

@@ -15,6 +15,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {YesNo} from 'form/models/yesNo';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -23,8 +24,9 @@ jest.mock('../../../../../../main/services/features/mediation/unavailableDatesFo
 
 const CONTROLLER_URL = DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL;
 
-function getClaim() {
+function getClaim(caseRole = CaseRole.DEFENDANT) {
   const claim = new Claim();
+  claim.caseRole =  caseRole;
   claim.respondent1 = new Party();
   claim.respondent1.partyPhone = {phone: '111111'};
   claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
@@ -52,6 +54,19 @@ describe('claimant Documents to be considered Controller', () => {
         .get(CONTROLLER_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain('Claimant documents to be considered');
+        });
+    });
+
+    it('should open Defendant documents to be considered page without value', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        return getClaim(CaseRole.CLAIMANT);
+      });
+      await request(app)
+        .get(CONTROLLER_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Defendant documents to be considered');
         });
     });
 
@@ -68,10 +83,28 @@ describe('claimant Documents to be considered Controller', () => {
         .get(CONTROLLER_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain('Claimant documents to be considered');
         });
     });
 
-    it('should open  Claimant documents to be considered page with no', async () => {
+    it('should open Defendant documents to be considered page with yes', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = getClaim(CaseRole.CLAIMANT);
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.hearing = new Hearing();
+        claim.directionQuestionnaire.hearing.hasClaimantDocumentsToBeConsidered = {option: YesNo.YES};
+        return claim;
+      });
+
+      await request(app)
+        .get(CONTROLLER_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Defendant documents to be considered');
+        });
+    });
+
+    it('should open Claimant documents to be considered page with no', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = getClaim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
@@ -84,6 +117,24 @@ describe('claimant Documents to be considered Controller', () => {
         .get(CONTROLLER_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain('Claimant documents to be considered');
+        });
+    });
+
+    it('should open Defendant documents to be considered page with no', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = getClaim(CaseRole.CLAIMANT);
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.hearing = new Hearing();
+        claim.directionQuestionnaire.hearing.hasClaimantDocumentsToBeConsidered = {option: YesNo.NO};
+        return claim;
+      });
+
+      await request(app)
+        .get(CONTROLLER_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Defendant documents to be considered');
         });
     });
 
