@@ -51,6 +51,7 @@ describe('Check your Answers GA Guard', () => {
       new UploadGAFiles(),
       new StatementOfTruthForm(false, ''),
       new GaHelpWithFees(),
+      YesNo.NO,
     );
     mockGetCaseData.mockImplementation(async () => claim);
     //When
