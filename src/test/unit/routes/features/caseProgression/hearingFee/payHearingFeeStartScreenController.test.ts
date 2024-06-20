@@ -8,11 +8,12 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PAY_HEARING_FEE_URL} from 'routes/urls';
 import {FIXED_DATE} from '../../../../../utils/dateUtils';
 import {CaseRole} from 'form/models/caseRoles';
+import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
-
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 describe('Pay Hearing Fee Start Screen Controller', () => {
   const civilServiceUrl = config.get<string>('services.civilService.url');
   const idamUrl: string = config.get('idamUrl');
@@ -41,7 +42,9 @@ describe('Pay Hearing Fee Start Screen Controller', () => {
         return done();
       });
   });
-
+  beforeEach(()=> {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+  });
   it('should return expected pay hearing fee page when claim exists', async () => {
     //Given
     app.locals.draftStoreClient = mockCivilClaimFastTrack;

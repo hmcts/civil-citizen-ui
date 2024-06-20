@@ -12,10 +12,12 @@ import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {mockCivilClaim, mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import civilClaimResponseFastTrackMock from '../../../../../utils/mocks/civilClaimResponseFastTrackMock.json';
+import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('services/features/caseProgression/trialArrangements/hearingDurationAndOtherInformation');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;
@@ -31,7 +33,9 @@ describe('Hearing duration & other info - On GET', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-
+  beforeEach(()=> {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+  });
   it('should render page successfully in English if cookie has correct values', async () => {
     //Given
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
@@ -78,6 +82,7 @@ describe('Hearing duration & other information - on POST', () => {
 
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 
   it('should redirect when other information is filled in', async () => {
