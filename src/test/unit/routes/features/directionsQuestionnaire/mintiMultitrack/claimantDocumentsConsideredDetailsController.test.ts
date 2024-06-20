@@ -3,8 +3,8 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
+  DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
   DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL,
-  DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
@@ -99,7 +99,7 @@ describe('Claimant documents considered details controller', () => {
         .send({claimantDocumentsConsideredDetails: 'test'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL);
+          expect(res.get('location')).toBe(DQ_DEFENDANT_EXPERT_EVIDENCE_URL);
         });
     });
 

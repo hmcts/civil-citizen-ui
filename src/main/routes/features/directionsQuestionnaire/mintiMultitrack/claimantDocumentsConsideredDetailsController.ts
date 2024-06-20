@@ -1,8 +1,8 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  BACK_URL,
-  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
+  BACK_URL, DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL,
 } from 'routes/urls';
 import {
   getDirectionQuestionnaire,
@@ -54,7 +54,7 @@ claimantDocumentsConsideredDetailsController.post(DQ_MULTITRACK_CLAIMANT_DOCUMEN
         'claimantDocumentsConsideredDetails',
         'hearing');
 
-      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL)); //todo change redirect url
+      res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_EVIDENCE_URL));
     }
 
   } catch (error) {
