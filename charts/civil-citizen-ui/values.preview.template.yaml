@@ -382,6 +382,7 @@ civil-general-applications:
       FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
       GENAPP_LRD_URL: http://rd-location-ref-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       PAY_CALLBACK_URL: https://${SERVICE_NAME}-general-applications.preview.platform.hmcts.net/service-request-update

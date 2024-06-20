@@ -1,22 +1,24 @@
 import request from 'supertest';
-import {app} from '../../../../main/app';
+import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  CANCEL_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL,
+  DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, REQUEST_FOR_RECONSIDERATION_CANCEL_URL,
 } from 'routes/urls';
-import {TestMessages} from '../../../utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as utilityService from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {CaseRole} from 'form/models/caseRoles';
+import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
-jest.mock('../../../../main/modules/oidc');
-jest.mock('../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../main/modules/utilityService');
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/utilityService');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 
-const CONTROLLER_URL = CANCEL_URL;
+const CONTROLLER_URL = REQUEST_FOR_RECONSIDERATION_CANCEL_URL;
 
 describe('Cancel controller ', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -27,6 +29,9 @@ describe('Cancel controller ', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  });
+  beforeEach(()=> {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 
   describe('on GET', () => {
