@@ -1613,7 +1613,8 @@
         "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline.",
         "SDO_ORDER_LEGAL_ADVISER_STATUS": "Send us more details before the hearing",
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
-        "WAITING_COURT_REVIEW": "Wait for the court to review the case."
+        "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
+        "HEARING_FEE_UNPAID": "This claim has been struck out."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
@@ -1654,7 +1655,8 @@
         "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
-        "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement."
+        "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement.",
+        "HEARING_FEE_UNPAID": "This claim has been struck out."
       },
       "SUPPORT_LINKS": {
         "CONTACT_COURT": "Contact the court to request a change to my case (make an application)",
