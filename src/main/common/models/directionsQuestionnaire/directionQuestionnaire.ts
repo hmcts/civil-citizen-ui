@@ -75,6 +75,15 @@ export class DirectionQuestionnaire {
 
   }
 
+  get isIntermediateOrMultiTrackDQJourneyCompleted(): boolean {
+    return this.hearing?.triedToSettle &&
+      this.hearing?.requestExtra4weeks &&
+      this.hearing?.hasClaimantDocumentsToBeConsidered &&
+      this.isExpertEvidenceJourneyCompleted &&
+      this.isCommonDQJourneyCompleted;
+
+  }
+
   get isCommonDQJourneyCompleted(): boolean {
     return !!(this.defendantYourselfEvidence &&
       this.witnesses?.otherWitnesses &&
