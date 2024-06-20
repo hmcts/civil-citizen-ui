@@ -544,11 +544,12 @@
         "HINT": "Please give details"
       }
     },
-    "CLAIMANT_DOCUMENTS_CONSIDERED_DETAILS" : {
-      "PAGE_TITLE": "What documents does the claimant have that you would like the court to consider?",
-      "TITLE": "Claimant documents to be considered",
+    "DOCUMENTS_CONSIDERED_DETAILS" : {
+      "PAGE_TITLE_WITH_CLAIMANT": "What documents does the claimant have that you would like the court to consider?",
+      "PAGE_TITLE_WITH_DEFENDANT": "What documents does the claimant have that you would like the court to consider?",
       "TEXT_AREA" : {
-        "LABEL": "What are the documents the claimants have that you want the court to consider?",
+        "LABEL_WITH_CLAIMANT": "What are the documents the claimants have that you want the court to consider?",
+        "LABEL_WITH_DEFENDANT": "What are the documents the defendants have that you want the court to consider?",
         "HINT": "Please give details"
       }
     },

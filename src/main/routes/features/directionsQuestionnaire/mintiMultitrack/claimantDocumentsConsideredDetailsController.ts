@@ -8,7 +8,7 @@ import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
@@ -17,24 +17,28 @@ import {
 
 const claimantDocumentsConsideredDetailsController = Router();
 const claimantDocumentsConsideredDetailsViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/claimant-documents-considered-details';
-const DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE = 'PAGES.CLAIMANT_DOCUMENTS_CONSIDERED_DETAILS.';
+const DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE = 'PAGES.DOCUMENTS_CONSIDERED_DETAILS.';
 
-function renderView(details: GenericForm<ClaimantDocumentsConsideredDetails>, res: Response): void {
+function renderView(details: GenericForm<ClaimantDocumentsConsideredDetails>, isClaimant: boolean, res: Response): void {
+  const userRoleKey = isClaimant ? 'WITH_DEFENDANT': 'WITH_CLAIMANT';
+
   res.render(claimantDocumentsConsideredDetailsViewPath, {
     form : details,
-    pageTitle: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}PAGE_TITLE`,
-    title: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}TITLE`,
+    pageTitle: `${DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE}PAGE_TITLE_${userRoleKey}`,
+    title: `DOCUMENTS_TO_BE_CONSIDERED.TITLE_${userRoleKey}`,
     backLinkUrl: BACK_URL,
   });
 }
 
 claimantDocumentsConsideredDetailsController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL, (async (req, res, next: NextFunction) => {
   try {
-    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
+    const directionQuestionnaire = await getDirectionQuestionnaire(redisKey);
     const details = directionQuestionnaire.hearing?.claimantDocumentsConsideredDetails ?
       new ClaimantDocumentsConsideredDetails(directionQuestionnaire.hearing.claimantDocumentsConsideredDetails) : new ClaimantDocumentsConsideredDetails();
 
-    renderView(new GenericForm(details) , res);
+    renderView(new GenericForm(details) ,claim.isClaimant(), res);
   } catch (error) {
     next(error);
   }
@@ -43,10 +47,12 @@ claimantDocumentsConsideredDetailsController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENT
 claimantDocumentsConsideredDetailsController.post(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
     const form = new GenericForm(new ClaimantDocumentsConsideredDetails(req.body.claimantDocumentsConsideredDetails));
     form.validateSync();
     if (form.hasErrors()) {
-      renderView(form, res);
+      renderView(form, claim.isClaimant(), res);
     } else {
       await saveDirectionQuestionnaire(
         generateRedisKey(<AppRequest>req),

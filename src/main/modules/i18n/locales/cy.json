@@ -537,14 +537,14 @@
       }
     },
     "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : {
-      "PAGE_TITLE": "Beth yw'r materion sy'n ymwneud â datgelu dogfennau electronig",
-      "TITLE": "Datgelu dogfennau electronig",
+      "PAGE_TITLE_WITH_CLAIMANT": "Beth yw'r materion sy'n ymwneud â datgelu dogfennau electronig",
+      "PAGE_TITLE_WITH_CLAIMANT": "Beth yw'r materion sy'n ymwneud â datgelu dogfennau electronig",
       "TEXT_AREA" : {
-        "LABEL": "Beth yw'r materion sy'n ymwneud â datgelu dogfennau electronig",
+        "LABEL_WITH_CLAIMANT": "Beth yw'r materion sy'n ymwneud â datgelu dogfennau electronig",
         "HINT": "Rhowch fanylion"
       }
     },
-    "CLAIMANT_DOCUMENTS_CONSIDERED_DETAILS" : {
+    "DOCUMENTS_CONSIDERED_DETAILS" : {
       "PAGE_TITLE": "Beth yw'r dogfennau sydd gan yr hawlwyr rydych chi am i'r llys eu hystyried?",
       "TITLE": "Dogfennau hawlydd i'w hystyried",
       "TEXT_AREA" : {
