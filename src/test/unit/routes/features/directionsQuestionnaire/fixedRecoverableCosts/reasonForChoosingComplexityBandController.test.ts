@@ -3,7 +3,7 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  SUBJECT_TO_FRC_URL,
+  REASON_FOR_FRC_BAND_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
@@ -11,15 +11,13 @@ import {Party} from 'models/party';
 import {CaseState} from 'form/models/claimDetails';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
-import {YesNo} from 'form/models/yesNo';
 import {FixedRecoverableCosts} from 'models/directionsQuestionnaire/fixedRecoverableCosts/fixedRecoverableCosts';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/services/features/mediation/unavailableDatesForMediationService');
 
-const CONTROLLER_URL = SUBJECT_TO_FRC_URL;
+const CONTROLLER_URL = REASON_FOR_FRC_BAND_URL;
 
 function getClaim() {
   const claim = new Claim();
@@ -29,7 +27,7 @@ function getClaim() {
   return claim;
 }
 
-describe('Subject to Fixed recoverable costs Controller', () => {
+describe('Reasons for choosing complexity band Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
@@ -42,7 +40,7 @@ describe('Subject to Fixed recoverable costs Controller', () => {
   });
 
   describe('on GET', () => {
-    it('should open subject to fixed recoverable costs page without value', async () => {
+    it('should open reasons for choosing complexity band page without value', async () => {
       mockGetCaseData.mockImplementation(async () => {
         return getClaim();
       });
@@ -53,28 +51,12 @@ describe('Subject to Fixed recoverable costs Controller', () => {
         });
     });
 
-    it('should open subject to fixed recoverable costs page with yes', async () => {
+    it('should open reasons for choosing complexity band page with value', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = getClaim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
         claim.directionQuestionnaire.fixedRecoverableCosts = new FixedRecoverableCosts();
-        claim.directionQuestionnaire.fixedRecoverableCosts.subjectToFrc = {option: YesNo.YES};
-        return claim;
-      });
-
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
-    });
-
-    it('should open subject to fixed recoverable costs page with no', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = getClaim();
-        claim.directionQuestionnaire = new DirectionQuestionnaire();
-        claim.directionQuestionnaire.fixedRecoverableCosts = new FixedRecoverableCosts();
-        claim.directionQuestionnaire.fixedRecoverableCosts.subjectToFrc = {option: YesNo.NO};
+        claim.directionQuestionnaire.fixedRecoverableCosts.reasonsForBandSelection = 'test';
         return claim;
       });
 
@@ -109,33 +91,13 @@ describe('Subject to Fixed recoverable costs Controller', () => {
       });
     });
 
-    it('should redirect when subject to fixed recoverable costs is yes ', async () => {
+    it('should redirect to next page', async () => {
       await request(app)
         .post(CONTROLLER_URL)
-        .send({option: YesNo.YES})
+        .send({reasonsForBandSelection: 'test'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
           expect(res.get('location')).toBe('todo');
-        });
-    });
-
-    it('should redirect when subject to fixed recoverable costs is NO', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: YesNo.YES})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
-        });
-    });
-
-    it('should validate the field is empty', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
         });
     });
 
@@ -146,7 +108,7 @@ describe('Subject to Fixed recoverable costs Controller', () => {
       });
       await request(app)
         .post(CONTROLLER_URL)
-        .send({option: YesNo.YES})
+        .send({reasonsForBandSelection: 'test'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
