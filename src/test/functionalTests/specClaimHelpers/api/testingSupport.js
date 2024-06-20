@@ -31,7 +31,7 @@ const checkToggleEnabled = async (toggle) => {
 };
 
 const isDashboardServiceToggleEnabled = async () => {
-  let toggleValue =  await checkToggleEnabled('cuiReleaseTwoEnabled');
+  let toggleValue =  await checkToggleEnabled('is-dashboard-enabled-for-case');
   return toggleValue;
 };
 
