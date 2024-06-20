@@ -3,7 +3,7 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
   DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
@@ -13,6 +13,10 @@ import {CaseState} from 'form/models/claimDetails';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
+import {
+  DisclosureOfDocuments,
+  TypeOfDisclosureDocument
+} from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -93,13 +97,39 @@ describe('Disclosure Of Electronic Documents Issues Controller', () => {
       });
     });
 
-    it('should redirect to claim documents to be considered page', async () => {
+    it('should redirect to claim documents to be considered page if non-electronic docs option was not chosen previously', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = getClaim();
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.hearing = new Hearing();
+        claim.directionQuestionnaire.hearing.disclosureOfDocuments = new DisclosureOfDocuments();
+        claim.directionQuestionnaire.hearing.disclosureOfDocuments.documentsTypeChosen = [TypeOfDisclosureDocument.ELECTRONIC];
+        return claim;
+      });
       await request(app)
         .post(CONTROLLER_URL)
         .send({disclosureOfElectronicDocumentsIssues: 'test'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL);
+        });
+    });
+
+    it('should redirect to non-electronic documents disclosure if non-electronic docs option was not chosen previously', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = getClaim();
+        claim.directionQuestionnaire = new DirectionQuestionnaire();
+        claim.directionQuestionnaire.hearing = new Hearing();
+        claim.directionQuestionnaire.hearing.disclosureOfDocuments = new DisclosureOfDocuments();
+        claim.directionQuestionnaire.hearing.disclosureOfDocuments.documentsTypeChosen = [TypeOfDisclosureDocument.ELECTRONIC, TypeOfDisclosureDocument.NON_ELECTRONIC];
+        return claim;
+      });
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send({disclosureOfElectronicDocumentsIssues: 'test'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL);
         });
     });
 
