@@ -668,6 +668,23 @@ describe('Latest Update Content Builder', () => {
     });
   });
 
+  describe('test Claim Taken offline buildResponseToClaimSection', () => {
+    it('should have build claim taken offline section', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
+      claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+      claim.takenOfflineDate = new Date();
+
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(2);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIM_TAKEN_OFFLINE_TITLE');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIM_TAKEN_OFFLINE_MESSAGE');
+      expect(responseToClaimSection[2]).toBeUndefined();
+    });
+  });
+
   describe('test Claim mediation successfull buildResponseToClaimSection', () => {
     it('should have build mediation successfull section', () => {
       // Given
