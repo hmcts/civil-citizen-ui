@@ -22,9 +22,9 @@ import {GaHelpWithFees} from 'common/models/generalApplication/gaHelpWithFees';
 import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 
+jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../main/modules/draft-store');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
@@ -33,10 +33,6 @@ const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
 
 describe('Check your Answers GA Guard', () => {
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
 
   it('should call next if GA journey is complete', async () => {
     //Given
