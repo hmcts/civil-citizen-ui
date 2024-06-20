@@ -1,11 +1,10 @@
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {NextFunction, Response} from 'express';
-import {AppRequest} from 'models/AppRequest';
+import {NextFunction, Request, Response} from 'express';
 import {getClaimById} from 'modules/utilityService';
 import {APPLICATION_TYPE_URL} from 'routes/urls';
 
-export const checkYourAnswersGAGuard = async (req: AppRequest, res: Response, next: NextFunction) => {
+export const checkYourAnswersGAGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim: Claim = await getClaimById(claimId, req, true);

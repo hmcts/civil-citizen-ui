@@ -1,5 +1,4 @@
 import { YesNo } from 'common/form/models/yesNo';
-import { AppRequest } from 'common/models/AppRequest';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
@@ -7,10 +6,8 @@ import { HearingArrangement, HearingTypeOptions } from 'common/models/generalApp
 import { HearingContactDetails } from 'common/models/generalApplication/hearingContactDetails';
 import { OrderJudge } from 'common/models/generalApplication/orderJudge';
 import { RequestingReason } from 'common/models/generalApplication/requestingReason';
-import {NextFunction, Response} from 'express';
-//import * as utilityService from 'modules/utilityService';
+import {Request, NextFunction, Response} from 'express';
 import { checkYourAnswersGAGuard } from 'routes/guards/checkYourAnswersGAGuard';
-//import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {
   UnavailableDatePeriodGaHearing,
   UnavailableDatesGaHearing,
@@ -21,18 +18,17 @@ import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {GaHelpWithFees} from 'common/models/generalApplication/gaHelpWithFees';
 
-jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../main/modules/draft-store');
 
-//const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
-const MOCK_REQUEST = { params: { id: '123' } } as unknown as AppRequest;
+const MOCK_REQUEST = { params: { id: '123' } } as unknown as Request;
 const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
-
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Check your Answers GA Guard', () => {
   it('should call next if GA journey is complete', async () => {
@@ -54,16 +50,13 @@ describe('Check your Answers GA Guard', () => {
       new GaResponse(),
       new UploadGAFiles(),
       new StatementOfTruthForm(false, ''),
-      YesNo.NO,
+      new GaHelpWithFees(),
     );
-
-    // Mock getClaimById
-    //jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
     mockGetCaseData.mockImplementation(async () => claim);
     //When
     await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
-    expect(MOCK_NEXT()).toHaveBeenCalled();
+    expect(MOCK_NEXT).toHaveBeenCalled();
   });
 
 /*  it('should call redirect GA journey is not complete', async () => {
