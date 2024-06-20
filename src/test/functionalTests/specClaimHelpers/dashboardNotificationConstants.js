@@ -173,10 +173,9 @@ module.exports = {
   claimantNotificationCCJRequested: () => {
     return {
       title: 'You requested a County Court Judgment against Sir John Doe',
-      content: ['You accepted the repayment plan.',
-        'When we\'ve processed the request, we\'ll post a copy of the judgment to you.'],
+      content: 'You accepted the repayment plan. When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
       nextSteps: 'Tell us it\'s paid',
-      nextSteps2: 'repayment plan.',
+      nextSteps2: 'repayment plan',
       //Nextsteps might be wrong?
     };
   },
@@ -196,7 +195,7 @@ module.exports = {
     return {
       title: 'The claim has been struck out',
       content: 'This is because the hearing fee was not paid by 10 November 2023 as stated in the hearing notice.',
-      nextSteps: 'hearing notice.',
+      nextSteps: 'hearing notice',
     };
   },
 
