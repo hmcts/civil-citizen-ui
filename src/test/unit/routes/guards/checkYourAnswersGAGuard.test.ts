@@ -21,6 +21,7 @@ import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {GaHelpWithFees} from "models/generalApplication/gaHelpWithFees";
 
 jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
@@ -54,6 +55,7 @@ describe('Check your Answers GA Guard', () => {
       new GaResponse(),
       new UploadGAFiles(),
       new StatementOfTruthForm(false, ''),
+      new GaHelpWithFees(),
       YesNo.NO,
     );
 
