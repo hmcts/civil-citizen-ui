@@ -10,7 +10,7 @@ import {
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {ReasonForNotSubjectToFrc} from "models/directionsQuestionnaire/fixedRecoverableCosts/reasonForNotSubjectToFRC";
+import {ReasonForNotSubjectToFrc} from 'models/directionsQuestionnaire/fixedRecoverableCosts/reasonForNotSubjectToFRC';
 const whyNotSubjectToFRCController = Router();
 const reasonForNotSubjectToFRCViewPath = 'features/directionsQuestionnaire/fixedRecoverableCosts/why-not-subject-to-frc';
 const WHY_NOT_SUBJECT_TO_FRC_PAGE = 'PAGES.WHY_NOT_SUBJECT_TO_FRC.';

@@ -3,7 +3,7 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-   WHY_NOT_SUBJECT_TO_FRC_URL,
+  WHY_NOT_SUBJECT_TO_FRC_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
@@ -94,7 +94,7 @@ describe('Reasons for not being subject to FRC', () => {
     it('should redirect to next page', async () => {
       await request(app)
         .post(CONTROLLER_URL)
-        .send({reasonsForBandSelection: 'test'})
+        .send({reasonsForNotSubjectToFrc: 'important reasons, probably'})
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe('todo');
