@@ -504,8 +504,8 @@
       }
     },
     "CLAIMANT_DOCS_FOR_DISCLOSURE" : {
-      "PAGE_TITLE": "Are there any documents the claimants have that you want the court to consider?",
-      "TITLE": "Claimant documents to be considered"
+      "PAGE_TITLE": "Are there any documents the {{userRole}} have that you want the court to consider?",
+      "TITLE": "{{userRole}} documents to be considered"
     },
     "HAS_AN_AGREEMENT_BEEN_REACHED" : {
       "PAGE_TITLE": "Has an agreement been reached about disclosure of electronic documents?",
