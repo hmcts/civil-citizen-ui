@@ -19,6 +19,8 @@ import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {GaHelpWithFees} from 'common/models/generalApplication/gaHelpWithFees';
+import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
@@ -31,6 +33,11 @@ const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
 
 describe('Check your Answers GA Guard', () => {
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should call next if GA journey is complete', async () => {
     //Given
     const claim = new Claim();
@@ -52,6 +59,8 @@ describe('Check your Answers GA Guard', () => {
       new StatementOfTruthForm(false, ''),
       new GaHelpWithFees(),
       YesNo.NO,
+      new UploadGAFiles(),
+      new GenericYesNo(YesNo.NO, 'no'),
     );
     mockGetCaseData.mockImplementation(async () => claim);
     //When
@@ -60,15 +69,162 @@ describe('Check your Answers GA Guard', () => {
     expect(MOCK_NEXT).toHaveBeenCalled();
   });
 
-/*  it('should call redirect GA journey is not complete', async () => {
+  it('should call next if GA journey is complete for Vary Judgement', async () => {
     //Given
     const claim = new Claim();
-    jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
+    const unavailableDates =
+      new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
+        {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()});
+    const n245Form = new FileUpload();
+    n245Form.fieldname = 'n245';
+    n245Form.size = 12;
+
+    claim.generalApplication = new GeneralApplication(
+      new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT),
+      YesNo.YES,
+      YesNo.YES,
+      new RequestingReason('test'),
+      new OrderJudge('test'),
+      new UnavailableDatesGaHearing([unavailableDates]),
+      new HearingArrangement(HearingTypeOptions.PERSON_AT_COURT, 'test'),
+      new HearingContactDetails('test', 'test'),
+      new GaResponse(),
+      new UploadGAFiles(),
+      new StatementOfTruthForm(false, ''),
+      new GaHelpWithFees(),
+      YesNo.NO,
+      new UploadGAFiles(n245Form),
+      new GenericYesNo(YesNo.NO, 'no'),
+    );
+    mockGetCaseData.mockImplementation(async () => claim);
     //When
-    await checkYourAnswersGAGuard(req as AppRequest, res as Response, next);
+    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
-    expect(next).not.toHaveBeenCalled();
-    expect(res.redirect).toHaveBeenCalled();
-  });*/
+    expect(MOCK_NEXT).toHaveBeenCalled();
+  });
+
+  it('should call next if GA journey is complete for RELIEF_FROM_SANCTIONS', async () => {
+    //Given
+    const claim = new Claim();
+    const unavailableDates =
+      new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
+        {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()});
+
+    claim.generalApplication = new GeneralApplication(
+      new ApplicationType(ApplicationTypeOption.RELIEF_FROM_SANCTIONS),
+      YesNo.YES,
+      YesNo.YES,
+      new RequestingReason('test'),
+      new OrderJudge('test'),
+      new UnavailableDatesGaHearing([unavailableDates]),
+      new HearingArrangement(HearingTypeOptions.PERSON_AT_COURT, 'test'),
+      new HearingContactDetails('test', 'test'),
+      new GaResponse(),
+      new UploadGAFiles(),
+      new StatementOfTruthForm(false, ''),
+      new GaHelpWithFees(),
+      YesNo.NO,
+      new UploadGAFiles(),
+      new GenericYesNo(YesNo.YES),
+    );
+    mockGetCaseData.mockImplementation(async () => claim);
+    //When
+    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_NEXT).toHaveBeenCalled();
+  });
+
+  it('should call next if GA journey is complete for SETTLE_BY_CONSENT', async () => {
+    //Given
+    const claim = new Claim();
+    const unavailableDates =
+      new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
+        {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()});
+
+    claim.generalApplication = new GeneralApplication(
+      new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT),
+      YesNo.YES,
+      YesNo.YES,
+      new RequestingReason('test'),
+      new OrderJudge('test'),
+      new UnavailableDatesGaHearing([unavailableDates]),
+      new HearingArrangement(HearingTypeOptions.PERSON_AT_COURT, 'test'),
+      new HearingContactDetails('test', 'test'),
+      new GaResponse(),
+      new UploadGAFiles(),
+      new StatementOfTruthForm(false, ''),
+      new GaHelpWithFees(),
+      YesNo.NO,
+      new UploadGAFiles(),
+      new GenericYesNo(YesNo.YES),
+    );
+    mockGetCaseData.mockImplementation(async () => claim);
+    //When
+    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_NEXT).toHaveBeenCalled();
+  });
+
+  it('should call next if GA journey is complete for Summary Judgement', async () => {
+    //Given
+    const claim = new Claim();
+    const unavailableDates =
+      new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
+        {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()});
+
+    claim.generalApplication = new GeneralApplication(
+      new ApplicationType(ApplicationTypeOption.SUMMARY_JUDGMENT),
+      YesNo.YES,
+      YesNo.YES,
+      new RequestingReason('test'),
+      new OrderJudge('test'),
+      new UnavailableDatesGaHearing([unavailableDates]),
+      new HearingArrangement(HearingTypeOptions.PERSON_AT_COURT, 'test'),
+      new HearingContactDetails('test', 'test'),
+      new GaResponse(),
+      new UploadGAFiles(),
+      new StatementOfTruthForm(false, ''),
+      new GaHelpWithFees(),
+      YesNo.NO,
+      new UploadGAFiles(),
+      new GenericYesNo(YesNo.YES),
+    );
+    mockGetCaseData.mockImplementation(async () => claim);
+    //When
+    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_NEXT).toHaveBeenCalled();
+  });
+
+  it('should not call next if GA journey is incomplete', async () => {
+    //Given
+    const claim = new Claim();
+    const unavailableDates =
+      new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
+        {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()});
+
+    claim.generalApplication = new GeneralApplication(
+      new ApplicationType(),
+      YesNo.YES,
+      YesNo.YES,
+      new RequestingReason('test'),
+      new OrderJudge('test'),
+      new UnavailableDatesGaHearing([unavailableDates]),
+      new HearingArrangement(HearingTypeOptions.PERSON_AT_COURT, 'test'),
+      new HearingContactDetails('test', 'test'),
+      new GaResponse(),
+      new UploadGAFiles(),
+      new StatementOfTruthForm(false, ''),
+      new GaHelpWithFees(),
+      YesNo.NO,
+      new UploadGAFiles(),
+      new GenericYesNo(YesNo.YES),
+    );
+    mockGetCaseData.mockImplementation(async () => claim);
+    //When
+    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_NEXT).not.toHaveBeenCalled();
+  });
 
 });
