@@ -19,7 +19,7 @@ import {
 } from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReachedOptions';
 import {
   DisclosureOfDocuments,
-  TypeOfDisclosureDocument
+  TypeOfDisclosureDocument,
 } from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 
 jest.mock('../../../../../../main/modules/oidc');
