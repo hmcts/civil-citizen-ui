@@ -689,6 +689,7 @@ describe('Latest Update Content Builder', () => {
     it('should have build mediation successfull section', () => {
       // Given
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
+      claim.ccdState = CaseState.CASE_STAYED;
       claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
       claim.mediationAgreement = <MediationAgreement>{
         name: 'test',
