@@ -493,6 +493,10 @@ export class Claim {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
 
+  isCaseIssuedPending(): boolean {
+    return this.ccdState === CaseState.PENDING_CASE_ISSUED;
+  }
+
   isClaimantIntentionPending(): boolean {
     return this.ccdState === CaseState.AWAITING_APPLICANT_INTENTION;
   }
