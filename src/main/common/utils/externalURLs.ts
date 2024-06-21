@@ -20,3 +20,6 @@ export const representYourselfUrl = 'https://www.gov.uk/represent-yourself-in-co
 export const findLegalAdviceUrl = 'https://www.gov.uk/find-legal-advice';
 export const findCourtTribunalUrl = 'https://www.gov.uk/find-court-tribunal';
 export const formN245Url = 'https://www.gov.uk/government/publications/form-n245-application-for-suspension-of-a-warrant-and-or-variation-of-an-order';
+export const bsGuidanceForCreditors = 'https://www.gov.uk/government/publications/debt-respite-scheme-breathing-space-guidance/debt-respite-scheme-breathing-space-guidance-for-creditors';
+export const bsCreditorsResponsibilities  = 'https://www.gov.uk/guidance/debt-respite-breathing-space-scheme-creditors-responsibilities-to-the-court';
+export const applyingToCourtAsCreditor='https://www.gov.uk/guidance/applying-to-the-court-as-a-creditor-of-a-debt-in-a-breathing-space';
