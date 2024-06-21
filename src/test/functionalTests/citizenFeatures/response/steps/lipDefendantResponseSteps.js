@@ -609,7 +609,7 @@ class ResponseSteps {
   }
 
   async EnterClaimantExpertDetails() {
-   await expertReportDetails.claimantExpertDetails();
+    await expertReportDetails.claimantExpertDetails();
   }
 
   async SelectGiveEvidenceYourself() {

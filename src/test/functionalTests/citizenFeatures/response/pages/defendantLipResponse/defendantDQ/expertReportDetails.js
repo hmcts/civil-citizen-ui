@@ -13,7 +13,7 @@ const fields ={
   claimantExpertFirstName:'input[@id="items[0][firstName]"]',
   claimantExpertLastName:'input[@id="items[0][lastName]"]',
   claimantFieldOfExpertise:'input[@id="items[0][fieldOfExpertise]"]',
-  claimantWhyNeedExpert:'textarea[@id="items[0][whyNeedExpert]"]'
+  claimantWhyNeedExpert:'textarea[@id="items[0][whyNeedExpert]"]',
 };
 
 const content = {
