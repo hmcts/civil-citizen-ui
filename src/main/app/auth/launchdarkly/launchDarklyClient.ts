@@ -12,7 +12,7 @@ async function getClient(): Promise<void> {
   }
 }
 
-async function getUser(epoch: any): Promise<LDUser> {
+async function getUser(epoch: string): Promise<LDUser> {
   const launchDarklyEnv = config.get<string>('services.launchDarkly.env');
   let user: LDUser = {'name': 'civil-service', 'key': 'civil-service'};
 
@@ -30,7 +30,7 @@ async function getUser(epoch: any): Promise<LDUser> {
 }
 
 export async function getFlagValue(
-  key: string, epoch ?:Date,
+  key: string, epoch?: string,
 ): Promise<LDFlagValue> {
   if (!ldClient) await getClient();
   if (ldClient)
@@ -52,12 +52,11 @@ export async function isPcqShutterOn(): Promise<boolean> {
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
   return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
 }
-export async function isDashboardServiceEnabled(): Promise<boolean> {
-  return await getFlagValue('dashboard-service') as boolean;
-}
+
 export async function isCARMEnabled(): Promise<boolean> {
   return await getFlagValue('carm') as boolean;
 }
+
 export async function isGaForLipsEnabled(): Promise<boolean> {
   return await getFlagValue('GaForLips') as boolean;
 }
