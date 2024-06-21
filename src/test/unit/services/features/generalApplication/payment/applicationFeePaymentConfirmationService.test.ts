@@ -1,4 +1,3 @@
-import {CivilServiceClient} from 'client/civilServiceClient';
 import * as requestModels from 'models/AppRequest';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../../../main/app';
@@ -6,6 +5,7 @@ import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {GA_PAYMENT_SUCCESSFUL_URL, GA_PAYMENT_UNSUCCESSFUL_URL, DASHBOARD_URL} from 'routes/urls';
 import { getRedirectUrl } from 'services/features/generalApplication/payment/applicationFeePaymentConfirmationService';
+import { GaServiceClient } from 'client/gaServiceClient';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/courtLocationCache');
@@ -15,7 +15,7 @@ declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 const claimId = '1';
 
-describe('Claim Fee PaymentConfirmation Service', () => {
+describe('Application Fee PaymentConfirmation Service', () => {
   app.locals.draftStoreClient = mockCivilClaim;
   jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
 
@@ -27,7 +27,7 @@ describe('Claim Fee PaymentConfirmation Service', () => {
       paymentReference: 'RC-1701-0909-0602-0418',
     };
 
-    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
 
     //when
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, mockedAppRequest);
@@ -44,7 +44,7 @@ describe('Claim Fee PaymentConfirmation Service', () => {
       paymentReference: 'RC-1701-0909-0602-0418',
       errorDescription: 'Payment Failed',
     };
-    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
     //when
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, mockedAppRequest);
 
@@ -60,7 +60,7 @@ describe('Claim Fee PaymentConfirmation Service', () => {
       paymentReference: 'RC-1701-0909-0602-0418',
       errorDescription: 'Payment was cancelled by the user',
     };
-    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
     //when
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, mockedAppRequest);
 
@@ -69,7 +69,7 @@ describe('Claim Fee PaymentConfirmation Service', () => {
   });
 
   it('should return 500 error page for any service error', async () => {
-    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
 
     //Then
     await expect(getRedirectUrl(claimId, mockedAppRequest)).rejects.toBe(
