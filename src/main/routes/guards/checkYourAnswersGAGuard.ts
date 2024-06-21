@@ -20,9 +20,10 @@ export const checkYourAnswersGAGuard = async (req: Request, res: Response, next:
     if (applicationTypes.length === 1) {
       const applicationType = applicationTypes[0].option;
 
-      if (([ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.SETTLE_BY_CONSENT].includes(applicationType) && hasRequiredFields) ||
-        (applicationType.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) && claim.generalApplication.uploadN245Form && hasRequiredFields) ||
-        (!singleApplicationType.includes(applicationType) && hasRequiredFields)) {
+      if ((([ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.SETTLE_BY_CONSENT].includes(applicationType)) ||
+        (applicationType.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) && claim.generalApplication.uploadN245Form) ||
+        !singleApplicationType.includes(applicationType)) &&
+        hasRequiredFields) {
         return next();
       } else {
         return res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL));
