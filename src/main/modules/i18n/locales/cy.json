@@ -537,18 +537,19 @@
       }
     },
     "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : {
-      "PAGE_TITLE_WITH_CLAIMANT": "Beth yw'r materion sy'n ymwneud â datgelu dogfennau electronig",
-      "PAGE_TITLE_WITH_CLAIMANT": "Beth yw'r materion sy'n ymwneud â datgelu dogfennau electronig",
+      "PAGE_TITLE": "Beth yw'r materion sy'n ymwneud â datgelu dogfennau electronig",
+      "TITLE": "Datgelu dogfennau electronig",
       "TEXT_AREA" : {
-        "LABEL_WITH_CLAIMANT": "Beth yw'r materion sy'n ymwneud â datgelu dogfennau electronig",
+        "LABEL": "Beth yw'r materion sy'n ymwneud â datgelu dogfennau electronig",
         "HINT": "Rhowch fanylion"
       }
     },
     "DOCUMENTS_CONSIDERED_DETAILS" : {
-      "PAGE_TITLE": "Beth yw'r dogfennau sydd gan yr hawlwyr rydych chi am i'r llys eu hystyried?",
-      "TITLE": "Dogfennau hawlydd i'w hystyried",
+      "PAGE_TITLE_WITH_CLAIMANT": "Beth yw'r dogfennau sydd gan yr hawlwyr rydych chi am i'r llys eu hystyried?",
+      "PAGE_TITLE_WITH_DEFENDANT": "Beth yw'r dogfennau sydd gan y diffynyddion rydych chi am i'r llys eu hystyried?",
       "TEXT_AREA" : {
-        "LABEL": "Beth yw'r dogfennau sydd gan yr hawlwyr rydych chi am i'r llys eu hystyried?",
+        "LABEL_WITH_CLAIMANT": "Beth yw'r dogfennau sydd gan yr hawlwyr rydych chi am i'r llys eu hystyried?",
+        "LABEL_WITH_DEFENDANT": "Beth yw'r dogfennau sydd gan y diffynyddion rydych chi am i'r llys eu hystyried?",
         "HINT": "Rhowch fanylion"
       }
     },
@@ -4087,6 +4088,7 @@
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau nad ydynt yn electronig",
     "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau electronig",
     "CLAIMANT_DOCUMENTS_CONSIDERED" : "Rhowch fanylion y dogfennau sydd gan yr hawlwyr yr ydych am i'r llys eu hystyried",
+    "DEFENDANT_DOCUMENTS_CONSIDERED" : "Rhowch fanylion am y dogfennau sydd gan y diffynyddion rydych chi am i'r llys eu hystyried",
     "ACCEPT_REPAYMENT_PLAN": "Dewiswch dderbyn y cynllun ad-dalu hwn i dderbyn cynllun ad-dalu arfaethedig y llys",
     "ADDRESS_NOT_FOUND": "Ni allwn ddod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
     "AMOUNT_INVALID_DECIMALS": "Rhowch swm, dim mwy na dau le degol",

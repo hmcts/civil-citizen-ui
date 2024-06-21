@@ -546,7 +546,7 @@
     },
     "DOCUMENTS_CONSIDERED_DETAILS" : {
       "PAGE_TITLE_WITH_CLAIMANT": "What documents does the claimant have that you would like the court to consider?",
-      "PAGE_TITLE_WITH_DEFENDANT": "What documents does the claimant have that you would like the court to consider?",
+      "PAGE_TITLE_WITH_DEFENDANT": "What documents does the defendant have that you would like the court to consider?",
       "TEXT_AREA" : {
         "LABEL_WITH_CLAIMANT": "What are the documents the claimants have that you want the court to consider?",
         "LABEL_WITH_DEFENDANT": "What are the documents the defendants have that you want the court to consider?",
@@ -4088,6 +4088,7 @@
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Give details of the issues about disclosure of non-electronic documents",
     "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : "Give details of the issues about disclosure of electronic documents",
     "CLAIMANT_DOCUMENTS_CONSIDERED" : "Give details of the documents the claimants have that you want the court to consider",
+    "DEFENDANT_DOCUMENTS_CONSIDERED" : "Give details of the documents the defendants have that you want the court to consider",
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court’s proposed repayment plan",
     "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
     "AMOUNT_INVALID_DECIMALS": "Enter a valid amount, maximum two decimal places",

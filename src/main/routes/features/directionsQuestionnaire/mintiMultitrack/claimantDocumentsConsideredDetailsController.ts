@@ -34,11 +34,12 @@ claimantDocumentsConsideredDetailsController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENT
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
+    const isClaimant = claim.isClaimant();
     const directionQuestionnaire = await getDirectionQuestionnaire(redisKey);
     const details = directionQuestionnaire.hearing?.claimantDocumentsConsideredDetails ?
-      new ClaimantDocumentsConsideredDetails(directionQuestionnaire.hearing.claimantDocumentsConsideredDetails) : new ClaimantDocumentsConsideredDetails();
+      new ClaimantDocumentsConsideredDetails(directionQuestionnaire.hearing.claimantDocumentsConsideredDetails, isClaimant) : new ClaimantDocumentsConsideredDetails('', isClaimant);
 
-    renderView(new GenericForm(details) ,claim.isClaimant(), res);
+    renderView(new GenericForm(details) , isClaimant, res);
   } catch (error) {
     next(error);
   }
@@ -49,10 +50,14 @@ claimantDocumentsConsideredDetailsController.post(DQ_MULTITRACK_CLAIMANT_DOCUMEN
     const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
-    const form = new GenericForm(new ClaimantDocumentsConsideredDetails(req.body.claimantDocumentsConsideredDetails));
+    const isClaimant = claim.isClaimant();
+    const form = new GenericForm(new ClaimantDocumentsConsideredDetails(
+      req.body.claimantDocumentsConsideredDetails,
+      isClaimant, isClaimant? 'ERRORS.DEFENDANT_DOCUMENTS_CONSIDERED' : 'ERRORS.CLAIMANT_DOCUMENTS_CONSIDERED'),
+    );
     form.validateSync();
     if (form.hasErrors()) {
-      renderView(form, claim.isClaimant(), res);
+      renderView(form, isClaimant, res);
     } else {
       await saveDirectionQuestionnaire(
         generateRedisKey(<AppRequest>req),
