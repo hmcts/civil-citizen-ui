@@ -35,8 +35,8 @@ documentsTobeConsideredController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CON
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
     const directionQuestionnaire = await getDirectionQuestionnaire(redisKey);
-    const hasClaimantDocumentsToBeConsidered = directionQuestionnaire.hearing?.hasClaimantDocumentsToBeConsidered ?
-      new GenericYesNo(directionQuestionnaire.hearing?.hasClaimantDocumentsToBeConsidered?.option) : new GenericYesNo();
+    const hasClaimantDocumentsToBeConsidered = directionQuestionnaire.hearing?.hasDocumentsToBeConsidered ?
+      new GenericYesNo(directionQuestionnaire.hearing?.hasDocumentsToBeConsidered?.option) : new GenericYesNo();
     renderView(new GenericForm(hasClaimantDocumentsToBeConsidered), claim.isClaimant(), res);
   } catch (error) {
     next(error);
@@ -57,7 +57,7 @@ documentsTobeConsideredController.post(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CO
       await saveDirectionQuestionnaire(
         redisKey,
         hasClaimantDocumentsToBeConsideredForm.model,
-        'hasClaimantDocumentsToBeConsidered',
+        'hasDocumentsToBeConsidered',
         'hearing');
       if (hasClaimantDocumentsToBeConsideredForm.model.option === YesNo.YES){
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL));

@@ -36,8 +36,8 @@ documentsConsideredDetailsController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_
     const claim = await getCaseDataFromStore(redisKey);
     const isClaimant = claim.isClaimant();
     const directionQuestionnaire = await getDirectionQuestionnaire(redisKey);
-    const details = directionQuestionnaire.hearing?.claimantDocumentsConsideredDetails ?
-      new ClaimantDocumentsConsideredDetails(directionQuestionnaire.hearing.claimantDocumentsConsideredDetails, isClaimant) : new ClaimantDocumentsConsideredDetails('', isClaimant);
+    const details = directionQuestionnaire.hearing?.documentsConsideredDetails ?
+      new ClaimantDocumentsConsideredDetails(directionQuestionnaire.hearing.documentsConsideredDetails, isClaimant) : new ClaimantDocumentsConsideredDetails('', isClaimant);
 
     renderView(new GenericForm(details) , isClaimant, res);
   } catch (error) {
@@ -62,7 +62,7 @@ documentsConsideredDetailsController.post(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE
       await saveDirectionQuestionnaire(
         generateRedisKey(<AppRequest>req),
         form.model.claimantDocumentsConsideredDetails,
-        'claimantDocumentsConsideredDetails',
+        'documentsConsideredDetails',
         'hearing');
 
       res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DEFENDANT_EXPERT_EVIDENCE_URL));

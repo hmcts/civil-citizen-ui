@@ -73,7 +73,7 @@ describe('Claimant documents considered details controller', () => {
         const claim = getClaim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
         claim.directionQuestionnaire.hearing = new Hearing();
-        claim.directionQuestionnaire.hearing.claimantDocumentsConsideredDetails = 'test';
+        claim.directionQuestionnaire.hearing.documentsConsideredDetails = 'test';
         return claim;
       });
 
@@ -90,7 +90,7 @@ describe('Claimant documents considered details controller', () => {
         const claim = getClaim(CaseRole.CLAIMANT);
         claim.directionQuestionnaire = new DirectionQuestionnaire();
         claim.directionQuestionnaire.hearing = new Hearing();
-        claim.directionQuestionnaire.hearing.claimantDocumentsConsideredDetails = 'test';
+        claim.directionQuestionnaire.hearing.documentsConsideredDetails = 'test';
         return claim;
       });
 
@@ -150,7 +150,7 @@ describe('Claimant documents considered details controller', () => {
         const claim = getClaim(CaseRole.CLAIMANT);
         claim.directionQuestionnaire = new DirectionQuestionnaire();
         claim.directionQuestionnaire.hearing = new Hearing();
-        claim.directionQuestionnaire.hearing.claimantDocumentsConsideredDetails = 'test';
+        claim.directionQuestionnaire.hearing.documentsConsideredDetails = 'test';
         return claim;
       });
       await request(app)

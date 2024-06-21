@@ -75,7 +75,7 @@ describe('claimant Documents to be considered Controller', () => {
         const claim = getClaim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
         claim.directionQuestionnaire.hearing = new Hearing();
-        claim.directionQuestionnaire.hearing.hasClaimantDocumentsToBeConsidered = {option: YesNo.YES};
+        claim.directionQuestionnaire.hearing.hasDocumentsToBeConsidered = {option: YesNo.YES};
         return claim;
       });
 
@@ -92,7 +92,7 @@ describe('claimant Documents to be considered Controller', () => {
         const claim = getClaim(CaseRole.CLAIMANT);
         claim.directionQuestionnaire = new DirectionQuestionnaire();
         claim.directionQuestionnaire.hearing = new Hearing();
-        claim.directionQuestionnaire.hearing.hasClaimantDocumentsToBeConsidered = {option: YesNo.YES};
+        claim.directionQuestionnaire.hearing.hasDocumentsToBeConsidered = {option: YesNo.YES};
         return claim;
       });
 
@@ -109,7 +109,7 @@ describe('claimant Documents to be considered Controller', () => {
         const claim = getClaim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
         claim.directionQuestionnaire.hearing = new Hearing();
-        claim.directionQuestionnaire.hearing.hasClaimantDocumentsToBeConsidered = {option: YesNo.NO};
+        claim.directionQuestionnaire.hearing.hasDocumentsToBeConsidered = {option: YesNo.NO};
         return claim;
       });
 
@@ -126,7 +126,7 @@ describe('claimant Documents to be considered Controller', () => {
         const claim = getClaim(CaseRole.CLAIMANT);
         claim.directionQuestionnaire = new DirectionQuestionnaire();
         claim.directionQuestionnaire.hearing = new Hearing();
-        claim.directionQuestionnaire.hearing.hasClaimantDocumentsToBeConsidered = {option: YesNo.NO};
+        claim.directionQuestionnaire.hearing.hasDocumentsToBeConsidered = {option: YesNo.NO};
         return claim;
       });
 
