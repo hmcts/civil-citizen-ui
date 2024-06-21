@@ -10,10 +10,10 @@ const fields ={
   firstExpertReportDay:'input[id="reportDetails[0][day]"]',
   firstExpertReportMonth: 'input[id="reportDetails[0][month]"]',
   firstExpertReportYear: 'input[id="reportDetails[0][year]"]',
-  claimantExpertFirstName:'input[@id="items[0][firstName]"]',
-  claimantExpertLastName:'input[@id="items[0][lastName]"]',
-  claimantFieldOfExpertise:'input[@id="items[0][fieldOfExpertise]"]',
-  claimantWhyNeedExpert:'textarea[@id="items[0][whyNeedExpert]"]',
+  claimantExpertFirstName:'input[id="items[0][firstName]"]',
+  claimantExpertLastName:'input[id="items[0][lastName]"]',
+  claimantFieldOfExpertise:'input[id="items[0][fieldOfExpertise]"]',
+  claimantWhyNeedExpert:'textarea[id="items[0][whyNeedExpert]"]',
 };
 
 const content = {
