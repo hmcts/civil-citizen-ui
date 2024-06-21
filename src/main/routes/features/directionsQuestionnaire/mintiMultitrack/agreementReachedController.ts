@@ -13,7 +13,7 @@ import {
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {getHowToAgreeDisclosureOfElectronicDocumentsContent,} from 'services/commons/detailContents';
+import {getHowToAgreeDisclosureOfElectronicDocumentsContent} from 'services/commons/detailContents';
 import {HasAnAgreementBeenReached} from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReached';
 import {
   HasAnAgreementBeenReachedOptions,

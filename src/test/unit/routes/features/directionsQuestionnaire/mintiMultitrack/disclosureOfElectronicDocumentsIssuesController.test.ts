@@ -15,7 +15,7 @@ import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {
   DisclosureOfDocuments,
-  TypeOfDisclosureDocument
+  TypeOfDisclosureDocument,
 } from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 
 jest.mock('../../../../../../main/modules/oidc');
