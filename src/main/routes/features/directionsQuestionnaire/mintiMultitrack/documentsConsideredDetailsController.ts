@@ -15,7 +15,7 @@ import {
   ClaimantDocumentsConsideredDetails,
 } from 'models/directionsQuestionnaire/mintiMultitrack/claimantDocumentsConsideredDetails';
 
-const claimantDocumentsConsideredDetailsController = Router();
+const documentsConsideredDetailsController = Router();
 const claimantDocumentsConsideredDetailsViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/claimant-documents-considered-details';
 const DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_PAGE = 'PAGES.DOCUMENTS_CONSIDERED_DETAILS.';
 
@@ -30,7 +30,7 @@ function renderView(details: GenericForm<ClaimantDocumentsConsideredDetails>, is
   });
 }
 
-claimantDocumentsConsideredDetailsController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL, (async (req, res, next: NextFunction) => {
+documentsConsideredDetailsController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
@@ -45,7 +45,7 @@ claimantDocumentsConsideredDetailsController.get(DQ_MULTITRACK_CLAIMANT_DOCUMENT
   }
 }) as RequestHandler);
 
-claimantDocumentsConsideredDetailsController.post(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
+documentsConsideredDetailsController.post(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
@@ -73,4 +73,4 @@ claimantDocumentsConsideredDetailsController.post(DQ_MULTITRACK_CLAIMANT_DOCUMEN
   }
 }) as RequestHandler);
 
-export default claimantDocumentsConsideredDetailsController;
+export default documentsConsideredDetailsController;

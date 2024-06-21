@@ -352,12 +352,12 @@ import disclosureOfDocumentsController
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureOfDocumentsController';
 import disclosureOfElectronicDocumentsIssues
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureOfElectronicDocumentsIssuesController';
-import claimantDocumentsConsideredDetailsController
-  from 'routes/features/directionsQuestionnaire/mintiMultitrack/claimantDocumentsConsideredDetailsController';
+import documentsConsideredDetailsController
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/documentsConsideredDetailsController';
 import agreementReachedController
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/agreementReachedController';
-import claimantDocumentsTobeConsideredController
-  from 'routes/features/directionsQuestionnaire/mintiMultitrack/claimantDocumentsTobeConsideredController';
+import documentsTobeConsideredController
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/documentsTobeConsideredController';
 import subjectToFRCController from './features/directionsQuestionnaire/fixedRecoverableCosts/subjectToFRCController';
 import frcBandAgreedController
   from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/frcBandAgreedController';
@@ -663,9 +663,9 @@ export default [
   multiTrackDisclosureNonElectronicDocuments,
   disclosureOfDocumentsController,
   disclosureOfElectronicDocumentsIssues,
-  claimantDocumentsConsideredDetailsController,
+  documentsConsideredDetailsController,
   agreementReachedController,
-  claimantDocumentsTobeConsideredController,
+  documentsTobeConsideredController,
   subjectToFRCController,
   frcBandAgreedController,
   chooseComplexityBandController,
