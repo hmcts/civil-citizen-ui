@@ -39,6 +39,7 @@ class ExpertReportDetails {
     const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
+    await I.click(cButtons.saveAndContinue[language]);
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.fillField(fields.claimantExpertFirstName,'TestExpert1');
     await I.fillField(fields.claimantExpertLastName,'Test1LastName');
