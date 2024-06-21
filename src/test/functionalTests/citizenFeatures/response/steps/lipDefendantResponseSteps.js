@@ -560,6 +560,22 @@ class ResponseSteps {
     await this.SelectLanguageOption();
   }
 
+  async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true) {
+    await this.SelectHearingRequirements(claimRef);
+    await this.SelectExpertNeededOrNot();
+    await this.EnterClaimantExpertDetails();
+    await this.SelectGiveEvidenceYourself();
+    if(!isIndividual) await this.EnterYourDetails();
+    await this.EnterDefedantWitnesses();
+    await this.SelectOptionForCantAttendHearing();
+    await this.EnterUnavailabilityDates();
+    await this.SelectOptionForPhoneOrVideoHearing();
+    await this.SelectOptionForVulnerability();
+    await this.SelectOptionForSupportRequired();
+    await this.SelectPreferredCourtLocation();
+    await this.SelectLanguageOption();
+  }
+  
   async EnterDQForFastTrack(claimRef, isIndividual = true){
     await this.SelectOptionForTriedToSettle(claimRef);
     await this.SelectOptionToRequestExtraFourWeeksToSettle();
@@ -590,6 +606,10 @@ class ResponseSteps {
 
   async EnterExpertReportDetails() {
     await expertReportDetails.enterExpertReportDetails();
+  }
+
+  async EnterClaimantExpertDetails() {
+    await expertReportDetails.claimantExpertDetails();
   }
 
   async SelectGiveEvidenceYourself() {
