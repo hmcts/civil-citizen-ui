@@ -298,7 +298,7 @@ describe('Check your Answers GA Guard', () => {
     //When
     await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
-    expect(MOCK_NEXT).not.toHaveBeenCalled();
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
   });
 
 });
