@@ -19,7 +19,7 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     const redisClaimId = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const paymentInfo = claim.generalApplication?.applicationFeePaymentDetails;
-    const paymentStatus = await getGaFeePaymentStatus(claimId, paymentInfo?.paymentReference, FeeType.APPLICATION, req);
+    const paymentStatus = await getGaFeePaymentStatus(claimId, paymentInfo?.paymentReference, req);
 
     if(paymentStatus.status === success) {
       const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH ? 'cy' : 'en';
