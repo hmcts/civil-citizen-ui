@@ -53,6 +53,7 @@ export class GeneralApplication {
     wantToUploadDocuments?: YesNo,
     uploadN245Form?: UploadGAFiles,
     informOtherParties?: InformOtherParties,
+    applicationFee?: ClaimFeeData,
   ) {
     this.applicationTypes = applicationType ? [applicationType] : [];
     this.agreementFromOtherParty = agreementFromOtherParty;
@@ -69,5 +70,6 @@ export class GeneralApplication {
     this.helpWithFees = helpWithFees;
     this.uploadN245Form = uploadN245Form;
     this.informOtherParties = informOtherParties;
+    this.applicationFee = applicationFee;
   }
 }
