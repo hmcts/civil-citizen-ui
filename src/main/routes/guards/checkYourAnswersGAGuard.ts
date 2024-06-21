@@ -13,23 +13,22 @@ export const checkYourAnswersGAGuard = async (req: Request, res: Response, next:
 
     const applicationTypes = claim.generalApplication?.applicationTypes || [];
     const hasRequiredFields = isGARequiredFieldsPresent(claim);
+    const singleApplicationType = [ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.SETTLE_BY_CONSENT, ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT];
 
     if (!applicationTypes.length) return res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL));
 
     if (applicationTypes.length === 1) {
       const applicationType = applicationTypes[0].option;
 
-      if ((applicationType.includes(ApplicationTypeOption.SET_ASIDE_JUDGEMENT) && hasRequiredFields) ||
+      if (([ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.SETTLE_BY_CONSENT].includes(applicationType) && hasRequiredFields) ||
         (applicationType.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) && claim.generalApplication.uploadN245Form && hasRequiredFields) ||
-        (applicationType.includes(ApplicationTypeOption.SETTLE_BY_CONSENT) && hasRequiredFields) ||
-        (!applicationType.includes(ApplicationTypeOption.SET_ASIDE_JUDGEMENT) &&
-          !applicationType.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) &&
-          !applicationType.includes(ApplicationTypeOption.SETTLE_BY_CONSENT) && hasRequiredFields)) {
+        (!singleApplicationType.includes(applicationType) && hasRequiredFields)) {
         return next();
       } else {
         return res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL));
       }
     } else {
+      // GA application with Multiple application types
       if (claim.generalApplication.orderJudges && hasRequiredFields) {
         return next();
       } else {
