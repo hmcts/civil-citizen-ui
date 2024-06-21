@@ -3,27 +3,21 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
-  DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL,
+  WHY_NOT_SUBJECT_TO_FRC_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {CaseState} from 'form/models/claimDetails';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
-import {
-  DisclosureOfDocuments,
-  TypeOfDisclosureDocument,
-} from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
+import {FixedRecoverableCosts} from 'models/directionsQuestionnaire/fixedRecoverableCosts/fixedRecoverableCosts';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/services/features/mediation/unavailableDatesForMediationService');
 
-const CONTROLLER_URL = DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL;
+const CONTROLLER_URL = WHY_NOT_SUBJECT_TO_FRC_URL;
 
 function getClaim() {
   const claim = new Claim();
@@ -33,7 +27,7 @@ function getClaim() {
   return claim;
 }
 
-describe('Disclosure Of Electronic Documents Issues Controller', () => {
+describe('Reasons for not being subject to FRC', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
@@ -46,7 +40,7 @@ describe('Disclosure Of Electronic Documents Issues Controller', () => {
   });
 
   describe('on GET', () => {
-    it('should open disclosure of electronic docs issues page without value', async () => {
+    it('should open reasons for not being subject to FRC page without value', async () => {
       mockGetCaseData.mockImplementation(async () => {
         return getClaim();
       });
@@ -57,12 +51,12 @@ describe('Disclosure Of Electronic Documents Issues Controller', () => {
         });
     });
 
-    it('should open disclosure of electronic docs issues page with value', async () => {
+    it('should open reasons for not being subject to FRC page with value', async () => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = getClaim();
         claim.directionQuestionnaire = new DirectionQuestionnaire();
-        claim.directionQuestionnaire.hearing = new Hearing();
-        claim.directionQuestionnaire.hearing.disclosureOfElectronicDocumentsIssues = 'test';
+        claim.directionQuestionnaire.fixedRecoverableCosts = new FixedRecoverableCosts();
+        claim.directionQuestionnaire.fixedRecoverableCosts.reasonsForNotSubjectToFrc = 'important reasons, probably';
         return claim;
       });
 
@@ -86,7 +80,7 @@ describe('Disclosure Of Electronic Documents Issues Controller', () => {
     });
   });
 
-  describe('on POST - disclosure of eletronic documents issues', () => {
+  describe('on POST', () => {
     beforeEach(() => {
       mockGetCaseData.mockImplementation(async () => {
         const claim = new Claim();
@@ -97,47 +91,13 @@ describe('Disclosure Of Electronic Documents Issues Controller', () => {
       });
     });
 
-    it('should redirect to claim documents to be considered page if non-electronic docs option was not chosen previously', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = getClaim();
-        claim.directionQuestionnaire = new DirectionQuestionnaire();
-        claim.directionQuestionnaire.hearing = new Hearing();
-        claim.directionQuestionnaire.hearing.disclosureOfDocuments = new DisclosureOfDocuments();
-        claim.directionQuestionnaire.hearing.disclosureOfDocuments.documentsTypeChosen = [TypeOfDisclosureDocument.ELECTRONIC];
-        return claim;
-      });
+    it('should redirect to next page', async () => {
       await request(app)
         .post(CONTROLLER_URL)
-        .send({disclosureOfElectronicDocumentsIssues: 'test'})
+        .send({reasonsForNotSubjectToFrc: 'important reasons, probably'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toBe(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL);
-        });
-    });
-
-    it('should redirect to non-electronic documents disclosure if non-electronic docs option was not chosen previously', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = getClaim();
-        claim.directionQuestionnaire = new DirectionQuestionnaire();
-        claim.directionQuestionnaire.hearing = new Hearing();
-        claim.directionQuestionnaire.hearing.disclosureOfDocuments = new DisclosureOfDocuments();
-        claim.directionQuestionnaire.hearing.disclosureOfDocuments.documentsTypeChosen = [TypeOfDisclosureDocument.ELECTRONIC, TypeOfDisclosureDocument.NON_ELECTRONIC];
-        return claim;
-      });
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({disclosureOfElectronicDocumentsIssues: 'test'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL);
-        });
-    });
-
-    it('should validate the field is empty ', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
+          expect(res.get('location')).toBe('todo');
         });
     });
 
@@ -148,7 +108,7 @@ describe('Disclosure Of Electronic Documents Issues Controller', () => {
       });
       await request(app)
         .post(CONTROLLER_URL)
-        .send({disclosureOfElectronicDocumentsIssues: 'test'})
+        .send({reasonsForNotSubjectToFrc: 'important reasons, probably'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

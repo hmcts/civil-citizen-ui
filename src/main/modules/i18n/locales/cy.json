@@ -507,6 +507,14 @@
         "HINT": "Rhowch eich rhesymau (dewisol)"
       }
     },
+    "WHY_NOT_SUBJECT_TO_FRC": {
+      "PAGE_TITLE": "Rheoliad Costau Adferadwy Penodol",
+      "TITLE": "Rheoliad Costau Adferadwy Penodol",
+      "TEXT_AREA": {
+        "LABEL": "Pam nad yw’r hawliad yn destun y Rheoliad Costau Adferadwy Penodol?",
+        "HINT": "Rhowch eich rhesymau (dewisol)"
+      }
+    },
     "DOCS_FOR_DISCLOSURE" : {
       "PAGE_TITLE_WITH_CLAIMANT": "A oes unrhyw ddogfennau sydd gan yr hawlydd yr hoffech i’r llys eu hystyried?",
       "COMPONENT_TEXT_WITH_CLAIMANT": "A oes unrhyw ddogfennau sydd gan yr hawlwyr yr hoffech i'r llys eu hystyried?",

@@ -5,4 +5,5 @@ export class FixedRecoverableCosts {
   frcBandAgreed: GenericYesNo;
   complexityBand: string;
   reasonsForBandSelection?: string;
+  reasonsForNotSubjectToFrc?: string;
 }

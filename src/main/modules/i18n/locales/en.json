@@ -507,6 +507,14 @@
         "HINT": "Please give your reasons (optional)"
       }
     },
+    "WHY_NOT_SUBJECT_TO_FRC": {
+      "PAGE_TITLE": "Fixed recoverable costs regime",
+      "TITLE": "Fixed Recoverable Costs Regime",
+      "TEXT_AREA": {
+        "LABEL": "Why is the claim not subject to the Fixed Recoverable Costs Regime?",
+        "HINT": "Please give your reasons (optional)"
+      }
+    },
     "DOCS_FOR_DISCLOSURE" : {
       "PAGE_TITLE_WITH_CLAIMANT": "Are there any documents the claimant has that you want the court to consider?",
       "COMPONENT_TEXT_WITH_CLAIMANT": "Are there any documents the claimants have that you want the court to consider?",

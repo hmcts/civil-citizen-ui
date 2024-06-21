@@ -350,3 +350,4 @@ export const SUBJECT_TO_FRC_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/subject-to-fr
 export const FRC_BAND_AGREED_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/frc-band-agreed`;
 export const ASSIGN_FRC_BAND_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/assign-complexity-band`;
 export const REASON_FOR_FRC_BAND_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/reason-for-complexity-band`;
+export const WHY_NOT_SUBJECT_TO_FRC_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/why-not-subject-to-frc`;

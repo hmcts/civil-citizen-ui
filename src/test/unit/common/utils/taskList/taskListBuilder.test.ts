@@ -51,7 +51,7 @@ describe('Task List Builder', () => {
   const howMuchMoneyAdmitOweUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_OWED_AMOUNT_URL);
   const freeTelephoneMediationUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FREE_TELEPHONE_MEDIATION_URL);
   const giveUsDetailsHearingUrlForSmallClaims = constructResponseUrlWithIdParams(claimId, DETERMINATION_WITHOUT_HEARING_URL);
-  const giveUsDetailsHearingUrlForFastTrack = constructResponseUrlWithIdParams(claimId, DQ_TRIED_TO_SETTLE_CLAIM_URL);
+  const giveUsDetailsHearingUrlForFastIntMultiTrack = constructResponseUrlWithIdParams(claimId, DQ_TRIED_TO_SETTLE_CLAIM_URL);
   const whenWillYouPayUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL);
 
   const tellUsHowMuchYouHavePaidUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_FR_AMOUNT_YOU_PAID_URL);
@@ -310,7 +310,7 @@ describe('Task List Builder', () => {
       //Given
       claim.respondent1 = undefined;
       //When
-      const respondToClaimSection = buildYourHearingRequirementsSection(claim, claimId, lang);
+      const respondToClaimSection = buildYourHearingRequirementsSection(claim, claimId, lang, false);
       //Then
       expect(respondToClaimSection.tasks.length).toBe(0);
     });
@@ -318,7 +318,7 @@ describe('Task List Builder', () => {
       //Given
       claim.totalClaimAmount = 9000;
       //When
-      const yourHearingRequirementsSection = buildYourHearingRequirementsSection(claim, claimId, lang);
+      const yourHearingRequirementsSection = buildYourHearingRequirementsSection(claim, claimId, lang, false);
       //Then
       expect(yourHearingRequirementsSection.tasks.length).toBe(1);
       expect(yourHearingRequirementsSection.tasks[0].url).toEqual(giveUsDetailsHearingUrlForSmallClaims);
@@ -327,10 +327,28 @@ describe('Task List Builder', () => {
       //Given
       claim.totalClaimAmount = 11000;
       //Then
-      const yourHearingRequirementsSection = buildYourHearingRequirementsSection(claim, claimId, lang);
+      const yourHearingRequirementsSection = buildYourHearingRequirementsSection(claim, claimId, lang, false);
       //Then
       expect(yourHearingRequirementsSection.tasks.length).toBe(1);
-      expect(yourHearingRequirementsSection.tasks[0].url).toEqual(giveUsDetailsHearingUrlForFastTrack);
+      expect(yourHearingRequirementsSection.tasks[0].url).toEqual(giveUsDetailsHearingUrlForFastIntMultiTrack);
+    });
+    it('should have giveUsDetailsHearingTask for int track claims', () => {
+      //Given
+      claim.totalClaimAmount = 26000;
+      //Then
+      const yourHearingRequirementsSection = buildYourHearingRequirementsSection(claim, claimId, lang, true);
+      //Then
+      expect(yourHearingRequirementsSection.tasks.length).toBe(1);
+      expect(yourHearingRequirementsSection.tasks[0].url).toEqual(giveUsDetailsHearingUrlForFastIntMultiTrack);
+    });
+    it('should have giveUsDetailsHearingTask for multi track claims', () => {
+      //Given
+      claim.totalClaimAmount = 260000;
+      //Then
+      const yourHearingRequirementsSection = buildYourHearingRequirementsSection(claim, claimId, lang, true);
+      //Then
+      expect(yourHearingRequirementsSection.tasks.length).toBe(1);
+      expect(yourHearingRequirementsSection.tasks[0].url).toEqual(giveUsDetailsHearingUrlForFastIntMultiTrack);
     });
   });
 });
