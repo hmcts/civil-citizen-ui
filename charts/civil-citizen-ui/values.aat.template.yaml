@@ -425,3 +425,5 @@ civil-general-applications:
     environment:
       LAUNCH_DARKLY_ENV: service-staging
       PAY_CALLBACK_URL: https://civil-cui-general-applications.aat.platform.hmcts.net/service-request-update
+      CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
+      DASHBOARD_API_URL: http://${SERVICE_NAME}-java
