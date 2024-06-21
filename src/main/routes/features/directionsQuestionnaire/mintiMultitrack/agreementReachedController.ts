@@ -3,7 +3,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {
   BACK_URL,
   DQ_MULTITRACK_AGREEMENT_REACHED_URL,
-  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL,
+  DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL,
   DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL,
 } from 'routes/urls';
 import {
@@ -13,13 +13,12 @@ import {
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {
-  getHowToAgreeDisclosureOfElectronicDocumentsContent,
-} from 'services/commons/detailContents';
+import {getHowToAgreeDisclosureOfElectronicDocumentsContent,} from 'services/commons/detailContents';
 import {HasAnAgreementBeenReached} from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReached';
 import {
   HasAnAgreementBeenReachedOptions,
 } from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReachedOptions';
+import {TypeOfDisclosureDocument} from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 
 const agreementReachedController = Router();
 const disclosureNonElectronicDocumentsViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/agreement-reached';
@@ -55,6 +54,7 @@ agreementReachedController.get(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req,
 agreementReachedController.post(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const hasAnAgreementBeenReachedForm = new GenericForm(new HasAnAgreementBeenReached(req.body.hasAnAgreementBeenReached));
     hasAnAgreementBeenReachedForm.validateSync();
     if (hasAnAgreementBeenReachedForm.hasErrors()) {
@@ -67,6 +67,8 @@ agreementReachedController.post(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req
         'hearing');
       if (hasAnAgreementBeenReachedForm.model.hasAnAgreementBeenReached !== HasAnAgreementBeenReachedOptions.YES) {
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL));
+      } else if (directionQuestionnaire.hearing?.disclosureOfDocuments?.documentsTypeChosen?.includes(TypeOfDisclosureDocument.NON_ELECTRONIC)) {
+        res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL));
       } else {
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL));
       }
