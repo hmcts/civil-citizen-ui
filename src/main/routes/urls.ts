@@ -324,6 +324,7 @@ export const GA_HEARING_ARRANGEMENTS_GUIDANCE_URL =`${BASE_GENERAL_APPLICATION_U
 export const GA_WANT_TO_UPLOAD_DOCUMENTS_URL = `${BASE_GENERAL_APPLICATION_URL}/want-to-upload-documents`;
 export const GA_UPLOAD_DOCUMENTS_URL = `${BASE_GENERAL_APPLICATION_URL}/upload-documents`;
 export const GA_ACCEPT_DEFENDANT_OFFER_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_URL}/accept-defendant-offer`;
+export const GA_APPLICATION_SUMMARY_URL = `${BASE_GENERAL_APPLICATION_URL}/summary`;
 export const VIEW_THE_JUDGMENT_URL = `${BASE_CASE_URL}/view-the-judgment`;
 export const GA_RESPONSE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_URL}/confirmation`;
 export const CONFIRM_YOU_HAVE_BEEN_PAID_URL = `${BASE_JUDGMENT_ONLINE_URL}/confirm-you-have-been-paid`;
@@ -340,3 +341,5 @@ export const GA_APPLY_HELP_WITH_FEE_REFERENCE = `${BASE_GENERAL_APPLICATION_URL}
 export const GA_APPLY_HELP_WITH_FEES = `${BASE_GENERAL_APPLICATION_URL}/apply-help-with-fees`;
 export const GA_APPLICATION_FEE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_URL}/pay-application-fee/confirmation`;
 export const GA_VIEW_APPLICATION_URL = `${BASE_GENERAL_APPLICATION_URL}/view-application`;
+export const BREATHING_SPACE_INFO_URL = `${DASHBOARD_URL}/:id/breathing-space-info`;
+
