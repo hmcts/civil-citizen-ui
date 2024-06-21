@@ -1,4 +1,4 @@
-{% extends "claim-details-tpl.njk" %}
+{% extends "../../../claim-details-tpl-dashboard.njk" %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
@@ -8,14 +8,8 @@
 {% from "../../../macro/external-link.njk" import externalLink %}
 {% from "../../../macro/contact-us.njk" import contactUs %}
 
-{% set contactocmc = 'contactocmc@justice.gov.uk' %}
-{% set phone = t('0300 123 7050') %}
-{% set contactEmail = t('contactocmc@justice.gov.uk') %}
-{% set callChargesUrl = t('https://www.gov.uk/call-charges') %}
 
-{% block content %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
+{% block nestedContent %}
       {{ govukPanel({
         titleText: t('PAGES.REQUEST_FOR_RECONSIDERATION.CONFIRMATION.PANEL_TEXT'),
         html: '<a class="govuk-link govuk-link--inverse" href=' + requestForReconsiderationDoc + ' target="_blank" rel="noreferrer noopener">'
@@ -24,19 +18,5 @@
       {% for item in confirmationContents %}
         {{ itemContent(item,t) }}
       {% endfor %}
-      <div class="govuk-form-group">
-        {{ govukButton({
-          text: t('COMMON.BUTTONS.GO_TO_ACCOUNT'),
-          href: dashboardUrl
-        }) }}
-        <p class="govuk-body govuk-!-margin-bottom-0"><h3 class="govuk-heading-m govuk-!-margin-bottom-0">{{ t('COMMON.EMAIL') }}</h3>
-        <a class="govuk-link govuk-!-margin-bottom-0" href='mailto:'{{contactEmail}}>{{contactEmail}}</a> <br></p>
-        <h3 class="govuk-heading-m govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') }}</h3>
-        <p class="govuk-body govuk-!-margin-bottom-0">{{ phone }}</p>
-        <p class="govuk-body govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS') }} <br>
-          <a target="_blank" class="govuk-link" href={{callChargesUrl}}>{{ t('COMMON.CONTACT_US_FOR_HELP.CALL_CHARGES') }}</a></p>
-      </div>
-    </div>
 
-  </div>
 {% endblock %}

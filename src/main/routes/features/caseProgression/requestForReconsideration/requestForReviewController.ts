@@ -62,6 +62,6 @@ async function renderView(res: Response, claimId: string, claim: Claim, form: Ge
   res.render(requestForReviewViewPath, {
     form,
     requestForReviewContents: getRequestForReviewContent(claim, claimId),
-    buttonContents: getButtonContent(), dashboardUrl, pageTitle});
+    buttonContents: getButtonContent(claimId), dashboardUrl, pageTitle});
 }
 export default requestForReviewController;

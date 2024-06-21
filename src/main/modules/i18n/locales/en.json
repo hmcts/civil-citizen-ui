@@ -1612,9 +1612,9 @@
         "RESPONSE_BY_POST": "The claim will continue by post.",
         "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline.",
         "SDO_ORDER_LEGAL_ADVISER_STATUS": "Send us more details before the hearing",
-        "SDO_ORDER_IN_REVIEW": "Wait for court to review the order",
-        "SDO_ORDER_IN_REVIEW_OTHER_PARTY_CLAIMANT": "Read the claimant’s requests for a judge to review the order",
-        "SDO_ORDER_IN_REVIEW_OTHER_PARTY_DEFENDANT": "Read the defendant’s requests for a judge to review the order",
+        "SDO_ORDER_IN_REVIEW": "Wait for court to review the order.",
+        "SDO_ORDER_IN_REVIEW_OTHER_PARTY_CLAIMANT": "Read the claimant’s requests for a judge to review the order.",
+        "SDO_ORDER_IN_REVIEW_OTHER_PARTY_DEFENDANT": "Read the defendant’s requests for a judge to review the order.",
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case."
       },
@@ -3720,8 +3720,8 @@
         "PANEL_TEXT": "You’ve asked the court to review order",
         "PANEL_LINK": "Download request for review of  order (PDF)"
       },
-      "DASHBOARD_STATE_CLAIMANT": "Read the defendant’s requests for a judge to review the order",
-      "DASHBOARD_STATE_DEFENDANT": "Read the claimant’s requests for a judge to review the order"
+      "DASHBOARD_STATE_CLAIMANT": "Read the defendant’s requests for a judge to review the order.",
+      "DASHBOARD_STATE_DEFENDANT": "Read the claimant’s requests for a judge to review the order."
     },
     "ORDERS_AND_NOTICES": {
       "CCJ_REQUEST": "County Court Judgment request",

@@ -32,7 +32,7 @@ requestForReconsiderationConfirmationController.get(REQUEST_FOR_RECONSIDERATION_
     const requestForReconsiderationDoc = CASE_DOCUMENT_VIEW_URL
       .replace(':id', claimId).replace(':documentId', documentIdExtractor(getRequestForReconsiderationDocumentForConfirmation(claim)));
     res.render(requestForReconsiderationConfirmationViewPath, {
-      confirmationContents:getRequestForReconsiderationConfirmationContent(claim, lang),
+      confirmationContents:getRequestForReconsiderationConfirmationContent(claim, lang, dashboardUrl),
       requestForReconsiderationDoc: requestForReconsiderationDoc,
       dashboardUrl});
   } catch (error) {
