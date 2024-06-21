@@ -6,7 +6,7 @@ import {
   CP_EVIDENCE_UPLOAD_CANCEL,
   CP_UPLOAD_DOCUMENTS_URL,
   DASHBOARD_CLAIMANT_URL,
-  DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL,
+  DEFENDANT_SUMMARY_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../main/app';
@@ -105,7 +105,7 @@ describe('Cancel document upload', () => {
       //Then
         .expect((res: {status: unknown, header: {location: unknown}}) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(OLD_DASHBOARD_CLAIMANT_URL.replace(':id', '1111'));
+          expect(res.header.location).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id', '1111'));
         });
     });
 
