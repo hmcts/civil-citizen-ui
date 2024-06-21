@@ -166,8 +166,6 @@ class CreateClaim {
     I.see('First name');
     I.see('Last name');
     I.see('Your postal address', 'h2');
-    I.see('If your address is not correct you can change it here.');
-    I.see('Any changes will be shared with the claimant when you submit your response.');
     I.see('Enter a UK postcode');
     I.see('Correspondence address', 'h2');
     I.see('Would you like correspondence sent to a different address?');
@@ -182,8 +180,6 @@ class CreateClaim {
     I.see('First name');
     I.see('Last name');
     I.see('Their address', 'h2');
-    I.see('If your address is not correct you can change it here.');
-    I.see('Any changes will be shared with the claimant when you submit your response.');
     I.see('The address must be in England or Wales.');
     I.see('Your claim may be invalid if you use the wrong address.');
     I.see('You must enter their usual or last known home address.');
