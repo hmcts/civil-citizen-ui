@@ -31,8 +31,14 @@ const checkToggleEnabled = async (toggle) => {
 };
 
 const isDashboardServiceToggleEnabled = async () => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    return true;
+  } else {
+    return false;
+  }
+  /*Will fix dynamically fetching toggle in next pr
   let toggleValue =  await checkToggleEnabled('dashboard-service');
-  return toggleValue;
+  return toggleValue;*/
 };
 
 const isMintiToggleEnabled = async () => {
