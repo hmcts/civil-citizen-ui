@@ -3,7 +3,6 @@ import {
   DASHBOARD_URL, GA_PAYMENT_SUCCESSFUL_URL, GA_PAYMENT_UNSUCCESSFUL_URL,
 } from 'routes/urls';
 import { deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
-import {FeeType} from 'form/models/helpWithFees/feeType';
 import {Claim} from 'models/claim';
 import { ClaimBilingualLanguagePreference } from 'common/models/claimBilingualLanguagePreference';
 import { getGaFeePaymentStatus } from '../applicationFee/generalApplicationFeePaymentService';
