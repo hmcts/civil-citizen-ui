@@ -23,10 +23,14 @@ import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {AcceptDefendantOffer, ProposedPaymentPlanOption} from 'common/models/generalApplication/response/acceptDefendantOffer';
 import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
+import config from 'config';
+import { GeneralApplicationClient } from 'client/generalApplicationClient';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 
+const baseUrl: string = config.get<string>('services.generalApplication.url');
+const generalApplicationClient = new GeneralApplicationClient(baseUrl);
 export const saveApplicationType = async (claimId: string, applicationType: ApplicationType, index?: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
@@ -337,4 +341,10 @@ export const saveHelpWithFeesDetails = async (claimId: string, value: any, hwfPr
     throw error;
   }
 };
+
+
+export const getApplicationFromGAService = async (req: AppRequest, applicationId: string): Promise<ApplicationResponse> => {
+  return await generalApplicationClient.getApplication(req, applicationId);
+};
+
 

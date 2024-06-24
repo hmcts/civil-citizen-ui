@@ -16,12 +16,12 @@ const paymentCancelledByUser = 'Payment was cancelled by the user';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<string> => {
+export const getRedirectUrl = async (applicationId: string, req: AppRequest): Promise<string> => {
   try {
     const redisClaimId = generateRedisKey(req);
-    const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    const claim = await civilServiceClient.retrieveClaimDetails(applicationId, <AppRequest>req);
     const paymentInfo = claim.generalApplication?.applicationFeePaymentDetails;
-    const paymentStatus = await getGaFeePaymentStatus(claimId, paymentInfo?.paymentReference, req);
+    const paymentStatus = await getGaFeePaymentStatus(applicationId, paymentInfo?.paymentReference, req);
 
     if(paymentStatus.status === success) {
       const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH ? 'cy' : 'en';

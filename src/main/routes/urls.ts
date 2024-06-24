@@ -341,6 +341,5 @@ export const GA_APPLY_HELP_WITH_FEE_REFERENCE = `${BASE_GENERAL_APPLICATION_URL}
 export const GA_APPLY_HELP_WITH_FEES = `${BASE_GENERAL_APPLICATION_URL}/apply-help-with-fees`;
 export const GA_APPLICATION_FEE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_URL}/pay-application-fee/confirmation`;
 export const BREATHING_SPACE_INFO_URL = `${DASHBOARD_URL}/:id/breathing-space-info`;
-export const APPLICATION_FEE_PAYMENT_CONFIRMATION_URL='/general-app-payment-confirmation/:id';
-export const APPLICATION_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID='/general-app-payment-confirmation/:id/:uniqueId/confirmation';
-
+export const APPLICATION_FEE_PAYMENT_CONFIRMATION_URL='/general-app-payment-confirmation/:id/appid/:appId';
+export const APPLICATION_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID='/general-app-payment-confirmation/:id/appid/:appId/:uniqueId/confirmation';
