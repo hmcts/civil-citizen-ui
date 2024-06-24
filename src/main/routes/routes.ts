@@ -346,6 +346,7 @@ import payApplicationFeeConfirmationController
 import submitGeneralApplicationConfirmationController
   from 'routes/features/generalApplication/submitGeneralApplicationConfirmationController';
 import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
+import viewBreathingSpaceInformationController from 'routes/features/dashboard/viewBreathingSpaceInformationController';
 import multiTrackDisclosureNonElectronicDocuments
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocumentsController';
 import disclosureOfDocumentsController
@@ -364,6 +365,8 @@ import frcBandAgreedController
 import chooseComplexityBandController from './features/directionsQuestionnaire/fixedRecoverableCosts/chooseComplexityBandController';
 import reasonForComplexityBandController
   from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/reasonForChoosingComplexityBandController';
+import whyNotSubjectToFRCController
+  from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/whyNotSubjectToFRCController';
 import backController from 'routes/common/backController';
 
 export default [
@@ -658,6 +661,7 @@ export default [
   helpWithApplicationFeeReferenceController,
   helpWithApplicationFeeContinueController,
   payApplicationFeeConfirmationController,
+  viewBreathingSpaceInformationController,
   multiTrackDisclosureNonElectronicDocuments,
   disclosureOfDocumentsController,
   disclosureOfElectronicDocumentsIssues,
@@ -668,5 +672,6 @@ export default [
   frcBandAgreedController,
   chooseComplexityBandController,
   reasonForComplexityBandController,
+  whyNotSubjectToFRCController,
   backController,
 ];

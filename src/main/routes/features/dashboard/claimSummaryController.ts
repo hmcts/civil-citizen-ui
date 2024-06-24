@@ -4,8 +4,7 @@ import {AppRequest} from 'models/AppRequest';
 import {APPLICATION_TYPE_URL, CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
-  isCUIReleaseTwoEnabled,
-  isCaseProgressionV1Enable, isDashboardServiceEnabled,
+  isCaseProgressionV1Enable, isDashboardEnabledForCase,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
@@ -40,13 +39,11 @@ const HearingUploadDocuments = 'Upload hearing documents';
 
 claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-
-    const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
-    const isDashboardService = await isDashboardServiceEnabled();
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    if (isReleaseTwoEnabled && isDashboardService) {
+    const isDashboardEnabled = await isDashboardEnabledForCase(claim.submittedDate);
+    if (isDashboardEnabled) {
       const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
