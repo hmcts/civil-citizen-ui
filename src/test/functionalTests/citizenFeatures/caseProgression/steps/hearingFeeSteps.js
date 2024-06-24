@@ -28,7 +28,7 @@ class hearingFeeSteps {
       payHearingFee.open(claimRef);
       payHearingFee.verifyPageContent(feeAmount, dueDate, caseNumber, claimAmount);
       payHearingFee.nextAction('Start now');
-      applyHelpFeeSelection.verifyPageContent(feeAmount, caseNumber, claimAmount);
+      applyHelpFeeSelection.verifyPageContent(caseNumber, claimAmount);
       applyHelpFeeSelection.nextAction('Yes');
       applyHelpFeeSelection.nextAction('Continue');
       applyHelpFees.verifyPageContent(feeAmount, caseNumber, claimAmount);

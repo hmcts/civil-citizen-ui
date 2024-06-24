@@ -30,9 +30,26 @@ const checkToggleEnabled = async (toggle) => {
     );
 };
 
-const isDashboardServiceToggleEnabled = async () => {
-  let toggleValue =  await checkToggleEnabled('dashboard-service');
-  return toggleValue;
+const isDashboardServiceToggleEnabled = async (caseId = 'noCaseId',  caseSubmittedDate = null) => {
+
+  const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+  return await restHelper.request(
+    `${config.url.civilService}/testing-support/is-dashboard-toggle-enabled`,
+    {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`,
+    }, {
+      submittedDate: caseSubmittedDate, //'2022-05-10T15:59:50'
+    }, 'POST')
+    .then(async response =>  {
+      if (response.status === 200) {
+        const json = await response.json();
+        console.log(`Dashboard toggle value for the case .. ${caseId} is..`, json.toggleEnabled);
+        return json.toggleEnabled;
+      } else {
+        throw new Error(`Error when checking Dashboard toggle occurred with status : ${response.status}`);
+      }
+    });
 };
 
 const isMintiToggleEnabled = async () => {

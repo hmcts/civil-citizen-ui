@@ -9,7 +9,7 @@ import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {YesNo} from 'common/form/models/yesNo';
-import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
@@ -174,8 +174,8 @@ export const saveIfPartyWantsToUploadDoc = async (redisKey: string, wantToSaveDo
 
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
   if (claim.isClaimant()) {
-    const isDashboardEnabled = await isDashboardServiceEnabled();
-    if (isDashboardEnabled) {
+    const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
+    if (isCUIR2Enabled) {
       return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
     }
     return constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL);
