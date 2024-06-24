@@ -58,7 +58,7 @@ subjectToFRCController.post(SUBJECT_TO_FRC_URL, (async (req: Request, res: Respo
         'subjectToFrc',
         'fixedRecoverableCosts');
       const redirectUrl = req.body.option === YesNo.YES ? FRC_BAND_AGREED_URL : WHY_NOT_SUBJECT_TO_FRC_URL;
-        res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
+      res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
     }
 
   } catch (error) {
