@@ -7,10 +7,10 @@ import uk.gov.hmcts.contino.GithubAPI
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "feat/CIV-13859"
+def camundaBranch = "feat/CIV-13715"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "feat/CIV-13859-test-13849"
+def ccdBranch = "feat/CIV-13715"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
