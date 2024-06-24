@@ -344,3 +344,5 @@ export const GA_APPLY_HELP_WITH_FEES_START = `${BASE_GENERAL_APPLICATION_URL}/ap
 export const GA_APPLY_HELP_WITH_FEE_REFERENCE = `${BASE_GENERAL_APPLICATION_URL}/apply-help-with-fees/reference-number`;
 export const GA_APPLY_HELP_WITH_FEES = `${BASE_GENERAL_APPLICATION_URL}/apply-help-with-fees`;
 export const GA_APPLICATION_FEE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_URL}/pay-application-fee/confirmation`;
+export const BREATHING_SPACE_INFO_URL = `${DASHBOARD_URL}/:id/breathing-space-info`;
+

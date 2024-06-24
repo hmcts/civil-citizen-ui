@@ -24,7 +24,6 @@ import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApp
 import { TestMessages } from '../../../../utils/errorMessageTestConstants';
 import { YesNo } from 'common/form/models/yesNo';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { CaseRole } from 'common/form/models/caseRoles';
 import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
 import { HearingSupport, SupportType } from 'models/generalApplication/hearingSupport';
@@ -37,6 +36,7 @@ import { ValidationError } from 'class-validator';
 import { ApplyHelpFeesReferenceForm } from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import { GaHelpWithFees } from 'models/generalApplication/gaHelpWithFees';
 import { AcceptDefendantOffer } from 'common/models/generalApplication/response/acceptDefendantOffer';
+import {isCUIReleaseTwoEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import { ApplicationState, ApplicationStatus } from 'common/models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -217,7 +217,7 @@ describe('General Application service', () => {
   describe('Get cancel button url', () => {
     it('should return claimant new dashboard url when user is claimant and dashboard feature flag is enabled', async () => {
       //Given
-      (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(true);
+      (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(true);
 
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
@@ -232,7 +232,7 @@ describe('General Application service', () => {
 
     it('should return claimant old dashboard url when user is claimant and dashboard feature flag is disabled', async () => {
       //Given
-      (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(false);
+      (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(false);
 
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
@@ -247,7 +247,7 @@ describe('General Application service', () => {
 
     it('should return defendant dashboard url when user is defendent', async () => {
       //Given
-      (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(false);
+      (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(false);
 
       const claim = new Claim();
       claim.caseRole = CaseRole.DEFENDANT;
@@ -614,5 +614,5 @@ describe('Save Accept defendant offer', () => {
     //Then
     await expect(saveAcceptDefendantOffer('123', acceptDefendantOffer)).rejects.toThrow(TestMessages.REDIS_FAILURE);
   });
-  
+
 });

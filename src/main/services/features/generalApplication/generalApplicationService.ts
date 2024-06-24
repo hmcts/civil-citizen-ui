@@ -5,7 +5,7 @@ import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {YesNo} from 'common/form/models/yesNo';
-import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
@@ -163,8 +163,8 @@ export const saveIfPartyWantsToUploadDoc = async (redisKey: string, wantToSaveDo
 
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
   if (claim.isClaimant()) {
-    const isDashboardEnabled = await isDashboardServiceEnabled();
-    if (isDashboardEnabled) {
+    const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
+    if (isCUIR2Enabled) {
       return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
     }
     return constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL);
@@ -264,8 +264,8 @@ export const saveStatementOfTruth = async (claimId: string, statementOfTruth: St
 
 export const getDynamicHeaderForMultipleApplications = (claim: Claim): string => {
   const applicationTypes = claim.generalApplication?.applicationTypes;
-  return (applicationTypes?.length === 1) 
-    ? selectedApplicationType[applicationTypes[0].option] 
+  return (applicationTypes?.length === 1)
+    ? selectedApplicationType[applicationTypes[0].option]
     : 'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION';
 };
 
@@ -310,8 +310,8 @@ export const validateAdditionalApplicationtType = (claim : Claim, errors : Valid
 };
 
 export const getListOfNotAllowedAdditionalAppType = () => {
-  return [ApplicationTypeOption.SET_ASIDE_JUDGEMENT, 
-    ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, 
+  return [ApplicationTypeOption.SET_ASIDE_JUDGEMENT,
+    ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT,
     ApplicationTypeOption.SETTLE_BY_CONSENT];
 };
 
