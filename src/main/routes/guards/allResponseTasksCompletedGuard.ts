@@ -8,7 +8,7 @@ import {setResponseDeadline} from 'services/features/common/responseDeadlineAgre
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
-import {isMintiEnabledForCase} from 'common/utils/mintiToggleUtils';
+import {isMintiEnabledForCase} from '../../app/auth/launchdarkly/launchDarklyClient';
 export class AllResponseTasksCompletedGuard {
   static apply(redirectUrl: string) {
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {

@@ -15,8 +15,8 @@ import {Claim} from 'models/claim';
 import {deepCopy} from '../../../../utils/deepCopy';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as carmToggleUtils from 'common/utils/carmToggleUtils';
-import * as mintiToggleUtils from 'common/utils/mintiToggleUtils';
 import * as taskListService from 'services/features/common/taskListService';
+import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedService');
@@ -26,8 +26,7 @@ const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(carmToggleUtils, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
 
-const isMintiEnabledSpy = (mintiEnabled: boolean) => configureSpy(mintiToggleUtils, 'isMintiEnabledForCase')
-  .mockReturnValue(Promise.resolve(mintiEnabled));
+const isMintiEnabledForCase = launchDarklyClient.isMintiEnabledForCase as jest.Mock;
 
 const getTaskListSpy = (taskList: TaskList[]) => configureSpy(taskListService, 'getTaskLists')
   .mockReturnValue(taskList);
@@ -55,7 +54,7 @@ describe('Claimant details', () => {
 
   beforeEach(() => {
     isCarmEnabledSpy(true);
-    isMintiEnabledSpy(true);
+    isMintiEnabledForCase.mockResolvedValue(true);
   });
 
   describe('on GET', () => {
@@ -109,7 +108,7 @@ describe('Claimant details', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const dateSubmitted = civilClaimResponseMock.case_data.submittedDate;
       const isCarmEnabled = isCarmEnabledSpy(true);
-      const isMintiEnabled = isMintiEnabledSpy(true);
+      const isMintiEnabled = isMintiEnabledForCase.mockResolvedValue(true);
 
       await request(app).get(responseTaskListUrl());
 
@@ -134,7 +133,7 @@ describe('Claimant details', () => {
 
       it('when isCarmEnabledForCase and isMintiEnabledForCase returns true', async () => {
         isCarmEnabledSpy(true);
-        isMintiEnabledSpy(true);
+        isMintiEnabledForCase.mockResolvedValue(true);
 
         await request(app).get(responseTaskListUrl());
 
@@ -144,7 +143,7 @@ describe('Claimant details', () => {
 
       it('when isCarmEnabledForCase and isMintiEnabledForCase returns false', async () => {
         isCarmEnabledSpy(false);
-        isMintiEnabledSpy(false);
+        isMintiEnabledForCase.mockResolvedValue(false);
 
         await request(app).get(responseTaskListUrl());
 
