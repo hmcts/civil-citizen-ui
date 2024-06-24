@@ -25,6 +25,7 @@ import {AcceptDefendantOffer, ProposedPaymentPlanOption} from 'common/models/gen
 import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
 import config from 'config';
 import { GeneralApplicationClient } from 'client/generalApplicationClient';
+import { ApplicationResponse } from 'common/models/generalApplication/applicationResponse';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');

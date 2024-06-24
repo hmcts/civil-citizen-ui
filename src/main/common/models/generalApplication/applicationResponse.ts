@@ -15,7 +15,7 @@ import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/
 import {
   CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
-import { ccdGAPbaDetails } from '../ccdGeneralApplication/ccdGAPBADetails';
+import { ccdGAPBADetails } from '../ccdGeneralApplication/ccdGAPbaDetails';
 export class ApplicationResponse {
   id: string;
   case_data: CCDApplication;
@@ -49,5 +49,5 @@ export interface CCDApplication extends ApplicationUpdate {
   generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
   generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
-  generalAppPBADetails : ccdGAPbaDetails;
+  generalAppPBADetails : ccdGAPBADetails;
 }
