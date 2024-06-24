@@ -494,6 +494,10 @@ export class Claim {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
 
+  isCaseIssuedPending(): boolean {
+    return this.ccdState === CaseState.PENDING_CASE_ISSUED;
+  }
+
   isClaimantIntentionPending(): boolean {
     return this.ccdState === CaseState.AWAITING_APPLICANT_INTENTION;
   }
@@ -847,8 +851,14 @@ export class Claim {
     return undefined;
   }
 
+  hasFullDefenceAccepted() {
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM
+      && this.getIntentionToProceed() === YesNo.NO
+      && this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
+  }
+
   hasClaimTakenOffline() {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.hasDefaultJudgmentSubmitted() && !this.ccjJudgmentStatement && !this.isClaimantRejectedPaymentPlan();
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !!this.takenOfflineDate;
   }
 
   hasMediationSuccessful() {

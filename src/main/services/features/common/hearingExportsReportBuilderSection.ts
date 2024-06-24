@@ -21,7 +21,11 @@ const buildExpertReportSection = (claim: Claim, claimId: string, lang: string, d
   const hasExportReportRow = buildHasExportReportSectionOption(claim, claimId, lang, hrefReportDetails);
   const exportReportSectionRows = [hasExportReportRow];
   if (claim.hasExpertReportDetails()) {
-    exportReportSectionRows.push(...buildExportReportsRows(claim, claimId, lang, hrefReportDetails, directionQuestionnaire));
+    if (directionQuestionnaire?.experts?.expertReportDetails?.reportDetails) {
+      exportReportSectionRows.push(...buildExportReportsRows(claim, claimId, lang, hrefReportDetails, directionQuestionnaire));
+    } else {
+      exportReportSectionRows.push(...buildExpertsDetailsRows(claim, claimId, lang, directionQuestionnaire));
+    }
   } else {
     exportReportSectionRows.push(...whatIsThereToExamineRows(claim, claimId, lang, directionQuestionnaire));
   }
@@ -37,7 +41,7 @@ const buildHasExportReportSectionOption = (claim: Claim, claimId: string, lang: 
 
 const buildExportReportsRows = (claim: Claim, claimId: string, lang: string, hrefReportDetails: string, directionQuestionnaire: DirectionQuestionnaire): SummaryRow[] => {
   const rows = directionQuestionnaire?.experts?.expertReportDetails?.reportDetails;
-  return rows.map((row, index) => {
+  return rows?.map((row, index) => {
     const reportNumber = index + 1;
     return summaryRow(`${t('PAGES.EXPERT_REPORT_DETAILS.REPORT_TEXT', {lng: lang})} ${reportNumber}`,
       buildExpertsReportDetailsValue(row, lang), hrefReportDetails, changeLabel(lang));
