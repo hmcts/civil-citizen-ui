@@ -20,6 +20,7 @@ import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/l
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedService');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 
@@ -108,14 +109,12 @@ describe('Claimant details', () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const dateSubmitted = civilClaimResponseMock.case_data.submittedDate;
       const isCarmEnabled = isCarmEnabledSpy(true);
-      const isMintiEnabled = isMintiEnabledForCase.mockResolvedValue(true);
 
       await request(app).get(responseTaskListUrl());
 
       expect(isCarmEnabled).toBeCalledTimes(1);
-      expect(isMintiEnabled).toBeCalledTimes(1);
       expect(isCarmEnabled).toBeCalledWith(dateSubmitted);
-      expect(isMintiEnabled).toBeCalledWith(dateSubmitted);
+      expect(isMintiEnabledForCase).toBeCalledWith(dateSubmitted);
     });
 
     describe('should call getTaskLists with expected arguments', () => {

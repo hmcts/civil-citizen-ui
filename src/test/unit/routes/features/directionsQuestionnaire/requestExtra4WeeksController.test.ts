@@ -21,6 +21,7 @@ import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/l
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const isMintiEnabledForCase = launchDarklyClient.isMintiEnabledForCase as jest.Mock;
 
