@@ -1,4 +1,4 @@
-import { PaymentInformation } from "../feePayment/paymentInformation";
+import { PaymentInformation } from '../feePayment/paymentInformation';
 
 export interface ccdGAPbaDetails {
   paymentDetails? : PaymentInformation;
