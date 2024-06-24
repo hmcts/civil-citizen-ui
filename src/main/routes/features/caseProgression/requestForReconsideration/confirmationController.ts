@@ -1,5 +1,6 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 import {
+  CASE_DOCUMENT_VIEW_URL,
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
   REQUEST_FOR_RECONSIDERATION_CONFIRMATION_URL,
@@ -10,9 +11,10 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {CaseRole} from 'form/models/caseRoles';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
-  getRequestForReconsiderationConfirmationContent,
+  getRequestForReconsiderationConfirmationContent, getRequestForReconsiderationDocumentForConfirmation,
 } from 'services/features/caseProgression/requestForReconsideration/requestForReviewContent';
 import {Claim} from 'models/claim';
+import {documentIdExtractor} from 'common/utils/stringUtils';
 
 const requestForReconsiderationConfirmationViewPath = 'features/caseProgression/requestForReconsideration/confirmation.njk';
 const requestForReconsiderationConfirmationController = Router();
@@ -27,9 +29,10 @@ requestForReconsiderationConfirmationController.get(REQUEST_FOR_RECONSIDERATION_
     const dashboardUrl = claim.caseRole === CaseRole.CLAIMANT
       ? constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)
       : constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
-    const requestForReconsiderationDoc = '/#'; //TODO: placeholder for request for reconsideration document
+    const requestForReconsiderationDoc = CASE_DOCUMENT_VIEW_URL
+      .replace(':id', claimId).replace(':documentId', documentIdExtractor(getRequestForReconsiderationDocumentForConfirmation(claim)));
     res.render(requestForReconsiderationConfirmationViewPath, {
-      confirmationContents:getRequestForReconsiderationConfirmationContent(claim, lang),
+      confirmationContents:getRequestForReconsiderationConfirmationContent(claim, lang, dashboardUrl),
       requestForReconsiderationDoc: requestForReconsiderationDoc,
       dashboardUrl});
   } catch (error) {

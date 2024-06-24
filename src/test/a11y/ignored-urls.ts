@@ -70,4 +70,5 @@ export const IGNORED_URLS = [
   urls.CONFIRM_YOU_HAVE_BEEN_PAID_URL, //TODO: remove this once finished the page
   urls.VIEW_THE_JUDGMENT_URL, //TODO: remove this once finished the page
   urls.REQUEST_FOR_RECONSIDERATION_CANCEL_URL,
+  urls.GA_APPLICATION_SUMMARY_URL, //TODO: remove this once finished the page
 ];

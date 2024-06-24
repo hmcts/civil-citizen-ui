@@ -353,6 +353,7 @@ import requestForReconsiderationConfirmationController
   from 'routes/features/caseProgression/requestForReconsideration/confirmationController';
 import cancelRequestForReconsiderationController
   from 'routes/features/caseProgression/requestForReconsideration/cancelRequestForReconsiderationController';
+import viewBreathingSpaceInformationController from 'routes/features/dashboard/viewBreathingSpaceInformationController';
 
 export default [
   homeController,
@@ -650,4 +651,5 @@ export default [
   helpWithApplicationFeeReferenceController,
   helpWithApplicationFeeContinueController,
   payApplicationFeeConfirmationController,
+  viewBreathingSpaceInformationController,
 ];
