@@ -2587,6 +2587,8 @@
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "Dydych chi ddim wedi ymateb i'r hawliad. Gall {{ claimantName }} nawr ofyn am Ddyfarniad Llys Sirol yn eich erbyn.",
       "CLAIM_ENDED_TITLE": "Mae’r hawliad hwn wedi dod i ben",
       "CLAIM_ENDED_MESSAGE": "Daeth {{claimantName}} â'i gais yn eich erbyn i ben ar {{acceptFullDefenseDate}}",
+      "CLAIM_TAKEN_OFFLINE_TITLE": "Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru mwyach",
+      "CLAIM_TAKEN_OFFLINE_MESSAGE": "Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru mwyach. Os oes unrhyw ddiweddariadau pellach i’ch achos, bydd y rhain yn cael eu hanfon atoch drwy'r post.",
       "CLAIMANT_CONFIRMED_SETTLED_CLAIM": "Cadarnhaodd {{claimantName}} eich bod wedi setlo ar {{settlementDate}}",
       "CLAIMANT_REJECT_PAYMENT_PLAN_MSG1": "Mae {{claimantName }} gwrthod eich cynllun ad-dalu.",
       "CLAIMANT_REJECT_PAYMENT_PLAN_MSG2": "Bydd y llys yn adolygu’r achos. Byddwn yn cysylltu â chi drwy’r post i ddweud wrthych beth i'w wneud nesaf.",
