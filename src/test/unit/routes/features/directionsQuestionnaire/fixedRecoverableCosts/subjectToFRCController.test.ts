@@ -3,7 +3,8 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  SUBJECT_TO_FRC_URL,
+  FRC_BAND_AGREED_URL,
+  SUBJECT_TO_FRC_URL, WHY_NOT_SUBJECT_TO_FRC_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
@@ -115,19 +116,17 @@ describe('Subject to Fixed recoverable costs Controller', () => {
         .send({option: YesNo.YES})
         .expect((res) => {
           expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
+          expect(res.get('location')).toBe(FRC_BAND_AGREED_URL);
         });
     });
 
     it('should redirect when subject to fixed recoverable costs is NO', async () => {
       await request(app)
         .post(CONTROLLER_URL)
-        .send({option: YesNo.YES})
+        .send({option: YesNo.NO})
         .expect((res) => {
           expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
+          expect(res.get('location')).toBe(WHY_NOT_SUBJECT_TO_FRC_URL);
         });
     });
 

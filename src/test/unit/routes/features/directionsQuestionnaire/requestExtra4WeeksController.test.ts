@@ -5,7 +5,7 @@ import {app} from '../../../../../main/app';
 import {
   DQ_REQUEST_EXTRA_4WEEKS_URL,
   DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL,
-  DQ_DISCLOSURE_OF_DOCUMENTS_URL,
+  DQ_DISCLOSURE_OF_DOCUMENTS_URL, SUBJECT_TO_FRC_URL,
 } from 'routes/urls';
 import {
   civilClaimResponseMock,
@@ -17,9 +17,12 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
 import {cloneDeep} from 'lodash';
+import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+
+const isMintiEnabledForCase = launchDarklyClient.isMintiEnabledForCase as jest.Mock;
 
 describe('Request extra 4 weeks to Settle Claim Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -71,19 +74,6 @@ describe('Request extra 4 weeks to Settle Claim Controller', () => {
         });
     });
 
-    it('should redirect to consider claimant documents page if option yes is selected and minti is enabled and is intermediate track', async () => {
-      const draftClaim = cloneDeep(civilClaimResponseMock);
-      draftClaim.case_data.totalClaimAmount = 150000;
-      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
-      jest.spyOn(launchDarkly, 'isMintiEnabled').mockResolvedValueOnce(true);
-
-      await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_DISCLOSURE_OF_DOCUMENTS_URL);
-        });
-    });
-
     it('should redirect to consider claimant documents page page if option no is selected', async () => {
       await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'no'})
         .expect((res) => {
@@ -92,11 +82,51 @@ describe('Request extra 4 weeks to Settle Claim Controller', () => {
         });
     });
 
-    it('should redirect to consider claimant documents page page if option no is selected and minti is enabled and is intermediate track', async () => {
+    it('should redirect to consider claimant docs page if option no is selected and minti is enabled and is not intermediate or multi track', async () => {
+      const draftClaim = cloneDeep(civilClaimResponseMock);
+      draftClaim.case_data.totalClaimAmount = 10000;
+      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
+      jest.spyOn(launchDarkly, 'isMintiEnabled').mockResolvedValueOnce(true);
+      isMintiEnabledForCase.mockResolvedValue(false);
+
+      await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'no'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.get('location')).toBe(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL);
+        });
+    });
+
+    it('should redirect to consider claimant docs page if option no is selected and minti is not enabled and is higher than fast track amount', async () => {
+      const draftClaim = cloneDeep(civilClaimResponseMock);
+      draftClaim.case_data.totalClaimAmount = 26000;
+      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
+      isMintiEnabledForCase.mockResolvedValue(false);
+
+      await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'no'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.get('location')).toBe(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL);
+        });
+    });
+
+    it('should redirect to fixed recoverable costs page if option no is selected and minti is enabled and is intermediate track', async () => {
+      const draftClaim = cloneDeep(civilClaimResponseMock);
+      draftClaim.case_data.totalClaimAmount = 26000;
+      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
+      isMintiEnabledForCase.mockResolvedValue(true);
+
+      await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'no'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.get('location')).toBe(SUBJECT_TO_FRC_URL);
+        });
+    });
+
+    it('should redirect to disclosure of documents page if option no is selected and minti is enabled and is multi track', async () => {
       const draftClaim = cloneDeep(civilClaimResponseMock);
       draftClaim.case_data.totalClaimAmount = 150000;
       app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
-      jest.spyOn(launchDarkly, 'isMintiEnabled').mockResolvedValueOnce(true);
+      isMintiEnabledForCase.mockResolvedValue(true);
 
       await request(app).post(DQ_REQUEST_EXTRA_4WEEKS_URL).send({option: 'no'})
         .expect((res) => {

@@ -3,6 +3,7 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
+  ASSIGN_FRC_BAND_URL,
   FRC_BAND_AGREED_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
@@ -115,8 +116,7 @@ describe('FRC Band agreed Controller', () => {
         .send({option: YesNo.YES})
         .expect((res) => {
           expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
+          expect(res.get('location')).toBe(ASSIGN_FRC_BAND_URL);
         });
     });
 
@@ -126,8 +126,7 @@ describe('FRC Band agreed Controller', () => {
         .send({option: YesNo.YES})
         .expect((res) => {
           expect(res.status).toBe(302);
-          //TODO CHANGE TO CORRECT URL WHEN IS AVAILABLE
-          expect(res.get('location')).toBe('todo');
+          expect(res.get('location')).toBe(ASSIGN_FRC_BAND_URL);
         });
     });
 

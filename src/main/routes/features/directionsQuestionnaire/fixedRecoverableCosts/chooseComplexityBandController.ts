@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  ASSIGN_FRC_BAND_URL, REASON_FOR_FRC_BAND_URL,
+  ASSIGN_FRC_BAND_URL, BACK_URL, REASON_FOR_FRC_BAND_URL,
 } from 'routes/urls';
 import {
   getDirectionQuestionnaire,
@@ -30,8 +30,7 @@ function renderView(complexityBand: GenericForm<ComplexityBand>, lang: string, r
     complexityBandOptions: ComplexityBandOptions,
     pageTitle: `${CHOOSE_COMPLEXITY_BAND_PAGE}PAGE_TITLE`,
     title: `${CHOOSE_COMPLEXITY_BAND_PAGE}TITLE`,
-    //TODO ADD THE BACK URL
-    backLinkUrl: constructResponseUrlWithIdParams('claimId', 'todo'),
+    backLinkUrl: constructResponseUrlWithIdParams('claimId', BACK_URL),
   });
 }
 

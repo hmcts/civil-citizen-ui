@@ -3,6 +3,7 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
+  DQ_DISCLOSURE_OF_DOCUMENTS_URL,
   WHY_NOT_SUBJECT_TO_FRC_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
@@ -97,7 +98,7 @@ describe('Reasons for not being subject to FRC', () => {
         .send({reasonsForNotSubjectToFrc: 'important reasons, probably'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe('todo');
+          expect(res.get('location')).toBe(DQ_DISCLOSURE_OF_DOCUMENTS_URL);
         });
     });
 
