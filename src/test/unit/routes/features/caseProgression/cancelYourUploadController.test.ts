@@ -19,8 +19,7 @@ import {t} from 'i18next';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
 import {
-  isCaseProgressionV1Enable,
-  isDashboardServiceEnabled,
+  isCaseProgressionV1Enable, isCUIReleaseTwoEnabled,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -98,7 +97,7 @@ describe('Cancel document upload', () => {
         .reply(200, claimId);
       await testSession
         .get(CP_UPLOAD_DOCUMENTS_URL.replace(':id', '1111'));
-      (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(true);
+      (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(true);
       //When
       await testSession
         .post(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', '1111'))
