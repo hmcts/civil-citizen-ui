@@ -66,7 +66,7 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
     } else {
       await saveStatementOfTruth(redisKey, statementOfTruth);
       await submitApplication(req);
-      await deleteDraftClaimFromStore(claimId);
+      await deleteDraftClaimFromStore(redisKey);
       res.redirect(getRedirectUrl(claimId, claim));
     }
   } catch (error) {
