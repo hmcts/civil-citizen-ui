@@ -16,7 +16,7 @@ import {getClaimById} from 'modules/utilityService';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {getClaimTimeline} from 'services/features/common/claimTimelineService';
-import {isCUIReleaseTwoEnabled,isDashboardServiceEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
+import {isCUIReleaseTwoEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 
@@ -27,7 +27,6 @@ const claimDetailsViewPathNew = 'features/response/claimDetails/claim-details-ne
 claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const isCUIReleaseTwo = await isCUIReleaseTwoEnabled();
-    const isDashboardEnabled = await isDashboardServiceEnabled();
     const claimId = req.params.id;
     const claim: Claim = await getClaimById(req.params.id, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -35,10 +34,10 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: Request, res: Respons
     const totalAmount = getTotalAmountWithInterestAndFees(claim);
     const timelineRows = getClaimTimeline(claim, getLng(lang));
     const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id).replace(':documentId', claim.extractDocumentId());
-    const claimFormUrl =  (isCUIReleaseTwo && isDashboardEnabled) ? CASE_DOCUMENT_VIEW_URL : CASE_DOCUMENT_DOWNLOAD_URL;
+    const claimFormUrl =  (isCUIReleaseTwo) ? CASE_DOCUMENT_VIEW_URL : CASE_DOCUMENT_DOWNLOAD_URL;
     const sealedClaimPdfUrl = claimFormUrl.replace(':id', req.params.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM));
     const pageTitle = 'PAGES.CLAIM_DETAILS.PAGE_TITLE_NEW';
-    const claimDetailsViewPath = (isCUIReleaseTwo && isDashboardEnabled) ? claimDetailsViewPathNew : claimDetailsViewPathOld;
+    const claimDetailsViewPath = (isCUIReleaseTwo) ? claimDetailsViewPathNew : claimDetailsViewPathOld;
     claim.totalInterest = interestData.interest;
     res.render(claimDetailsViewPath, {
       claim, totalAmount, interestData, timelineRows, timelinePdfUrl, sealedClaimPdfUrl,
