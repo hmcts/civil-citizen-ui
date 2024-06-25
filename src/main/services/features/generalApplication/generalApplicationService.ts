@@ -342,7 +342,3 @@ export const saveHelpWithFeesDetails = async (claimId: string, value: any, hwfPr
     throw error;
   }
 };
-
-export const getApplicationFromGAService = async (req: AppRequest, applicationId: string): Promise<ApplicationResponse> => {
-  return await generalApplicationClient.getApplication(req, applicationId);
-};
