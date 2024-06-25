@@ -20,7 +20,7 @@ import {ComplexityBandOptions} from 'models/directionsQuestionnaire/fixedRecover
 import {TypeOfDisclosureDocument} from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 import {
   HasAnAgreementBeenReachedOptions,
-} from "models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReachedOptions";
+} from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReachedOptions';
 
 describe('translate CCDDQ to CUI DQ model', () => {
   it('should return undefined if ccdClaim doesnt exist', () => {
@@ -282,7 +282,7 @@ function getCCDDataForIntTrackClaimUncommonFields(): CCDClaim {
       reasonForNoAgreement: 'electronic',
     },
     specRespondent1DQDisclosureOfNonElectronicDocuments: <CCDDisclosureOfNonElectronicDocuments> {
-      bespokeDirections: 'non-electronic'
+      bespokeDirections: 'non-electronic',
     },
     respondent1DQClaimantDocumentsToBeConsidered: <CCDDocumentsToBeConsidered> {
       hasDocumentsToBeConsidered: YesNoUpperCamelCase.YES,

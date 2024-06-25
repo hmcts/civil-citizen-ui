@@ -4,7 +4,7 @@ import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {YesNo, YesNoNotReceived} from 'form/models/yesNo';
 import {VulnerabilityQuestions} from 'models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
 import {
-  WelshLanguageRequirements,
+  WelshLanguageRequirements
 } from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
 import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
@@ -82,9 +82,7 @@ const createHearing = (triedToSettleOption: YesNo, requestExtra4weeksOption: Yes
   return hearing;
 };
 
-const createFixedRecoverableCostsSection = (subjectToFrc: YesNo, frcAgreed: YesNo,
-                       band: string, reasons: string,
-): FixedRecoverableCosts => {
+const createFixedRecoverableCostsSection = (subjectToFrc: YesNo, frcAgreed: YesNo, band: string, reasons: string): FixedRecoverableCosts => {
 
   const fixedRecoverableCosts = new FixedRecoverableCosts();
   fixedRecoverableCosts.subjectToFrc = {
@@ -99,9 +97,7 @@ const createFixedRecoverableCostsSection = (subjectToFrc: YesNo, frcAgreed: YesN
   return fixedRecoverableCosts;
 };
 
-const createDisclosureOfDocuments = (hearing: Hearing, disclosureOfDocuments: string[], agreementReached: string,
-                                            electronicDocs: string, nonElectronicDocs: string,
-): Hearing => {
+const createDisclosureOfDocuments = (hearing: Hearing, disclosureOfDocuments: string[], agreementReached: string, electronicDocs: string, nonElectronicDocs: string,): Hearing => {
 
   hearing.disclosureOfDocuments = new DisclosureOfDocuments();
   hearing.disclosureOfDocuments.documentsTypeChosen = disclosureOfDocuments;
@@ -112,7 +108,7 @@ const createDisclosureOfDocuments = (hearing: Hearing, disclosureOfDocuments: st
   return hearing;
 };
 
-const createDocumentsToBeConsideredMinti = (hearing: Hearing, documentsToConsidered: YesNo, details: string,): Hearing => {
+const createDocumentsToBeConsideredMinti = (hearing: Hearing, documentsToConsidered: YesNo, details: string): Hearing => {
 
   hearing.hasDocumentsToBeConsidered = {
     option: documentsToConsidered,
