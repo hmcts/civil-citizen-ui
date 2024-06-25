@@ -3,7 +3,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {GA_PAYMENT_SUCCESSFUL_URL, GA_PAYMENT_UNSUCCESSFUL_URL, DASHBOARD_URL} from 'routes/urls';
+import {GA_PAYMENT_SUCCESSFUL_URL, GA_PAYMENT_UNSUCCESSFUL_URL, GA_APPLY_HELP_WITH_FEE_SELECTION} from 'routes/urls';
 import { getRedirectUrl } from 'services/features/generalApplication/payment/applicationFeePaymentConfirmationService';
 import { GaServiceClient } from 'client/gaServiceClient';
 
@@ -66,7 +66,7 @@ describe('Application Fee PaymentConfirmation Service', () => {
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
 
     //Then
-    expect(actualPaymentRedirectUrl).toBe(DASHBOARD_URL);
+    expect(actualPaymentRedirectUrl).toBe(GA_APPLY_HELP_WITH_FEE_SELECTION);
   });
 
   it('should return 500 error page for any service error', async () => {

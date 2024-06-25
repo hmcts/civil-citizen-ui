@@ -1,7 +1,5 @@
 import {AppRequest} from 'models/AppRequest';
-import {
-  DASHBOARD_URL, GA_PAYMENT_SUCCESSFUL_URL, GA_PAYMENT_UNSUCCESSFUL_URL,
-} from 'routes/urls';
+import {GA_APPLY_HELP_WITH_FEE_SELECTION, GA_PAYMENT_SUCCESSFUL_URL, GA_PAYMENT_UNSUCCESSFUL_URL,} from 'routes/urls';
 import { getGaFeePaymentStatus } from '../applicationFee/generalApplicationFeePaymentService';
 import { getClaimById } from 'modules/utilityService';
 
@@ -23,7 +21,7 @@ export const getRedirectUrl = async (claimId: string, applicationId: string, req
     }
 
     return paymentStatus.errorDescription !== paymentCancelledByUser ?
-      GA_PAYMENT_UNSUCCESSFUL_URL : DASHBOARD_URL;
+      GA_PAYMENT_UNSUCCESSFUL_URL : GA_APPLY_HELP_WITH_FEE_SELECTION;
   }
   catch (error) {
     logger.error(error);
