@@ -18,12 +18,11 @@ import {PartyType} from 'models/partyType';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {CaseRole} from 'form/models/caseRoles';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
-import { isCUIReleaseTwoEnabled, isDashboardServiceEnabled } from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import { isCUIReleaseTwoEnabled } from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 const isReleaseTwo = isCUIReleaseTwoEnabled as jest.Mock;
-const isDashboardEnabled = isDashboardServiceEnabled as jest.Mock;
 
 const nock = require('nock');
 
@@ -54,7 +53,6 @@ describe('Claim details page', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     isReleaseTwo.mockResolvedValue(false);
-    isDashboardEnabled.mockResolvedValue(false);
   });
 
   describe('on Get', () => {
@@ -155,7 +153,7 @@ describe('Claim details page', () => {
         });
     });
 
-    it('should return your new claim details page with values from civil-service when isCUIReleaseTwoEnabled and isDashboardServiceEnabled flags are enabled', async () => {
+    it('should return your new claim details page with values from civil-service when isCUIReleaseTwoEnabled  flags are enabled', async () => {
       nock(civilServiceUrl)
         .get('/cases/1713273393110043')
         .reply(200, CivilClaimResponseMock);
@@ -163,7 +161,6 @@ describe('Claim details page', () => {
         .get(CIVIL_SERVICE_CASES_URL + 1713273393110043 + '/userCaseRoles')
         .reply(200, [CaseRole.CLAIMANT]);
       isReleaseTwo.mockResolvedValue(true);
-      isDashboardEnabled.mockResolvedValue(true);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const totalClaimAmount = currencyFormat(getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
@@ -176,7 +173,7 @@ describe('Claim details page', () => {
           expect(res.text).toContain('View the claim');
           expect(res.text).toContain('Reason for claim');
           expect(res.text).toContain('If you cannot find a document that you are looking for in this section');
-          expect(res.text).toContain('View the claim (PDF)'); 
+          expect(res.text).toContain('View the claim (PDF)');
           expect(res.text).toContain('1713273393110043'); // case number
           expect(res.text).toContain(totalClaimAmount); // total claim amount
           expect(res.text).toContain('House repair'); // claim reason
