@@ -191,16 +191,14 @@ export const mintiClaimantDocsToConsiderQuestion = (claim: Claim, claimId: strin
 };
 
 export const mintiClaimantDocsToConsiderDetailsQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
-  if (directionQuestionnaire?.hearing?.hasDocumentsToBeConsidered?.option === YesNo.YES) {
-    const text = directionQuestionnaire?.hearing?.documentsConsideredDetails;
+  const text = directionQuestionnaire?.hearing?.documentsConsideredDetails;
 
-    return summaryRow(
-      t('PAGES.CHECK_YOUR_ANSWER.CLAIMANT_DOCS_TO_CONSIDER_DETAILS', {lng}),
-      text,
-      constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL),
-      changeLabel(lng),
-    );
-  }
+  return summaryRow(
+    t('PAGES.CHECK_YOUR_ANSWER.CLAIMANT_DOCS_TO_CONSIDER_DETAILS', {lng}),
+    text,
+    constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL),
+    changeLabel(lng),
+  );
 };
 
 export const considerClaimantDocQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
@@ -295,7 +293,9 @@ export const buildHearingRequirementsForTrack = (claim: Claim, hearingRequiremen
       hearingRequirementsSection.summaryList.rows.push(nonElectronicDocsDisclosureQuestion(claim, claimId, lng,directionQuestionnaire));
     }
     hearingRequirementsSection.summaryList.rows.push(mintiClaimantDocsToConsiderQuestion(claim, claimId, lng,directionQuestionnaire));
-    hearingRequirementsSection.summaryList.rows.push(mintiClaimantDocsToConsiderDetailsQuestion(claim, claimId, lng,directionQuestionnaire));
+    if (directionQuestionnaire?.hearing?.hasDocumentsToBeConsidered?.option === YesNo.YES) {
+      hearingRequirementsSection.summaryList.rows.push(mintiClaimantDocsToConsiderDetailsQuestion(claim, claimId, lng,directionQuestionnaire));
+    }
   }
 
   if (fastTrack) {

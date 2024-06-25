@@ -6,7 +6,7 @@ import {ComplexityBandOptions} from 'models/directionsQuestionnaire/fixedRecover
 import {YesNo} from 'form/models/yesNo';
 
 export const toCUIFixedRecoverableCosts = (ccdClaim: CCDClaim): FixedRecoverableCosts => {
-  if (ccdClaim) {
+  if (ccdClaim && ccdClaim.respondent1DQFixedRecoverableCostsIntermediate?.isSubjectToFixedRecoverableCostRegime) {
     const fixedRecoverableCosts: FixedRecoverableCosts = new FixedRecoverableCosts();
     fixedRecoverableCosts.subjectToFrc = toCUIGenericYesNo(ccdClaim.respondent1DQFixedRecoverableCostsIntermediate?.isSubjectToFixedRecoverableCostRegime);
     fixedRecoverableCosts.frcBandAgreed = toCUIGenericYesNo(ccdClaim.respondent1DQFixedRecoverableCostsIntermediate?.complexityBandingAgreed);
