@@ -2530,6 +2530,13 @@
         "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
       },
       "VIEW_APPLICATION": {
+        "RESPONSE_COURT": "Response from the court",
+        "COURTS_RESPONSE": "Court's response to the application",
+        "DATE_RESPONSE": "Date of response",
+        "TYPE_RESPONSE": "Type of response",
+        "READ_RESPONSE": "Read the response",
+        "PAY_ADDITIONAL_FEE": "Pay the additional fee",
+
         "APPLICATION": "Application",
         "APPLICATION_DETAILS": "Application details submitted by the applicant.",
         "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
