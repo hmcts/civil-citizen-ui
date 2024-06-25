@@ -21,10 +21,19 @@
     <li>{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_8') }}</li>
   </ul>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_9') }}</p>
-  <p class="govuk-body">
-    {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10_LINK', externalURLs.abilityNetUrl, true) }}
-    {{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10') }}
-  </p>
+
+  {% if getLanguage() =='cy' %}
+    <p class="govuk-body">
+      {{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10_TEXT_BEFORE') }}
+      {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10_LINK', externalURLs.abilityNetUrl, true) }}
+      {{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10') }}
+    </p>
+  {% else %}
+    <p class="govuk-body">
+      {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10_LINK', externalURLs.abilityNetUrl, true) }}
+      {{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10') }}
+    </p>
+  {% endif %}
 
   <h1 class="govuk-heading-l">{{t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_HOW_1')}}</h1>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_HOW_2') }}</p>
