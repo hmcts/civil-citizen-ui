@@ -58,7 +58,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
 
     const form = new GenericForm(applicationType);
     form.validateSync();
-    if(!applicationIndex || applicationIndex != 0) {
+    if(!applicationIndex && applicationIndex != 0) {
       validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
     }
     const cancelUrl = await getCancelUrl( req.params.id, claim);
