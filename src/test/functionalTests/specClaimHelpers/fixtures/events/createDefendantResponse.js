@@ -60,6 +60,10 @@ module.exports = {
         } else {
           return rejectAllSmallClaims.rejectAllAlreadypaidInFullWithIndividual(totalClaimAmount);
         }
+      case config.defenceType.rejectAllIntermediateTrackMinti:
+        return rejectAllIntermediateClaim.citizenDefendantResponseCompany(totalClaimAmount);
+      case config.defenceType.rejectAllMultiTrackMinti:
+        return rejectAllMultiClaim.citizenDefendantResponseCompany(totalClaimAmount);
       case config.defenceType.rejectAllSmallClaimsCarm:
         if (partyType === 'DefendantCompany') {
           return rejectAllSmallClaimsCarm.citizenDefendantResponseCarmCompany(totalClaimAmount);
@@ -69,13 +73,7 @@ module.exports = {
           return rejectAllSmallClaimsCarm.citizenDefendantResponseCarmOrganisation(totalClaimAmount);
         } else if (partyType === 'SoleTraderVCompany') {
           return rejectAllSmallClaimsCarm.LrDefendantResponseCarmCompany(totalClaimAmount);
-        } else {
-          break;
         }
-      case config.defenceType.rejectAllIntermediateTrackMinti:
-        return rejectAllIntermediateClaim.citizenDefendantResponseCompany(totalClaimAmount);
-      case config.defenceType.rejectAllMultiTrackMinti:
-        return rejectAllMultiClaim.citizenDefendantResponseCompany(totalClaimAmount);
     }
   },
 };
