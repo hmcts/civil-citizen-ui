@@ -70,10 +70,13 @@ module.exports = {
         } else if (partyType === 'SoleTraderVCompany') {
           return rejectAllSmallClaimsCarm.LrDefendantResponseCarmCompany(totalClaimAmount);
         }
+        break;
       case config.defenceType.rejectAllIntermediateTrackMinti:
         return rejectAllIntermediateClaim.citizenDefendantResponseCompany(totalClaimAmount);
+        break;
       case config.defenceType.rejectAllMultiTrackMinti:
         return rejectAllMultiClaim.citizenDefendantResponseCompany(totalClaimAmount);
+        break;
     }
   },
 };
