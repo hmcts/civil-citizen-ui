@@ -346,6 +346,13 @@ import payApplicationFeeConfirmationController
 import submitGeneralApplicationConfirmationController
   from 'routes/features/generalApplication/submitGeneralApplicationConfirmationController';
 import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
+import requestForReviewController
+  from 'routes/features/caseProgression/requestForReconsideration/requestForReviewController';
+import requestForReconsiderationCheckAnswersController from './features/caseProgression/requestForReconsideration/checkAnswersController';
+import requestForReconsiderationConfirmationController
+  from 'routes/features/caseProgression/requestForReconsideration/confirmationController';
+import cancelRequestForReconsiderationController
+  from 'routes/features/caseProgression/requestForReconsideration/cancelRequestForReconsiderationController';
 
 export default [
   homeController,
@@ -634,6 +641,10 @@ export default [
   unavailableHearingDatesResponseController,
   submitGeneralApplicationConfirmationController,
   acceptDefendantOfferController,
+  requestForReviewController,
+  requestForReconsiderationCheckAnswersController,
+  requestForReconsiderationConfirmationController,
+  cancelRequestForReconsiderationController,
   helpWithApplicationFeeController,
   helpWithFeesContentController,
   helpWithApplicationFeeReferenceController,
