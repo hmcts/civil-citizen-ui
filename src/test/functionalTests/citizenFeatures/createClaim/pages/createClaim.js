@@ -166,9 +166,9 @@ class CreateClaim {
     I.see('First name');
     I.see('Last name');
     I.see('Your postal address', 'h2');
-    I.see('Enter a UK postcode');
     I.see('If your address is not correct you can change it here.');
     I.see('Any changes will be shared with the claimant when you submit your response.');
+    I.see('Enter a UK postcode');
     I.see('Correspondence address', 'h2');
     I.see('Would you like correspondence sent to a different address?');
     I.see('No');
