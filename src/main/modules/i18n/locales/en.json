@@ -406,6 +406,7 @@
       "PARAGRAPH_AS_8": "listen to most of the website using a screen reader (including the most recent version of VoiceOver)",
       "PARAGRAPH_AS_9": "We’ve also made the website text as simple as possible to understand.",
       "PARAGRAPH_AS_10": " has advice on making your device easier to use if you have a disability.",
+      "PARAGRAPH_AS_10_TEXT_BEFORE": "",
       "PARAGRAPH_AS_10_LINK": "AbilityNet",
       "PARAGRAPH_COMPLIANCE_1": "Compliance status",
       "PARAGRAPH_COMPLIANCE_2": "This website is partially compliant with the ",
@@ -425,14 +426,14 @@
       "PARAGRAPH_HOW_3": "Error messages are not specific to the field where the error was made.",
       "PARAGRAPH_IMPROVE_1": "What we’re doing to improve accessibility",
       "PARAGRAPH_IMPROVE_2": "We continually run automated accessibility testing as part of our development practices. This helps us to resolve issues before we launch new pages or features.",
-      "PARAGRAPH_IMPROVE_3": "This website will also be tested by  the Digital Accessibility Centre (DAC) in late 2024.",
+      "PARAGRAPH_IMPROVE_3": "This website will also be tested by the Digital Accessibility Centre (DAC) in late 2024.",
       "PARAGRAPH_NON_ACCESIBLE_1": "Non-accessible content",
       "PARAGRAPH_NON_ACCESIBLE_2": "The content listed below is non-accessible for the following reasons.",
       "PARAGRAPH_NON_ACCESIBLE_3": "Non-compliance with the accessibility regulations",
       "PARAGRAPH_NON_ACCESIBLE_4": "Online Civil Money Claims (OCMC) digital service has been tested for accessibility and does meet the Web Content Accessibility Guidelines (WCAG) 2.2 AA requirement. However, some error messages are not accessible because:",
       "PARAGRAPH_NON_ACCESIBLE_5": "Screen reader users might have difficulty navigating error messages as some error messages are not specific to the field where the error was made. This fails Web Content Accessibility Guidelines (WCAG) 2.2 [3.3.1] success criterion (Error Identification). We plan to fix this by late 2024.",
       "PARAGRAPH_PREPARATION_1": "Preparation of this accessibility statement",
-      "PARAGRAPH_PREPARATION_2": "This statement was prepared on 24 May 2024.  It was last reviewed on 15 March 2024.",
+      "PARAGRAPH_PREPARATION_2": "This statement was prepared on 24 May 2024. It was last reviewed on 15 March 2024.",
       "PARAGRAPH_REPORTING_1": "Reporting accessibility problems with this website",
       "PARAGRAPH_REPORTING_2": "We’re always looking to improve the accessibility of this website. If you find any problems not listed on this page or think we’re not meeting accessibility requirements, contact:",
       "PARAGRAPH_TECHNICAL_1": "Technical information about this website’s accessibility",
@@ -607,22 +608,6 @@
       "QUESTION": "In what language do you want to make your claim?",
       "TITLE": "Language",
       "WELSH_AND_ENGLISH": "Welsh"
-    },
-    "BREATHING_SPACE_DEBT_RESPITE_LIFT": {
-      "DATE_LIFT_OPTIONAL": "This is the date that you have been told it will finish (optional):",
-      "PAGE_TITLE": "Date for lifting debt respite scheme (breathing space)",
-      "TITLE": "Date for lifting debt respite scheme (breathing space)"
-    },
-    "BREATHING_SPACE_DEBT_RESPITE_START": {
-      "DATE_START_OPTIONAL": "This is the date it started, not the date you received notification of it (optional).",
-      "PAGE_TITLE": "When did it start?",
-      "TITLE": "When did it start?"
-    },
-    "BREATHING_SPACE_DEBT_RESPITE_TYPE": {
-      "MENTAL_HEALTH": "Mental health crisis moratorium",
-      "PAGE_TITLE": "What type is it?",
-      "STANDARD": "Standard breathing space",
-      "TITLE": "What type is it?"
     },
     "CARER": {
       "PAGE_TITLE": "Carer's allowance"
@@ -1165,25 +1150,6 @@
       "TOTAL_CLAIM_AMOUNT": "Total claim amount:",
       "TRIAL_DOCUMENTS": "trial documents"
     },
-    "CLAIMANT_DEBT_RESPITE_CHECK_ANSWERS": {
-      "PAGE_TITLE": "Check your answers before submitting",
-      "TITLE": "Check your answers before submitting",
-      "REFERENCE_NUMBER": "Reference number",
-      "WHEN_DID_IT_START": "When did it start?",
-      "TYPE": {
-        "WHAT_TYPE_IS_IT": "What type is it?",
-        "MENTAL_HEALTH_CRISIS_MORATORIUM": "Mental health crisis moratorium",
-        "STANDARD_BREATHING_SPACE": "Standard breathing space"
-      },
-      "EXPECTED_END_DATE": "Expected end date"
-    },
-    "CLAIMANT_LIFT_BREATHING_SPACE_CHECK_ANSWER": {
-      "PAGE_TITLE": "Lift the debt respite scheme (breathing space)",
-      "TITLE": "Lift the debt respite scheme (breathing space)",
-      "DATE_LIFTED": " Date lifted",
-      "CYA_HEADER": "Are you sure you want to lift the debt respite scheme?",
-      "CYA_HEADER_TEXT": "Once the debt respite scheme is lifted you will not be able to change this."
-    },
     "CLAIMANT_DOB": {
       "PAGE_TITLE": "Your date of birth",
       "TITLE": "What is your date of birth?"
@@ -1692,11 +1658,13 @@
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement."
       },
       "SUPPORT_LINKS": {
+        "APPLYING_TO_COURT_AS_A_CREDITOR":"Applying to the court as a creditor of a debt in breathing space",
         "CONTACT_COURT": "Contact the court to request a change to my case (make an application)",
+        "DEBT_RESPITE_SCHEME": "Debt Respite (Breathing Space) SchemeCH1 creditors’ responsibilities to the court",
         "FIND_INFO_COURT": "Find information about my court",
         "FIND_MEDIATION": "Find out about mediation",
         "FIND_LEGAL_ADVICE": "Find legal advice",
-        "GET_DEBT_RESPITE": "Get debt respite (breathing space)",
+        "GET_DEBT_RESPITE": "Inform the court of a breathing space debt respite",
         "HELP_SUPPORT": "Help and support",
         "HELP_FEES": "Help with fees",
         "I_WANT_TO": "I want to...",
@@ -1716,15 +1684,31 @@
       "TITLE": "Do you have loans or credit card debts?",
       "TOTAL_OWED_IN_POUNDS": "Total owed, in pounds"
     },
-    "DEBT_RESPITE_REF_NUMBER": {
-      "ENTER_REFERENCE": "Enter the reference number (optional):",
-      "PAGE_TITLE": "Debt Respite Scheme reference number",
-      "TITLE": "Do you have a Debt Respite Scheme reference number?"
-    },
-    "DEBT_RESPITE_END_DATE": {
-      "PAGE_TITLE": "Expected end date",
-      "THIS_IS_THE": "This is the end date that it is due to finish (optional)",
-      "TITLE": "Expected end date"
+    "INFORM_THE_COURT_OF_A_BREATHING_SPACE": {
+      "CONTACT_LOCAL_COURT_LINK": "contact your local court",
+      "DEBT_RESPITE_GUIDANCE_SCHEME_LINK": "read the full Debt Respite Scheme guidance for creditors",
+      "HOW_TO_CONTACT": "How to contact the court",
+      "HOW_TO_CONTACT_PARA1": "If you have not yet received a directions order then you should contact the Courts and Tribunal Service Centre (CTSC):",
+      "HOW_TO_CONTACT_PARA3": "If you have already received a directions order, you should LINK_TO_CONTACT_YOUR_LOCAL_COURT.",
+      "LINK_TITLE": "Related content",
+      "MORE_INFO": "More information",
+      "MORE_INFO_PARA1": "If you have any questions about a breathing space, you should contact the debt advice provider whose details are in the notification from the Insolvency Service.",
+      "MORE_INFO_PARA2": "You can DEBT_RESPITE_GUIDANCE_SCHEME_LINK.",
+      "PAGE_TITLE": "Inform the court of a breathing space",
+      "POST": "Post: HMCTS CMC, PO Box 12747, Harlow, CM20 9RA ",
+      "REASON_1": "whether the debt is subject to a standard or mental health breathing space",
+      "REASON_2": "the date on which the breathing space started",
+      "REASON_3": "the date when breathing space is expected to be lifted, if it is standard",
+      "REASON_4": "the breathing space reference number, if known",
+      "SUMMARY": "The Debt Respite Scheme (Breathing Space) gives someone in problem debt the right to legal protection from their creditors.",
+      "WHAT_NEXT": "What you need to do now",
+      "WHAT_NEXT_PARAGRAPH_1": "If you’re notified by the Insolvency Service that a debt owed to you is in a breathing space, you must inform the court by email or post. You must tell the court about each debt that has entered a breathing space.\n\n",
+      "WHAT_NEXT_PARAGRAPH_2": "The court will not check for other debts against the debtor’s name. If the debtor has debts owed to you at different courts, you must notify each court.",
+      "WHAT_NEXT_PARAGRAPH_3": "When informing the court, you must state:",
+      "WHAT_NEXT_PARAGRAPH_4": "You can find this information in the notification you received from the Insolvency Service. You will also need to provide the court claim number.",
+      "WHAT_HAPPENS_DURING_BS": "What happens during breathing space",
+      "WHAT_HAPPENS_DURING_BS_PARA1": "Court orders and judgments related to a debt which were made before breathing space started cannot be enforced until the breathing space ends unless the court gives permission to continue.",
+      "WHAT_HAPPENS_DURING_BS_PARA2": "If a hearing has been scheduled then this may be cancelled while the breathing space is in place."
     },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Trading as (If you know it)",
@@ -1945,6 +1929,10 @@
       "OVER_25000": "Over £25,000",
       "TITLE": "Total amount you're claiming",
       "25000_OR_LESS": "£25,000 or less"
+    },
+    "ELIGIBILITY_KNOWN_CLAIM_AMOUNT": {
+      "PAGE_TITLE": "Do you know the amount you are claiming?",
+      "TITLE": "Do you know the amount you are claiming?"
     },
     "ELIGIBILITY_OVER_18_CLAIMANT": {
       "PAGE_TITLE": "Are you 18 or over?",
@@ -2230,6 +2218,17 @@
         "WHY_PREFER": "Why would you prefer this type of hearing?",
         "WHY_REQUESTING": "Why are you requesting this order?"
       },
+      "CHECK_YOUR_ANSWER_RESPONSE": {
+        "CLAIM_REFERENCE": "Claim reference: ",
+        "PREFERRED_LOCATION": "Preferred location",
+        "RESPOND_TO_AN_APPLICATION": "Respond to an application",
+        "STATEMENT_OF_TRUTH": {
+          "APPLICATION": "The information on this page forms your response to the application.",
+          "CHECKBOX": "I believe that the facts stated in this response form are true.",
+          "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
+        },
+        "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
+      },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Application fee to pay:",
         "TITLE": "Paying for your application",
@@ -2511,6 +2510,26 @@
         "RETURN_CASE_DETAILS": "Close and return to case details",
         "TITLE": "Application created",
         "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge."
+      },
+      "APPLY_HELP_WITH_FEE": {
+        "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
+        "CONTENT_PAGE_TITLE": "Apply for help with fees",
+        "CONTINUE_TO_APPLY_HWF_PAGE_TITLE": "Do you want to continue to apply for Help with Fees",
+        "CONFIRMATION_PAGE_TITLE": "Confirmation of your application fee payment",
+        "CONFIRMATION_TITLE": "Your application for help with the application fee is complete",
+        "GENERAL_APPLICATION_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The application fee is: £{{ feeAmount }}</span>",
+        "HEADING": "Application fee",
+        "REFERENCE_NUMBER": {
+          "LIST_ITEMS": {
+            "APPLICATION_FEE_SECOND": "When you are asked to enter a court or tribunal number, enter 'application fee' followed by short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
+            "APPLICATION_FEE_FIFTH": "Complete the application fee payment by entering your help with fees reference number."
+          },
+          "PAGE_TITLE": "Do you have a help with fees reference number?",
+          "TITLE": "Do you have a help with fees reference number?"
+        },
+        "TITLE": "Help with fees",
+        "WANT_TO_APPLY_HWF_TITLE": "Pay application fee",
+        "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -2569,6 +2588,8 @@
       "CLAIMANT_CAN_ASK_FOR_CCJ_AGAINST_YOU": "You haven't responded to the claim. {{ claimantName }} can now ask for a County Court Judgment against you.",
       "CLAIM_ENDED_TITLE": "This claim has ended",
       "CLAIM_ENDED_MESSAGE": "{{ claimantName }} ended their claim against you on {{ acceptFullDefenseDate }}",
+      "CLAIM_TAKEN_OFFLINE_TITLE": "Your online account will no longer be updated",
+      "CLAIM_TAKEN_OFFLINE_MESSAGE": "Your online account will no longer be updated. If there are any further updates to your case these will be by post.",
       "CLAIMANT_CONFIRMED_SETTLED_CLAIM": "{{ claimantName }} confirmed you settled on {{ settlementDate }}",
       "CLAIMANT_REJECT_PAYMENT_PLAN_MSG1": "{{ claimantName }} rejected your repayment plan.",
       "CLAIMANT_REJECT_PAYMENT_PLAN_MSG2": "The court will review the case. We’ll contact you by post to tell you what to do next.",
@@ -2849,7 +2870,7 @@
       "TITLE_WITH_PERSON": "Is {{ contactPerson }} the right person for the mediation service to call?"
     },
     "MEDIATION_CONTACT_PERSON_CONFIRMATION": {
-      "PAGE_TITLE": "Mediation contact person confirmation",
+      "PAGE_TITLE": "Who will be attending the mediation appointment?",
       "PAGE_TEXT": "Is {{ partyContactPerson }} the person who will be attending the mediation appointment?"
     },
     "MEDIATION_ALTERNATIVE_CONTACT_PERSON": {
@@ -4107,6 +4128,7 @@
     "INVALID_AMOUNT": "Invalid amount",
     "HOW_YOU_CALCULATED_AMOUNT": "You must tell us how you calculated the amount",
     "JOB_TITLE_REQUIRED": "Enter a job title",
+    "KNOWN_CLAIM_AMOUNT": "Indicate if you know the amount you are claiming for",
     "NAME_REQUIRED": "Please enter a name",
     "NO_LANGUAGE_ENTERED": "Enter the language that needs to be interpreted",
     "NO_OTHER_SUPPORT": "Tell us what other support they need",
@@ -4258,8 +4280,6 @@
       "RENT": "Enter a valid Rent amount, maximum two decimal places",
       "WATER": "Enter a valid Water amount, maximum two decimal places"
     },
-    "VALID_DEBT_RESPITE_END_DATE": "Expected end date must not be before today’s date",
-    "VALID_DEBT_RESPITE_OPTION": "You must select the Type before continuing",
     "VALID_DISAGREE_REASON_REQUIRED": "Enter text explaining why do you disagree",
     "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",

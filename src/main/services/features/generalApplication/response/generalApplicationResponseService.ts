@@ -11,6 +11,7 @@ import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 import {getLast} from 'services/features/generalApplication/generalApplicationService';
+import {StatementOfTruthForm} from 'common/models/generalApplication/statementOfTruthForm';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -32,7 +33,7 @@ export function getRespondToApplicationCaption(claim: Claim, lng: string) : stri
     return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO_MULTIPLE', { lng: getLng(lng) });
   }
   const applicationType = t(selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option], {lng: getLng(lng)}).toLowerCase();
-  return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO', 
+  return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO',
     { lng: getLng(lng), interpolation: { escapeValue: false }, applicationType});
 }
 
@@ -67,7 +68,7 @@ export const saveRespondentHearingSupport = async (claimId: string, hearingSuppo
     const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.response = Object.assign(new GaResponse(), claim.generalApplication.response);
-    claim.generalApplication.hearingSupport = hearingSupport;
+    claim.generalApplication.response.hearingSupport = hearingSupport;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -84,6 +85,20 @@ export const saveRespondentUnavailableDates = async (claimId: string, claim: Cla
     }
     claim.generalApplication.response.unavailableDatesHearing = unavailableDates;
     await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveRespondentStatementOfTruth = async (redisKey: string, statementOfTruth: StatementOfTruthForm): Promise<void> => {
+  try {
+    const claim = await getCaseDataFromStore(redisKey, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    const gaResponse = Object.assign(new GaResponse(), claim.generalApplication?.response);
+    claim.generalApplication.response = gaResponse;
+    gaResponse.statementOfTruth = statementOfTruth;
+    await saveDraftClaim(redisKey, claim);
   } catch (error) {
     logger.error(error);
     throw error;

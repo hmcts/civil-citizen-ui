@@ -65,7 +65,6 @@ import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
 import {CaseRole} from 'form/models/caseRoles';
 import {ChooseHowProceed} from './chooseHowProceed';
-import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {PinToPost} from './pinToPost';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {FeeType} from 'form/models/helpWithFees/feeType';
@@ -149,7 +148,6 @@ export class Claim {
   caseRole?: CaseRole;
   draftClaimCreatedAt?: Date;
   helpWithFees ?: CCDHelpWithFees;
-  enterBreathing?: CCDBreathingSpaceStartInfo;
   respondent1PinToPostLRspec: PinToPost;
   defendantSignedSettlementAgreement?: YesNo;
   courtDecision: RepaymentDecisionType;
@@ -495,6 +493,10 @@ export class Claim {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
 
+  isCaseIssuedPending(): boolean {
+    return this.ccdState === CaseState.PENDING_CASE_ISSUED;
+  }
+
   isClaimantIntentionPending(): boolean {
     return this.ccdState === CaseState.AWAITING_APPLICANT_INTENTION;
   }
@@ -582,7 +584,7 @@ export class Claim {
   }
 
   isDefendantDetailsCompleted(): boolean {
-    return !!this.respondent1?.type && 
+    return !!this.respondent1?.type &&
       !!this.respondent1?.partyDetails?.primaryAddress &&
       (
         (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName) ||
@@ -850,8 +852,14 @@ export class Claim {
     return undefined;
   }
 
+  hasFullDefenceAccepted() {
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM
+      && this.getIntentionToProceed() === YesNo.NO
+      && this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
+  }
+
   hasClaimTakenOffline() {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.hasDefaultJudgmentSubmitted() && !this.ccjJudgmentStatement && !this.isClaimantRejectedPaymentPlan();
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !!this.takenOfflineDate;
   }
 
   hasMediationSuccessful() {

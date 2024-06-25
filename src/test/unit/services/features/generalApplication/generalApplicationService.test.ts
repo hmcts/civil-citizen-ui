@@ -17,12 +17,12 @@ import {
   validateAdditionalApplicationtType,
   getDynamicHeaderForMultipleApplications,
   saveAcceptDefendantOffer,
+  saveHelpWithFeesDetails,
 } from 'services/features/generalApplication/generalApplicationService';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../utils/errorMessageTestConstants';
 import { YesNo } from 'common/form/models/yesNo';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { CaseRole } from 'common/form/models/caseRoles';
 import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
 import { HearingSupport, SupportType } from 'models/generalApplication/hearingSupport';
@@ -32,7 +32,10 @@ import { HearingContactDetails } from 'models/generalApplication/hearingContactD
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { ValidationError } from 'class-validator';
+import { ApplyHelpFeesReferenceForm } from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import { GaHelpWithFees } from 'models/generalApplication/gaHelpWithFees';
 import { AcceptDefendantOffer } from 'common/models/generalApplication/response/acceptDefendantOffer';
+import {isCUIReleaseTwoEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -212,7 +215,7 @@ describe('General Application service', () => {
   describe('Get cancel button url', () => {
     it('should return claimant new dashboard url when user is claimant and dashboard feature flag is enabled', async () => {
       //Given
-      (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(true);
+      (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(true);
 
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
@@ -227,7 +230,7 @@ describe('General Application service', () => {
 
     it('should return claimant old dashboard url when user is claimant and dashboard feature flag is disabled', async () => {
       //Given
-      (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(false);
+      (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(false);
 
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
@@ -242,7 +245,7 @@ describe('General Application service', () => {
 
     it('should return defendant dashboard url when user is defendent', async () => {
       //Given
-      (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(false);
+      (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(false);
 
       const claim = new Claim();
       claim.caseRole = CaseRole.DEFENDANT;
@@ -494,6 +497,63 @@ describe('General Application service', () => {
       expect(error.constraints['additionalApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING');
     });
   });
+
+  describe('Save help with application fee details', () => {
+    it('should save help with application fee selection', async () => {
+      const  claim = new Claim();
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.helpWithFees = new GaHelpWithFees();
+        claim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
+        return claim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      //When
+      await saveHelpWithFeesDetails('123', YesNo.YES, 'applyHelpWithFees');
+      //Then
+      await expect(spy).toBeCalledWith('123', claim);
+    });
+
+    it('should save help with application fee continue selection', async () => {
+      const  claim = new Claim();
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.helpWithFees = new GaHelpWithFees();
+        claim.generalApplication.helpWithFees.helpWithFeesRequested = YesNo.YES;
+        return claim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      //When
+      await saveHelpWithFeesDetails('123', YesNo.YES, 'helpWithFeesRequested');
+      //Then
+      await expect(spy).toBeCalledWith('123', claim);
+    });
+
+    it('should save help with application fee reference number', async () => {
+      const  claim = new Claim();
+      const hwfReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-123-86D');
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.helpWithFees = new GaHelpWithFees();
+        claim.generalApplication.helpWithFees.helpFeeReferenceNumberForm = hwfReferenceNumberForm;
+        return claim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      //When
+      await saveHelpWithFeesDetails('123', hwfReferenceNumberForm, 'helpFeeReferenceNumber');
+      //Then
+      await expect(spy).toBeCalledWith('123', claim);
+    });
+  });
 });
 
 describe('Save Accept defendant offer', () => {
@@ -525,5 +585,5 @@ describe('Save Accept defendant offer', () => {
     //Then
     await expect(saveAcceptDefendantOffer('123', acceptDefendantOffer)).rejects.toThrow(TestMessages.REDIS_FAILURE);
   });
-  
+
 });

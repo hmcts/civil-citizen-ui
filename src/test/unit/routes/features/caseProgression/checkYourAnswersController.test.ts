@@ -8,9 +8,12 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {SummarySection, SummarySections} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
+import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/caseProgression/checkYourAnswers/checkAnswersService');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+
 const mockSummarySections = checkAnswersService.getSummarySections as jest.Mock;
 mockSummarySections.mockReturnValue({} as SummarySections);
 const mockDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
@@ -48,6 +51,9 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       .get('/cases/claimant/123')
       .reply(200, {data: civilClaimResponse });
   });
+  beforeEach(()=> {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+  });
 
   describe('On Get', () => {
     it('should render page successfully with all sections and summary rows', async () => {
@@ -68,7 +74,24 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
           expect(res.text).toContain('Check your answers');
         });
     });
+    it('should render page successfully update task list status', async () => {
+      //Given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      mockDraftStore.mockReturnValueOnce(claim);
+      mockSummarySections.mockImplementation(() => {
+        return {sections: [] as SummarySection[]} as SummarySections;
+      });
 
+      //When
+      await testSession
+        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'en'})
+        //Then
+        .expect((res: { status: unknown; text: unknown; }) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Check your answers');
+        });
+    });
     it('should render page successfully in Welsh with all sections and summary rows', async () => {
       //Given
       const claim: Claim = new Claim();
@@ -184,6 +207,21 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         expect(res.status).toBe(302);
         expect(res.text).toContain('Found. Redirecting to /case/undefined/case-progression/documents-uploaded');
       });
+    });
+    test('Throw error', async () => {
+      //given
+      jest.spyOn(draftStoreService, 'getDraftClaimFromStore')
+        .mockImplementation(() => {
+          throw new Error(TestMessages.REDIS_FAILURE);
+        });
+
+      //when
+      await testSession.post(CP_CHECK_ANSWERS_URL);
+      expect((res: Response) => {
+        expect(res.status).toBe(500);
+        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+      });
+
     });
   });
 });

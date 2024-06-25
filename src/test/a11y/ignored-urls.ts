@@ -26,6 +26,7 @@ export const IGNORED_URLS = [
   urls.DASHBOARD_NOTIFICATION_REDIRECT,
   urls.DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT,
   urls.MEDIATION_SERVICE_EXTERNAL,
+  urls.BASE_CASE_PROGRESSION_URL,
   //Currently failing on accessibility
   urls.ASSIGN_CLAIM_URL,
   urls.CLAIM_TIMELINE_URL,
@@ -36,7 +37,6 @@ export const IGNORED_URLS = [
   urls.CLAIM_FEE_BREAKUP,
   urls.CLAIM_FEE_CHANGE_URL,
   urls.CITIZEN_TIMELINE_URL,
-  urls.BREATHING_SPACE_RESPITE_LIFTED_URL,
   urls.CP_UPLOAD_DOCUMENTS_URL,
   urls.CP_EVIDENCE_UPLOAD_SUBMISSION_URL,
   urls.TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
@@ -70,4 +70,5 @@ export const IGNORED_URLS = [
   urls.CONFIRM_YOU_HAVE_BEEN_PAID_URL, //TODO: remove this once finished the page
   urls.VIEW_THE_JUDGMENT_URL, //TODO: remove this once finished the page
   urls.REQUEST_FOR_CONSIDERATION, //TODO: remove this once finished the page
+  urls.GA_APPLICATION_SUMMARY_URL, //TODO: remove this once finished the page
 ];

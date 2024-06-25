@@ -5,7 +5,7 @@ import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {YesNo} from 'common/form/models/yesNo';
-import {isDashboardServiceEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
@@ -20,8 +20,9 @@ import {HearingContactDetails} from 'models/generalApplication/hearingContactDet
 import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import { AcceptDefendantOffer, ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
-import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
+import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
+import {AcceptDefendantOffer, ProposedPaymentPlanOption} from 'common/models/generalApplication/response/acceptDefendantOffer';
+import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -161,8 +162,8 @@ export const saveIfPartyWantsToUploadDoc = async (redisKey: string, wantToSaveDo
 
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
   if (claim.isClaimant()) {
-    const isDashboardEnabled = await isDashboardServiceEnabled();
-    if (isDashboardEnabled) {
+    const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
+    if (isCUIR2Enabled) {
       return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
     }
     return constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL);
@@ -262,8 +263,8 @@ export const saveStatementOfTruth = async (claimId: string, statementOfTruth: St
 
 export const getDynamicHeaderForMultipleApplications = (claim: Claim): string => {
   const applicationTypes = claim.generalApplication?.applicationTypes;
-  return (applicationTypes?.length === 1) 
-    ? selectedApplicationType[applicationTypes[0].option] 
+  return (applicationTypes?.length === 1)
+    ? selectedApplicationType[applicationTypes[0].option]
     : 'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION';
 };
 
@@ -308,8 +309,8 @@ export const validateAdditionalApplicationtType = (claim : Claim, errors : Valid
 };
 
 export const getListOfNotAllowedAdditionalAppType = () => {
-  return [ApplicationTypeOption.SET_ASIDE_JUDGEMENT, 
-    ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, 
+  return [ApplicationTypeOption.SET_ASIDE_JUDGEMENT,
+    ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT,
     ApplicationTypeOption.SETTLE_BY_CONSENT];
 };
 
@@ -318,3 +319,22 @@ export const additionalApplicationErrorMessages: Partial<{ [key in ApplicationTy
   [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT',
   [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT',
 };
+
+export const saveHelpWithFeesDetails = async (claimId: string, value: any, hwfPropertyName: string): Promise<void> => {
+  try {
+    const claim: any = await getCaseDataFromStore(claimId, true);
+    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    if(claim.generalApplication.helpWithFees) {
+      claim.generalApplication.helpWithFees[hwfPropertyName] = value;
+    } else {
+      const helpWithFees: any = new GaHelpWithFees();
+      helpWithFees[hwfPropertyName] = value;
+      claim.generalApplication.helpWithFees = helpWithFees;
+    }
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
