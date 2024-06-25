@@ -22,18 +22,18 @@ export const getExpertReportDetails = async (claimId: string): Promise<ExpertRep
         caseData.directionQuestionnaire.experts.expertReportDetails.reportDetails?.map(reportDetail => ReportDetail.fromJson(reportDetail));
       return caseData.directionQuestionnaire.experts.expertReportDetails;
     }
-    return new ExpertReportDetails();
+    return new ExpertReportDetails(caseData.isClaimant());
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-export const getExpertReportDetailsForm = (option: YesNo, reportDetails: Record<string, string>[]): ExpertReportDetails => {
+export const getExpertReportDetailsForm = (isClaimant: boolean, option: YesNo, reportDetails: Record<string, string>[]): ExpertReportDetails => {
   const reportDetailsForm = (option === YesNo.NO) ? undefined : reportDetails;
   const form = reportDetailsForm?.map((reportDetail: Record<string, string>) => ReportDetail.fromObject(reportDetail));
   if (option) {
-    return new ExpertReportDetails(option, form);
+    return new ExpertReportDetails(isClaimant, option, form);
   }
-  return new ExpertReportDetails(undefined, [new ReportDetail('', '', '', '')]);
+  return new ExpertReportDetails(isClaimant, undefined, [new ReportDetail('', '', '', '')]);
 };

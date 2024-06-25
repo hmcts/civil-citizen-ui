@@ -26,7 +26,7 @@ export const getRequestForReviewContent = (claim: Claim, claimId: string) => {
 
 export const getButtonContent = (claimId: string) => {
   return new PageSectionBuilder()
-    .addButtonWithCancelLink('COMMON.BUTTONS.SAVE', '', false, REQUEST_FOR_RECONSIDERATION_CANCEL_URL
+    .addButtonWithCancelLink('COMMON.BUTTONS.CONTINUE', '', false, REQUEST_FOR_RECONSIDERATION_CANCEL_URL
       .replace(':id', claimId)
       .replace(':propertyName', 'caseProgression') )
     .build();
