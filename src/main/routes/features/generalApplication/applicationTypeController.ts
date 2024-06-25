@@ -49,7 +49,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
     let applicationType = null;
-
+    const applicationIndex = queryParamNumber(req, 'index');
     if (req.body.option === ApplicationTypeOption.OTHER) {
       applicationType = new ApplicationType(req.body.optionOther);
     } else {
@@ -58,14 +58,15 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
 
     const form = new GenericForm(applicationType);
     form.validateSync();
-    validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
+    if(!applicationIndex) {
+      validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
+    }
     const cancelUrl = await getCancelUrl( req.params.id, claim);
     const backLinkUrl = await getBackLinkUrl(req.params.id, claim, cancelUrl);
 
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() });
     } else {
-      const applicationIndex = queryParamNumber(req, 'index');
       await saveApplicationType(redisKey, applicationType, applicationIndex);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_AGREEMENT_FROM_OTHER_PARTY_URL));
     }

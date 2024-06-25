@@ -297,7 +297,7 @@ export const updateByIndexOrAppend = <T>(array: T[], newElem: T, index: number |
 
 export const validateAdditionalApplicationtType = (claim : Claim, errors : ValidationError[], applicationType : ApplicationType,body : any) => {
 
-  if(claim.generalApplication?.applicationTypes?.length > 0 && getListOfNotAllowedAdditionalAppType().includes(applicationType.option)) {
+  if(claim.generalApplication?.applicationTypes?.length > 1 && getListOfNotAllowedAdditionalAppType().includes(applicationType.option)) {
     const errorMessage = additionalApplicationErrorMessages[applicationType.option];
 
     const validationError = new FormValidationError({
