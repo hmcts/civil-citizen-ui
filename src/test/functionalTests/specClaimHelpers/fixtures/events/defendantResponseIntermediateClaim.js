@@ -19,10 +19,10 @@ module.exports = {
             AddressLine2: 'TestAddressLine2',
             AddressLine3: 'TestAddressLine3',
             PostCode: 'IG61JD',
-            PostTown: 'TestCity'
+            PostTown: 'TestCity',
           },
           soleTraderDateOfBirth: null,
-          type: 'COMPANY'
+          type: 'COMPANY',
         },
         respondent1LiPResponse: {
           timelineComment: '',
@@ -36,14 +36,14 @@ module.exports = {
             requestExtra4weeks: 'No',
             considerClaimantDocumentsDetails: '',
             respondent1DQLiPExpert: {
-              expertCanStillExamineDetails: ''
-            }
+              expertCanStillExamineDetails: '',
+            },
           },
           respondent1DQHearingSupportLip: {
-            supportRequirementLip: 'No'
+            supportRequirementLip: 'No',
           },
           respondent1LiPContactPerson: 'defendant contact person',
-          respondent1ResponseLanguage: 'ENGLISH'
+          respondent1ResponseLanguage: 'ENGLISH',
         },
         respondent1LiPFinancialDetails: {},
         detailsOfWhyDoesYouDisputeTheClaim: 'disagree',
@@ -52,27 +52,27 @@ module.exports = {
         specResponselistYourEvidenceList: [],
         defenceRouteRequired: 'DISPUTES_THE_CLAIM',
         respondToClaim: {
-          howMuchWasPaid: null
+          howMuchWasPaid: null,
         },
         respondent1DQHomeDetails: {},
         respondent1PartnerAndDependent: {
-          howManyChildrenByAgeGroup: {}
+          howManyChildrenByAgeGroup: {},
         },
         specDefendant1SelfEmploymentDetails: {},
         respondToClaimAdmitPartUnemployedLRspec: {},
         respondent1DQLanguage: {
           court: 'ENGLISH',
-          documents: 'ENGLISH'
+          documents: 'ENGLISH',
         },
         respondent1DQVulnerabilityQuestions: {
-          vulnerabilityAdjustmentsRequired: 'No'
+          vulnerabilityAdjustmentsRequired: 'No',
         },
         respondent1DQRequestedCourt: {
           requestHearingAtSpecificCourt: 'No',
           otherPartyPreferredSite: '',
           responseCourtCode: '',
           responseCourtLocations: [],
-          caseLocation: {}
+          caseLocation: {},
         },
         respondent1DQWitnesses: {
           witnessesToAppear: 'No',
@@ -84,34 +84,34 @@ module.exports = {
                 lastName: '',
                 emailAddress: '',
                 phoneNumber: '',
-                reasonForWitness: ''
-              }
-            }
-          ]
+                reasonForWitness: '',
+              },
+            },
+          ],
         },
         respondent1DQExperts: {},
         respondent1DQHearingSupport: {
-          supportRequirements: 'No'
+          supportRequirements: 'No',
         },
         respondent1DQFixedRecoverableCostsIntermediate: {
           isSubjectToFixedRecoverableCostRegime: 'Yes',
           band: 'BAND_3',
           complexityBandingAgreed: 'Yes',
-          reasons: 'band reasons'
+          reasons: 'band reasons',
         },
         specRespondent1DQDisclosureOfElectronicDocuments: {
           reachedAgreement: 'No',
           agreementLikely: 'Yes',
-          reasonForNoAgreement: 'electronic issues'
+          reasonForNoAgreement: 'electronic issues',
         },
         specRespondent1DQDisclosureOfNonElectronicDocuments: {
-          bespokeDirections: 'non-electronic details'
+          bespokeDirections: 'non-electronic details',
         },
         respondent1DQClaimantDocumentsToBeConsidered: {
           hasDocumentsToBeConsidered: 'Yes',
-          details: 'claimant docs details'
-        }
-      }
+          details: 'claimant docs details',
+        },
+      },
     };
   },
 };
