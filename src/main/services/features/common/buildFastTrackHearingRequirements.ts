@@ -178,7 +178,7 @@ export const nonElectronicDocsDisclosureQuestion = (claim: Claim, claimId: strin
 };
 
 export const mintiClaimantDocsToConsiderQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
-  const option = directionQuestionnaire?.hearing?.hasClaimantDocumentsToBeConsidered?.option === YesNo.YES
+  const option = directionQuestionnaire?.hearing?.hasDocumentsToBeConsidered?.option === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
 
@@ -191,8 +191,8 @@ export const mintiClaimantDocsToConsiderQuestion = (claim: Claim, claimId: strin
 };
 
 export const mintiClaimantDocsToConsiderDetailsQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
-  if (directionQuestionnaire?.hearing?.hasClaimantDocumentsToBeConsidered?.option === YesNo.YES) {
-    const text = directionQuestionnaire?.hearing?.claimantDocumentsConsideredDetails;
+  if (directionQuestionnaire?.hearing?.hasDocumentsToBeConsidered?.option === YesNo.YES) {
+    const text = directionQuestionnaire?.hearing?.documentsConsideredDetails;
 
     return summaryRow(
       t('PAGES.CHECK_YOUR_ANSWER.CLAIMANT_DOCS_TO_CONSIDER_DETAILS', {lng}),

@@ -67,8 +67,8 @@ export const toCUIHearing = (ccdClaim: CCDClaim) : Hearing => {
     }
 
     if (ccdClaim.respondent1DQClaimantDocumentsToBeConsidered?.hasDocumentsToBeConsidered) {
-      hearing.hasClaimantDocumentsToBeConsidered = toCUIGenericYesNo(ccdClaim.respondent1DQClaimantDocumentsToBeConsidered?.hasDocumentsToBeConsidered);
-      hearing.claimantDocumentsConsideredDetails = ccdClaim.respondent1DQClaimantDocumentsToBeConsidered?.details;
+      hearing.hasDocumentsToBeConsidered = toCUIGenericYesNo(ccdClaim.respondent1DQClaimantDocumentsToBeConsidered?.hasDocumentsToBeConsidered);
+      hearing.documentsConsideredDetails = ccdClaim.respondent1DQClaimantDocumentsToBeConsidered?.details;
     }
 
     if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.whyUnavailableForHearing) {
