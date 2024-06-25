@@ -55,7 +55,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmA
   const getHearingRequirementsSection = () => {
     return (directionQuestionnaireFromClaimant(claim)
     )
-      ? buildHearingRequirementsSectionCommon(claim, claimId, lang, claim.claimantResponse.directionQuestionnaire)
+      ? buildHearingRequirementsSectionCommon(claim, claimId, lang, claim.claimantResponse.directionQuestionnaire, false) //todo pass mintiApplicable here for claimant CYA ticket
       : null;
   };
   return {
