@@ -2223,6 +2223,9 @@
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Claim reference: ",
         "PREFERRED_LOCATION": "Preferred location",
+        "PROPOSED_INSTALMENTS": "Proposed certain instalments per month",
+        "PROPOSED_PAYMENT_PLAN": "Proposed payment plan",
+        "PROPOSED_SET_DATE": "Proposed payment in full by set date",
         "RESPOND_TO_AN_APPLICATION": "Respond to an application",
         "STATEMENT_OF_TRUTH": {
           "APPLICATION": "The information on this page forms your response to the application.",
