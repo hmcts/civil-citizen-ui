@@ -30,7 +30,7 @@ import {CCDDQSupportRequirements,CCDExpert} from 'models/ccdResponse/ccdExpert';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 import {CCDFixedRecoverableCostsIntermediate} from 'models/ccdResponse/ccdFixedRecoverableCostsIntermediate';
-import {CCDDisclosureOfElectronicDocuments} from 'models/ccdResponse/CCDDisclosureOfElectronicDocuments';
+import {CCDDisclosureOfElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfElectronicDocuments';
 import {CCDDisclosureOfNonElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfNonElectronicDocuments';
 import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeConsidered';
 
