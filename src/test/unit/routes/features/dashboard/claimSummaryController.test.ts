@@ -2,7 +2,9 @@ import {app} from '../../../../../main/app';
 import config from 'config';
 import Module from 'module';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {
+  isCaseProgressionV1Enable,
+} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CaseState} from 'form/models/claimDetails';
 
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -28,8 +30,8 @@ const isCaseProgressionV1EnableMock = isCaseProgressionV1Enable as jest.Mock;
 const getLatestUpdateContentMock = getLatestUpdateContent as jest.Mock;
 const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.Mock;
 const isCarmEnabledForCaseMock = isCarmEnabledForCase as jest.Mock;
-const isDashboardServiceEnabledMock = launchDarklyClient.isDashboardServiceEnabled as jest.Mock;
 const isCUIReleaseTwoEnabledMock = launchDarklyClient.isCUIReleaseTwoEnabled as jest.Mock;
+const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
 const mockExpectedDashboardInfo=
   [{
     'categoryEn': 'Hearing',
@@ -403,8 +405,8 @@ describe('Claim Summary Controller Defendant', () => {
           ...claim.case_data,
         },
       };
-      isDashboardServiceEnabledMock.mockResolvedValue(true);
       isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
+      isDashboardEnabledForCase.mockResolvedValue(true);
       isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
       isCarmEnabledForCaseMock.mockResolvedValue(true);
       //when
@@ -431,8 +433,8 @@ describe('Claim Summary Controller Defendant', () => {
           ...claim.case_data,
         },
       };
-      isDashboardServiceEnabledMock.mockResolvedValue(true);
       isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
+      isDashboardEnabledForCase.mockResolvedValue(true);
       isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
       isCarmEnabledForCaseMock.mockResolvedValue(true);
       //when
