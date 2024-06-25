@@ -78,7 +78,7 @@ export class DirectionQuestionnaire {
   get isIntermediateOrMultiTrackDQJourneyCompleted(): boolean {
     return this.hearing?.triedToSettle &&
       this.hearing?.requestExtra4weeks &&
-      this.hearing?.hasClaimantDocumentsToBeConsidered &&
+      this.hearing?.hasDocumentsToBeConsidered &&
       this.isExpertEvidenceJourneyCompleted &&
       this.isCommonDQJourneyCompleted;
 
