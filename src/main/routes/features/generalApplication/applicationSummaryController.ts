@@ -5,7 +5,7 @@ import { AppRequest } from 'common/models/AppRequest';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { GA_APPLICATION_SUMMARY_URL, GA_VIEW_APPLICATION_URL } from 'routes/urls';
 import { getApplicationStatus, getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
-import { GeneralApplicationClient } from 'client/generalApplicationClient';
+import { GaServiceClient } from 'client/gaServiceClient';
 import { ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { dateTimeFormat } from 'common/utils/dateUtils';
@@ -14,7 +14,7 @@ const applicationSummaryController = Router();
 const viewPath = 'features/generalApplication/applications-summary';
 
 const generalApplicationServiceApiBaseUrl = config.get<string>('services.generalApplication.url');
-const generalApplicationServiceClient: GeneralApplicationClient = new GeneralApplicationClient(generalApplicationServiceApiBaseUrl);
+const generalApplicationServiceClient: GaServiceClient = new GaServiceClient(generalApplicationServiceApiBaseUrl);
 
 applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {

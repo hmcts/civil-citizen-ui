@@ -7,7 +7,7 @@ import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 import { t } from 'i18next';
 import { Claim } from 'models/claim';
 import { isGaForLipsEnabled } from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import { GeneralApplicationClient } from 'client/generalApplicationClient';
+import { GaServiceClient } from 'client/gaServiceClient';
 import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { decode } from 'punycode';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
@@ -45,7 +45,7 @@ describe('General Application - Application costs', () => {
         return new Claim();
       });
       jest
-        .spyOn(GeneralApplicationClient.prototype, 'getApplicationsByCaseId')
+        .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
         .mockResolvedValueOnce([applicationMock]);
 
       await request(app)
