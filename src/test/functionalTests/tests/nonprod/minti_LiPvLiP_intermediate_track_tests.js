@@ -26,5 +26,6 @@ Scenario('LiP vs LiP Intermediate claim', async ({api}) => {
     securityCode = caseData.respondent1PinToPostLRspec.accessCode;
     console.log('claim number', claimNumber);
     console.log('Security code', securityCode);
+    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, intTrackClaimType, config.defenceType.rejectAllIntermediateTrackMinti, 'DefendantCompany');
   }
 });

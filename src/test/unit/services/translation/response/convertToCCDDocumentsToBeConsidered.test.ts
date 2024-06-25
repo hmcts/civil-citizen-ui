@@ -18,15 +18,15 @@ describe('translate minti documents to be considered to CCD model', () => {
 
   it('should documents to be considered to CCD when YES', () => {
     claim.directionQuestionnaire.hearing.hasDocumentsToBeConsidered = {
-      option: YesNo.YES
+      option: YesNo.YES,
     };
-    claim.directionQuestionnaire.hearing.documentsConsideredDetails = 'details'
+    claim.directionQuestionnaire.hearing.documentsConsideredDetails = 'details';
     const ccdClaim = convertToCCDDocumentsToBeConsidered(claim);
 
     const expected: CCDDocumentsToBeConsidered = {
       hasDocumentsToBeConsidered: YesNoUpperCamelCase.YES,
       details: 'details',
-    }
+    };
     expect(ccdClaim).toMatchObject(expected);
   });
 
@@ -36,14 +36,14 @@ describe('translate minti documents to be considered to CCD model', () => {
     claim.directionQuestionnaire.hearing = new Hearing();
 
     claim.directionQuestionnaire.hearing.hasDocumentsToBeConsidered = {
-      option: YesNo.NO
+      option: YesNo.NO,
     };
     const ccdClaim = convertToCCDDocumentsToBeConsidered(claim);
 
     const expected: CCDDocumentsToBeConsidered = {
       hasDocumentsToBeConsidered: YesNoUpperCamelCase.NO,
       details: undefined,
-    }
+    };
     expect(ccdClaim).toMatchObject(expected);
   });
 

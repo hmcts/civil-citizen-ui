@@ -4,7 +4,7 @@ import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {YesNo, YesNoNotReceived} from 'form/models/yesNo';
 import {VulnerabilityQuestions} from 'models/directionsQuestionnaire/vulnerabilityQuestions/vulnerabilityQuestions';
 import {
-  WelshLanguageRequirements
+  WelshLanguageRequirements,
 } from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
 import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
@@ -15,7 +15,7 @@ import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetail
 import {ExpertReportDetails} from 'models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails';
 import {SpecificCourtLocation} from 'common/models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
-import {buildHearingRequirementsSectionCommon,} from 'services/features/common/buildHearingRequirementsSection';
+import {buildHearingRequirementsSectionCommon} from 'services/features/common/buildHearingRequirementsSection';
 import {FixedRecoverableCosts} from 'models/directionsQuestionnaire/fixedRecoverableCosts/fixedRecoverableCosts';
 import {
   DisclosureOfDocuments,
@@ -97,7 +97,7 @@ const createFixedRecoverableCostsSection = (subjectToFrc: YesNo, frcAgreed: YesN
   return fixedRecoverableCosts;
 };
 
-const createDisclosureOfDocuments = (hearing: Hearing, disclosureOfDocuments: string[], agreementReached: string, electronicDocs: string, nonElectronicDocs: string,): Hearing => {
+const createDisclosureOfDocuments = (hearing: Hearing, disclosureOfDocuments: string[], agreementReached: string, electronicDocs: string, nonElectronicDocs: string): Hearing => {
 
   hearing.disclosureOfDocuments = new DisclosureOfDocuments();
   hearing.disclosureOfDocuments.documentsTypeChosen = disclosureOfDocuments;

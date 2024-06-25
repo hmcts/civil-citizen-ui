@@ -7,10 +7,10 @@ import {
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {
   DisclosureOfDocuments,
-  TypeOfDisclosureDocument
+  TypeOfDisclosureDocument,
 } from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 import {
-  HasAnAgreementBeenReachedOptions
+  HasAnAgreementBeenReachedOptions,
 } from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReachedOptions';
 import {CCDDisclosureOfElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfElectronicDocuments';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
@@ -38,7 +38,7 @@ describe('translate minti disclosure of documents to CCD model', () => {
       reachedAgreement: YesNoUpperCamelCase.NO,
       agreementLikely: YesNoUpperCamelCase.YES,
       reasonForNoAgreement: 'issues',
-    }
+    };
     expect(ccdClaim).toMatchObject(expected);
   });
 
@@ -50,7 +50,7 @@ describe('translate minti disclosure of documents to CCD model', () => {
 
     const expected: CCDDisclosureOfNonElectronicDocuments = {
       bespokeDirections: 'directions',
-    }
+    };
     expect(ccdClaim).toMatchObject(expected);
   });
 });

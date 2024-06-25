@@ -6,6 +6,8 @@ const partAdmitFastTrack = require('./partAdmitFastTrackDefendantResponse');
 const rejectAllSmallClaims = require('./rejectAllSmallClaimsDefendantResponse');
 const rejectAllFastTrack = require('./rejectAllFastTrackDefendantResponse');
 const rejectAllSmallClaimsCarm = require('./defendantResponseCarm');
+const rejectAllIntermediateClaim = require('./defendantResponseIntermediateClaim');
+const rejectAllMultiClaim = require('./defendantResponseMultiClaim');
 
 module.exports = {
   createDefendantResponse: (totalClaimAmount, responseType, claimType, partyType) => {
@@ -68,6 +70,10 @@ module.exports = {
         } else if (partyType === 'SoleTraderVCompany') {
           return rejectAllSmallClaimsCarm.LrDefendantResponseCarmCompany(totalClaimAmount);
         }
+      case config.defenceType.rejectAllIntermediateTrackMinti:
+        return rejectAllIntermediateClaim.citizenDefendantResponseCompany(totalClaimAmount);
+      case config.defenceType.rejectAllMultiTrackMinti:
+        return rejectAllMultiClaim.citizenDefendantResponseCompany(totalClaimAmount);
     }
   },
 };

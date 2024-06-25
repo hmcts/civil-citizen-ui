@@ -155,6 +155,10 @@ module.exports = {
     if (claimType === 'FastTrack') {
       console.log('FastTrack claim...');
       totalClaimAmount = '15000';
+    } else if (claimType === 'Intermediate') {
+      totalClaimAmount = '26000';
+    } else if (claimType === 'Multi') {
+      totalClaimAmount = '150000';
     } else {
       console.log('SmallClaim...');
       totalClaimAmount = '1500';
