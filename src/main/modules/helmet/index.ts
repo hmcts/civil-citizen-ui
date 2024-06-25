@@ -16,6 +16,7 @@ const scriptSrcElem = [
   inline,
   '*.google-analytics.com',
   '*.googletagmanager.com',
+  dynatraceDomain,
 ];
 
 const styleSrc = [
