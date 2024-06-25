@@ -31,7 +31,7 @@ function renderView(complexityBand: GenericForm<ReasonForComplexityBand>, lang: 
     complexityBandOptions: ComplexityBandOptions,
     pageTitle: `${COMPLEXITY_BAND_REASON_PAGE}PAGE_TITLE`,
     title: `${COMPLEXITY_BAND_REASON_PAGE}TITLE`,
-    backLinkUrl: constructResponseUrlWithIdParams('claimId', BACK_URL),
+    backLinkUrl: BACK_URL,
   });
 }
 

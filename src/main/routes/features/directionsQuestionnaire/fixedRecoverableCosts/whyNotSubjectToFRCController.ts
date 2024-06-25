@@ -23,7 +23,7 @@ function renderView(complexityBand: GenericForm<ReasonForNotSubjectToFrc>, lang:
     form,
     pageTitle: `${WHY_NOT_SUBJECT_TO_FRC_PAGE}PAGE_TITLE`,
     title: `${WHY_NOT_SUBJECT_TO_FRC_PAGE}TITLE`,
-    backLinkUrl: constructResponseUrlWithIdParams('claimId', BACK_URL),
+    backLinkUrl: BACK_URL,
   });
 }
 

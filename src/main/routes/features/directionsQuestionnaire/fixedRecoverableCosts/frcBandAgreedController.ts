@@ -28,7 +28,7 @@ function renderView(subjectToFRC: GenericForm<GenericYesNo>, claimId: string, re
     buttonTitle: `${FRC_BAND_AGREED_PAGE}BUTTON_TITLE`,
     pageTitle: `${FRC_BAND_AGREED_PAGE}PAGE_TITLE`,
     title: `${FRC_BAND_AGREED_PAGE}TITLE`,
-    backLinkUrl: constructResponseUrlWithIdParams(claimId, BACK_URL),
+    backLinkUrl: BACK_URL,
   });
 }
 
