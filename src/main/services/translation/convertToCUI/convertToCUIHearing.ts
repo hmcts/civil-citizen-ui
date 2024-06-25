@@ -2,7 +2,7 @@ import {CCDClaim} from 'models/civilClaimResponse';
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {CCDSpecificCourtLocations} from 'models/ccdResponse/ccdSpecificCourtLocations';
-import {toCUIGenericYesNo, toCUIYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
+import {toCUIGenericYesNo, toCUIYesNo,} from 'services/translation/convertToCUI/convertToCUIYesNo';
 import {UnavailableDatePeriod, UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {CCDUnavailableDates, CCDUnavailableDateType} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {Support, SupportRequired} from 'models/directionsQuestionnaire/supportRequired';
@@ -16,7 +16,7 @@ import {
 } from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReachedOptions';
 import {
   DisclosureOfDocuments,
-  TypeOfDisclosureDocument
+  TypeOfDisclosureDocument,
 } from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 
 export const toCUIHearing = (ccdClaim: CCDClaim) : Hearing => {

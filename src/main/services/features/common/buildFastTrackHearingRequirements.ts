@@ -34,7 +34,7 @@ import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQu
 import {isIntermediateTrack, isMultiTrack} from 'form/models/claimType';
 import {TypeOfDisclosureDocument} from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 import {
-  HasAnAgreementBeenReachedOptions
+  HasAnAgreementBeenReachedOptions,
 } from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReachedOptions';
 
 export const triedToSettleQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {

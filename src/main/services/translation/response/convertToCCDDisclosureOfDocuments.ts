@@ -1,7 +1,7 @@
 import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
 import {Claim} from 'models/claim';
 import {
-  HasAnAgreementBeenReachedOptions
+  HasAnAgreementBeenReachedOptions,
 } from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReachedOptions';
 import {TypeOfDisclosureDocument} from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 import {YesNo} from 'form/models/yesNo';
@@ -16,7 +16,7 @@ export const toCCDDisclosureOfElectronicDocuments = (claim: Claim) => {
       ccdAgreement = toCCDYesNo(hasAnAgreementBeenReached.toLowerCase());
     } else if (hasAnAgreementBeenReached === HasAnAgreementBeenReachedOptions.NO_BUT_AN_AGREEMENT_IS_LIKELY) {
       ccdAgreement = toCCDYesNo(YesNo.NO);
-      agreementLikely = toCCDYesNo(YesNo.YES)
+      agreementLikely = toCCDYesNo(YesNo.YES);
       reasons = claim.directionQuestionnaire?.hearing?.disclosureOfElectronicDocumentsIssues;
     } else if (hasAnAgreementBeenReached === HasAnAgreementBeenReachedOptions.NO) {
       ccdAgreement = toCCDYesNo(hasAnAgreementBeenReached);

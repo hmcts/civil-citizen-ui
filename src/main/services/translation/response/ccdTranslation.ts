@@ -42,11 +42,11 @@ import {toCCDResponseLiPFinancialDetails} from 'services/translation/response/co
 import {toCCDMediationCarm} from 'services/translation/response/convertToCCDMediationCarm';
 import {toCCDDQHearingSupport} from 'services/translation/response/convertToCCDHearingSupport';
 import {
-  toCCDFixedRecoverableCostsIntermediate
+  toCCDFixedRecoverableCostsIntermediate,
 } from 'services/translation/response/convertToCCDFixedRecoverableCostsIntermediate';
 import {
   toCCDDisclosureOfElectronicDocuments,
-  toCCDDisclosureOfNonElectronicDocuments
+  toCCDDisclosureOfNonElectronicDocuments,
 } from 'services/translation/response/convertToCCDDisclosureOfDocuments';
 import {convertToCCDDocumentsToBeConsidered} from 'services/translation/response/convertToCCDDocumentsToBeConsidered';
 
