@@ -1,11 +1,11 @@
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicationSections} from 'services/features/generalApplication/viewApplication/viewApplicationService';
-import {GeneralApplicationClient} from 'client/generalApplicationClient';
+import {GaServiceClient} from 'client/gaServiceClient';
 import * as requestModels from 'models/AppRequest';
 
 jest.mock('../../../../../../main/modules/i18n');
-jest.mock('../../../../../../main/app/client/generalApplicationClient');
+jest.mock('../../../../../../main/app/client/gaServiceClient');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
@@ -19,7 +19,7 @@ describe('View Application service', () => {
     let application: ApplicationResponse;
     beforeEach(() => {
       application = Object.assign(new ApplicationResponse(), mockApplication);
-      jest.spyOn(GeneralApplicationClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
     });
 
     it('view application content test', async () => {

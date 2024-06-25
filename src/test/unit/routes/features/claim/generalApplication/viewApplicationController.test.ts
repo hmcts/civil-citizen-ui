@@ -6,14 +6,14 @@ import {GA_VIEW_APPLICATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {GeneralApplicationClient} from 'client/generalApplicationClient';
+import {GaServiceClient} from 'client/gaServiceClient';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicationSections} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
-jest.mock('../../../../../../main/app/client/generalApplicationClient');
+jest.mock('../../../../../../main/app/client/gaServiceClient');
 
 const mockedSummaryRows = getApplicationSections as jest.Mock;
 
@@ -25,8 +25,7 @@ describe('General Application - View application', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(GeneralApplicationClient.prototype, 'getApplication').mockResolvedValueOnce(application);
-    jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
+    jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
