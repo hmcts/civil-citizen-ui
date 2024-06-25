@@ -2565,6 +2565,24 @@
         "TITLE": "Help with fees",
         "WANT_TO_APPLY_HWF_TITLE": "Pay application fee",
         "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
+      },
+      "VIEW_APPLICATION": {
+        "APPLICATION": "Application",
+        "APPLICATION_DETAILS": "Application details submitted by the applicant.",
+        "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
+        "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
+        "PAGE_TITLE": "View application",
+        "RESPONSE": "Response from the other parties",
+        "REVIEW": "Review the application together with any response that has been received.",
+        "STATUS": {
+          "AWAITING_RESPONSE": "Awaiting other parties response",
+          "TITLE": "Status"
+        },
+        "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
+        "TITLE": "Application 1",
+        "UPLOAD_DOCUMENTS_1": "You can also ",
+        "UPLOAD_DOCUMENTS_2": "upload additional documents",
+        "UPLOAD_DOCUMENTS_3": " if you need to."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
