@@ -28,5 +28,3 @@ const checkTaskCompleteForTrack = (claim: Claim, claimantDQ: DirectionQuestionna
   }
   return false;
 };
-
-

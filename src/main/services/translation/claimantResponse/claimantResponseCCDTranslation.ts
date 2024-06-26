@@ -28,7 +28,7 @@ import {
   toCCDDisclosureOfElectronicDocuments,
   toCCDDisclosureOfNonElectronicDocuments,
 } from 'services/translation/response/convertToCCDDisclosureOfDocuments';
-import {convertToCCDDocumentsToBeConsidered} from "services/translation/response/convertToCCDDocumentsToBeConsidered";
+import {convertToCCDDocumentsToBeConsidered} from 'services/translation/response/convertToCCDDocumentsToBeConsidered';
 
 function isClaimantWantToSettleTheClaim(claim: Claim) {
   if (claim.isPartialAdmission() || (claim.isFullDefence() && !claim.hasPaidInFull())) {
