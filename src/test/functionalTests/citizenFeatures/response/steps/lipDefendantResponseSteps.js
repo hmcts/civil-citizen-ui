@@ -570,7 +570,21 @@ class ResponseSteps {
     await this.SelectPreferredCourtLocation();
     await this.SelectLanguageOption();
   }
-
+  async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true) {
+    await this.SelectHearingRequirements(claimRef);
+    await this.SelectExpertNeededOrNot();
+    await this.EnterClaimantExpertDetails();
+    await this.SelectGiveEvidenceYourself();
+    if(!isIndividual) await this.EnterYourDetails();
+    await this.EnterDefedantWitnesses();
+    await this.SelectOptionForCantAttendHearing();
+    await this.EnterUnavailabilityDates();
+    await this.SelectOptionForPhoneOrVideoHearing();
+    await this.SelectOptionForVulnerability();
+    await this.SelectOptionForSupportRequired();
+    await this.SelectPreferredCourtLocation();
+    await this.SelectLanguageOption();
+  }
   async EnterDQForMultiTrackClaims(claimRef, isIndividual = true) {
     await this.SelectOptionForTriedToSettle(claimRef);
     await this.SelectOptionToRequestExtraFourWeeksToSettle();
