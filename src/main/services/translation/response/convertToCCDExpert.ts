@@ -5,7 +5,7 @@ import {
 import {CCDExportReportSent} from 'models/ccdResponse/ccdExpert';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {Claim} from 'models/claim';
-import {YesNoNotReceived, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNo, YesNoNotReceived, YesNoUpperCamelCase} from 'form/models/yesNo';
 
 export const toCCDExpert = (claim: Claim) => {
   const referenceDQ = claim.isClaimantIntentionPending() ? claim.claimantResponse?.directionQuestionnaire : claim.directionQuestionnaire;
@@ -22,7 +22,11 @@ const toCCDExpertRequiredResponse = (claim: Claim) => {
   if (claim.isFastTrackClaim) {
     return toCCDYesNo(referenceDQ?.experts?.expertEvidence?.option);
   } else {
-    return toCCDYesNo(referenceDQ?.experts?.expertCanStillExamine?.option);
+    if (claim.isClaimant() && referenceDQ?.experts?.expertReportDetails?.option === YesNo.YES) {
+      return toCCDYesNo(referenceDQ?.experts?.expertReportDetails?.option);
+    } else {
+      return toCCDYesNo(referenceDQ?.experts?.expertCanStillExamine?.option);
+    }
   }
 };
 

@@ -5,9 +5,10 @@ import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {GeneralApplicationResponse} from 'models/generalApplicationResponse';
 import {Application} from 'models/application';
-import {GA_FEES_PAYMENT_STATUS_URL, GA_FEES_PAYMENT_URL, GA_SERVICE_SUBMIT_EVENT} from 'client/gaServiceUrls';
+import {GA_FEES_PAYMENT_STATUS_URL, GA_FEES_PAYMENT_URL, GA_SERVICE_CASES_URL, GA_SERVICE_SUBMIT_EVENT} from 'client/gaServiceUrls';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {plainToInstance} from 'class-transformer';
+import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('gaServiceClient');
@@ -20,10 +21,18 @@ const convertResponseToApplication = (caseDetails: GeneralApplicationResponse): 
 export class GaServiceClient {
   client: AxiosInstance;
 
-  constructor(baseURL: string) {
-    this.client = Axios.create({
-      baseURL,
-    });
+  constructor(baseURL: string, isDocumentInstance?: boolean) {
+    if (isDocumentInstance) {
+      this.client = Axios.create({
+        baseURL,
+        responseType: 'arraybuffer',
+        responseEncoding: 'binary',
+      });
+    } else {
+      this.client = Axios.create({
+        baseURL,
+      });
+    }
   }
 
   getConfig(req: AppRequest) {
@@ -73,6 +82,22 @@ export class GaServiceClient {
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
       logger.error('Error when getting fee payment status');
+      throw err;
+    }
+  }
+
+  async getApplications(req: AppRequest): Promise<ApplicationResponse[]> {
+    const config = this.getConfig(req);
+    let applications: ApplicationResponse[] = [];
+    try {
+      const response = await this.client.post(GA_SERVICE_CASES_URL, {match_all: {}}, config);
+      applications = response.data.cases.map((application: ApplicationResponse) => {
+        const caseData = Object.assign(new Application(), application.case_data);
+        return new ApplicationResponse(application.id, caseData, application.state, application.last_modified);
+      });
+      return applications;
+    } catch (err) {
+      logger.error('Error when getApplications');
       throw err;
     }
   }
