@@ -78,3 +78,5 @@ export interface TableCell {
   html?: string,
   classes?: string
 }
+
+export const CSS_CLASS_SUMMARY_LIST_KEY = 'govuk-summary-list__key';
