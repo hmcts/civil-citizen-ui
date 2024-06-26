@@ -853,6 +853,8 @@
       "NON_ELEC_DOCS_DISCLOSURE": "What non-electronic documents are proposed for disclosure?",
       "CLAIMANT_DOCS_TO_CONSIDER": "Are there any documents the claimants have that you want the court to consider?",
       "CLAIMANT_DOCS_TO_CONSIDER_DETAILS": "What are the documents the claimants have that you want the court to consider?",
+      "DEFENDANT_DOCS_TO_CONSIDER": "Are there any documents the defendants have that you want the court to consider?",
+      "DEFENDANT_DOCS_TO_CONSIDER_DETAILS": "What are the documents the defendants have that you want the court to consider?",
       "AIRLINE": "Airline",
       "ARE_YOU_CLAIMING_DELAYED_FLIGHT": "Are you claiming for a delayed flight?",
       "BANK_BALANCE": "Balance",

@@ -853,6 +853,8 @@
       "NON_ELEC_DOCS_DISCLOSURE": "Pa ddogfennau nad ydynt yn electronig sy’n cael eu cynnig i’w datgelu?",
       "CLAIMANT_DOCS_TO_CONSIDER": "Oes unrhyw ddogfennau sydd gan yr hawlwyr yr hoffech i’r llys eu hystyried?",
       "CLAIMANT_DOCS_TO_CONSIDER_DETAILS": "Beth yw’r dogfennau sydd gan yr hawlwyr yr hoffech i’r llys eu hystyried?",
+      "DEFENDANT_DOCS_TO_CONSIDER": "A oes unrhyw ddogfennau sydd gan y diffynyddion yr ydych am i'r llys eu hystyried?",
+      "DEFENDANT_DOCS_TO_CONSIDER_DETAILS": "Beth yw'r dogfennau sydd gan y diffynyddion rydych chi am i'r llys eu hystyried?",
       "AIRLINE": "Cwmni hedfan",
       "ARE_YOU_CLAIMING_DELAYED_FLIGHT": "A ydych yn hawlio am oedi wrth hedfan?",
       "BANK_BALANCE": "Cydbwysedd",

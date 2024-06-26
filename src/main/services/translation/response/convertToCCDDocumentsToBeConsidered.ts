@@ -1,11 +1,11 @@
 import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
-import {Claim} from 'models/claim';
+import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 
-export const convertToCCDDocumentsToBeConsidered = (claim: Claim) => {
-  if (claim && claim.directionQuestionnaire?.hearing?.hasDocumentsToBeConsidered?.option) {
+export const convertToCCDDocumentsToBeConsidered = (hearing: Hearing) => {
+  if (hearing?.hasDocumentsToBeConsidered?.option) {
     return {
-      hasDocumentsToBeConsidered: toCCDYesNo(claim.directionQuestionnaire?.hearing?.hasDocumentsToBeConsidered?.option),
-      details: claim.directionQuestionnaire?.hearing?.documentsConsideredDetails,
+      hasDocumentsToBeConsidered: toCCDYesNo(hearing?.hasDocumentsToBeConsidered?.option),
+      details: hearing?.documentsConsideredDetails,
     };
   }
 };
