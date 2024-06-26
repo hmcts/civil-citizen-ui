@@ -2363,6 +2363,7 @@
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
         "RESPOND_TO": "Respond to an application to {{applicationType}}",
+        "RESPOND_TO_MULTIPLE": "Respond to an application",
         "TITLE": "The other parties have said that you've agreed to the order they've requested. Is this correct?"
       },
       "APPLICATION_COSTS": {
@@ -2442,6 +2443,9 @@
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Claim reference: ",
         "PREFERRED_LOCATION": "Preferred location",
+        "PROPOSED_INSTALMENTS": "Proposed certain instalments per month",
+        "PROPOSED_PAYMENT_PLAN": "Proposed payment plan",
+        "PROPOSED_SET_DATE": "Proposed payment in full by set date",
         "RESPOND_TO_AN_APPLICATION": "Respond to an application",
         "STATEMENT_OF_TRUTH": {
           "APPLICATION": "The information on this page forms your response to the application.",
