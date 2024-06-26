@@ -4,7 +4,6 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 
 const ResponseSteps = require("../../citizenFeatures/response/steps/lipDefendantResponseSteps");
 
-const carmEnabled = false;
 const partAdmit = 'partial-admission';
 const rejectAll = 'rejectAll';
 
@@ -43,11 +42,10 @@ Scenario('MT Defendant and Claimant responses', async ({api}) => {
     await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, 'immediate');
     await ResponseSteps.EnterDQForMultiTrackClaims(claimRef);
     await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-
   }
 });
 
-Scenario('IT Defendant and Claimant responses @123', async ({api}) => {
+Scenario('IT Defendant and Claimant responses', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Intermediate', false, 'DefendantCompany');
     console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
@@ -60,7 +58,7 @@ Scenario('IT Defendant and Claimant responses @123', async ({api}) => {
     console.log('Security code', securityCode);
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await ResponseSteps.RespondToClaim(claimRef);
-    await ResponseSteps.EnterCompDetails(carmEnabled);
+    await ResponseSteps.EnterCompDetails(true);
     await ResponseSteps.EnterYourOptionsForDeadline(claimRef, 'dontWantMoreTime');
     await ResponseSteps.EnterResponseToClaim(claimRef, rejectAll);
     await ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
@@ -70,7 +68,6 @@ Scenario('IT Defendant and Claimant responses @123', async ({api}) => {
     await ResponseSteps.AddYourTimeLineEvents();
     await ResponseSteps.EnterYourEvidenceDetails();
     await ResponseSteps.EnterDQForIntTrackClaims(claimRef, false);
-
-
+    // To do later
   }
 });

@@ -598,6 +598,9 @@ class ResponseSteps {
   async EnterDQForIntTrackClaims(claimRef, isIndividual = true) {
     await this.SelectOptionForTriedToSettle(claimRef);
     await this.SelectOptionToRequestExtraFourWeeksToSettle();
+    await this.SelectConsiderClaimantDocs();
+
+    // To do later
     // await this.SelectDisclosureOfDocuments();
     // await this.SelectAgreementReached();
     // await this.ProvideDisclosureOfElecDocumentsIssues();
