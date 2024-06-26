@@ -595,7 +595,7 @@ class ResponseSteps {
     await this.SelectLanguageOption();
   }
 
-  async EnterDQForIntTrackClaims(claimRef, isIndividual = true) {
+  async EnterDQForIntTrackClaims(claimRef) {
     await this.SelectOptionForTriedToSettle(claimRef);
     await this.SelectOptionToRequestExtraFourWeeksToSettle();
     await this.SelectConsiderClaimantDocs();

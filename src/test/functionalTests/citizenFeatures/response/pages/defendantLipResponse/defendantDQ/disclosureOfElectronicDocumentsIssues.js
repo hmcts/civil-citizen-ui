@@ -13,7 +13,7 @@ const content = {
   },
   descriptionText: {
     en: 'What are the issues about disclosure of electronic documents?',
-  }
+  },
 };
 
 class DisclosureOfElectronicDocumentsIssues {

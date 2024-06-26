@@ -13,7 +13,7 @@ const content = {
   },
   descriptionText: {
     en: 'What non-electronic documents are proposed for disclosure?',
-  }
+  },
 };
 
 class DisclosureOfNonElectronicDocuments {

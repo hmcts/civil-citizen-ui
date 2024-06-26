@@ -2,7 +2,7 @@ const config = require('../../../config');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 
-const ResponseSteps = require("../../citizenFeatures/response/steps/lipDefendantResponseSteps");
+const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 
 const partAdmit = 'partial-admission';
 const rejectAll = 'rejectAll';
@@ -43,7 +43,7 @@ Scenario('MT Defendant and Claimant responses', async ({api}) => {
     await ResponseSteps.EnterDQForMultiTrackClaims(claimRef);
     await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
   }
-});
+}).tag('@regression-minti').tag('@nightly');
 
 Scenario('IT Defendant and Claimant responses', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
