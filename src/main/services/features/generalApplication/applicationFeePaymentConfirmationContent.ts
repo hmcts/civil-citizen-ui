@@ -39,7 +39,6 @@ export const getGaPaymentSuccessfulBodyContent = (claim: Claim, calculatedAmount
   }
 
   contentBuilder.addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.PAYMENT_SUMMARY_TITLE', { lng: getLng(lng) })
-  // dynamic value will be added as part of story CIV-13767
     .addSummary(currencyFormatWithNoTrailingZeros(convertToPoundsFilter(
       calculatedAmountInPence)),
     'COMMON.MICRO_TEXT.APPLICATION_FEE',lng);
