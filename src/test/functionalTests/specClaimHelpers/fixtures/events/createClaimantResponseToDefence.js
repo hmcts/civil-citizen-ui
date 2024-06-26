@@ -496,7 +496,7 @@ module.exports = {
           documents: 'ENGLISH',
         },
         applicant1DQVulnerabilityQuestions: {
-          vulnerabilityAdjustmentsRequired: 'No'
+          vulnerabilityAdjustmentsRequired: 'No',
         },
         applicant1DQRequestedCourt: {
           requestHearingAtSpecificCourt: 'No',
@@ -522,7 +522,7 @@ module.exports = {
         },
         applicant1DQExperts: {},
         applicant1DQHearingSupport: {
-          supportRequirements: 'No'
+          supportRequirements: 'No',
         },
         applicant1ProceedWithClaim: 'Yes',
         applicant1SettleClaim: 'No',
