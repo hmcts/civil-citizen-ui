@@ -466,14 +466,18 @@ module.exports = {
     console.log('End of viewAndRespondToDefence()');
   },
 
-  claimantLipRespondToDefence: async (user, caseId, carmEnabled = false, expectedEndState) => {
+  claimantLipRespondToDefence: async (user, caseId, carmEnabled = false, expectedEndState, mintiTrack = '') => {
     console.log('This is inside claimantLipRespondToDefence : ' + caseId);
     eventName = 'CLAIMANT_RESPONSE_CUI';
     let payload;
 
     await apiRequest.setupTokens(user);
 
-    if (carmEnabled) {
+    if (mintiTrack === 'Intermediate') {
+      payload = claimantResponse.createClaimantLipIntendsToProceedResponseIntermediate()
+    } else if (mintiTrack === 'Multi') {
+      payload = claimantResponse.createClaimantLipIntendsToProceedResponseMulti();
+    } else if (carmEnabled) {
       payload = claimantResponse.createClaimantLipIntendsToProceedResponseCarm();
     } else {
       payload = claimantResponse.createClaimantLipIntendsToProceedResponse();

@@ -24,7 +24,7 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          
+
         },
         respondent1: {
           type: 'INDIVIDUAL',
@@ -43,7 +43,7 @@ module.exports = {
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
           partyPhone: '07123456789',
-          
+
           flags: null,
         },
         partAdmitPaidValuePounds: null,
@@ -387,6 +387,158 @@ module.exports = {
         applicant1FullDefenceConfirmAmountPaidSpec: 'Yes',
         applicant1SettleClaim: 'No',
       },
+    };
+    return claimantResponseData;
+  },
+
+  createClaimantLipIntendsToProceedResponseIntermediate: () => {
+    const claimantResponseData = {
+      event: 'CLAIMANT_RESPONSE_CUI',
+      caseDataUpdate: {
+          applicant1LiPResponse: {
+            applicant1DQExtraDetails: {
+              wantPhoneOrVideoHearing: 'No',
+              whyPhoneOrVideoHearing: '',
+              giveEvidenceYourSelf: 'No',
+              triedToSettle: 'Yes',
+              determinationWithoutHearingReason: '',
+              requestExtra4weeks: 'No',
+              considerClaimantDocumentsDetails: '',
+              applicant1DQLiPExpert: {
+                expertCanStillExamineDetails: '',
+              },
+            },
+            applicant1DQHearingSupportLip: {
+              supportRequirementLip: 'No',
+            },
+          },
+          applicant1DQLanguage: {
+            court: 'ENGLISH',
+            documents: 'ENGLISH',
+          },
+          applicant1DQVulnerabilityQuestions: {
+            vulnerabilityAdjustmentsRequired: 'No',
+          },
+          applicant1DQRequestedCourt: {
+            requestHearingAtSpecificCourt: 'No',
+            otherPartyPreferredSite: '',
+            responseCourtCode: '',
+            responseCourtLocations: [],
+            caseLocation: {},
+          },
+          applicant1DQWitnesses: {
+            witnessesToAppear: 'No',
+            details: [
+              {
+                value: {
+                  name: '',
+                  firstName: '',
+                  lastName: '',
+                  emailAddress: '',
+                  phoneNumber: '',
+                  reasonForWitness: '',
+                },
+              },
+            ],
+          },
+          applicant1DQExperts: {},
+          applicant1DQHearingSupport: {
+            supportRequirements: 'No',
+          },
+          applicant1ProceedWithClaim: 'Yes',
+          applicant1SettleClaim: 'No',
+          applicant1DQFixedRecoverableCostsIntermediate: {
+            isSubjectToFixedRecoverableCostRegime: 'Yes',
+            band: 'BAND_2',
+            complexityBandingAgreed: 'No',
+            reasons: 'band reasons',
+          },
+          specApplicant1DQDisclosureOfElectronicDocuments: {
+            reachedAgreement: 'No',
+            agreementLikely: 'No',
+            reasonForNoAgreement: 'claimant electronic disclosure',
+          },
+          specApplicant1DQDisclosureOfNonElectronicDocuments: {
+            bespokeDirections: 'claimant non electronic disclosure',
+          },
+          applicant1DQDefendantDocumentsToBeConsidered: {
+            hasDocumentsToBeConsidered: 'Yes',
+            details: 'claimant response consider docs',
+          },
+        },
+    };
+    return claimantResponseData;
+  },
+
+  createClaimantLipIntendsToProceedResponseMulti: () => {
+    const claimantResponseData = {
+      event: 'CLAIMANT_RESPONSE_CUI',
+      caseDataUpdate: {
+          applicant1LiPResponse: {
+            applicant1DQExtraDetails: {
+              wantPhoneOrVideoHearing: 'No',
+              whyPhoneOrVideoHearing: '',
+              giveEvidenceYourSelf: 'No',
+              triedToSettle: 'Yes',
+              determinationWithoutHearingReason: '',
+              requestExtra4weeks: 'No',
+              considerClaimantDocumentsDetails: '',
+              applicant1DQLiPExpert: {
+                expertCanStillExamineDetails: '',
+              },
+            },
+            applicant1DQHearingSupportLip: {
+              supportRequirementLip: 'No',
+            },
+          },
+          applicant1DQLanguage: {
+            court: 'ENGLISH',
+            documents: 'ENGLISH',
+          },
+          applicant1DQVulnerabilityQuestions: {
+            vulnerabilityAdjustmentsRequired: 'No'
+          },
+          applicant1DQRequestedCourt: {
+            requestHearingAtSpecificCourt: 'No',
+            otherPartyPreferredSite: '',
+            responseCourtCode: '',
+            responseCourtLocations: [],
+            caseLocation: {},
+          },
+          applicant1DQWitnesses: {
+            witnessesToAppear: 'No',
+            details: [
+              {
+                value: {
+                  name: '',
+                  firstName: '',
+                  lastName: '',
+                  emailAddress: '',
+                  phoneNumber: '',
+                  reasonForWitness: '',
+                },
+              },
+            ],
+          },
+          applicant1DQExperts: {},
+          applicant1DQHearingSupport: {
+            supportRequirements: 'No'
+          },
+          applicant1ProceedWithClaim: 'Yes',
+          applicant1SettleClaim: 'No',
+          specApplicant1DQDisclosureOfElectronicDocuments: {
+            reachedAgreement: 'No',
+            agreementLikely: 'No',
+            reasonForNoAgreement: 'claimant response electronic disclosure',
+          },
+          specApplicant1DQDisclosureOfNonElectronicDocuments: {
+            bespokeDirections: 'claimant response non-electronic disclosure',
+          },
+          applicant1DQDefendantDocumentsToBeConsidered: {
+            hasDocumentsToBeConsidered: 'Yes',
+            details: 'claimant response documents to be considered',
+          },
+        },
     };
     return claimantResponseData;
   },
