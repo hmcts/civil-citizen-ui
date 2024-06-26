@@ -32,12 +32,12 @@ import {
 import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import config from 'config';
-import {GeneralApplicationClient} from 'client/generalApplicationClient';
+import {GaServiceClient} from 'client/gaServiceClient';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 const baseUrl: string = config.get<string>('services.generalApplication.url');
-const generalApplicationClient = new GeneralApplicationClient(baseUrl);
+const generalApplicationClient = new GaServiceClient(baseUrl);
 
 export const saveApplicationType = async (claimId: string, applicationType: ApplicationType, index?: number): Promise<void> => {
   try {
