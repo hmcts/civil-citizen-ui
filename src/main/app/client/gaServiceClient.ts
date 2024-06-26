@@ -1,7 +1,6 @@
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AppRequest} from 'common/models/AppRequest';
-import {EventDto} from 'models/gaEvents/eventDto';
-import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
+import {CCDGeneralApplication, EventDto} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {GeneralApplicationResponse} from 'models/generalApplicationResponse';
 import {Application} from 'models/application';
@@ -15,7 +14,7 @@ import {
 } from 'client/gaServiceUrls';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {plainToInstance} from 'class-transformer';
-import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
+import {ApplicationResponse, CCDApplication} from 'common/models/generalApplication/applicationResponse';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -52,7 +51,11 @@ export class GaServiceClient {
     };
   }
 
-  async submitEvent(event: ApplicationEvent, claimId: string, updatedApplication?: CCDGeneralApplication, req?: AppRequest): Promise<Application> {
+  async submitRespondToApplicationEvent(applicationId: string, generalApplication: CCDGeneralApplication | CCDApplication, req?: AppRequest): Promise<Application> {
+    return this.submitEvent(ApplicationEvent.RESPOND_TO_APPLICATION, applicationId, generalApplication, req);
+  }
+
+  async submitEvent(event: ApplicationEvent, claimId: string, updatedApplication?: CCDGeneralApplication | CCDApplication, req?: AppRequest): Promise<Application> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
     const data: EventDto = {

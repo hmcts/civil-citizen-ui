@@ -1,5 +1,5 @@
 import { GeneralApplication } from 'models/generalApplication/GeneralApplication';
-import { CCDGeneralApplication } from 'models/gaEvents/eventDto';
+import { CCDGeneralApplication, CCDRespondToApplication } from 'models/gaEvents/eventDto';
 import { OrderJudge } from 'models/generalApplication/orderJudge';
 import { ApplicationType } from 'models/generalApplication/applicationType';
 import { CcdGeneralApplicationTypes } from 'models/ccdGeneralApplication/ccdGeneralApplicationTypes';
@@ -14,6 +14,8 @@ import {
 } from 'models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
 import {
+  CcdGADebtorPaymentPlanGAspec,
+  CcdGARespondentDebtorOfferOptionsGAspec,
   CcdGeneralApplicationHearingDetails,
   CcdHearingType,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
@@ -33,6 +35,9 @@ import {
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
 import {CCDHelpWithFees} from 'form/models/claimDetails';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
+import { CCDApplication } from 'common/models/generalApplication/applicationResponse';
+import { convertToPenceFromStringToString } from '../claim/moneyConversation';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
@@ -194,4 +199,42 @@ const toCCDGeneralAppHelpWithFees = (helpWithFees: ApplyHelpFeesReferenceForm | 
     helpWithFee: toCCDYesNo(helpWithFees.option),
     helpWithFeesReferenceNumber: helpWithFees.referenceNumber,
   };
+};
+
+const toCcdPaymentPlan = (paymentPlan: ProposedPaymentPlanOption | undefined): CcdGADebtorPaymentPlanGAspec | undefined => {
+  if (paymentPlan) {
+    switch (paymentPlan) {
+      case ProposedPaymentPlanOption.ACCEPT_INSTALMENTS: return CcdGADebtorPaymentPlanGAspec.INSTALMENT;
+      case ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE: return CcdGADebtorPaymentPlanGAspec.PAYFULL;
+    }
+  }
+};
+
+const toCcdDebtorOfferOptions = (acceptDefendantOfferOption: YesNo): CcdGARespondentDebtorOfferOptionsGAspec => {
+  switch (acceptDefendantOfferOption) {
+    case YesNo.YES: return CcdGARespondentDebtorOfferOptionsGAspec.ACCEPT;
+    case YesNo.NO: return CcdGARespondentDebtorOfferOptionsGAspec.DECLINE;
+  }
+};
+
+export const toCcdGeneralApplicationWithResponse = (ccdApplication: CCDApplication, generalApplication: GeneralApplication): CCDRespondToApplication => {
+  const response = generalApplication.response;
+  const acceptDefendantOffer = response?.acceptDefendantOffer;
+  return {
+    ...ccdApplication,
+    hearingDetailsResp: toCCDGeneralAppHearingDetails(
+      response?.hearingArrangement, 
+      response?.hearingContactDetails, 
+      response?.unavailableDatesHearing, 
+      response?.hearingSupport,
+    ),
+    gaRespondentDebtorOffer: {
+      respondentDebtorOffer: toCcdDebtorOfferOptions(acceptDefendantOffer?.option),
+      debtorObjections: response?.respondentAgreement?.reasonForDisagreement,
+      paymentPlan: toCcdPaymentPlan(acceptDefendantOffer?.type),
+      monthlyInstalment: convertToPenceFromStringToString(acceptDefendantOffer?.amountPerMonth),
+      paymentSetDate: acceptDefendantOffer?.proposedSetDate,
+    },
+  };
+ 
 };

@@ -11,6 +11,7 @@ import { getSummarySections } from 'services/features/generalApplication/respons
 import { t } from 'i18next';
 import { getRespondToApplicationCaption, saveRespondentStatementOfTruth } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import { submitApplicationResponse } from 'services/features/generalApplication/response/submitApplicationResponse';
 
 const gaCheckAnswersResponseController = Router();
 const viewPath = 'features/generalApplication/response/check-answers';
@@ -55,6 +56,7 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
     } else {
       const redisKey = generateRedisKey(req);
       await saveRespondentStatementOfTruth(redisKey, statementOfTruth);
+      await submitApplicationResponse(req);
       res.redirect('test'); // TODO: correct URL      
     }
   } catch (error) {
