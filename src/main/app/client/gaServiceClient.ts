@@ -9,6 +9,7 @@ import {GA_FEES_PAYMENT_STATUS_URL, GA_FEES_PAYMENT_URL, GA_SERVICE_CASES_URL, G
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {plainToInstance} from 'class-transformer';
 import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
+import { getLast } from 'services/features/generalApplication/generalApplicationService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('gaServiceClient');
@@ -42,6 +43,10 @@ export class GaServiceClient {
         'Authorization': `Bearer ${req.session?.user?.accessToken}`,
       },
     };
+  }
+
+  async submitRespondToApplicationEvent(applicationId: string, generalApplication: CCDGeneralApplication, req?: AppRequest): Promise<Application> {
+    return this.submitEvent(ApplicationEvent.RESPOND_TO_APPLICATION, applicationId, generalApplication, req);
   }
 
   async submitEvent(event: ApplicationEvent, claimId: string, updatedApplication?: CCDGeneralApplication, req?: AppRequest): Promise<Application> {
@@ -96,6 +101,17 @@ export class GaServiceClient {
         return new ApplicationResponse(application.id, caseData, application.state, application.last_modified);
       });
       return applications;
+    } catch (err) {
+      logger.error('Error when getApplications');
+      throw err;
+    }
+  }
+
+  async getLatestCcdApplication(req: AppRequest): Promise<ApplicationResponse | undefined> {
+    const config = this.getConfig(req);
+    try {
+      const response = await this.client.post(GA_SERVICE_CASES_URL, {match_all: {}}, config);
+      return getLast(response.data.cases);
     } catch (err) {
       logger.error('Error when getApplications');
       throw err;

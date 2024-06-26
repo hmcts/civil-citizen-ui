@@ -17,6 +17,7 @@ import {
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
 import {CCDHelpWithFees} from 'form/models/claimDetails';
 import {CaseLink} from 'models/generalApplication/CaseLink';
+import { CcdGeneralApplicationRespondentResponse } from '../ccdGeneralApplication/ccdGeneralApplicationRespondentResponse';
 
 export interface EventDto {
   event: ApplicationEvent,
@@ -35,4 +36,5 @@ export interface CCDGeneralApplication extends ClaimUpdate {
   generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
   generalAppHelpWithFees: CCDHelpWithFees;
   caseLink?: CaseLink;
+  respondentsResponses: CcdGeneralApplicationRespondentResponse[];
 }

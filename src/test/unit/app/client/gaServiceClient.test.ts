@@ -6,6 +6,10 @@ import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {GaServiceClient} from 'client/gaServiceClient';
 import { GA_SERVICE_CASES_URL } from 'client/gaServiceUrls';
 import { Application } from 'common/models/generalApplication/application';
+//import { getLast } from 'services/features/generalApplication/generalApplicationService';
+
+jest.mock('../../../../main/services/features/generalApplication/generalApplicationService');
+//const getLastMock = getLast as jest.Mock;
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;

@@ -33,6 +33,7 @@ import {
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
 import {CCDHelpWithFees} from 'form/models/claimDetails';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import { CcdGeneralApplicationRespondentResponse } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationRespondentResponse';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
@@ -60,6 +61,7 @@ export const translateDraftApplicationToCCD = (
     ),
     generalAppStatementOfTruth: toCCDStatementOfTruth(application.statementOfTruth),
     generalAppHelpWithFees: toCCDGeneralAppHelpWithFees(application.helpWithFees?.helpFeeReferenceNumberForm),
+    respondentsResponses: [],
   };
 };
 
@@ -193,5 +195,21 @@ const toCCDGeneralAppHelpWithFees = (helpWithFees: ApplyHelpFeesReferenceForm | 
   return {
     helpWithFee: toCCDYesNo(helpWithFees.option),
     helpWithFeesReferenceNumber: helpWithFees.referenceNumber,
+  };
+};
+
+export const toCcdGeneralApplicationRespondentResponse = (generalApplication: GeneralApplication): CcdGeneralApplicationRespondentResponse => {
+  const response = generalApplication.response;
+  return {
+    value: {
+      gaHearingDetails: toCCDGeneralAppHearingDetails(
+        response?.hearingArrangement, 
+        response?.hearingContactDetails, 
+        response?.unavailableDatesHearing, 
+        response?.hearingSupport),
+      gaRespondentDetails: 'respondent details',
+      gaRespondentResponseReason: generalApplication.response?.respondentAgreement?.reasonForDisagreement,
+      generalAppRespondent1Representative: toCCDYesNo(YesNo.NO),
+    },
   };
 };

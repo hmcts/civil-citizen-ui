@@ -1,3 +1,3 @@
 export enum ApplicationEvent {
-  // TODO: Add events here for use by GA client
+  RESPOND_TO_APPLICATION = 'RESPOND_TO_APPLICATION',
 }
