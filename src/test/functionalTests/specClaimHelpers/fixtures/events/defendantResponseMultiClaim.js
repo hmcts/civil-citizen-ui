@@ -8,7 +8,7 @@ module.exports = {
         respondToClaimAdmitPartLRspec: {},
         responseClaimMediationSpecRequired: 'No',
         specAoSApplicantCorrespondenceAddressRequired: 'Yes',
-        totalClaimAmount: 26000,
+        totalClaimAmount: 150000,
         respondent1: {
           companyName: 'Test Company Defendant',
           individualDateOfBirth: null,
