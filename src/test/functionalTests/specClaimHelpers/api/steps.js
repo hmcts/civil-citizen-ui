@@ -474,7 +474,7 @@ module.exports = {
     await apiRequest.setupTokens(user);
 
     if (mintiTrack === 'Intermediate') {
-      payload = claimantResponse.createClaimantLipIntendsToProceedResponseIntermediate()
+      payload = claimantResponse.createClaimantLipIntendsToProceedResponseIntermediate();
     } else if (mintiTrack === 'Multi') {
       payload = claimantResponse.createClaimantLipIntendsToProceedResponseMulti();
     } else if (carmEnabled) {
