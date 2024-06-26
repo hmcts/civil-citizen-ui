@@ -1,19 +1,19 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {CITIZEN_REJECT_ALL_CLAIM_URL, RESPONSE_TASK_LIST_URL, SEND_RESPONSE_BY_EMAIL_URL} from '../../urls';
-import {getRejectAllOfClaim, saveRejectAllOfClaim} from '../../../services/features/response/rejectAllOfClaimService';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {RejectAllOfClaim} from '../../../common/form/models/rejectAllOfClaim';
-import {generateRedisKey, getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {WhyDoYouDisagree} from '../../../common/form/models/admission/partialAdmission/whyDoYouDisagree';
-import {HowMuchHaveYouPaid} from '../../../common/form/models/admission/howMuchHaveYouPaid';
-import {RejectAllOfClaimType} from '../../../common/form/models/rejectAllOfClaimType';
+import {getRejectAllOfClaim, saveRejectAllOfClaim} from 'services/features/response/rejectAllOfClaimService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'form/models/genericForm';
+import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {WhyDoYouDisagree} from 'form/models/admission/partialAdmission/whyDoYouDisagree';
+import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
+import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 import {AppRequest} from 'common/models/AppRequest';
 
 const rejectAllOfClaimViewPath = 'features/response/reject-all-of-claim';
 const rejectAllOfClaimController = Router();
 
-rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: Request, res: Response, next: NextFunction) => {
+rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(claimId);
@@ -26,9 +26,9 @@ rejectAllOfClaimController.get(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: Request
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: Request, res: Response, next: NextFunction) => {
+rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
@@ -57,6 +57,6 @@ rejectAllOfClaimController.post(CITIZEN_REJECT_ALL_CLAIM_URL, async (req: Reques
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default rejectAllOfClaimController;

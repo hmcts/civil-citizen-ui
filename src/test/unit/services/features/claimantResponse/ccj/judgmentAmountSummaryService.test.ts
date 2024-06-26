@@ -2,7 +2,7 @@ import {Claim} from 'models/claim';
 import {deepCopy} from '../../../../../utils/deepCopy';
 import {mockClaim} from '../../../../../utils/mockClaim';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
-import {YesNo} from 'form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 
 describe('Get Judgment amount summary', () => {
   const claim: Claim = Object.assign(new Claim(), deepCopy(mockClaim));
@@ -16,8 +16,8 @@ describe('Get Judgment amount summary', () => {
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(true);
     expect(result.claimHasInterest).toEqual(true);
-    expect(result.alreadyPaidAmount).toEqual(claim.claimantResponse.ccjRequest.paidAmount.amount);
-    const total = claim.totalClaimAmount + result.interestToDate + claimFee - claim.getDefendantPaidAmount();
+    expect(result.alreadyPaidAmount).toEqual((claim.claimantResponse.ccjRequest.paidAmount.amount).toFixed(2));
+    const total = claim.totalClaimAmount + Number(result.interestToDate) + claimFee - claim.getDefendantPaidAmount();
     expect(result.total).toEqual(Number(total).toFixed(2));
   });
 
@@ -30,8 +30,8 @@ describe('Get Judgment amount summary', () => {
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(true);
     expect(result.claimHasInterest).toEqual(false);
-    expect(result.subTotal).toEqual(claim.totalClaimAmount + claimFee);
-    expect(result.alreadyPaidAmount).toEqual(claim.claimantResponse.ccjRequest.paidAmount.amount);
+    expect(result.subTotal).toEqual((claim.totalClaimAmount + claimFee).toFixed(2));
+    expect(result.alreadyPaidAmount).toEqual((claim.claimantResponse.ccjRequest.paidAmount.amount).toFixed(2));
     const total = claim.totalClaimAmount + claimFee - claim.getDefendantPaidAmount();
     expect(result.total).toEqual(Number(total).toFixed(2));
   });
@@ -46,7 +46,7 @@ describe('Get Judgment amount summary', () => {
     //Then
     expect(result.hasDefendantAlreadyPaid).toEqual(false);
     expect(result.claimHasInterest).toEqual(true);
-    const total = claim.totalClaimAmount + result.interestToDate + claimFee;
+    const total = claim.totalClaimAmount + Number(result.interestToDate) + claimFee;
     expect(result.total).toEqual(Number(total).toFixed(2));
   });
 
@@ -62,5 +62,34 @@ describe('Get Judgment amount summary', () => {
     expect(result.claimHasInterest).toEqual(false);
     const total = claim.totalClaimAmount + claimFee;
     expect(result.total).toEqual(Number(total).toFixed(2));
+  });
+
+  it('get summary details when there is Hwf', () => {
+
+    //When
+    claim.helpWithFees = {
+      helpWithFee: YesNoUpperCamelCase.YES,
+      helpWithFeesReferenceNumber : 'Test',
+    };
+    claim.claimIssuedHwfDetails = {
+      outstandingFeeInPounds: '100',
+    };
+    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
+
+    //Then
+    expect(result.claimFeeAmount).toEqual(Number(claim.claimIssuedHwfDetails.outstandingFeeInPounds));
+  });
+
+  it('get summary details when there is no Hwf', () => {
+
+    //When
+    claim.helpWithFees = {
+      helpWithFee: YesNoUpperCamelCase.NO,
+      helpWithFeesReferenceNumber : undefined,
+    };
+    const result = getJudgmentAmountSummary(claim, claimFee, 'en');
+
+    //Then
+    expect(result.claimFeeAmount).toEqual(Number(claimFee));
   });
 });

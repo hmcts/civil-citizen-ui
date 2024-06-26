@@ -17,14 +17,15 @@ import {submitClaimantResponse} from 'services/features/claimantResponse/submitC
 import {YesNo} from 'common/form/models/yesNo';
 import {claimantResponsecheckYourAnswersGuard } from 'routes/guards/claimantResponseCheckYourAnswersGuard';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 
 const checkAnswersViewPath = 'features/claimantResponse/check-answers';
 const claimantResponseCheckAnswersController = Router();
 
-async function renderView(req: AppRequest, res: Response, form: GenericForm<StatementOfTruthForm>, claim: Claim) {
+async function renderView(req: AppRequest, res: Response, form: GenericForm<StatementOfTruthForm>, claim: Claim, isCarmApplicable: boolean) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
-  const summarySections = getSummarySections(req.params.id, claim, lang, claimFee);
+  const summarySections = getSummarySections(req.params.id, claim, lang, claimFee, isCarmApplicable);
 
   res.render(checkAnswersViewPath, {
     form,
@@ -38,7 +39,8 @@ claimantResponseCheckAnswersController.get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,c
       const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
       const isClaimantRejectedDefendantOffer = claim?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
       const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer));
-      await renderView(<AppRequest>req, res, form, claim);
+      const isCarmApplicable = await isCarmEnabledForCase(claim.submittedDate);
+      await renderView(<AppRequest>req, res, form, claim, isCarmApplicable);
     } catch (error) {
       next(error);
     }
@@ -49,11 +51,13 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     const isClaimantRejectedDefendantOffer = req.body.isClaimantRejectedDefendantOffer === 'true';
     const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer, req.body.type, true, req.body.directionsQuestionnaireSigned));
     await form.validate();
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
+    const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     if (form.hasErrors()) {
-      const claim = await getCaseDataFromStore(req.params.id);
-      await renderView(<AppRequest>req, res, form, claim);
+      const claim = await getCaseDataFromStore(redisKey);
+      await renderView(<AppRequest>req, res, form, claim, carmEnabled);
     } else {
-      const redisKey = generateRedisKey(req as unknown as AppRequest);
       await saveStatementOfTruth(redisKey, form.model);
       await submitClaimantResponse(<AppRequest>req);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_CONFIRMATION_URL));

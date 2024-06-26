@@ -15,6 +15,11 @@ import {formatDateToFullDate} from '../../../../../../../main/common/utils/dateU
 import {PartyDetails} from '../../../../../../../main/common/form/models/partyDetails';
 import {Email} from '../../../../../../../main/common/models/Email';
 import {CitizenDate} from '../../../../../../../main/common/form/models/claim/claimant/citizenDate';
+import {buildTheirDetailsSection} from 'services/features/claim/checkAnswers/detailsSection/buildTheirDetailsSection';
+import {t} from 'i18next';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {YesNo} from 'common/form/models/yesNo';
+import {FlightDetails} from 'common/models/flightDetails';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -36,8 +41,39 @@ const CLAIM_ID = 'claimId';
 const INDEX_THEIRDETAILS_SECTION = 1;
 
 describe('Citizen Details Section', () => {
-  const claim = createClaimWithBasicRespondentDetails();
+  it('should build Their Details Section', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.type = PartyType.SOLE_TRADER;
+    claim.respondent1.partyDetails.soleTraderTradingAs = 'test';
+    claim.respondent1.partyDetails.contactPerson = 'contact';
+    claim.respondent1.emailAddress = new Email(EMAIL_ADDRESS);
+    //When
+    const summarySections = await buildTheirDetailsSection(claim, CLAIM_ID, 'en');
+    //Then
+    expect(summarySections.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT'));
+    expect(summarySections.summaryList.rows[0].value.html).toBe(FULL_NAME);
+    expect(summarySections.summaryList.rows[1].value.html).toBe('test');
+    expect(summarySections.summaryList.rows[2].value.html).toBe('contact');
+    expect(summarySections.summaryList.rows[4].value.html).toBe(CORRESPONDENCE_ADDRESS);
+    expect(summarySections.summaryList.rows[5].value.html).toBe(EMAIL_ADDRESS);
+    expect(summarySections.summaryList.rows[6].value.html).toBe(CONTACT_NUMBER);
+  });
+  it('should build Their Details Section with DOB', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.type = PartyType.INDIVIDUAL;
+    claim.respondent1.dateOfBirth = new CitizenDate('1', '1', '1991');
+    //When
+    const summarySections = await buildTheirDetailsSection(claim, CLAIM_ID, 'en');
+    //Then
+    expect(summarySections.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT'));
+    expect(summarySections.summaryList.rows[0].value.html).toBe(FULL_NAME);
+    expect(summarySections.summaryList.rows[3].value.html).toBe('1 January 1991');
+  });
   it('should return your Individual details summary sections', async () => {
+    //Given
+    const claim = createClaimWithBasicRespondentDetails();
     //When
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
     //Then
@@ -99,7 +135,7 @@ describe('Citizen Details Section', () => {
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[3].value.html).toBe(formatDateToFullDate(new Date(2000, 1, 1)));
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].value.html).toBe(EMAIL_ADDRESS);
   });
-  it('should return your Company details summary sections', async () => {
+  it('should return your Sole trander details summary sections', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();
     if (claim.respondent1) {
@@ -135,5 +171,37 @@ describe('Citizen Details Section', () => {
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe('Nice organisation');
+  });
+  it('should return your Company details summary sections when flight delayed yes', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.type = PartyType.COMPANY;
+    claim.delayedFlight = new GenericYesNo(YesNo.YES);
+    claim.flightDetails = new FlightDetails('test', '123', '2023', '1', '1');
+    claim.respondent1.partyDetails.contactPerson = CONTACT_PERSON;
+    //When
+    const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe('Nice organisation');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].value.html).toBe('The Post Man');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].value.html).toBe('COMMON.VARIATION.YES');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[5].value.html).toBe('test');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[6].value.html).toBe('123');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[7].value.html).toBe('1 January 2023');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[8].value.html).toBe('077777777779');
+  });
+  it('should return your Company details summary sections when flight delayed no', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.type = PartyType.COMPANY;
+    claim.delayedFlight = new GenericYesNo(YesNo.NO);
+    claim.respondent1.partyDetails.contactPerson = CONTACT_PERSON;
+    //When
+    const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[0].value.html).toBe('Nice organisation');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[1].value.html).toBe('The Post Man');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[4].value.html).toBe('COMMON.VARIATION.NO');
+    expect(summarySections.sections[INDEX_THEIRDETAILS_SECTION].summaryList.rows[5].value.html).toBe('077777777779');
   });
 });

@@ -1,4 +1,4 @@
-import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   DASHBOARD_CLAIMANT_URL, PAY_HEARING_FEE_SUCCESSFUL_URL,
@@ -9,17 +9,22 @@ import {
 } from 'services/features/claim/paymentSuccessfulContents';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
+import {AppRequest} from 'models/AppRequest';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import config from 'config';
 const paymentSuccessfulController: Router = Router();
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const paymentSuccessfulViewPath  = 'features/claim/payment-successful';
 
-async function renderView(res: Response, req: any, claimId: string, redirectUrl: string) {
+async function renderView(res: Response, req:  AppRequest | Request, claimId: string, redirectUrl: string, calculatedAmountInPence: string) {
   const claim: Claim = await getClaimById(claimId, req, true);
-
+  const lng = req.query.lang ? req.query.lang : req.cookies.lang;
   res.render(paymentSuccessfulViewPath,
     {
-      paymentSuccessfulPanel: getPaymentSuccessfulPanelContent(claim),
-      paymentSuccessfulBody: getPaymentSuccessfulBodyContent(claim),
+      paymentSuccessfulPanel: getPaymentSuccessfulPanelContent(claim,lng),
+      paymentSuccessfulBody: getPaymentSuccessfulBodyContent(claim, calculatedAmountInPence,lng),
       paymentSuccessfulButton: getPaymentSuccessfulButtonContent(redirectUrl),
     });
 }
@@ -28,7 +33,9 @@ paymentSuccessfulController.get(PAY_HEARING_FEE_SUCCESSFUL_URL, (async (req, res
   try {
     const claimId = req.params.id;
     const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-    await renderView(res, req, claimId, redirectUrl);
+    const ccdClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    const calculatedAmountInPence = ccdClaim.caseProgressionHearing?.hearingFeeInformation?.hearingFee?.calculatedAmountInPence;
+    await renderView(res, req, claimId, redirectUrl, calculatedAmountInPence);
   }catch (error) {
     next(error);
   }

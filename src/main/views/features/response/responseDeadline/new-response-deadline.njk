@@ -6,8 +6,16 @@
 {% from "../../../macro/back.njk" import back %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.NEW_RESPONSE_DEADLINE.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.NEW_RESPONSE_DEADLINE.PAGE_TITLE') }}
 {% endblock %}
+
+{% set NEW_RESPONSE_DEADLINE_CONTENT %}
+    {% if isReleaseTwoEnabled %}
+        {{   t('PAGES.NEW_RESPONSE_DEADLINE.CONTENT_R2') }}
+    {% else %}
+        {{  t('PAGES.NEW_RESPONSE_DEADLINE.CONTENT', {claimantName : claimantName}) }}
+    {% endif %}
+{% endset %}
 
 {% block content %}
 <div class="govuk-grid-row govuk-!-padding-top-0">
@@ -15,7 +23,7 @@
     {{ back(backUrl,t) }}
     <h1 class="govuk-heading-l">{{  t('PAGES.NEW_RESPONSE_DEADLINE.PAGE_TITLE') }}</h1>
     <h2 class="govuk-heading-m">{{ t('PAGES.NEW_RESPONSE_DEADLINE.TITLE',  {responseDeadline: responseDeadline}) }}</h2>
-    <p class="govuk-body">{{ t('PAGES.NEW_RESPONSE_DEADLINE.CONTENT', {claimantName : claimantName}) }}
+    <p class="govuk-body">{{ NEW_RESPONSE_DEADLINE_CONTENT }}
   <div class="govuk-form-group">
     <form method="post" novalidate>
       {{ csrfProtection(csrf) }}

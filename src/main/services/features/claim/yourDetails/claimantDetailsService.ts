@@ -1,6 +1,6 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {Party} from '../../../../common/models/party';
-import {PartyDetails} from '../../../../common/form/models/partyDetails';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {Party} from 'models/party';
+import {PartyDetails} from 'form/models/partyDetails';
 
 export const getClaimantInformation = async (claimId: string): Promise<Party> => {
   const responseData = await getCaseDataFromStore(claimId);
@@ -16,9 +16,9 @@ export const saveClaimant = async (claimId: string, partyDetails: PartyDetails):
   responseData.applicant1.partyDetails.provideCorrespondenceAddress = partyDetails?.provideCorrespondenceAddress;
   responseData.applicant1.partyDetails.primaryAddress = partyDetails?.primaryAddress;
   responseData.applicant1.partyDetails.correspondenceAddress = partyDetails?.correspondenceAddress;
-  responseData.applicant1.partyDetails.individualTitle = partyDetails?.individualTitle;
-  responseData.applicant1.partyDetails.individualFirstName = partyDetails?.individualFirstName;
-  responseData.applicant1.partyDetails.individualLastName = partyDetails?.individualLastName;
+  responseData.applicant1.partyDetails.title = partyDetails?.title;
+  responseData.applicant1.partyDetails.firstName = partyDetails?.firstName;
+  responseData.applicant1.partyDetails.lastName = partyDetails?.lastName;
   responseData.applicant1.partyDetails.partyName = partyDetails?.partyName;
   responseData.applicant1.partyDetails.contactPerson = partyDetails?.contactPerson;
   responseData.applicant1.partyDetails.soleTraderTradingAs = partyDetails?.soleTraderTradingAs;

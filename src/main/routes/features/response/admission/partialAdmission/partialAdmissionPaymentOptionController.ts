@@ -1,20 +1,20 @@
-import {NextFunction, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   CITIZEN_PA_PAYMENT_DATE_URL,
   CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
   RESPONSE_TASK_LIST_URL,
-} from '../../../../urls';
-import {PaymentOption} from '../../../../../common/form/models/admission/paymentOption/paymentOption';
+} from 'routes/urls';
+import {PaymentOption} from 'form/models/admission/paymentOption/paymentOption';
 import {
   getPaymentOptionForm,
   savePaymentOptionData,
-} from '../../../../../services/features/response/admission/paymentOptionService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {generateRedisKey, getCaseDataFromStore} from '../../../../../modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../common/models/claim';
-import {ResponseType} from '../../../../../common/form/models/responseType';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {PartAdmitGuard} from '../../../../../routes/guards/partAdmitGuard';
+} from 'services/features/response/admission/paymentOptionService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {ResponseType} from 'form/models/responseType';
+import {GenericForm} from 'form/models/genericForm';
+import {PartAdmitGuard} from 'routes/guards/partAdmitGuard';
 import {AppRequest} from 'common/models/AppRequest';
 
 const partialAdmissionPaymentOptionController = Router();
@@ -34,7 +34,7 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: Response)
 
 let admittedPaymentAmount: number;
 
-partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, PartAdmitGuard.apply(RESPONSE_TASK_LIST_URL), async (req, res, next: NextFunction) => {
+partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, PartAdmitGuard.apply(RESPONSE_TASK_LIST_URL), (async (req, res, next: NextFunction) => {
   const claimId = generateRedisKey(<AppRequest>req);
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
@@ -48,9 +48,9 @@ partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OP
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-partialAdmissionPaymentOptionController.post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, async (req, res, next: NextFunction) => {
+partialAdmissionPaymentOptionController.post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const paymentOption = new PaymentOption(req.body.paymentType);
@@ -65,6 +65,6 @@ partialAdmissionPaymentOptionController.post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_O
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default partialAdmissionPaymentOptionController;

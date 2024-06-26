@@ -1,18 +1,18 @@
-import {NextFunction, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   CITIZEN_ALREADY_PAID_URL,
   CITIZEN_REJECT_ALL_CLAIM_URL,
   CITIZEN_RESPONSE_TYPE_URL,
   RESPONSE_TASK_LIST_URL,
-} from '../../../urls';
-import {Claim} from '../../../../common/models/claim';
-import {CitizenResponseType} from '../../../../common/form/models/citizenResponseType';
-import {ResponseType} from '../../../../common/form/models/responseType';
-import {ComponentDetailItems} from '../../../../common/form/models/componentDetailItems/componentDetailItems';
-import {getCaseDataFromStore} from '../../../../modules/draft-store/draftStoreService';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {saveResponseType} from '../../../../services/features/response/responseType/citizenResponseTypeService';
+} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {CitizenResponseType} from 'form/models/citizenResponseType';
+import {ResponseType} from 'form/models/responseType';
+import {ComponentDetailItems} from 'form/models/componentDetailItems/componentDetailItems';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'form/models/genericForm';
+import {saveResponseType} from 'services/features/response/responseType/citizenResponseTypeService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -23,7 +23,7 @@ function renderView(form: GenericForm<CitizenResponseType>, res: Response, compo
   res.render(citizenResponseTypeViewPath, {form: form, componentDetailItemsList: componentDetailItemsList});
 }
 
-citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res, next: NextFunction) => {
+citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, (async (req, res, next: NextFunction) => {
   try {
     const citizenResponseType = new GenericForm(new CitizenResponseType());
     const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
@@ -36,10 +36,10 @@ citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, async (req, res, ne
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
-  async (req, res, next: NextFunction) => {
+  (async (req, res, next: NextFunction) => {
     try {
       const formResponseType: GenericForm<CitizenResponseType> = new GenericForm<CitizenResponseType>(new CitizenResponseType(req.body.responseType));
       await formResponseType.validate();
@@ -64,7 +64,7 @@ citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
 function getDetailItemsList(claim: Claim, lng?: string): ComponentDetailItems[] {
   return [

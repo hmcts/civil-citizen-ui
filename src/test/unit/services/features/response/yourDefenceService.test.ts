@@ -70,9 +70,9 @@ function createClaim() {
     type: PartyType.ORGANISATION,
     partyDetails: {
       partyName: 'Test',
-      individualTitle: 'Mr.',
-      individualFirstName: 'TestName',
-      individualLastName: 'TestLastName',
+      title: 'Mr.',
+      firstName: 'TestName',
+      lastName: 'TestLastName',
     },
   };
   claim.rejectAllOfClaim = new RejectAllOfClaim();

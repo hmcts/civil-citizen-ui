@@ -28,6 +28,7 @@ import mockDefendantResponseSmallClaimRejectClaimMock from './mocks/mockDefendan
 import civilClaimResponseHearingFeeMock from './mocks/civilClaimResponseHearingFeeMock.json';
 import civilClaimResponseWithFeeType from './mocks/civilClaimResponseWithFeeTypeMock.json';
 import civilClaimResponseDefendantMock from './mocks/civilClaimResponseDefendantMock.json';
+import civilClaimResponseClaimantIntentionMockNotSettle from './mocks/civilClaimResponseClaimantIntentionMockNotSettle.json';
 
 import {LoggerInstance} from 'winston';
 import {Claim} from 'models/claim';
@@ -54,6 +55,12 @@ const mockCivilClaimDefendantCaseProgression = {
   del: jest.fn(() => Promise.resolve({})),
   ttl: jest.fn(() => Promise.resolve({})),
   expireat: jest.fn(() => Promise.resolve({})),
+};
+
+const mockCivilClaimClaimantIntentionNotSettle = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseClaimantIntentionMockNotSettle))),
+  del: jest.fn(() => Promise.resolve({})),
 };
 
 const mockCivilClaimClaimantIntention = {
@@ -284,4 +291,5 @@ export {
   mockCivilClaimHearingFee,
   mockCivilClaimWithFeeType,
   mockDraftClaim,
+  mockCivilClaimClaimantIntentionNotSettle,
 };

@@ -1,0 +1,5 @@
+{% macro cancelLink(cancelUrl, t) %}
+    {% if cancelUrl %}
+      <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+    {% endif %}
+{% endmacro %}

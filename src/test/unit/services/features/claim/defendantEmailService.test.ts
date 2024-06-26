@@ -18,9 +18,9 @@ const EMAIL_ADDRESS = 'test@gmail.com';
 const respondent: Party = {
   partyDetails: {
     postToThisAddress: '',
-    individualTitle: '',
-    individualLastName: '',
-    individualFirstName: '',
+    title: '',
+    lastName: '',
+    firstName: '',
     partyName: '',
     contactPerson: '',
   },

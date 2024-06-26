@@ -1,10 +1,12 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
-{% macro back(backUrl,t) %}
-<div class="govuk-!-margin-bottom-9">
-    {{ govukBackLink({
-        text: t('COMMON.BUTTONS.BACK'),
-        href: backUrl,
-        classes: 'govuk-!-margin-top-0 govuk-!-margin-bottom-0'
-    }) }}
-</div>
+{% macro back(backUrl, t, withMarginBottom=true, withMarginTop=false) %}
+    {% if backUrl %}
+      <div class="{% if withMarginBottom %} govuk-!-margin-bottom-9 {% endif %} {% if withMarginTop %} govuk-!-margin-top-7 {% endif %}">
+          {{ govukBackLink({
+              text: t('COMMON.BUTTONS.BACK'),
+              href: backUrl,
+              classes: 'govuk-!-margin-top-0 govuk-!-margin-bottom-0'
+          }) }}
+    </div>
+    {% endif %}
 {% endmacro %}

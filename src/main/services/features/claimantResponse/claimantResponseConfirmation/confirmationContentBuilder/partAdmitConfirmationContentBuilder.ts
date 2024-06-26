@@ -1,12 +1,12 @@
 import {t} from 'i18next';
 import {ClaimSummaryType} from 'common/form/models/claimSummarySection';
 import {Claim} from 'common/models/claim';
-import {addDaysToDate, formatDateToFullDate} from 'common/utils/dateUtils';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 export const getPAPayImmediatelyAcceptedNextSteps = (claim: Claim, lang: string) => {
   const admittedAmount = claim.partialAdmission?.howMuchDoYouOwe?.amount?.toFixed(2);
-  const paymentDeadLine = addDaysToDate(claim?.respondent1ResponseDate, 5);
-  const paymentDate = formatDateToFullDate(paymentDeadLine, lang);
+  const paymentDate = formatDateToFullDate(claim.respondentPaymentDeadline, lang);
+
   return [
     {
       type: ClaimSummaryType.TITLE,
@@ -17,19 +17,19 @@ export const getPAPayImmediatelyAcceptedNextSteps = (claim: Claim, lang: string)
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.DEFENDANT_TO_PAY_YOU_IMMEDIATELY', {admittedAmount, lgn: lang}),
+        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.DEFENDANT_TO_PAY_YOU_IMMEDIATELY', {admittedAmount, lng: lang}),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.PAYMENT_BY', {paymentDate, lgn: lang}),
+        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.PAYMENT_BY', {paymentDate, lng: lang}),
       },
     },
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.TELL_US_SETTLEMENT', {lgn: lang}),
+        text: t('PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PA_PAY_IMMEDIATELY.TELL_US_SETTLEMENT', {lng: lang}),
       },
     },
   ];

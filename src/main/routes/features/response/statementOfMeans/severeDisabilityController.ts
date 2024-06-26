@@ -1,4 +1,4 @@
-import {NextFunction, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL} from '../../../urls';
 import {SevereDisabilityService} from '../../../../services/features/response/statementOfMeans/severeDisabilityService';
 import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
@@ -15,16 +15,16 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(citizenSevereDisabilityViewPath, {form});
 }
 
-severeDisabilityController.get(CITIZEN_SEVERELY_DISABLED_URL, async (req, res, next: NextFunction) => {
+severeDisabilityController.get(CITIZEN_SEVERELY_DISABLED_URL, (async (req, res, next: NextFunction) => {
   try {
     const severeDisability = await severeDisabilityService.getSevereDisability(generateRedisKey(<AppRequest>req));
     renderView(severeDisability, res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-severeDisabilityController.post(CITIZEN_SEVERELY_DISABLED_URL, async (req, res, next: NextFunction) => {
+severeDisabilityController.post(CITIZEN_SEVERELY_DISABLED_URL, (async (req, res, next: NextFunction) => {
   try {
     const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
     form.validateSync();
@@ -37,6 +37,6 @@ severeDisabilityController.post(CITIZEN_SEVERELY_DISABLED_URL, async (req, res, 
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default severeDisabilityController;

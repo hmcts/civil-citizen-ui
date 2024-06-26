@@ -2,7 +2,11 @@ const config = require('../../../config');
 
 const idamHelper = require('./idamHelper');
 const restHelper = require('./restHelper.js');
+const {retry} = require('./retryHelper');
 const totp = require('totp-generator');
+
+const TASK_MAX_RETRIES = 20;
+const TASK_RETRY_TIMEOUT_MS = 20000;
 
 const tokens = {};
 const getCcdDataStoreBaseUrl = () => `${config.url.ccdDataStore}/caseworkers/${tokens.userId}/jurisdictions/${config.definition.jurisdiction}/case-types/${config.definition.caseType}`;
@@ -66,15 +70,27 @@ module.exports = {
   startEventForCitizen: async (eventName, caseId, payload) => {
     let url = getCivilServiceUrl();
     const userId = await idamHelper.userId(tokens.userAuth);
-    console.log('The value of the userId from the startEventForCitizen() : '+userId);
     if (caseId) {
       url += `/cases/${caseId}`;
     }
     url += `/citizen/${userId}/event`;
 
-    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST',200)
-      .then(response => response.json());
-    tokens.ccdEvent = response.token;
+    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200);
+    const data = await response.json();
+    if (data?.token) {
+      tokens.ccdEvent = data.token;
+    }
+  },
+
+  startEventForLiPCitizen: async (payload) => {
+    let url = getCivilServiceUrl();
+    const userId = await idamHelper.userId(tokens.userAuth);
+    url += `/cases/draft/citizen/${userId}/event`;
+
+    const response = await restHelper.request(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200);
+    const data = await response.json();
+    console.log('***************** case id *****************' + data.id);
+    return data.id;
   },
 
   validatePageForMidEvent: async (eventName, pageId, caseData, caseId, expectedStatus = 200) => {
@@ -122,10 +138,71 @@ module.exports = {
     return response || {};
   },
 
-  uploadDocument: async () => {
-    let endpointURL = getCivilServiceUrl() + '/testing-support/upload/test-document';
-    let response = await restHelper.retriedRequest(endpointURL, getRequestHeaders(tokens.userAuth),
-      {}, 'POST');
-    return await response.json();
+  taskActionByUser: async function (user, taskId, action, expectedStatus = 204) {
+    const userToken = await idamHelper.accessToken(user);
+    const s2sToken = await restHelper.retriedRequest(
+      `${config.url.authProviderApi}/lease`,
+      {'Content-Type': 'application/json'},
+      {
+        microservice: config.s2sForXUI.microservice,
+        oneTimePassword: totp(config.s2sForXUI.secret),
+      })
+      .then(response => response.text());
+
+    return retry(() => {
+      return restHelper.request(`${config.url.waTaskMgmtApi}/task/${taskId}/${action}`,
+        {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userToken}`,
+          'ServiceAuthorization': `Bearer ${s2sToken}`,
+        }, '', 'POST', expectedStatus);
+    }, 2, TASK_RETRY_TIMEOUT_MS);
   },
+
+  fetchTaskDetails: async (user, caseNumber, taskType, expectedStatus = 200) => {
+    let taskDetails;
+    const userToken = await idamHelper.accessToken(user);
+    const s2sToken = await restHelper.retriedRequest(
+      `${config.url.authProviderApi}/lease`,
+      {'Content-Type': 'application/json'},
+      {
+        microservice: config.s2sForXUI.microservice,
+        oneTimePassword: totp(config.s2sForXUI.secret),
+      })
+      .then(response => response.text());
+
+    const inputData = {
+      'search_parameters': [
+        {'key': 'caseId', 'operator': 'IN', 'values': [caseNumber]},
+        {'key': 'jurisdiction', 'operator': 'IN', 'values': ['CIVIL']},
+        {'key': 'state', 'operator': 'IN', 'values': ['assigned', 'unassigned']},
+      ],
+      'sorting_parameters': [{'sort_by': 'dueDate', 'sort_order': 'asc'}],
+    };
+
+    return retry(() => {
+      return restHelper.request(`${config.url.waTaskMgmtApi}/task`,
+        {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${userToken}`,
+          'ServiceAuthorization': `Bearer ${s2sToken}`,
+        }, inputData, 'POST', expectedStatus)
+        .then(async response => await response.json())
+        .then(jsonResponse => {
+          let availableTaskDetails = jsonResponse['tasks'];
+          availableTaskDetails.forEach((taskInfo) => {
+            if (taskInfo['type'] == taskType) {
+              console.log('Found taskInfo with type ...', taskType);
+              console.log('Task details are ...', taskInfo);
+              taskDetails = taskInfo;
+            }
+          });
+          if (!taskDetails) {
+            throw new Error(`Ongoing task retrieval process for case id: ${caseNumber}`);
+          } else {
+            return taskDetails;
+          }
+        });
+    }, TASK_MAX_RETRIES, TASK_RETRY_TIMEOUT_MS);
+  }, 
 };

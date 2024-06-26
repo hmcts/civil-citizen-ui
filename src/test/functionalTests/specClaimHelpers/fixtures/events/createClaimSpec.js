@@ -1,7 +1,8 @@
 const {listElement, buildAddress} = require('../../api/dataHelper');
 const config = require('../../../../config');
 
-const respondent1 = {
+const respondent1 = 
+{
   type: 'INDIVIDUAL',
   individualFirstName: 'John',
   individualLastName: 'Doe',
@@ -9,11 +10,30 @@ const respondent1 = {
   primaryAddress: buildAddress('respondent'),
   partyEmail: 'civilmoneyclaimsdemo@gmail.com',
 };
-const respondent1WithPartyName = {
+
+// {
+//   type: 'SOLE_TRADER',
+//   soleTraderTitle: 'Sir',
+//   soleTraderFirstName: 'John',
+//   soleTraderLastName: 'Doe',
+//   soleTraderTradingAs: 'Test',
+//   primaryAddress: buildAddress('respondent'),
+//   partyEmail: 'civilmoneyclaimsdemo@gmail.com',
+// }
+
+const respondent1WithPartyName = 
+{
   ...respondent1,
   partyName: 'Sir John Doe',
   partyTypeDisplayValue: 'Individual',
 };
+
+// {
+//   ...respondent1,
+//   partyName: 'Sir John Doe',
+//   partyTypeDisplayValue: 'Sole trader',
+// };
+
 const applicant1 = {
   type: 'COMPANY',
   companyName: 'Test Inc',

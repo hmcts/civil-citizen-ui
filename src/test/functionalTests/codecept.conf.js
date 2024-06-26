@@ -1,25 +1,66 @@
+/* eslint-disable no-unused-vars */
 const testConfig = require('../config.js');
+const {unAssignAllUsers} = require('./specClaimHelpers/api/caseRoleAssignmentHelper');
+const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
 
 //const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
+process.env.PLAYWRIGHT_SERVICE_RUN_ID = process.env.PLAYWRIGHT_SERVICE_RUN_ID || new Date().toISOString();
 
 exports.config = {
-  tests: '../functionalTests/tests/**/*_tests.js',
+
+  async teardown() {
+    console.log('Current worker has finished running tests so we should clean up the user roles');
+    await unAssignAllUsers();
+    await deleteAllIdamTestUsers();
+  },
+  tests: process.env.ENVIRONMENT == 'aat' ?
+    [ '../functionalTests/tests/prod/**/*.js',
+      '../functionalTests/tests/common/**/*.js'  ] :
+    [ '../functionalTests/tests/nonprod/**/*.js',
+      '../functionalTests/tests/common/**/*.js' ],
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
     Playwright: {
       url: testConfig.TestUrl,
-      show: false,
+      show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
       browser: 'chromium',
-      waitForTimeout: 20000,
-      windowSize: '1920x1080',
-      timeout: 20000,
+      waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
+      windowSize: '1280x960',
+      timeout: 30000,
       waitForAction: 500,
-      waitForNavigation: 'networkidle0',
+      video: true,
+      trace: true,
+      contextOptions : {
+        recordVideo:{
+          dir:'failed-videos',
+        },
+      },
+      waitForNavigation: 'networkidle',
+      bypassCSP: true,
       ignoreHTTPSErrors: true,
+      retries: 3,
+      chromium: process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN && {
+        timeout: 30000,
+        headers: {
+          'x-mpt-access-key': process.env.PLAYWRIGHT_SERVICE_ACCESS_TOKEN,
+        },
+        exposeNetwork: testConfig.TestUrl ? '*.platform.hmcts.net' : '<loopback>',
+        browserWSEndpoint: {
+          wsEndpoint: `${process.env.PLAYWRIGHT_SERVICE_URL}?cap=${JSON.stringify({
+            os: 'linux',
+            runId: process.env.PLAYWRIGHT_SERVICE_RUN_ID,
+          })}`,
+        },
+      },
+    },
+    BrowserHelpers: {
+      require: './helpers/browser_helper.js',
     },
   },
   include: {
     api: './specClaimHelpers/api/steps.js',
+    wa: './specClaimHelpers/api/stepsWA.js',
+    noc: './specClaimHelpers/api/steps_noc.js',
   },
   plugins: {
     autoDelay: {

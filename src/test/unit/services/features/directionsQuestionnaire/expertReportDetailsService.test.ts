@@ -42,7 +42,7 @@ describe('Expert Report Details service', () => {
         reportDetails: mockReportDetails,
       };
       //When
-      const expertReportDetails = getExpertReportDetailsForm(value.option, value.reportDetails);
+      const expertReportDetails = getExpertReportDetailsForm(false, value.option, value.reportDetails);
       //Then
       if (expertReportDetails.reportDetails) {
         expect(expertReportDetails.option).toBe('yes');
@@ -57,16 +57,14 @@ describe('Expert Report Details service', () => {
         reportDetails: mockReportDetails,
       };
       //When
-      const expertReportDetails = getExpertReportDetailsForm(value.option, value.reportDetails);
+      const expertReportDetails = getExpertReportDetailsForm(false, value.option, value.reportDetails);
       //Then
       expect(expertReportDetails.option).toBe('no');
       expect(expertReportDetails?.reportDetails).toBeUndefined();
     });
     it('should set option to undefined when no option is selected', async () => {
-      //Given
-      const value: any = {};
       //When
-      const expertReportDetails = getExpertReportDetailsForm(value.option, value?.reportDetails);
+      const expertReportDetails = getExpertReportDetailsForm(undefined, undefined, undefined);
       //Then
       expect(expertReportDetails.option).toBeUndefined();
     });
@@ -75,7 +73,7 @@ describe('Expert Report Details service', () => {
   describe('Validation', () => {
     it('should raise select yes/no option error if option is unspecified', async () => {
       //Given
-      const expertReportDetails = new ExpertReportDetails(undefined);
+      const expertReportDetails = new ExpertReportDetails(undefined, undefined);
       const form = new GenericForm(expertReportDetails);
       //When
       form.validateSync();
@@ -91,7 +89,7 @@ describe('Expert Report Details service', () => {
     });
     it('should not raise any error if option is "no" and reportDetails unspecified', async () => {
       //Given
-      const expertReportDetails = new ExpertReportDetails(YesNo.NO, undefined);
+      const expertReportDetails = new ExpertReportDetails(true, YesNo.NO, undefined);
       const form = new GenericForm(expertReportDetails);
       //When
       form.validateSync();
@@ -100,7 +98,7 @@ describe('Expert Report Details service', () => {
     });
     it('should raise at least error if option "yes" and reportDetails are empty', async () => {
       //Given
-      const expertReportDetails = new ExpertReportDetails(YesNo.YES, []);
+      const expertReportDetails = new ExpertReportDetails(false, YesNo.YES, []);
       const form = new GenericForm(expertReportDetails);
       //When
       form.validateSync();
@@ -119,7 +117,7 @@ describe('Expert Report Details service', () => {
       const reportDetails = [
         new ReportDetail('John Doe'),
       ];
-      const expertReportDetails = new ExpertReportDetails(YesNo.YES, reportDetails);
+      const expertReportDetails = new ExpertReportDetails(false, YesNo.YES, reportDetails);
       const form = new GenericForm(expertReportDetails);
       //When
       form.validateSync();
@@ -137,7 +135,7 @@ describe('Expert Report Details service', () => {
       const reportDetails = [
         new ReportDetail(undefined, '2022', '1', '1'),
       ];
-      const expertReportDetails = new ExpertReportDetails(YesNo.YES, reportDetails);
+      const expertReportDetails = new ExpertReportDetails(false, YesNo.YES, reportDetails);
       const form = new GenericForm(expertReportDetails);
       //When
       form.validateSync();
@@ -155,7 +153,7 @@ describe('Expert Report Details service', () => {
       const reportDetails = [
         new ReportDetail('John Doe', '2022', '1', undefined),
       ];
-      const expertReportDetails = new ExpertReportDetails(YesNo.YES, reportDetails);
+      const expertReportDetails = new ExpertReportDetails(false, YesNo.YES, reportDetails);
       const form = new GenericForm(expertReportDetails);
       //When
       form.validateSync();
@@ -173,7 +171,7 @@ describe('Expert Report Details service', () => {
       const reportDetails = [
         new ReportDetail('John Doe', '2022', '1', '32'),
       ];
-      const expertReportDetails = new ExpertReportDetails(YesNo.YES, reportDetails);
+      const expertReportDetails = new ExpertReportDetails(false, YesNo.YES, reportDetails);
       const form = new GenericForm(expertReportDetails);
       //When
       form.validateSync();
@@ -191,7 +189,7 @@ describe('Expert Report Details service', () => {
       const reportDetails = [
         new ReportDetail('John Doe', '2022', undefined, '1'),
       ];
-      const expertReportDetails = new ExpertReportDetails(YesNo.YES, reportDetails);
+      const expertReportDetails = new ExpertReportDetails(false, YesNo.YES, reportDetails);
       const form = new GenericForm(expertReportDetails);
       //When
       form.validateSync();
@@ -209,7 +207,7 @@ describe('Expert Report Details service', () => {
       const reportDetails = [
         new ReportDetail('John Doe', '2022', '13', '1'),
       ];
-      const expertReportDetails = new ExpertReportDetails(YesNo.YES, reportDetails);
+      const expertReportDetails = new ExpertReportDetails(false, YesNo.YES, reportDetails);
       const form = new GenericForm(expertReportDetails);
       //When
       form.validateSync();
@@ -227,7 +225,7 @@ describe('Expert Report Details service', () => {
       const reportDetails = [
         new ReportDetail('John Doe', undefined, '1', '1'),
       ];
-      const expertReportDetails = new ExpertReportDetails(YesNo.YES, reportDetails);
+      const expertReportDetails = new ExpertReportDetails(false, YesNo.YES, reportDetails);
       const form = new GenericForm(expertReportDetails);
       //When
       form.validateSync();
@@ -245,7 +243,7 @@ describe('Expert Report Details service', () => {
       const reportDetails = [
         new ReportDetail('John Doe', '222', '1', '1'),
       ];
-      const expertReportDetails = new ExpertReportDetails(YesNo.YES, reportDetails);
+      const expertReportDetails = new ExpertReportDetails(false, YesNo.YES, reportDetails);
       const form = new GenericForm(expertReportDetails);
       //When
       form.validateSync();
@@ -263,7 +261,7 @@ describe('Expert Report Details service', () => {
       const reportDetails = [
         new ReportDetail('John Doe', '3023', '1', '1'),
       ];
-      const expertReportDetails = new ExpertReportDetails(YesNo.YES, reportDetails);
+      const expertReportDetails = new ExpertReportDetails(false, YesNo.YES, reportDetails);
       const form = new GenericForm(expertReportDetails);
       //When
       form.validateSync();
@@ -281,7 +279,7 @@ describe('Expert Report Details service', () => {
       const reportDetails = [
         new ReportDetail('John Doe', '2022', '1', '1'),
       ];
-      const expertReportDetails = new ExpertReportDetails(YesNo.YES, reportDetails);
+      const expertReportDetails = new ExpertReportDetails(false, YesNo.YES, reportDetails);
       const form = new GenericForm(expertReportDetails);
       //When
       form.validateSync();
@@ -306,7 +304,7 @@ describe('Expert Report Details service', () => {
         reportDetail,
         emptyReportDetail,
       ];
-      const expertReportDetails = new ExpertReportDetails(YesNo.YES, reportDetails);
+      const expertReportDetails = new ExpertReportDetails(false, YesNo.YES, reportDetails);
       //When
       const filteredExpertReportDetails = ExpertReportDetails.removeEmptyReportDetails(expertReportDetails);
       //Then
@@ -342,7 +340,7 @@ describe('Expert Report Details service', () => {
       //Given
       mockGetCaseDataFromStore.mockImplementation(async () => {
         const reportDetail = new ReportDetail('John Doe', '2022', '1', '1');
-        const mockDetails = new ExpertReportDetails(YesNo.YES, [reportDetail]);
+        const mockDetails = new ExpertReportDetails(true, YesNo.YES, [reportDetail]);
         const mockDQ = {
           experts: {
             expertReportDetails: mockDetails,
@@ -437,7 +435,7 @@ describe('Expert Report Details service', () => {
         claim.directionQuestionnaire.experts = new Experts();
         return claim;
       });
-      const expertReportDetails = new ExpertReportDetails(YesNo.NO, []);
+      const expertReportDetails = new ExpertReportDetails(false, YesNo.NO, []);
       //When
       await saveDirectionQuestionnaire('1234', expertReportDetails, 'expertReportDetails', 'experts');
       //Then
@@ -445,7 +443,7 @@ describe('Expert Report Details service', () => {
     });
     it('should throw error when draft store throws error', async () => {
       //Given
-      const expertReportDetails = new ExpertReportDetails(YesNo.NO, []);
+      const expertReportDetails = new ExpertReportDetails(false, YesNo.NO, []);
       //When
       mockSaveDraftClaim.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
@@ -459,7 +457,7 @@ describe('Expert Report Details service', () => {
 
 function createClaimWithExpertReportDetails(): Claim {
   const claim = new Claim();
-  const mockDetails = new ExpertReportDetails(undefined, []);
+  const mockDetails = new ExpertReportDetails(undefined, undefined, []);
   claim.directionQuestionnaire = <DirectionQuestionnaire>{
     experts: {
       expertReportDetails: mockDetails,

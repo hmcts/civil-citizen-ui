@@ -64,10 +64,10 @@ describe('Case Progression Latest Update Content service', () => {
   it('getFinaliseTrialArrangementsContent: should return finalise trial arrangements content', () => {
     //Given
     claim.caseProgressionHearing = getCaseProgressionHearingMock();
-    const finaliseTrialArrangementsSectionExpected = buildFinaliseTrialArrangements(claim);
+    const finaliseTrialArrangementsSectionExpected = buildFinaliseTrialArrangements(claim, 'en');
 
     //When
-    const finaliseTrialArrangementsSectionResult = getFinaliseTrialArrangementsContent(claim);
+    const finaliseTrialArrangementsSectionResult = getFinaliseTrialArrangementsContent(claim, 'en');
 
     //Then
     expect(finaliseTrialArrangementsSectionExpected).toMatchObject(finaliseTrialArrangementsSectionResult);

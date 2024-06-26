@@ -1,13 +1,13 @@
-import {NextFunction, Request, Response, Router} from 'express';
-import {CitizenDob} from '../../../../common/form/models/citizenDob';
-import {AGE_ELIGIBILITY_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from '../../../../routes/urls';
-import {Party} from '../../../../common/models/party';
-import {Claim} from '../../../../common/models/claim';
-import {AgeEligibilityVerification} from '../../../../common/utils/ageEligibilityVerification';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {CitizenDate} from '../../../../common/form/models/claim/claimant/citizenDate';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {CitizenDob} from 'form/models/citizenDob';
+import {AGE_ELIGIBILITY_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {Party} from 'models/party';
+import {Claim} from 'models/claim';
+import {AgeEligibilityVerification} from 'common/utils/ageEligibilityVerification';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {GenericForm} from 'form/models/genericForm';
+import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -28,7 +28,7 @@ function redirectToNextPage(req: Request, res: Response, dob: Date, respondent: 
   }
 }
 
-citizenDobController.get(DOB_URL, async (req: Request, res: Response, next: NextFunction) => {
+citizenDobController.get(DOB_URL, (async (req: Request, res: Response, next: NextFunction) => {
   const {year, month, day} = req.body;
   try {
     const citizenDob = new GenericForm(new CitizenDob(year, month, day));
@@ -43,9 +43,9 @@ citizenDobController.get(DOB_URL, async (req: Request, res: Response, next: Next
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-citizenDobController.post(DOB_URL, async (req, res, next: NextFunction) => {
+citizenDobController.post(DOB_URL, (async (req, res, next: NextFunction) => {
   const {year, month, day} = req.body;
   const redisKey = generateRedisKey(<AppRequest>req);
   try {
@@ -68,6 +68,6 @@ citizenDobController.post(DOB_URL, async (req, res, next: NextFunction) => {
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default citizenDobController;

@@ -32,9 +32,9 @@ export const buildAddress = (): Address => {
 export const buildRespondent1 = (): Party => {
   const respondent = new Party();
   respondent.partyDetails = new PartyDetails({});
-  respondent.partyDetails.individualTitle = 'Mrs.';
-  respondent.partyDetails.individualLastName = 'Mary';
-  respondent.partyDetails.individualFirstName = 'Richards';
+  respondent.partyDetails.title = 'Mrs.';
+  respondent.partyDetails.lastName = 'Mary';
+  respondent.partyDetails.firstName = 'Richards';
   respondent.partyDetails.partyName = 'Mrs Richards Mary';
   respondent.partyDetails.contactPerson = 'Mrs Richards Mary';
   respondent.partyPhone = new PartyPhone('0208339922');
@@ -60,9 +60,9 @@ function buildMockClaim(): Claim {
       year: null,
     },
     partyDetails: {
-      individualTitle: 'Mrs',
-      individualLastName: 'Clark',
-      individualFirstName: 'Jane',
+      title: 'Mrs',
+      lastName: 'Clark',
+      firstName: 'Jane',
       partyName: 'Mrs Jane Clark',
       primaryAddress: new Address(),
       contactPerson: 'Mrs Jane Clark',
@@ -223,6 +223,21 @@ function buildMockClaim(): Claim {
         documentName: 'hearing_form_000MC001.pdf',
         documentSize: 345683,
         documentType: DocumentType.HEARING_FORM,
+        createdDatetime: new Date('2022-06-21T14:15:19'),
+      },
+    },
+    {
+      id: '1234567',
+      value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de',
+          document_filename: 'claimant_directions_questionnaire_000MC001.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary',
+        },
+        documentName: 'claimant_directions_questionnaire_000MC001.pdf',
+        documentSize: 345683,
+        documentType: DocumentType.DIRECTIONS_QUESTIONNAIRE,
         createdDatetime: new Date('2022-06-21T14:15:19'),
       },
     },

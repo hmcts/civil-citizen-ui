@@ -1,85 +1,190 @@
-import {app} from '../../../../../main/app';
 import config from 'config';
-import Module from 'module';
-import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {ClaimSummaryContent, ClaimSummaryType} from 'form/models/claimSummarySection';
+import nock from 'nock';
+import request from 'supertest';
+import {app} from '../../../../../main/app';
+import {mockCivilClaim} from '../../../../utils/mockDraftStore';
+import {OLD_DASHBOARD_CLAIMANT_URL} from '../../../../../main/routes/urls';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {PartyType} from 'common/models/partyType';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {Party} from 'common/models/party';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {Claim} from 'common/models/claim';
 import {CaseRole} from 'form/models/caseRoles';
-import {getLatestUpdateContentForClaimant} from 'services/features/dashboard/claimSummary/latestUpdateService';
-import { CaseState } from 'common/form/models/claimDetails';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {PaymentDetails, PaymentStatus} from 'models/PaymentDetails';
+import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
+import {CaseProgression} from 'models/caseProgression/caseProgression';
+import * as UtilityService from 'modules/utilityService';
+import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
-const nock = require('nock');
-const session = require('supertest-session');
-const citizenRoleToken: string = config.get('citizenRoleToken');
-const testSession = session(app);
-const getLatestUpdateContentForClaimantMock = getLatestUpdateContentForClaimant as jest.Mock;
-
-jest.mock('../../../../../main/app/auth/user/oidc', () => ({
-  ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
-  getUserDetails: jest.fn(() => USER_DETAILS),
-}));
+jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('services/features/dashboard/claimSummary/latestUpdateService');
-jest.mock('services/features/dashboard/claimSummaryService');
-jest.mock('services/caseDocuments/documentService');
-jest.mock('services/features/caseProgression/bundles/bundlesService');
+jest.mock('services/dashboard/dashboardService', () => ({
+  getNotifications: jest.fn(),
+  getDashboardForm: jest.fn(),
+  extractOrderDocumentIdFromNotification: jest.fn(),
+}));
 
-export const USER_DETAILS = {
-  accessToken: citizenRoleToken,
-  roles: ['citizen'],
-};
+describe('claimant Dashboard Controller', () => {
+  const citizenRoleToken: string = config.get('citizenRoleToken');
+  const idamUrl: string = config.get('idamUrl');
 
-describe('Claim Summary Controller Claimant', () => {
-  const civilServiceUrl = config.get<string>('services.civilService.url');
-  beforeAll((done) => {
-    testSession
-      .get('/oauth2/callback')
-      .query('code=ABC')
-      .expect(302)
-      .end(function (err: Error) {
-        if (err) {
-          return done(err);
-        }
-        return done();
-      });
+  beforeAll(() => {
+    nock(idamUrl)
+      .post('/o/token')
+      .reply(200, {id_token: citizenRoleToken});
   });
 
-  const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-  const claimId = claim.id;
-  const mockClaimSummaryContent: ClaimSummaryContent = {
-    contentSections: [
-      {
-        type: ClaimSummaryType.TITLE,
-        data: {
-          text: 'Test Title',
-        },
-      },
-    ],
-  };
-
-  const data = {
-    ...claim,
-    state: CaseState.AWAITING_APPLICANT_INTENTION,
-  };
-
   describe('on GET', () => {
+    it('should return claimant dashboard page when only draft and isCUIReleaseTwoEnabled', async () => {
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.INDIVIDUAL;
+      claim.respondent1.partyDetails = new PartyDetails({
+        individualTitle:'Mr',
+        individualFirstName:'Jon',
+        individualLastName:'Doe',
+      });
+      claim.totalClaimAmount=12000;
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.applicant1Represented = YesNoUpperCamelCase.NO;
+      claim.caseProgressionHearing = new CaseProgressionHearing( null, null, null, null, null, null, new PaymentDetails('123', 'cu123', PaymentStatus.SUCCESS) );
+      claim.caseProgression = new CaseProgression();
+      jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(new Claim()));
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+      await request(app).get(OLD_DASHBOARD_CLAIMANT_URL.replace(':id', 'draft')).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).not.toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
+      });
+    });
+    it('should return claimant dashboard page with claimant and fast Track and isCUIReleaseTwoEnabled', async () => {
 
-    it('should show latest Update claimant', async () => {
-      //given
-      getLatestUpdateContentForClaimantMock.mockReturnValue(mockClaimSummaryContent);
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200,data);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
-        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      //then
-      await testSession
-        .get(`/dashboard/${claimId}/claimant`)
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.INDIVIDUAL;
+      claim.respondent1.partyDetails = new PartyDetails({
+        individualTitle:'Mr',
+        individualFirstName:'Jon',
+        individualLastName:'Doe',
+      });
+      claim.totalClaimAmount=12000;
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.applicant1Represented = YesNoUpperCamelCase.NO;
+      claim.caseProgressionHearing = new CaseProgressionHearing( null, null, null, null, null, null, new PaymentDetails('123', 'cu123', PaymentStatus.SUCCESS) );
+      claim.caseProgression = new CaseProgression();
+
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
+      });
+    });
+    it('should return defendant dashboard page with claimant and small claims and isCUIReleaseTwoEnabled', async () => {
+
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.INDIVIDUAL;
+      claim.respondent1.partyDetails = new PartyDetails({
+        individualTitle:'Mr',
+        individualFirstName:'Jon',
+        individualLastName:'Doe',
+      });
+      claim.totalClaimAmount=500;
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.caseProgression = new CaseProgression();
+
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
+      });
+    });
+    it('should return defendant dashboard page with defendant and fast track and isCUIReleaseTwoEnabled', async () => {
+
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.INDIVIDUAL;
+      claim.respondent1.partyDetails = new PartyDetails({
+        individualTitle:'Mr',
+        individualFirstName:'Jon',
+        individualLastName:'Doe',
+      });
+      claim.totalClaimAmount=12000;
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
+      claim.caseProgression = new CaseProgression();
+
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
+      });
+    });
+    it('should return defendant dashboard page with defendant and small claims and isCUIReleaseTwoEnabled', async () => {
+
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.INDIVIDUAL;
+      claim.respondent1.partyDetails = new PartyDetails({
+        individualTitle:'Mr',
+        individualFirstName:'Jon',
+        individualLastName:'Doe',
+      });
+      claim.totalClaimAmount=500;
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.caseProgression = new CaseProgression();
+
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
+      });
+    });
+
+    it('should return status 500 when error thrown and isCUIReleaseTwoEnabled', async () => {
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+      await request(app)
+        .get(OLD_DASHBOARD_CLAIMANT_URL)
         .expect((res: Response) => {
-          expect(res.status).toBe(200);
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+    it('should return status 500 when error thrown', async () => {
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(false);
+      await request(app)
+        .get(OLD_DASHBOARD_CLAIMANT_URL)
+        .expect((res: Response) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
+
 });

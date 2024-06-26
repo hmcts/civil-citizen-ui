@@ -55,7 +55,7 @@ describe('translate Recurring Income to CUI model', () => {
       childBenefit: new Transaction(true, setUpTransactionSource(IncomeType.CHILD_BENEFIT)),
       councilTaxSupport: new Transaction(true, setUpTransactionSource(IncomeType.COUNCIL_TAX_SUPPORT)),
       pension: new Transaction(true, setUpTransactionSource(IncomeType.PENSION)),
-      other: new OtherTransaction(true, [setUpTransactionSourceOther(IncomeType.OTHER)]),
+      other: new OtherTransaction(true, [setUpTransactionSourceOther()]),
     };
     expect(output).toEqual(expected);
   });
@@ -79,7 +79,7 @@ describe('translate Recurring Income to CUI model', () => {
       childBenefit: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.CHILD_BENEFIT)),
       councilTaxSupport: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.COUNCIL_TAX_SUPPORT)),
       pension: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.PENSION)),
-      other: new OtherTransaction(false, [setUpTransactionSourceOtherUndefined(IncomeType.OTHER)]),
+      other: new OtherTransaction(false, [setUpTransactionSourceOtherUndefined()]),
     };
     expect(output).toEqual(expected);
   });
@@ -103,7 +103,7 @@ describe('translate Recurring Income to CUI model', () => {
       childBenefit: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.CHILD_BENEFIT)),
       councilTaxSupport: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.COUNCIL_TAX_SUPPORT)),
       pension: new Transaction(undefined, setUpTransactionSourceUndefined(IncomeType.PENSION)),
-      other: new OtherTransaction(false, [setUpTransactionSourceOtherUndefined(IncomeType.OTHER)]),
+      other: new OtherTransaction(false, [setUpTransactionSourceOtherUndefined()]),
     };
     expect(output).toEqual(expected);
   });
@@ -137,7 +137,7 @@ describe('translate Recurring Income to CUI model', () => {
       childBenefit: new Transaction(true, setUpTransactionSourceUndefined(IncomeType.CHILD_BENEFIT)),
       councilTaxSupport: new Transaction(true, setUpTransactionSourceUndefined(IncomeType.COUNCIL_TAX_SUPPORT)),
       pension: new Transaction(true, setUpTransactionSourceUndefined(IncomeType.PENSION)),
-      other: new OtherTransaction(true, [setUpTransactionSourceOtherValueUndefined(IncomeType.OTHER)]),
+      other: new OtherTransaction(true, [setUpTransactionSourceOtherValueUndefined()]),
     };
     expect(output).toEqual(expected);
   });
@@ -191,7 +191,7 @@ const setUpTransactionSource = (incomeType : IncomeType) : TransactionSource => 
   );
 };
 
-const setUpTransactionSourceOther = (incomeType : IncomeType) : TransactionSource => {
+const setUpTransactionSourceOther = () : TransactionSource => {
   return new TransactionSource(
     {
       name : 'test',
@@ -215,7 +215,7 @@ const setUpTransactionSourceUndefined = (incomeType : IncomeType) : TransactionS
   );
 };
 
-const setUpTransactionSourceOtherUndefined = (incomeType : IncomeType) : TransactionSource => {
+const setUpTransactionSourceOtherUndefined = () : TransactionSource => {
   return new TransactionSource(
     {
       name : undefined,
@@ -227,7 +227,7 @@ const setUpTransactionSourceOtherUndefined = (incomeType : IncomeType) : Transac
   );
 };
 
-const setUpTransactionSourceOtherValueUndefined = (incomeType : IncomeType) : TransactionSource => {
+const setUpTransactionSourceOtherValueUndefined = () : TransactionSource => {
   return new TransactionSource(
     {
       name : undefined,

@@ -1,17 +1,17 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   DQ_EXPERT_CAN_STILL_EXAMINE_URL,
   DQ_EXPERT_DETAILS_URL,
   DQ_GIVE_EVIDENCE_YOURSELF_URL,
-} from '../../../urls';
+} from 'routes/urls';
 import {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
-} from '../../../../services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {ExpertCanStillExamine} from '../../../../common/models/directionsQuestionnaire/experts/expertCanStillExamine';
+} from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
+import {GenericForm} from 'form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {YesNo} from 'form/models/yesNo';
+import {ExpertCanStillExamine} from 'models/directionsQuestionnaire/experts/expertCanStillExamine';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -24,7 +24,7 @@ function renderView(form: GenericForm<ExpertCanStillExamine>, res: Response): vo
   res.render(expertCanStillExamineViewPath, {form});
 }
 
-expertCanStillExamineController.get(DQ_EXPERT_CAN_STILL_EXAMINE_URL, async (req, res, next: NextFunction) => {
+expertCanStillExamineController.get(DQ_EXPERT_CAN_STILL_EXAMINE_URL, (async (req, res, next: NextFunction) => {
   try {
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const expertCanStillExamine = directionQuestionnaire.experts?.expertCanStillExamine ?
@@ -34,9 +34,9 @@ expertCanStillExamineController.get(DQ_EXPERT_CAN_STILL_EXAMINE_URL, async (req,
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-expertCanStillExamineController.post(DQ_EXPERT_CAN_STILL_EXAMINE_URL, async (req: Request, res: Response, next: NextFunction) => {
+expertCanStillExamineController.post(DQ_EXPERT_CAN_STILL_EXAMINE_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const details = req.body.option === YesNo.YES ? req.body.details : undefined;
@@ -56,6 +56,6 @@ expertCanStillExamineController.post(DQ_EXPERT_CAN_STILL_EXAMINE_URL, async (req
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default expertCanStillExamineController;

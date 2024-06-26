@@ -12,6 +12,13 @@ import {CCDDJPaymentOption} from 'common/models/ccdResponse/ccdDJPaymentOption';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
+import {CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
+import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
+import {CCDRejectAllOfClaimType} from 'models/ccdResponse/ccdRejectAllOfClaimType';
+import { CCDRepaymentPlanFrequency } from 'common/models/ccdResponse/ccdRepaymentPlan';
+import { CCDEvidenceType } from 'common/models/ccdResponse/ccdEvidence';
+import { EvidenceItem } from 'common/form/models/evidence/evidenceItem';
+import { EvidenceType } from 'common/models/evidence/evidenceType';
 
 const phoneCCD = '123456789';
 const title = 'Mr';
@@ -149,7 +156,7 @@ describe('translateCCDCaseDataToCUIModel', () => {
       respondent1: getPartyIndividualCCD(),
       respondent1ClaimResponseTypeForSpec: 'PART_ADMISSION',
       applicant1AcceptPartAdmitPaymentPlanSpec: YesNoUpperCamelCase.YES,
-      applicant1PartAdmitIntentionToSettleClaimSpec: YesNoUpperCamelCase.YES,
+      applicant1AcceptAdmitAmountPaidSpec: YesNoUpperCamelCase.YES,
       specDefenceAdmittedRequired: YesNoUpperCamelCase.YES,
     };
 
@@ -264,7 +271,7 @@ describe('translateCCDCaseDataToCUIModel', () => {
     //Then
     expect(claim.respondentPaymentDeadline).toEqual(undefined);
   });
-  
+
   it('should translate paymentDate to CUI model', () => {
     //Given
     const paymentDate = new Date('2023-12-07');
@@ -278,5 +285,175 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     //Then
     expect(claim.claimantResponse.suggestedPaymentIntention.paymentDate).toEqual(paymentDate);
+  });
+
+  it('should translate claimantResponse CourtDecisionPlan to CUI model', () => {
+    //Given
+    const input: CCDClaim = {
+      applicant1LiPResponse : {
+        claimantResponseOnCourtDecision: CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN,
+      },
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.courtProposedPlan.decision).toEqual(CourtProposedPlanOptions.ACCEPT_REPAYMENT_PLAN);
+  });
+
+  it('should translate claimantResponse CourtDecisionDate to CUI model', () => {
+    //Given
+    const input: CCDClaim = {
+      applicant1LiPResponse: {
+        claimantResponseOnCourtDecision: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE,
+      },
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.courtProposedDate.decision).toEqual(CourtProposedDateOptions.JUDGE_REPAYMENT_DATE);
+  });
+
+  it('should translate totalInterest when InterestClaimOptionsType is BREAK_DOWN_INTEREST', () => {
+    //Given
+    const input: CCDClaim = {
+      interestClaimOptions: CCDInterestType.BREAK_DOWN_INTEREST,
+      breakDownInterestTotal: 1000,
+      breakDownInterestDescription: 'break down interest',
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    expect(claim.interest.totalInterest.amount).toEqual(1000);
+    expect(claim.interest.totalInterest.reason).toEqual('break down interest');
+  });
+
+  it('should translate claimant mediation to CUI model for undefined', () => {
+    //Given
+    const input: CCDClaim = {
+      applicant1ClaimMediationSpecRequiredLip : undefined,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.mediation).toEqual(undefined);
+  });
+
+  it('should translate claimant mediation to CUI model for having value', () => {
+    //Given
+    const input: CCDClaim = {
+      applicant1ClaimMediationSpecRequiredLip : {
+        companyTelephoneOptionMediationLiP: YesNoUpperCamelCase.NO,
+      },
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.mediation.companyTelephoneNumber.option).toContain(YesNo.NO);
+  });
+
+  it('should translate claimant mediation to CUI model for having value', () => {
+    //Given
+    const input: CCDClaim = {
+      respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
+      defenceRouteRequired : CCDRejectAllOfClaimType.HAS_PAID_THE_AMOUNT_CLAIMED,
+      totalClaimAmount: 100,
+      respondToClaim: {
+        howMuchWasPaid: 10000,
+      },
+      applicant1PartAdmitIntentionToSettleClaimSpec: YesNoUpperCamelCase.YES,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled.option).toEqual(YesNo.YES);
+  });
+
+  it('should translate claimant mediation to undefined for not paid already route', () => {
+    //Given
+    const input: CCDClaim = {
+      respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
+      defenceRouteRequired : CCDRejectAllOfClaimType.DISPUTES_THE_CLAIM,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled).toEqual(undefined);
+  });
+
+  it('should translate claimant mediation to CUI model for having value', () => {
+    //Given
+    const input: CCDClaim = undefined;
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled).toEqual(undefined);
+  });
+
+  it('should translate claimant suggestedPaymentIntention repaymentplan to CUI model for having value', () => {
+    //Given
+    const input: CCDClaim = {
+      applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: 1000,
+      applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: '2024-06-01',
+      applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: CCDRepaymentPlanFrequency.ONCE_ONE_MONTH,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    const repaymentPlan = {
+      paymentAmount : 1000,
+      repaymentFrequency : 'MONTH',
+      firstRepaymentDate : new Date('2024-06-01'),
+    };
+
+    expect(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan).toEqual(repaymentPlan);
+  });
+
+  it('should translate claimant suggested immediate repayment deadline date to CUI model for having value', () => {
+    //Given
+    const paymentDate = new Date('2024-04-30');
+    const input: CCDClaim = {
+      applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec : paymentDate,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.suggestedImmediatePaymentDeadLine).toEqual(paymentDate);
+  });
+
+  it('should translate claimant evidence to CUI model for having value', () => {
+    //Given
+    const input: CCDClaim = {
+      speclistYourEvidenceList: [
+        {
+          'id': '339536de-eeb8-4b74-968d-4b9d02c00ef7',
+          'value': {
+            evidenceType: CCDEvidenceType.OTHER,
+            otherEvidence: 'test other',
+          },
+        },
+      ],
+    };
+
+    const evidenceCUI: EvidenceItem[] = [
+      {
+        type: EvidenceType.OTHER,
+        description: 'test other',
+      },
+    ];
+
+    // When
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantEvidence.evidenceItem).toEqual(evidenceCUI);
   });
 });

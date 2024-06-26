@@ -7,9 +7,8 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.TENANCY_DEPOSIT.TITLE') }}
+  {{ setPageTitle(t, 'PAGES.TENANCY_DEPOSIT.TITLE') }}
 {% endblock %}
-{% set hideLogout = true  %}
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">

@@ -43,6 +43,12 @@ import {ClaimantResponse} from 'models/claimantResponse';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {Mediation} from 'models/mediation/mediation';
 import {CompanyTelephoneNumber} from 'form/models/mediation/companyTelephoneNumber';
+import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {FlightDetails} from 'common/models/flightDetails';
+import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
+import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
+import * as launchDarkly from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -101,45 +107,6 @@ describe('Claim isInterestFromClaimSubmitDate', () => {
     const result = claim.isInterestFromClaimSubmitDate();
     //Then
     expect(result).toBeFalsy();
-  });
-});
-describe('Claim isClaimantResponseSupportRequiredYes', () => {
-  const claim = new Claim();
-  claim.claimantResponse=new ClaimantResponse();
-  it('should return undefined', () => {
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredYes).toBeFalsy();
-  });
-  it('should return true', () => {
-    //Given
-    claim.claimantResponse=new ClaimantResponse();
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredYes).toBeTruthy;
-  });
-  it('should return false', () => {
-    //Given
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredYes).toBeFalsy();
-  });
-});
-
-describe('Claim isClaimantResponseSupportRequiredDetailsAvailable', () => {
-  const claim = new Claim();
-  claim.claimantResponse=new ClaimantResponse();
-  it('should return undefined', () => {
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeFalsy();
-  });
-  it('should return true', () => {
-    //Given
-    claim.claimantResponse=new ClaimantResponse();
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeTruthy;
-  });
-  it('should return false', () => {
-    //Given
-    //Then
-    expect(claim.isClaimantResponseSupportRequiredDetailsAvailable).toBeFalsy();
   });
 });
 
@@ -1025,6 +992,15 @@ describe('Documents', () => {
       //Then
       expect(result).toBe(mockClaim.systemGeneratedCaseDocuments[0].value);
     });
+
+    it('should return document details for directions questionnaire ', () => {
+      //Given
+      const claim = mockClaim;
+      //When
+      const result = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
+      //Then
+      expect(result).toBe(mockClaim.systemGeneratedCaseDocuments[3].value);
+    });
   });
 
   describe('isDefendantNotResponded', () => {
@@ -1320,6 +1296,131 @@ describe('Documents', () => {
     });
   });
 
+  describe('isCompany', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isCompany();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with company type', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.COMPANY;
+      //When
+      const result = claim.isCompany();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+  describe('isOrganisation', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isOrganisation();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with company type', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.ORGANISATION;
+      //When
+      const result = claim.isOrganisation();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+  describe('isDefendantDetailsCompleted', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isDefendantDetailsCompleted();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.COMPANY;
+      claim.respondent1.partyDetails = new PartyDetails({
+        partyName: 'Test Company',
+        primaryAddress: 'test',
+      });
+      claim.delayedFlight = new GenericYesNo(YesNo.NO);
+      //When
+      const result = claim.isDefendantDetailsCompleted();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.COMPANY;
+      claim.respondent1.partyDetails = new PartyDetails({
+        partyName: 'Test Company',
+        primaryAddress: 'test',
+      });
+      claim.delayedFlight = new GenericYesNo(YesNo.YES);
+      claim.flightDetails = new FlightDetails('test', '123', '1', '1', '2023');
+      //When
+      const result = claim.isDefendantDetailsCompleted();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.ORGANISATION;
+      claim.respondent1.partyDetails = new PartyDetails({
+        partyName: 'Test Company',
+        primaryAddress: 'test',
+      });
+      claim.delayedFlight = new GenericYesNo(YesNo.YES);
+      claim.flightDetails = new FlightDetails('test', '123', '1', '1', '2023');
+      //When
+      const result = claim.isDefendantDetailsCompleted();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isAirlineComplete', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isAirlineComplete();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true when NO', () => {
+      //Given
+      claim.delayedFlight = new GenericYesNo(YesNo.NO);
+      //When
+      const result = claim.isAirlineComplete();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return false when YES and no details', () => {
+      //Given
+      claim.delayedFlight = new GenericYesNo(YesNo.YES);
+      //When
+      const result = claim.isAirlineComplete();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true when YES and has details', () => {
+      //Given
+      claim.delayedFlight = new GenericYesNo(YesNo.YES);
+      claim.flightDetails = new FlightDetails('test','123', '1', '2023', '1');
+      //When
+      const result = claim.isAirlineComplete();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
   describe('Claim formattedTotalClaimAmount', () => {
     const claim = new Claim();
     it('should return empty string', () => {
@@ -1367,48 +1468,6 @@ describe('Documents', () => {
       claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.YES};
       //When
       const result = claim.hasSupportRequiredList;
-      //Then
-      expect(result).toBe(true);
-    });
-  });
-
-  describe('isSupportRequiredYes', () => {
-    const claim = new Claim();
-    it('should return false with empty claim', () => {
-      //When
-      const result = claim.isSupportRequiredYes;
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return false with empty directionQuestionnaire', () => {
-      //Given
-      claim.directionQuestionnaire = new DirectionQuestionnaire();
-      //When
-      const result = claim.isSupportRequiredYes;
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return false with empty hearing', () => {
-      //Given
-      claim.directionQuestionnaire.hearing = new Hearing();
-      //When
-      const result = claim.isSupportRequiredYes;
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return false with "no" option', () => {
-      //Given
-      claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.NO};
-      //When
-      const result = claim.isSupportRequiredYes;
-      //Then
-      expect(result).toBe(false);
-    });
-    it('should return true with "yes" option', () => {
-      //Given
-      claim.directionQuestionnaire.hearing.supportRequiredList = {option: YesNo.YES};
-      //When
-      const result = claim.isSupportRequiredYes;
       //Then
       expect(result).toBe(true);
     });
@@ -1469,14 +1528,14 @@ describe('Documents', () => {
       //Given
       claim.totalClaimAmount = 10000;
       //when Then
-      expect(claim.claimType).toEqual(claimType.SMALL_CLAIM);
+      expect(claim.claimTrackType).toEqual(claimType.SMALL_CLAIM);
       expect(claim.isFastTrackClaim).toBe(false);
     });
     it('Its a fast track claim', () => {
       //Given
       claim.totalClaimAmount = 11000;
       //when Then
-      expect(claim.claimType).toEqual(claimType.FAST_TRACK_CLAIM);
+      expect(claim.claimTrackType).toEqual(claimType.FAST_TRACK_CLAIM);
       expect(claim.isFastTrackClaim).toBe(true);
     });
   });
@@ -2097,5 +2156,243 @@ describe('Documents', () => {
       //Then
       expect(result).toEqual(true);
     });
+  });
+
+  describe('Claim isRejectionReasonCompleted', () => {
+    let claim: Claim;
+    beforeEach(() => {
+      claim = new Claim();
+      claim.claimantResponse = new ClaimantResponse();
+    });
+
+    it('should return false if no claimantResponse object', () => {
+      //When
+      const result = claim.claimantResponse.isRejectionReasonCompleted;
+      //Then
+      expect(result).toEqual(false);
+    });
+
+    it('should return false if no hasPartPaymentBeenAccepted object', () => {
+      //Given
+      claim.claimantResponse.hasPartPaymentBeenAccepted = undefined;
+      //When
+      const result = claim.claimantResponse.isRejectionReasonCompleted;
+      //Then
+      expect(result).toEqual(false);
+    });
+
+    it('should return true if hasPartPaymentBeenAccepted is No with reason', () => {
+      //Given
+      claim.claimantResponse.hasPartPaymentBeenAccepted = {
+        option : YesNo.NO,
+      };
+      claim.claimantResponse.rejectionReason = {
+        text: 'test',
+      };
+      //When
+      const result = claim.claimantResponse.isRejectionReasonCompleted;
+      //Then
+      expect(result).toEqual(true);
+    });
+
+    it('should return true if hasFullDefenceStatesPaidClaimSettled is No with reason', () => {
+      //Given
+      claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {
+        option : YesNo.NO,
+      };
+      claim.claimantResponse.rejectionReason = {
+        text: 'test',
+      };
+      //When
+      const result = claim.claimantResponse.isRejectionReasonCompleted;
+      //Then
+      expect(result).toEqual(true);
+    });
+
+    it('should return false if hasFullDefenceStatesPaidClaimSettled is No with reason undefined', () => {
+      //Given
+      claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled = {
+        option : YesNo.NO,
+      };
+      claim.claimantResponse.rejectionReason = {
+        text: undefined,
+      };
+      //When
+      const result = claim.claimantResponse.isRejectionReasonCompleted;
+      //Then
+      expect(result).toEqual(false);
+    });
+  });
+
+  describe('hasClaimantAcceptedToSettleClaim', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantAcceptedToSettleClaim();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false when not accepted', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+      claim.applicant1PartAdmitIntentionToSettleClaimSpec = 'No';
+      //When
+      const result = claim.hasClaimantAcceptedToSettleClaim();
+      //Then
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('hasClaimantNotSettled', () => {
+    const claim = new Claim();
+    claim.claimantResponse = new ClaimantResponse();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.hasClaimantNotSettled();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true when claimant intends to proceed', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        intentionToProceed: {option: YesNo.YES},
+        hasFullDefenceStatesPaidClaimSettled: {option: YesNo.YES},
+        hasDefendantPaidYou: {option: YesNo.YES},
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        hasPartPaymentBeenAccepted: {option: YesNo.YES},
+      };
+      //When
+      const result = claim.hasClaimantNotSettled();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true when claimant rejects defendant response', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        intentionToProceed: {option: YesNo.NO},
+        hasFullDefenceStatesPaidClaimSettled: {option: YesNo.NO},
+        hasDefendantPaidYou: {option: YesNo.YES},
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        hasPartPaymentBeenAccepted: {option: YesNo.YES},
+      };
+      //When
+      const result = claim.hasClaimantNotSettled();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true when claimant rejects defendant payment', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        intentionToProceed: {option: YesNo.NO},
+        hasFullDefenceStatesPaidClaimSettled: {option: YesNo.YES},
+        hasDefendantPaidYou: {option: YesNo.NO},
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        hasPartPaymentBeenAccepted: {option: YesNo.YES},
+      };
+      //When
+      const result = claim.hasClaimantNotSettled();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true when claimant rejects defendant part admit amount', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        intentionToProceed: {option: YesNo.NO},
+        hasFullDefenceStatesPaidClaimSettled: {option: YesNo.YES},
+        hasDefendantPaidYou: {option: YesNo.YES},
+        hasPartAdmittedBeenAccepted: {option: YesNo.NO},
+        hasPartPaymentBeenAccepted: {option: YesNo.YES},
+      };
+      //When
+      const result = claim.hasClaimantNotSettled();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true when claimant rejects defendant part admit payment', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        intentionToProceed: {option: YesNo.NO},
+        hasFullDefenceStatesPaidClaimSettled: {option: YesNo.YES},
+        hasDefendantPaidYou: {option: YesNo.YES},
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        hasPartPaymentBeenAccepted: {option: YesNo.NO},
+      };
+      //When
+      const result = claim.hasClaimantNotSettled();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return false when claimant rejects defendant part admit payment', () => {
+      //Given
+      claim.claimantResponse = <ClaimantResponse>{
+        intentionToProceed: {option: YesNo.NO},
+        hasFullDefenceStatesPaidClaimSettled: {option: YesNo.YES},
+        hasDefendantPaidYou: {option: YesNo.YES},
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        hasPartPaymentBeenAccepted: {option: YesNo.YES},
+      };
+      //When
+      const result = claim.hasClaimantNotSettled();
+      //Then
+      expect(result).toBe(false);
+    });
+  });
+});
+describe('isCcjComplete', () => {
+  const claim = new Claim();
+  it('should return no when ccj not completed and state is correct', () => {
+    //Given
+    claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
+    //When
+    const result = claim.isCCJComplete();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return yes when ccj completed and state is correct', () => {
+    //Given
+    claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.ccjRequest = new CCJRequest();
+    claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 1000, 9000);
+    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
+    //When
+    const result = claim.isCCJComplete();
+    //Then
+    expect(result).toBe(true);
+  });
+});
+describe('isCcjCompleteForJo', () => {
+  const claim = new Claim();
+  claim.claimantResponse = new ClaimantResponse();
+  claim.claimantResponse.ccjRequest = new CCJRequest();
+  claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 1000, 9000);
+  it('should return true when ccj completed, state is correct and flag is on', async() => {
+    //Given
+    claim.ccdState = CaseState.All_FINAL_ORDERS_ISSUED;
+    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+    //When
+    const result = claim.isCCJCompleteForJo(true);
+    //Then
+    expect(result).toBe(true);
+  });
+  it('should return false when ccj completed, state is correct and flag is off', async() => {
+    //Given
+    claim.ccdState = CaseState.All_FINAL_ORDERS_ISSUED;
+    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
+    //When
+    const result = claim.isCCJCompleteForJo(false);
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false when ccj completed, state is incorrect and flag is on', async() => {
+    //Given
+    claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+    //When
+    const result = claim.isCCJCompleteForJo(true);
+    //Then
+    expect(result).toBe(false);
   });
 });

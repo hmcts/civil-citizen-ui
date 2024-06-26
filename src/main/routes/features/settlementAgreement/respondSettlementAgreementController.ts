@@ -29,7 +29,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response, data?: objec
 respondSettlementAgreementController.get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req, true);
+    const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     renderView(new GenericForm(new GenericYesNo(claim.defendantSignedSettlementAgreement, 'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION')), res, getRespondSettlementAgreementText(claim, req));
   } catch (error) {
     next(error);

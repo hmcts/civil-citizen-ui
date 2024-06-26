@@ -9,7 +9,7 @@
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.CLAIM_JOURNEY.HOW_MUCH_CONTINUE.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.CLAIM_JOURNEY.HOW_MUCH_CONTINUE.PAGE_TITLE') }}
 {% endblock %}
 {% set amountValue = '' + form.model.dailyInterestAmount %}
 {% set noHtml %}

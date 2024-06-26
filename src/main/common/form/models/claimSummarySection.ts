@@ -2,7 +2,7 @@ import {SummaryRow, TableCell} from '../../../common/models/summaryList/summaryL
 
 export interface ClaimSummaryContent {
   contentSections?: ClaimSummarySection[];
-  hasDivider?: boolean | true;
+  hasDivider?: boolean ;
 }
 
 export interface ClaimSummarySection {
@@ -59,4 +59,5 @@ export enum ClaimSummaryType {
   NEW_TAB_BUTTON = 'newTabButton',
   MICRO_TEXT = 'microText',
   SPAN = 'span',
+  REMOVE_BUTTON = 'removeButton',
 }

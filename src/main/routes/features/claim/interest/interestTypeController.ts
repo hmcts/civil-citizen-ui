@@ -1,15 +1,15 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   CLAIM_INTEREST_RATE_URL,
   CLAIM_INTEREST_TOTAL_URL,
   CLAIM_INTEREST_TYPE_URL,
-} from '../../../urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'models/AppRequest';
 import InterestClaimOption from '../../../../common/form/models/claim/interest/interestClaimOption';
-import {constructResponseUrlWithIdParams} from '../../../../common/utils/urlFormatter';
-import {InterestClaimOptionsType} from '../../../../common/form/models/claim/interest/interestClaimOptionsType';
-import {getInterest, saveInterest} from '../../../../services/features/claim/interest/interestService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
+import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
 
 const interestTypeController = Router();
 const interestTypeViewPath = 'features/claim/interest/interest-type';
@@ -19,7 +19,7 @@ function renderView(form: GenericForm<InterestClaimOption>, res: Response) {
   res.render(interestTypeViewPath, {form});
 }
 
-interestTypeController.get(CLAIM_INTEREST_TYPE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+interestTypeController.get(CLAIM_INTEREST_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   const claimId = req.session?.user?.id;
   try {
     const interest = await getInterest(claimId);
@@ -27,9 +27,9 @@ interestTypeController.get(CLAIM_INTEREST_TYPE_URL, async (req: AppRequest, res:
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-interestTypeController.post(CLAIM_INTEREST_TYPE_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+interestTypeController.post(CLAIM_INTEREST_TYPE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const claimId = (<AppRequest>req).session?.user?.id;
     const interestTypeForm = new GenericForm(new InterestClaimOption(req.body.interestType));
@@ -48,6 +48,6 @@ interestTypeController.post(CLAIM_INTEREST_TYPE_URL, async (req: AppRequest | Re
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default interestTypeController;

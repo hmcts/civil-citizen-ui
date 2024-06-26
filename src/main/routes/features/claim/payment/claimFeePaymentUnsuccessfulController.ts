@@ -1,40 +1,31 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {
-  PAY_CLAIM_FEE_UNSUCCESSFUL_URL,
-} from 'routes/urls';
-import {
-  getPaymentUnsuccessfulBodyContent,
-} from 'services/features/claim/payment/claimFeePaymentConfirmationContent';
-import {Claim} from 'models/claim';
+import {CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL, DASHBOARD_CLAIMANT_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
-import {
-  generateRedisKey,
-  getCaseDataFromStore,
-  saveDraftClaim,
-} from 'modules/draft-store/draftStoreService';
-import {getLng} from 'common/utils/languageToggleUtils';
-import {getFeePaymentRedirectInformation} from 'services/features/feePayment/feePaymentService';
-import {FeeType} from 'form/models/helpWithFees/feeType';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+
 const paymentUnsuccessfulController: Router = Router();
 
-const paymentUnsuccessfulViewPath  = 'features/claim/payment/claim-fee-payment-unsuccessful';
-
-async function renderView(res: Response, req: AppRequest, claim: Claim, claimId: string) {
-  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  res.render(paymentUnsuccessfulViewPath,
-    {
-      paymentUnsuccessfulBody: getPaymentUnsuccessfulBodyContent(claim, getLng(lang), claimId),
-    });
-}
+const paymentUnsuccessfulViewPath  = 'features/caseProgression/hearingFee/payment-unsuccessful';
 
 paymentUnsuccessfulController.get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIMISSUED, req);
+    const makePaymentAgainUrl = constructResponseUrlWithIdParams(claimId, CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL);
     const claim = await getCaseDataFromStore(generateRedisKey(req));
-    claim.claimDetails.claimFeePayment = paymentRedirectInformation;
-    await saveDraftClaim(claim.id, claim, true);
-    await renderView(res, req, claim, claimId);
+    const claimNumber : string = claim.getFormattedCaseReferenceNumber(claimId);
+    res.render(paymentUnsuccessfulViewPath, {
+      claimNumber,
+      makePaymentAgainUrl,
+    });
+  } catch (error) {
+    next(error);
+  }
+}) as RequestHandler);
+
+paymentUnsuccessfulController.post(PAY_CLAIM_FEE_UNSUCCESSFUL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+  try {
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, DASHBOARD_CLAIMANT_URL));
   } catch (error) {
     next(error);
   }

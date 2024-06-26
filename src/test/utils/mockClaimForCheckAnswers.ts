@@ -1,9 +1,7 @@
 import {Claim} from '../../main/common/models/claim';
 import {ResponseType} from '../../main/common/form/models/responseType';
 import {PaymentOptionType} from '../../main/common/form/models/admission/paymentOption/paymentOptionType';
-import {
-  TransactionSchedule,
-} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {TransactionSchedule} from '../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {PartyType} from '../../main/common/models/partyType';
 import {DebtItems} from '../../main/common/form/models/statementOfMeans/debts/debtItems';
 import {Debts} from '../../main/common/form/models/statementOfMeans/debts/debts';
@@ -56,9 +54,6 @@ import {
 } from '../../main/common/form/models/claimDetails';
 import {Address} from '../../main/common/form/models/address';
 import {FullAdmission} from '../../main/common/models/fullAdmission';
-import {DebtRespiteStartDate} from '../../main/common/models/breathingSpace/debtRespiteStartDate';
-import {DebtRespiteEndDate} from '../../main/common/models/breathingSpace/debtRespiteEndDate';
-import {DebtRespiteOptionType} from '../../main/common/models/breathingSpace/debtRespiteOptionType';
 import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
 import {ClaimantTimeline} from '../../main/common/form/models/timeLineOfEvents/claimantTimeline';
 import {ClaimantResponse} from 'models/claimantResponse';
@@ -72,6 +67,8 @@ import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
+import {MediationCarm} from 'models/mediation/mediationCarm';
+import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -92,9 +89,9 @@ export const createClaimWithBasicRespondentDetails = (contactPerson?: string): C
     partyDetails: {
       partyName: PARTY_NAME,
       contactPerson: contactPerson,
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
     },
   };
   claim.respondent1.partyDetails.primaryAddress = new Address('23 Brook lane', '', '', 'Bristol', 'BS13SS');
@@ -122,9 +119,9 @@ export const createClaimWithBasicClaimDetails = (contactPerson?: string): Claim 
     partyDetails: {
       partyName: PARTY_NAME,
       contactPerson: contactPerson,
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
     },
   };
   claim.claimDetails = new ClaimDetails();
@@ -144,9 +141,9 @@ export const createClaimWithBasicDetails = (contactPerson?: string): Claim => {
     partyDetails: {
       partyName: PARTY_NAME,
       contactPerson: contactPerson,
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
     },
   };
   claim.respondent1 = {
@@ -157,9 +154,9 @@ export const createClaimWithBasicDetails = (contactPerson?: string): Claim => {
     partyDetails: {
       partyName: PARTY_NAME,
       contactPerson: contactPerson,
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
     },
   };
   claim.claimDetails = new ClaimDetails();
@@ -174,14 +171,15 @@ export const createClaimWithBasicApplicantDetails = (contactPerson?: string): Cl
   const claim = new Claim();
   claim.applicant1 = {
     partyPhone: {phone: CONTACT_NUMBER},
+    emailAddress: {emailAddress: EMAIL_ADDRESS},
     dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
     type: PartyType.INDIVIDUAL,
     responseType: ResponseType.FULL_ADMISSION,
     partyDetails: {
       partyName: PARTY_NAME,
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
       contactPerson: contactPerson,
     },
   };
@@ -218,9 +216,9 @@ export const createClaimWithIndividualDetails = (): Claim => {
     responseType: ResponseType.FULL_ADMISSION,
     partyPhone: {phone: CONTACT_NUMBER},
     partyDetails: {
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
       partyName: PARTY_NAME,
     },
   };
@@ -235,9 +233,9 @@ export const createClaimWithIndividualDetailsWithCcdPhoneExist = (): Claim => {
     responseType: ResponseType.FULL_ADMISSION,
     partyPhone: {phone: CONTACT_NUMBER, ccdPhoneExist: true},
     partyDetails: {
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
       partyName: PARTY_NAME,
     },
   };
@@ -252,9 +250,9 @@ export const createClaimWithIndividualDetailsWithPartyPhoneNotExist = (): Claim 
     type: PartyType.INDIVIDUAL,
     responseType: ResponseType.FULL_ADMISSION,
     partyDetails: {
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
       partyName: PARTY_NAME,
     },
   };
@@ -270,9 +268,9 @@ export const createClaimWithApplicantIndividualDetails = (): Claim => {
     partyPhone: {phone: CONTACT_NUMBER},
     responseType: ResponseType.FULL_ADMISSION,
     partyDetails: {
-      individualTitle: TITLE,
-      individualLastName: LAST_NAME,
-      individualFirstName: FIRST_NAME,
+      title: TITLE,
+      lastName: LAST_NAME,
+      firstName: FIRST_NAME,
       partyName: PARTY_NAME,
     },
   };
@@ -295,7 +293,17 @@ export const createCCJClaimWithClaimResponseDetailsForPayBySetDate = (): Claim =
   claim.claimantResponse.ccjRequest.paidAmount.option = YesNo.YES;
   claim.claimantResponse.ccjRequest.paidAmount.totalAmount = 1000;
   claim.claimantResponse.ccjRequest.paidAmount.amount = 200;
+  claim.claimantResponse.hasPartAdmittedBeenAccepted = new GenericYesNo('No');
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe();
+  claim.partialAdmission.howMuchDoYouOwe.amount = 1000;
+  claim.claimInterest = YesNo.NO;
   claim.totalClaimAmount = 1000;
+  claim.claimFee = {
+    code: 'test',
+    version: 1,
+    calculatedAmountInPence : 0,
+  };
   return claim;
 };
 
@@ -1053,31 +1061,81 @@ export const createClaimWithMediationSectionWithOption = (option: YesNo, isCompa
   claim.partialAdmission.paymentIntention = new PaymentIntention();
   claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
 
-  claim.mediation = new Mediation();
-  claim.mediation.hasAvailabilityMediationFinished = true;
-  claim.mediation.hasTelephoneMeditationAccessed = true;
-  claim.mediation.isMediationEmailCorrect = new GenericYesNo(option);
-  claim.mediation.isMediationPhoneCorrect = new GenericYesNo(option);
-  claim.mediation.isMediationContactNameCorrect = new GenericYesNo(option);
-  claim.mediation.hasUnavailabilityNextThreeMonths = new GenericYesNo(option);
+  claim.mediationCarm = new MediationCarm();
+  claim.mediationCarm.hasAvailabilityMediationFinished = true;
+  claim.mediationCarm.hasTelephoneMeditationAccessed = true;
+  claim.mediationCarm.isMediationEmailCorrect = new GenericYesNo(option);
+  claim.mediationCarm.isMediationPhoneCorrect = new GenericYesNo(option);
+  claim.mediationCarm.isMediationContactNameCorrect = new GenericYesNo(option);
+  claim.mediationCarm.hasUnavailabilityNextThreeMonths = new GenericYesNo(option);
 
-  if (claim.mediation.isMediationEmailCorrect.option === option) {
-    claim.mediation.alternativeMediationEmail =  {
+  if (claim.mediationCarm.isMediationEmailCorrect.option === option) {
+    claim.mediationCarm.alternativeMediationEmail =  {
       alternativeEmailAddress: 'test@test.com',
     };
   }
-  if (claim.mediation.isMediationPhoneCorrect.option === option) {
-    claim.mediation.alternativeMediationTelephone= {
+  if (claim.mediationCarm.isMediationPhoneCorrect.option === option) {
+    claim.mediationCarm.alternativeMediationTelephone= {
       alternativeTelephone: '123',
     };
   }
-  if (claim.mediation.isMediationContactNameCorrect.option === option) {
-    claim.mediation.alternativeMediationContactPerson =  {
+  if (claim.mediationCarm.isMediationContactNameCorrect.option === option) {
+    claim.mediationCarm.alternativeMediationContactPerson =  {
       alternativeContactPerson: 'test',
     };
   }
-  if (claim.mediation.hasUnavailabilityNextThreeMonths.option === option) {
-    claim.mediation.unavailableDatesForMediation = {
+  if (claim.mediationCarm.hasUnavailabilityNextThreeMonths.option === option) {
+    claim.mediationCarm.unavailableDatesForMediation = {
+      items: [
+        {
+          date: new Date('2024-01-01T00:00:00.000Z'),
+          from: new Date('2024-01-01T00:00:00.000Z'),
+          until: new Date('2024-01-02T00:00:00.000Z'),
+          unavailableDateType: UnavailableDateType.SINGLE_DATE,
+        },
+      ],
+    };
+  }
+  return claim as Claim;
+};
+export const createClaimWithMediationSectionWithOptionClaimantResponse = (option: YesNo, isCompany = false): Claim => {
+  const claim = createClaimWithBasicApplicantDetails('contactTest');
+
+  claim.applicant1.emailAddress.emailAddress = 'em@ail.com';
+
+  claim.applicant1AdditionalLipPartyDetails = {contactPerson: 'oldContact'};
+
+  claim.claimantResponse = new ClaimantResponse();
+
+  claim.claimantResponse.intentionToProceed = new GenericYesNo();
+  claim.claimantResponse.intentionToProceed.option = YesNo.YES;
+  isCompany? claim.applicant1.type = PartyType.COMPANY: claim.applicant1.type = PartyType.INDIVIDUAL;
+
+  claim.claimantResponse.mediationCarm = new MediationCarm();
+  claim.claimantResponse.mediationCarm.hasAvailabilityMediationFinished = true;
+  claim.claimantResponse.mediationCarm.hasTelephoneMeditationAccessed = true;
+  claim.claimantResponse.mediationCarm.isMediationEmailCorrect = new GenericYesNo(option);
+  claim.claimantResponse.mediationCarm.isMediationPhoneCorrect = new GenericYesNo(option);
+  claim.claimantResponse.mediationCarm.isMediationContactNameCorrect = new GenericYesNo(option);
+  claim.claimantResponse.mediationCarm.hasUnavailabilityNextThreeMonths = new GenericYesNo(option);
+
+  if (claim.claimantResponse.mediationCarm.isMediationEmailCorrect.option === option) {
+    claim.claimantResponse.mediationCarm.alternativeMediationEmail =  {
+      alternativeEmailAddress: 'test@test.com',
+    };
+  }
+  if (claim.claimantResponse.mediationCarm.isMediationPhoneCorrect.option === option) {
+    claim.claimantResponse.mediationCarm.alternativeMediationTelephone= {
+      alternativeTelephone: '123',
+    };
+  }
+  if (claim.claimantResponse.mediationCarm.isMediationContactNameCorrect.option === option) {
+    claim.claimantResponse.mediationCarm.alternativeMediationContactPerson =  {
+      alternativeContactPerson: 'test',
+    };
+  }
+  if (claim.claimantResponse.mediationCarm.hasUnavailabilityNextThreeMonths.option === option) {
+    claim.claimantResponse.mediationCarm.unavailableDatesForMediation = {
       items: [
         {
           date: new Date('2024-01-01T00:00:00.000Z'),
@@ -1266,40 +1324,6 @@ export const claimWithClaimAmountOneBreakDown = (): Claim => {
   return claim;
 };
 
-export const getClaimWithFewDetails = (): Claim => {
-  const claim = new Claim();
-  claim.claimDetails = new ClaimDetails();
-  claim.claimDetails.breathingSpace = {
-    debtRespiteReferenceNumber: {
-      referenceNumber: 'R225B1230',
-    },
-    debtRespiteOption: {
-      type: DebtRespiteOptionType.STANDARD || DebtRespiteOptionType.MENTAL_HEALTH,
-    },
-    debtRespiteStartDate: new DebtRespiteStartDate('10', 'January', '2022'),
-    debtRespiteEndDate: new DebtRespiteEndDate('10', 'December', '2022'),
-
-  };
-  return claim;
-};
-
-export const getClaimWithNoDetails = (): Claim => {
-  const claim = new Claim();
-  claim.claimDetails = new ClaimDetails();
-  claim.claimDetails.breathingSpace = {
-    debtRespiteReferenceNumber: {
-      referenceNumber: '',
-    },
-    debtRespiteOption: {
-      type: DebtRespiteOptionType.STANDARD || DebtRespiteOptionType.MENTAL_HEALTH,
-    },
-    debtRespiteStartDate: new DebtRespiteStartDate(),
-    debtRespiteEndDate: new DebtRespiteEndDate(),
-
-  };
-  return claim;
-};
-
 export const claimWithClaimTimeLineAndEvents = (): Claim => {
   const claim = new Claim();
   claim.claimDetails = new ClaimDetails();
@@ -1336,6 +1360,16 @@ export const getClaimWithClaimantTrialArrangements = (): Claim => {
   claimantTrialArrangements.hasAnythingChanged = hasAnythingChanged;
   caseProgression.claimantTrialArrangements = claimantTrialArrangements;
   claim.caseProgression = caseProgression;
+  return claim;
+};
+
+export const claimWithHwFDetails = (): Claim => {
+  const claim = new Claim();
+  claim.claimDetails = new ClaimDetails();
+  const helpWithFee = new HelpWithFees();
+  helpWithFee.referenceNumber = 'HWF-2AB-DC3';
+  helpWithFee.option = YesNo.YES;
+  claim.claimDetails.helpWithFees = helpWithFee;
   return claim;
 };
 

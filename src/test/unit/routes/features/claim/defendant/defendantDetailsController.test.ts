@@ -30,9 +30,9 @@ const mockDefendantInformation = getDefendantInformation as jest.Mock;
 const mockSaveDefendant = saveDefendantProperty as jest.Mock;
 
 const mockSaveData = {
-  individualTitle: 'Mr',
-  individualFirstName: 'John',
-  individualLastName: 'Doe',
+  title: 'Mr',
+  firstName: 'John',
+  lastName: 'Doe',
   soleTraderTradingAs: 'John`s Sons Ltd',
   partyName: 'Bob Ltd',
   contactPerson: 'Louise',
@@ -144,7 +144,7 @@ describe('Defendant details controller', () => {
       it('should redirect to the defendant email page if data is successfully saved', async () => {
         const _mockSaveData = mockSaveData;
         _mockSaveData.soleTraderTradingAs = '';
-        _mockSaveData.individualFirstName = 'Jane';
+        _mockSaveData.firstName = 'Jane';
         mockDefendantInformation.mockImplementation(async () => {
           const party = new Party();
           party.type = PartyType.INDIVIDUAL;
@@ -164,7 +164,7 @@ describe('Defendant details controller', () => {
         });
         await request(app)
           .post(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL)
-          .send({individualFirstName: '', individualLastName: ''}).expect((res) => {
+          .send({firstName: '', lastName: ''}).expect((res) => {
             expect(res.status).toBe(200);
             expect(res.text).toContain(TestMessages.ENTER_FIRST_NAME);
             expect(res.text).toContain(TestMessages.ENTER_LAST_NAME);
@@ -251,8 +251,8 @@ describe('Defendant details controller', () => {
             city: ['',''],
             postCode: ['',''],
             provideCorrespondenceAddress: '',
-            individualFirstName: '',
-            individualLastName: '',
+            firstName: '',
+            lastName: '',
             contactPerson: '',
 
           });

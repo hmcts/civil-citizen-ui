@@ -167,14 +167,14 @@ describe('HowMuchHaveYouPaid service', () => {
         isNumber: 'ERRORS.VALID_TWO_DECIMAL_NUMBER',
         min: 'ERRORS.VALID_AMOUNT',
       });
-      expect(form.getErrors()[1].property).toBe('day');
-      expect(form.getErrors()[1].constraints).toEqual({min: 'ERRORS.VALID_DAY', max: 'ERRORS.VALID_DAY'});
-      expect(form.getErrors()[2].property).toBe('month');
-      expect(form.getErrors()[2].constraints).toEqual({min: 'ERRORS.VALID_MONTH', max: 'ERRORS.VALID_MONTH'});
-      expect(form.getErrors()[3].property).toBe('year');
-      expect(form.getErrors()[3].constraints).toEqual({max: 'ERRORS.VALID_YEAR'});
-      expect(form.getErrors()[4].property).toBe('text');
-      expect(form.getErrors()[4].constraints).toEqual({isNotEmpty: 'ERRORS.ENTER_PAYMENT_EXPLANATION'});
+      expect(form.getErrors()[2].property).toBe('day');
+      expect(form.getErrors()[2].constraints).toEqual({min: 'ERRORS.VALID_DAY', max: 'ERRORS.VALID_DAY'});
+      expect(form.getErrors()[3].property).toBe('month');
+      expect(form.getErrors()[3].constraints).toEqual({min: 'ERRORS.VALID_MONTH', max: 'ERRORS.VALID_MONTH'});
+      expect(form.getErrors()[4].property).toBe('year');
+      expect(form.getErrors()[4].constraints).toEqual({max: 'ERRORS.VALID_YEAR'});
+      expect(form.getErrors()[1].property).toBe('text');
+      expect(form.getErrors()[1].constraints).toEqual({isNotEmpty: 'ERRORS.ENTER_PAYMENT_EXPLANATION'});
 
     });
     it('should raise an error if no text', async () => {

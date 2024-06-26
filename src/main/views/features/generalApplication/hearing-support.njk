@@ -1,0 +1,130 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from 'govuk/components/checkboxes/macro.njk' import govukCheckboxes %}
+{% from 'govuk/components/input/macro.njk' import govukInput %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
+{% from "../../macro/external-link.njk" import externalLink %}
+{% import "external-urls.njk" as externalURLs %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE') }}
+{% endblock %}
+
+{% set errors = form.getAllErrors('model') %}
+{% set checkedSignLanguageHtml %}
+{% set signLanguageError = form.errorFor('model[signLanguageInterpreter][content]', 'model') %}
+{{ govukInput({
+  id: 'model[signLanguageInterpreter][content]',
+  name: 'signLanguageContent',
+  label: {
+    text: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.WHAT_SIGN_LANGUAGE')
+  },
+  value: form.model.signLanguageInterpreter.content,
+  errorMessage: {
+    text: t(signLanguageError)
+  } if signLanguageError
+}) }}
+{% endset -%}
+
+{% set checkedLanguageInterpreterHtml %}
+{% set languageError = form.errorFor('model[languageInterpreter][content]', 'model') %}
+{{ govukInput({
+  id: 'model[languageInterpreter][content]',
+  name: 'languageContent',
+  label: {
+    text: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.WHAT_LANGUAGE')
+  },
+  value: form.model.languageInterpreter.content,
+  errorMessage: {
+    text: t(languageError)
+  } if languageError
+}) }}
+{% endset -%}
+
+{% set checkedOtherHtml %}
+{% set otherSupportError = form.errorFor('model[otherSupport][content]', 'model') %}
+{{ govukInput({
+  id: 'model[otherSupport][content]',
+  name: 'otherContent',
+  label: {
+    text: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.WHAT_OTHER')
+  },
+  value: form.model.otherSupport.content,
+  errorMessage: {
+    text: t(otherSupportError)
+  } if otherSupportError
+}) }}
+{% endset -%}
+
+{% block nestedContent %}
+          {{ headingWithCaption(t, headerTitle, headingTitle) }}
+          <p class="govuk-body govuk-!-font-weight-bold">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.IF_YOU_NEED') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.NEED_TO_ARRANGE') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.NOT_ABLE') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.ARRANGING_OWN') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.ALWAYS_ARRANGE') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.FIND_OUT') }}
+                      {{ externalLink(t, 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.GET_INTERPRETER', externalURLs.getInterpreterUrl, false) }}</p>
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {{ govukCheckboxes({
+              idPrefix: "requiredSupport",
+              name: "requiredSupport",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.DO_YOU_NEED'),
+                  classes: "govuk-fieldset__legend--m"
+                }
+              },
+              hint: {
+                text: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SELECT_ALL_THAT_APPLY')
+              },
+              items: [
+                {
+                  value: "stepFreeAccess",
+                  text: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS'),
+                  checked: true if form.model.stepFreeAccess.selected
+                },
+                {
+                  value: "hearingLoop",
+                  text: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP'),
+                  checked: true if form.model.hearingLoop.selected
+                },
+                {
+                  value: "signLanguageInterpreter",
+                  text: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER'),
+                  conditional: {
+                  html: checkedSignLanguageHtml
+                },
+                  checked: true if form.model.signLanguageInterpreter.selected
+                },
+                {
+                  value: "languageInterpreter",
+                  text: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER'),
+                  conditional: {
+                  html: checkedLanguageInterpreterHtml
+                },
+                  checked: true if form.model.languageInterpreter.selected
+                },
+                {
+                  value: "otherSupport",
+                  text: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER'),
+                  conditional: {
+                  html: checkedOtherHtml
+                },
+                  checked: true if form.model.otherSupport.selected
+                }
+              ]
+            }) }}
+            <div class="govuk-button-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.CONTINUE')
+              }) }}
+              <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+            </div>
+          </form>
+{% endblock %}

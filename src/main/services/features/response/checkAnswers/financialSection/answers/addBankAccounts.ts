@@ -12,9 +12,9 @@ import {BankAccountTypeValues} from '../../../../../../common/form/models/bankAn
 import {currencyFormatWithNoTrailingZeros} from '../../../../../../common/utils/currencyFormat';
 import {YesNoUpperCase} from '../../../../../../common/form/models/yesNo';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
-export const addBankAccounts = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+export const addBankAccounts = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string ) => {
   const yourBankAccountHref = CITIZEN_BANK_ACCOUNT_URL.replace(':id', claimId);
   if (claim.statementOfMeans?.bankAccounts) {
     const bankAccounts: CitizenBankAccount[] = claim.statementOfMeans.bankAccounts;

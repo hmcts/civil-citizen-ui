@@ -11,9 +11,11 @@ const session = require('supertest-session');
 import {YesNo} from 'form/models/yesNo';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
+import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;
@@ -23,6 +25,7 @@ const testSession = session(app);
 describe('Has anything changed - On GET', () => {
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -33,7 +36,7 @@ describe('Has anything changed - On GET', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
-  it('should render page successfully if cookie has correct values', async () => {
+  it('should render page successfully in English', async () => {
     //Given
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
     //When
@@ -42,7 +45,20 @@ describe('Has anything changed - On GET', () => {
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.HAS_ANYTHING_CHANGED.PAGE_TITLE'));
+        expect(res.text).toContain('Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?');
+      });
+  });
+
+  it('should render page successfully in Welsh if query has Welsh values', async () => {
+    //Given
+    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    //When
+    await testSession
+      .get(HAS_ANYTHING_CHANGED_URL.replace(':id', claimId)).query({lang: 'cy'})
+      //Then
+      .expect((res: { status: unknown; text: unknown; }) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('A oes unrhyw beth wedi newid i’r cymorth neu’r addasiadau rydych yn dymuno i’r llys a’r barnwr eu hystyried ar eich rhan neu i dyst a fydd yn rhoi tystiolaeth ar eich rhan?');
       });
   });
 
@@ -64,7 +80,7 @@ describe('Has anything changed - On GET', () => {
     app.locals.draftStoreClient = mockRedisFailure;
     //When
     await testSession
-      .get(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
+      .get(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111')).query({lang: 'en'})
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(500);
@@ -77,6 +93,7 @@ describe('Has anything changed - On GET', () => {
 describe('Has anything changed - on POST', () => {
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 
   it('should display error when neither Yes nor No were selected', async () => {

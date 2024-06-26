@@ -39,7 +39,7 @@ describe('Small Claim Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(determinationWithoutHearingQuestion(claim, claimId, lng,claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
+      expect(determinationWithoutHearingQuestion(claimId, lng,claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if determination without hearing option is yes', () => {
@@ -57,7 +57,7 @@ describe('Small Claim Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(determinationWithoutHearingQuestion(claim, claimId, lng,claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
+      expect(determinationWithoutHearingQuestion(claimId, lng,claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
     });
   });
 
@@ -79,7 +79,7 @@ describe('Small Claim Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(determinationWithoutHearingReason(claim, claimId, lng,claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
+      expect(determinationWithoutHearingReason(claimId, lng,claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
     });
 
     it('should return summaryRow if determination without hearing reason is not set', () => {
@@ -95,7 +95,7 @@ describe('Small Claim Hearing Requirements Section', () => {
         changeButton,
       );
       //Then
-      expect(determinationWithoutHearingReason(claim, claimId, lng,claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
+      expect(determinationWithoutHearingReason(claimId, lng,claim.directionQuestionnaire)).toStrictEqual(mockSummarySection);
     });
   });
 });

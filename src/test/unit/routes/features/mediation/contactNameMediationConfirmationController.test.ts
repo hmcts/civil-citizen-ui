@@ -3,7 +3,6 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
-  MEDIATION_DISAGREEMENT_URL,
   MEDIATION_CONTACT_PERSON_CONFIRMATION_URL,
   MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL,
   MEDIATION_PHONE_CONFIRMATION_URL,
@@ -11,7 +10,7 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockCivilClaimClaimantIntention, mockRedisFailure} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
 
@@ -52,23 +51,49 @@ describe('Mediation Contact Person Mediation Confirmation Controller', () => {
   });
 
   describe('on POST', () => {
-    it('should redirect page when NO', async () => {
-      await request(app)
-        .post(MEDIATION_CONTACT_PERSON_CONFIRMATION_URL)
-        .send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL);
-        });
+    describe('defendant response', () => {
+      it('should redirect page when NO', async () => {
+        await request(app)
+          .post(MEDIATION_CONTACT_PERSON_CONFIRMATION_URL)
+          .send({option: 'no'})
+          .expect((res) => {
+            expect(res.status).toBe(302);
+            expect(res.header.location).toEqual(MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL);
+          });
+      });
+      it('should redirect page when Yes', async () => {
+        await request(app)
+          .post(MEDIATION_CONTACT_PERSON_CONFIRMATION_URL)
+          .send({option: 'yes'})
+          .expect((res) => {
+            expect(res.status).toBe(302);
+            expect(res.header.location).toEqual(MEDIATION_PHONE_CONFIRMATION_URL);
+          });
+      });
     });
-    it('should redirect page when Yes', async () => {
-      await request(app)
-        .post(MEDIATION_CONTACT_PERSON_CONFIRMATION_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(MEDIATION_PHONE_CONFIRMATION_URL);
-        });
+
+    describe('claimant response', () => {
+      beforeEach(() => {
+        app.locals.draftStoreClient = mockCivilClaimClaimantIntention;
+      });
+      it('should redirect page when NO', async () => {
+        await request(app)
+          .post(MEDIATION_CONTACT_PERSON_CONFIRMATION_URL)
+          .send({option: 'no'})
+          .expect((res) => {
+            expect(res.status).toBe(302);
+            expect(res.header.location).toEqual(MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL);
+          });
+      });
+      it('should redirect page when Yes', async () => {
+        await request(app)
+          .post(MEDIATION_CONTACT_PERSON_CONFIRMATION_URL)
+          .send({option: 'yes'})
+          .expect((res) => {
+            expect(res.status).toBe(302);
+            expect(res.header.location).toEqual(MEDIATION_PHONE_CONFIRMATION_URL);
+          });
+      });
     });
 
     it('should return error on incorrect input', async () => {
@@ -84,7 +109,7 @@ describe('Mediation Contact Person Mediation Confirmation Controller', () => {
     it('should return http 500 when has error', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(MEDIATION_DISAGREEMENT_URL)
+        .post(MEDIATION_CONTACT_PERSON_CONFIRMATION_URL)
         .send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(500);

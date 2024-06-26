@@ -8,10 +8,10 @@ import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {CCDDQSupportRequirements, CCDExpert} from 'models/ccdResponse/ccdExpert';
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 import {CCDMediation} from '../ccdResponse/ccdMediation';
-import {CCDRepaymentPlanFrequency} from 'models/ccdResponse/ccdRepaymentPlan';
 import {CCDClaimantPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 import {ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
+import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 
 export interface CCDClaimantMediationLip extends CCDMediation {
   hasAgreedFreeMediation?: YesNoUpperCamelCase;
@@ -24,6 +24,7 @@ export interface CCDClaimantResponse extends ClaimUpdate, ClaimantResponseReques
   applicant1DQWitnesses?: CCDWitnesses;
   applicant1DQSmallClaimHearing?: CCDSmallClaimHearing;
   applicant1LiPResponse?: CCDClaimantLiPResponse;
+  applicant1LiPResponseCarm?: CcdMediationCarm;
   applicant1ClaimExpertSpecRequired?: YesNoUpperCamelCase;
   applicant1DQExperts?: CCDExpert;
   applicant1DQHearingSupport?: CCDDQSupportRequirements;
@@ -36,8 +37,7 @@ export interface CCDClaimantResponse extends ClaimUpdate, ClaimantResponseReques
   applicant1PartAdmitConfirmAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1FullDefenceConfirmAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1ProceedWithClaim?: YesNoUpperCamelCase;
-  applicant1SuggestInstalmentsPaymentAmountForDefendantSpec?: number;
-  applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec?: CCDRepaymentPlanFrequency;
-  applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec?: string;
+  applicant1SettleClaim?: YesNoUpperCamelCase;
   applicant1RequestedPaymentDateForDefendantSpec?: CCDClaimantPayBySetDate;
+  applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec?: Date;
 }

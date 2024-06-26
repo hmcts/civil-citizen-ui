@@ -8,9 +8,9 @@ import {
 } from '../../../../../../routes/urls';
 import {YesNo} from '../../../../../../common/form/models/yesNo';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
-export const addOtherDependants = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string | unknown) => {
+export const addOtherDependants = (claim: Claim, financialSection: SummarySection, claimId: string, lang: string ) => {
   const yourOtherDependantsHref = CITIZEN_OTHER_DEPENDANTS_URL.replace(':id', claimId);
   const otherDependantsOption = claim.statementOfMeans?.otherDependants?.option === YesNo.YES ? YesNo.YES : YesNo.NO;
   const otherDependants = claim.statementOfMeans?.otherDependants;

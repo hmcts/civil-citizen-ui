@@ -8,7 +8,7 @@ const mockOSPlacesClient = {
 };
 
 jest.mock('@hmcts/os-places-client', () => ({
-  OSPlacesClient: jest.fn((apiKey: string) => mockOSPlacesClient),
+  OSPlacesClient: jest.fn(() => mockOSPlacesClient),
 }));
 
 jest.mock('config', () => ({

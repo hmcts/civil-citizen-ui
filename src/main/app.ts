@@ -1,14 +1,14 @@
 import * as bodyParser from 'body-parser';
-import config = require('config');
 import cookieParser from 'cookie-parser';
-
 import express from 'express';
-import {Helmet} from 'modules/helmet';
 import * as path from 'path';
-import {HTTPError} from './HttpError';
+import session from 'express-session';
+import 'express-async-errors';
+
+import {AppInsights} from 'modules/appinsights';
+import {Helmet} from 'modules/helmet';
 import {Nunjucks} from 'modules/nunjucks';
 import {PropertiesVolume} from 'modules/properties-volume';
-import {AppInsights} from 'modules/appinsights';
 import {I18Next} from 'modules/i18n';
 import {HealthCheck} from 'modules/health';
 import {OidcMiddleware} from 'modules/oidc';
@@ -18,21 +18,28 @@ import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
 import {getRedisStoreForSession} from 'modules/utilityService';
-import session from 'express-session';
 import {
+  BASE_CASE_PROGRESSION_URL,
   BASE_CLAIM_URL,
+  BASE_CLAIMANT_RESPONSE_URL,
+  BASE_GENERAL_APPLICATION_RESPONSE_URL,
+  BASE_GENERAL_APPLICATION_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
-  HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL,
+  HAS_ANYTHING_CHANGED_URL,
+  IS_CASE_READY_URL,
   STATEMENT_OF_MEANS_URL,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
 import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
-import {BASE_CLAIMANT_RESPONSE_URL} from 'routes/urls';
 import {claimantIntentGuard} from 'routes/guards/claimantIntentGuard';
-import { createOSPlacesClientInstance } from 'modules/ordance-survey-key/ordanceSurveyKey';
+import {createOSPlacesClientInstance} from 'modules/ordance-survey-key/ordanceSurveyKey';
 import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragement/trialArrangementsGuard';
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
+import {ErrorHandler} from 'modules/error';
+import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
+import {isCaseProgressionV1Enabled} from 'routes/guards/caseProgressionGuard';
+import config = require('config');
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -54,6 +61,7 @@ I18Next.enableFor(app);
 const logger = Logger.getLogger('app');
 
 new PropertiesVolume().enableFor(app);
+new AppInsights().enable();
 
 logger.info('Creating new draftStoreClient');
 new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
@@ -79,7 +87,6 @@ app.use(session({
 
 app.enable('trust proxy');
 
-new AppInsights().enable();
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
@@ -87,7 +94,9 @@ new OidcMiddleware().enableFor(app);
 
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
+app.use([BASE_GENERAL_APPLICATION_URL, BASE_GENERAL_APPLICATION_RESPONSE_URL], isGAForLiPEnabled);
 app.use(BASE_CLAIM_URL, claimIssueTaskListGuard);
+app.use(BASE_CASE_PROGRESSION_URL, isCaseProgressionV1Enabled);
 app.use([CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   HAS_ANYTHING_CHANGED_URL,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
@@ -121,21 +130,6 @@ if (env !== 'test') {
 }
 
 app.use(routes);
+new ErrorHandler().enableFor(app);
 
 setupDev(app,developmentMode);
-// returning "not found" page for requests with paths not resolved by the router
-app.use((_req, res) => {
-  res.status(404);
-  res.render('not-found');
-});
-
-// error handler
-app.use((err: HTTPError, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  logger.error(`${err.stack || err}`);
-
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = env === 'development' ? err : {};
-  res.status(err.status || 500);
-  res.render('error', {error: res.locals.error});
-});

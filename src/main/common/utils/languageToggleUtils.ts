@@ -1,3 +1,3 @@
-export const getLng = (lang: string | unknown): string => {
+export const getLng = (lang: string): string => {
   return lang ? String(lang) : 'en';
 };

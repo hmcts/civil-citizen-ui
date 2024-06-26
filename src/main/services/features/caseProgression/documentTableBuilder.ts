@@ -27,7 +27,7 @@ export function getEvidenceUploadDocuments(claim: Claim, lang: string): ClaimSum
   const wrap = 'tableWrap';
 
   const evidenceUploadTab = new TabSectionBuilder()
-    .addParagraph('PAGES.CLAIM_SUMMARY.EVIDENCE_UPLOAD_SUMMARY')
+    .addParagraph(t('PAGES.CLAIM_SUMMARY.EVIDENCE_UPLOAD_SUMMARY', {lng: lang}))
     .addTable(getTableHeaders(disclosureHeading, disclosureListClaimant, true, lang), getTableRows(disclosureListClaimant, claim,true, lang), wrap)
     .addTable(getTableHeaders(disclosureHeading, disclosureListDefendant, false, lang), getTableRows(disclosureListDefendant, claim,false, lang), wrap)
     .addTable(getTableHeaders(witnessHeading, witnessListClaimant, true, lang), getTableRows(witnessListClaimant, claim,true, lang), wrap)
@@ -44,7 +44,7 @@ export function getEvidenceUploadDocuments(claim: Claim, lang: string): ClaimSum
 function getTableHeaders(header: string, rows: UploadDocumentTypes[], isClaimant: boolean, lang: string){
   if(!rows || rows.length == 0) return null;
 
-  const newHeader = isClaimant == true ? t('PAGES.CLAIM_SUMMARY.CLAIMANT', {lng: lang}) + t(header, {lng: lang}) : t('PAGES.CLAIM_SUMMARY.DEFENDANT', {lng: lang}) + t(header, {lng: lang});
+  const newHeader = isClaimant ? t('PAGES.CLAIM_SUMMARY.CLAIMANT', {lng: lang}) + t(header, {lng: lang}) : t('PAGES.CLAIM_SUMMARY.DEFENDANT', {lng: lang}) + t(header, {lng: lang});
 
   return [{html: newHeader, classes:'govuk-!-width-one-half'},{html: '', classes: 'govuk-!-width-one-half'}] as TableCell[];
 }
@@ -61,7 +61,7 @@ function getTableRows(rows: UploadDocumentTypes[], claim: Claim, isClaimant: boo
   {
     const uploadDateString: string  = upload.createdDateTimeFormatted;
 
-    const uploaderName = isClaimant == true ? t('PAGES.CLAIM_SUMMARY.CLAIMANT', {lng: lang}) : t('PAGES.CLAIM_SUMMARY.DEFENDANT', {lng: lang});
+    const uploaderName = isClaimant  ? t('PAGES.CLAIM_SUMMARY.CLAIMANT', {lng: lang}) : t('PAGES.CLAIM_SUMMARY.DEFENDANT', {lng: lang});
     const documentTypeName = UploadedEvidenceFormatter.getDocumentTypeName(upload.documentType, lang);
     let documentName: string;
 
@@ -82,7 +82,7 @@ function getTableRows(rows: UploadDocumentTypes[], claim: Claim, isClaimant: boo
   return tableRows;
 }
 
-function orderDocumentNewestToOldest(documentsWithDates: UploadDocumentTypes[]): UploadDocumentTypes[] {
+export function orderDocumentNewestToOldest(documentsWithDates: UploadDocumentTypes[]): UploadDocumentTypes[] {
 
   documentsWithDates.sort((a: UploadDocumentTypes, b: UploadDocumentTypes) => {
     return +b.caseDocument?.createdDatetime - +a.caseDocument?.createdDatetime;

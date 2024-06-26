@@ -1,14 +1,14 @@
-import {NextFunction, Request, Response, Router} from 'express';
-import {HowMuchDoYouOwe} from '../../../../../common/form/models/admission/partialAdmission/howMuchDoYouOwe';
-import {CITIZEN_OWED_AMOUNT_URL, RESPONSE_TASK_LIST_URL} from '../../../../urls';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {CITIZEN_OWED_AMOUNT_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {
   getHowMuchDoYouOweForm,
   saveHowMuchDoYouOweData,
-} from '../../../../../services/features/response/admission/partialAdmission/howMuchDoYouOweService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {toNumberOrUndefined} from '../../../../../common/utils/numberConverter';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {PartAdmitHowMuchHaveYouPaidGuard} from '../../../../../routes/guards/partAdmitHowMuchHaveYouPaidGuard';
+} from 'services/features/response/admission/partialAdmission/howMuchDoYouOweService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {toNumberOrUndefined} from 'common/utils/numberConverter';
+import {GenericForm} from 'form/models/genericForm';
+import {PartAdmitHowMuchHaveYouPaidGuard} from 'routes/guards/partAdmitHowMuchHaveYouPaidGuard';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
@@ -19,16 +19,16 @@ function renderView(form: GenericForm<HowMuchDoYouOwe>, res: Response) {
   res.render(howMuchDoYouOweViewPath, {form: form});
 }
 
-howMuchDoYouOweController.get(CITIZEN_OWED_AMOUNT_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL), async (req: Request, res: Response, next: NextFunction) => {
+howMuchDoYouOweController.get(CITIZEN_OWED_AMOUNT_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL), (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const howMuchDoYouOweForm = await getHowMuchDoYouOweForm(generateRedisKey(<AppRequest>req));
     renderView(new GenericForm(howMuchDoYouOweForm), res);
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-howMuchDoYouOweController.post(CITIZEN_OWED_AMOUNT_URL, async (req: Request, res: Response, next: NextFunction) => {
+howMuchDoYouOweController.post(CITIZEN_OWED_AMOUNT_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const savedValues = await getHowMuchDoYouOweForm(redisKey);
@@ -44,6 +44,6 @@ howMuchDoYouOweController.post(CITIZEN_OWED_AMOUNT_URL, async (req: Request, res
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default howMuchDoYouOweController;

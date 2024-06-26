@@ -18,22 +18,22 @@ import {ResponseType} from 'common/form/models/responseType';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {RepaymentPlan} from 'common/models/repaymentPlan';
 
-const changeLabel = (lang: string | unknown): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
-const getResponseTitle = (claim: Claim, lang: string | unknown): string => {
+const getResponseTitle = (claim: Claim, lang: string ): string => {
   if (claim.isFullAdmission() && claim.isFAPaymentOptionPayImmediately()) {
     return t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_TITLE', {lng: getLng(lang)});
   }
   return t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY_TITLE', {lng: getLng(lang)});
 };
 
-const buildExplanationRow = (claim: Claim, claimId: string, lang: string | unknown): SummaryRow => {
+const buildExplanationRow = (claim: Claim, claimId: string, lang: string ): SummaryRow => {
   const explanationHref = constructResponseUrlWithIdParams(claimId, CITIZEN_EXPLANATION_URL);
   const explanationText = claim.statementOfMeans?.explanation?.text ? claim.statementOfMeans.explanation.text : '';
   return summaryRow(t('PAGES.EXPLANATION.TITLE', {lng: getLng(lang)}), explanationText, explanationHref, changeLabel(lang));
 };
 
-export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, lang: string | unknown): SummarySection => {
+export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, lang: string): SummarySection => {
   const yourResponseHref = constructResponseUrlWithIdParams(claimId, CITIZEN_RESPONSE_TYPE_URL);
   let paymentOptionHref: string;
   let repaymentPlanHref: string;

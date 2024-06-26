@@ -13,25 +13,40 @@ import {buildFreeTelephoneMediationSection} from './buildFreeTelephoneMediationS
 import {buildHearingRequirementsSectionCommon} from 'services/features/common/buildHearingRequirementsSection';
 import { buildSummaryForCourtDecisionDetails } from '../responseSection/buildCourtDecisionDetailsSection';
 import {isDefendantRejectedMediationOrFastTrackClaim} from 'services/features/response/submitConfirmation/submitConfirmationService';
+import {buildMediationSection} from 'services/features/response/checkAnswers/responseSection/buildMediationSection';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
-const buildSummarySections = (claim: Claim, claimId: string, lang: string, claimFee?: number): SummarySections => {
+const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmApplicable: boolean, claimFee?: number): SummarySections => {
   const getYourResponseSection = () => {
     return claim.isFullDefence() || claim.isPartialAdmission() || claim.isFullAdmission()
       ? buildYourResponseSection(claim, claimId, lang)
       : null;
   };
   const getJudgmentRequestSection = () => {
-    return claim.isRequestACCJ()
+    const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+    return claimantResponse.isCCJRequested
       ? buildJudgmentRequestSection(claim, claimId, lang, claimFee)
       : null;
   };
   const getHowYouWishToProceed = () => {
     return buildHowYouWishToProceed(claim, claimId, lang);
   };
+
+  const getMediationSection = () => {
+    if (carmApplicable) {
+      const mediationSection = buildMediationSection(claim, claimId, lang, true);
+      return claim.hasClaimantNotSettled() ? mediationSection : null;
+    } else {
+      return null;
+    }
+  };
+
   const getFreeTelephoneMediationSection = () => {
+    if (carmApplicable) {
+      return null;
+    }
     return (directionQuestionnaireFromClaimant(claim) && !isDefendantRejectedMediationOrFastTrackClaim(claim)
     )
       ? buildFreeTelephoneMediationSection(claim, claimId, lang)
@@ -47,6 +62,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, claim
     sections: [
       getYourResponseSection(),
       getHowYouWishToProceed(),
+      getMediationSection(),
       getJudgmentRequestSection(),
       buildSettlementAgreementSection(claim, claimId, lang),
       getFreeTelephoneMediationSection(),
@@ -56,9 +72,10 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, claim
   };
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, lang?: string, claimFee?: number): SummarySections => {
+export const getSummarySections = (claimId: string, claim: Claim, lang?: string, claimFee?: number, carmApplicable = false): SummarySections => {
   const lng = getLng(lang);
-  return buildSummarySections(claim, claimId, lng, claimFee);
+  claim.claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+  return buildSummarySections(claim, claimId, lng, carmApplicable, claimFee);
 };
 
 export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {
@@ -83,6 +100,7 @@ function directionQuestionnaireFromClaimant(claim: Claim) : boolean {
     || claim.hasClaimantIntentToProceedResponse()
     || claim.hasClaimantRejectedDefendantPaid()
     || claim.hasClaimantRejectedPartAdmitPayment()
+    || claim.hasClaimantRejectedDefendantResponse()
   );
 }
 

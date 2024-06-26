@@ -55,7 +55,7 @@ export const buildConsiderOtherOptions = (caseData: Claim, userId: string, lang:
   }
 
   const taskList: TaskList = {
-    title: t('PAGES.CLAIM_TASK_LIST.CONSIDER_OPTIONS'),
+    title: t('PAGES.CLAIM_TASK_LIST.CONSIDER_OPTIONS', { lng: getLng(lang) }),
     tasks: [considerOtherOptionsTask],
   };
 
@@ -118,7 +118,7 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
   }
 
   const taskList: TaskList = {
-    title: t('PAGES.CLAIM_TASK_LIST.PREPARE_CLAIM'),
+    title: t('PAGES.CLAIM_TASK_LIST.PREPARE_CLAIM', { lng: getLng(lang)}),
     tasks: [
       completingYourClaimTask,
       yourDetailsTask,
@@ -132,14 +132,15 @@ export const buildPrepareYourClaimSection = (caseData: Claim, userId: string, la
 };
 
 export const buildSubmitSection = (caseData: Claim, userId: string, lang: string): TaskList => {
+  const lng = getLng(lang);
   const considerOtherOptionsTask = {
-    description: t('PAGES.CLAIM_TASK_LIST.CHECK_AND_SUBMIT', { lng: getLng(lang) }),
+    description: t('PAGES.CLAIM_TASK_LIST.CHECK_AND_SUBMIT', { lng }),
     url: constructResponseUrlWithIdParams(userId, CLAIM_CHECK_ANSWERS_URL),
     status: TaskStatus.INCOMPLETE,
   };
 
   const taskList: TaskList = {
-    title: t('PAGES.CLAIM_TASK_LIST.SUBMIT'),
+    title: t('PAGES.CLAIM_TASK_LIST.SUBMIT', { lng }),
     tasks: [considerOtherOptionsTask],
   };
 

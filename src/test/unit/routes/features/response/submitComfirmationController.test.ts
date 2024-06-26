@@ -63,6 +63,10 @@ describe('Submit confirmation controller', () => {
         });
     });
     it('should return http 500 when has error in the get method', async () => {
+      nock('http://localhost:4000')
+        .get('/cases/:id')
+        .reply(500);
+
       await request(app)
         .get(CONFIRMATION_URL)
         .expect((res) => {

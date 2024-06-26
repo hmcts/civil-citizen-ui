@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 
@@ -15,7 +15,7 @@ function renderView(form: GenericForm<Reason>, res: Response): void {
   res.render(reasonViewPath, {form});
 }
 
-reasonController.get(CLAIM_REASON_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
+reasonController.get(CLAIM_REASON_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimDetails: ClaimDetails = await getClaimDetails(req.session?.user?.id);
     const reason: Reason = claimDetails.reason;
@@ -25,9 +25,9 @@ reasonController.get(CLAIM_REASON_URL, async (req: AppRequest, res: Response, ne
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-reasonController.post(CLAIM_REASON_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+reasonController.post(CLAIM_REASON_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const reasonForm = new GenericForm(new Reason(req.body.text));
     reasonForm.validateSync();
@@ -42,6 +42,6 @@ reasonController.post(CLAIM_REASON_URL, async (req: AppRequest | Request, res: R
   } catch (error) {
     next(error);
   }
-});
+})as RequestHandler);
 
 export default reasonController;

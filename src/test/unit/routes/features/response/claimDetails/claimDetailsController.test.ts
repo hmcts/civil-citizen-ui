@@ -10,16 +10,20 @@ import {
   mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
 import CivilClaimResponseMock from '../../../../../utils/mocks/civilClaimResponseMock.json';
-import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import {dateFilter} from 'modules/nunjucks/filters/dateFilter';
-import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import currencyFormat, {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {CaseRole} from 'form/models/caseRoles';
+import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
+import { isCUIReleaseTwoEnabled } from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+const isReleaseTwo = isCUIReleaseTwoEnabled as jest.Mock;
+
 const nock = require('nock');
 
 const civilServiceUrl = config.get<string>('services.civilService.url');
@@ -48,6 +52,7 @@ describe('Claim details page', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    isReleaseTwo.mockResolvedValue(false);
   });
 
   describe('on Get', () => {
@@ -72,12 +77,14 @@ describe('Claim details page', () => {
         .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const totalClaimAmount = currencyFormat(getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
+        CivilClaimResponseMock.case_data)));
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('000MC009'); // case number
-          expect(res.text).toContain('£195.00'); // tottal claim amount
+          expect(res.text).toContain(totalClaimAmount); // tottal claim amount
           expect(res.text).toContain('House repair'); // claim reason
           expect(res.text).toContain('200'); // claim amount
           expect(res.text).toContain('15'); // total interest
@@ -104,7 +111,6 @@ describe('Claim details page', () => {
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(getTotalAmountWithInterestAndFees(claim.case_data).toString());
           expect(res.text).toContain(claim.case_data?.claimAmountBreakup[0].value.claimReason);
           expect(res.text).toContain(claim.case_data?.claimAmountBreakup[0].value.claimAmount);
           expect(res.text).toContain(claim.case_data?.totalInterest.toString());
@@ -145,6 +151,40 @@ describe('Claim details page', () => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
+    });
+
+    it('should return your new claim details page with values from civil-service when isCUIReleaseTwoEnabled  flags are enabled', async () => {
+      nock(civilServiceUrl)
+        .get('/cases/1713273393110043')
+        .reply(200, CivilClaimResponseMock);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + 1713273393110043 + '/userCaseRoles')
+        .reply(200, [CaseRole.CLAIMANT]);
+      isReleaseTwo.mockResolvedValue(true);
+      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const totalClaimAmount = currencyFormat(getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
+        CivilClaimResponseMock.case_data)));
+
+      await request(app)
+        .get('/case/1713273393110043/response/claim-details')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('View the claim');
+          expect(res.text).toContain('Reason for claim');
+          expect(res.text).toContain('If you cannot find a document that you are looking for in this section');
+          expect(res.text).toContain('View the claim (PDF)');
+          expect(res.text).toContain('1713273393110043'); // case number
+          expect(res.text).toContain(totalClaimAmount); // total claim amount
+          expect(res.text).toContain('House repair'); // claim reason
+          expect(res.text).toContain('200'); // claim amount
+          expect(res.text).toContain('15'); // total interest
+          expect(res.text).toContain('70'); // claim fee
+          expect(res.text).toContain('House repair'); // details of claim
+          expect(res.text).toContain('I noticed a leak on the landing and told Mr Smith about this.'); // timeline description
+          expect(res.text).toContain('1 January 2022'); // timeline date
+        });
+      expect(spyRedisSave).toBeCalled();
     });
   });
 });

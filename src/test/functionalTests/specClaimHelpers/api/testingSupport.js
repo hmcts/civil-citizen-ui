@@ -2,15 +2,63 @@ const config = require('../../../config');
 const idamHelper = require('./idamHelper');
 const restHelper = require('./restHelper');
 const {retry} = require('./retryHelper');
+const totp = require('totp-generator');
 
 let incidentMessage;
 
 const MAX_RETRIES = 50;
 const RETRY_TIMEOUT_MS = 10000;
 
+const checkToggleEnabled = async (toggle) => {
+  const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+
+  return await restHelper.request(
+    `${config.url.civilService}/testing-support/feature-toggle/${toggle}`,
+    {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`,
+    }, null, 'GET')
+    .then(async response =>  {
+      if (response.status === 200) {
+        const json = await response.json();
+        console.log('Toggle..', toggle, '...and value is..', json.toggleEnabled);
+        return json.toggleEnabled;
+      } else {
+        throw new Error(`Error when checking toggle occurred with status : ${response.status}`);
+      }
+    },
+    );
+};
+
+const isDashboardServiceToggleEnabled = async (caseId = 'noCaseId',  caseSubmittedDate = null) => {
+
+  const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+  return await restHelper.request(
+    `${config.url.civilService}/testing-support/is-dashboard-toggle-enabled`,
+    {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`,
+    }, {
+      submittedDate: caseSubmittedDate, //'2022-05-10T15:59:50'
+    }, 'POST')
+    .then(async response =>  {
+      if (response.status === 200) {
+        const json = await response.json();
+        console.log(`Dashboard toggle value for the case .. ${caseId} is..`, json.toggleEnabled);
+        return json.toggleEnabled;
+      } else {
+        throw new Error(`Error when checking Dashboard toggle occurred with status : ${response.status}`);
+      }
+    });
+};
+
+const isMintiToggleEnabled = async () => {
+  return await checkToggleEnabled('minti');
+};
+
 module.exports = {
-  waitForFinishedBusinessProcess: async caseId => {
-    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+  waitForFinishedBusinessProcess: async (caseId, user = '') => {
+    const authToken = await idamHelper.accessToken(user ? user : config.applicantSolicitorUser);
 
     await retry(() => {
       return restHelper.request(
@@ -95,6 +143,20 @@ module.exports = {
     return await response.json();
   },
 
+  uploadDocumentUser: async (user) => {
+    const authToken = await idamHelper.accessToken(user);
+    let response = await restHelper.request(
+      `${config.url.civilService}/testing-support/upload/test-document`,
+      {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+      },
+      {},
+      'POST');
+
+    return await response.json();
+  },
+
   hearingFeeUnpaid: async (caseId) => {
     const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
     await restHelper.request(
@@ -105,7 +167,7 @@ module.exports = {
       }, null, 'GET')
       .then(async response => {
         if (response.status === 200) {
-          console.log(`Hearing Fee unpaid for ${caseId} successfull`);
+          console.log(`Hearing Fee unpaid for ${caseId} successful`);
         } else {
           throw new Error(`Error occurred with status : ${response.status}`);
         }
@@ -113,23 +175,45 @@ module.exports = {
       );
   },
 
-  checkToggleEnabled: async (toggle) => {
+  bundleGeneration: async (caseId) => {
     const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
-
-    return await restHelper.request(
-      `${config.url.civilService}/testing-support/feature-toggle/${toggle}`,
+    await restHelper.request(
+      `${config.url.civilService}/testing-support/${caseId}/trigger-trial-bundle`,
       {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${authToken}`,
       }, null, 'GET')
-      .then(async response =>  {
+      .then(async response => {
         if (response.status === 200) {
-          const json = await response.json();
-          return json.toggleEnabled;
+          console.log(`Bundle for ${caseId} successful`);
         } else {
-          throw new Error(`Error when checking toggle occurred with status : ${response.status}`);
+          throw new Error(`Error occurred with status : ${response.status}`);
         }
       },
       );
   },
+
+  updateCaseData: async (caseId, caseData, user = config.applicantSolicitorUser) => {
+    const authToken = await idamHelper.accessToken(user);
+    const s2sAuth = await restHelper.retriedRequest(
+      `${config.url.authProviderApi}/lease`,
+      {'Content-Type': 'application/json'},
+      {
+        microservice: config.s2s.microservice,
+        oneTimePassword: totp(config.s2s.secret),
+      })
+      .then(response => response.text());
+
+    await restHelper.retriedRequest(
+      `${config.url.civilService}/testing-support/case/${caseId}`,
+      {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+        'ServiceAuthorization': s2sAuth,
+      }, caseData, 'PUT');
+  },
+
+  checkToggleEnabled,
+  isDashboardServiceToggleEnabled,
+  isMintiToggleEnabled,
 };

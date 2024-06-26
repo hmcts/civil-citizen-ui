@@ -4,11 +4,16 @@
 {% from "./macro/page-title.njk" import setPageTitle %}
 {% from "./macro/header.njk" import headerComponent %}
 {% from "./macro/cookie-banner.njk" import cookieBanner %}
+{% from "./macro/back.njk" import back %}
 
-{% set bannerText = "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>feedback</a> will help us to improve it." %}
+{% set bannerText = t('COMMON.HEADER.NEW_SERVICE') %}
 {% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=en'>English</a>"%}
 {% extends "govuk/template.njk" %}
 {% block head %}
+
+<!-- Dynatrace -->
+  <script type="text/javascript" src="{{ dynatraceUrl }}" crossorigin="anonymous"></script>
+<!-- End Dynatrace -->
 <!-- Google Tag Manager -->
 <script nonce={{ nonceValue }}>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -19,7 +24,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {% include "webpack/css.njk" %}
 {% endblock %}
 {% block pageTitle %}
-  {{setPageTitle()}}
+  {{setPageTitle(t)}}
 {% endblock %}
 {% block skipLink %}
   {{ govukSkipLink({
@@ -28,28 +33,36 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   }) }}
 {% endblock %}
 {% block header %}
-  {{ headerComponent(t, hideLogout) }}
+  {{ headerComponent(t, user) }}
 {% endblock %}
 
 {% block beforeContent %}
 {{ govukPhaseBanner({
         tag: {
-          text: "beta"
+          text: t('COMMON.HEADER.BETA')
         },
         html: bannerText + languageToggle
       }) }}
+
+  {{ back(backLinkUrl, t,  false, true) }}
+
 {% endblock %}
+
 
 {% block bodyStart %}
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ gtmScriptId }}"
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ gtmScriptId }}&nojscript=true"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
   {{ cookieBanner(t) }}
 {% endblock %}
 
 {% block footer %}
+{% if developmentMode != 'production' %}
 {{ govukFooter({
+    contentLicence: {
+      html: t('FOOTER.ALL_CONTENT', { link: 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/' })
+    },
     meta: {
       items: [
         {
@@ -69,7 +82,43 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           text: t("FOOTER.CONTACT_US_URL")
         },
         {
-          href: AccessibilityStatementUrl,
+          href: urls.ACCESSIBILITY_STATEMENT_URL,
+          text: t("FOOTER.ACCESSIBILITY_STATEMENT_URL")
+        },
+        {
+          href: TermsAndConditionsUrl,
+          text: t("FOOTER.TERMS_AND_CONDITIONS_URL")
+        },
+        {
+          href: TestingSupportUrl,
+          text: t("FOOTER.TESTING_SUPPORT")
+        }
+      ]
+    }
+  }) }} {% else %} {{ govukFooter({
+    contentLicence: {
+      html: t('FOOTER.ALL_CONTENT', { link: 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/' })
+    },
+    meta: {
+      items: [
+        {
+          href: urls.COOKIES_URL,
+          text: t("FOOTER.COOKIES_URL")
+        },
+        {
+          href: PrivacyPolicyUrl,
+          text: t("FOOTER.PRIVACY_POLICY_URL")
+        },
+        {
+          href: "https://www.gov.uk/help",
+          text: t("FOOTER.HELP_USING_GOV_URL")
+        },
+        {
+          href: ContactUsUrl,
+          text: t("FOOTER.CONTACT_US_URL")
+        },
+        {
+          href: urls.ACCESSIBILITY_STATEMENT_URL,
           text: t("FOOTER.ACCESSIBILITY_STATEMENT_URL")
         },
         {
@@ -78,7 +127,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         }
       ]
     }
-  }) }}
+  }) }} {% endif %}
 {% endblock %}
 {% block bodyEnd %}
 {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}

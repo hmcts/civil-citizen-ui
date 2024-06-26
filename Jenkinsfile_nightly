@@ -2,7 +2,7 @@
 
 properties([
     // H allow predefined but random minute see https://en.wikipedia.org/wiki/Cron#Non-standard_characters
-    pipelineTriggers([cron('H 8 * * 1-5')]),
+    pipelineTriggers([cron('H 12 * * 1-5')]),
     parameters([
         string(name: 'ENVIRONMENT', defaultValue: 'aat', description: 'Environment to test'),
         string(name: 'TEST_URL', defaultValue: 'https://civil-citizen-ui.aat.platform.hmcts.net', description: 'The URL you want to run tests against'),
@@ -10,6 +10,8 @@ properties([
           description: 'The URL you want to run the full functional tests against'),
         string(name: 'IDAM_API_URL', defaultValue: 'https://idam-api.aat.platform.hmcts.net',
           description: 'The URL of idam api'),
+        string(name: 'IDAM_WEB_URL', defaultValue: 'https://idam-web-public.aat.platform.hmcts.net',
+          description: 'The URL of idam web'),
         string(name: 'DM_STORE_URL', defaultValue: 'http://dm-store-aat.service.core-compute-aat.internal',
           description: 'The URL of dm store'),
         string(name: 'SERVICE_AUTH_PROVIDER_API_BASE_URL', defaultValue: 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
@@ -18,6 +20,8 @@ properties([
           description: 'The URL of ccd data store'),
         string(name: 'CIVIL_SERVICE_URL', defaultValue: 'http://civil-service-aat.service.core-compute-aat.internal',
           description: 'The URL of civil service'),
+        string(name: 'CIVIL_GENERAL_APPLICATIONS_URL', defaultValue: 'http://civil-general-applications-aat.service.core-compute-aat.internal',
+          description: 'The URL of general applications'),
     ])
 ])
 
@@ -41,12 +45,19 @@ static Map<String, Object> secret(String secretName, String envVariable) {
 }
 
 def secrets = [
+  's2s-${env}': [
+    secret('microservicekey-xui-webapp', 'XUI_S2S_SECRET'),
+  ],
   'civil-${env}': [
     secret('microservicekey-civil-service', 'S2S_SECRET'),
     secret('citizen-ui-test-username', 'CITIZEN_USERNAME'),
     secret('citizen-ui-test-password', 'CITIZEN_PASSWORD'),
     secret('civil-judge-password', 'JUDGE_PASSWORD'),
     secret('system-update-user-password', 'SYSTEM_USER_PASSWORD')
+  ],
+  'civil-cui-${env}': [
+    secret('playwright-service-url', 'PLAYWRIGHT_SERVICE_URL'),
+    secret('playwright-token', 'PLAYWRIGHT_SERVICE_ACCESS_TOKEN'),
   ]
 ]
 
@@ -57,9 +68,11 @@ withNightlyPipeline(type, product, component) {
   env.URL = params.EXUI_URL
   env.DM_STORE_URL=params.DM_STORE_URL
   env.IDAM_API_URL=params.IDAM_API_URL
+  env.IDAM_WEB_URL=params.IDAM_WEB_URL
   env.SERVICE_AUTH_PROVIDER_API_BASE_URL = params.SERVICE_AUTH_PROVIDER_API_BASE_URL
   env.CCD_DATA_STORE_URL = params.CCD_DATA_STORE_URL
   env.CIVIL_SERVICE_URL = params.CIVIL_SERVICE_URL
+  env.CIVIL_GENERAL_APPLICATIONS_URL = params.CIVIL_GENERAL_APPLICATIONS_URL
   env.TESTS_FOR_ACCESSIBILITY = false
   overrideVaultEnvironments([
     'aat': params.ENVIRONMENT

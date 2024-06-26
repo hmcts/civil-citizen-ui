@@ -13,14 +13,14 @@ export const toCUIParty = (ccdParty: CCDParty): Party => {
   const cuiParty = new Party();
   cuiParty.partyDetails = new PartyDetails({});
   if (ccdParty?.type === PartyType.INDIVIDUAL) {
-    cuiParty.partyDetails.individualFirstName = ccdParty?.individualFirstName ? ccdParty.individualFirstName : undefined;
-    cuiParty.partyDetails.individualLastName = ccdParty.individualLastName ? ccdParty?.individualLastName : undefined;
-    cuiParty.partyDetails.individualTitle = ccdParty.individualTitle ? ccdParty?.individualTitle : undefined;
+    cuiParty.partyDetails.firstName = ccdParty?.individualFirstName ? ccdParty.individualFirstName : undefined;
+    cuiParty.partyDetails.lastName = ccdParty.individualLastName ? ccdParty?.individualLastName : undefined;
+    cuiParty.partyDetails.title = ccdParty.individualTitle ? ccdParty?.individualTitle : undefined;
     cuiParty.dateOfBirth = toCitizenDate(ccdParty.individualDateOfBirth);
   } else if (ccdParty?.type === PartyType.SOLE_TRADER) {
-    cuiParty.partyDetails.individualFirstName = ccdParty.soleTraderFirstName ? ccdParty?.soleTraderFirstName : undefined;
-    cuiParty.partyDetails.individualLastName = ccdParty.soleTraderLastName ? ccdParty?.soleTraderLastName : undefined;
-    cuiParty.partyDetails.individualTitle = ccdParty.soleTraderTitle ? ccdParty?.soleTraderTitle : undefined;
+    cuiParty.partyDetails.firstName = ccdParty.soleTraderFirstName ? ccdParty?.soleTraderFirstName : undefined;
+    cuiParty.partyDetails.lastName = ccdParty.soleTraderLastName ? ccdParty?.soleTraderLastName : undefined;
+    cuiParty.partyDetails.title = ccdParty.soleTraderTitle ? ccdParty?.soleTraderTitle : undefined;
     cuiParty.dateOfBirth = toCitizenDate(ccdParty.soleTraderDateOfBirth);
     cuiParty.partyDetails.soleTraderTradingAs = ccdParty.soleTraderTradingAs ? ccdParty?.soleTraderTradingAs : undefined;
   } else if (ccdParty?.type === PartyType.COMPANY) {

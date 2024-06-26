@@ -22,6 +22,8 @@ import {
   getSettleTheClaimForTask,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/yourResponseSectionTasks';
 import { ClaimantResponse } from 'common/models/claimantResponse';
+import {getTelephoneMediationTask} from 'common/utils/taskList/tasks/telephoneMediation';
+import {getAvailabilityForMediationTask} from 'common/utils/taskList/tasks/availabilityForMediation';
 
 export function buildHowDefendantRespondSection(claim: Claim, claimId: string, lang: string) {
   const tasks: Task[] = [];
@@ -63,11 +65,11 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     }
   }
 
-  if (claim?.claimantResponse?.intentionToProceed?.option === YesNo.YES && claim.isDefendantAgreedForMediation()) {
+  if (claim?.hasClaimantIntentToProceedResponse() && (claim.isDefendantAgreedForMediation() || claim.isDefendantLrAgreedForMediation())) {
     tasks.push(freeTelephoneMediationTask);
   }
 
-  if (claim?.claimantResponse?.hasFullDefenceStatesPaidClaimSettled?.option === YesNo.NO && claim.isDefendantAgreedForMediation())  {
+  if (claim?.hasClaimantRejectedDefendantResponse() && (claim.isDefendantAgreedForMediation() || claim.isDefendantLrAgreedForMediation())) {
     tasks.push(freeTelephoneMediationTask);
   }
 
@@ -78,12 +80,22 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
   return {title: t('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.TITLE', {lng: lang}), tasks};
 }
 
-export function buildYourResponseSection(claim: Claim, claimId: string, lang: string) {
+export function buildClaimantResponseMediationSection(claim: Claim, claimId: string, lang: string, carmApplicable: boolean) {
+  if (carmApplicable) {
+    const tasks: Task[] = [];
+    tasks.push(getTelephoneMediationTask(claim, claimId, lang, true));
+    tasks.push(getAvailabilityForMediationTask(claim, claimId, lang, true));
+    return { title: t('COMMON.MEDIATION', { lng: lang }), tasks };
+  }
+}
+
+export function buildYourResponseSection(claim: Claim, claimId: string, lang: string, carmApplicable: boolean) {
   const tasks: Task[] = [];
   const isFullPaid = claim.isFullDefence() && claim.hasPaidInFull();
   const isPartialPaid = (claim.isPartialAdmissionPaid() || claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS);
   const isSettleTheClaim = (isPartialPaid && claim.hasClaimantConfirmedDefendantPaid()) || isFullPaid;
-  const isFreePhoneMediation = claim.isDefendantAgreedForMediation() && ((isPartialPaid && (claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment())) || claim.hasClaimantRejectedDefendantResponse());
+  const isFreePhoneMediation = (claim.isDefendantLrAgreedForMediation() || claim.isDefendantAgreedForMediation())
+    && ((isPartialPaid && (claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment())) || claim.hasClaimantRejectedDefendantResponse());
 
   if (!isFullPaid) {
     const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
@@ -92,7 +104,7 @@ export function buildYourResponseSection(claim: Claim, claimId: string, lang: st
   if (isSettleTheClaim) {
     tasks.push(getSettleTheClaimForTask(claim, claimId, lang));
   }
-  if (isFreePhoneMediation) {
+  if (isFreePhoneMediation && !carmApplicable) {
     tasks.push(getFreeTelephoneMediationTask(claim, claimId, lang));
   }
   return { title: t('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE', { lng: lang }), tasks };
@@ -116,7 +128,7 @@ export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: s
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
 
-  if (claim.isClaimantIntentionPending() && claim?.claimantResponse?.intentionToProceed?.option === YesNo.YES) {
+  if (claim.isClaimantIntentionPending() && claim?.hasClaimantIntentToProceedResponse()) {
     const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
     tasks.push(giveUsDetailsClaimantHearingTask);
   }

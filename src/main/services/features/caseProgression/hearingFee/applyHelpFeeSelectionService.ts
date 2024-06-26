@@ -8,6 +8,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getFeePaymentRedirectInformation} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {getClaimById} from 'modules/utilityService';
+import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('hearingFeeHelpSelectionService');
@@ -18,7 +19,7 @@ const hearingFeeHelpSelection = 'hearingFeeHelpSelection';
 
 export const getRedirectUrl = async (claimId: string, IsApplyHelpFeeModel: GenericYesNo, req: AppRequest): Promise<string> => {
   try{
-    const redisClaimId = generateRedisKey(<AppRequest>req);
+    const redisClaimId = generateRedisKey(req);
     let redirectUrl;
     let paymentRedirectInformation;
     if (IsApplyHelpFeeModel.option === YesNo.NO) {
@@ -29,7 +30,7 @@ export const getRedirectUrl = async (claimId: string, IsApplyHelpFeeModel: Gener
     }
     await saveCaseProgression(redisClaimId, paymentRedirectInformation, paymentInformation, hearing);
     await saveCaseProgression(redisClaimId, IsApplyHelpFeeModel, hearingFeeHelpSelection);
-    const claim: any = await getClaimById(claimId, req, true);
+    const claim: Claim = await getClaimById(claimId, req, true);
     claim.feeTypeHelpRequested = FeeType.HEARING;
     await saveDraftClaim(redisClaimId, claim);
     return redirectUrl;

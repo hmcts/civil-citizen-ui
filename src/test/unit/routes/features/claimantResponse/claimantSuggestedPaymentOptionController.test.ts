@@ -42,7 +42,7 @@ describe('Claimant suggested Payment Option Controller', () => {
         .get(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('How do you want the defandant to pay?');
+          expect(res.text).toContain('How do you want the defendant to pay?');
         });
     });
 

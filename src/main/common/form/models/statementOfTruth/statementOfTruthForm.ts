@@ -15,7 +15,7 @@ export class StatementOfTruthForm {
 
   constructor(isFullAmountRejected?: boolean, type?: SignatureType, signed?: boolean, directionsQuestionnaireSigned?: boolean) {
     this.isFullAmountRejected = isFullAmountRejected;
-    this.type = (type) ? type : SignatureType.BASIC;
+    this.type = type || SignatureType.BASIC;
     this.signed = signed;
     this.directionsQuestionnaireSigned = directionsQuestionnaireSigned;
   }

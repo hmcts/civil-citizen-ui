@@ -8,7 +8,7 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.TOTAL_AMOUNT.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.TOTAL_AMOUNT.PAGE_TITLE') }}
 {% endblock %}
 
 {% block content %}
@@ -60,7 +60,7 @@
                   classes: "black-border-top govuk-!-font-weight-bold govuk-!-text-align-right"
                 }
               }
-            ] 
+            ]
           }) }}
 
           {% if form.hasHelpWithFees %}
@@ -100,7 +100,7 @@
                   classes: "govuk-!-text-align-right"
                 }
               }
-            ] 
+            ]
           }) }}
 
           <p class="govuk-body">{{t('PAGES.TOTAL_AMOUNT.YOU_DONT_HAVE_TO_PAY')}}</p>

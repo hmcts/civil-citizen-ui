@@ -9,7 +9,7 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.SPECIFIC_COURT.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.SPECIFIC_COURT.PAGE_TITLE') }}
 {% endblock %}
 
  {% set courtItems = [{value: '', text: t('PAGES.SPECIFIC_COURT.SELECT_VALUE')}] %}

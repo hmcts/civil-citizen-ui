@@ -102,9 +102,9 @@
     }) }}
     <br>
     {% if removeButton.hidden %}
-      <button class="govuk-button govuk-button--secondary remove-row govuk-visually-hidden">{{ t('COMMON.REMOVE') }}</button>
+      <button type="button" class="govuk-button govuk-button--secondary remove-row govuk-visually-hidden">{{ t('COMMON.REMOVE') }}</button>
     {% else %}
-      <button class="govuk-button govuk-button--secondary remove-row">{{ t('COMMON.REMOVE') }}</button>
+      <button type= "button" class="govuk-button govuk-button--secondary remove-row">{{ t('COMMON.REMOVE') }}</button>
     {% endif %}
   </div>
 {% endmacro %}

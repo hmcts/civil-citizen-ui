@@ -7,7 +7,7 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.JUDGMENT_AMOUNT.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.JUDGMENT_AMOUNT.PAGE_TITLE') }}
 {% endblock %}
 {% set detailsHtml %}
   {% if (judgmentSummaryDetails.isBreakDownInterest) %}
@@ -41,7 +41,7 @@
                 <div class="govuk-grid-column-two-thirds">
                     <h1 class="govuk-heading-l">{{ t('PAGES.JUDGMENT_AMOUNT.TITLE') }}</h1>
                     <p
-                            class="govuk-body-m">{{ t('PAGES.JUDGMENT_AMOUNT.JUDGMENT_STATEMENT' , {subTotal : judgmentSummaryDetails.subTotal}) }}</p>
+                            class="govuk-body-m">{{ t('PAGES.JUDGMENT_AMOUNT.JUDGMENT_STATEMENT' , {subTotal : judgmentSummaryDetails.total}) }}</p>
                     <table class="govuk-table">
                         <thead class="govuk-table__head">
                         <tr class="govuk-table__row">
@@ -68,7 +68,7 @@
                         {% endif %}
                         <tr class="govuk-table__row">
                             <td class="govuk-table__cell ">{{ t('PAGES.JUDGMENT_AMOUNT.CLAIM_FEE_AMOUNT') }}</td>
-                            <td class="govuk-table__cell  govuk-!-text-align-right">{{ t ("£" + claimFee) }}</td>
+                            <td class="govuk-table__cell  govuk-!-text-align-right">{{ t ("£" + judgmentSummaryDetails.claimFeeAmount) }}</td>
                         </tr>
                         {% if judgmentSummaryDetails.hasDefendantAlreadyPaid %}
                             <tr class="govuk-table__row">

@@ -1,4 +1,4 @@
-import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   APPLY_HELP_WITH_FEES_REFERENCE, APPLY_HELP_WITH_FEES_START,
   DASHBOARD_CLAIMANT_URL, GENERIC_HELP_FEES_URL, HEARING_FEE_APPLY_HELP_FEE_SELECTION,
@@ -17,26 +17,26 @@ import {
 } from 'services/features/caseProgression/hearingFee/applyHelpFeeReferenceContents';
 import {YesNo} from 'form/models/yesNo';
 import {triggerNotifyEvent} from 'services/features/caseProgression/hearingFee/hearingFeeService';
+import {getClaimById} from 'modules/utilityService';
 
 const applyHelpFeeReferenceViewPath  = 'features/caseProgression/hearingFee/apply-help-fee-reference';
 const applyHelpFeeReferenceController: Router = Router();
 const helpFeeReferenceNumberForm = 'helpFeeReferenceNumberForm';
 
-async function renderView(res: Response, req: any, form: any, claimId: string, redirectUrl: string) {
-  const redisClaimId = generateRedisKey(<AppRequest>req);
-  const claim: Claim = await getCaseDataFromStore(redisClaimId);
+async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<ApplyHelpFeesReferenceForm>, claimId: string, redirectUrl: string) {
+  const claim: Claim = await getClaimById(claimId, req, true);
   if (!form.hasErrors()) {
     form = claim.caseProgression?.helpFeeReferenceNumberForm ? new GenericForm(claim.caseProgression.helpFeeReferenceNumberForm) : form;
   }
-  const startApplyHelpFee = constructResponseUrlWithIdParams(req.params.id, APPLY_HELP_WITH_FEES_START);
+  const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, APPLY_HELP_WITH_FEES_START);
   const genericHelpFeeUrl : string = GENERIC_HELP_FEES_URL;
   res.render(applyHelpFeeReferenceViewPath,
     {
       redirectUrl,
       form,
-      startApplyHelpFee,
+      backLinkUrl,
       genericHelpFeeUrl,
-      applyHelpFeeReferenceContents: getApplyHelpFeeReferenceContents(),
+      applyHelpFeeReferenceContents: getApplyHelpFeeReferenceContents(claimId,claim.totalClaimAmount),
       applyHelpFeeReferenceButtonContents: getButtonsContents(claimId),
     });
 }
@@ -52,7 +52,7 @@ applyHelpFeeReferenceController.get(APPLY_HELP_WITH_FEES_REFERENCE, (async (req,
 
 }) as RequestHandler);
 
-applyHelpFeeReferenceController.post(APPLY_HELP_WITH_FEES_REFERENCE, (async (req:any, res, next) => {
+applyHelpFeeReferenceController.post(APPLY_HELP_WITH_FEES_REFERENCE, (async (req:AppRequest | Request, res, next) => {
   try{
     const claimId = req.params.id;
     const redisClaimId = generateRedisKey(<AppRequest>req);

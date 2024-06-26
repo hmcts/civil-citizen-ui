@@ -46,7 +46,7 @@ export const getFutureMonthDate = (numberOfMonths: number): Date => {
   return monthFromNow;
 };
 
-export const formatDateToFullDate = (date: Date, lang?: string | unknown): string => {
+export const formatDateToFullDate = (date: Date, lang?: string): string => {
   const dateTime = convertDateToLuxonDate(date);
   const localeValue = lang === 'cy' ? 'cy' : 'en-gb';
   return dateTime.toLocaleString(DateTime.DATE_FULL, {locale: localeValue});
@@ -88,6 +88,15 @@ export const formatStringDateSlash = (text: string) => {
   const date = new Date(Date.parse(text));
   const day = date.getDate().toString();
   const month = (date.getUTCMonth() + 1).toString();
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
+export const formatDateSlash = (dateToFormat: Date) => {
+  const date = new Date(dateToFormat);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
   const year = date.getFullYear();
 
   return `${day}/${month}/${year}`;

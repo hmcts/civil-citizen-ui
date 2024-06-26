@@ -11,14 +11,15 @@ export const getClaimantSuggestedInstalmentsPlan = async (claimId: string): Prom
     const claim = await getCaseDataFromStore(claimId);
     const claimantSuggestedInstalments = claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan;
     const firstRepaymentDate = new Date(claimantSuggestedInstalments?.firstRepaymentDate);
+    const claimAmountAccepted : number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
     return claimantSuggestedInstalments ? new RepaymentPlanForm(
-      claim.totalClaimAmount,
+      claimAmountAccepted,
       claimantSuggestedInstalments.paymentAmount,
       claimantSuggestedInstalments.repaymentFrequency,
       firstRepaymentDate.getFullYear().toString(),
       (firstRepaymentDate.getMonth() + 1).toString(),
       firstRepaymentDate.getDate().toString(),
-    ) : new RepaymentPlanForm(claim.totalClaimAmount);
+    ) : new RepaymentPlanForm(claimAmountAccepted);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -28,8 +29,9 @@ export const getClaimantSuggestedInstalmentsPlan = async (claimId: string): Prom
 export const getClaimantSuggestedInstalmentsForm = async (req: Request): Promise<RepaymentPlanForm> => {
   try {
     const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
+    const claimAmountAccepted : number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
     return new RepaymentPlanForm(
-      claim.totalClaimAmount,
+      claimAmountAccepted,
       req.body.paymentAmount,
       req.body.repaymentFrequency,
       req.body.year,

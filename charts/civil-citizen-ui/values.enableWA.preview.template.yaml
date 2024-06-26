@@ -106,8 +106,6 @@ wa-case-event-handler:
             alias: S2S_SECRET_CASE_EVENT_HANDLER
           - name: ld-secret
             alias: LAUNCH_DARKLY_SDK_KEY
-          - name: wa-case-event-handler-POSTGRES-DATABASE
-            alias: POSTGRES_NAME
           - name: wa-idam-client-secret
             alias: WA_IDAM_CLIENT_SECRET
     environment:

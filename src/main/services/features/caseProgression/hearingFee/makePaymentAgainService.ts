@@ -13,7 +13,7 @@ const paymentInformation = 'paymentInformation';
 const hearing = 'hearing';
 export const getRedirectUrl = async (claimId: string,  req: AppRequest): Promise<string> => {
   try{
-    const redisClaimId = generateRedisKey(<AppRequest>req);
+    const redisClaimId = generateRedisKey(req);
     const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.HEARING, req);
     await saveCaseProgression(redisClaimId, paymentRedirectInformation, paymentInformation, hearing);
     return paymentRedirectInformation?.nextUrl;

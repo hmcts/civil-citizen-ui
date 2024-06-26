@@ -11,9 +11,11 @@ const session = require('supertest-session');
 import {YesNo} from 'form/models/yesNo';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
+import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;
@@ -29,8 +31,11 @@ describe('Is case ready - On GET', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
+  beforeEach(()=> {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+  });
 
-  it('should render page successfully if cookie has correct values', async () => {
+  it('should render page successfully in English if cookie has correct values', async () => {
     //Given
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
     //When
@@ -39,7 +44,20 @@ describe('Is case ready - On GET', () => {
     //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.IS_CASE_READY.PAGE_TITLE'));
+        expect(res.text).toContain('Is the case ready for trial?');
+      });
+  });
+
+  it('should render page successfully in Welsh when query is cy and cookie has correct values', async () => {
+    //Given
+    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    //When
+    await testSession
+      .get(IS_CASE_READY_URL.replace(':id', claimId)).query({lang: 'cy'})
+      //Then
+      .expect((res: { status: unknown; text: unknown; }) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('A yw’r achos yn barod ar gyfer treial?');
       });
   });
 
@@ -48,7 +66,7 @@ describe('Is case ready - On GET', () => {
     app.locals.draftStoreClient = mockRedisFailure;
     //When
     await testSession
-      .get(IS_CASE_READY_URL.replace(':id', '1111'))
+      .get(IS_CASE_READY_URL.replace(':id', '1111')).query({lang: 'en'})
     //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(500);
@@ -60,6 +78,7 @@ describe('Is case ready - On GET', () => {
 describe('Is case ready - on POST', () => {
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   it('should display error when neither Yes nor No were selected', async () => {
 

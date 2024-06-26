@@ -8,6 +8,8 @@ import {
 import {DocumentType} from 'models/document/documentType';
 import {CaseDocumentInfoExtractor} from 'services/features/caseProgression/SystemDocumentInfoExtractor';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
+import {PaymentDetails} from 'models/PaymentDetails';
+import { getNumberOfDaysBetweenTwoDays } from 'common/utils/dateUtils';
 
 export class HearingLocation {
   value: {
@@ -44,18 +46,21 @@ export class CaseProgressionHearing {
   hearingTimeHourMinute?: string;
   hearingDuration?: HearingDuration;
   hearingFeeInformation?: HearingFeeInformation;
+  hearingFeePaymentDetails: PaymentDetails;
   constructor(hearingDocuments?: CaseProgressionHearingDocuments[],
     hearingLocation?: HearingLocation,
     hearingDate?: Date,
     hearingTimeHourMinute?: string,
     hearingDuration?: HearingDuration,
-    hearingFeeInformation?: HearingFeeInformation ) {
+    hearingFeeInformation?: HearingFeeInformation,
+    hearingFeePaymentDetails?: PaymentDetails) {
     this.hearingDocuments = hearingDocuments;
     this.hearingLocation = hearingLocation;
     this.hearingDate = hearingDate;
     this.hearingTimeHourMinute = hearingTimeHourMinute;
     this.hearingDuration = hearingDuration;
     this.hearingFeeInformation = hearingFeeInformation;
+    this.hearingFeePaymentDetails = hearingFeePaymentDetails;
   }
 
   getHearingTimeHourMinuteFormatted(): string {
@@ -69,5 +74,11 @@ export class CaseProgressionHearing {
 
   getHearingDurationFormatted(lng: string): string {
     return HearingDurationFormatter.formatHearingDuration(this.hearingDuration, lng);
+  }
+
+  getDurationOfDaysForHearing(): number {
+    if (this.hearingDate) {
+      return getNumberOfDaysBetweenTwoDays(new Date(), this.hearingDate);
+    }
   }
 }

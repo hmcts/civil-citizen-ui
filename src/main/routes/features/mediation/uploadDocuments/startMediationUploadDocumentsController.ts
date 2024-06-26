@@ -1,12 +1,13 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 import {
-  MEDIATION_TYPE_OF_DOCUMENTS, START_MEDIATION_UPLOAD_FILES,
+  CANCEL_URL,
+  MEDIATION_TYPE_OF_DOCUMENTS,
+  START_MEDIATION_UPLOAD_FILES,
 } from 'routes/urls';
-import {AppRequest} from 'models/AppRequest';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+import {getClaimById} from 'modules/utilityService';
 
 const startMediationUploadFileViewPath = 'features/common/static-page';
 const startMediationUploadDocumentsController = Router();
@@ -14,7 +15,6 @@ const MEDIATION_START_PAGE = 'PAGES.MEDIATION.START_PAGE.';
 const pageTitle = `${MEDIATION_START_PAGE}PAGE_TITLE`;
 
 const getContents = (claimId: string, claim: Claim) => {
-
   return new PageSectionBuilder()
     .addMainTitle(`${MEDIATION_START_PAGE}PAGE_TITLE`)
     .addLeadParagraph('COMMON.CASE_REFERENCE', {claimId: caseNumberPrettify(claimId)})
@@ -35,15 +35,17 @@ const getContents = (claimId: string, claim: Claim) => {
     .addTitle(`${MEDIATION_START_PAGE}BEFORE_YOU_UPLOAD_TITLE`)
     .addParagraph(`${MEDIATION_START_PAGE}BEFORE YOU UPLOAD`)
     .addParagraph(`${MEDIATION_START_PAGE}EACH_DOCUMENT_MUST`)
-    .addStartButton('COMMON.BUTTONS.START_NOW', MEDIATION_TYPE_OF_DOCUMENTS.replace(':id', claimId))
+    .addStartButtonWithLink('COMMON.BUTTONS.START_NOW', MEDIATION_TYPE_OF_DOCUMENTS.replace(':id', claimId),
+      CANCEL_URL
+        .replace(':id', claimId)
+        .replace(':propertyName', 'mediationUploadDocuments'))
     .build();
 };
 
 startMediationUploadDocumentsController.get(START_MEDIATION_UPLOAD_FILES, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const claim: Claim = await getCaseDataFromStore(redisKey);
+    const claim: Claim = await getClaimById(req.params.id, req, true);
     res.render(startMediationUploadFileViewPath, {pageTitle: pageTitle, contents: getContents(claimId, claim)});
   } catch (error) {
     next(error);

@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {RepaymentPlanForm} from 'common/form/models/repaymentPlan/repaymentPlanForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DateFormatter} from 'common/utils/dateFormatter';
@@ -7,7 +7,7 @@ import {
   getRepaymentPlanForm,
   saveRepaymentPlanData,
 } from 'services/features/response/repaymentPlan/repaymentPlanService';
-import {CITIZEN_REPAYMENT_PLAN_FULL_URL, RESPONSE_TASK_LIST_URL} from '../../../../../urls';
+import {CITIZEN_REPAYMENT_PLAN_FULL_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -26,7 +26,7 @@ export const getFirstPaymentExampleDate = () => {
   });
 };
 
-repaymentPlanFullAdmissionController.get(CITIZEN_REPAYMENT_PLAN_FULL_URL, async (req, res, next: NextFunction) => {
+repaymentPlanFullAdmissionController.get(CITIZEN_REPAYMENT_PLAN_FULL_URL, (async (req, res, next: NextFunction) => {
   try {
     const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
     const form = getRepaymentPlanForm(claim);
@@ -34,10 +34,10 @@ repaymentPlanFullAdmissionController.get(CITIZEN_REPAYMENT_PLAN_FULL_URL, async 
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 repaymentPlanFullAdmissionController.post(CITIZEN_REPAYMENT_PLAN_FULL_URL,
-  async (req: Request, res: Response, next: NextFunction) => {
+  (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const redisKey = generateRedisKey(<AppRequest>req);
       const claim = await getCaseDataFromStore(redisKey);
@@ -53,6 +53,6 @@ repaymentPlanFullAdmissionController.post(CITIZEN_REPAYMENT_PLAN_FULL_URL,
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
 export default repaymentPlanFullAdmissionController;

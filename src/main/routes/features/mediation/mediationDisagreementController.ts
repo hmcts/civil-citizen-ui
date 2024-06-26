@@ -1,19 +1,18 @@
-import {NextFunction, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   CAN_WE_USE_COMPANY_URL,
   CAN_WE_USE_URL,
   DONT_WANT_FREE_MEDIATION_URL,
   MEDIATION_DISAGREEMENT_URL,
 } from '../../urls';
-import {GenericForm} from '../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../common/form/models/genericYesNo';
-import {getMediation, saveMediation} from '../../../services/features/response/mediation/mediationService';
-import {constructResponseUrlWithIdParams} from '../../../common/utils/urlFormatter';
-import {YesNo} from '../../../common/form/models/yesNo';
-import {Claim} from '../../../common/models/claim';
-import {getCaseDataFromStore} from '../../../modules/draft-store/draftStoreService';
-import {PartyType} from '../../../common/models/partyType';
-import {CaseState} from '../../../common/form/models/claimDetails';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {getMediation, saveMediation} from 'services/features/response/mediation/mediationService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {YesNo} from 'form/models/yesNo';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {CaseState} from 'form/models/claimDetails';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -24,7 +23,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response, claimStatus:
   res.render(mediationDisagreementViewPath, {form, claimStatus});
 }
 
-mediationDisagreementController.get(MEDIATION_DISAGREEMENT_URL, async (req, res, next: NextFunction) => {
+mediationDisagreementController.get(MEDIATION_DISAGREEMENT_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
@@ -34,9 +33,9 @@ mediationDisagreementController.get(MEDIATION_DISAGREEMENT_URL, async (req, res,
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-mediationDisagreementController.post(MEDIATION_DISAGREEMENT_URL, async (req, res, next: NextFunction) => {
+mediationDisagreementController.post(MEDIATION_DISAGREEMENT_URL, (async (req, res, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
@@ -54,16 +53,16 @@ mediationDisagreementController.post(MEDIATION_DISAGREEMENT_URL, async (req, res
       if (req.body.option === YesNo.NO) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, DONT_WANT_FREE_MEDIATION_URL));
       } else {
-        if (claim.respondent1.type === PartyType.INDIVIDUAL || claim.respondent1.type === PartyType.SOLE_TRADER) {
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CAN_WE_USE_URL));
-        } else {
+        if (claim.isBusiness()) {
           res.redirect(constructResponseUrlWithIdParams(req.params.id, CAN_WE_USE_COMPANY_URL));
+        } else {
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, CAN_WE_USE_URL));
         }
       }
     }
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default mediationDisagreementController;

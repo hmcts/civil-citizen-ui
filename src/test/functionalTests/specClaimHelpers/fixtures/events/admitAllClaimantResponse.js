@@ -22,7 +22,7 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          unavailableDates: null,
+          
         },
         respondent1: {
           type: 'INDIVIDUAL',
@@ -40,7 +40,7 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          unavailableDates: null,
+
           flags: null,
         },
         respondent2: null,
@@ -110,7 +110,7 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          unavailableDates: null,
+          
         },
         respondent1: {
           type: 'INDIVIDUAL',
@@ -128,7 +128,7 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          unavailableDates: null,
+          
           flags: null,
         },
         respondent2: null,

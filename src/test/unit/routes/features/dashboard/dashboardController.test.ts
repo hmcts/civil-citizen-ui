@@ -4,6 +4,7 @@ import Module from 'module';
 import {DASHBOARD_URL} from '../../../../../main/routes/urls';
 import {CIVIL_SERVICE_CASES_URL} from '../../../../../main/app/client/civilServiceUrls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {OidcResponse} from '../../../../../main/app/auth/user/oidc';
 const nock = require('nock');
 
 const session = require('supertest-session');
@@ -15,6 +16,9 @@ jest.mock('../../../../../main/services/dashboard/draftClaimService');
 jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
+  getSessionIssueTime: jest.fn(() => 123),
+  getOidcResponse: jest.fn(async () => { return { id_token: '1',
+    access_token: '1'} as OidcResponse;}),
 }));
 
 export const USER_DETAILS = {
@@ -27,21 +31,6 @@ describe('Dashboard page', () => {
   const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
   const draftStoreUrl = config.get<string>('services.draftStore.legacy.url');
   const civilServiceUrl = config.get<string>('services.civilService.url');
-  nock(idamUrl)
-    .post('/o/token')
-    .reply(200, {id_token: citizenRoleToken});
-  nock(civilServiceUrl)
-    .post(CIVIL_SERVICE_CASES_URL)
-    .reply(200, {});
-  nock(serviceAuthProviderUrl)
-    .post('/lease')
-    .reply(200, {});
-  nock(draftStoreUrl)
-    .get('/drafts')
-    .reply(200, {});
-  nock(civilServiceUrl)
-    .get(CIVIL_SERVICE_CASES_URL + 'claimant/undefined?page=1')
-    .reply(200, {});
   beforeAll((done) => {
     testSession
       .get('/oauth2/callback')
@@ -53,6 +42,23 @@ describe('Dashboard page', () => {
         }
         return done();
       });
+  });
+  beforeEach(() => {
+    nock(idamUrl)
+      .post('/o/token')
+      .reply(200, {id_token: citizenRoleToken});
+    nock(civilServiceUrl)
+      .post(CIVIL_SERVICE_CASES_URL)
+      .reply(200, {});
+    nock(serviceAuthProviderUrl)
+      .post('/lease')
+      .reply(200, {});
+    nock(draftStoreUrl)
+      .get('/drafts')
+      .reply(200, {});
+    nock(civilServiceUrl)
+      .get(CIVIL_SERVICE_CASES_URL + 'claimant/undefined?page=1')
+      .reply(200, {});
   });
 
   describe('on GET', () => {

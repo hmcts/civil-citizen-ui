@@ -9,14 +9,15 @@ import config from 'config';
 import nock from 'nock';
 const session = require('supertest-session');
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {t} from 'i18next';
 import {mockCivilClaim, mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import civilClaimResponseFastTrackMock from '../../../../../utils/mocks/civilClaimResponseFastTrackMock.json';
+import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('services/features/caseProgression/trialArrangements/hearingDurationAndOtherInformation');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;
@@ -32,17 +33,33 @@ describe('Hearing duration & other info - On GET', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-
-  it('should render page successfully if cookie has correct values', async () => {
+  beforeEach(()=> {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+  });
+  it('should render page successfully in English if cookie has correct values', async () => {
     //Given
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
     //When
     await testSession
-      .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', claimId))
+      .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', claimId)).query({lang: 'en'})
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TITLE'));
+        expect(res.text).toContain('Finalise your trial arrangements');
+        expect(res.text).toContain('Other Information');
+      });
+  });
+
+  it('should render page successfully in Welsh if query is cy', async () => {
+    //Given
+    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    //When
+    await testSession
+      .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', claimId)).query({lang: 'cy'})
+      //Then
+      .expect((res: { status: unknown; text: unknown; }) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Cwblhau trefniadau eich treial');
         expect(res.text).toContain('Other Information');
       });
   });
@@ -52,7 +69,7 @@ describe('Hearing duration & other info - On GET', () => {
     app.locals.draftStoreClient = mockRedisFailure;
     //When
     await testSession
-      .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
+      .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111')).query({lang: 'en'})
       //Then
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(500);
@@ -65,6 +82,7 @@ describe('Hearing duration & other information - on POST', () => {
 
   beforeEach(() => {
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 
   it('should redirect when other information is filled in', async () => {

@@ -8,6 +8,7 @@ import nock from 'nock';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('modules/draft-store/draftStoreService');
@@ -25,6 +26,7 @@ describe('Claim TaskList page', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(CivilServiceClient.prototype, 'createDashboard').mockReturnValue(null);
   });
 
   describe('on GET', () => {

@@ -114,7 +114,7 @@ describe('test buildExportReportSection', ()=>{
     const claim = new Claim();
     claim.directionQuestionnaire = new DirectionQuestionnaire();
     claim.directionQuestionnaire.experts = new Experts();
-    claim.directionQuestionnaire.experts.expertReportDetails = new ExpertReportDetails(YesNo.YES,
+    claim.directionQuestionnaire.experts.expertReportDetails = new ExpertReportDetails(false, YesNo.YES,
       [new ReportDetail('John Smith', '2021', '1', '1')]);
 
     //When

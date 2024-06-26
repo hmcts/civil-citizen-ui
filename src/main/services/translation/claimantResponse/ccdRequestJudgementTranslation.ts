@@ -3,15 +3,19 @@ import { Claim } from 'common/models/claim';
 import { toCCDYesNo } from '../response/convertToCCDYesNo';
 import { calculateInterestToDate } from 'common/utils/interestUtils';
 import { CCDClaim } from 'common/models/civilClaimResponse';
-import { toCCDParty } from 'services/translation/response/convertToCCDParty';
-import { CCDRepaymentPlanFrequency } from 'models/ccdResponse/ccdRepaymentPlan';
-import { toCCDRepaymentPlanFrequency } from 'services/translation/response/convertToCCDRepaymentPlan';
-import { CCDClaimantPaymentOption } from 'models/ccdResponse/ccdClaimantPaymentOption';
-import { toCCDClaimantPaymentOption } from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
+import {toCCDParty} from 'services/translation/response/convertToCCDParty';
+import {CCDRepaymentPlanFrequency} from 'models/ccdResponse/ccdRepaymentPlan';
+import {toCCDRepaymentPlanFrequency} from 'services/translation/response/convertToCCDRepaymentPlan';
+import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
+import {toCCDClaimantPaymentOption} from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {CCDClaimantPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
 import {convertDateToStringFormat} from 'common/utils/dateUtils';
+import {convertToPence} from '../claim/moneyConversation';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
+import {toCCDDJPaymentFrequency} from '../response/convertToCCDDJPaymentFrequency';
+import {toCCDDJPaymentOption} from './convertToCCDDJPaymentOption';
 
 export interface ClaimantResponsePaymentPlanDetails {
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
@@ -91,5 +95,12 @@ export const translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD = 
     applicant1RequestedPaymentDateForDefendantSpec: {
       paymentSetDate: convertDateToStringFormat(claimantResponse.ccjRequest?.defendantPaymentDate?.date),
     },
+    partialPayment: toCCDYesNo(claimantResponse.ccjRequest?.paidAmount?.option),
+    partialPaymentAmount: claimantResponse.ccjRequest?.paidAmount?.option === YesNo.YES ? convertToPence(claimantResponse.ccjRequest?.paidAmount?.amount).toString() : undefined,
+    paymentTypeSelection: toCCDDJPaymentOption(claimantResponse.ccjRequest?.ccjPaymentOption?.type),
+    paymentSetDate: claimantResponse.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.BY_SET_DATE ? claimantResponse.ccjRequest?.defendantPaymentDate?.date : undefined,
+    repaymentFrequency: claimantResponse.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.INSTALMENTS ? toCCDDJPaymentFrequency(claimantResponse.ccjRequest?.repaymentPlanInstalments?.paymentFrequency) : undefined,
+    repaymentDue:claimantResponse.ccjRequest?.paidAmount?.option === YesNo.YES ? (claimantResponse.ccjRequest?.paidAmount?.totalAmount - claimantResponse.ccjRequest?.paidAmount?.amount).toString() : undefined,
+    repaymentSuggestion: claimantResponse.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.INSTALMENTS ? claimantResponse.ccjRequest?.repaymentPlanInstalments?.amount.toString() : undefined,
   };
 };

@@ -9,7 +9,7 @@
 {% from "../../macro/support-required.njk" import supportRequired %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.SUPPORT_REQUIRED.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.SUPPORT_REQUIRED.PAGE_TITLE') }}
 {% endblock %}
 
 {% set rowNumberToShowRemoveButton = 2 %}
@@ -27,12 +27,10 @@
   <div>
     {{ govukButton({
       text: t('PAGES.SUPPORT_REQUIRED.ADD_ANOTHER'),
-      classes: "govuk-button--secondary append-row"
+      classes: "govuk-button--secondary append-row",
+      type: "button"
     }) }}
   </div>
-{% endset %}
-{% set notificationHtml %}
- <span class="govuk-body">{{ t('PAGES.SUPPORT_REQUIRED.SUPPORT_REQUIREMENTS_MESSAGE')}}</span>
 {% endset %}
 {% block content %}
   <div class="govuk-width-container">
@@ -47,17 +45,11 @@
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
               <h1 class="govuk-fieldset__heading">{{ t('PAGES.SUPPORT_REQUIRED.TITLE') }}</h1>
             </legend>
-            {% if isDefendant %}
-             {{ govukNotificationBanner({
-              html:notificationHtml,
-              titleText: t('PAGES.SUPPORT_REQUIRED.SUPPORT_REQUIREMENTS_HEADING')
-              }) 
-            }}
-            {% endif %}
             {{ yesNoRadioButton(t, 'model[option]', 'option', '', form, '', {yesHtml: supportDetailsHtml, yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO'}) }}
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+                type: "submit"
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

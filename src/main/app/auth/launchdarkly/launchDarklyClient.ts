@@ -1,10 +1,5 @@
 import config from 'config';
-import { LDClient, init, LDFlagValue } from 'launchdarkly-node-server-sdk';
-
-const user = {
-  'name': 'civil-service',
-  'key': 'civil-service',
-};
+import {init, LDClient, LDFlagValue, LDUser} from 'launchdarkly-node-server-sdk';
 
 let ldClient: LDClient;
 
@@ -17,12 +12,29 @@ async function getClient(): Promise<void> {
   }
 }
 
+async function getUser(epoch: string): Promise<LDUser> {
+  const launchDarklyEnv = config.get<string>('services.launchDarkly.env');
+  let user: LDUser = {'name': 'civil-service', 'key': 'civil-service'};
+
+  if (launchDarklyEnv) {
+    user = {
+      'name': 'civil-service', 'key': 'civil-service',
+      'custom': {
+        environment: launchDarklyEnv,
+        timestamp: epoch || new Date().getMilliseconds(),
+      },
+    };
+
+  }
+  return user;
+}
+
 export async function getFlagValue(
-  key: string,
+  key: string, epoch?: string,
 ): Promise<LDFlagValue> {
   if (!ldClient) await getClient();
   if (ldClient)
-    return await ldClient.variation(key, user, false);
+    return await ldClient.variation(key, await getUser(epoch), false);
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
@@ -43,4 +55,23 @@ export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
 
 export async function isCARMEnabled(): Promise<boolean> {
   return await getFlagValue('carm') as boolean;
+}
+
+export async function isGaForLipsEnabled(): Promise<boolean> {
+  return await getFlagValue('GaForLips') as boolean;
+}
+
+export async function isMintiEnabled(): Promise<boolean> {
+  return await getFlagValue('minti') as boolean;
+}
+
+export async function isJudgmentOnlineLive(): Promise<boolean> {
+  return await getFlagValue('isJudgmentOnlineLive') as boolean;
+}
+
+export async function  isDashboardEnabledForCase(date: Date): Promise<boolean> {
+  const { DateTime } = require('luxon');
+  const systemTimeZone = DateTime.local().zoneName;
+  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
+  return await getFlagValue('is-dashboard-enabled-for-case', epoch) as boolean;
 }

@@ -5,6 +5,8 @@ import {EvidenceItem} from 'form/models/evidence/evidenceItem';
 import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 import {TableCell} from 'models/summaryList/summaryList';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {convertToEvidenceTypeToTranslationKey} from 'models/evidence/evidenceType';
+import {getLng} from 'common/utils/languageToggleUtils';
 
 export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[], lng: string): TableCell[][] => {
   return theirTOERows.map(row => {
@@ -16,10 +18,10 @@ export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[], lng: strin
   });
 };
 
-export const generateTableRowsForEvidence = (evidenceRows: EvidenceItem[]): TableCell[][] => {
+export const generateTableRowsForEvidence = (evidenceRows: EvidenceItem[], lng: string): TableCell[][] => {
   return evidenceRows.map(row => {
     return [{
-      text: row.type,
+      text: t(convertToEvidenceTypeToTranslationKey(row.type), {lng: getLng(lng)}),
     },
     {
       text: row.description,
@@ -38,7 +40,9 @@ const getResponseStatement = (name: string, text: string, amount?: number) => {
 };
 
 export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] => {
-  const theirTOERows = claim.partialAdmission?.timeline?.rows;
+  const theirTOERows = claim.isPartialAdmission()
+    ? claim.partialAdmission?.timeline?.rows
+    : claim.rejectAllOfClaim?.timeline?.rows;
   if (!theirTOERows?.length) {
     return [];
   }
@@ -67,7 +71,10 @@ export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] =
 };
 
 export const getDisagreementStatementWithTimeline = (claim: Claim, lng: string): ClaimSummarySection[] => {
-  if (!claim.partialAdmission?.timeline?.comment) {
+  const comment = claim.isPartialAdmission()
+    ? claim.partialAdmission?.timeline?.comment
+    : claim.rejectAllOfClaim?.timeline?.comment;
+  if (!comment) {
     return [];
   }
   return [
@@ -80,7 +87,7 @@ export const getDisagreementStatementWithTimeline = (claim: Claim, lng: string):
     {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
-        text: claim.partialAdmission?.timeline?.comment,
+        text: comment,
       },
     },
   ];
@@ -109,7 +116,7 @@ export const getTheirEvidence = (claim: Claim, lng: string): ClaimSummarySection
             text: t('COMMON.DESCRIPTION', {lng}),
           },
         ],
-        tableRows: generateTableRowsForEvidence(evidenceRows),
+        tableRows: generateTableRowsForEvidence(evidenceRows, lng),
       },
     },
   ];

@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {CONFIRMATION_URL, RESPONSE_CHECK_ANSWERS_URL, RESPONSE_INCOMPLETE_SUBMISSION_URL} from '../../urls';
 import {
   getStatementOfTruth,
@@ -33,7 +33,7 @@ function renderView(req: Request, res: Response, form: GenericForm<StatementOfTr
 checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
   [AllResponseTasksCompletedGuard.apply(RESPONSE_INCOMPLETE_SUBMISSION_URL),
     isFirstTimeInPCQ],
-  async (req: Request, res: Response, next: NextFunction) => {
+  (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
       const carmApplicable = await isCarmEnabledForCase(claim.submittedDate);
@@ -42,9 +42,9 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
     } catch (error) {
       next(error);
     }
-  });
+  }) as RequestHandler);
 
-checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: Request, res: Response, next: NextFunction) => {
+checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const isFullAmountRejected = (req.body.isFullAmountRejected === 'true');
     const redisKey = generateRedisKey(<AppRequest>req);
@@ -64,7 +64,7 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, async (req: Request, res
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default checkAnswersController;
 

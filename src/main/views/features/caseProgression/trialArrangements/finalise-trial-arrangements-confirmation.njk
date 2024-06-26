@@ -9,7 +9,7 @@
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.PAGE_TITLE') }}
 {% endblock %}
 
 {% set titleTextContent %}
@@ -31,7 +31,7 @@
       {% endfor %}
       <div class="govuk-form-group">
         {{ govukButton({
-          text: t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.RETURN_TO_CASE_DETAILS'),
+          text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW'),
           href: latestUpdateUrl
         }) }}
       </div>

@@ -8,7 +8,7 @@
 {% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle('PAGES.CHECK_YOUR_ANSWER.TITLE') }}
+  {{ setPageTitle(t, 'PAGES.CHECK_YOUR_ANSWER.TITLE') }}
 {% endblock %}
 
 {% set labelHtml = t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX')

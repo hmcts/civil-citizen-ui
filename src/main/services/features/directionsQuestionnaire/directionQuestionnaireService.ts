@@ -4,6 +4,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {DirectionQuestionnaireErrorMessages} from 'form/models/directionQuestionnaireErrorMessages';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {ConfirmYourDetailsEvidence} from 'form/models/confirmYourDetailsEvidence';
+import {getGenericOptionForm} from 'services/genericForm/genericFormService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('directionQuestionnaireService');
@@ -33,7 +34,7 @@ const getGenericOption = async (claimId: string, directionQuestionnairePropertyN
     } else if (!parentPropertyName && directionQuestionnaire[directionQuestionnairePropertyName]) {
       return directionQuestionnaire[directionQuestionnairePropertyName];
     } else {
-      return new GenericYesNo(undefined, getDirectionQuestionnaireErrorMessage(directionQuestionnairePropertyName));
+      return getGenericOptionForm(undefined,directionQuestionnairePropertyName,DirectionQuestionnaireErrorMessages);
     }
   } catch (error) {
     logger.error(error);
@@ -41,8 +42,8 @@ const getGenericOption = async (claimId: string, directionQuestionnairePropertyN
   }
 };
 
-const getGenericOptionForm = (option: string, propertyName: string): GenericYesNo => {
-  return new GenericYesNo(option, getDirectionQuestionnaireErrorMessage(propertyName));
+const getGenericOptionFormDirectionQuestionnaire = (option: string, propertyName: string): GenericYesNo => {
+  return getGenericOptionForm(option,propertyName,DirectionQuestionnaireErrorMessages);
 };
 
 const getConfirmYourDetailsEvidenceForm = (body: any): ConfirmYourDetailsEvidence => {
@@ -86,12 +87,6 @@ const saveDirectionQuestionnaire = async (claimId: string, value: any, direction
   }
 };
 
-const getDirectionQuestionnaireErrorMessage = (propertyName: string): string => {
-  return (DirectionQuestionnaireErrorMessages[propertyName as keyof typeof DirectionQuestionnaireErrorMessages]) ?
-    DirectionQuestionnaireErrorMessages[propertyName as keyof typeof DirectionQuestionnaireErrorMessages] :
-    undefined;
-};
-
 const getConfirmYourDetailsEvidence = async (claimId: string, directionQuestionnairePropertyName: string, parentPropertyName?: string): Promise<ConfirmYourDetailsEvidence> => {
   try {
     const claim = await getCaseDataFromStore(claimId);
@@ -113,7 +108,7 @@ export {
   getDirectionQuestionnaire,
   saveDirectionQuestionnaire,
   getGenericOption,
-  getGenericOptionForm,
+  getGenericOptionFormDirectionQuestionnaire,
   getConfirmYourDetailsEvidence,
   getConfirmYourDetailsEvidenceForm,
 };

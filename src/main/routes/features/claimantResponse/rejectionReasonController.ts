@@ -17,7 +17,7 @@ const rejectionReasonController = Router();
 rejectionReasonController.get(CLAIMANT_RESPONSE_REJECTION_REASON_URL, async (req, res, next: NextFunction) => {
   try {
     const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
-    const courtProposedPlanDecision = claimantResponse.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN ? CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN : '';
+    const courtProposedPlanDecision = claimantResponse.isRequestJudgePaymentPlan ? CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN : '';
     const rejectionReason = claimantResponse ?
       claimantResponse.rejectionReason : new RejectionReason();
     res.render(claimantRejectionReasonPath, {form: new GenericForm(rejectionReason), courtProposedPlanDecision: courtProposedPlanDecision});
@@ -33,7 +33,7 @@ rejectionReasonController.post(CLAIMANT_RESPONSE_REJECTION_REASON_URL, async (re
   await form.validate();
   if (form.hasErrors()) {
     const claimantResponse = await getClaimantResponse(redisKey);
-    const courtProposedPlanDecision = claimantResponse.courtProposedPlan?.decision === CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN ? CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN : '';
+    const courtProposedPlanDecision = claimantResponse.isRequestJudgePaymentPlan ? CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN : '';
     res.render(claimantRejectionReasonPath, { form, courtProposedPlanDecision: courtProposedPlanDecision });
   } else {
     try {

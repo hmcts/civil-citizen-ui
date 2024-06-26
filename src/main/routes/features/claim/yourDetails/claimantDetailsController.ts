@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   CLAIMANT_COMPANY_DETAILS_URL,
   CLAIMANT_DOB_URL,
@@ -47,7 +47,7 @@ function renderPage(res: Response, req: Request, claimantDetails: GenericForm<Pa
   }
 }
 
-claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response, next: NextFunction) => {
+claimantDetailsController.get(detailsURLs, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
     const claimant: Party = await getClaimantInformation(caseId);
@@ -58,9 +58,9 @@ claimantDetailsController.get(detailsURLs, async (req: AppRequest, res: Response
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+claimantDetailsController.post(detailsURLs, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   const caseId = (<AppRequest>req).session?.user?.id;
   const claim: Claim = await getCaseDataFromStore(caseId);
   const carmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
@@ -86,6 +86,6 @@ claimantDetailsController.post(detailsURLs, async (req: AppRequest | Request, re
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default claimantDetailsController;

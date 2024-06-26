@@ -110,8 +110,8 @@ describe('PageSectionBuilder tests', ()=> {
 
   it('should addLink with just text', ()=> {
     //Given
-    const textAfterUnd: any = undefined;
-    const textBeforeUnd: any = undefined;
+    const textAfterUnd: string = undefined;
+    const textBeforeUnd: string = undefined;
     const contactLinkExpected = ({
       type: ClaimSummaryType.LINK,
       data: {
@@ -134,8 +134,8 @@ describe('PageSectionBuilder tests', ()=> {
 
   it('should open the link in external window with just text', () => {
     //Given
-    const textAfterUnd: any = undefined;
-    const textBeforeUnd: any = undefined;
+    const textAfterUnd: string = undefined;
+    const textBeforeUnd: string = undefined;
     const contactLinkExpected = ({
       type: ClaimSummaryType.LINK,
       data: {
@@ -272,5 +272,44 @@ describe('PageSectionBuilder tests', ()=> {
 
     //Then
     expect(buttonWithCancelLinkResult).toEqual([buttonWithCancelLinkExpected]);
+  });
+
+  it('should add Warning', ()=> {
+    //Given
+    const addWarningResultExpected = ({
+      type: ClaimSummaryType.WARNING,
+      data: {
+        text: 'text',
+        variables: 'variables',
+      },
+    });
+    //When
+    const addWarningResult = new PageSectionBuilder()
+      .addWarning('text', 'variables')
+      .build();
+
+    //Then
+    expect(addWarningResult).toEqual([addWarningResultExpected]);
+  });
+
+  it('should add button with cancel link', ()=> {
+    //Given
+    const buttonExpected = ({
+      type: ClaimSummaryType.BUTTON_WITH_CANCEL_LINK,
+      data: {
+        text: 'text',
+        href: 'href',
+        isStartButton: false,
+        cancelHref: 'cancelHref',
+      },
+    });
+
+    //When
+    const buttonBuilt = new PageSectionBuilder()
+      .addButtonWithCancelLink(buttonExpected.data.text,buttonExpected.data.href, false, buttonExpected.data.cancelHref )
+      .build();
+
+    //Then
+    expect(buttonBuilt).toEqual([buttonExpected]);
   });
 });

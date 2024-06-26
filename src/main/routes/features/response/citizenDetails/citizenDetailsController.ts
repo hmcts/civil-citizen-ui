@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {Party} from 'models/party';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -42,16 +42,14 @@ function renderPage(res: Response, req: Request, partyDetails: GenericForm<Party
 const redirect = (respondent: Party, req: Request, res: Response) => {
   if (respondent?.type === PartyType.INDIVIDUAL) {
     res.redirect(constructResponseUrlWithIdParams(req.params.id, DOB_URL));
+  } else if (respondent?.partyPhone && respondent?.partyPhone?.ccdPhoneExist) {
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
   } else {
-    if (respondent?.partyPhone && respondent?.partyPhone?.ccdPhoneExist) {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
-    } else {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
-    }
+    res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PHONE_NUMBER_URL));
   }
 };
 
-citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
+citizenDetailsController.get(CITIZEN_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
@@ -63,9 +61,9 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, async (req: Request, res: Resp
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Response, next: NextFunction) => {
+citizenDetailsController.post(CITIZEN_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
@@ -91,6 +89,6 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, async (req: Request, res: Res
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default citizenDetailsController;

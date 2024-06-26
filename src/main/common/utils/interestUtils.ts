@@ -15,7 +15,7 @@ export const getInterestDetails = (claim: Claim) => {
   const interestToDate = getInterestToDate(claim);
   const numberOfDays = getNumberOfDaysBetweenTwoDays(interestFromDate, interestToDate);
   const rate = getInterestRate(claim);
-  const interest = claim?.totalInterest;
+  const interest = calculateInterestToDate(claim);
 
   return {interestFromDate, interestToDate, numberOfDays, interest, rate};
 };
@@ -28,14 +28,15 @@ function getInterestToDate(claim: Claim) {
   return interestToDate;
 }
 
-export function getInterestDateOrIssueDate(claim: Claim) {
+export function getInterestDateOrIssueDate(claim: Claim) : Date | string {
   let interestFromDate = claim?.issueDate;
   if (claim.isInterestFromClaimSubmitDate()) {
     interestFromDate = claim.submittedDate;
   } else if (claim.isInterestFromASpecificDate()) {
     interestFromDate = claim.interest?.interestStartDate.date;
   }
-  return interestFromDate;
+  
+  return interestFromDate ? new Date(interestFromDate).toISOString() : undefined;
 }
 
 export function getInterestRate(claim: Claim): number {
@@ -74,10 +75,11 @@ export const calculateInterest = (amount: number, interest: number, startDate: D
 };
 
 export const getInterestData = (claim: Claim, lang: string) => {
-  const interestStartDate = formatDateToFullDate(getInterestStartDate(claim), getLng(lang));
-  const interestEndDate = formatDateToFullDate(new Date());
-  const numberOfDays = getNumberOfDaysBetweenTwoDays(interestStartDate, interestEndDate);
-  const interestToDate = calculateInterestToDate(claim);
+  const interestStrtDate = getInterestStartDate(claim);
+  const interestStartDate = formatDateToFullDate(interestStrtDate, getLng(lang));
+  const interestEndDate = formatDateToFullDate(new Date(), getLng(lang));
+  const numberOfDays = getNumberOfDaysBetweenTwoDays(interestStrtDate, new Date());
+  const interestToDate = calculateInterestToDate(claim).toFixed(2);
   const interestRate = getInterestRate(claim);
   const isBreakDownInterest = claim.isInterestClaimOptionsBreakDownInterest();
   const howInterestIsCalculatedReason = isBreakDownInterest ? claim.getHowTheInterestCalculatedReason() : undefined;

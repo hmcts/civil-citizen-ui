@@ -1,11 +1,12 @@
 import {NextFunction, Router} from 'express';
-import { AddressInfoResponse } from '@hmcts/os-places-client';
-import {POSTCODE_LOOKUP_URL} from '../../../urls';
-import { getOSPlacesClientInstance } from 'modules/ordance-survey-key/ordanceSurveyKey';
+import {AddressInfoResponse} from '@hmcts/os-places-client';
+import {POSTCODE_LOOKUP_URL} from 'routes/urls';
+import {getOSPlacesClientInstance} from 'modules/ordance-survey-key/ordanceSurveyKey';
 
 export default Router()
   .get(POSTCODE_LOOKUP_URL, (req, res, next: NextFunction) => {
-    if (!req.query.postcode || !req.query.postcode.toString().trim()) {
+    const postcode = <string>req.query?.postcode;
+    if (!postcode || postcode.trim().length === 0) {
       return res.status(400).json({
         error: {
           status: 400,

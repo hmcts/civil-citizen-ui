@@ -8,6 +8,8 @@ import nock from 'nock';
 import config from 'config';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Party} from '../../../../../../main/common/models/party';
+import {CaseRole} from 'form/models/caseRoles';
+import {CivilClaimResponse} from 'models/civilClaimResponse';
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/translation/response/ccdTranslation');
@@ -22,12 +24,16 @@ describe('Submit response to ccd', ()=>{
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   const claim = new Claim();
   claim.respondent1 = new Party();
-  const claimFromService = new Claim();
-  claimFromService.respondent1 = new Party();
+  const claimFromService = new CivilClaimResponse('123', {});
+
   beforeEach(() => {
     nock(citizenBaseUrl)
       .get('/cases/1')
       .reply(200, claimFromService);
+
+    nock(citizenBaseUrl)
+      .get('/cases/1/userCaseRoles')
+      .reply(200, [CaseRole.DEFENDANT]);
   });
   it('should submit response successfully when there are no errors', async ()=> {
     //Given

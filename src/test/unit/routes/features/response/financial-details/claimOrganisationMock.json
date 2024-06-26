@@ -64,8 +64,8 @@
       "type": "INDIVIDUAL",
       "partyTypeDisplayValue": "Individual",
       "partyDetails": {
-        "individualFirstName": "John",
-        "individualLastName": "Doe",
+        "firstName": "John",
+        "lastName": "Doe",
         "primaryAddress": {
           "postCode": "CB1 3AX",
           "addressLine1": "100 Ross Street"

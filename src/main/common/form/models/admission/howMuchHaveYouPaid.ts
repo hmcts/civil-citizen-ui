@@ -1,10 +1,9 @@
-import {IsDate, IsDefined, IsNotEmpty, IsNumber, Max, Min, Validate, ValidateIf} from 'class-validator';
+import {IsDate, IsDefined, IsNotEmpty, IsNumber,Min, Validate, ValidateIf} from 'class-validator';
 import {MIN_AMOUNT_VALUE} from '../../validators/validationConstraints';
 import {EqualToOrLessThanPropertyValueValidator} from '../../validators/equalToOrLessThanPropertyValueValidator';
-import {OptionalDateFourDigitValidator} from '../../validators/optionalDateFourDigitValidator';
 import {OptionalDateInPastValidator} from '../../validators/optionalDateInPastValidator';
 import {DateConverter} from '../../../utils/dateConverter';
-import {toNumberOrUndefined} from '../../../utils/numberConverter';
+import { BaseDate } from './fullAdmission/baseDate';
 
 export interface HowMuchHaveYouPaidParams {
   amount?: number;
@@ -15,7 +14,7 @@ export interface HowMuchHaveYouPaidParams {
   text?: string;
 }
 
-export class HowMuchHaveYouPaid {
+export class HowMuchHaveYouPaid extends BaseDate {
 
   @IsDefined({message: 'ERRORS.VALID_AMOUNT'})
   @Min(MIN_AMOUNT_VALUE, {message: 'ERRORS.VALID_AMOUNT'})
@@ -30,28 +29,14 @@ export class HowMuchHaveYouPaid {
   @Validate(OptionalDateInPastValidator, {message: 'ERRORS.VALID_DATE_IN_PAST'})
     date?: Date;
 
-  @Min(1, {message: 'ERRORS.VALID_DAY'})
-  @Max(31, {message: 'ERRORS.VALID_DAY'})
-    day: number;
-
-  @Min(1, {message: 'ERRORS.VALID_MONTH'})
-  @Max(12, {message: 'ERRORS.VALID_MONTH'})
-    month: number;
-
-  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
-  @Max(9999, {message: 'ERRORS.VALID_YEAR'})
-    year: number;
-
   @IsNotEmpty({message: 'ERRORS.ENTER_PAYMENT_EXPLANATION'})
     text?: string;
 
   constructor(howMuchHaveYouPaidParams?: HowMuchHaveYouPaidParams) {
+    super(howMuchHaveYouPaidParams?.year, howMuchHaveYouPaidParams?.month, howMuchHaveYouPaidParams?.day);
     this.amount = howMuchHaveYouPaidParams?.amount;
     this.totalClaimAmount = howMuchHaveYouPaidParams?.totalClaimAmount;
     this.date = DateConverter.convertToDate(howMuchHaveYouPaidParams?.year, howMuchHaveYouPaidParams?.month, howMuchHaveYouPaidParams?.day);
-    this.year = toNumberOrUndefined(howMuchHaveYouPaidParams?.year);
-    this.month = toNumberOrUndefined(howMuchHaveYouPaidParams?.month);
-    this.day = toNumberOrUndefined(howMuchHaveYouPaidParams?.day);
     this.text = howMuchHaveYouPaidParams?.text;
   }
 }

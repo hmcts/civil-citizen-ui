@@ -1,15 +1,15 @@
-import {NextFunction, Response, Router} from 'express';
-import {WhyDoYouDisagree} from '../../../../../common/form/models/admission/partialAdmission/whyDoYouDisagree';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {WhyDoYouDisagree} from 'form/models/admission/partialAdmission/whyDoYouDisagree';
 import {
   getWhyDoYouDisagreeForm,
   saveWhyDoYouDisagreeData,
-} from '../../../../../services/features/response/admission/whyDoYouDisagreeService';
-import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL, RESPONSE_TASK_LIST_URL} from '../../../../urls';
-import {WhyDoYouDisagreeForm} from '../../../../../common/models/whyDoYouDisagreeForm';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {ResponseType} from '../../../../../common/form/models/responseType';
-import {PartAdmitHowMuchHaveYouPaidGuard} from '../../../../../routes/guards/partAdmitHowMuchHaveYouPaidGuard';
+} from 'services/features/response/admission/whyDoYouDisagreeService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {WhyDoYouDisagreeForm} from 'models/whyDoYouDisagreeForm';
+import {GenericForm} from 'form/models/genericForm';
+import {ResponseType} from 'form/models/responseType';
+import {PartAdmitHowMuchHaveYouPaidGuard} from 'routes/guards/partAdmitHowMuchHaveYouPaidGuard';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
@@ -21,7 +21,7 @@ function renderView(form: GenericForm<WhyDoYouDisagree>, _claimAmount: number, r
   res.render(whyDoYouDisagreeViewPath, {form, claimAmount: _claimAmount});
 }
 
-whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL), async (req, res, next: NextFunction) => {
+whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL), (async (req, res, next: NextFunction) => {
   try {
     const form = await getWhyDoYouDisagreeForm(generateRedisKey(<AppRequest>req), ResponseType.PART_ADMISSION);
     claimAmount = form.claimAmount;
@@ -29,9 +29,9 @@ whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, PartAdmitHowMuch
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
-whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res, next: NextFunction) => {
+whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, (async (req, res, next: NextFunction) => {
   const whyDoYouDisagree = new WhyDoYouDisagree(req.body.text);
   const whyDoYouDisagreeForm = new WhyDoYouDisagreeForm();
   whyDoYouDisagreeForm.claimAmount = claimAmount;
@@ -48,6 +48,6 @@ whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, async (req, res
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default whyDoYouDisagreeController;

@@ -33,6 +33,7 @@ import {InterestClaimOptionsType} from 'common/form/models/claim/interest/intere
 import {TotalInterest} from 'common/form/models/interest/totalInterest';
 import {InterestStartDate} from 'common/form/models/interest/interestStartDate';
 import {outstandingTasksFromCase} from 'services/features/claim/taskListService';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
 
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -139,6 +140,7 @@ describe('Claim Task List service', () => {
       caseData.respondent1 = new Party();
       caseData.applicant1 = new Party();
       caseData.respondent1.type = PartyType.COMPANY;
+      caseData.delayedFlight = new GenericYesNo(YesNo.NO);
       caseData.applicant1.type = PartyType.COMPANY;
       caseData.respondent1.partyDetails = new PartyDetails({
         partyName: 'Test Company',
@@ -184,11 +186,11 @@ describe('Claim Task List service', () => {
       caseData.applicant1.type = PartyType.INDIVIDUAL;
       caseData.claimInterest = YesNo.YES;
       caseData.respondent1.partyDetails = new PartyDetails({
-        individualFirstName: 'Test Company',
+        firstName: 'Test Company',
         primaryAddress: 'test',
       });
       caseData.applicant1.partyDetails = new PartyDetails({
-        individualFirstName: 'Test Company',
+        firstName: 'Test Company',
         primaryAddress: 'test',
       });
       caseData.respondent1.dateOfBirth = new CitizenDate();
@@ -233,11 +235,11 @@ describe('Claim Task List service', () => {
       caseData.respondent1.type = PartyType.INDIVIDUAL;
       caseData.applicant1.type = PartyType.INDIVIDUAL;
       caseData.respondent1.partyDetails = new PartyDetails({
-        individualFirstName: 'Test Company',
+        firstName: 'Test Company',
         primaryAddress: 'test',
       });
       caseData.applicant1.partyDetails = new PartyDetails({
-        individualFirstName: 'Test Company',
+        firstName: 'Test Company',
         primaryAddress: 'test',
       });
       caseData.respondent1.dateOfBirth = new CitizenDate();
@@ -286,11 +288,11 @@ describe('Claim Task List service', () => {
       caseData.respondent1.type = PartyType.INDIVIDUAL;
       caseData.applicant1.type = PartyType.INDIVIDUAL;
       caseData.respondent1.partyDetails = new PartyDetails({
-        individualFirstName: 'Test Company',
+        firstName: 'Test Company',
         primaryAddress: 'test',
       });
       caseData.applicant1.partyDetails = new PartyDetails({
-        individualFirstName: 'Test Company',
+        firstName: 'Test Company',
         primaryAddress: 'test',
       });
       caseData.respondent1.dateOfBirth = new CitizenDate();
