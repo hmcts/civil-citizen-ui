@@ -13,6 +13,7 @@ import { getRespondToApplicationCaption, saveRespondentStatementOfTruth } from '
 import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
 import { getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
+import { submitApplicationResponse } from 'services/features/generalApplication/response/submitApplicationResponse';
 
 const gaCheckAnswersResponseController = Router();
 const viewPath = 'features/generalApplication/response/check-answers';
@@ -60,6 +61,7 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
     } else {
       const redisKey = generateRedisKeyForGA(req);
       await saveRespondentStatementOfTruth(redisKey, statementOfTruth);
+      await submitApplicationResponse(req);
       res.redirect('test'); // TODO: correct URL      
     }
   } catch (error) {
