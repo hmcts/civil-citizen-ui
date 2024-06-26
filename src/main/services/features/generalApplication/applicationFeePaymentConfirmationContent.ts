@@ -12,8 +12,7 @@ export const getGaPaymentSuccessfulPanelContent = (claim: Claim, lng?: string) =
   if (isApplicationSubmittedWithoutFee(claim.generalApplication.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option, claim.caseProgressionHearing)) {
     panelBuilder.addPanelForConfirmation('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.APPLICATION_SUBMITTED', lng);
   } else {
-    // dynamic value will be added as part of story CIV-13767
-    panelBuilder.addPanel('REF-123-123', lng);
+    panelBuilder.addPanel(claim.generalApplication?.applicationFeePaymentDetails?.paymentReference, lng);
   }
   return panelBuilder.build();
 };
