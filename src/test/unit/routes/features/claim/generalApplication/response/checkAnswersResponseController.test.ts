@@ -16,10 +16,13 @@ import { TestMessages } from '../../../../../../utils/errorMessageTestConstants'
 import { StatementOfTruthForm } from 'common/models/generalApplication/statementOfTruthForm';
 import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import { submitApplicationResponse } from 'services/features/generalApplication/response/submitApplicationResponse';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../../main/services/features/generalApplication/response/submitApplicationResponse');
+
 jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
@@ -27,6 +30,7 @@ jest.mock('../../../../../../../main/services/features/generalApplication/respon
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockGenerateRedisKey = generateRedisKeyForGA as jest.Mock;
+const mockSubmitApplicationResponse = submitApplicationResponse as jest.Mock;
 
 describe('General application - response - check your answers', () => {
 
@@ -37,8 +41,10 @@ describe('General application - response - check your answers', () => {
       .reply(200, {id_token: config.get('citizenRoleToken')});
     jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
-
+    mockSubmitApplicationResponse.mockResolvedValue(undefined);
   });
+
+  afterAll(() => jest.clearAllMocks());
 
   describe('on GET', () => {
 
