@@ -3,6 +3,7 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {
+  DQ_DISCLOSURE_OF_DOCUMENTS_URL,
   REASON_FOR_FRC_BAND_URL,
 } from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
@@ -97,7 +98,7 @@ describe('Reasons for choosing complexity band Controller', () => {
         .send({reasonsForBandSelection: 'test'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe('todo');
+          expect(res.get('location')).toBe(DQ_DISCLOSURE_OF_DOCUMENTS_URL);
         });
     });
 

@@ -1,6 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
+  BACK_URL, DQ_DISCLOSURE_OF_DOCUMENTS_URL,
   REASON_FOR_FRC_BAND_URL,
 } from 'routes/urls';
 import {
@@ -30,8 +31,7 @@ function renderView(complexityBand: GenericForm<ReasonForComplexityBand>, lang: 
     complexityBandOptions: ComplexityBandOptions,
     pageTitle: `${COMPLEXITY_BAND_REASON_PAGE}PAGE_TITLE`,
     title: `${COMPLEXITY_BAND_REASON_PAGE}TITLE`,
-    //TODO ADD THE BACK URL
-    backLinkUrl: constructResponseUrlWithIdParams('claimId', 'todo'),
+    backLinkUrl: BACK_URL,
   });
 }
 
@@ -55,8 +55,7 @@ reasonForComplexityBandController.post(REASON_FOR_FRC_BAND_URL, (async (req: Req
       req.body.reasonsForBandSelection,
       'reasonsForBandSelection',
       'fixedRecoverableCosts');
-    //TODO REDIRECTION URL
-    res.redirect(constructResponseUrlWithIdParams(claimId, 'todo'));
+    res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DISCLOSURE_OF_DOCUMENTS_URL));
   } catch (error) {
     next(error);
   }

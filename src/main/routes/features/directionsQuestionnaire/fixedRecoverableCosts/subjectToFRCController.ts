@@ -1,7 +1,8 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
-  SUBJECT_TO_FRC_URL,
+  BACK_URL, FRC_BAND_AGREED_URL,
+  SUBJECT_TO_FRC_URL, WHY_NOT_SUBJECT_TO_FRC_URL,
 } from 'routes/urls';
 import {
   getDirectionQuestionnaire,
@@ -12,6 +13,7 @@ import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {getWhatAreFixedRecoverableCostsContent} from 'services/commons/detailContents';
+import {YesNo} from 'form/models/yesNo';
 
 const subjectToFRCController = Router();
 const subjectToFRCViewPath = 'features/directionsQuestionnaire/fixedRecoverableCosts/subject-to-frc';
@@ -26,7 +28,7 @@ function renderView(subjectToFRC: GenericForm<GenericYesNo>, claimId: string, re
     buttonTitle: `${SUBJECT_TO_FRC_PAGE}BUTTON_TITLE`,
     pageTitle: `${SUBJECT_TO_FRC_PAGE}PAGE_TITLE`,
     title: `${SUBJECT_TO_FRC_PAGE}TITLE`,
-    backLinkUrl: constructResponseUrlWithIdParams(claimId, 'todo'),
+    backLinkUrl: BACK_URL,
   });
 }
 
@@ -55,8 +57,8 @@ subjectToFRCController.post(SUBJECT_TO_FRC_URL, (async (req: Request, res: Respo
         subjectToFRCForm.model,
         'subjectToFrc',
         'fixedRecoverableCosts');
-      //TODO add the url.
-      res.redirect(constructResponseUrlWithIdParams(claimId, 'todo'));
+      const redirectUrl = req.body.option === YesNo.YES ? FRC_BAND_AGREED_URL : WHY_NOT_SUBJECT_TO_FRC_URL;
+      res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
     }
 
   } catch (error) {

@@ -2,7 +2,7 @@ import {RequestHandler, Response, Router} from 'express';
 import {
   DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL,
   DQ_DISCLOSURE_OF_DOCUMENTS_URL,
-  DQ_REQUEST_EXTRA_4WEEKS_URL,
+  DQ_REQUEST_EXTRA_4WEEKS_URL, SUBJECT_TO_FRC_URL,
 } from '../../urls';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
@@ -14,8 +14,8 @@ import {
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
-import {isMultiTrack} from 'form/models/claimType';
-import {isMintiEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isIntermediateTrack, isMultiTrack} from 'form/models/claimType';
+import {isMintiEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const requestExtra4WeeksController = Router();
 const dqPropertyName = 'requestExtra4weeks';
@@ -45,8 +45,10 @@ requestExtra4WeeksController.post(DQ_REQUEST_EXTRA_4WEEKS_URL, (async (req, res,
       await saveDirectionQuestionnaire(generateRedisKey(<AppRequest>req), form.model, dqPropertyName, dqParentName);
       const redisKey = generateRedisKey(<AppRequest>req);
       const claim = await getCaseDataFromStore(redisKey);
-      const mintiFlag = await isMintiEnabled();
-      if (isMultiTrack(claim.totalClaimAmount, mintiFlag)) {
+      const mintiFlag = await isMintiEnabledForCase(claim.submittedDate);
+      if (isIntermediateTrack(claim.totalClaimAmount, mintiFlag)) {
+        res.redirect(constructResponseUrlWithIdParams(claimId, SUBJECT_TO_FRC_URL));
+      } else if (isMultiTrack(claim.totalClaimAmount, mintiFlag)) {
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DISCLOSURE_OF_DOCUMENTS_URL));
       } else {
         res.redirect(constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL));

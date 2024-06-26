@@ -1,6 +1,8 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
+  ASSIGN_FRC_BAND_URL,
+  BACK_URL,
   FRC_BAND_AGREED_URL,
 } from 'routes/urls';
 import {
@@ -26,7 +28,7 @@ function renderView(subjectToFRC: GenericForm<GenericYesNo>, claimId: string, re
     buttonTitle: `${FRC_BAND_AGREED_PAGE}BUTTON_TITLE`,
     pageTitle: `${FRC_BAND_AGREED_PAGE}PAGE_TITLE`,
     title: `${FRC_BAND_AGREED_PAGE}TITLE`,
-    backLinkUrl: constructResponseUrlWithIdParams(claimId, 'todo'),
+    backLinkUrl: BACK_URL,
   });
 }
 
@@ -55,8 +57,7 @@ frcBandAgreedController.post(FRC_BAND_AGREED_URL, (async (req: Request, res: Res
         frcBandAgreedForm.model,
         'frcBandAgreed',
         'fixedRecoverableCosts');
-      //TODO add the url.
-      res.redirect(constructResponseUrlWithIdParams(claimId, 'todo'));
+      res.redirect(constructResponseUrlWithIdParams(claimId, ASSIGN_FRC_BAND_URL));
     }
 
   } catch (error) {

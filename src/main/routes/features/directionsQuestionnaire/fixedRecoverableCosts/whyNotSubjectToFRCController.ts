@@ -1,6 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {
+  BACK_URL, DQ_DISCLOSURE_OF_DOCUMENTS_URL,
   WHY_NOT_SUBJECT_TO_FRC_URL,
 } from 'routes/urls';
 import {
@@ -22,8 +23,7 @@ function renderView(complexityBand: GenericForm<ReasonForNotSubjectToFrc>, lang:
     form,
     pageTitle: `${WHY_NOT_SUBJECT_TO_FRC_PAGE}PAGE_TITLE`,
     title: `${WHY_NOT_SUBJECT_TO_FRC_PAGE}TITLE`,
-    //TODO ADD THE BACK URL
-    backLinkUrl: constructResponseUrlWithIdParams('claimId', 'todo'),
+    backLinkUrl: BACK_URL,
   });
 }
 
@@ -47,8 +47,7 @@ whyNotSubjectToFRCController.post(WHY_NOT_SUBJECT_TO_FRC_URL, (async (req: Reque
       req.body.reasonsForNotSubjectToFrc,
       'reasonsForNotSubjectToFrc',
       'fixedRecoverableCosts');
-    //TODO REDIRECTION URL
-    res.redirect(constructResponseUrlWithIdParams(claimId, 'todo'));
+    res.redirect(constructResponseUrlWithIdParams(claimId, DQ_DISCLOSURE_OF_DOCUMENTS_URL));
   } catch (error) {
     next(error);
   }
