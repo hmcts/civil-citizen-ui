@@ -9,16 +9,24 @@ import {
   saveRespondentHearingContactDetails,
   saveRespondentHearingSupport,
   saveRespondentUnavailableDates,
+  getRespondToApplicationCaption,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
+import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../main/modules/i18n');
+jest.mock('i18next', () => ({
+  t: (i: string | unknown) => i,
+  use: jest.fn(),
+}));
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
@@ -197,6 +205,30 @@ describe('General Application Response service', () => {
       claim.generalApplication = new GeneralApplication();
       //Then
       await expect(saveRespondentUnavailableDates('123', claim, new UnavailableDatesGaHearing())).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+
+  describe('Display for respondent caption', () => {
+    it('should display when single application selected', () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING)];
+
+      //When
+      const result = getRespondToApplicationCaption(claim, 'en');
+      //Then
+      expect(result).toContain(t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO'));
+    });
+
+    it('should display when multiple application selected', () => {
+      //Given
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING), new ApplicationType(ApplicationTypeOption.SUMMARY_JUDGMENT)];
+      //When
+      const result = getRespondToApplicationCaption(claim, 'en');
+      //Then
+      expect(result).toContain(t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO'));
     });
   });
 });
