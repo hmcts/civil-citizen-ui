@@ -12,7 +12,8 @@ describe('translate minti documents to be considered to CCD model', () => {
 
   it('should return undefined if documents to be considered doesnt exist', () => {
     const claimEmpty = new Claim();
-    const ccdClaim = convertToCCDDocumentsToBeConsidered(claimEmpty);
+    claim.directionsQuestionnaire = new DirectionQuestionnaire();
+    const ccdClaim = convertToCCDDocumentsToBeConsidered(claimEmpty.directionQuestionnaire?.hearing);
     expect(ccdClaim).toBe(undefined);
   });
 
@@ -21,7 +22,7 @@ describe('translate minti documents to be considered to CCD model', () => {
       option: YesNo.YES,
     };
     claim.directionQuestionnaire.hearing.documentsConsideredDetails = 'details';
-    const ccdClaim = convertToCCDDocumentsToBeConsidered(claim);
+    const ccdClaim = convertToCCDDocumentsToBeConsidered(claim.directionQuestionnaire?.hearing);
 
     const expected: CCDDocumentsToBeConsidered = {
       hasDocumentsToBeConsidered: YesNoUpperCamelCase.YES,
@@ -38,7 +39,7 @@ describe('translate minti documents to be considered to CCD model', () => {
     claim.directionQuestionnaire.hearing.hasDocumentsToBeConsidered = {
       option: YesNo.NO,
     };
-    const ccdClaim = convertToCCDDocumentsToBeConsidered(claim);
+    const ccdClaim = convertToCCDDocumentsToBeConsidered(claim.directionQuestionnaire?.hearing);
 
     const expected: CCDDocumentsToBeConsidered = {
       hasDocumentsToBeConsidered: YesNoUpperCamelCase.NO,

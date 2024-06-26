@@ -23,7 +23,8 @@ describe('translate minti disclosure of documents to CCD model', () => {
 
   it('should return undefined if disclosure of documents doesnt exist', () => {
     const claimEmpty = new Claim();
-    const ccdClaim = toCCDDisclosureOfElectronicDocuments(claimEmpty);
+    claim.directionsQuestionnaire = new DirectionQuestionnaire();
+    const ccdClaim = toCCDDisclosureOfElectronicDocuments(claimEmpty.directionQuestionnaire?.hearing);
     expect(ccdClaim).toBe(undefined);
   });
 
@@ -32,7 +33,7 @@ describe('translate minti disclosure of documents to CCD model', () => {
     claim.directionQuestionnaire.hearing.disclosureOfDocuments.documentsTypeChosen = [TypeOfDisclosureDocument.ELECTRONIC];
     claim.directionQuestionnaire.hearing.hasAnAgreementBeenReached = HasAnAgreementBeenReachedOptions.NO_BUT_AN_AGREEMENT_IS_LIKELY;
     claim.directionQuestionnaire.hearing.disclosureOfElectronicDocumentsIssues = 'issues';
-    const ccdClaim = toCCDDisclosureOfElectronicDocuments(claim);
+    const ccdClaim = toCCDDisclosureOfElectronicDocuments(claim.directionQuestionnaire?.hearing);
 
     const expected: CCDDisclosureOfElectronicDocuments = {
       reachedAgreement: YesNoUpperCamelCase.NO,
@@ -46,7 +47,7 @@ describe('translate minti disclosure of documents to CCD model', () => {
     claim.directionQuestionnaire.hearing.disclosureOfDocuments = new DisclosureOfDocuments();
     claim.directionQuestionnaire.hearing.disclosureOfDocuments.documentsTypeChosen = [TypeOfDisclosureDocument.NON_ELECTRONIC];
     claim.directionQuestionnaire.hearing.disclosureNonElectronicDocument = 'directions';
-    const ccdClaim = toCCDDisclosureOfNonElectronicDocuments(claim);
+    const ccdClaim = toCCDDisclosureOfNonElectronicDocuments(claim.directionQuestionnaire?.hearing);
 
     const expected: CCDDisclosureOfNonElectronicDocuments = {
       bespokeDirections: 'directions',
