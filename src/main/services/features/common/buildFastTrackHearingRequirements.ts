@@ -274,12 +274,15 @@ export const buildHearingRequirementsForTrack = (claim: Claim, hearingRequiremen
   if (intTrack) {
     // frc section
     hearingRequirementsSection.summaryList.rows.push(subjectToFrcQuestion(claim, claimId, lng,directionQuestionnaire));
-    if (directionQuestionnaire?.fixedRecoverableCosts?.subjectToFrc?.option === YesNo.NO) {
+    if (directionQuestionnaire?.fixedRecoverableCosts?.subjectToFrc?.option === YesNo.NO
+      && directionQuestionnaire?.fixedRecoverableCosts?.reasonsForNotSubjectToFrc) {
       hearingRequirementsSection.summaryList.rows.push(whyNotFrcQuestion(claim, claimId, lng,directionQuestionnaire));
     } else {
       hearingRequirementsSection.summaryList.rows.push(bandAgreedQuestion(claim, claimId, lng,directionQuestionnaire));
       hearingRequirementsSection.summaryList.rows.push(whichBandQuestion(claim, claimId, lng,directionQuestionnaire));
-      hearingRequirementsSection.summaryList.rows.push(reasonForBandQuestion(claim, claimId, lng,directionQuestionnaire));
+      if (directionQuestionnaire?.fixedRecoverableCosts?.reasonsForBandSelection) {
+        hearingRequirementsSection.summaryList.rows.push(reasonForBandQuestion(claim, claimId, lng,directionQuestionnaire));
+      }
     }
   }
 
