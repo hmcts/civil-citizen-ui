@@ -3,7 +3,7 @@ import { GA_PAYMENT_SUCCESSFUL_URL } from 'routes/urls';
 import { AppRequest } from 'models/AppRequest';
 import { getGaPaymentSuccessfulBodyContent, getGaPaymentSuccessfulButtonContent, getGaPaymentSuccessfulPanelContent } from 'services/features/generalApplication/applicationFeePaymentConfirmationContent';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
-import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import { deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 const applicationFeePaymentSuccessfulController: Router = Router();
 
 const paymentSuccessfulViewPath = 'features/generalApplication/payment-successful';
@@ -11,11 +11,13 @@ const paymentSuccessfulViewPath = 'features/generalApplication/payment-successfu
 async function renderView(res: Response, req: AppRequest, claimId: string) {
   const redisKey = generateRedisKey(req);
   const claim = await getCaseDataFromStore(redisKey);
+  const calculatedAmountInPence = claim.generalApplication?.applicationFee?.calculatedAmountInPence;
   const lng = req.query.lang ? req.query.lang : req.cookies.lang;
+  await deleteDraftClaimFromStore(redisKey);
   res.render(paymentSuccessfulViewPath,
     {
       gaPaymentSuccessfulPanel: getGaPaymentSuccessfulPanelContent(claim, lng),
-      gaPaymentSuccessfulBody: getGaPaymentSuccessfulBodyContent(claim, lng),
+      gaPaymentSuccessfulBody: getGaPaymentSuccessfulBodyContent(claim, String(calculatedAmountInPence), lng),
       gaPaymentSuccessfulButton: getGaPaymentSuccessfulButtonContent(await getCancelUrl(claimId, claim)),
     });
 }
