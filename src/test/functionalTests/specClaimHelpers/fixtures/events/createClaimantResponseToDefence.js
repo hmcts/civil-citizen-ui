@@ -441,7 +441,9 @@ module.exports = {
             },
           ],
         },
-        applicant1DQExperts: {},
+        applicant1DQExperts: {
+          expertRequired: 'No',
+        },
         applicant1DQHearingSupport: {
           supportRequirements: 'No',
         },
@@ -449,21 +451,21 @@ module.exports = {
         applicant1SettleClaim: 'No',
         applicant1DQFixedRecoverableCostsIntermediate: {
           isSubjectToFixedRecoverableCostRegime: 'Yes',
-          band: 'BAND_2',
+          band: 'BAND_1',
           complexityBandingAgreed: 'No',
-          reasons: 'band reasons',
+          reasons: 'reasons for band',
         },
         specApplicant1DQDisclosureOfElectronicDocuments: {
           reachedAgreement: 'No',
           agreementLikely: 'No',
-          reasonForNoAgreement: 'claimant electronic disclosure',
+          reasonForNoAgreement: 'claimant response electronic docs disclosure',
         },
         specApplicant1DQDisclosureOfNonElectronicDocuments: {
-          bespokeDirections: 'claimant non electronic disclosure',
+          bespokeDirections: 'claimant response non-electronic docs disclosure',
         },
         applicant1DQDefendantDocumentsToBeConsidered: {
           hasDocumentsToBeConsidered: 'Yes',
-          details: 'claimant response consider docs',
+          details: 'claimant response docs to consider',
         },
       },
     };
@@ -520,7 +522,9 @@ module.exports = {
             },
           ],
         },
-        applicant1DQExperts: {},
+        applicant1DQExperts: {
+          expertRequired: 'No',
+        },
         applicant1DQHearingSupport: {
           supportRequirements: 'No',
         },
@@ -528,15 +532,15 @@ module.exports = {
         applicant1SettleClaim: 'No',
         specApplicant1DQDisclosureOfElectronicDocuments: {
           reachedAgreement: 'No',
-          agreementLikely: 'No',
-          reasonForNoAgreement: 'claimant response electronic disclosure',
+          agreementLikely: 'Yes',
+          reasonForNoAgreement: 'claimant response electronic docs disclosure',
         },
         specApplicant1DQDisclosureOfNonElectronicDocuments: {
-          bespokeDirections: 'claimant response non-electronic disclosure',
+          bespokeDirections: 'claimant response non-electronic docs disclosure',
         },
         applicant1DQDefendantDocumentsToBeConsidered: {
           hasDocumentsToBeConsidered: 'Yes',
-          details: 'claimant response documents to be considered',
+          details: 'claimant response docs to consider',
         },
       },
     };
