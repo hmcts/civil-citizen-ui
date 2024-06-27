@@ -352,6 +352,7 @@ import submitGeneralApplicationConfirmationController
 import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
 import viewApplicationController from 'routes/features/generalApplication/viewApplicationController';
 import viewBreathingSpaceInformationController from 'routes/features/dashboard/viewBreathingSpaceInformationController';
+import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
 
 export default [
   homeController,
@@ -647,4 +648,5 @@ export default [
   payApplicationFeeConfirmationController,
   viewApplicationController,
   viewBreathingSpaceInformationController,
+  applicationFeePaymentConfirmationController,
 ];

@@ -4,6 +4,7 @@ import { GeneralApplication } from 'common/models/generalApplication/GeneralAppl
 import { HearingArrangement, HearingTypeOptions } from 'common/models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'common/models/generalApplication/hearingContactDetails';
 import { HearingSupport, SupportType } from 'common/models/generalApplication/hearingSupport';
+import { AcceptDefendantOffer, ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { UnavailableDatePeriodGaHearing, UnavailableDateType, UnavailableDatesGaHearing } from 'common/models/generalApplication/unavailableDatesGaHearing';
@@ -41,6 +42,111 @@ describe('Check Answers response service', () => {
     it('returns no sections when general application is empty', () => {
       const {claim} = claimAndResponse();
       expect(getSummarySections('123', claim, 'en')).toEqual([]);
+    });
+
+    it('returns accept offer rows - yes', () => {
+      const {claim, response} = claimAndResponse();
+      response.acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES);
+
+      expect(getSummarySections('123', claim, 'en')).toEqual([{ 
+        key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'}, 
+        value: { html: 'COMMON.VARIATION.YES' },
+        actions: {
+          items: [{
+            href: '/case/123/response/general-application/accept-defendant-offer',
+            text: 'COMMON.BUTTONS.CHANGE',
+            visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE',
+          }],
+        }},
+      ]);
+    });
+
+    it('returns accept offer rows - yes (ignoring other fields)', () => {
+      const {claim, response} = claimAndResponse();
+      response.acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES, ProposedPaymentPlanOption.ACCEPT_INSTALMENTS, '500', 'reason');
+
+      expect(getSummarySections('123', claim, 'en')).toEqual([{ 
+        key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'}, 
+        value: { html: 'COMMON.VARIATION.YES' },
+        actions: {
+          items: [{
+            href: '/case/123/response/general-application/accept-defendant-offer',
+            text: 'COMMON.BUTTONS.CHANGE',
+            visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE',
+          }],
+        }},
+      ]);
+    });
+
+    it('returns accept offer rows - no - installments', () => {
+      const {claim, response} = claimAndResponse();
+      response.acceptDefendantOffer = new AcceptDefendantOffer(YesNo.NO, ProposedPaymentPlanOption.ACCEPT_INSTALMENTS, '500.05', 'Reason Proposed Instalments');
+
+      const expectedPaymentHtml = '<ul class="no-list-style">'
+      + '<li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_INSTALMENTS</li>'
+      + '<li>£500.05</li>'
+      + '<li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT</li>'
+      + '<li>Reason Proposed Instalments</li>'
+      + '</ul>';
+      expect(getSummarySections('123', claim, 'en')).toEqual([{ 
+        key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'}, 
+        value: { html: 'COMMON.VARIATION.NO' },
+        actions: {
+          items: [{
+            href: '/case/123/response/general-application/accept-defendant-offer',
+            text: 'COMMON.BUTTONS.CHANGE',
+            visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE',
+          }],
+        }},
+      { 
+        key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN'}, 
+        value: { html: expectedPaymentHtml },
+        actions: {
+          items: [{
+            href: '/case/123/response/general-application/accept-defendant-offer',
+            text: 'COMMON.BUTTONS.CHANGE',
+            visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
+          }],
+        }},
+      ]);
+    });
+
+    it('returns accept offer rows - no - set date', () => {
+      const {claim, response} = claimAndResponse();
+      response.acceptDefendantOffer = Object.assign(new AcceptDefendantOffer(), {
+        option: YesNo.NO,
+        type: ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE,
+        proposedSetDate: new Date('2024-02-29'),
+        reasonProposedSetDate: 'reason for set day proposal',
+      } as AcceptDefendantOffer);
+
+      const expectedPaymentHtml = '<ul class="no-list-style">'
+      + '<li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_SET_DATE</li>'
+      + '<li>29/02/2024</li>'
+      + '<li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT</li>'
+      + '<li>reason for set day proposal</li>'
+      + '</ul>';
+      expect(getSummarySections('123', claim, 'en')).toEqual([{ 
+        key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'}, 
+        value: { html: 'COMMON.VARIATION.NO' },
+        actions: {
+          items: [{
+            href: '/case/123/response/general-application/accept-defendant-offer',
+            text: 'COMMON.BUTTONS.CHANGE',
+            visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE',
+          }],
+        }},
+      { 
+        key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN'}, 
+        value: { html: expectedPaymentHtml },
+        actions: {
+          items: [{
+            href: '/case/123/response/general-application/accept-defendant-offer',
+            text: 'COMMON.BUTTONS.CHANGE',
+            visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
+          }],
+        }},
+      ]);
     });
 
     it('returns respondent agreement rows', () => {
