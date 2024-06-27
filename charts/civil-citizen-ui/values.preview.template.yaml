@@ -379,6 +379,7 @@ civil-general-applications:
       CMC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       CMC_DB_CONNECTION_OPTIONS: '?sslmode=allow'
       REFERENCE_DATABASE_MIGRATION: false
+      DASHBOARD_API_URL: http://${SERVICE_NAME}-civil-service
       FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
@@ -394,3 +395,4 @@ civil-general-applications:
       RD_COMMONDATA_API_URL: http://rd-commondata-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       RELEASE_REVISION: "{{ .Release.Revision }}"
       GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
+      CUI_URL: https://${SERVICE_FQDN}
