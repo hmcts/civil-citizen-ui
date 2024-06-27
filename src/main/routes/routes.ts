@@ -346,7 +346,15 @@ import payApplicationFeeConfirmationController
 import submitGeneralApplicationConfirmationController
   from 'routes/features/generalApplication/submitGeneralApplicationConfirmationController';
 import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
+import requestForReviewController
+  from 'routes/features/caseProgression/requestForReconsideration/requestForReviewController';
+import requestForReconsiderationCheckAnswersController from './features/caseProgression/requestForReconsideration/checkAnswersController';
+import requestForReconsiderationConfirmationController
+  from 'routes/features/caseProgression/requestForReconsideration/confirmationController';
+import cancelRequestForReconsiderationController
+  from 'routes/features/caseProgression/requestForReconsideration/cancelRequestForReconsiderationController';
 import viewBreathingSpaceInformationController from 'routes/features/dashboard/viewBreathingSpaceInformationController';
+import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
 
 export default [
   homeController,
@@ -635,10 +643,15 @@ export default [
   unavailableHearingDatesResponseController,
   submitGeneralApplicationConfirmationController,
   acceptDefendantOfferController,
+  requestForReviewController,
+  requestForReconsiderationCheckAnswersController,
+  requestForReconsiderationConfirmationController,
+  cancelRequestForReconsiderationController,
   helpWithApplicationFeeController,
   helpWithFeesContentController,
   helpWithApplicationFeeReferenceController,
   helpWithApplicationFeeContinueController,
   payApplicationFeeConfirmationController,
   viewBreathingSpaceInformationController,
+  applicationFeePaymentConfirmationController,
 ];

@@ -1613,7 +1613,10 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "Mae {{defendantName}} wedi gofyn am fwy o amser i ymateb.",
         "RESPONSE_BY_POST": "Bydd yr hawliad yn parhau drwy'r post.",
         "SDO_ORDER_STATUS": "Mae’r llys wedi cyhoeddi gorchymyn; ni ellir parhau â’r hawliad hwn ar-lein a bydd yn rhaid defnyddio ffurflenni papur.",
-        "SDO_ORDER_LEGAL_ADVISER_STATUS": "Anfonwch fwy o fanylion atom cyn y gwrandawiad",
+        "SDO_ORDER_LEGAL_ADVISER_STATUS": "Anfonwch fwy o fanylion atom cyn y gwrandawiad.",
+        "SDO_ORDER_IN_REVIEW": "Arhoswch i'r llys adolygu'r gorchymyn.",
+        "SDO_ORDER_IN_REVIEW_OTHER_PARTY_CLAIMANT": "Darllenwch geisiadau'r hawlydd i farnwr adolygu'r gorchymyn.",
+        "SDO_ORDER_IN_REVIEW_OTHER_PARTY_DEFENDANT": "Darllenwch geisiadau'r diffynnydd i farnwr adolygu'r gorchymyn.",
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "Mae'r dogfennau'n cael eu cyfieithu.",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos."
       },
@@ -3739,6 +3742,23 @@
       "DIRECTIONS": "holiadur cyfarwyddiadau.",
       "WHAT_SUPPORT": "Pa gymorth sydd ei angen arnoch chi, eich arbenigwyr neu dystion?",
       "FOR_EXAMPLE": "Er enghraifft, mae tyst angen ystafell llys heb risiau."
+    },
+    "REQUEST_FOR_RECONSIDERATION": {
+      "REQUEST_FOR_REVIEW": {
+        "MICRO_TEXT": "Cais i adolygu’r gorchymyn",
+        "MAIN_TITLE": "Sut a pham ydych chi eisiau i'r gorchymyn gael ei newid?",
+        "PARAGRAPH": "Gallwch barhau heb roi manylion os byddai’n well gennych. Os byddwch yn rhoi manylion bydd {{ claimantOrDefendant }} yn gallu gweld yr hyn a ddywedoch ac ychwanegu eu sylwadau eu hunain."
+      },
+      "CONFIRMATION": {
+        "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
+        "PARAGRAPH_1": "Byddwn yn dweud wrth {{ claimantOrDefendant }} eich bod wedi gwneud y cais. Bydd ganddynt tan {{ date }} i ychwanegu sylwadau eu hunain.",
+        "PARAGRAPH_2": "Yna bydd barnwr yn adolygu'r gorchymyn ac unrhyw sylwadau, a chysylltir â chi os bydd y barnwr yn gwneud gorchymyn newydd.",
+        "PARAGRAPH_3": "Parhewch i wneud yr hyn y mae'r gorchymyn presennol yn ei ofyn gennych oni bai eich bod yn cael gwybod bod barnwr wedi gwneud gorchymyn newydd.",
+        "PANEL_TEXT": "Rydych wedi gofyn i’r llys adolygu gorchymyn",
+        "PANEL_LINK": "Lawrlwythwch gais am adolygiad o orchymyn (PDF)"
+      },
+      "DASHBOARD_STATE_CLAIMANT": "Darllenwch geisiadau'r diffynnydd i farnwr adolygu'r gorchymyn.",
+      "DASHBOARD_STATE_DEFENDANT": "Darllenwch geisiadau'r hawlydd i farnwr adolygu'r gorchymyn."
     },
     "ORDERS_AND_NOTICES": {
       "CCJ_REQUEST": "Cais am Ddyfarniad Llys Sirol",
