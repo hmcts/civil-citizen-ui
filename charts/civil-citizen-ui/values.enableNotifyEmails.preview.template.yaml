@@ -195,3 +195,4 @@ civil-general-applications:
       GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
       CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       CUI_URL: https://${SERVICE_FQDN}
+      DUMMY_PROPERTY: true
