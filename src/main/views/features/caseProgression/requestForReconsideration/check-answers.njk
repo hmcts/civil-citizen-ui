@@ -1,0 +1,33 @@
+{% extends "../../../claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../dashboard/item-content.njk" import itemContent %}
+{% from "../../../macro/button.njk" import addButton %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.CHECK_YOUR_ANSWER.TITLE') }}
+{% endblock %}
+{% set submitText = t('COMMON.BUTTONS.SUBMIT') %}
+
+{% block nestedContent %}
+          {% for content in caseInfoContents %}
+            {{ itemContent(content, t) }}
+          {% endfor %}
+
+          {% for section in summarySections.sections %}
+            {% if section.summaryList.rows %}
+              <div class="govuk-!-margin-bottom-9">
+                <div class="govuk-form-group">
+                  {{ govukSummaryList({
+                    rows: section.summaryList.rows
+                  }) }}
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+          <form method="post" novalidate autocomplete="off">
+            {{ csrfProtection(csrf) }}
+      {{ addButton(t, 'SUBMIT',cancelUrl) }}
+          </form>
+
+{% endblock %}
