@@ -89,21 +89,28 @@ module.exports = {
             },
           ],
         },
-        respondent1DQExperts: {},
+        respondent1DQHearingFastClaim: {
+          hearingLengthHours: '3',
+          hearingLengthDays: '1',
+          unavailableDatesRequired: 'No',
+        },
+        respondent1DQExperts: {
+          expertRequired: 'No',
+        },
         respondent1DQHearingSupport: {
           supportRequirements: 'No',
         },
         specRespondent1DQDisclosureOfElectronicDocuments: {
           reachedAgreement: 'No',
           agreementLikely: 'No',
-          reasonForNoAgreement: 'electronic issues',
+          reasonForNoAgreement: 'defendant electronic docs disclosure',
         },
         specRespondent1DQDisclosureOfNonElectronicDocuments: {
-          bespokeDirections: 'non electronic disclosure details',
+          bespokeDirections: 'defendant non-electronic docs disclosure',
         },
         respondent1DQClaimantDocumentsToBeConsidered: {
           hasDocumentsToBeConsidered: 'Yes',
-          details: 'details',
+          details: 'defendant response docs to consider',
         },
       },
     };
