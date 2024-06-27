@@ -3,13 +3,13 @@ import {app} from '../../../../../main/app';
 import {Claim} from 'common/models/claim';
 import {DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {getClaimById} from 'modules/utilityService';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {FullAdmission} from 'models/fullAdmission';
-import {YesNo} from 'form/models/yesNo';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {ClaimantResponse} from 'models/claimantResponse';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -19,7 +19,10 @@ jest.mock('routes/guards/respondSettlementAgreementConfirmationGuard', () => ({
     next();
   }),
 }));
-const mockGetCaseData = getClaimById as jest.Mock;
+jest.mock('modules/utilityService', () => ({
+  getRedisStoreForSession: jest.fn(),
+}));
+
 
 describe('Claimant response confirmation controller', () => {
 
@@ -34,8 +37,12 @@ describe('Claimant response confirmation controller', () => {
     it('should return accept settlement agreement confirmation', async () => {
       // Given
       const mockClaim = getMockClaim();
-      mockClaim.defendantSignedSettlementAgreement = YesNo.YES;
-      mockGetCaseData.mockImplementation(() => mockClaim);
+      mockClaim.respondentSignSettlementAgreement = YesNoUpperCamelCase.YES;
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockReturnValue(
+          new Promise((resolve) => resolve(mockClaim)),
+        );
       // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
       // Then
@@ -53,9 +60,13 @@ describe('Claimant response confirmation controller', () => {
       mockClaim.claimantResponse.suggestedPaymentIntention.paymentOption =
           PaymentOptionType.IMMEDIATELY;
       mockClaim.claimantResponse.suggestedImmediatePaymentDeadLine = new Date();
-      mockClaim.defendantSignedSettlementAgreement = YesNo.YES;
+      mockClaim.respondentSignSettlementAgreement = YesNoUpperCamelCase.YES;
 
-      mockGetCaseData.mockImplementation(() => mockClaim);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockReturnValue(
+          new Promise((resolve) => resolve(mockClaim)),
+        );
       // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
       // Then
@@ -73,21 +84,31 @@ describe('Claimant response confirmation controller', () => {
       mockClaim.claimantResponse.suggestedPaymentIntention.paymentOption =
           PaymentOptionType.BY_SET_DATE;
       mockClaim.claimantResponse.suggestedPaymentIntention.paymentDate = new Date();
-      mockClaim.defendantSignedSettlementAgreement = YesNo.YES;
+      mockClaim.respondentSignSettlementAgreement = YesNoUpperCamelCase.YES;
 
-      mockGetCaseData.mockImplementation(() => mockClaim);
+      const claim = Object.assign(new Claim(), mockClaim);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockReturnValue(
+          new Promise((resolve) => resolve(claim)),
+        );
+
       // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
       // Then
       expect(res.status).toBe(200);
       expect(res.text).toContain("You've both signed a settlement agreement");
     });
-    
+
     it('should return reject settlement agreement confirmation', async () => {
       // Given
       const mockClaim = getMockClaim();
-      mockClaim.defendantSignedSettlementAgreement = YesNo.NO;
-      mockGetCaseData.mockImplementation(() => mockClaim);
+      mockClaim.respondentSignSettlementAgreement = YesNoUpperCamelCase.NO;
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockReturnValue(
+          new Promise((resolve) => resolve(mockClaim)),
+        );
       // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
       // Then
@@ -97,7 +118,10 @@ describe('Claimant response confirmation controller', () => {
 
     it('should return http 500 when has error in the get method', async () => {
       // Given
-      mockGetCaseData.mockImplementation(() => {throw new Error('Test error');});
+      const error = new Error('Test error');
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockRejectedValueOnce(error);
       // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
       // Then
