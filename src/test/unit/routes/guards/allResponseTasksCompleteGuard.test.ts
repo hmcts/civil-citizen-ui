@@ -21,7 +21,7 @@ jest.mock('../../../../main/services/features/common/taskListService');
 jest.mock('../../../../main/modules/i18n');
 jest.mock('../../../../main/modules/utilityService');
 jest.mock('../../../../main/services/features/common/responseDeadlineAgreedService');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
