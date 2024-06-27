@@ -208,7 +208,7 @@ export const considerClaimantDocQuestion = (claim: Claim, claimId: string, lng: 
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT', {lng}),
-    t(`COMMON.VARIATION.${option}`, {lng}),
+    t(`COMMON.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL),
     changeLabel(lng),
   );
