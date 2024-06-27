@@ -69,6 +69,7 @@ import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/h
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {MediationCarm} from 'models/mediation/mediationCarm';
 import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
+import {RequestForReviewForm} from 'models/caseProgression/requestForReconsideration/requestForReviewForm';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -1370,6 +1371,19 @@ export const claimWithHwFDetails = (): Claim => {
   helpWithFee.referenceNumber = 'HWF-2AB-DC3';
   helpWithFee.option = YesNo.YES;
   claim.claimDetails.helpWithFees = helpWithFee;
+  return claim;
+};
+
+export const getClaimRequestForReconsideration = (): Claim => {
+  const claim = new Claim();
+  const caseProgression = new CaseProgression();
+  const requestForReviewClaimant = new RequestForReviewForm();
+  const requestForReviewDefendant = new RequestForReviewForm();
+  requestForReviewClaimant.textArea = 'Want review';
+  requestForReviewDefendant.textArea = 'Also want review';
+  caseProgression.requestForReviewClaimant = requestForReviewClaimant;
+  caseProgression.requestForReviewDefendant = requestForReviewDefendant;
+  claim.caseProgression = caseProgression;
   return claim;
 };
 

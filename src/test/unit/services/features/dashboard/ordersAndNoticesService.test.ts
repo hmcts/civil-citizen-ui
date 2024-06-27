@@ -15,6 +15,8 @@ import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePre
 import {CaseRole} from 'form/models/caseRoles';
 import {Document} from 'models/document/document';
 import {ClaimantResponse} from 'models/claimantResponse';
+import {CaseProgression} from 'models/caseProgression/caseProgression';
+import {CaseDocument} from 'models/document/caseDocument';
 
 describe('View Orders And Notices Service', () => {
 
@@ -230,6 +232,25 @@ describe('View Orders And Notices Service', () => {
       const expectedResult = new DocumentsViewComponent('Claimant', [expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
+
+    it('should get data array for request for reconsideration claimant', async () => {
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpCaseDocument(documentName, DocumentType.REQUEST_FOR_RECONSIDERATION);
+      claim.caseProgression = new CaseProgression();
+      claim.caseProgression.requestForReconsiderationDocument = document;
+      //When
+      const result = getClaimantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MICRO_TEXT',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Claimant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
   });
 
   describe('Get Defendant Documents', () => {
@@ -334,6 +355,25 @@ describe('View Orders And Notices Service', () => {
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.DEFENDANT_SUPPORT_DOC',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for request for reconsideration defendant', async () => {
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpCaseDocument(documentName, DocumentType.REQUEST_FOR_RECONSIDERATION);
+      claim.caseProgression = new CaseProgression();
+      claim.caseProgression.requestForReconsiderationDocumentRes = document;
+      //When
+      const result = getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MICRO_TEXT',
         '21 June 2022',
         new DocumentLinkInformation(documentUrl, documentName),
       );
@@ -462,6 +502,7 @@ describe('View Orders And Notices Service', () => {
       const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
+
   });
 
   function setUpMockSystemGeneratedCaseDocument(documentName: string, documentType: DocumentType) {
@@ -479,6 +520,21 @@ describe('View Orders And Notices Service', () => {
         'documentType': documentType,
         'createdDatetime': new Date('2022-06-21T14:15:19'),
       },
+    };
+  }
+
+  function setUpCaseDocument(documentName: string, documentType: DocumentType) : CaseDocument {
+    return {
+      'createdBy': 'Civil',
+      'documentLink': {
+        'document_url': 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de',
+        'document_filename': documentName,
+        'document_binary_url': 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary',
+      },
+      'documentName': documentName,
+      'documentSize': 45794,
+      'documentType': documentType,
+      'createdDatetime': new Date('2022-06-21T14:15:19'),
     };
   }
 
