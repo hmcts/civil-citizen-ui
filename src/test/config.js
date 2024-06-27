@@ -87,7 +87,7 @@ module.exports = {
   },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: `defendantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
+    email: `youonlytestonce1@gmail.com`,
     type: 'defendant',
   },
   defendantLRCitizenUser:{
