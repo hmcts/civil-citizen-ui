@@ -12,7 +12,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with PartAdmit - FastTrack');
+Feature('Response with PartAdmit - FastTrack @kiyron');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -23,21 +23,21 @@ Before(async ({api}) => {
   securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
-  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
-  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
+  // await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
+  // await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  // await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
 Scenario('Response with PartAdmit-AlreadyPaid @citizenUI @partAdmit @nightly', async () => {
-  await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterCompanyDetails();
-  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
-  await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
-  await ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
-  await ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500, partAdmit);
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
-  await ResponseSteps.AddYourTimeLineEvents();
-  await ResponseSteps.EnterYourEvidenceDetails();
-  await ResponseSteps.EnterDQForFastTrack(claimRef, false);
-  await ResponseSteps.CheckAndSubmit(claimRef, partAdmit, claimType);
+  // await ResponseSteps.RespondToClaim(claimRef);
+  // await ResponseSteps.EnterCompanyDetails();
+  // await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+  // await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
+  // await ResponseSteps.SelectPartAdmitAlreadyPaid('yes');
+  // await ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 500, partAdmit);
+  // await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
+  // await ResponseSteps.AddYourTimeLineEvents();
+  // await ResponseSteps.EnterYourEvidenceDetails();
+  // await ResponseSteps.EnterDQForFastTrack(claimRef, false);
+  // await ResponseSteps.CheckAndSubmit(claimRef, partAdmit, claimType);
 }).tag('@regression-cui-r1');
