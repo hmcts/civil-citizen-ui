@@ -50,6 +50,10 @@ export class GeneralApplication {
     uploadEvidenceForApplication?: UploadGAFiles,
     statementOfTruth?: StatementOfTruthForm,
     helpWithFees?: GaHelpWithFees,
+    wantToUploadDocuments?: YesNo,
+    uploadN245Form?: UploadGAFiles,
+    informOtherParties?: InformOtherParties,
+    applicationFee?: ClaimFeeData,
   ) {
     this.applicationTypes = applicationType ? [applicationType] : [];
     this.agreementFromOtherParty = agreementFromOtherParty;
@@ -61,7 +65,11 @@ export class GeneralApplication {
     this.hearingContactDetails = hearingContactDetails;
     this.response = response;
     this.statementOfTruth = statementOfTruth;
+    this.wantToUploadDocuments = wantToUploadDocuments;
     this.uploadEvidenceForApplication = uploadEvidenceForApplication ? [uploadEvidenceForApplication] : [];
     this.helpWithFees = helpWithFees;
+    this.uploadN245Form = uploadN245Form;
+    this.informOtherParties = informOtherParties;
+    this.applicationFee = applicationFee;
   }
 }
