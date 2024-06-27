@@ -20,6 +20,9 @@ jest.mock('../../../../../../main/services/features/generalApplication/checkAnsw
 jest.mock('../../../../../../main/services/features/generalApplication/submitApplication');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('modules/draft-store/courtLocationCache');
+jest.mock('../../../../../../main/routes/guards/checkYourAnswersGAGuard', () => ({
+  checkYourAnswersGAGuard: jest.fn((req, res, next) => next()),
+}));
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;
