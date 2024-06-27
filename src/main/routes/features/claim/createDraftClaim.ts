@@ -4,7 +4,7 @@ import { CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
 import { saveDraftClaimToCache } from 'modules/draft-store/draftClaimCache';
 const createDraftViewPath = 'features/claim/create-draft';
 import jwt_decode from 'jwt-decode';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 interface IdTokenJwtPayload {
   uid: string;

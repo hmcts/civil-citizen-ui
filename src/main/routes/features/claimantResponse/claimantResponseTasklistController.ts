@@ -5,7 +5,7 @@ import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {getClaimantResponseTaskLists} from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
 import {Claim} from 'models/claim';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const claimantResponseTasklistViewPath = 'features/claimantResponse/claimant-response-task-list';
 const claimantResponseTasklistController = Router();
