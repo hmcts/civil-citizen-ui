@@ -70,7 +70,7 @@ export const subjectToFrcQuestion = (claim: Claim, claimId: string, lng: string,
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.SUBECT_TO_FRC', {lng}),
-    t(`COMMON.${option}`, {lng}),
+    t(`COMMON.VARIATION.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, SUBJECT_TO_FRC_URL),
     changeLabel(lng),
   );
@@ -83,7 +83,7 @@ export const bandAgreedQuestion = (claim: Claim, claimId: string, lng: string, d
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.FRC_BAND_AGREED', {lng}),
-    t(`COMMON.${option}`, {lng}),
+    t(`COMMON.VARIATION.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, FRC_BAND_AGREED_URL),
     changeLabel(lng),
   );
@@ -184,7 +184,7 @@ export const mintiDocsToConsiderQuestion = (claim: Claim, claimId: string, lng: 
 
   return summaryRow(
     t(claim.isClaimantIntentionPending() ? 'PAGES.CHECK_YOUR_ANSWER.DEFENDANT_DOCS_TO_CONSIDER' : 'PAGES.CHECK_YOUR_ANSWER.CLAIMANT_DOCS_TO_CONSIDER', {lng}),
-    t(`COMMON.${option}`, {lng}),
+    t(`COMMON.VARIATION.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL),
     changeLabel(lng),
   );
@@ -208,7 +208,7 @@ export const considerClaimantDocQuestion = (claim: Claim, claimId: string, lng: 
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT', {lng}),
-    t(`COMMON.${option}`, {lng}),
+    t(`COMMON.VARIATION.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL),
     changeLabel(lng),
   );
