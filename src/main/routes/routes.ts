@@ -351,7 +351,7 @@ import submitGeneralApplicationConfirmationController
   from 'routes/features/generalApplication/submitGeneralApplicationConfirmationController';
 import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
 import viewApplicationController from 'routes/features/generalApplication/viewApplicationController';
-  from 'routes/features/caseProgression/requestForReconsideration/requestForReviewController';
+import requestForReviewController from 'routes/features/caseProgression/requestForReconsideration/requestForReviewController';
 import requestForReconsiderationCheckAnswersController from './features/caseProgression/requestForReconsideration/checkAnswersController';
 import requestForReconsiderationConfirmationController
   from 'routes/features/caseProgression/requestForReconsideration/confirmationController';
