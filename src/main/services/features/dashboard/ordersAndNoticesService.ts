@@ -16,6 +16,7 @@ export const getClaimantDocuments = (claim: Claim, claimId: string, lang: string
   const claimantDocumentsArray: DocumentInformation[] = [];
   claimantDocumentsArray.push(...getClaimantDirectionQuestionnaire(claim, claimId, lang));
   claimantDocumentsArray.push(...getClaimantSealClaimForm(claim, claimId, lang));
+  claimantDocumentsArray.push(...getClaimantRequestForReconsideration(claim, claimId, lang));
 
   if (claim.isClaimant()) {
     claimantDocumentsArray.push(...getClaimantUnsealClaimForm(claim, claimId, lang));
@@ -32,6 +33,7 @@ export const getDefendantDocuments = (claim: Claim, claimId: string, lang: strin
   const defendantDocumentsArray: DocumentInformation[] = [];
   defendantDocumentsArray.push(...getDefendantResponse(claim, claimId, lang));
   defendantDocumentsArray.push(...getDefendantDirectionQuestionnaire(claim, claimId, lang));
+  defendantDocumentsArray.push(...getDefendantRequestForReconsideration(claim, claimId, lang));
   // Documents for LR only
   defendantDocumentsArray.push(...getDefendantSupportDocument(claim, claimId, lang));
   return new DocumentsViewComponent('Defendant', defendantDocumentsArray);
@@ -155,6 +157,18 @@ const getSettlementAgreement = (claim: Claim, claimId: string, lang: string) => 
   const settlementAgreement = claim.getDocumentDetails(DocumentType.SETTLEMENT_AGREEMENT);
   return settlementAgreement ? Array.of(
     setUpDocumentLinkObject(settlementAgreement.documentLink, settlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.SETTLEMENT_AGREEMENT')) : [];
+};
+
+const getClaimantRequestForReconsideration = (claim: Claim, claimId: string, lang: string) => {
+  const document = claim.caseProgression?.requestForReconsiderationDocument;
+  return document ? Array.of(
+    setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MICRO_TEXT')) : [];
+};
+
+const getDefendantRequestForReconsideration = (claim: Claim, claimId: string, lang: string) => {
+  const document = claim.caseProgression?.requestForReconsiderationDocumentRes;
+  return document ? Array.of(
+    setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MICRO_TEXT')) : [];
 };
 
 const setUpDocumentLinkObject = (document: Document, documentDate: Date, claimId: string, lang: string, fileName: string) => {
