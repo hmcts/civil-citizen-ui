@@ -23,7 +23,6 @@ jest.mock('modules/utilityService', () => ({
   getRedisStoreForSession: jest.fn(),
 }));
 
-
 describe('Claimant response confirmation controller', () => {
 
   function getMockClaim() {
