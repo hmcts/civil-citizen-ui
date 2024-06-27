@@ -297,6 +297,9 @@ export interface CCDClaim extends ClaimUpdate {
   applicant1DefenceResponseDocumentSpec?: ResponseDocument;
   isFlightDelayClaim?: string;
   flightDelayDetails?: CCDFlightDelayDetails;
+  requestForReconsiderationDeadline?: Date;
+  requestForReconsiderationDocument?: CaseDocument;
+  requestForReconsiderationDocumentRes?: CaseDocument;
 }
 
 export interface ClaimFeeData {
