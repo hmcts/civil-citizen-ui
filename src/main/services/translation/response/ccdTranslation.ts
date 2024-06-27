@@ -101,7 +101,7 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1DQRequestedCourt: toCCDSpecificCourtLocations(claim.directionQuestionnaire?.hearing?.specificCourtLocation),
     respondent1DQWitnesses: toCCDWitnesses(claim.directionQuestionnaire?.witnesses),
     respondent1DQHearingSmallClaim: claim.isSmallClaimsTrackDQ ? toCCDSmallClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
-    respondent1DQHearingFastClaim: claim.isFastTrackClaim ? toCCDFastClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
+    respondent1DQHearingFastClaim: !claim.isSmallClaimsTrackDQ ? toCCDFastClaimHearing(claim.directionQuestionnaire?.hearing) : undefined,
     respondent1DQExperts: toCCDExpert(claim),
     respondent1DQHearingSupport: toCCDDQHearingSupport(claim.directionQuestionnaire?.hearing?.supportRequiredList),
     responseClaimExpertSpecRequired: toCCDYesNo(claim.directionQuestionnaire?.experts?.permissionForExpert?.option),
