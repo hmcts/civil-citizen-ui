@@ -372,9 +372,9 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
       expect(summaryRows.summaryList.rows[1].value.html).toEqual('COMMON.YES');
       expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.SUBECT_TO_FRC');
-      expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.VARIATION.YES');
       expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.FRC_BAND_AGREED');
-      expect(summaryRows.summaryList.rows[3].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[3].value.html).toEqual('COMMON.VARIATION.YES');
       expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.FRC_BAND_CHOSEN');
       expect(summaryRows.summaryList.rows[4].value.html).toEqual('PAGES.CHECK_YOUR_ANSWER.FRC_BANDS.BAND_2');
       expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.REASON_FOR_FRC_BAND');
@@ -388,7 +388,7 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.NON_ELEC_DOCS_DISCLOSURE');
       expect(summaryRows.summaryList.rows[9].value.html).toEqual('non-electronic');
       expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CLAIMANT_DOCS_TO_CONSIDER');
-      expect(summaryRows.summaryList.rows[10].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[10].value.html).toEqual('COMMON.VARIATION.YES');
       expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CLAIMANT_DOCS_TO_CONSIDER_DETAILS');
       expect(summaryRows.summaryList.rows[11].value.html).toEqual('considered');
       expect(summaryRows.summaryList.rows[12].key.text).toEqual('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE');
@@ -451,13 +451,13 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
       expect(summaryRows.summaryList.rows[1].value.html).toEqual('COMMON.NO');
       expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.SUBECT_TO_FRC');
-      expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.VARIATION.NO');
       expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.REASON_FOR_NO_FRC_BAND');
       expect(summaryRows.summaryList.rows[3].value.html).toEqual('reasons');
       expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DISCLOSURE_OF_DOCUMENTS.QUESTION');
       expect(summaryRows.summaryList.rows[4].value.html).toEqual('PAGES.CHECK_YOUR_ANSWER.DISCLOSURE_OF_DOCUMENTS.NO');
       expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CLAIMANT_DOCS_TO_CONSIDER');
-      expect(summaryRows.summaryList.rows[5].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[5].value.html).toEqual('COMMON.VARIATION.NO');
       expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE');
       expect(summaryRows.summaryList.rows[6].value.html).toEqual('COMMON.VARIATION_2.NO');
       expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
@@ -518,7 +518,7 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.NON_ELEC_DOCS_DISCLOSURE');
       expect(summaryRows.summaryList.rows[5].value.html).toEqual('non-electronic');
       expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CLAIMANT_DOCS_TO_CONSIDER');
-      expect(summaryRows.summaryList.rows[6].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[6].value.html).toEqual('COMMON.VARIATION.YES');
       expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CLAIMANT_DOCS_TO_CONSIDER_DETAILS');
       expect(summaryRows.summaryList.rows[7].value.html).toEqual('considered');
       expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE');
@@ -581,7 +581,7 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DISCLOSURE_OF_DOCUMENTS.QUESTION');
       expect(summaryRows.summaryList.rows[2].value.html).toEqual('PAGES.CHECK_YOUR_ANSWER.DISCLOSURE_OF_DOCUMENTS.NO');
       expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CLAIMANT_DOCS_TO_CONSIDER');
-      expect(summaryRows.summaryList.rows[3].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[3].value.html).toEqual('COMMON.VARIATION.NO');
       expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE');
       expect(summaryRows.summaryList.rows[4].value.html).toEqual('COMMON.VARIATION_2.NO');
       expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
