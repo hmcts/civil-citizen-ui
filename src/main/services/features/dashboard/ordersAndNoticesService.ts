@@ -11,6 +11,7 @@ import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directi
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {Document} from 'models/document/document';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 export const getClaimantDocuments = (claim: Claim, claimId: string, lang: string) => {
   const claimantDocumentsArray: DocumentInformation[] = [];
@@ -37,14 +38,19 @@ export const getDefendantDocuments = (claim: Claim, claimId: string, lang: strin
   return new DocumentsViewComponent('Defendant', defendantDocumentsArray);
 };
 
-export const getCourtDocuments = (claim: Claim, claimId: string, lang: string) => {
+export const getCourtDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const courtDocumentsArray: DocumentInformation[] = [];
+  const caseProgressionEnabled = await isCaseProgressionV1Enable();
   courtDocumentsArray.push(...getStandardDirectionsOrder(claim, claimId, lang));
   courtDocumentsArray.push(...getManualDetermination(claim, claimId, lang));
   courtDocumentsArray.push(...getCcjRequestAdmission(claim, claimId, lang));
   courtDocumentsArray.push(...getInterlocutoryJudgement(claim, claimId, lang));
   courtDocumentsArray.push(...getCcjRequestDetermination(claim, claimId, lang));
   courtDocumentsArray.push(...getSettlementAgreement(claim, claimId, lang));
+
+  if (caseProgressionEnabled) {
+    courtDocumentsArray.push(...getDecisionOnReconsideration(claim, claimId, lang));
+  }
 
   return new DocumentsViewComponent('CourtDocument', courtDocumentsArray);
 };
@@ -155,6 +161,12 @@ const getSettlementAgreement = (claim: Claim, claimId: string, lang: string) => 
   const settlementAgreement = claim.getDocumentDetails(DocumentType.SETTLEMENT_AGREEMENT);
   return settlementAgreement ? Array.of(
     setUpDocumentLinkObject(settlementAgreement.documentLink, settlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.SETTLEMENT_AGREEMENT')) : [];
+};
+
+const getDecisionOnReconsideration = (claim: Claim, claimId: string, lang: string) => {
+  const settlementAgreement = claim.getDocumentDetails(DocumentType.DECISION_MADE_ON_APPLICATIONS);
+  return settlementAgreement ? Array.of(
+    setUpDocumentLinkObject(settlementAgreement.documentLink, settlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION')) : [];
 };
 
 const setUpDocumentLinkObject = (document: Document, documentDate: Date, claimId: string, lang: string, fileName: string) => {
