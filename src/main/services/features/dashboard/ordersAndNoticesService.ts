@@ -43,6 +43,7 @@ export const getDefendantDocuments = (claim: Claim, claimId: string, lang: strin
 export const getCourtDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
   const courtDocumentsArray: DocumentInformation[] = [];
+
   courtDocumentsArray.push(...getStandardDirectionsOrder(claim, claimId, lang));
   courtDocumentsArray.push(...getManualDetermination(claim, claimId, lang));
   courtDocumentsArray.push(...getCcjRequestAdmission(claim, claimId, lang));
@@ -51,6 +52,7 @@ export const getCourtDocuments = async (claim: Claim, claimId: string, lang: str
   courtDocumentsArray.push(...getSettlementAgreement(claim, claimId, lang));
 
   if (isCaseProgressionEnabled) {
+    courtDocumentsArray.push(...getDecisionOnReconsideration(claim, claimId, lang));
     courtDocumentsArray.push(...getTranslatedOrders(claim, claimId, lang));
   }
 
@@ -187,6 +189,12 @@ const getTranslatedOrders = (claim: Claim, claimId: string, lang: string) => {
     });
   }
   return caseDocuments;
+};
+
+const getDecisionOnReconsideration = (claim: Claim, claimId: string, lang: string) => {
+  const settlementAgreement = claim.getDocumentDetails(DocumentType.DECISION_MADE_ON_APPLICATIONS);
+  return settlementAgreement ? Array.of(
+    setUpDocumentLinkObject(settlementAgreement.documentLink, settlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION')) : [];
 };
 
 const setUpDocumentLinkObject = (document: Document, documentDate: Date, claimId: string, lang: string, fileName: string) => {

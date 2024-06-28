@@ -152,6 +152,10 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
       .replace(':notificationId', notificationId)
       .replace(':documentId', documentIdExtractor(documentId)));
 
+    valuesMap.set('{VIEW_DECISION_RECONSIDERATION}', DASHBOARD_NOTIFICATION_REDIRECT
+      .replace(':id', claimId)
+      .replace(':locationName', 'VIEW_DECISION_RECONSIDERATION')
+      .replace(':notificationId', notificationId));
   }
 
   return valuesMap;
