@@ -295,7 +295,10 @@ export interface CCDClaim extends ClaimUpdate {
   defendantResponseDocuments?: SystemGeneratedCaseDocuments[];
   applicant1DefenceResponseDocumentSpec?: ResponseDocument;
   isFlightDelayClaim?: string;
-  flightDelayDetails?: CCDFlightDelayDetails; 
+  flightDelayDetails?: CCDFlightDelayDetails;
+  requestForReconsiderationDeadline?: Date;
+  requestForReconsiderationDocument?: CaseDocument;
+  requestForReconsiderationDocumentRes?: CaseDocument;
 }
 
 export interface ClaimFeeData {

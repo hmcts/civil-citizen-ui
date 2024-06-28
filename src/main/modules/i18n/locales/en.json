@@ -1593,6 +1593,7 @@
         "CLAIMANT_REQUESTED_CCJ": "You requested a County Court Judgment against {{defendantName}}.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
+        "DECISION_ON_RECONSIDERATION": "An order has been made.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
         "DOCUMENTS_BEING_TRANSLATED": "The documents are being translated.",
         "HWF_FEE_PAYMENT_OUTCOME": "The hearing fee has been paid.",
@@ -1612,7 +1613,10 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post.",
         "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline.",
-        "SDO_ORDER_LEGAL_ADVISER_STATUS": "Send us more details before the hearing",
+        "SDO_ORDER_LEGAL_ADVISER_STATUS": "Send us more details before the hearing.",
+        "SDO_ORDER_IN_REVIEW": "Wait for court to review the order.",
+        "SDO_ORDER_IN_REVIEW_OTHER_PARTY_CLAIMANT": "Read the claimant’s requests for a judge to review the order.",
+        "SDO_ORDER_IN_REVIEW_OTHER_PARTY_DEFENDANT": "Read the defendant’s requests for a judge to review the order.",
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case."
       },
@@ -1634,6 +1638,7 @@
         "CLAIMANT_REJECT_PARTIAL_ADMISSION": "{{ claimantName }} rejected your admission of £{{ amount }}.",
         "CLAIMANT_REQUESTED_CCJ": "{{ claimantName }} requested a County Court Judgment against you on {{ccjRequestedDate}}.",
         "CLAIMANT_REQUESTED_CCJ_BY_DETERMINATION": "{{ claimantName }} requested a County Court Judgment against you.",
+        "DECISION_ON_RECONSIDERATION": "An order has been made.",
         "DOCUMENTS_BEING_TRANSLATED": "The documents are being translated.",
         "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days.",
         "MORE_DETAILS_REQUIRED": "Send us more details before the hearing.",
@@ -3738,12 +3743,30 @@
       "WHAT_SUPPORT": "What support do you, experts or witnesses need?",
       "FOR_EXAMPLE": "For example, a witness requires a courtroom with step-free access."
     },
+    "REQUEST_FOR_RECONSIDERATION": {
+      "REQUEST_FOR_REVIEW": {
+        "MICRO_TEXT": "Request to review order",
+        "MAIN_TITLE": "How and why do you want the order changed?",
+        "PARAGRAPH": "You can continue without giving details if you prefer. If you enter details {{ claimantOrDefendant }} will be able to see what you said and add their own comments."
+      },
+      "CONFIRMATION": {
+        "WHAT_HAPPENS_NEXT": "What happens next",
+        "PARAGRAPH_1": "We’ll tell {{ claimantOrDefendant }} you’ve made the request. They will have until {{ date }} to add comments of their own.",
+        "PARAGRAPH_2": "A judge will then review the order and any comments, and you will be contacted if the judge makes a new order.",
+        "PARAGRAPH_3": "Continue doing what the current order asks of you unless you’re informed a judge has made a new order.",
+        "PANEL_TEXT": "You’ve asked the court to review order",
+        "PANEL_LINK": "Download request for review of  order (PDF)"
+      },
+      "DASHBOARD_STATE_CLAIMANT": "Read the defendant’s requests for a judge to review the order.",
+      "DASHBOARD_STATE_DEFENDANT": "Read the claimant’s requests for a judge to review the order."
+    },
     "ORDERS_AND_NOTICES": {
       "CCJ_REQUEST": "County Court Judgment request",
       "CLAIMANT_DQ": "Claimant Directions Questionnaire",
       "CLAIMANT_RESPONSE_RECEIPT": "Claimant response receipt",
       "CLAIMANT_TIMELINE": "Claimant timeline of events",
       "COURT_DOCUMENTS": "Documents from the court",
+      "DECISION_ON_RECONSIDERATION": "Decision on reconsideration request",
       "DEFENDANT_DQ": "Defendant Directions Questionnaire",
       "DEFENDANT_RESPONSE": "Defendant response",
       "DEFENDANT_SUPPORT_DOC": "Defendants supporting documents",
