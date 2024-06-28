@@ -1874,11 +1874,11 @@
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
       "PARAGRAPH1_1": "Os ydych eisoes wedi gwneud cais am Help i Dalu Ffioedd mewn perthynas â'r ",
-      "PARAGRAPH1_2": "efallai bod gennych chi rif cyfeirnod yn barod. Os felly, gallwch gadw eich cais a pharhau a’i nodi pan ofynnir amdano. Peidiwch â defnyddio cyfeirnod Help i Dalu Ffioedd sy’n gysylltiedig â hawliad gwahanol neu unrhyw ffioedd gwneud cais. Bydd yn annilys gan na allwch ddefnyddio’r un cyfeirnod Help i Dalu Ffioedd ddwywaith.",
+      "PARAGRAPH1_2": "efallai bod gennych chi cyfeirnod yn barod. Os felly, gallwch gadw eich cais a pharhau a’i nodi pan ofynnir amdano. Peidiwch â defnyddio cyfeirnod Help i Dalu Ffioedd sy’n gysylltiedig â hawliad gwahanol neu unrhyw ffioedd gwneud cais. Bydd yn annilys gan na allwch ddefnyddio’r un cyfeirnod Help i Dalu Ffioedd ddwywaith.",
       "PARAGRAPH1_3": "Os nad oes gennych gyfeirnod Help i Dalu Ffioedd ar gyfer yr hawliad hwn, dylech wneud cais am Help i Dalu Ffioedd a fydd yn rhoi cyfeirnod i chi.",
       "PARAGRAPH2": "Os oes angen i chi ddefnyddio'r cais papur Help i Dalu Ffioedd yn hytrach na'r fersiwn ar-lein, ni fyddwch yn gallu defnyddio'r gwasanaeth Hawliadau am Arian yn y Llys Sifil ar-lein i gychwyn eich hawliad.",
       "PARAGRAPH3": "Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd gofynnir i chi am y rhif ar eich ffurflen llys neu dribiwnlys. Sylwch mai ffurflen N1 yw honno.",
-      "PARAGRAPH4": "Pan fyddwch wedi cwblhau eich cais Help i Dalu Ffioedd, byddwch yn cael rhif cyfeirnod (Er enghraifft HWF-C2D-45E). Nodwch y rhif a'i gadw'n ddiogel. Bydd ei angen arnoch yn nes ymlaen yn y broses hawlio. Yna dychwelwch i'r dudalen hon a chliciwch ar y blwch Cadw a pharhau isod er mwyn i chi allu cychwyn yr hawliad.",
+      "PARAGRAPH4": "Pan fyddwch wedi cwblhau eich cais Help i Dalu Ffioedd, byddwch yn cael cyfeirnod (Er enghraifft HWF-C2D-45E). Nodwch y rhif a'i gadw'n ddiogel. Bydd ei angen arnoch yn nes ymlaen yn y broses hawlio. Yna dychwelwch i'r dudalen hon a chliciwch ar y blwch Cadw a pharhau isod er mwyn i chi allu cychwyn yr hawliad.",
       "PLEASE_NOTE": "Sylwer:",
       "THIS_CLAIM": "HAWLIAD",
       "TITLE": "Gwneud cais am Help i Dalu Ffioedd"
@@ -2928,7 +2928,7 @@
     "NOT_ELIGIBLE_FOR_SERVICE": {
       "ABLE_TO_GET_AN_ADVICE": {
         "1": "Efallai y gallwch gael cyngor gan sefydliadau fel ",
-        "2": " ynglŷn â gwneud cais."
+        "2": " ynglŷn â gwneud hawliad."
       },
       "CANT_CALCULATE_THE_AMOUNT": "Os na allwch gyfrifo'r swm a hawlir, er enghraifft oherwydd eich bod yn hawlio am anaf neu ddamwain, defnyddiwch y ",
       "CLAIM_AGAINST_GOVERNMENT": {
@@ -2939,10 +2939,10 @@
       "CLAIM_BY_PAPER": "Gallwch hefyd wneud hawliad ar bapur. ",
       "CLAIM_ON_BEHALF": {
         "CURRENTLY_SERVICE": "Ar hyn o bryd mae'r gwasanaeth hwn ar gyfer hawlwyr sy'n cynrychioli eu hunain.",
-        "COMPLETE_RETURN": ", ei gwblhau a'i ddychwelyd i wneud eich hawliad.",
-        "DOWNLOAD_PAPER_LINK": "Lawrlwytho ffurflen bapur",
+        "COMPLETE_RETURN": ", ei chwblhau a'i dychwelyd i wneud eich hawliad.",
+        "DOWNLOAD_PAPER_LINK": "Lawrlwythwch ffurflen bapur",
         "LEGAL_REPRESENTATIVE": "Os ydych yn gynrychiolydd cyfreithiol ",
-        "MCOL_LINK": "defnyddio'r gwasanaeth Hawliadau am Arian Ar-lein (MCOL)",
+        "MCOL_LINK": "defnyddiwch y gwasanaeth Hawliadau am Arian Ar-lein (MCOL)",
         "OR": " neu "
       },
       "COMPLETE_AND_RETURN_PAPER_FORM": "ei chwblhau a'i dychwelyd i wneud eich hawliad.",
@@ -2950,7 +2950,7 @@
         "AND": "a",
         "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES": "Dim ond i hawlio yn erbyn unigolyn neu sefydliad sydd â chyfeiriad yng Nghymru neu Loegr y gallwch ddefnyddio'r gwasanaeth hwn.",
         "COMPLETE_FORMS_AND_RETURN": ". Cwblhewch y ffurflenni a'u dychwelyd i wneud eich hawliad.",
-        "DOWNLOAD_PAPER_FORM_N1": "Lawrlwytho ffurflen bapur N1",
+        "DOWNLOAD_PAPER_FORM_N1": "Lawrlwythwch ffurflen bapur N1",
         "FORM_N510": "ffurflen N510",
         "USING_PAPER_FORM": "Yn dibynnu ar ble byddwch yn anfon yr hawliad, efallai y byddwch yn gallu gwneud hawliad gan ddefnyddio ffurflen bapur."
       },
@@ -2986,7 +2986,7 @@
       "TENANCY_DEPOSIT": {
         "GET": "Cael",
         "HELP_TO_RESOLVE_YOUR_DISPUTE": "help i ddatrys eich anghydfod",
-        "NOT_USED_FOR_TENANCY_DEPOSIT": "Ni allwch wneud cais am flaendal tenantiaeth drwy ddefnyddio'r gwasanaeth hwn.",
+        "NOT_USED_FOR_TENANCY_DEPOSIT": "Ni allwch wneud hawliad am flaendal tenantiaeth drwy ddefnyddio'r gwasanaeth hwn.",
         "WITH_A_LANLORD_OR_TENANT": "gyda landlord neu denant."
       },
       "USE_MCOL": "defnyddio Hawliadau am Arian Ar-lein (MCOL)",
