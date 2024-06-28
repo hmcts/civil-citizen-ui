@@ -15,6 +15,13 @@ import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePre
 import {CaseRole} from 'form/models/caseRoles';
 import {Document} from 'models/document/document';
 import {ClaimantResponse} from 'models/claimantResponse';
+import {
+  isCaseProgressionV1Enable,
+} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {CaseProgression} from 'models/caseProgression/caseProgression';
+import {CaseDocument} from 'models/document/caseDocument';
+
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 describe('View Orders And Notices Service', () => {
 
@@ -230,6 +237,25 @@ describe('View Orders And Notices Service', () => {
       const expectedResult = new DocumentsViewComponent('Claimant', [expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
+
+    it('should get data array for request for reconsideration claimant', async () => {
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpCaseDocument(documentName, DocumentType.REQUEST_FOR_RECONSIDERATION);
+      claim.caseProgression = new CaseProgression();
+      claim.caseProgression.requestForReconsiderationDocument = document;
+      //When
+      const result = getClaimantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MICRO_TEXT',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Claimant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
   });
 
   describe('Get Defendant Documents', () => {
@@ -340,6 +366,25 @@ describe('View Orders And Notices Service', () => {
       const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
+
+    it('should get data array for request for reconsideration defendant', async () => {
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpCaseDocument(documentName, DocumentType.REQUEST_FOR_RECONSIDERATION);
+      claim.caseProgression = new CaseProgression();
+      claim.caseProgression.requestForReconsiderationDocumentRes = document;
+      //When
+      const result = getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MICRO_TEXT',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
   });
 
   describe('Get Court Documents', () => {
@@ -349,7 +394,7 @@ describe('View Orders And Notices Service', () => {
       //given
       const claim = new Claim();
       //When
-      const result = getCourtDocuments(claim, claimId, 'en');
+      const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       const expectedResult = new DocumentsViewComponent('CourtDocument', []);
       expect(result).toEqual(expectedResult);
@@ -362,7 +407,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.SDO_ORDER);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getCourtDocuments(claim, claimId, 'en');
+      const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.STANDARD_DIRECTIONS_ORDER',
@@ -380,7 +425,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.LIP_MANUAL_DETERMINATION);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getCourtDocuments(claim, claimId, 'en');
+      const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.DETERMINATION_REQUEST',
@@ -398,7 +443,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CCJ_REQUEST_ADMISSION);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getCourtDocuments(claim, claimId, 'en');
+      const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.CCJ_REQUEST',
@@ -416,7 +461,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.INTERLOCUTORY_JUDGEMENT);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getCourtDocuments(claim, claimId, 'en');
+      const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.CLAIMANT_RESPONSE_RECEIPT',
@@ -434,7 +479,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CCJ_REQUEST_DETERMINATION);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getCourtDocuments(claim, claimId, 'en');
+      const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.CCJ_REQUEST',
@@ -452,7 +497,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.SETTLEMENT_AGREEMENT);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getCourtDocuments(claim, claimId, 'en');
+      const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.SETTLEMENT_AGREEMENT',
@@ -460,6 +505,39 @@ describe('View Orders And Notices Service', () => {
         new DocumentLinkInformation(documentUrl, documentName),
       );
       const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for decision on reconsideration', async () => {
+      //given
+      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DECISION_MADE_ON_APPLICATIONS);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should not get data array for decision on reconsideration if toggle off', async () => {
+      //given
+      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(false);
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DECISION_MADE_ON_APPLICATIONS);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedResult = new DocumentsViewComponent('CourtDocument', []);
       expect(result).toEqual(expectedResult);
     });
   });
@@ -479,6 +557,21 @@ describe('View Orders And Notices Service', () => {
         'documentType': documentType,
         'createdDatetime': new Date('2022-06-21T14:15:19'),
       },
+    };
+  }
+
+  function setUpCaseDocument(documentName: string, documentType: DocumentType) : CaseDocument {
+    return {
+      'createdBy': 'Civil',
+      'documentLink': {
+        'document_url': 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de',
+        'document_filename': documentName,
+        'document_binary_url': 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary',
+      },
+      'documentName': documentName,
+      'documentSize': 45794,
+      'documentType': documentType,
+      'createdDatetime': new Date('2022-06-21T14:15:19'),
     };
   }
 
