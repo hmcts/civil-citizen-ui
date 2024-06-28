@@ -22,11 +22,11 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 const ordersAndNoticesController = Router();
 const viewResponseToClaim = 'features/dashboard/orders-and-notices';
 
-const renderView = (res: Response, claimId: string, claim: Claim, lang: string): void => {
+const renderView = async (res: Response, claimId: string, claim: Claim, lang: string): Promise<void> => {
 
   const claimantDocuments = getClaimantDocuments(claim, claimId, lang);
   const defendantDocuments = getDefendantDocuments(claim, claimId, lang);
-  const courtDocuments = getCourtDocuments(claim, claimId, lang);
+  const courtDocuments = await getCourtDocuments(claim, claimId, lang);
 
   res.render(viewResponseToClaim, {
     claimantDocuments: claimantDocuments,
