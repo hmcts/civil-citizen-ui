@@ -106,9 +106,9 @@ export const translateDraftResponseToCCD = (claim: Claim, addressHasChange: bool
     respondent1DQHearingSupport: toCCDDQHearingSupport(claim.directionQuestionnaire?.hearing?.supportRequiredList),
     responseClaimExpertSpecRequired: toCCDYesNo(claim.directionQuestionnaire?.experts?.permissionForExpert?.option),
     respondent1DQFixedRecoverableCostsIntermediate: toCCDFixedRecoverableCostsIntermediate(claim.directionQuestionnaire?.fixedRecoverableCosts),
-    specRespondent1DQDisclosureOfElectronicDocuments: toCCDDisclosureOfElectronicDocuments(claim),
-    specRespondent1DQDisclosureOfNonElectronicDocuments: toCCDDisclosureOfNonElectronicDocuments(claim),
-    respondent1DQClaimantDocumentsToBeConsidered: convertToCCDDocumentsToBeConsidered(claim),
+    specRespondent1DQDisclosureOfElectronicDocuments: toCCDDisclosureOfElectronicDocuments(claim.directionQuestionnaire?.hearing),
+    specRespondent1DQDisclosureOfNonElectronicDocuments: toCCDDisclosureOfNonElectronicDocuments(claim.directionQuestionnaire?.hearing),
+    respondent1DQClaimantDocumentsToBeConsidered: convertToCCDDocumentsToBeConsidered(claim.directionQuestionnaire?.hearing),
   };
 };
 

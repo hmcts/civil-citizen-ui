@@ -177,24 +177,24 @@ export const nonElectronicDocsDisclosureQuestion = (claim: Claim, claimId: strin
   );
 };
 
-export const mintiClaimantDocsToConsiderQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const mintiDocsToConsiderQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const option = directionQuestionnaire?.hearing?.hasDocumentsToBeConsidered?.option === YesNo.YES
     ? YesNoUpperCase.YES
     : YesNoUpperCase.NO;
 
   return summaryRow(
-    t('PAGES.CHECK_YOUR_ANSWER.CLAIMANT_DOCS_TO_CONSIDER', {lng}),
+    t(claim.isClaimantIntentionPending() ? 'PAGES.CHECK_YOUR_ANSWER.DEFENDANT_DOCS_TO_CONSIDER' : 'PAGES.CHECK_YOUR_ANSWER.CLAIMANT_DOCS_TO_CONSIDER', {lng}),
     t(`COMMON.VARIATION.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_URL),
     changeLabel(lng),
   );
 };
 
-export const mintiClaimantDocsToConsiderDetailsQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
+export const mintiDocsToConsiderDetailsQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const text = directionQuestionnaire?.hearing?.documentsConsideredDetails;
 
   return summaryRow(
-    t('PAGES.CHECK_YOUR_ANSWER.CLAIMANT_DOCS_TO_CONSIDER_DETAILS', {lng}),
+    t(claim.isClaimantIntentionPending() ? 'PAGES.CHECK_YOUR_ANSWER.DEFENDANT_DOCS_TO_CONSIDER_DETAILS' : 'PAGES.CHECK_YOUR_ANSWER.CLAIMANT_DOCS_TO_CONSIDER_DETAILS', {lng}),
     text,
     constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL),
     changeLabel(lng),
@@ -295,9 +295,9 @@ export const buildHearingRequirementsForTrack = (claim: Claim, hearingRequiremen
     if (directionQuestionnaire?.hearing?.disclosureOfDocuments?.documentsTypeChosen?.includes(TypeOfDisclosureDocument.NON_ELECTRONIC)) {
       hearingRequirementsSection.summaryList.rows.push(nonElectronicDocsDisclosureQuestion(claim, claimId, lng,directionQuestionnaire));
     }
-    hearingRequirementsSection.summaryList.rows.push(mintiClaimantDocsToConsiderQuestion(claim, claimId, lng,directionQuestionnaire));
+    hearingRequirementsSection.summaryList.rows.push(mintiDocsToConsiderQuestion(claim, claimId, lng,directionQuestionnaire));
     if (directionQuestionnaire?.hearing?.hasDocumentsToBeConsidered?.option === YesNo.YES) {
-      hearingRequirementsSection.summaryList.rows.push(mintiClaimantDocsToConsiderDetailsQuestion(claim, claimId, lng,directionQuestionnaire));
+      hearingRequirementsSection.summaryList.rows.push(mintiDocsToConsiderDetailsQuestion(claim, claimId, lng,directionQuestionnaire));
     }
   }
 
