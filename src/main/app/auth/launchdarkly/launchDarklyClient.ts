@@ -82,5 +82,8 @@ export async function  isCarmEnabledForCase(date: Date): Promise<boolean> {
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
   const carmFlag = await getFlagValue('carm') as boolean;
   const carmApplicable = await getFlagValue('cam-enabled-for-case', epoch) as boolean;
+  console.log('submittedDate = ' + date);
+  console.log('carmFlag = ' + carmFlag);
+  console.log('carmApplicable = ' + carmApplicable);
   return carmFlag && carmApplicable;
 }
