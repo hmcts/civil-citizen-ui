@@ -5,10 +5,11 @@ import {
   GENERAL_APPLICATION_CONFIRM_URL,
   GA_APPLICATION_FEE_CONFIRMATION_URL,
   GA_APPLY_HELP_WITH_FEE_REFERENCE,
+  PAYING_FOR_APPLICATION_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
-import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {getCancelUrl, getDynamicHeaderForMultipleApplications, saveStatementOfTruth} from 'services/features/generalApplication/generalApplicationService';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
@@ -16,10 +17,10 @@ import {Claim} from 'models/claim';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {getSummarySections} from 'services/features/generalApplication/checkAnswers/checkAnswersService';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
-import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {submitApplication} from 'services/features/generalApplication/submitApplication';
+import {checkYourAnswersGAGuard} from 'routes/guards/checkYourAnswersGAGuard';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -32,15 +33,14 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const summaryRows = getSummarySections(claimId, claim, lang);
   const headerTitle = getDynamicHeaderForMultipleApplications(claim);
-  const applicationTypeTitle = claim.generalApplication?.applicationTypes?.length === 1
-    ? selectedApplicationType[claim.generalApplication.applicationTypes[0].option]
-    : t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CAPTION', {lng: lang});
-  const backLinkUrl = claim.generalApplication?.helpWithFees?.helpFeeReferenceNumberForm?.referenceNumber ?
-    constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_REFERENCE) : 'test'; // TODO: add url
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, applicationTypeTitle, claimIdPrettified, claim, summaryRows });
+
+  const backLinkUrl = claim.generalApplication?.helpWithFees?.helpFeeReferenceNumberForm?.referenceNumber 
+    ? constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_REFERENCE) 
+    : constructResponseUrlWithIdParams(claimId, PAYING_FOR_APPLICATION_URL);
+  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, summaryRows });
 }
 
-gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
@@ -52,7 +52,7 @@ gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res:
   }
 }) as RequestHandler);
 
-gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
@@ -65,7 +65,7 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, (async (req: AppRequest, res
     } else {
       await saveStatementOfTruth(redisKey, statementOfTruth);
       await submitApplication(req);
-      await deleteDraftClaimFromStore(claimId);
+      await deleteDraftClaimFromStore(redisKey);
       res.redirect(getRedirectUrl(claimId, claim));
     }
   } catch (error) {
