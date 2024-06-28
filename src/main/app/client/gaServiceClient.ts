@@ -109,10 +109,10 @@ export class GaServiceClient {
   async getApplication(applicationCaseRef: string, req: AppRequest): Promise<ApplicationResponse> {
     const config = this.getConfig(req);
     try {
-      const response = await this.client.post<ApplicationResponse>(GA_SERVICE_CASE_URL.replace(':caseId', applicationCaseRef), config);
+      const response = await this.client.get<ApplicationResponse>(GA_SERVICE_CASE_URL.replace(':caseId', applicationCaseRef), config);
       return response.data;
     } catch (err) {
-      logger.error(`Unable to fetch general application with id ${applicationCaseRef}`);
+      logger.error(`Unable to fetch general application with id ${applicationCaseRef}`, err);
       throw err;
     }
   }

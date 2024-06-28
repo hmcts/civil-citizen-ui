@@ -17,6 +17,7 @@ export const submitApplicationResponse = async (req: AppRequest): Promise<Applic
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const userId = req.session?.user?.id;
+    //TODO retrieve application id. The fields below are present in the database but not in the actual object at this stage
     const applicationId = claim.generalApplication?.caseLink?.caseReference;
     const applicationResponse = await gaServiceClient.getApplication(applicationId, req);
     const generalApplication: CCDGeneralApplication = {
