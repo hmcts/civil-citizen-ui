@@ -489,6 +489,15 @@ export class Claim {
     return undefined;
   }
 
+  getDocumentDetailsList(documentType: DocumentType): SystemGeneratedCaseDocuments[] {
+    if (this.isSystemGeneratedCaseDocumentsAvailable()) {
+      return this.systemGeneratedCaseDocuments?.filter(document => {
+        return document?.value.documentType === documentType;
+      });
+    }
+    return undefined;
+  }
+
   isDefendantNotResponded(): boolean {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }

@@ -389,7 +389,7 @@ describe('View Orders And Notices Service', () => {
       //given
       const claim = new Claim();
       //When
-      const result = getCourtDocuments(claim, claimId, 'en');
+      const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       const expectedResult = new DocumentsViewComponent('CourtDocument', []);
       expect(result).toEqual(expectedResult);
@@ -402,7 +402,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.SDO_ORDER);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getCourtDocuments(claim, claimId, 'en');
+      const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.STANDARD_DIRECTIONS_ORDER',
@@ -420,7 +420,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.LIP_MANUAL_DETERMINATION);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getCourtDocuments(claim, claimId, 'en');
+      const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.DETERMINATION_REQUEST',
@@ -438,7 +438,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CCJ_REQUEST_ADMISSION);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getCourtDocuments(claim, claimId, 'en');
+      const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.CCJ_REQUEST',
@@ -456,7 +456,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.INTERLOCUTORY_JUDGEMENT);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getCourtDocuments(claim, claimId, 'en');
+      const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.CLAIMANT_RESPONSE_RECEIPT',
@@ -474,7 +474,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CCJ_REQUEST_DETERMINATION);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getCourtDocuments(claim, claimId, 'en');
+      const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.CCJ_REQUEST',
@@ -492,10 +492,28 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.SETTLEMENT_AGREEMENT);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getCourtDocuments(claim, claimId, 'en');
+      const result = await getCourtDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.SETTLEMENT_AGREEMENT',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for translated order', async () => {
+      //given
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_ORDER',
         '21 June 2022',
         new DocumentLinkInformation(documentUrl, documentName),
       );
