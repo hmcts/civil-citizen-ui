@@ -198,7 +198,7 @@ const toCCDGeneralAppHelpWithFees = (helpWithFees: ApplyHelpFeesReferenceForm | 
   };
 };
 
-export const toCcdGeneralApplicationRespondentResponse = (generalApplication: GeneralApplication): CcdGeneralApplicationRespondentResponse => {
+export const toCcdGeneralApplicationRespondentResponse = (generalApplication: GeneralApplication, userId: string | undefined): CcdGeneralApplicationRespondentResponse => {
   const response = generalApplication.response;
   return {
     value: {
@@ -207,7 +207,7 @@ export const toCcdGeneralApplicationRespondentResponse = (generalApplication: Ge
         response?.hearingContactDetails, 
         response?.unavailableDatesHearing, 
         response?.hearingSupport),
-      gaRespondentDetails: 'respondent details',
+      gaRespondentDetails: userId,
       gaRespondentResponseReason: generalApplication.response?.respondentAgreement?.reasonForDisagreement,
       generalAppRespondent1Representative: toCCDYesNo(YesNo.NO),
     },

@@ -5,8 +5,6 @@ import {Application} from 'models/application';
 import {getClaimById} from 'modules/utilityService';
 import {GaServiceClient} from 'client/gaServiceClient';
 import { CCDGeneralApplication } from 'common/models/gaEvents/eventDto';
-//import { CCDGeneralApplication } from 'common/models/gaEvents/eventDto';
-//import { getLast } from '../generalApplicationService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('submitApplicationResponse');
@@ -18,18 +16,14 @@ export const submitApplicationResponse = async (req: AppRequest): Promise<Applic
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    //const applicationId = claim.generalApplication?.caseLink?.caseReference;
-    //const applicationId = '1718976755835339';
-    //const applicationId = '1718969207972180';
-    //const applications = await generalApplicationClient.getApplications(req);
-    const applicationResponse = await gaServiceClient.getLatestCcdApplication(req);//.getApplication(req, applicationId);
-    
-    //const ccdApplication = translateDraftApplicationToCCD(claim.generalApplication);
-    const generalApplication = {
+    const userId = req.session?.user?.id;
+    const applicationId = claim.generalApplication?.caseLink?.caseReference;
+    const applicationResponse = await gaServiceClient.getApplication(applicationId, req);
+    const generalApplication: CCDGeneralApplication = {
       ...applicationResponse?.case_data,
-      respondentsResponses: [toCcdGeneralApplicationRespondentResponse(claim.generalApplication)],
+      respondentsResponses: [toCcdGeneralApplicationRespondentResponse(claim.generalApplication, userId)],
     };
-    return await gaServiceClient.submitRespondToApplicationEvent(applicationResponse.id, generalApplication as CCDGeneralApplication, req);
+    return await gaServiceClient.submitRespondToApplicationEvent(applicationResponse.id, generalApplication, req);
   } catch (err) {
     logger.error(err);
     throw err;

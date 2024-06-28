@@ -13,9 +13,9 @@ import { ApplicationResponse } from 'common/models/generalApplication/applicatio
 import { CCDGeneralApplication } from 'common/models/gaEvents/eventDto';
 import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import { CcdGeneralApplicationHearingDetails } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
-import { CcdGeneralApplicationStatementOfTruth } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
-import { CCDHelpWithFees } from 'common/form/models/claimDetails';
-import { Application } from 'common/models/generalApplication/application';
+import * as CcdTraslation from 'services/translation/generalApplication/ccdTranslation';
+import { CcdGeneralApplicationRespondentResponse } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationRespondentResponse';
+import { configureSpy } from '../../../../../utils/spyConfiguration';
 
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/modules/utilityService');
@@ -34,38 +34,41 @@ describe('Submit application to ccd', () => {
   });
 
   it('should submit claim successfully when there are no errors', async () => {
-    const generalApplication: CCDGeneralApplication = {
+    const generalApplication: Partial<CCDGeneralApplication> = {
       generalAppType: {types: [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]},
       generalAppRespondentAgreement: { hasAgreed: YesNoUpperCamelCase.NO },
       generalAppInformOtherParty: { isWithNotice: YesNoUpperCamelCase.NO, reasonsForWithoutNotice: ''},
-      generalAppAskForCosts: YesNoUpperCamelCase.NO,
-      generalAppDetailsOfOrder: '',
-      generalAppReasonsOfOrder: '',
-      generalAppEvidenceDocument: [],
-      generalAppHearingDetails: {} as CcdGeneralApplicationHearingDetails,
-      generalAppStatementOfTruth: {} as CcdGeneralApplicationStatementOfTruth,
-      generalAppHelpWithFees: {} as CCDHelpWithFees,
       respondentsResponses: [],
     };
-    // const ccdTranslationServiceMock = jest
-    //   .spyOn(ccdTranslationService, 'toCcdGeneralApplicationRespondentResponse')
-    //   .mockReturnValue(generalApplication);
+    const ccdResponse: CcdGeneralApplicationRespondentResponse = {value: {
+      generalAppRespondent1Representative: YesNoUpperCamelCase.NO,
+      gaHearingDetails: {} as CcdGeneralApplicationHearingDetails,
+      gaRespondentDetails: 'a1b2-c3d4-e5f6',
+      gaRespondentResponseReason: 'reason',
+    }};
 
-    const submitRespondToApplicationEventMock = jest
-      .spyOn(GaServiceClient.prototype, 'submitRespondToApplicationEvent')
-      .mockResolvedValue(new Application());
+    const ccdTranslationServiceMock = configureSpy(CcdTraslation, 'toCcdGeneralApplicationRespondentResponse')
+      .mockReturnValue(ccdResponse);
+
+    const submitRespondToApplicationEventMock = configureSpy(GaServiceClient.prototype, 'submitRespondToApplicationEvent')
+      .mockResolvedValue(claim);
     
-    const getLatestGaMock = jest.spyOn(GaServiceClient.prototype, 'getLatestCcdApplication');
-    getLatestGaMock.mockResolvedValue(new ApplicationResponse('567', generalApplication));
-    (req as AppRequest).params = {id: '123'};
+    const getApplicationMock = configureSpy(GaServiceClient.prototype, 'getApplication');
+    getApplicationMock.mockResolvedValue(new ApplicationResponse('567', generalApplication as CCDGeneralApplication));
+    (req as AppRequest).params = { id: '123'};
+    req.session.user ={...req.session?.user, id: 'a1b2'};
 
     //When
-    await submitApplicationResponse(req as AppRequest);
+    const result = await submitApplicationResponse(req as AppRequest);
 
     //then
-    //expect(result).toBe({});
-    //expect(ccdTranslationServiceMock).toBeCalled();
-    expect(submitRespondToApplicationEventMock).toBeCalled();
+    expect(result).toBe(claim);
+    expect(ccdTranslationServiceMock).toBeCalledWith(claim.generalApplication, 'a1b2');
+    expect(submitRespondToApplicationEventMock).toBeCalledWith(
+      '567', {
+        ...generalApplication, 
+        respondentsResponses: [ccdResponse],
+      }, req);
   });
 
   it('should return http 500 when has error in the get method', async () => {

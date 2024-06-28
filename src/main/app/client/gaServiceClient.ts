@@ -5,11 +5,10 @@ import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {GeneralApplicationResponse} from 'models/generalApplicationResponse';
 import {Application} from 'models/application';
-import {GA_FEES_PAYMENT_STATUS_URL, GA_FEES_PAYMENT_URL, GA_SERVICE_CASES_URL, GA_SERVICE_SUBMIT_EVENT} from 'client/gaServiceUrls';
+import {GA_FEES_PAYMENT_STATUS_URL, GA_FEES_PAYMENT_URL, GA_SERVICE_CASES_URL, GA_SERVICE_CASE_URL, GA_SERVICE_SUBMIT_EVENT} from 'client/gaServiceUrls';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {plainToInstance} from 'class-transformer';
 import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
-import { getLast } from 'services/features/generalApplication/generalApplicationService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('gaServiceClient');
@@ -107,14 +106,15 @@ export class GaServiceClient {
     }
   }
 
-  async getLatestCcdApplication(req: AppRequest): Promise<ApplicationResponse | undefined> {
+  async getApplication(applicationCaseRef: string, req: AppRequest): Promise<ApplicationResponse> {
     const config = this.getConfig(req);
     try {
-      const response = await this.client.post(GA_SERVICE_CASES_URL, {match_all: {}}, config);
-      return getLast(response.data.cases);
+      const response = await this.client.post<ApplicationResponse>(GA_SERVICE_CASE_URL.replace(':caseId', applicationCaseRef), config);
+      return response.data;
     } catch (err) {
-      logger.error('Error when getApplications');
+      logger.error(`Unable to fetch general application with id ${applicationCaseRef}`);
       throw err;
     }
   }
+
 }
