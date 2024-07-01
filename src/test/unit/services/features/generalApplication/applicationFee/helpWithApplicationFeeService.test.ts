@@ -22,6 +22,7 @@ jest.mock('modules/utilityService', () => ({
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 const claimId = '1';
+const genAppId = 'test';
 const nextUrl= 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960';
 
 describe('apply help with application fee selection', () => {
@@ -52,15 +53,15 @@ describe('apply help with application fee selection', () => {
     jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
 
     //when
-    const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), mockedAppRequest);
+    const actualRedirectUrl = await getRedirectUrl(claimId, genAppId, new GenericYesNo(YesNo.NO), mockedAppRequest);
     //Then
     expect(actualRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, nextUrl));
   });
 
   it('should return - Do you want to continue to apply for Help with Fees page if applyHelpWithFees option is yes', async () => {
     //when
-    const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), mockedAppRequest);
+    const actualRedirectUrl = await getRedirectUrl(claimId, genAppId, new GenericYesNo(YesNo.YES), mockedAppRequest);
     //Then
-    expect(actualRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES));
+    expect(actualRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES) + '?id=test');
   });
 });
