@@ -41,8 +41,9 @@ export const getDefendantDocuments = (claim: Claim, claimId: string, lang: strin
 };
 
 export const getCourtDocuments = async (claim: Claim, claimId: string, lang: string) => {
+  const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
   const courtDocumentsArray: DocumentInformation[] = [];
-  const caseProgressionEnabled = await isCaseProgressionV1Enable();
+
   courtDocumentsArray.push(...getStandardDirectionsOrder(claim, claimId, lang));
   courtDocumentsArray.push(...getManualDetermination(claim, claimId, lang));
   courtDocumentsArray.push(...getCcjRequestAdmission(claim, claimId, lang));
@@ -50,8 +51,9 @@ export const getCourtDocuments = async (claim: Claim, claimId: string, lang: str
   courtDocumentsArray.push(...getCcjRequestDetermination(claim, claimId, lang));
   courtDocumentsArray.push(...getSettlementAgreement(claim, claimId, lang));
 
-  if (caseProgressionEnabled) {
+  if (isCaseProgressionEnabled) {
     courtDocumentsArray.push(...getDecisionOnReconsideration(claim, claimId, lang));
+    courtDocumentsArray.push(...getTranslatedOrders(claim, claimId, lang));
   }
 
   return new DocumentsViewComponent('CourtDocument', courtDocumentsArray);
@@ -175,6 +177,18 @@ const getDefendantRequestForReconsideration = (claim: Claim, claimId: string, la
   const document = claim.caseProgression?.requestForReconsiderationDocumentRes;
   return document ? Array.of(
     setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MICRO_TEXT')) : [];
+};
+
+const getTranslatedOrders = (claim: Claim, claimId: string, lang: string) => {
+  const documents = claim.getDocumentDetailsList(DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
+  const caseDocuments: DocumentInformation[] = [];
+  if (documents && documents.length > 0) {
+    documents.forEach((documentElement) => {
+      const document = documentElement.value;
+      caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRANSLATED_ORDER'));
+    });
+  }
+  return caseDocuments;
 };
 
 const getDecisionOnReconsideration = (claim: Claim, claimId: string, lang: string) => {

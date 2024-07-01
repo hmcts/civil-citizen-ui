@@ -1003,6 +1003,26 @@ describe('Documents', () => {
     });
   });
 
+  describe('getDocumentDetailsList', () => {
+    it('should return undefined with empty claim', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const result = claim.getDocumentDetailsList(DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
+      //Then
+      expect(result).toBeUndefined;
+    });
+
+    it('should return document details list', () => {
+      //Given
+      const claim = mockClaim;
+      //When
+      const result = claim.getDocumentDetailsList(DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
+      //Then
+      expect(result).toStrictEqual([mockClaim.systemGeneratedCaseDocuments[4], mockClaim.systemGeneratedCaseDocuments[5]]);
+    });
+  });
+
   describe('isDefendantNotResponded', () => {
     const claim = new Claim();
     it('should return false with empty claim', () => {
