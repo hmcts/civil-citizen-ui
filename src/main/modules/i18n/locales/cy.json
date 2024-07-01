@@ -341,7 +341,7 @@
       "HOW_FORMALISE": "Dewiswch sut i ffurfioli ad-daliad",
       "PROPOSE_ALTERNATIVE_REPAYMENT": "Cynnig cynllun ad-dalu amgen",
       "REQUEST_COUNTY_COURT_JUDGMENT": "Gwneud cais am Ddyfarniad Llys Sirol",
-      "SIGN_SETTLEMENT": "Arwyddo cytundeb setlo",
+      "SIGN_SETTLEMENT": "Llofnodi cytundeb setlo",
       "TITLE": "Dewiswch beth i'w wneud nesaf"
     },
     "HOW_THEY_RESPONDED": {
@@ -748,7 +748,7 @@
       "IN_FULL": "Yn llawn erbyn {{paymentDate}}",
       "ISSUE_A_CCJ": "Cyhoeddi Dyfarniad y Llys Sirol (CCJ)",
       "IMMEDIATELY":"Immediately",
-      "IN_FULL_BY":"In full by {{ claimantSetDate }}",
+      "IN_FULL_BY":"Yn llawn erbyn {{ claimantSetDate }}",
       "INCOME_REGULAR": "Incwm rheolaidd",
       "INCOME_JOB": "Incwm o'ch swydd",
       "INCOME_UNIVERSAL_CREDIT": "Credyd Cynhwysol",
@@ -801,8 +801,8 @@
       "SAME_ADDRESS": "Yr un fath â'r cyfeiriad",
       "SCHEDULED_DATE_OF_FLIGHT": "Dyddiad hedfan a drefnwyd",
       "SETTLEMENT_AGREEMENT": "Cytundeb setlo",
-      "SIGN_A_SETTLEMENT_AGREEMENT": "Arwyddo cytundeb setlo",
-      "SIGN_SETTLEMENT": "Arwyddo cytundeb setlo",
+      "SIGN_A_SETTLEMENT_AGREEMENT": "Llofnodi cytundeb setlo",
+      "SIGN_SETTLEMENT": "Llofnodi cytundeb setlo",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Ydych chi'n cefnogi unrhyw un arall yn ariannol?",
       "SUPPORT_REQUIRED_INTERPRETER": "Dehonglydd",
       "SUPPORT_REQUIRED_NAME": "Enw'r sawl sydd angen cymorth:",
@@ -1155,16 +1155,16 @@
       "TITLE": "Beth yw eich dyddiad geni?"
     },
     "CLAIMANT_FORMALISE_REPAYMENT_TYPE": {
-      "PAGE_TITLE": "Dewiswch sut i ffurfioli ad-daliad",
+      "PAGE_TITLE": "Dewiswch sut i ffurfioli'r ad-dalu",
       "REQUEST_A_CCJ": {
-        "DESCRIPTION": "Gallwch ofyn i'r llys wneud gorchymyn ffurfiol yn rhwymo'r diffynnydd i'r cynllun ad-dalu. Mae hyn yn ychwanegu enw'r diffynnydd at gofrestr CCJ, a allai ei gwneud hi'n anoddach iddo fenthyg arian i'ch ad-dalu.",
+        "DESCRIPTION": "Gallwch ofyn i'r llys wneud gorchymyn ffurfiol yn rhwymo'r diffynnydd i'r cynllun ad-dalu. Mae hyn yn ychwanegu enw'r diffynnydd at gofrestr CCJ, a allai ei gwneud hi'n anoddach iddynt fenthyg arian i'ch ad-dalu.",
         "LABEL": "Gofyn am CCJ"
       },
       "SIGN_A_SETTLEMENT_AGREEMENT": {
-        "DESCRIPTION": "Mae hwn yn gytundeb cyfreithiol rhyngoch chi a'r diffynnydd yn cytuno i'r cynllun ad-dalu. Os yw'n ei dorri gallwch ofyn am Ddyfarniad Llys Sirol (CCJ). Byddwn yn dangos fformat awgrymedig i chi ar gyfer y cytundeb.",
-        "LABEL": "Arwyddo cytundeb setlo"
+        "DESCRIPTION": "Mae hwn yn gytundeb cyfreithiol rhyngoch chi a'r diffynnydd yn cytuno i'r cynllun ad-dalu. Os ydynt yn ei dorri gallwch ofyn am Ddyfarniad Llys Sirol (CCJ). Byddwn yn dangos fformat awgrymedig i chi ar gyfer y cytundeb.",
+        "LABEL": "Llofnodi cytundeb setlo"
       },
-      "TITLE": "Dewiswch sut i ffurfioli ad-daliad"
+      "TITLE": "Dewiswch sut i ffurfioli'r ad-dalu"
     },
     "CLAIMANT_INTEREST_RATE": {
       "DIFFERENT_RATE_LABEL": "Cyfradd wahanol",
@@ -1366,7 +1366,7 @@
         "THIRD_PARAGRAPH": "Gall y naill barti neu’r llall weld a llwytho'r cytundeb hwn o'u cyfrif Hawliadau am Arian. Dylai'r ddau barti gadw copi o'r cytundeb hwn.",
         "IF_THE_AGREEMENT_IS_BROKEN": "Os torrir y cytundeb",
         "CLAIMANT_REQUEST_CCJ": "Gall yr hawlydd ofyn am Ddyfarniad Llys Sirol (CCJ) am unrhyw arian sy'n dal i fod yn ddyledus o'r cytundeb hwn.",
-        "SIGN_THE_AGREEMENT": "Arwyddo'r cytundeb",
+        "SIGN_THE_AGREEMENT": "Llofnodi'r cytundeb",
         "AGREEMENT_NOTE": "Gwnewch yn siŵr bod y cytundeb hwn yn cynnwys popeth rydych chi wedi ei gytuno â {{ defendant }} cyn arwyddo. Ni fyddwch yn gallu newid hyn yn nes ymlaen.",
         "CONFIRMATION": "Rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb."
       }
@@ -4370,7 +4370,7 @@
     "VALID_WHY_FROM_PARTICULAR_DATE": "Mae angen i chi egluro pam eich bod yn hawlio",
     "QUESTION_1_REQUIRED": "Dewiswch oes os yw rhywun yn fregus mewn ffordd y mae angen i’r llys ei hystyried",
     "QUESTION_2_REQUIRED": "Dywedwch wrthym pwy sy'n agored i niwed a pha gefnogaeth sydd ei hangen arnynt",
-    "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Nodwch pam y gwnaethoch wrthod cynllun ad-dalu",
+    "CLAIMANT_REJECTION_RESPONSE_REQUIRED": "Nodwch pam eich bod wedi gwrthod y cynllun ad-dalu",
     "VALID_DATE_OF_DOC_MUST_INCLUDE_DAY": "Rhaid i’r dyddiad y ddogfen gynnwys diwrnod",
     "VALID_DATE_OF_DOC_MUST_INCLUDE_MONTH": "Rhaid i’r dyddiad y ddogfen gynnwys mis",
     "VALID_DATE_OF_DOC_MUST_INCLUDE_YEAR": "Rhaid i’r dyddiad y ddogfen gynnwys blwyddyn",
