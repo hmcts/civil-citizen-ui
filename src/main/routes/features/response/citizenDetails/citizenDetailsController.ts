@@ -53,7 +53,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, (async (req: Request, res: Res
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
-    const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
+    const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     const respondent: Party = await getDefendantInformation(generateRedisKey(<AppRequest>req));
     const partyDetails = new GenericForm(respondent.partyDetails);
     const partyPhoneForm = new GenericForm<PartyPhone>(new PartyPhone(respondent.partyPhone?.phone, respondent.partyPhone?.ccdPhoneExist));
