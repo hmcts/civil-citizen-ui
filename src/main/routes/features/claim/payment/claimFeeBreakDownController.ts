@@ -1,11 +1,6 @@
 import {AppRequest} from 'common/models/AppRequest';
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {
-  deleteDraftClaimFromStore,
-  generateRedisKey,
-  getCaseDataFromStore,
-  saveDraftClaim
-} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {CLAIM_FEE_BREAKUP} from 'routes/urls';
 import {YesNo} from 'common/form/models/yesNo';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
@@ -18,7 +13,7 @@ import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 const claimFeeBreakDownController = Router();
 const viewPath = 'features/claim/payment/claim-fee-breakdown';
 
-claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
+claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claim = await getClaimById(req.params.id, req, true);
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
@@ -29,7 +24,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
   } catch (error) {
     next(error);
   }
-})as RequestHandler);
+});
 
 claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -38,7 +33,6 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
     const claim =  await getCaseDataFromStore(generateRedisKey(req));
     claim.claimDetails.claimFeePayment = paymentRedirectInformation;
     await saveDraftClaim(claim.id, claim, true);
-    await deleteDraftClaimFromStore(claimId);
     res.redirect(paymentRedirectInformation?.nextUrl);
   } catch (error) {
     next(error);
