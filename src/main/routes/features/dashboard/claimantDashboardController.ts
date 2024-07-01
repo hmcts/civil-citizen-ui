@@ -1,5 +1,11 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {APPLICATION_TYPE_URL, DASHBOARD_CLAIMANT_URL, DATE_PAID_URL, OLD_DASHBOARD_CLAIMANT_URL} from '../../urls';
+import {
+  APPLICATION_TYPE_URL,
+  BREATHING_SPACE_INFO_URL,
+  DASHBOARD_CLAIMANT_URL,
+  DATE_PAID_URL,
+  OLD_DASHBOARD_CLAIMANT_URL,
+} from '../../urls';
 import {
   extractOrderDocumentIdFromNotification,
   getDashboardForm,
@@ -13,11 +19,10 @@ import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {isDashboardServiceEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isCUIReleaseTwoEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {t} from 'i18next';
-import {getDebtRespiteUrl} from 'common/utils/externalURLs';
 import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
@@ -33,8 +38,8 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const claimId =  req.params.id;
     let claimIdPrettified;
     let claimAmountFormatted;
-    const isDashboardEnabled = await isDashboardServiceEnabled();
-    if (isDashboardEnabled){
+    const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
+    if (isCUIR2Enabled){
       const lng = req.query.lang ? req.query.lang : req.cookies.lang;
       let claim: Claim;
       let caseRole: ClaimantOrDefendant;
@@ -113,7 +118,7 @@ const getSupportLinks = (claim: Claim, claimId: string, lng: string) => {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_ENDED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
   }
   if (showGetDebtRespiteLink && claim.isClaimant()) {
-    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }), url: getDebtRespiteUrl });
+    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }), url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL) });
   }
 
   const helpSupportTitle = getHelpSupportTitle(lng);
