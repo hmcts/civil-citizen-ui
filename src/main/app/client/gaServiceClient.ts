@@ -5,7 +5,7 @@ import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {GeneralApplicationResponse} from 'models/generalApplicationResponse';
 import {Application} from 'models/application';
-import {GA_FEES_PAYMENT_STATUS_URL, GA_FEES_PAYMENT_URL, GA_SERVICE_CASES_URL, GA_SERVICE_SUBMIT_EVENT} from 'client/gaServiceUrls';
+import {GA_FEES_PAYMENT_STATUS_URL, GA_FEES_PAYMENT_URL, GA_SERVICE_CASES_URL, GA_SERVICE_CASE_URL, GA_SERVICE_SUBMIT_EVENT} from 'client/gaServiceUrls';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {plainToInstance} from 'class-transformer';
 import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
@@ -42,6 +42,10 @@ export class GaServiceClient {
         'Authorization': `Bearer ${req.session?.user?.accessToken}`,
       },
     };
+  }
+
+  async submitRespondToApplicationEvent(applicationId: string, generalApplication: CCDGeneralApplication, req?: AppRequest): Promise<Application> {
+    return this.submitEvent(ApplicationEvent.RESPOND_TO_APPLICATION, applicationId, generalApplication, req);
   }
 
   async submitEvent(event: ApplicationEvent, claimId: string, updatedApplication?: CCDGeneralApplication, req?: AppRequest): Promise<Application> {
@@ -101,4 +105,16 @@ export class GaServiceClient {
       throw err;
     }
   }
+
+  async getApplication(applicationCaseRef: string, req: AppRequest): Promise<ApplicationResponse> {
+    const config = this.getConfig(req);
+    try {
+      const response = await this.client.get<ApplicationResponse>(GA_SERVICE_CASE_URL.replace(':caseId', applicationCaseRef), config);
+      return response.data;
+    } catch (err) {
+      logger.error(`Unable to fetch general application with id ${applicationCaseRef}`, err);
+      throw err;
+    }
+  }
+
 }

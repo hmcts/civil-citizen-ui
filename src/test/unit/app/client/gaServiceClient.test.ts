@@ -1,4 +1,4 @@
-import axios, {AxiosInstance} from 'axios';
+import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 import config from 'config';
 import {AppRequest} from 'models/AppRequest';
 import {req} from '../../../utils/UserDetails';
@@ -6,6 +6,10 @@ import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {GaServiceClient} from 'client/gaServiceClient';
 import { GA_SERVICE_CASES_URL } from 'client/gaServiceUrls';
 import { Application } from 'common/models/generalApplication/application';
+//import { getLast } from 'services/features/generalApplication/generalApplicationService';
+
+jest.mock('../../../../main/services/features/generalApplication/generalApplicationService');
+//const getLastMock = getLast as jest.Mock;
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -156,6 +160,21 @@ describe('GA Service Client', () => {
       const gaServiceClient = new GaServiceClient(baseUrl);
       //Then
       await expect(gaServiceClient.getApplications(appReq)).rejects.toThrow('error');
+    });
+  });
+
+  describe('getApplication', () => {
+    it('should return application', async () => {
+      const mockData = require('../../../utils/mocks/generalApplicationsMock.json');
+      const mockGet = jest.fn().mockResolvedValue({data: mockData.cases[0]});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const gaServiceClient = new GaServiceClient(baseUrl);
+
+      const application = await gaServiceClient.getApplication('1645882162449409', appReq);
+
+      expect(application).toStrictEqual(mockData.cases[0]);
+      expect(mockGet).toBeCalledWith('/cases/1645882162449409',
+        { headers: { Authorization: 'Bearer 54321', 'Content-Type': 'application/json'} as AxiosRequestConfig});
     });
   });
 });
