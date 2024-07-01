@@ -13,7 +13,7 @@ import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 const claimFeeBreakDownController = Router();
 const viewPath = 'features/claim/payment/claim-fee-breakdown';
 
-claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, async (req: AppRequest, res: Response, next: NextFunction) => {
+claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claim = await getClaimById(req.params.id, req, true);
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
@@ -24,7 +24,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, async (
   } catch (error) {
     next(error);
   }
-});
+})as RequestHandler);
 
 claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
