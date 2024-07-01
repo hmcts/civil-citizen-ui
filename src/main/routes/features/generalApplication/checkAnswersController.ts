@@ -9,7 +9,6 @@ import {
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
-import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {getCancelUrl, getDynamicHeaderForMultipleApplications, saveStatementOfTruth} from 'services/features/generalApplication/generalApplicationService';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
@@ -18,14 +17,11 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {getSummarySections} from 'services/features/generalApplication/checkAnswers/checkAnswersService';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {submitApplication} from 'services/features/generalApplication/submitApplication';
 import {checkYourAnswersGAGuard} from 'routes/guards/checkYourAnswersGAGuard';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('gaCheckAnswersController');
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, req: AppRequest, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
@@ -80,20 +76,7 @@ function getRedirectUrl(claimId: string, claim: Claim): string {
   if(claim.generalApplication?.helpWithFees?.helpFeeReferenceNumberForm?.referenceNumber) {
     return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_FEE_CONFIRMATION_URL);
   }
-  if (claim.generalApplication?.applicationTypes?.length === 1 && claim.generalApplication.applicationTypes[0].option === ApplicationTypeOption.ADJOURN_HEARING
-    && hearingMoreThan14DaysInFuture(claim)) {
-    return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL);
-  } else {
-    return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL);
-  }
-}
-
-function hearingMoreThan14DaysInFuture(claim: Claim): boolean {
-  const today = new Date();
-  const hearingDate = claim.caseProgressionHearing?.hearingDate;
-  logger.info(`Hearing date: ${hearingDate}`);
-  const future = hearingDate && getNumberOfDaysBetweenTwoDays(today, hearingDate) > 14;
-  return future;
+  return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL);
 }
 
 export default gaCheckAnswersController;
