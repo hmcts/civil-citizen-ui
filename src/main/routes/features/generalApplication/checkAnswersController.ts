@@ -62,8 +62,7 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
       await saveStatementOfTruth(redisKey, statementOfTruth);
       const claimResponse = await submitApplication(req);
       const genApps = claimResponse.generalApplications as Array<any>;
-      const latestId = genApps[genApps?.length - 1]?.id;
-      console.log(latestId);
+      const latestId = genApps ? genApps[genApps.length - 1].id : undefined;
       await deleteDraftClaimFromStore(redisKey);
       res.redirect(getRedirectUrl(claimId, claim) + `?id=${latestId}`);
     }
