@@ -16,6 +16,7 @@ import {YesNo} from 'form/models/yesNo';
 
 import {getClaimById} from 'modules/utilityService';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -67,6 +68,9 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       break;
     case 'VIEW_FINAL_ORDER':
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', req.params.documentId);
+      break;
+    case 'VIEW_DECISION_RECONSIDERATION':
+      redirectUrl =  CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DECISION_MADE_ON_APPLICATIONS));
       break;
   }
   return redirectUrl;
