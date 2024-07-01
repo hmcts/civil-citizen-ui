@@ -19,6 +19,7 @@ import {getClaimTimeline} from 'services/features/common/claimTimelineService';
 import {isCUIReleaseTwoEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {CaseState} from 'form/models/claimDetails';
 
 const claimDetailsController = Router();
 const claimDetailsViewPathOld = 'features/response/claimDetails/claim-details';
@@ -35,7 +36,8 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: Request, res: Respons
     const timelineRows = getClaimTimeline(claim, getLng(lang));
     const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id).replace(':documentId', claim.extractDocumentId());
     const claimFormUrl =  (isCUIReleaseTwo) ? CASE_DOCUMENT_VIEW_URL : CASE_DOCUMENT_DOWNLOAD_URL;
-    const sealedClaimPdfUrl = claimFormUrl.replace(':id', req.params.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM));
+    const sealedClaimPdfUrl = claimFormUrl.replace(':id', req.params.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,
+      (claim.ccdState === CaseState.PENDING_CASE_ISSUED) ? DocumentType.DRAFT_CLAIM_FORM : DocumentType.SEALED_CLAIM));
     const pageTitle = 'PAGES.CLAIM_DETAILS.PAGE_TITLE_NEW';
     const claimDetailsViewPath = (isCUIReleaseTwo) ? claimDetailsViewPathNew : claimDetailsViewPathOld;
     claim.totalInterest = interestData.interest;
