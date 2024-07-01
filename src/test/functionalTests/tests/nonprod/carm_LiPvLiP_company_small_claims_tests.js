@@ -63,7 +63,7 @@ Scenario.only('LiP Defendant Response with Reject all claim', async ({api}) => {
     await ResponseSteps.VerifyConfirmationPage('RejectsAndLessThanClaimAmount');
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-carm').tag('@nightly');
+}).tag('@leo').tag('@nightly');
 
 // Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
 //   if (['preview', 'demo'].includes(config.runningEnv)) {

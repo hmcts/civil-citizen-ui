@@ -1,5 +1,6 @@
 import config from 'config';
 import {init, LDClient, LDFlagValue, LDUser} from 'launchdarkly-node-server-sdk';
+import {convertDateToLuxonDate} from 'common/utils/dateUtils';
 
 let ldClient: LDClient;
 
@@ -77,9 +78,11 @@ export async function  isDashboardEnabledForCase(date: Date): Promise<boolean> {
 }
 
 export async function  isCarmEnabledForCase(date: Date): Promise<boolean> {
+  const convertedDate = convertDateToLuxonDate(date);
+  console.log('convertedDate = ' + convertedDate);
   const { DateTime } = require('luxon');
   const systemTimeZone = DateTime.local().zoneName;
-  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
+  const epoch = DateTime.fromISO(convertedDate, { zone: systemTimeZone }).toSeconds();
   const carmFlag = await getFlagValue('carm') as boolean;
   const carmApplicable = await getFlagValue('cam-enabled-for-case', epoch) as boolean;
   console.log('submittedDate = ' + date);
