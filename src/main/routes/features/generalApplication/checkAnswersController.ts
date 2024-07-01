@@ -34,8 +34,8 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
   const summaryRows = getSummarySections(claimId, claim, lang);
   const headerTitle = getDynamicHeaderForMultipleApplications(claim);
 
-  const backLinkUrl = claim.generalApplication?.helpWithFees?.helpFeeReferenceNumberForm?.referenceNumber 
-    ? constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_REFERENCE) 
+  const backLinkUrl = claim.generalApplication?.helpWithFees?.helpFeeReferenceNumberForm?.referenceNumber
+    ? constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_REFERENCE)
     : constructResponseUrlWithIdParams(claimId, PAYING_FOR_APPLICATION_URL);
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, summaryRows });
 }
@@ -64,9 +64,12 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
       await renderView(claimId, claim, form, req, res);
     } else {
       await saveStatementOfTruth(redisKey, statementOfTruth);
-      await submitApplication(req);
+      const claimResponse = await submitApplication(req);
+      const genApps = claimResponse.generalApplications as Array<any>;
+      const latestId = genApps[genApps?.length - 1]?.id;
+      console.log(latestId);
       await deleteDraftClaimFromStore(redisKey);
-      res.redirect(getRedirectUrl(claimId, claim));
+      res.redirect(getRedirectUrl(claimId, claim) + `?id=${latestId}`);
     }
   } catch (error) {
     next(error);
@@ -81,7 +84,7 @@ function getRedirectUrl(claimId: string, claim: Claim): string {
     && hearingMoreThan14DaysInFuture(claim)) {
     return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL);
   } else {
-    return 'test'; // TODO: correct URL
+    return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL);
   }
 }
 

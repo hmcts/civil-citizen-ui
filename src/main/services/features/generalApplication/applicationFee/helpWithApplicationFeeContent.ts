@@ -45,8 +45,8 @@ export const getHelpApplicationFeeContinuePageContents = (gaFeeData: ClaimFeeDat
     .build();
 };
 
-export const getApplicationFeeContentPageDetails = (claimId: string) => {
-  const nextPageUrl = GA_APPLY_HELP_WITH_FEE_REFERENCE.replace(':id', claimId);
+export const getApplicationFeeContentPageDetails = (claimId: string, genAppId: string) => {
+  const nextPageUrl = GA_APPLY_HELP_WITH_FEE_REFERENCE.replace(':id', claimId) + (genAppId ? `?id=${genAppId}` : '');
   const dashBoardClaimantUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
   return new PageSectionBuilder()
     .addMicroText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING')
