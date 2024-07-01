@@ -141,7 +141,7 @@ civil-service:
 civil-general-applications:
   enabled: true
   java:
-    image: 'hmctspublic.azurecr.io/civil/general-applications:latest'
+    image: 'hmctspublic.azurecr.io/civil/general-applications:pr-1344'
     releaseNameOverride: ${SERVICE_NAME}-general-applications
     ingressHost: ${SERVICE_NAME}-general-applications.preview.platform.hmcts.net
     imagePullPolicy: Always
@@ -195,3 +195,4 @@ civil-general-applications:
       GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
       CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       CUI_URL: https://${SERVICE_FQDN}
+      DUMMY_PROPERTY: true
