@@ -11,8 +11,8 @@ export class InterestStartDate {
   @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.CORRECT_DATE_NOT_IN_FUTURE'})
     date?: Date;
 
-  @Min(1, {message: 'ERRORS.VALID_DAY'})
-  @Max(31, {message: 'ERRORS.VALID_DAY'})
+  @Min(1, {message: 'ERRORS.VALIDA_DAY_VARIATION_2'})
+  @Max(31, {message: 'ERRORS.VALIDA_DAY_VARIATION_2'})
     day: number;
 
   @Min(1, {message: 'ERRORS.VALID_MONTH'})
