@@ -9,6 +9,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
 import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import { updateDayErrorMsg } from 'services/features/claimantResponse/claimantSuggestedInstalmentsService';
 
 const paymentDatePath = 'features/response/admission/payment-date';
 const claimantSuggestedPaymentDateController = Router();
@@ -37,10 +38,7 @@ claimantSuggestedPaymentDateController.post(CLAIMANT_RESPONSE_PAYMENT_DATE_URL, 
   const form: GenericForm<PaymentDate> = new GenericForm<PaymentDate>(claimantSuggestedPaymentDate);
   form.validateSync();
   if (form.hasErrors()) {
-    const updateErrorDayMsg = form.errors.find(e => e.property === 'day' && (e.constraints?.max || e.constraints?.min));
-    if (updateErrorDayMsg) {
-      updateErrorDayMsg.constraints = { max: 'ERRORS.VALID_DAY_VARIATION1', min: 'ERRORS.VALID_DAY_VARIATION1' }
-    }
+    updateDayErrorMsg(form.errors);
     renderView(form, res);
   } else {
     try {
