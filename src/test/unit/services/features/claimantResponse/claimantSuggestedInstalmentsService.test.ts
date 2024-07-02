@@ -5,6 +5,7 @@ import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paym
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import { getClaimantSuggestedInstalmentsForm, getClaimantSuggestedInstalmentsPlan, updateDayErrorMsg } from 'services/features/claimantResponse/claimantSuggestedInstalmentsService';
+import { ValidationError } from 'class-validator';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
@@ -148,7 +149,7 @@ describe('Claiman Suggested Instalments Plan Service', () => {
     });
 
     it('should update the error message for date', () => {
-      const errors = [
+      const errors:ValidationError[] = [
         {
           target: {
             year: undefined,
