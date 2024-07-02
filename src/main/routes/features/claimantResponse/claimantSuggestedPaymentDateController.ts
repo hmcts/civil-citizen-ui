@@ -37,6 +37,10 @@ claimantSuggestedPaymentDateController.post(CLAIMANT_RESPONSE_PAYMENT_DATE_URL, 
   const form: GenericForm<PaymentDate> = new GenericForm<PaymentDate>(claimantSuggestedPaymentDate);
   form.validateSync();
   if (form.hasErrors()) {
+    const updateErrorDayMsg = form.errors.find(e => e.property === 'day' && (e.constraints?.max || e.constraints?.min));
+    if (updateErrorDayMsg) {
+      updateErrorDayMsg.constraints = { max: 'ERRORS.VALID_DAY_VARIATION1', min: 'ERRORS.VALID_DAY_VARIATION1' }
+    }
     renderView(form, res);
   } else {
     try {
