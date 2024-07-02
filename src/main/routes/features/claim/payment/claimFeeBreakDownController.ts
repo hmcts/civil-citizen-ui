@@ -26,7 +26,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
   }
 })as RequestHandler);
 
-claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, async (req: AppRequest, res: Response, next: NextFunction) => {
+claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIMISSUED , req);
@@ -37,6 +37,6 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, async (req: AppRequest, res:
   } catch (error) {
     next(error);
   }
-});
+}) as RequestHandler);
 
 export default claimFeeBreakDownController;
