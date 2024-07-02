@@ -328,7 +328,7 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE');
       expect(summaryRows.summaryList.rows[3].value.html).toEqual('COMMON.VARIATION_2.NO');
       expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE');
-      expect(summaryRows.summaryList.rows[4].value.html).toEqual('COMMON.VARIATION.NO');
+      expect(summaryRows.summaryList.rows[4].value.html).toEqual('COMMON.VARIATION_4.NO');
       expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE');
       expect(summaryRows.summaryList.rows[5].value.html).toEqual('COMMON.VARIATION_2.YES');
       expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
