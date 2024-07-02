@@ -234,7 +234,7 @@ const constructBanksAndSavingsAccountSection = (claim: Claim, lng: string) => {
           text: t('COMMON.BANK_JOINT_ACCOUNT', {lng}),
         },
         value: {
-          text: account?.joint === 'yes' ? t('COMMON.YES', {lng}) : t('COMMON.NO', {lng}),
+          text: account?.joint === 'yes' ? t('COMMON.YES', { lng }) : t('COMMON.VARIATION_4.NO', { lng }),
         },
       });
     });
@@ -345,7 +345,7 @@ const constructFinancialSupportSection = (claim: Claim, lng: string) => {
       text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.SUPPORT_ANYONE_ELSE', {lng}),
     },
     value: {
-      text: otherDependants ? t('COMMON.YES', {lng}) : t('COMMON.NO', {lng}),
+      text: otherDependants ? t('COMMON.YES', { lng }) : t('COMMON.VARIATION_4.NO', { lng }),
     },
     classes: 'govuk-summary-list__row--no-border',
   });

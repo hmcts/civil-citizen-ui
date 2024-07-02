@@ -44,6 +44,10 @@ claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_U
     const form = new GenericForm(claimantResponsePaymentOption);
     form.validateSync();
     if (form.hasErrors()) {
+      const errorMsgToUpdate = form.errors.find(e => e.constraints && e.constraints.isIn);
+      if (errorMsgToUpdate) {
+        errorMsgToUpdate.constraints.isIn = 'ERRORS.VALID_PAYMENT_OPTION_VARIATION1';
+      }
       renderView(form, res);
     } else {
       await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), form.model.paymentType, crPropertyName, crParentName);
