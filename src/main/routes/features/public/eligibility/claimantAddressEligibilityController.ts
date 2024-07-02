@@ -23,7 +23,7 @@ claimantAddressEligibilityController.get(ELIGIBILITY_CLAIMANT_ADDRESS_URL, (req:
 });
 
 claimantAddressEligibilityController.post(ELIGIBILITY_CLAIMANT_ADDRESS_URL, (async (req: Request, res: Response) => {
-  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
+  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_OPTION_COMMON'));
   await genericYesNoForm.validate();
 
   if (genericYesNoForm.hasErrors()) {
