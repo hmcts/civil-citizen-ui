@@ -4,23 +4,23 @@ import {t} from 'i18next';
 import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
 import {getPaymentDate} from 'common/utils/repaymentUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {YesNo} from 'form/models/yesNo';
-import { PageSectionBuilder } from 'common/utils/pageSectionBuilder';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {DocumentType} from 'models/document/documentType';
 
 export function buildPanelSection(claim: Claim, lang: string): ClaimSummarySection[] {
-  if (claim.defendantSignedSettlementAgreement === YesNo.YES) {
+  if (claim?.respondentSignSettlementAgreement === YesNoUpperCamelCase.YES) {
     return getAcceptConfirmationPanel(claim, lang);
-  } else if (claim.defendantSignedSettlementAgreement === YesNo.NO) {
+  } else if (claim?.respondentSignSettlementAgreement === YesNoUpperCamelCase.NO) {
     return getRejectConfirmationPanel(claim, lang);
   }
 }
 
 const getAcceptConfirmationPanel = (claim: Claim, lang: string) => {
-  // TODO: Replace with actual settlement agreement document id
-  const documentId = 'document-id';
-  const documentLinkUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', documentId);
+  const documentLinkUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT));
   return [
     {
       type: ClaimSummaryType.PANEL,
