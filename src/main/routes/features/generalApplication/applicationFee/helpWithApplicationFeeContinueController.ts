@@ -58,8 +58,9 @@ helpWithApplicationFeeContinueController.post(GA_APPLY_HELP_WITH_FEES, (async (r
     if (form.hasErrors()) {
       await renderView(res, req, form, claimId);
     } else {
+      const genAppId = req.query.id as string;
       await saveHelpWithFeesDetails(generateRedisKey(req as unknown as AppRequest), req.body.option, hwfPropertyName);
-      res.redirect(getRedirectUrl(claimId, form.model));
+      res.redirect(getRedirectUrl(claimId, genAppId, form.model));
     }
   } catch (error) {
     next(error);
@@ -67,9 +68,9 @@ helpWithApplicationFeeContinueController.post(GA_APPLY_HELP_WITH_FEES, (async (r
 }) as RequestHandler);
 export default helpWithApplicationFeeContinueController;
 
-function getRedirectUrl(claimId: string, isHWFContinue: GenericYesNo): string {
+function getRedirectUrl(claimId: string, genAppId: string, isHWFContinue: GenericYesNo): string {
   if (isHWFContinue.option === YesNo.YES) {
-    return constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES_START);
+    return constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES_START) + (genAppId ? `?id=${genAppId}` : '');
   }
-  return constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+  return constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION) + (genAppId ? `?id=${genAppId}` : '');
 }

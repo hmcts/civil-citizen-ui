@@ -63,7 +63,7 @@ describe('Help with Application fee content', () => {
   it('should return all the content for getHelpWithApplicationFeeContent', () => {
     //Given
     //When
-    const actualContent = getApplicationFeeContentPageDetails('123');
+    const actualContent = getApplicationFeeContentPageDetails('123', 'abc');
     //Then
     expect(actualContent[0].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING');
     expect(actualContent[1].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.TITLE');

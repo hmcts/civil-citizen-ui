@@ -1,8 +1,8 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  DASHBOARD_CLAIMANT_URL,
+  DASHBOARD_CLAIMANT_URL, GA_APPLICATION_FEE_CONFIRMATION_URL,
   GA_APPLY_HELP_WITH_FEE_REFERENCE, GA_APPLY_HELP_WITH_FEE_SELECTION,
-  GA_APPLY_HELP_WITH_FEES_START, GA_CHECK_ANSWERS_URL,
+  GA_APPLY_HELP_WITH_FEES_START,
   GENERIC_HELP_FEES_URL,
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
@@ -60,8 +60,9 @@ helpWithApplicationFeeReferenceController.post(GA_APPLY_HELP_WITH_FEE_REFERENCE,
       await renderView(res, req, form, claimId, redirectUrl);
     } else {
       const redisKey = generateRedisKey(<AppRequest>req);
+      const genAppId = req.query.id as string;
       await saveHelpWithFeesDetails(redisKey, new ApplyHelpFeesReferenceForm(req.body.option, req.body.referenceNumber), hwfPropertyName);
-      res.redirect(getRedirectUrl(claimId, form.model));
+      res.redirect(getRedirectUrl(claimId, genAppId, form.model));
     }
   }catch (error) {
     next(error);
@@ -69,9 +70,9 @@ helpWithApplicationFeeReferenceController.post(GA_APPLY_HELP_WITH_FEE_REFERENCE,
 })as RequestHandler);
 export default helpWithApplicationFeeReferenceController;
 
-function getRedirectUrl(claimId: string, isHelpWithFee: GenericYesNo): string {
+function getRedirectUrl(claimId: string, genAppId: string, isHelpWithFee: GenericYesNo): string {
   if (isHelpWithFee.option === YesNo.YES) {
-    return constructResponseUrlWithIdParams(claimId, GA_CHECK_ANSWERS_URL);
-  } 
-  return constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+    return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_FEE_CONFIRMATION_URL) + (genAppId ? `?id=${genAppId}` : '');
+  }
+  return constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION) + (genAppId ? `?id=${genAppId}` : '');
 }

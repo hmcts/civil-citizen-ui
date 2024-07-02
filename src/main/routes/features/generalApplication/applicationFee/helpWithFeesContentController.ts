@@ -15,11 +15,12 @@ helpWithFeesContentController.get(GA_APPLY_HELP_WITH_FEES_START, (async (req: Ap
   const claimId = req.params.id;
   const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
   const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_APPLY_HELP_WITH_FEES);
+  const genAppId = req.query.id as string;
   res.render(applyHelpWithFeeViewPath,
     {
       backLinkUrl,
       redirectUrl,
-      applyHelpWithFeeContents:getApplicationFeeContentPageDetails(claimId),
+      applyHelpWithFeeContents:getApplicationFeeContentPageDetails(claimId, genAppId),
     });
 }) as RequestHandler);
 
