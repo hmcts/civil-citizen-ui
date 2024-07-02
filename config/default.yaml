@@ -57,7 +57,6 @@ services:
     tokenKey: 'test'
   govPay:
     url: 'https://card.payments.service.gov.uk'
-  carmDate: '01 August 2024'
   enforceJudgment:
     url: 'https://www.gov.uk/make-court-claim-for-money/enforce-a-judgment'
   civilMoneyClaims:

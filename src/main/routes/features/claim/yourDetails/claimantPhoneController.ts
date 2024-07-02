@@ -7,7 +7,7 @@ import {CitizenTelephoneNumber} from 'form/models/citizenTelephoneNumber';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmEnabledForCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 
 const claimantPhoneViewPath = 'features/claim/claimant-phone';
 const claimantPhoneController = Router();

@@ -11,12 +11,13 @@ import {PartyType} from 'models/partyType';
 import {PartyDetails} from 'form/models/partyDetails';
 import {PartyPhone} from 'models/PartyPhone';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import * as caarmTogglesUtils from 'common/utils/carmToggleUtils';
 import * as enVars from '../../../../../../main/modules/i18n/locales/en.json';
+import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const mockGetRespondentInformation = getDefendantInformation as jest.Mock;
 const mockSaveRespondent = saveDefendantProperty as jest.Mock;
@@ -80,7 +81,7 @@ const validDataForPost = {
 const configureSpy = (service: any, method: string) => jest.spyOn(service, method).mockReset();
 const getCaseDataFromStoreSpy = (claim: Claim) => jest.spyOn(draftStoreService, 'getCaseDataFromStore')
   .mockReturnValue(Promise.resolve(claim));
-const carmToggleSpy = (calmEnabled: boolean) => configureSpy(caarmTogglesUtils, 'isCarmEnabledForCase')
+const carmToggleSpy = (calmEnabled: boolean) => configureSpy(launchDarklyClient, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
 
 describe('Confirm Details page', () => {

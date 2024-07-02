@@ -75,7 +75,6 @@ nodejs:
     OCMC_URL: https://moneyclaims.{{ .Values.global.environment }}.platform.hmcts.net
     PCQ_URL: https://pcq.{{ .Values.global.environment }}.platform.hmcts.net
     GOVPAY_URL: https://card.payments.service.gov.uk
-    CARM_DATE: '01 August 2024'
     ENFORCEJUDGMENT_URL: https://www.gov.uk/make-court-claim-for-money/enforce-a-judgment
     CIVILMONEYCLAIMS_TELEPHONE: '0300 123 7050'
     CIVILMONEYCLAIMS_WELSHSPEAKER_TELEPHONE: '0300 303 5174'

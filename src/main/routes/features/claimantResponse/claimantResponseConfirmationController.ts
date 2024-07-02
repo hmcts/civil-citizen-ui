@@ -6,7 +6,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {claimantResponseConfirmationGuard} from 'routes/guards/claimantResponseConfirmationGuard';
 import {AppRequest} from 'common/models/AppRequest';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {getRespondToSettlementAgreementDeadline} from 'services/features/claimantResponse/signSettlmentAgreementService';
 
 const claimantResponseConfirmationController = Router();

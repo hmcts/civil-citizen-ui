@@ -35,7 +35,6 @@ services:
     url: PCQ_URL
   govPay:
     url: GOVPAY_URL
-  carmDate: CARM_DATE
   civilMoneyClaims:
     telephone: CIVILMONEYCLAIMS_TELEPHONE
     courtEmailId: CIVILMONEYCLAIMS_COURT_EMAIL_ID

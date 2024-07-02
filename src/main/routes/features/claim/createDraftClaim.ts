@@ -4,7 +4,8 @@ import { CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
 import { saveDraftClaimToCache } from 'modules/draft-store/draftClaimCache';
 const createDraftViewPath = 'features/claim/create-draft';
 import jwt_decode from 'jwt-decode';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {Claim} from 'models/claim';
 
 interface IdTokenJwtPayload {
   uid: string;
@@ -24,6 +25,9 @@ createDraftClaimController.get(TESTING_SUPPORT_URL, (async (req: AppRequest, res
 }) as RequestHandler);
 
 createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: Response, next: NextFunction) => {
+  const claimWithSubmittedDate = {
+    submittedDate : new Date().toISOString(),
+  };
   try {
     let userId = ((req.session) as AppSession)?.user?.id;
     const caseData = req.body?.caseData ? JSON.parse(req.body?.caseData) : undefined;
@@ -32,7 +36,10 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
       const jwt: IdTokenJwtPayload = jwt_decode(req.body?.idToken);
       userId = jwt?.uid;
     }
-    const isCarmEnabled = await isCarmEnabledForCase(new Date(Date.now()));
+
+    const claimData = Object.assign(new Claim(), claimWithSubmittedDate);
+    const isCarmEnabled = await isCarmEnabledForCase(claimData.submittedDate);
+
     await saveDraftClaimToCache(userId, caseData, isCarmEnabled);
     if (req.body?.idToken && userId) {
       return res.sendStatus(200);

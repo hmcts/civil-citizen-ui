@@ -7,7 +7,7 @@ import {AppRequest} from 'models/AppRequest';
 import { outstandingClaimantResponseTasks } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
 import { getClaimById } from 'modules/utilityService';
 import { Claim } from 'common/models/claim';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const incompleteSubmissionViewPath = 'features/response/incomplete-submission';
 const incompleteClaimantResponseSubmissionController = Router();

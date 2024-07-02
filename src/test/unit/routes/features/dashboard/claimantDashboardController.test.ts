@@ -19,11 +19,13 @@ import {CaseState} from 'common/form/models/claimDetails';
 import {t} from 'i18next';
 import * as UtilityService from 'modules/utilityService';
 import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {Dashboard} from 'models/dashboard/dashboard';
-const isCarmEnabledForCaseMock = isCarmEnabledForCase as jest.Mock;
+
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+
+const isCarmEnabledForCaseMock = launchDarkly.isCarmEnabledForCase as jest.Mock;
 
 const mockExpectedDashboardInfo=
   [{
