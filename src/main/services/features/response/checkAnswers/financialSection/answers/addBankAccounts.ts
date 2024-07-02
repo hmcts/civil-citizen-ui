@@ -42,7 +42,7 @@ export const addBankAccounts = (claim: Claim, financialSection: SummarySection, 
       financialSection.summaryList.rows.push(
         summaryRow((bankAccounts.length > 1 ? (i + 1) + '. ' : '') + t('COMMON.ACCOUNT_TYPE', {lng: getLng(lang)}), typeOfAccount, yourBankAccountHref, changeLabel(lang)),
         summaryRow(t('PAGES.CHECK_YOUR_ANSWER.BANK_BALANCE', {lng: getLng(lang)}), currencyFormatWithNoTrailingZeros(Number(bankAccounts[i].balance)), yourBankAccountHref, changeLabel(lang)),
-        summaryRow(t('COMMON.BANK_JOINT_ACCOUNT', {lng: getLng(lang)}), t(`COMMON.${joint}`, {lng: getLng(lang)}), yourBankAccountHref, changeLabel(lang)),
+        summaryRow(t('COMMON.BANK_JOINT_ACCOUNT', {lng: getLng(lang)}), t(`COMMON.VARIATION_4.${joint}`, {lng: getLng(lang)}), yourBankAccountHref, changeLabel(lang)),
       );
     }
   } else {

@@ -70,7 +70,7 @@ export const vulnerabilityQuestion = ( directionQuestionnaire : DirectionQuestio
 
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION', {lng}),
-    t(`COMMON.VARIATION_2.${option}`, {lng}),
+    t(`COMMON.VARIATION_3.${option}`, {lng}),
     constructResponseUrlWithIdParams(claimId, VULNERABILITY_URL),
     changeLabel(lng),
   );
