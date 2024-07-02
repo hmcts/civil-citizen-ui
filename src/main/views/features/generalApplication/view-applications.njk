@@ -10,7 +10,7 @@
 
 {% set applicationHtml %}
   <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
-    <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DETAILS'}</p>
+    <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DETAILS')}}</p>
     <div class="govuk-form-group">
         {{ govukSummaryList({
             rows: summaryRows
@@ -29,7 +29,7 @@
 {% endset %}
 
 {% block nestedContent %}
-  <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TITLE', { applicationIndex )}) }}</h1>
+  <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TITLE', { applicationIndex : applicationIndex }) }}</h1>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REVIEW') }}</p>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.SUBMITTED') }}</p>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.EITHER_PARTIES') }}</p>
