@@ -7,6 +7,7 @@ import {toCUIHearing} from 'services/translation/convertToCUI/convertToCUIHearin
 import {toCUIWitnesses} from 'services/translation/convertToCUI/convertToCUIWitnesses';
 import {toCUIGenericYesNo} from 'services/translation/convertToCUI/convertToCUIYesNo';
 import {toCUIExperts} from './convertToCUIExperts';
+import {toCUIFixedRecoverableCosts} from 'services/translation/convertToCUI/convertToCUIFixedRecoverableCosts';
 
 export const toCUIDQs = (ccdClaim: CCDClaim): DirectionQuestionnaire => {
   if (ccdClaim) {
@@ -17,6 +18,7 @@ export const toCUIDQs = (ccdClaim: CCDClaim): DirectionQuestionnaire => {
     dq.witnesses = toCUIWitnesses(ccdClaim.respondent1DQWitnesses);
     dq.defendantYourselfEvidence = toCUIGenericYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.giveEvidenceYourSelf);
     dq.experts = toCUIExperts(ccdClaim);
+    dq.fixedRecoverableCosts = toCUIFixedRecoverableCosts(ccdClaim);
     return dq;
   }
 };

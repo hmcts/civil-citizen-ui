@@ -21,6 +21,14 @@ import {
 import {toCCDDQHearingSupport} from '../response/convertToCCDHearingSupport';
 import { YesNo } from 'common/form/models/yesNo';
 import {toCCDMediationCarm} from 'services/translation/response/convertToCCDMediationCarm';
+import {
+  toCCDFixedRecoverableCostsIntermediate,
+} from 'services/translation/response/convertToCCDFixedRecoverableCostsIntermediate';
+import {
+  toCCDDisclosureOfElectronicDocuments,
+  toCCDDisclosureOfNonElectronicDocuments,
+} from 'services/translation/response/convertToCCDDisclosureOfDocuments';
+import {convertToCCDDocumentsToBeConsidered} from 'services/translation/response/convertToCCDDocumentsToBeConsidered';
 
 function isClaimantWantToSettleTheClaim(claim: Claim) {
   if (claim.isPartialAdmission() || (claim.isFullDefence() && !claim.hasPaidInFull())) {
@@ -59,5 +67,9 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: toCCDClaimantSuggestedFirstRepaymentDate(claim.claimantResponse),
     applicant1RequestedPaymentDateForDefendantSpec: toCCDClaimantSuggestedPayByDate(claim.claimantResponse) ? toCCDClaimantPayBySetDate(claim.claimantResponse?.suggestedPaymentIntention?.paymentDate) : undefined,
     applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec: toCCDClaimantSuggestedImmediatePaymentDateInFavourClaimant(claim.claimantResponse) ? claim.claimantResponse?.suggestedImmediatePaymentDeadLine : undefined,
+    applicant1DQFixedRecoverableCostsIntermediate: toCCDFixedRecoverableCostsIntermediate(claim.claimantResponse?.directionQuestionnaire?.fixedRecoverableCosts),
+    specApplicant1DQDisclosureOfElectronicDocuments: toCCDDisclosureOfElectronicDocuments(claim.claimantResponse?.directionQuestionnaire?.hearing),
+    specApplicant1DQDisclosureOfNonElectronicDocuments: toCCDDisclosureOfNonElectronicDocuments(claim.claimantResponse?.directionQuestionnaire?.hearing),
+    applicant1DQDefendantDocumentsToBeConsidered: convertToCCDDocumentsToBeConsidered(claim.claimantResponse?.directionQuestionnaire?.hearing),
   };
 };

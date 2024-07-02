@@ -155,6 +155,10 @@ module.exports = {
     if (claimType === 'FastTrack') {
       console.log('FastTrack claim...');
       totalClaimAmount = '15000';
+    } else if (claimType === 'Intermediate') {
+      totalClaimAmount = '26000';
+    } else if (claimType === 'Multi') {
+      totalClaimAmount = '150000';
     } else {
       console.log('SmallClaim...');
       totalClaimAmount = '1500';
@@ -462,14 +466,18 @@ module.exports = {
     console.log('End of viewAndRespondToDefence()');
   },
 
-  claimantLipRespondToDefence: async (user, caseId, carmEnabled = false, expectedEndState) => {
+  claimantLipRespondToDefence: async (user, caseId, carmEnabled = false, expectedEndState, mintiTrack = '') => {
     console.log('This is inside claimantLipRespondToDefence : ' + caseId);
     eventName = 'CLAIMANT_RESPONSE_CUI';
     let payload;
 
     await apiRequest.setupTokens(user);
 
-    if (carmEnabled) {
+    if (mintiTrack === 'Intermediate') {
+      payload = claimantResponse.createClaimantLipIntendsToProceedResponseIntermediate();
+    } else if (mintiTrack === 'Multi') {
+      payload = claimantResponse.createClaimantLipIntendsToProceedResponseMulti();
+    } else if (carmEnabled) {
       payload = claimantResponse.createClaimantLipIntendsToProceedResponseCarm();
     } else {
       payload = claimantResponse.createClaimantLipIntendsToProceedResponse();

@@ -26,5 +26,7 @@ Scenario('LiP vs LiP Multi claim', async ({api}) => {
     securityCode = caseData.respondent1PinToPostLRspec.accessCode;
     console.log('claim number', claimNumber);
     console.log('Security code', securityCode);
+    await api.performCitizenResponse(config.defendantCitizenUser, claimRef, multiTrackClaimType, config.defenceType.rejectAllMultiTrackMinti, 'DefendantCompany');
+    await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, true, 'JUDICIAL_REFERRAL', multiTrackClaimType);
   }
 });

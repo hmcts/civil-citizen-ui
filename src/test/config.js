@@ -178,6 +178,8 @@ module.exports = {
     partAdmitWithPartPaymentOnSpecificDateWithIndividual: 'PART_ADMIT_PAY_BY_SET_DATE_INDIVIDUAL',
     partAdmitWithPartPaymentAsPerInstallmentPlanWithIndividual: 'PART_ADMIT_PAY_BY_INSTALLMENTS_INDIVIDUAL',
     rejectAllSmallClaimsCarm: 'REJECT_ALL_CARM',
+    rejectAllIntermediateTrackMinti: 'REJECT_ALL_INT',
+    rejectAllMultiTrackMinti: 'REJECT_ALL_MULTI',
   },
   sdoSelectionType: {
     judgementSumSelectedYesAssignToSmallClaimsYes: 'JUDGEMENT_SUM_YES_SMALL_CLAIMS_YES',

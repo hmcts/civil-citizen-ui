@@ -29,6 +29,10 @@ import {CCDFastClaimHearing} from 'models/ccdResponse/ccdFastClaimHearing';
 import {CCDDQSupportRequirements,CCDExpert} from 'models/ccdResponse/ccdExpert';
 import {CCDFinancialDetailsLiP} from 'models/ccdResponse/ccdFinancialDetailsLiP';
 import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
+import {CCDFixedRecoverableCostsIntermediate} from 'models/ccdResponse/ccdFixedRecoverableCostsIntermediate';
+import {CCDDisclosureOfElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfElectronicDocuments';
+import {CCDDisclosureOfNonElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfNonElectronicDocuments';
+import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeConsidered';
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec?: string;
@@ -83,4 +87,8 @@ export interface CCDResponse extends ClaimUpdate {
   respondent1DQExperts?: CCDExpert;
   respondent1DQHearingSupport?: CCDDQSupportRequirements;
   responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
+  respondent1DQFixedRecoverableCostsIntermediate: CCDFixedRecoverableCostsIntermediate;
+  specRespondent1DQDisclosureOfElectronicDocuments: CCDDisclosureOfElectronicDocuments;
+  specRespondent1DQDisclosureOfNonElectronicDocuments: CCDDisclosureOfNonElectronicDocuments;
+  respondent1DQClaimantDocumentsToBeConsidered: CCDDocumentsToBeConsidered;
 }

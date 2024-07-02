@@ -15,6 +15,7 @@ describe('translate DQ expert details to CCD model', () => {
   claim.directionQuestionnaire = new DirectionQuestionnaire();
   claim.directionQuestionnaire.hearing = new Hearing();
   claim.directionQuestionnaire.experts = new Experts();
+  claim.totalClaimAmount = 1500;
 
   it('should return undefined if data doesnt exist', () => {
 

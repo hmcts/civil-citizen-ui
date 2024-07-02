@@ -18,14 +18,15 @@ import {YesNo} from 'common/form/models/yesNo';
 import {claimantResponsecheckYourAnswersGuard } from 'routes/guards/claimantResponseCheckYourAnswersGuard';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isMintiEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const checkAnswersViewPath = 'features/claimantResponse/check-answers';
 const claimantResponseCheckAnswersController = Router();
 
-async function renderView(req: AppRequest, res: Response, form: GenericForm<StatementOfTruthForm>, claim: Claim, isCarmApplicable: boolean) {
+async function renderView(req: AppRequest, res: Response, form: GenericForm<StatementOfTruthForm>, claim: Claim, isCarmApplicable: boolean, isMintiApplicable: boolean) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
-  const summarySections = getSummarySections(req.params.id, claim, lang, claimFee, isCarmApplicable);
+  const summarySections = getSummarySections(req.params.id, claim, lang, claimFee, isCarmApplicable, isMintiApplicable);
 
   res.render(checkAnswersViewPath, {
     form,
@@ -40,7 +41,8 @@ claimantResponseCheckAnswersController.get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,c
       const isClaimantRejectedDefendantOffer = claim?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
       const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer));
       const isCarmApplicable = await isCarmEnabledForCase(claim.submittedDate);
-      await renderView(<AppRequest>req, res, form, claim, isCarmApplicable);
+      const isMintiApplicable = await isMintiEnabledForCase(claim.submittedDate);
+      await renderView(<AppRequest>req, res, form, claim, isCarmApplicable, isMintiApplicable);
     } catch (error) {
       next(error);
     }
@@ -54,9 +56,10 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
+    const mintiEnabled = await isMintiEnabledForCase(claim.submittedDate);
     if (form.hasErrors()) {
       const claim = await getCaseDataFromStore(redisKey);
-      await renderView(<AppRequest>req, res, form, claim, carmEnabled);
+      await renderView(<AppRequest>req, res, form, claim, carmEnabled, mintiEnabled);
     } else {
       await saveStatementOfTruth(redisKey, form.model);
       await submitClaimantResponse(<AppRequest>req);
