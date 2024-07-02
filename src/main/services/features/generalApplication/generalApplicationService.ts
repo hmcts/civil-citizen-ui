@@ -23,6 +23,7 @@ import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {AcceptDefendantOffer, ProposedPaymentPlanOption} from 'common/models/generalApplication/response/acceptDefendantOffer';
 import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
+import {ApplicationState, ApplicationStatus} from 'common/models/generalApplication/applicationSummary';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -338,3 +339,15 @@ export const saveHelpWithFeesDetails = async (claimId: string, value: any, hwfPr
   }
 };
 
+export const getApplicationStatus = (status: ApplicationState): ApplicationStatus => {
+  switch (status) {
+    case ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION:
+      return ApplicationStatus.IN_PROGRESS;
+    case ApplicationState.AWAITING_RESPONDENT_RESPONSE:
+      return ApplicationStatus.IN_PROGRESS;
+    case ApplicationState.AWAITING_APPLICATION_PAYMENT:
+      return ApplicationStatus.TO_DO;
+    default:
+      return ApplicationStatus.TO_DO;
+  }
+};

@@ -73,4 +73,5 @@ export const IGNORED_URLS = [
   urls.GA_APPLICATION_SUMMARY_URL, //TODO: remove this once finished the page
   urls.APPLICATION_FEE_PAYMENT_CONFIRMATION_URL,
   urls.APPLICATION_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID,
+  urls.GA_VIEW_APPLICATION_URL, //TODO: remove this once finished the page
 ];
