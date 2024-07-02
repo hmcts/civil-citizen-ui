@@ -52,6 +52,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.claimantBilingualLanguagePreference = toCUIClaimBilingualLangPreference(ccdClaim.claimantBilingualLanguagePreference);
   claim.rejectAllOfClaim = toCUIRejectAllOfClaim(ccdClaim);
   claim.directionQuestionnaire = toCUIDQs(ccdClaim);
+  claim.claimType = ccdClaim.responseClaimTrack;
   claim.sdoOrderDocument = ccdClaim.systemGeneratedCaseDocuments?.find((documents) => documents.value.documentType === DocumentType.SDO_ORDER);
   claim.caseProgressionHearing = toCUICaseProgressionHearing(ccdClaim);
   claim.caseProgression = toCUICaseProgression(ccdClaim);
@@ -98,6 +99,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.claimantResponse.mediationCarm = toCUIMediationCarm(ccdClaim.applicant1LiPResponseCarm);
   claim.claimantResponse.suggestedImmediatePaymentDeadLine = ccdClaim.applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec;
   claim.claimantResponse.applicant1DefenceResponseDocumentSpec = ccdClaim.applicant1DefenceResponseDocumentSpec;
+  claim.claimType = ccdClaim.claimType;
   return claim;
 };
 

@@ -298,6 +298,12 @@ module.exports = {
     if (claimType === 'FastTrack') {
       console.log('FastTrack claim...');
       totalClaimAmount = '15000';
+    } else if (claimType === 'Intermediate') {
+      console.log('Intermediate track claim...');
+      totalClaimAmount = '26000';
+    } else if (claimType === 'Multi') {
+      console.log('Multi track claim...');
+      totalClaimAmount = '150000';
     } else {
       console.log('SmallClaim...');
       totalClaimAmount = '1500';
@@ -346,6 +352,13 @@ module.exports = {
       /*const submittedDate = {'submittedDate':'2023-08-10T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to before carm date');*/
+    }
+    if (claimType === 'Intermediate' || claimType === 'Multi') {
+      console.log('updating submitted date for minti case');
+      await apiRequest.setupTokens(config.systemUpdate);
+      const submittedDate = {'submittedDate':'2025-02-20T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
+      console.log('submitted date update to after minti date');
     }
     return caseId;
   },
