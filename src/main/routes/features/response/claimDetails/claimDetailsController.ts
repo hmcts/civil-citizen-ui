@@ -1,4 +1,4 @@
-import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   CASE_DOCUMENT_DOWNLOAD_URL,
   CASE_DOCUMENT_VIEW_URL,
@@ -12,7 +12,6 @@ import {Claim} from 'models/claim';
 import {getInterestDetails} from 'common/utils/interestUtils';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import {DocumentType} from 'models/document/documentType';
-import {getClaimById} from 'modules/utilityService';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {getClaimTimeline} from 'services/features/common/claimTimelineService';
@@ -20,16 +19,21 @@ import {isCUIReleaseTwoEnabled} from '../../../../app/auth/launchdarkly/launchDa
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {CaseState} from 'form/models/claimDetails';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {AppRequest} from 'models/AppRequest';
 
 const claimDetailsController = Router();
 const claimDetailsViewPathOld = 'features/response/claimDetails/claim-details';
 const claimDetailsViewPathNew = 'features/response/claimDetails/claim-details-new';
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
+claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const isCUIReleaseTwo = await isCUIReleaseTwoEnabled();
     const claimId = req.params.id;
-    const claim: Claim = await getClaimById(req.params.id, req, true);
+    const claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const interestData = getInterestDetails(claim);
     const totalAmount = getTotalAmountWithInterestAndFees(claim);
