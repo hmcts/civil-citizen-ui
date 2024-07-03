@@ -1019,10 +1019,6 @@ export class Claim {
   getIntentionToProceed(): string{
     return this.claimantResponse?.intentionToProceed?.option;
   }
-
-  isProceedsInHeritageSystem(): boolean {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
-  }
 }
 
 export interface StatementOfTruth {
