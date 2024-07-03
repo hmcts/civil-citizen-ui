@@ -115,12 +115,12 @@ const getSupportLinks = (claim: Claim, claimId: string, lng: string) => {
     if(!claim.hasClaimTakenOffline()) {
       iWantToLinks.push({
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)
+        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
       });
     }
     else {
       iWantToLinks.push({
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng})
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
       });
     }
   }
