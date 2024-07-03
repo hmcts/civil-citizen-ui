@@ -3264,7 +3264,7 @@
       "DEBTS_BEHIND_ON": "Oes ganddyn nhw unrhyw ddyledion maen nhw ar ei hôl hi yn eu talu?",
       "DEBTS_LOAN_OR_CREDIT_CARD": "Oes ganddyn nhw ddyledion benthyciadau neu gardiau credyd?",
       "DOWNLOAD_RESPONSE": "Lawrlwythwch eu hymateb llawn (PDF)",
-      "EMPLOYED": "Oes ganddynt swydd?",
+      "EMPLOYED": "A oes ganddynt swydd?",
       "FINANCIAL_SUPPORT": "Cymorth ariannol",
       "FULL_ADMISSION": "Mae {{ defendant }} yn cyfaddef fod arno’r holl arian rydych chi wedi'i hawlio.",
       "FULL_ADMISSION_PAY_BY_INSTALLMENTS": {
