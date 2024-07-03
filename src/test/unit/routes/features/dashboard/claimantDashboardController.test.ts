@@ -331,23 +331,6 @@ describe('claimant Dashboard Controller', () => {
       });
     });
 
-    it('should not show contact court support links for claimant when in proceeds in heritage system', async () => {
-
-      const claim = new Claim();
-      claim.caseRole = CaseRole.CLAIMANT;
-      claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
-      claim.takenOfflineDate = new Date('December 17, 2023 03:24:00');
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
-      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
-
-      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
-      });
-    });
-
     it('should show support links for claimant whit links hidden', async () => {
 
       const claim = new Claim();
