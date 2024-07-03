@@ -25,7 +25,7 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
     const applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req);
     
     const applicationsRows: ApplicationSummary[] = [];
-    applications.forEach(application => {
+    applications.forEach((application, index) => {
       const status = getApplicationStatus(application.state);
       applicationsRows.push({
         state: t(`PAGES.GENERAL_APPLICATION.SUMMARY.STATES.${application.state}`, {lng}),
@@ -34,7 +34,7 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
         types: application.case_data?.applicationTypes,
         id: application.id,
         createdDate: dateTimeFormat(application.created_date, lng),
-        applicationUrl: `${constructResponseUrlWithIdParams(application.id, GA_VIEW_APPLICATION_URL)}?applicationId=${application.id}`,
+        applicationUrl: `${constructResponseUrlWithIdParams(application.id, GA_VIEW_APPLICATION_URL)}?applicationId=${application.id}&index${index}`,
       });
     });
 
