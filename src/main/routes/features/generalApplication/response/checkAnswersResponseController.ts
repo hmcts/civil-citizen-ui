@@ -25,7 +25,6 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
     backLinkUrl, 
     headerTitle: getTitle(claim, lang), 
     claimIdPrettified: caseNumberPrettify(claimId), 
-    claimIdTitle: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.CLAIM_REFERENCE',
     claim, 
     summaryRows: getSummarySections(claimId, claim, lang) });
 }

@@ -45,7 +45,7 @@ module.exports = {
   //Notice.AAA6.ClaimIssue.Response.Required
   respondToClaim: () => {
     return {
-      title: 'You haven´t responded to the claim',
+      title: 'You haven\'t responded to the claim',
       content: 'days remaining. Respond to the claim.',
       nextSteps: 'Respond to the claim',
     };
@@ -173,10 +173,9 @@ module.exports = {
   claimantNotificationCCJRequested: () => {
     return {
       title: 'You requested a County Court Judgment against Sir John Doe',
-      content: ['You accepted the repayment plan.',
-        'When we\'ve processed the request, we\'ll post a copy of the judgment to you.'],
+      content: 'You accepted the repayment plan. When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
       nextSteps: 'Tell us it\'s paid',
-      nextSteps2: 'repayment plan.',
+      nextSteps2: 'repayment plan',
       //Nextsteps might be wrong?
     };
   },
@@ -196,7 +195,7 @@ module.exports = {
     return {
       title: 'The claim has been struck out',
       content: 'This is because the hearing fee was not paid by 10 November 2023 as stated in the hearing notice.',
-      nextSteps: 'hearing notice.',
+      nextSteps: 'hearing notice',
     };
   },
 
@@ -241,6 +240,7 @@ module.exports = {
     return {
       title: 'Wait for the court to review the case',
       content: 'You have rejected Sir John Doe\'s response. The case will be referred to a judge who will decide what should happen next.',
+      nextSteps: 'View the defendant\'s response',
     };
   },
 
@@ -262,7 +262,7 @@ module.exports = {
       content: ['Miss Jane Doe rejected your repayment plan and an alternative plan proposed by the court based on your financial details. They asked a judge to make a new plan.',
         'When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
         'If you pay the debt within one month of the date of judgment, the County Court Judgment (CCJ) is removed from the public register. You can pay £15 to apply for a certificate (opens in new tab) that confirms this.'],
-      nextSteps: 'Contact Miss Jane Doe if you need their payment details.',
+      nextSteps: 'Contact Miss Jane Doe',
       nextSteps2: 'View your response',
     };
   },
@@ -274,7 +274,7 @@ module.exports = {
       content: ['Miss Jane Doe rejected your repayment plan and has proposed a new plan, which the court agreed with, based on the financial details you provided.',
         'When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
         'If you pay the debt within one month of the date of judgment, the County Court Judgment (CCJ) is removed from the public register. You can pay £15 to apply for a certificate (opens in new tab) that confirms this.'],
-      nextSteps: 'Contact Miss Jane Doe if you need their payment details.',
+      nextSteps: 'Contact Miss Jane Doe',
       nextSteps2: 'View your response',
     };
   },
@@ -367,7 +367,7 @@ module.exports = {
       title: 'You did not attend mediation',
       content: ['You did not attend your mediation appointment, and the judge may issue a penalty against you.',
         'Your case will not be reviewed by the court.'],
-      nextSteps: 'Explain why you did not attend your appointment.',
+      nextSteps: 'Explain why you did not attend your appointment',
     };
   },
 

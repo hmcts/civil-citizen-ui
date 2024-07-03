@@ -30,7 +30,7 @@ describe('General application - response - check your answers', () => {
     nock(config.get('idamUrl'))
       .post('/o/token')
       .reply(200, {id_token: config.get('citizenRoleToken')});
-    jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
+    jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
@@ -92,12 +92,12 @@ describe('General application - response - check your answers', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(mockSaveDraftClaim).toBeCalledTimes(1);
-          expect(mockSaveDraftClaim).toBeCalledWith('123', { 
+          expect(mockSaveDraftClaim).toBeCalledWith('123', {
             generalApplication: {
               ...new GeneralApplication(),
               response: {
                 statementOfTruth,
-              }} satisfies GeneralApplication, 
+              }} satisfies GeneralApplication,
           });
         });
     });
