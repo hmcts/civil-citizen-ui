@@ -141,7 +141,7 @@ civil-service:
 civil-general-applications:
   enabled: true
   java:
-    image: 'hmctspublic.azurecr.io/civil/general-applications:latest'
+    image: 'hmctspublic.azurecr.io/civil/general-applications:pr-1381'
     releaseNameOverride: ${SERVICE_NAME}-general-applications
     ingressHost: ${SERVICE_NAME}-general-applications.preview.platform.hmcts.net
     imagePullPolicy: Always
@@ -149,36 +149,24 @@ civil-general-applications:
       civil:
         resourceGroup: civil
         secrets:
-          - name: civil-idam-client-secret
-            alias: idam.client.secret
-          - name: system-update-user-username
-            alias: CIVIL_SYSTEM_UPDATE_USERNAME
-          - name: system-update-user-password
-            alias: CIVIL_SYSTEM_UPDATE_PASSWORD
-          - name: cross-access-user-username
-            alias: CIVIL_CROSS_ACCESS_USERNAME
-          - name: cross-access-user-password
-            alias: CIVIL_CROSS_ACCESS_PASSWORD
-          - name: prd-admin-user-username
-            alias: CIVIL_PRD_ADMIN_USERNAME
-          - name: prd-admin-user-password
-            alias: CIVIL_PRD_ADMIN_PASSWORD
+          - civil-idam-client-secret
+          - system-update-user-username
+          - system-update-user-password
+          - cross-access-user-username
+          - cross-access-user-password
+          - prd-admin-user-username
+          - prd-admin-user-password
           - name: AppInsightsInstrumentationKeyGeneralApplications
             alias: azure.application-insights.instrumentation-key
-          - name: docmosis-api-key
-            alias: docmosis.tornado.key
+          - docmosis-api-key
           - name: gov-notify-guest-list-api-key
             alias: GOV_NOTIFY_API_KEY
-          - name: sendgrid-api-key
-            alias: SENDGRID_API_KEY
-          - name: robotics-notification-sender
-            alias: robotics.notification.sender
-          - name: robotics-notification-recipient
-            alias: robotics.notification.recipient
+          - sendgrid-api-key
+          - robotics-notification-sender
+          - robotics-notification-recipient
           - name: launch-darkly-sdk-key-non-prod
-            alias: LAUNCH_DARKLY_SDK_KEY
-          - name: robotics-notification-multipartyrecipient
-            alias: robotics.notification.multipartyrecipient
+            alias: launch-darkly-sdk-key
+          - robotics-notification-multipartyrecipient
       civil-gen-apps:
         resourceGroup: civil
         secrets:
