@@ -336,6 +336,7 @@ describe('claimant Dashboard Controller', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+      claim.takenOfflineDate = new Date('December 17, 2023 03:24:00');
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
