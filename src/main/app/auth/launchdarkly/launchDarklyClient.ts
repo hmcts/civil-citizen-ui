@@ -84,3 +84,12 @@ export async function isCarmEnabledForCase(date: Date): Promise<boolean> {
   const carmApplicable = await getFlagValue('cam-enabled-for-case', epoch) as boolean;
   return carmFlag && carmApplicable;
 }
+
+export async function  isMintiEnabledForCase(date: Date): Promise<boolean> {
+  const { DateTime } = require('luxon');
+  const systemTimeZone = DateTime.local().zoneName;
+  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
+  const mintiFlag = await getFlagValue('minti') as boolean;
+  const mintiApplicable = await getFlagValue('multi-or-intermediate-track', epoch) as boolean;
+  return mintiFlag && mintiApplicable;
+}

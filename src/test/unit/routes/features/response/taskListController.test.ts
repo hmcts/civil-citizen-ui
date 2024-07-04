@@ -26,6 +26,8 @@ const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(launchDarklyClient, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
 
+const isMintiEnabledForCase = launchDarklyClient.isMintiEnabledForCase as jest.Mock;
+
 const getTaskListSpy = (taskList: TaskList[]) => configureSpy(taskListService, 'getTaskLists')
   .mockReturnValue(taskList);
 
@@ -52,6 +54,7 @@ describe('Claimant details', () => {
 
   beforeEach(() => {
     isCarmEnabledSpy(true);
+    isMintiEnabledForCase.mockResolvedValue(true);
   });
 
   describe('on GET', () => {
@@ -101,7 +104,7 @@ describe('Claimant details', () => {
         });
     });
 
-    it('should call isCarmEnabledForCase with claim submitted date', async () => {
+    it('should call isCarmEnabledForCase and isMintiEnabledForCase with claim submitted date', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       const dateSubmitted = civilClaimResponseMock.case_data.submittedDate;
       const isCarmEnabled = isCarmEnabledSpy(true);
@@ -110,6 +113,7 @@ describe('Claimant details', () => {
 
       expect(isCarmEnabled).toBeCalledTimes(1);
       expect(isCarmEnabled).toBeCalledWith(dateSubmitted);
+      expect(isMintiEnabledForCase).toBeCalledWith(dateSubmitted);
     });
 
     describe('should call getTaskLists with expected arguments', () => {
@@ -125,22 +129,24 @@ describe('Claimant details', () => {
         } as unknown as Claim;
       });
 
-      it('when isCarmEnabledForCase returns true', async () => {
+      it('when isCarmEnabledForCase and isMintiEnabledForCase returns true', async () => {
         isCarmEnabledSpy(true);
+        isMintiEnabledForCase.mockResolvedValue(true);
 
         await request(app).get(responseTaskListUrl());
 
         expect(taskListSpy).toBeCalledTimes(1);
-        expect(taskListSpy).toBeCalledWith(caseData, caseData.id, 'en', true);
+        expect(taskListSpy).toBeCalledWith(caseData, caseData.id, 'en', true, true);
       });
 
-      it('when isCarmEnabledForCase returns false', async () => {
+      it('when isCarmEnabledForCase and isMintiEnabledForCase returns false', async () => {
         isCarmEnabledSpy(false);
+        isMintiEnabledForCase.mockResolvedValue(false);
 
         await request(app).get(responseTaskListUrl());
 
         expect(taskListSpy).toBeCalledTimes(1);
-        expect(taskListSpy).toBeCalledWith(caseData, caseData.id, 'en', false);
+        expect(taskListSpy).toBeCalledWith(caseData, caseData.id, 'en', false, false);
       });
     });
 
