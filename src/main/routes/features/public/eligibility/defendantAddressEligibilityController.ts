@@ -23,7 +23,7 @@ defendantAddressEligibilityController.get(ELIGIBILITY_DEFENDANT_ADDRESS_URL, (re
 });
 
 defendantAddressEligibilityController.post(ELIGIBILITY_DEFENDANT_ADDRESS_URL, (req, res) => {
-  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
+  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_OPTION_COMMON'));
   genericYesNoForm.validateSync();
 
   if (genericYesNoForm.hasErrors()) {
