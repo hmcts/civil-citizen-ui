@@ -13,7 +13,6 @@ const paymentCancelledByUser = 'Payment was cancelled by the user';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-
 export const getRedirectUrl = async (claimId: string, applicationId: string, req: AppRequest): Promise<string> => {
   try {
     const claim = await getClaimById(claimId, req, true);
