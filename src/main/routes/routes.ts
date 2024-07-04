@@ -359,6 +359,27 @@ import requestForReconsiderationConfirmationController
 import cancelRequestForReconsiderationController
   from 'routes/features/caseProgression/requestForReconsideration/cancelRequestForReconsiderationController';
 import viewBreathingSpaceInformationController from 'routes/features/dashboard/viewBreathingSpaceInformationController';
+import multiTrackDisclosureNonElectronicDocuments
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocumentsController';
+import disclosureOfDocumentsController
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureOfDocumentsController';
+import disclosureOfElectronicDocumentsIssues
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureOfElectronicDocumentsIssuesController';
+import documentsConsideredDetailsController
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/documentsConsideredDetailsController';
+import agreementReachedController
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/agreementReachedController';
+import documentsTobeConsideredController
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/documentsTobeConsideredController';
+import subjectToFRCController from './features/directionsQuestionnaire/fixedRecoverableCosts/subjectToFRCController';
+import frcBandAgreedController
+  from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/frcBandAgreedController';
+import chooseComplexityBandController from './features/directionsQuestionnaire/fixedRecoverableCosts/chooseComplexityBandController';
+import reasonForComplexityBandController
+  from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/reasonForChoosingComplexityBandController';
+import whyNotSubjectToFRCController
+  from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/whyNotSubjectToFRCController';
+import backController from 'routes/common/backController';
 import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
 
 export default [
@@ -659,5 +680,17 @@ export default [
   payApplicationFeeConfirmationController,
   viewApplicationController,
   viewBreathingSpaceInformationController,
+  multiTrackDisclosureNonElectronicDocuments,
+  disclosureOfDocumentsController,
+  disclosureOfElectronicDocumentsIssues,
+  documentsConsideredDetailsController,
+  agreementReachedController,
+  documentsTobeConsideredController,
+  subjectToFRCController,
+  frcBandAgreedController,
+  chooseComplexityBandController,
+  reasonForComplexityBandController,
+  whyNotSubjectToFRCController,
+  backController,
   applicationFeePaymentConfirmationController,
 ];
