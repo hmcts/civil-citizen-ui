@@ -13,7 +13,6 @@ import {setResponseDeadline} from 'services/features/common/responseDeadlineAgre
 import {DocumentUri, DocumentType} from 'common/models/document/documentType';
 import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
-
 const taskListViewPath = 'features/response/task-list';
 const taskListController = Router();
 
