@@ -377,7 +377,7 @@ civil-general-applications:
           - name: robotics-notification-recipient
             alias: robotics.notification.recipient
           - name: launch-darkly-sdk-key-non-prod
-            alias: launch-darkly-sdk-key
+            alias: LAUNCH_DARKLY_SDK_KEY
           - name: robotics-notification-multipartyrecipient
             alias: robotics.notification.multipartyrecipient
       civil-gen-apps:
