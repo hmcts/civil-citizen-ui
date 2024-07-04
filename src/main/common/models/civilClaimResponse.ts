@@ -197,6 +197,7 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1DQExperts?: CCDExpert;
   responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
   claimType?: string;
+  responseClaimTrack?: string;
   specDefenceAdmittedRequired?: YesNoUpperCamelCase;
   respondToAdmittedClaim?: CCDRespondToClaim;
   detailsOfWhyDoesYouDisputeTheClaim?: string;

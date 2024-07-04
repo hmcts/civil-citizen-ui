@@ -75,3 +75,12 @@ export async function  isDashboardEnabledForCase(date: Date): Promise<boolean> {
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
   return await getFlagValue('is-dashboard-enabled-for-case', epoch) as boolean;
 }
+
+export async function  isMintiEnabledForCase(date: Date): Promise<boolean> {
+  const { DateTime } = require('luxon');
+  const systemTimeZone = DateTime.local().zoneName;
+  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
+  const mintiFlag = await getFlagValue('minti') as boolean;
+  const mintiApplicable = await getFlagValue('multi-or-intermediate-track', epoch) as boolean;
+  return mintiFlag && mintiApplicable;
+}
