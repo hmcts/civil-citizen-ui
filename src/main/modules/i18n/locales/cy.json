@@ -71,7 +71,7 @@
     "ADDRESS_FORM": {
       "ADDRESS_CHANGES_SHARED": "Bydd unrhyw newidiadau yn cael eu rhannu â'r hawlydd pan fyddwch yn cyflwyno eich ymateb.",
       "BUILDING_AND_STREET": "Adeilad a stryd",
-      "CHANGE_ADDRESS": "Os nad yw eich cyfeiriad yn gywir gallwch ei newid yma.",
+      "CHANGE_ADDRESS": "Os nad yw eu cyfeiriad yn gywir, gallwch ei newid yma.",
       "POSTCODE": "Cod post",
       "TOWN_OR_CITY": "Tref neu ddinas"
     },
@@ -163,7 +163,7 @@
       "BETA": "BETA",
       "MONEY_CLAIMS": "Hawliadau am Arian",
       "MY_ACCOUNT": "Fy nghyfrif",
-      "NEW_SERVICE": "Gwasanaeth newydd yw hwn – bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>adborth</a> yn ein helpu i’w wella.",
+      "NEW_SERVICE": "Mae hwn yn wasanaeth newydd - bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>adborth</a> yn ein helpu i’w wella.",
       "SIGN_IN": "Mewngofnodi",
       "SIGN_OUT": "Allgofnodi"
     },
@@ -182,7 +182,7 @@
       "CALCULATE_THIS": "I gyfrifo hyn, defnyddiwch y camau isod",
       "EXAMPLE": {
         "EXAMPLE": "Enghraifft",
-        "OWED": "Roedd £,1000 yn ddyledus i chi:",
+        "OWED": "Roedd £1,000 yn ddyledus i chi:",
         "ANNUAL_INTEREST": "y llog blynyddol fyddai £80 (1000 x 0.08 = 80) byddech yn rhannu £80 gyda 365 i gael y llog dyddiol: tua 22p y diwrnod (80 / 365 = 0.22) ar ôl 50 diwrnod byddai hyn yn £11 (50 x 0.22 = 11)"
       },
       "STEPS": {
@@ -601,11 +601,11 @@
       "WELSH": "Cymraeg"
     },
     "CLAIM_BILINGUAL_LANGUAGE_PREFERENCE": {
-      "DESCRIPTION_1": "Mae’n rhaid i chi ddewis pa iaith rydych chi eisiau ei defnyddio i wneud yr hawliad hwn.",
-      "DESCRIPTION_2": "Os byddwch yn dewis 'Cymraeg', bydd yr wybodaeth a’r dogfennau yn cael eu cyflwyno yn Gymraeg. Ond bydd rhai hysbysiadau am eich cais yn dal i fod yn Saesneg.",
+      "DESCRIPTION_1": "Rhaid i chi ddewis pa iaith yr ydych eisiau ei defnyddio i wneud yr hawliad hwn.",
+      "DESCRIPTION_2": "Os byddwch yn dewis 'Cymraeg' bydd gwybodaeth a dogfennau yn cael eu cyflwyno yn Gymraeg ond bydd rhai hysbysiadau am eich hawliad yn Saesneg.",
       "ENGLISH": "Saesneg",
       "PAGE_TITLE": "Iaith",
-      "QUESTION": "Ym mha iaith ydych chi eisiau gwneud eich cais?",
+      "QUESTION": "Ym mha iaith ydych chi eisiau gwneud eich hawliad?",
       "TITLE": "Iaith",
       "WELSH_AND_ENGLISH": "Cymraeg"
     },
@@ -813,7 +813,7 @@
       "TELL_US_WHY": "Dywedwch wrthym beth roedd yn dyst iddo",
       "TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING": "Dywedwch wrthym pam eich bod eisiau gwrandawiad ffôn neu fideo",
       "THEIR_DETAILS_TITLE": "Ei fanylion",
-      "THEIR_DETAILS_TITLE_DEFENDANT": "Ei fanylion (diffynnydd)",
+      "THEIR_DETAILS_TITLE_DEFENDANT": "Eu manylion (diffynnydd)",
       "THE_AGREEMENT_CYA": "Y cytundeb",
       "TITLE": "Gwiriwch eich atebion",
       "TIMELINE_TITLE": "Eich llinell amser o'r hyn a ddigwyddodd (dewisol)",
@@ -926,7 +926,7 @@
       "DESCRIPTION": "Gallai eich hawliad fod am un swm neu'n cynnwys nifer o eitemau.",
       "HINT": "Esboniwch bob eitem yn fyr - er enghraifft, \"teils wedi torri\", \"difrod to\"",
       "INTEREST": "llog - byddwn yn gofyn i chi am hyn nesaf",
-      "REASON": "Yr hyn rydych chi'n ei hawlio amdano?",
+      "REASON": "Beth ydych chi'n ei hawlio amdano?",
       "TITLE": "Hawlio swm"
     },
     "CLAIM_DETAILS": {
@@ -957,7 +957,7 @@
       "CHECK_AND_SUBMIT": "Gwirio a chyflwyno’ch hawliad",
       "CLAIM_AMOUNT": "Swm yr hawliad",
       "CLAIM_DETAILS": "Manylion yr hawliad",
-      "COMPLETED_SECTIONS": "Rydych wedi cwblhau {{ completed }} allan o {{ total }} adran",
+      "COMPLETED_SECTIONS": "Rydych wedi cwblhau {{ completed }} allan o {{ total }} rhan",
       "COMPLETING_CLAIM": "Cwblhau eich hawliad",
       "CONSIDER_OPTIONS": "Ystyried opsiynau eraill",
       "PAGE_TITLE": "Gwneud hawliad am arian",
@@ -986,10 +986,10 @@
         "TITLE": "Parhau i hawlio llog ar ôl i chi gyflwyno eich cais?"
       },
       "DEFENDANT_EMAIL": {
-        "PAGE_TITLE": "Ei gyfeiriad e-bost (dewisol)",
-        "PERSONAL_EMAIL": "Rhaid mai dyma yw ei gyfeiriad e-bost personol",
-        "TITLE": "Ei gyfeiriad e-bost (dewisol)",
-        "USE_THIS_EMAIL": "Byddwn yn defnyddio hwn i ddweud wrtho eich bod wedi gwneud hawliad, yn ogystal â'i hysbysu drwy'r post."
+        "PAGE_TITLE": "Eu cyfeiriad e-bost (dewisol)",
+        "PERSONAL_EMAIL": "Rhaid mai dyma yw eu cyfeiriad e-bost personol",
+        "TITLE": "Eu cyfeiriad e-bost (dewisol)",
+        "USE_THIS_EMAIL": "Byddwn yn defnyddio hwn i ddweud wrthynt eich bod wedi gwneud hawliad, yn ogystal  'a'u' hysbysu drwy'r post."
       },
       "HOW_MUCH_CONTINUE": {
         "DAILY_INTEREST_AMOUNT": "Swm llog dyddiol",
@@ -1014,8 +1014,8 @@
         "P2": {
           "HEADING": "Siarad â'r unigolyn neu'r sefydliad",
           "MAKE_A_CLAIM": "esbonio y byddwch yn gwneud hawliad yn ei erbyn os nad yw’n dilyn eich amserlen",
-          "SUGGESTING_TIMETABLE": "awgrymu amserlen gyda chamau rydych eisiau i'r unigolyn eu cymryd",
-          "TELLING_THEM_WHY": "dweud wrth yr unigolyn pam eich bod yn bwriadu gwneud hawliad yn ei erbyn",
+          "SUGGESTING_TIMETABLE": "awgrymu amserlen gyda chamau rydych eisiau i'r unigolyn neu'r sefydliad eu cymryd",
+          "TELLING_THEM_WHY": "dweud wrth yr unigolyn neu'r sefydliad pam eich bod yn bwriadu gwneud hawliad yn ei erbyn",
           "TRY_TO_RESOLVE": "Ceisiwch ddatrys yr anghydfod drwy:"
         },
         "PAGE_TITLE": "Ceisio datrys yr anghydfod",
@@ -1815,8 +1815,8 @@
       "TITLE": "Ydych chi eisiau defnyddio tystiolaeth arbenigwr?"
     },
     "DEFENDANT_PHONE_NUMBER": {
-      "PAGE_TITLE": "Ei rif ffôn",
-      "TITLE": "Ei rif ffôn (dewisol)"
+      "PAGE_TITLE": "Eu rhif ffôn",
+      "TITLE": "Eu rhif ffôn (dewisol)"
     },
     "DEFENDANT_EXPERT_CAN_STILL_EXAMINE": {
       "CAN_NOT_USE": "Ni allwch ddefnyddio arbenigwr yn yr achos hwn",
@@ -3143,7 +3143,7 @@
       "EXTRA_FEE_IF_CHANGE_DETAILS": "Bydd yn rhaid i chi dalu ffi ychwanegol os ydych chi am newid manylion yr hawliad nes ymlaen.",
       "DONT_GIVE_TIMELINE": "Peidiwch â rhoi llinell amser fanwl i ni - byddwn yn gofyn am hynny ar wahân.",
       "PAGE_TITLE": "Esboniwch eich hawliad yn gryno",
-      "TELL_US_WHY": "Dywedwch pam eich bod yn credu bod ar y diffynnydd arian i chi.",
+      "TELL_US_WHY": "Dywedwch pam eich bod yn credu bod arno'r diffynnydd arian i chi.",
       "TITLE": "Esboniwch eich hawliad yn gryno"
     },
     "REGULAR_EXPENSES": {
@@ -3580,7 +3580,7 @@
       "OTHER_FEES": "Ffioedd eraill",
       "PAGE_TITLE": "Y cyfanswm yr ydych yn ei hawlio",
       "TITLE": "Y cyfanswm yr ydych yn ei hawlio",
-      "TOTAL_CLAIM_AMOUNT": "Cyfanswm swm yr hawliad",
+      "TOTAL_CLAIM_AMOUNT": "Cyfanswm yr hawliad",
       "TOTAL_WOULD_BE_LOWER": "Byddai hynny'n golygu y byddai cyfanswm yr hawliad yn is na'r swm sy'n cael ei ddangos ar y dudalen hon.",
       "WE_WILL_REVIEW": "Byddwn yn adolygu eich cais am Help Gyda Ffioedd ar ôl i chi gyflwyno'r cais",
       "WE_WONT_REFOUND": "Ni fyddwn yn ad-dalu ffi’r hawliad. Gallwch ofyn i'r diffynnydd dalu eich ffi yn ôl fel rhan o'r setliad.",
@@ -3593,11 +3593,11 @@
     },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "Byddwn yn ei ychwanegu at swm yr hawliad.",
-      "CALCULATE_INTEREST": "Mae angen i chi gyfrifo llog ar gyfer y gwahanol gyfnodau neu eitemau amser a rhoi gwybod i ni am y cyfanswm.",
+      "CALCULATE_INTEREST": "Mae angen i chi gyfrifo llog ar gyfer y gwahanol gyfnodau amser neu'r gwahanol eitemau a rhoi gwybod i ni am y cyfanswm.",
       "CALCULATION_PROOF": "Dangos sut y gwnaethoch gyfrifo’r swm",
       "PAGE_TITLE": "Hawlio’r  llog cyfan",
-      "TITLE": "Beth yw'r llog cyfan ar gyfer eich cais?",
-      "TOTAL_AMOUNT": "Cyfanswm swm y llog"
+      "TITLE": "Beth yw cyfanswm y llog ar gyfer eich cais?",
+      "TOTAL_AMOUNT": "Cyfanswm y llog"
     },
     "TRIAL_DURATION_TRIAL_ARRANGEMENTS": {
       "TITLE": "Cwblhau trefniadau eich treial",
@@ -4316,6 +4316,7 @@
     "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Rhaid peidio â nodi dyddiad sydd ar ôl dyddiad heddiw",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Rhaid i’r dyddiad cychwyn beidio â bod ar ôl dyddiad heddiw",
     "VALID_DAY": "Rhowch ddydd dilys",
+    "VALIDA_DAY_VARIATION_2": "Rhowch ddiwrnod dilys",
     "FIRST_PAYMENT_MESSAGE": "Dylai'r dyddiad fod ddim cynharach na {{firstPaymentDate}}",
     "VALID_DEBT_AMOUNT": {
       "COUNCIL_TAX": "Rhowch swm dilys o Dreth Gyngor neu Dreth Gymunedol, uchafswm dau le degol",
@@ -4372,7 +4373,8 @@
     "VALID_YES_NO_OPTION_NAC_YDW": "Dewiswch opsiwn: ‘ydw’ neu ‘nac ydw’",
     "VALID_YES_OR_NO_OPTION": "Dewiswch Oes i setlo’r hawliad",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Dewiswch Oes neu Nac oes",
-    "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
+    "VALID_YES_NO_SELECTION": "Dewiswch Ydw neu Nac ydw, os gwelwch yn dda",
+    "VALID_YES_NO_SELECTION_OPTION2": "Dewiswch Oes neu Nac oes, os gwelwch yn dda",
     "VALID_YES_NO_SELECTION_UPPER": "Dewiswch Oes neu Nac oes",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "Rhaid i chi nodi y math o ddogfen",
     "VALID_ENTER_YOUR_NAME": "Mae’n rhaid ichi nodi eich enw",
