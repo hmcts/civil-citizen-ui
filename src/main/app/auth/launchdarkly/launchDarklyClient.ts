@@ -76,7 +76,7 @@ export async function  isDashboardEnabledForCase(date: Date): Promise<boolean> {
   return await getFlagValue('is-dashboard-enabled-for-case', epoch) as boolean;
 }
 
-export async function  isCarmEnabledForCase(date: Date): Promise<boolean> {
+export async function isCarmEnabledForCase(date: Date): Promise<boolean> {
   const { DateTime } = require('luxon');
   const systemTimeZone = DateTime.local().zoneName;
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
