@@ -36,7 +36,7 @@ export abstract class DashboardItem {
   ocmc?: boolean;
   draft?: boolean;
   url: string;
-
+  defaultJudgementIssuedDate?: string;
   getHref() {
     return this.ocmc ? `${ocmcBaseUrl}${this.url.replace(':claimId', this.claimId)}` : this.url.replace(':claimId', this.claimId);
   }
@@ -141,6 +141,7 @@ export class DashboardDefendantItem extends DashboardItem {
     const paramCCJRequestedDate = {key: 'ccjRequestedDate', value: formatDateToFullDate(this.ccjRequestedDate, lang)};
     const paramResponseDeadline = {key: 'responseDeadline', value: formatDateToFullDate(this.responseDeadline, lang)};
     const paramAdmittedAmount = {key: 'amount', value: this.respondToAdmittedClaimOwingAmountPounds?.toString() ?? this.admittedAmount?.toString()};
+    const paramDefaultJudgementIssuedDate = { key: 'defaultJudgementIssuedDate', value: formatDateToFullDate(this.defaultJudgementIssuedDate as unknown as Date, lang) };
 
     return {
       NO_STATUS: {translationKey: ''},
@@ -231,6 +232,10 @@ export class DashboardDefendantItem extends DashboardItem {
       DEFENDANT_APPLY_NOC: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.RESPONSE_BY_POST'},
       DECISION_FOR_RECONSIDERATION_MADE: { translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.DECISION_ON_RECONSIDERATION' },
       HEARING_FEE_UNPAID: { translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.HEARING_FEE_UNPAID'},
+      DEFAULT_JUDGEMENT_ISSUED: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.DEFAULT_JUDGEMENT_ISSUED_STATUS',
+        parameter: [paramDefaultJudgementIssuedDate],
+      },
     };
   }
 }
