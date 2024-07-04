@@ -2,8 +2,8 @@ const I = actor();
 const config = require('../../../../../../config');
 
 const fields ={
-  yesButton: 'input[id="option"]',
-  noButton: 'input[id="option-2"]',
+  yesButton: 'input[value="yes"]',
+  noButton: 'input[value="no"]',
 };
 
 class RequestExtraFourWeeks {
