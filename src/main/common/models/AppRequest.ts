@@ -31,7 +31,7 @@ export interface AppSession extends Session {
   fileUpload: string;
   issuedAt: number;
   dashboard: Dashboard;
-
+  history?: string[];
 }
 
 export interface UserDetails {
