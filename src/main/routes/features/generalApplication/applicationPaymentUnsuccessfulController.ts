@@ -16,7 +16,8 @@ applicationPaymentUnsuccessfulController.get(GA_PAYMENT_UNSUCCESSFUL_URL, (req, 
       const redisKey = generateRedisKey(<AppRequest>req);
       const claim = await getClaimById(redisKey, req, true);
       const cancelUrl = await getCancelUrl(claimId, claim);
-      const makePaymentAgainUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+      const genAppId = req.query.id;
+      const makePaymentAgainUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION) + (genAppId ? `?id=${genAppId}` : '');
       res.render(applicationPaymentUnsuccessfulViewPath, {cancelUrl, makePaymentAgainUrl});
     } catch (error) {
       next(error);
