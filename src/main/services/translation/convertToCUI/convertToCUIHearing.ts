@@ -7,7 +7,7 @@ import {UnavailableDatePeriod, UnavailableDateType} from 'models/directionsQuest
 import {CCDUnavailableDates, CCDUnavailableDateType} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {Support, SupportRequired} from 'models/directionsQuestionnaire/supportRequired';
 import {CCDSupportRequirement, CCDSupportRequirements} from 'models/ccdResponse/ccdHearingSupport';
-import {claimType} from 'common/form/models/claimType';
+import {analyseClaimType, claimType} from 'common/form/models/claimType';
 import {DeterminationWithoutHearing} from 'common/models/directionsQuestionnaire/hearing/determinationWithoutHearing';
 import {ConsiderClaimantDocuments} from 'common/models/directionsQuestionnaire/hearing/considerClaimantDocuments';
 
@@ -46,7 +46,7 @@ export const toCUIHearing = (ccdClaim: CCDClaim) : Hearing => {
         items: toCUISupportItems(ccdClaim.respondent1LiPResponse.respondent1DQHearingSupportLip.requirementsLip),
       };
     }
-    if (ccdClaim.claimType === claimType.SMALL_CLAIM) {
+    if (ccdClaim.responseClaimTrack === claimType.SMALL_CLAIM || analyseClaimType(ccdClaim.totalClaimAmount) === claimType.SMALL_CLAIM) {
       if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails) {
         hearing.determinationWithoutHearing = {
           option: toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.determinationWithoutHearingRequired),
