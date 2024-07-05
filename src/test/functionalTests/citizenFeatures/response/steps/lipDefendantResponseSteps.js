@@ -79,7 +79,12 @@ const DisclosureOfDocuments = require('../pages/defendantLipResponse/defendantDQ
 const AgreementReached = require('../pages/defendantLipResponse/defendantDQ/agreementReached');
 const DisclosureOfElectronicDocumentsIssues = require('../pages/defendantLipResponse/defendantDQ/disclosureOfElectronicDocumentsIssues');
 const DisclosureOfNonElectronicDocuments = require('../pages/defendantLipResponse/defendantDQ/disclosureOfNonElectronicDocuments');
-const ClaimantDocsToBeConsider = require('../pages/defendantLipResponse/defendantDQ/claimantDocsToBeConsider');
+const ClaimantDocsToBeConsider = require('../pages/defendantLipResponse/defendantDQ/claimantDocsToBeConsider')
+const SubjectToFrc = require('../pages/defendantLipResponse/defendantDQ/subjectToFrc');
+const FrcBandAgreed = require('../pages/defendantLipResponse/defendantDQ/frcBandAgreed');
+const AssignComplexityBand = require('../pages/defendantLipResponse/defendantDQ/assignComplexityBand');
+const ReasonForComplexityBand = require('../pages/defendantLipResponse/defendantDQ/reasonForComplexityBand');
+
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -164,6 +169,10 @@ const agreementReached = new AgreementReached();
 const disclosureOfNonElectronicDocuments = new DisclosureOfNonElectronicDocuments();
 const disclosureOfElectronicDocumentsIssues = new DisclosureOfElectronicDocumentsIssues();
 const claimantDocsToBeConsider = new ClaimantDocsToBeConsider();
+const subjectToFrc = new SubjectToFrc();
+const frcBandAgreed = new FrcBandAgreed();
+const assignComplexityBand = new AssignComplexityBand();
+const reasonForComplexityBand = new ReasonForComplexityBand();
 
 class ResponseSteps {
   async AssignCaseToLip(claimNumber, securityCode){
@@ -612,28 +621,29 @@ class ResponseSteps {
   async EnterDQForIntTrackClaims(claimRef) {
     await this.SelectOptionForTriedToSettle(claimRef);
     await this.SelectOptionToRequestExtraFourWeeksToSettle();
-    await this.SelectConsiderClaimantDocs();
-
-    // To do later
-    // await this.SelectDisclosureOfDocuments();
-    // await this.SelectAgreementReached();
-    // await this.ProvideDisclosureOfElecDocumentsIssues();
-    // await this.ProvideDisclosureOfNonElecDocuments();
-    // await this.SelectClaimantDocsConsider();
-    // await this.SelectExpertEvidence();
-    // await this.SelectSentExpertReports();
-    // await this.SelectOptionForSharedExpert();
-    // await this.EnterExpertDetails();
-    // await this.SelectGiveEvidenceYourself();
-    // if(!isIndividual) await this.EnterYourDetails();
-    // await this.EnterDefedantWitnesses();
-    // await this.SelectOptionForCantAttendHearing();
-    // await this.EnterUnavailabilityDates();
-    // await this.SelectOptionForPhoneOrVideoHearing();
-    // await this.SelectOptionForVulnerability();
-    // await this.SelectOptionForSupportRequired();
-    // await this.SelectPreferredCourtLocation();
-    // await this.SelectLanguageOption();
+    await this.SelectSubjectToFrc();
+    await this.SelectFrcBandAgreed();
+    await this.SelectComplexityBand();
+    await this.TypeReasonForBand();
+    await this.SelectDisclosureOfDocuments();
+    await this.SelectAgreementReached();
+    await this.ProvideDisclosureOfElecDocumentsIssues();
+    await this.ProvideDisclosureOfNonElecDocuments();
+    await this.SelectClaimantDocsConsider();
+    await this.SelectExpertEvidence();
+    await this.SelectSentExpertReports();
+    await this.SelectOptionForSharedExpert();
+    await this.EnterExpertDetails();
+    await this.SelectGiveEvidenceYourself();
+    if(!isIndividual) await this.EnterYourDetails();
+    await this.EnterDefedantWitnesses();
+    await this.SelectOptionForCantAttendHearing();
+    await this.EnterUnavailabilityDates();
+    await this.SelectOptionForPhoneOrVideoHearing();
+    await this.SelectOptionForVulnerability();
+    await this.SelectOptionForSupportRequired();
+    await this.SelectPreferredCourtLocation();
+    await this.SelectLanguageOption();
   }
 
   async EnterDQForFastTrack(claimRef, isIndividual = true){
@@ -738,6 +748,22 @@ class ResponseSteps {
 
   async SelectClaimantDocsConsider(){
     await claimantDocsToBeConsider.SelectClaimantDocs();
+  }
+
+  async SelectSubjectToFrc(){
+    await subjectToFrc.SelectSubjectToFrc();
+  }
+
+  async SelectFrcBandAgreed(){
+    await frcBandAgreed.SelectFrcBandAgreed();
+  }
+
+  async SelectComplexityBand(){
+    await assignComplexityBand.SelectComplexityBand();
+  }
+
+  async TypeReasonForBand(){
+    await reasonForComplexityBand.TypeReasonForBand();
   }
 
   async SelectConsiderClaimantDocs(){

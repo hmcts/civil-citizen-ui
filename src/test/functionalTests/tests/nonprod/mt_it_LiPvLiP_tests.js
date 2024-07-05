@@ -68,6 +68,6 @@ Scenario('IT Defendant and Claimant responses', async ({api}) => {
     await ResponseSteps.AddYourTimeLineEvents();
     await ResponseSteps.EnterYourEvidenceDetails();
     await ResponseSteps.EnterDQForIntTrackClaims(claimRef, false);
-    // To do later
+    await ResponseSteps.CheckAndSubmit(claimRef, rejectAll, 'Intermediate');
   }
 });
