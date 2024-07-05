@@ -825,6 +825,36 @@
       "INSET": "The court will review your suggestion and may reject it if it's more than the defendant can afford."
     },
     "CHECK_YOUR_ANSWER": {
+      "SUBECT_TO_FRC": "Is the claim subject to the fixed recoverable costs regime?",
+      "FRC_BAND_AGREED": "Has the complexity band been agreed with the other parties?",
+      "FRC_BAND_CHOSEN": "Which complexity band do you believe the claim falls into?",
+      "FRC_BANDS": {
+        "BAND_1": "Band 1",
+        "BAND_2": "Band 2",
+        "BAND_3": "Band 3",
+        "BAND_4": "Band 4"
+      },
+      "REASON_FOR_FRC_BAND": "Reason for band selection",
+      "REASON_FOR_NO_FRC_BAND": "Why is the claim not subject to the Fixed Recoverable Costs Regime?",
+      "DISCLOSURE_OF_DOCUMENTS": {
+        "QUESTION": "You can ask the court to order disclosure of documents from the other parties. Do you want to request the disclosure of electronic or non-electronic documents, or both?",
+        "NO": "No",
+        "BOTH": "Both",
+        "ELECTRONIC_DOCUMENTS": "Electronic documents for disclosure",
+        "NON_ELECTRONIC_DOCUMENTS": "Non-electronic documents for disclosure"
+      },
+      "ELEC_AGREEMENT_REACHED": {
+        "QUESTION": "Has an agreement been reached between the parties involved in the claim about what electronic documents will be disclosed?",
+        "YES": "Yes",
+        "NO": "No",
+        "NO_BUT_AN_AGREEMENT_IS_LIKELY": "No, but an agreement is likely"
+      },
+      "ELEC_DOCS_ISSUES": "What are the issues about disclosure of electronic documents?",
+      "NON_ELEC_DOCS_DISCLOSURE": "What non-electronic documents are proposed for disclosure?",
+      "CLAIMANT_DOCS_TO_CONSIDER": "Are there any documents the claimants have that you want the court to consider?",
+      "CLAIMANT_DOCS_TO_CONSIDER_DETAILS": "What are the documents the claimants have that you want the court to consider?",
+      "DEFENDANT_DOCS_TO_CONSIDER": "Are there any documents the defendants have that you want the court to consider?",
+      "DEFENDANT_DOCS_TO_CONSIDER_DETAILS": "What are the documents the defendants have that you want the court to consider?",
       "AIRLINE": "Airline",
       "ARE_YOU_CLAIMING_DELAYED_FLIGHT": "Are you claiming for a delayed flight?",
       "BANK_BALANCE": "Balance",
@@ -2734,6 +2764,24 @@
         "TITLE": "Help with fees",
         "WANT_TO_APPLY_HWF_TITLE": "Pay application fee",
         "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
+      },
+      "VIEW_APPLICATION": {
+        "APPLICATION": "Application",
+        "APPLICATION_DETAILS": "Application details submitted by the applicant.",
+        "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
+        "EITHER_PARTIES": "Applications and responses can be made by either parties in a case.",
+        "PAGE_TITLE": "View application",
+        "RESPONSE": "Response from the other parties",
+        "REVIEW": "Review the application together with any response that has been received.",
+        "STATUS": {
+          "AWAITING_RESPONSE": "Awaiting other parties response",
+          "TITLE": "Status"
+        },
+        "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
+        "TITLE": "Application {{applicationIndex}}",
+        "UPLOAD_DOCUMENTS_1": "You can also ",
+        "UPLOAD_DOCUMENTS_2": "upload additional documents",
+        "UPLOAD_DOCUMENTS_3": " if you need to."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
