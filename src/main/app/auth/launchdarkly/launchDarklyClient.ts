@@ -12,7 +12,7 @@ async function getClient(): Promise<void> {
   }
 }
 
-async function getUser(): Promise<LDUser> {
+async function getUser(epoch: string): Promise<LDUser> {
   const launchDarklyEnv = config.get<string>('services.launchDarkly.env');
   let user: LDUser = {'name': 'civil-service', 'key': 'civil-service'};
 
@@ -21,7 +21,7 @@ async function getUser(): Promise<LDUser> {
       'name': 'civil-service', 'key': 'civil-service',
       'custom': {
         environment: launchDarklyEnv,
-        timestamp: new Date().getMilliseconds(),
+        timestamp: epoch || new Date().getMilliseconds(),
       },
     };
 
@@ -30,11 +30,11 @@ async function getUser(): Promise<LDUser> {
 }
 
 export async function getFlagValue(
-  key: string,
+  key: string, epoch?: string,
 ): Promise<LDFlagValue> {
   if (!ldClient) await getClient();
   if (ldClient)
-    return await ldClient.variation(key, await getUser(), false);
+    return await ldClient.variation(key, await getUser(epoch), false);
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
@@ -52,12 +52,11 @@ export async function isPcqShutterOn(): Promise<boolean> {
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
   return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
 }
-export async function isDashboardServiceEnabled(): Promise<boolean> {
-  return await getFlagValue('dashboard-service') as boolean;
-}
+
 export async function isCARMEnabled(): Promise<boolean> {
   return await getFlagValue('carm') as boolean;
 }
+
 export async function isGaForLipsEnabled(): Promise<boolean> {
   return await getFlagValue('GaForLips') as boolean;
 }
@@ -68,4 +67,20 @@ export async function isMintiEnabled(): Promise<boolean> {
 
 export async function isJudgmentOnlineLive(): Promise<boolean> {
   return await getFlagValue('isJudgmentOnlineLive') as boolean;
+}
+
+export async function  isDashboardEnabledForCase(date: Date): Promise<boolean> {
+  const { DateTime } = require('luxon');
+  const systemTimeZone = DateTime.local().zoneName;
+  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
+  return await getFlagValue('is-dashboard-enabled-for-case', epoch) as boolean;
+}
+
+export async function  isMintiEnabledForCase(date: Date): Promise<boolean> {
+  const { DateTime } = require('luxon');
+  const systemTimeZone = DateTime.local().zoneName;
+  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
+  const mintiFlag = await getFlagValue('minti') as boolean;
+  const mintiApplicable = await getFlagValue('multi-or-intermediate-track', epoch) as boolean;
+  return mintiFlag && mintiApplicable;
 }

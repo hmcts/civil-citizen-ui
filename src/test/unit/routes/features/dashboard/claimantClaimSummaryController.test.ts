@@ -37,7 +37,7 @@ describe('claimant Dashboard Controller', () => {
   });
 
   describe('on GET', () => {
-    it('should return claimant dashboard page when only draft and isDashboardServiceEnabled', async () => {
+    it('should return claimant dashboard page when only draft and isCUIReleaseTwoEnabled', async () => {
       const claim = new Claim();
       claim.respondent1 = new Party();
       claim.respondent1.type = PartyType.INDIVIDUAL;
@@ -52,7 +52,7 @@ describe('claimant Dashboard Controller', () => {
       claim.caseProgressionHearing = new CaseProgressionHearing( null, null, null, null, null, null, new PaymentDetails('123', 'cu123', PaymentStatus.SUCCESS) );
       claim.caseProgression = new CaseProgression();
       jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(new Claim()));
-      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
@@ -61,7 +61,7 @@ describe('claimant Dashboard Controller', () => {
         expect(res.text).not.toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
       });
     });
-    it('should return claimant dashboard page with claimant and fast Track and isDashboardServiceEnabled', async () => {
+    it('should return claimant dashboard page with claimant and fast Track and isCUIReleaseTwoEnabled', async () => {
 
       const claim = new Claim();
       claim.respondent1 = new Party();
@@ -80,14 +80,14 @@ describe('claimant Dashboard Controller', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
-      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.text).toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
       });
     });
-    it('should return defendant dashboard page with claimant and small claims and isDashboardServiceEnabled', async () => {
+    it('should return defendant dashboard page with claimant and small claims and isCUIReleaseTwoEnabled', async () => {
 
       const claim = new Claim();
       claim.respondent1 = new Party();
@@ -104,14 +104,14 @@ describe('claimant Dashboard Controller', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
-      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.text).toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
       });
     });
-    it('should return defendant dashboard page with defendant and fast track and isDashboardServiceEnabled', async () => {
+    it('should return defendant dashboard page with defendant and fast track and isCUIReleaseTwoEnabled', async () => {
 
       const claim = new Claim();
       claim.respondent1 = new Party();
@@ -129,7 +129,7 @@ describe('claimant Dashboard Controller', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
-      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
 
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
@@ -137,7 +137,7 @@ describe('claimant Dashboard Controller', () => {
         expect(res.text).toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
       });
     });
-    it('should return defendant dashboard page with defendant and small claims and isDashboardServiceEnabled', async () => {
+    it('should return defendant dashboard page with defendant and small claims and isCUIReleaseTwoEnabled', async () => {
 
       const claim = new Claim();
       claim.respondent1 = new Party();
@@ -154,7 +154,7 @@ describe('claimant Dashboard Controller', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
-      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
 
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
@@ -163,10 +163,10 @@ describe('claimant Dashboard Controller', () => {
       });
     });
 
-    it('should return status 500 when error thrown and isDashboardServiceEnabled', async () => {
+    it('should return status 500 when error thrown and isCUIReleaseTwoEnabled', async () => {
       jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
       await request(app)
         .get(OLD_DASHBOARD_CLAIMANT_URL)
         .expect((res: Response) => {
@@ -177,7 +177,7 @@ describe('claimant Dashboard Controller', () => {
     it('should return status 500 when error thrown', async () => {
       jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(false);
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(false);
       await request(app)
         .get(OLD_DASHBOARD_CLAIMANT_URL)
         .expect((res: Response) => {

@@ -174,6 +174,7 @@ export class Claim {
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
   judgmentOnline?: JudgmentOnline;
+  claimType?: string;
 
   // Index signature to allow dynamic property access
   [key: string]: any;
@@ -771,16 +772,14 @@ export class Claim {
     return party?.partyDetails?.partyName;
   }
 
-  get claimTrackType(): string {
-    return analyseClaimType(this.totalClaimAmount);
-  }
-
   get isFastTrackClaim(): boolean {
-    return this.claimTrackType === claimType.FAST_TRACK_CLAIM;
+    const claimTypeResult = analyseClaimType(this.totalClaimAmount);
+    return claimTypeResult === claimType.FAST_TRACK_CLAIM;
   }
 
   get isSmallClaimsTrackDQ(): boolean {
-    return this.claimTrackType === claimType.SMALL_CLAIM;
+    const claimTypeResult = analyseClaimType(this.totalClaimAmount);
+    return claimTypeResult === claimType.SMALL_CLAIM;
   }
 
   hasSdoOrderDocument(): boolean {
@@ -852,8 +851,14 @@ export class Claim {
     return undefined;
   }
 
+  hasFullDefenceAccepted() {
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM
+      && this.getIntentionToProceed() === YesNo.NO
+      && this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
+  }
+
   hasClaimTakenOffline() {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.hasDefaultJudgmentSubmitted() && !this.ccjJudgmentStatement && !this.isClaimantRejectedPaymentPlan();
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !!this.takenOfflineDate;
   }
 
   hasMediationSuccessful() {

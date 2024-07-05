@@ -21,10 +21,18 @@ const convertResponseToApplication = (caseDetails: GeneralApplicationResponse): 
 export class GaServiceClient {
   client: AxiosInstance;
 
-  constructor(baseURL: string) {
-    this.client = Axios.create({
-      baseURL,
-    });
+  constructor(baseURL: string, isDocumentInstance?: boolean) {
+    if (isDocumentInstance) {
+      this.client = Axios.create({
+        baseURL,
+        responseType: 'arraybuffer',
+        responseEncoding: 'binary',
+      });
+    } else {
+      this.client = Axios.create({
+        baseURL,
+      });
+    }
   }
 
   getConfig(req: AppRequest) {
