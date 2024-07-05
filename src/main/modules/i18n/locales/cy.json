@@ -825,6 +825,36 @@
       "INSET": "Bydd y llys yn adolygu eich awgrym a gall ei wrthod os yw'n fwy nag y gall y diffynnydd ei fforddio."
     },
     "CHECK_YOUR_ANSWER": {
+      "SUBECT_TO_FRC": " A yw’r hawliad yn ddarostyngedig i’r Drefn Costau Adennill Sefydlog?",
+      "FRC_BAND_AGREED": "A yw’r band cymhlethdod wedi’i gytuno gyda’r partïon eraill?",
+      "FRC_BAND_CHOSEN": "Pa fand cymhlethdod ydych chi’n credu bod y hawliad hwn yn syrthio iddo?",
+      "FRC_BANDS": {
+        "BAND_1": "Band 1",
+        "BAND_2": "Band 2",
+        "BAND_3": "Band 3",
+        "BAND_4": "Band 4"
+      },
+      "REASON_FOR_FRC_BAND": "Rhesymau dros ddewis band",
+      "REASON_FOR_NO_FRC_BAND": "Pam nad yw’r hawliad yn destun y Rheoliad Costau Adferadwy Penodol?",
+      "DISCLOSURE_OF_DOCUMENTS": {
+        "QUESTION": "Gallwch ofyn i'r llys orchymyn datgelu dogfennau gan y partïon eraill. Ydych chi eisiau gofyn am ddatgelu dogfennau electronig neu anelectronig, neu'r ddau? ",
+        "NO": "Na",
+        "BOTH": "Y ddau",
+        "ELECTRONIC_DOCUMENTS": "Dogfennau electronig i'w datgelu",
+        "NON_ELECTRONIC_DOCUMENTS": "Dogfennau nad ydynt yn electronig i'w datgelu"
+      },
+      "ELEC_AGREEMENT_REACHED": {
+        "QUESTION": "A yw cytundeb wedi'i gyrraedd rhwng y partïon sy'n rhan o'r hawliad ynglŷn â pha ddogfennau electronig a ddatgelir?",
+        "YES": "Ie",
+        "NO": "Na",
+        "NO_BUT_AN_AGREEMENT_IS_LIKELY": "Na, ond mae'n debygol y bydd cytundeb"
+      },
+      "ELEC_DOCS_ISSUES": "Beth yw’r materion ynghylch datgelu dogfennau electronig?",
+      "NON_ELEC_DOCS_DISCLOSURE": "Pa ddogfennau nad ydynt yn electronig sy’n cael eu cynnig i’w datgelu?",
+      "CLAIMANT_DOCS_TO_CONSIDER": "Oes unrhyw ddogfennau sydd gan yr hawlwyr yr hoffech i’r llys eu hystyried?",
+      "CLAIMANT_DOCS_TO_CONSIDER_DETAILS": "Beth yw’r dogfennau sydd gan yr hawlwyr yr hoffech i’r llys eu hystyried?",
+      "DEFENDANT_DOCS_TO_CONSIDER": "A oes unrhyw ddogfennau sydd gan y diffynyddion yr ydych am i'r llys eu hystyried?",
+      "DEFENDANT_DOCS_TO_CONSIDER_DETAILS": "Beth yw'r dogfennau sydd gan y diffynyddion rydych chi am i'r llys eu hystyried?",
       "AIRLINE": "Cwmni hedfan",
       "ARE_YOU_CLAIMING_DELAYED_FLIGHT": "A ydych yn hawlio am oedi wrth hedfan?",
       "BANK_BALANCE": "Cydbwysedd",
@@ -2734,6 +2764,24 @@
         "TITLE": "Help with fees",
         "WANT_TO_APPLY_HWF_TITLE": "Pay application fee",
         "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
+      },
+      "VIEW_APPLICATION": {
+        "APPLICATION": "Application",
+        "APPLICATION_DETAILS": "Application details submitted by the applicant.",
+        "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
+        "EITHER_PARTIES": "Applications and responses can be made by either parties in a case.",
+        "PAGE_TITLE": "View application",
+        "RESPONSE": "Response from the other parties",
+        "REVIEW": "Review the application together with any response that has been received.",
+        "STATUS": {
+          "AWAITING_RESPONSE": "Awaiting other parties response",
+          "TITLE": "Status"
+        },
+        "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
+        "TITLE": "Application {{applicationIndex}}",
+        "UPLOAD_DOCUMENTS_1": "You can also ",
+        "UPLOAD_DOCUMENTS_2": "upload additional documents",
+        "UPLOAD_DOCUMENTS_3": " if you need to."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
