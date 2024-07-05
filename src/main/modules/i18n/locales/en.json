@@ -825,6 +825,36 @@
       "INSET": "The court will review your suggestion and may reject it if it's more than the defendant can afford."
     },
     "CHECK_YOUR_ANSWER": {
+      "SUBECT_TO_FRC": "Is the claim subject to the fixed recoverable costs regime?",
+      "FRC_BAND_AGREED": "Has the complexity band been agreed with the other parties?",
+      "FRC_BAND_CHOSEN": "Which complexity band do you believe the claim falls into?",
+      "FRC_BANDS": {
+        "BAND_1": "Band 1",
+        "BAND_2": "Band 2",
+        "BAND_3": "Band 3",
+        "BAND_4": "Band 4"
+      },
+      "REASON_FOR_FRC_BAND": "Reason for band selection",
+      "REASON_FOR_NO_FRC_BAND": "Why is the claim not subject to the Fixed Recoverable Costs Regime?",
+      "DISCLOSURE_OF_DOCUMENTS": {
+        "QUESTION": "You can ask the court to order disclosure of documents from the other parties. Do you want to request the disclosure of electronic or non-electronic documents, or both?",
+        "NO": "No",
+        "BOTH": "Both",
+        "ELECTRONIC_DOCUMENTS": "Electronic documents for disclosure",
+        "NON_ELECTRONIC_DOCUMENTS": "Non-electronic documents for disclosure"
+      },
+      "ELEC_AGREEMENT_REACHED": {
+        "QUESTION": "Has an agreement been reached between the parties involved in the claim about what electronic documents will be disclosed?",
+        "YES": "Yes",
+        "NO": "No",
+        "NO_BUT_AN_AGREEMENT_IS_LIKELY": "No, but an agreement is likely"
+      },
+      "ELEC_DOCS_ISSUES": "What are the issues about disclosure of electronic documents?",
+      "NON_ELEC_DOCS_DISCLOSURE": "What non-electronic documents are proposed for disclosure?",
+      "CLAIMANT_DOCS_TO_CONSIDER": "Are there any documents the claimants have that you want the court to consider?",
+      "CLAIMANT_DOCS_TO_CONSIDER_DETAILS": "What are the documents the claimants have that you want the court to consider?",
+      "DEFENDANT_DOCS_TO_CONSIDER": "Are there any documents the defendants have that you want the court to consider?",
+      "DEFENDANT_DOCS_TO_CONSIDER_DETAILS": "What are the documents the defendants have that you want the court to consider?",
       "AIRLINE": "Airline",
       "ARE_YOU_CLAIMING_DELAYED_FLIGHT": "Are you claiming for a delayed flight?",
       "BANK_BALANCE": "Balance",
