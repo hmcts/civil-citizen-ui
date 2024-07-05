@@ -141,6 +141,7 @@ describe('outstanding Claimant Response Tasks', () => {
         claimId,
         lng,
         false,
+        false,
       );
 
       // then
@@ -166,6 +167,7 @@ describe('outstanding Claimant Response Tasks', () => {
         claim,
         claimId,
         lng,
+        false,
         false,
       );
 
@@ -197,6 +199,7 @@ describe('outstanding Claimant Response Tasks', () => {
         claim,
         claimId,
         lng,
+        false,
         false,
       );
 
@@ -247,6 +250,7 @@ describe('outstanding Claimant Response Tasks', () => {
       claimId,
       lng,
       false,
+      false,
     );
 
     // then
@@ -296,6 +300,7 @@ describe('outstanding Claimant Response Tasks', () => {
       claim,
       claimId,
       lng,
+      false,
       false,
     );
 
@@ -353,6 +358,7 @@ describe('outstanding Claimant Response Tasks', () => {
       claimId,
       lng,
       true,
+      false,
     );
 
     // then

@@ -117,19 +117,19 @@ export function buildClaimantResponseSubmitSection(claimId: string, lang: string
   return {title: t('TASK_LIST.SUBMIT.TITLE', {lng: lang}), tasks};
 }
 
-export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: string, lang: string) {
+export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: string, lang: string, mintiApplicable: boolean) {
   const tasks: Task[] = [];
   if (isPartialAdmissionNotAccepted(claim) ||
     isPartialAdmissionPaidAndClaimantRejectPaymentOrNotSettleTheClaim(claim) ||
     isFullDefenceClaimantNotSettleTheClaim(claim) ||
     claim.hasClaimantRejectedDefendantPaid() ||
     claim.hasClaimantRejectedPartAdmitPayment()) {
-    const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
+    const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang, mintiApplicable);
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
 
   if (claim.isClaimantIntentionPending() && claim?.hasClaimantIntentToProceedResponse()) {
-    const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
+    const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang, mintiApplicable);
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
   return {title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng: lang}), tasks};
