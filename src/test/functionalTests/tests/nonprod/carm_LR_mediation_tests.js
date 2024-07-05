@@ -138,6 +138,7 @@ Scenario('LR vs LiP Unsuccessful Mediation - LR not contactable', async ({api, n
 });
 
 // LiP Sole Trader vs LR Company
+// After CIV-14085 Case will be in PROCEEDS_IN_HERITAGE_SYSTEM after NoC is completed for Defendant LiP
 Scenario('LiP vs LR Unsuccessful Mediation with Upload Documents', async ({api, noc}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'SoleTraderVCompany');
@@ -152,44 +153,5 @@ Scenario('LiP vs LR Unsuccessful Mediation with Upload Documents', async ({api, 
     await noc.requestNoticeOfChangeForRespondent1Solicitor(claimRef, config.defendantSolicitorUser);
     await api.checkUserCaseAccess(config.defendantCitizenUser, false);
     await api.checkUserCaseAccess(config.defendantSolicitorUser, true);
-    await api.performLrResponse(config.defendantSolicitorUser, claimRef, claimType, config.defenceType.rejectAllSmallClaimsCarm, 'SoleTraderVCompany');
-    await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, true, 'IN_MEDIATION');
-    await api.mediationUnsuccessful(mediationAdmin, true, ['NOT_CONTACTABLE_CLAIMANT_ONE', 'NOT_CONTACTABLE_DEFENDANT_ONE']);
-    await api.waitForFinishedBusinessProcess();
-
-    // Before uploading Mediation doc
-    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    const notification = mediationUnsuccessfulClaimant1NonAttendance();
-    await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-    taskListItem = viewMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Not available yet');
-    taskListItem = uploadMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed');
-    taskListItem = viewMediationSettlementAgreement();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
-
-    // After LR uploaded Mediation doc
-    await api.uploadMediationDocumentsExui(config.defendantSolicitorUser);
-    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    const lrNotification = mediationUnsuccessfulClaimant1NonAttendance();
-    await verifyNotificationTitleAndContent(claimNumber, lrNotification.title, lrNotification.content);
-    taskListItem = viewMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available');
-    taskListItem = uploadMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed');
-    taskListItem = viewMediationSettlementAgreement();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
-
-    // After LIP uploaded Mediation doc
-    await api.uploadMediationDocumentsCui(config.claimantCitizenUser, claimRef);
-    await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    const defNotification = mediationUnsuccessfulClaimant1NonAttendance();
-    await verifyNotificationTitleAndContent(claimNumber, defNotification.title, defNotification.content);
-    taskListItem = viewMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available');
-    taskListItem = uploadMediationDocuments();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress');
-    taskListItem = viewMediationSettlementAgreement();
-    await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
   }
 });
