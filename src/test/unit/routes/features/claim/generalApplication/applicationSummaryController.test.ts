@@ -11,6 +11,7 @@ import { GaServiceClient } from 'client/gaServiceClient';
 import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { decode } from 'punycode';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
+import { ApplicationResponse } from 'common/models/generalApplication/applicationResponse';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -30,10 +31,20 @@ describe('General Application - Application costs', () => {
   });
 
   describe('on GET', () => {
-    const applicationMock = {
+    const applicationMock: ApplicationResponse = {
       id: '1234567890',
       case_data: {
-        applicationTypes: 'Adjourn a hearing', 
+        applicationTypes: 'Adjourn a hearing',
+        generalAppType: null,
+        generalAppRespondentAgreement: null,
+        generalAppInformOtherParty: null,
+        generalAppAskForCosts: null,
+        generalAppDetailsOfOrder: null,
+        generalAppReasonsOfOrder: null,
+        generalAppEvidenceDocument: null,
+        gaAddlDoc: null,
+        generalAppHearingDetails: null,
+        generalAppStatementOfTruth: null,
       },
       state: ApplicationState.AWAITING_RESPONDENT_RESPONSE,
       last_modified: '2024-05-29T14:39:28.483971',

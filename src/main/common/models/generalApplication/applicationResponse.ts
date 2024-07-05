@@ -1,5 +1,21 @@
 import {ApplicationUpdate} from 'models/generalApplication/events/eventDto';
 import { ApplicationState } from './applicationSummary';
+import {CcdGeneralApplicationTypes} from 'models/ccdGeneralApplication/ccdGeneralApplicationTypes';
+import {
+  CcdGeneralApplicationRespondentAgreement,
+} from 'models/ccdGeneralApplication/ccdGeneralApplicationRespondentAgreement';
+import {
+  CcdGeneralApplicationInformOtherParty,
+} from 'models/ccdGeneralApplication/ccdGeneralApplicationInformOtherParty';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {
+  CcdGeneralApplicationEvidenceDocument,
+} from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
+import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
+import {
+  CcdGeneralApplicationStatementOfTruth,
+} from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
+import {CcdGeneralApplicationAddlDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 
 export class ApplicationResponse {
   id: string;
@@ -26,4 +42,14 @@ export class ApplicationResponse {
 export interface CCDApplication extends ApplicationUpdate {
   applicationTypes: string;
   legacyCaseReference?: string;
+  generalAppType: CcdGeneralApplicationTypes;
+  generalAppRespondentAgreement: CcdGeneralApplicationRespondentAgreement;
+  generalAppInformOtherParty: CcdGeneralApplicationInformOtherParty;
+  generalAppAskForCosts: YesNoUpperCamelCase;
+  generalAppDetailsOfOrder: string;
+  generalAppReasonsOfOrder: string;
+  generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
+  gaAddlDoc: CcdGeneralApplicationAddlDocument[];
+  generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
+  generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
 }
