@@ -12,6 +12,10 @@ import {CCDClaimantPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 import {ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
+import {CCDFixedRecoverableCostsIntermediate} from 'models/ccdResponse/ccdFixedRecoverableCostsIntermediate';
+import {CCDDisclosureOfElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfElectronicDocuments';
+import {CCDDisclosureOfNonElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfNonElectronicDocuments';
+import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeConsidered';
 
 export interface CCDClaimantMediationLip extends CCDMediation {
   hasAgreedFreeMediation?: YesNoUpperCamelCase;
@@ -40,4 +44,8 @@ export interface CCDClaimantResponse extends ClaimUpdate, ClaimantResponseReques
   applicant1SettleClaim?: YesNoUpperCamelCase;
   applicant1RequestedPaymentDateForDefendantSpec?: CCDClaimantPayBySetDate;
   applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec?: Date;
+  applicant1DQFixedRecoverableCostsIntermediate?: CCDFixedRecoverableCostsIntermediate;
+  specApplicant1DQDisclosureOfElectronicDocuments?: CCDDisclosureOfElectronicDocuments;
+  specApplicant1DQDisclosureOfNonElectronicDocuments?: CCDDisclosureOfNonElectronicDocuments;
+  applicant1DQDefendantDocumentsToBeConsidered?: CCDDocumentsToBeConsidered;
 }
