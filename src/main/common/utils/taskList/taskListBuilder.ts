@@ -132,10 +132,10 @@ const buildResolvingTheClaimSection = (caseData: Claim, claimId: string, lang: s
   return {title: t('TASK_LIST.RESOLVING_THE_CLAIM.TITLE', {lng: getLng(lang)}), tasks};
 };
 
-const buildYourHearingRequirementsSection = (caseData: Claim, claimId: string, lang: string): TaskList => {
+const buildYourHearingRequirementsSection = (caseData: Claim, claimId: string, lang: string, mintiApplicable: boolean): TaskList => {
   const tasks: Task[] = [];
   if (caseData.isPartialAdmission() || isFullDefenceAndNotCounterClaim(caseData)) {
-    const giveUsDetailsHearingTask = getGiveUsDetailsHearingTask(caseData, claimId, lang);
+    const giveUsDetailsHearingTask = getGiveUsDetailsHearingTask(caseData, claimId, lang, mintiApplicable);
     tasks.push(giveUsDetailsHearingTask);
   }
   return {title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng: getLng(lang)}), tasks};
