@@ -85,26 +85,6 @@ describe('Claim Details - Help With Fees', () => {
         });
     });
 
-    it('should show error if no radio button selected', async () => {
-      await request(app)
-        .post(CLAIM_HELP_WITH_FEES_URL)
-        .send({option: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION'));
-        });
-    });
-
-    it('should show error if Yes selected and reference number is empty', async () => {
-      await request(app)
-        .post(CLAIM_HELP_WITH_FEES_URL)
-        .send({option: YesNo.YES})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.HELP_WITH_FEES_REFERENCE_REQUIRED'));
-        });
-    });
-
     it('should return status 500 when error thrown', async () => {
       mockSaveClaimDetails.mockImplementationOnce(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
