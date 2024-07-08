@@ -26,5 +26,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Yarn install
         run: yarn install
+      - name: install playwright
+        run: yarn playwright install
       - name: Yarn run smoke
         run: yarn test:smoke
