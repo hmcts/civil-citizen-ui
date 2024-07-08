@@ -578,6 +578,7 @@ class ResponseSteps {
     await this.SelectPreferredCourtLocation();
     await this.SelectLanguageOption();
   }
+
   async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true) {
     await this.SelectHearingRequirements(claimRef);
     await this.SelectExpertNeededOrNot();
