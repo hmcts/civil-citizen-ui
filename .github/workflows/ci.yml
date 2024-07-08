@@ -26,3 +26,5 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - name: Yarn install
         run: yarn install
+      - name: Yarn run smoke
+        run: yarm test:smoke
