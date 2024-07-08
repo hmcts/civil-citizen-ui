@@ -79,12 +79,11 @@ const DisclosureOfDocuments = require('../pages/defendantLipResponse/defendantDQ
 const AgreementReached = require('../pages/defendantLipResponse/defendantDQ/agreementReached');
 const DisclosureOfElectronicDocumentsIssues = require('../pages/defendantLipResponse/defendantDQ/disclosureOfElectronicDocumentsIssues');
 const DisclosureOfNonElectronicDocuments = require('../pages/defendantLipResponse/defendantDQ/disclosureOfNonElectronicDocuments');
-const ClaimantDocsToBeConsider = require('../pages/defendantLipResponse/defendantDQ/claimantDocsToBeConsider')
+const ClaimantDocsToBeConsider = require('../pages/defendantLipResponse/defendantDQ/claimantDocsToBeConsider');
 const SubjectToFrc = require('../pages/defendantLipResponse/defendantDQ/subjectToFrc');
 const FrcBandAgreed = require('../pages/defendantLipResponse/defendantDQ/frcBandAgreed');
 const AssignComplexityBand = require('../pages/defendantLipResponse/defendantDQ/assignComplexityBand');
 const ReasonForComplexityBand = require('../pages/defendantLipResponse/defendantDQ/reasonForComplexityBand');
-
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -618,7 +617,7 @@ class ResponseSteps {
     await this.SelectLanguageOption();
   }
 
-  async EnterDQForIntTrackClaims(claimRef) {
+  async EnterDQForIntTrackClaims(claimRef, isIndividual = true) {
     await this.SelectOptionForTriedToSettle(claimRef);
     await this.SelectOptionToRequestExtraFourWeeksToSettle();
     await this.SelectSubjectToFrc();

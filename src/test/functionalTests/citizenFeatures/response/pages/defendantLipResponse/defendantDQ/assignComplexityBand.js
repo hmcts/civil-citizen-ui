@@ -1,6 +1,7 @@
 const I = actor();
 const config = require('../../../../../../config');
 const cButtons = require('../../../../../commonComponents/cButtons');
+const sharedData = require('../../../../../sharedData');
 
 const fields ={
   band1: 'input[id="complexityBand"]',
@@ -19,6 +20,7 @@ const content = {
 class AssignComplexityBand {
 
   async SelectComplexityBand() {
+    const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
     await I.click('Save and continue');
