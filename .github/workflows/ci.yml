@@ -27,4 +27,4 @@ jobs:
       - name: Yarn install
         run: yarn install
       - name: Yarn run smoke
-        run: yarm test:smoke
+        run: yarn test:smoke
