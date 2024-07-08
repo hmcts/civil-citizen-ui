@@ -123,7 +123,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
                 'text': 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
               },
               'value': {
-                'html': 'COMMON.VARIATION.NO',
+                'html': 'COMMON.VARIATION_4.NO',
               },
               'actions': {
                 'items': [
@@ -365,7 +365,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
                 'text': 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
               },
               'value': {
-                'html': 'COMMON.VARIATION.NO',
+                'html': 'COMMON.VARIATION_4.NO',
               },
               'actions': {
                 'items': [
@@ -587,7 +587,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
                 'text': 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
               },
               'value': {
-                'html': 'COMMON.VARIATION.NO',
+                'html': 'COMMON.VARIATION_4.NO',
               },
               'actions': {
                 'items': [
