@@ -75,6 +75,15 @@ const ExpertDetails = require('../pages/defendantLipResponse/defendantDQ/expertD
 const AssignCaseToLip = require('../pages/defendantLipResponse/assignCasePinInPost');
 const ConfirmYourDetails = require('../pages/defendantLipResponse/defendantDQ/confirmYourDetails');
 const DefendantAdmissionSSA = require('../pages/defendantLipResponse/defendantAdmission_SSA');
+const DisclosureOfDocuments = require('../pages/defendantLipResponse/defendantDQ/disclosureOfDocuments');
+const AgreementReached = require('../pages/defendantLipResponse/defendantDQ/agreementReached');
+const DisclosureOfElectronicDocumentsIssues = require('../pages/defendantLipResponse/defendantDQ/disclosureOfElectronicDocumentsIssues');
+const DisclosureOfNonElectronicDocuments = require('../pages/defendantLipResponse/defendantDQ/disclosureOfNonElectronicDocuments');
+const ClaimantDocsToBeConsider = require('../pages/defendantLipResponse/defendantDQ/claimantDocsToBeConsider');
+const SubjectToFrc = require('../pages/defendantLipResponse/defendantDQ/subjectToFrc');
+const FrcBandAgreed = require('../pages/defendantLipResponse/defendantDQ/frcBandAgreed');
+const AssignComplexityBand = require('../pages/defendantLipResponse/defendantDQ/assignComplexityBand');
+const ReasonForComplexityBand = require('../pages/defendantLipResponse/defendantDQ/reasonForComplexityBand');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
@@ -154,6 +163,16 @@ const sharedExpert = new SharedExpert();
 const expertDetails = new ExpertDetails();
 const assignCaseToLip = new AssignCaseToLip();
 const defendantAdmissionSSA = new DefendantAdmissionSSA();
+const disclosureOfDocuments = new DisclosureOfDocuments();
+const agreementReached = new AgreementReached();
+const disclosureOfNonElectronicDocuments = new DisclosureOfNonElectronicDocuments();
+const disclosureOfElectronicDocumentsIssues = new DisclosureOfElectronicDocumentsIssues();
+const claimantDocsToBeConsider = new ClaimantDocsToBeConsider();
+const subjectToFrc = new SubjectToFrc();
+const frcBandAgreed = new FrcBandAgreed();
+const assignComplexityBand = new AssignComplexityBand();
+const reasonForComplexityBand = new ReasonForComplexityBand();
+
 class ResponseSteps {
   async AssignCaseToLip(claimNumber, securityCode){
     await assignCaseToLip.open(claimNumber, securityCode);
@@ -575,7 +594,58 @@ class ResponseSteps {
     await this.SelectPreferredCourtLocation();
     await this.SelectLanguageOption();
   }
-  
+  async EnterDQForMultiTrackClaims(claimRef, isIndividual = true) {
+    await this.SelectOptionForTriedToSettle(claimRef);
+    await this.SelectOptionToRequestExtraFourWeeksToSettle();
+    await this.SelectDisclosureOfDocuments();
+    await this.SelectAgreementReached();
+    await this.ProvideDisclosureOfElecDocumentsIssues();
+    await this.ProvideDisclosureOfNonElecDocuments();
+    await this.SelectClaimantDocsConsider();
+    await this.SelectExpertEvidence();
+    await this.SelectSentExpertReports();
+    await this.SelectOptionForSharedExpert();
+    await this.EnterExpertDetails();
+    await this.SelectGiveEvidenceYourself();
+    if(!isIndividual) await this.EnterYourDetails();
+    await this.EnterDefedantWitnesses();
+    await this.SelectOptionForCantAttendHearing();
+    await this.EnterUnavailabilityDates();
+    await this.SelectOptionForPhoneOrVideoHearing();
+    await this.SelectOptionForVulnerability();
+    await this.SelectOptionForSupportRequired();
+    await this.SelectPreferredCourtLocation();
+    await this.SelectLanguageOption();
+  }
+
+  async EnterDQForIntTrackClaims(claimRef, isIndividual = true) {
+    await this.SelectOptionForTriedToSettle(claimRef);
+    await this.SelectOptionToRequestExtraFourWeeksToSettle();
+    await this.SelectSubjectToFrc();
+    await this.SelectFrcBandAgreed();
+    await this.SelectComplexityBand();
+    await this.TypeReasonForBand();
+    await this.SelectDisclosureOfDocuments();
+    await this.SelectAgreementReached();
+    await this.ProvideDisclosureOfElecDocumentsIssues();
+    await this.ProvideDisclosureOfNonElecDocuments();
+    await this.SelectClaimantDocsConsider();
+    await this.SelectExpertEvidence();
+    await this.SelectSentExpertReports();
+    await this.SelectOptionForSharedExpert();
+    await this.EnterExpertDetails();
+    await this.SelectGiveEvidenceYourself();
+    if(!isIndividual) await this.EnterYourDetails();
+    await this.EnterDefedantWitnesses();
+    await this.SelectOptionForCantAttendHearing();
+    await this.EnterUnavailabilityDates();
+    await this.SelectOptionForPhoneOrVideoHearing();
+    await this.SelectOptionForVulnerability();
+    await this.SelectOptionForSupportRequired();
+    await this.SelectPreferredCourtLocation();
+    await this.SelectLanguageOption();
+  }
+
   async EnterDQForFastTrack(claimRef, isIndividual = true){
     await this.SelectOptionForTriedToSettle(claimRef);
     await this.SelectOptionToRequestExtraFourWeeksToSettle();
@@ -658,6 +728,42 @@ class ResponseSteps {
 
   async SelectOptionToRequestExtraFourWeeksToSettle(){
     await requestExtraFourWeeks.SelectExtraFourWeeksToSettle();
+  }
+
+  async SelectDisclosureOfDocuments(){
+    await disclosureOfDocuments.selectDisclosureOfDocuments();
+  }
+
+  async SelectAgreementReached(){
+    await agreementReached.selectAgreementReached();
+  }
+
+  async ProvideDisclosureOfElecDocumentsIssues(){
+    await disclosureOfElectronicDocumentsIssues.provideDisclosureOfElecDocumentsIssues();
+  }
+
+  async ProvideDisclosureOfNonElecDocuments(){
+    await disclosureOfNonElectronicDocuments.provideDisclosureOfNonElecDocuments();
+  }
+
+  async SelectClaimantDocsConsider(){
+    await claimantDocsToBeConsider.SelectClaimantDocs();
+  }
+
+  async SelectSubjectToFrc(){
+    await subjectToFrc.SelectSubjectToFrc();
+  }
+
+  async SelectFrcBandAgreed(){
+    await frcBandAgreed.SelectFrcBandAgreed();
+  }
+
+  async SelectComplexityBand(){
+    await assignComplexityBand.SelectComplexityBand();
+  }
+
+  async TypeReasonForBand(){
+    await reasonForComplexityBand.TypeReasonForBand();
   }
 
   async SelectConsiderClaimantDocs(){
