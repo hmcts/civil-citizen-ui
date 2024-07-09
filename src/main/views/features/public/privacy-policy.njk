@@ -13,7 +13,7 @@
   <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_3') }}</p>
   <p class="govuk-body">
     {{ t('PAGES.PRIVACY_POLICY.P_4') }}
-    <a href="{{ test }}">{{ t('PAGES.PRIVACY_POLICY.P_5') }}</a>
+    {{ externalLink(t, 'PAGES.PRIVACY_POLICY.P_5', externalURLs.personalInformationUrl, true) }}
     {{ t('PAGES.PRIVACY_POLICY.P_6') }}
   </p>
   <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_7') }}</p>
@@ -82,7 +82,7 @@
     <li>
       <p class="govuk-body">
         {{ t('PAGES.PRIVACY_POLICY.P_46') }}
-        <a href="{{ test }}">{{ t('PAGES.PRIVACY_POLICY.P_47') }}</a>
+        {{ externalLink(t, 'PAGES.PRIVACY_POLICY.P_47', externalURLs.personalInformationUrl, true) }}
         {{ t('PAGES.PRIVACY_POLICY.P_48') }}
       </p>
     </li>
@@ -104,14 +104,14 @@
   <h1 class="govuk-heading-m">{{ t('PAGES.PRIVACY_POLICY.P_58') }}</h1>
   <p class="govuk-body">
     {{ t('PAGES.PRIVACY_POLICY.P_59') }}
-    <a href="{{ test }}">{{ t('PAGES.PRIVACY_POLICY.P_60') }}</a>
+    {{ externalLink(t, 'PAGES.PRIVACY_POLICY.P_60', externalURLs.complainsProcedureUrl, false) }}
     {{ t('PAGES.PRIVACY_POLICY.P_61') }}
   </p>
   <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_62') }}</p>
   <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_63') }}</p>
   <p class="govuk-body">
     {{ t('PAGES.PRIVACY_POLICY.P_64') }}
-    <a href="{{ test }}">{{ t('PAGES.PRIVACY_POLICY.P_65') }}</a>
+    {{ externalLink(t, 'PAGES.PRIVACY_POLICY.P_65', externalURLs.icoContactUsUrl, true) }}
     {{ t('PAGES.PRIVACY_POLICY.P_66') }}
   </p>
 
