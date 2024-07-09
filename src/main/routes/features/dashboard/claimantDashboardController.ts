@@ -26,7 +26,7 @@ import {t} from 'i18next';
 import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
-import {applicationNoticeUrl} from 'common/utils/externalURLs';
+import { applicationNoticeUrl } from 'common/utils/externalURLs';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -95,7 +95,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
   }
 }) as RequestHandler);
 
-const getSupportLinks = (claim: Claim, claimId: string, isGAFlagEnable : boolean, lng: string) => {
+const getSupportLinks = (claim: Claim, claimId: string, isGAFlagEnable: boolean, lng: string) => {
   const showTellUsEndedLink = claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
     claim.ccdState === CaseState.IN_MEDIATION ||
@@ -113,15 +113,20 @@ const getSupportLinks = (claim: Claim, claimId: string, isGAFlagEnable : boolean
 
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks = [];
-
   if (claim.ccdState && !claim.isCaseIssuedPending()) {
-    if(isGAFlagEnable) {
-      iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }), url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) });
-    } else  {
+    if(!claim.hasClaimTakenOffline() && isGAFlagEnable) {
+      iWantToLinks.push({
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
+      });
+    } else if(claim.hasClaimTakenOffline()) {
+      iWantToLinks.push({
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+      });
+    } else {
       iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }), url: applicationNoticeUrl });
     }
   }
-
   if (showTellUsEndedLink) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_ENDED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
   }
