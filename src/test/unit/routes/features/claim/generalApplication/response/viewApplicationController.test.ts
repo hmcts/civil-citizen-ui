@@ -6,7 +6,7 @@ import {t} from 'i18next';
 import {GaServiceClient} from 'client/gaServiceClient';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicationSections} from 'services/features/generalApplication/viewApplication/viewApplicationService';
-import mockApplication from '../../../../../../utils/mocks/applicationMock.json'
+import mockApplication from '../../../../../../utils/mocks/applicationMock.json';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {app} from '../../../../../../../main/app';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
