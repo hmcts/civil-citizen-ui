@@ -51,4 +51,5 @@ export interface CCDApplication extends ApplicationUpdate {
   gaAddlDoc: CcdGeneralApplicationAddlDocument[];
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
   generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
+  parentClaimantIsApplicant: YesNoUpperCamelCase;
 }

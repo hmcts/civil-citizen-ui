@@ -85,6 +85,7 @@
       "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Go back and try payment again",
       "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
       "I_CONFIRM_IVE_READ_THIS": "Cadarnhaf fy mod wedi darllen hwn",
+      "RESPOND_TO_APPLICATION": "Respond to application",
       "RESPOND_TO_CLAIM": "Ymateb i'r hawliad",
       "SAVE": "Cadw",
       "SAVE_AND_CONTINUE": "Cadw a Pharhau",
@@ -2782,7 +2783,14 @@
         "UPLOAD_DOCUMENTS_1": "You can also ",
         "UPLOAD_DOCUMENTS_2": "upload additional documents",
         "UPLOAD_DOCUMENTS_3": " if you need to."
-      }
+      },
+      "RESPONDENT_VIEW_APPLICATION": {
+        "SUMMERY_MESSAGE1" : "This is the application that the other parties have made.",
+        "SUMMERY_MESSAGE2" : "Their answers to 'What order do you want the judge to make?' and 'Why are you requesting this order' will explain the change that they've requested and why. There will be a link to review any documents that they've uploaded.",
+        "SUMMERY_MESSAGE3" : "Once you've reviewed their application, click 'respond to application' below. You'll be asked whether or not you agree with their request.",
+        "APPLICATION_TYPE_AND_DESC": "Application type and description"
+      },
+      "ORDER_FOR_COSTS": " Order for costs"
     },
     "ACCEPT_REPAYMENT_PLAN": {
       "DEFENDANT_OFFERED_TO_PAY": "Mae {{ defendantName }}  wedi cynnig eich talu'n llawn erbyn {{ proposedSetDate }}",
