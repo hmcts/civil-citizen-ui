@@ -4,7 +4,7 @@ import {AppRequest} from 'models/AppRequest';
 import {req} from '../../../utils/UserDetails';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {GaServiceClient} from 'client/gaServiceClient';
-import { GA_SERVICE_CASES_URL } from 'client/gaServiceUrls';
+import { GA_GET_APPLICATION_URL, GA_SERVICE_CASES_URL } from 'client/gaServiceUrls';
 import { Application } from 'common/models/generalApplication/application';
 
 jest.mock('axios');
@@ -156,6 +156,44 @@ describe('GA Service Client', () => {
       const gaServiceClient = new GaServiceClient(baseUrl);
       //Then
       await expect(gaServiceClient.getApplications(appReq)).rejects.toThrow('error');
+    });
+  });
+
+  describe('get GA Applications', () => {
+    it('should return GAs successfully', async () => {
+      //Given
+      const data = require('../../../utils/mocks/generalApplicationsMock.json');
+      const mockPost = jest.fn().mockResolvedValue({data: data});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const generalApplicationClient = new GaServiceClient(baseUrl);
+
+      //When
+      const claimantDashboardItems = await generalApplicationClient.getApplications(appReq);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockPost.mock.calls[0][0]).toContain(GA_SERVICE_CASES_URL);
+      expect(claimantDashboardItems.length).toEqual(1);
+    });
+  });
+
+  describe('get GA Application', () => {
+    it('should return GAs successfully', async () => {
+      //Given
+      const data = require('../../../utils/mocks/applicationMock.json');
+      const mockGet = jest.fn().mockResolvedValue({data: data});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const generalApplicationClient = new GaServiceClient(baseUrl);
+
+      //When
+      const application = await generalApplicationClient.getApplication(appReq, '1718105701451856');
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockGet.mock.calls[0][0]).toContain(GA_GET_APPLICATION_URL.replace(':caseId','1718105701451856'));
+      expect(application.id).toBe(1718105701451856);
     });
   });
 });
