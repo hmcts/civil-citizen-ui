@@ -2790,7 +2790,7 @@
         "UPLOAD_DOCUMENTS_1": "You can also ",
         "UPLOAD_DOCUMENTS_2": "upload additional documents",
         "UPLOAD_DOCUMENTS_3": " if you need to."
-      },
+      }
     },
     "ACCEPT_REPAYMENT_PLAN": {
       "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
