@@ -2,13 +2,13 @@ import config from 'config';
 import { t } from 'i18next';
 import { NextFunction, Response, Router } from 'express';
 import { AppRequest } from 'common/models/AppRequest';
-import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { GA_APPLICATION_SUMMARY_URL, GA_VIEW_APPLICATION_URL } from 'routes/urls';
 import { getApplicationStatus, getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { GaServiceClient } from 'client/gaServiceClient';
 import { ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { dateTimeFormat } from 'common/utils/dateUtils';
+import { getClaimById } from 'modules/utilityService';
 
 const applicationSummaryController = Router();
 const viewPath = 'features/generalApplication/applications-summary';
@@ -20,8 +20,7 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
   try {
     const lng = req.query.lang || req.cookies.lang;
     const claimId = req.params.id;
-    const redisKey = generateRedisKey(req);
-    const claim = await getCaseDataFromStore(redisKey);
+    const claim = await getClaimById(claimId, req, true);
     const applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req);
     
     const applicationsRows: ApplicationSummary[] = [];
@@ -34,7 +33,7 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
         types: application.case_data?.applicationTypes,
         id: application.id,
         createdDate: dateTimeFormat(application.created_date, lng),
-        applicationUrl: `${constructResponseUrlWithIdParams(application.id, GA_VIEW_APPLICATION_URL)}?applicationId=${application.id}&index=${index}`,
+        applicationUrl: `${constructResponseUrlWithIdParams(claimId, GA_VIEW_APPLICATION_URL)}?applicationId=${application.id}&index=${index}`,
       });
     });
 
