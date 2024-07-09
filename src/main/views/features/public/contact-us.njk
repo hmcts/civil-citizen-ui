@@ -1,0 +1,18 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "../../macro/contact-us.njk" import contactUs %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.CONTACT_US.TITLE') }}
+{% endblock %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-xl">{{t('PAGES.CONTACT_US.TITLE')}}</h1>
+          {{ contactUs(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
