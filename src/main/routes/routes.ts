@@ -381,6 +381,8 @@ import whyNotSubjectToFRCController
   from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/whyNotSubjectToFRCController';
 import backController from 'routes/common/backController';
 import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
+import uploadAdditionalDocumentsController from './features/generalApplication/additionalDocuments/uploadAdditionalDocumentsController';
+import gaAdditionalDocCheckAnswerController from './features/generalApplication/additionalDocuments/checkAnswersController';
 
 export default [
   homeController,
@@ -693,4 +695,6 @@ export default [
   whyNotSubjectToFRCController,
   backController,
   applicationFeePaymentConfirmationController,
+  uploadAdditionalDocumentsController,
+  gaAdditionalDocCheckAnswerController
 ];

@@ -359,3 +359,5 @@ export const FRC_BAND_AGREED_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/frc-band-agr
 export const ASSIGN_FRC_BAND_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/assign-complexity-band`;
 export const REASON_FOR_FRC_BAND_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/reason-for-complexity-band`;
 export const WHY_NOT_SUBJECT_TO_FRC_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/why-not-subject-to-frc`;
+export const GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL = `${BASE_GENERAL_APPLICATION_URL}/:gaId/upload-additional-documents`
+export const GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL = `${BASE_GENERAL_APPLICATION_URL}/:gaId/upload-additional-documents/check-and-send`
