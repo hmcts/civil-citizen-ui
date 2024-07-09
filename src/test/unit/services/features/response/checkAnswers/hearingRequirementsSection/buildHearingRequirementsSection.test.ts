@@ -407,7 +407,7 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[18].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING');
       expect(summaryRows.summaryList.rows[18].value.html).toEqual('Test Phone or video hearing');
       expect(summaryRows.summaryList.rows[19].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
-      expect(summaryRows.summaryList.rows[19].value.html).toEqual('COMMON.VARIATION_2.YES');
+      expect(summaryRows.summaryList.rows[19].value.html).toEqual('COMMON.VARIATION_3.YES');
       expect(summaryRows.summaryList.rows[20].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
       expect(summaryRows.summaryList.rows[20].value.html).toEqual('Test vulnerability details');
       expect(summaryRows.summaryList.rows[21].key.text).toEqual('PAGES.SPECIFIC_COURT.TITLE');
@@ -467,7 +467,7 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
       expect(summaryRows.summaryList.rows[9].value.html).toEqual('COMMON.VARIATION_2.NO');
       expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
-      expect(summaryRows.summaryList.rows[10].value.html).toEqual('COMMON.VARIATION_2.NO');
+      expect(summaryRows.summaryList.rows[10].value.html).toEqual('COMMON.VARIATION_3.NO');
       expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.SPECIFIC_COURT.TITLE');
       expect(summaryRows.summaryList.rows[11].value.html).toEqual('COMMON.VARIATION_2.NO');
       expect(summaryRows.summaryList.rows[12].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
@@ -537,7 +537,7 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[14].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING');
       expect(summaryRows.summaryList.rows[14].value.html).toEqual('Test Phone or video hearing');
       expect(summaryRows.summaryList.rows[15].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
-      expect(summaryRows.summaryList.rows[15].value.html).toEqual('COMMON.VARIATION_2.YES');
+      expect(summaryRows.summaryList.rows[15].value.html).toEqual('COMMON.VARIATION_3.YES');
       expect(summaryRows.summaryList.rows[16].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
       expect(summaryRows.summaryList.rows[16].value.html).toEqual('Test vulnerability details');
       expect(summaryRows.summaryList.rows[17].key.text).toEqual('PAGES.SPECIFIC_COURT.TITLE');
@@ -591,7 +591,7 @@ describe('Hearing Requirements Section', () => {
       expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
       expect(summaryRows.summaryList.rows[7].value.html).toEqual('COMMON.VARIATION_2.NO');
       expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
-      expect(summaryRows.summaryList.rows[8].value.html).toEqual('COMMON.VARIATION_2.NO');
+      expect(summaryRows.summaryList.rows[8].value.html).toEqual('COMMON.VARIATION_3.NO');
       expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.SPECIFIC_COURT.TITLE');
       expect(summaryRows.summaryList.rows[9].value.html).toEqual('COMMON.VARIATION_2.NO');
       expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
