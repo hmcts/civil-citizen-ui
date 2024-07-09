@@ -83,6 +83,10 @@ import { FeeType } from 'common/form/models/helpWithFees/feeType';
 import {PaymentDetails} from 'models/PaymentDetails';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 import {CCDFlightDelayDetails} from './airlines/flights';
+import {CCDFixedRecoverableCostsIntermediate} from 'models/ccdResponse/ccdFixedRecoverableCostsIntermediate';
+import {CCDDisclosureOfElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfElectronicDocuments';
+import {CCDDisclosureOfNonElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfNonElectronicDocuments';
+import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeConsidered';
 
 export class CivilClaimResponse {
   id: string;
@@ -191,12 +195,17 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1DQWitnesses?: CCDWitnesses;
   respondent1DQHearingSmallClaim?: CCDSmallClaimHearing;
   respondent1DQHearingFastClaim?: CCDFastClaimHearing;
+  respondent1DQFixedRecoverableCostsIntermediate?: CCDFixedRecoverableCostsIntermediate;
+  specRespondent1DQDisclosureOfElectronicDocuments?: CCDDisclosureOfElectronicDocuments;
+  specRespondent1DQDisclosureOfNonElectronicDocuments?: CCDDisclosureOfNonElectronicDocuments;
+  respondent1DQClaimantDocumentsToBeConsidered?: CCDDocumentsToBeConsidered;
   sdoOrderDocument?: CaseDocument;
   respondToClaim?: CCDRespondToClaim;
   defenceRouteRequired?: string;
   respondent1DQExperts?: CCDExpert;
   responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
   claimType?: string;
+  responseClaimTrack?: string;
   specDefenceAdmittedRequired?: YesNoUpperCamelCase;
   respondToAdmittedClaim?: CCDRespondToClaim;
   detailsOfWhyDoesYouDisputeTheClaim?: string;

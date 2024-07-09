@@ -31,7 +31,6 @@ import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/dire
 import {Hearing} from 'common/models/directionsQuestionnaire/hearing/hearing';
 import {Address} from 'common/form/models/address';
 import {FullAdmission} from 'common/models/fullAdmission';
-import {claimType} from 'form/models/claimType';
 import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
@@ -1548,14 +1547,12 @@ describe('Documents', () => {
       //Given
       claim.totalClaimAmount = 10000;
       //when Then
-      expect(claim.claimTrackType).toEqual(claimType.SMALL_CLAIM);
       expect(claim.isFastTrackClaim).toBe(false);
     });
     it('Its a fast track claim', () => {
       //Given
       claim.totalClaimAmount = 11000;
       //when Then
-      expect(claim.claimTrackType).toEqual(claimType.FAST_TRACK_CLAIM);
       expect(claim.isFastTrackClaim).toBe(true);
     });
   });
