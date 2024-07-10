@@ -19,7 +19,7 @@ export const getClaimInterest = async (claimId: string): Promise<GenericYesNo> =
 };
 
 export const getClaimInterestForm = (claimInterest: string): GenericYesNo => {
-  return new GenericYesNo(claimInterest, 'ERRORS.VALID_YES_NO_SELECTION');
+  return new GenericYesNo(claimInterest, 'ERRORS.VALID_YES_NO_SELECTION_VARIATION_2');
 };
 
 export const saveClaimInterest = async (claimId: string, claimInterest: YesNo) => {
