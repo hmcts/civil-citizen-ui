@@ -101,9 +101,7 @@ const getSupportLinks = (claim: Claim, lng: string, claimId: string) => {
       });
     }
     else {
-      iWantToLinks.push({
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-      });
+      iWantToLinks.push({text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng})});
     }
   }
   const helpSupportTitle = getHelpSupportTitle(lng);
