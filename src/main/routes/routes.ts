@@ -331,13 +331,13 @@ import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/con
 import confirmYouHaveBeenPaidConfirmController
   from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
 import gaCheckAnswersResponseController
-from 'routes/features/generalApplication/response/checkAnswersResponseController';
+  from 'routes/features/generalApplication/response/checkAnswersResponseController';
 import hearingArrangementResponseController
-from 'routes/features/generalApplication/response/hearingArrangementResponseController';
+  from 'routes/features/generalApplication/response/hearingArrangementResponseController';
 import hearingContactDetailsResponseController
-from 'routes/features/generalApplication/response/hearingContactDetailsResponseController';
+  from 'routes/features/generalApplication/response/hearingContactDetailsResponseController';
 import hearingSupportResponseController
-from 'routes/features/generalApplication/response/hearingSupportResponseController';
+  from 'routes/features/generalApplication/response/hearingSupportResponseController';
 import unavailableHearingDatesResponseController
   from 'routes/features/generalApplication/response/unavailableHearingDatesResponseController';
 import helpWithApplicationFeeController
