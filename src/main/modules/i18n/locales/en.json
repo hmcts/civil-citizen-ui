@@ -2764,6 +2764,24 @@
         "TITLE": "Help with fees",
         "WANT_TO_APPLY_HWF_TITLE": "Pay application fee",
         "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
+      },
+      "VIEW_APPLICATION": {
+        "APPLICATION": "Application",
+        "APPLICATION_DETAILS": "Application details submitted by the applicant.",
+        "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
+        "EITHER_PARTIES": "Applications and responses can be made by either parties in a case.",
+        "PAGE_TITLE": "View application",
+        "RESPONSE": "Response from the other parties",
+        "REVIEW": "Review the application together with any response that has been received.",
+        "STATUS": {
+          "AWAITING_RESPONSE": "Awaiting other parties response",
+          "TITLE": "Status"
+        },
+        "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
+        "TITLE": "Application {{applicationIndex}}",
+        "UPLOAD_DOCUMENTS_1": "You can also ",
+        "UPLOAD_DOCUMENTS_2": "upload additional documents",
+        "UPLOAD_DOCUMENTS_3": " if you need to."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -4532,7 +4550,6 @@
     "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Date entered must not be after today’s date",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Enter a valid day",
-    "VALIDA_DAY_VARIATION_2": "Enter a valid day",
     "FIRST_PAYMENT_MESSAGE": "Date must not be sooner than {{firstPaymentDate}}",
     "VALID_DEBT_AMOUNT": {
       "COUNCIL_TAX": "Enter a valid Council Tax or Community Charge amount, maximum two decimal places",
@@ -4590,6 +4607,7 @@
     "VALID_YES_OR_NO_OPTION": "Select Yes to settle the claim",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
+    "VALID_YES_NO_SELECTION_VARIATION_2": "Please select yes or no",
     "VALID_YES_NO_SELECTION_OPTION2": "Please select yes or no",
     "VALID_YES_NO_SELECTION_UPPER": "Please select Yes or No",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
