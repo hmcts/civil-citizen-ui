@@ -45,7 +45,7 @@ class CheckYourAnswersPage {
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.waitForElement(fields.cyaSigned);
     await I.checkOption(fields.cyaSigned);
-    if(claimType == 'FastTrack'){
+    if(claimType == 'FastTrack' || claimType == 'Intermediate'){
       await I.fillField(fields.signedName, 'TestTest');
       await I.fillField(fields.signedRole, 'Test');
     }
