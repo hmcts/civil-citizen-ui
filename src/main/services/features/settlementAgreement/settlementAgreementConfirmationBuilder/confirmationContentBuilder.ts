@@ -4,7 +4,7 @@ import {t} from 'i18next';
 import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
 import {getPaymentDate} from 'common/utils/repaymentUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
@@ -44,9 +44,9 @@ const getRejectConfirmationPanel = (claim: Claim, lang: string) => {
 };
 
 export function buildNextStepsSection(claim: Claim, lang: string): ClaimSummarySection[] {
-  if (claim.defendantSignedSettlementAgreement === YesNo.YES) {
+  if (claim?.respondentSignSettlementAgreement === YesNoUpperCamelCase.YES) {
     return getAcceptSettlementAgreementNextSteps(claim, lang);
-  } else if (claim.defendantSignedSettlementAgreement === YesNo.NO) {
+  } else if (claim?.respondentSignSettlementAgreement === YesNoUpperCamelCase.NO) {
     return getRejectSettlementAgreementNextSteps(claim, lang);
   }
 }
