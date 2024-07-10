@@ -1,7 +1,7 @@
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {
+  REQUEST_FOR_RECONSIDERATION_COMMENTS_CONFIRMATION_URL,
   REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL,
-  REQUEST_FOR_RECONSIDERATION_CONFIRMATION_URL,
 } from 'routes/urls';
 import {app} from '../../../../../../main/app';
 import config from 'config';
@@ -100,7 +100,7 @@ describe('Request for Reconsideration - on POST', () => {
       .post(REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL.replace(':id', claimId))
       .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(REQUEST_FOR_RECONSIDERATION_CONFIRMATION_URL.replace(':id', claimId));
+        expect(res.header.location).toEqual(REQUEST_FOR_RECONSIDERATION_COMMENTS_CONFIRMATION_URL.replace(':id', claimId));
         expect(CivilServiceClientServiceMock).toBeCalled();
       });
   });
