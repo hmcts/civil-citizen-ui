@@ -42,6 +42,7 @@ requestForReviewCommentsController.post(REQUEST_FOR_RECONSIDERATION_COMMENTS_URL
     const form = new GenericForm(new RequestForReviewCommentsForm(req.body.textArea));
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req);
+    await form.validate();
     if (form.hasErrors()) {
       renderView(res, claimId, claim, form);
     } else {

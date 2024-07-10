@@ -19,10 +19,10 @@ export const getRequestForReviewCommentsContent = (claim: Claim, claimId: string
     .addMainTitle('PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW_COMMENTS.MAIN_TITLE')
     .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
     .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
-    .addParagraph('PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW_COMMENTS.REVIEW_HAS_BEEN_REQUESTED')
-    .addParagraph('PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW_COMMENTS.ADD_OWN_COMMENTS')
-    .addParagraph('PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW_COMMENTS.WILL_SEE_COMMENTS', {claimantOrDefendant: claimantOrDefendant})
-    .addParagraph('PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW_COMMENTS.ANY_EVIDENCE_INCLUDED')
+    .addParagraph('PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW_COMMENTS.REVIEW_HAS_BEEN_REQUESTED', null, 'govuk-!-margin-bottom-1')
+    .addParagraph('PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW_COMMENTS.ADD_OWN_COMMENTS',null, 'govuk-!-margin-bottom-1')
+    .addParagraph('PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW_COMMENTS.WILL_SEE_COMMENTS', {claimantOrDefendant: claimantOrDefendant},  'govuk-!-margin-bottom-1')
+    .addParagraph('PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW_COMMENTS.ANY_EVIDENCE_INCLUDED', null, 'govuk-!-margin-bottom-1')
     .build();
 };
 
@@ -39,7 +39,7 @@ export const getClaimantOrDefendant = (claim: Claim) => {
     return claim.getDefendantFullName();
   } else {
     return claim.getClaimantFullName();
-  };
+  }
 };
 
 export const getRequestForReconsiderationCommentsConfirmationContent = (claim: Claim, lang: string, redirectUrl: string): ClaimSummarySection[] => {

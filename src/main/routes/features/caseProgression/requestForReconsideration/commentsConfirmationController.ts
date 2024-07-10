@@ -13,7 +13,7 @@ import {
   getRequestForReconsiderationCommentsConfirmationContent,
 } from 'services/features/caseProgression/requestForReconsideration/requestForReviewCommentsContent';
 
-const requestForReconsiderationConfirmationViewPath = 'features/caseProgression/requestForReconsideration/confirmation.njk';
+const requestForReconsiderationConfirmationViewPath = 'features/caseProgression/requestForReconsideration/comments-confirmation.njk';
 const requestForReconsiderationCommentsConfirmationController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);

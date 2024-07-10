@@ -8,15 +8,17 @@ import {
   REQUEST_FOR_RECONSIDERATION_COMMENTS_URL, REQUEST_FOR_RECONSIDERATION_COMMENTS_CONFIRMATION_URL,
 } from 'routes/urls';
 import {
-  getSummarySections,
+  getSummarySectionsComments,
 } from 'services/features/caseProgression/requestForReconsideration/requestForReviewService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {getCaseInfoContents} from 'services/features/caseProgression/requestForReconsideration/requestForReviewService';
 import {
   translateDraftRequestForReconsiderationToCCD,
 } from 'services/translation/caseProgression/requestForReconsideration/convertToCCDRequestForReconsideration';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {
+  getCommentsCYACaseInfoContents
+} from 'services/features/caseProgression/requestForReconsideration/requestForReviewCommentsService';
 
 const checkAnswersViewPath = 'features/caseProgression/requestForReconsideration/check-answers';
 const requestForReconsiderationCommentsCheckAnswersController = Router();
@@ -24,9 +26,9 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderView(res: Response, claim: Claim, claimId: string, lang: string) {
-  const caseInfoContents = getCaseInfoContents(claimId, claim);
+  const caseInfoContents = getCommentsCYACaseInfoContents(claimId, claim);
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_COMMENTS_URL);
-  const summarySections = getSummarySections(claimId, claim, lang);
+  const summarySections = getSummarySectionsComments(claimId, claim, lang);
   const cancelUrl = REQUEST_FOR_RECONSIDERATION_CANCEL_URL
     .replace(':id', claimId)
     .replace(':propertyName', 'caseProgression');
