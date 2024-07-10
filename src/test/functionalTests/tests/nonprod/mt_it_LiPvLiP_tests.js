@@ -42,6 +42,7 @@ Scenario('MT Defendant and Claimant responses', async ({api}) => {
     await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, 'immediate');
     await ResponseSteps.EnterDQForMultiTrackClaims(claimRef);
     await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+    await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-minti').tag('@nightly');
 
@@ -68,6 +69,13 @@ Scenario('IT Defendant and Claimant responses', async ({api}) => {
     await ResponseSteps.AddYourTimeLineEvents();
     await ResponseSteps.EnterYourEvidenceDetails();
     await ResponseSteps.EnterDQForIntTrackClaims(claimRef, false);
+    await ResponseSteps.CheckAndSubmit(claimRef, rejectAll, 'Intermediate');
+    await api.waitForFinishedBusinessProcess();
+
+    // Respond as claimant user
     // To do later
+    // await LoginSteps.EnterCitizenCredentials(config.applicantSolicitorUser.email, config.applicantSolicitorUser.password);
+    // await ResponseSteps.RespondToClaim(claimRef);
+
   }
-});
+}).tag('@regression-minti').tag('@nightly');

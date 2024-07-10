@@ -258,7 +258,7 @@ describe('Common Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION',
-        'COMMON.VARIATION_2.NO',
+        'COMMON.VARIATION_3.NO',
         `/case/${claimId}/directions-questionnaire/vulnerability`,
         changeButton,
       );
@@ -276,7 +276,7 @@ describe('Common Hearing Requirements Section', () => {
       };
       const mockSummarySection = summaryRow(
         'PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION',
-        'COMMON.VARIATION_2.YES',
+        'COMMON.VARIATION_3.YES',
         `/case/${claimId}/directions-questionnaire/vulnerability`,
         changeButton,
       );
