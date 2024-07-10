@@ -873,7 +873,7 @@ describe('Summary section', () => {
             text: 'COMMON.BANK_JOINT_ACCOUNT',
           },
           value: {
-            text: 'COMMON.YES',
+            text: 'COMMON.VARIATION_4.YES',
           },
         },
         {
@@ -1017,7 +1017,7 @@ describe('Summary section', () => {
             text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.SUPPORT_ANYONE_ELSE',
           },
           value: {
-            text: 'COMMON.YES',
+            text: 'COMMON.VARIATION_4.YES',
           },
         },
         {

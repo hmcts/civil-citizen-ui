@@ -9,11 +9,23 @@ import {
   DETERMINATION_WITHOUT_HEARING_URL,
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
 } from 'routes/urls';
+import {isIntermediateTrack, isMultiTrack} from 'form/models/claimType';
 
-export const getGiveUsDetailsHearingTask = (claim: Claim, claimId: string, lang: string): Task => {
+const checkTaskCompleteForTrack = (claim: Claim, defendantDQ: DirectionQuestionnaire, mintiApplicable: boolean): boolean => {
+  if (claim.isSmallClaimsTrackDQ) {
+    return defendantDQ.isSmallClaimsDQJourneyCompleted;
+  } else if (claim.isFastTrackClaim) {
+    return defendantDQ.isFastTrackDQJourneyCompleted;
+  } else if (isIntermediateTrack(claim.totalClaimAmount, mintiApplicable) || isMultiTrack(claim.totalClaimAmount, mintiApplicable)) {
+    return defendantDQ.isIntermediateOrMultiTrackDQJourneyCompleted;
+  }
+  return false;
+};
+
+export const getGiveUsDetailsHearingTask = (claim: Claim, claimId: string, lang: string, mintiApplicable: boolean): Task => {
   const defendantDQ = Object.assign(new DirectionQuestionnaire(), claim.directionQuestionnaire);
-  const linkUrl = claim.isSmallClaimsTrackDQ ? DETERMINATION_WITHOUT_HEARING_URL : DQ_TRIED_TO_SETTLE_CLAIM_URL;
-  const isTaskCompleted = claim.isSmallClaimsTrackDQ ? defendantDQ.isSmallClaimsDQJourneyCompleted : defendantDQ.isFastTrackDQJourneyCompleted;
+  const linkUrl = !claim.isSmallClaimsTrackDQ ? DQ_TRIED_TO_SETTLE_CLAIM_URL : DETERMINATION_WITHOUT_HEARING_URL;
+  const isTaskCompleted = checkTaskCompleteForTrack(claim, defendantDQ, mintiApplicable);
   return {
     description: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS', {lng: getLng(lang)}),
     url: constructResponseUrlWithIdParams(claimId, linkUrl),
