@@ -456,7 +456,6 @@ describe('Claim Summary Controller Defendant', () => {
     it('should I want to link with case moved to caseman', async () => {
       //given
       const caseProgressionHearing = getCaseProgressionHearingMock();
-
       const claimWithHeringDocs = {
         ...claim,
         state: CaseState.PROCEEDS_IN_HERITAGE_SYSTEM,
@@ -466,6 +465,7 @@ describe('Claim Summary Controller Defendant', () => {
           hearingLocation: caseProgressionHearing.hearingLocation,
           hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
           hearingDocuments: caseProgressionHearing.hearingDocuments,
+          takenOfflineDate: new Date(),
         },
       };
 
