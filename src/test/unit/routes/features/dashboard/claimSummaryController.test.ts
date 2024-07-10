@@ -21,7 +21,6 @@ import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/l
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {Dashboard} from 'models/dashboard/dashboard';
-import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 
 const nock = require('nock');
 const session = require('supertest-session');
