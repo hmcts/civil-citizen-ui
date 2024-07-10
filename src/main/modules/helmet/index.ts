@@ -5,7 +5,6 @@ import config from 'config';
 
 const googleAnalyticsDomain = '*.google-analytics.com';
 const self = "'self'";
-const inline = '\'unsafe-inline\'';
 const loginUrl: string = config.get('services.idam.authorizationURL');
 const govPayUrl: string = config.get('services.govPay.url');
 const ocmcBaseUrl: string = config.get('services.cmc.url');
@@ -13,7 +12,6 @@ const dynatraceDomain = '*.dynatrace.com';
 
 const scriptSrcElem = [
   self,
-  inline,
   '*.google-analytics.com',
   '*.googletagmanager.com',
   dynatraceDomain,
@@ -21,7 +19,6 @@ const scriptSrcElem = [
 
 const styleSrc = [
   self,
-  inline,
   '*.googletagmanager.com',
   'fonts.googleapis.com',
   '*.google-analytics.com',
@@ -30,7 +27,6 @@ const styleSrc = [
 
 const imgSrc = [
   self,
-  inline,
   '*.google-analytics.com',
   '*.analytics.google.com',
   'vcc-eu4.8x8.com',
@@ -43,7 +39,6 @@ const imgSrc = [
 
 const mediaSrc = [
   self,
-  inline,
   'vcc-eu4.8x8.com',
   'vcc-eu4b.8x8.com',
   'ssl.gstatic.com',
@@ -55,7 +50,6 @@ const mediaSrc = [
 
 const connectSrc = [
   self,
-  inline,
   '*.gov.uk',
   '*.google-analytics.com',
   '*.analytics.google.com',
