@@ -3,7 +3,7 @@ import {
 } from 'services/features/caseProgression/requestForReconsideration/requestForReviewCommentsService';
 import {Claim} from 'models/claim';
 import {
-  RequestForReviewCommentsForm
+  RequestForReviewCommentsForm,
 } from 'models/caseProgression/requestForReconsideration/requestForReviewCommentsForm';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CaseRole} from 'form/models/caseRoles';

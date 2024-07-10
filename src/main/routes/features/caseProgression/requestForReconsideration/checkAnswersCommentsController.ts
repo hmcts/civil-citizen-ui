@@ -17,7 +17,7 @@ import {
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
-  getCommentsCYACaseInfoContents
+  getCommentsCYACaseInfoContents,
 } from 'services/features/caseProgression/requestForReconsideration/requestForReviewCommentsService';
 
 const checkAnswersViewPath = 'features/caseProgression/requestForReconsideration/check-answers';
