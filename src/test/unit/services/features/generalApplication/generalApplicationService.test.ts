@@ -18,6 +18,7 @@ import {
   getDynamicHeaderForMultipleApplications,
   saveAcceptDefendantOffer,
   saveHelpWithFeesDetails,
+  getApplicationStatus,
 } from 'services/features/generalApplication/generalApplicationService';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../utils/errorMessageTestConstants';
@@ -36,6 +37,7 @@ import { ApplyHelpFeesReferenceForm } from 'form/models/caseProgression/hearingF
 import { GaHelpWithFees } from 'models/generalApplication/gaHelpWithFees';
 import { AcceptDefendantOffer } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import {isCUIReleaseTwoEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import { ApplicationState, ApplicationStatus } from 'common/models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -552,6 +554,33 @@ describe('General Application service', () => {
       await saveHelpWithFeesDetails('123', hwfReferenceNumberForm, 'helpFeeReferenceNumber');
       //Then
       await expect(spy).toBeCalledWith('123', claim);
+    });
+  });
+
+  describe('getApplicationStatus', () => {
+    it('should return IN_PROGRESS when APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', () => {
+      //Given
+      const applicationState = ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
+    });
+    it('should return IN_PROGRESS when AWAITING_RESPONDENT_RESPONSE', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_RESPONDENT_RESPONSE;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
+    });
+    it('should return TO_DO when AWAITING_APPLICATION_PAYMENT', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_APPLICATION_PAYMENT;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
     });
   });
 });
