@@ -121,6 +121,14 @@ const HELP_SUPPORT_LINKS = [
   { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'), url: 'test' },
 ];
 
+const testCases = [
+  { caseRole: CaseRole.CLAIMANT, ccdState: CaseState.CASE_PROGRESSION },
+  { caseRole: CaseRole.CLAIMANT, ccdState: CaseState.HEARING_READINESS },
+  { caseRole: CaseRole.CLAIMANT, ccdState: CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING },
+  { caseRole: CaseRole.CLAIMANT, ccdState: CaseState.DECISION_OUTCOME },
+  { caseRole: CaseRole.CLAIMANT, ccdState: CaseState.All_FINAL_ORDERS_ISSUED },
+];
+
 describe('claimant Dashboard Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -331,6 +339,32 @@ describe('claimant Dashboard Controller', () => {
       });
     });
 
+    describe.each(testCases)('Dashboard Support Links Test', (testCase) => {
+      it(`should show support links for claimant with caseRole: ${testCase.caseRole} and ccdState: ${testCase.ccdState}`, async () => {
+
+        const claim = new Claim();
+        claim.caseRole = testCase.caseRole;
+        claim.ccdState = testCase.ccdState;
+        jest
+          .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+          .mockResolvedValueOnce(claim);
+        jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+        jest.spyOn(launchDarkly, 'isCaseProgressionV1Enable').mockResolvedValueOnce(true);
+
+        await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_MEDIATION'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.WHAT_EXPECT_HEARING'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'));
+        });
+      });
+    });
     it('should show support links for claimant whit links hidden', async () => {
 
       const claim = new Claim();
