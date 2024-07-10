@@ -21,6 +21,7 @@ import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/l
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {Dashboard} from 'models/dashboard/dashboard';
+import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -317,41 +318,6 @@ describe('Claim Summary Controller Defendant', () => {
         });
     });
 
-    it('should I want to link with case moved to caseman', async () => {
-      //given
-      const caseProgressionHearing = getCaseProgressionHearingMock();
-
-      const claimWithHeringDocs = {
-        ...claim,
-        state: CaseState.PROCEEDS_IN_HERITAGE_SYSTEM,
-        case_data: {
-          ...claimWithSdo.case_data,
-          hearingDate: caseProgressionHearing.hearingDate,
-          hearingLocation: caseProgressionHearing.hearingLocation,
-          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
-          hearingDocuments: caseProgressionHearing.hearingDocuments,
-        },
-      };
-
-      isDashboardEnabledForCase.mockResolvedValue(true);
-      isCaseProgressionV1EnableMock.mockResolvedValue(true);
-      getLatestUpdateContentMock.mockReturnValue([]);
-      //when
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimWithHeringDocs);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
-        .reply(200, [CaseRole.DEFENDANT]);
-      //then
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Contact the court to request a change to my case (make an application)');
-        });
-    });
-
     it('should show case progression Trial bundle', async () => {
       //given
       const caseProgressionHearing = getCaseProgressionHearingMock();
@@ -485,6 +451,41 @@ describe('Claim Summary Controller Defendant', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Case number: ');
+        });
+    });
+
+    it('should I want to link with case moved to caseman', async () => {
+      //given
+      const caseProgressionHearing = getCaseProgressionHearingMock();
+
+      const claimWithHeringDocs = {
+        ...claim,
+        state: CaseState.PROCEEDS_IN_HERITAGE_SYSTEM,
+        case_data: {
+          ...claimWithSdo.case_data,
+          hearingDate: caseProgressionHearing.hearingDate,
+          hearingLocation: caseProgressionHearing.hearingLocation,
+          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
+          hearingDocuments: caseProgressionHearing.hearingDocuments,
+        },
+      };
+
+      isDashboardEnabledForCase.mockResolvedValue(true);
+      isCaseProgressionV1EnableMock.mockResolvedValue(true);
+      getLatestUpdateContentMock.mockReturnValue([]);
+      //when
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claimWithHeringDocs);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.DEFENDANT]);
+      //then
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Contact the court to request a change to my case (make an application)');
         });
     });
   });
