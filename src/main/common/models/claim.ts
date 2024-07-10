@@ -156,7 +156,7 @@ export class Claim {
   applicant1Represented?: YesNoUpperCamelCase;
   specRespondent1Represented?: YesNoUpperCamelCase;
   respondentPaymentDeadline: Date;
-  respondentSignSettlementAgreement?: GenericYesNo;
+  respondentSignSettlementAgreement?: YesNoUpperCamelCase;
   mediationUploadDocuments?: UploadDocuments;
   applicant1AdditionalLipPartyDetails?: AdditionalLipPartyDetails;
   businessProcess?: BusinessProcess;
@@ -486,6 +486,15 @@ export class Claim {
         return document?.value.documentType === documentType;
       });
       return filteredDocumentDetailsByType?.value;
+    }
+    return undefined;
+  }
+
+  getDocumentDetailsList(documentType: DocumentType): SystemGeneratedCaseDocuments[] {
+    if (this.isSystemGeneratedCaseDocumentsAvailable()) {
+      return this.systemGeneratedCaseDocuments?.filter(document => {
+        return document?.value.documentType === documentType;
+      });
     }
     return undefined;
   }
