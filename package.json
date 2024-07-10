@@ -35,7 +35,7 @@
     "test:api": "MOCHAWESOME_REPORTFILENAME=api npx codeceptjs -c 'e2e/codecept.conf.js' run --grep @test --reporter mocha-multi --verbose",
     "cichecks": "yarn && yarn build && yarn lint && yarn test:coverage && yarn test:routes && yarn test:a11y",
     "cichecks:win": "yarn && yarn build && yarn lint:win && yarn test:coverage && yarn test:routes && yarn test:a11y",
-    "wiremock:start": "wiremock --root-dir ./wiremock --port 8181",
+    "wiremock:start": "wiremock --root-dir ./wiremock --port 1111",
     "test:e2e": "MOCHAWESOME_REPORTFILENAME=carm yarn test:functional:codeceptjs run-workers --suites 2 --grep @e2e --reporter mocha-multi --verbose"
   },
   "dependencies": {

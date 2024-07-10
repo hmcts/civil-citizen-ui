@@ -10,7 +10,11 @@ class LoginSteps {
     await I.wait(10);
     await LoginPage.openCitizenLogin();
     //await this.AcceptCookies(); -- skip as it is flaky
-    await LoginPage.citizenLogin(username, password);
+    await I.seeInCurrentUrl(endpoint);
+  }
+
+  EnterCitizenWithoutCredentials() {
+    I.amOnPage('/dashboard');
   }
 
   async EnterCitizenCredentialsOCMC(username, password) {

@@ -18,10 +18,10 @@ const buttons = {
 };
 
 class LoginPage {
-  async openCitizenLogin() {
-    await I.clearCookie();
-    await I.setCookie([...idamCookies, ...cuiCookies]);
-    await I.amOnPage('/');
+  openCitizenLogin() {
+    I.clearCookie();
+    I.setCookie([...idamCookies, ...cuiCookies]);
+    I.amOnPage('/');
   }
 
   async openOCMC() {
@@ -61,7 +61,7 @@ class LoginPage {
 
   async caseworkerLogin(email, password) {
     const exuiCookies = await generateExuiCookies({email, password});
-    await I.setCookie(exuiCookies); 
+    await I.setCookie(exuiCookies);
     await this.#login(email, password, '/work/my-work/list');
   }
 }

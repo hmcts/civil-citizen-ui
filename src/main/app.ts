@@ -11,7 +11,6 @@ import {Nunjucks} from 'modules/nunjucks';
 import {PropertiesVolume} from 'modules/properties-volume';
 import {I18Next} from 'modules/i18n';
 import {HealthCheck} from 'modules/health';
-import {OidcMiddleware} from 'modules/oidc';
 import {DraftStoreClient} from 'modules/draft-store';
 import {CSRFToken} from 'modules/csrf';
 import routes from './routes/routes';
@@ -49,12 +48,13 @@ import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
 import {isCaseProgressionV1Enabled} from 'routes/guards/caseProgressionGuard';
 import config = require('config');
 import {trackHistory} from 'routes/guards/trackHistory';
+import {OidcMiddleware} from "modules/oidc";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
 
 const env = process.env.NODE_ENV || 'development';
-const productionMode = env === 'production';
+const productionMode = false;// = env === 'production';
 const developmentMode = env === 'development';
 const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();
@@ -95,7 +95,6 @@ app.use(session({
 }));
 
 app.enable('trust proxy');
-
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
