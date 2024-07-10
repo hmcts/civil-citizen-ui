@@ -36,7 +36,7 @@ const buildApplicationSections = (application: ApplicationResponse, lang: string
   ];
 };
 
-function buildViewApplicationToRespondentSections(application: ApplicationResponse, lang: string) {
+const buildViewApplicationToRespondentSections = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   return [
     ...addApplicationTypesAndDescriptionRows(application, lang),
     ...addOtherPartiesAgreedRow(application, lang),
@@ -49,7 +49,7 @@ function buildViewApplicationToRespondentSections(application: ApplicationRespon
     ...addUnavailableDatesRows(application, lang),
     ...addHearingSupportRows(application, lang),
   ];
-}
+};
 
 export const getApplicationSections = async (req: AppRequest, applicationId: string, lang?: string): Promise<SummaryRow[]> => {
   const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
@@ -58,7 +58,7 @@ export const getApplicationSections = async (req: AppRequest, applicationId: str
     : buildViewApplicationToRespondentSections(applicationResponse, lang);
 };
 
-function toggleViewApplicationBuilderBasedOnUserAndApplicant(claim: Claim, application: ApplicationResponse) {
+const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {
   return ((claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
     || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
-}
+};
