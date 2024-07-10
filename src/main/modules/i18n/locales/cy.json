@@ -2575,6 +2575,42 @@
         "TITLE": "Select application",
         "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order."
       },
+      "SUMMARY": {
+        "APP_REQUESTED": "An application is a request for a change to the case.",
+        "APPLICATION": "Application",
+        "APPLICATION_ID": "Application ID",
+        "APPLICATION_TYPE": "Application type",
+        "DETAILS": "Details",
+        "IN_PROGRESS": "In progress",
+        "MY_APPLICATIONS": "My applications",
+        "STATUS": "Status",
+        "STATES": {
+          "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
+          "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
+          "APPLICATION_ADD_PAYMENT": "Application Additional Payment",
+          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application Submitted - Awaiting Judicial Decision",
+          "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
+          "ADDITIONAL_RESPONSE_TIME_PROVIDED": "Additional Response Time Provided",
+          "AWAITING_DIRECTIONS_ORDER_DOCS": "Directions Order Made",
+          "ORDER_MADE": "Order Made",
+          "LISTING_FOR_A_HEARING": "Listed for a Hearing",
+          "HEARING_SCHEDULED": "Hearing Scheduled",
+          "APPLICATION_PAYMENT_FAILED": "Application Payment Failed",
+          "AWAITING_APPLICATION_PAYMENT": "Awaiting Application Payment",
+          "AWAITING_WRITTEN_REPRESENTATIONS": "Awaiting Written Representations",
+          "AWAITING_ADDITIONAL_INFORMATION": "Additional Information Required",
+          "APPLICATION_DISMISSED": "Application Dismissed",
+          "APPLICATION_CLOSED": "Application Closed",
+          "PROCEEDS_IN_HERITAGE": "Proceeds In Heritage",
+          "RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION": "Respond to judge for Written Representations"
+        },
+        "SUBMITTED_ON": "Submitted on",
+        "THE_STATUS_CHANGE": "The status of an application will change as it progresses. An application with a 'To do' status means you need to take action. For example, paying an application fee or responding.",
+        "THESE_ARE_APPS": "These are the applications that have been made by you or the other parties. The 'other parties' are the other side or sides involved in your claim.",
+        "TITLE": "All applications",
+        "TO_DO": "To do",
+        "VIEW_APPLICATION": "View application"
+      },
       "INFORM_OTHER_PARTIES": {
         "COURT_SEND_OTHER_PARTIES": "The court will usually send the other parties a copy of your application to give them the opportunity to respond to it.",
         "DO_NOT_WANT_COURT": "If you do not want the court to inform the other parties about this application",
@@ -4024,6 +4060,7 @@
       "SEALED_CLAIM": "Ffurflen Hawlio wedi'i selio",
       "SETTLEMENT_AGREEMENT": "Cytundeb setlo",
       "STANDARD_DIRECTIONS_ORDER": "Gorchymyn Cyfarwyddo Safonol",
+      "TRANSLATED_ORDER": "Translated order",
       "UNSEALED_CLAIM": "Ffurflen Hawlio heb ei selio"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
