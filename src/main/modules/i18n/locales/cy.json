@@ -4030,7 +4030,7 @@
         "PARAGRAPH": "Gallwch barhau heb roi manylion os byddai’n well gennych. Os byddwch yn rhoi manylion bydd {{ claimantOrDefendant }} yn gallu gweld yr hyn a ddywedoch ac ychwanegu eu sylwadau eu hunain."
       },
       "REQUEST_FOR_REVIEW_COMMENTS": {
-        "MICRO_TEXT": "Cais i adolygu gorchymyn",
+        "MICRO_TEXT": "Cais i adolygu’r gorchymyn",
         "MAIN_TITLE": "Ychwanegu eich sylwadau",
         "REVIEW_HAS_BEEN_REQUESTED": "Mae’r partïon eraill wedi gofyn am adolygiad o orchymyn.",
         "ADD_OWN_COMMENTS": "Gallwch ychwanegu eich sylwadau eich hun isod fel rhan o’r adolygiad.",

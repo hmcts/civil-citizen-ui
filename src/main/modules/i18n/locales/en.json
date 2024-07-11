@@ -4030,7 +4030,7 @@
         "PARAGRAPH": "You can continue without giving details if you prefer. If you enter details {{ claimantOrDefendant }} will be able to see what you said and add their own comments."
       },
       "REQUEST_FOR_REVIEW_COMMENTS": {
-        "MICRO_TEXT": "Request to review an order",
+        "MICRO_TEXT": "Request to review order",
         "MAIN_TITLE": "Add your comments",
         "REVIEW_HAS_BEEN_REQUESTED": "A review of an order has been requested by the other parties.",
         "ADD_OWN_COMMENTS": "You can add your own comments below as part of the review.",
