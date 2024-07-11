@@ -976,7 +976,7 @@ class ResponseToDefence {
     I.see('Do you want an extra 4 weeks to try to settle the claim?', 'h1');
     I.see('You can use this time to try to settle the claim without going to a hearing.');
     I.see('Settling without going to a hearing may avoid costs including fees.');
-    I.see('even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline.');
+    I.see('Even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline.');
     await I.click(paths.options.no);
     await I.click(paths.buttons.save_and_continue);
   }
