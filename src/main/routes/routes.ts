@@ -384,6 +384,12 @@ import applicationFeePaymentConfirmationController from './features/generalAppli
 import applicationSummaryController from './features/generalApplication/applicationSummaryController';
 import additionalFeeController from './features/generalApplication/additionalFee/additionalFeeController';
 import payAdditionalFeeController from 'routes/features/generalApplication/additionalFee/payAdditionalFeeController';
+import requestForReviewCommentsController
+  from 'routes/features/caseProgression/requestForReconsideration/requestForReviewCommentsController';
+import checkAnswersCommentsController
+  from 'routes/features/caseProgression/requestForReconsideration/checkAnswersCommentsController';
+import commentsConfirmationController
+  from 'routes/features/caseProgression/requestForReconsideration/commentsConfirmationController';
 
 export default [
   homeController,
@@ -699,4 +705,7 @@ export default [
   applicationSummaryController,
   additionalFeeController,
   payAdditionalFeeController,
+  requestForReviewCommentsController,
+  checkAnswersCommentsController,
+  commentsConfirmationController,
 ];

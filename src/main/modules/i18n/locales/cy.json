@@ -4048,6 +4048,14 @@
         "MAIN_TITLE": "Sut a pham ydych chi eisiau i'r gorchymyn gael ei newid?",
         "PARAGRAPH": "Gallwch barhau heb roi manylion os byddai’n well gennych. Os byddwch yn rhoi manylion bydd {{ claimantOrDefendant }} yn gallu gweld yr hyn a ddywedoch ac ychwanegu eu sylwadau eu hunain."
       },
+      "REQUEST_FOR_REVIEW_COMMENTS": {
+        "MICRO_TEXT": "Cais i adolygu’r gorchymyn",
+        "MAIN_TITLE": "Ychwanegu eich sylwadau",
+        "REVIEW_HAS_BEEN_REQUESTED": "Mae’r partïon eraill wedi gofyn am adolygiad o orchymyn.",
+        "ADD_OWN_COMMENTS": "Gallwch ychwanegu eich sylwadau eich hun isod fel rhan o’r adolygiad.",
+        "WILL_SEE_COMMENTS": "Bydd {{ claimantOrDefendant }} yn gallu gweld eich sylwadau.",
+        "ANY_EVIDENCE_INCLUDED": "Dylai unrhyw dystiolaeth yr ydych yn cynnwys yn eich sylwadau fod yn berthnasol i’r achos."
+      },
       "CONFIRMATION": {
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
         "PARAGRAPH_1": "Byddwn yn dweud wrth {{ claimantOrDefendant }} eich bod wedi gwneud y cais. Bydd ganddynt tan {{ date }} i ychwanegu sylwadau eu hunain.",
@@ -4055,6 +4063,13 @@
         "PARAGRAPH_3": "Parhewch i wneud yr hyn y mae'r gorchymyn presennol yn ei ofyn gennych oni bai eich bod yn cael gwybod bod barnwr wedi gwneud gorchymyn newydd.",
         "PANEL_TEXT": "Rydych wedi gofyn i’r llys adolygu gorchymyn",
         "PANEL_LINK": "Lawrlwythwch gais am adolygiad o orchymyn (PDF)"
+      },
+      "COMMENTS_CONFIRMATION": {
+        "CONTINUE_TO_FOLLOW_ORDER": "Dylech barhau i wneud yr hyn y mae’r gorchymyn yn gofyn i chi wneud oni bai eich bod yn clywed bod barnwr wedi gwneud gorchymyn newydd.",
+        "JUDGE_WILL_REVIEW": "Bydd barnwr nawr yn adolygu’r gorchymyn a’r sylwadau. Byddwn yn cysylltu â’r holl bartïon i’ch diweddaru ar y camau nesaf.",
+        "LET_OTHER_PARTY_KNOW": "Byddwn yn gadael i {{ claimantOrDefendant }} wybod eich bod wedi cyflwyno sylwadau ar y gorchymyn.",
+        "PANEL_TEXT": "Mae eich sylwadau wedi’u cyflwyno’n llwyddiannus.",
+        "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
       },
       "DASHBOARD_STATE_CLAIMANT": "Darllenwch geisiadau'r diffynnydd i farnwr adolygu'r gorchymyn.",
       "DASHBOARD_STATE_DEFENDANT": "Darllenwch geisiadau'r hawlydd i farnwr adolygu'r gorchymyn."

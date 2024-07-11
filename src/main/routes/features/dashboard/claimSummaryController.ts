@@ -50,7 +50,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest, lang);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest, isCarmApplicable);
-      const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(lang, claimId);
+      const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(claim, lang, claimId);
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
 
@@ -90,11 +90,20 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
   }
 }) as RequestHandler);
 
-const getSupportLinks = (lng: string, claimId: string) => {
+const getSupportLinks = (claim: Claim, lng: string, claimId: string) => {
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
-  const iWantToLinks = [
-    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }), url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) },
-  ];
+  const iWantToLinks = [];
+  if (claim.ccdState && !claim.isCaseIssuedPending()) {
+    if(!claim.hasClaimTakenOffline()) {
+      iWantToLinks.push({
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
+      });
+    }
+    else {
+      iWantToLinks.push({text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng})});
+    }
+  }
   const helpSupportTitle = getHelpSupportTitle(lng);
   const helpSupportLinks = getHelpSupportLinks(lng);
 
