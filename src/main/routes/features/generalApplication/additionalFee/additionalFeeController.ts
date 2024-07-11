@@ -3,7 +3,7 @@ import {
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
   GA_ADDITIONAL_FEE_URL,
-  GA_PAY_ADDITIONAL_FEE_URL
+  GA_PAY_ADDITIONAL_FEE_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';

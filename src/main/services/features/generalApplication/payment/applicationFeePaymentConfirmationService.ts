@@ -3,7 +3,7 @@ import {
   GA_APPLY_HELP_WITH_FEE_SELECTION,
   GA_PAY_ADDITIONAL_FEE_URL,
   GA_PAYMENT_SUCCESSFUL_URL,
-  GA_PAYMENT_UNSUCCESSFUL_URL
+  GA_PAYMENT_UNSUCCESSFUL_URL,
 } from 'routes/urls';
 import { getGaFeePaymentStatus } from '../applicationFee/generalApplicationFeePaymentService';
 import { getClaimById } from 'modules/utilityService';

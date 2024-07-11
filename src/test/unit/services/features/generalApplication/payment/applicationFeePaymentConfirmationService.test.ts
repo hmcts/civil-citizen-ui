@@ -7,7 +7,7 @@ import {
   GA_PAYMENT_SUCCESSFUL_URL,
   GA_PAYMENT_UNSUCCESSFUL_URL,
   GA_APPLY_HELP_WITH_FEE_SELECTION,
-  GA_PAY_ADDITIONAL_FEE_URL
+  GA_PAY_ADDITIONAL_FEE_URL,
 } from 'routes/urls';
 import { getRedirectUrl } from 'services/features/generalApplication/payment/applicationFeePaymentConfirmationService';
 import { GaServiceClient } from 'client/gaServiceClient';
