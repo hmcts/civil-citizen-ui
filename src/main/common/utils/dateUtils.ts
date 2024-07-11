@@ -52,6 +52,12 @@ export const formatDateToFullDate = (date: Date, lang?: string): string => {
   return dateTime.toLocaleString(DateTime.DATE_FULL, {locale: localeValue});
 };
 
+export function dateTimeFormat(value: string, lang?: string): string {
+  const language = lang === 'cy' ? 'cy' : 'en-gb';
+  const date = DateTime.fromJSDate(new Date(value));
+  return date.setLocale(language).toFormat('d LLLL yyyy, h:mm:ss a');
+}
+
 export const getNumberOfDaysBetweenTwoDays = (startDay: Date | string, endDay: Date | string) => {
   return convertDateToLuxonDate(endDay).startOf('day').diff(convertDateToLuxonDate(startDay).startOf('day'), 'days').days;
 };

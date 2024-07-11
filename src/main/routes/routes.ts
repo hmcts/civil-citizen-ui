@@ -291,12 +291,12 @@ import respondentAgreementController from './features/generalApplication/respons
 import viewTheHearingController from 'routes/features/caseProgression/viewTheHearingController';
 import viewResponseToClaimController from 'routes/features/dashboard/viewResponseToClaimController';
 import viewTheJudgementController from 'routes/features/caseProgression/viewTheJudgementController';
-import claimFeeMakePaymentAgainController
-  from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
+import claimFeeMakePaymentAgainController from 'routes/features/claim/payment/claimFeeMakePaymentAgainController';
 import informOtherPartiesController from './features/generalApplication/informOtherPartiesController';
 import hearingSupportController from './features/generalApplication/hearingSupportController';
 import agreementFromOtherPartyController from './features/generalApplication/agreementFromOtherPartyController';
-import applicationFeePaymentSuccessfulController from './features/generalApplication/applicationFeePaymentSuccessfulController';
+import applicationFeePaymentSuccessfulController
+  from './features/generalApplication/applicationFeePaymentSuccessfulController';
 import claimApplicationCostController from './features/generalApplication/claimApplicationCostController';
 import respondentAgreeToOrderController from 'routes/features/generalApplication/respondentAgreeToOrderController';
 import payingForApplicationController from './features/generalApplication/payingForApplicationController';
@@ -310,7 +310,8 @@ import unavailableHearingDatesController from 'routes/features/generalApplicatio
 import hearingArrangementController from './features/generalApplication/hearingArrangementController';
 import hearingContactDetailsController from './features/generalApplication/hearingContactDetailsController';
 import gaCheckAnswersController from 'routes/features/generalApplication/checkAnswersController';
-import applicationPaymentUnsuccessfulController from './features/generalApplication/applicationPaymentUnsuccessfulController';
+import applicationPaymentUnsuccessfulController
+  from './features/generalApplication/applicationPaymentUnsuccessfulController';
 import applicationResponseConfirmationController
   from 'routes/features/generalApplication/response/applicationResponseConfirmationController';
 import flightDetailsController from './features/claim/airlines/flightDetailsController';
@@ -318,13 +319,16 @@ import delayedFlightController from './features/claim/airlines/delayedFlightCont
 import respondentRequestChangeInformationController
   from 'routes/features/generalApplication/respondentRequestChangeInformationController';
 import accessibilityStatementController from './features/public/accessibilityStatementController';
-import hearingArrangementsGuidanceController from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
+import hearingArrangementsGuidanceController
+  from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
 import wantToUploadDocumentsController from 'routes/features/generalApplication/wantToUploadDocuments';
-import uploadEvidenceDocumentsForApplicationController from 'routes/features/generalApplication/uploadEvidenceDocumentForApplication';
+import uploadEvidenceDocumentsForApplicationController
+  from 'routes/features/generalApplication/uploadEvidenceDocumentForApplication';
 import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
 import confirmYouHaveBeenPaidConfirmController
   from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
-import gaCheckAnswersResponseController from 'routes/features/generalApplication/response/checkAnswersResponseController';
+import gaCheckAnswersResponseController
+  from 'routes/features/generalApplication/response/checkAnswersResponseController';
 import hearingArrangementResponseController
   from 'routes/features/generalApplication/response/hearingArrangementResponseController';
 import hearingContactDetailsResponseController
@@ -346,7 +350,38 @@ import payApplicationFeeConfirmationController
 import submitGeneralApplicationConfirmationController
   from 'routes/features/generalApplication/submitGeneralApplicationConfirmationController';
 import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
+import viewApplicationController from 'routes/features/generalApplication/viewApplicationController';
+import requestForReviewController
+  from 'routes/features/caseProgression/requestForReconsideration/requestForReviewController';
+import requestForReconsiderationCheckAnswersController from './features/caseProgression/requestForReconsideration/checkAnswersController';
+import requestForReconsiderationConfirmationController
+  from 'routes/features/caseProgression/requestForReconsideration/confirmationController';
+import cancelRequestForReconsiderationController
+  from 'routes/features/caseProgression/requestForReconsideration/cancelRequestForReconsiderationController';
 import viewBreathingSpaceInformationController from 'routes/features/dashboard/viewBreathingSpaceInformationController';
+import multiTrackDisclosureNonElectronicDocuments
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocumentsController';
+import disclosureOfDocumentsController
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureOfDocumentsController';
+import disclosureOfElectronicDocumentsIssues
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureOfElectronicDocumentsIssuesController';
+import documentsConsideredDetailsController
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/documentsConsideredDetailsController';
+import agreementReachedController
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/agreementReachedController';
+import documentsTobeConsideredController
+  from 'routes/features/directionsQuestionnaire/mintiMultitrack/documentsTobeConsideredController';
+import subjectToFRCController from './features/directionsQuestionnaire/fixedRecoverableCosts/subjectToFRCController';
+import frcBandAgreedController
+  from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/frcBandAgreedController';
+import chooseComplexityBandController from './features/directionsQuestionnaire/fixedRecoverableCosts/chooseComplexityBandController';
+import reasonForComplexityBandController
+  from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/reasonForChoosingComplexityBandController';
+import whyNotSubjectToFRCController
+  from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/whyNotSubjectToFRCController';
+import backController from 'routes/common/backController';
+import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
+import applicationSummaryController from './features/generalApplication/applicationSummaryController';
 
 export default [
   homeController,
@@ -635,10 +670,29 @@ export default [
   unavailableHearingDatesResponseController,
   submitGeneralApplicationConfirmationController,
   acceptDefendantOfferController,
+  requestForReviewController,
+  requestForReconsiderationCheckAnswersController,
+  requestForReconsiderationConfirmationController,
+  cancelRequestForReconsiderationController,
   helpWithApplicationFeeController,
   helpWithFeesContentController,
   helpWithApplicationFeeReferenceController,
   helpWithApplicationFeeContinueController,
   payApplicationFeeConfirmationController,
+  viewApplicationController,
   viewBreathingSpaceInformationController,
+  multiTrackDisclosureNonElectronicDocuments,
+  disclosureOfDocumentsController,
+  disclosureOfElectronicDocumentsIssues,
+  documentsConsideredDetailsController,
+  agreementReachedController,
+  documentsTobeConsideredController,
+  subjectToFRCController,
+  frcBandAgreedController,
+  chooseComplexityBandController,
+  reasonForComplexityBandController,
+  whyNotSubjectToFRCController,
+  backController,
+  applicationFeePaymentConfirmationController,
+  applicationSummaryController,
 ];

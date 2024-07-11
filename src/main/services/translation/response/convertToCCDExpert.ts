@@ -19,7 +19,7 @@ export const toCCDExpert = (claim: Claim) => {
 
 const toCCDExpertRequiredResponse = (claim: Claim) => {
   const referenceDQ = claim.isClaimantIntentionPending() ? claim.claimantResponse?.directionQuestionnaire : claim.directionQuestionnaire;
-  if (claim.isFastTrackClaim) {
+  if (!claim.isSmallClaimsTrackDQ) {
     return toCCDYesNo(referenceDQ?.experts?.expertEvidence?.option);
   } else {
     if (claim.isClaimant() && referenceDQ?.experts?.expertReportDetails?.option === YesNo.YES) {
