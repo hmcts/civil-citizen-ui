@@ -3482,7 +3482,7 @@
       "HINT": "You can use this time to try to settle the claim without going to a hearing. Settling without going to a hearing may avoid costs including fees.",
       "PAGE_TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
       "TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
-      "WARNING": "This will not change the response deadline. even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
+      "WARNING": "This will not change the response deadline. Even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
     },
     "REQUEST_MORE_TIME": {
       "APPLY_TO_COURT": "You need to apply to the court to request more time.",
@@ -4639,6 +4639,9 @@
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_COMMON": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_VARIATION_2": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_VARIATION_4": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_DO_NADDO": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_CARM_IE_NEU_NA": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_NAC_YDW": "Choose option: Yes or No",
