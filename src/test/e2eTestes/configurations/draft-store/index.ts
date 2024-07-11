@@ -1,12 +1,13 @@
 import {Application} from 'express';
 import {LoggerInstance} from 'winston';
+import RedisStore from 'connect-redis';
 
 const Redis = require('ioredis-mock');
 
 const REDIS_DATA = require('./redisData.json');
 
 export class DraftStoreCliente2e {
-  public static REDIS_CONNECTION_SUCCESS = 'Connected to Redis instance successfully';
+  public static REDIS_CONNECTION_SUCCESS = 'Connected to Redis instance successfully e2e tests';
 
   constructor(private readonly logger: LoggerInstance) {
   }
@@ -26,3 +27,11 @@ export class DraftStoreCliente2e {
     });
   }
 }
+
+export const getRedisStoreForSessione2e = () => {
+  return new RedisStore({
+    client: new Redis(),
+    prefix: 'citizen-ui-session:',
+    ttl: 86400, //prune expired entries every 24h
+  });
+};

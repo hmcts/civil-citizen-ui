@@ -3,7 +3,27 @@
     {
       "request": {
         "method": "POST",
-        "url": "/cases/draft/citizen/someID/event",
+        "urlPattern": "/cases/draft/citizen/.*?/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "1111222233334444"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/.*?",
         "headers": {
           "Content-Type": {
             "equalTo": "application/json"
@@ -28,32 +48,7 @@
     {
       "request": {
         "method": "GET",
-        "url": "/cases/12345",
-        "headers": {
-          "Content-Type": {
-            "equalTo": "application/json"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "jsonBody": {
-          "id": "12345",
-          "case_data": {
-            "legacyCaseReference": "legacyCaseReference"
-          },
-          "state": "ACTIVE",
-          "last_modified": "2023-07-10T10:00:00Z"
-        }
-      }
-    },
-    {
-      "request": {
-        "method": "GET",
-        "url": "/cases/12345/userCaseRoles",
+        "urlPattern": "/cases/.*?/userCaseRoles",
         "headers": {
           "Authorization": {
             "matches": "Bearer .*"
