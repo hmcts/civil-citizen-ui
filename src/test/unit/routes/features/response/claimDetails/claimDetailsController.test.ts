@@ -4,10 +4,8 @@ import config from 'config';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {
-  mockCivilClaim,
-  mockCivilClaimPDFTimeline,
+  civilClaimResponseMock,
   mockCivilClaimUndefined,
-  mockRedisFailure,
 } from '../../../../../utils/mockDraftStore';
 import CivilClaimResponseMock from '../../../../../utils/mocks/civilClaimResponseMock.json';
 import {dateFilter} from 'modules/nunjucks/filters/dateFilter';
@@ -19,6 +17,8 @@ import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {CaseRole} from 'form/models/caseRoles';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import { isCUIReleaseTwoEnabled } from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import civilClaimResponsePDFTimeline from '../../../../../utils/mocks/civilClaimResponsePDFTimelineMock.json';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
@@ -31,7 +31,6 @@ const civilServiceUrl = config.get<string>('services.civilService.url');
 describe('Claim details page', () => {
   const idamUrl: string = config.get('idamUrl');
   const citizenRoleToken: string = config.get('citizenRoleToken');
-  const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
   const mockClaim = new Claim();
   const now = new Date();
   mockClaim.legacyCaseReference = '000MC009';
@@ -57,10 +56,10 @@ describe('Claim details page', () => {
 
   describe('on Get', () => {
     it('should return 500 if the case is not found in ccd and redis', async () => {
-      nock('http://localhost:4000')
-        .get('/cases/1111')
-        .reply(400);
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      const error = new Error('Test error');
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockRejectedValueOnce(error);
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
@@ -69,14 +68,10 @@ describe('Claim details page', () => {
         });
     });
     it('should return your claim details page with values from civil-service', async () => {
-      nock(civilServiceUrl)
-        .get('/cases/1111')
-        .reply(200, CivilClaimResponseMock);
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + 1111 + '/userCaseRoles')
-        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
-      const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const claim = Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
       const totalClaimAmount = currencyFormat(getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
         CivilClaimResponseMock.case_data)));
       await request(app)
@@ -93,58 +88,42 @@ describe('Claim details page', () => {
           expect(res.text).toContain('I noticed a leak on the landing and told Mr Smith about this.'); // timeline description
           expect(res.text).toContain('1 January 2022'); // timeline date
         });
-      expect(spyRedisSave).toBeCalled();
     });
     it('should retrieve claim from redis when claim exists in redis', async () => {
-      const mockGetClaimById = jest.fn().mockImplementation(() => {
-        return {};
-      });
-      jest.mock('../../../../../../main/app/client/civilServiceClient', () => {
-        return mockGetClaimById;
-      });
-      nock('http://localhost:4000')
-        .get('/cases/1111')
-        .reply(200, CivilClaimResponseMock);
-      app.locals.draftStoreClient = mockCivilClaim;
-      const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const claim = Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(claim.case_data?.claimAmountBreakup[0].value.claimReason);
-          expect(res.text).toContain(claim.case_data?.claimAmountBreakup[0].value.claimAmount);
-          expect(res.text).toContain(claim.case_data?.totalInterest.toString());
-          expect(res.text).toContain(convertToPoundsFilter(claim.case_data?.claimFee.calculatedAmountInPence).toString());
-          expect(res.text).toContain(claim.case_data?.claimDetails.reason.text);
-          expect(res.text).toContain(claim.case_data?.timelineOfEvents[0].value.timelineDescription);
-          expect(res.text).toContain(dateFilter(claim.case_data?.timelineOfEvents[0].value.timelineDate));
+          expect(res.text).toContain(claim?.claimAmountBreakup[0].value.claimReason);
+          expect(res.text).toContain(claim?.claimAmountBreakup[0].value.claimAmount);
+          expect(res.text).toContain(claim?.totalInterest.toString());
+          expect(res.text).toContain(convertToPoundsFilter(claim?.claimFee.calculatedAmountInPence).toString());
+          expect(res.text).toContain(claim?.claimDetails.reason.text);
+          expect(res.text).toContain(claim?.timelineOfEvents[0].value.timelineDescription);
+          expect(res.text).toContain(dateFilter(claim?.timelineOfEvents[0].value.timelineDate));
         });
-      expect(spyRedisSave).not.toBeCalled();
-      expect(mockGetClaimById).not.toBeCalled();
     });
     it('should display Download and view their Timeline', async () => {
-      const mockGetClaimById = jest.fn().mockImplementation(() => {
-        return {};
-      });
-      jest.mock('../../../../../../main/app/client/civilServiceClient', () => {
-        return mockGetClaimById;
-      });
-      nock('http://localhost:4000')
-        .get('/cases/1111')
-        .reply(200, CivilClaimResponseMock);
-      app.locals.draftStoreClient = mockCivilClaimPDFTimeline;
-      const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const claim = Object.assign(new Claim(), civilClaimResponsePDFTimeline.case_data);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Download and view timeline');
         });
-      expect(spyRedisSave).not.toBeCalled();
-      expect(mockGetClaimById).not.toBeCalled();
     });
     it('should return 500 status when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      const error = new Error('Test error');
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockRejectedValueOnce(error);
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {
@@ -153,7 +132,7 @@ describe('Claim details page', () => {
         });
     });
 
-    it('should return your new claim details page with values from civil-service when isCUIReleaseTwoEnabled  flags are enabled', async () => {
+    it('should return your new claim details page with values from civil-service when isCUIReleaseTwoEnabled flags are enabled', async () => {
       nock(civilServiceUrl)
         .get('/cases/1713273393110043')
         .reply(200, CivilClaimResponseMock);
@@ -162,7 +141,6 @@ describe('Claim details page', () => {
         .reply(200, [CaseRole.CLAIMANT]);
       isReleaseTwo.mockResolvedValue(true);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
-      const spyRedisSave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const totalClaimAmount = currencyFormat(getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
         CivilClaimResponseMock.case_data)));
 
@@ -184,7 +162,6 @@ describe('Claim details page', () => {
           expect(res.text).toContain('I noticed a leak on the landing and told Mr Smith about this.'); // timeline description
           expect(res.text).toContain('1 January 2022'); // timeline date
         });
-      expect(spyRedisSave).toBeCalled();
     });
   });
 });

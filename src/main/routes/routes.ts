@@ -350,6 +350,7 @@ import payApplicationFeeConfirmationController
 import submitGeneralApplicationConfirmationController
   from 'routes/features/generalApplication/submitGeneralApplicationConfirmationController';
 import acceptDefendantOfferController from './features/generalApplication/response/acceptDefendantOfferController';
+import viewApplicationController from 'routes/features/generalApplication/viewApplicationController';
 import requestForReviewController
   from 'routes/features/caseProgression/requestForReconsideration/requestForReviewController';
 import requestForReconsiderationCheckAnswersController from './features/caseProgression/requestForReconsideration/checkAnswersController';
@@ -381,6 +382,7 @@ import whyNotSubjectToFRCController
   from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/whyNotSubjectToFRCController';
 import backController from 'routes/common/backController';
 import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
+import applicationSummaryController from './features/generalApplication/applicationSummaryController';
 
 export default [
   homeController,
@@ -693,4 +695,5 @@ export default [
   whyNotSubjectToFRCController,
   backController,
   applicationFeePaymentConfirmationController,
+  applicationSummaryController,
 ];

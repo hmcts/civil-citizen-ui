@@ -81,7 +81,7 @@
             </div>
             {% endset %}
 
-            {{ yesNoRadioButton(t,id,name, title, form, description, {yesHtml: yesHtml}) }}
+            {{ yesNoRadioButton(t,id,name, title, form, description, {yesHtml: yesHtml, yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
 
             <div class="govuk-form-group">
               {{ govukButton({

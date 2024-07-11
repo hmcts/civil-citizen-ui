@@ -71,7 +71,7 @@
 {% endset %}
 
 {% block nestedContent %}
-  <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TITLE') }}</h1>
+  <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TITLE', { applicationIndex : applicationIndex }) }}</h1>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REVIEW') }}</p>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.SUBMITTED') }}</p>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.EITHER_PARTIES') }}</p>
@@ -94,5 +94,10 @@
       html: responseHtml
     }) }}
   </div>
+
+  {{ govukButton({
+    text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD'),
+    href: dashboardUrl
+  }) }}
 
 {% endblock %}
