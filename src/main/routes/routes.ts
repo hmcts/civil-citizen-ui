@@ -383,6 +383,7 @@ import backController from 'routes/common/backController';
 import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
 import uploadAdditionalDocumentsController from './features/generalApplication/additionalDocuments/uploadAdditionalDocumentsController';
 import gaAdditionalDocCheckAnswerController from './features/generalApplication/additionalDocuments/checkAnswersController';
+import additionalDocSubmittedController from './features/generalApplication/additionalDocuments/submittedController';
 
 export default [
   homeController,
@@ -696,5 +697,6 @@ export default [
   backController,
   applicationFeePaymentConfirmationController,
   uploadAdditionalDocumentsController,
-  gaAdditionalDocCheckAnswerController
+  gaAdditionalDocCheckAnswerController,
+  additionalDocSubmittedController,
 ];

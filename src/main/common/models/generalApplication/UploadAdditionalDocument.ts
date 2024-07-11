@@ -9,7 +9,7 @@ export class UploadAdditionalDocument {
     fileUpload: FileUpload;
     caseDocument: CaseDocument;
 
-    @IsNotEmpty({ message: 'You need to tell us what type of document you are uploading.' })
+    @IsNotEmpty({ message: 'ERRORS.GENERAL_APPLICATION.TYPE_OF_DOC' })
     typeOfDocument: string;
 
     constructor(fileUpload?: FileUpload) {

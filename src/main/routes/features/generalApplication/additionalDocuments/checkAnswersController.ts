@@ -7,10 +7,11 @@ import { caseNumberPrettify } from 'common/utils/stringUtils';
 import { NextFunction, RequestHandler, Response, Router } from 'express';
 import { getClaimById } from 'modules/utilityService';
 import config from 'config';
-import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL } from 'routes/urls';
+import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL, GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_URL, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL } from 'routes/urls';
 import { GaServiceClient } from 'client/gaServiceClient';
 import { ApplicationEvent } from 'common/models/gaEvents/applicationEvent';
-
+import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
+const { v4: uuidv4 } = require('uuid');
 const gaAdditionalDocCheckAnswerController = Router();
 const viewPath = 'features/generalApplication/additionalDocuments/check-answers';
 const generalAppApiBaseUrl = config.get<string>('services.generalApplication.url');
@@ -22,37 +23,42 @@ gaAdditionalDocCheckAnswerController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL,
         const claim = await getClaimById(id, req, true);
         const claimIdPrettified = caseNumberPrettify(id);
         const gaApplication = Object.assign(new GeneralApplication(), claim.generalApplication)
-        // const formattedSummary = getSummaryList(gaApplication.uploadAdditionalDocuments, id, gaId)
-        //  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+        const cancelUrl = await getCancelUrl(id, claim);
+        const backLinkUrl = GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', id).replace(':gaId', gaId)
         const summaryRows = buildSummarySection(gaApplication.uploadAdditionalDocuments, id, gaId)
-        res.render(viewPath, { claimIdPrettified, claim, summaryRows });
+        res.render(viewPath, { backLinkUrl, cancelUrl, claimIdPrettified, claim, summaryRows });
     } catch (error) {
         next(error);
     }
 }) as RequestHandler)
 
 gaAdditionalDocCheckAnswerController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
-
     const { gaId, id } = req.params;
     console.log(gaId);
+    console.log(id);
     const claim = await getClaimById(id, req, true);
     const gaApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     const uploadedDocuments = gaApplication.uploadAdditionalDocuments.map(doc => {
-
         return {
-            documentType: doc.typeOfDocument,
-            additionalDocument: {
-                documentUrl: doc.caseDocument.documentLink.document_url,
-                documentBinaryUrl: doc.caseDocument.documentLink.document_binary_url,
-                documentFileName: doc.caseDocument.documentName,
+            id: uuidv4(),
+            value: {
+                typeOfDocument: doc.typeOfDocument,
+                documentUpload: {
+                    document_url: doc.caseDocument.documentLink.document_url,
+                    document_binary_url: doc.caseDocument.documentLink.document_binary_url,
+                    document_filename: doc.caseDocument.documentName,
+                }
+
             }
         }
-
     })
-    const data = await gaServiceClient.submitEvent(ApplicationEvent.UPLOAD_ADDL_DOCUMENTS, gaId, { uploadDocument: uploadedDocuments }, req);
-    console.log(data);
-
+    const generalApplication = {
+        uploadDocument: uploadedDocuments
+    };
+    await gaServiceClient.submitEvent(ApplicationEvent.UPLOAD_ADDL_DOCUMENTS, gaId, generalApplication, req);
+    res.redirect(GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_URL.replace(':id', id).replace(':gaId', gaId));
 }) as RequestHandler);
+
 const buildSummarySection = (additionalDocumentsList: UploadAdditionalDocument[], claimId: string, gaId: string) => {
     const rows: SummaryRow[] = []
     additionalDocumentsList.forEach(doc => {
