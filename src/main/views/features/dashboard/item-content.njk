@@ -329,19 +329,18 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.WARNING %}
-    <div class="govuk-warning-text">
-      <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-      <strong class="govuk-warning-text__text">
-        <span class="govuk-warning-text__assistive">Warning</span>
-        {% set object = '' %}
-        {% if content.data.variables %}
-          {% set object = content.data.variables %}
-          {{ t(content.data.text,object) }}
-        {% else %}
-          {{ t(content.data.text) }}
-        {% endif %}
-      </strong>
-    </div>
+    {% set object = '' %}
+    {% if content.data.variables %}
+    {% set object = content.data.variables %}
+    {% set warningText = t(content.data.text,object) %}
+    {% else %}
+      {% set warningText = t(content.data.text) %}
+    {% endif %}
+
+    {{ govukWarningText({
+      text: warningText,
+      iconFallbackText: "Warning"
+     }) }}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.SELECT %}
