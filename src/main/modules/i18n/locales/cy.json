@@ -2369,6 +2369,21 @@
         "WHY_NOT_ACCEPT": "Why do you not accept the defendant's offer?",
         "WHY_NOT_ACCEPT_2": "Why you do not accept the defendant's offer?"
       },
+      "ADDITIONAL_FEE": {
+        "CLOSE_AND_RETURN": "Close and return to case details",
+        "COURT_DECIDED": "The court has decided that your application must be submitted 'with notice'. This means that the other parties will receive a copy of the application and will be able to respond to what you have said.",
+        "DO_NEXT": "What you need to do next",
+        "HWF_LINK": "Help with Fees",
+        "IF_NOT_PAY": "If you do not pay the fee, your application will not be considered.",
+        "LOW_INCOME": "If you're on a low income, receive benefits or have limited savings, you may be eligible for ",
+        "MAKE_PAYMENT": "Make the payment",
+        "MEET_CRITERIA": "If you meet the criteria, you can apply for this support when you make the payment.",
+        "PAGE_TITLE": "Additional fee",
+        "PAY_ADDITIONAL_FEE": "Pay the additional fee of {{additionalFee}}.",
+        "TITLE": "You must pay an additional fee",
+        "WITH_NOTICE_COST": "A 'with notice' application costs {{withNoticeCost}}. You've already paid {{alreadyPaid}}, but you'll now need to pay an additional fee to make up the full amount.",
+        "WITHOUT_NOTICE": "Your application was submitted without giving notice to the other parties."
+      },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
         "RESPOND_TO": "Respond to an application to {{applicationType}}",
@@ -2462,6 +2477,10 @@
           "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
         },
         "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
+      },
+      "PAY_ADDITIONAL_FEE": {
+        "HEADING": "Additional application fee",
+        "WANT_TO_APPLY_HWF_TITLE": "Pay additional application fee"
       },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Application fee to pay:",

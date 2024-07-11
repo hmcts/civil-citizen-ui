@@ -1,38 +1,40 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {DASHBOARD_CLAIMANT_URL, GA_APPLY_HELP_WITH_FEE_SELECTION} from 'routes/urls';
+import {DASHBOARD_CLAIMANT_URL, GA_ADDITIONAL_FEE_URL, GA_PAY_ADDITIONAL_FEE_URL} from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
 import {getClaimById} from 'modules/utilityService';
 import {t} from 'i18next';
 import {AppRequest} from 'models/AppRequest';
-import {getHelpApplicationFeeSelectionPageContents, getButtonsContents}
-  from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
+import {getHelpAdditionalFeeSelectionPageContents, getButtonsContents}
+  from 'services/features/generalApplication/additionalFee/helpWithAdditionalFeeContent';
 import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
-const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee';
-const helpWithApplicationFeeController = Router();
-const hwfPropertyName = 'applyHelpWithFees';
-const backLinkUrl = 'test'; // TODO: add url
+const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/additionalFee/help-with-additional-fee';
+const payAdditionalFeeController = Router();
+const hwfPropertyName = 'applyAdditionalHelpWithFees';
+
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, redirectUrl: string, lng: string) {
+  const appId = req.params.appId;
   if (!form) {
     const claim: Claim = await getClaimById(claimId, req, true);
-    form = new GenericForm(new GenericYesNo(claim.generalApplication?.helpWithFees?.applyHelpWithFees));
+    form = new GenericForm(new GenericYesNo(claim.generalApplication?.helpWithFees?.applyAdditionalHelpWithFees));
   }
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_ADDITIONAL_FEE_URL);
   res.render(applyHelpWithApplicationFeeViewPath,
     {
       form,
       backLinkUrl,
       redirectUrl,
-      applyHelpWithFeeSelectionContents: getHelpApplicationFeeSelectionPageContents(lng),
+      applyHelpWithFeeSelectionContents: getHelpAdditionalFeeSelectionPageContents(lng),
       applyHelpWithFeeSelectionButtonContents: getButtonsContents(claimId),
     });
 }
 
-helpWithApplicationFeeController.get(GA_APPLY_HELP_WITH_FEE_SELECTION, (async (req: AppRequest, res: Response, next: NextFunction) => {
+payAdditionalFeeController.get(GA_PAY_ADDITIONAL_FEE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -43,14 +45,14 @@ helpWithApplicationFeeController.get(GA_APPLY_HELP_WITH_FEE_SELECTION, (async (r
   }
 }) as RequestHandler);
 
-helpWithApplicationFeeController.post(GA_APPLY_HELP_WITH_FEE_SELECTION, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+payAdditionalFeeController.post(GA_PAY_ADDITIONAL_FEE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
     await form.validate();
     if (form.hasErrors()) {
-      const redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+      const redirectUrl = constructResponseUrlWithIdParams(claimId, GA_PAY_ADDITIONAL_FEE_URL);
       await renderView(res, req, form, claimId, redirectUrl, lng);
     } else {
       const redisKey = generateRedisKey(<AppRequest>req);
@@ -62,4 +64,4 @@ helpWithApplicationFeeController.post(GA_APPLY_HELP_WITH_FEE_SELECTION, (async (
     next(error);
   }
 }) as RequestHandler);
-export default helpWithApplicationFeeController;
+export default payAdditionalFeeController;
