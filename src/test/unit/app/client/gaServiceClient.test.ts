@@ -6,7 +6,6 @@ import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {GaServiceClient} from 'client/gaServiceClient';
 import { GA_GET_APPLICATION_URL, GA_SERVICE_CASES_URL } from 'client/gaServiceUrls';
 import { Application } from 'common/models/generalApplication/application';
-import { GA_GET_APPLICATION_URL, GA_SERVICE_CASES_URL } from 'client/gaServiceUrls';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;

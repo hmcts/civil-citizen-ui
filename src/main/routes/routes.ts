@@ -358,7 +358,6 @@ import requestForReconsiderationConfirmationController
   from 'routes/features/caseProgression/requestForReconsideration/confirmationController';
 import cancelRequestForReconsiderationController
   from 'routes/features/caseProgression/requestForReconsideration/cancelRequestForReconsiderationController';
-import viewApplicationController from 'routes/features/generalApplication/viewApplicationController';
 import viewBreathingSpaceInformationController from 'routes/features/dashboard/viewBreathingSpaceInformationController';
 import multiTrackDisclosureNonElectronicDocuments
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocumentsController';

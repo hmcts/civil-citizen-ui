@@ -2821,7 +2821,7 @@
           "TITLE": "Status"
         },
         "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
-        "TITLE": "Application 1",
+        "TITLE": "Application {{applicationIndex}}",
         "UPLOAD_DOCUMENTS_1": "You can also ",
         "UPLOAD_DOCUMENTS_2": "upload additional documents",
         "UPLOAD_DOCUMENTS_3": " if you need to."
