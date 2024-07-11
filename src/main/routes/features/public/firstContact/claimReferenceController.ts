@@ -32,6 +32,8 @@ claimReferenceController.post(FIRST_CONTACT_CLAIM_REFERENCE_URL, (async (req: Re
       req.session = saveFirstContactData(req.session as AppSession, {claimReference: req.body.claimReferenceValue});
       if (req.body.claimReferenceValue?.includes('MC') && await civilServiceClient.isOcmcDefendantLinked(req.body.claimReferenceValue)) {
         res.redirect(ocmcBaseUrl + DASHBOARD_URL);
+      } else if (await civilServiceClient.isDefendantLinked(req.body.claimReferenceValue)) {
+        res.redirect(DASHBOARD_URL);
       } else {
         res.redirect(FIRST_CONTACT_PIN_URL);
       }

@@ -21,6 +21,7 @@ export const CIVIL_SERVICE_USER_CASE_ROLE = `${CIVIL_SERVICE_CASES_URL}:claimId/
 export const CIVIL_SERVICE_COURT_DECISION =  `${CIVIL_SERVICE_CASES_URL}:claimId/courtDecision`;
 export const CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL = `${CIVIL_SERVICE_ASSIGNMENT_URL}/reference/:caseReference/ocmc`;
 export const CIVIL_SERVICE_CHECK_OCMC_DEFENDENT_LINKED_URL = `${CIVIL_SERVICE_ASSIGNMENT_URL}/reference/:caseReference/ocmc`;
+export const CIVIL_SERVICE_CHECK_DEFENDENT_LINKED_URL = `${CIVIL_SERVICE_ASSIGNMENT_URL}/reference/:caseReference/defendant-link-status`;
 export const CIVIL_SERVICE_FEES_PAYMENT_URL= `${CIVIL_SERVICE_FEES_URL}/:feeType/case/:claimId/payment`;
 export const CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL= `${CIVIL_SERVICE_FEES_URL}/:feeType/case/:claimId/payment/:paymentReference/status`;
 export const CIVIL_SERVICE_DASHBOARD_TASKLIST_URL= `${CIVIL_SERVICE_DASHBOARD_URL}/taskList/:ccd-case-identifier/role/:role-type`;
