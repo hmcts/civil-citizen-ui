@@ -192,9 +192,16 @@ class CreateClaimSteps {
     await I.waitForVisible('#navigation', 60);
     await I.amOnPage('/testing-support/create-draft-claim');
     await I.click('Create Draft Claim');
-    //I.seeInCurrentUrl('/claim/task-list'); // verify the URL contains a specific path
-    //await I.amOnPage('/claim/task-list');
-    //await I.waitForContent('Prepare your claim', 60);
+    await I.amOnPage('/claim/task-list');
+    await I.waitForContent('Prepare your claim', 60);
+  }
+
+  createClaimDraftViaTestingSupportE2e() {
+    I.amOnPage('/testing-support/create-draft-claim');
+    I.click('Create Draft Claim');
+    I.seeInCurrentUrl('/claim/check-and-send'); // verify the URL contains a specific path
+    I.click('Submit claim');
+    I.seeInCurrentUrl('/claim/12345/confirmation'); // verify the URL contains a specific path
   }
 
   async addSoleTraderClaimant() {

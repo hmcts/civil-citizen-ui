@@ -48,7 +48,8 @@ import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
 import {isCaseProgressionV1Enabled} from 'routes/guards/caseProgressionGuard';
 import config = require('config');
 import {trackHistory} from 'routes/guards/trackHistory';
-import {OidcMiddleware} from "modules/oidc";
+//import {OidcMiddleware} from "modules/oidc";
+import {AppSession} from "models/AppRequest";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -98,7 +99,7 @@ app.enable('trust proxy');
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
-new OidcMiddleware().enableFor(app);
+//new OidcMiddleware().enableFor(app);
 
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
@@ -133,6 +134,13 @@ app.use((_req, res, next) => {
     'Cache-Control',
     'no-cache, max-age=0, must-revalidate, no-store',
   );
+  next();
+});
+
+// Use your custom middleware to add the session information
+app.use((req, res, next) => {
+  const session = ((req.session) as AppSession);
+  session.user = {accessToken: "someAccessToken", email: "", familyName: "", givenName: "", roles: [], id: 'someID'};
   next();
 });
 

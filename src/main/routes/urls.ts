@@ -191,6 +191,7 @@ export const CLAIM_INTEREST_CONTINUE_CLAIMING_URL = `${BASE_CLAIM_URL}/interest-
 export const CLAIM_INTEREST_HOW_MUCH_URL = `${BASE_CLAIM_URL}/interest-how-much`;
 export const CLAIM_CHECK_ANSWERS_URL = `${BASE_CLAIM_URL}/check-and-send`;
 export const TESTING_SUPPORT_URL = '/testing-support/create-draft-claim';
+export const TESTING_SUPPORT_LOGIN_URL = '/testing-support/login';
 export const CLAIM_FEE_CHANGE_URL = `${BASE_CLAIM_URL}/:id/fee-change`;
 export const CLAIM_CONFIRMATION_URL = `${BASE_CLAIM_URL}/:id/confirmation`;
 export const CLAIM_INCOMPLETE_SUBMISSION_URL = `${BASE_CLAIM_URL}/incomplete-submission`;

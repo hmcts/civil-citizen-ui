@@ -1,6 +1,6 @@
 import { AppRequest, AppSession } from 'common/models/AppRequest';
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
-import { CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
+import {CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_LOGIN_URL} from 'routes/urls';
 import { saveDraftClaimToCache } from 'modules/draft-store/draftClaimCache';
 const createDraftViewPath = 'features/claim/create-draft';
 import jwt_decode from 'jwt-decode';
@@ -14,8 +14,8 @@ interface IdTokenJwtPayload {
   roles: string[];
 }
 
-const createDraftClaimController = Router();
-createDraftClaimController.get(TESTING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+const loginTest = Router();
+loginTest.get(TESTING_SUPPORT_LOGIN_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     return res.render(createDraftViewPath, res);
   } catch (error) {
@@ -23,7 +23,7 @@ createDraftClaimController.get(TESTING_SUPPORT_URL, (async (req: AppRequest, res
   }
 }) as RequestHandler);
 
-createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: Response, next: NextFunction) => {
+loginTest.post(TESTING_SUPPORT_LOGIN_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     let userId = ((req.session) as AppSession)?.user?.id;
     console.log('userId ->' + userId);
@@ -45,4 +45,4 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
   }
 }) as RequestHandler);
 
-export default createDraftClaimController;
+export default loginTest;
