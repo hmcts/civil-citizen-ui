@@ -1,14 +1,17 @@
-import request from 'supertest';
 import {app} from '../../../../../../../main/app';
-import nock from 'nock';
 import config from 'config';
+import nock from 'nock';
+import request from 'supertest';
 import {GA_ADDITIONAL_FEE_URL} from 'routes/urls';
-import {t} from 'i18next';
-import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
-import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
+import { Claim } from 'common/models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {t} from 'i18next';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -18,10 +21,8 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
 }));
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockClaim = new Claim();
-describe('Arrive on additional fee', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
+mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+describe('General Application - Pay additional fee Page', () => {
   const applicationResponse: ApplicationResponse = {
     case_data: {
       applicationTypes: undefined,
@@ -43,11 +44,13 @@ describe('Arrive on additional fee', () => {
     last_modified: '',
     state: undefined,
   };
-
+  const citizenRoleToken: string = config.get('citizenRoleToken');
+  const idamUrl: string = config.get('idamUrl');
   beforeAll(() => {
     nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+        .post('/o/token')
+        .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
   beforeEach(()=> {
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(applicationResponse);
