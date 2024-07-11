@@ -383,6 +383,12 @@ import backController from 'routes/common/backController';
 import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
 import viewApplicationToRespondentController from 'routes/features/generalApplication/response/viewApplicationController';
 import applicationSummaryController from './features/generalApplication/applicationSummaryController';
+import requestForReviewCommentsController
+  from 'routes/features/caseProgression/requestForReconsideration/requestForReviewCommentsController';
+import checkAnswersCommentsController
+  from 'routes/features/caseProgression/requestForReconsideration/checkAnswersCommentsController';
+import commentsConfirmationController
+  from 'routes/features/caseProgression/requestForReconsideration/commentsConfirmationController';
 
 export default [
   homeController,
@@ -697,4 +703,7 @@ export default [
   applicationFeePaymentConfirmationController,
   viewApplicationToRespondentController,
   applicationSummaryController,
+  requestForReviewCommentsController,
+  checkAnswersCommentsController,
+  commentsConfirmationController,
 ];
