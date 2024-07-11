@@ -1875,7 +1875,7 @@
         "NO_RESPONSE_ELIGIBLE_CCJ": "You haven’t responded to the claim. {{ claimantName }} can now ask for a County Court Judgment (CCJ) against you. You can still respond to this claim before they ask for a CCJ.",
         "PART_ADMIT_NOT_PAID": "You’ve admitted part of the claim.",
         "PART_ADMIT_STATES_PAID": "We’ve emailed {{ claimantName }} telling them when and how you said you paid the claim.",
-        "RESPONSE_BY_POST": "The claim will continue by post",
+        "RESPONSE_BY_POST": "The claim will continue by post.",
         "REQUESTED_CHANGE_BY_CLAIMANT": "The claimant applied to change something about the claim.",
         "REQUESTED_CHANGE_BY_DEFENDANT": "You applied to change the claim.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "You need to respond before 4pm on {{ responseDeadline }}.",
