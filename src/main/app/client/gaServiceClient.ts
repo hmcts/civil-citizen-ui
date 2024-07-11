@@ -5,10 +5,18 @@ import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {GeneralApplicationResponse} from 'models/generalApplicationResponse';
 import {Application} from 'models/application';
-import {GA_FEES_PAYMENT_STATUS_URL, GA_FEES_PAYMENT_URL, GA_GET_APPLICATION_URL, GA_SERVICE_CASES_URL, GA_SERVICE_SUBMIT_EVENT} from 'client/gaServiceUrls';
+import {
+  GA_GET_APPLICATION_URL, 
+  GA_BY_CASE_URL, 
+  GA_FEES_PAYMENT_STATUS_URL, 
+  GA_FEES_PAYMENT_URL, 
+  GA_SERVICE_CASES_URL, 
+  GA_SERVICE_SUBMIT_EVENT,
+} from 'client/gaServiceUrls';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {plainToInstance} from 'class-transformer';
 import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('gaServiceClient');
@@ -114,4 +122,16 @@ export class GaServiceClient {
     }
   }
 
+  async getApplicationsByCaseId(caseId: string, req: AppRequest): Promise<ApplicationResponse[]> {
+    const config = this.getConfig(req);
+    try {
+      const response = await this.client.get(constructResponseUrlWithIdParams(caseId, GA_BY_CASE_URL), config);
+      return response.data.cases.sort((a: any, b: any) => {
+        return new Date(a.created_date).getTime() - new Date(b.created_date).getTime();
+      });
+    } catch (err) {
+      logger.error('Error when getApplicationsByCaseId', err);
+      throw err;
+    }
+  }
 }
