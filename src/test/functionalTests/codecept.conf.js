@@ -31,6 +31,9 @@ exports.config = {
       '../e2eTestes/tests/**/*.js'],
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
+    RedisHelper: {
+      require: '../e2eTestes/configurations/redisHelper.js', // Adjust the path to your RedisHelper.js file
+    },
     Playwright: {
       url: testConfig.TestUrl,
       show: true,//process.env.SHOW_BROWSER_WINDOW === 'true' || false,

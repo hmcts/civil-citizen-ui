@@ -48,8 +48,9 @@ import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
 import {isCaseProgressionV1Enabled} from 'routes/guards/caseProgressionGuard';
 import config = require('config');
 import {trackHistory} from 'routes/guards/trackHistory';
-//import {OidcMiddleware} from "modules/oidc";
-import {AppSession} from "models/AppRequest";
+import {OidcMiddleware} from 'modules/oidc';
+import {AppSession} from 'models/AppRequest';
+import {DraftStoreCliente2e} from "../test/e2eTestes/configurations/draft-store";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -57,6 +58,7 @@ const {setupDev} = require('./development');
 const env = process.env.NODE_ENV || 'development';
 const productionMode = false;// = env === 'production';
 const developmentMode = env === 'development';
+const e2eTestMode = true;
 const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();
 app.use(cookieParser());
@@ -73,8 +75,13 @@ const logger = Logger.getLogger('app');
 new PropertiesVolume().enableFor(app);
 new AppInsights().enable();
 
-logger.info('Creating new draftStoreClient');
-new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
+if(e2eTestMode){
+  logger.info('Creating new draftStoreClient e2e');
+  new DraftStoreCliente2e(Logger.getLogger('draftStoreClient')).enableFor(app);
+}else {
+  logger.info('Creating new draftStoreClient');
+  new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
+}
 
 logger.info('Creating OSplaces Client Instance');
 createOSPlacesClientInstance();
@@ -99,7 +106,9 @@ app.enable('trust proxy');
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
-//new OidcMiddleware().enableFor(app);
+if(!e2eTestMode){
+  new OidcMiddleware().enableFor(app);
+}
 
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
@@ -137,12 +146,14 @@ app.use((_req, res, next) => {
   next();
 });
 
-// Use your custom middleware to add the session information
-app.use((req, res, next) => {
-  const session = ((req.session) as AppSession);
-  session.user = {accessToken: "someAccessToken", email: "", familyName: "", givenName: "", roles: [], id: 'someID'};
-  next();
-});
+if(e2eTestMode){
+  // Use your custom middleware to add the session information
+  app.use((req, res, next) => {
+    const session = ((req.session) as AppSession);
+    session.user = {accessToken: 'someAccessToken', email: '', familyName: '', givenName: '', roles: [], id: 'someID'};
+    next();
+  });
+}
 
 const checkServiceAvailability = async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
   const serviceShuttered = await isServiceShuttered();
