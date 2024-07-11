@@ -156,7 +156,7 @@ export class Claim {
   applicant1Represented?: YesNoUpperCamelCase;
   specRespondent1Represented?: YesNoUpperCamelCase;
   respondentPaymentDeadline: Date;
-  respondentSignSettlementAgreement?: GenericYesNo;
+  respondentSignSettlementAgreement?: YesNoUpperCamelCase;
   mediationUploadDocuments?: UploadDocuments;
   applicant1AdditionalLipPartyDetails?: AdditionalLipPartyDetails;
   businessProcess?: BusinessProcess;
@@ -174,6 +174,7 @@ export class Claim {
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
   judgmentOnline?: JudgmentOnline;
+  claimType?: string;
 
   // Index signature to allow dynamic property access
   [key: string]: any;
@@ -489,6 +490,15 @@ export class Claim {
     return undefined;
   }
 
+  getDocumentDetailsList(documentType: DocumentType): SystemGeneratedCaseDocuments[] {
+    if (this.isSystemGeneratedCaseDocumentsAvailable()) {
+      return this.systemGeneratedCaseDocuments?.filter(document => {
+        return document?.value.documentType === documentType;
+      });
+    }
+    return undefined;
+  }
+
   isDefendantNotResponded(): boolean {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
   }
@@ -771,16 +781,14 @@ export class Claim {
     return party?.partyDetails?.partyName;
   }
 
-  get claimTrackType(): string {
-    return analyseClaimType(this.totalClaimAmount);
-  }
-
   get isFastTrackClaim(): boolean {
-    return this.claimTrackType === claimType.FAST_TRACK_CLAIM;
+    const claimTypeResult = analyseClaimType(this.totalClaimAmount);
+    return claimTypeResult === claimType.FAST_TRACK_CLAIM;
   }
 
   get isSmallClaimsTrackDQ(): boolean {
-    return this.claimTrackType === claimType.SMALL_CLAIM;
+    const claimTypeResult = analyseClaimType(this.totalClaimAmount);
+    return claimTypeResult === claimType.SMALL_CLAIM;
   }
 
   hasSdoOrderDocument(): boolean {
