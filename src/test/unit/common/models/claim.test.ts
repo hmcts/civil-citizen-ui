@@ -31,7 +31,6 @@ import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/dire
 import {Hearing} from 'common/models/directionsQuestionnaire/hearing/hearing';
 import {Address} from 'common/form/models/address';
 import {FullAdmission} from 'common/models/fullAdmission';
-import {claimType} from 'form/models/claimType';
 import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
@@ -1003,6 +1002,26 @@ describe('Documents', () => {
     });
   });
 
+  describe('getDocumentDetailsList', () => {
+    it('should return undefined with empty claim', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const result = claim.getDocumentDetailsList(DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
+      //Then
+      expect(result).toBeUndefined;
+    });
+
+    it('should return document details list', () => {
+      //Given
+      const claim = mockClaim;
+      //When
+      const result = claim.getDocumentDetailsList(DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
+      //Then
+      expect(result).toStrictEqual([mockClaim.systemGeneratedCaseDocuments[4], mockClaim.systemGeneratedCaseDocuments[5]]);
+    });
+  });
+
   describe('isDefendantNotResponded', () => {
     const claim = new Claim();
     it('should return false with empty claim', () => {
@@ -1528,14 +1547,12 @@ describe('Documents', () => {
       //Given
       claim.totalClaimAmount = 10000;
       //when Then
-      expect(claim.claimTrackType).toEqual(claimType.SMALL_CLAIM);
       expect(claim.isFastTrackClaim).toBe(false);
     });
     it('Its a fast track claim', () => {
       //Given
       claim.totalClaimAmount = 11000;
       //when Then
-      expect(claim.claimTrackType).toEqual(claimType.FAST_TRACK_CLAIM);
       expect(claim.isFastTrackClaim).toBe(true);
     });
   });

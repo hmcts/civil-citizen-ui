@@ -387,7 +387,180 @@
       "TITLE": "Your hearing requirements"
     }
   },
+  "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS": {
+    "DETAILS": {
+      "TITLE": "What is Disclosure?",
+      "PARAGRAPH1": "You are required to share (disclose) all documents which are relevant to the claim with all parties involved.",
+      "PARAGRAPH2": "This includes all physical and electronic documents, such as invoices and contracts, as well as images, videos, text messages, and social media messages.",
+      "PARAGRAPH3": "You must disclose all relevant documents, even if you do not intend to rely on them during a hearing or if they are harmful to your claim.",
+      "PARAGRAPH4": "A list of documents from the other parties will be made available to you, and you can ask for copies of any of these documents. The other parties involved in the claim can also ask to see and inspect copies of documents you disclose.",
+      "URL": {
+        "BEFORE": "Find more information about ",
+        "TEXT": "disclosure of documents (opens in a new tab)",
+        "AFTER": "."
+      }
+    }
+  },
+  "HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS": {
+    "DETAILS": {
+      "TITLE": "How to agree disclosure of electronic documents",
+      "PARAGRAPH1": "Parties can agree ahead of time what electronic documents will be disclosed by all parties involved in the claim.",
+      "URL1": {
+        "BEFORE": "This can be done using the ",
+        "TEXT": "Electronic Documents Questionnaire on Gov.uk (opens in a new tab)",
+        "AFTER": "."
+      },
+      "URL2": {
+        "BEFORE": "There is more information on the Electronic Documents Questionnaire in paragraph 10 of ",
+        "TEXT": "Practice Direction 31B (opens in a new tab)",
+        "AFTER": "."
+      },
+      "URL3": {
+        "BEFORE": "You can also provide this digitally as set out in paragraph 31 of ",
+        "TEXT": "Practice Direction 31B (opens in a new tab)",
+        "AFTER": "."
+      }
+    }
+  },
+  "WHAT_ARE_FIXED_RECOVERABLE_COSTS": {
+    "TITLE": "What are Fixed Recoverable Costs?",
+    "PARA_1":  "Most civil money claims valued up to and including £100,000 are subject to the Fixed Recoverable Costs Regime (FRCs).",
+    "PARA_2":  "FRCs set limits on the amount of legal costs the successful parties can claim back from unsuccessful parties.",
+    "PARA_3":  "They provide certainty to all parties involved by setting in advance the maximum amount of costs the losing party will have to pay.",
+    "URL": {
+      "BEFORE": "For more information on limits for FRCs see ",
+      "TEXT": "Table 14 (opens in a new tab)",
+      "AFTER": "."
+    },
+    "PARA_4": "All claims subject to FRCs need to be assigned to a complexity ban from 1 to 4.",
+    "PARA_5": "Band 1 is for the least complex claims where only one issue is in dispute. For example, claims where either the amount of money being claimed or liability (legal responsibility) is in dispute.",
+    "PARA_6": "Band 2 is for most other claims where more than one issue is in dispute. For example, the amount of money being claimed and liability is in dispute.",
+    "PARA_7": "Band 3 is for more complex claims where more than one issue is in dispute. For example, noise induced hearing loss or employer liability for diseases.",
+    "PARA_8": "Band 4 is for the most complex cases with serious issues around the facts of law.",
+    "PARA_9": "You may agree the complexity banding with the other parties beforehand or say which band you think this claim falls into.",
+    "PARA_10": "However, if the Court disagrees, it has the power to assign a claim to whatever band it feels is appropriate."
+  },
+  "WHICH_COMPLEXITY_BAND_TO_CHOOSE": {
+    "TITLE": "Which complexity band should I use?",
+    "PARA_1_TITLE": "Band 1",
+    "PARA_1": "Any claim where only one issue is in dispute. For example, claims where only the amount of money, or liability (legal responsibility) is in dispute. Examples include:",
+    "PARA_1_POINT_1": "Personal injury claims where liability or the amount of money being claimed is disputed.",
+    "PARA_1_POINT_2": "Road traffic accidents with no claim for personal injury.",
+    "PARA_1_POINT_3": "Debt claims where there is disagreement over the facts of the claim.",
+    "PARA_2_TITLE": "Band 2",
+    "PARA_2": "Most claims where more than one issue is in dispute. For example, claims where the amount of money being claimed, and liability (legal responsibility) is in dispute. Examples include:",
+    "PARA_2_POINT_1": "Personal injury claims where liability and the amount of money being claimed is disputed.",
+    "PARA_2_POINT_2": "Road traffic accidents which include a claim for personal injury.",
+    "PARA_3_TITLE": "Band 3",
+    "PARA_3": "Any other claims where more than one issue is in dispute. For example:",
+    "PARA_3_POINT_1": "Noise induced hearing loss.",
+    "PARA_3_POINT_2": "Employer liability for diseases.",
+    "PARA_4_TITLE": "Band 4",
+    "PARA_4": "Any claim which is not suitable for bands 1 to 3. For example:",
+    "PARA_4_POINT_1": "Complex personal injury claims with serious issues around the facts or law.",
+    "URL": {
+      "TITLE": "More information on complexity bands",
+      "BEFORE": "For more information on complexity bands see ",
+      "TEXT": "CPR 26.16 Table 2 (opens in a new tab)",
+      "AFTER": "."
+    }
+  },
+  "DOCUMENTS_TO_BE_CONSIDERED" : {
+    "TITLE_WITH_CLAIMANT": "Claimant documents to be considered",
+    "TITLE_WITH_DEFENDANT": "Defendant documents to be considered"
+  },
   "PAGES": {
+    "SUBJECT_TO_FRC": {
+      "PAGE_TITLE": "Is the claim subject to the Fixed Recoverable Costs Regime?",
+      "TITLE": "Fixed Recoverable Costs Regime",
+      "BUTTON_TITLE": "Is the claim subject to the Fixed Recoverable Costs Regime?"
+    },
+    "FRC_BAND_AGREED": {
+      "PAGE_TITLE": "Has the complexity band been agreed with the other parties?",
+      "TITLE": "Agreement of complexity band",
+      "BUTTON_TITLE": "Has the complexity band been agreed with the other parties?"
+    },
+    "CHOOSE_COMPLEXITY_BAND": {
+      "PAGE_TITLE": "Which complexity band do you believe this claim falls into?",
+      "TITLE": "Complexity band",
+      "COMBO_BOX" : {
+        "TITLE": "Which complexity band do you believe this claim falls into?",
+        "ITEM1": {
+          "TEXT": "Band 1"
+        },
+        "ITEM2": {
+          "TEXT": "Band 2"
+        },
+        "ITEM3": {
+          "TEXT": "Band 3"
+        },
+        "ITEM4": {
+          "TEXT": "Band 4"
+        }
+      }
+    },
+    "COMPLEXITY_BAND_REASON": {
+      "PAGE_TITLE": "Reasons for band selection",
+      "TITLE": "Complexity band",
+      "TEXT_AREA": {
+        "LABEL": "Reasons for band selection",
+        "HINT": "Please give your reasons (optional)"
+      }
+    },
+    "WHY_NOT_SUBJECT_TO_FRC": {
+      "PAGE_TITLE": "Fixed recoverable costs regime",
+      "TITLE": "Fixed Recoverable Costs Regime",
+      "TEXT_AREA": {
+        "LABEL": "Why is the claim not subject to the Fixed Recoverable Costs Regime?",
+        "HINT": "Please give your reasons (optional)"
+      }
+    },
+    "DOCS_FOR_DISCLOSURE" : {
+      "PAGE_TITLE_WITH_CLAIMANT": "Are there any documents the claimant has that you want the court to consider?",
+      "COMPONENT_TEXT_WITH_CLAIMANT": "Are there any documents the claimants have that you want the court to consider?",
+      "PAGE_TITLE_WITH_DEFENDANT": "Are there any documents the defendant has that you want the court to consider?",
+      "COMPONENT_TEXT_WITH_DEFENDANT": "Are there any documents that defendants have that you want the court to consider?"
+    },
+    "HAS_AN_AGREEMENT_BEEN_REACHED" : {
+      "PAGE_TITLE": "Has an agreement been reached about disclosure of electronic documents?",
+      "TITLE": "Disclosure of electronic documents",
+      "COMBO_BOX" : {
+        "TITLE": "Has an agreement been reached between the parties involved in the claim about what electronic documents will be disclosed?",
+        "ITEM1": {
+          "TEXT": "Yes"
+        },
+        "ITEM2": {
+          "TEXT": "No, but an agreement is likely"
+        },
+        "ITEM3": {
+          "TEXT": "No"
+        }
+      }
+    },
+    "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : {
+      "PAGE_TITLE": "Disclosure of non-electronic documents",
+      "TEXT_AREA" : {
+        "LABEL": "What non-electronic documents are proposed for disclosure?",
+        "HINT": "Please give details"
+      }
+    },
+    "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : {
+      "PAGE_TITLE": "What are the issues about disclosure of electronic documents?",
+      "TITLE": "Disclosure of electronic documents",
+      "TEXT_AREA" : {
+        "LABEL": "What are the issues about disclosure of electronic documents?",
+        "HINT": "Please give details"
+      }
+    },
+    "DOCUMENTS_CONSIDERED_DETAILS" : {
+      "PAGE_TITLE_WITH_CLAIMANT": "What documents does the claimant have that you would like the court to consider?",
+      "PAGE_TITLE_WITH_DEFENDANT": "What documents does the defendant have that you would like the court to consider?",
+      "TEXT_AREA" : {
+        "LABEL_WITH_CLAIMANT": "What are the documents the claimants have that you want the court to consider?",
+        "LABEL_WITH_DEFENDANT": "What are the documents the defendants have that you want the court to consider?",
+        "HINT": "Please give details"
+      }
+    },
     "ACCESSIBILITY_STATEMENT": {
       "CONSIDER": "We’ll consider your request and get back to you in 10 days.",
       "EMAIL": "HMCTSforms@justice.gov.uk",
@@ -652,6 +825,36 @@
       "INSET": "The court will review your suggestion and may reject it if it's more than the defendant can afford."
     },
     "CHECK_YOUR_ANSWER": {
+      "SUBECT_TO_FRC": "Is the claim subject to the fixed recoverable costs regime?",
+      "FRC_BAND_AGREED": "Has the complexity band been agreed with the other parties?",
+      "FRC_BAND_CHOSEN": "Which complexity band do you believe the claim falls into?",
+      "FRC_BANDS": {
+        "BAND_1": "Band 1",
+        "BAND_2": "Band 2",
+        "BAND_3": "Band 3",
+        "BAND_4": "Band 4"
+      },
+      "REASON_FOR_FRC_BAND": "Reason for band selection",
+      "REASON_FOR_NO_FRC_BAND": "Why is the claim not subject to the Fixed Recoverable Costs Regime?",
+      "DISCLOSURE_OF_DOCUMENTS": {
+        "QUESTION": "You can ask the court to order disclosure of documents from the other parties. Do you want to request the disclosure of electronic or non-electronic documents, or both?",
+        "NO": "No",
+        "BOTH": "Both",
+        "ELECTRONIC_DOCUMENTS": "Electronic documents for disclosure",
+        "NON_ELECTRONIC_DOCUMENTS": "Non-electronic documents for disclosure"
+      },
+      "ELEC_AGREEMENT_REACHED": {
+        "QUESTION": "Has an agreement been reached between the parties involved in the claim about what electronic documents will be disclosed?",
+        "YES": "Yes",
+        "NO": "No",
+        "NO_BUT_AN_AGREEMENT_IS_LIKELY": "No, but an agreement is likely"
+      },
+      "ELEC_DOCS_ISSUES": "What are the issues about disclosure of electronic documents?",
+      "NON_ELEC_DOCS_DISCLOSURE": "What non-electronic documents are proposed for disclosure?",
+      "CLAIMANT_DOCS_TO_CONSIDER": "Are there any documents the claimants have that you want the court to consider?",
+      "CLAIMANT_DOCS_TO_CONSIDER_DETAILS": "What are the documents the claimants have that you want the court to consider?",
+      "DEFENDANT_DOCS_TO_CONSIDER": "Are there any documents the defendants have that you want the court to consider?",
+      "DEFENDANT_DOCS_TO_CONSIDER_DETAILS": "What are the documents the defendants have that you want the court to consider?",
       "AIRLINE": "Airline",
       "ARE_YOU_CLAIMING_DELAYED_FLIGHT": "Are you claiming for a delayed flight?",
       "BANK_BALANCE": "Balance",
@@ -1410,6 +1613,27 @@
       "GIVE_DETAILS": "Give details of the documents",
       "PAGE_TITLE": "Are there any documents the other party has that you want the court to consider?",
       "TITLE": "Are there any documents the other party has that you want the court to consider?"
+    },
+    "DISCLOSURE_OF_DOCUMENTS": {
+      "PAGE_TITLE": "Disclosure of documents",
+      "TITLE": "Disclosure of documents",
+      "CHECKBOX_TITLE": "You can ask the court to order disclosure of documents from the other parties. Do you want to request the disclosure of electronic or non-electronic documents, or both? (optional)",
+      "WHAT_IS_THE_DIFFERENCE": "What is the difference between electronic and non-electronic documents?",
+      "TITLE_1": "Electronic documents",
+      "PARAGRAPH_1.1": "Electronic documents are any documents that can be supplied in any digital or electronic format. This includes physical documents which can be supplied in an electronic format.",
+      "PARAGRAPH_1.2": "These formats include DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+      "PARAGRAPH_1.3": "For example, an invoice or contract which was a physical document, but has been scanned or photographed and can be submitted electronically is an electronic document.",
+      "TITLE_2": "Non-electronic documents",
+      "PARAGRAPH_2.1": "Non-electronic documents are physical documents which are not in a digital or electronic format. This includes electronic documents, which happen to be in a physical format.",
+      "PARAGRAPH_2.2": "For example, a print-out of an email is a non-electronic document.",
+      "TITLE_3": "More information",
+      "URL": {
+        "BEFORE": "Find more information on ",
+        "TEXT": "Practice Direction 31B (opens in new tab)",
+        "AFTER": "."
+      },
+      "ELECTRONIC_DOCS_OPTION": "Electronic documents for disclosure",
+      "NON_ELECTRONIC_DOCS_OPTION": "Non-electronic documents for disclosure"
     },
     "CONTACT_THEM": {
       "ABOUT": "About claim",
@@ -2351,6 +2575,42 @@
         "TITLE": "Select application",
         "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order."
       },
+      "SUMMARY": {
+        "APP_REQUESTED": "An application is a request for a change to the case.",
+        "APPLICATION": "Application",
+        "APPLICATION_ID": "Application ID",
+        "APPLICATION_TYPE": "Application type",
+        "DETAILS": "Details",
+        "IN_PROGRESS": "In progress",
+        "MY_APPLICATIONS": "My applications",
+        "STATUS": "Status",
+        "STATES": {
+          "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
+          "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
+          "APPLICATION_ADD_PAYMENT": "Application Additional Payment",
+          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application Submitted - Awaiting Judicial Decision",
+          "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
+          "ADDITIONAL_RESPONSE_TIME_PROVIDED": "Additional Response Time Provided",
+          "AWAITING_DIRECTIONS_ORDER_DOCS": "Directions Order Made",
+          "ORDER_MADE": "Order Made",
+          "LISTING_FOR_A_HEARING": "Listed for a Hearing",
+          "HEARING_SCHEDULED": "Hearing Scheduled",
+          "APPLICATION_PAYMENT_FAILED": "Application Payment Failed",
+          "AWAITING_APPLICATION_PAYMENT": "Awaiting Application Payment",
+          "AWAITING_WRITTEN_REPRESENTATIONS": "Awaiting Written Representations",
+          "AWAITING_ADDITIONAL_INFORMATION": "Additional Information Required",
+          "APPLICATION_DISMISSED": "Application Dismissed",
+          "APPLICATION_CLOSED": "Application Closed",
+          "PROCEEDS_IN_HERITAGE": "Proceeds In Heritage",
+          "RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION": "Respond to judge for Written Representations"
+        },
+        "SUBMITTED_ON": "Submitted on",
+        "THE_STATUS_CHANGE": "The status of an application will change as it progresses. An application with a 'To do' status means you need to take action. For example, paying an application fee or responding.",
+        "THESE_ARE_APPS": "These are the applications that have been made by you or the other parties. The 'other parties' are the other side or sides involved in your claim.",
+        "TITLE": "All applications",
+        "TO_DO": "To do",
+        "VIEW_APPLICATION": "View application"
+      },
       "INFORM_OTHER_PARTIES": {
         "COURT_SEND_OTHER_PARTIES": "The court will usually send the other parties a copy of your application to give them the opportunity to respond to it.",
         "DO_NOT_WANT_COURT": "If you do not want the court to inform the other parties about this application",
@@ -2540,6 +2800,24 @@
         "TITLE": "Help with fees",
         "WANT_TO_APPLY_HWF_TITLE": "Pay application fee",
         "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
+      },
+      "VIEW_APPLICATION": {
+        "APPLICATION": "Application",
+        "APPLICATION_DETAILS": "Application details submitted by the applicant.",
+        "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
+        "EITHER_PARTIES": "Applications and responses can be made by either parties in a case.",
+        "PAGE_TITLE": "View application",
+        "RESPONSE": "Response from the other parties",
+        "REVIEW": "Review the application together with any response that has been received.",
+        "STATUS": {
+          "AWAITING_RESPONSE": "Awaiting other parties response",
+          "TITLE": "Status"
+        },
+        "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
+        "TITLE": "Application {{applicationIndex}}",
+        "UPLOAD_DOCUMENTS_1": "You can also ",
+        "UPLOAD_DOCUMENTS_2": "upload additional documents",
+        "UPLOAD_DOCUMENTS_3": " if you need to."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -3204,7 +3482,7 @@
       "HINT": "You can use this time to try to settle the claim without going to a hearing. Settling without going to a hearing may avoid costs including fees.",
       "PAGE_TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
       "TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
-      "WARNING": "This will not change the response deadline. even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
+      "WARNING": "This will not change the response deadline. Even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
     },
     "REQUEST_MORE_TIME": {
       "APPLY_TO_COURT": "You need to apply to the court to request more time.",
@@ -3782,6 +4060,7 @@
       "SEALED_CLAIM": "Sealed Claim form",
       "SETTLEMENT_AGREEMENT": "Settlement agreement",
       "STANDARD_DIRECTIONS_ORDER": "Standard Directions Order",
+      "TRANSLATED_ORDER": "Translated order",
       "UNSEALED_CLAIM":"Unsealed Claim form"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
@@ -3953,6 +4232,16 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "SUBJECT_TO_FRC": "Indicate if the claim is subject to the Fixed Recoverable Costs Regime",
+    "FRC_BAND_AGREED": "Indicate if the complexity band has been agreed with the other parties",
+    "CHOOSE_COMPLEXITY_BAND": "Indicate which complexity band you believe this claim falls into",
+    "HAS_AN_AGREEMENT_BEEN_REACHED" : "Indicate if agreement has been reached about what electronic documents will be disclosed",
+    "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Indicate if there are any documents the claimants have that you want the court to consider",
+    "DEFENDANT_DOCS_FOR_DISCLOSURE" : "Indicate if there are any documents the defendants have that you want the court to consider",
+    "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Give details of the issues about disclosure of non-electronic documents",
+    "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : "Give details of the issues about disclosure of electronic documents",
+    "CLAIMANT_DOCUMENTS_CONSIDERED" : "Give details of the documents the claimants have that you want the court to consider",
+    "DEFENDANT_DOCUMENTS_CONSIDERED" : "Give details of the documents the defendants have that you want the court to consider",
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court’s proposed repayment plan",
     "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
     "AMOUNT_INVALID_DECIMALS": "Enter a valid amount, maximum two decimal places",
@@ -4350,11 +4639,17 @@
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_COMMON": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_VARIATION_2": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_VARIATION_4": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_DO_NADDO": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_CARM_IE_NEU_NA": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_NAC_YDW": "Choose option: Yes or No",
     "VALID_YES_OR_NO_OPTION": "Select Yes to settle the claim",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
+    "VALID_YES_NO_SELECTION_VARIATION_2": "Please select yes or no",
+    "VALID_YES_NO_SELECTION_OPTION2": "Please select yes or no",
     "VALID_YES_NO_SELECTION_UPPER": "Please select Yes or No",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
     "VALID_ENTER_YOUR_NAME": "You must enter your name",
