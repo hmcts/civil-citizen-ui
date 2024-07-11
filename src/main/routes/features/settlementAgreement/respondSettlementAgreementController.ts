@@ -7,7 +7,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
-import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {YesNo} from 'form/models/yesNo';
 import {
@@ -50,6 +50,7 @@ respondSettlementAgreementController.post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (
       claim.defendantSignedSettlementAgreement = respondSettlementAgreement.model.option as YesNo;
       await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
       await civilServiceClient.submitDefendantSignSettlementAgreementEvent(claimId,{'respondentSignSettlementAgreement' : toCCDYesNo(claim.defendantSignedSettlementAgreement)}, <AppRequest>req);
+      await deleteDraftClaimFromStore(claimId);
       res.redirect(constructResponseUrlWithIdParams(claimId, DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION));
     }
   } catch (error) {

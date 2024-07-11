@@ -382,6 +382,7 @@ import whyNotSubjectToFRCController
 import backController from 'routes/common/backController';
 import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
 import viewApplicationToRespondentController from 'routes/features/generalApplication/response/viewApplicationController';
+import applicationSummaryController from './features/generalApplication/applicationSummaryController';
 
 export default [
   homeController,
@@ -695,4 +696,5 @@ export default [
   backController,
   applicationFeePaymentConfirmationController,
   viewApplicationToRespondentController,
+  applicationSummaryController,
 ];
