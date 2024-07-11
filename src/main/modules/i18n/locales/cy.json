@@ -949,7 +949,7 @@
       "I_ACCEPT_THIS_REPAYMENT_PLAN": "Rwy'n derbyn y cynllun ad-dalu hwn",
       "I_REJECT_THIS_REPAYMENT_PLAN": "Rwy'n gwrthod y cynllun ad-dalu hwn",
       "IN_FULL": "Yn llawn erbyn {{paymentDate}}",
-      "ISSUE_A_CCJ": "Choeddi Dyfarniad y Llys Sirol (CCJ)",
+      "ISSUE_A_CCJ": "Cyhoeddi Dyfarniad Llys Sirol (CCJ)",
       "IMMEDIATELY":"Immediately",
       "IN_FULL_BY":"Yn llawn erbyn {{ claimantSetDate }}",
       "INCOME_REGULAR": "Incwm rheolaidd",
@@ -1365,7 +1365,7 @@
       },
       "SIGN_A_SETTLEMENT_AGREEMENT": {
         "DESCRIPTION": "Mae hwn yn gytundeb cyfreithiol rhyngoch chi a'r diffynnydd yn cytuno i'r cynllun ad-dalu. Os ydynt ei dorri gallwch ofyn am Ddyfarniad Llys Sirol (CCJ). Byddwn yn dangos fformat awgrymedig i chi ar gyfer y cytundeb.",
-        "LABEL": "Arwyddo cytundeb setlo"
+        "LABEL": "Llofnodi cytundeb setlo"
       },
       "TITLE": "Dewiswch sut i ffurfioli'r ad-dalu"
     },
