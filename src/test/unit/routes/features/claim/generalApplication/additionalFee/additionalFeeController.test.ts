@@ -48,8 +48,8 @@ describe('General Application - Pay additional fee Page', () => {
   const idamUrl: string = config.get('idamUrl');
   beforeAll(() => {
     nock(idamUrl)
-        .post('/o/token')
-        .reply(200, {id_token: citizenRoleToken});
+      .post('/o/token')
+      .reply(200, {id_token: citizenRoleToken});
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
   beforeEach(()=> {
