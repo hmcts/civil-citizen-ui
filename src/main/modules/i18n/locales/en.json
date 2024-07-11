@@ -4029,6 +4029,14 @@
         "MAIN_TITLE": "How and why do you want the order changed?",
         "PARAGRAPH": "You can continue without giving details if you prefer. If you enter details {{ claimantOrDefendant }} will be able to see what you said and add their own comments."
       },
+      "REQUEST_FOR_REVIEW_COMMENTS": {
+        "MICRO_TEXT": "Request to review order",
+        "MAIN_TITLE": "Add your comments",
+        "REVIEW_HAS_BEEN_REQUESTED": "A review of an order has been requested by the other parties.",
+        "ADD_OWN_COMMENTS": "You can add your own comments below as part of the review.",
+        "WILL_SEE_COMMENTS": "{{ claimantOrDefendant }} will be able to see your comments.",
+        "ANY_EVIDENCE_INCLUDED": "Any evidence included in your comments should be relevant to the case."
+      },
       "CONFIRMATION": {
         "WHAT_HAPPENS_NEXT": "What happens next",
         "PARAGRAPH_1": "We’ll tell {{ claimantOrDefendant }} you’ve made the request. They will have until {{ date }} to add comments of their own.",
@@ -4036,6 +4044,13 @@
         "PARAGRAPH_3": "Continue doing what the current order asks of you unless you’re informed a judge has made a new order.",
         "PANEL_TEXT": "You’ve asked the court to review order",
         "PANEL_LINK": "Download request for review of  order (PDF)"
+      },
+      "COMMENTS_CONFIRMATION": {
+        "CONTINUE_TO_FOLLOW_ORDER": "You should continue to do what the order asks of you unless you hear that a judge has made a new order.",
+        "JUDGE_WILL_REVIEW": "A judge will now review the order and the comments. We’ll contact all parties to update you on the next steps.",
+        "LET_OTHER_PARTY_KNOW": "We will let {{ claimantOrDefendant }} know that you’ve submitted comments on the order.",
+        "PANEL_TEXT": "Your comments have been submitted successfully.",
+        "WHAT_HAPPENS_NEXT": "What happens next"
       },
       "DASHBOARD_STATE_CLAIMANT": "Read the defendant’s requests for a judge to review the order.",
       "DASHBOARD_STATE_DEFENDANT": "Read the claimant’s requests for a judge to review the order."
