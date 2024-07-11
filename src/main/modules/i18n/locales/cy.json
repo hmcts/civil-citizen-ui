@@ -163,7 +163,7 @@
       "BETA": "BETA",
       "MONEY_CLAIMS": "Hawliadau am Arian",
       "MY_ACCOUNT": "Fy nghyfrif",
-      "NEW_SERVICE": "Mae hwn yn wasanaeth newydd - bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>adborth</a> yn ein helpu i’w wella.",
+      "NEW_SERVICE": "Mae hwn yn wasanaeth newydd – bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>adborth</a> yn ein helpu i’w wella.",
       "SIGN_IN": "Mewngofnodi",
       "SIGN_OUT": "Allgofnodi"
     },
@@ -774,7 +774,7 @@
       "WELSH": "Cymraeg"
     },
     "CLAIM_BILINGUAL_LANGUAGE_PREFERENCE": {
-      "DESCRIPTION_1": "Rhaid i chi ddewis pa iaith yr ydych eisiau ei defnyddio i wneud yr hawliad hwn.",
+      "DESCRIPTION_1": "Rhaid i chi ddewis pa iaith rydych eisiau ei defnyddio i wneud yr hawliad hwn.",
       "DESCRIPTION_2": "Os byddwch yn dewis 'Cymraeg' bydd gwybodaeth a dogfennau yn cael eu cyflwyno yn Gymraeg ond bydd rhai hysbysiadau am eich hawliad yn Saesneg.",
       "ENGLISH": "Saesneg",
       "PAGE_TITLE": "Iaith",
@@ -821,7 +821,7 @@
       "INSTALMENT_AMOUNT_HELP": "Er enghraifft £10",
       "PAGE_TITLE": "Awgrymu rhandaliadau i'r diffynnydd",
       "TITLE": "Awgrymu rhandaliadau i'r diffynnydd",
-      "TOTAL_CLAIM_AMOUNT": "Cyfanswm y swm hawlio yw £{{ totalClaimAmount }}.",
+      "TOTAL_CLAIM_AMOUNT": "Cyfanswm y swm a hawlir yw £{{ totalClaimAmount }}.",
       "INSET": "Bydd y llys yn adolygu eich awgrym a gall ei wrthod os yw'n fwy nag y gall y diffynnydd ei fforddio."
     },
     "CHECK_YOUR_ANSWER": {
@@ -861,7 +861,7 @@
       "BY_INSTALMENTS":"By instalments",
       "CARER_CREDIT_DO_YOU_CLAIM": "Ydych chi'n hawlio Lwfans Gofalwr neu Gredyd Gofalwr?",
       "CCJ_AMOUNT_ALREADY_PAID": "Swm a dalwyd eisoes",
-      "CCJ_FIRST_PAYMENT_DATE": "Pa bryd ydych chi eisiau i’r diffynnydd wneud y taliad cynt?",
+      "CCJ_FIRST_PAYMENT_DATE": "Pa bryd ydych chi eisiau i’r diffynnydd wneud y taliad cyntaf?",
       "CCJ_HAS_DEFENDANT_PAID_SOME": "Ydy'r diffynnydd wedi talu rhywfaint o'r swm sy'n ddyledus i chi?",
       "CCJ_HOW_TO_PAY": "Sut ydych chi am i'r diffynnydd dalu?",
       "CCJ_INSTALMENTS_OF": "Fesul",
@@ -896,7 +896,7 @@
       "COURT_ORDERS_MONTHLY_INSTALMENT": "Swm rhandaliad misol",
       "DATE_FOR_FIRST_INSTALMENT": "Dyddiad ar gyfer rhandaliad cyntaf",
       "DEBTS_LOANS_OR_CREDIT_CARDS": "A oes gennych fenthyciadau neu ddyledion cerdyn credyd?",
-      "DECLARATION": "Rwy'n datgan bod y manylion a roddais yn gywir hyd eithaf fy ngwybodaeth.",
+      "DECLARATION": "Rwy'n datgan bod y manylion a roddwyd gennyf yn wir hyd eithaf fy ngwybodaeth.",
       "DECLARATION_TITLE": "Datganiad",
       "DETAILS_TITLE": "Eich manylion",
       "DETAILS_TITLE_CLAIMANT": "Eich manylion (yr hawlydd)",
@@ -2099,14 +2099,14 @@
       "REASON": "Esboniwch pam rydych chi'n hawlio o'r dyddiad hwn?"
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
-      "PARAGRAPH1_1": "Os ydych eisoes wedi gwneud cais am Help i Dalu Ffioedd mewn perthynas â ",
-      "PARAGRAPH1_2": "efallai bod gennych chi rif cyfeirnod yn barod. Os felly, gallwch gadw eich cais a pharhau a’i nodi pan ofynnir amdano. Peidiwch â defnyddio cyfeirnod Help i Dalu Ffioedd sy’n gysylltiedig â hawliad gwahanol neu unrhyw ffioedd gwneud cais. Bydd yn annilys gan na allwch ddefnyddio’r un cyfeirnod Help i Dalu Ffioedd ddwywaith.",
+      "PARAGRAPH1_1": "Os ydych eisoes wedi gwneud cais am Help i Dalu Ffioedd mewn perthynas â'r ",
+      "PARAGRAPH1_2": "efallai bod gennych chi gyfeirnod yn barod. Os felly, gallwch gadw eich cais a pharhau a’i nodi pan ofynnir amdano. Peidiwch â defnyddio cyfeirnod Help i Dalu Ffioedd sy’n gysylltiedig â hawliad gwahanol neu unrhyw ffioedd gwneud cais. Bydd yn annilys gan na allwch ddefnyddio’r un cyfeirnod Help i Dalu Ffioedd ddwywaith.",
       "PARAGRAPH1_3": "Os nad oes gennych gyfeirnod Help i Dalu Ffioedd ar gyfer yr hawliad hwn, dylech wneud cais am Help i Dalu Ffioedd a fydd yn rhoi cyfeirnod i chi.",
       "PARAGRAPH2": "Os oes angen i chi ddefnyddio'r cais papur Help i Dalu Ffioedd yn hytrach na'r fersiwn ar-lein, ni fyddwch yn gallu defnyddio'r gwasanaeth Hawliadau am Arian yn y Llys Sifil ar-lein i gychwyn eich hawliad.",
-      "PARAGRAPH3": "Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd gofynnir i chi am y rhif ar eich ffurflen llys neu dribiwnlys. Sylwch mai ffurflen N1 yw hwnnw.",
-      "PARAGRAPH4": "Pan fyddwch wedi cwblhau eich cais Help i Dalu Ffioedd, byddwch yn cael rhif cyfeirnod (Er enghraifft HWF-C2D-45E). Nodwch y rhif a'i gadw'n ddiogel. Bydd ei angen arnoch yn nes ymlaen yn y broses hawlio. Yna dychwelwch i'r dudalen hon a chliciwch ar y blwch Cadw a pharhau isod er mwyn i chi allu cychwyn yr hawliad.",
+      "PARAGRAPH3": "Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd gofynnir i chi am y rhif ar eich ffurflen llys neu dribiwnlys. Sylwch mai ffurflen N1 yw honno.",
+      "PARAGRAPH4": "Pan fyddwch wedi cwblhau eich cais Help i Dalu Ffioedd, byddwch yn cael cyfeirnod (Er enghraifft HWF-C2D-45E). Nodwch y rhif a'i gadw'n ddiogel. Bydd ei angen arnoch yn nes ymlaen yn y broses hawlio. Yna dychwelwch i'r dudalen hon a chliciwch ar y blwch Cadw a pharhau isod er mwyn i chi allu cychwyn yr hawliad.",
       "PLEASE_NOTE": "Sylwer:",
-      "THIS_CLAIM": "YR HAWLIAD HWN",
+      "THIS_CLAIM": "HAWLIAD",
       "TITLE": "Gwneud cais am Help i Dalu Ffioedd"
     },
     "ELIGIBILITY_CLAIMANT_ADDRESS": {
@@ -2145,9 +2145,9 @@
       "DECIDE": "Penderfynu a ddylid gwneud cais am Help i Dalu Ffioedd",
       "MAKE_A_NOTE": "Gwnewch nodyn o'r rhif Help i Dalu Ffioedd pan fyddwch yn gwneud cais.",
       "MAKE_CLAIM_USING": " a gwneud hawliad gan ddefnyddio rhif Help i Dalu Ffioedd. Os oes angen i chi ddefnyddio'r cais papur am Help i Dalu Ffioedd yn hytrach na'r fersiwn ar-lein  yna ni fyddwch yn gallu defnyddio Hawliadau Arian Sifil Ar-lein i gychwyn eich cais.",
-      "PAGE_TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
-      "TITLE": "Oes gennych chi rif cyfeirnod Help i Dalu Ffioedd?",
-      "WHEN_YOU_APPLY": "Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd gofynnir i chi am y rhif ar eich ffurflen llys neu dribiwnlys. Sylwch mai N1 yw hwnnw.",
+      "PAGE_TITLE": "Oes gennych chi gyfeirnod Help i Dalu Ffioedd?",
+      "TITLE": "Oes gennych chi gyfeirnod Help i Dalu Ffioedd?",
+      "WHEN_YOU_APPLY": "Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd gofynnir i chi am y rhif ar eich ffurflen llys neu dribiwnlys. Sylwch mai N1 yw honno.",
       "WILL_NEED": "Bydd angen y rhif hwn arnoch i wneud eich cais pan fyddwch yn dychwelyd i'r gwasanaeth hwn."
     },
     "ELIGIBILITY_SINGLE_DEFENDANT": {
@@ -2574,6 +2574,42 @@
         "SELECT_APPLICATION": "Select the application you want and click continue.",
         "TITLE": "Select application",
         "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order."
+      },
+      "SUMMARY": {
+        "APP_REQUESTED": "An application is a request for a change to the case.",
+        "APPLICATION": "Application",
+        "APPLICATION_ID": "Application ID",
+        "APPLICATION_TYPE": "Application type",
+        "DETAILS": "Details",
+        "IN_PROGRESS": "In progress",
+        "MY_APPLICATIONS": "My applications",
+        "STATUS": "Status",
+        "STATES": {
+          "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
+          "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
+          "APPLICATION_ADD_PAYMENT": "Application Additional Payment",
+          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application Submitted - Awaiting Judicial Decision",
+          "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
+          "ADDITIONAL_RESPONSE_TIME_PROVIDED": "Additional Response Time Provided",
+          "AWAITING_DIRECTIONS_ORDER_DOCS": "Directions Order Made",
+          "ORDER_MADE": "Order Made",
+          "LISTING_FOR_A_HEARING": "Listed for a Hearing",
+          "HEARING_SCHEDULED": "Hearing Scheduled",
+          "APPLICATION_PAYMENT_FAILED": "Application Payment Failed",
+          "AWAITING_APPLICATION_PAYMENT": "Awaiting Application Payment",
+          "AWAITING_WRITTEN_REPRESENTATIONS": "Awaiting Written Representations",
+          "AWAITING_ADDITIONAL_INFORMATION": "Additional Information Required",
+          "APPLICATION_DISMISSED": "Application Dismissed",
+          "APPLICATION_CLOSED": "Application Closed",
+          "PROCEEDS_IN_HERITAGE": "Proceeds In Heritage",
+          "RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION": "Respond to judge for Written Representations"
+        },
+        "SUBMITTED_ON": "Submitted on",
+        "THE_STATUS_CHANGE": "The status of an application will change as it progresses. An application with a 'To do' status means you need to take action. For example, paying an application fee or responding.",
+        "THESE_ARE_APPS": "These are the applications that have been made by you or the other parties. The 'other parties' are the other side or sides involved in your claim.",
+        "TITLE": "All applications",
+        "TO_DO": "To do",
+        "VIEW_APPLICATION": "View application"
       },
       "INFORM_OTHER_PARTIES": {
         "COURT_SEND_OTHER_PARTIES": "The court will usually send the other parties a copy of your application to give them the opportunity to respond to it.",
@@ -3172,7 +3208,7 @@
     "NOT_ELIGIBLE_FOR_SERVICE": {
       "ABLE_TO_GET_AN_ADVICE": {
         "1": "Efallai y gallwch gael cyngor gan sefydliadau fel ",
-        "2": " ynglŷn â gwneud cais."
+        "2": " ynglŷn â gwneud hawliad."
       },
       "CANT_CALCULATE_THE_AMOUNT": "Os na allwch gyfrifo'r swm a hawlir, er enghraifft oherwydd eich bod yn hawlio am anaf neu ddamwain, defnyddiwch y ",
       "CLAIM_AGAINST_GOVERNMENT": {
@@ -3183,23 +3219,23 @@
       "CLAIM_BY_PAPER": "Gallwch hefyd wneud hawliad ar bapur. ",
       "CLAIM_ON_BEHALF": {
         "CURRENTLY_SERVICE": "Ar hyn o bryd mae'r gwasanaeth hwn ar gyfer hawlwyr sy'n cynrychioli eu hunain.",
-        "COMPLETE_RETURN": ", ei gwblhau a'i ddychwelyd i wneud eich hawliad.",
-        "DOWNLOAD_PAPER_LINK": "Lawrlwytho ffurflen bapur",
+        "COMPLETE_RETURN": ", ei chwblhau a'i dychwelyd i wneud eich hawliad.",
+        "DOWNLOAD_PAPER_LINK": "Lawrlwythwch ffurflen bapur",
         "LEGAL_REPRESENTATIVE": "Os ydych yn gynrychiolydd cyfreithiol ",
-        "MCOL_LINK": "defnyddio'r gwasanaeth Hawliadau am Arian Ar-lein (MCOL)",
+        "MCOL_LINK": "defnyddiwch y gwasanaeth Hawliadau am Arian Ar-lein (MCOL)",
         "OR": " neu "
       },
-      "COMPLETE_AND_RETURN_PAPER_FORM": "ei gwblhau a'i ddychwelyd i wneud eich hawliad.",
+      "COMPLETE_AND_RETURN_PAPER_FORM": "ei chwblhau a'i dychwelyd i wneud eich hawliad.",
       "DEFENDANT_ADDRESS": {
         "AND": "a",
         "CAN_ONLY_USE_ADDRESS_ENGLAND_OR_WALES": "Dim ond i hawlio yn erbyn unigolyn neu sefydliad sydd â chyfeiriad yng Nghymru neu Loegr y gallwch ddefnyddio'r gwasanaeth hwn.",
         "COMPLETE_FORMS_AND_RETURN": ". Cwblhewch y ffurflenni a'u dychwelyd i wneud eich hawliad.",
-        "DOWNLOAD_PAPER_FORM_N1": "Lawrlwytho ffurflen bapur N1",
+        "DOWNLOAD_PAPER_FORM_N1": "Lawrlwythwch ffurflen bapur N1",
         "FORM_N510": "ffurflen N510",
         "USING_PAPER_FORM": "Yn dibynnu ar ble byddwch yn anfon yr hawliad, efallai y byddwch yn gallu gwneud hawliad gan ddefnyddio ffurflen bapur."
       },
       "DEFENDANT_UNDER_18": {
-        "ABOUT_MAKING_CLAIM": " ynglŷn â gwneud cais.",
+        "ABOUT_MAKING_CLAIM": " ynglŷn â gwneud hawliad.",
         "CAN_ONLY_USE": "Dim ond i hawlio yn erbyn diffynnydd sy'n 18 oed neu'n hŷn y gallwch ddefnyddio'r gwasanaeth hwn.",
         "CITIZENS_ADVICE": "Cyngor ar Bopeth",
         "MIGHT_ABLE": "Efallai y gallwch gael cyngor gan sefydliadau fel "
@@ -3211,7 +3247,7 @@
       "CLAIMANT_UNDER_18": {
         "CANT_USE_IF_UNDER_18": "Mae angen i chi fod yn 18 oed neu'n hŷn i ddefnyddio'r gwasanaeth hwn."
       },
-      "DOWNLOAD_PAPER_FORM": "Lawrlwytho ffurflen bapur",
+      "DOWNLOAD_PAPER_FORM": "Lawrlwythwch ffurflen bapur",
       "FOR_CLAIMS_LESS_THAN_25000": "Mae'r gwasanaeth hwn ar gyfer hawliadau am £25,000 neu lai.",
       "FOR_CLAIMS_BETWEEN_25001_AND_100000": "Ar gyfer hawliadau rhwng £25,001 a £100,000 efallai y byddwch yn gallu ",
       "MULTIPLE_CLAIMANTS": {
@@ -3230,7 +3266,7 @@
       "TENANCY_DEPOSIT": {
         "GET": "Cael",
         "HELP_TO_RESOLVE_YOUR_DISPUTE": "help i ddatrys eich anghydfod",
-        "NOT_USED_FOR_TENANCY_DEPOSIT": "Ni allwch wneud cais am flaendal tenantiaeth drwy ddefnyddio'r gwasanaeth hwn.",
+        "NOT_USED_FOR_TENANCY_DEPOSIT": "Ni allwch wneud hawliad am flaendal tenantiaeth drwy ddefnyddio'r gwasanaeth hwn.",
         "WITH_A_LANLORD_OR_TENANT": "gyda landlord neu denant."
       },
       "USE_MCOL": "defnyddio Hawliadau am Arian Ar-lein (MCOL)",
@@ -4216,7 +4252,7 @@
     "CHOOSE_TYPE_OF_INTEREST": "Dewis math o log",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "Mae angen i chi nodi rhif yr hawliad",
-    "CLAIM_SELECT_WELSH_AND_ENGLISH_OPTION": "Dewiswch ‘Cymraeg’ os ydych am greu’r hawliad hwn yn Gymraeg",
+    "CLAIM_SELECT_WELSH_AND_ENGLISH_OPTION": "Dewiswch Cymraeg os ydych eisiau creu'r hawliad hwn yn Gymraeg",
     "CLAIM_SUBMITTED_ADVICE_REQUIRED": "Dewiswch: Unwaith y bydd eich cais yn cael ei gyflwyno, ni fyddwch yn gallu gwneud unrhyw newidiadau. Ni fydd eich hawliad yn cael ei gyhoeddi a’i anfon at y partïon eraill nes eich bod wedi talu ffi’r hawliad.",
     "CLAIM_VALID_AMOUNT": "Rhowch swm dilys",
     "CLAIMANT_ACCEPT_TERMS_OF_THE_AGREEMENT": "Dewiswch rwy'n cadarnhau fy mod wedi darllen a derbyn telerau'r cytundeb",
@@ -4224,7 +4260,7 @@
     "DATE_REQUIRED": "Nodwch ddyddiad",
     "DATE_NOT_MORE_THAN_28_DAYS": "Ni all y dyddiad ymateb yr ydych wedi’i gytuno fod mwy na 28 diwrnod ar ôl y dyddiad ymateb gwreiddiol",
     "DEFENCE_REQUIRED": "Mae angen ichi egluro pam nad oes arian yn ddyledus gennych",
-    "DEFENDANT_AGE_REQUIRED": "Dewiswch ie, na, neu cwmni/sefydliad",
+    "DEFENDANT_AGE_REQUIRED": "Dewiswch Ydw, nac ydw, neu cwmni/sefydliad",
     "DEFENDANT_POSTCODE_NOT_VALID": "Rhaid nodi cod post yng Nghymru neu Loegr",
     "DEFENDANT_POSTCODE_NOT_VALID_CORRESPONDENCE": "Rhaid nodi cod post yng Nghymru neu Loegr",
     "DEFENDANT_EXPERT_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau defnyddio tystiolaeth arbenigwr",
@@ -4535,7 +4571,7 @@
     "VALID_AT_LEAST_ONE_OPTION": "Rhaid i chi ddewis o leiaf un opsiwn",
     "VALID_BETWEEN_NUMBERS_0_11": "Rhowch rif rhwng 0 ac 11",
     "VALID_BETWEEN_NUMBERS_0_80": "Rhowch rif rhwng 0 ac 80",
-    "VALID_CCJ_PAYMENT_OPTION": "Dewis opsiwn",
+    "VALID_CCJ_PAYMENT_OPTION": "Dewiswch opsiwn",
     "VALID_CHOOSE": "Dewiswch eich ymateb",
     "VALID_CITY": "Rhowch enw tref/dinas dilys",
     "VALID_CITY_CORRESPONDENCE": "Rhowch enw tref/dinas ar gyfer gohebiaeth",
@@ -4603,6 +4639,10 @@
     "VALID_VALUE": "A ydych yn siŵr bod hwn yn swm dilys?",
     "VALID_YEAR": "Rhowch flwyddyn ddilys",
     "VALID_YES_NO_OPTION": "Dewiswch opsiwn: ie neu na",
+    "VALID_YES_NO_OPTION_COMMON": "Dewiswch opsiwn: Oes neu Nac oes",
+    "VALID_YES_NO_OPTION_VARIATION_2": "Dewiswch opsiwn: Ydw neu Nac ydw",
+    "VALID_YES_NO_OPTION_VARIATION_4": "Dewiswch opsiwn: Ydy neu Nac ydy",
+    "VALID_YES_NO_OPTION_DO_NADDO": "Dewiswch opsiwn: Do neu Naddo",
     "VALID_YES_NO_OPTION_CARM_IE_NEU_NA": "Dewisiwch opsiwn: ie neu na",
     "VALID_YES_NO_OPTION_NAC_YDW": "Dewiswch opsiwn: ‘ydw’ neu ‘nac ydw’",
     "VALID_YES_OR_NO_OPTION": "Dewiswch Oes i setlo’r hawliad",
