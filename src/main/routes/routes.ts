@@ -384,6 +384,7 @@ import whyNotSubjectToFRCController
   from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/whyNotSubjectToFRCController';
 import backController from 'routes/common/backController';
 import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
+import applicationSummaryController from './features/generalApplication/applicationSummaryController';
 
 export default [
   homeController,
@@ -699,4 +700,5 @@ export default [
   whyNotSubjectToFRCController,
   backController,
   applicationFeePaymentConfirmationController,
+  applicationSummaryController,
 ];
