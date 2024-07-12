@@ -1,19 +1,22 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  GA_RESPONDENT_UPLOAD_DOCUMENT,
-  GA_RESPONDENT_HEARING_PREFERENCE,
-  GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT,
+  GA_RESPONDENT_UPLOAD_DOCUMENT_URL,
+  GA_RESPONDENT_HEARING_PREFERENCE_URL,
+  GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL,
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {getCancelUrl, getRespondToApplicationCaption, saveRespondentWantToUploadDoc}
+import {getCancelUrl, saveRespondentWantToUploadDoc}
   from 'services/features/generalApplication/generalApplicationService';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
+import {
+  getRespondToApplicationCaption,
+} from 'services/features/generalApplication/response/generalApplicationResponseService';
 
 const respondentWantToUploadDocumentsController = Router();
 const viewPath = 'features/generalApplication/response/respondent-want-to-upload-documents';
@@ -22,7 +25,7 @@ async function renderView(req: AppRequest | Request, form: GenericForm<GenericYe
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const applicationType: string = getRespondToApplicationCaption(claim, lang);
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_HEARING_PREFERENCE);
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_HEARING_PREFERENCE_URL);
   res.render(viewPath, {
     form,
     cancelUrl,
@@ -31,7 +34,7 @@ async function renderView(req: AppRequest | Request, form: GenericForm<GenericYe
   });
 }
 
-respondentWantToUploadDocumentsController.get(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT, (async (req: AppRequest, res: Response, next: NextFunction) => {
+respondentWantToUploadDocumentsController.get(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
@@ -42,7 +45,7 @@ respondentWantToUploadDocumentsController.get(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUM
   }
 }) as RequestHandler);
 
-respondentWantToUploadDocumentsController.post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+respondentWantToUploadDocumentsController.post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
@@ -55,7 +58,7 @@ respondentWantToUploadDocumentsController.post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCU
     } else {
       let redirectUrl;
       if (req.body.option == YesNo.YES) {
-        redirectUrl = constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_UPLOAD_DOCUMENT);
+        redirectUrl = constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
       } else if (req.body.option == YesNo.NO) {
         redirectUrl = 'test'; // TODO: add url
       }

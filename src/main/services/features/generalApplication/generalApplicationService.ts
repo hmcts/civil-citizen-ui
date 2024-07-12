@@ -350,6 +350,23 @@ export const saveHelpWithFeesDetails = async (claimId: string, value: any, hwfPr
   }
 };
 
+export const saveRespondentWantToUploadDoc = async (claimId: string, claim: Claim, wantToUploadDocuments: YesNo): Promise<void> => {
+  try {
+    const generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = {
+      ...generalApplication,
+      response: {
+        ...generalApplication.response,
+        wantToUploadDocuments,
+      },
+    };
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 export const getApplicationFromGAService = async (req: AppRequest, applicationId: string): Promise<ApplicationResponse> => {
   return await generalApplicationClient.getApplication(req, applicationId);
 };

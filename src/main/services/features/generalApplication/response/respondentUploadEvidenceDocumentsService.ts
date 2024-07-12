@@ -3,7 +3,7 @@ import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/dr
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {summaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {GA_RESPONDENT_UPLOAD_DOCUMENT} from 'routes/urls';
+import {GA_RESPONDENT_UPLOAD_DOCUMENT_URL} from 'routes/urls';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'models/AppRequest';
@@ -24,7 +24,7 @@ export const getSummaryList = async (formattedSummary: SummarySection, redisKey:
   let index = 0;
   claim?.generalApplication?.response?.uploadEvidenceDocuments?.forEach((uploadDocument: UploadGAFiles) => {
     index= index+ 1;
-    return formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_UPLOAD_DOCUMENT+'?id='+index), 'Remove document'));
+    return formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL+'?id='+index), 'Remove document'));
   });
   return undefined;
 };

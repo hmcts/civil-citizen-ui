@@ -2,7 +2,7 @@ import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT} from 'routes/urls';
+import {GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
@@ -38,7 +38,7 @@ describe('General Application - Respondent want to upload document ', () => {
     it('should return Do you want to upload documents to support your response page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .get(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT)
+        .get(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.RESPONDENT_WANT_TO_UPLOAD_DOC.TITLE'));
@@ -50,7 +50,7 @@ describe('General Application - Respondent want to upload document ', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .get(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT)
+        .get(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -62,7 +62,7 @@ describe('General Application - Respondent want to upload document ', () => {
     it('should send the value and redirect', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT)
+        .post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL)
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -72,7 +72,7 @@ describe('General Application - Respondent want to upload document ', () => {
     it('should show error message if radio button not selected', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT)
+        .post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL)
         .send({option: null})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -85,7 +85,7 @@ describe('General Application - Respondent want to upload document ', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT)
+        .post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL)
         .send({option:YesNo.NO })
         .expect((res) => {
           expect(res.status).toBe(500);

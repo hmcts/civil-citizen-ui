@@ -381,6 +381,12 @@ import whyNotSubjectToFRCController
   from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/whyNotSubjectToFRCController';
 import backController from 'routes/common/backController';
 import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
+import respondentHearingPreferenceController
+  from 'routes/features/generalApplication/response/respondentHearingPreferenceController';
+import respondentWantToUploadDocumentsController
+  from 'routes/features/generalApplication/response/respondentWantToUploadDocumentsController';
+import respondentUploadEvidenceDocumentsController
+  from 'routes/features/generalApplication/response/respondentUploadEvidenceDocmentsController';
 
 export default [
   homeController,
@@ -693,4 +699,7 @@ export default [
   whyNotSubjectToFRCController,
   backController,
   applicationFeePaymentConfirmationController,
+  respondentHearingPreferenceController,
+  respondentWantToUploadDocumentsController,
+  respondentUploadEvidenceDocumentsController,
 ];

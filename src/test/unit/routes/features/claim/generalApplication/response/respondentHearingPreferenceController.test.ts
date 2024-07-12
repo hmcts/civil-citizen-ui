@@ -3,7 +3,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {t} from 'i18next';
-import {GA_RESPONDENT_HEARING_PREFERENCE} from 'routes/urls';
+import {GA_RESPONDENT_HEARING_PREFERENCE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
@@ -35,7 +35,7 @@ describe('General Application - Respondent Application hearing preference', () =
     it('should return Respondent Application hearing preference page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .get(GA_RESPONDENT_HEARING_PREFERENCE)
+        .get(GA_RESPONDENT_HEARING_PREFERENCE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.HEARING_PREFERENCE.TITLE'));
@@ -47,7 +47,7 @@ describe('General Application - Respondent Application hearing preference', () =
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .get(GA_RESPONDENT_HEARING_PREFERENCE)
+        .get(GA_RESPONDENT_HEARING_PREFERENCE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

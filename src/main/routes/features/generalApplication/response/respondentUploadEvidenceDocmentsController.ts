@@ -1,14 +1,13 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  GA_RESPONDENT_UPLOAD_DOCUMENT,
-  GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT,
+  GA_RESPONDENT_UPLOAD_DOCUMENT_URL,
+  GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
 import {
   getCancelUrl,
-  getRespondToApplicationCaption,
 } from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -21,6 +20,9 @@ import {
 } from 'services/features/generalApplication/response/respondentUploadEvidenceDocumentsService';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import {
+  getRespondToApplicationCaption
+} from 'services/features/generalApplication/response/generalApplicationResponseService';
 
 const respondentUploadEvidenceDocumentsController = Router();
 const viewPath = 'features/generalApplication/response/respondent-upload-documents';
@@ -32,10 +34,10 @@ const upload = multer({
 
 async function renderView(req: AppRequest, form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const applicationType: string = getRespondToApplicationCaption(claim, lang);
+  const applicationType: string = getRespondToApplicationCaption(claim,lang);
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const currentUrl = constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_UPLOAD_DOCUMENT);
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT);
+  const currentUrl = constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL);
   res.render(viewPath, {
     form,
     formattedSummary,
@@ -46,7 +48,7 @@ async function renderView(req: AppRequest, form: GenericForm<UploadGAFiles>, cla
   });
 }
 
-respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT, (async (req: AppRequest, res: Response, next: NextFunction) => {
+respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
@@ -72,12 +74,12 @@ respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT, (
   }
 }) as RequestHandler);
 
-respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
-    const currentUrl = constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_UPLOAD_DOCUMENT);
+    const currentUrl = constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
 
     const formattedSummary = summarySection(
       {
