@@ -385,6 +385,12 @@ import whyNotSubjectToFRCController
 import backController from 'routes/common/backController';
 import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
 import applicationSummaryController from './features/generalApplication/applicationSummaryController';
+import requestForReviewCommentsController
+  from 'routes/features/caseProgression/requestForReconsideration/requestForReviewCommentsController';
+import checkAnswersCommentsController
+  from 'routes/features/caseProgression/requestForReconsideration/checkAnswersCommentsController';
+import commentsConfirmationController
+  from 'routes/features/caseProgression/requestForReconsideration/commentsConfirmationController';
 
 export default [
   homeController,
@@ -701,4 +707,7 @@ export default [
   backController,
   applicationFeePaymentConfirmationController,
   applicationSummaryController,
+  requestForReviewCommentsController,
+  checkAnswersCommentsController,
+  commentsConfirmationController,
 ];
