@@ -40,7 +40,7 @@
       "services/*": [
         "services/*"
       ],
-      "draft-store-e2e": ["../../test/e2eTests/configurations/draft-store"]
+      "draft-store-e2e-configuration": ["src/test/e2eTests/configurations/*"]
     },
     "typeRoots": [
       "./node_modules/@types",
