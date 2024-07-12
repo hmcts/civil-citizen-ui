@@ -46,5 +46,8 @@
       "./node_modules/@types",
       "./typings"
     ]
-  }
+  },
+  "include": [
+    "src/test/e2eTests/configurations/**/*", // include e2e configuration
+  ]
 }
