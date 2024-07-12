@@ -2771,7 +2771,6 @@
       "RESPONDENT_UPLOAD_DOCUMENTS": {
         "TITLE": "Upload documents",
         "MSG1": "You should only upload documents that are relevant to your application response."
-        "TITLE": "Do you agree that the court should make the order that the other parties have requested?"
       },
       "UNAVAILABLE_HEARING_DATES": {
         "ADD_ANOTHER_DATE": "Add another date or date range",
