@@ -39,15 +39,11 @@
       ],
       "services/*": [
         "services/*"
-      ],
-      "draft-store-e2e-configuration": ["src/test/e2eTests/configurations/*"]
+      ]
     },
     "typeRoots": [
       "./node_modules/@types",
       "./typings"
     ]
-  },
-  "include": [
-    "src/test/e2eTests/configurations/**/*", // include e2e configuration
-  ]
+  }
 }

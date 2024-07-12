@@ -50,7 +50,7 @@ import config = require('config');
 import {trackHistory} from 'routes/guards/trackHistory';
 import {OidcMiddleware} from 'modules/oidc';
 import {AppSession} from 'models/AppRequest';
-import {DraftStoreCliente2e, getRedisStoreForSessione2e} from '../test/e2eTests/configurations/draft-store';
+import {DraftStoreCliente2e, getRedisStoreForSessione2e} from 'modules/draft-store/e2eConfiguration';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
