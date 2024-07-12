@@ -2759,6 +2759,19 @@
         "TEXT_REVIEW": "Make sure you've reviewed the full application. If you disagree with any part of the application, select 'No' and explain why.",
         "TITLE": "Do you agree that the court should make the order that the other parties have requested?"
       },
+      "RESPONDENT_WANT_TO_UPLOAD_DOC": {
+        "PAGE_TITLE": "Do you want to upload documents to support your response?",
+        "TITLE": "Do you want to upload documents to support your response? (Optional)"
+      },
+      "HEARING_PREFERENCE": {
+        "TITLE": "Application hearing preferences",
+        "CONTENT_1": "We need to ask for your hearing preferences as a judge usually requires a hearing before making a decision on an application.",
+        "CONTENT_2": "This hearing is only to discuss the application."
+      },
+      "RESPONDENT_UPLOAD_DOCUMENTS": {
+        "TITLE": "Upload documents",
+        "MSG1": "You should only upload documents that are relevant to your application response."
+      },
       "UNAVAILABLE_HEARING_DATES": {
         "ADD_ANOTHER_DATE": "Add another date or date range",
         "ENTER_UNAVAILABLE": "Enter unavailable date",
@@ -4728,7 +4741,8 @@
       "UPLOAD_FILE_MESSAGE": "You need to choose a file before clicking 'Upload file'",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
-      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing"
+      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
+      "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your response. Choose Yes or No."
     }
   }
 }
