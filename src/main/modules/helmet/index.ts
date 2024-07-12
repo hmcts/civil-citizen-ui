@@ -37,6 +37,8 @@ const imgSrc = [
   '*.gstatic.com',
   'stats.g.doubleclick.net',
   'data:',
+  "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
+  (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
 ];
 
 const mediaSrc = [
