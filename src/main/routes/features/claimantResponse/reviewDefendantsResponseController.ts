@@ -62,7 +62,7 @@ reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPO
       repaymentPlan,
       claimId,
       originalUrl,
-      admittedAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission.howMuchDoYouOwe.amount),
+      admittedAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission?.howMuchDoYouOwe?.amount),
     });
   } catch (error) {
     next(error);
