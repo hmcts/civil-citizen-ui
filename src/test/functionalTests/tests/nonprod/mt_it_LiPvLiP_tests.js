@@ -46,7 +46,7 @@ Scenario('MT Defendant and Claimant responses', async ({api}) => {
   }
 }).tag('@regression-minti').tag('@nightly');
 
-Scenario('IT Defendant and Claimant responses', async ({api}) => {
+Scenario('IT Defendant and Claimant responses @test', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Intermediate', false, 'DefendantCompany');
     console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
