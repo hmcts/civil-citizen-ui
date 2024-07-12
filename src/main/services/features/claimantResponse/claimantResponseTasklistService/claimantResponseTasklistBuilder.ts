@@ -65,11 +65,11 @@ export function buildWhatToDoNextSection(claim: Claim, claimId: string, lang: st
     }
   }
 
-  if (claim?.hasClaimantIntentToProceedResponse() && claim.isDefendantAgreedForMediation()) {
+  if (claim?.hasClaimantIntentToProceedResponse() && (claim.isDefendantAgreedForMediation() || claim.isDefendantLrAgreedForMediation())) {
     tasks.push(freeTelephoneMediationTask);
   }
 
-  if (claim?.hasClaimantRejectedDefendantResponse() && claim.isDefendantAgreedForMediation())  {
+  if (claim?.hasClaimantRejectedDefendantResponse() && (claim.isDefendantAgreedForMediation() || claim.isDefendantLrAgreedForMediation())) {
     tasks.push(freeTelephoneMediationTask);
   }
 
@@ -94,7 +94,8 @@ export function buildYourResponseSection(claim: Claim, claimId: string, lang: st
   const isFullPaid = claim.isFullDefence() && claim.hasPaidInFull();
   const isPartialPaid = (claim.isPartialAdmissionPaid() || claim.responseStatus === ClaimResponseStatus.RC_PAID_LESS);
   const isSettleTheClaim = (isPartialPaid && claim.hasClaimantConfirmedDefendantPaid()) || isFullPaid;
-  const isFreePhoneMediation = claim.isDefendantAgreedForMediation() && ((isPartialPaid && (claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment())) || claim.hasClaimantRejectedDefendantResponse());
+  const isFreePhoneMediation = (claim.isDefendantLrAgreedForMediation() || claim.isDefendantAgreedForMediation())
+    && ((isPartialPaid && (claim.hasClaimantRejectedDefendantPaid() || claim.hasClaimantRejectedPartAdmitPayment())) || claim.hasClaimantRejectedDefendantResponse());
 
   if (!isFullPaid) {
     const haveYouBeenPaidTask = getHaveYouBeenPaidTask(claim, claimId, lang);
@@ -116,19 +117,19 @@ export function buildClaimantResponseSubmitSection(claimId: string, lang: string
   return {title: t('TASK_LIST.SUBMIT.TITLE', {lng: lang}), tasks};
 }
 
-export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: string, lang: string) {
+export function buildClaimantHearingRequirementsSection(claim: Claim, claimId: string, lang: string, mintiApplicable: boolean) {
   const tasks: Task[] = [];
   if (isPartialAdmissionNotAccepted(claim) ||
     isPartialAdmissionPaidAndClaimantRejectPaymentOrNotSettleTheClaim(claim) ||
     isFullDefenceClaimantNotSettleTheClaim(claim) ||
     claim.hasClaimantRejectedDefendantPaid() ||
     claim.hasClaimantRejectedPartAdmitPayment()) {
-    const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
+    const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang, mintiApplicable);
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
 
   if (claim.isClaimantIntentionPending() && claim?.hasClaimantIntentToProceedResponse()) {
-    const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang);
+    const giveUsDetailsClaimantHearingTask = getGiveUsDetailsClaimantHearingTask(claim, claimId, lang, mintiApplicable);
     tasks.push(giveUsDetailsClaimantHearingTask);
   }
   return {title: t('TASK_LIST.YOUR_HEARING_REQUIREMENTS.TITLE', {lng: lang}), tasks};

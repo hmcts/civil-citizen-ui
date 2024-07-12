@@ -285,5 +285,27 @@ describe('Dashboard Items', ()=> {
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD');
     });
+
+    it('should return translated status for claim SDO_ORDER_LEGAL_ADVISER_CREATED', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'SDO_ORDER_LEGAL_ADVISER_CREATED';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.SDO_ORDER_LEGAL_ADVISER_STATUS');
+
+    });
+
+    it('should return translated status for claim SDO_ORDER_LEGAL_ADVISER_CREATED', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'DEFENDANT_APPLY_NOC';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.RESPONSE_BY_POST');
+
+    });
   });
 });

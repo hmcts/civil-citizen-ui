@@ -1,6 +1,11 @@
 {% macro setPageTitle(t, title) %}
-  {% set dynamicTitle = t('COMMON.PAGE_TITLE_PART1') + ' - ' + t(title) if title else t('COMMON.PAGE_TITLE_PART1') + " - " + t('COMMON.PAGE_TITLE_PART2') %}
+  {% set dynamicTitle = t(title) + ' - ' + t('COMMON.PAGE_TITLE_PART1') if title else t('COMMON.PAGE_TITLE_PART1') + " - " + t('COMMON.PAGE_TITLE_PART2') %}
   {% block pageTitle %}
     {{ dynamicTitle }}
   {% endblock %}
 {% endmacro %}
+
+{% macro createPageTitle(title, t, size = 'l') %}
+  <h1 class=govuk-heading-{{size}}>{{ t(title) }}</h1>
+{% endmacro %}
+

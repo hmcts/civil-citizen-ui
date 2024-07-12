@@ -66,7 +66,7 @@ export const enum TestMessages {
   IS_YOUR_PARTNER_OVER_18 = 'Is your partner aged 18 or over?',
   IS_YOUR_PARTNER_SEVERELY_DISABLED = 'Is your partner severely disabled?',
   MEDIATION_DISAGREEMENT = 'You chose not to try free mediation',
-  MEDIATION_CONTACT_PERSON_CONFIRMATION = 'Mediation contact person confirmation',
+  MEDIATION_CONTACT_PERSON_CONFIRMATION = 'Who will be attending the mediation appointment?',
   MEDIATION_EMAIL_CONFIRMATION = 'Mediation email confirmation',
   MEDIATION_PHONE_CONFIRMATION = 'Mediation telephone confirmation',
   MEDIATION_UPLOAD_DOCUMENTS_TITLE_PAGE = 'Upload your documents',
@@ -197,5 +197,9 @@ export const enum TestMessages {
   CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_CLOSE_AND_RETURN = 'Close and return to case details',
   ERRORS_CORRECT_DATE_NOT_IN_FUTURE = 'Correct the date. You can’t use a future date.',
   ERRORS_VALID_DATE = 'Please enter a valid date',
-
+  CCJ_CONFIRMATION_TITLE = 'County Court Judgment requested',
+  CCJ_CONFIRMATION_PROCESS_YOUR_REQUEST = 'We’ll process your request and send a copy of the judgment to you and to',
+  CCJ_CONFIRMATION_PROCESS_YOUR_REQUEST_1 = 'Please do not call the Court &amp; Tribunal Service Centre (CTSC) about the progress of your request.',
+  CCJ_CONFIRMATION_NO_LONGER_RESPONSE = 'can no longer respond to your claim online.',
+  CCJ_CONFIRMATION_PROCESS_YOUR_REQUEST_JO = 'We’ll process your request and you will receive notifications by email, you will be able to view the judgment via your dashboard and we’ll also post a copy of the judgment to'
 }

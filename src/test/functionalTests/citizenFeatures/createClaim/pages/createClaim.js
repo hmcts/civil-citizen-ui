@@ -182,8 +182,6 @@ class CreateClaim {
     I.see('First name');
     I.see('Last name');
     I.see('Their address', 'h2');
-    I.see('If your address is not correct you can change it here.');
-    I.see('Any changes will be shared with the claimant when you submit your response.');
     I.see('The address must be in England or Wales.');
     I.see('Your claim may be invalid if you use the wrong address.');
     I.see('You must enter their usual or last known home address.');
@@ -728,6 +726,16 @@ class CreateClaim {
 
   async fillCompanyDefendantDetails() {
     await I.click(paths.options.limited_company_defendant);
+    this.clickNextAction(paths.buttons.save_and_continue);
+    await I.waitForContent('Are you claming for a delayed flight?', 60);
+    I.click(paths.options.yes);
+    this.clickNextAction(paths.buttons.save_and_continue);
+    await I.waitForContent('Enter flight details', 60);
+    await I.fillField('airline', 'Aegean');
+    await I.fillField('flightNumber', '012345');
+    await I.fillField('#day', '01');
+    await I.fillField('#month', '01');
+    await I.fillField('#year', '2020');
     this.clickNextAction(paths.buttons.save_and_continue);
     await I.waitForContent('Company details', 60);
     await I.fillField(paths.fields.OrgpartyName, 'Defendant Company name');

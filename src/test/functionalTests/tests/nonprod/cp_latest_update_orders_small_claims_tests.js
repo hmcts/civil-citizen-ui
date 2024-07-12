@@ -36,15 +36,14 @@ Scenario('Case progression journey - Small Claims - Verify latest Update page fo
       const notification = orderMade();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       taskListItem = ordersAndNotices();
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'AVAILABLE', true);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
       await I.click(notification.nextSteps);
       await ResponseSteps.SignOut();
       await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
       await I.click(claimNumber);
-      await I.dontSee(notification.title);
+      await I.dontSee(notification.content);
     } else {
       CaseProgressionSteps.verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType);
     }
   }
 }).tag('@regression-cp');
-

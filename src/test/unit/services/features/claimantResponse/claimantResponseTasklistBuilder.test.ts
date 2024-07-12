@@ -63,7 +63,7 @@ jest.mock('i18next', () => ({
 describe('Full Defence', () => {
   const claimId = '5129';
   const lang = 'en';
-  it('should display decide whether to proceed task with proceed value as no as complete with hearing requirements as incomplete and free telephone mediation as incomplete for full defense states paid', () => {
+  it('should display decide whether to proceed task with proceed value as no as complete with hearing requirements as incomplete and free telephone mediation as incomplete for full defense states paid minti not applicable', () => {
     //Given
     const claim=new Claim();
     claim.mediation=new Mediation();
@@ -92,7 +92,7 @@ describe('Full Defence', () => {
 
     //When
     const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
-    const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+    const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
     //Then
     expect(whatToDoNext.tasks.length).toBe(2);
     expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.ACCEPT_OR_REJECT_THEIR_RESPONSE');
@@ -848,7 +848,7 @@ describe('Claimant Response Task List builder', () => {
       expect(whatToDoNext.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
     });
 
-    it('should display decide wether to proceed task with proceed value as yes as complete with hearing requirements as incomplete and free telephone mediation as incomplete for full defense', () => {
+    it('should display decide wether to proceed task with proceed value as yes as complete with hearing requirements as incomplete and free telephone mediation as incomplete for full defense minti not applicable', () => {
       //Given
       const claim = new Claim();
       claim.respondent1 = {responseType: ResponseType.FULL_DEFENCE};
@@ -866,7 +866,7 @@ describe('Claimant Response Task List builder', () => {
       } as ClaimantResponse;
       //When
       const whatToDoNext = buildWhatToDoNextSection(claim, claimId, lang);
-      const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+      const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
       //Then
       expect(whatToDoNext.tasks.length).toBe(2);
       expect(whatToDoNext.tasks[0].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.DECIDE_WHETHER_TO_PROCEED');
@@ -984,6 +984,47 @@ describe('Claimant Response Task List builder', () => {
           text: 'test',
         },
       } as ClaimantResponse;
+      //When
+      const yourResponse = buildYourResponseSection(claim, claimId, lang, false);
+      //Then
+      expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
+      expect(yourResponse.tasks.length).toBe(3);
+      expect(yourResponse.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(yourResponse.tasks[1].status).toEqual(TaskStatus.COMPLETE);
+      expect(yourResponse.tasks[2].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(yourResponse.tasks[2].url).toEqual(freeMediationUrl);
+      expect(yourResponse.tasks[2].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(yourResponse.tasks[3]).toBeUndefined();
+    });
+    it('should display haveYouBeenPaidTask and freeTelephoneMediationTas as second for when claimant doesn`t accept defendant payment for Lip v Lr case', () => {
+      //Given
+      claim.claimantResponse = {
+        hasDefendantPaidYou: new GenericYesNo(YesNo.NO),
+      } as ClaimantResponse;
+      claim.isDefendantAgreedForMediation = jest.fn().mockReturnValue(false);
+      claim.isDefendantLrAgreedForMediation = jest.fn().mockReturnValue(true);
+      //When
+      const yourResponse = buildYourResponseSection(claim, claimId, lang, false);
+      //Then
+      expect(yourResponse.title).toBe('CLAIMANT_RESPONSE_TASK_LIST.YOUR_RESPONSE.TITLE');
+      expect(yourResponse.tasks.length).toBe(2);
+      expect(yourResponse.tasks[0].status).toEqual(TaskStatus.COMPLETE);
+      expect(yourResponse.tasks[1].description).toEqual('CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.FREE_TELEPHONE_MEDIATION');
+      expect(yourResponse.tasks[1].url).toEqual(freeMediationUrl);
+      expect(yourResponse.tasks[1].status).toEqual(TaskStatus.INCOMPLETE);
+      expect(yourResponse.tasks[2]).toBeUndefined();
+    });
+    it('should display haveYouBeenPaidTask, settleClaimForPaidAmountTask and freeTelephoneMediationTask as third task for when claimant accept defendant payment but not settle the claim for Lip v Lr case', () => {
+      //Given
+      claim.claimantResponse = {
+        hasDefendantPaidYou: new GenericYesNo(YesNo.YES),
+        hasPartPaymentBeenAccepted: new GenericYesNo(YesNo.NO),
+        rejectionReason: {
+          text: 'test',
+        },
+      } as ClaimantResponse;
+      claim.isDefendantAgreedForMediation = jest.fn().mockReturnValue(false);
+      claim.isDefendantLrAgreedForMediation = jest.fn().mockReturnValue(true);
       //When
       const yourResponse = buildYourResponseSection(claim, claimId, lang, false);
       //Then
@@ -1126,42 +1167,42 @@ describe('Claimant Response Task List builder', () => {
       claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
       claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
     });
-    it('shouldn`t display hearingRequirement section when there is no value for settlement', () => {
+    it('shouldn`t display hearingRequirement section when there is no value for settlement minti not applicable', () => {
       //Given
       claim.claimantResponse = <ClaimantResponse>{hasPartAdmittedBeenAccepted: undefined};
 
       //When
-      const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+      const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
       //Then
       expect(hearingRequirement.tasks[0]).toBeUndefined();
     });
 
-    it('shouldn`t display hearingRequirement section when claimant rejected settlement for defendent`s partial admission amount', () => {
+    it('shouldn`t display hearingRequirement section when claimant rejected settlement for defendent`s partial admission amount minti not applicable', () => {
       //Given
       claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.YES};
       //When
-      const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+      const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
       //Then
       expect(hearingRequirement.tasks[0]).toBeUndefined();
     });
 
-    it('shouldn`t display hearingRequirement section when claimant accepts defendant paid amount in Full Defence states Paid (when states paid amount was LESS THAN full amount)', () => {
+    it('shouldn`t display hearingRequirement section when claimant accepts defendant paid amount in Full Defence states Paid (when states paid amount was LESS THAN full amount) minti not applicable', () => {
       //Given
       claim.claimantResponse.hasPartAdmittedBeenAccepted = undefined;
       claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
       //When
-      const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+      const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
       //Then
       expect(hearingRequirement.tasks[0]).toBeUndefined();
     });
 
-    it('shouldn`t display hearingRequirement section when claimant settle claim defendant paid amount in Full Defence states Paid (when states paid amount was LESS THAN full amount)', () => {
+    it('shouldn`t display hearingRequirement section when claimant settle claim defendant paid amount in Full Defence states Paid (when states paid amount was LESS THAN full amount)  minti not applicable', () => {
       //Given
       claim.claimantResponse.hasPartAdmittedBeenAccepted = undefined;
       claim.claimantResponse.hasDefendantPaidYou = {option: YesNo.YES};
       claim.claimantResponse.hasPartPaymentBeenAccepted = {option: YesNo.YES};
       //When
-      const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+      const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
       //Then
       expect(hearingRequirement.tasks[0]).toBeUndefined();
     });
@@ -1170,12 +1211,12 @@ describe('Claimant Response Task List builder', () => {
       beforeEach(() => {
         claim.totalClaimAmount = 9000;
       });
-      it('should display give us details for hearing task as incomplete when claimant rejected settlement for defendent`s partial admission amount', () => {
+      it('should display give us details for hearing task as incomplete when claimant rejected settlement for defendent`s partial admission amount minti not applicable', () => {
         //Given
         claim.claimantResponse.hasPartAdmittedBeenAccepted = {option: YesNo.NO};
         claim.totalClaimAmount = 9000;
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks.length).toBe(1);
         expect(hearingRequirement.tasks[0].description).toEqual('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS');
@@ -1183,11 +1224,11 @@ describe('Claimant Response Task List builder', () => {
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
       });
 
-      it('should display give us details for hearing task task as incomplete with empty directions questionnaire', () => {
+      it('should display give us details for hearing task task as incomplete with empty directions questionnaire minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks.length).toBe(1);
         expect(hearingRequirement.tasks[0].description).toEqual('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS');
@@ -1195,53 +1236,53 @@ describe('Claimant Response Task List builder', () => {
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
       });
 
-      it('should display give us details for hearing task as incomplete when other witnesses is not available', () => {
+      it('should display give us details for hearing task as incomplete when other witnesses is not available minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire.witnesses = new Witnesses();
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
-      it('should display give us details for hearing task as incomplete when phone or video hearing is not available', () => {
+      it('should display give us details for hearing task as incomplete when phone or video hearing is not available minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire.hearing = new Hearing();
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
-      it('should display give us details for hearing task as incomplete when vulnerability not available', () => {
+      it('should display give us details for hearing task as incomplete when vulnerability not available minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire.vulnerabilityQuestions = new VulnerabilityQuestions();
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
-      it('should display give us details for hearing task as incomplete when welsh language requirements not available', () => {
+      it('should display give us details for hearing task as incomplete when welsh language requirements not available minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire.welshLanguageRequirements = new WelshLanguageRequirements();
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
-      it('should display give us details for hearing task as complete for small claims when all information provided - expert not required scenario', () => {
+      it('should display give us details for hearing task as complete for small claims when all information provided - expert not required scenario minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
         claim.claimantResponse.directionQuestionnaire.hearing.determinationWithoutHearing = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts.expertRequired = false;
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks.length).toBe(1);
         expect(hearingRequirement.tasks[0].description).toEqual('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS');
@@ -1249,91 +1290,91 @@ describe('Claimant Response Task List builder', () => {
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       });
 
-      it('should display give us details for hearing task as complete when expert required and expert report details available', () => {
+      it('should display give us details for hearing task as complete when expert required and expert report details available minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
         claim.claimantResponse.directionQuestionnaire.hearing.determinationWithoutHearing = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts.expertRequired = true;
         claim.claimantResponse.directionQuestionnaire.experts.expertReportDetails = {option: YesNo.YES};
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
-      it('should display give us details for hearing task as incomplete when expert required and expert report details not available', () => {
+      it('should display give us details for hearing task as incomplete when expert required and expert report details not available minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire.experts.expertRequired = true;
         claim.claimantResponse.directionQuestionnaire.experts.expertReportDetails = {option: YesNo.NO};
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
-      it('should display give us details for hearing task as complete when expert required, expert report details not available but not wanted to ask for court permission to use an expert ', () => {
+      it('should display give us details for hearing task as complete when expert required, expert report details not available but not wanted to ask for court permission to use an expert minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
         claim.claimantResponse.directionQuestionnaire.hearing.determinationWithoutHearing = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts.permissionForExpert = {option: YesNo.NO};
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
-      it('should display give us details for hearing task as incomplete when expert required, expert report details not available but wanted to ask for court permission to use an expert ', () => {
+      it('should display give us details for hearing task as incomplete when expert required, expert report details not available but wanted to ask for court permission to use an expert minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire.experts.permissionForExpert = {option: YesNo.YES};
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
-      it('should display give us details for hearing task as complete when expert required, expert report details not available, wanted to ask for court permission to use an expert but there is nothing expert can still examine', () => {
+      it('should display give us details for hearing task as complete when expert required, expert report details not available, wanted to ask for court permission to use an expert but there is nothing expert can still examine minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
         claim.claimantResponse.directionQuestionnaire.hearing.determinationWithoutHearing = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts.expertCanStillExamine = {option: YesNo.NO};
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
-      it('should display give us details for hearing task as incomplete when expert required, expert report details not available, wanted to ask for court permission to use an expert and there is something expert can still exomine ', () => {
+      it('should display give us details for hearing task as incomplete when expert required, expert report details not available, wanted to ask for court permission to use an expert and there is something expert can still exomine minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire.experts.expertCanStillExamine = {option: YesNo.YES};
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
-      it('should display give us details for hearing task as complete when expert required, expert report details not available, wanted to ask for court permission to use an expert, there is something expert can still examine but expert details not available', () => {
+      it('should display give us details for hearing task as complete when expert required, expert report details not available, wanted to ask for court permission to use an expert, there is something expert can still examine but expert details not available minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
         claim.claimantResponse.directionQuestionnaire.hearing.determinationWithoutHearing = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = mockExpertDetailsList;
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
       });
 
-      it('should display give us details for hearing task as incomplete when expert required, expert details not available, wanted to ask for court permission to use an expert and there is something expert can still exomine ', () => {
+      it('should display give us details for hearing task as incomplete when expert required, expert details not available, wanted to ask for court permission to use an expert and there is something expert can still exomine minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = undefined;
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingSmallClaimsUrl);
@@ -1345,9 +1386,9 @@ describe('Claimant Response Task List builder', () => {
       beforeEach(() => {
         claim.totalClaimAmount = 24000;
       });
-      it('should display give us details for hearing task as incomplete when claimant rejected settlement for defendent`s partial admission amount', () => {
+      it('should display give us details for hearing task as incomplete when claimant rejected settlement for defendent`s partial admission amount minti not applicable', () => {
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks.length).toBe(1);
         expect(hearingRequirement.tasks[0].description).toEqual('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS');
@@ -1355,9 +1396,9 @@ describe('Claimant Response Task List builder', () => {
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
       });
 
-      it('should display give us details for hearing task task as incomplete with empty directions questionnaire', () => {
+      it('should display give us details for hearing task task as incomplete with empty directions questionnaire minti not applicable', () => {
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks.length).toBe(1);
         expect(hearingRequirement.tasks[0].description).toEqual('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS');
@@ -1365,39 +1406,39 @@ describe('Claimant Response Task List builder', () => {
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
       });
 
-      it('should display give us details for hearing task as incomplete when other witnesses is not available', () => {
+      it('should display give us details for hearing task as incomplete when other witnesses is not available minti not applicable', () => {
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
-      it('should display give us details for hearing task as incomplete when phone or video hearing is not available', () => {
+      it('should display give us details for hearing task as incomplete when phone or video hearing is not available minti not applicable', () => {
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
-      it('should display give us details for hearing task as incomplete when vulnerability not available', () => {
+      it('should display give us details for hearing task as incomplete when vulnerability not available minti not applicable', () => {
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
-      it('should display give us details for hearing task as incomplete when welsh language requirements not available', () => {
+      it('should display give us details for hearing task as incomplete when welsh language requirements not available minti not applicable', () => {
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
-      it('should display give us details for hearing task as complete for fast track claims when all information provided - expert evidence not used sceneraio', () => {
+      it('should display give us details for hearing task as complete for fast track claims when all information provided - expert evidence not used sceneraio minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
         claim.claimantResponse.directionQuestionnaire.experts = {
@@ -1407,7 +1448,7 @@ describe('Claimant Response Task List builder', () => {
         claim.claimantResponse.directionQuestionnaire.hearing.requestExtra4weeks = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.hearing.considerClaimantDocuments = {option: YesNo.YES};
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks.length).toBe(1);
         expect(hearingRequirement.tasks[0].description).toEqual('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS');
@@ -1415,38 +1456,38 @@ describe('Claimant Response Task List builder', () => {
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       });
 
-      it('should display give us details for hearing task as incomplete when expert evidence used but sent expert reports not available', () => {
+      it('should display give us details for hearing task as incomplete when expert evidence used but sent expert reports not available minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire.experts.expertEvidence = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts.sentExpertReports = {};
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
-      it('should display give us details for hearing task as incomplete when expert evidence used and sharing expert with other party not available', () => {
+      it('should display give us details for hearing task as incomplete when expert evidence used and sharing expert with other party not available minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire.experts.sharedExpert = {};
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
-      it('should display give us details for hearing task as incomplete when expert evidence used used and expert details not available', () => {
+      it('should display give us details for hearing task as incomplete when expert evidence used used and expert details not available minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = {items: []};
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
       });
 
-      it('should display give us details for hearing task as complete when expert evidence used, sent expert reports, sharedExpert and expert details available', () => {
+      it('should display give us details for hearing task as complete when expert evidence used, sent expert reports, sharedExpert and expert details available minti not applicable', () => {
         //Given
         claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
         claim.claimantResponse.directionQuestionnaire.hearing.triedToSettle = {option: YesNo.YES};
@@ -1456,10 +1497,60 @@ describe('Claimant Response Task List builder', () => {
         claim.claimantResponse.directionQuestionnaire.experts.sharedExpert = {option: YesNo.YES};
         claim.claimantResponse.directionQuestionnaire.experts.expertDetailsList = mockExpertDetailsList;
         //When
-        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang);
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, false);
         //Then
         expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
         expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
+      });
+    });
+
+    describe('Intermediate track DQ', () => {
+      beforeEach(() => {
+        claim.totalClaimAmount = 26000;
+      });
+      it('should display give us details for hearing task as incomplete when claimant rejected settlement for defendent`s partial admission amount', () => {
+        //When
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, true);
+        //Then
+        expect(hearingRequirement.tasks.length).toBe(1);
+        expect(hearingRequirement.tasks[0].description).toEqual('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS');
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
+        expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+      });
+
+      it('should display give us details for hearing task as incomplete documents to consider not complete', () => {
+        //Given
+        claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
+        claim.claimantResponse.directionQuestionnaire.experts = {
+          expertEvidence: {option: YesNo.NO},
+        };
+        claim.claimantResponse.directionQuestionnaire.hearing.triedToSettle = {option: YesNo.YES};
+        claim.claimantResponse.directionQuestionnaire.hearing.requestExtra4weeks = {option: YesNo.YES};
+        //When
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, true);
+        //Then
+        expect(hearingRequirement.tasks.length).toBe(1);
+        expect(hearingRequirement.tasks[0].description).toEqual('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS');
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
+        expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.INCOMPLETE);
+      });
+
+      it('should display give us details for hearing task as complete', () => {
+        //Given
+        claim.claimantResponse.directionQuestionnaire = Object.assign(new DirectionQuestionnaire(), getCommonJourneyCompleted());
+        claim.claimantResponse.directionQuestionnaire.experts = {
+          expertEvidence: {option: YesNo.NO},
+        };
+        claim.claimantResponse.directionQuestionnaire.hearing.triedToSettle = {option: YesNo.YES};
+        claim.claimantResponse.directionQuestionnaire.hearing.requestExtra4weeks = {option: YesNo.YES};
+        claim.claimantResponse.directionQuestionnaire.hearing.hasDocumentsToBeConsidered = {option: YesNo.YES};
+        //When
+        const hearingRequirement = buildClaimantHearingRequirementsSection(claim, claimId, lang, true);
+        //Then
+        expect(hearingRequirement.tasks.length).toBe(1);
+        expect(hearingRequirement.tasks[0].description).toEqual('TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS');
+        expect(hearingRequirement.tasks[0].url).toEqual(giveUsDetailsClaimantHearingFastTrackUrl);
+        expect(hearingRequirement.tasks[0].status).toEqual(TaskStatus.COMPLETE);
       });
     });
   });

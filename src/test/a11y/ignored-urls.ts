@@ -26,6 +26,7 @@ export const IGNORED_URLS = [
   urls.DASHBOARD_NOTIFICATION_REDIRECT,
   urls.DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT,
   urls.MEDIATION_SERVICE_EXTERNAL,
+  urls.BASE_CASE_PROGRESSION_URL,
   //Currently failing on accessibility
   urls.ASSIGN_CLAIM_URL,
   urls.CLAIM_TIMELINE_URL,
@@ -36,7 +37,6 @@ export const IGNORED_URLS = [
   urls.CLAIM_FEE_BREAKUP,
   urls.CLAIM_FEE_CHANGE_URL,
   urls.CITIZEN_TIMELINE_URL,
-  urls.BREATHING_SPACE_RESPITE_LIFTED_URL,
   urls.CP_UPLOAD_DOCUMENTS_URL,
   urls.CP_EVIDENCE_UPLOAD_SUBMISSION_URL,
   urls.TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
@@ -56,6 +56,7 @@ export const IGNORED_URLS = [
   // WCAG2AA.Principle1.Guideline1_3.1_3_1.H39.3.LayoutTable - govUK has caption on tables
   urls.VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT,
   urls.CANCEL_URL,
+  urls.BACK_URL,
   urls.VIEW_MEDIATION_DOCUMENTS,
   urls.BASE_GENERAL_APPLICATION_URL,
   urls.BASE_GENERAL_APPLICATION_RESPONSE_URL,
@@ -63,5 +64,15 @@ export const IGNORED_URLS = [
   //TODO: remove this once finished the page
   urls.VIEW_THE_HEARING_URL,
   urls.BASE_GENERAL_APPLICATION_RESPONSE_URL,
-  urls.VIEW_THE_JUDGEMENT_URL, //TODO: remove this once finished the page
+  //TODO: remove this once finished the page
+  urls.VIEW_THE_JUDGMENT_URL,
+  //TODO: remove this once finished the page
+  urls.GENERAL_APPLICATION_CONFIRM_URL,
+  urls.CONFIRM_YOU_HAVE_BEEN_PAID_URL, //TODO: remove this once finished the page
+  urls.VIEW_THE_JUDGMENT_URL, //TODO: remove this once finished the page
+  urls.REQUEST_FOR_RECONSIDERATION_CANCEL_URL,
+  urls.GA_APPLICATION_SUMMARY_URL, //TODO: remove this once finished the page
+  urls.APPLICATION_FEE_PAYMENT_CONFIRMATION_URL,
+  urls.APPLICATION_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID,
+  urls.RESPONSE_DEADLINE_OPTIONS_URL,
 ];

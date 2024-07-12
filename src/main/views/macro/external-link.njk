@@ -1,6 +1,20 @@
-{% macro externalLink(t, text, href, newWindow) %}
+{% macro externalLink(t, text, href, newWindow, translated) %}
+  {% if href %}
   <a class="govuk-link" href={{ href }} target="_blank" rel="noreferrer noopener">
-    {{ t(text) }} 
+    {% if translated %}
+      {{ text }}
+    {% else %}
+     {{ t(text) }}
+    {% endif %}
     {{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.OPENS_IN_A_NEW_WINDOW') if newWindow }}
   </a>
+  {% else %}
+<p class="govuk-body">
+    {% if translated %}
+      {{ text }}
+    {% else %}
+      {{ t(text) }}
+    {% endif %}
+</p>
+  {% endif %}
 {% endmacro %}

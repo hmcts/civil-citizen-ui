@@ -11,6 +11,7 @@ import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApp
 import { CaseProgressionHearing } from 'common/models/caseProgression/caseProgressionHearing';
 import { t } from 'i18next';
 import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
+import { PaymentInformation } from 'common/models/feePayment/paymentInformation';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -31,12 +32,14 @@ describe('Claim fee payment confirmation', () => {
   beforeEach(() => {
     claim = new Claim();
     claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.applicationFeePaymentDetails = new PaymentInformation();
+    claim.generalApplication.applicationFeePaymentDetails.paymentReference = 'REF-123-123';
     claim.caseProgressionHearing = new CaseProgressionHearing();
   });
 
   describe('on GET', () => {
     it('should return resolving successful payment page', async () => {
-      claim.generalApplication.applicationType = new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM);
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM)];
       mockDataFromStore.mockResolvedValueOnce(claim);
       await request(app)
         .get(GA_PAYMENT_SUCCESSFUL_URL)
@@ -51,7 +54,7 @@ describe('Claim fee payment confirmation', () => {
 
     });
     it('should return resolving successful application submitted', async () => {
-      claim.generalApplication.applicationType = new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING);
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING)];
       claim.caseProgressionHearing.hearingDate = new Date('2026-01-01');
       mockDataFromStore.mockResolvedValueOnce(claim);
       await request(app)

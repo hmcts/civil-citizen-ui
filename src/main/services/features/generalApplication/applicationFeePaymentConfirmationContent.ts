@@ -9,16 +9,15 @@ const daysForHearingAdjournWithoutFee =14;
 
 export const getGaPaymentSuccessfulPanelContent = (claim: Claim, lng?: string) => {
   const panelBuilder = new PaymentSuccessfulSectionBuilder();
-  if (isApplicationSubmittedWithoutFee(claim.generalApplication.applicationType?.option, claim.caseProgressionHearing)) {
+  if (isApplicationSubmittedWithoutFee(claim.generalApplication.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option, claim.caseProgressionHearing)) {
     panelBuilder.addPanelForConfirmation('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.APPLICATION_SUBMITTED', lng);
   } else {
-    // dynamic value will be added as part of story CIV-13767
-    panelBuilder.addPanel('REF-123-123', lng);
+    panelBuilder.addPanel(claim.generalApplication?.applicationFeePaymentDetails?.paymentReference, lng);
   }
   return panelBuilder.build();
 };
 
-export const getGaPaymentSuccessfulBodyContent = (claim: Claim, lng?: string) => {
+export const getGaPaymentSuccessfulBodyContent = (claim: Claim, calculatedAmountInPence : string, lng?: string) => {
   let contentBuilder = new PaymentSuccessfulSectionBuilder()
     .addParagraph('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.CONFIRMATION', { lng: getLng(lng) })
     .addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT',{ lng: getLng(lng) })
@@ -29,7 +28,7 @@ export const getGaPaymentSuccessfulBodyContent = (claim: Claim, lng?: string) =>
     .addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.CHOOSEN_NOT_TO_INFORM_OTHER_PARTY', { lng: getLng(lng) })
     .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_1', { lng: getLng(lng) })
     .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_2', { lng: getLng(lng) });
-  if (isApplicationSubmittedWithoutFee(claim.generalApplication?.applicationType?.option, claim.caseProgressionHearing)) {
+  if (isApplicationSubmittedWithoutFee(claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option, claim.caseProgressionHearing)) {
     contentBuilder = new PaymentSuccessfulSectionBuilder()
       .addParagraph('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.CONFIRMATION', { lng: getLng(lng) })
       .addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT', { lng: getLng(lng) })
@@ -40,9 +39,8 @@ export const getGaPaymentSuccessfulBodyContent = (claim: Claim, lng?: string) =>
   }
 
   contentBuilder.addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.PAYMENT_SUMMARY_TITLE', { lng: getLng(lng) })
-  // dynamic value will be added as part of story CIV-13767
     .addSummary(currencyFormatWithNoTrailingZeros(convertToPoundsFilter(
-      '0.00')),
+      calculatedAmountInPence)),
     'COMMON.MICRO_TEXT.APPLICATION_FEE',lng);
   return contentBuilder.build();
 };

@@ -13,5 +13,14 @@
 {% set essentialCookiesUrl = 'https://hmcts-access.service.gov.uk/cookies' %}
 {% set enforceJudgementUrl = 'https://www.gov.uk/make-court-claim-for-money/enforce-a-judgment' %}
 {% set claimCreationSmartSurveyUrl = 'https://www.smartsurvey.co.uk/s/CMC_ExitSurvey_Claimant/?pageUrl=/claim/claimId/confirmation' %}
-{% set callChargesUrl = 'https://www.gov.uk/call-charges' %}
+{% if getLanguage() =='cy' %}
+  {% set callChargesUrl = 'https://www.gov.uk/costau-galwadau' %}
+{% else %}
+  {% set callChargesUrl = 'https://www.gov.uk/call-charges' %}
+{% endif %}
 {% set getInterpreterUrl = 'https://www.gov.uk/get-interpreter-at-court-or-tribunal' %}
+{% set moneyClaimsUrl = 'https://www1.moneyclaims.service.gov.uk/' %}
+{% set abilityNetUrl = 'https://mcmw.abilitynet.org.uk' %}
+{% set equalityUrl = 'https://www.equalityadvisoryservice.com' %}
+{% set complianceUrl = 'https://www.w3.org/TR/WCAG22' %}
+{% set formN245Url = 'https://www.gov.uk/government/publications/form-n245-application-for-suspension-of-a-warrant-and-or-variation-of-an-order' %}
