@@ -21,6 +21,7 @@ jobs:
           node-version: 21.6.1
       - run: yarn install
       - run: yarn build
+      - run: yarn playwright install
       - run: yarn wiremock:start &
       - run: yarn start:e2e &
       - run: yarn test:e2e
