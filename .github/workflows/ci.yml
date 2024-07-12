@@ -27,9 +27,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 21.6.1
-      - run: yarn playwright install && yarn install
+      - run: yarn install && yarn playwright install
       - run: yarn build
-      - run: yarn playwright install
       - run: yarn wiremock:start &
       - run: yarn start:e2e &
       - name: Wait for 5 seconds
