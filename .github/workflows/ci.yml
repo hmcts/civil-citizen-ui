@@ -29,13 +29,13 @@ jobs:
           node-version: 21.6.1
       - name: Install
         run: yarn install && yarn playwright install
-      - name: build
+      - name: Build
         run: yarn build
       - name: Starting WireMock
         run: yarn wiremock:start &
       - name: Starting CUI
         run: yarn start:e2e &
-      - name: Wait for 5 seconds
+      - name: Waiting CUI to get ready
         run: sleep 5
-      - name: Execution e2e tests
+      - name: Executing e2e tests
         run: yarn test:e2e
