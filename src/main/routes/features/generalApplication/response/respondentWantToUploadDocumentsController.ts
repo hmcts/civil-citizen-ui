@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  GA_RESPONDENT_UPLOAD_DOCUMENT,
   GA_RESPONDENT_HEARING_PREFERENCE,
+  GA_RESPONDENT_UPLOAD_DOCUMENT,
   GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT,
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
@@ -9,11 +9,16 @@ import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {getCancelUrl, getRespondToApplicationCaption, saveRespondentWantToUploadDoc}
-  from 'services/features/generalApplication/generalApplicationService';
+import {
+  getCancelUrl,
+  saveRespondentWantToUploadDoc
+} from 'services/features/generalApplication/generalApplicationService';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
+import {
+  getRespondToApplicationCaption,
+} from 'services/features/generalApplication/response/generalApplicationResponseService';
 
 const respondentWantToUploadDocumentsController = Router();
 const viewPath = 'features/generalApplication/response/respondent-want-to-upload-documents';

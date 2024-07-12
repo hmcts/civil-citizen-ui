@@ -52,7 +52,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
   beforeEach(() => {
     claim = new Claim();
     claim.generalApplication = new GeneralApplication();
-    claim.generalApplication.applicationType = new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT);
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT)];
     claim.generalApplication.response = new GaResponse();
     claim.generalApplication.response.wantToUploadDocuments = YesNo.YES;
     mockDataFromStore.mockResolvedValue(claim);
@@ -147,7 +147,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
           expect(res.text).toContain(t('ERRORS.VALID_CHOOSE_THE_FILE'));
         });
     });
-    
+
     it('should return http 500 when has error in the get method', async () => {
       mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)

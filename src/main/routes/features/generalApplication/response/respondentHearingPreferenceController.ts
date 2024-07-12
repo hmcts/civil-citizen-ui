@@ -1,9 +1,11 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {GA_RESPONDENT_HEARING_PREFERENCE, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT } from 'routes/urls';
+import {GA_RESPONDENT_HEARING_PREFERENCE, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
-import {getRespondToApplicationCaption} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {
+  getRespondToApplicationCaption,
+} from 'services/features/generalApplication/response/generalApplicationResponseService';
 
 const respondentHearingPreferenceController = Router();
 const viewPath = 'features/generalApplication/response/respondent-hearing-preference';
