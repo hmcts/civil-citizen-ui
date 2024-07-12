@@ -15,7 +15,7 @@ import {DraftStoreClient} from 'modules/draft-store';
 import {CSRFToken} from 'modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
-//import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
+import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
 import {getRedisStoreForSession} from 'modules/utilityService';
 import {
   ASSIGN_FRC_BAND_URL,
@@ -50,13 +50,13 @@ import config = require('config');
 import {trackHistory} from 'routes/guards/trackHistory';
 import {OidcMiddleware} from 'modules/oidc';
 import {AppSession} from 'models/AppRequest';
-import {DraftStoreCliente2e, getRedisStoreForSessione2e} from "../test/e2eTestes/configurations/draft-store";
+import {DraftStoreCliente2e, getRedisStoreForSessione2e} from '../test/e2eTestes/configurations/draft-store';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
 
 const env = process.env.NODE_ENV || 'development';
-const productionMode = false;// = env === 'production';
+const productionMode = env === 'production';
 const developmentMode = env === 'development';
 const e2eTestMode = env === 'e2eTest';
 const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
@@ -83,7 +83,7 @@ if(e2eTestMode){
   new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
 }
 
-logger.info('Creating OS places Client Instance');
+logger.info('Creating OSplaces Client Instance');
 createOSPlacesClientInstance();
 
 logger.info('Adding configuration for session store');
@@ -156,7 +156,7 @@ if(e2eTestMode){
 }
 
 const checkServiceAvailability = async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
-  const serviceShuttered = false;//await isServiceShuttered();
+  const serviceShuttered = await isServiceShuttered();
   logger.info(`Checking for service availability... ${serviceShuttered}`);
   if (serviceShuttered) {
     res.render('service-unavailable');

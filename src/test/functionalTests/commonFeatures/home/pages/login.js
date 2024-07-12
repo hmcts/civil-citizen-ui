@@ -18,10 +18,10 @@ const buttons = {
 };
 
 class LoginPage {
-  openCitizenLogin() {
-    I.clearCookie();
-    I.setCookie([...idamCookies, ...cuiCookies]);
-    I.amOnPage('/');
+  async openCitizenLogin() {
+    await I.clearCookie();
+    await I.setCookie([...idamCookies, ...cuiCookies]);
+    await I.amOnPage('/');
   }
 
   async openOCMC() {

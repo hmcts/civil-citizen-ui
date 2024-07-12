@@ -4,6 +4,7 @@ import { CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
 import { saveDraftClaimToCache } from 'modules/draft-store/draftClaimCache';
 const createDraftViewPath = 'features/claim/create-draft';
 import jwt_decode from 'jwt-decode';
+import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 
 interface IdTokenJwtPayload {
   uid: string;
@@ -25,19 +26,17 @@ createDraftClaimController.get(TESTING_SUPPORT_URL, (async (req: AppRequest, res
 createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     let userId = ((req.session) as AppSession)?.user?.id;
-    console.log('userId ->' + userId);
     const caseData = req.body?.caseData ? JSON.parse(req.body?.caseData) : undefined;
 
     if (req.body?.idToken) {
       const jwt: IdTokenJwtPayload = jwt_decode(req.body?.idToken);
       userId = jwt?.uid;
     }
-    const isCarmEnabled = false; //await isCarmEnabledForCase(new Date(Date.now()));
+    const isCarmEnabled = await isCarmEnabledForCase(new Date(Date.now()));
     await saveDraftClaimToCache(userId, caseData, isCarmEnabled);
     if (req.body?.idToken && userId) {
       return res.sendStatus(200);
     }
-    //console.log(typeof isCarmEnabledForCase); // Should output 'function' if properly defined
     return res.redirect(CLAIM_CHECK_ANSWERS_URL);
 
   } catch (error) {

@@ -7,8 +7,5 @@ module.exports = [
     value: '{"analytics":"on","apm":"on"}',
     domain: getDomain(config.TestUrl),
     path: '/',
-    user: {
-      id: 'someId',
-    },
   },
 ];
