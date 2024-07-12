@@ -383,6 +383,18 @@ import backController from 'routes/common/backController';
 import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
 import viewApplicationToRespondentController from 'routes/features/generalApplication/response/viewApplicationController';
 import applicationSummaryController from './features/generalApplication/applicationSummaryController';
+import requestForReviewCommentsController
+  from 'routes/features/caseProgression/requestForReconsideration/requestForReviewCommentsController';
+import checkAnswersCommentsController
+  from 'routes/features/caseProgression/requestForReconsideration/checkAnswersCommentsController';
+import commentsConfirmationController
+  from 'routes/features/caseProgression/requestForReconsideration/commentsConfirmationController';
+import respondentHearingPreferenceController
+  from 'routes/features/generalApplication/response/respondentHearingPreferenceController';
+import respondentWantToUploadDocumentsController
+  from 'routes/features/generalApplication/response/respondentWantToUploadDocumentsController';
+import respondentUploadEvidenceDocumentsController
+  from 'routes/features/generalApplication/response/respondentUploadEvidenceDocmentsController';
 
 export default [
   homeController,
@@ -697,4 +709,10 @@ export default [
   applicationFeePaymentConfirmationController,
   viewApplicationToRespondentController,
   applicationSummaryController,
+  requestForReviewCommentsController,
+  checkAnswersCommentsController,
+  commentsConfirmationController,
+  respondentHearingPreferenceController,
+  respondentWantToUploadDocumentsController,
+  respondentUploadEvidenceDocumentsController,
 ];

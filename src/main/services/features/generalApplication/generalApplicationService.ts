@@ -367,3 +367,20 @@ export const getApplicationStatus = (status: ApplicationState): ApplicationStatu
 export const getApplicationFromGAService = async (req: AppRequest, applicationId: string): Promise<ApplicationResponse> => {
   return await generalApplicationClient.getApplication(req, applicationId);
 };
+
+export const saveRespondentWantToUploadDoc = async (claimId: string, claim: Claim, wantToUploadDocuments: YesNo): Promise<void> => {
+  try {
+    const generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = {
+      ...generalApplication,
+      response: {
+        ...generalApplication.response,
+        wantToUploadDocuments,
+      },
+    };
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
