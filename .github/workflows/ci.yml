@@ -15,7 +15,9 @@ env:
   CI: true
   NODE_OPTIONS: --max-old-space-size=4096
   CIVIL_SERVICE_URL: http://localhost:1111
-  TEST_HEADLESS: false
+  TEST_URL: http://localhost:3001
+  IDAM_API_URL: http://localhost:1111
+  ENVIRONMENT: preview
 jobs:
   build:
     runs-on: ubuntu-latest
