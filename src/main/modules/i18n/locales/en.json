@@ -1875,7 +1875,7 @@
         "NO_RESPONSE_ELIGIBLE_CCJ": "You haven’t responded to the claim. {{ claimantName }} can now ask for a County Court Judgment (CCJ) against you. You can still respond to this claim before they ask for a CCJ.",
         "PART_ADMIT_NOT_PAID": "You’ve admitted part of the claim.",
         "PART_ADMIT_STATES_PAID": "We’ve emailed {{ claimantName }} telling them when and how you said you paid the claim.",
-        "RESPONSE_BY_POST": "The claim will continue by post",
+        "RESPONSE_BY_POST": "The claim will continue by post.",
         "REQUESTED_CHANGE_BY_CLAIMANT": "The claimant applied to change something about the claim.",
         "REQUESTED_CHANGE_BY_DEFENDANT": "You applied to change the claim.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "You need to respond before 4pm on {{ responseDeadline }}.",
@@ -2574,6 +2574,42 @@
         "SELECT_APPLICATION": "Select the application you want and click continue.",
         "TITLE": "Select application",
         "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order."
+      },
+      "SUMMARY": {
+        "APP_REQUESTED": "An application is a request for a change to the case.",
+        "APPLICATION": "Application",
+        "APPLICATION_ID": "Application ID",
+        "APPLICATION_TYPE": "Application type",
+        "DETAILS": "Details",
+        "IN_PROGRESS": "In progress",
+        "MY_APPLICATIONS": "My applications",
+        "STATUS": "Status",
+        "STATES": {
+          "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
+          "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
+          "APPLICATION_ADD_PAYMENT": "Application Additional Payment",
+          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application Submitted - Awaiting Judicial Decision",
+          "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
+          "ADDITIONAL_RESPONSE_TIME_PROVIDED": "Additional Response Time Provided",
+          "AWAITING_DIRECTIONS_ORDER_DOCS": "Directions Order Made",
+          "ORDER_MADE": "Order Made",
+          "LISTING_FOR_A_HEARING": "Listed for a Hearing",
+          "HEARING_SCHEDULED": "Hearing Scheduled",
+          "APPLICATION_PAYMENT_FAILED": "Application Payment Failed",
+          "AWAITING_APPLICATION_PAYMENT": "Awaiting Application Payment",
+          "AWAITING_WRITTEN_REPRESENTATIONS": "Awaiting Written Representations",
+          "AWAITING_ADDITIONAL_INFORMATION": "Additional Information Required",
+          "APPLICATION_DISMISSED": "Application Dismissed",
+          "APPLICATION_CLOSED": "Application Closed",
+          "PROCEEDS_IN_HERITAGE": "Proceeds In Heritage",
+          "RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION": "Respond to judge for Written Representations"
+        },
+        "SUBMITTED_ON": "Submitted on",
+        "THE_STATUS_CHANGE": "The status of an application will change as it progresses. An application with a 'To do' status means you need to take action. For example, paying an application fee or responding.",
+        "THESE_ARE_APPS": "These are the applications that have been made by you or the other parties. The 'other parties' are the other side or sides involved in your claim.",
+        "TITLE": "All applications",
+        "TO_DO": "To do",
+        "VIEW_APPLICATION": "View application"
       },
       "INFORM_OTHER_PARTIES": {
         "COURT_SEND_OTHER_PARTIES": "The court will usually send the other parties a copy of your application to give them the opportunity to respond to it.",
@@ -3446,7 +3482,7 @@
       "HINT": "You can use this time to try to settle the claim without going to a hearing. Settling without going to a hearing may avoid costs including fees.",
       "PAGE_TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
       "TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
-      "WARNING": "This will not change the response deadline. even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
+      "WARNING": "This will not change the response deadline. Even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
     },
     "REQUEST_MORE_TIME": {
       "APPLY_TO_COURT": "You need to apply to the court to request more time.",
@@ -3993,6 +4029,14 @@
         "MAIN_TITLE": "How and why do you want the order changed?",
         "PARAGRAPH": "You can continue without giving details if you prefer. If you enter details {{ claimantOrDefendant }} will be able to see what you said and add their own comments."
       },
+      "REQUEST_FOR_REVIEW_COMMENTS": {
+        "MICRO_TEXT": "Request to review order",
+        "MAIN_TITLE": "Add your comments",
+        "REVIEW_HAS_BEEN_REQUESTED": "A review of an order has been requested by the other parties.",
+        "ADD_OWN_COMMENTS": "You can add your own comments below as part of the review.",
+        "WILL_SEE_COMMENTS": "{{ claimantOrDefendant }} will be able to see your comments.",
+        "ANY_EVIDENCE_INCLUDED": "Any evidence included in your comments should be relevant to the case."
+      },
       "CONFIRMATION": {
         "WHAT_HAPPENS_NEXT": "What happens next",
         "PARAGRAPH_1": "We’ll tell {{ claimantOrDefendant }} you’ve made the request. They will have until {{ date }} to add comments of their own.",
@@ -4000,6 +4044,13 @@
         "PARAGRAPH_3": "Continue doing what the current order asks of you unless you’re informed a judge has made a new order.",
         "PANEL_TEXT": "You’ve asked the court to review order",
         "PANEL_LINK": "Download request for review of  order (PDF)"
+      },
+      "COMMENTS_CONFIRMATION": {
+        "CONTINUE_TO_FOLLOW_ORDER": "You should continue to do what the order asks of you unless you hear that a judge has made a new order.",
+        "JUDGE_WILL_REVIEW": "A judge will now review the order and the comments. We’ll contact all parties to update you on the next steps.",
+        "LET_OTHER_PARTY_KNOW": "We will let {{ claimantOrDefendant }} know that you’ve submitted comments on the order.",
+        "PANEL_TEXT": "Your comments have been submitted successfully.",
+        "WHAT_HAPPENS_NEXT": "What happens next"
       },
       "DASHBOARD_STATE_CLAIMANT": "Read the defendant’s requests for a judge to review the order.",
       "DASHBOARD_STATE_DEFENDANT": "Read the claimant’s requests for a judge to review the order."
@@ -4024,6 +4075,7 @@
       "SEALED_CLAIM": "Sealed Claim form",
       "SETTLEMENT_AGREEMENT": "Settlement agreement",
       "STANDARD_DIRECTIONS_ORDER": "Standard Directions Order",
+      "TRANSLATED_ORDER": "Translated order",
       "UNSEALED_CLAIM":"Unsealed Claim form"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
@@ -4550,7 +4602,7 @@
     "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Date entered must not be after today’s date",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Enter a valid day",
-    "VALIDA_DAY_VARIATION_2": "Enter a valid day",
+    "VALID_DAY_VARIATION1": "Enter a valid day",
     "FIRST_PAYMENT_MESSAGE": "Date must not be sooner than {{firstPaymentDate}}",
     "VALID_DEBT_AMOUNT": {
       "COUNCIL_TAX": "Enter a valid Council Tax or Community Charge amount, maximum two decimal places",
@@ -4583,6 +4635,7 @@
     "VALID_PARTY_NAME": "Enter name",
     "VALID_CONTACT_PERSON": "Enter contact person",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
+    "VALID_PAYMENT_OPTION_VARIATION1": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Phone number must be a UK number",
     "VALID_PHONE_NUMBER_EVIDENCE": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192",
     "VALID_PHONE_OR_VIDEO_HEARING": {
@@ -4603,11 +4656,17 @@
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_COMMON": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_VARIATION_2": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_VARIATION_4": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_DO_NADDO": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_CARM_IE_NEU_NA": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_NAC_YDW": "Choose option: Yes or No",
     "VALID_YES_OR_NO_OPTION": "Select Yes to settle the claim",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
+    "VALID_YES_NO_SELECTION_VARIATION1": "Please select yes or no",
+    "VALID_YES_NO_SELECTION_VARIATION_2": "Please select yes or no",
     "VALID_YES_NO_SELECTION_OPTION2": "Please select yes or no",
     "VALID_YES_NO_SELECTION_UPPER": "Please select Yes or No",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
