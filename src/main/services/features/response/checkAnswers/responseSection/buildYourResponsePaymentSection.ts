@@ -72,8 +72,8 @@ export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, l
       break;
     case PaymentOptionType.BY_SET_DATE:
       responseSection.summaryList.rows.push(...[summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY', {lng: getLng(lang)}), t(`COMMON.PAYMENT_OPTION.${paymentOption}`, {lng: getLng(lang)}) + ': ' + formatDateToFullDate(paymentDate, getLng(lang)), paymentOptionHref, changeLabel(lang)), 
-      claim.isBusiness() ? null : buildExplanationRow(claim, claimId, lang),
-    ]);
+        claim.isBusiness() ? null : buildExplanationRow(claim, claimId, lang),
+      ]);
       break;
     case PaymentOptionType.INSTALMENTS: {
       responseSection.summaryList.rows.push(...[
