@@ -10,11 +10,12 @@ on:
       - refs/tags/*
     tags:
       - '*'
-      -
+
 env:
   CI: true
   NODE_OPTIONS: --max-old-space-size=4096
   CIVIL_SERVICE_URL: http://localhost:1111
+  TEST_HEADLESS: false
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,6 +29,6 @@ jobs:
       - run: yarn playwright install
       - run: yarn wiremock:start &
       - run: yarn start:e2e &
-      - name: Wait for 30 seconds
-        run: sleep 60  # Wait for 30 seconds
+      - name: Wait for 5 seconds
+        run: sleep 5  # Wait for 5 seconds
       - run: yarn test:e2e
