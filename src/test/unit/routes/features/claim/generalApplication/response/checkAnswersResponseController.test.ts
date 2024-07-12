@@ -85,6 +85,8 @@ describe('General application - response - check your answers', () => {
       mockGenerateRedisKey.mockReturnValue('123');
       const mockSaveDraftClaim = jest.spyOn(draftService, 'saveDraftClaim');
       const statementOfTruth: StatementOfTruthForm = {signed: true, name: 'Mr Applicant'};
+      const gaResponse = new GaResponse();
+      gaResponse.statementOfTruth = statementOfTruth;
 
       await request(app)
         .post(GA_RESPONSE_CHECK_ANSWERS_URL)
@@ -95,13 +97,11 @@ describe('General application - response - check your answers', () => {
           expect(mockSaveDraftClaim).toBeCalledWith('123', {
             generalApplication: {
               ...new GeneralApplication(),
-              response: {
-                statementOfTruth,
-              }} satisfies GeneralApplication,
+              response: gaResponse,
+            },
           });
         });
     });
-
     it('should show validation errors when statement of truth not filled in', async () => {
       mockGetCaseData.mockResolvedValueOnce(new Claim());
 
