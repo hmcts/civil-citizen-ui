@@ -319,6 +319,9 @@ import delayedFlightController from './features/claim/airlines/delayedFlightCont
 import respondentRequestChangeInformationController
   from 'routes/features/generalApplication/respondentRequestChangeInformationController';
 import accessibilityStatementController from './features/public/accessibilityStatementController';
+import termsAndConditionsController from './features/public/termsAndConditionsController';
+import contactUsController from './features/public/contactUsController';
+import privacyPolicyController from './features/public/privacyPolicyController';
 import hearingArrangementsGuidanceController
   from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
 import wantToUploadDocumentsController from 'routes/features/generalApplication/wantToUploadDocuments';
@@ -669,6 +672,9 @@ export default [
   delayedFlightController,
   respondentRequestChangeInformationController,
   accessibilityStatementController,
+  termsAndConditionsController,
+  privacyPolicyController,
+  contactUsController,
   hearingArrangementsGuidanceController,
   wantToUploadDocumentsController,
   uploadEvidenceDocumentsForApplicationController,
