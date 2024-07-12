@@ -11,7 +11,7 @@ import {Claim} from 'models/claim';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {
   getCancelUrl,
-  saveRespondentWantToUploadDoc
+  saveRespondentWantToUploadDoc,
 } from 'services/features/generalApplication/generalApplicationService';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';

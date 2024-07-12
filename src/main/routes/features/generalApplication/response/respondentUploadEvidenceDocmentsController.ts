@@ -1,9 +1,9 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {GA_RESPONDENT_UPLOAD_DOCUMENT, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT,} from 'routes/urls';
+import {GA_RESPONDENT_UPLOAD_DOCUMENT, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
-import {getCancelUrl,} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
