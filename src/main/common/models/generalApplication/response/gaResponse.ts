@@ -7,7 +7,6 @@ import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDa
 import {AcceptDefendantOffer} from './acceptDefendantOffer';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import {YesNo} from 'form/models/yesNo';
 
 export class GaResponse {
   hearingArrangement?: HearingArrangement;

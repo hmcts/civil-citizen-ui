@@ -6,9 +6,7 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
-import {
-  getCancelUrl,
-} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
@@ -21,7 +19,7 @@ import {
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {
-  getRespondToApplicationCaption
+  getRespondToApplicationCaption,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 
 const respondentUploadEvidenceDocumentsController = Router();
