@@ -77,7 +77,7 @@ export const addApplicationTypesAndDescriptionRows = (
             t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC', {
               lng,
             }),
-            t(applicationTypeDisplay, { lng }) + '. ' + t(applicationTypeDescription, {lng}),
+            t(applicationTypeDisplay, { lng }) + '.</br>' + t(applicationTypeDescription, {lng}),
             null,
             null,
             undefined,
