@@ -384,6 +384,7 @@ import whyNotSubjectToFRCController
   from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/whyNotSubjectToFRCController';
 import backController from 'routes/common/backController';
 import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
+import viewApplicationToRespondentController from 'routes/features/generalApplication/response/viewApplicationController';
 import applicationSummaryController from './features/generalApplication/applicationSummaryController';
 import requestForReviewCommentsController
   from 'routes/features/caseProgression/requestForReconsideration/requestForReviewCommentsController';
@@ -712,6 +713,7 @@ export default [
   whyNotSubjectToFRCController,
   backController,
   applicationFeePaymentConfirmationController,
+  viewApplicationToRespondentController,
   applicationSummaryController,
   requestForReviewCommentsController,
   checkAnswersCommentsController,
