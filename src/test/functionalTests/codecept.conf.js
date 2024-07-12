@@ -25,18 +25,15 @@ exports.config = {
   tests: process.env.ENVIRONMENT == 'aat' ?
     [ '../functionalTests/tests/prod/**/*.js',
       '../functionalTests/tests/common/**/*.js',
-      '../e2eTestes/tests/**/*.js'] :
+      '../e2eTests/tests/**/*.js'] :
     [ '../functionalTests/tests/nonprod/**/*.js',
       '../functionalTests/tests/common/**/*.js',
-      '../e2eTestes/tests/**/*.js'],
+      '../e2eTests/tests/**/*.js'],
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
-    RedisHelper: {
-      require: '../e2eTestes/configurations/redisHelper.js', // Adjust the path to your RedisHelper.js file
-    },
     Playwright: {
       url: testConfig.TestUrl,
-      show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,
+      show: true,//process.env.SHOW_BROWSER_WINDOW === 'true' || false,
       browser: 'chromium',
       waitForTimeout: parseInt(process.env.WAIT_FOR_TIMEOUT_MS || 90000),
       windowSize: '1280x960',

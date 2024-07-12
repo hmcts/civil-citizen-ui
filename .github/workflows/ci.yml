@@ -10,7 +10,11 @@ on:
       - refs/tags/*
     tags:
       - '*'
-
+      -
+env:
+  CI: true
+  NODE_OPTIONS: --max-old-space-size=4096
+  CIVIL_SERVICE_URL: http://localhost:1111
 jobs:
   build:
     runs-on: ubuntu-latest
