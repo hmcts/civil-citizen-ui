@@ -27,10 +27,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 21.6.1
-      - run: yarn install && yarn playwright install
-      - run: yarn build
-      - run: yarn wiremock:start &
-      - run: yarn start:e2e &
+      - name: Install
+        run: yarn install && yarn playwright install
+      - name: build
+        run: yarn build
+      - name: Starting WireMock
+        run: yarn wiremock:start &
+      - name: Starting CUI
+        run: yarn start:e2e &
       - name: Wait for 5 seconds
-        run: sleep 5  # Wait for 5 seconds
-      - run: yarn test:e2e
+        run: sleep 5
+      - name: Execution e2e tests
+        run: yarn test:e2e
