@@ -15,6 +15,8 @@ const scriptSrcElem = [
   '*.google-analytics.com',
   '*.googletagmanager.com',
   dynatraceDomain,
+  "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
+  (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
 ];
 
 const styleSrc = [
@@ -91,6 +93,7 @@ export class Helmet {
           ],
           scriptSrcElem: scriptSrcElem,
           styleSrc: styleSrc,
+          manifestSrc: [self],
           formAction: [self, loginUrl, ocmcBaseUrl, govPayUrl],
         },
       }),
