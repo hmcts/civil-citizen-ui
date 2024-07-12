@@ -5,12 +5,11 @@ const formatter = new Intl.NumberFormat('en-UK',
   });
 
 const noGroupingFormatter = new Intl.NumberFormat('en-UK',
-    {
-        style: 'currency',
-        currency: 'GBP',
-        useGrouping: false,
-    });
-
+  {
+    style: 'currency',
+    currency: 'GBP',
+    useGrouping: false,
+  });
 
 export default function currencyFormat(amount: number): string {
   return formatter.format(amount);
@@ -25,10 +24,10 @@ export function convertToPoundsFilter(value: number | string): number {
 }
 
 export function noGroupingCurrencyFormat(amount: number): string {
-    return noGroupingFormatter.format(amount);
+  return noGroupingFormatter.format(amount);
 }
 
 export function noGroupingCurrencyFormatWithNoTrailingZeros(amount: number): string {
-    return noGroupingCurrencyFormat(amount).replace(/(\.00+)$/, '');
+  return noGroupingCurrencyFormat(amount).replace(/(\.00+)$/, '');
 }
 

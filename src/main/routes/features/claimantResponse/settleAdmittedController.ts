@@ -9,7 +9,7 @@ import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draf
 import { getClaimantResponse, saveClaimantResponse } from 'services/features/claimantResponse/claimantResponseService';
 import {
   currencyFormatWithNoTrailingZeros,
-  noGroupingCurrencyFormatWithNoTrailingZeros
+  noGroupingCurrencyFormatWithNoTrailingZeros,
 } from 'common/utils/currencyFormat';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { AppRequest } from 'common/models/AppRequest';
@@ -20,7 +20,7 @@ const settleClaimViewPath = 'features/claimantResponse/settle-admitted';
 async function renderView(form: GenericForm<GenericYesNo>, claimId: string, res: Response): Promise<void> {
   const claim = await getCaseDataFromStore(claimId);
   const admittedAmount = noGroupingCurrencyFormatWithNoTrailingZeros(
-      claim.isFullDefence() ? (claim.isRejectAllOfClaimAlreadyPaid() / 100) : claim.partialAdmissionPaymentAmount());
+    claim.isFullDefence() ? (claim.isRejectAllOfClaimAlreadyPaid() / 100) : claim.partialAdmissionPaymentAmount());
   res.render(settleClaimViewPath, {
     form,
     totalAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount),

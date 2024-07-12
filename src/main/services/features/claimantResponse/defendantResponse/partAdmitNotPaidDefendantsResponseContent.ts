@@ -67,8 +67,10 @@ const getResponseStatementPayByDate = (claim: Claim, lng: string): ClaimSummaryS
     type: ClaimSummaryType.PARAGRAPH,
     data: {
       text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_BY_DATE', {lng}),
-      variables: {paidAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission.howMuchDoYouOwe.amount),
-      datePaid: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lng)},
+      variables: {
+        paidAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission.howMuchDoYouOwe.amount),
+        datePaid: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lng),
+      },
     },
   }];
 };
@@ -100,8 +102,10 @@ const getPayByDateResponseForHowTheyWantToPay = (claim: Claim, lng: string): Cla
       type: ClaimSummaryType.PARAGRAPH,
       data: {
         text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_BY_DATE', {lng}),
-        variables: {paidAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission.howMuchDoYouOwe.amount),
-        datePaid: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lng)},
+        variables: {
+          paidAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission.howMuchDoYouOwe.amount),
+          datePaid: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lng),
+        },
       },
     }];
 };
