@@ -18,6 +18,7 @@ env:
   TEST_URL: http://localhost:3001
   IDAM_API_URL: http://localhost:1111
   ENVIRONMENT: preview
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,11 +27,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 21.6.1
-      - run: yarn install
+      - run: yarn playwright install && yarn install
       - run: yarn build
       - run: yarn playwright install
       - run: yarn wiremock:start &
       - run: yarn start:e2e &
-      - name: Wait for 10 seconds
-        run: sleep 10  # Wait for 5 seconds
+      - name: Wait for 5 seconds
+        run: sleep 5  # Wait for 5 seconds
       - run: yarn test:e2e
