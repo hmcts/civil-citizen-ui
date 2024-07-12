@@ -5,6 +5,9 @@ import {DocumentType} from 'common/models/document/documentType';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {Document} from 'models/document/document';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {CaseDocument} from 'models/document/caseDocument';
+import {CaseProgression} from 'models/caseProgression/caseProgression';
+import {CaseRole} from 'form/models/caseRoles';
 
 describe('dashboardInterpolationService', () => {
   const textToReplaceDynamic = 'You have {daysLeftToRespond} days left.';
@@ -184,7 +187,7 @@ describe('dashboardInterpolationService', () => {
     const textToReplaceUrl = '{APPLY_HELP_WITH_FEES_START}';
     const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, undefined);
     const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
-    const sizeExpected = '/case/123/apply-help-with-fees/start';
+    const sizeExpected = '/case/123/case-progression/apply-help-with-fees/start';
 
     expect(textReplacedDynamic).toEqual(sizeExpected);
   });
@@ -269,4 +272,51 @@ describe('dashboardInterpolationService', () => {
 
     expect(textReplacedDynamic).toEqual(textExpected);
   });
+
+  it('should replace placeholders for request for reconsideration claimant', () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseProgression = new CaseProgression();
+    claim.caseProgression.requestForReconsiderationDocumentRes = setUpCaseDocument('document.pdf', DocumentType.REQUEST_FOR_RECONSIDERATION);
+    claim.caseRole = CaseRole.CLAIMANT;
+    const textToReplaceUrl = '{VIEW_REQUEST_FOR_RECONSIDERATION_DOCUMENT}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params);
+
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const sizeExpected = '/case/123/view-documents/71582e35-300e-4294-a604-35d8cabc33de';
+
+    expect(textReplacedDynamic).toEqual(sizeExpected);
+  });
+
+  it('should replace placeholders for request for reconsideration defendant', () => {
+    const claim: Claim = new Claim();
+    claim.id = '123';
+    claim.caseProgression = new CaseProgression();
+    claim.caseProgression.requestForReconsiderationDocument = setUpCaseDocument('document.pdf', DocumentType.REQUEST_FOR_RECONSIDERATION);
+    claim.caseRole = CaseRole.DEFENDANT;
+    const textToReplaceUrl = '{VIEW_REQUEST_FOR_RECONSIDERATION_DOCUMENT}';
+    const params: Map<string, object> = new Map<string, object>();
+    const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params);
+
+    const textReplacedDynamic = replaceDashboardPlaceholders(textToReplaceUrl, claim, claim.id, dashboardNotification);
+    const sizeExpected = '/case/123/view-documents/71582e35-300e-4294-a604-35d8cabc33de';
+
+    expect(textReplacedDynamic).toEqual(sizeExpected);
+  });
+
+  function setUpCaseDocument(documentName: string, documentType: DocumentType) : CaseDocument {
+    return {
+      'createdBy': 'Civil',
+      'documentLink': {
+        'document_url': 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de',
+        'document_filename': documentName,
+        'document_binary_url': 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary',
+      },
+      'documentName': documentName,
+      'documentSize': 45794,
+      'documentType': documentType,
+      'createdDatetime': new Date('2022-06-21T14:15:19'),
+    };
+  }
 });

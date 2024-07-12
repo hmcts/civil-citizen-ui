@@ -1,11 +1,10 @@
-import {NextFunction, RequestHandler, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import config from 'config';
 import {AppRequest} from 'models/AppRequest';
-import {CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
+import {APPLICATION_TYPE_URL, CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
-  isCUIReleaseTwoEnabled,
-  isCaseProgressionV1Enable, isDashboardServiceEnabled,
+  isCaseProgressionV1Enable, isDashboardEnabledForCase,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
@@ -26,9 +25,9 @@ import {getClaimWithExtendedPaymentDeadline} from 'services/features/response/su
 import {ClaimantOrDefendant} from 'models/partyType';
 import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 import {t} from 'i18next';
-import {applicationNoticeUrl} from 'common/utils/externalURLs';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
@@ -36,26 +35,32 @@ const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign'
 const claimSummaryController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+const HearingUploadDocuments = 'Upload hearing documents';
 
-claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFunction) => {
+claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-
-    const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
-    const isDashboardService = await isDashboardServiceEnabled();
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    if (isReleaseTwoEnabled && isDashboardService) {
+    const isDashboardEnabled = await isDashboardEnabledForCase(claim.submittedDate);
+    if (isDashboardEnabled) {
       const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
       const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest, lang);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest, isCarmApplicable);
-      const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(lang);
+      const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(claim, lang, claimId);
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
 
+      const hearing = dashboardTaskList?.items[2]?.tasks ? dashboardTaskList?.items[2]?.tasks : [];
+      hearing.forEach((task) => {
+        if (task.taskNameEn.search(HearingUploadDocuments)>0){
+          req.session.dashboard = {taskIdHearingUploadDocuments:undefined};
+          req.session.dashboard.taskIdHearingUploadDocuments = task.id;
+        }
+      });
       res.render(claimSummaryRedesignViewPath,
         {
           claim,
@@ -85,11 +90,20 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req, res, next: NextFu
   }
 }) as RequestHandler);
 
-const getSupportLinks = (lng: string) => {
+const getSupportLinks = (claim: Claim, lng: string, claimId: string) => {
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
-  const iWantToLinks = [
-    { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }), url: applicationNoticeUrl },
-  ];
+  const iWantToLinks = [];
+  if (claim.ccdState && !claim.isCaseIssuedPending()) {
+    if(!claim.hasClaimTakenOffline()) {
+      iWantToLinks.push({
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
+      });
+    }
+    else {
+      iWantToLinks.push({text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng})});
+    }
+  }
   const helpSupportTitle = getHelpSupportTitle(lng);
   const helpSupportLinks = getHelpSupportLinks(lng);
 

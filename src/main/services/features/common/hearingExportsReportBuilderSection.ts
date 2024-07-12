@@ -21,7 +21,11 @@ const buildExpertReportSection = (claim: Claim, claimId: string, lang: string, d
   const hasExportReportRow = buildHasExportReportSectionOption(claim, claimId, lang, hrefReportDetails);
   const exportReportSectionRows = [hasExportReportRow];
   if (claim.hasExpertReportDetails()) {
-    exportReportSectionRows.push(...buildExportReportsRows(claim, claimId, lang, hrefReportDetails, directionQuestionnaire));
+    if (directionQuestionnaire?.experts?.expertReportDetails?.reportDetails) {
+      exportReportSectionRows.push(...buildExportReportsRows(claim, claimId, lang, hrefReportDetails, directionQuestionnaire));
+    } else {
+      exportReportSectionRows.push(...buildExpertsDetailsRows(claim, claimId, lang, directionQuestionnaire));
+    }
   } else {
     exportReportSectionRows.push(...whatIsThereToExamineRows(claim, claimId, lang, directionQuestionnaire));
   }
@@ -37,7 +41,7 @@ const buildHasExportReportSectionOption = (claim: Claim, claimId: string, lang: 
 
 const buildExportReportsRows = (claim: Claim, claimId: string, lang: string, hrefReportDetails: string, directionQuestionnaire: DirectionQuestionnaire): SummaryRow[] => {
   const rows = directionQuestionnaire?.experts?.expertReportDetails?.reportDetails;
-  return rows.map((row, index) => {
+  return rows?.map((row, index) => {
     const reportNumber = index + 1;
     return summaryRow(`${t('PAGES.EXPERT_REPORT_DETAILS.REPORT_TEXT', {lng: lang})} ${reportNumber}`,
       buildExpertsReportDetailsValue(row, lang), hrefReportDetails, changeLabel(lang));
@@ -50,9 +54,10 @@ const buildExpertsReportDetailsValue = (reportDetails: ReportDetail, lang: strin
 
 const whatIsThereToExamineRows = (claim: Claim, claimId: string, lang: string, directionQuestionnaire: DirectionQuestionnaire): SummaryRow[] => {
   const valueForExpertPermission = claim?.hasPermissionForExperts() ? t('COMMON.VARIATION_2.YES', {lng: lang}) : t('COMMON.VARIATION_2.NO', {lng: lang});
-  const valueForDefendantExpertEvidence = claim?.hasEvidenceExpertCanStillExamine() ? t('COMMON.VARIATION.YES', {lng: lang}) : t('COMMON.VARIATION.NO', {lng: lang});
-  const examineRows = [summaryRow(t('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE', {lng: lang}),
-    valueForExpertPermission, constructResponseUrlWithIdParams(claimId, PERMISSION_FOR_EXPERT_URL), changeLabel(lang)), summaryRow(t('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE', {lng: lang}), valueForDefendantExpertEvidence, constructResponseUrlWithIdParams(claimId, DQ_EXPERT_CAN_STILL_EXAMINE_URL), changeLabel(lang))];
+  const valueForDefendantExpertEvidence = claim?.hasEvidenceExpertCanStillExamine() ? t('COMMON.VARIATION_4.YES', {lng: lang}) : t('COMMON.VARIATION_4.NO', {lng: lang});
+  const examineRows = [
+    summaryRow(t('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE', {lng: lang}), valueForExpertPermission, constructResponseUrlWithIdParams(claimId, PERMISSION_FOR_EXPERT_URL), changeLabel(lang)), 
+    summaryRow(t('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE', {lng: lang}), valueForDefendantExpertEvidence, constructResponseUrlWithIdParams(claimId, DQ_EXPERT_CAN_STILL_EXAMINE_URL), changeLabel(lang))];
   if (claim.hasEvidenceExpertCanStillExamine()) {
     examineRows.push(summaryRow(t('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.EXAMINE', {lng: lang}),
       directionQuestionnaire?.experts?.expertCanStillExamine?.details, constructResponseUrlWithIdParams(claimId, DQ_EXPERT_CAN_STILL_EXAMINE_URL),

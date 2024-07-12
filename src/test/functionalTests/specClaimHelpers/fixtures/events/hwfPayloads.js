@@ -8,7 +8,6 @@ module.exports = {
           'helpWithFee': 'Yes',
           'helpWithFeesReferenceNumber': 'HWF-123-466',
         },
-        'hearingHelpFeesReferenceNumber': null,
         'claimIssuedHwfDetails': {
           'hwfReferenceNumber': 'HWF-345-908',
           'noRemissionDetails': null,
@@ -30,8 +29,6 @@ module.exports = {
           'helpWithFeesReferenceNumber': 'HWF-345-908',
         },
         'hwfFeeType': 'CLAIMISSUED',
-        'hearingHelpFeesReferenceNumber': null,
-        'hearingHwfDetails': null,
         'claimIssuedHwfDetails': {
           'remissionAmount': '2300',
           'noRemissionDetails': null,
@@ -48,14 +45,12 @@ module.exports = {
     return {
       event: 'FULL_REMISSION_HWF',
       caseData: {
-        'hearingHelpFeesReferenceNumber': null,
         'hwfFeeType': 'CLAIMISSUED',
         'helpWithFees': {
           'helpWithFee': 'Yes',
           'helpWithFeesReferenceNumber': 'HWF-345-908',
         },
         'claimIssuedHwfDetails': null,
-        'hearingHwfDetails': null,
       },
     };
   },
@@ -109,7 +104,6 @@ module.exports = {
           'individualFirstName': 'defendant',
           'partyTypeDisplayValue': 'Individual',
         },
-        'hearingHelpFeesReferenceNumber': null,
         'helpWithFeesMoreInformationClaimIssue': {
           'hwFMoreInfoDetails': 'other income details',
           'hwFMoreInfoDocumentDate': '2025-09-09',

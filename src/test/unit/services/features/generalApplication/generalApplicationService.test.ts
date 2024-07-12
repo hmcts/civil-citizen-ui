@@ -1,5 +1,5 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import { Claim } from 'models/claim';
+import {Claim} from 'models/claim';
 import {
   getCancelUrl,
   saveAgreementFromOtherParty,
@@ -7,26 +7,38 @@ import {
   saveApplicationType,
   saveHearingSupport,
   saveRequestingReason,
-  saveRespondentAgreeToOrder,
   saveRespondentAgreement,
   saveHearingArrangement,
-  saveHearingContactDetails, saveUnavailableDates,
+  saveHearingContactDetails,
+  saveUnavailableDates,
+  getByIndexOrLast,
+  getByIndex,
+  updateByIndexOrAppend,
+  validateAdditionalApplicationtType,
+  getDynamicHeaderForMultipleApplications,
+  saveAcceptDefendantOffer,
+  saveHelpWithFeesDetails,
+  getApplicationStatus,
   saveRespondentWantToUploadDoc,
 } from 'services/features/generalApplication/generalApplicationService';
 import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../utils/errorMessageTestConstants';
 import { YesNo } from 'common/form/models/yesNo';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { isDashboardServiceEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { CaseRole } from 'common/form/models/caseRoles';
 import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
 import { HearingSupport, SupportType } from 'models/generalApplication/hearingSupport';
 import { RequestingReason } from 'models/generalApplication/requestingReason';
 import { HearingArrangement, HearingTypeOptions } from 'models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
-import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
-import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
+import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
+import { ValidationError } from 'class-validator';
+import { ApplyHelpFeesReferenceForm } from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import { GaHelpWithFees } from 'models/generalApplication/gaHelpWithFees';
+import { AcceptDefendantOffer } from 'common/models/generalApplication/response/acceptDefendantOffer';
+import {isCUIReleaseTwoEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import { ApplicationState, ApplicationStatus } from 'common/models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -206,7 +218,7 @@ describe('General Application service', () => {
   describe('Get cancel button url', () => {
     it('should return claimant new dashboard url when user is claimant and dashboard feature flag is enabled', async () => {
       //Given
-      (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(true);
+      (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(true);
 
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
@@ -221,7 +233,7 @@ describe('General Application service', () => {
 
     it('should return claimant old dashboard url when user is claimant and dashboard feature flag is disabled', async () => {
       //Given
-      (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(false);
+      (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(false);
 
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
@@ -236,7 +248,7 @@ describe('General Application service', () => {
 
     it('should return defendant dashboard url when user is defendent', async () => {
       //Given
-      (isDashboardServiceEnabled as jest.Mock).mockReturnValueOnce(false);
+      (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(false);
 
       const claim = new Claim();
       claim.caseRole = CaseRole.DEFENDANT;
@@ -247,40 +259,6 @@ describe('General Application service', () => {
       const cancelUrl = await getCancelUrl('123', claim);
       //Then
       expect(cancelUrl).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '123'));
-    });
-  });
-
-  describe('Save respondent agree to order', () => {
-    it('should save respondent agree to order', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
-
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-
-      //When
-      await saveRespondentAgreeToOrder('123', claim, YesNo.NO);
-      //Then
-      expect(spy).toBeCalled();
-    });
-
-    it('should throw error when draft store throws error', async () => {
-      //Given
-
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      //When
-      mockSaveClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-      //Then
-      await expect(saveRespondentAgreeToOrder('123', claim, YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
@@ -380,6 +358,73 @@ describe('General Application service', () => {
     });
   });
 
+  describe('getDynamicHeaderForMultipleApplications', () => {
+    it.each`
+      selectedApplicationTypes                                                      | expectedHeader
+      ${[]}                                                                         | ${'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION'}
+      ${undefined}                                                                  | ${'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION'}
+      ${[ApplicationTypeOption.ADJOURN_HEARING]}                                    | ${'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING'}
+      ${[ApplicationTypeOption.ADJOURN_HEARING, ApplicationTypeOption.EXTEND_TIME]} | ${'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION'}
+    `('should return $expected when selected types are $selectedApplicationTypes',
+      ({ selectedApplicationTypes, expectedHeader}) => {
+        //When
+        const claim = new Claim();
+        claim.generalApplication = new GeneralApplication();
+        if (selectedApplicationTypes) {
+          claim.generalApplication.applicationTypes = selectedApplicationTypes.map((at: ApplicationTypeOption) => new ApplicationType(at));
+        }
+        //Then
+        expect(getDynamicHeaderForMultipleApplications(claim)).toEqual(expectedHeader);
+      });
+  });
+
+  describe('Get by index or last', () => {
+    it.each`
+      list           | index              | expected
+      ${[1, 2, 3]}   | ${0}               | ${1}
+      ${[1, 2, 3]}   | ${2}               | ${3}
+      ${[1, 2, 3]}   | ${3}               | ${3}
+      ${[1, 2, 3]}   | ${undefined}       | ${3}
+      ${[]}          | ${0}               | ${undefined}
+      ${undefined}   | ${0}               | ${undefined}
+      ${undefined}   | ${undefined}       | ${undefined}
+      `('should return $expected when retrieving index $index from $list',
+      ({ list, index, expected }) => {
+        expect(getByIndexOrLast(list, index)).toEqual(expected);
+      });
+  });
+
+  describe('Get by index', () => {
+    it.each`
+      list           | index              | expected
+      ${[1, 2, 3]}   | ${0}               | ${1}
+      ${[1, 2, 3]}   | ${2}               | ${3}
+      ${[1, 2, 3]}   | ${3}               | ${undefined}
+      ${[1, 2, 3]}   | ${undefined}       | ${undefined}
+      ${[]}          | ${0}               | ${undefined}
+      ${undefined}   | ${0}               | ${undefined}
+      ${undefined}   | ${undefined}       | ${undefined}
+      `('should return $expected when retrieving index $index from $list',
+      ({ list, index, expected }) => {
+        expect(getByIndex(list, index)).toEqual(expected);
+      });
+  });
+
+  describe('Update by index or append', () => {
+    it.each`
+    list           | index              | expected
+    ${[1, 2, 3]}   | ${0}               | ${[9, 2, 3]}
+    ${[1, 2, 3]}   | ${2}               | ${[1, 2, 9]}
+    ${[1, 2, 3]}   | ${3}               | ${[1, 2, 3, 9]}
+    ${[1, 2, 3]}   | ${undefined}       | ${[1, 2, 3, 9]}
+    ${[]}          | ${0}               | ${[9]}
+    `('should return $expected when retrieving index $index from $list',
+      ({ list, index, expected }) => {
+        updateByIndexOrAppend(list, 9, index);
+        expect(list).toEqual(expected);
+      });
+  });
+
   describe('Save respondent agreement', () => {
     it('saves respondent agreement when no general agreement stored', async () => {
       mockGetCaseData.mockResolvedValue(new Claim());
@@ -392,8 +437,8 @@ describe('General Application service', () => {
       await saveRespondentAgreement('123', respondentAgreement);
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
-      claim.generalApplication.response = new GaResponse(respondentAgreement);
-      expect(spy).toBeCalled();
+      claim.generalApplication.response = { respondentAgreement };
+      await expect(spy).toBeCalledWith('123', claim);
     });
 
     it('saves respondent agreement when no response stored', async () => {
@@ -432,6 +477,145 @@ describe('General Application service', () => {
       await expect(spy).toBeCalledWith('123', claim);
     });
   });
+
+  describe('Validate additional application type', () => {
+    it('should return error message if additional application type is in excluded list', () => {
+
+      //Given
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM)];
+      const errors : ValidationError[] = [];
+      const applicationType = new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT);
+      const body = {
+        optionOther: 'test',
+        option: 'testOption',
+      };
+      //When
+      validateAdditionalApplicationtType(claim, errors, applicationType,body);
+
+      //Then
+      const error : ValidationError = errors[0];
+      expect(errors.length).toBe(1);
+      expect(error.constraints['additionalApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING');
+    });
+  });
+
+  describe('Save help with application fee details', () => {
+    it('should save help with application fee selection', async () => {
+      const  claim = new Claim();
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.helpWithFees = new GaHelpWithFees();
+        claim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
+        return claim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      //When
+      await saveHelpWithFeesDetails('123', YesNo.YES, 'applyHelpWithFees');
+      //Then
+      await expect(spy).toBeCalledWith('123', claim);
+    });
+
+    it('should save help with application fee continue selection', async () => {
+      const  claim = new Claim();
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.helpWithFees = new GaHelpWithFees();
+        claim.generalApplication.helpWithFees.helpWithFeesRequested = YesNo.YES;
+        return claim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      //When
+      await saveHelpWithFeesDetails('123', YesNo.YES, 'helpWithFeesRequested');
+      //Then
+      await expect(spy).toBeCalledWith('123', claim);
+    });
+
+    it('should save help with application fee reference number', async () => {
+      const  claim = new Claim();
+      const hwfReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-123-86D');
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.helpWithFees = new GaHelpWithFees();
+        claim.generalApplication.helpWithFees.helpFeeReferenceNumberForm = hwfReferenceNumberForm;
+        return claim;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      //When
+      await saveHelpWithFeesDetails('123', hwfReferenceNumberForm, 'helpFeeReferenceNumber');
+      //Then
+      await expect(spy).toBeCalledWith('123', claim);
+    });
+  });
+
+  describe('getApplicationStatus', () => {
+    it('should return IN_PROGRESS when APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', () => {
+      //Given
+      const applicationState = ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
+    });
+    it('should return IN_PROGRESS when AWAITING_RESPONDENT_RESPONSE', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_RESPONDENT_RESPONSE;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
+    });
+    it('should return TO_DO when AWAITING_APPLICATION_PAYMENT', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_APPLICATION_PAYMENT;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+  });
+});
+
+describe('Save Accept defendant offer', () => {
+  it('should save acceptDefendantOffer successfully', async () => {
+    //Given
+    // mockGetCaseData.mockResolvedValue(new Claim());
+    mockGetCaseData.mockImplementation(async () => {
+      return new Claim();
+    });
+    const acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES);
+
+    const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
+    //When
+    await saveAcceptDefendantOffer('123', acceptDefendantOffer);
+    //Then
+    expect(spy).toBeCalled();
+  });
+  it('should throw error when draft store throws error', async () => {
+    //Given
+    mockGetCaseData.mockImplementation(async () => {
+      return new Claim();
+    });
+    const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+    const acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES);
+    //When
+    mockSaveClaim.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
+    //Then
+    await expect(saveAcceptDefendantOffer('123', acceptDefendantOffer)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+  });
+
 
   describe('Save Respondent support to upload document', () => {
     const claim = new Claim();

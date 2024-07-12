@@ -70,7 +70,6 @@ import {
   CCDTrialArrangementsOtherComments,
 } from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
 import {CCDAdditionalPartyDetails} from 'models/ccdResponse/ccdAdditionalPartyDetails';
-import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {CCDTimeLineOfEvent} from 'models/ccdResponse/ccdTimeLine';
 import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
@@ -84,6 +83,10 @@ import { FeeType } from 'common/form/models/helpWithFees/feeType';
 import {PaymentDetails} from 'models/PaymentDetails';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 import {CCDFlightDelayDetails} from './airlines/flights';
+import {CCDFixedRecoverableCostsIntermediate} from 'models/ccdResponse/ccdFixedRecoverableCostsIntermediate';
+import {CCDDisclosureOfElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfElectronicDocuments';
+import {CCDDisclosureOfNonElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfNonElectronicDocuments';
+import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeConsidered';
 
 export class CivilClaimResponse {
   id: string;
@@ -157,7 +160,7 @@ export interface CCDClaim extends ClaimUpdate {
   defenceAdmitPartPaymentTimeRouteRequired?: CCDPaymentOption;
   respondent1RepaymentPlan?: CCDRepaymentPlan;
   respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
-  responseClaimMediationSpecRequired?: string;
+  responseClaimMediationSpecRequired?: YesNoUpperCamelCase;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   claimantUserDetails?: IdamUserDetails;
   //Defendant Response part
@@ -192,12 +195,17 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1DQWitnesses?: CCDWitnesses;
   respondent1DQHearingSmallClaim?: CCDSmallClaimHearing;
   respondent1DQHearingFastClaim?: CCDFastClaimHearing;
+  respondent1DQFixedRecoverableCostsIntermediate?: CCDFixedRecoverableCostsIntermediate;
+  specRespondent1DQDisclosureOfElectronicDocuments?: CCDDisclosureOfElectronicDocuments;
+  specRespondent1DQDisclosureOfNonElectronicDocuments?: CCDDisclosureOfNonElectronicDocuments;
+  respondent1DQClaimantDocumentsToBeConsidered?: CCDDocumentsToBeConsidered;
   sdoOrderDocument?: CaseDocument;
   respondToClaim?: CCDRespondToClaim;
   defenceRouteRequired?: string;
   respondent1DQExperts?: CCDExpert;
   responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
   claimType?: string;
+  responseClaimTrack?: string;
   specDefenceAdmittedRequired?: YesNoUpperCamelCase;
   respondToAdmittedClaim?: CCDRespondToClaim;
   detailsOfWhyDoesYouDisputeTheClaim?: string;
@@ -271,13 +279,11 @@ export interface CCDClaim extends ClaimUpdate {
   trialReadyRespondent1?: YesNoUpperCamelCase;
   respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
-  enterBreathing?: CCDBreathingSpaceStartInfo;
   claimFee?:CCDClaimFee;
   timelineOfEvents?:CCDTimeLineOfEvent[];
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
   applicant1ResponseDate?: Date;
-  liftBreathing?: CCDBreathingSpaceStartInfo;
   hearingFee?: HearingFee;
   hearingDueDate?: Date;
   hearingFeeHelpWithFees?:CCDHelpWithFees;
@@ -298,7 +304,10 @@ export interface CCDClaim extends ClaimUpdate {
   defendantResponseDocuments?: SystemGeneratedCaseDocuments[];
   applicant1DefenceResponseDocumentSpec?: ResponseDocument;
   isFlightDelayClaim?: string;
-  flightDelayDetails?: CCDFlightDelayDetails; 
+  flightDelayDetails?: CCDFlightDelayDetails;
+  requestForReconsiderationDeadline?: Date;
+  requestForReconsiderationDocument?: CaseDocument;
+  requestForReconsiderationDocumentRes?: CaseDocument;
 }
 
 export interface ClaimFeeData {

@@ -4,6 +4,7 @@ import config from 'config';
 import {GA_RESPONSE_CONFIRMATION_URL} from 'routes/urls';
 import {app} from '../../../../../../../main/app';
 import {t} from 'i18next';
+import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../../main/modules/oidc');
 
@@ -15,6 +16,8 @@ describe('GA response submission confirmation controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
   describe('on GET', () => {

@@ -4,7 +4,7 @@ module.exports = {
   draftClaim: () => {
     return {
       title: 'This claim has not been submitted',
-      content: 'Your claim is saved as a draft. Continue with claim.',
+      content: 'Your claim is saved as a draft. Continue with claim',
     };
   },
 
@@ -45,14 +45,14 @@ module.exports = {
   //Notice.AAA6.ClaimIssue.Response.Required
   respondToClaim: () => {
     return {
-      title: 'You haven´t responded to the claim',
+      title: 'You haven\'t responded to the claim',
       content: 'days remaining. Respond to the claim.',
       nextSteps: 'Respond to the claim',
     };
   },
 
   //Notice.AAA6.ClaimIssue.HWF.Requested
-  hwfSubmission:() => {
+  hwfSubmission: () => {
     return {
       title: 'We\'re reviewing your help with fees application',
       content: 'You\'ve applied for help with the claim fee. You\'ll receive an update in 5 to 10 working days.',
@@ -134,7 +134,7 @@ module.exports = {
   defendantResponseFullAdmitPayInstalments: (amount, instalmentAmount, date) => {
     return {
       title: 'Response to the claim',
-      content: [`You have offered to pay £${amount} in instalments of £${instalmentAmount} every month.`, `You have offered to do this starting from ${date}`,  'We will contact you when the claimant responds to your offer.'],
+      content: [`You have offered to pay £${amount} in instalments of £${instalmentAmount} every month.`, `You have offered to do this starting from ${date}`, 'We will contact you when the claimant responds to your offer.'],
       nextSteps: 'View your response',
     };
   },
@@ -163,7 +163,7 @@ module.exports = {
   defendantResponseFullAdmitPayBySetDateClaimant: (amount) => {
     return {
       title: 'Response to the claim',
-      content: ['Sir John Doe has offered to pay',  `£${amount} by`],
+      content: ['Sir John Doe has offered to pay', `£${amount} by`],
       nextSteps: 'View and respond',
     };
   },
@@ -173,10 +173,9 @@ module.exports = {
   claimantNotificationCCJRequested: () => {
     return {
       title: 'You requested a County Court Judgment against Sir John Doe',
-      content: ['You accepted the repayment plan.',
-        'When we\'ve processed the request, we\'ll post a copy of the judgment to you.'],
+      content: 'You accepted the repayment plan. When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
       nextSteps: 'Tell us it\'s paid',
-      nextSteps2: 'repayment plan.',
+      nextSteps2: 'repayment plan',
       //Nextsteps might be wrong?
     };
   },
@@ -196,7 +195,7 @@ module.exports = {
     return {
       title: 'The claim has been struck out',
       content: 'This is because the hearing fee was not paid by 10 November 2023 as stated in the hearing notice.',
-      nextSteps: 'hearing notice.',
+      nextSteps: 'hearing notice',
     };
   },
 
@@ -228,11 +227,20 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.CP.HearingFee.Paid.Claimant
+  hearingFeePaidFull: () => {
+    return {
+      title: 'The hearing fee has been paid',
+      content: 'The hearing fee has been paid in full.',
+    };
+  },
+
   //Notice.AAA6.ClaimantIntent.GoToHearing.Claimant
   goToHearingClaimant: () => {
     return {
       title: 'Wait for the court to review the case',
       content: 'You have rejected Sir John Doe\'s response. The case will be referred to a judge who will decide what should happen next.',
+      nextSteps: 'View the defendant\'s response',
     };
   },
 
@@ -254,7 +262,7 @@ module.exports = {
       content: ['Miss Jane Doe rejected your repayment plan and an alternative plan proposed by the court based on your financial details. They asked a judge to make a new plan.',
         'When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
         'If you pay the debt within one month of the date of judgment, the County Court Judgment (CCJ) is removed from the public register. You can pay £15 to apply for a certificate (opens in new tab) that confirms this.'],
-      nextSteps: 'Contact Miss Jane Doe if you need their payment details.',
+      nextSteps: 'Contact Miss Jane Doe',
       nextSteps2: 'View your response',
     };
   },
@@ -266,7 +274,7 @@ module.exports = {
       content: ['Miss Jane Doe rejected your repayment plan and has proposed a new plan, which the court agreed with, based on the financial details you provided.',
         'When we\'ve processed the request, we\'ll post a copy of the judgment to you.',
         'If you pay the debt within one month of the date of judgment, the County Court Judgment (CCJ) is removed from the public register. You can pay £15 to apply for a certificate (opens in new tab) that confirms this.'],
-      nextSteps: 'Contact Miss Jane Doe if you need their payment details.',
+      nextSteps: 'Contact Miss Jane Doe',
       nextSteps2: 'View your response',
     };
   },
@@ -309,7 +317,7 @@ module.exports = {
     return {
       title: 'Settlement agreement',
       content: ['You have accepted the settlement agreement.',
-        'The claimant cannot request a County Court Judgment, unless you break the terms of the agreement.'],
+        'The claimant cannot request a County Court Judgment (CCJ), unless you break the terms of the agreement.'],
     };
   },
 
@@ -349,6 +357,48 @@ module.exports = {
       title: 'You requested a County Court Judgment against Sir John Doe',
       content: ['You rejected the repayment plan.',
         'When a judge has made a decision, we’ll post a copy of the judgment to you.'],
+    };
+  },
+
+  // Notice.AAA6.MediationUnsuccessful.Claimant1NonAttendance.CARM.Claimant
+  // CIV-13157
+  mediationUnsuccessfulClaimant1NonAttendance: () => {
+    return {
+      title: 'You did not attend mediation',
+      content: ['You did not attend your mediation appointment, and the judge may issue a penalty against you.',
+        'Your case will not be reviewed by the court.'],
+      nextSteps: 'Explain why you did not attend your appointment',
+    };
+  },
+
+  // CIV-11625
+  // Notice.AAA6.ClaimantIntent.Mediation.CARM.Claimant
+  mediationCARMClaimantDefendant: () => {
+    return {
+      title: 'Your claim is now going to mediation',
+      content: ['Your claim is now going to mediation. You will be contacted within 28 days with details of your appointment.',
+        'If you do not attend your mediation appointment, the judge may issue a penalty.'],
+    };
+  },
+
+  // CIV-13154 and 13155
+  // Notice.AAA6.MediationUnsuccessful.NOTClaimant1NonContactable.CARM.Claimant
+  mediationUnsuccessfulNOTClaimant1NonContactable: () => {
+    return {
+      title: 'Mediation appointment unsuccessful',
+      content: ['You were not able to resolve this claim using mediation.',
+        'This case will now be reviewed by the court.'],
+    };
+  },
+
+  // CIV-13149 and 13152
+  // Notice.AAA6.MediationSuccessful.CARM.Claimant
+  mediationSuccessful: () => {
+    return {
+      title: 'Mediation appointment successful',
+      content: ['Both parties attended mediation and an agreement was reached.',
+        'This case is now settled and no further action is needed.',
+        'You can view your mediation agreement here.'],
     };
   },
 };

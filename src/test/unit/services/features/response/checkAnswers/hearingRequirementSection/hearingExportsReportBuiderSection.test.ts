@@ -63,7 +63,7 @@ describe('test buildExportReportSection', ()=>{
     const summaryRows = buildExpertReportSection(claim, '1', 'eng',claim.directionQuestionnaire);
     //Then
     expect(summaryRows[2].key.text).toEqual('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE');
-    expect(summaryRows[2].value.html).toEqual('COMMON.VARIATION.YES');
+    expect(summaryRows[2].value.html).toEqual('COMMON.VARIATION_4.YES');
   });
   it('should display no when claim has something to examine', ()=> {
     //Given
@@ -77,7 +77,7 @@ describe('test buildExportReportSection', ()=>{
     const summaryRows = buildExpertReportSection(claim, '1', 'eng',claim.directionQuestionnaire);
     //Then
     expect(summaryRows[2].key.text).toEqual('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE');
-    expect(summaryRows[2].value.html).toEqual('COMMON.VARIATION.NO');
+    expect(summaryRows[2].value.html).toEqual('COMMON.VARIATION_4.NO');
   });
   it('should display yes when claim has permission to use expert', ()=> {
     //Given
@@ -114,7 +114,7 @@ describe('test buildExportReportSection', ()=>{
     const claim = new Claim();
     claim.directionQuestionnaire = new DirectionQuestionnaire();
     claim.directionQuestionnaire.experts = new Experts();
-    claim.directionQuestionnaire.experts.expertReportDetails = new ExpertReportDetails(YesNo.YES,
+    claim.directionQuestionnaire.experts.expertReportDetails = new ExpertReportDetails(false, YesNo.YES,
       [new ReportDetail('John Smith', '2021', '1', '1')]);
 
     //When
@@ -144,7 +144,7 @@ describe('test buildExportReportSection', ()=>{
     expect(summaryRows[1].key.text).toEqual('PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE');
     expect(summaryRows[1].value.html).toEqual('COMMON.VARIATION_2.YES');
     expect(summaryRows[2].key.text).toEqual('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE');
-    expect(summaryRows[2].value.html).toEqual('COMMON.VARIATION.YES');
+    expect(summaryRows[2].value.html).toEqual('COMMON.VARIATION_4.YES');
     expect(summaryRows[3].key.text).toEqual('PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.EXAMINE');
     expect(summaryRows[3].value.html).toEqual('something');
     expect(summaryRows[4].key.text).toEqual('PAGES.EXPERT_DETAILS.SECTION_TITLE 1');

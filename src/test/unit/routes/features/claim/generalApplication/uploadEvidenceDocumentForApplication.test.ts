@@ -6,7 +6,7 @@ import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { app } from '../../../../../../main/app';
-import {GA_UPLOAD_DOCUMENTS} from 'routes/urls';
+import {GA_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
 import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { CaseDocument } from 'common/models/document/caseDocument';
@@ -44,7 +44,7 @@ describe('General Application - upload evidence docs to support application', ()
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
+    jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
@@ -52,14 +52,14 @@ describe('General Application - upload evidence docs to support application', ()
     claim = new Claim();
     claim.id ='id';
     claim.generalApplication = new GeneralApplication();
-    claim.generalApplication.applicationType = new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT);
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT)];
     mockDataFromStore.mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
     it('should return upload document page', async () => {
       await request(app)
-        .get(GA_UPLOAD_DOCUMENTS)
+        .get(GA_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.TITLE'));
@@ -76,7 +76,7 @@ describe('General Application - upload evidence docs to support application', ()
       claim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
       const currentDocuments = 2;
       await request(app)
-        .get(GA_UPLOAD_DOCUMENTS+'?id=1')
+        .get(GA_UPLOAD_DOCUMENTS_URL+'?id=1')
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.TITLE'));
@@ -98,7 +98,7 @@ describe('General Application - upload evidence docs to support application', ()
 
       app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
       await request(app)
-        .get(GA_UPLOAD_DOCUMENTS)
+        .get(GA_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_MIME_TYPE_FILE'));
@@ -120,7 +120,7 @@ describe('General Application - upload evidence docs to support application', ()
 
       app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
       await request(app)
-        .get(GA_UPLOAD_DOCUMENTS)
+        .get(GA_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_SIZE_FILE'));
@@ -141,7 +141,7 @@ describe('General Application - upload evidence docs to support application', ()
 
       app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
       await request(app)
-        .get(GA_UPLOAD_DOCUMENTS)
+        .get(GA_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_CHOOSE_THE_FILE'));
@@ -151,7 +151,7 @@ describe('General Application - upload evidence docs to support application', ()
     it('should return http 500 when has error in the get method', async () => {
       mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
-        .get(GA_UPLOAD_DOCUMENTS)
+        .get(GA_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -162,31 +162,31 @@ describe('General Application - upload evidence docs to support application', ()
   describe('on POST', () => {
     it('should throw the error if user click upload file button without uploading', async () => {
       await request(app)
-        .post(GA_UPLOAD_DOCUMENTS)
+        .post(GA_UPLOAD_DOCUMENTS_URL)
         .field('action', 'uploadButton')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_UPLOAD_DOCUMENTS);
+          expect(res.text).toContain(GA_UPLOAD_DOCUMENTS_URL);
         });
     });
 
     it('should throw the error if user click continue button without uploading a file', async () => {
       await request(app)
-        .post(GA_UPLOAD_DOCUMENTS)
+        .post(GA_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_CHOOSE_THE_FILE'));
+          expect(res.text).toContain('You need to choose a file before clicking');
         });
     });
     it('should save the file and display', async () => {
       jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
       await request(app)
-        .post(GA_UPLOAD_DOCUMENTS)
+        .post(GA_UPLOAD_DOCUMENTS_URL)
         .field('action', 'uploadButton')
         .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_UPLOAD_DOCUMENTS);
+          expect(res.text).toContain(GA_UPLOAD_DOCUMENTS_URL);
         });
     });
     it('should return http 500 when has error in the get method', async () => {
@@ -199,7 +199,7 @@ describe('General Application - upload evidence docs to support application', ()
       };
       jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
-        .post(GA_UPLOAD_DOCUMENTS)
+        .post(GA_UPLOAD_DOCUMENTS_URL)
         .field('action', 'uploadButton')
         .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
         .expect((res) => {
