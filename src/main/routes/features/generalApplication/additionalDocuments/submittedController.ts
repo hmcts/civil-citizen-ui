@@ -20,7 +20,7 @@ additionalDocSubmittedController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_UR
       gaPaymentSuccessfulPanel: getContentForPanel(lng),
       gaPaymentSuccessfulBody: getContentForBody(lng),
       gaPaymentSuccessfulButton: getContentForCloseButton(await getCancelUrl(claimId, claim)),
-    })
+    });
   } catch (err) {
     next(err);
   }
