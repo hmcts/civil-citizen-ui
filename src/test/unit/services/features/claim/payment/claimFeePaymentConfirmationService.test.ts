@@ -1,25 +1,28 @@
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {getRedirectUrl} from 'services/features/claim/payment/claimFeePaymentConfirmationService';
 import * as requestModels from 'models/AppRequest';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {app} from '../../../../../../main/app';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PAY_CLAIM_FEE_SUCCESSFUL_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL, DASHBOARD_URL} from 'routes/urls';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('modules/draft-store/courtLocationCache');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
+
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 const claimId = '1';
 
 describe('Claim Fee PaymentConfirmation Service', () => {
-  app.locals.draftStoreClient = mockCivilClaim;
-  jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
 
   it('should return to payment successful screen if payment is successful', async () => {
+    mockGetCaseData.mockImplementation(async () => {
+      return new Claim();
+    });
     const mockclaimFeePaymentInfo = {
       status: 'Success',
       nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
