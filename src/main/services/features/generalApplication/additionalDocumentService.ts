@@ -35,7 +35,7 @@ export const getSummaryList = (additionalDocumentsList: UploadAdditionalDocument
     formattedSummary.summaryList.rows.push(summaryRow('Type of document', uploadDocument.typeOfDocument));
     formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', `${GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId)}?indexId=${index}`, 'Remove document'));
   });
-  return formattedSummary
+  return formattedSummary;
 };
 
 export const removeSelectedDocument = async (redisKey: string, claim: Claim, index: number): Promise<void> => {
@@ -54,8 +54,8 @@ export const uploadSelectedFile = async (req: AppRequest, claim: Claim) => {
   uploadedDocument.fileUpload = fileUpload;
   uploadedDocument.typeOfDocument = req.body.typeOfDocument;
   const form = new GenericForm(uploadedDocument);
-  const uploadAdditionalDocuments = claim.generalApplication.uploadAdditionalDocuments
-  form.validateSync()
+  const uploadAdditionalDocuments = claim.generalApplication.uploadAdditionalDocuments;
+  form.validateSync();
   if (!form.hasErrors()) {
     uploadedDocument.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
     uploadAdditionalDocuments.push(uploadedDocument);
@@ -64,19 +64,19 @@ export const uploadSelectedFile = async (req: AppRequest, claim: Claim) => {
     const errors = translateErrors(form.getAllErrors(), t);
     req.session.fileUpload = JSON.stringify(errors);
   }
-}
+};
 
 export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
   try {
-    const claim = await getClaimById(req.params.id, req, true)
-    const gaApplication = Object.assign(new GeneralApplication(), claim.generalApplication)
+    const claim = await getClaimById(req.params.id, req, true);
+    const gaApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication = gaApplication;
-    return claim
+    return claim;
   } catch (error) {
     logger.error(error);
     throw error;
   }
-}
+};
 
 export const prepareCCDData = (uploadAdditionalDocuments: UploadAdditionalDocument[]) => {
   return uploadAdditionalDocuments.map(doc => {
@@ -88,37 +88,36 @@ export const prepareCCDData = (uploadAdditionalDocuments: UploadAdditionalDocume
           document_url: doc.caseDocument.documentLink.document_url,
           document_binary_url: doc.caseDocument.documentLink.document_binary_url,
           document_filename: doc.caseDocument.documentName,
-        }
-
-      }
+        },
+      },
     }
-  })
-}
+  });
+};
 
 export const buildSummarySectionForAdditionalDoc = (additionalDocumentsList: UploadAdditionalDocument[], claimId: string, gaId: string) => {
   const rows: SummaryRow[] = []
   additionalDocumentsList.forEach(doc => {
     rows.push(summaryRow('Type of document', doc.typeOfDocument));
     rows.push(summaryRow('Uploaded document', doc.caseDocument.documentName, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId), changeLabel('en')))
-  })
+  });
   return rows;
-}
+};
 
 export const getContentForPanel = (lng: string) => {
   const panelBuilder = new PaymentSuccessfulSectionBuilder();
   panelBuilder.addPanelForConfirmation('PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.UPLOADED_ADDITIONAL_DOCS', getLng(lng));
   return panelBuilder.build();
-}
+};
 
 export const getContentForBody = (lng: string) => {
-  let contentBuilder = new PaymentSuccessfulSectionBuilder();
+  const contentBuilder = new PaymentSuccessfulSectionBuilder();
   return contentBuilder.addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT', { lng: getLng(lng) })
     .addParagraph('PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.JUDGE_WILL_REVIEW', { lng: getLng(lng) })
     .build();
-}
+};
 
 export const getContentForCloseButton = (redirectUrl: string) => {
   return new PaymentSuccessfulSectionBuilder()
     .addButton('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD', redirectUrl)
     .build();
-}
+};

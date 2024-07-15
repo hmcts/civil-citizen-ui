@@ -44,12 +44,12 @@ uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (asy
   } catch (err) {
     next(err);
   }
-}) as RequestHandler)
+}) as RequestHandler);
 
 uploadAdditionalDocumentsController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const { gaId, id } = req.params
-    const currentUrl = GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', id).replace(':gaId', gaId)
+    const { gaId, id } = req.params;
+    const currentUrl = GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', id).replace(':gaId', gaId);
     const claim = await getClaimDetailsById(req);
     const gaDetails = claim.generalApplication;
     if (req.body.action === 'uploadButton') {
@@ -66,16 +66,16 @@ uploadAdditionalDocumentsController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, upl
         property: '',
 
         constraints: {
-          isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE'
+          isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
         },
-      }]
+      }];
       req.session.fileUpload = JSON.stringify(errors);
       return res.redirect(`${currentUrl}`);
     }
     res.redirect(constructResponseUrlWithIdParams(id, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL).replace(':gaId', gaId));
   } catch (err) {
-    next(err)
+    next(err);
   }
-}))
+}));
 
 export default uploadAdditionalDocumentsController;

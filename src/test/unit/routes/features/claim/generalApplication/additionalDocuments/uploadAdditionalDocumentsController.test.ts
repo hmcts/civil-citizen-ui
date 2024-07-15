@@ -39,7 +39,6 @@ jest.mock('../../../../../../../main/services/features/generalApplication/genera
   getCancelUrl: jest.fn(),
 }));
 
-
 describe('uploadAdditionalDocumentsController', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -64,30 +63,30 @@ describe('uploadAdditionalDocumentsController', () => {
       const redisKey = 'redis-key';
       const cancelUrl = '/cancel-url';
       const formattedSummaryList = {
-        title: "",
+        title: '',
         summaryList: {
           rows: [
             {
               key: {
-                text: "Type of document",
+                text: 'Type of document',
               },
               value: {
-                html: "test",
+                html: 'test',
               },
             },
             {
               key: {
-                text: "n245form.pdf",
+                text: 'n245form.pdf',
               },
               value: {
-                html: "",
+                html: '',
               },
               actions: {
                 items: [
                   {
-                    href: "/case/1720536503257495/general-application/1720536653906339/upload-additional-documents?indexId=1",
-                    text: "Remove document",
-                    visuallyHiddenText: "n245form.pdf",
+                    href: '/case/1720536503257495/general-application/1720536653906339/upload-additional-documents?indexId=1',
+                    text: 'Remove document',
+                    visuallyHiddenText: 'n245form.pdf',
                   },
                 ],
               },
@@ -108,13 +107,13 @@ describe('uploadAdditionalDocumentsController', () => {
       expect(getCancelUrl).toHaveBeenCalledWith(claimId, claim);
       expect(getSummaryList).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId);
       expect(res.text).toContain('Type of document');
-      expect(res.text).toContain('test')
+      expect(res.text).toContain('test');
     });
 
     it('should remove the selected doc from the store', async () => {
 
       const additionalDocument = new UploadAdditionalDocument();
-      additionalDocument.typeOfDocument = 'testt'
+      additionalDocument.typeOfDocument = 'testt';
       additionalDocument.caseDocument = {
         documentLink: { document_binary_url: 'binary_url1', document_filename: 'testDoc', document_url: 'url' },
         documentName: 'testDoc',
@@ -135,7 +134,7 @@ describe('uploadAdditionalDocumentsController', () => {
       const res = await request(app).get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId)).query({ indexId: 1 });
 
       expect(res.status).toBe(200);
-      expect(removeSelectedDocument).toHaveBeenCalledWith(redisKey, claim, 0)
+      expect(removeSelectedDocument).toHaveBeenCalledWith(redisKey, claim, 0);
     });
 
     it('should return page with errors when upload file button clicked without choosing file', async () => {
@@ -150,7 +149,7 @@ describe('uploadAdditionalDocumentsController', () => {
         },
       ];
       const additionalDocument = new UploadAdditionalDocument();
-      additionalDocument.typeOfDocument = 'testt'
+      additionalDocument.typeOfDocument = 'testt';
       additionalDocument.caseDocument = {
         documentLink: { document_binary_url: 'binary_url1', document_filename: 'testDoc', document_url: 'url' },
         documentName: 'testDoc',
@@ -202,7 +201,7 @@ describe('uploadAdditionalDocumentsController', () => {
 
     it('should redirect to CYA page if documents are uploaded', async () => {
       const additionalDocument = new UploadAdditionalDocument();
-      additionalDocument.typeOfDocument = 'testt'
+      additionalDocument.typeOfDocument = 'testt';
       additionalDocument.caseDocument = {
         documentLink: { document_binary_url: 'binary_url1', document_filename: 'testDoc', document_url: 'url' },
         documentName: 'testDoc',

@@ -15,17 +15,17 @@ const gaServiceClient: GaServiceClient = new GaServiceClient(generalAppApiBaseUr
 
 gaAdditionalDocCheckAnswerController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const { gaId, id: claimId } = req.params
+    const { gaId, id: claimId } = req.params;
     const claimIdPrettified = caseNumberPrettify(claimId);
     const claim = await getClaimDetailsById(req);
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const backLinkUrl = GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId)
-    const summaryRows = buildSummarySectionForAdditionalDoc(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId)
+    const backLinkUrl = GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId);
+    const summaryRows = buildSummarySectionForAdditionalDoc(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId);
     res.render(viewPath, { backLinkUrl, cancelUrl, claimIdPrettified, claim, summaryRows });
   } catch (error) {
     next(error);
   }
-}) as RequestHandler)
+}) as RequestHandler);
 
 gaAdditionalDocCheckAnswerController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -33,7 +33,7 @@ gaAdditionalDocCheckAnswerController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL
     const claim = await getClaimDetailsById(req);
     const uploadedDocuments = prepareCCDData(claim.generalApplication.uploadAdditionalDocuments);
     const generalApplication = {
-      uploadDocument: uploadedDocuments
+      uploadDocument: uploadedDocuments,
     };
     await gaServiceClient.submitEvent(ApplicationEvent.UPLOAD_ADDL_DOCUMENTS, gaId, generalApplication as unknown, req);
     res.redirect(GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_URL.replace(':id', claimId).replace(':gaId', gaId));
@@ -41,6 +41,5 @@ gaAdditionalDocCheckAnswerController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL
     next(error);
   }
 }) as RequestHandler);
-
 
 export default gaAdditionalDocCheckAnswerController;
