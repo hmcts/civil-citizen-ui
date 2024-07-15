@@ -36,6 +36,6 @@ jobs:
       - name: Starting CUI
         run: yarn start:e2e &
       - name: Waiting CUI to get ready
-        run: sleep 5
+        run: sleep 10
       - name: Executing e2e tests
         run: yarn test:e2e
