@@ -2,7 +2,6 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {
   DQ_CONFIRM_YOUR_DETAILS_URL,
   DQ_DEFENDANT_WITNESSES_URL,
@@ -38,7 +37,6 @@ describe('Confirm your details evidence Controller', () => {
 
   describe('on GET', () => {
     it('should return confirm your details evidence page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DQ_CONFIRM_YOUR_DETAILS_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Confirm your details');
