@@ -83,7 +83,7 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
   }
 };
 
-const translateErrors = (keys: FormValidationError[], t: (key: string) => string, formatValues?: { keyError: string, keyToReplace: string, valueToReplace: string }[]) => {
+export const translateErrors = (keys: FormValidationError[], t: (key: string) => string, formatValues?: { keyError: string, keyToReplace: string, valueToReplace: string }[]) => {
   return keys.map((key) => {
     if (formatValues) {
       const formatValue = formatValues.find(v => v.keyError === key.text);

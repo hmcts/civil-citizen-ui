@@ -9,6 +9,7 @@ import {getFinancialDetails, saveClaimantResponse} from 'services/features/claim
 import {
   getClaimantSuggestedInstalmentsForm,
   getClaimantSuggestedInstalmentsPlan,
+  updateDayErrorMsg,
 } from 'services/features/claimantResponse/claimantSuggestedInstalmentsService';
 import {generateRedisKey } from 'modules/draft-store/draftStoreService';
 import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
@@ -46,6 +47,7 @@ claimantSuggestedInstalmentsController.post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,
       const form = new GenericForm(claimantSuggestedInstalments);
       form.validateSync();
       if (form.hasErrors()) {
+        updateDayErrorMsg(form.errors);
         const claimId = req.params.id;
         const claim: Claim = await getClaimById(claimId, req, true);
         renderView(form, res, req, claim);
