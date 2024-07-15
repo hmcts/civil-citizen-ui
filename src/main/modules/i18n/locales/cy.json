@@ -338,7 +338,7 @@
       "ACCEPT_OR_REJECT_THEIR_RESPONSE": "Derbyn neu wrthod eu hymateb",
       "FREE_TELEPHONE_MEDIATION": "Gwasanaeth cyfryngu dros y ffôn am ddim",
       "DECIDE_WHETHER_TO_PROCEED": "Penderfynu a ddylid bwrw ymlaen",
-      "HOW_FORMALISE": "Dewiswch sut i ffurfioli ad-daliad",
+      "HOW_FORMALISE": "Dewiswch sut i ffurfioli'r ad-dalu",
       "PROPOSE_ALTERNATIVE_REPAYMENT": "Cynnig cynllun ad-dalu amgen",
       "REQUEST_COUNTY_COURT_JUDGMENT": "Gwneud cais am Ddyfarniad Llys Sirol",
       "SIGN_SETTLEMENT": "Llofnodi cytundeb setlo",
@@ -949,7 +949,7 @@
       "I_ACCEPT_THIS_REPAYMENT_PLAN": "Rwy'n derbyn y cynllun ad-dalu hwn",
       "I_REJECT_THIS_REPAYMENT_PLAN": "Rwy'n gwrthod y cynllun ad-dalu hwn",
       "IN_FULL": "Yn llawn erbyn {{paymentDate}}",
-      "ISSUE_A_CCJ": "Cyhoeddi Dyfarniad y Llys Sirol (CCJ)",
+      "ISSUE_A_CCJ": "Cyhoeddi Dyfarniad Llys Sirol (CCJ)",
       "IMMEDIATELY":"Immediately",
       "IN_FULL_BY":"Yn llawn erbyn {{ claimantSetDate }}",
       "INCOME_REGULAR": "Incwm rheolaidd",
@@ -1005,7 +1005,7 @@
       "SCHEDULED_DATE_OF_FLIGHT": "Dyddiad hedfan a drefnwyd",
       "SETTLEMENT_AGREEMENT": "Cytundeb setlo",
       "SIGN_A_SETTLEMENT_AGREEMENT": "Llofnodi cytundeb setlo",
-      "SIGN_SETTLEMENT": "Llofnodi cytundeb setlo",
+      "SIGN_SETTLEMENT": "Arwyddo cytundeb setlo",
       "SUPPORT_ANYONE_ELSE_FINANCIALLY": "Ydych chi'n cefnogi unrhyw un arall yn ariannol?",
       "SUPPORT_REQUIRED_INTERPRETER": "Dehonglydd",
       "SUPPORT_REQUIRED_NAME": "Enw'r sawl sydd angen cymorth:",
@@ -1364,7 +1364,7 @@
         "LABEL": "Gofyn am CCJ"
       },
       "SIGN_A_SETTLEMENT_AGREEMENT": {
-        "DESCRIPTION": "Mae hwn yn gytundeb cyfreithiol rhyngoch chi a'r diffynnydd yn cytuno i'r cynllun ad-dalu. Os ydynt yn ei dorri gallwch ofyn am Ddyfarniad Llys Sirol (CCJ). Byddwn yn dangos fformat awgrymedig i chi ar gyfer y cytundeb.",
+        "DESCRIPTION": "Mae hwn yn gytundeb cyfreithiol rhyngoch chi a'r diffynnydd yn cytuno i'r cynllun ad-dalu. Os ydynt ei dorri gallwch ofyn am Ddyfarniad Llys Sirol (CCJ). Byddwn yn dangos fformat awgrymedig i chi ar gyfer y cytundeb.",
         "LABEL": "Llofnodi cytundeb setlo"
       },
       "TITLE": "Dewiswch sut i ffurfioli'r ad-dalu"
@@ -3462,7 +3462,7 @@
       "FOR_EXAMPLE_NEXT_MONTH": "Ni ddylai hyn fod yn gynt na ",
       "HOW_OFTEN_PAYMENTS": "Pa mor aml y byddwch chi’n gwneud y taliadau hyn",
       "HOW_OFTEN_RECEIVE_PAYMENTS": "Pa mor aml ydych chi am dderbyn y taliadau hyn?",
-      "HOW_OFTEN_RECEIVE_PAYMENTS_HINT": "Bydd y llys yn derbyn pa mor aml mae’r diffynnydd am dalu. Ni fyddwn ond yn ystyried eich dewis o ran pa mor aml y bydd yn talu os bydd cynllun gwahanol yn cael ei osod gan farnwr yn ddiweddarach.",
+      "HOW_OFTEN_RECEIVE_PAYMENTS_HINT": "Bydd y llys yn derbyn pa mor aml mae’r diffynnydd am dalu. Byddwn ond yn ystyried eich dewis o ran pa mor aml y bydd yn talu os bydd cynllun gwahanol yn cael ei osod gan farnwr yn ddiweddarach.",
       "LENGTH": "Hyd y cynllun ad-dalu",
       "PAGE_TITLE": "Eich cynllun ad-dalu",
       "REGULAR_PAYMENTS": "Taliadau rheolaidd o",
@@ -3505,7 +3505,7 @@
     },
     "RESIDENCE": {
       "ASSOCIATION_HOME": "Cartref cymdeithas dai neu'r cyngor",
-      "OWN_HOME": "Cartref rydych yn berchen arno (neu'n talu morgais arno)",
+      "OWN_HOME": "Cartref maen nhw'n berchen arno (neu'n talu morgais arno)",
       "HOME_TYPE": "Pa fath o dŷ?",
       "JOIN_HOME": "Cartref rydych yn berchen arno ar y cyd (neu'n talu morgais arno ar y cyd)",
       "OTHER": "Arall",
@@ -3542,7 +3542,7 @@
       "DEBTS_BEHIND_ON": "Oes ganddyn nhw unrhyw ddyledion maen nhw ar ei hôl hi yn eu talu?",
       "DEBTS_LOAN_OR_CREDIT_CARD": "Oes ganddyn nhw ddyledion benthyciadau neu gardiau credyd?",
       "DOWNLOAD_RESPONSE": "Lawrlwythwch eu hymateb llawn (PDF)",
-      "EMPLOYED": "A oes ganddynt swydd?",
+      "EMPLOYED": "Oes ganddynt swydd?",
       "FINANCIAL_SUPPORT": "Cymorth ariannol",
       "FULL_ADMISSION": "Mae {{ defendant }} yn cyfaddef fod arno’r holl arian rydych chi wedi'i hawlio.",
       "FULL_ADMISSION_PAY_BY_INSTALLMENTS": {
@@ -4029,6 +4029,14 @@
         "MAIN_TITLE": "Sut a pham ydych chi eisiau i'r gorchymyn gael ei newid?",
         "PARAGRAPH": "Gallwch barhau heb roi manylion os byddai’n well gennych. Os byddwch yn rhoi manylion bydd {{ claimantOrDefendant }} yn gallu gweld yr hyn a ddywedoch ac ychwanegu eu sylwadau eu hunain."
       },
+      "REQUEST_FOR_REVIEW_COMMENTS": {
+        "MICRO_TEXT": "Cais i adolygu’r gorchymyn",
+        "MAIN_TITLE": "Ychwanegu eich sylwadau",
+        "REVIEW_HAS_BEEN_REQUESTED": "Mae’r partïon eraill wedi gofyn am adolygiad o orchymyn.",
+        "ADD_OWN_COMMENTS": "Gallwch ychwanegu eich sylwadau eich hun isod fel rhan o’r adolygiad.",
+        "WILL_SEE_COMMENTS": "Bydd {{ claimantOrDefendant }} yn gallu gweld eich sylwadau.",
+        "ANY_EVIDENCE_INCLUDED": "Dylai unrhyw dystiolaeth yr ydych yn cynnwys yn eich sylwadau fod yn berthnasol i’r achos."
+      },
       "CONFIRMATION": {
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
         "PARAGRAPH_1": "Byddwn yn dweud wrth {{ claimantOrDefendant }} eich bod wedi gwneud y cais. Bydd ganddynt tan {{ date }} i ychwanegu sylwadau eu hunain.",
@@ -4036,6 +4044,13 @@
         "PARAGRAPH_3": "Parhewch i wneud yr hyn y mae'r gorchymyn presennol yn ei ofyn gennych oni bai eich bod yn cael gwybod bod barnwr wedi gwneud gorchymyn newydd.",
         "PANEL_TEXT": "Rydych wedi gofyn i’r llys adolygu gorchymyn",
         "PANEL_LINK": "Lawrlwythwch gais am adolygiad o orchymyn (PDF)"
+      },
+      "COMMENTS_CONFIRMATION": {
+        "CONTINUE_TO_FOLLOW_ORDER": "Dylech barhau i wneud yr hyn y mae’r gorchymyn yn gofyn i chi wneud oni bai eich bod yn clywed bod barnwr wedi gwneud gorchymyn newydd.",
+        "JUDGE_WILL_REVIEW": "Bydd barnwr nawr yn adolygu’r gorchymyn a’r sylwadau. Byddwn yn cysylltu â’r holl bartïon i’ch diweddaru ar y camau nesaf.",
+        "LET_OTHER_PARTY_KNOW": "Byddwn yn gadael i {{ claimantOrDefendant }} wybod eich bod wedi cyflwyno sylwadau ar y gorchymyn.",
+        "PANEL_TEXT": "Mae eich sylwadau wedi’u cyflwyno’n llwyddiannus.",
+        "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
       },
       "DASHBOARD_STATE_CLAIMANT": "Darllenwch geisiadau'r diffynnydd i farnwr adolygu'r gorchymyn.",
       "DASHBOARD_STATE_DEFENDANT": "Darllenwch geisiadau'r hawlydd i farnwr adolygu'r gorchymyn."
@@ -4587,6 +4602,7 @@
     "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Rhaid peidio â nodi dyddiad sydd ar ôl dyddiad heddiw",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Rhaid i’r dyddiad cychwyn beidio â bod ar ôl dyddiad heddiw",
     "VALID_DAY": "Rhowch ddydd dilys",
+    "VALID_DAY_VARIATION1":"Rhowch ddiwrnod dilys",
     "FIRST_PAYMENT_MESSAGE": "Dylai'r dyddiad fod ddim cynharach na {{firstPaymentDate}}",
     "VALID_DEBT_AMOUNT": {
       "COUNCIL_TAX": "Rhowch swm dilys o Dreth Gyngor neu Dreth Gymunedol, uchafswm dau le degol",
@@ -4618,7 +4634,8 @@
     "VALID_OWED_AMOUNT_REQUIRED": "Rhowch swm dilys",
     "VALID_PARTY_NAME": "Rhowch enw",
     "VALID_CONTACT_PERSON": "Nodwch unigolyn cyswllt",
-    "VALID_PAYMENT_OPTION": "Dewis opsiwn talu",
+    "VALID_PAYMENT_OPTION": "Dewis opsiwn ad-dalu",
+    "VALID_PAYMENT_OPTION_VARIATION1":"Dewiswch opsiwn talu",
     "VALID_PHONE_NUMBER": "Rhaid i’r rhif ffôn fod yn rhif yn y DU",
     "VALID_PHONE_NUMBER_EVIDENCE": "Rhowch rif ffôn, fel 01632 960 001, 07700 900 982, neu +44 808 157 0192",
     "VALID_PHONE_OR_VIDEO_HEARING": {
@@ -4648,6 +4665,7 @@
     "VALID_YES_OR_NO_OPTION": "Dewiswch Oes i setlo’r hawliad",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Dewiswch Oes neu Nac oes",
     "VALID_YES_NO_SELECTION": "Dewiswch ie neu na, os gwelwch yn dda",
+    "VALID_YES_NO_SELECTION_VARIATION1": "Dewiswch Ydw neu Nac ydw, os gwelwch yn dda",
     "VALID_YES_NO_SELECTION_VARIATION_2": "Dewiswch Ydw neu Nac ydw, os gwelwch yn dda",
     "VALID_YES_NO_SELECTION_OPTION2": "Dewiswch Oes neu Nac oes, os gwelwch yn dda",
     "VALID_YES_NO_SELECTION_UPPER": "Dewiswch Oes neu Nac oes",
