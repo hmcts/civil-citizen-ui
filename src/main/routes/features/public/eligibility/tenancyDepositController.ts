@@ -25,7 +25,7 @@ tenancyDepositController.get(ELIGIBILITY_TENANCY_DEPOSIT_URL, (req, res) => {
 });
 
 tenancyDepositController.post(ELIGIBILITY_TENANCY_DEPOSIT_URL, (req, res) => {
-  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
+  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_OPTION_VARIATION_4'));
   genericYesNoForm.validateSync();
   if (genericYesNoForm.hasErrors()) {
     renderView(genericYesNoForm, res);
