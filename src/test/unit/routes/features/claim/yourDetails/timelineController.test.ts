@@ -3,16 +3,21 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {CLAIM_EVIDENCE_URL, CLAIM_TIMELINE_URL} from 'routes/urls';
-import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import civilClaimResponseOptionNoMock from '../../../../../utils/mocks/civilClaimResponseOptionNoMock.json';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => {
     next();
   }),
 }));
+
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Claimant Timeline Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -26,7 +31,10 @@ describe('Claimant Timeline Controller', () => {
 
   describe('on GET', () => {
     it('should render timeline page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+
       await request(app).get(CLAIM_TIMELINE_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Timeline of events');
@@ -34,7 +42,9 @@ describe('Claimant Timeline Controller', () => {
     });
 
     it('should return 500 page on redis failure', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app).get(CLAIM_TIMELINE_URL).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -44,7 +54,9 @@ describe('Claimant Timeline Controller', () => {
 
   describe('on POST', () => {
     it('should render timeline page if there are validation errors', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
       await request(app).post(CLAIM_TIMELINE_URL).send({rows: []}).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.AT_LEAST_ONE_ROW);
@@ -52,7 +64,9 @@ describe('Claimant Timeline Controller', () => {
     });
 
     it('should return 500 page if there are errors', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app).post(CLAIM_TIMELINE_URL).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -60,7 +74,9 @@ describe('Claimant Timeline Controller', () => {
     });
 
     it('should update data and redirect to evidence page if all required details are provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
       const mockData = [{
         day: 1,
         month: 3,
@@ -74,7 +90,11 @@ describe('Claimant Timeline Controller', () => {
     });
 
     it('should save data if applicant doesn\'t exist and redirect to evidence page', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      mockGetCaseData.mockImplementation(async () => {
+        const jsonObject = JSON.parse(JSON.stringify(civilClaimResponseOptionNoMock));
+        return jsonObject as Claim;
+      });
+
       const mockData = [{
         day: 1,
         month: 3,
