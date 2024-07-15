@@ -24,101 +24,101 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
 export const getSummaryList = (additionalDocumentsList: UploadAdditionalDocument[], claimId: string, gaId: string): SummarySection => {
-    let index = 0;
-    const formattedSummary = summarySection(
-        {
-            title: '',
-            summaryRows: [],
-        });
-    additionalDocumentsList.forEach((uploadDocument: UploadAdditionalDocument) => {
-        index = index + 1;
-        formattedSummary.summaryList.rows.push(summaryRow('Type of document', uploadDocument.typeOfDocument));
-        formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', `${GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId)}?indexId=${index}`, 'Remove document'));
+  let index = 0;
+  const formattedSummary = summarySection(
+    {
+      title: '',
+      summaryRows: [],
     });
-    return formattedSummary
+  additionalDocumentsList.forEach((uploadDocument: UploadAdditionalDocument) => {
+    index = index + 1;
+    formattedSummary.summaryList.rows.push(summaryRow('Type of document', uploadDocument.typeOfDocument));
+    formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', `${GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId)}?indexId=${index}`, 'Remove document'));
+  });
+  return formattedSummary
 };
 
 export const removeSelectedDocument = async (redisKey: string, claim: Claim, index: number): Promise<void> => {
-    try {
-        claim?.generalApplication?.uploadAdditionalDocuments?.splice(index, 1);
-        await saveDraftClaim(redisKey, claim);
-    } catch (error) {
-        logger.error(error);
-        throw error;
-    }
+  try {
+    claim?.generalApplication?.uploadAdditionalDocuments?.splice(index, 1);
+    await saveDraftClaim(redisKey, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
 };
 
 export const uploadSelectedFile = async (req: AppRequest, claim: Claim) => {
-    const uploadedDocument = new UploadAdditionalDocument();
-    const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
-    uploadedDocument.fileUpload = fileUpload;
-    uploadedDocument.typeOfDocument = req.body.typeOfDocument;
-    const form = new GenericForm(uploadedDocument);
-    const uploadAdditionalDocuments = claim.generalApplication.uploadAdditionalDocuments
-    form.validateSync()
-    if (!form.hasErrors()) {
-        uploadedDocument.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
-        uploadAdditionalDocuments.push(uploadedDocument);
-        await saveDraftClaim(generateRedisKey(req), claim);
-    } else {
-        const errors = translateErrors(form.getAllErrors(), t);
-        req.session.fileUpload = JSON.stringify(errors);
-    }
+  const uploadedDocument = new UploadAdditionalDocument();
+  const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
+  uploadedDocument.fileUpload = fileUpload;
+  uploadedDocument.typeOfDocument = req.body.typeOfDocument;
+  const form = new GenericForm(uploadedDocument);
+  const uploadAdditionalDocuments = claim.generalApplication.uploadAdditionalDocuments
+  form.validateSync()
+  if (!form.hasErrors()) {
+    uploadedDocument.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
+    uploadAdditionalDocuments.push(uploadedDocument);
+    await saveDraftClaim(generateRedisKey(req), claim);
+  } else {
+    const errors = translateErrors(form.getAllErrors(), t);
+    req.session.fileUpload = JSON.stringify(errors);
+  }
 }
 
 export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
-    try {
-        const claim = await getClaimById(req.params.id, req, true)
-        const gaApplication = Object.assign(new GeneralApplication(), claim.generalApplication)
-        claim.generalApplication = gaApplication;
-        return claim
-    } catch (error) {
-        logger.error(error);
-        throw error;
-    }
+  try {
+    const claim = await getClaimById(req.params.id, req, true)
+    const gaApplication = Object.assign(new GeneralApplication(), claim.generalApplication)
+    claim.generalApplication = gaApplication;
+    return claim
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
 }
 
 export const prepareCCDData = (uploadAdditionalDocuments: UploadAdditionalDocument[]) => {
-    return uploadAdditionalDocuments.map(doc => {
-        return {
-            id: uuIdv4(),
-            value: {
-                typeOfDocument: doc.typeOfDocument,
-                documentUpload: {
-                    document_url: doc.caseDocument.documentLink.document_url,
-                    document_binary_url: doc.caseDocument.documentLink.document_binary_url,
-                    document_filename: doc.caseDocument.documentName,
-                }
-
-            }
+  return uploadAdditionalDocuments.map(doc => {
+    return {
+      id: uuIdv4(),
+      value: {
+        typeOfDocument: doc.typeOfDocument,
+        documentUpload: {
+          document_url: doc.caseDocument.documentLink.document_url,
+          document_binary_url: doc.caseDocument.documentLink.document_binary_url,
+          document_filename: doc.caseDocument.documentName,
         }
-    })
+
+      }
+    }
+  })
 }
 
 export const buildSummarySectionForAdditionalDoc = (additionalDocumentsList: UploadAdditionalDocument[], claimId: string, gaId: string) => {
-    const rows: SummaryRow[] = []
-    additionalDocumentsList.forEach(doc => {
-        rows.push(summaryRow('Type of document', doc.typeOfDocument));
-        rows.push(summaryRow('Uploaded document', doc.caseDocument.documentName, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId), changeLabel('en')))
-    })
-    return rows;
+  const rows: SummaryRow[] = []
+  additionalDocumentsList.forEach(doc => {
+    rows.push(summaryRow('Type of document', doc.typeOfDocument));
+    rows.push(summaryRow('Uploaded document', doc.caseDocument.documentName, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId), changeLabel('en')))
+  })
+  return rows;
 }
 
 export const getContentForPanel = (lng: string) => {
-    const panelBuilder = new PaymentSuccessfulSectionBuilder();
-    panelBuilder.addPanelForConfirmation('PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.UPLOADED_ADDITIONAL_DOCS', getLng(lng));
-    return panelBuilder.build();
+  const panelBuilder = new PaymentSuccessfulSectionBuilder();
+  panelBuilder.addPanelForConfirmation('PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.UPLOADED_ADDITIONAL_DOCS', getLng(lng));
+  return panelBuilder.build();
 }
 
 export const getContentForBody = (lng: string) => {
-    let contentBuilder = new PaymentSuccessfulSectionBuilder();
-    return contentBuilder.addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT', { lng: getLng(lng) })
-        .addParagraph('PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.JUDGE_WILL_REVIEW', { lng: getLng(lng) })
-        .build();
+  let contentBuilder = new PaymentSuccessfulSectionBuilder();
+  return contentBuilder.addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT', { lng: getLng(lng) })
+    .addParagraph('PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.JUDGE_WILL_REVIEW', { lng: getLng(lng) })
+    .build();
 }
 
 export const getContentForCloseButton = (redirectUrl: string) => {
-    return new PaymentSuccessfulSectionBuilder()
-        .addButton('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD', redirectUrl)
-        .build();
+  return new PaymentSuccessfulSectionBuilder()
+    .addButton('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD', redirectUrl)
+    .build();
 }
