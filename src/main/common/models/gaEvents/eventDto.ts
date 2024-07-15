@@ -35,22 +35,20 @@ export interface CCDGeneralApplication extends ClaimUpdate {
   generalAppStatementOfTruth?: CcdGeneralApplicationStatementOfTruth;
   generalAppHelpWithFees?: CCDHelpWithFees;
   caseLink?: CaseLink;
-  uploadDocument?: any[]
+  uploadDocument?: AdditionalDocuments[]
 }
-// interface Document {
-//   documentUrl: string;
-//   documentBinaryUrl: string;
-//   documentFileName: string;
-//   documentHash?: string;
-//   categoryID?: string;
-//   uploadTimestamp?: string;
-// }
+interface DocumentDetails {
+  document_url: string;
+  document_binary_url: string;
+  document_filename: string;
+}
 
-// interface AdditionDocDetails {
-//   documentType: string,
-//   additionalDocument: Document
-// }
+interface AdditionDocDetails {
+  typeOfDocument: string,
+  documentUpload: DocumentDetails
+}
 
-// export interface AdditionalDocuments {
- 
-// }
+export interface AdditionalDocuments {
+  id: string;
+  value: AdditionDocDetails
+}
