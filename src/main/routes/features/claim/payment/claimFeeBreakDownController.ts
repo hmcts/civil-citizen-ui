@@ -1,6 +1,6 @@
 import {AppRequest} from 'common/models/AppRequest';
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {CLAIM_FEE_BREAKUP} from 'routes/urls';
 import {YesNo} from 'common/form/models/yesNo';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
@@ -32,8 +32,7 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
     const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.CLAIMISSUED , req);
     const claim =  await getCaseDataFromStore(generateRedisKey(req));
     claim.claimDetails.claimFeePayment = paymentRedirectInformation;
-    // await saveDraftClaim(claim.id, claim, true);
-    await deleteDraftClaimFromStore(claimId);
+    await saveDraftClaim(claim.id, claim, true);
     res.redirect(paymentRedirectInformation?.nextUrl);
   } catch (error) {
     next(error);
