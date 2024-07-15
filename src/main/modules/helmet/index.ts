@@ -62,7 +62,7 @@ const connectSrc = [
 
 const manifestSrc = [
   self,
-  'idam-web-public.aat.platform.hmcts.net',
+  loginUrl,
 ];
 
 /**
