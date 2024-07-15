@@ -1,0 +1,193 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "../../macro/external-link.njk" import externalLink %}
+
+{% import "external-urls.njk" as externalURLs %}
+
+{% set pageTitle = t('PAGES.PRIVACY_POLICY.TITLE') %}
+
+{% block nestedContent %}
+  <h1 class="govuk-heading-l">{{ t('PAGES.PRIVACY_POLICY.TITLE') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_1') }}</p>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.PRIVACY_POLICY.P_2') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_3') }}</p>
+  <p class="govuk-body">
+    {{ t('PAGES.PRIVACY_POLICY.P_4') }}
+    {{ externalLink(t, 'PAGES.PRIVACY_POLICY.P_5', externalURLs.personalInformationUrl, true) }}
+    {{ t('PAGES.PRIVACY_POLICY.P_6') }}
+  </p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_7') }}</p>
+  <p class="govuk-body">
+    {{ t('PAGES.PRIVACY_POLICY.P_8') }}
+    <a href="{{ urls.TERMS_AND_CONDITIONS_URL }}">{{ t('PAGES.PRIVACY_POLICY.TERMS_AND_CONDITIONS') }}</a>.
+  </p>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.PRIVACY_POLICY.P_9') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_10') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_11') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_12') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_13') }}</li>
+  </ul>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_14') }}</p>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.PRIVACY_POLICY.P_15') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_16') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_17') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_18') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_19') }}</li>
+  </ul>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.PRIVACY_POLICY.P_20') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_21') }}</p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_22') }}</p>
+  <p class="govuk-body">
+    {{ t('PAGES.PRIVACY_POLICY.P_23') }}
+    <a href="{{ urls.COOKIES_URL }}">{{ t('PAGES.PRIVACY_POLICY.USE_COOKIES') }}</a>
+    {{ t('PAGES.PRIVACY_POLICY.P_24') }}
+  </p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_25') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_26') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_27') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_28') }}</li>
+  </ul>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.PRIVACY_POLICY.P_29') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_30') }}</p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_31') }}</p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_32') }}</p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_33') }}</p>
+  <p class="govuk-body">
+    {{ t('PAGES.PRIVACY_POLICY.P_34') }}
+    <a href="{{ urls.TERMS_AND_CONDITIONS_URL }}">{{ t('PAGES.PRIVACY_POLICY.TERMS_AND_CONDITIONS') }}</a>.
+  </p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_35') }}</p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_36') }}</p>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.PRIVACY_POLICY.P_37') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_38') }}</p>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.PRIVACY_POLICY.P_39') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_40') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_41') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_42') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_43') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_44') }}</li>
+  </ul>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_45') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>
+      <p class="govuk-body">
+        {{ t('PAGES.PRIVACY_POLICY.P_46') }}
+        {{ externalLink(t, 'PAGES.PRIVACY_POLICY.P_47', externalURLs.personalInformationUrl, true) }}
+        {{ t('PAGES.PRIVACY_POLICY.P_48') }}
+      </p>
+    </li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_49') }}</li>
+  </ul>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_50') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_51') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_52') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_53') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_54') }}</li>
+  </ul>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_55') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_56') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_57') }}</li>
+  </ul>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.PRIVACY_POLICY.P_58') }}</h1>
+  <p class="govuk-body">
+    {{ t('PAGES.PRIVACY_POLICY.P_59') }}
+    {{ externalLink(t, 'PAGES.PRIVACY_POLICY.P_60', externalURLs.complainsProcedureUrl, false) }}
+    {{ t('PAGES.PRIVACY_POLICY.P_61') }}
+  </p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_62') }}</p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_63') }}</p>
+  <p class="govuk-body">
+    {{ t('PAGES.PRIVACY_POLICY.P_64') }}
+    {{ externalLink(t, 'PAGES.PRIVACY_POLICY.P_65', externalURLs.icoContactUsUrl, true) }}
+    {{ t('PAGES.PRIVACY_POLICY.P_66') }}
+  </p>
+
+  <h1 class="govuk-heading-l">{{ t('PAGES.PRIVACY_POLICY.P_67') }}</h1>
+  <h1 class="govuk-heading-m">{{ t('PAGES.PRIVACY_POLICY.P_68') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_69') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_70') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_71') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_72') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_73') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_74') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_75') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_76') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_77') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_78') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_79') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_80') }}</li>
+  </ul>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_81') }}</p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_82') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_83') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_84') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_85') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_86') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_87') }}</li>
+  </ul>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.PRIVACY_POLICY.P_88') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_89') }}</p>
+
+  <h1 class="govuk-heading-s">{{ t('PAGES.PRIVACY_POLICY.P_90') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_91') }}</p>
+
+  <h1 class="govuk-heading-s">{{ t('PAGES.PRIVACY_POLICY.P_92') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_93') }}</p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_94') }}</p>
+
+  <h1 class="govuk-heading-s">{{ t('PAGES.PRIVACY_POLICY.P_95') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_96') }}</p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_97') }}</p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_98') }}</p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_99') }}</p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_100') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_101') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_102') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_103') }}</li>
+  </ul>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_104') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_105') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_106') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_107') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_108') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_109') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_110') }}</li>
+  </ul>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_111') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_112') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_113') }}</li>
+  </ul>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_114') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_115') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_116') }}</li>
+  </ul>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_117') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_118') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_119') }}</li>
+    <li>{{ t('PAGES.PRIVACY_POLICY.P_120') }}</li>
+  </ul>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_121') }}</p>
+  <p class="govuk-body">{{ t('PAGES.PRIVACY_POLICY.P_122') }}</p>
+
+{% endblock %}
