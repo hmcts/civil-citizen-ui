@@ -55,4 +55,5 @@ export interface CCDApplication extends ApplicationUpdate {
   generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
   generalAppPBADetails: CcdGeneralApplicationPBADetails;
   applicationFeeAmountInPence: string;
+  parentClaimantIsApplicant: YesNoUpperCamelCase;
 }
