@@ -4,6 +4,8 @@ import {AppRequest} from 'models/AppRequest';
 import {req} from '../../../utils/UserDetails';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {GaServiceClient} from 'client/gaServiceClient';
+import { GA_GET_APPLICATION_URL, GA_SERVICE_CASES_URL } from 'client/gaServiceUrls';
+import { Application } from 'common/models/generalApplication/application';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -40,6 +42,30 @@ appReq.session = {
 };
 
 describe('GA Service Client', () => {
+  describe('submitEvent', () => {
+    it('should submit Event', async () => {
+      //Given
+      const result = new Application();
+      const mockPost = jest.fn().mockResolvedValue({data: result});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const gaServiceClient = new GaServiceClient(baseUrl);
+      //When
+      const response = await gaServiceClient.submitEvent(null, '123', null, appReq);
+      //Then
+      expect(response).toEqual(result);
+    });
+    it('should throw error on submitEvent', async () => {
+      //Given
+      const mockPost = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const gaServiceClient = new GaServiceClient(baseUrl);
+      //Then
+      await expect(gaServiceClient.submitEvent(null, '123', null, appReq)).rejects.toThrow('error');
+    });
+  });
+
   describe('getGaFeePaymentRedirectInformation', () => {
     const claimId = '1';
     it('should get payment redirect information', async () => {
@@ -102,6 +128,72 @@ describe('GA Service Client', () => {
 
       //Then
       await expect(gaServiceClient.getGaFeePaymentStatus('1', mockHearingFeePaymentRedirectInfo.paymentReference, appReq)).rejects.toThrow('error');
+    });
+  });
+  describe('get dashboard GA', () => {
+    it('should return GAs successfully', async () => {
+      //Given
+      const data = require('../../../utils/mocks/generalApplicationsMock.json');
+      const mockPost = jest.fn().mockResolvedValue({data: data});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const gaServiceClient = new GaServiceClient(baseUrl);
+
+      //When
+      const claimantDashboardItems = await gaServiceClient.getApplications(appReq);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockPost.mock.calls[0][0]).toContain(GA_SERVICE_CASES_URL);
+      expect(claimantDashboardItems.length).toEqual(1);
+    });
+    it('should throw error on getApplications', async () => {
+      //Given
+      const mockPost = jest.fn().mockImplementation(() => {
+        throw new Error('error');
+      });
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const gaServiceClient = new GaServiceClient(baseUrl);
+      //Then
+      await expect(gaServiceClient.getApplications(appReq)).rejects.toThrow('error');
+    });
+  });
+
+  describe('get GA Applications', () => {
+    it('should return GAs successfully', async () => {
+      //Given
+      const data = require('../../../utils/mocks/generalApplicationsMock.json');
+      const mockPost = jest.fn().mockResolvedValue({data: data});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const generalApplicationClient = new GaServiceClient(baseUrl);
+
+      //When
+      const claimantDashboardItems = await generalApplicationClient.getApplications(appReq);
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockPost.mock.calls[0][0]).toContain(GA_SERVICE_CASES_URL);
+      expect(claimantDashboardItems.length).toEqual(1);
+    });
+  });
+
+  describe('get GA Application', () => {
+    it('should return GAs successfully', async () => {
+      //Given
+      const data = require('../../../utils/mocks/applicationMock.json');
+      const mockGet = jest.fn().mockResolvedValue({data: data});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const generalApplicationClient = new GaServiceClient(baseUrl);
+
+      //When
+      const application = await generalApplicationClient.getApplication(appReq, '1718105701451856');
+      //Then
+      expect(mockedAxios.create).toHaveBeenCalledWith({
+        baseURL: baseUrl,
+      });
+      expect(mockGet.mock.calls[0][0]).toContain(GA_GET_APPLICATION_URL.replace(':caseId','1718105701451856'));
+      expect(application.id).toBe(1718105701451856);
     });
   });
 });

@@ -85,6 +85,7 @@
       "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Go back and try payment again",
       "GO_TO_ACCOUNT": "Go to your account",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
+      "RESPOND_TO_APPLICATION": "Respond to application",
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE": "Save",
       "SAVE_AND_CONTINUE": "Save and continue",
@@ -387,7 +388,180 @@
       "TITLE": "Your hearing requirements"
     }
   },
+  "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS": {
+    "DETAILS": {
+      "TITLE": "What is Disclosure?",
+      "PARAGRAPH1": "You are required to share (disclose) all documents which are relevant to the claim with all parties involved.",
+      "PARAGRAPH2": "This includes all physical and electronic documents, such as invoices and contracts, as well as images, videos, text messages, and social media messages.",
+      "PARAGRAPH3": "You must disclose all relevant documents, even if you do not intend to rely on them during a hearing or if they are harmful to your claim.",
+      "PARAGRAPH4": "A list of documents from the other parties will be made available to you, and you can ask for copies of any of these documents. The other parties involved in the claim can also ask to see and inspect copies of documents you disclose.",
+      "URL": {
+        "BEFORE": "Find more information about ",
+        "TEXT": "disclosure of documents (opens in a new tab)",
+        "AFTER": "."
+      }
+    }
+  },
+  "HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS": {
+    "DETAILS": {
+      "TITLE": "How to agree disclosure of electronic documents",
+      "PARAGRAPH1": "Parties can agree ahead of time what electronic documents will be disclosed by all parties involved in the claim.",
+      "URL1": {
+        "BEFORE": "This can be done using the ",
+        "TEXT": "Electronic Documents Questionnaire on Gov.uk (opens in a new tab)",
+        "AFTER": "."
+      },
+      "URL2": {
+        "BEFORE": "There is more information on the Electronic Documents Questionnaire in paragraph 10 of ",
+        "TEXT": "Practice Direction 31B (opens in a new tab)",
+        "AFTER": "."
+      },
+      "URL3": {
+        "BEFORE": "You can also provide this digitally as set out in paragraph 31 of ",
+        "TEXT": "Practice Direction 31B (opens in a new tab)",
+        "AFTER": "."
+      }
+    }
+  },
+  "WHAT_ARE_FIXED_RECOVERABLE_COSTS": {
+    "TITLE": "What are Fixed Recoverable Costs?",
+    "PARA_1":  "Most civil money claims valued up to and including £100,000 are subject to the Fixed Recoverable Costs Regime (FRCs).",
+    "PARA_2":  "FRCs set limits on the amount of legal costs the successful parties can claim back from unsuccessful parties.",
+    "PARA_3":  "They provide certainty to all parties involved by setting in advance the maximum amount of costs the losing party will have to pay.",
+    "URL": {
+      "BEFORE": "For more information on limits for FRCs see ",
+      "TEXT": "Table 14 (opens in a new tab)",
+      "AFTER": "."
+    },
+    "PARA_4": "All claims subject to FRCs need to be assigned to a complexity ban from 1 to 4.",
+    "PARA_5": "Band 1 is for the least complex claims where only one issue is in dispute. For example, claims where either the amount of money being claimed or liability (legal responsibility) is in dispute.",
+    "PARA_6": "Band 2 is for most other claims where more than one issue is in dispute. For example, the amount of money being claimed and liability is in dispute.",
+    "PARA_7": "Band 3 is for more complex claims where more than one issue is in dispute. For example, noise induced hearing loss or employer liability for diseases.",
+    "PARA_8": "Band 4 is for the most complex cases with serious issues around the facts of law.",
+    "PARA_9": "You may agree the complexity banding with the other parties beforehand or say which band you think this claim falls into.",
+    "PARA_10": "However, if the Court disagrees, it has the power to assign a claim to whatever band it feels is appropriate."
+  },
+  "WHICH_COMPLEXITY_BAND_TO_CHOOSE": {
+    "TITLE": "Which complexity band should I use?",
+    "PARA_1_TITLE": "Band 1",
+    "PARA_1": "Any claim where only one issue is in dispute. For example, claims where only the amount of money, or liability (legal responsibility) is in dispute. Examples include:",
+    "PARA_1_POINT_1": "Personal injury claims where liability or the amount of money being claimed is disputed.",
+    "PARA_1_POINT_2": "Road traffic accidents with no claim for personal injury.",
+    "PARA_1_POINT_3": "Debt claims where there is disagreement over the facts of the claim.",
+    "PARA_2_TITLE": "Band 2",
+    "PARA_2": "Most claims where more than one issue is in dispute. For example, claims where the amount of money being claimed, and liability (legal responsibility) is in dispute. Examples include:",
+    "PARA_2_POINT_1": "Personal injury claims where liability and the amount of money being claimed is disputed.",
+    "PARA_2_POINT_2": "Road traffic accidents which include a claim for personal injury.",
+    "PARA_3_TITLE": "Band 3",
+    "PARA_3": "Any other claims where more than one issue is in dispute. For example:",
+    "PARA_3_POINT_1": "Noise induced hearing loss.",
+    "PARA_3_POINT_2": "Employer liability for diseases.",
+    "PARA_4_TITLE": "Band 4",
+    "PARA_4": "Any claim which is not suitable for bands 1 to 3. For example:",
+    "PARA_4_POINT_1": "Complex personal injury claims with serious issues around the facts or law.",
+    "URL": {
+      "TITLE": "More information on complexity bands",
+      "BEFORE": "For more information on complexity bands see ",
+      "TEXT": "CPR 26.16 Table 2 (opens in a new tab)",
+      "AFTER": "."
+    }
+  },
+  "DOCUMENTS_TO_BE_CONSIDERED" : {
+    "TITLE_WITH_CLAIMANT": "Claimant documents to be considered",
+    "TITLE_WITH_DEFENDANT": "Defendant documents to be considered"
+  },
   "PAGES": {
+    "SUBJECT_TO_FRC": {
+      "PAGE_TITLE": "Is the claim subject to the Fixed Recoverable Costs Regime?",
+      "TITLE": "Fixed Recoverable Costs Regime",
+      "BUTTON_TITLE": "Is the claim subject to the Fixed Recoverable Costs Regime?"
+    },
+    "FRC_BAND_AGREED": {
+      "PAGE_TITLE": "Has the complexity band been agreed with the other parties?",
+      "TITLE": "Agreement of complexity band",
+      "BUTTON_TITLE": "Has the complexity band been agreed with the other parties?"
+    },
+    "CHOOSE_COMPLEXITY_BAND": {
+      "PAGE_TITLE": "Which complexity band do you believe this claim falls into?",
+      "TITLE": "Complexity band",
+      "COMBO_BOX" : {
+        "TITLE": "Which complexity band do you believe this claim falls into?",
+        "ITEM1": {
+          "TEXT": "Band 1"
+        },
+        "ITEM2": {
+          "TEXT": "Band 2"
+        },
+        "ITEM3": {
+          "TEXT": "Band 3"
+        },
+        "ITEM4": {
+          "TEXT": "Band 4"
+        }
+      }
+    },
+    "COMPLEXITY_BAND_REASON": {
+      "PAGE_TITLE": "Reasons for band selection",
+      "TITLE": "Complexity band",
+      "TEXT_AREA": {
+        "LABEL": "Reasons for band selection",
+        "HINT": "Please give your reasons (optional)"
+      }
+    },
+    "WHY_NOT_SUBJECT_TO_FRC": {
+      "PAGE_TITLE": "Fixed recoverable costs regime",
+      "TITLE": "Fixed Recoverable Costs Regime",
+      "TEXT_AREA": {
+        "LABEL": "Why is the claim not subject to the Fixed Recoverable Costs Regime?",
+        "HINT": "Please give your reasons (optional)"
+      }
+    },
+    "DOCS_FOR_DISCLOSURE" : {
+      "PAGE_TITLE_WITH_CLAIMANT": "Are there any documents the claimant has that you want the court to consider?",
+      "COMPONENT_TEXT_WITH_CLAIMANT": "Are there any documents the claimants have that you want the court to consider?",
+      "PAGE_TITLE_WITH_DEFENDANT": "Are there any documents the defendant has that you want the court to consider?",
+      "COMPONENT_TEXT_WITH_DEFENDANT": "Are there any documents that defendants have that you want the court to consider?"
+    },
+    "HAS_AN_AGREEMENT_BEEN_REACHED" : {
+      "PAGE_TITLE": "Has an agreement been reached about disclosure of electronic documents?",
+      "TITLE": "Disclosure of electronic documents",
+      "COMBO_BOX" : {
+        "TITLE": "Has an agreement been reached between the parties involved in the claim about what electronic documents will be disclosed?",
+        "ITEM1": {
+          "TEXT": "Yes"
+        },
+        "ITEM2": {
+          "TEXT": "No, but an agreement is likely"
+        },
+        "ITEM3": {
+          "TEXT": "No"
+        }
+      }
+    },
+    "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : {
+      "PAGE_TITLE": "Disclosure of non-electronic documents",
+      "TEXT_AREA" : {
+        "LABEL": "What non-electronic documents are proposed for disclosure?",
+        "HINT": "Please give details"
+      }
+    },
+    "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : {
+      "PAGE_TITLE": "What are the issues about disclosure of electronic documents?",
+      "TITLE": "Disclosure of electronic documents",
+      "TEXT_AREA" : {
+        "LABEL": "What are the issues about disclosure of electronic documents?",
+        "HINT": "Please give details"
+      }
+    },
+    "DOCUMENTS_CONSIDERED_DETAILS" : {
+      "PAGE_TITLE_WITH_CLAIMANT": "What documents does the claimant have that you would like the court to consider?",
+      "PAGE_TITLE_WITH_DEFENDANT": "What documents does the defendant have that you would like the court to consider?",
+      "TEXT_AREA" : {
+        "LABEL_WITH_CLAIMANT": "What are the documents the claimants have that you want the court to consider?",
+        "LABEL_WITH_DEFENDANT": "What are the documents the defendants have that you want the court to consider?",
+        "HINT": "Please give details"
+      }
+    },
     "ACCESSIBILITY_STATEMENT": {
       "CONSIDER": "We’ll consider your request and get back to you in 10 days.",
       "EMAIL": "HMCTSforms@justice.gov.uk",
@@ -445,6 +619,211 @@
       "TELEPHONE": "0300 123 7050",
       "TELEPHONE_TITLE": "Telephone",
       "TITLE": "Accessibility statement for the Online Civil Money Claims service"
+    },
+    "CONTACT_US": {
+      "TITLE": "Contact us"
+    },
+    "PRIVACY_POLICY": {
+      "TITLE": "Privacy policy",
+      "TERMS_AND_CONDITIONS": "terms and conditions",
+      "USE_COOKIES": "use cookies",
+      "P_1": "This privacy policy explains why we collect your personal data and what we do with it. It also explains your rights and how to enforce them.",
+      "P_2": "Who manages this service",
+      "P_3": "This service is managed by HM Courts and Tribunals Service (HMCTS), which is an executive agency of the Ministry of Justice (MoJ).",
+      "P_4": "The MoJ is known as the data controller for data protection purposes. The ",
+      "P_5": "MoJ personal information charter",
+      "P_6": " explains how the MoJ processes personal data.",
+      "P_7": "As part of the MoJ, HMCTS is responsible for deciding how your personal data is used and for protecting the personal data you provide.",
+      "P_8": "More information about how to use the service is in the ",
+      "P_9": "Why we collect your personal data",
+      "P_10": "We collect your personal data to:",
+      "P_11": "process your claim or application",
+      "P_12": "meet legal requirements",
+      "P_13": "make improvements to this service",
+      "P_14": "Our staff use your personal data to process your claim or application. They work in the UK and your data is stored in the UK.",
+      "P_15": "Types of personal data we collect",
+      "P_16": "The personal data we collect includes:",
+      "P_17": "your name, address and contact details",
+      "P_18": "your email and password (if you create an account)",
+      "P_19": "other personal information you provide in your claim or application",
+      "P_20": "Using your data",
+      "P_21": "As part of your claim you’ll be asked to use your email address to set up an account. You will be able to use this email and password to sign into other HMCTS services.",
+      "P_22": "We may ask for your permission to use your email address to send you emails using GOV.UK Notify. This system processes emails only within the European Economic Area until the point where emails are handed over to the email provider you use.",
+      "P_23": "We ",
+      "P_24": " to collect data that tells us about how you’re using this service, including:",
+      "P_25": "if you open an email from us or click on a link in an email",
+      "P_26": "your computer, phone or tablet’s IP address",
+      "P_27": "the region or town where you are using your computer, phone or tablet",
+      "P_28": "the web browser you use",
+      "P_29": "Sharing your data",
+      "P_30": "While processing your claim or application, another government department, agency or organisation might be involved and we may share your data with them.",
+      "P_31": "Any data posted in by you or other parties to support the claim issue and progression will be shared with Exela Technologies Limited and, if printing is required, with Xerox (UK) Ltd.",
+      "P_32": "If you contact us and ask for help with the service you are using, your personal data may be shared with the Good Things Foundation. This is a company who we have partnered with to offer face to face support.",
+      "P_33": "In some circumstances we may share your data for example, to prevent or detect crime, or to produce anonymised statistics.",
+      "P_34": "We use Google Analytics to collect data about how a website is used. This anonymous data is shared with Google. Find out about this in our ",
+      "P_35": "The information you submit will be shared with everyone who is named on the claim. This excludes any payment details that you use to pay court fees.",
+      "P_36": "If a judgment is made on a case some information is shared with Registry Trust Limited who provide financial information about court judgments to banks and credit agencies.",
+      "P_37": "Storing and sharing your data internationally",
+      "P_38": "Sometimes we need to send your personal information outside of the UK. When we do this we comply with data protection law.",
+      "P_39": "Your rights",
+      "P_40": "You can ask:",
+      "P_41": "to see the personal data that we hold on you",
+      "P_42": "to have the personal data corrected",
+      "P_43": "to have the personal data removed or deleted (this will depend on the circumstances, for example if you decide not to continue your claim or application)",
+      "P_44": "that access to the personal data is restricted (for example, you can ask to have your data stored for longer and not automatically deleted)",
+      "P_45": "If you want to see the personal data that we hold on you, you can:",
+      "P_46": "complete a form to ",
+      "P_47": "make a subject access request",
+      "P_48": " - your request goes to the MOJ as data controller",
+      "P_49": "write to us: Disclosure Team, Post point 10.38, 102 Petty France, London, SW1H 9AJ",
+      "P_50": "You can ask for more information about:",
+      "P_51": "agreements we have on sharing information with other organisations",
+      "P_52": "when we are allowed to pass on personal information without telling you",
+      "P_53": "our instructions to staff on how to collect, use or delete your personal information)",
+      "P_54": "how we check that the information we hold is accurate and up-to-date",
+      "P_55": "You can contact the MoJ data protection officer by:",
+      "P_56": "writing to us: Post point 10.38, 102 Petty France, London, SW1H 9AJ",
+      "P_57": "emailing: privacy@justice.gov.uk",
+      "P_58": "How to complain",
+      "P_59": "See our ",
+      "P_60": "complaints procedure,",
+      "P_61": " if you want to complain about how we’ve handled your personal data.",
+      "P_62": "Write to: Post point 10.38, 102 Petty France, London, SW1H 9AJ",
+      "P_63": "Email: privacy@justice.gov.uk",
+      "P_64": "You can also complain to the ",
+      "P_65": "Information Commissioner’s Office",
+      "P_66": " if you’re not satisfied with our response or believe we are not processing your personal data lawfully.",
+      "P_67": "Using the money claims service",
+      "P_68": "The personal data we need",
+      "P_69": "If you are using the money claims service we may ask you for:",
+      "P_70": "your name",
+      "P_71": "your business or organisation if you are acting on their behalf",
+      "P_72": "your date of birth",
+      "P_73": "your email or mobile phone number",
+      "P_74": "your address",
+      "P_75": "the name of the person, business or organisation you are claiming against",
+      "P_76": "their email address",
+      "P_77": "their address",
+      "P_78": "the reasons you are making the claim",
+      "P_79": "the timeline of events leading to the dispute",
+      "P_80": "a list of any evidence you have to support your claim",
+      "P_81": "If you are responding to a money claim we ask you to check the personal information about you that was provided by the claimant which includes your name, your address and contact details.",
+      "P_82": "We may ask you to provide:",
+      "P_83": "your date of birth",
+      "P_84": "your business or organisation if you are acting on their behalf",
+      "P_85": "your response to the claim made against you",
+      "P_86": "the timeline of events leading to the dispute",
+      "P_87": "a list of any evidence you have to support your claim",
+      "P_88": "Storing your data",
+      "P_89": "When you use this service you’ll be asked to use your email address to set up an account. You can use this email and password to sign into other HMCTS services.",
+      "P_90": "Before you submit your information",
+      "P_91": "The information you enter in the money claims service is saved until you decide to submit it. This allows you to save what you are doing and continue later. Saved information that you do not submit will be deleted after 90 days.",
+      "P_92": "After you submit your information",
+      "P_93": "The information you submit for a money claim will be deleted 2 years after the court makes a decision on the outcome of your claim (this is called a judgment).",
+      "P_94": "If the court doesn’t make a decision about your claim (for example, you settle the claim out of court and a judgment is no longer required) then the information you provide will be deleted 3 years after the last update made to the claim.",
+      "P_95": "Retain and dispose",
+      "P_96": "In the course of carrying out various functions, HMCTS creates and holds a wide range of recorded information. Records will be properly retained to enable HMCTS to meet its business needs, legal requirements, to evidence events or agreements in the event of allegations or disputes and to ensure that any records of historic value are preserved.",
+      "P_97": "The untimely destruction of records could affect the conduct of HMCTS business and HMCTS ability to comply with statutory obligations. Conversely, the permanent retention of records is undesirable and disposal is necessary to free up storage space, reduce administrative burden and to ensure that HMCTS does not unlawfully retain records for longer than necessary (particularly those containing personal data).",
+      "P_98": "1. This policy supports HMCTS in demonstrating accountability through the proper retention of records and by demonstrating that disposal decisions are taken with proper authority and in accordance with due process.",
+      "P_99": "2. The purpose of this policy is to provide guidance as to set out the length of time that HMCTS records should be retained and the processes to review the records as to any further retention or for disposing of records at the end of the retention period. The policy helps to ensure that HMCTS operates in compliance with the General Data Protection Regulation and any other legislative or regulatory retention obligations.",
+      "P_100": "3. The policy covers the records listed by HMCTS irrespective of the media on which they are created or held including:",
+      "P_101": "paper",
+      "P_102": "electronic files (including database, Word documents, power point presentations, spreadsheets, webpages and e-mails)",
+      "P_103": "photographs, scanned images, CD-ROMs and video tapes",
+      "P_104": "And includes all types of records which HMCTS creates or holds on behalf of the members. The records may include, but are not limited to, the following:",
+      "P_105": "client files",
+      "P_106": "contracts and invoices",
+      "P_107": "registers",
+      "P_108": "legal advice",
+      "P_109": "financial accounts",
+      "P_110": "user information",
+      "P_111": "4. The retention period for records is six years, unless the following applies:",
+      "P_112": "If the case has been transferred to a County Court the record will be copied to a paper file, in which case the electronic record will be destroyed after three years",
+      "P_113": "HMCTS has the ability to change the date the file will be disposed of if, for example, a caseworker reviews the file and notes that after six years the case is still progressing. In these circumstances the date of disposal will be extended for a minimum of one year.",
+      "P_114": "5. The Data Protection Manager is responsible for ensuring that the user information is periodically reviewed (annually) to determine whether any retention periods have expired. Once the retention period has expired, the record must be reviewed and a ‘disposal action’ agreed upon. A ‘disposal action’ is;",
+      "P_115": "the destruction of the record; or",
+      "P_116": "the retention of the record for a further period under the instruction from the Data Controller of the data",
+      "P_117": "6. No destruction of a record will take place without assurance that:",
+      "P_118": "the record is no longer required by HMCTS",
+      "P_119": "no litigation or investigation is current or pending which affects the claim",
+      "P_120": "there are no current or pending FOIA or GDPR subject access requests which affect the record.",
+      "P_121": "6.1 Destruction of Paper Records. Destruction will be carried out in a way that preserves the confidentiality of the record. Non-confidential records will be placed in ordinary rubbish bins or recycling bins. Confidential records will be placed in confidential waste bins and collected by the Chambers approved disposal firm for secure destruction. A certificate of destruction will be provided upon each completed process. All copies including security copies, preservation copies and backup copies will also be destroyed at the same time in the same manner.",
+      "P_122": "6.2 Destruction of Electronic Records. All electronic records will be either physically destroyed or wiped. Confirmation of the date of this will be recorded by HMCTS."
+    },
+    "TERMS_AND_CONDITIONS": {
+      "TITLE": "Terms and conditions",
+      "PRIVACY_POLICY": "privacy policy",
+      "COOKIE_POLICY": "cookie policy" ,
+      "P_1": "Terms and conditions",
+      "P_2": "By using this service you’re agreeing to the following terms of use.This includes the ",
+      "P_4": "By creating an account, you agree to accept documents from the court electronically.",
+      "P_5": "Who we are",
+      "P_6": "This service is managed by Her Majesty’s Courts and Tribunals Service.",
+      "P_7": "You should check these terms and conditions regularly. We may update them at any time without notice. If you continue to use this service after the terms and conditions have changed, you are deemed to have agreed to the changes.",
+      "P_8": "Information provided by this service",
+      "P_9": "This service provides information to support your claim or application. We cannot give legal advice on individual cases.",
+      "P_10": "You should answer the questions in the service based on your circumstances, and seek legal advice if you need it.",
+      "P_11": "Sharing and storing data",
+      "P_12": "Our ",
+      "P_13":" explains where your data is stored, and who it is shared with.",
+      "P_14": "Our ",
+      "P_15": "explains how this service uses and stores cookies.",
+      "P_16": "Laws applying to this service",
+      "P_17": "Your use of this service and any dispute arising from its use will be governed by and construed in accordance with the laws of England and Wales, including but not limited to the:",
+      "P_18": "Computer Misuse Act 1990",
+      "P_19": "Data Protection Act 1998 (until 25 May 2018)",
+      "P_20": "Data Protection Act 2018 (from 25 May 2018)",
+      "P_21": "General Data Protection Regulation",
+      "P_22": "Mental Capacity Act 2005",
+      "P_23": "How to use this service responsibly",
+      "P_24": "There are risks in using a shared computer (for example, in a library) to access this service. It’s your responsibility to be aware of these risks and to avoid using any computer which may leave your personal information accessible to others. You’re responsible if you choose to leave a computer unprotected while using this service.",
+      "P_25": "You should take your own precautions to ensure that the way you access this service does not expose you to the risk of:",
+      "P_26": "viruses",
+      "P_27": "malicious computer code",
+      "P_28": "other forms of interference which may damage your computer system",
+      "P_29": "You must not misuse this service by knowingly introducing viruses, trojans, worms, logic bombs or other material which is malicious or technologically harmful. You must not attempt to gain unauthorised access to this service, the system on which it is stored, or any server, computer or database connected to it. You must not attack this site using a denial-of-service attack or a distributed denial-of-service attack.",
+      "P_30": "Entering personally sensitive information",
+      "P_31": "This online service contains several free-text fields in which you may choose to enter information which is personally sensitive.",
+      "P_32": "If you enter information about your:",
+      "P_33": "religious beliefs",
+      "P_34": "sexual orientation or sex life",
+      "P_35": "racial or ethnic origins",
+      "P_36": "political opinions",
+      "P_37": "religious or philosophical beliefs",
+      "P_38": "trade union membership",
+      "P_39": "genetic data or biometric data",
+      "P_40": "health data",
+      "P_41": "You give us your consent to processing this information for the purpose of dealing with your application.",
+      "P_42": "For more information about how we collect and store your personal data, see the ",
+      "P_43": "Disclaimer",
+      "P_44": "While we make every effort to keep GOV.UK up to date, we don’t provide any guarantees, conditions or warranties that the information will be:",
+      "P_45": "current",
+      "P_46": "secure",
+      "P_47": "accurate",
+      "P_48": "complete",
+      "P_49": "free from bugs or viruses",
+      "P_50": "We don’t publish advice on GOV.UK. You should get professional or specialist advice before doing anything on the basis of the content.",
+      "P_51": "We’re not liable for any loss or damage that may come from using GOV.UK. This includes:",
+      "P_52": "any direct, indirect or consequential losses",
+      "P_53": "any loss or damage caused by civil wrongs (‘tort’, including negligence), breach of contract or otherwise",
+      "P_54": "the use of GOV.UK and any websites that are linked to or from it",
+      "P_55": "the inability to use GOV.UK and any websites that are linked to or from it",
+      "P_56": "This applies if the loss or damage was foreseeable, arose in the normal course of things or you advised us that it might happen.",
+      "P_57": "This includes (but isn’t limited to) the loss of your:",
+      "P_58": "income or revenue",
+      "P_59": "salary, benefits or other payments",
+      "P_60": "business",
+      "P_61": "profits or contracts",
+      "P_62": "opportunity",
+      "P_63": "anticipated savings",
+      "P_64": "data",
+      "P_65": "goodwill or reputation",
+      "P_66": "intangible property, including loss, corruption or damage to data or any computer system",
+      "P_67": "wasted management or office time",
+      "P_68": "We may still be liable for:",
+      "P_69": "death or personal injury arising from our negligence",
+      "P_70": "fraudulent misrepresentation",
+      "P_71": "any other liability which cannot be excluded or limited under applicable law"
     },
     "VIEW_MEDIATION_DOCUMENTS": {
       "CLAIMANT_TABLE_TITLE": "Claimant mediation documents",
@@ -652,6 +1031,36 @@
       "INSET": "The court will review your suggestion and may reject it if it's more than the defendant can afford."
     },
     "CHECK_YOUR_ANSWER": {
+      "SUBECT_TO_FRC": "Is the claim subject to the fixed recoverable costs regime?",
+      "FRC_BAND_AGREED": "Has the complexity band been agreed with the other parties?",
+      "FRC_BAND_CHOSEN": "Which complexity band do you believe the claim falls into?",
+      "FRC_BANDS": {
+        "BAND_1": "Band 1",
+        "BAND_2": "Band 2",
+        "BAND_3": "Band 3",
+        "BAND_4": "Band 4"
+      },
+      "REASON_FOR_FRC_BAND": "Reason for band selection",
+      "REASON_FOR_NO_FRC_BAND": "Why is the claim not subject to the Fixed Recoverable Costs Regime?",
+      "DISCLOSURE_OF_DOCUMENTS": {
+        "QUESTION": "You can ask the court to order disclosure of documents from the other parties. Do you want to request the disclosure of electronic or non-electronic documents, or both?",
+        "NO": "No",
+        "BOTH": "Both",
+        "ELECTRONIC_DOCUMENTS": "Electronic documents for disclosure",
+        "NON_ELECTRONIC_DOCUMENTS": "Non-electronic documents for disclosure"
+      },
+      "ELEC_AGREEMENT_REACHED": {
+        "QUESTION": "Has an agreement been reached between the parties involved in the claim about what electronic documents will be disclosed?",
+        "YES": "Yes",
+        "NO": "No",
+        "NO_BUT_AN_AGREEMENT_IS_LIKELY": "No, but an agreement is likely"
+      },
+      "ELEC_DOCS_ISSUES": "What are the issues about disclosure of electronic documents?",
+      "NON_ELEC_DOCS_DISCLOSURE": "What non-electronic documents are proposed for disclosure?",
+      "CLAIMANT_DOCS_TO_CONSIDER": "Are there any documents the claimants have that you want the court to consider?",
+      "CLAIMANT_DOCS_TO_CONSIDER_DETAILS": "What are the documents the claimants have that you want the court to consider?",
+      "DEFENDANT_DOCS_TO_CONSIDER": "Are there any documents the defendants have that you want the court to consider?",
+      "DEFENDANT_DOCS_TO_CONSIDER_DETAILS": "What are the documents the defendants have that you want the court to consider?",
       "AIRLINE": "Airline",
       "ARE_YOU_CLAIMING_DELAYED_FLIGHT": "Are you claiming for a delayed flight?",
       "BANK_BALANCE": "Balance",
@@ -1411,6 +1820,27 @@
       "PAGE_TITLE": "Are there any documents the other party has that you want the court to consider?",
       "TITLE": "Are there any documents the other party has that you want the court to consider?"
     },
+    "DISCLOSURE_OF_DOCUMENTS": {
+      "PAGE_TITLE": "Disclosure of documents",
+      "TITLE": "Disclosure of documents",
+      "CHECKBOX_TITLE": "You can ask the court to order disclosure of documents from the other parties. Do you want to request the disclosure of electronic or non-electronic documents, or both? (optional)",
+      "WHAT_IS_THE_DIFFERENCE": "What is the difference between electronic and non-electronic documents?",
+      "TITLE_1": "Electronic documents",
+      "PARAGRAPH_1.1": "Electronic documents are any documents that can be supplied in any digital or electronic format. This includes physical documents which can be supplied in an electronic format.",
+      "PARAGRAPH_1.2": "These formats include DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+      "PARAGRAPH_1.3": "For example, an invoice or contract which was a physical document, but has been scanned or photographed and can be submitted electronically is an electronic document.",
+      "TITLE_2": "Non-electronic documents",
+      "PARAGRAPH_2.1": "Non-electronic documents are physical documents which are not in a digital or electronic format. This includes electronic documents, which happen to be in a physical format.",
+      "PARAGRAPH_2.2": "For example, a print-out of an email is a non-electronic document.",
+      "TITLE_3": "More information",
+      "URL": {
+        "BEFORE": "Find more information on ",
+        "TEXT": "Practice Direction 31B (opens in new tab)",
+        "AFTER": "."
+      },
+      "ELECTRONIC_DOCS_OPTION": "Electronic documents for disclosure",
+      "NON_ELECTRONIC_DOCS_OPTION": "Non-electronic documents for disclosure"
+    },
     "CONTACT_THEM": {
       "ABOUT": "About claim",
       "CLAIMANT": "Claimant",
@@ -1593,6 +2023,7 @@
         "CLAIMANT_REQUESTED_CCJ": "You requested a County Court Judgment against {{defendantName}}.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "You've signed a settlement agreement. The defendant can choose to sign it or not.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED": "The defendant has not responded to your settlement agreement. You can request a County Court Judgment against them.",
+        "DECISION_ON_RECONSIDERATION": "An order has been made.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
         "DOCUMENTS_BEING_TRANSLATED": "The documents are being translated.",
         "HWF_FEE_PAYMENT_OUTCOME": "The hearing fee has been paid.",
@@ -1612,9 +2043,13 @@
         "REQUESTED_MORE_TIME_TO_RESPOND": "{{defendantName}} has requested more time to respond.",
         "RESPONSE_BY_POST": "The claim will continue by post.",
         "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline.",
-        "SDO_ORDER_LEGAL_ADVISER_STATUS": "Send us more details before the hearing",
+        "SDO_ORDER_LEGAL_ADVISER_STATUS": "Send us more details before the hearing.",
+        "SDO_ORDER_IN_REVIEW": "Wait for court to review the order.",
+        "SDO_ORDER_IN_REVIEW_OTHER_PARTY_CLAIMANT": "Read the claimant’s requests for a judge to review the order.",
+        "SDO_ORDER_IN_REVIEW_OTHER_PARTY_DEFENDANT": "Read the defendant’s requests for a judge to review the order.",
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
-        "WAITING_COURT_REVIEW": "Wait for the court to review the case."
+        "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
+        "HEARING_FEE_UNPAID": "This claim has been struck out."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
@@ -1634,6 +2069,7 @@
         "CLAIMANT_REJECT_PARTIAL_ADMISSION": "{{ claimantName }} rejected your admission of £{{ amount }}.",
         "CLAIMANT_REQUESTED_CCJ": "{{ claimantName }} requested a County Court Judgment against you on {{ccjRequestedDate}}.",
         "CLAIMANT_REQUESTED_CCJ_BY_DETERMINATION": "{{ claimantName }} requested a County Court Judgment against you.",
+        "DECISION_ON_RECONSIDERATION": "An order has been made.",
         "DOCUMENTS_BEING_TRANSLATED": "The documents are being translated.",
         "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days.",
         "MORE_DETAILS_REQUIRED": "Send us more details before the hearing.",
@@ -1645,7 +2081,7 @@
         "NO_RESPONSE_ELIGIBLE_CCJ": "You haven’t responded to the claim. {{ claimantName }} can now ask for a County Court Judgment (CCJ) against you. You can still respond to this claim before they ask for a CCJ.",
         "PART_ADMIT_NOT_PAID": "You’ve admitted part of the claim.",
         "PART_ADMIT_STATES_PAID": "We’ve emailed {{ claimantName }} telling them when and how you said you paid the claim.",
-        "RESPONSE_BY_POST": "The claim will continue by post",
+        "RESPONSE_BY_POST": "The claim will continue by post.",
         "REQUESTED_CHANGE_BY_CLAIMANT": "The claimant applied to change something about the claim.",
         "REQUESTED_CHANGE_BY_DEFENDANT": "You applied to change the claim.",
         "REQUESTED_MORE_TIME_TO_RESPOND": "You need to respond before 4pm on {{ responseDeadline }}.",
@@ -1655,7 +2091,8 @@
         "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
-        "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement."
+        "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement.",
+        "HEARING_FEE_UNPAID": "This claim has been struck out."
       },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Applying to the court as a creditor of a debt in breathing space",
@@ -2141,6 +2578,7 @@
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
         "RESPOND_TO": "Respond to an application to {{applicationType}}",
+        "RESPOND_TO_MULTIPLE": "Respond to an application",
         "TITLE": "The other parties have said that you've agreed to the order they've requested. Is this correct?"
       },
       "APPLICATION_COSTS": {
@@ -2220,6 +2658,9 @@
       "CHECK_YOUR_ANSWER_RESPONSE": {
         "CLAIM_REFERENCE": "Claim reference: ",
         "PREFERRED_LOCATION": "Preferred location",
+        "PROPOSED_INSTALMENTS": "Proposed certain instalments per month",
+        "PROPOSED_PAYMENT_PLAN": "Proposed payment plan",
+        "PROPOSED_SET_DATE": "Proposed payment in full by set date",
         "RESPOND_TO_AN_APPLICATION": "Respond to an application",
         "STATEMENT_OF_TRUTH": {
           "APPLICATION": "The information on this page forms your response to the application.",
@@ -2338,7 +2779,44 @@
         "OTHER": "Other applications",
         "SELECT_APPLICATION": "Select the application you want and click continue.",
         "TITLE": "Select application",
-        "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order."
+        "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order.",
+        "ASK_MORE_TIME_DESCRIPTION": "For example, asking for the deadline for uploading documents before a trial or hearing to be extended. You'll need to provide a valid reason for not meeting the original deadline. This application can only be made before the original deadline has passed. This is also known as an application to extend time.  Instead of making an application, you can get written agreement from the other parties for more time to do what's required by the court. To do this, the time extension you request must be less than 28 days and should not affect a hearing date."
+      },
+      "SUMMARY": {
+        "APP_REQUESTED": "An application is a request for a change to the case.",
+        "APPLICATION": "Application",
+        "APPLICATION_ID": "Application ID",
+        "APPLICATION_TYPE": "Application type",
+        "DETAILS": "Details",
+        "IN_PROGRESS": "In progress",
+        "MY_APPLICATIONS": "My applications",
+        "STATUS": "Status",
+        "STATES": {
+          "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
+          "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
+          "APPLICATION_ADD_PAYMENT": "Application Additional Payment",
+          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application Submitted - Awaiting Judicial Decision",
+          "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
+          "ADDITIONAL_RESPONSE_TIME_PROVIDED": "Additional Response Time Provided",
+          "AWAITING_DIRECTIONS_ORDER_DOCS": "Directions Order Made",
+          "ORDER_MADE": "Order Made",
+          "LISTING_FOR_A_HEARING": "Listed for a Hearing",
+          "HEARING_SCHEDULED": "Hearing Scheduled",
+          "APPLICATION_PAYMENT_FAILED": "Application Payment Failed",
+          "AWAITING_APPLICATION_PAYMENT": "Awaiting Application Payment",
+          "AWAITING_WRITTEN_REPRESENTATIONS": "Awaiting Written Representations",
+          "AWAITING_ADDITIONAL_INFORMATION": "Additional Information Required",
+          "APPLICATION_DISMISSED": "Application Dismissed",
+          "APPLICATION_CLOSED": "Application Closed",
+          "PROCEEDS_IN_HERITAGE": "Proceeds In Heritage",
+          "RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION": "Respond to judge for Written Representations"
+        },
+        "SUBMITTED_ON": "Submitted on",
+        "THE_STATUS_CHANGE": "The status of an application will change as it progresses. An application with a 'To do' status means you need to take action. For example, paying an application fee or responding.",
+        "THESE_ARE_APPS": "These are the applications that have been made by you or the other parties. The 'other parties' are the other side or sides involved in your claim.",
+        "TITLE": "All applications",
+        "TO_DO": "To do",
+        "VIEW_APPLICATION": "View application"
       },
       "INFORM_OTHER_PARTIES": {
         "COURT_SEND_OTHER_PARTIES": "The court will usually send the other parties a copy of your application to give them the opportunity to respond to it.",
@@ -2470,6 +2948,7 @@
         "PREFERRED_TELEPHONE_NUMBER": "Preferred telephone number",
         "TITLE": "Contact Details"
       },
+      "ORDER_FOR_COSTS": " Order for costs",
       "RESPONDENT_INFORMATION": {
         "CLICK_RESPOND": "Click 'respond to application' to let the court know whether or not you agree with their request.",
         "HEADER": "Respond to an application",
@@ -2487,6 +2966,25 @@
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
         "TEXT_REVIEW": "Make sure you've reviewed the full application. If you disagree with any part of the application, select 'No' and explain why.",
         "TITLE": "Do you agree that the court should make the order that the other parties have requested?"
+      },
+      "RESPONDENT_VIEW_APPLICATION": {
+        "APPLICATION_TYPE_AND_DESC": "Application type and description",
+        "SUMMERY_MESSAGE1" : "This is the application that the other parties have made.",
+        "SUMMERY_MESSAGE2" : "Their answers to 'What order do you want the judge to make?' and 'Why are you requesting this order' will explain the change that they've requested and why. There will be a link to review any documents that they've uploaded.",
+        "SUMMERY_MESSAGE3" : "Once you've reviewed their application, click 'respond to application' below. You'll be asked whether or not you agree with their request."
+      },
+      "RESPONDENT_WANT_TO_UPLOAD_DOC": {
+        "PAGE_TITLE": "Do you want to upload documents to support your response?",
+        "TITLE": "Do you want to upload documents to support your response? (Optional)"
+      },
+      "HEARING_PREFERENCE": {
+        "TITLE": "Application hearing preferences",
+        "CONTENT_1": "We need to ask for your hearing preferences as a judge usually requires a hearing before making a decision on an application.",
+        "CONTENT_2": "This hearing is only to discuss the application."
+      },
+      "RESPONDENT_UPLOAD_DOCUMENTS": {
+        "TITLE": "Upload documents",
+        "MSG1": "You should only upload documents that are relevant to your application response."
       },
       "UNAVAILABLE_HEARING_DATES": {
         "ADD_ANOTHER_DATE": "Add another date or date range",
@@ -2529,6 +3027,24 @@
         "TITLE": "Help with fees",
         "WANT_TO_APPLY_HWF_TITLE": "Pay application fee",
         "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
+      },
+      "VIEW_APPLICATION": {
+        "APPLICATION": "Application",
+        "APPLICATION_DETAILS": "Application details submitted by the applicant.",
+        "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
+        "EITHER_PARTIES": "Applications and responses can be made by either parties in a case.",
+        "PAGE_TITLE": "View application",
+        "RESPONSE": "Response from the other parties",
+        "REVIEW": "Review the application together with any response that has been received.",
+        "STATUS": {
+          "AWAITING_RESPONSE": "Awaiting other parties response",
+          "TITLE": "Status"
+        },
+        "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
+        "TITLE": "Application {{applicationIndex}}",
+        "UPLOAD_DOCUMENTS_1": "You can also ",
+        "UPLOAD_DOCUMENTS_2": "upload additional documents",
+        "UPLOAD_DOCUMENTS_3": " if you need to."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -3193,7 +3709,7 @@
       "HINT": "You can use this time to try to settle the claim without going to a hearing. Settling without going to a hearing may avoid costs including fees.",
       "PAGE_TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
       "TITLE": "Do you want an extra 4 weeks to try to settle the claim?",
-      "WARNING": "This will not change the response deadline. even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
+      "WARNING": "This will not change the response deadline. Even if an extra 4 weeks to settle the claim is agreed, you will still need to respond to the claim by the stated deadline."
     },
     "REQUEST_MORE_TIME": {
       "APPLY_TO_COURT": "You need to apply to the court to request more time.",
@@ -3734,12 +4250,45 @@
       "WHAT_SUPPORT": "What support do you, experts or witnesses need?",
       "FOR_EXAMPLE": "For example, a witness requires a courtroom with step-free access."
     },
+    "REQUEST_FOR_RECONSIDERATION": {
+      "REQUEST_FOR_REVIEW": {
+        "MICRO_TEXT": "Request to review order",
+        "MAIN_TITLE": "How and why do you want the order changed?",
+        "PARAGRAPH": "You can continue without giving details if you prefer. If you enter details {{ claimantOrDefendant }} will be able to see what you said and add their own comments."
+      },
+      "REQUEST_FOR_REVIEW_COMMENTS": {
+        "MICRO_TEXT": "Request to review order",
+        "MAIN_TITLE": "Add your comments",
+        "REVIEW_HAS_BEEN_REQUESTED": "A review of an order has been requested by the other parties.",
+        "ADD_OWN_COMMENTS": "You can add your own comments below as part of the review.",
+        "WILL_SEE_COMMENTS": "{{ claimantOrDefendant }} will be able to see your comments.",
+        "ANY_EVIDENCE_INCLUDED": "Any evidence included in your comments should be relevant to the case."
+      },
+      "CONFIRMATION": {
+        "WHAT_HAPPENS_NEXT": "What happens next",
+        "PARAGRAPH_1": "We’ll tell {{ claimantOrDefendant }} you’ve made the request. They will have until {{ date }} to add comments of their own.",
+        "PARAGRAPH_2": "A judge will then review the order and any comments, and you will be contacted if the judge makes a new order.",
+        "PARAGRAPH_3": "Continue doing what the current order asks of you unless you’re informed a judge has made a new order.",
+        "PANEL_TEXT": "You’ve asked the court to review order",
+        "PANEL_LINK": "Download request for review of  order (PDF)"
+      },
+      "COMMENTS_CONFIRMATION": {
+        "CONTINUE_TO_FOLLOW_ORDER": "You should continue to do what the order asks of you unless you hear that a judge has made a new order.",
+        "JUDGE_WILL_REVIEW": "A judge will now review the order and the comments. We’ll contact all parties to update you on the next steps.",
+        "LET_OTHER_PARTY_KNOW": "We will let {{ claimantOrDefendant }} know that you’ve submitted comments on the order.",
+        "PANEL_TEXT": "Your comments have been submitted successfully.",
+        "WHAT_HAPPENS_NEXT": "What happens next"
+      },
+      "DASHBOARD_STATE_CLAIMANT": "Read the defendant’s requests for a judge to review the order.",
+      "DASHBOARD_STATE_DEFENDANT": "Read the claimant’s requests for a judge to review the order."
+    },
     "ORDERS_AND_NOTICES": {
       "CCJ_REQUEST": "County Court Judgment request",
       "CLAIMANT_DQ": "Claimant Directions Questionnaire",
       "CLAIMANT_RESPONSE_RECEIPT": "Claimant response receipt",
       "CLAIMANT_TIMELINE": "Claimant timeline of events",
       "COURT_DOCUMENTS": "Documents from the court",
+      "DECISION_ON_RECONSIDERATION": "Decision on reconsideration request",
       "DEFENDANT_DQ": "Defendant Directions Questionnaire",
       "DEFENDANT_RESPONSE": "Defendant response",
       "DEFENDANT_SUPPORT_DOC": "Defendants supporting documents",
@@ -3753,6 +4302,7 @@
       "SEALED_CLAIM": "Sealed Claim form",
       "SETTLEMENT_AGREEMENT": "Settlement agreement",
       "STANDARD_DIRECTIONS_ORDER": "Standard Directions Order",
+      "TRANSLATED_ORDER": "Translated order",
       "UNSEALED_CLAIM":"Unsealed Claim form"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
@@ -3924,6 +4474,16 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "SUBJECT_TO_FRC": "Indicate if the claim is subject to the Fixed Recoverable Costs Regime",
+    "FRC_BAND_AGREED": "Indicate if the complexity band has been agreed with the other parties",
+    "CHOOSE_COMPLEXITY_BAND": "Indicate which complexity band you believe this claim falls into",
+    "HAS_AN_AGREEMENT_BEEN_REACHED" : "Indicate if agreement has been reached about what electronic documents will be disclosed",
+    "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Indicate if there are any documents the claimants have that you want the court to consider",
+    "DEFENDANT_DOCS_FOR_DISCLOSURE" : "Indicate if there are any documents the defendants have that you want the court to consider",
+    "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Give details of the issues about disclosure of non-electronic documents",
+    "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : "Give details of the issues about disclosure of electronic documents",
+    "CLAIMANT_DOCUMENTS_CONSIDERED" : "Give details of the documents the claimants have that you want the court to consider",
+    "DEFENDANT_DOCUMENTS_CONSIDERED" : "Give details of the documents the defendants have that you want the court to consider",
     "ACCEPT_REPAYMENT_PLAN": "Select I want to accept this repayment plan to accept the court’s proposed repayment plan",
     "ADDRESS_NOT_FOUND": "We can't find an address for that postcode.",
     "AMOUNT_INVALID_DECIMALS": "Enter a valid amount, maximum two decimal places",
@@ -4269,6 +4829,7 @@
     "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Date entered must not be after today’s date",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Enter a valid day",
+    "VALID_DAY_VARIATION1": "Enter a valid day",
     "FIRST_PAYMENT_MESSAGE": "Date must not be sooner than {{firstPaymentDate}}",
     "VALID_DEBT_AMOUNT": {
       "COUNCIL_TAX": "Enter a valid Council Tax or Community Charge amount, maximum two decimal places",
@@ -4301,6 +4862,7 @@
     "VALID_PARTY_NAME": "Enter name",
     "VALID_CONTACT_PERSON": "Enter contact person",
     "VALID_PAYMENT_OPTION": "Choose a payment option",
+    "VALID_PAYMENT_OPTION_VARIATION1": "Choose a payment option",
     "VALID_PHONE_NUMBER": "Phone number must be a UK number",
     "VALID_PHONE_NUMBER_EVIDENCE": "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 808 157 0192",
     "VALID_PHONE_OR_VIDEO_HEARING": {
@@ -4321,11 +4883,18 @@
     "VALID_VALUE": "Are you sure this is a valid value?",
     "VALID_YEAR": "Enter a valid year",
     "VALID_YES_NO_OPTION": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_COMMON": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_VARIATION_2": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_VARIATION_4": "Choose option: Yes or No",
+    "VALID_YES_NO_OPTION_DO_NADDO": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_CARM_IE_NEU_NA": "Choose option: Yes or No",
     "VALID_YES_NO_OPTION_NAC_YDW": "Choose option: Yes or No",
     "VALID_YES_OR_NO_OPTION": "Select Yes to settle the claim",
     "VALID_YES_NO_OPTION_TRIAL_ARR": "Select Yes or No",
     "VALID_YES_NO_SELECTION": "Please select yes or no",
+    "VALID_YES_NO_SELECTION_VARIATION1": "Please select yes or no",
+    "VALID_YES_NO_SELECTION_VARIATION_2": "Please select yes or no",
+    "VALID_YES_NO_SELECTION_OPTION2": "Please select yes or no",
     "VALID_YES_NO_SELECTION_UPPER": "Please select Yes or No",
     "VALID_ENTER_TYPE_OF_DOCUMENT": "You must enter type of document",
     "VALID_ENTER_YOUR_NAME": "You must enter your name",
@@ -4386,7 +4955,8 @@
       "UPLOAD_FILE_MESSAGE": "You need to choose a file before clicking 'Upload file'",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
-      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing"
+      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
+      "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your response. Choose Yes or No."
     }
   }
 }

@@ -11,6 +11,9 @@
 {% extends "govuk/template.njk" %}
 {% block head %}
 
+<!-- Dynatrace -->
+  <script type="text/javascript" src="{{ dynatraceUrl }}" crossorigin="anonymous"></script>
+<!-- End Dynatrace -->
 <!-- Google Tag Manager -->
 <script nonce={{ nonceValue }}>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -67,7 +70,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           text: t("FOOTER.COOKIES_URL")
         },
         {
-          href: PrivacyPolicyUrl,
+          href: urls.PRIVACY_POLICY_URL,
           text: t("FOOTER.PRIVACY_POLICY_URL")
         },
         {
@@ -75,7 +78,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           text: t("FOOTER.HELP_USING_GOV_URL")
         },
         {
-          href: ContactUsUrl,
+          href: urls.CONTACT_US_URL,
           text: t("FOOTER.CONTACT_US_URL")
         },
         {
@@ -83,7 +86,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           text: t("FOOTER.ACCESSIBILITY_STATEMENT_URL")
         },
         {
-          href: TermsAndConditionsUrl,
+          href: urls.TERMS_AND_CONDITIONS_URL,
           text: t("FOOTER.TERMS_AND_CONDITIONS_URL")
         },
         {
@@ -103,7 +106,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           text: t("FOOTER.COOKIES_URL")
         },
         {
-          href: PrivacyPolicyUrl,
+          href: urls.PRIVACY_POLICY_URL,
           text: t("FOOTER.PRIVACY_POLICY_URL")
         },
         {
@@ -111,7 +114,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           text: t("FOOTER.HELP_USING_GOV_URL")
         },
         {
-          href: ContactUsUrl,
+          href: urls.CONTACT_US_URL,
           text: t("FOOTER.CONTACT_US_URL")
         },
         {
@@ -119,7 +122,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           text: t("FOOTER.ACCESSIBILITY_STATEMENT_URL")
         },
         {
-          href: TermsAndConditionsUrl,
+          href: urls.TERMS_AND_CONDITIONS_URL,
           text: t("FOOTER.TERMS_AND_CONDITIONS_URL")
         }
       ]
