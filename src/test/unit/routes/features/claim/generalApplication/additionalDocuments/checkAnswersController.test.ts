@@ -15,80 +15,80 @@ jest.mock('../../../../../../../main/modules/oidc');
 // jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../../main/services/features/generalApplication/additionalDocumentService', () => ({
-    getClaimDetailsById: jest.fn(),
-    prepareCCDData: jest.fn(),
-    buildSummarySectionForAdditionalDoc: jest.fn(),
+  getClaimDetailsById: jest.fn(),
+  prepareCCDData: jest.fn(),
+  buildSummarySectionForAdditionalDoc: jest.fn(),
 }));
 jest.mock('../../../../../../../main/services/features/generalApplication/generalApplicationService', () => ({
-    getCancelUrl: jest.fn(),
+  getCancelUrl: jest.fn(),
 }));
 
 describe('General Application - additional docs check answer controller ', () => {
-    const citizenRoleToken: string = config.get('citizenRoleToken');
-    const idamUrl: string = config.get('idamUrl');
-    beforeAll(() => {
-        nock(idamUrl)
-            .post('/o/token')
-            .reply(200, { id_token: citizenRoleToken });
-        (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
+  const citizenRoleToken: string = config.get('citizenRoleToken');
+  const idamUrl: string = config.get('idamUrl');
+  beforeAll(() => {
+    nock(idamUrl)
+      .post('/o/token')
+      .reply(200, { id_token: citizenRoleToken });
+    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+  describe('GET check your answers', () => {
+    it('should render the check answers page with correct data', async () => {
+      const claimId = '123';
+      const gaId = '456';
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
+      (getCancelUrl as jest.Mock).mockResolvedValue('/cancel-url');
+      (buildSummarySectionForAdditionalDoc as jest.Mock).mockReturnValue([]);
+
+      const res = await request(app).get(`${GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL.replace(':id', claimId).replace(':gaId', gaId)}`);
+
+      expect(res.status).toBe(200);
+      expect(getClaimDetailsById).toHaveBeenCalledWith(expect.anything());
+      expect(getCancelUrl).toHaveBeenCalledWith(claimId, claim);
+      expect(buildSummarySectionForAdditionalDoc).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId);
+      expect(res.text).toContain('Check your answers');
     });
 
-    beforeEach(() => {
-        jest.clearAllMocks();
+    it('should handle errors', async () => {
+      (getClaimDetailsById as jest.Mock).mockRejectedValue(new Error('Error'));
+
+      const res = await request(app).get(`${GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL.replace(':id', '123').replace(':gaId', '456')}`);
+
+      expect(res.status).toBe(500);
     });
-    describe('GET check your answers', () => {
-        it('should render the check answers page with correct data', async () => {
-            const claimId = '123';
-            const gaId = '456';
-            const claim = new Claim();
-            claim.generalApplication = new GeneralApplication();
-            (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
-            (getCancelUrl as jest.Mock).mockResolvedValue('/cancel-url');
-            (buildSummarySectionForAdditionalDoc as jest.Mock).mockReturnValue([]);
+  });
 
-            const res = await request(app).get(`${GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL.replace(':id', claimId).replace(':gaId', gaId)}`);
+  describe('POST /ga-upload-additional-documents-cya', () => {
+    it('should submit the documents and redirect to submitted page', async () => {
+      const claimId = '123';
+      const gaId = '456';
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
+      (prepareCCDData as jest.Mock).mockReturnValue([]);
+      const mockGaServiceClient = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
 
-            expect(res.status).toBe(200);
-            expect(getClaimDetailsById).toHaveBeenCalledWith(expect.anything());
-            expect(getCancelUrl).toHaveBeenCalledWith(claimId, claim);
-            expect(buildSummarySectionForAdditionalDoc).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId);
-            expect(res.text).toContain('Check your answers');
-        });
+      const res = await request(app).post(`${GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL.replace(':id', claimId).replace(':gaId', gaId)}`);
 
-        it('should handle errors', async () => {
-            (getClaimDetailsById as jest.Mock).mockRejectedValue(new Error('Error'));
-
-            const res = await request(app).get(`${GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL.replace(':id', '123').replace(':gaId', '456')}`);
-
-            expect(res.status).toBe(500);
-        });
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBe(GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_URL.replace(':id', claimId).replace(':gaId', gaId));
+      expect(getClaimDetailsById).toHaveBeenCalledWith(expect.anything());
+      expect(prepareCCDData).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments);
+      expect(mockGaServiceClient).toHaveBeenCalledWith(ApplicationEvent.UPLOAD_ADDL_DOCUMENTS, gaId, { uploadDocument: [] }, expect.anything());
     });
 
-    describe('POST /ga-upload-additional-documents-cya', () => {
-        it('should submit the documents and redirect to submitted page', async () => {
-            const claimId = '123';
-            const gaId = '456';
-            const claim = new Claim();
-            claim.generalApplication = new GeneralApplication();
-            (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
-            (prepareCCDData as jest.Mock).mockReturnValue([]);
-            const mockGaServiceClient = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
+    it('should handle errors', async () => {
+      (getClaimDetailsById as jest.Mock).mockRejectedValue(new Error('Error'));
 
-            const res = await request(app).post(`${GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL.replace(':id', claimId).replace(':gaId', gaId)}`);
+      const res = await request(app).post(`${GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL.replace(':id', '123').replace(':gaId', '456')}`).send({});
 
-            expect(res.status).toBe(302);
-            expect(res.header.location).toBe(GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_URL.replace(':id', claimId).replace(':gaId', gaId));
-            expect(getClaimDetailsById).toHaveBeenCalledWith(expect.anything());
-            expect(prepareCCDData).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments);
-            expect(mockGaServiceClient).toHaveBeenCalledWith(ApplicationEvent.UPLOAD_ADDL_DOCUMENTS, gaId, { uploadDocument: [] }, expect.anything());
-        });
-
-        it('should handle errors', async () => {
-            (getClaimDetailsById as jest.Mock).mockRejectedValue(new Error('Error'));
-
-            const res = await request(app).post(`${GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL.replace(':id', '123').replace(':gaId', '456')}`).send({});
-
-            expect(res.status).toBe(500);
-        });
+      expect(res.status).toBe(500);
     });
+  });
 })

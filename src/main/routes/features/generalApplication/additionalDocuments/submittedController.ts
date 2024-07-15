@@ -10,20 +10,20 @@ const additionalDocSubmittedController = Router();
 const viewPath = 'features/generalApplication/additionalDocuments/submitted'
 
 additionalDocSubmittedController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
-    try {
-        const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-        const { id } = req.params
-        const claim = await getClaimById(id, req, true);
-        const redisKey = generateRedisKey(req);
-        await deleteDraftClaimFromStore(redisKey);
-        res.render(viewPath, {
-            gaPaymentSuccessfulPanel: getContentForPanel(lng),
-            gaPaymentSuccessfulBody: getContentForBody(lng),
-            gaPaymentSuccessfulButton: getContentForCloseButton(await getCancelUrl(id, claim)),
-        })
-    } catch (err) {
-        next(err);
-    }
+  try {
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
+    const { id } = req.params
+    const claim = await getClaimById(id, req, true);
+    const redisKey = generateRedisKey(req);
+    await deleteDraftClaimFromStore(redisKey);
+    res.render(viewPath, {
+      gaPaymentSuccessfulPanel: getContentForPanel(lng),
+      gaPaymentSuccessfulBody: getContentForBody(lng),
+      gaPaymentSuccessfulButton: getContentForCloseButton(await getCancelUrl(id, claim)),
+    })
+  } catch (err) {
+    next(err);
+  }
 }) as RequestHandler)
 
 export default additionalDocSubmittedController;
