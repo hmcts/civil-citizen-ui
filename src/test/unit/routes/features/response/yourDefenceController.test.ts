@@ -2,18 +2,19 @@ import {app} from '../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_TIMELINE_URL, RESPONSE_YOUR_DEFENCE_URL} from '../../../../../main/routes/urls';
-import {
-  mockCivilClaim,
-  mockCivilClaimUnemploymentRetired,
-  mockNoStatementOfMeans,
-  mockRedisFailure,
-  mockRedisFullAdmission,
-} from '../../../../utils/mockDraftStore';
+import {CITIZEN_TIMELINE_URL, RESPONSE_YOUR_DEFENCE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMock.json';
+import noStatementOfMeansMock from '../../../../utils/mocks/noStatementOfMeansMock.json';
+import civilClaimResponseFullAdmissionMock from '../../../../utils/mocks/civilClaimResponseFullAdmissionMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('yourDefence', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -24,6 +25,10 @@ describe('yourDefence', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
   });
 
   describe('on Get', () => {
@@ -31,7 +36,6 @@ describe('yourDefence', () => {
     const header = 'Why do you disagree with the claim?';
 
     it('should return yourDefence page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(RESPONSE_YOUR_DEFENCE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -41,7 +45,9 @@ describe('yourDefence', () => {
     });
 
     it('should return yourDefence page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUnemploymentRetired;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(RESPONSE_YOUR_DEFENCE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -51,7 +57,9 @@ describe('yourDefence', () => {
     });
 
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(RESPONSE_YOUR_DEFENCE_URL)
         .expect((res) => {
@@ -63,7 +71,9 @@ describe('yourDefence', () => {
 
   describe('on Post', () => {
     it('should return error message when any text is filled', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).post(RESPONSE_YOUR_DEFENCE_URL)
         .send()
         .expect((res) => {
@@ -74,7 +84,9 @@ describe('yourDefence', () => {
     });
 
     it('should redirect to timeline page option text is fill', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noStatementOfMeansMock.case_data);
+      });
       await request(app).post(RESPONSE_YOUR_DEFENCE_URL)
         .send({text: 'Test'})
         .expect((res) => {
@@ -84,7 +96,10 @@ describe('yourDefence', () => {
     });
 
     it('should redirect to timeline page option text is fill and rejectAllOfClaim no exist', async () => {
-      app.locals.draftStoreClient = mockRedisFullAdmission;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseFullAdmissionMock.case_data);
+      });
+
       await request(app).post(RESPONSE_YOUR_DEFENCE_URL)
         .send({text: 'Test'})
         .expect((res) => {
@@ -93,7 +108,9 @@ describe('yourDefence', () => {
         });
     });
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(RESPONSE_YOUR_DEFENCE_URL)
         .send({text: 'Test'})
