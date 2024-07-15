@@ -12,7 +12,7 @@ const dynatraceDomain = '*.dynatrace.com';
 
 const scriptSrcElem = [
   self,
-  '*.google-analytics.com',
+  googleAnalyticsDomain,
   '*.googletagmanager.com',
   dynatraceDomain,
   "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
@@ -23,13 +23,13 @@ const styleSrc = [
   self,
   '*.googletagmanager.com',
   'fonts.googleapis.com',
-  '*.google-analytics.com',
+  googleAnalyticsDomain,
   '*.analytics.google.com',
 ];
 
 const imgSrc = [
   self,
-  '*.google-analytics.com',
+  googleAnalyticsDomain,
   '*.analytics.google.com',
   'vcc-eu4.8x8.com',
   'vcc-eu4b.8x8.com',
@@ -48,15 +48,22 @@ const mediaSrc = [
   'ssl.gstatic.com',
   'www.gstatic.com',
   'stats.g.doubleclick.net',
-  '*.google-analytics.com',
+  googleAnalyticsDomain,
   '*.analytics.google.com',
 ];
 
 const connectSrc = [
   self,
   '*.gov.uk',
-  '*.google-analytics.com',
+  googleAnalyticsDomain,
   '*.analytics.google.com',
+  dynatraceDomain
+];
+
+const manifestSrc = [
+  self,
+  'idam-web-public.aat.platform.hmcts.net'
+
 ];
 
 /**
@@ -95,7 +102,7 @@ export class Helmet {
           ],
           scriptSrcElem: scriptSrcElem,
           styleSrc: styleSrc,
-          manifestSrc: [self],
+          manifestSrc: manifestSrc,
           formAction: [self, loginUrl, ocmcBaseUrl, govPayUrl],
         },
       }),
