@@ -57,13 +57,12 @@ const connectSrc = [
   '*.gov.uk',
   googleAnalyticsDomain,
   '*.analytics.google.com',
-  dynatraceDomain
+  dynatraceDomain,
 ];
 
 const manifestSrc = [
   self,
-  'idam-web-public.aat.platform.hmcts.net'
-
+  'idam-web-public.aat.platform.hmcts.net',
 ];
 
 /**
