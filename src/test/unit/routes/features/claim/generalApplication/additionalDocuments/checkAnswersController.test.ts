@@ -91,4 +91,4 @@ describe('General Application - additional docs check answer controller ', () =>
       expect(res.status).toBe(500);
     });
   });
-})
+});

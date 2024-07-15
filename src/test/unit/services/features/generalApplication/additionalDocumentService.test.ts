@@ -100,7 +100,7 @@ describe('Additional Documents Service', () => {
             documentType: null,
             documentSize: 123,
           } as CaseDocument,
-          fileUpload: {} as FileUpload
+          fileUpload: {} as FileUpload,
         },
       ];
       const claimId = '1';
@@ -117,7 +117,7 @@ describe('Additional Documents Service', () => {
   describe('getClaimDetailsById', () => {
     it('should retrieve and return claim details', async () => {
       const req: AppRequest = {
-        params: { id: '1' }
+        params: { id: '1' },
       } as unknown as AppRequest;
       claim.generalApplication = undefined;
       (getClaimById as jest.Mock).mockResolvedValue(claim);
@@ -139,10 +139,10 @@ describe('Additional Documents Service', () => {
             documentLink: {
               document_url: 'url1',
               document_binary_url: 'binaryUrl1',
-              document_filename: 'filename1'
+              document_filename: 'filename1',
             },
             documentType: null,
-            documentSize: 123
+            documentSize: 123,
           } as CaseDocument,
           fileUpload: {} as FileUpload,
         },
@@ -157,10 +157,10 @@ describe('Additional Documents Service', () => {
               document_filename: 'filename2',
             },
             documentType: null,
-            documentSize: 456
+            documentSize: 456,
           } as CaseDocument,
           fileUpload: {} as FileUpload,
-        }
+        },
       ];
 
       const result = prepareCCDData(uploadAdditionalDocuments);
@@ -187,12 +187,12 @@ describe('Additional Documents Service', () => {
                 createdBy: 'User2',
                 documentLink: { document_url: 'ur2', document_filename: 'filename2', document_binary_url: 'binaryUrl2' },
                 documentType: null,
-                documentSize: 123
+                documentSize: 123,
               } as CaseDocument,
-              fileUpload: {} as FileUpload
+              fileUpload: {} as FileUpload,
             },
-          ]
-        } as GeneralApplication
+          ],
+        } as GeneralApplication,
       } as Claim;
       const index = 0;
 

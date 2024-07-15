@@ -14,7 +14,7 @@ jest.mock('../../../..../../../../../../main/modules/utilityService');
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService', () => ({
   generateRedisKey: jest.fn((key) => key),
-  deleteDraftClaimFromStore: jest.fn((key) => { })
+  deleteDraftClaimFromStore: jest.fn((key) => { key }),
 }));
 jest.mock('../../../../../../../main/services/features/generalApplication/generalApplicationService', () => ({
   getCancelUrl: jest.fn(),
@@ -62,4 +62,4 @@ describe('General Application - additional docs submitted controller', () => {
       expect(res.status).toBe(500);
     });
   });
-})
+});

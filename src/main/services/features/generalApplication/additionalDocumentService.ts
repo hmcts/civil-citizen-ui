@@ -90,15 +90,15 @@ export const prepareCCDData = (uploadAdditionalDocuments: UploadAdditionalDocume
           document_filename: doc.caseDocument.documentName,
         },
       },
-    }
+    };
   });
 };
 
 export const buildSummarySectionForAdditionalDoc = (additionalDocumentsList: UploadAdditionalDocument[], claimId: string, gaId: string) => {
-  const rows: SummaryRow[] = []
+  const rows: SummaryRow[] = [];
   additionalDocumentsList.forEach(doc => {
     rows.push(summaryRow('Type of document', doc.typeOfDocument));
-    rows.push(summaryRow('Uploaded document', doc.caseDocument.documentName, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId), changeLabel('en')))
+    rows.push(summaryRow('Uploaded document', doc.caseDocument.documentName, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId), changeLabel('en')));
   });
   return rows;
 };
