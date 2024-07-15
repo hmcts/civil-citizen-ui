@@ -51,12 +51,10 @@ describe('Additional Documents Service', () => {
         createdBy: 'User1',
         documentLink: { document_url: 'url', document_filename: 'filename', document_binary_url: 'binaryUrl' },
         documentType: null,
-        documentSize: 123
+        documentSize: 123,
       } as CaseDocument;
       (TypeOfDocumentSectionMapper.mapToSingleFile as jest.Mock).mockReturnValue(fileUpload);
-
-
-      const mockValue = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValue(uploadedDocument as any as CaseDocument);
+      const mockValue = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValue(uploadedDocument as unknown as CaseDocument);
 
       await uploadSelectedFile(req, claim as Claim);
 
@@ -89,9 +87,9 @@ describe('Additional Documents Service', () => {
             createdBy: 'User1',
             documentLink: { document_url: 'ur1', document_filename: 'filename1', document_binary_url: 'binaryUrl1' },
             documentType: null,
-            documentSize: 123
+            documentSize: 123,
           } as CaseDocument,
-          fileUpload: {} as FileUpload
+          fileUpload: {} as FileUpload,
         },
         {
           typeOfDocument: 'Type2',
@@ -100,10 +98,10 @@ describe('Additional Documents Service', () => {
             createdBy: 'User2',
             documentLink: { document_url: 'ur2', document_filename: 'filename2', document_binary_url: 'binaryUrl2' },
             documentType: null,
-            documentSize: 123
+            documentSize: 123,
           } as CaseDocument,
           fileUpload: {} as FileUpload
-        }
+        },
       ];
       const claimId = '1';
       const gaId = '2';
@@ -126,7 +124,7 @@ describe('Additional Documents Service', () => {
 
       const result = await getClaimDetailsById(req);
 
-      expect(result.generalApplication.uploadAdditionalDocuments).toEqual([])
+      expect(result.generalApplication.uploadAdditionalDocuments).toEqual([]);
       expect(getClaimById).toHaveBeenCalledWith(req.params.id, req, true);
     });
   });
@@ -146,7 +144,7 @@ describe('Additional Documents Service', () => {
             documentType: null,
             documentSize: 123
           } as CaseDocument,
-          fileUpload: {} as FileUpload
+          fileUpload: {} as FileUpload,
         },
         {
           typeOfDocument: 'Type2',
@@ -156,12 +154,12 @@ describe('Additional Documents Service', () => {
             documentLink: {
               document_url: 'url2',
               document_binary_url: 'binaryUrl2',
-              document_filename: 'filename2'
+              document_filename: 'filename2',
             },
             documentType: null,
             documentSize: 456
           } as CaseDocument,
-          fileUpload: {} as FileUpload
+          fileUpload: {} as FileUpload,
         }
       ];
 
@@ -192,7 +190,7 @@ describe('Additional Documents Service', () => {
                 documentSize: 123
               } as CaseDocument,
               fileUpload: {} as FileUpload
-            }
+            },
           ]
         } as GeneralApplication
       } as Claim;
@@ -222,7 +220,7 @@ describe('Additional Documents Service', () => {
     it('should return built content for panel', () => {
       const lng = 'en';
       const result = getContentForPanel(lng);
-      expect(result).toEqual([{ "data": { "title": "<span class='govuk-!-font-size-36'>PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.UPLOADED_ADDITIONAL_DOCS</span>" }, "type": "panel" }]);
+      expect(result).toEqual([{ 'data': { 'title': '<span class=\'govuk-!-font-size-36\'>PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.UPLOADED_ADDITIONAL_DOCS</span>' }, 'type': 'panel' }]);
     });
   });
 
@@ -231,7 +229,7 @@ describe('Additional Documents Service', () => {
       const lng = 'en';
       const result = getContentForBody(lng);
 
-      expect(result).toEqual([{ "data": { "classes": undefined, "text": "PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT", "variables": { "lng": "en" } }, "type": "title" }, { "data": { "classes": undefined, "text": "PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.JUDGE_WILL_REVIEW", "variables": { "lng": "en" } }, "type": "p" }]);
+      expect(result).toEqual([{ 'data': { 'classes': undefined, 'text': 'PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT', 'variables': { 'lng': 'en' } }, 'type': 'title' }, { 'data': { 'classes': undefined, 'text': 'PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.JUDGE_WILL_REVIEW', 'variables': { 'lng': 'en' } }, 'type': 'p' }]);
     });
   });
 
@@ -239,7 +237,7 @@ describe('Additional Documents Service', () => {
     it('should return built content for close button', () => {
       const redirectUrl = '/redirect-url';
       const result = getContentForCloseButton(redirectUrl);
-      expect(result).toEqual([{ "data": { "href": "/redirect-url", "text": "COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD" }, "type": "button" }]);
+      expect(result).toEqual([{ 'data': { 'href': '/redirect-url', 'text': 'COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD' }, 'type': 'button' }]);
     });
   });
 });
