@@ -54,8 +54,8 @@
                   }
                 ],
                 errorMessage: {
-                  text:t(form.errorFor(signed))
-                } if form.errorFor(signed)
+                  text:t(form.errorFor('acceptNoChangesAllowed'))
+                } if form.errorFor('acceptNoChangesAllowed')
               }) }}
             {% endif %}
            {{ statementOfTruth(

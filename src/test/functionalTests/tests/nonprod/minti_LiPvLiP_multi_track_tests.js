@@ -5,7 +5,7 @@ const multiTrackClaimType = 'Multi';
 const carmEnabled = true;
 let claimRef, caseData, claimNumber, securityCode;
 
-Feature('LiP - Minti Multi track @minti');
+Feature('LiP - Minti Multi track @regression @minti');
 
 Before(async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
