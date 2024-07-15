@@ -2,15 +2,21 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {
   DQ_CONFIRM_YOUR_DETAILS_URL,
   DQ_DEFENDANT_WITNESSES_URL,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {CaseState} from 'form/models/claimDetails';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const mockSaveData = {
   firstName: 'John',
@@ -40,7 +46,10 @@ describe('Confirm your details evidence Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+
       await request(app)
         .get(DQ_CONFIRM_YOUR_DETAILS_URL)
         .expect((res) => {
@@ -51,11 +60,13 @@ describe('Confirm your details evidence Controller', () => {
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-    });
 
     it('should return confirm your details evidence page', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        return claim;
+      });
       await request(app).post(DQ_CONFIRM_YOUR_DETAILS_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Confirm your details');
@@ -88,7 +99,10 @@ describe('Confirm your details evidence Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+
       const _mockSaveData = {
         firstName: 'John',
         lastName: 'Doe',
