@@ -63,6 +63,7 @@ describe('Accessibility', async () => {
     it('Test of '+url,async () => {
       app.get(url, (req: any, res: any) => {
         url = url.replace(':id', '1645882162449409');
+        url = url.replace(':gaId', '1720536653906339');
         const filePath = translateUrlToFilePath(url);
         const fileContent = fs.readFileSync(filePath,  'utf8');
         res.send(fileContent);
