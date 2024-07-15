@@ -3,7 +3,7 @@ import {t} from 'i18next';
 import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {selectedApplicationType} from 'models/generalApplication/applicationType';
+import {selectedApplicationType, selectedApplicationTypeDescription} from 'models/generalApplication/applicationType';
 import {HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {CcdHearingType} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
@@ -16,8 +16,8 @@ export const addApplicationStatus = (
   lang: string,
 ): SummaryRow[] => {
   const lng = getLng(lang);
-
   const rows: SummaryRow[] = [];
+
   if (application.state) {
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE', {lng})),
@@ -58,6 +58,39 @@ export const addApplicationTypesRows = (
   return rows;
 };
 
+export const addApplicationTypesAndDescriptionRows = (
+  application: ApplicationResponse,
+  lang: string,
+): SummaryRow[] => {
+  const lng = getLng(lang);
+
+  const rows: SummaryRow[] = [];
+  if (application.case_data.generalAppType.types) {
+    application.case_data.generalAppType?.types?.forEach(
+      (applicationType, index, arr) => {
+        const applicationTypeDisplay =
+          selectedApplicationType[applicationType];
+        const applicationTypeDescription = selectedApplicationTypeDescription[applicationType];
+
+        rows.push(
+          summaryRow(
+            t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC', {
+              lng,
+            }),
+            t(applicationTypeDisplay, { lng }) + '.</br>' + t(applicationTypeDescription, {lng}),
+            null,
+            null,
+            undefined,
+            index,
+            arr.length,
+          ),
+        );
+      },
+    );
+  }
+  return rows;
+};
+
 export const addOtherPartiesAgreedRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
@@ -82,24 +115,13 @@ export const addInformOtherPartiesRow = (application: ApplicationResponse, lang:
   return rows;
 };
 
-export const addAskForCostsRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
-  const lng = getLng(lang);
-  const rows: SummaryRow[] = [];
-  if (application.case_data.generalAppAskForCosts) {
-    const askForCosts = (application.case_data.generalAppAskForCosts === YesNoUpperCamelCase.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
-    rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ASK_FOR_COSTS', {lng}), t(`COMMON.VARIATION.${askForCosts}`, {lng})),
-    );
-  }
-  return rows;
-};
-
 export const addOrderJudgeRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppDetailsOfOrder) {
+    const orderForCost = application.case_data.generalAppAskForCosts === YesNoUpperCamelCase.YES ? 'PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS' : '';
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), application.case_data.generalAppDetailsOfOrder),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), application.case_data.generalAppDetailsOfOrder + t(orderForCost, {lng})),
     );
   }
   return rows;
