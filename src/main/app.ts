@@ -134,6 +134,11 @@ app.use((_req, res, next) => {
     'Cache-Control',
     'no-cache, max-age=0, must-revalidate, no-store',
   );
+
+  res.setHeader(
+    'Access-Control-Allow-Origin',
+    '*'
+  )
   next();
 });
 
