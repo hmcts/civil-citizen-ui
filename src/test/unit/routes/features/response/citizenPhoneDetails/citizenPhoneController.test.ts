@@ -3,23 +3,36 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {CITIZEN_PHONE_NUMBER_URL} from 'routes/urls';
-import {
-  mockCivilClaim,
-  mockRedisFailure,
-  civilClaimResponseMock, mockDraftClaim,
-} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {cloneDeep} from 'lodash';
 import {Claim} from 'models/claim';
 import {configureSpy} from '../../../../../utils/spyConfiguration';
 import * as carmToggleUtils from 'common/utils/carmToggleUtils';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
+import {PartyPhone} from 'models/PartyPhone';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('.../../../../../../main/modules/draft-store/draftStoreService');
+
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(carmToggleUtils, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
+
+function getClaim() {
+  const claim = new Claim();
+  claim.applicant1 = new Party();
+  claim.applicant1.type = PartyType.COMPANY;
+  claim.applicant1.partyDetails = {
+    partyName: 'test',
+  };
+  claim.submittedDate = new Date(Date.now());
+  return claim;
+}
 
 describe('Citizen phone number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -39,7 +52,11 @@ describe('Citizen phone number', () => {
     });
 
     it('should return citizen phone number page with all information from redis', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = getClaim();
+        claim.applicant1.partyPhone =  new PartyPhone('01234567890');
+        return claim;
+      });
       await request(app)
         .get(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
@@ -48,9 +65,9 @@ describe('Citizen phone number', () => {
         });
     });
     it('should return empty citizen phone number page', async () => {
-      const draftClaim = cloneDeep(civilClaimResponseMock);
-      draftClaim.case_data.statementOfMeans = undefined;
-      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
+      mockGetCaseData.mockImplementation(async () => {
+        return getClaim();
+      });
       await request(app)
         .get(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
@@ -59,7 +76,9 @@ describe('Citizen phone number', () => {
         });
     });
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
@@ -75,7 +94,11 @@ describe('Citizen phone number', () => {
     });
 
     it('should return citizen phone number page with all information from redis', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = getClaim();
+        claim.applicant1.partyPhone =  new PartyPhone('01234567890');
+        return claim;
+      });
       await request(app)
         .get(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
@@ -84,9 +107,9 @@ describe('Citizen phone number', () => {
         });
     });
     it('should return empty citizen phone number page', async () => {
-      const draftClaim = cloneDeep(civilClaimResponseMock);
-      draftClaim.case_data.statementOfMeans = undefined;
-      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
+      mockGetCaseData.mockImplementation(async () => {
+        return getClaim();
+      });
       await request(app)
         .get(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
@@ -96,7 +119,9 @@ describe('Citizen phone number', () => {
         });
     });
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
@@ -110,10 +135,15 @@ describe('Citizen phone number', () => {
   describe('on POST. CARM off', () => {
     beforeEach(() => {
       isCarmEnabledSpy(false);
+      mockGetCaseData.mockImplementation(async () => {
+        return getClaim();
+      });
     });
 
     it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return getClaim();
+      });
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=abc')
@@ -148,9 +178,6 @@ describe('Citizen phone number', () => {
         });
     });
     it('should redirect on correct input', async () => {
-      const draftClaim = cloneDeep(civilClaimResponseMock);
-      draftClaim.case_data.statementOfMeans = undefined;
-      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=01234567890')
@@ -159,9 +186,6 @@ describe('Citizen phone number', () => {
         });
     });
     it('should redirect on empty input', async () => {
-      const draftClaim = cloneDeep(civilClaimResponseMock);
-      draftClaim.case_data.statementOfMeans = undefined;
-      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=')
@@ -170,7 +194,9 @@ describe('Citizen phone number', () => {
         });
     });
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
@@ -183,10 +209,12 @@ describe('Citizen phone number', () => {
   describe('on POST. CARM on', () => {
     beforeEach(() => {
       isCarmEnabledSpy(true);
+      mockGetCaseData.mockImplementation(async () => {
+        return getClaim();
+      });
     });
 
     it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=abc')
@@ -221,9 +249,6 @@ describe('Citizen phone number', () => {
         });
     });
     it('should redirect on correct input', async () => {
-      const draftClaim = cloneDeep(civilClaimResponseMock);
-      draftClaim.case_data.statementOfMeans = undefined;
-      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=01234567890')
@@ -232,9 +257,6 @@ describe('Citizen phone number', () => {
         });
     });
     it('should return error on empty input', async () => {
-      const draftClaim = cloneDeep(civilClaimResponseMock);
-      draftClaim.case_data.statementOfMeans = undefined;
-      app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=')
@@ -244,7 +266,9 @@ describe('Citizen phone number', () => {
         });
     });
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .expect((res) => {
