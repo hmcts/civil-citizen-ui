@@ -9,16 +9,19 @@ import {
   CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/features/claimantResponse/getDecisionOnClaimantProposedPlan');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
   getRedisStoreForSession: jest.fn(),
 }));
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const getCalculatedDecision = getDecisionOnClaimantProposedPlan as jest.Mock;
 getCalculatedDecision.mockImplementation(() => {
@@ -37,7 +40,9 @@ describe('Claimant suggested Payment Option Controller', () => {
 
   describe('on Get', () => {
     it('should return payment option page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .get(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL)
         .expect((res) => {
@@ -47,7 +52,9 @@ describe('Claimant suggested Payment Option Controller', () => {
     });
 
     it('should return status 500 when there is an error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL)
         .expect((res) => {
@@ -59,7 +66,9 @@ describe('Claimant suggested Payment Option Controller', () => {
 
   describe('on Post', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should validate when option is not selected', async () => {
@@ -99,7 +108,9 @@ describe('Claimant suggested Payment Option Controller', () => {
         });
     });
     it('should return 500 status when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL)
         .send('paymentType=BY_SET_DATE')

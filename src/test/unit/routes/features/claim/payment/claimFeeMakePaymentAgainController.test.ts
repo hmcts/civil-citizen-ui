@@ -9,11 +9,14 @@ import {app} from '../../../../../../main/app';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as makePaymentAgainService from 'services/features/claim/payment/claimFeeMakePaymentAgainService';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Hearing Fees - Make Payment Again', () => {
   const idamServiceUrl: string = config.get('services.idam.url');
@@ -27,7 +30,9 @@ describe('Hearing Fees - Make Payment Again', () => {
 
   describe('on GET', () => {
     it('should redirect user to govPay Payment Page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       jest.spyOn(makePaymentAgainService,'getRedirectUrl').mockResolvedValueOnce('12354876');
       jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
       jest.spyOn(draftStoreService,'saveDraftClaim');

@@ -3,11 +3,13 @@ import express from 'express';
 import {app} from '../../../../../../main/app';
 import claimFeeBreakDownController from 'routes/features/claim/payment/claimFeeBreakDownController';
 import {CLAIM_FEE_BREAKUP} from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
 import {getClaimById} from 'modules/utilityService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Claim} from 'models/claim';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 
-jest.mock('modules/draft-store/draftStoreService');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
@@ -17,6 +19,8 @@ jest.mock('routes/guards/claimFeePaymentGuard', () => ({
     next();
   }),
 }));
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('on GET', () => {
   const app = express();
@@ -58,7 +62,9 @@ describe('on GET', () => {
 
   it('should return 500 status code when error occurs', async () => {
     //given
-    app.locals.draftStoreClient = mockRedisFailure;
+    mockGetCaseData.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
     //when-then
     await request(app)
       .get(CLAIM_FEE_BREAKUP)
@@ -69,7 +75,9 @@ describe('on GET', () => {
 });
 describe('on POST', () => {
   it('should handle the get call of fee summary details', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
     await request(app)
       .post(CLAIM_FEE_BREAKUP)
       .expect((res) => {
