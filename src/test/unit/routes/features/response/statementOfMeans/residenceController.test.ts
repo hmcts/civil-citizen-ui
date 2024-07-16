@@ -3,13 +3,17 @@ const request = require('supertest');
 const {app} = require('../../../../../../main/app');
 import nock from 'nock';
 import config from 'config';
-import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from '../../../../../../main/routes/urls';
-import {FREE_TEXT_MAX_LENGTH} from '../../../../../../main/common/form/validators/validationConstraints';
-import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../utils/mockDraftStore';
+import {CITIZEN_PARTNER_URL, CITIZEN_RESIDENCE_URL} from 'routes/urls';
+import {FREE_TEXT_MAX_LENGTH} from 'form/validators/validationConstraints';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import fullAdmitPayBySetDateMock from '../../../../../utils/mocks/fullAdmitPayBySetDateMock.json';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const agent = request.agent(app);
 const tooLongHousingDetails: string = Array(FREE_TEXT_MAX_LENGTH + 2).join('a');
@@ -28,7 +32,9 @@ describe('Citizen residence', () => {
 
   describe('on GET', () => {
     it('should return residence page', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await agent
         .get(respondentResidenceUrl)
         .expect((res: Response) => {
@@ -38,7 +44,9 @@ describe('Citizen residence', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await agent
         .get(respondentResidenceUrl)
         .expect((res: Response) => {
@@ -49,7 +57,9 @@ describe('Citizen residence', () => {
   });
   describe('on POST', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
     });
 
     it('should redirect when OWN_HOME option selected', async () => {
@@ -106,7 +116,9 @@ describe('Citizen residence', () => {
     });
 
     it('should status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await agent
         .post(respondentResidenceUrl)
         .send('type=OTHER')

@@ -5,18 +5,22 @@ import request from 'supertest';
 import {
   AGREED_TO_MORE_TIME_URL,
   NEW_RESPONSE_DEADLINE_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {
-  mockCivilClaim,
-  mockCivilClaimApplicantIndividualType,
-  mockRedisFailure,
+  civilClaimResponseMock,
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import civilClaimResponseApplicantIndividual
+  from '../../../../../utils/mocks/civilClaimResponseApplicantIndividualMock.json';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Agreed response date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -35,7 +39,9 @@ describe('Agreed response date', () => {
 
   describe('on Exception', () => {
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(AGREED_TO_MORE_TIME_URL)
         .expect((res) => {
@@ -45,7 +51,9 @@ describe('Agreed response date', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(AGREED_TO_MORE_TIME_URL)
         .send('year=9999')
@@ -60,7 +68,9 @@ describe('Agreed response date', () => {
 
   describe('on GET', () => {
     it('should return agreed response date page', async () => {
-      app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseApplicantIndividual.case_data);
+      });
       await request(app)
         .get(AGREED_TO_MORE_TIME_URL)
         .expect((res) => {
@@ -72,7 +82,9 @@ describe('Agreed response date', () => {
         });
     });
     it('should return agreed response date with payment date loaded from Redis', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .get(AGREED_TO_MORE_TIME_URL)
         .expect((res) => {
@@ -84,7 +96,9 @@ describe('Agreed response date', () => {
         });
     });
     it('should show error when draft store throws error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app).get(AGREED_TO_MORE_TIME_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
@@ -94,7 +108,9 @@ describe('Agreed response date', () => {
   });
   describe('on POST', () => {
     it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(AGREED_TO_MORE_TIME_URL)
         .send('year=')
@@ -175,7 +191,9 @@ describe('Agreed response date', () => {
         });
     });
     it('should show error when draft store throws error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app).post(AGREED_TO_MORE_TIME_URL)
         .expect((res) => {
           expect(res.status).toBe(500);

@@ -1,14 +1,17 @@
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_PRIORITY_DEBTS_URL, CITIZEN_DEBTS_URL} from '../../../../../../main/routes/urls';
-import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../utils/mockDraftStore';
+import {CITIZEN_PRIORITY_DEBTS_URL, CITIZEN_DEBTS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import fullAdmitPayBySetDateMock from '../../../../../utils/mocks/fullAdmitPayBySetDateMock.json';
+import {Claim} from 'models/claim';
 
 const {app} = require('../../../../../../main/app');
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Priority Debts Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -18,12 +21,16 @@ describe('Priority Debts Controller', () => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {
     it('should display page successfully', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_PRIORITY_DEBTS_URL)
         .expect((res: Response) => {
@@ -32,7 +39,9 @@ describe('Priority Debts Controller', () => {
         });
     });
     it('should return 500 status code when there is an error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_PRIORITY_DEBTS_URL)
         .expect((res: Response) => {
@@ -44,7 +53,9 @@ describe('Priority Debts Controller', () => {
   describe('on POST', () => {
 
     beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
     });
 
     it('should show errors when gas is selected but no amount or schedule selected', async () => {
@@ -194,7 +205,9 @@ describe('Priority Debts Controller', () => {
     });
 
     it('should return status 500 when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CITIZEN_PRIORITY_DEBTS_URL)
         .send({

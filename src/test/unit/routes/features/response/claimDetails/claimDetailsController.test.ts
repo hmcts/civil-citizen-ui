@@ -5,7 +5,6 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {
   civilClaimResponseMock,
-  mockCivilClaimUndefined,
 } from '../../../../../utils/mockDraftStore';
 import CivilClaimResponseMock from '../../../../../utils/mocks/civilClaimResponseMock.json';
 import {dateFilter} from 'modules/nunjucks/filters/dateFilter';
@@ -19,9 +18,13 @@ import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import { isCUIReleaseTwoEnabled } from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import civilClaimResponsePDFTimeline from '../../../../../utils/mocks/civilClaimResponsePDFTimelineMock.json';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+
 const isReleaseTwo = isCUIReleaseTwoEnabled as jest.Mock;
 
 const nock = require('nock');
@@ -140,7 +143,9 @@ describe('Claim details page', () => {
         .get(CIVIL_SERVICE_CASES_URL + 1713273393110043 + '/userCaseRoles')
         .reply(200, [CaseRole.CLAIMANT]);
       isReleaseTwo.mockResolvedValue(true);
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), undefined);
+      });
       const totalClaimAmount = currencyFormat(getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
         CivilClaimResponseMock.case_data)));
 
