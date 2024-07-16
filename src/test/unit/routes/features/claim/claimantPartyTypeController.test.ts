@@ -12,10 +12,13 @@ import {
   CLAIMANT_SOLE_TRADER_DETAILS_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Claim Party Type Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -29,14 +32,18 @@ describe('Claim Party Type Controller', () => {
 
   describe('on GET', () => {
     it('should render claimant party type selection page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       const res = await request(app).get(CLAIMANT_PARTY_TYPE_SELECTION_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.TITLE'));
     });
 
     it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       const res = await request(app).get(CLAIMANT_PARTY_TYPE_SELECTION_URL);
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -45,7 +52,9 @@ describe('Claim Party Type Controller', () => {
 
   describe('on POST', () => {
     it('should render error message when claiming as is not selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       const res = await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('There was a problem');
@@ -60,7 +69,9 @@ describe('Claim Party Type Controller', () => {
     });
 
     it('should render claimant sole trader details page when radio "A sole trader or self-employed person" is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       const res = await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL)
         .send({'option': PartyType.SOLE_TRADER});
       expect(res.status).toBe(302);
@@ -68,7 +79,9 @@ describe('Claim Party Type Controller', () => {
     });
 
     it('should render claimant company details page when radio "A limited company" is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       const res = await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL)
         .send({'option': PartyType.COMPANY});
       expect(res.status).toBe(302);
@@ -76,7 +89,9 @@ describe('Claim Party Type Controller', () => {
     });
 
     it('should render claimant organisation details page when radio "Another type of organisation" is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       const res = await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL)
         .send({'option': PartyType.ORGANISATION});
       expect(res.status).toBe(302);
@@ -84,7 +99,9 @@ describe('Claim Party Type Controller', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       const res = await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL)
         .send({'option': PartyType.ORGANISATION});
       expect(res.status).toBe(500);

@@ -3,16 +3,18 @@ import nock from 'nock';
 import config from 'config';
 import {app} from '../../../../../main/app';
 import {CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import {
-  mockCivilClaimClaimantIntention,
-  mockCivilClaimClaimantIntentionNotSettle,
-  mockRedisFailure,
-} from '../../../../utils/mockDraftStore';
 import {configureSpy} from '../../../../utils/spyConfiguration';
 import * as carmToggleUtils from 'common/utils/carmToggleUtils';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import civilClaimResponseClaimantIntentMock from '../../../../utils/mocks/civilClaimResponseClaimantIntentionMock.json';
+import {Claim} from 'models/claim';
+import civilClaimResponseClaimantIntentionMockNotSettle
+  from '../../../../utils/mocks/civilClaimResponseClaimantIntentionMockNotSettle.json';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(carmToggleUtils, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
@@ -29,8 +31,9 @@ describe('Claimant response task list', () => {
 
   describe('on GET', () => {
     it('should display task list', async () => {
-      app.locals.draftStoreClient = mockCivilClaimClaimantIntention;
-
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseClaimantIntentMock.case_data);
+      });
       await request(app)
         .get(CLAIMANT_RESPONSE_TASK_LIST_URL)
         .expect((res) => {
@@ -43,7 +46,9 @@ describe('Claimant response task list', () => {
     });
 
     it('should display task list carm not enabled', async () => {
-      app.locals.draftStoreClient = mockCivilClaimClaimantIntention;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseClaimantIntentMock.case_data);
+      });
       isCarmEnabledSpy(false);
       await request(app)
         .get(CLAIMANT_RESPONSE_TASK_LIST_URL)
@@ -59,7 +64,9 @@ describe('Claimant response task list', () => {
 
     it('should display task list claimant proceeds carm enabled', async () => {
       isCarmEnabledSpy(true);
-      app.locals.draftStoreClient = mockCivilClaimClaimantIntentionNotSettle;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseClaimantIntentionMockNotSettle.case_data);
+      });
       await request(app)
         .get(CLAIMANT_RESPONSE_TASK_LIST_URL)
         .expect((res) => {
@@ -73,7 +80,9 @@ describe('Claimant response task list', () => {
     });
 
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CLAIMANT_RESPONSE_TASK_LIST_URL)
         .expect((res) => {

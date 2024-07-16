@@ -5,16 +5,19 @@ import {app} from '../../../../../main/app';
 import {
   CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
-} from '../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+} from 'routes/urls';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
   getRedisStoreForSession: jest.fn(),
 }));
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Claimant intention to proceed Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -28,7 +31,9 @@ describe('Claimant intention to proceed Controller', () => {
 
   describe('on GET', () => {
     it('should return intention to proceed page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Do you want to proceed with claim?');
@@ -36,7 +41,9 @@ describe('Claimant intention to proceed Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL)
         .expect((res) => {
@@ -48,7 +55,9 @@ describe('Claimant intention to proceed Controller', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return error on empty post', async () => {
@@ -75,7 +84,9 @@ describe('Claimant intention to proceed Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL)
         .send({option: 'yes'})

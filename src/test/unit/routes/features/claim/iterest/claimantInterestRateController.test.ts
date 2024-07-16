@@ -7,12 +7,15 @@ import {
   CLAIM_INTEREST_DATE_URL,
 } from 'routes/urls';
 import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {SameRateInterestType} from 'form/models/claimDetails';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Claimant Interest Rate', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -27,7 +30,9 @@ describe('Claimant Interest Rate', () => {
 
   describe('on GET', () => {
     it('should return on your claimant interest rate page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .get(CLAIM_INTEREST_RATE_URL)
         .expect((res) => {
@@ -37,7 +42,9 @@ describe('Claimant Interest Rate', () => {
     });
 
     it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CLAIM_INTEREST_RATE_URL)
         .expect((res) => {
@@ -49,7 +56,9 @@ describe('Claimant Interest Rate', () => {
 
   describe('on Post', () => {
     it('should redirect to task list when interest is provided with different rate', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CLAIM_INTEREST_RATE_URL)
         .send({
@@ -64,7 +73,9 @@ describe('Claimant Interest Rate', () => {
     });
 
     it('should redirect to task list when interest is provided with 8% rate', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CLAIM_INTEREST_RATE_URL)
         .send({
@@ -79,7 +90,9 @@ describe('Claimant Interest Rate', () => {
     });
 
     it('should return error when different interest selected and not provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CLAIM_INTEREST_RATE_URL)
         .send({
@@ -93,7 +106,9 @@ describe('Claimant Interest Rate', () => {
     });
 
     it('should return error when different interest selected and not reasons not provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CLAIM_INTEREST_RATE_URL)
         .send({
@@ -107,7 +122,9 @@ describe('Claimant Interest Rate', () => {
     });
 
     it('should return status 500 when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CLAIM_INTEREST_RATE_URL)
         .send({

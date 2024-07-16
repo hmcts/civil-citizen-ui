@@ -2,7 +2,6 @@ import nock from 'nock';
 import config from 'config';
 import {CLAIMANT_RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaimantIntention, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {
   getClaimById,
   getRedisStoreForSession,
@@ -16,13 +15,13 @@ import {Task} from 'models/taskList/task';
 import {
   outstandingClaimantResponseTasks,
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/services/features/claimantResponse/ccj/ccjCheckAnswersService');
 jest.mock('../../../../../main/services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService');
 
@@ -36,7 +35,9 @@ jest.mock('../../../../../main/routes/guards/claimantResponseCheckYourAnswersGua
     next();
   }),
 }));
+jest.mock('modules/draft-store/draftStoreService');
 
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 jest.spyOn(CivilServiceClient.prototype, 'getClaimAmountFee').mockImplementation(() => Promise.resolve(0));
 
 const mockOutstandingClaimantResponseTasks =
@@ -67,22 +68,27 @@ describe('Claimant Response - Check answers', () => {
   describe('Get', () => {
 
     it('should return check answers page', async () => {
-      // (getClaimById as jest.Mock).mockResolvedValueOnce(noRespondentTelephoneClaimantIntentionMock.case_data);
-      app.locals.draftStoreClient = mockCivilClaimantIntention;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data);
+      });
       const res = await request(app).get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain(checkYourAnswerEng);
     });
 
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       const res = await request(app).get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL);
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
     });
 
     it('should pass english translation via query', async () => {
-      app.locals.draftStoreClient = mockCivilClaimantIntention;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data);
+      });
       await session(app).get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL)
         .query({lang: 'en'})
         .expect((res: Response) => {
@@ -92,7 +98,9 @@ describe('Claimant Response - Check answers', () => {
     });
 
     it('should pass cy translation via query', async () => {
-      app.locals.draftStoreClient = mockCivilClaimantIntention;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data);
+      });
       await session(app).get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL)
         .query({lang: 'cy'})
         .expect((res: Response) => {
@@ -104,7 +112,9 @@ describe('Claimant Response - Check answers', () => {
 
   describe('on Post', () => {
     it('should return errors when form is incomplete', async () => {
-      app.locals.draftStoreClient = mockCivilClaimantIntention;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data);
+      });
       (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data));
       const data = {isClaimantRejectedDefendantOffer: 'true'};
       await request(app)
@@ -117,7 +127,9 @@ describe('Claimant Response - Check answers', () => {
     });
 
     it('should return 500 when error in service', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data));
       const data = {isClaimantRejectedDefendantOffer: 'true'};
       await request(app)

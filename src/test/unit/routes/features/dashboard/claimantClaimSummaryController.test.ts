@@ -2,8 +2,8 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
-import {OLD_DASHBOARD_CLAIMANT_URL} from '../../../../../main/routes/urls';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
+import {OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'common/models/partyType';
 import {PartyDetails} from 'common/form/models/partyDetails';
@@ -17,14 +17,16 @@ import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHear
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import * as UtilityService from 'modules/utilityService';
 import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/dashboard/dashboardService', () => ({
   getNotifications: jest.fn(),
   getDashboardForm: jest.fn(),
   extractOrderDocumentIdFromNotification: jest.fn(),
 }));
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('claimant Dashboard Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -81,7 +83,9 @@ describe('claimant Dashboard Controller', () => {
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
       jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.text).toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
@@ -105,7 +109,9 @@ describe('claimant Dashboard Controller', () => {
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
       jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.text).toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
@@ -131,7 +137,9 @@ describe('claimant Dashboard Controller', () => {
         .mockResolvedValueOnce(claim);
       jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
 
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.text).toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');
@@ -156,7 +164,9 @@ describe('claimant Dashboard Controller', () => {
         .mockResolvedValueOnce(claim);
       jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
 
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(OLD_DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.text).toContain('Found. Redirecting to /dashboard/:id/claimantNewDesign');

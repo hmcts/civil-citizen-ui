@@ -8,12 +8,15 @@ import {AmountBreakdown} from 'form/models/claim/amount/amountBreakdown';
 import {ClaimAmountRow} from 'form/models/claim/amount/claimAmountRow';
 import {CLAIM_AMOUNT_URL, CLAIM_INTEREST_URL, NOT_ELIGIBLE_FOR_THIS_SERVICE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/services/features/claim/amount/claimAmountBreakdownService');
+jest.mock('modules/draft-store/draftStoreService');
 
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockServiceGet = claimAmountbreakdownService.getClaimAmountBreakdownForm as jest.Mock;
 
 describe('claimAmountBreakdownController test', ()=>{
@@ -25,7 +28,9 @@ describe('claimAmountBreakdownController test', ()=>{
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
   });
   describe('On Get', () => {
     it('should return page successfully', async () => {
