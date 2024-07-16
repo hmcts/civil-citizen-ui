@@ -6,12 +6,15 @@ import {
   DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
   DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL,
   DQ_PHONE_OR_VIDEO_HEARING_URL,
-} from '../../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+} from 'routes/urls';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('cannot attend hearing in next months Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -25,7 +28,9 @@ describe('cannot attend hearing in next months Controller', () => {
 
   describe('on GET', () => {
     it('should return cannot attend hearing in next months page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?');
@@ -33,7 +38,9 @@ describe('cannot attend hearing in next months Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL)
         .expect((res) => {
@@ -45,7 +52,9 @@ describe('cannot attend hearing in next months Controller', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return cannot attend hearing in next months page on empty post', async () => {
@@ -72,7 +81,9 @@ describe('cannot attend hearing in next months Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL)
         .send({option: 'yes'})

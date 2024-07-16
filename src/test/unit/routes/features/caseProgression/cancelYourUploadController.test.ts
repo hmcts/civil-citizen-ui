@@ -1,6 +1,5 @@
 import {
-  mockCivilClaim,
-  mockCivilClaimDefendantCaseProgression,
+  civilClaimResponseMock,
 } from '../../../../utils/mockDraftStore';
 import {
   CP_EVIDENCE_UPLOAD_CANCEL,
@@ -21,11 +20,13 @@ import {Claim} from 'models/claim';
 import {
   isCaseProgressionV1Enable, isCUIReleaseTwoEnabled,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import civilClaimResponseDefendantMock from '../../../../utils/mocks/civilClaimResponseDefendantMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/app/client/civilServiceClient');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/draftStoreService');
 
 const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
 const claimDefendant = require('../../../../utils/mocks/civilClaimResponseDefendantMock.json');
@@ -33,6 +34,7 @@ const claimId = claim.id;
 const claimDefendantId = claimDefendant.id;
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const testSession = session(app);
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Cancel document upload', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -43,7 +45,9 @@ describe('Cancel document upload', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
   beforeEach(()=> {
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 
@@ -130,7 +134,9 @@ describe('Cancel document upload', () => {
     it('should redirect to defendant page', async () => {
 
       //Given
-      app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseDefendantMock.case_data);
+      });
       nock(civilServiceUrl)
         .post(CIVIL_SERVICE_CASES_URL + claimDefendantId)
         .reply(200, claimDefendantId);
@@ -149,7 +155,9 @@ describe('Cancel document upload', () => {
     it('should redirect to claimant page', async () => {
 
       //Given
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       nock(civilServiceUrl)
         .post(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claimId);

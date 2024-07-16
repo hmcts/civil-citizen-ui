@@ -4,16 +4,18 @@ import nock from 'nock';
 import config from 'config';
 import {CCJ_CONFIRMATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('routes/guards/ccjConfirmationGuard', () => ({
   ccjConfirmationGuard: jest.fn((req, res, next) => {
     next();
   }),
 }));
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('CCJ confirmation controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -28,7 +30,9 @@ describe('CCJ confirmation controller', () => {
   describe('on GET', () => {
     it('should return ccj confirmation page', async () => {
       jest.spyOn(Claim.prototype, 'isCCJCompleteForJo').mockReturnValue(false);
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       const res = await request(app).get(CCJ_CONFIRMATION_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain(TestMessages.CCJ_CONFIRMATION_TITLE);
@@ -37,7 +41,9 @@ describe('CCJ confirmation controller', () => {
     });
     it('should return ccj confirmation page for JO', async () => {
       jest.spyOn(Claim.prototype, 'isCCJCompleteForJo').mockReturnValue(true);
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       const res = await request(app).get(CCJ_CONFIRMATION_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain(TestMessages.CCJ_CONFIRMATION_TITLE);
@@ -46,7 +52,9 @@ describe('CCJ confirmation controller', () => {
     });
 
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       const res = await request(app).get(CCJ_CONFIRMATION_URL);
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
