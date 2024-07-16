@@ -104,7 +104,8 @@
     "MICRO_TEXT": {
       "HEARING_FEE": "Hearing fee",
       "CLAIM_FEE": "Claim fee",
-      "APPLICATION_FEE" : "Application fee"
+      "APPLICATION_FEE" : "Application fee",
+      "ADDITIONAL_APPLICATION_FEE" : "Additional application fee"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Council Tax or Community Charge",
@@ -2881,6 +2882,7 @@
         "WHAT_HAPPENS_NEXT_PARA_3": "You'll receive a notification letting you know if an application hearing has been scheduled.",
         "WHAT_HAPPENS_NEXT_PARA_4" : "If you've made an application to change a hearing date, the trial or hearing will go ahead as planned on the original date unless a judge makes an order changing the date of the hearing.",
         "WHAT_HAPPENS_NEXT_PARA_5": "The other parties will have 5 working days to respond to your application. If you have a hearing in the next 10 days, your application will be treated urgently.",
+        "WHAT_HAPPENS_NEXT_PARA_6": "You may be required to attend a hearing so that the judge can consider your application with you and the other parties and decide what the next steps should be.",
         "WHAT_HAPPENS_NEXT": "What happens next"
       },
       "HEARING_SUPPORT": {

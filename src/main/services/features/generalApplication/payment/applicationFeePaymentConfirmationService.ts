@@ -27,7 +27,7 @@ export const getRedirectUrl = async (claimId: string, applicationId: string, req
     const isAdditionalFee = !!applicationResponse.case_data.applicationFeeAmountInPence;
 
     if(paymentStatus.status === success) {
-      return isAdditionalFee ? '/test' : GA_PAYMENT_SUCCESSFUL_URL;
+      return GA_PAYMENT_SUCCESSFUL_URL;
     }
 
     const paymentCancelledUrl = isAdditionalFee

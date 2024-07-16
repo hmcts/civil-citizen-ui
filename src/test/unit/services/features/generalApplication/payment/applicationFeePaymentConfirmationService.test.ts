@@ -40,6 +40,7 @@ const applicationResponse: ApplicationResponse = {
     generalAppStatementOfTruth: undefined,
     generalAppPBADetails: undefined,
     applicationFeeAmountInPence: undefined,
+    parentClaimantIsApplicant: undefined,
   },
   created_date: '',
   id: '',
@@ -85,7 +86,7 @@ describe('Application Fee PaymentConfirmation Service', () => {
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
 
     //Then
-    expect(actualPaymentRedirectUrl).toBe('/test');
+    expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_SUCCESSFUL_URL);
   });
 
   it('should return to Payment Unsuccessful page when payment has failed', async () => {
