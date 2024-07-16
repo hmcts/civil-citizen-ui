@@ -348,12 +348,12 @@ camunda-bpm:
     ingressHost: camunda-${SERVICE_FQDN}
     environment:
       CAMUNDA_API_AUTH_ENABLED: false
-#      CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
-#      CAMUNDA_DB_NAME: camunda
-#      CAMUNDA_DB_USER_NAME: "{{ .Values.postgresql.auth.username}}"
+      CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
+      CAMUNDA_DB_NAME: camunda
+      CAMUNDA_DB_USER_NAME: "{{ .Values.postgresql.auth.username}}"
       CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
       S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-#      CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified"
+      CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified"
       RELEASE_REVISION: "{{ .Release.Revision }}"
     secrets:
       CAMUNDA_DB_PASSWORD:

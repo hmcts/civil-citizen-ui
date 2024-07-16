@@ -117,20 +117,6 @@ wa:
         secretRef: "{{ .Values.global.postgresSecret }}"
         key: PASSWORD
         disabled: true
-  camunda-bpm:
-    java:
-      environment:
-        CAMUNDA_DB_USER_NAME: "hmcts"
-        CAMUNDA_DB_PASSWORD: ${POSTGRES_PASSWORD}
-        CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified"
-        CAMUNDA_DB_NAME: 'camunda'
-        TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
-        CAMUNDA_API_AUTH_ENABLED: false
-      secrets:
-        CAMUNDA_DB_PASSWORD:
-          secretRef: "{{ .Values.global.postgresSecret }}"
-          key: PASSWORD
-          disabled: true
 
 xui-webapp:
   nodejs:
