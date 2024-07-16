@@ -13,7 +13,6 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'models/partyType';
 import {ResponseOptions} from 'form/models/responseDeadline';
-import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -114,7 +113,9 @@ describe('Response Deadline Options Controller', () => {
     });
 
     it('should render error page on redis failure error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

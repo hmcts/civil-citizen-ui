@@ -2,12 +2,17 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../../main/app';
-import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL, RESPONSE_TASK_LIST_URL} from '../../../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import civilClaimResponseMock from '../../../../../../utils/mocks/civilClaimResponseMock.json';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('You Have Paid Less Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -18,7 +23,9 @@ describe('You Have Paid Less Controller', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
   });
 
   describe('on GET', () => {
@@ -30,7 +37,9 @@ describe('You Have Paid Less Controller', () => {
     });
 
     it('should return status 500 when there is an error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL).expect((res) => {
           expect(res.status).toBe(500);
