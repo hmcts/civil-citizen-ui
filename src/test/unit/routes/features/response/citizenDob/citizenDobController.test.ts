@@ -9,20 +9,25 @@ import {
   RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {
-  mockCivilClaim,
-  mockCivilClaimUndefined,
-  mockRedisFailure,
-  mockNoStatementOfMeans,
-  mockCivilClaimRespondentIndividualTypeWithPhoneNumber,
-  mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber,
-  mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse,
-  mockCivilClaimApplicantIndividualType,
+  civilClaimResponseMock,
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import noStatementOfMeansMock from '../../../../../utils/mocks/noStatementOfMeansMock.json';
+import {Claim} from 'models/claim';
+import civilClaimResponseRespondentIndividualWithPhoneNumber
+  from '../../../../../utils/mocks/civilClaimResponseRespondentIndividualWithPhoneNumberMock.json';
+import civilClaimResponseApplicantIndividual
+  from '../../../../../utils/mocks/civilClaimResponseApplicantIndividualMock.json';
+import civilClaimResponseRespondentIndividualWithoutPhoneNumber
+  from '../../../../../utils/mocks/civilClaimResponseRespondentIndividualWithoutPhoneNumberMock.json';
+import civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalse
+  from '../../../../../utils/mocks/civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalseMock.json';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Citizen date of birth', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -31,12 +36,14 @@ describe('Citizen date of birth', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {
     it('should return citizen date of birth page empty when dont have information on redis ', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noStatementOfMeansMock.case_data);
+      });
+
       await request(app)
         .get(DOB_URL)
         .expect((res) => {
@@ -45,7 +52,9 @@ describe('Citizen date of birth', () => {
         });
     });
     it('should return citizen date of birth page with all information from redis', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .get(DOB_URL)
         .expect((res) => {
@@ -54,7 +63,9 @@ describe('Citizen date of birth', () => {
         });
     });
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(DOB_URL)
         .expect((res) => {
@@ -66,7 +77,9 @@ describe('Citizen date of birth', () => {
 
   describe('on POST', () => {
     it('should create a new claim if redis gives undefined', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), undefined);
+      });
       await request(app)
         .post(DOB_URL)
         .send('year=2000')
@@ -77,7 +90,9 @@ describe('Citizen date of birth', () => {
         });
     });
     it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(DOB_URL)
         .send('year=')
@@ -178,7 +193,9 @@ describe('Citizen date of birth', () => {
         });
     });
     it('should redirect to phone number page on valid DOB when has undefined on redis', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noStatementOfMeansMock.case_data);
+      });
       await request(app)
         .post(DOB_URL)
         .send('year=1981')
@@ -190,7 +207,9 @@ describe('Citizen date of birth', () => {
         });
     });
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(DOB_URL)
         .send('year=1981')
@@ -203,7 +222,9 @@ describe('Citizen date of birth', () => {
     });
     describe('Redirect to phone-number or task-list screen', () => {
       it('should redirect to task-list screen if phone-number provided', async () => {
-        app.locals.draftStoreClient = mockCivilClaimRespondentIndividualTypeWithPhoneNumber;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseRespondentIndividualWithPhoneNumber.case_data);
+        });
         await request(app)
           .post(DOB_URL)
           .send('year=1981')
@@ -215,7 +236,9 @@ describe('Citizen date of birth', () => {
           });
       });
       it('should redirect to phone-number screen if phone-number NOT provided', async () => {
-        app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseApplicantIndividual.case_data);
+        });
         await request(app)
           .post(DOB_URL)
           .send('year=1981')
@@ -227,7 +250,9 @@ describe('Citizen date of birth', () => {
           });
       });
       it('should redirect to phone-number screen if phone-number is empty', async () => {
-        app.locals.draftStoreClient = mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseRespondentIndividualWithoutPhoneNumber.case_data);
+        });
         await request(app)
           .post(DOB_URL)
           .send('year=1981')
@@ -239,7 +264,12 @@ describe('Citizen date of birth', () => {
           });
       });
       it('should redirect to phone-number screen if ccd phone number exist is false', async () => {
-        app.locals.draftStoreClient = mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalse.case_data);
+        });
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseRespondentIndividualWithCcdPhoneNumberFalse.case_data);
+        });
         await request(app)
           .post(DOB_URL)
           .send('year=1981')
