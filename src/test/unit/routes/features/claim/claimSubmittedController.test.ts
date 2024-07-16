@@ -3,20 +3,22 @@ import {CLAIM_CONFIRMATION_URL} from 'routes/urls';
 import nock from 'nock';
 import request from 'supertest';
 import config from 'config';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import {Claim} from 'models/claim';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {YesNo} from 'form/models/yesNo';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const {app} = require('../../../../../main/app');
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/features/claim/amount/checkClaimFee');
 jest.mock('modules/utilityService', () => ({
   getRedisStoreForSession: jest.fn(),
 }));
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Claim - Claim Submitted', () => {
   const idamServiceUrl: string = config.get('services.idam.url');
@@ -29,7 +31,9 @@ describe('Claim - Claim Submitted', () => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
   });
 
   describe('on GET', () => {

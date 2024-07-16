@@ -3,13 +3,14 @@ import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {PAY_CLAIM_FEE_UNSUCCESSFUL_URL} from 'routes/urls';
-import {
-  mockCivilClaim, mockRedisFailure,
-} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Claim fee payment confirmation', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -23,7 +24,9 @@ describe('Claim fee payment confirmation', () => {
 
   describe('on GET', () => {
     it('should return resolving unsuccessful payment page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL)
         .expect((res) => {
@@ -32,7 +35,9 @@ describe('Claim fee payment confirmation', () => {
     });
 
     it('should return 500 error page for redis failure', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL)
         .expect((res) => {

@@ -8,11 +8,14 @@ import {
   CLAIM_INTEREST_TYPE_URL,
   CLAIM_HELP_WITH_FEES_URL,
 } from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Claim Interest page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -27,7 +30,9 @@ describe('Claim Interest page', () => {
 
   describe('on GET', () => {
     it('should return on claim interest page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(CLAIM_INTEREST_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.CLAIM_JOURNEY.CLAIM_INTEREST.TITLE'));
@@ -35,7 +40,9 @@ describe('Claim Interest page', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CLAIM_INTEREST_URL)
         .expect((res) => {
@@ -47,7 +54,9 @@ describe('Claim Interest page', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return error message when no option selected', async () => {
@@ -74,7 +83,9 @@ describe('Claim Interest page', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CLAIM_INTEREST_URL)
         .send({option: 'yes'})

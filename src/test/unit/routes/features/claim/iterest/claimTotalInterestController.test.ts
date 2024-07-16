@@ -2,15 +2,18 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import {CLAIM_INTEREST_CONTINUE_CLAIMING_URL, CLAIM_INTEREST_TOTAL_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
 import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/services/features/claim/interest/interestService');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+
 const getInterestMock = getInterest as jest.Mock;
 const saveInterestMock = saveInterest as jest.Mock;
 
@@ -27,7 +30,9 @@ describe('Claim Total Interest Controller', () => {
 
   describe('on GET', () => {
     it('should render total claim interest controller', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(CLAIM_INTEREST_TOTAL_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('What is the total interest for your claim?');
