@@ -16,7 +16,7 @@ import {t} from 'i18next';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {CCDBundle} from 'models/caseProgression/bundles/ccdBundle';
 import {CaseRole} from 'form/models/caseRoles';
-import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
@@ -29,7 +29,7 @@ const testSession = session(app);
 const isCaseProgressionV1EnableMock = isCaseProgressionV1Enable as jest.Mock;
 const getLatestUpdateContentMock = getLatestUpdateContent as jest.Mock;
 const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.Mock;
-const isCarmEnabledForCaseMock = isCarmEnabledForCase as jest.Mock;
+const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest.Mock;
 const isCUIReleaseTwoEnabledMock = launchDarklyClient.isCUIReleaseTwoEnabled as jest.Mock;
 const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
 const mockExpectedDashboardInfo=
@@ -450,6 +450,41 @@ describe('Claim Summary Controller Defendant', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Case number: ');
+        });
+    });
+
+    it('should I want to link with case moved to caseman', async () => {
+      //given
+      const caseProgressionHearing = getCaseProgressionHearingMock();
+      const claimWithHeringDocs = {
+        ...claim,
+        state: CaseState.PROCEEDS_IN_HERITAGE_SYSTEM,
+        case_data: {
+          ...claimWithSdo.case_data,
+          hearingDate: caseProgressionHearing.hearingDate,
+          hearingLocation: caseProgressionHearing.hearingLocation,
+          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
+          hearingDocuments: caseProgressionHearing.hearingDocuments,
+          takenOfflineDate: new Date(),
+        },
+      };
+
+      isDashboardEnabledForCase.mockResolvedValue(true);
+      isCaseProgressionV1EnableMock.mockResolvedValue(true);
+      getLatestUpdateContentMock.mockReturnValue([]);
+      //when
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claimWithHeringDocs);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.DEFENDANT]);
+      //then
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Contact the court to request a change to my case (make an application)');
         });
     });
   });

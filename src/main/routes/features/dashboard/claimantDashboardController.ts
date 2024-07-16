@@ -19,11 +19,11 @@ import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {isCUIReleaseTwoEnabled, isGaForLipsEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isCaseProgressionV1Enable, isCUIReleaseTwoEnabled, isCarmEnabledForCase, isGaForLipsEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {t} from 'i18next';
-import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import { applicationNoticeUrl } from 'common/utils/externalURLs';
@@ -59,12 +59,14 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
       }
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
+      const caseProgressionEnabled = await isCaseProgressionV1Enable();
       const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
       const dashboardNotifications = await getNotifications(dashboardId, claim, caseRole, req, lng);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const isGAFlagEnable = await isGaForLipsEnabled();
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable, isGAFlagEnable);
-      const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(claim, claimId, isGAFlagEnable, lng);
+      const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
+        = getSupportLinks(claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable);
       const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
       hearing.forEach((task) => {
         if (task.taskNameEn.search(HearingUploadDocuments)>0){
@@ -95,7 +97,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
   }
 }) as RequestHandler);
 
-const getSupportLinks = (claim: Claim, claimId: string, isGAFlagEnable: boolean, lng: string) => {
+const getSupportLinks = (claim: Claim, claimId: string, lng: string, isCaseProgressionEnabled: boolean, isGAFlagEnable: boolean) => {
   const showTellUsEndedLink = claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
     claim.ccdState === CaseState.IN_MEDIATION ||
@@ -110,6 +112,13 @@ const getSupportLinks = (claim: Claim, claimId: string, isGAFlagEnable: boolean,
     claim.ccdState === CaseState.IN_MEDIATION ||
     claim.ccdState === CaseState.JUDICIAL_REFERRAL ||
     claim.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+
+  const showGetDebtRespiteLinkCaseProgression =
+    claim.ccdState === CaseState.CASE_PROGRESSION ||
+    claim.ccdState === CaseState.HEARING_READINESS ||
+    claim.ccdState === CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING ||
+    claim.ccdState === CaseState.DECISION_OUTCOME ||
+    claim.ccdState === CaseState.All_FINAL_ORDERS_ISSUED;
 
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks = [];
@@ -130,7 +139,8 @@ const getSupportLinks = (claim: Claim, claimId: string, isGAFlagEnable: boolean,
   if (showTellUsEndedLink) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_ENDED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
   }
-  if (showGetDebtRespiteLink && claim.isClaimant()) {
+  if ((showGetDebtRespiteLink && claim.isClaimant())
+    || (isCaseProgressionEnabled && showGetDebtRespiteLinkCaseProgression && claim.isClaimant())) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }), url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL) });
   }
 

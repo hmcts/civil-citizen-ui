@@ -19,13 +19,15 @@ import {CaseState} from 'common/form/models/claimDetails';
 import {t} from 'i18next';
 import * as UtilityService from 'modules/utilityService';
 import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {Dashboard} from 'models/dashboard/dashboard';
 import { applicationNoticeUrl } from 'common/utils/externalURLs';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-const isCarmEnabledForCaseMock = isCarmEnabledForCase as jest.Mock;
+
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+
+const isCarmEnabledForCaseMock = launchDarkly.isCarmEnabledForCase as jest.Mock;
 
 const mockExpectedDashboardInfo=
   [{
@@ -121,6 +123,14 @@ const HELP_SUPPORT_LINKS = [
   { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF'), url: 'test' },
   { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE'), url: 'test' },
   { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'), url: 'test' },
+];
+
+const testCases = [
+  { caseRole: CaseRole.CLAIMANT, ccdState: CaseState.CASE_PROGRESSION },
+  { caseRole: CaseRole.CLAIMANT, ccdState: CaseState.HEARING_READINESS },
+  { caseRole: CaseRole.CLAIMANT, ccdState: CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING },
+  { caseRole: CaseRole.CLAIMANT, ccdState: CaseState.DECISION_OUTCOME },
+  { caseRole: CaseRole.CLAIMANT, ccdState: CaseState.All_FINAL_ORDERS_ISSUED },
 ];
 
 describe('claimant Dashboard Controller', () => {
@@ -333,6 +343,32 @@ describe('claimant Dashboard Controller', () => {
       });
     });
 
+    describe.each(testCases)('Dashboard Support Links Test', (testCase) => {
+      it(`should show support links for claimant with caseRole: ${testCase.caseRole} and ccdState: ${testCase.ccdState}`, async () => {
+
+        const claim = new Claim();
+        claim.caseRole = testCase.caseRole;
+        claim.ccdState = testCase.ccdState;
+        jest
+          .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+          .mockResolvedValueOnce(claim);
+        jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+        jest.spyOn(launchDarkly, 'isCaseProgressionV1Enable').mockResolvedValueOnce(true);
+
+        await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_MEDIATION'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.WHAT_EXPECT_HEARING'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE'));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'));
+        });
+      });
+    });
     it('should show support links for claimant with links hidden', async () => {
 
       const claim = new Claim();
@@ -343,7 +379,7 @@ describe('claimant Dashboard Controller', () => {
         .mockResolvedValueOnce(claim);
       jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
       jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
-
+      
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).not.toContain('Tell us you&#39;ve ended the claim');
