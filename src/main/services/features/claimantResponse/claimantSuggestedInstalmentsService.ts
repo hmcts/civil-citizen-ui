@@ -2,6 +2,7 @@ import {RepaymentPlanForm} from 'common/form/models/repaymentPlan/repaymentPlanF
 import { AppRequest } from 'common/models/AppRequest';
 import {Request} from 'express';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import { ValidationError } from 'class-validator';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantSuggestedInstalmentsService');
@@ -41,5 +42,12 @@ export const getClaimantSuggestedInstalmentsForm = async (req: Request): Promise
   } catch (error) {
     logger.error(error);
     throw error;
+  }
+};
+
+export const updateDayErrorMsg = (errors?: ValidationError[]) => {
+  const updateErrorDayMsg = errors.find(e => e.property === 'day' && (e.constraints?.max || e.constraints?.min));
+  if (updateErrorDayMsg) {
+    updateErrorDayMsg.constraints = { max: 'ERRORS.VALID_DAY_VARIATION1', min: 'ERRORS.VALID_DAY_VARIATION1' };
   }
 };

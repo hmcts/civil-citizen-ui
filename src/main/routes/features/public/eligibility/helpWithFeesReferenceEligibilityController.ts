@@ -21,7 +21,7 @@ helpWithFeesReferenceEligibilityController.get(ELIGIBILITY_HELP_WITH_FEES_REFERE
 });
 
 helpWithFeesReferenceEligibilityController.post(ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL, (req, res) => {
-  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
+  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_OPTION_COMMON'));
   genericYesNoForm.validateSync();
 
   if (genericYesNoForm.hasErrors()) {

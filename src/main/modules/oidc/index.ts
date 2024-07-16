@@ -15,6 +15,9 @@ import {
   SIGN_OUT_URL,
   UNAUTHORISED_URL,
   ACCESSIBILITY_STATEMENT_URL,
+  CONTACT_US_URL,
+  TERMS_AND_CONDITIONS_URL,
+  PRIVACY_POLICY_URL,
 } from 'routes/urls';
 
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
@@ -39,6 +42,18 @@ const isEligibilityPage = (requestUrl: string): boolean => {
 
 const isAccessibilityStatementPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(ACCESSIBILITY_STATEMENT_URL);
+};
+
+const isContactUsPage = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(CONTACT_US_URL);
+};
+
+const isTermAndConditionsPage = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(TERMS_AND_CONDITIONS_URL);
+};
+
+const isPrivacyPolicyPage = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(PRIVACY_POLICY_URL);
 };
 
 const isMakeClaimPage = (requestUrl: string): boolean => {
@@ -118,7 +133,17 @@ export class OidcMiddleware {
           return next();
         }
       }
-      if (requestIsForPinAndPost(req) || requestIsForDownloadPdf(req) || isEligibilityPage(req.originalUrl) || isMakeClaimPage(req.originalUrl) || isTestingSupportDraftUrl(req.originalUrl) || isAccessibilityStatementPage(req.originalUrl)) {
+      if (
+        requestIsForPinAndPost(req) || 
+        requestIsForDownloadPdf(req) || 
+        isEligibilityPage(req.originalUrl) || 
+        isMakeClaimPage(req.originalUrl) || 
+        isTestingSupportDraftUrl(req.originalUrl) || 
+        isAccessibilityStatementPage(req.originalUrl) ||
+        isContactUsPage(req.originalUrl) ||
+        isTermAndConditionsPage(req.originalUrl) ||
+        isPrivacyPolicyPage(req.originalUrl)
+      ) {
         return next();
       }
       if (requestIsForAssigningClaimForDefendant(req) ) {

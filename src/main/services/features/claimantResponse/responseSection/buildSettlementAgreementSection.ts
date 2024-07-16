@@ -78,7 +78,7 @@ export const buildJudgmentRequestSection = (claim: Claim, claimId: string, lng: 
   const ccjPaidAmountHref = constructResponseUrlWithIdParams(claimId, CCJ_EXTENDED_PAID_AMOUNT_URL);
   const paymentOption = claim.getHasDefendantPaid();
 
-  const paymentOptionTranslationKey = paymentOption ? `COMMON.VARIATION.${paymentOption.toUpperCase()}` : '';
+  const paymentOptionTranslationKey = paymentOption ? `COMMON.VARIATION_5.${paymentOption.toUpperCase()}` : '';
   const paymentOptionText = paymentOptionTranslationKey ? t(paymentOptionTranslationKey, {lng}) : '';
   const judgmentRequestSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST', {lng}),
