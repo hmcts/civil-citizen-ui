@@ -3,11 +3,17 @@ import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
 import {CCJ_CHECK_AND_SEND_URL, CCJ_DEFENDANT_PAYMENT_DATE_URL} from 'routes/urls';
-import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {
+  civilClaimResponseMock,
+} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import noStatementOfMeansMock from '../../../../../utils/mocks/noStatementOfMeansMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('CCJ - defendant Payment date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -21,7 +27,9 @@ describe('CCJ - defendant Payment date', () => {
 
   describe('on Exception', () => {
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CCJ_DEFENDANT_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -31,7 +39,9 @@ describe('CCJ - defendant Payment date', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CCJ_DEFENDANT_PAYMENT_DATE_URL)
         .send('year=9999')
@@ -46,7 +56,9 @@ describe('CCJ - defendant Payment date', () => {
 
   describe('on GET', () => {
     it('should return payment date page', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noStatementOfMeansMock.case_data);
+      });
       await request(app)
         .get(CCJ_DEFENDANT_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -60,11 +72,15 @@ describe('CCJ - defendant Payment date', () => {
 
   describe('on POST', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CCJ_DEFENDANT_PAYMENT_DATE_URL)
         .send('year=')
@@ -79,7 +95,9 @@ describe('CCJ - defendant Payment date', () => {
 
     });
     it('should return errors on no input : invalid month', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CCJ_DEFENDANT_PAYMENT_DATE_URL)
         .send('year= 2023')

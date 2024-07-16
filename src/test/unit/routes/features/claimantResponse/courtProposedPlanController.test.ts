@@ -6,18 +6,21 @@ import {
   CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL,
   CLAIMANT_RESPONSE_REJECTION_REASON_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
-} from '../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+} from 'routes/urls';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {CourtProposedPlanOptions} from 'common/form/models/claimantResponse/courtProposedPlan';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
   getRedisStoreForSession: jest.fn(),
 }));
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Claimant court proposed plan Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -31,7 +34,9 @@ describe('Claimant court proposed plan Controller', () => {
 
   describe('on GET', () => {
     it('should return court proposed plan page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_PLAN.TITLE'));
@@ -39,7 +44,9 @@ describe('Claimant court proposed plan Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL)
         .expect((res) => {
@@ -51,7 +58,9 @@ describe('Claimant court proposed plan Controller', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return error on empty post', async () => {
@@ -82,7 +91,9 @@ describe('Claimant court proposed plan Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL)
         .send({ decision: CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN })

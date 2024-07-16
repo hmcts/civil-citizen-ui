@@ -3,14 +3,17 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {DATE_PAID_URL, DATE_PAID_CONFIRMATION_URL} from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import { t } from 'i18next';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('client/civilServiceClient');
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -32,14 +35,18 @@ describe('Date Paid Controller', () => {
 
   describe('on GET', () => {
     it('should render date paid page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       const res = await request(app).get(DATE_PAID_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.CLAIMANT_SETTLE_DATE.TITLE'));
     });
 
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(DATE_PAID_URL)
         .expect((res) => {
@@ -51,14 +58,18 @@ describe('Date Paid Controller', () => {
 
   describe('on POST', () => {
     it('should render date paid page if there are form errors', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       const res = await request(app).post(DATE_PAID_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.CLAIMANT_SETTLE_DATE.TITLE'));
     });
 
     it('should redirect to the confirmation page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).post(DATE_PAID_URL)
         .send({day: 2, month: 3, year: 1980})
         .expect((res) => {
@@ -68,7 +79,9 @@ describe('Date Paid Controller', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(DATE_PAID_URL)
         .send({day: 4, month: 5, year: 1952})

@@ -4,7 +4,7 @@ import nock from 'nock';
 import config from 'config';
 import {CLAIM_DEFENDANT_EMAIL_URL, CLAIM_DEFENDANT_PHONE_NUMBER_URL} from 'routes/urls';
 import {t} from 'i18next';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -81,7 +81,9 @@ describe('Completing Claim', () => {
     });
 
     it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CLAIM_DEFENDANT_EMAIL_URL)
         .send({emailAddress: 'test'})

@@ -6,11 +6,14 @@ import {
   CLAIM_DEFENDANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL,
 } from 'routes/urls';
 import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const PHONE_NUMBER = '01632960001';
 describe('Completing Claim', () => {
@@ -25,7 +28,9 @@ describe('Completing Claim', () => {
 
   describe('on GET', () => {
     it('should return on your defendant phone number page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .get(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
         .expect((res) => {
@@ -35,7 +40,9 @@ describe('Completing Claim', () => {
     });
 
     it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
         .expect((res) => {
@@ -47,7 +54,9 @@ describe('Completing Claim', () => {
 
   describe('on Post', () => {
     it('should redirect to task list when optional phone number provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
         .send({telephoneNumber: PHONE_NUMBER})
@@ -58,7 +67,9 @@ describe('Completing Claim', () => {
     });
 
     it('should redirect to task list when optional phone number is not provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
         .send({telephoneNumber: ''})
@@ -69,7 +80,9 @@ describe('Completing Claim', () => {
     });
 
     it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
         .send({telephoneNumber: 'abc'})
@@ -99,7 +112,9 @@ describe('Completing Claim', () => {
     });
 
     it('should return status 500 when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
         .send({telephoneNumber: PHONE_NUMBER})

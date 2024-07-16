@@ -7,11 +7,14 @@ import {
   CCJ_DEFENDANT_DOB_URL,
   CCJ_PAID_AMOUNT_URL,
 } from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('CCJ - Defendant`s date of birth', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -25,14 +28,18 @@ describe('CCJ - Defendant`s date of birth', () => {
 
   describe('on GET', () => {
     it('should return Defendant`s date of birth', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       const res = await request(app).get(CCJ_DEFENDANT_DOB_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('Do you know the defendant&#39;s date of birth?');
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       const res = await request(app).get(CCJ_DEFENDANT_DOB_URL);
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -41,7 +48,9 @@ describe('CCJ - Defendant`s date of birth', () => {
 
   describe('on POST', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return error on empty post', async () => {
@@ -113,7 +122,9 @@ describe('CCJ - Defendant`s date of birth', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       const res = await request(app).post(CCJ_DEFENDANT_DOB_URL)
         .send({option: 'no'});
       expect(res.status).toBe(500);

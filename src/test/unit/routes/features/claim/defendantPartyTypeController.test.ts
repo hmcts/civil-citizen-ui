@@ -3,7 +3,6 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {PartyType} from 'models/partyType';
-import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {
   DELAYED_FLIGHT_URL,
   CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
@@ -16,8 +15,8 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {Claim} from 'models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Defendant party type controller', () => {
   const mockGetClaim = getCaseDataFromStore as jest.Mock;
@@ -48,7 +47,9 @@ describe('Defendant party type controller', () => {
       mockGetClaim.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CLAIM_DEFENDANT_PARTY_TYPE_URL)
         .expect((res: Response) => {
