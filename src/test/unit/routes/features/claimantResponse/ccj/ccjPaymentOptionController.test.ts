@@ -9,11 +9,14 @@ import {
   CCJ_REPAYMENT_PLAN_INSTALMENTS_URL,
   CCJ_CHECK_AND_SEND_URL,
 } from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('modules/oidc');
-jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('CCJ - Payment option', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -27,14 +30,18 @@ describe('CCJ - Payment option', () => {
 
   describe('on GET', () => {
     it('should return ccj payment option', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       const res = await request(app).get(CCJ_PAYMENT_OPTIONS_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('Payment Option');
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       const res = await request(app).get(CCJ_PAYMENT_OPTIONS_URL);
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -43,7 +50,9 @@ describe('CCJ - Payment option', () => {
 
   describe('on POST', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should validate when option is not selected', async () => {
@@ -83,7 +92,9 @@ describe('CCJ - Payment option', () => {
         });
     });
     it('should return 500 status when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CCJ_PAYMENT_OPTIONS_URL)
         .send('type=BY_SET_DATE')

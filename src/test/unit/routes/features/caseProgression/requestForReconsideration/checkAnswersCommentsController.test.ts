@@ -1,4 +1,4 @@
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import {
   REQUEST_FOR_RECONSIDERATION_COMMENTS_CONFIRMATION_URL,
   REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL,
@@ -14,9 +14,12 @@ import {
 } from '../../../../../utils/mockClaimForCheckAnswers';
 import * as checkAnswersService from '../../../../../../main/services/features/caseProgression/requestForReconsideration/requestForReviewService';
 import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const claim = getClaimRequestForReconsideration();
 const claimId = '1692795793361508';
@@ -37,7 +40,9 @@ describe('Request for Reconsideration comments check answers - On GET', () => {
 
   it('should render page successfully in English with all sections and summary rows', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
     //When
     await testSession
       .get(REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL.replace(':id', claimId)).query({lang: 'en'})
@@ -52,7 +57,9 @@ describe('Request for Reconsideration comments check answers - On GET', () => {
 
   it('should render page successfully in Welsh with all sections and summary rows if Welsh query', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
     //When
     await testSession
       .get(REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL.replace(':id', claimId)).query({lang: 'cy'})
@@ -82,7 +89,9 @@ describe('Request for Reconsideration comments check answers - On GET', () => {
 
 describe('Request for Reconsideration - on POST', () => {
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
   });
   beforeEach(()=> {
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);

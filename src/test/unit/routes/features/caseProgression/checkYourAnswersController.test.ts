@@ -1,7 +1,6 @@
 import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../main/app';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {CP_CHECK_ANSWERS_URL} from 'routes/urls';
 import * as checkAnswersService from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -9,14 +8,15 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {SummarySection, SummarySections} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
 import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/caseProgression/checkYourAnswers/checkAnswersService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSummarySections = checkAnswersService.getSummarySections as jest.Mock;
 mockSummarySections.mockReturnValue({} as SummarySections);
-const mockDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 
 const session = require('supertest-session');
 const testSession = session(app);
@@ -60,7 +60,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       //Given
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
-      mockDraftStore.mockReturnValueOnce(claim);
+      mockGetCaseData.mockReturnValueOnce(claim);
       mockSummarySections.mockImplementation(() => {
         return {sections: [] as SummarySection[]} as SummarySections;
       });
@@ -78,7 +78,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       //Given
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
-      mockDraftStore.mockReturnValueOnce(claim);
+      mockGetCaseData.mockReturnValueOnce(claim);
       mockSummarySections.mockImplementation(() => {
         return {sections: [] as SummarySection[]} as SummarySections;
       });
@@ -96,7 +96,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       //Given
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
-      mockDraftStore.mockReturnValueOnce(claim);
+      mockGetCaseData.mockReturnValueOnce(claim);
       mockSummarySections.mockImplementation(() => {
         return {sections: [] as SummarySection[]} as SummarySections;
       });
@@ -119,7 +119,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       mockSummarySections.mockImplementation(() => {
         return {sections: [] as SummarySection[]} as SummarySections;
       });
-      mockDraftStore.mockReturnValueOnce(claimantClaim);
+      mockGetCaseData.mockReturnValueOnce(claimantClaim);
       //When
       await testSession
         .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'en'})
@@ -138,7 +138,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       mockSummarySections.mockImplementation(() => {
         return {sections: [] as SummarySection[]} as SummarySections;
       });
-      mockDraftStore.mockReturnValueOnce(claimantClaim);
+      mockGetCaseData.mockReturnValueOnce(claimantClaim);
       //When
       await testSession
         .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'cy'})
@@ -172,7 +172,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       //given
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
-      mockDraftStore.mockReturnValueOnce(claim);
+      mockGetCaseData.mockReturnValueOnce(claim);
 
       //when
       await testSession.post(CP_CHECK_ANSWERS_URL).query({lang: 'en'}).expect((res: { status: unknown; text: unknown; }) => {
@@ -186,7 +186,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       //given
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
-      mockDraftStore.mockReturnValueOnce(claim);
+      mockGetCaseData.mockReturnValueOnce(claim);
 
       //when
       await testSession.post(CP_CHECK_ANSWERS_URL).query({lang: 'cy'}).expect((res: { status: unknown; text: unknown; }) => {
@@ -198,9 +198,8 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
 
     test('If the form is not missing, redirect to new page', async () => {
       //given
-      app.locals.draftStoreClient = mockCivilClaim;
 
-      mockDraftStore.mockReturnValue('');
+      mockGetCaseData.mockReturnValue('');
 
       //when
       await testSession.post(CP_CHECK_ANSWERS_URL).send({signed: true}).expect((res: { status: unknown; text: unknown; }) => {
