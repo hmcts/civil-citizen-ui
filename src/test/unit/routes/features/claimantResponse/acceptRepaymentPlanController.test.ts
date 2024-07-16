@@ -1,19 +1,22 @@
 import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../main/app';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import request from 'supertest';
 import {
   CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {t} from 'i18next';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from 'common/form/models/yesNo';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
   getRedisStoreForSession: jest.fn(),
@@ -31,7 +34,9 @@ describe('Accept Repayment Plan Page', () => {
 
   describe('on GET', () => {
     it('should return accept repayment plan page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL)
         .expect((res) => {
@@ -41,7 +46,9 @@ describe('Accept Repayment Plan Page', () => {
     });
 
     it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL)
         .expect((res) => {
@@ -53,7 +60,9 @@ describe('Accept Repayment Plan Page', () => {
 
   describe('on POST', () => {
     it('should redirect to task list when yes is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL)
         .send({
@@ -66,7 +75,9 @@ describe('Accept Repayment Plan Page', () => {
     });
 
     it('should redirect to task list when no is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL)
         .send({
@@ -79,7 +90,9 @@ describe('Accept Repayment Plan Page', () => {
     });
 
     it('should return error when no option selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL)
         .send({
@@ -91,7 +104,9 @@ describe('Accept Repayment Plan Page', () => {
         });
     });
     it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL)
         .send({option: YesNo.NO})

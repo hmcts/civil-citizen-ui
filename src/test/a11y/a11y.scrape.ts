@@ -4,20 +4,22 @@ import config from 'config';
 import nock from 'nock';
 import {IGNORED_URLS} from './ignored-urls';
 import CivilClaimResponseMock from '../utils/mocks/civilClaimResponseMock.json';
-import {CIVIL_SERVICE_CALCULATE_DEADLINE} from '../../main/app/client/civilServiceUrls';
+import {CIVIL_SERVICE_CALCULATE_DEADLINE} from 'client/civilServiceUrls';
 import request from 'supertest';
 import {app} from '../../main/app';
 import {translateUrlToFilePath} from '../utils/mocks/a11y/urlToFileName';
-import {mockCivilClaim, mockResponseFullAdmitPayBySetDate} from '../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../utils/mockDraftStore';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {CivilClaimResponse, ClaimFeeData} from 'models/civilClaimResponse';
 import * as courtLocationCache from 'modules/draft-store/courtLocationCache';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import fullAdmitPayBySetDateMock from '../utils/mocks/fullAdmitPayBySetDateMock.json';
 
 const urlsList = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
 jest.mock('../../main/modules/oidc');
-jest.mock('../../main/modules/draft-store/draftStoreService');
-
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 describe('Accessibility', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   //const idamUrl: string = config.get('idamUrl');
@@ -92,9 +94,13 @@ async function scraper(urlsList: string[]) {
 
   for (const url of urlsList) {
     if(url.includes(urls.STATEMENT_OF_MEANS_URL)){
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
     } else {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     }
 
     it('Scraping '+url, async () => {

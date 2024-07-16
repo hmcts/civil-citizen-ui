@@ -5,15 +5,21 @@ import nock from 'nock';
 import {app} from '../../main/app';
 import {fail} from 'assert';
 import {IGNORED_URLS} from './ignored-urls';
-import {mockCivilClaim} from '../utils/mockDraftStore';
 import CivilClaimResponseMock from '../utils/mocks/civilClaimResponseMock.json';
 import {CIVIL_SERVICE_CALCULATE_DEADLINE} from '../../main/app/client/civilServiceUrls';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {civilClaimResponseMock} from '../utils/mockDraftStore';
 
 jest.mock('../../main/modules/oidc');
-jest.mock('../../main/modules/draft-store');
 
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const pa11y = require('pa11y');
-app.locals.draftStoreClient = mockCivilClaim;
+mockGetCaseData.mockImplementation(async () => {
+  return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+});
+
 const agent = supertest.agent(app);
 const urlsList = Object.values(urls).filter(url => !IGNORED_URLS.includes(url));
 
