@@ -137,18 +137,20 @@ app.use((_req, res, next) => {
     'no-cache, max-age=0, must-revalidate, no-store',
   );
 
-  res.header(
+  res.setHeader(
     'Access-Control-Allow-Origin',
     '*',
   );
-  res.header(
+
+  res.setHeader(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept',
   );
- res.setHeader(
+
+  res.setHeader(
    'access-control-allow-methods',
    'GET,POST,OPTIONS,PUT,DELETE',
- );
+  );
 
   next();
 });
