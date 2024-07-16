@@ -4,15 +4,17 @@ import config from 'config';
 import request from 'supertest';
 import {CITIZEN_PA_PAYMENT_DATE_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {
-  mockCivilClaim,
-  mockCivilClaimUndefined,
-  mockNoStatementOfMeans,
-  mockRedisFailure,
+  civilClaimResponseMock,
 } from '../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import noStatementOfMeansMock from '../../../../../../utils/mocks/noStatementOfMeansMock.json';
 
 jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Payment date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -27,7 +29,9 @@ describe('Payment date', () => {
 
   describe('on Exception', () => {
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_PA_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -37,7 +41,9 @@ describe('Payment date', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CITIZEN_PA_PAYMENT_DATE_URL)
         .send('year=9999')
@@ -52,7 +58,9 @@ describe('Payment date', () => {
 
   describe('on GET', () => {
     it('should redirect to task list when part admit and amount not defined', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noStatementOfMeansMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_PA_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -60,7 +68,9 @@ describe('Payment date', () => {
         });
     });
     it('should return payment date page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_PA_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -72,7 +82,9 @@ describe('Payment date', () => {
         });
     });
     it('should return payment date page with payment date loaded from Redis', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_PA_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -86,7 +98,10 @@ describe('Payment date', () => {
   });
   describe('on POST', () => {
     it('should create a new claim if redis gives undefined', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
+
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), undefined);
+      });
       await request(app)
         .post(CITIZEN_PA_PAYMENT_DATE_URL)
         .send('year=9999')
@@ -98,7 +113,9 @@ describe('Payment date', () => {
         });
     });
     it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_PA_PAYMENT_DATE_URL)
         .send('year=')
