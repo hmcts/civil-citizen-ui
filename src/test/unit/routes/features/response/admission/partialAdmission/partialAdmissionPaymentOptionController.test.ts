@@ -6,19 +6,21 @@ import {
   CITIZEN_PA_PAYMENT_DATE_URL,
   CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL,
   RESPONSE_TASK_LIST_URL,
-} from '../../../../../../../main/routes/urls';
-import {
-  mockRedisWithPaymentAmount,
-  mockRedisFullAdmission,
-  mockRedisWithoutAdmittedPaymentAmount,
-  mockRedisFailure,
-} from '../../../../../../utils/mockDraftStore';
+} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import civilClaimResponseWithAdmittedPaymentAmountMock
   from '../../../../../../utils/mocks/civilClaimResponseWithAdmittedPaymentAmountMock.json';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import civilClaimResponseFullAdmissionMock
+  from '../../../../../../utils/mocks/civilClaimResponseFullAdmissionMock.json';
+import civilClaimResponseNoAdmittedPaymentAmountMock
+  from '../../../../../../utils/mocks/civilClaimResponseNoAdmittedPaymentAmountMock.json';
 
 jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Part Admit - Payment Option Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -32,7 +34,9 @@ describe('Part Admit - Payment Option Controller', () => {
   });
   describe('on Get', () => {
     it('should return payment option page successfully', async () => {
-      app.locals.draftStoreClient = mockRedisWithPaymentAmount;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseWithAdmittedPaymentAmountMock.case_data);
+      });
       const mockAdmittedPaymentAmount = civilClaimResponseWithAdmittedPaymentAmountMock.case_data.partialAdmission.howMuchDoYouOwe.amount.toFixed(2);
       await request(app)
         .get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
@@ -42,7 +46,9 @@ describe('Part Admit - Payment Option Controller', () => {
         });
     });
     it('should redirect to claim task list when response type is not part admission', async () => {
-      app.locals.draftStoreClient = mockRedisFullAdmission;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseFullAdmissionMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
         .expect((res) => {
@@ -51,7 +57,9 @@ describe('Part Admit - Payment Option Controller', () => {
         });
     });
     it('should redirect to claim task list when admitted payment amount is not provided', async () => {
-      app.locals.draftStoreClient = mockRedisWithoutAdmittedPaymentAmount;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseNoAdmittedPaymentAmountMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
         .expect((res) => {
@@ -60,7 +68,9 @@ describe('Part Admit - Payment Option Controller', () => {
         });
     });
     it('should return status 500 when there is an error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
         .expect((res) => {
@@ -71,7 +81,9 @@ describe('Part Admit - Payment Option Controller', () => {
   });
   describe('on Post', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockRedisWithPaymentAmount;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseWithAdmittedPaymentAmountMock.case_data);
+      });
     });
     it('should validate when option is not selected', async () => {
       await request(app)
@@ -110,7 +122,9 @@ describe('Part Admit - Payment Option Controller', () => {
         });
     });
     it('should return 500 status when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL)
         .send('paymentType=BY_SET_DATE')
