@@ -2,12 +2,16 @@ import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../../../main/app';
-import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL} from '../../../../../../../main/routes/urls';
+import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../../utils/mockDraftStore';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Why do you disagree Full Rejection Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -22,7 +26,9 @@ describe('Why do you disagree Full Rejection Controller', () => {
 
   describe('on Get', () => {
     it('should return Why do you disagree Full Rejection page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL)
         .expect((res) => {
@@ -32,7 +38,9 @@ describe('Why do you disagree Full Rejection Controller', () => {
     });
 
     it('should return status 500 when there is an error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL)
         .expect((res) => {
@@ -44,7 +52,9 @@ describe('Why do you disagree Full Rejection Controller', () => {
 
   describe('on Post', () => {
     it('should validate when text is not fill', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL)
         .send()
@@ -55,7 +65,9 @@ describe('Why do you disagree Full Rejection Controller', () => {
     });
 
     it('should redirect to timeline of events when text is filled', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL)
         .send('text=Test')
@@ -66,7 +78,9 @@ describe('Why do you disagree Full Rejection Controller', () => {
     });
 
     it('should return 500 status when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CITIZEN_WHY_DO_YOU_DISAGREE_FULL_REJECTION_URL)
         .send('text=Test')
