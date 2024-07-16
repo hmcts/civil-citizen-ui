@@ -7,20 +7,26 @@ import {
   HEARING_FEE_CONFIRMATION_URL,
 } from 'routes/urls';
 import {
-  mockCivilClaim, mockCivilClaimDocumentUploaded,
-  mockRedisFailure,
-  mockRedisWithoutAdmittedPaymentAmount,
+  civilClaimResponseMock,
 } from '../../../../../utils/mockDraftStore';
-import {mockCivilClaimHearingFee} from '../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import civilClaimResponseNoAdmittedPaymentAmountMock
+  from '../../../../../utils/mocks/civilClaimResponseNoAdmittedPaymentAmountMock.json';
+import civilClaimResponseHearingFeeMock from '../../../../../utils/mocks/civilClaimResponseHearingFeeMock.json';
+import civilClaimResponseDocumentUploadedMock
+  from '../../../../../utils/mocks/civilClaimResponseDocumentUploadedMock.json';
 
 jest.mock('services/features/caseProgression/hearingFee/hearingFeeService');
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Apply for help with fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -37,7 +43,9 @@ describe('Apply for help with fees', () => {
   describe('on GET', () => {
     it('should return resolving apply help fees reference page', async () => {
       //Given
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       //When //Then
       await request(app)
         .get(APPLY_HELP_WITH_FEES_REFERENCE)
@@ -49,7 +57,9 @@ describe('Apply for help with fees', () => {
 
     it('should return resolving apply help fees page with no case progression data', async () => {
       //Given
-      app.locals.draftStoreClient = mockRedisWithoutAdmittedPaymentAmount;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseNoAdmittedPaymentAmountMock.case_data);
+      });
       //When //Then
       await request(app)
         .get(APPLY_HELP_WITH_FEES_REFERENCE)
@@ -60,7 +70,9 @@ describe('Apply for help with fees', () => {
     });
 
     it('should return resolving apply help fees reference page with option marked', async () => {
-      app.locals.draftStoreClient = mockCivilClaimHearingFee;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseHearingFeeMock.case_data);
+      });
       await request(app)
         .get(APPLY_HELP_WITH_FEES_REFERENCE)
         .expect((res) => {
@@ -70,7 +82,9 @@ describe('Apply for help with fees', () => {
     });
 
     it('should return page if no case progression data', async () => {
-      app.locals.draftStoreClient = mockCivilClaimDocumentUploaded;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseDocumentUploadedMock.case_data);
+      });
       await request(app)
         .get(APPLY_HELP_WITH_FEES_REFERENCE)
         .expect((res) => {
@@ -80,7 +94,9 @@ describe('Apply for help with fees', () => {
     });
 
     it('should return 500 error page for redis failure', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(APPLY_HELP_WITH_FEES_REFERENCE)
         .expect((res) => {
@@ -92,7 +108,9 @@ describe('Apply for help with fees', () => {
 
   describe('on POST', () => {
     it('should show error if there is no option', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(APPLY_HELP_WITH_FEES_REFERENCE)
         .send({})
@@ -103,7 +121,9 @@ describe('Apply for help with fees', () => {
     });
 
     it('should redirect to confirmation if option is NO', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(APPLY_HELP_WITH_FEES_REFERENCE)
         .send({option: YesNo.NO})
@@ -114,7 +134,9 @@ describe('Apply for help with fees', () => {
     });
 
     it('should redirect to confirmation and save data if option is YES', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(APPLY_HELP_WITH_FEES_REFERENCE)
         .send({option: YesNo.YES, referenceNumber: 'ABC11ACB112'})
@@ -125,7 +147,9 @@ describe('Apply for help with fees', () => {
     });
 
     it('should return 500 error page for redis failure', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(APPLY_HELP_WITH_FEES_REFERENCE)
         .expect((res) => {

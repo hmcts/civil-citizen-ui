@@ -3,22 +3,26 @@ import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/apply
 import * as requestModels from 'models/AppRequest';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {app} from '../../../../../../main/app';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import {YesNo} from 'form/models/yesNo';
 import {APPLY_HELP_WITH_FEES} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
-jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/courtLocationCache');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 const claimId = '1';
 
 describe('applyHelpWithFeeSelection', () => {
-  app.locals.draftStoreClient = mockCivilClaim;
+  mockGetCaseData.mockImplementation(async () => {
+    return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+  });
   jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   it('should return gov pay url if user selects No', async () => {
     const mockHearingFeePaymentRedirectInfo = {
