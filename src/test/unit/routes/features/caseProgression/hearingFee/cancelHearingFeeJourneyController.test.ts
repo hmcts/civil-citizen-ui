@@ -6,12 +6,17 @@ import {
   DASHBOARD_CLAIMANT_URL,
   HEARING_FEE_CANCEL_JOURNEY,
 } from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+
 describe('Apply for help with fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -27,7 +32,9 @@ describe('Apply for help with fees', () => {
 
   describe('on GET', () => {
     it('should return to claimant dashboard', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .get(HEARING_FEE_CANCEL_JOURNEY)
         .expect((res) => {
@@ -37,7 +44,9 @@ describe('Apply for help with fees', () => {
     });
   });
   it('should return http 302 when has error in the get method', async () => {
-    app.locals.draftStoreClient = mockRedisFailure;
+    mockGetCaseData.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
     await request(app)
       .get(HEARING_FEE_CANCEL_JOURNEY)
       .expect((res) => {

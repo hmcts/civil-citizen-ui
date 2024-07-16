@@ -6,15 +6,19 @@ import {
   CHILDREN_DISABILITY_URL,
   CITIZEN_DEPENDANTS_EDUCATION_URL,
   CITIZEN_OTHER_DEPENDANTS_URL,
-} from '../../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {hasDisabledChildren}
-  from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
-import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
+  from 'services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import fullAdmitPayBySetDateMock from '../../../../../../utils/mocks/fullAdmitPayBySetDateMock.json';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockHasDisabledChildren = hasDisabledChildren as jest.Mock;
 
 const EXPECTED_TEXT = 'Children aged 16 to 19 living with you';
@@ -31,7 +35,9 @@ describe('Dependant Teenagers', () => {
   });
 
   describe('on GET', () => {
-    app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+    });
     it('should return dependent teenagers page', async () => {
       await request(app)
         .get(CITIZEN_DEPENDANTS_EDUCATION_URL)
@@ -41,7 +47,9 @@ describe('Dependant Teenagers', () => {
         });
     });
     it('should return 500 error code when there is an error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .expect((res) => {
@@ -52,7 +60,9 @@ describe('Dependant Teenagers', () => {
   });
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
     });
     it('should show error when no number is added', async () => {
       await request(app)
@@ -115,7 +125,9 @@ describe('Dependant Teenagers', () => {
         });
     });
     it('should return 500 code when there is an error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
         .send({value: 1, maxValue: 3})

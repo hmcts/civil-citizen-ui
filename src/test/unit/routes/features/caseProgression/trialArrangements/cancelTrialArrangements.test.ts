@@ -1,14 +1,16 @@
-import {
-  mockCivilClaimFastTrack, mockRedisFailure,
-} from '../../../../../utils/mockDraftStore';
 import {CANCEL_TRIAL_ARRANGEMENTS, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import civilClaimResponseFastTrackMock from '../../../../../utils/mocks/civilClaimResponseFastTrackMock.json';
+import {Claim} from 'models/claim';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 const session = require('supertest-session');
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;
@@ -26,7 +28,9 @@ describe('Is case ready - On GET', () => {
 
   it('should redirect to defendant page', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+    });
     //When
     await testSession
       .get(CANCEL_TRIAL_ARRANGEMENTS.replace(':id', claimId))
@@ -39,7 +43,9 @@ describe('Is case ready - On GET', () => {
 
   it('should return "Something went wrong" page when claim does not exist', async () => {
     //Given
-    app.locals.draftStoreClient = mockRedisFailure;
+    mockGetCaseData.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
     //When
     await testSession
       .get(CANCEL_TRIAL_ARRANGEMENTS.replace(':id', '1111'))
