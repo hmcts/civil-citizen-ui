@@ -11,8 +11,7 @@ import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import {DocumentUri, DocumentType} from 'common/models/document/documentType';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
-import {isMintiEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const taskListViewPath = 'features/response/task-list';
 const taskListController = Router();

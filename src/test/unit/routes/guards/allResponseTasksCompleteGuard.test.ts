@@ -10,7 +10,7 @@ import {setResponseDeadline} from 'services/features/common/responseDeadlineAgre
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {configureSpy} from '../../../utils/spyConfiguration';
-import * as carmToggleUtils from 'common/utils/carmToggleUtils';
+import * as launchDarklyClient from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
@@ -21,6 +21,7 @@ jest.mock('../../../../main/services/features/common/taskListService');
 jest.mock('../../../../main/modules/i18n');
 jest.mock('../../../../main/modules/utilityService');
 jest.mock('../../../../main/services/features/common/responseDeadlineAgreedService');
+jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
@@ -31,7 +32,7 @@ const mockOutstandingTasksFromTaskLists = outstandingTasksFromTaskLists as jest.
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 const getClaimByIdMock = getClaimById as jest.Mock;
 
-const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(carmToggleUtils, 'isCarmEnabledForCase')
+const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(launchDarklyClient, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
 
 const CLAIM_ID = 'aaa';
