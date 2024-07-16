@@ -6,8 +6,7 @@ import {CLAIMANT_RESPONSE_INCOMPLETE_SUBMISSION_URL} from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
 import {outstandingClaimantResponseTasks } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
-import {isMintiEnabledForCase} from '../../app/auth/launchdarkly/launchDarklyClient';
+import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../app/auth/launchdarkly/launchDarklyClient';
 
 export const claimantResponsecheckYourAnswersGuard = async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
