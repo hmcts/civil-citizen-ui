@@ -14,7 +14,7 @@ Scenario('Create Claim -  Individual vs Company - small claims - no interest - n
   if (['preview', 'demo'].includes(config.runningEnv)) {
     selectedHWF = false;
     const defaultClaimFee = 455;
-    const defaultClaimAmount = 15000;
+    const defaultClaimAmount = 9000;
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
