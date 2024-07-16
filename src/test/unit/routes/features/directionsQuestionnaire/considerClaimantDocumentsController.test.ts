@@ -2,16 +2,19 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import {
   DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL,
   DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
-} from '../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Consider Claimant Documents Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -25,7 +28,9 @@ describe('Consider Claimant Documents Controller', () => {
 
   describe('on GET', () => {
     it('should return consider claimant documents page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Are there any documents the other party has that you want the court to consider?');
@@ -33,7 +38,9 @@ describe('Consider Claimant Documents Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL)
         .expect((res: Response) => {
@@ -45,7 +52,9 @@ describe('Consider Claimant Documents Controller', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return consider claimant documents page', async () => {
@@ -91,7 +100,9 @@ describe('Consider Claimant Documents Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(DQ_CONSIDER_CLAIMANT_DOCUMENTS_URL)
         .send({option: 'yes', details : 'details'})

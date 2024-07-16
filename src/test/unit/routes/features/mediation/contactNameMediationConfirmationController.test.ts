@@ -10,9 +10,16 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
-import {mockCivilClaim, mockCivilClaimClaimantIntention, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {
+  civilClaimResponseMock,
+} from '../../../../utils/mockDraftStore';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import civilClaimResponseClaimantIntentMock from '../../../../utils/mocks/civilClaimResponseClaimantIntentionMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Mediation Contact Person Mediation Confirmation Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -26,7 +33,9 @@ describe('Mediation Contact Person Mediation Confirmation Controller', () => {
   });
 
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
   });
 
   describe('on GET', () => {
@@ -40,7 +49,9 @@ describe('Mediation Contact Person Mediation Confirmation Controller', () => {
     });
 
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(MEDIATION_CONTACT_PERSON_CONFIRMATION_URL)
         .expect((res) => {
@@ -74,7 +85,9 @@ describe('Mediation Contact Person Mediation Confirmation Controller', () => {
 
     describe('claimant response', () => {
       beforeEach(() => {
-        app.locals.draftStoreClient = mockCivilClaimClaimantIntention;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseClaimantIntentMock.case_data);
+        });
       });
       it('should redirect page when NO', async () => {
         await request(app)
@@ -107,7 +120,9 @@ describe('Mediation Contact Person Mediation Confirmation Controller', () => {
     });
 
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(MEDIATION_CONTACT_PERSON_CONFIRMATION_URL)
         .send({option: 'no'})

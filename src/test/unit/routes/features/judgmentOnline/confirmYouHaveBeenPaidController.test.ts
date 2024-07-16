@@ -9,15 +9,17 @@ import nock from 'nock';
 const session = require('supertest-session');
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {
-  mockCivilClaim,
-  mockCivilClaimDefendantCaseProgression,
-  mockRedisFailure,
+  civilClaimResponseMock,
 } from '../../../../utils/mockDraftStore';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import civilClaimResponseDefendantMock from '../../../../utils/mocks/civilClaimResponseDefendantMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/features/caseProgression/trialArrangements/hearingDurationAndOtherInformation');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;
@@ -37,7 +39,9 @@ describe('Confirm you have been paid', () => {
 
     it('should render page successfully if cookie has correct values', async () => {
     //Given
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       //When
       await testSession
         .get(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', claimId))
@@ -54,7 +58,9 @@ describe('Confirm you have been paid', () => {
 
     it('should return "Something went wrong" page when claim does not exist', async () => {
     //Given
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       //When
       await testSession
         .get(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1111'))
@@ -67,7 +73,9 @@ describe('Confirm you have been paid', () => {
 
     it('should return "Something went wrong" page when the logged-in user is the defendant', async () => {
     //Given
-      app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseDefendantMock.case_data);
+      });
       //When
       await testSession
         .get(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
@@ -82,7 +90,9 @@ describe('Confirm you have been paid', () => {
   describe('Confirm you have been paid - on POST', () => {
 
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should redirect to the Confirm you have been paid Confirmation page', async () => {
@@ -203,7 +213,9 @@ describe('Confirm you have been paid', () => {
 
     it('should return "Something went wrong" page when claim does not exist', async () => {
     //Given
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       //When
       await testSession
         .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1234'))
