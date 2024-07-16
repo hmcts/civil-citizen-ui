@@ -9,12 +9,15 @@ import {
 } from 'routes/urls';
 import {t} from 'i18next';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import { Session } from 'express-session';
 import { AppSession } from 'common/models/AppRequest';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const mockFullClaim = { 'id': 1662129391355637, 'case_data': {}};
 describe('Respond to Claim - Pin Controller', () => {
@@ -24,7 +27,9 @@ describe('Respond to Claim - Pin Controller', () => {
   describe('on GET', () => {
     it('should display page successfully', async () => {
 
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .get(FIRST_CONTACT_PIN_URL)
         .expect((res) => {
@@ -39,7 +44,9 @@ describe('Respond to Claim - Pin Controller', () => {
       nock(civilServiceUrl)
         .post('/assignment/reference/undefined')
         .reply(400);
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '' }).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('ERRORS.ENTER_VALID_SECURITY_CODE'));
@@ -51,7 +58,9 @@ describe('Respond to Claim - Pin Controller', () => {
         .post('/assignment/reference/000MC000')
         .reply(200, mockFullClaim);
 
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       app.request.session = { firstContact: { claimReference: '000MC000' } } as unknown as Session;
       await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '000033331111' }).expect((res) => {
         expect(res.status).toBe(302);
@@ -77,7 +86,9 @@ describe('Respond to Claim - Pin Controller', () => {
         .post('/assignment/reference/000MC000')
         .reply(401, {});
 
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       app.request.session = { firstContact: { claimReference: '000MC000' } } as unknown as Session;
       await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '1234' }).expect((res) => {
         expect(res.status).toBe(302);
@@ -90,7 +101,9 @@ describe('Respond to Claim - Pin Controller', () => {
         .post('/assignment/reference/111MC111')
         .reply(400, {});
 
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       app.request.session = { firstContact: { claimReference: '111MC111' } } as unknown as Session;
       await request(app).post(FIRST_CONTACT_PIN_URL).send({ pin: '1111' }).expect((res) => {
         expect(res.status).toBe(200);
@@ -103,7 +116,9 @@ describe('Respond to Claim - Pin Controller', () => {
         .post('/assignment/reference/error')
         .reply(500, {});
 
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       app.request.session = { firstContact: { claimReference: 'error' } } as unknown as Session;
       await request(app)
         .post(FIRST_CONTACT_PIN_URL)

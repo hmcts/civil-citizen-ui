@@ -4,12 +4,16 @@ import config from 'config';
 import nock from 'nock';
 import {BILINGUAL_LANGUAGE_PREFERENCE_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {t} from 'i18next';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Bilingual language preference', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -24,7 +28,9 @@ describe('Bilingual language preference', () => {
 
   describe('on Get', () => {
     it('should return on bilingual language preference page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(BILINGUAL_LANGUAGE_PREFERENCE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -33,7 +39,9 @@ describe('Bilingual language preference', () => {
     });
 
     it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(BILINGUAL_LANGUAGE_PREFERENCE_URL)
         .expect((res) => {
@@ -45,7 +53,9 @@ describe('Bilingual language preference', () => {
 
   describe('on Post', () => {
     it('should return errors when option is not selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(BILINGUAL_LANGUAGE_PREFERENCE_URL)
         .send({})
@@ -56,7 +66,9 @@ describe('Bilingual language preference', () => {
     });
 
     it('should redirect with bilingual language preference set to ENGLISH and redirect to task list', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(BILINGUAL_LANGUAGE_PREFERENCE_URL)
         .send({option: ClaimBilingualLanguagePreference.ENGLISH})
@@ -67,7 +79,9 @@ describe('Bilingual language preference', () => {
     });
 
     it('should redirect with with bilingual language preference set to WELSH_AND_ENGLISH and redirect to task list', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(BILINGUAL_LANGUAGE_PREFERENCE_URL)
         .send({option: ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH})
@@ -78,7 +92,9 @@ describe('Bilingual language preference', () => {
     });
 
     it('should return status 500 when there is error wiht bilingual language preference set to ENGLISH', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(BILINGUAL_LANGUAGE_PREFERENCE_URL)
         .send({option: ClaimBilingualLanguagePreference.ENGLISH})
@@ -89,7 +105,9 @@ describe('Bilingual language preference', () => {
     });
 
     it('should return status 500 when there is error wiht bilingual language preference set to WELSH_AND_ENGLISH', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(BILINGUAL_LANGUAGE_PREFERENCE_URL)
         .send({option: ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH})
