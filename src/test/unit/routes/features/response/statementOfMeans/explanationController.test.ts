@@ -4,10 +4,14 @@ import nock from 'nock';
 import config from 'config';
 import {CITIZEN_EXPLANATION_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../utils/mockDraftStore';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {mockResponseFullAdmitPayBySetDate} from '../../../../../utils/mockDraftStore';
+import fullAdmitPayBySetDateMock from '../../../../../utils/mocks/fullAdmitPayBySetDateMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Explanation Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -17,12 +21,14 @@ describe('Explanation Controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {
     it('should return explanation page', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_EXPLANATION_URL)
         .expect((res) => {
@@ -30,7 +36,9 @@ describe('Explanation Controller', () => {
         });
     });
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_EXPLANATION_URL)
         .expect((res) => {
@@ -43,6 +51,9 @@ describe('Explanation Controller', () => {
   describe('on POST', () => {
     it('should redirect to claim task list page', async () => {
       app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_EXPLANATION_URL)
         .send({text: 'test'})
@@ -53,6 +64,9 @@ describe('Explanation Controller', () => {
     });
     it('should return error on incorrect input', async () => {
       app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_EXPLANATION_URL)
         .send()
@@ -62,7 +76,9 @@ describe('Explanation Controller', () => {
         });
     });
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CITIZEN_EXPLANATION_URL)
         .send({text: 'test'})

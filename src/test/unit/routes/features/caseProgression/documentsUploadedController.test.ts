@@ -5,15 +5,18 @@ import config from 'config';
 import nock from 'nock';
 import {Claim} from 'models/claim';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import civilClaimDocumentUploaded from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {
   isCaseProgressionV1Enable,
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Documents uploaded controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -64,7 +67,9 @@ describe('Documents uploaded controller', () => {
       .mockReturnValue(
         new Promise((resolve) => resolve(claim)),
       );
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
     const mockClaimId = '1645882162449409';
     const caseData = new Claim();
     caseData.caseProgression = new CaseProgression();
@@ -84,7 +89,9 @@ describe('Documents uploaded controller', () => {
       .mockReturnValue(
         new Promise((resolve) => resolve(claim)),
       );
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
     const mockClaimId = '1645882162449409';
     const caseData = new Claim();
     caseData.caseProgression = new CaseProgression();

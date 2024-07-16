@@ -2,16 +2,19 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {
   DQ_EXPERT_CAN_STILL_EXAMINE_URL,
   DQ_EXPERT_DETAILS_URL,
   DQ_GIVE_EVIDENCE_YOURSELF_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Defendant expert can still examine Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -25,7 +28,9 @@ describe('Defendant expert can still examine Controller', () => {
 
   describe('on GET', () => {
     it('should return expert can still examine page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(DQ_EXPERT_CAN_STILL_EXAMINE_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Does the claim involve something an expert can still examine?');
@@ -33,7 +38,9 @@ describe('Defendant expert can still examine Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(DQ_EXPERT_CAN_STILL_EXAMINE_URL)
         .expect((res) => {
@@ -45,7 +52,9 @@ describe('Defendant expert can still examine Controller', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return expert can still examine page', async () => {
@@ -74,7 +83,9 @@ describe('Defendant expert can still examine Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(DQ_EXPERT_CAN_STILL_EXAMINE_URL)
         .send({option: 'no'})

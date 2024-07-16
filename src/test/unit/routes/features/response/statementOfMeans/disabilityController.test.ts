@@ -8,10 +8,14 @@ import {
   CITIZEN_SEVERELY_DISABLED_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaimOptionNo, mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../utils/mockDraftStore';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import fullAdmitPayBySetDateMock from '../../../../../utils/mocks/fullAdmitPayBySetDateMock.json';
+import {Claim} from 'models/claim';
+import civilClaimResponseOptionNoMock from '../../../../../utils/mocks/civilClaimResponseOptionNoMock.json';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Disability', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -21,12 +25,13 @@ describe('Disability', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {
     it('should return citizen disability page', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_DISABILITY_URL)
         .expect((res) => {
@@ -35,7 +40,10 @@ describe('Disability', () => {
         });
     });
     it('should show disability page when haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockCivilClaimOptionNo;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseOptionNoMock.case_data);
+      });
+
       await request(app)
         .get(CITIZEN_DISABILITY_URL)
         .send('')
@@ -44,7 +52,9 @@ describe('Disability', () => {
         });
     });
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_DISABILITY_URL)
         .expect((res) => {
@@ -56,17 +66,22 @@ describe('Disability', () => {
 
   describe('on POST', () => {
     it('should redirect page when "no"', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
         .send('option=no')
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
+
         });
     });
     it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
         .send('')
@@ -76,7 +91,9 @@ describe('Disability', () => {
         });
     });
     it('should redirect page when "no" and haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockCivilClaimOptionNo;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseOptionNoMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
         .send('option=no')
@@ -86,7 +103,9 @@ describe('Disability', () => {
         });
     });
     it('should redirect page when "yes"', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
         .send('option=yes')
@@ -96,7 +115,9 @@ describe('Disability', () => {
         });
     });
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CITIZEN_DISABILITY_URL)
         .send('option=no')

@@ -6,16 +6,18 @@ import {
   DQ_EXPERT_DETAILS_URL,
   DQ_EXPERT_GUIDANCE_URL,
   DQ_EXPERT_REPORT_DETAILS_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {
-  mockCivilClaim,
-  mockCivilClaimDefendantCaseProgression,
-  mockRedisFailure,
+  civilClaimResponseMock,
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import civilClaimResponseDefendantMock from '../../../../../utils/mocks/civilClaimResponseDefendantMock.json';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Expert Report Details Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -29,7 +31,9 @@ describe('Expert Report Details Controller', () => {
 
   describe('on GET', () => {
     it('should return Have you already got a report written by an expert', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(DQ_EXPERT_REPORT_DETAILS_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Have you already got a report written by an expert?');
@@ -37,7 +41,9 @@ describe('Expert Report Details Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(DQ_EXPERT_REPORT_DETAILS_URL)
         .expect((res) => {
@@ -49,7 +55,9 @@ describe('Expert Report Details Controller', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return page with error message on empty post', async () => {
@@ -69,7 +77,9 @@ describe('Expert Report Details Controller', () => {
     });
 
     it('should redirect to give evidence yourself if option yes is selected - defendant', async () => {
-      app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseDefendantMock.case_data);
+      });
       await request(app).post(DQ_EXPERT_REPORT_DETAILS_URL)
         .send({option: 'yes', reportDetails: [{expertName: 'Ahmet', day: '1', month: '3', year: '2022'}]})
         .expect((res) => {
@@ -87,7 +97,9 @@ describe('Expert Report Details Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(DQ_EXPERT_REPORT_DETAILS_URL)
         .send({option: 'yes', reportDetails: [{expertName: 'Ahmet', day: '1', month: '3', year: '2022'}]})
