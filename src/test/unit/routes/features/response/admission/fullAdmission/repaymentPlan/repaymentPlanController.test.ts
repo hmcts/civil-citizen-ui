@@ -2,14 +2,18 @@ import {app} from '../../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_REPAYMENT_PLAN_FULL_URL, RESPONSE_TASK_LIST_URL} from '../../../../../../../../main/routes/urls';
+import {CITIZEN_REPAYMENT_PLAN_FULL_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import {getNextYearValue} from '../../../../../../../utils/dateUtils';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -24,7 +28,9 @@ describe('Repayment Plan', () => {
 
   describe('on Get', () => {
     it('should return on your repayment plan page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(CITIZEN_REPAYMENT_PLAN_FULL_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -32,7 +38,9 @@ describe('Repayment Plan', () => {
         });
     });
     it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_REPAYMENT_PLAN_FULL_URL)
         .expect((res) => {
@@ -46,7 +54,9 @@ describe('Repayment Plan', () => {
     const mockFutureYear = getNextYearValue();
 
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return error when no input text is filled', async () => {
@@ -202,7 +212,9 @@ describe('Repayment Plan', () => {
     });
 
     it('should return status 500 when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
         .send({jobTitle: 'Developer', annualTurnover: 70000})
