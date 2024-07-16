@@ -28,7 +28,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     let payAdditionalFeeUrl: string = null;
     if(isResponseFromCourt) {
       responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
-      payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_PAY_ADDITIONAL_FEE_URL)
+      payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_PAY_ADDITIONAL_FEE_URL);
     }
     
     res.render(viewPath, {
@@ -47,14 +47,14 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
 }) as RequestHandler);
 
 const getJudgeResponseSummary = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
-    const rows: SummaryRow[] = [];
-    const documentUrl = 'test';
-    rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
-      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
-      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng})}</a>`),
-    );
-    return rows;
+  const rows: SummaryRow[] = [];
+  const documentUrl = 'test';
+  rows.push(
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng})}</a>`),
+  );
+  return rows;
 };
 
 export default viewApplicationController;
