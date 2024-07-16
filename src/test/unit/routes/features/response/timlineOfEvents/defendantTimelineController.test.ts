@@ -1,14 +1,17 @@
 import config from 'config';
 import nock from 'nock';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import {app} from '../../../../../../main/app';
 import request from 'supertest';
 import {CITIZEN_EVIDENCE_URL, CITIZEN_TIMELINE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('defendant timeline controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -23,7 +26,9 @@ describe('defendant timeline controller', () => {
 
   describe('on Get', () => {
     it('should display the page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_TIMELINE_URL)
         .expect((res) => {
@@ -35,7 +40,9 @@ describe('defendant timeline controller', () => {
         });
     });
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_TIMELINE_URL)
         .expect((res) => {
@@ -47,7 +54,9 @@ describe('defendant timeline controller', () => {
 
   describe('on Post', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return error message when date is entered but no description', async () => {
@@ -106,7 +115,9 @@ describe('defendant timeline controller', () => {
         });
     });
     it('should return http 500 on redis error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       const data = {
         rows: [
           {
