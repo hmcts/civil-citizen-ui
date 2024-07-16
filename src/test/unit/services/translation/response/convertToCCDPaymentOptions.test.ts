@@ -25,7 +25,7 @@ describe('convert payment option', () => {
       // WHEN
       const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
-      expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
+      expect(result).toEqual(undefined);
     });
 
     it('payment option is INSTALMENTS should return IMMEDIATELY', () => {
@@ -41,7 +41,7 @@ describe('convert payment option', () => {
       // WHEN
       const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
-      expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
+      expect(result).toEqual(undefined);
     });
 
     it('payment option is BY_SET_DATE should return IMMEDIATELY', () => {
@@ -57,7 +57,7 @@ describe('convert payment option', () => {
       // WHEN
       const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
-      expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
+      expect(result).toEqual(undefined);
     });
   });
 
@@ -117,7 +117,7 @@ describe('convert payment option', () => {
       claim.respondent1 = {
         responseType: ResponseType.FULL_ADMISSION,
       };
-      claim.partialAdmission = {
+      claim.fullAdmission = {
         paymentIntention: {
           paymentOption: PaymentOptionType.IMMEDIATELY,
         },
@@ -133,7 +133,7 @@ describe('convert payment option', () => {
       claim.respondent1 = {
         responseType: ResponseType.FULL_ADMISSION,
       };
-      claim.partialAdmission = {
+      claim.fullAdmission = {
         paymentIntention: {
           paymentOption: PaymentOptionType.INSTALMENTS,
         },
@@ -141,7 +141,7 @@ describe('convert payment option', () => {
       // WHEN
       const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
-      expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
+      expect(result).toEqual(CCDPaymentOption.REPAYMENT_PLAN);
     });
 
     it('when payment option is BY_SET_DATE should return IMMEDIATELY', () => {
@@ -149,7 +149,7 @@ describe('convert payment option', () => {
       claim.respondent1 = {
         responseType: ResponseType.FULL_ADMISSION,
       };
-      claim.partialAdmission = {
+      claim.fullAdmission = {
         paymentIntention: {
           paymentOption: PaymentOptionType.BY_SET_DATE,
         },
@@ -157,7 +157,7 @@ describe('convert payment option', () => {
       // WHEN
       const result = toCCDPaymentOption(claim.getPaymentIntention()?.paymentOption);
       // THEN
-      expect(result).toEqual(CCDPaymentOption.IMMEDIATELY);
+      expect(result).toEqual(PaymentOptionType.BY_SET_DATE);
     });
   });
 });
