@@ -5,12 +5,13 @@ import request from 'supertest';
 import {APPLICATION_TYPE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { getClaimById } from 'modules/utilityService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -20,6 +21,8 @@ jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
 }));
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('General Application - Application type', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -56,7 +59,9 @@ describe('General Application - Application type', () => {
 
   describe('on POST', () => {
     it('should send the value and redirect', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
       await request(app)
         .post(APPLICATION_TYPE_URL)
@@ -67,7 +72,9 @@ describe('General Application - Application type', () => {
     });
 
     it('should send the value when select OTHER and redirect', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
       await request(app)
         .post(APPLICATION_TYPE_URL)
@@ -78,7 +85,9 @@ describe('General Application - Application type', () => {
     });
 
     it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
       await request(app)
         .post(APPLICATION_TYPE_URL)
@@ -110,7 +119,9 @@ describe('General Application - Application type', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
       await request(app)
         .post(APPLICATION_TYPE_URL)

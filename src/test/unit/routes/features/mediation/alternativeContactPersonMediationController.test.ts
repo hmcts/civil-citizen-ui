@@ -8,10 +8,13 @@ import {
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const CONTROLLER_URL = MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL;
 describe('Mediation Alternative Contact Person Confirmation Controller', () => {
@@ -26,7 +29,9 @@ describe('Mediation Alternative Contact Person Confirmation Controller', () => {
   });
 
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
   });
 
   describe('on GET', () => {
@@ -40,7 +45,9 @@ describe('Mediation Alternative Contact Person Confirmation Controller', () => {
     });
 
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CONTROLLER_URL)
         .expect((res) => {
@@ -81,7 +88,9 @@ describe('Mediation Alternative Contact Person Confirmation Controller', () => {
     });
 
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CONTROLLER_URL)
         .send({alternativeContactPerson: 'Joe Bloggs'})
