@@ -3,10 +3,6 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import {
-  mockCivilClaim, mockDefendantResponseSmallClaimFullReject,
-  mockRedisFailure,
-} from '../../../../utils/mockDraftStore';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import {TaskList} from 'models/taskList/taskList';
 import {configureSpy} from '../../../../utils/spyConfiguration';
@@ -17,12 +13,18 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as carmToggleUtils from 'common/utils/carmToggleUtils';
 import * as taskListService from 'services/features/common/taskListService';
 import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import mockDefendantResponseSmallClaimRejectClaimMock
+  from '../../../../utils/mocks/mockDefendantResponseSmallClaimRejectClaimMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/draftStoreService');
 
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(carmToggleUtils, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
@@ -60,7 +62,9 @@ describe('Claimant details', () => {
 
   describe('on GET', () => {
     it('should return contact claimant details from claim', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .get(responseTaskListUrl())
         .expect((res) => {
@@ -80,7 +84,9 @@ describe('Claimant details', () => {
     });
 
     it('should return Telephone Mediation and Availability for mediation tasks when isCarmEnabledForCase returns true', async () => {
-      app.locals.draftStoreClient = mockDefendantResponseSmallClaimFullReject;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), mockDefendantResponseSmallClaimRejectClaimMock.case_data);
+      });
       await request(app)
         .get(responseTaskListUrl())
         .expect((res) => {
@@ -92,7 +98,9 @@ describe('Claimant details', () => {
     });
 
     it('should not return Free telephone mediation task when isCarmEnabledForCase returns false', async () => {
-      app.locals.draftStoreClient = mockDefendantResponseSmallClaimFullReject;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), mockDefendantResponseSmallClaimRejectClaimMock.case_data);
+      });
       isCarmEnabledSpy(false);
 
       await request(app)
@@ -106,7 +114,9 @@ describe('Claimant details', () => {
     });
 
     it('should call isCarmEnabledForCase and isMintiEnabledForCase with claim submitted date', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       const dateSubmitted = civilClaimResponseMock.case_data.submittedDate;
       const isCarmEnabled = isCarmEnabledSpy(true);
 
@@ -122,7 +132,11 @@ describe('Claimant details', () => {
       let caseData: Claim;
 
       beforeEach(() => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          const claim = Object.assign(new Claim(), civilClaimResponseMock.case_data);
+          claim.id = civilClaimResponseMock.id;
+          return claim;
+        });
         taskListSpy = getTaskListSpy([]);
         caseData = {
           ...deepCopy(civilClaimResponseMock.case_data),
@@ -152,7 +166,9 @@ describe('Claimant details', () => {
     });
 
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(RESPONSE_TASK_LIST_URL)
         .expect((res) => {
