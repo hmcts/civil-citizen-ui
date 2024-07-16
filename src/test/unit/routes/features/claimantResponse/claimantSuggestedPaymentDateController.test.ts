@@ -6,17 +6,23 @@ import {
   CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL,
   CLAIMANT_RESPONSE_PAYMENT_DATE_URL,
 } from 'routes/urls';
-import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {
+  civilClaimResponseMock,
+} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import noStatementOfMeansMock from '../../../../utils/mocks/noStatementOfMeansMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/features/claimantResponse/getDecisionOnClaimantProposedPlan');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
   getRedisStoreForSession: jest.fn(),
 }));
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const getCalculatedDecision = getDecisionOnClaimantProposedPlan as jest.Mock;
 getCalculatedDecision.mockImplementation(() => {
@@ -35,7 +41,9 @@ describe('Claimant suggested Payment date', () => {
 
   describe('on Exception', () => {
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CLAIMANT_RESPONSE_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -45,7 +53,9 @@ describe('Claimant suggested Payment date', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CLAIMANT_RESPONSE_PAYMENT_DATE_URL)
         .send('year=9999')
@@ -60,7 +70,9 @@ describe('Claimant suggested Payment date', () => {
 
   describe('on GET', () => {
     it('should return payment date page', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noStatementOfMeansMock.case_data);
+      });
       await request(app)
         .get(CLAIMANT_RESPONSE_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -74,11 +86,15 @@ describe('Claimant suggested Payment date', () => {
 
   describe('on POST', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CLAIMANT_RESPONSE_PAYMENT_DATE_URL)
         .send('year=')
@@ -93,7 +109,9 @@ describe('Claimant suggested Payment date', () => {
 
     });
     it('should return errors on no input : invalid month', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CLAIMANT_RESPONSE_PAYMENT_DATE_URL)
         .send('year= 2023')

@@ -8,13 +8,14 @@ import {
   CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import {getNextYearValue} from '../../../../utils/dateUtils';
 import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/features/claimantResponse/getDecisionOnClaimantProposedPlan');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true,
@@ -25,6 +26,8 @@ jest.mock('services/features/claimantResponse/claimantResponseService', () => ({
   getFinancialDetails: jest.fn().mockResolvedValueOnce([[], [], [], [], [], [], [], [], []]),
   saveClaimantResponse: jest.fn(),
 }));
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const getCalculatedDecision = getDecisionOnClaimantProposedPlan as jest.Mock;
 
@@ -45,7 +48,9 @@ describe('Suggest instalments for the defendant', () => {
 
   describe('on Get', () => {
     it('should return suggest instalments page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -53,7 +58,9 @@ describe('Suggest instalments for the defendant', () => {
         });
     });
     it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
         .expect((res) => {
@@ -67,7 +74,9 @@ describe('Suggest instalments for the defendant', () => {
     const mockFutureYear = getNextYearValue();
 
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return error when no input text is filled', async () => {
@@ -223,7 +232,9 @@ describe('Suggest instalments for the defendant', () => {
     });
 
     it('should return status 500 when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL)
         .send({jobTitle: 'Developer', annualTurnover: 70000})
