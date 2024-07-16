@@ -6,19 +6,22 @@ import {
   CITIZEN_DEPENDANTS_EDUCATION_URL,
   CITIZEN_DEPENDANTS_URL,
   CITIZEN_OTHER_DEPENDANTS_URL,
-} from '../../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {hasDisabledChildren}
-  from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
-import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
+  from 'services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import fullAdmitPayBySetDateMock from '../../../../../../utils/mocks/fullAdmitPayBySetDateMock.json';
+import {Claim} from 'models/claim';
 
 const request = require('supertest');
 const {app} = require('../../../../../../../main/app');
 
 jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService');
 const mockHasDisabledChildren = hasDisabledChildren as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const respondentDependantsUrl = CITIZEN_DEPENDANTS_URL.replace(':id', 'aaa');
 
@@ -30,12 +33,13 @@ describe('Citizen dependants', () => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
     });
 
     it('should return dependants page', async () => {
@@ -47,7 +51,9 @@ describe('Citizen dependants', () => {
         });
     });
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(respondentDependantsUrl)
         .expect((res: Response) => {
@@ -58,7 +64,9 @@ describe('Citizen dependants', () => {
   });
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
     });
 
     it('when Yes option,under11 field filled in, hasDisabledChildren returns false, should redirect to Other Dependants screen', async () => {
@@ -139,7 +147,9 @@ describe('Citizen dependants', () => {
         });
     });
     it('should status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(respondentDependantsUrl)
         .send('declared=yes')

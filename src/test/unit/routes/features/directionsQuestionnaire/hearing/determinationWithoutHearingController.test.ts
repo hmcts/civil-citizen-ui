@@ -2,13 +2,16 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {DETERMINATION_WITHOUT_HEARING_URL, DQ_EXPERT_SMALL_CLAIMS_URL} from '../../../../../../main/routes/urls';
+import {DETERMINATION_WITHOUT_HEARING_URL, DQ_EXPERT_SMALL_CLAIMS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {YesNo} from 'form/models/yesNo';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Determination Without Hearing Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -22,7 +25,9 @@ describe('Determination Without Hearing Controller', () => {
 
   describe('on GET', () => {
     it('should return determination without hearing page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(DETERMINATION_WITHOUT_HEARING_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Determination without Hearing Questions');
@@ -30,7 +35,9 @@ describe('Determination Without Hearing Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(DETERMINATION_WITHOUT_HEARING_URL)
         .expect((res) => {
@@ -42,7 +49,9 @@ describe('Determination Without Hearing Controller', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return determination without hearing page', async () => {
@@ -86,7 +95,9 @@ describe('Determination Without Hearing Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(DETERMINATION_WITHOUT_HEARING_URL)
         .send({option: YesNo.YES})
