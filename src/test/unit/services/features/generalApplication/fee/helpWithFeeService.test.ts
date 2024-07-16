@@ -63,6 +63,7 @@ describe('apply help with application fee selection', () => {
         generalAppStatementOfTruth: undefined,
         generalAppPBADetails: undefined,
         applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: undefined,
       },
       created_date: '',
       id: '',

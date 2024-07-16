@@ -38,6 +38,7 @@ describe('General Application - Pay additional fee Page', () => {
       generalAppStatementOfTruth: undefined,
       generalAppPBADetails: undefined,
       applicationFeeAmountInPence: undefined,
+      parentClaimantIsApplicant: undefined,
     },
     created_date: '',
     id: '',
