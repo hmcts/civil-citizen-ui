@@ -2,12 +2,17 @@ import request from 'supertest';
 import { app } from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import { CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL } from '../../../../../../main/routes/urls';
+import { CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL } from 'routes/urls';
 import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaimOptionNo, mockRedisFailure, mockResponseFullAdmitPayBySetDate } from '../../../../../utils/mockDraftStore';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import fullAdmitPayBySetDateMock from '../../../../../utils/mocks/fullAdmitPayBySetDateMock.json';
+import {Claim} from 'models/claim';
+import civilClaimResponseOptionNoMock from '../../../../../utils/mocks/civilClaimResponseOptionNoMock.json';
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('SevereDisability', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -22,7 +27,9 @@ describe('SevereDisability', () => {
 
   describe('on GET', () => {
     it('should return citizen severe disability page', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_SEVERELY_DISABLED_URL)
         .expect((res) => {
@@ -31,8 +38,9 @@ describe('SevereDisability', () => {
         });
     });
     it('should show disability page when haven´t statementOfMeans', async () => {
-
-      app.locals.draftStoreClient = mockCivilClaimOptionNo;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseOptionNoMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_SEVERELY_DISABLED_URL)
         .send('')
@@ -41,7 +49,9 @@ describe('SevereDisability', () => {
         });
     });
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_SEVERELY_DISABLED_URL)
         .expect((res) => {
@@ -53,11 +63,15 @@ describe('SevereDisability', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
     });
 
     it('should redirect page when "no" and haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockCivilClaimOptionNo;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseOptionNoMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_SEVERELY_DISABLED_URL)
         .send('option=no')
@@ -94,7 +108,9 @@ describe('SevereDisability', () => {
         });
     });
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CITIZEN_SEVERELY_DISABLED_URL)
         .send('option=yes')
