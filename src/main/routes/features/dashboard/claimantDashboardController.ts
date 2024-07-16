@@ -19,11 +19,11 @@ import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {isCaseProgressionV1Enable, isCUIReleaseTwoEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isCaseProgressionV1Enable, isCUIReleaseTwoEnabled, isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {t} from 'i18next';
-import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
