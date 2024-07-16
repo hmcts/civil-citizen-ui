@@ -52,7 +52,7 @@ import {trackHistory} from 'routes/guards/trackHistory';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
-const cors = require('cors');
+const cors = require('cors/lib/index');
 
 const env = process.env.NODE_ENV || 'development';
 const productionMode = env === 'production';
@@ -145,6 +145,11 @@ app.use((_req, res, next) => {
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept',
   );
+ res.setHeader(
+   'access-control-allow-methods',
+   'GET,POST,OPTIONS,PUT,DELETE',
+ );
+
   next();
 });
 
