@@ -4828,7 +4828,7 @@
     "VALID_DATE_ONE_MONTH_FROM_TODAY": "Rhaid i’r dyddiad fod o leiaf mis o ddyddiad heddiw",
     "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Rhaid peidio â nodi dyddiad sydd ar ôl dyddiad heddiw",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Rhaid i’r dyddiad cychwyn beidio â bod ar ôl dyddiad heddiw",
-    "VALID_DAY": "Rhowch ddydd dilys",
+    "VALID_DAY": "Rhowch ddiwrnod dilys",
     "VALID_DAY_VARIATION1":"Rhowch ddiwrnod dilys",
     "FIRST_PAYMENT_MESSAGE": "Dylai'r dyddiad fod ddim cynharach na {{firstPaymentDate}}",
     "VALID_DEBT_AMOUNT": {
