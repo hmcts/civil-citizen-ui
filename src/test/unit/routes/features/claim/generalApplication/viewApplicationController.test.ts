@@ -26,7 +26,6 @@ describe('General Application - View application', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
-    jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
