@@ -9,15 +9,20 @@ import config from 'config';
 import nock from 'nock';
 const session = require('supertest-session');
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {mockCivilClaim, mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {
+  civilClaimResponseMock,
+} from '../../../../../utils/mockDraftStore';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import civilClaimResponseFastTrackMock from '../../../../../utils/mocks/civilClaimResponseFastTrackMock.json';
 import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/caseProgression/trialArrangements/hearingDurationAndOtherInformation');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;
@@ -38,7 +43,9 @@ describe('Hearing duration & other info - On GET', () => {
   });
   it('should render page successfully in English if cookie has correct values', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+    });
     //When
     await testSession
       .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', claimId)).query({lang: 'en'})
@@ -52,7 +59,9 @@ describe('Hearing duration & other info - On GET', () => {
 
   it('should render page successfully in Welsh if query is cy', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+    });
     //When
     await testSession
       .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', claimId)).query({lang: 'cy'})
@@ -66,7 +75,9 @@ describe('Hearing duration & other info - On GET', () => {
 
   it('should return "Something went wrong" page when claim does not exist', async () => {
     //Given
-    app.locals.draftStoreClient = mockRedisFailure;
+    mockGetCaseData.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
     //When
     await testSession
       .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111')).query({lang: 'en'})
@@ -81,7 +92,9 @@ describe('Hearing duration & other info - On GET', () => {
 describe('Hearing duration & other information - on POST', () => {
 
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+    });
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 
@@ -139,7 +152,9 @@ describe('Hearing duration & other information - on POST', () => {
 
   it('should return "Something went wrong" page when claim does not exist', async () => {
     //Given
-    app.locals.draftStoreClient = mockRedisFailure;
+    mockGetCaseData.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
     //When
     await testSession
       .post(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
@@ -152,7 +167,9 @@ describe('Hearing duration & other information - on POST', () => {
 
   it('should redirect to latestUpload screen when is small claim', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
     //When
     await testSession
       .post(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))

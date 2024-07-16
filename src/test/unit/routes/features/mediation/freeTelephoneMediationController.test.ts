@@ -2,15 +2,19 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from '../../../../../main/routes/urls';
+import {CITIZEN_FREE_TELEPHONE_MEDIATION_URL} from 'routes/urls';
 import {
-  mockCivilClaim, mockCivilClaimUnemploymentRetired,
-  mockRedisFailure,
+  civilClaimResponseMock,
 } from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import civilClaimResponseUnemploymentRetired
+  from '../../../../utils/mocks/civilClaimResponseUnemploymentRetiredMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Free Telephone Mediation Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -20,12 +24,13 @@ describe('Free Telephone Mediation Controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {
     it('should return free telephone mediation page successfully when applicant is business', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(CITIZEN_FREE_TELEPHONE_MEDIATION_URL).expect(res => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Free telephone mediation');
@@ -33,7 +38,9 @@ describe('Free Telephone Mediation Controller', () => {
     });
 
     it('should return free telephone mediation page successfully when applicant is individual', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUnemploymentRetired;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseUnemploymentRetired.case_data);
+      });
       await request(app).get(CITIZEN_FREE_TELEPHONE_MEDIATION_URL).expect(res => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Free telephone mediation');
@@ -41,7 +48,9 @@ describe('Free Telephone Mediation Controller', () => {
     });
 
     it('should return status 500 when there is Redis error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app).get(CITIZEN_FREE_TELEPHONE_MEDIATION_URL).expect(res => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

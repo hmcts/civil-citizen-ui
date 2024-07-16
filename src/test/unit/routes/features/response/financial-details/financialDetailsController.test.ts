@@ -8,44 +8,23 @@ import {
 } from 'routes/features/response/financialDetails/financialDetailsController';
 import {LoggerInstance} from 'winston';
 import {FINANCIAL_DETAILS_URL} from 'routes/urls';
-import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const claimIndividualMock = require('./claimIndividualMock.json');
 const claimIndividualMockNoType = require('./claimIndividualMockNoType.json');
 const claimOrganisationMock = require('./claimOrganisationMock.json');
-const claimIndividual: string = JSON.stringify(claimIndividualMock);
-const claimIndividualNoType: string = JSON.stringify(claimIndividualMockNoType);
-const claimOrganisation: string = JSON.stringify(claimOrganisationMock);
 
 jest.mock('../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
   info: jest.fn().mockImplementation((message: string) => message),
 } as unknown as LoggerInstance;
-
-const mockIndividualDraftStore = {
-  set: jest.fn(() => Promise.resolve({data: {}})),
-  get: jest.fn(() => Promise.resolve(claimIndividual)),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
-const mockOrganisationDraftStore = {
-  set: jest.fn(() => Promise.resolve({data: {}})),
-  get: jest.fn(() => Promise.resolve(claimOrganisation)),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
-const mockNoIndividualTypeDraftStore = {
-  set: jest.fn(() => Promise.resolve({data: {}})),
-  get: jest.fn(() => Promise.resolve(claimIndividualNoType)),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
 
 describe('Citizen financial details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -61,7 +40,9 @@ describe('Citizen financial details', () => {
 
   describe('on GET', () => {
     it('should return individual financial details page', async () => {
-      app.locals.draftStoreClient = mockIndividualDraftStore;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), claimIndividualMock.case_data);
+      });
       await request(app)
         .get(constructResponseUrlWithIdParams('1646818997929180', FINANCIAL_DETAILS_URL))
         .expect((res) => {
@@ -70,7 +51,9 @@ describe('Citizen financial details', () => {
         });
     });
     it('should return organisation financial details page', async () => {
-      app.locals.draftStoreClient = mockOrganisationDraftStore;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), claimOrganisationMock.case_data);
+      });
       await request(app)
         .get(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
         .expect((res) => {
@@ -79,7 +62,9 @@ describe('Citizen financial details', () => {
         });
     });
     it('should not match expected string, and log error, if draft store fails to return anything', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
         .expect((res) => {
@@ -92,7 +77,9 @@ describe('Citizen financial details', () => {
 
   describe('on POST', () => {
     it('should redirect for individual', async () => {
-      app.locals.draftStoreClient = mockIndividualDraftStore;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), claimIndividualMock.case_data);
+      });
       await request(app)
         .post(constructResponseUrlWithIdParams('1646818997929180', FINANCIAL_DETAILS_URL))
         .expect((res) => {
@@ -100,7 +87,9 @@ describe('Citizen financial details', () => {
         });
     });
     it('should redirect for organisation', async () => {
-      app.locals.draftStoreClient = mockOrganisationDraftStore;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), claimOrganisationMock.case_data);
+      });
       await request(app)
         .post(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
         .expect((res) => {
@@ -108,7 +97,9 @@ describe('Citizen financial details', () => {
         });
     });
     it('should not redirect, and log error, if draft store fails to return anything', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
         .expect((res) => {
@@ -117,7 +108,9 @@ describe('Citizen financial details', () => {
         });
     });
     it('should be 404 for no caseId in path', async () => {
-      app.locals.draftStoreClient = mockOrganisationDraftStore;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), claimOrganisationMock.case_data);
+      });
       await request(app)
         .post(constructResponseUrlWithIdParams('', FINANCIAL_DETAILS_URL))
         .expect((res) => {
@@ -125,7 +118,9 @@ describe('Citizen financial details', () => {
         });
     });
     it('should be error for no respondent type in JSON', async () => {
-      app.locals.draftStoreClient = mockNoIndividualTypeDraftStore;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), claimIndividualMockNoType.case_data);
+      });
       await request(app)
         .post(constructResponseUrlWithIdParams('1646818997929180', FINANCIAL_DETAILS_URL))
         .expect((res) => {

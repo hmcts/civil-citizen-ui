@@ -4,23 +4,24 @@ import nock from 'nock';
 import request from 'supertest';
 import {
   CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
-  FLIGHT_DETAILS_URL, 
+  FLIGHT_DETAILS_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {Claim} from 'models/claim';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
+
 import { CivilServiceClient } from 'client/civilServiceClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('client/civilServiceClient');
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreService');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+const mockGetCaseDataFromDraftStore = getCaseDataFromStore as jest.Mock;
 const mockGetAirlines = civilServiceClient.getAirlines as jest.Mock;
 
 describe('Flight details Controller', () => {
@@ -32,11 +33,13 @@ describe('Flight details Controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseDataFromDraftStore.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
 
     mockGetAirlines.mockImplementation(() => {
       return [
-        {airline: 'airline 1', epimsID: '1'}, 
+        {airline: 'airline 1', epimsID: '1'},
         {airline: 'airline 2', epimsID: '2'},
       ];
     });

@@ -1,6 +1,6 @@
 import {
-  mockCivilClaim,
-  mockCivilClaimFastTrack, mockRedisFailure,
+  civilClaimResponseMock,
+  mockCivilClaimFastTrack,
 } from '../../../../../utils/mockDraftStore';
 import {DEFENDANT_SUMMARY_URL, HAS_ANYTHING_CHANGED_URL, TRIAL_ARRANGEMENTS_HEARING_DURATION} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -12,10 +12,14 @@ import {YesNo} from 'form/models/yesNo';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
 import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import civilClaimResponseFastTrackMock from '../../../../../utils/mocks/civilClaimResponseFastTrackMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;
@@ -24,7 +28,9 @@ const testSession = session(app);
 
 describe('Has anything changed - On GET', () => {
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+    });
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -38,7 +44,9 @@ describe('Has anything changed - On GET', () => {
 
   it('should render page successfully in English', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+    });
     //When
     await testSession
       .get(HAS_ANYTHING_CHANGED_URL.replace(':id', claimId))
@@ -52,6 +60,9 @@ describe('Has anything changed - On GET', () => {
   it('should render page successfully in Welsh if query has Welsh values', async () => {
     //Given
     app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+    });
     //When
     await testSession
       .get(HAS_ANYTHING_CHANGED_URL.replace(':id', claimId)).query({lang: 'cy'})
@@ -64,7 +75,9 @@ describe('Has anything changed - On GET', () => {
 
   it('should redirect to latestUpload screen when is small claim', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
     //When
     await testSession
       .get(HAS_ANYTHING_CHANGED_URL.replace(':id', claimId))
@@ -77,7 +90,9 @@ describe('Has anything changed - On GET', () => {
 
   it('should return "Something went wrong" page when claim does not exist', async () => {
     //Given
-    app.locals.draftStoreClient = mockRedisFailure;
+    mockGetCaseData.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
     //When
     await testSession
       .get(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111')).query({lang: 'en'})
@@ -92,7 +107,9 @@ describe('Has anything changed - On GET', () => {
 
 describe('Has anything changed - on POST', () => {
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+    });
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 
@@ -162,7 +179,9 @@ describe('Has anything changed - on POST', () => {
 
   it('should redirect to latestUpload screen when is small claim', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
     //When
     await testSession
       .post(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
@@ -176,7 +195,9 @@ describe('Has anything changed - on POST', () => {
 
   it('should return "Something went wrong" page when claim does not exist', async () => {
     //Given
-    app.locals.draftStoreClient = mockRedisFailure;
+    mockGetCaseData.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
     //When
     await testSession
       .post(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'))
