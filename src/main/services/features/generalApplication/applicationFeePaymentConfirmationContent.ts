@@ -31,7 +31,7 @@ export const getGaPaymentSuccessfulBodyContent = (claim: Claim, calculatedAmount
   } else {
     if (withoutFee) {
       contentBuilder
-        .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_5', {lng: getLng(lng)})
+        .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_5', {lng: getLng(lng)});
     } else {
       contentBuilder
         .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_1', { lng: getLng(lng) });
@@ -51,8 +51,8 @@ export const getGaPaymentSuccessfulBodyContent = (claim: Claim, calculatedAmount
   contentBuilder.addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.PAYMENT_SUMMARY_TITLE', { lng: getLng(lng) })
     .addSummary(currencyFormatWithNoTrailingZeros(convertToPoundsFilter(
       calculatedAmountInPence)),
-      isAdditionalFee ? 'COMMON.MICRO_TEXT.ADDITIONAL_APPLICATION_FEE' : 'COMMON.MICRO_TEXT.APPLICATION_FEE',
-      lng);
+    isAdditionalFee ? 'COMMON.MICRO_TEXT.ADDITIONAL_APPLICATION_FEE' : 'COMMON.MICRO_TEXT.APPLICATION_FEE',
+    lng);
   return contentBuilder.build();
 };
 

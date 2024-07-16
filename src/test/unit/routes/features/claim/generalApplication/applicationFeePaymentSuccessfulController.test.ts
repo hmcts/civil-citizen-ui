@@ -23,7 +23,6 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
   getApplicationFromGAService: jest.fn(),
 }));
 
-
 describe('Claim fee payment confirmation', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

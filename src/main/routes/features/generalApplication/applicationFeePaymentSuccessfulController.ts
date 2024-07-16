@@ -4,7 +4,7 @@ import { AppRequest } from 'models/AppRequest';
 import { getGaPaymentSuccessfulBodyContent, getGaPaymentSuccessfulButtonContent, getGaPaymentSuccessfulPanelContent } from 'services/features/generalApplication/applicationFeePaymentConfirmationContent';
 import {
   getApplicationFromGAService,
-  getCancelUrl
+  getCancelUrl,
 } from 'services/features/generalApplication/generalApplicationService';
 import { deleteDraftClaimFromStore, generateRedisKey } from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
