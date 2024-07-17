@@ -5,12 +5,15 @@ import config from 'config';
 import {
   APPLY_HELP_WITH_FEES_REFERENCE, APPLY_HELP_WITH_FEES_START,
 } from 'routes/urls';
-import {mockCivilClaimHearingFee} from '../../../../../utils/mockDraftStore';
 import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import civilClaimResponseHearingFeeMock from '../../../../../utils/mocks/civilClaimResponseHearingFeeMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Apply for help with fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -26,7 +29,9 @@ describe('Apply for help with fees', () => {
   });
   describe('on GET', () => {
     it('should return resolving apply help fees page', async () => {
-      app.locals.draftStoreClient = mockCivilClaimHearingFee;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseHearingFeeMock.case_data);
+      });
       await request(app)
         .get(APPLY_HELP_WITH_FEES_START)
         .expect((res) => {
