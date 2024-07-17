@@ -4,7 +4,6 @@ import nock from 'nock';
 import config from 'config';
 import {CITIZEN_EXPLANATION_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockResponseFullAdmitPayBySetDate} from '../../../../../utils/mockDraftStore';
 import fullAdmitPayBySetDateMock from '../../../../../utils/mocks/fullAdmitPayBySetDateMock.json';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -50,7 +49,6 @@ describe('Explanation Controller', () => {
 
   describe('on POST', () => {
     it('should redirect to claim task list page', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       mockGetCaseData.mockImplementation(async () => {
         return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
       });
@@ -63,7 +61,6 @@ describe('Explanation Controller', () => {
         });
     });
     it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       mockGetCaseData.mockImplementation(async () => {
         return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
       });

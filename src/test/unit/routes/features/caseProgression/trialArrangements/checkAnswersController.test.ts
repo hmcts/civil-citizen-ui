@@ -1,4 +1,3 @@
-import { mockCivilClaimFastTrack } from '../../../../../utils/mockDraftStore';
 import {
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
   TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
@@ -13,10 +12,14 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {getClaimWithDefendantTrialArrangements} from '../../../../../utils/mockClaimForCheckAnswers';
 import * as checkAnswersService from '../../../../../../main/services/features/caseProgression/trialArrangements/checkAnswersService';
 import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import civilClaimResponseFastTrackMock from '../../../../../utils/mocks/civilClaimResponseFastTrackMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const claim = getClaimWithDefendantTrialArrangements();
 const claimId = '1692795793361508';
 const testSession = session(app);
@@ -37,7 +40,9 @@ describe('Trial Arrangements check answers - On GET', () => {
   });
   it('should render page successfully in English with all sections and summary rows', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+    });
     //When
     const response = await testSession
       .get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS.replace(':id', claimId)).query({lang: 'en'})
@@ -70,7 +75,9 @@ describe('Trial Arrangements check answers - On GET', () => {
 
   it('should render page successfully in Welsh with all sections and summary rows if Welsh query', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+    });
     //When
     const response = await testSession
       .get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS.replace(':id', claimId)).query({lang: 'cy'})
@@ -118,7 +125,9 @@ describe('Trial Arrangements check answers - On GET', () => {
 
 describe('Trial Arrangements check answers - on POST', () => {
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+    });
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
 

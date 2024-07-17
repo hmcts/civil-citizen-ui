@@ -19,7 +19,6 @@ import {Claim} from 'models/claim';
 import {StatementOfMeans} from 'models/statementOfMeans';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
 import fullAdmitPayBySetDateMock from '../../../../../../utils/mocks/fullAdmitPayBySetDateMock.json';
 
 jest.mock('../../../../../../../main/modules/oidc');
@@ -107,7 +106,9 @@ describe('Debts', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
     });
     it('should validate when has no option selected', async () => {
       await request(app)

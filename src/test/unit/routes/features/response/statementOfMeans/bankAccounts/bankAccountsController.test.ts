@@ -4,10 +4,14 @@ import config from 'config';
 import nock from 'nock';
 import {CITIZEN_BANK_ACCOUNT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import fullAdmitPayBySetDateMock from '../../../../../../utils/mocks/fullAdmitPayBySetDateMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Bank Accounts and Savings', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -22,7 +26,9 @@ describe('Bank Accounts and Savings', () => {
 
   describe('on Get', () => {
     it('should return accounts page successfully', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app).get(CITIZEN_BANK_ACCOUNT_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -32,7 +38,9 @@ describe('Bank Accounts and Savings', () => {
   });
   describe('on Post', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
     });
     it('should return error when type of account is not specified', async () => {
       const data = {
