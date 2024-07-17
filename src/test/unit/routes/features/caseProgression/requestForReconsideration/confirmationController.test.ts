@@ -6,9 +6,11 @@ import {
 } from 'routes/urls';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import Module from 'module';
-import {mockCivilClaimFastTrack} from '../../../../../utils/mockDraftStore';
 import {CaseRole} from 'form/models/caseRoles';
 import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import civilClaimResponseFastTrackMock from '../../../../../utils/mocks/civilClaimResponseFastTrackMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -17,12 +19,13 @@ export const USER_DETAILS = {
   accessToken: citizenRoleToken,
   roles: ['citizen'],
 };
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
 }));
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Request for reconsideration page test', () => {
   const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
@@ -53,7 +56,9 @@ describe('Request for reconsideration page test', () => {
   describe('on GET', () => {
     it('should return expected page in English when claim exists', async () => {
       //Given
-      app.locals.draftStoreClient = mockCivilClaimFastTrack;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+      });
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claim);
@@ -73,7 +78,9 @@ describe('Request for reconsideration page test', () => {
     it('should return expected page in Welsh when claim exists with Welsh cookie', async () => {
       //Given
       app.request.cookies = {lang: 'cy'};
-      app.locals.draftStoreClient = mockCivilClaimFastTrack;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+      });
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claim);

@@ -9,9 +9,11 @@ import {
   mockCivilClaimUndefined,
 } from '../../../../utils/mockDraftStore';
 import {isCUIReleaseTwoEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/claim/amount/claimFeesService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
@@ -20,6 +22,7 @@ jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   }),
 }));
 
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const isReleaseTwo = isCUIReleaseTwoEnabled as jest.Mock;
 
 describe('Total amount', () => {
@@ -41,7 +44,9 @@ describe('Total amount', () => {
       nock('http://localhost:4000')
         .get('/fees/claim/undefined')
         .reply(200, {'calculatedAmountInPence': '50'});
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), undefined);
+      });
       const spySave = jest.spyOn(claimFeeService, 'saveClaimFee');
 
       const res = await request(app)

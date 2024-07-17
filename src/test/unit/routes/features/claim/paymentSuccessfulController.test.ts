@@ -3,19 +3,22 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {PAY_HEARING_FEE_SUCCESSFUL_URL} from 'routes/urls';
-import {mockCivilClaimApplicantCompanyType} from '../../../../utils/mockDraftStore';
-import {mockCivilClaimHearingFee} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {Claim} from 'models/claim';
 import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {t} from 'i18next';
+import civilClaimResponseHearingFeeMock from '../../../../utils/mocks/civilClaimResponseHearingFeeMock.json';
+import civilClaimResponseApplicantCompany from '../../../../utils/mocks/civilClaimResponseApplicantCompanyMock.json';
+import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 const spyDel = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+
 describe('Apply for help with fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -35,7 +38,9 @@ describe('Apply for help with fees', () => {
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(caseData);
       app.request.cookies = {lang: 'en'};
-      app.locals.draftStoreClient = mockCivilClaimHearingFee;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseHearingFeeMock.case_data);
+      });
       await request(app)
         .get(PAY_HEARING_FEE_SUCCESSFUL_URL)
         .expect((res) => {
@@ -48,7 +53,9 @@ describe('Apply for help with fees', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(caseData);
-      app.locals.draftStoreClient = mockCivilClaimHearingFee;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseHearingFeeMock.case_data);
+      });
       await request(app)
         .get(PAY_HEARING_FEE_SUCCESSFUL_URL)
         .expect((res) => {
@@ -64,7 +71,9 @@ describe('Apply for help with fees', () => {
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(caseData);
       app.request.cookies = {lang: 'cy'};
-      app.locals.draftStoreClient = mockCivilClaimHearingFee;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseHearingFeeMock.case_data);
+      });
       await request(app)
         .get(PAY_HEARING_FEE_SUCCESSFUL_URL)
         .expect((res) => {
@@ -77,7 +86,9 @@ describe('Apply for help with fees', () => {
 
     it('should return error if there is no case progression data', async () => {
       app.request.cookies = {lang: 'en'};
-      app.locals.draftStoreClient = mockCivilClaimApplicantCompanyType;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseApplicantCompany.case_data);
+      });
 
       spyDel.mockImplementation(() => {return null;});
 
