@@ -81,7 +81,7 @@ function getTextForPayByImmediately(claim: Claim, lang: string){
     paymentText: t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THE_AGREEMENT.IMMEDIATE_PLAN', {
       lng: lang,
       fullName: claim.getDefendantFullName(),
-      amount: getAmount(claim),
+      amount: noGroupingCurrencyFormatWithNoTrailingZeros(getAmount(claim)),
       claimant: claim.getClaimantFullName(),
       paymentDate: formatDateToFullDate(paymentDate, lang),
     }),

@@ -1763,8 +1763,8 @@
           "LABEL": "Y cytundeb",
           "REPAYMENT_PLAN_PART_ONE": "Bydd {{ defendant }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ paymentAmount }} pob  ",
           "REPAYMENT_PLAN_PART_TWO": "Telir y rhandaliad cyntaf erbyn {{ firstRepaymentDate }}",
-          "PAYMENT_TEXT": "Bydd {{ fullName }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ instalmentAmount }} pob {{ frequency }}. Telir y rhandaliad cyntaf erbyn {{ instalmentDate }}",
-          "IMMEDIATE_PLAN": "Bydd {{ fullName }} yn talu £{{ amount }} ar unwaith. Bydd {{ claimant }} yn derbyn yr arian erbyn {{ paymentDate }} fan bellaf. Bydd unrhyw sieciau neu drosglwyddiadau banc wedi clirio ac yng nghyfrif {{ fullName }}'s erbyn y dyddiad hwn."
+          "PAYMENT_TEXT": "Bydd {{ fullName }} yn ad-dalu {{ amount }} mewn rhandaliadau o £{{ instalmentAmount }} pob {{ frequency }}. Telir y rhandaliad cyntaf erbyn {{ instalmentDate }}",
+          "IMMEDIATE_PLAN": "Bydd {{ fullName }} yn talu {{ amount }} ar unwaith. Bydd {{ claimant }} yn derbyn yr arian erbyn {{ paymentDate }} fan bellaf. Bydd unrhyw sieciau neu drosglwyddiadau banc wedi clirio ac yng nghyfrif {{ fullName }}'s erbyn y dyddiad hwn."
         },
         "COMPLETION_DATE": {
           "LABEL": "Dyddiad cwblhau",
