@@ -260,6 +260,9 @@ ccd:
     dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
     idamApiUrl: https://idam-api.aat.platform.hmcts.net
     idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
+    postgresUsername: hmcts
+    postgresPassword: ${POSTGRES_PASSWORD}
+    postgresSecret: postgres
     s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
   ccd-api-gateway-web:
@@ -284,6 +287,8 @@ ccd:
       environment:
         CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: false
         DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
+        DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
+        DATA_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
         DATA_STORE_IDAM_KEY: ${CCD_DATA_STORE_S2S_SECRET}
         DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_ps,bulk_scan_orchestrator,ccpay_bubble,ctsc_work_allocation,em_ccd_orchestrator,xui_webapp,civil_service,ccd_case_document_am_api,aac_manage_case_assignment,wa_task_management_api,wa_task_monitor,wa_case_event_handler,wa_workflow_api,civil_general_applications
         IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
@@ -300,6 +305,11 @@ ccd:
         ELASTIC_SEARCH_DATA_NODES_HOSTS: http://${SERVICE_NAME}-es-master:9200
       keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_NAME}.preview.platform.hmcts.net
+      secrets:
+        DATA_STORE_DB_PASSWORD:
+          secretRef: "{{ .Values.global.postgresSecret }}"
+          key: PASSWORD
+          disabled: true
   am-role-assignment-service:
     java:
       releaseNameOverride: ${SERVICE_NAME}-am-role-assignment-service
@@ -333,6 +343,13 @@ ccd:
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
         ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 12000
+        DEFINITION_STORE_DB_OPTIONS: "?stringtype=unspecified"
+          DEFINITION_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      secrets:
+        DEFINITION_STORE_DB_PASSWORD:
+          secretRef: "{{ .Values.global.postgresSecret }}"
+          key: PASSWORD
+          disabled: true
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_NAME}.preview.platform.hmcts.net
 
@@ -430,3 +447,18 @@ civil-general-applications:
       RELEASE_REVISION: "{{ .Release.Revision }}"
       GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
       CUI_URL: https://${SERVICE_FQDN}
+
+postgresql:
+  enabled: false
+  flexibleserver: civil-preview
+  setup:
+    databases:
+      - name: "pr-${CHANGE_ID}-data-store"
+      - name: "pr-${CHANGE_ID}-definition-store"
+      - name: "pr-${CHANGE_ID}-user-profile"
+      - name: "pr-${CHANGE_ID}-camunda"
+      - name: "pr-${CHANGE_ID}-role-assignment"
+      - name: "pr-${CHANGE_ID}-cft_task_db"
+      - name: "pr-${CHANGE_ID}-wa-case-event-handler"
+      - name: "pr-${CHANGE_ID}-wa_workflow_api"
+      - name: "pr-${CHANGE_ID}-cmc"
