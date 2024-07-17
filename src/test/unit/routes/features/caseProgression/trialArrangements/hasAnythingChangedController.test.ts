@@ -1,6 +1,5 @@
 import {
   civilClaimResponseMock,
-  mockCivilClaimFastTrack,
 } from '../../../../../utils/mockDraftStore';
 import {DEFENDANT_SUMMARY_URL, HAS_ANYTHING_CHANGED_URL, TRIAL_ARRANGEMENTS_HEARING_DURATION} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -59,7 +58,6 @@ describe('Has anything changed - On GET', () => {
 
   it('should render page successfully in Welsh if query has Welsh values', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
     mockGetCaseData.mockImplementation(async () => {
       return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
     });
