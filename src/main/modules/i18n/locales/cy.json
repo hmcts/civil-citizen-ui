@@ -4440,6 +4440,7 @@
       },
       "CONFIRMATION_PAGE": {
         "TITLE": "Confirmation of your hearing fee payment",
+        "TITLE_CLAIM_FEE": "Confirmation of your claim fee payment",
         "CONFIRMATION_TITLE.HEARING": "Mae eich ceisiadau am help i dalu ffioedd gwrandawiad’ yn gyflawn",
         "REFERENCE_NUMBER": "Eich cyfeirnod yw ",
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
