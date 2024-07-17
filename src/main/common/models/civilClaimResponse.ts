@@ -70,7 +70,6 @@ import {
   CCDTrialArrangementsOtherComments,
 } from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
 import {CCDAdditionalPartyDetails} from 'models/ccdResponse/ccdAdditionalPartyDetails';
-import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {CCDTimeLineOfEvent} from 'models/ccdResponse/ccdTimeLine';
 import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
@@ -157,7 +156,7 @@ export interface CCDClaim extends ClaimUpdate {
   defenceAdmitPartPaymentTimeRouteRequired?: CCDPaymentOption;
   respondent1RepaymentPlan?: CCDRepaymentPlan;
   respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
-  responseClaimMediationSpecRequired?: string;
+  responseClaimMediationSpecRequired?: YesNoUpperCamelCase;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   claimantUserDetails?: IdamUserDetails;
   //Defendant Response part
@@ -271,13 +270,11 @@ export interface CCDClaim extends ClaimUpdate {
   trialReadyRespondent1?: YesNoUpperCamelCase;
   respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
-  enterBreathing?: CCDBreathingSpaceStartInfo;
   claimFee?:CCDClaimFee;
   timelineOfEvents?:CCDTimeLineOfEvent[];
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
   applicant1ResponseDate?: Date;
-  liftBreathing?: CCDBreathingSpaceStartInfo;
   hearingFee?: HearingFee;
   hearingDueDate?: Date;
   hearingFeeHelpWithFees?:CCDHelpWithFees;
@@ -298,7 +295,10 @@ export interface CCDClaim extends ClaimUpdate {
   defendantResponseDocuments?: SystemGeneratedCaseDocuments[];
   applicant1DefenceResponseDocumentSpec?: ResponseDocument;
   isFlightDelayClaim?: string;
-  flightDelayDetails?: CCDFlightDelayDetails; 
+  flightDelayDetails?: CCDFlightDelayDetails;
+  requestForReconsiderationDeadline?: Date;
+  requestForReconsiderationDocument?: CaseDocument;
+  requestForReconsiderationDocumentRes?: CaseDocument;
 }
 
 export interface ClaimFeeData {

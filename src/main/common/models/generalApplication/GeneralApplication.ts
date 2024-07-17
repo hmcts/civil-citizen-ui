@@ -11,6 +11,9 @@ import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthFo
 import {ClaimFeeData} from '../civilClaimResponse';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
+import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
+import {CaseLink} from 'models/generalApplication/CaseLink';
 
 export class GeneralApplication {
 
@@ -19,7 +22,6 @@ export class GeneralApplication {
   hearingSupport?: HearingSupport;
   agreementFromOtherParty?: YesNo;
   applicationCosts?: YesNo;
-  respondentAgreeToOrder?: YesNo;
   requestingReasons?: RequestingReason[];
   orderJudges?: OrderJudge[];
   uploadN245Form?: UploadGAFiles;
@@ -31,12 +33,14 @@ export class GeneralApplication {
   uploadEvidenceForApplication?: UploadGAFiles[];
   statementOfTruth?: StatementOfTruthForm;
   applicationFee?: ClaimFeeData;
+  helpWithFees?: GaHelpWithFees;
+  applicationFeePaymentDetails : PaymentInformation;
+  caseLink?: CaseLink;
 
   constructor(
     applicationType?: ApplicationType,
     agreementFromOtherParty?: YesNo,
     applicationCosts?: YesNo,
-    respondentAgreeToOrder?: YesNo,
     requestingReason?: RequestingReason,
     orderJudge?: OrderJudge,
     unavailableDatesHearing?: UnavailableDatesGaHearing,
@@ -45,11 +49,15 @@ export class GeneralApplication {
     response?: GaResponse,
     uploadEvidenceForApplication?: UploadGAFiles,
     statementOfTruth?: StatementOfTruthForm,
+    helpWithFees?: GaHelpWithFees,
+    wantToUploadDocuments?: YesNo,
+    uploadN245Form?: UploadGAFiles,
+    informOtherParties?: InformOtherParties,
+    applicationFee?: ClaimFeeData,
   ) {
     this.applicationTypes = applicationType ? [applicationType] : [];
     this.agreementFromOtherParty = agreementFromOtherParty;
     this.applicationCosts = applicationCosts;
-    this.respondentAgreeToOrder = respondentAgreeToOrder;
     this.requestingReasons = requestingReason ? [requestingReason] : [];
     this.orderJudges = orderJudge ? [orderJudge] : [];
     this.unavailableDatesHearing = unavailableDatesHearing;
@@ -57,6 +65,11 @@ export class GeneralApplication {
     this.hearingContactDetails = hearingContactDetails;
     this.response = response;
     this.statementOfTruth = statementOfTruth;
+    this.wantToUploadDocuments = wantToUploadDocuments;
     this.uploadEvidenceForApplication = uploadEvidenceForApplication ? [uploadEvidenceForApplication] : [];
+    this.helpWithFees = helpWithFees;
+    this.uploadN245Form = uploadN245Form;
+    this.informOtherParties = informOtherParties;
+    this.applicationFee = applicationFee;
   }
 }

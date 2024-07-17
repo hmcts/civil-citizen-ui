@@ -2,7 +2,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_HEARING_ARRANGEMENTS_GUIDANCE, GA_UPLOAD_DOCUMENTS, GA_WANT_TO_UPLOAD_DOCUMENTS} from 'routes/urls';
+import {GA_HEARING_ARRANGEMENTS_GUIDANCE_URL, GA_UPLOAD_DOCUMENTS_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
@@ -47,7 +47,7 @@ describe('General Application - Want to upload documents to support hearing', ()
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isDashboardServiceEnabled').mockResolvedValueOnce(true);
+    jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
@@ -56,7 +56,7 @@ describe('General Application - Want to upload documents to support hearing', ()
       mockGetCaseData.mockImplementation(async () => mockClaim);
       mockClaim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT)];
       await request(app)
-        .get(GA_WANT_TO_UPLOAD_DOCUMENTS)
+        .get(GA_WANT_TO_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.WANT_TO_UPLOAD_DOCUMENTS.TITLE'));
@@ -69,7 +69,7 @@ describe('General Application - Want to upload documents to support hearing', ()
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .get(GA_WANT_TO_UPLOAD_DOCUMENTS)
+        .get(GA_WANT_TO_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -81,11 +81,11 @@ describe('General Application - Want to upload documents to support hearing', ()
     it('should send the value and redirect to Upload document page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(GA_WANT_TO_UPLOAD_DOCUMENTS)
+        .post(GA_WANT_TO_UPLOAD_DOCUMENTS_URL)
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_UPLOAD_DOCUMENTS);
+          expect(res.text).toContain(GA_UPLOAD_DOCUMENTS_URL);
         });
     });
 
@@ -97,11 +97,11 @@ describe('General Application - Want to upload documents to support hearing', ()
       mockClaim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(GA_WANT_TO_UPLOAD_DOCUMENTS)
+        .post(GA_WANT_TO_UPLOAD_DOCUMENTS_URL)
         .send({option: 'no'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_HEARING_ARRANGEMENTS_GUIDANCE);
+          expect(res.text).toContain(GA_HEARING_ARRANGEMENTS_GUIDANCE_URL);
           expect(mockClaim.generalApplication.uploadEvidenceForApplication).toEqual([]);
         });
     });
@@ -109,7 +109,7 @@ describe('General Application - Want to upload documents to support hearing', ()
     it('should show error message if radio button not selected', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(GA_WANT_TO_UPLOAD_DOCUMENTS)
+        .post(GA_WANT_TO_UPLOAD_DOCUMENTS_URL)
         .send({option: null})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -122,7 +122,7 @@ describe('General Application - Want to upload documents to support hearing', ()
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .post(GA_WANT_TO_UPLOAD_DOCUMENTS)
+        .post(GA_WANT_TO_UPLOAD_DOCUMENTS_URL)
         .send({option:YesNo.NO })
         .expect((res) => {
           expect(res.status).toBe(500);

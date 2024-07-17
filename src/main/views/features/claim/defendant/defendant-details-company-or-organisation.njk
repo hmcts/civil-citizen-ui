@@ -69,10 +69,6 @@
               {% if addressTitle %}
                 <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
               {% endif %}
-              <p class="govuk-body">
-                {{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }}
-                {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}
-              </p>
               {% if defendantType === partyType.COMPANY %}
                 <p class="govuk-body">
                   {{ t('PAGES.DEFENDANT_DETAILS.COMPANY_MAIN_OFFICE') + ' ' + t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}
