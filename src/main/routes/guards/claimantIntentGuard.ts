@@ -13,7 +13,7 @@ export const claimantIntentGuard = (async (req: Request, res: Response, next: Ne
       
     // Delete cache from redis if case state is not AWAITING_APPLICANT_INTENTION.
     // Giving a chance to reload data from ccd database.
-    if(!caseStoreData.isEmpty() && !caseStoreData.isClaimantIntentionPending()) {
+    if(caseStoreData && !caseStoreData.isEmpty() && !caseStoreData.isClaimantIntentionPending()) {
       await deleteDraftClaimFromStore(redisClaimId);
     }
       
