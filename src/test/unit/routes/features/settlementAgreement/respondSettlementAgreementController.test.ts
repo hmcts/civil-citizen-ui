@@ -7,7 +7,6 @@ import {
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION,
 } from 'routes/urls';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {ResponseType} from 'common/form/models/responseType';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
@@ -26,13 +25,16 @@ import { ClaimantResponse } from 'common/models/claimantResponse';
 import { RepaymentDecisionType } from 'common/models/claimantResponse/RepaymentDecisionType';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {PartyType} from 'models/partyType';
+import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import { civilClaimResponseMock } from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
 }));
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Respond To Settlement Agreement', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -217,7 +219,9 @@ describe('Respond To Settlement Agreement', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return error on empty post', async () => {
