@@ -7,18 +7,18 @@ import {
   CITIZEN_PARTNER_DISABILITY_URL,
   CITIZEN_PARTNER_PENSION_URL,
   RESPONSE_TASK_LIST_URL,
-} from '../../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {
-  mockCivilClaimUndefined,
-  mockCivilClaimOptionNo,
-  mockRedisFailure,
-  mockResponseFullAdmitPayBySetDate,
-} from '../../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import fullAdmitPayBySetDateMock from '../../../../../../utils/mocks/fullAdmitPayBySetDateMock.json';
+import civilClaimResponseOptionNoMock from '../../../../../../utils/mocks/civilClaimResponseOptionNoMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Partner Pension', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -33,7 +33,9 @@ describe('Partner Pension', () => {
 
   describe('on GET', () => {
     it('should return citizen partner pension page', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_PARTNER_PENSION_URL)
         .expect((res) => {
@@ -43,7 +45,9 @@ describe('Partner Pension', () => {
     });
 
     it('should show partner pension page when haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_PARTNER_PENSION_URL)
         .send()
@@ -53,7 +57,9 @@ describe('Partner Pension', () => {
     });
 
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_PARTNER_PENSION_URL)
         .expect((res) => {
@@ -65,10 +71,14 @@ describe('Partner Pension', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
     });
     it('should redirect to response task list if redis claim is undefined', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), undefined);
+      });
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
         .send('option=no')
@@ -89,7 +99,9 @@ describe('Partner Pension', () => {
     });
 
     it('should redirect page when "no" and defendant disabled = no', async () => {
-      app.locals.draftStoreClient = mockCivilClaimOptionNo;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseOptionNoMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
         .send('option=no')
@@ -100,7 +112,9 @@ describe('Partner Pension', () => {
     });
 
     it('should redirect page when "yes" and defendant disabled = no', async () => {
-      app.locals.draftStoreClient = mockCivilClaimOptionNo;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseOptionNoMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
         .send('option=yes')
@@ -141,7 +155,9 @@ describe('Partner Pension', () => {
     });
 
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CITIZEN_PARTNER_PENSION_URL)
         .send('option=no')

@@ -1,5 +1,4 @@
 import {app} from '../../../../../../main/app';
-import {mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import config from 'config';
 import nock from 'nock';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
@@ -9,11 +8,17 @@ import {PAY_HEARING_FEE_URL} from 'routes/urls';
 import {FIXED_DATE} from '../../../../../utils/dateUtils';
 import {CaseRole} from 'form/models/caseRoles';
 import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import civilClaimResponseFastTrackMock from '../../../../../utils/mocks/civilClaimResponseFastTrackMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+
 describe('Pay Hearing Fee Start Screen Controller', () => {
   const civilServiceUrl = config.get<string>('services.civilService.url');
   const idamUrl: string = config.get('idamUrl');
@@ -47,7 +52,9 @@ describe('Pay Hearing Fee Start Screen Controller', () => {
   });
   it('should return expected pay hearing fee page when claim exists', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+    });
     nock(civilServiceUrl)
       .get(CIVIL_SERVICE_CASES_URL + claimId)
       .reply(200, claim);
@@ -65,7 +72,9 @@ describe('Pay Hearing Fee Start Screen Controller', () => {
 
   it('should return "Something went wrong" page when claim does not exist', async () => {
     //Given
-    app.locals.draftStoreClient = mockRedisFailure;
+    mockGetCaseData.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
     nock(civilServiceUrl)
       .get(CIVIL_SERVICE_CASES_URL + '1111')
       .reply(404, null);
