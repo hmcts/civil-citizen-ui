@@ -4,7 +4,7 @@ import {AppRequest} from 'models/AppRequest';
 import {APPLICATION_TYPE_URL, CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
-  isCaseProgressionV1Enable, isDashboardEnabledForCase,
+  isCaseProgressionV1Enable, isDashboardEnabledForCase, isCarmEnabledForCase,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
@@ -23,7 +23,7 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {extractOrderDocumentIdFromNotification, getDashboardForm, getHelpSupportLinks, getHelpSupportTitle, getNotifications} from 'services/dashboard/dashboardService';
 import {getClaimWithExtendedPaymentDeadline} from 'services/features/response/submitConfirmation/submitConfirmationService';
 import {ClaimantOrDefendant} from 'models/partyType';
-import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 import {t} from 'i18next';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
