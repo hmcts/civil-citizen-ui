@@ -105,8 +105,6 @@ export class Helmet {
           formAction: [self, loginUrl, ocmcBaseUrl, govPayUrl],
         },
       }),
-    );
-    app.use(
       helmet({
         crossOriginEmbedderPolicy: false,
       }),
