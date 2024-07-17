@@ -21,7 +21,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const summaryRows = await getApplicationSections(req, applicationId, lang);
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
-    const isResponseFromCourt = applicationResponse.case_data?.judicialDecision?.decision ? true : false;
+    const isResponseFromCourt = !!applicationResponse.case_data?.judicialDecision?.decision;
     let responseFromCourt: SummaryRow[] = [];
     let payAdditionalFeeUrl: string = null;
 
