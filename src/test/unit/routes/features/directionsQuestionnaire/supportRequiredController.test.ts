@@ -4,18 +4,19 @@ import config from 'config';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {
-  mockCivilClaimWithExpertAndWitness,
-  mockRedisFailure,
-} from '../../../../utils/mockDraftStore';
-import {
   DQ_COURT_LOCATION_URL,
   SUPPORT_REQUIRED_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo} from 'form/models/yesNo';
+import civilClaimResponseWithWithExpertAndWitness
+  from '../../../../utils/mocks/civilClaimResponseExpertAndWitnessMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const supportRequiredUrl = SUPPORT_REQUIRED_URL.replace(':id', 'aaa');
 
@@ -31,7 +32,9 @@ describe('Support required', () => {
 
   describe('on GET', () => {
     it('should return supportRequired page', async () => {
-      app.locals.draftStoreClient = mockCivilClaimWithExpertAndWitness;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseWithWithExpertAndWitness.case_data);
+      });
       await request(app)
         .get(supportRequiredUrl)
         .expect((res: Response) => {
@@ -40,7 +43,9 @@ describe('Support required', () => {
         });
     });
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(supportRequiredUrl)
         .expect((res: Response) => {
@@ -52,7 +57,9 @@ describe('Support required', () => {
 
   describe('on POST', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaimWithExpertAndWitness;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseWithWithExpertAndWitness.case_data);
+      });
     });
 
     it('wshould display error when there is no option selection', async () => {
@@ -206,7 +213,9 @@ describe('Support required', () => {
     });
 
     it('should status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(supportRequiredUrl)
         .send({

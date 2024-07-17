@@ -1,10 +1,4 @@
 import request from 'supertest';
-import {
-  mockCivilClaim, mockCivilClaimDefendantCaseProgression,
-  mockCivilClaimDocumentClaimantUploaded,
-  mockCivilClaimDocumentUploaded,
-  mockRedisFailure,
-} from '../../../../utils/mockDraftStore';
 import {CP_CHECK_ANSWERS_URL, CP_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {app} from '../../../../../main/app';
@@ -26,17 +20,25 @@ import {DateInputFields, UploadDocumentsUserForm} from 'models/caseProgression/u
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import civilClaimResponseDocumentUploadedMock
+  from '../../../../utils/mocks/civilClaimResponseDocumentUploadedMock.json';
+import civilClaimResponseDocumentUploadedClaimantMock
+  from '../../../../utils/mocks/civilClaimResponseDocumentUploadedClaimantMock.json';
+import civilClaimResponseDefendantMock from '../../../../utils/mocks/civilClaimResponseDefendantMock.json';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 
 const getTrialContentMock = getTrialContent as jest.Mock;
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('services/features/caseProgression/disclosureService');
 jest.mock('services/features/caseProgression/witnessService');
 jest.mock('services/features/caseProgression/expertService');
 jest.mock('services/features/caseProgression/trialService');
 
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const caseDoc = '{"documentLink":{"document_url":"http://test","document_binary_url":"http://test/binary","document_filename":"test.png","document_hash":"test"},"documentName":"test.png","documentSize":86349,"createdDatetime":"2023-06-27T11:32:29","createdBy":"test"}';
 
 describe('Upload document- upload document controller', () => {
@@ -70,7 +72,9 @@ describe('Upload document- upload document controller', () => {
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   it('should render page successfully if cookie has correct values', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
     const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
     civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
     const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
@@ -88,7 +92,9 @@ describe('Upload document- upload document controller', () => {
   });
 
   it('should render page successfully in Welsh if cookie has correct values and query cy', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
 
     const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
     civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
@@ -107,7 +113,9 @@ describe('Upload document- upload document controller', () => {
   });
 
   it('should render page successfully with uploaded document section if document available in redis', async () => {
-    app.locals.draftStoreClient = mockCivilClaimDocumentUploaded;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseDocumentUploadedMock.case_data);
+    });
     const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedMock.json');
     civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
     const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
@@ -148,7 +156,9 @@ describe('Upload document- upload document controller', () => {
   });
 
   it('should render page successfully with uploaded document section if document available in redis on claimant request', async () => {
-    app.locals.draftStoreClient = mockCivilClaimDocumentClaimantUploaded;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseDocumentUploadedClaimantMock.case_data);
+    });
     const civilClaimDocumentClaimantUploaded = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedClaimantMock.json');
     civilClaimDocumentClaimantUploaded.case_data.id = civilClaimDocumentClaimantUploaded.id;
 
@@ -162,7 +172,9 @@ describe('Upload document- upload document controller', () => {
   });
 
   it('should render page successfully in Welsh with uploaded document section if document available in redis on claimant request', async () => {
-    app.locals.draftStoreClient = mockCivilClaimDocumentClaimantUploaded;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseDocumentUploadedClaimantMock.case_data);
+    });
 
     const civilClaimDocumentClaimantUploaded = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedClaimantMock.json');
     civilClaimDocumentClaimantUploaded.case_data.id = civilClaimDocumentClaimantUploaded.id;
@@ -177,7 +189,9 @@ describe('Upload document- upload document controller', () => {
   });
 
   it('should return 500 error page for redis failure', async () => {
-    app.locals.draftStoreClient = mockRedisFailure;
+    mockGetCaseData.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
     await request(app)
       .get(CP_UPLOAD_DOCUMENTS_URL).query({lang: 'en'})
       .expect((res) => {
@@ -190,7 +204,9 @@ describe('Upload document- upload document controller', () => {
 describe('on POST', () => {
   const mockFutureYear = getNextYearValue().toString();
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   it('should display documentForDisclosure validation error when invalid', async () => {
@@ -457,7 +473,9 @@ describe('on POST', () => {
 
   it('should display all questions for other party\'s expert validation errors on defendant request', async () => {
     const model = {'questionsForExperts':[{'expertName':'', 'otherPartyName':'', 'questionDocumentName':'', 'fileUpload':''}]};
-    app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseDefendantMock.case_data);
+    });
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
       .send(model)
@@ -616,7 +634,9 @@ describe('on POST', () => {
   });
 
   it('should return 500 error page for failure', async () => {
-    app.locals.draftStoreClient = mockRedisFailure;
+    mockGetCaseData.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
     await request(app)
       .get(CP_UPLOAD_DOCUMENTS_URL)
       .expect((res) => {

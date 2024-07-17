@@ -3,10 +3,6 @@ import config from 'config';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {
-  mockCivilClaimWithExpertAndWitness,
-  mockRedisFailure,
-} from '../../../../../utils/mockDraftStore';
-import {
   DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
   DQ_PHONE_OR_VIDEO_HEARING_URL,
   DQ_UNAVAILABLE_FOR_HEARING_URL,
@@ -15,9 +11,14 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {t} from 'i18next';
 import {isTwentyNineLeapYear} from '../../../../../utils/dateUtils';
+import civilClaimResponseWithWithExpertAndWitness
+  from '../../../../../utils/mocks/civilClaimResponseExpertAndWitnessMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Unavailable dates for hearing Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -31,7 +32,9 @@ describe('Unavailable dates for hearing Controller', () => {
 
   describe('on GET', () => {
     it('should return unavailable dates for hearing page', async () => {
-      app.locals.draftStoreClient = mockCivilClaimWithExpertAndWitness;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseWithWithExpertAndWitness.case_data);
+      });
       await request(app)
         .get(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .expect((res: Response) => {
@@ -40,7 +43,9 @@ describe('Unavailable dates for hearing Controller', () => {
         });
     });
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(DQ_AVAILABILITY_DATES_FOR_HEARING_URL)
         .expect((res: Response) => {
@@ -53,7 +58,9 @@ describe('Unavailable dates for hearing Controller', () => {
   describe('on POST', () => {
     const today = new Date();
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaimWithExpertAndWitness;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseWithWithExpertAndWitness.case_data);
+      });
     });
     it('should display error when single/longer period option is not selected', async () => {
       await request(app)
@@ -540,7 +547,9 @@ describe('Unavailable dates for hearing Controller', () => {
     });
 
     it('should status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       const is29Feb = isTwentyNineLeapYear(today);
 
       await request(app)

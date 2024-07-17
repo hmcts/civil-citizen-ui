@@ -5,7 +5,7 @@ import request from 'supertest';
 import {GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../../utils/mockDraftStore';
 import {isGaForLipsEnabled} from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {CURRENT_DAY, CURRENT_MONTH, CURRENT_YEAR} from '../../../../../../utils/dateUtils';
@@ -14,13 +14,16 @@ import {
   UnavailableDatePeriodGaHearing,
   UnavailableDatesGaHearing,
 } from 'models/generalApplication/unavailableDatesGaHearing';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/services/features/claim/details/claimDetailsService');
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../../main/services/features/generalApplication/unavailableHearingDatesService');
 const getUnavailableDatesHearingFormMock = getUnavailableDatesForHearingForm as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('General Application Response- Unavailable hearing dates', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -35,7 +38,9 @@ describe('General Application Response- Unavailable hearing dates', () => {
 
   describe('on GET', () => {
     it('should return page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
 
       await request(app)
         .get(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
@@ -46,7 +51,9 @@ describe('General Application Response- Unavailable hearing dates', () => {
     });
 
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
         .expect((res) => {
@@ -64,7 +71,9 @@ describe('General Application Response- Unavailable hearing dates', () => {
             {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
         );
       });
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
         .send()
@@ -80,7 +89,9 @@ describe('General Application Response- Unavailable hearing dates', () => {
             {'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
         );
       });
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
         .send()
@@ -91,7 +102,9 @@ describe('General Application Response- Unavailable hearing dates', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
         .send()
