@@ -2,7 +2,7 @@ import {NextFunction, Response, Router} from 'express';
 import {GA_APPLY_HELP_WITH_FEE_SELECTION, GA_PAY_ADDITIONAL_FEE_URL, GA_PAYMENT_UNSUCCESSFUL_URL} from 'routes/urls';
 import {
   getApplicationFromGAService,
-  getCancelUrl
+  getCancelUrl,
 } from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
