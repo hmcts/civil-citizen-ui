@@ -1,6 +1,5 @@
 import {
-  mockCivilClaim,
-  mockCivilClaimFastTrack, mockRedisFailure,
+  civilClaimResponseMock,
 } from '../../../../../utils/mockDraftStore';
 import {DEFENDANT_SUMMARY_URL, HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -12,11 +11,15 @@ import {YesNo} from 'form/models/yesNo';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
 import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import civilClaimResponseFastTrackMock from '../../../../../utils/mocks/civilClaimResponseFastTrackMock.json';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;
 const civilServiceUrl = config.get<string>('services.civilService.url');
@@ -37,7 +40,9 @@ describe('Is case ready - On GET', () => {
 
   it('should render page successfully in English if cookie has correct values', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+    });
     //When
     await testSession
       .get(IS_CASE_READY_URL.replace(':id', claimId))
@@ -50,7 +55,9 @@ describe('Is case ready - On GET', () => {
 
   it('should render page successfully in Welsh when query is cy and cookie has correct values', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+    });
     //When
     await testSession
       .get(IS_CASE_READY_URL.replace(':id', claimId)).query({lang: 'cy'})
@@ -63,7 +70,9 @@ describe('Is case ready - On GET', () => {
 
   it('should return "Something went wrong" page when claim does not exist', async () => {
     //Given
-    app.locals.draftStoreClient = mockRedisFailure;
+    mockGetCaseData.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
     //When
     await testSession
       .get(IS_CASE_READY_URL.replace(':id', '1111')).query({lang: 'en'})
@@ -77,7 +86,9 @@ describe('Is case ready - On GET', () => {
 
 describe('Is case ready - on POST', () => {
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseFastTrackMock.case_data);
+    });
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   it('should display error when neither Yes nor No were selected', async () => {
@@ -119,7 +130,9 @@ describe('Is case ready - on POST', () => {
   it('should redirect to latestUpload screen when is small claim', async () => {
 
     //Given
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
     //When
     await testSession
       .post(IS_CASE_READY_URL.replace(':id', '1111'))

@@ -4,7 +4,7 @@ import nock from 'nock';
 import config from 'config';
 import {APPLY_HELP_WITH_FEES, APPLY_HELP_WITH_FEES_START, HEARING_FEE_APPLY_HELP_FEE_SELECTION,
 } from 'routes/urls';
-import {mockCivilClaim, mockCivilClaimWithFeeType} from '../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
 import * as helpWithFeesContentService from 'services/features/helpWithFees/applyHelpWithFeesService';
@@ -14,10 +14,14 @@ import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFe
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import civilClaimResponseWithFeeType from '../../../../utils/mocks/civilClaimResponseWithFeeTypeMock.json';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+
 describe('Arrive on help with fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -32,8 +36,9 @@ describe('Arrive on help with fees', () => {
   });
   describe('on GET', () => {
     it('should return populated help-with-fees page', async () => {
-      app.locals.draftStoreClient = mockCivilClaimWithFeeType;
-
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseWithFeeType.case_data);
+      });
       const claimMock = new Claim();
       claimMock.caseProgressionHearing = new CaseProgressionHearing();
       claimMock.caseProgressionHearing.hearingFeeInformation = new HearingFeeInformation();
@@ -54,7 +59,9 @@ describe('Arrive on help with fees', () => {
 
   describe('on POST', () => {
     it('should show error if no option was chosen', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(APPLY_HELP_WITH_FEES)
         .send({})
@@ -65,7 +72,9 @@ describe('Arrive on help with fees', () => {
     });
 
     it('should redirect to payments if option is NO & feeType is present', async () => {
-      app.locals.draftStoreClient = mockCivilClaimWithFeeType;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseWithFeeType.case_data);
+      });
       await request(app)
         .post(APPLY_HELP_WITH_FEES)
         .send({option: YesNo.NO})
@@ -76,7 +85,9 @@ describe('Arrive on help with fees', () => {
     });
 
     it('should redirect to help with fees if option is YES', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(APPLY_HELP_WITH_FEES)
         .send({option: YesNo.YES})

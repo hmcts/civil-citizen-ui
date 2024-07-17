@@ -4,16 +4,17 @@ import nock from 'nock';
 import request from 'supertest';
 import {CLAIM_INTEREST_END_DATE_URL, CLAIM_INTEREST_START_DATE_URL} from 'routes/urls';
 import {
-  mockCivilClaim,
-  mockCivilClaimUndefined,
-  mockNoStatementOfMeans,
-  mockRedisFailure,
+  civilClaimResponseMock,
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
+import noStatementOfMeansMock from '../../../../../utils/mocks/noStatementOfMeansMock.json';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('interest start date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -27,7 +28,9 @@ describe('interest start date', () => {
 
   describe('on GET', () => {
     it('should return interest start date page empty when dont have information on redis ', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noStatementOfMeansMock.case_data);
+      });
       await request(app)
         .get(CLAIM_INTEREST_START_DATE_URL)
         .expect((res) => {
@@ -36,7 +39,9 @@ describe('interest start date', () => {
         });
     });
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CLAIM_INTEREST_START_DATE_URL)
         .expect((res) => {
@@ -48,7 +53,9 @@ describe('interest start date', () => {
 
   describe('on POST', () => {
     it('should create a new claim if redis gives undefined', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), undefined);
+      });
       await request(app)
         .post(CLAIM_INTEREST_START_DATE_URL)
         .send('year=2000')
@@ -60,7 +67,9 @@ describe('interest start date', () => {
         });
     });
     it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CLAIM_INTEREST_START_DATE_URL)
         .send('year=')
@@ -144,7 +153,9 @@ describe('interest start date', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CLAIM_INTEREST_START_DATE_URL)
         .send('year=1981')

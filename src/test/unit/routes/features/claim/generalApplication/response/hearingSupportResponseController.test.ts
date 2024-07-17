@@ -5,14 +5,18 @@ import request from 'supertest';
 import {GA_RESPONSE_HEARING_SUPPORT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../../utils/mockDraftStore';
 import {SupportType} from 'models/generalApplication/hearingSupport';
 import {isGaForLipsEnabled} from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/services/features/claim/details/claimDetailsService');
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('General Application Response- Hearing support', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -27,7 +31,9 @@ describe('General Application Response- Hearing support', () => {
 
   describe('on GET', () => {
     it('should return page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
 
       await request(app)
         .get(GA_RESPONSE_HEARING_SUPPORT_URL)
@@ -38,7 +44,9 @@ describe('General Application Response- Hearing support', () => {
     });
 
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(GA_RESPONSE_HEARING_SUPPORT_URL)
         .expect((res) => {
@@ -50,7 +58,9 @@ describe('General Application Response- Hearing support', () => {
 
   describe('on POST', () => {
     it('should send the value and redirect', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(GA_RESPONSE_HEARING_SUPPORT_URL)
         .send({requiredSupport: [SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT],
@@ -61,7 +71,9 @@ describe('General Application Response- Hearing support', () => {
     });
 
     it('should return errors on box selected but no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(GA_RESPONSE_HEARING_SUPPORT_URL)
         .send({requiredSupport: SupportType.OTHER_SUPPORT, signLanguageContent: '', languageContent: '', otherContent: ''})
@@ -72,7 +84,9 @@ describe('General Application Response- Hearing support', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(GA_RESPONSE_HEARING_SUPPORT_URL)
         .send({requiredSupport: [SupportType.STEP_FREE_ACCESS, SupportType.HEARING_LOOP]})

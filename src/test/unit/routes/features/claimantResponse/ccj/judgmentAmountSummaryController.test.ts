@@ -6,15 +6,16 @@ import {
   CCJ_PAID_AMOUNT_SUMMARY_URL,
   CCJ_PAYMENT_OPTIONS_URL,
 } from 'routes/urls';
-import {
-  mockCivilClaimClaimantIntention,
-  mockRedisFailure,
-} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import civilClaimResponseClaimantIntentMock
+  from '../../../../../utils/mocks/civilClaimResponseClaimantIntentionMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/common/utils/dateUtils');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Judgment Amount Summary', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -28,8 +29,9 @@ describe('Judgment Amount Summary', () => {
 
   describe('on GET', () => {
     it('should return judgement summary page - from request CCJ', async () => {
-      app.locals.draftStoreClient = mockCivilClaimClaimantIntention;
-
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseClaimantIntentMock.case_data);
+      });
       const res = await request(app)
         .get(CCJ_PAID_AMOUNT_SUMMARY_URL);
 
@@ -38,7 +40,9 @@ describe('Judgment Amount Summary', () => {
     });
 
     it('should return http 500 when has error in the get method - from request CCJ', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CCJ_PAID_AMOUNT_SUMMARY_URL)
         .expect((res) => {
@@ -50,7 +54,9 @@ describe('Judgment Amount Summary', () => {
 
   describe('on POST', () => {
     it('should redirect to ccj payment options - from request CCJ', async () => {
-      app.locals.draftStoreClient = mockCivilClaimClaimantIntention;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseClaimantIntentMock.case_data);
+      });
       const res = await request(app).post(CCJ_PAID_AMOUNT_SUMMARY_URL).send();
       expect(res.status).toBe(302);
       expect(res.get('location')).toBe(CCJ_PAYMENT_OPTIONS_URL);
