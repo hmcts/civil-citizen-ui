@@ -6,36 +6,23 @@ import {
   CITIZEN_CARER_URL,
   CITIZEN_EMPLOYMENT_URL,
   CITIZEN_OTHER_DEPENDANTS_URL,
-} from '../../../../../../../main/routes/urls';
-import {TestMessages} from '../../../../../../../test/utils/errorMessageTestConstants';
-import {mockResponseFullAdmitPayBySetDate, mockCivilClaimOptionNo, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+} from 'routes/urls';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import severelyDisabledDefendantMock from './severelyDisabledDefendantMock.json';
 import disabledPartnerMock from './disabledPartnerMock.json';
 import disabledChildrenMock from './disabledChildrenMock.json';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import fullAdmitPayBySetDateMock from '../../../../../../utils/mocks/fullAdmitPayBySetDateMock.json';
+import civilClaimResponseOptionNoMock from '../../../../../../utils/mocks/civilClaimResponseOptionNoMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const withoutOtherDependentJson = require('./withoutOtherDependantsMock.json');
 const option1ToRedirectToCarerJson = require('./option1ToRedirectToCarerMock.json');
 const option2ToRedirectToCarerJson = require('./option2ToRedirectToCarerMock.json');
 
-const civilClaimResponseWithoutOtherDependent: string = JSON.stringify(withoutOtherDependentJson);
-const civilClaimResponseOption1ToRedirectToCarer: string = JSON.stringify(option1ToRedirectToCarerJson);
-const civilClaimResponseOption2ToRedirectToCarer: string = JSON.stringify(option2ToRedirectToCarerJson);
-export const civilClaimResponseSeverelyDisabledDefendant: string = JSON.stringify(severelyDisabledDefendantMock);
-const civilClaimResponseDisabledPartnerMock: string = JSON.stringify(disabledPartnerMock);
-const civilClaimResponseDisabledChildrenMock: string = JSON.stringify(disabledChildrenMock);
-
-export function mockDraftStore(mockData: string) {
-  return {
-    set: jest.fn(() => Promise.resolve({})),
-    get: jest.fn(() => Promise.resolve(mockData)),
-    ttl: jest.fn(() => Promise.resolve({})),
-    expireat: jest.fn(() => Promise.resolve({})),
-  };
-}
-
 jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Other Dependants', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -45,12 +32,13 @@ describe('Other Dependants', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on GET', () => {
     it('should return other dependants page', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_OTHER_DEPENDANTS_URL)
         .expect((res) => {
@@ -60,7 +48,9 @@ describe('Other Dependants', () => {
     });
 
     it('should show "Number of people and Give details" section when "yes"', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .get(CITIZEN_OTHER_DEPENDANTS_URL)
         .send('option=yes')
@@ -72,7 +62,9 @@ describe('Other Dependants', () => {
     });
 
     it('should return error when Cannot read property \'numberOfPeople\' and \'details\' of undefined', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_OTHER_DEPENDANTS_URL)
         .expect((res) => {
@@ -82,7 +74,9 @@ describe('Other Dependants', () => {
     });
 
     it('should return empty OtherDependants object', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseWithoutOtherDependent);
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), withoutOtherDependentJson.case_data);
+      });
       await request(app)
         .get(CITIZEN_OTHER_DEPENDANTS_URL)
         .expect((res) => {
@@ -94,7 +88,9 @@ describe('Other Dependants', () => {
 
   describe('on POST', () => {
     it('should return error when radio box is not selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaimOptionNo;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseOptionNoMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send('')
@@ -105,7 +101,9 @@ describe('Other Dependants', () => {
     });
 
     it('should redirect when "no" is selected', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseDisabledPartnerMock);
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), disabledPartnerMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'no', numberOfPeople: '', details: '' })
@@ -116,7 +114,9 @@ describe('Other Dependants', () => {
     });
 
     it('should redirect when "yes" is selected and number of people and details are valid', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseDisabledChildrenMock);
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), disabledChildrenMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })
@@ -127,7 +127,9 @@ describe('Other Dependants', () => {
     });
 
     it('should redirect employment page when defendant is disabled and severely disabled', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseSeverelyDisabledDefendant);
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), severelyDisabledDefendantMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({option: 'no', numberOfPeople: '', details: ''})
@@ -138,7 +140,9 @@ describe('Other Dependants', () => {
     });
 
     it('should redirect employment page when partner is selected and disabled', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseDisabledChildrenMock);
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), disabledChildrenMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({option: 'no', numberOfPeople: '', details: ''})
@@ -149,7 +153,9 @@ describe('Other Dependants', () => {
     });
 
     it('should redirect employment page when children is existing and any of them is disabled', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseDisabledPartnerMock);
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), disabledPartnerMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({option: 'no', numberOfPeople: '', details: ''})
@@ -160,7 +166,9 @@ describe('Other Dependants', () => {
     });
 
     it('should redirect when disability, cohabiting and childrenDisability are "no"', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseOption1ToRedirectToCarer);
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), option1ToRedirectToCarerJson.case_data);
+      });
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'no', numberOfPeople: '', details: '' })
@@ -171,7 +179,9 @@ describe('Other Dependants', () => {
     });
 
     it('should redirect when disability, cohabiting are "no" and partnerDisability is "yes"', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseOption2ToRedirectToCarer);
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), option2ToRedirectToCarerJson.case_data);
+      });
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'no', numberOfPeople: '', details: '' })
@@ -182,7 +192,9 @@ describe('Other Dependants', () => {
     });
 
     it('should return error when number of people is undefined', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'yes', numberOfPeople: '', details: '' })
@@ -193,7 +205,9 @@ describe('Other Dependants', () => {
     });
 
     it('should return error when number of people is negative', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'yes', numberOfPeople: '-1', details: '' })
@@ -204,7 +218,9 @@ describe('Other Dependants', () => {
     });
 
     it('should return error when number of people is valid details is undefined', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'yes', numberOfPeople: '1', details: '' })
@@ -215,7 +231,9 @@ describe('Other Dependants', () => {
     });
 
     it('should return error when number of people and details are undefined', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'yes', numberOfPeople: '', details: '' })
@@ -227,7 +245,9 @@ describe('Other Dependants', () => {
     });
 
     it('should return error when number of people is 0 details is undefined', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'yes', numberOfPeople: '0', details: '' })
@@ -239,7 +259,9 @@ describe('Other Dependants', () => {
     });
 
     it('should save when we dont have information on redis', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseWithoutOtherDependent);
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), withoutOtherDependentJson.case_data);
+      });
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })
@@ -250,7 +272,9 @@ describe('Other Dependants', () => {
     });
 
     it('should throw an error when call redis', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CITIZEN_OTHER_DEPENDANTS_URL)
         .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })

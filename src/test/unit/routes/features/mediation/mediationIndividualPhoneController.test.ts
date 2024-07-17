@@ -4,29 +4,23 @@ import config from 'config';
 import nock from 'nock';
 import {CAN_WE_USE_URL, RESPONSE_TASK_LIST_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockCivilClaimantIntention, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {PartyPhone} from '../../../../../main/common/models/PartyPhone';
+import {
+  civilClaimResponseMock,
+} from '../../../../utils/mockDraftStore';
+import {PartyPhone} from 'models/PartyPhone';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import noRespondentTelephoneClaimantIntentionMock
+  from '../../../../utils/mocks/noRespondentTelephoneClaimantIntentionMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const noRespondentTelephoneMock = require('../../../../utils/mocks/noRespondentTelephoneMock.json');
-const civilClaimResponseMockWithoutRespondentPhone: string = JSON.stringify(noRespondentTelephoneMock);
-const mockWithoutRespondentPhone = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithoutRespondentPhone)),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
 noRespondentTelephoneMock.case_data.respondent1.partyPhone = new PartyPhone('1234');
 
-const civilClaimResponseMockWithRespondentPhone: string = JSON.stringify(noRespondentTelephoneMock);
-const mockWithRespondentPhone = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithRespondentPhone)),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
 describe('Repayment Plan', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -40,7 +34,9 @@ describe('Repayment Plan', () => {
 
   describe('on Get', () => {
     it('should return on mediation confirm your telephone number repayment plan page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(CAN_WE_USE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -48,7 +44,9 @@ describe('Repayment Plan', () => {
         });
     });
     it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CAN_WE_USE_URL)
         .expect((res) => {
@@ -57,7 +55,9 @@ describe('Repayment Plan', () => {
         });
     });
     it('should return on mediation confirm your telephone number repayment plan page without partyPhone', async () => {
-      app.locals.draftStoreClient = mockWithoutRespondentPhone;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noRespondentTelephoneMock.case_data);
+      });
       await request(app).get(CAN_WE_USE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -67,7 +67,9 @@ describe('Repayment Plan', () => {
 
   describe('on Post', () => {
     it('should return error when no input text is filled', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CAN_WE_USE_URL)
         .send('')
@@ -77,7 +79,9 @@ describe('Repayment Plan', () => {
         });
     });
     it('should return errors when "NO" option selected and telephone number is undefined ', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CAN_WE_USE_URL)
         .send({option: 'no', mediationPhoneNumber: ''})
@@ -87,7 +91,9 @@ describe('Repayment Plan', () => {
         });
     });
     it('should return errors when "NO" option selected and telephone number max length is greater than 30 characters ', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CAN_WE_USE_URL)
         .send({option: 'no', mediationPhoneNumber: '1234567890123456789012345678900'})
@@ -97,7 +103,9 @@ describe('Repayment Plan', () => {
         });
     });
     it('should redirect with valid input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CAN_WE_USE_URL)
         .send({option: 'no', mediationPhoneNumber: '01632960001'})
@@ -107,7 +115,9 @@ describe('Repayment Plan', () => {
         });
     });
     it('should redirect with mediationDisagreement', async () => {
-      app.locals.draftStoreClient = mockCivilClaimantIntention;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data);
+      });
       await request(app)
         .post(CAN_WE_USE_URL)
         .send({option: 'no', mediationPhoneNumber: '01632960001'})
@@ -117,7 +127,9 @@ describe('Repayment Plan', () => {
         });
     });
     it('should redirect to claimant task list with valid input', async () => {
-      app.locals.draftStoreClient = mockCivilClaimantIntention;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data);
+      });
       await request(app)
         .post(CAN_WE_USE_URL)
         .send({option: 'no', mediationPhoneNumber: '01632960001'})
@@ -127,7 +139,9 @@ describe('Repayment Plan', () => {
         });
     });
     it('should redirect with input option equal to "yes" ', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(CAN_WE_USE_URL)
         .send({option: 'yes', mediationPhoneNumber: ''})
@@ -137,7 +151,9 @@ describe('Repayment Plan', () => {
         });
     });
     it('should return status 500 when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CAN_WE_USE_URL)
         .send({option: 'yes', mediationPhoneNumber: ''})
@@ -149,7 +165,9 @@ describe('Repayment Plan', () => {
 
     describe('Enter Phone Number Screen', () => {
       it('should redirect with valid input', async () => {
-        app.locals.draftStoreClient = mockWithoutRespondentPhone;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), noRespondentTelephoneMock.case_data);
+        });
         await request(app)
           .post(CAN_WE_USE_URL)
           .send({option: 'no', mediationPhoneNumber: '01632960002'})
@@ -159,7 +177,9 @@ describe('Repayment Plan', () => {
           });
       });
       it('should redirect with valid input diferent ccdState with respondent phone', async () => {
-        app.locals.draftStoreClient = mockWithRespondentPhone;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), noRespondentTelephoneMock.case_data);
+        });
         await request(app)
           .post(CAN_WE_USE_URL)
           .send({option: 'no', mediationPhoneNumber: '01632960002'})
@@ -169,7 +189,9 @@ describe('Repayment Plan', () => {
           });
       });
       it('should redirect claimant task list with valid input', async () => {
-        app.locals.draftStoreClient = mockCivilClaimantIntention;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data);
+        });
         await request(app)
           .post(CAN_WE_USE_URL)
           .send({option: 'no', mediationPhoneNumber: '01632960002'})

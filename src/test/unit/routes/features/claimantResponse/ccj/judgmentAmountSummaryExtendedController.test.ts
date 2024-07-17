@@ -6,14 +6,18 @@ import {
   CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
-import {mockCivilClaimClaimantIntention, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import civilClaimResponseClaimantIntentMock
+  from '../../../../../utils/mocks/civilClaimResponseClaimantIntentionMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/common/utils/dateUtils');
 
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 jest.spyOn(draftStoreService,'saveDraftClaim');
 
 describe('Judgment Amount Summary Extended', () => {
@@ -28,7 +32,9 @@ describe('Judgment Amount Summary Extended', () => {
 
   describe('on GET', () => {
     it('should return judgement summary page - from claimant response task-list', async () => {
-      app.locals.draftStoreClient = mockCivilClaimClaimantIntention;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseClaimantIntentMock.case_data);
+      });
       const res = await request(app)
         .get(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL);
 
@@ -37,7 +43,9 @@ describe('Judgment Amount Summary Extended', () => {
     });
 
     it('should return http 500 when has error in the get method - from claimant response task-list', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL)
         .expect((res) => {
@@ -49,7 +57,9 @@ describe('Judgment Amount Summary Extended', () => {
 
   describe('on POST', () => {
     it('should redirect to payment options - fom claimant response task-list', async () => {
-      app.locals.draftStoreClient = mockCivilClaimClaimantIntention;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseClaimantIntentMock.case_data);
+      });
       const res = await request(app).post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL).send();
       expect(res.status).toBe(302);
       expect(res.get('location')).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
