@@ -106,5 +106,10 @@ export class Helmet {
         },
       }),
     );
+    app.use(
+      helmet({
+          crossOriginEmbedderPolicy: false,
+        })
+    );
   }
 }
