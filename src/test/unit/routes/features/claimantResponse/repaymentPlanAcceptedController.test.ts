@@ -12,7 +12,7 @@ jest.mock('modules/utilityService', () => ({
 }));
 
 jest.mock('modules/draft-store/draftStoreService', () => ({
-  getCaseDataFromStore: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true,isEmpty: jest.fn().mockReturnValue(true), }),
+  getCaseDataFromStore: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true,isEmpty: jest.fn().mockReturnValue(true) }),
   deleteDraftClaimFromStore: jest.fn(),
   generateRedisKey:jest.fn,
 }));
