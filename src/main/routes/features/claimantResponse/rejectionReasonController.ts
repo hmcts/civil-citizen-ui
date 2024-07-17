@@ -13,6 +13,7 @@ import { AppRequest } from 'common/models/AppRequest';
 
 const claimantRejectionReasonPath = 'features/claimantResponse/rejection-reason';
 const rejectionReasonController = Router();
+const pageTitle= 'PAGES.CLAIMANT_RESPONSE_REJECTION_REASON.PAGE_TITLE';
 
 rejectionReasonController.get(CLAIMANT_RESPONSE_REJECTION_REASON_URL, async (req, res, next: NextFunction) => {
   try {
@@ -20,7 +21,7 @@ rejectionReasonController.get(CLAIMANT_RESPONSE_REJECTION_REASON_URL, async (req
     const courtProposedPlanDecision = claimantResponse.isRequestJudgePaymentPlan ? CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN : '';
     const rejectionReason = claimantResponse ?
       claimantResponse.rejectionReason : new RejectionReason();
-    res.render(claimantRejectionReasonPath, {form: new GenericForm(rejectionReason), courtProposedPlanDecision: courtProposedPlanDecision, pageTitle: 'PAGES.CLAIMANT_RESPONSE_REJECTION_REASON.PAGE_TITLE'});
+    res.render(claimantRejectionReasonPath, {form: new GenericForm(rejectionReason), courtProposedPlanDecision: courtProposedPlanDecision, pageTitle});
   } catch (error) {
     next(error);
   }
@@ -34,7 +35,7 @@ rejectionReasonController.post(CLAIMANT_RESPONSE_REJECTION_REASON_URL, async (re
   if (form.hasErrors()) {
     const claimantResponse = await getClaimantResponse(redisKey);
     const courtProposedPlanDecision = claimantResponse.isRequestJudgePaymentPlan ? CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN : '';
-    res.render(claimantRejectionReasonPath, { form, courtProposedPlanDecision: courtProposedPlanDecision, pageTitle: 'PAGES.CLAIMANT_RESPONSE_REJECTION_REASON.PAGE_TITLE' });
+    res.render(claimantRejectionReasonPath, { form, courtProposedPlanDecision: courtProposedPlanDecision, pageTitle});
   } else {
     try {
       await saveClaimantResponse(redisKey, reason, 'rejectionReason');
