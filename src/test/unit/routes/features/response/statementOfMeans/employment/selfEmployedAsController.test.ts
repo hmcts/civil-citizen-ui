@@ -2,13 +2,17 @@ import {app} from '../../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
-import {CITIZEN_SELF_EMPLOYED_URL, ON_TAX_PAYMENTS_URL} from '../../../../../../../main/routes/urls';
+import {CITIZEN_SELF_EMPLOYED_URL, ON_TAX_PAYMENTS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import fullAdmitPayBySetDateMock from '../../../../../../utils/mocks/fullAdmitPayBySetDateMock.json';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Self Employed As', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -23,7 +27,9 @@ describe('Self Employed As', () => {
 
   describe('on Get', () => {
     it('should return on self employed page successfully', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app).get(CITIZEN_SELF_EMPLOYED_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -31,7 +37,9 @@ describe('Self Employed As', () => {
         });
     });
     it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_SELF_EMPLOYED_URL)
         .expect((res) => {
@@ -43,7 +51,9 @@ describe('Self Employed As', () => {
 
   describe('on Post', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
     });
     it('should return error when no input text is filled', async () => {
       await request(app)
@@ -110,7 +120,9 @@ describe('Self Employed As', () => {
         });
     });
     it('should return status 500 when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CITIZEN_SELF_EMPLOYED_URL)
         .send({jobTitle: 'Developer', annualTurnover: 70000})
