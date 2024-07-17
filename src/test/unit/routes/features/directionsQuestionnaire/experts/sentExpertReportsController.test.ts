@@ -2,12 +2,15 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {DQ_SENT_EXPERT_REPORTS_URL, DQ_SHARE_AN_EXPERT_URL} from '../../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {DQ_SENT_EXPERT_REPORTS_URL, DQ_SHARE_AN_EXPERT_URL} from 'routes/urls';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Sent Expert Reports Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -21,7 +24,9 @@ describe('Sent Expert Reports Controller', () => {
 
   describe('on GET', () => {
     it('should return sent expert reports page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(DQ_SENT_EXPERT_REPORTS_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Have you already sent expert reports to other parties?');
@@ -29,7 +34,9 @@ describe('Sent Expert Reports Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(DQ_SENT_EXPERT_REPORTS_URL)
         .expect((res) => {
@@ -41,7 +48,9 @@ describe('Sent Expert Reports Controller', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return sent expert reports page on empty post', async () => {
@@ -76,7 +85,9 @@ describe('Sent Expert Reports Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(DQ_SENT_EXPERT_REPORTS_URL)
         .send({sentExpertReportsOptions: 'yes'})

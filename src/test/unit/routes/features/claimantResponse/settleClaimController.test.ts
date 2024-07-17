@@ -8,7 +8,7 @@ import {
   CLAIMANT_RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {civilClaimResponseMock, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as utilService from 'modules/utilityService';
 import { Claim } from 'common/models/claim';
@@ -69,7 +69,9 @@ describe('Claimant Response - Settle Claim Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       jest.spyOn(utilService, 'getClaimById').mockRejectedValueOnce(mockRedisFailure);
       await request(app)
         .get(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL)
@@ -82,7 +84,9 @@ describe('Claimant Response - Settle Claim Controller', () => {
 
   describe('on POST', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return error on empty post', async () => {
@@ -109,7 +113,9 @@ describe('Claimant Response - Settle Claim Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       jest.spyOn(utilService, 'getClaimById').mockRejectedValueOnce(mockRedisFailure);
       await request(app)
         .post(CLAIMANT_RESPONSE_SETTLE_CLAIM_URL)
