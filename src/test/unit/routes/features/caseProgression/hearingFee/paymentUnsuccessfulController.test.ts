@@ -6,14 +6,18 @@ import {
 import nock from 'nock';
 import request from 'supertest';
 import config from 'config';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import {app} from '../../../../../../main/app';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Hearing Fees - Payment Unsuccessful', () => {
   const idamServiceUrl: string = config.get('services.idam.url');
@@ -29,7 +33,9 @@ describe('Hearing Fees - Payment Unsuccessful', () => {
   });
   describe('on GET', () => {
     it('should return hearing fees payment unsuccessful page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
 
       await request(app)
         .get(PAY_HEARING_FEE_UNSUCCESSFUL_URL)
@@ -40,7 +46,9 @@ describe('Hearing Fees - Payment Unsuccessful', () => {
     });
 
     it('should return 500 error page for redis failure', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(PAY_HEARING_FEE_UNSUCCESSFUL_URL)
         .expect((res) => {

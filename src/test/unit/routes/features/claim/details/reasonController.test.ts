@@ -10,12 +10,14 @@ import {
   saveClaimDetails,
 } from 'services/features/claim/details/claimDetailsService';
 import {Claim} from 'models/claim';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/features/claim/details/claimDetailsService');
 
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockClaimDetails = getClaimDetails as jest.Mock;
 const mockSaveClaimDetails = saveClaimDetails as jest.Mock;
 
@@ -28,7 +30,9 @@ describe('Claim Details - Reason', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
   });
 
   describe('on GET', () => {
