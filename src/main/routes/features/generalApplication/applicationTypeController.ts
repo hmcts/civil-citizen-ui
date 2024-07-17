@@ -26,7 +26,7 @@ const viewPath = 'features/generalApplication/application-type';
 applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const applicationId = req.params.id;
+    const applicationId = req.params.appId;
     const claim = await getClaimById(claimId, req, true);
     const applicationIndex = queryParamNumber(req, 'index');
     const generalApplication = claim.generalApplications.find(a => a.id === applicationId);
@@ -49,6 +49,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
 applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
+    const applicationId = req.params.appId;
     const claim = await getClaimById(redisKey, req, true);
     let applicationType = null;
     const applicationIndex = queryParamNumber(req, 'index');
@@ -64,7 +65,6 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
       validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
     }
     const cancelUrl = await getCancelUrl( req.params.id, claim);
-    const applicationId = req.params.id;
     const generalApplication = claim.generalApplications.find(a => a.id === applicationId);
     const backLinkUrl = await getBackLinkUrl(req.params.id, generalApplication, cancelUrl);
 

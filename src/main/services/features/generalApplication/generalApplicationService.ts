@@ -139,10 +139,13 @@ export const saveHearingSupport = async (claimId: string, hearingSupport: Hearin
   }
 };
 
-export const saveAgreementFromOtherParty = async (claimId: string, claim: Claim, agreementFromOtherParty: YesNo): Promise<void> => {
+export const saveAgreementFromOtherParty = async (claimId: string, applicationId: string, claim: Claim, agreementFromOtherParty: YesNo): Promise<void> => {
   try {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.agreementFromOtherParty = agreementFromOtherParty;
+
+    // claim.generalApplications = Object.assign(new GeneralApplication(), claim.generalApplications);
+    claim.generalApplications.find(a => a.id === applicationId).agreementFromOtherParty = agreementFromOtherParty;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);

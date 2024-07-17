@@ -13,18 +13,19 @@ import { getCancelUrl, getLast, saveAgreementFromOtherParty, validateNoConsentOp
 import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {agreementFromOtherPartyGuard} from 'routes/guards/generalApplication/agreementFromOtherPartyGuard';
+import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 
 const agreementFromOtherPartyController = Router();
 const viewPath = 'features/generalApplication/agreement-from-other-party';
 
 agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreementFromOtherPartyGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const applicationId = req.params.id;
+    const applicationId = req.params.appId;
     const backLinkUrl = getBackLinkUrl(<AppRequest>req);
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
-    const generalApplication = claim.generalApplications.find(a => a.id === applicationId);
+    const generalApplication = claim.generalApplications.find(a => a.id === applicationId) ?? new GeneralApplication();
     const applicationType = selectedApplicationType[getLast(generalApplication?.applicationTypes)?.option];
     const form = new GenericForm(new GenericYesNo(generalApplication?.agreementFromOtherParty));
 
@@ -44,9 +45,10 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreem
 
     const backLinkUrl = getBackLinkUrl(<AppRequest>req);
     const redisKey = generateRedisKey(<AppRequest>req);
+    const applicationId = req.params.appId;
     const claim = await getClaimById(redisKey, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
-    const applicationTypeOption = getLast(claim.generalApplication?.applicationTypes)?.option;
+    const applicationTypeOption = getLast(claim.generalApplications.find(a => a.id === applicationId)?.applicationTypes)?.option;
     const applicationType = selectedApplicationType[applicationTypeOption];
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION'));
 
@@ -57,7 +59,7 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreem
     if (form.hasErrors()) {
       res.render(viewPath, { form, applicationType,cancelUrl, backLinkUrl });
     } else {
-      await saveAgreementFromOtherParty(redisKey, claim, req.body.option);
+      await saveAgreementFromOtherParty(redisKey, applicationId, claim, req.body.option);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, INFORM_OTHER_PARTIES_URL));
     }
   } catch (error) {

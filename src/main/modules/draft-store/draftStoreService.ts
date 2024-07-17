@@ -48,6 +48,7 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
   return claim;
 };
 
+// TODO: is needed?s
 export const getApplicationById = async (claimId: string, applicationId: string): Promise<GeneralApplication> => {
   const civilClaimResponse = await getDraftClaimFromStore(claimId, false);
   const claim: Claim = new Claim();
