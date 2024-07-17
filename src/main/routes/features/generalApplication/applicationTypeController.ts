@@ -18,7 +18,7 @@ import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
+import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
@@ -26,13 +26,15 @@ const viewPath = 'features/generalApplication/application-type';
 applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const applicationId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const applicationIndex = queryParamNumber(req, 'index');
-    const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
+    const generalApplication = claim.generalApplications.find(a => a.id === applicationId);
+    const applicationTypeOption = getByIndex(generalApplication?.applicationTypes, applicationIndex)?.option;
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const backLinkUrl = await getBackLinkUrl(claimId, claim, cancelUrl);
+    const backLinkUrl = await getBackLinkUrl(claimId, generalApplication, cancelUrl);
     res.render(viewPath, {
       form,
       cancelUrl,
@@ -62,7 +64,9 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
       validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
     }
     const cancelUrl = await getCancelUrl( req.params.id, claim);
-    const backLinkUrl = await getBackLinkUrl(req.params.id, claim, cancelUrl);
+    const applicationId = req.params.id;
+    const generalApplication = claim.generalApplications.find(a => a.id === applicationId);
+    const backLinkUrl = await getBackLinkUrl(req.params.id, generalApplication, cancelUrl);
 
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() });
@@ -75,8 +79,8 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
   }
 }) as RequestHandler);
 
-async function getBackLinkUrl(claimId: string, claim: Claim, cancelUrl: string) {
-  return (!claim?.generalApplication?.applicationTypes) ? cancelUrl
+async function getBackLinkUrl(claimId: string, generalApplication: GeneralApplication, cancelUrl: string) {
+  return (!generalApplication?.applicationTypes) ? cancelUrl
     : constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL);
 }
 

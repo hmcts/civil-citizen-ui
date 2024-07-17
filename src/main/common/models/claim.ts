@@ -167,6 +167,7 @@ export class Claim {
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
   generalApplication?: GeneralApplication;
+  generalApplications?: GeneralApplication[];
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
   defendantResponseDocuments: SystemGeneratedCaseDocuments[];

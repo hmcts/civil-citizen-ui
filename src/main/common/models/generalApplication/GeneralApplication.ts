@@ -17,6 +17,7 @@ import {CaseLink} from 'models/generalApplication/CaseLink';
 
 export class GeneralApplication {
 
+  id: string;
   applicationTypes?: ApplicationType[];
   informOtherParties?: InformOtherParties;
   hearingSupport?: HearingSupport;

@@ -7,6 +7,7 @@ import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
 import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils';
 import {AppRequest} from 'common/models/AppRequest';
+import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -45,6 +46,14 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
   Object.assign(claim, civilClaimResponse?.case_data);
   claim.id = civilClaimResponse?.id;
   return claim;
+};
+
+export const getApplicationById = async (claimId: string, applicationId: string): Promise<GeneralApplication> => {
+  const civilClaimResponse = await getDraftClaimFromStore(claimId, false);
+  const claim: Claim = new Claim();
+  Object.assign(claim, civilClaimResponse?.case_data);
+  claim.id = civilClaimResponse?.id;
+  return claim.generalApplications.find(a => a.id === applicationId);
 };
 
 /**

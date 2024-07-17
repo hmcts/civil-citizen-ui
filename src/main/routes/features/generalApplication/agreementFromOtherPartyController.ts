@@ -19,12 +19,14 @@ const viewPath = 'features/generalApplication/agreement-from-other-party';
 
 agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreementFromOtherPartyGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
+    const applicationId = req.params.id;
     const backLinkUrl = getBackLinkUrl(<AppRequest>req);
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
-    const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
-    const form = new GenericForm(new GenericYesNo(claim.generalApplication?.agreementFromOtherParty));
+    const generalApplication = claim.generalApplications.find(a => a.id === applicationId);
+    const applicationType = selectedApplicationType[getLast(generalApplication?.applicationTypes)?.option];
+    const form = new GenericForm(new GenericYesNo(generalApplication?.agreementFromOtherParty));
 
     res.render(viewPath, {
       form,
