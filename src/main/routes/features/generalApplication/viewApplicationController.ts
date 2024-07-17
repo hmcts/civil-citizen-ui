@@ -13,9 +13,9 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const applicationId = req.query.applicationId ? String(req.query.applicationId) : null;
     const applicationIndex = queryParamNumber(req, 'index');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const summaryRows = await getApplicationSections(req, applicationId, lang);
+    const {summaryRows, responseSummaries} = await getApplicationSections(req, applicationId, lang);
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
-    res.render(viewPath, {backLinkUrl, summaryRows, pageTitle, dashboardUrl: DASHBOARD_URL, applicationIndex });
+    res.render(viewPath, {backLinkUrl, summaryRows, responseSummaries, pageTitle, dashboardUrl: DASHBOARD_URL, applicationIndex });
   } catch (error) {
     next(error);
   }
