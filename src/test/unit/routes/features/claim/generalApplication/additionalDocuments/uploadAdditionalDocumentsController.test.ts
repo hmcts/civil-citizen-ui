@@ -22,6 +22,7 @@ import { CaseDocument } from 'common/models/document/caseDocument';
 import { FileUpload } from 'common/models/caseProgression/uploadDocumentsUserForm';
 import { Session } from 'express-session';
 import { t } from 'i18next';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/services/features/generalApplication/additionalDocumentService', () => ({
@@ -99,7 +100,7 @@ describe('uploadAdditionalDocumentsController', () => {
       (getCancelUrl as jest.Mock).mockResolvedValue(cancelUrl);
       (getSummaryList as jest.Mock).mockReturnValue(formattedSummaryList);
 
-      const res = await request(app).get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId));
+      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
 
       expect(res.status).toBe(200);
       expect(getClaimDetailsById).toHaveBeenCalledWith(expect.anything());
@@ -131,7 +132,7 @@ describe('uploadAdditionalDocumentsController', () => {
       (getSummaryList as jest.Mock).mockReturnValue({});
       (removeSelectedDocument as jest.Mock).mockReturnValueOnce(void 0);
 
-      const res = await request(app).get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId)).query({ indexId: 1 });
+      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)).query({ indexId: 1 });
 
       expect(res.status).toBe(200);
       expect(removeSelectedDocument).toHaveBeenCalledWith(redisKey, claim, 0);
@@ -168,7 +169,7 @@ describe('uploadAdditionalDocumentsController', () => {
       (removeSelectedDocument as jest.Mock).mockReturnValueOnce(void 0);
       app.request.session = { fileUpload: JSON.stringify(errors) } as unknown as Session;
       await request(app)
-        .get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId))
+        .get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_CHOOSE_THE_FILE'));
@@ -178,7 +179,7 @@ describe('uploadAdditionalDocumentsController', () => {
     it('should handle errors', async () => {
       (getClaimDetailsById as jest.Mock).mockRejectedValue(new Error('Error'));
 
-      const res = await request(app).get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', '123').replace(':gaId', '456'));
+      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
 
       expect(res.status).toBe(500);
     });
@@ -190,12 +191,12 @@ describe('uploadAdditionalDocumentsController', () => {
       (uploadSelectedFile as jest.Mock).mockResolvedValueOnce(void 0);
 
       const res = await request(app)
-        .post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId))
+        .post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL))
         .field('action', 'uploadButton')
         .attach('selectedFile', Buffer.from('file content'), 'test-file.txt');
 
       expect(res.status).toBe(302);
-      expect(res.header['location']).toBe(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId));
+      expect(res.header['location']).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
       expect(uploadSelectedFile).toHaveBeenCalledWith(expect.anything(), claim);
     });
 
@@ -215,17 +216,17 @@ describe('uploadAdditionalDocumentsController', () => {
       (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
 
       const res = await request(app)
-        .post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId));
+        .post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
 
       expect(res.status).toBe(302);
-      expect(res.header['location']).toBe(GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL.replace(':id', claimId).replace(':gaId', gaId));
+      expect(res.header['location']).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL));
     });
 
     it('should handle errors', async () => {
       (getClaimDetailsById as jest.Mock).mockRejectedValue(new Error('Error'));
 
       const res = await request(app)
-        .post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', '123').replace(':gaId', '456'))
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '456', GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL))
         .field('action', 'submit');
 
       expect(res.status).toBe(500);

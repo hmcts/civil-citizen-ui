@@ -6,6 +6,7 @@ import { CaseDocument } from 'common/models/document/caseDocument';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { UploadAdditionalDocument } from 'common/models/generalApplication/UploadAdditionalDocument';
 import { summaryRow } from 'common/models/summaryList/summaryList';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import { generateRedisKey, saveDraftClaim } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL } from 'routes/urls';
@@ -110,7 +111,7 @@ describe('Additional Documents Service', () => {
 
       expect(result.summaryList.rows).toHaveLength(4);
       expect(result.summaryList.rows[0]).toEqual(summaryRow('Type of document', 'Type1'));
-      expect(result.summaryList.rows[1]).toEqual(summaryRow('Document1', '', `${GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId)}?indexId=1`, 'Remove document'));
+      expect(result.summaryList.rows[1]).toEqual(summaryRow('Document1', '', `${constructResponseUrlWithIdAndAppIdParams(claimId, gaId,GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)}?indexId=1`, 'Remove document'));
     });
   });
 

@@ -16,6 +16,7 @@ import { GeneralApplication } from 'common/models/generalApplication/GeneralAppl
 import { changeLabel } from 'common/utils/checkYourAnswer/changeButton';
 import { PaymentSuccessfulSectionBuilder } from '../claim/paymentSuccessfulSectionBuilder';
 import { getLng } from 'common/utils/languageToggleUtils';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 
 const { v4: uuIdv4 } = require('uuid');
 const { Logger } = require('@hmcts/nodejs-logging');
@@ -33,7 +34,7 @@ export const getSummaryList = (additionalDocumentsList: UploadAdditionalDocument
   additionalDocumentsList.forEach((uploadDocument: UploadAdditionalDocument) => {
     index = index + 1;
     formattedSummary.summaryList.rows.push(summaryRow('Type of document', uploadDocument.typeOfDocument));
-    formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', `${GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId)}?indexId=${index}`, 'Remove document'));
+    formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', `${constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)}?indexId=${index}`, 'Remove document'));
   });
   return formattedSummary;
 };

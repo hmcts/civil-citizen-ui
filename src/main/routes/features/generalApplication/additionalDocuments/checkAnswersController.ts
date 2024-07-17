@@ -7,6 +7,7 @@ import { GaServiceClient } from 'client/gaServiceClient';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { NextFunction, RequestHandler, Response, Router } from 'express';
 import config from 'config';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 
 const gaAdditionalDocCheckAnswerController = Router();
 const viewPath = 'features/generalApplication/additionalDocuments/check-answers';
@@ -15,12 +16,12 @@ const gaServiceClient: GaServiceClient = new GaServiceClient(generalAppApiBaseUr
 
 gaAdditionalDocCheckAnswerController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const { gaId, id: claimId } = req.params;
+    const { appId, id: claimId } = req.params;
     const claimIdPrettified = caseNumberPrettify(claimId);
     const claim = await getClaimDetailsById(req);
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const backLinkUrl = GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL.replace(':id', claimId).replace(':gaId', gaId);
-    const summaryRows = buildSummarySectionForAdditionalDoc(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId);
+    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
+    const summaryRows = buildSummarySectionForAdditionalDoc(claim.generalApplication.uploadAdditionalDocuments, claimId, appId);
     res.render(viewPath, { backLinkUrl, cancelUrl, claimIdPrettified, claim, summaryRows });
   } catch (error) {
     next(error);
@@ -29,14 +30,14 @@ gaAdditionalDocCheckAnswerController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL,
 
 gaAdditionalDocCheckAnswerController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const { gaId, id: claimId } = req.params;
+    const { appId, id: claimId } = req.params;
     const claim = await getClaimDetailsById(req);
     const uploadedDocuments = prepareCCDData(claim.generalApplication.uploadAdditionalDocuments);
     const generalApplication = {
       uploadDocument: uploadedDocuments,
     };
-    await gaServiceClient.submitEvent(ApplicationEvent.UPLOAD_ADDL_DOCUMENTS, gaId, generalApplication as unknown, req);
-    res.redirect(GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_URL.replace(':id', claimId).replace(':gaId', gaId));
+    await gaServiceClient.submitEvent(ApplicationEvent.UPLOAD_ADDL_DOCUMENTS, appId, generalApplication as unknown, req);
+    res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_URL));
   } catch (error) {
     next(error);
   }
