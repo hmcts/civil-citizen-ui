@@ -13,7 +13,7 @@ import {
 } from 'common/utils/currencyFormat';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { AppRequest } from 'common/models/AppRequest';
-import {t} from "i18next";
+import {t} from 'i18next';
 
 const settleAdmittedController = Router();
 const settleClaimViewPath = 'features/claimantResponse/settle-admitted';
