@@ -1,27 +1,29 @@
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/paymentConfirmationService';
 import * as requestModels from 'models/AppRequest';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {app} from '../../../../../../main/app';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {
   PAY_HEARING_FEE_UNSUCCESSFUL_URL,
   PAY_HEARING_FEE_SUCCESSFUL_URL,
   HEARING_FEE_APPLY_HELP_FEE_SELECTION,
 } from 'routes/urls';
+import civilClaimResponseMock from '../../../../../utils/mocks/civilClaimResponseMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
-jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('modules/draft-store/courtLocationCache');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
 
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 const claimId = '1';
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('PaymentConfirmation Service', () => {
-  app.locals.draftStoreClient = mockCivilClaim;
-  jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  mockGetCaseData.mockImplementation(async () => {
+    return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+  });
   it('should return to payment successful screen if payment is successful', async () => {
     const mockHearingFeePaymentInfo = {
       status: 'Success',
