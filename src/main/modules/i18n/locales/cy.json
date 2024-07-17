@@ -3110,8 +3110,13 @@
         "JUDGE_HAS_MADE_ORDER": "Mae'r Barnwr wedi gwneud gorchymyn ar eich hawliad.",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
-        "RESPONSE": "Response from the other parties",
         "READ_RESPONSE": "Read the response",
+        "RESPONSE": {
+          "DO_YOU_AGREE_WITH_APLICANT_REQUEST": "Do you agree that the court should make the order that the applicant has requested?",
+          "OTHER_PARTIES_RESPONSE": "The other parties's response to the application.",
+          "TITLE": "Response from the other parties",
+          "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing"
+        },
         "RESPONSE_COURT": "Response from the court",
         "RESPONDENTS_DOCUMENTS": "Respondent's documents",
         "RESPOND_TO_REQUEST": "Respond to the request",

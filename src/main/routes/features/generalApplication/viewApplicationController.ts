@@ -33,7 +33,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const claimId = req.params.id;
     const applicationIndex = queryParamNumber(req, 'index');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const summaryRows = await getApplicationSections(req, req.params.appId, lang);
+    const {summaryRows, responseSummaries} = await getApplicationSections(req, req.params.appId, lang);
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, req.params.appId);
@@ -75,6 +75,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     res.render(viewPath, {
       backLinkUrl,
       summaryRows,
+      responseSummaries,
       pageTitle,
       dashboardUrl: DASHBOARD_URL,
       applicationIndex,
@@ -92,6 +93,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       judgesDirectionsOrderUrl,
       showRequestMoreInfoButton,
     });
+
   } catch (error) {
     next(error);
   }

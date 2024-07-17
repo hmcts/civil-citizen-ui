@@ -34,6 +34,12 @@ import {DocumentType} from 'models/document/documentType';
 import {
   CcdGeneralApplicationDirectionsOrderDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
+import {buildResponseSummaries} from './addViewApplicationResponseRows';
+
+export type ViewApplicationSummaries = {
+  summaryRows: SummaryRow[],
+  responseSummaries?: SummaryRow[],
+}
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -66,11 +72,13 @@ const buildViewApplicationToRespondentSections = (application: ApplicationRespon
   ];
 };
 
-export const getApplicationSections = async (req: AppRequest, applicationId: string, lang?: string): Promise<SummaryRow[]> => {
+export const getApplicationSections = async (req: AppRequest, applicationId: string, lang?: string): Promise<ViewApplicationSummaries> => {
   const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
   const claim = await getClaimById(req.params.id, req, true);
-  return toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, applicationResponse) ? buildApplicationSections(applicationResponse, lang)
-    : buildViewApplicationToRespondentSections(applicationResponse, lang);
+  return toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, applicationResponse) 
+    ? { summaryRows: buildApplicationSections(applicationResponse, lang),
+      responseSummaries: buildResponseSummaries(applicationResponse.case_data, lang) } 
+    : { summaryRows: buildViewApplicationToRespondentSections(applicationResponse, lang) };
 };
 
 const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {

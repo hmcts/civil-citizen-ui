@@ -94,8 +94,8 @@ describe('View Application service', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
-      const result = await getApplicationSections(mockedAppRequest, '1718105701451856', 'en');
-
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
+      
       expect(result).toHaveLength(13);
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE');
@@ -134,7 +134,7 @@ describe('View Application service', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
-      const result = await getApplicationSections(mockedAppRequest, '1718105701451856', 'en');
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
 
       expect(result).toHaveLength(12);
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC');
