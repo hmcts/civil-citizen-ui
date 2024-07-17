@@ -62,7 +62,7 @@ const connectSrc = [
 
 const manifestSrc = [
   self,
-  loginUrl,
+  'idam-api.aat.platform.hmcts.net',
 ];
 
 /**
@@ -104,9 +104,6 @@ export class Helmet {
           manifestSrc: manifestSrc,
           formAction: [self, loginUrl, ocmcBaseUrl, govPayUrl],
         },
-      }),
-      helmet({
-        crossOriginEmbedderPolicy: false,
       }),
     );
   }
