@@ -6,13 +6,19 @@ import {
   CCJ_PAID_AMOUNT_URL,
   CCJ_PAID_AMOUNT_SUMMARY_URL, CCJ_EXTENDED_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_URL,
 } from 'routes/urls';
-import {mockCivilClaim, mockCivilClaimantIntention, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {
+  civilClaimResponseMock,
+} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as utilService from 'modules/utilityService';
 import {Claim} from 'models/claim';
+import noRespondentTelephoneClaimantIntentionMock
+  from '../../../../../utils/mocks/noRespondentTelephoneClaimantIntentionMock.json';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('CCJ - Paid amount', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -27,14 +33,18 @@ describe('CCJ - Paid amount', () => {
 
   describe('on GET', () => {
     it('should return Paid amount page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       const res = await request(app).get(CCJ_PAID_AMOUNT_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('Has the defendant paid some of the amount owed?');
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       const res = await request(app).get(CCJ_PAID_AMOUNT_URL);
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -43,14 +53,18 @@ describe('CCJ - Paid amount', () => {
 
   describe('on GET from task-list', () => {
     it('should return Paid amount page from task-list', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       const res = await request(app).get(CCJ_EXTENDED_PAID_AMOUNT_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('Has the defendant paid some of the amount owed?');
     });
 
     it('should return status 500 when error thrown from task-list', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       const res = await request(app).get(CCJ_EXTENDED_PAID_AMOUNT_URL);
       expect(res.status).toBe(500);
       expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -59,7 +73,9 @@ describe('CCJ - Paid amount', () => {
 
   describe('on POST', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return error on empty post', async () => {
@@ -125,7 +141,9 @@ describe('CCJ - Paid amount', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       const res = await request(app).post(CCJ_PAID_AMOUNT_URL)
         .send({option: 'no'});
       expect(res.status).toBe(500);
@@ -135,7 +153,9 @@ describe('CCJ - Paid amount', () => {
 
   describe('on POST', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaimantIntention                                                    ;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data);
+      });
     });
     it('should redirect to paid amount summary page if option yes is selected with valid amount', async () => {
       const res = await request(app).post(CCJ_PAID_AMOUNT_URL)

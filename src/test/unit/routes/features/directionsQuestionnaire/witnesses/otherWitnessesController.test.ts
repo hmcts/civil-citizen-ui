@@ -5,14 +5,16 @@ import nock from 'nock';
 import {
   DQ_DEFENDANT_WITNESSES_URL,
   DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {t} from 'i18next';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {YesNo} from 'form/models/yesNo';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const otherWitnessMock = {
   'id': 1645882162449409,
@@ -34,12 +36,6 @@ const otherWitnessMock = {
   },
 };
 
-const civilClaimResponseMock: string = JSON.stringify(otherWitnessMock);
-const mockOtherWitnesses = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseMock)),
-};
-
 describe('Other Witnesses', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -52,7 +48,9 @@ describe('Other Witnesses', () => {
 
   describe('on Get', () => {
     test('should return on your other witnesses page successfully', async () => {
-      app.locals.draftStoreClient = mockOtherWitnesses;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), otherWitnessMock.case_data);
+      });
       await request(app).get(DQ_DEFENDANT_WITNESSES_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -61,7 +59,9 @@ describe('Other Witnesses', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(DQ_DEFENDANT_WITNESSES_URL)
         .expect((res) => {
@@ -73,7 +73,9 @@ describe('Other Witnesses', () => {
 
   describe('on Post', () => {
     test('should redirect with correct input and redirect to availability dates in next 12 months screen', async () => {
-      app.locals.draftStoreClient = mockOtherWitnesses;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), otherWitnessMock.case_data);
+      });
       await request(app)
         .post(DQ_DEFENDANT_WITNESSES_URL)
         .send({option: YesNo.NO, witnessItems: []})
@@ -136,7 +138,9 @@ describe('Other Witnesses', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(DQ_DEFENDANT_WITNESSES_URL)
         .send({
