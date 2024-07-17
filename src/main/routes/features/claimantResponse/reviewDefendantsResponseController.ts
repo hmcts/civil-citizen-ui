@@ -18,6 +18,7 @@ import { getClaimById } from 'modules/utilityService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
 import {ClaimResponseStatus} from 'models/claimResponseStatus';
+import {noGroupingCurrencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 const reviewDefendantsResponseController = Router();
 const reviewDefendantResponseViewPath = 'features/claimantResponse/review-defendants-response';
@@ -63,6 +64,7 @@ reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPO
       repaymentPlan,
       claimId,
       originalUrl,
+      admittedAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission?.howMuchDoYouOwe?.amount),
       pageTitle,
     });
   } catch (error) {
