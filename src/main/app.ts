@@ -148,8 +148,8 @@ app.use((_req, res, next) => {
   );
 
   res.setHeader(
-   'access-control-allow-methods',
-   'GET,POST,OPTIONS,PUT,DELETE',
+    'access-control-allow-methods',
+    'GET,POST,OPTIONS,PUT,DELETE',
   );
 
   next();
