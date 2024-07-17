@@ -1,6 +1,10 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
-import {ApplicationType, ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {
+  ApplicationType,
+  ApplicationTypeOption,
+  selectedApplicationType,
+} from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
@@ -21,11 +25,20 @@ import {RespondentAgreement} from 'common/models/generalApplication/response/res
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
-import {AcceptDefendantOffer, ProposedPaymentPlanOption} from 'common/models/generalApplication/response/acceptDefendantOffer';
+import {
+  AcceptDefendantOffer,
+  ProposedPaymentPlanOption,
+} from 'common/models/generalApplication/response/acceptDefendantOffer';
 import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
+import {ApplicationState, ApplicationStatus} from 'common/models/generalApplication/applicationSummary';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import config from 'config';
+import {GaServiceClient} from 'client/gaServiceClient';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
+const baseUrl: string = config.get<string>('services.generalApplication.url');
+const generalApplicationClient = new GaServiceClient(baseUrl);
 
 export const saveApplicationType = async (claimId: string, applicationType: ApplicationType, index?: number): Promise<void> => {
   try {
@@ -338,3 +351,36 @@ export const saveHelpWithFeesDetails = async (claimId: string, value: any, hwfPr
   }
 };
 
+export const getApplicationStatus = (status: ApplicationState): ApplicationStatus => {
+  switch (status) {
+    case ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION:
+      return ApplicationStatus.IN_PROGRESS;
+    case ApplicationState.AWAITING_RESPONDENT_RESPONSE:
+      return ApplicationStatus.IN_PROGRESS;
+    case ApplicationState.AWAITING_APPLICATION_PAYMENT:
+      return ApplicationStatus.TO_DO;
+    default:
+      return ApplicationStatus.TO_DO;
+  }
+};
+
+export const getApplicationFromGAService = async (req: AppRequest, applicationId: string): Promise<ApplicationResponse> => {
+  return await generalApplicationClient.getApplication(req, applicationId);
+};
+
+export const saveRespondentWantToUploadDoc = async (claimId: string, claim: Claim, wantToUploadDocuments: YesNo): Promise<void> => {
+  try {
+    const generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = {
+      ...generalApplication,
+      response: {
+        ...generalApplication.response,
+        wantToUploadDocuments,
+      },
+    };
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};

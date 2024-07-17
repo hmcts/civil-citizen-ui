@@ -4,7 +4,7 @@ import {MIN_AMOUNT_VALUE} from 'common/form/validators/validationConstraints';
 import {YesNo} from '../../../form/models/yesNo';
 
 export class PaidAmount {
-  @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION'})
+  @IsDefined({message: 'ERRORS.VALID_YES_NO_OPTION_DO_NADDO'})
     option?: YesNo;
 
   totalAmount?: number;

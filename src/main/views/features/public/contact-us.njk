@@ -1,0 +1,23 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "../../macro/external-link.njk" import externalLink %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.CONTACT_US.TITLE') }}
+{% endblock %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{t('PAGES.CONTACT_US.TITLE')}}</h1>
+          <h1 class="govuk-heading-m govuk-!-margin-bottom-0">{{ t('COMMON.EMAIL') }}</h1>
+          <a class="govuk-link" href="mailto:{{t('contactocmc@justice.gov.uk')}}">{{t('contactocmc@justice.gov.uk')}}</a>
+          <h1 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-6">{{ t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') }}</h1>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ t('0300 123 7050') }}</p>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS') }}</p>
+          {{ externalLink(t, 'COMMON.CONTACT_US_FOR_HELP.CALL_CHARGES', 'https://www.gov.uk/call-charges', false) }}</p>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
