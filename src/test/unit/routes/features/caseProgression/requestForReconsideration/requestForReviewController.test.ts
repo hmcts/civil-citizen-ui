@@ -1,6 +1,5 @@
 import {
-  mockCivilClaim,
-  mockRedisFailure,
+  civilClaimResponseMock,
 } from '../../../../../utils/mockDraftStore';
 import {
   REQUEST_FOR_RECONSIDERATION_URL, REQUEST_FOR_RECONSIDERATION_CYA_URL,
@@ -12,11 +11,14 @@ import nock from 'nock';
 const session = require('supertest-session');
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const claimId = claim.id;
 const civilServiceUrl = config.get<string>('services.civilService.url');
@@ -37,7 +39,9 @@ describe('Request for Review - On GET', () => {
 
   it('should render page successfully in English if cookie has correct values', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
     //When
     await testSession
       .get(REQUEST_FOR_RECONSIDERATION_URL.replace(':id', claimId))
@@ -50,7 +54,9 @@ describe('Request for Review - On GET', () => {
 
   it('should render page successfully in Welsh when query is cy and cookie has correct values', async () => {
     //Given
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
     //When
     await testSession
       .get(REQUEST_FOR_RECONSIDERATION_URL.replace(':id', claimId)).query({lang: 'cy'})
@@ -63,7 +69,9 @@ describe('Request for Review - On GET', () => {
 
   it('should return "Something went wrong" page when claim does not exist', async () => {
     //Given
-    app.locals.draftStoreClient = mockRedisFailure;
+    mockGetCaseData.mockImplementation(async () => {
+      throw new Error(TestMessages.REDIS_FAILURE);
+    });
     //When
     await testSession
       .get(REQUEST_FOR_RECONSIDERATION_URL.replace(':id', '1111')).query({lang: 'en'})
@@ -77,7 +85,9 @@ describe('Request for Review - On GET', () => {
 
 describe('Request for Review - on POST', () => {
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    mockGetCaseData.mockImplementation(async () => {
+      return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+    });
   });
   beforeEach(()=> {
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);

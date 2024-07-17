@@ -5,13 +5,16 @@ import request from 'supertest';
 import {GA_REQUESTING_REASON_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/features/claim/details/claimDetailsService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('General Application - Requesting reason', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -26,7 +29,9 @@ describe('General Application - Requesting reason', () => {
 
   describe('on GET', () => {
     it('should return page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
 
       await request(app)
         .get(GA_REQUESTING_REASON_URL)
@@ -37,7 +42,9 @@ describe('General Application - Requesting reason', () => {
     });
 
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(GA_REQUESTING_REASON_URL)
         .expect((res) => {
@@ -49,7 +56,9 @@ describe('General Application - Requesting reason', () => {
 
   describe('on POST', () => {
     it('should send the value and redirect', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(GA_REQUESTING_REASON_URL)
         .send({text: 'test'})
@@ -59,7 +68,9 @@ describe('General Application - Requesting reason', () => {
     });
 
     it('should return errors on empty textarea', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .post(GA_REQUESTING_REASON_URL)
         .send({text: ''})
@@ -70,7 +81,9 @@ describe('General Application - Requesting reason', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(GA_REQUESTING_REASON_URL)
         .send({text: 'test'})

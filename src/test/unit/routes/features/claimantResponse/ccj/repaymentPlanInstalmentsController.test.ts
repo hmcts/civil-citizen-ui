@@ -5,14 +5,19 @@ import {app} from '../../../../../../main/app';
 import {
   CCJ_CHECK_AND_SEND_URL,
   CCJ_REPAYMENT_PLAN_INSTALMENTS_URL,
-} from '../../../../../../main/routes/urls';
-import {mockCivilClaim, mockCivilClaimUndefined, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+} from 'routes/urls';
+import {
+  civilClaimResponseMock,
+} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {TransactionSchedule} from '../../../../../../main/common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('CCJ Repayment Plan page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -26,7 +31,9 @@ describe('CCJ Repayment Plan page', () => {
 
   describe('on GET', () => {
     it('should return CCJ Repayment Plan page empty when dont have information on redis ', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app)
         .get(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
         .expect((res) => {
@@ -36,7 +43,9 @@ describe('CCJ Repayment Plan page', () => {
     });
 
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
         .expect((res) => {
@@ -48,7 +57,9 @@ describe('CCJ Repayment Plan page', () => {
 
   describe('on POST', () => {
     it('should create a new claim response if redis gives undefined', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), undefined);
+      });
       await request(app)
         .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
         .send({
@@ -69,7 +80,9 @@ describe('CCJ Repayment Plan page', () => {
 
     describe('instalmentAmount', () => {
       it('should return error when no amount input', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+        });
         await request(app)
           .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
           .send({
@@ -89,7 +102,9 @@ describe('CCJ Repayment Plan page', () => {
       });
 
       it('should return error when negative amount input', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+        });
         await request(app)
           .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
           .send({
@@ -109,7 +124,9 @@ describe('CCJ Repayment Plan page', () => {
       });
 
       it('should return error when amount is more than two decimal places', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+        });
         await request(app)
           .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
           .send({
@@ -129,7 +146,9 @@ describe('CCJ Repayment Plan page', () => {
       });
 
       it('should return error when amount is more than total claim amount', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+        });
         await request(app)
           .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
           .send({
@@ -151,7 +170,9 @@ describe('CCJ Repayment Plan page', () => {
 
     describe('firstPaymentDate', () => {
       it('should return error for day larger than 31', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+        });
         await request(app)
           .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
           .send({
@@ -171,7 +192,9 @@ describe('CCJ Repayment Plan page', () => {
       });
 
       it('should return error for day when no input', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+        });
         await request(app)
           .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
           .send({
@@ -191,7 +214,9 @@ describe('CCJ Repayment Plan page', () => {
       });
 
       it('should return error for month larger than 12', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+        });
         await request(app)
           .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
           .send({
@@ -211,7 +236,9 @@ describe('CCJ Repayment Plan page', () => {
       });
 
       it('should return error for month when no input', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+        });
         await request(app)
           .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
           .send({
@@ -231,7 +258,9 @@ describe('CCJ Repayment Plan page', () => {
       });
 
       it('should return error for year not 4 digits', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+        });
         await request(app)
           .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
           .send({
@@ -251,7 +280,9 @@ describe('CCJ Repayment Plan page', () => {
       });
 
       it('should return error for year when no input', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+        });
         await request(app)
           .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
           .send({
@@ -271,7 +302,9 @@ describe('CCJ Repayment Plan page', () => {
       });
 
       it('should return error when year is larger than 9999', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+        });
         await request(app)
           .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
           .send({
@@ -291,7 +324,9 @@ describe('CCJ Repayment Plan page', () => {
       });
 
       it('should return error for date that is before a month from now', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+        });
         await request(app)
           .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
           .send({
@@ -313,7 +348,9 @@ describe('CCJ Repayment Plan page', () => {
 
     describe('paymentFrequency', () => {
       it('should return error when no payment frequency option selected', async () => {
-        app.locals.draftStoreClient = mockCivilClaim;
+        mockGetCaseData.mockImplementation(async () => {
+          return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+        });
         await request(app)
           .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
           .send({
@@ -396,7 +433,9 @@ describe('CCJ Repayment Plan page', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL)
         .send({
