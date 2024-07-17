@@ -8,7 +8,7 @@
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.CCJ_DEFENDANT_DOB.PAGE_TITLE') }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% set errors = form.getAllErrors() %}

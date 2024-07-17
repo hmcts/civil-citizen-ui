@@ -20,7 +20,7 @@ import { AppRequest } from 'common/models/AppRequest';
 import {ClaimResponseStatus} from 'models/claimResponseStatus';
 
 const reviewDefendantsResponseController = Router();
-const revieDefendantResponseViewPath = 'features/claimantResponse/review-defendants-response';
+const reviewDefendantResponseViewPath = 'features/claimantResponse/review-defendants-response';
 const crPropertyName = 'defendantResponseViewed';
 const pageParam = 'how-they-want-to-pay-response';
 
@@ -35,6 +35,7 @@ const renderHowTheyWantPay = (req: Request, res: Response, claim: Claim) => {
     defendantsResponseContent,
     continueLink,
     financialDetails,
+    pageTitle: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PAGE_TITLE',
   });
 };
 
@@ -52,7 +53,7 @@ reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPO
       return renderHowTheyWantPay(req, res, claim);
     }
 
-    res.render(revieDefendantResponseViewPath, {
+    res.render(reviewDefendantResponseViewPath, {
       claim,
       downloadResponseLink,
       financialDetails,
@@ -61,6 +62,7 @@ reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPO
       repaymentPlan,
       claimId,
       originalUrl,
+      pageTitle: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PAGE_TITLE',
     });
   } catch (error) {
     next(error);

@@ -10,6 +10,7 @@ import { getClaimantResponse, saveClaimantResponse } from 'services/features/cla
 import { currencyFormatWithNoTrailingZeros } from 'common/utils/currencyFormat';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { AppRequest } from 'common/models/AppRequest';
+import {t} from "i18next";
 
 const settleAdmittedController = Router();
 const settleClaimViewPath = 'features/claimantResponse/settle-admitted';
@@ -21,6 +22,7 @@ async function renderView(form: GenericForm<GenericYesNo>, claimId: string, res:
     form,
     totalAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount),
     admittedAmount,
+    pageTitle: t('PAGES.PARTIAL_ADMISSION_SETTLE_ADMITTED.PAGE_TITLE', {admittedAmount: admittedAmount}),
   });
 }
 
