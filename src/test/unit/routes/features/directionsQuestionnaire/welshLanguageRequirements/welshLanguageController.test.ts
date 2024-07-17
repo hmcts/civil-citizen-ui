@@ -6,18 +6,20 @@ import {
   RESPONSE_TASK_LIST_URL,
   DQ_WELSH_LANGUAGE_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
-} from '../../../../../../main/routes/urls';
+} from 'routes/urls';
 import {
-  mockCivilClaim,
-  mockCivilClaimantIntention,
-  mockCivilClaimUndefined,
-  mockRedisFailure,
+  civilClaimResponseMock,
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
+import noRespondentTelephoneClaimantIntentionMock
+  from '../../../../../utils/mocks/noRespondentTelephoneClaimantIntentionMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Welsh Language Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -31,7 +33,9 @@ describe('Welsh Language Controller', () => {
 
   describe('on GET', () => {
     it('should return welsh language page when has data in redis', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(DQ_WELSH_LANGUAGE_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.WELSH_LANGUAGE.PAGE_TITLE'));
@@ -39,7 +43,9 @@ describe('Welsh Language Controller', () => {
     });
 
     it('should return welsh language page- when redis is empty', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), undefined);
+      });
       await request(app).get(DQ_WELSH_LANGUAGE_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.WELSH_LANGUAGE.PAGE_TITLE'));
@@ -47,7 +53,9 @@ describe('Welsh Language Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(DQ_WELSH_LANGUAGE_URL)
         .expect((res) => {
@@ -59,7 +67,9 @@ describe('Welsh Language Controller', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return welsh language page on empty post', async () => {
@@ -80,7 +90,9 @@ describe('Welsh Language Controller', () => {
     });
 
     it('should redirect to Claimant Response Task List page', async () => {
-      app.locals.draftStoreClient = mockCivilClaimantIntention;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data);
+      });
       await request(app).post(DQ_WELSH_LANGUAGE_URL)
         .send({speakLanguage: 'en', documentsLanguage: 'en-cy'})
         .expect((res) => {
@@ -90,7 +102,9 @@ describe('Welsh Language Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(DQ_WELSH_LANGUAGE_URL)
         .send({speakLanguage: 'en', documentsLanguage: 'en-cy'})

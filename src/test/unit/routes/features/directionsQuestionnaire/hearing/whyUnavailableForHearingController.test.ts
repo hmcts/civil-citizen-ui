@@ -2,13 +2,16 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {DQ_PHONE_OR_VIDEO_HEARING_URL, DQ_UNAVAILABLE_FOR_HEARING_URL} from '../../../../../../main/routes/urls';
+import {civilClaimResponseMock} from '../../../../../utils/mockDraftStore';
+import {DQ_PHONE_OR_VIDEO_HEARING_URL, DQ_UNAVAILABLE_FOR_HEARING_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Why Unavailable for Hearing Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -22,7 +25,9 @@ describe('Why Unavailable for Hearing Controller', () => {
 
   describe('on GET', () => {
     it('should return why unavailable for hearing page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(DQ_UNAVAILABLE_FOR_HEARING_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Why are you, your experts or witnesses unavailable for a hearing for ');
@@ -30,7 +35,9 @@ describe('Why Unavailable for Hearing Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(DQ_UNAVAILABLE_FOR_HEARING_URL)
         .expect((res: Response) => {
@@ -42,7 +49,9 @@ describe('Why Unavailable for Hearing Controller', () => {
 
   describe('on POST', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return why unavailable for hearing page', async () => {
@@ -70,7 +79,9 @@ describe('Why Unavailable for Hearing Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(DQ_UNAVAILABLE_FOR_HEARING_URL)
         .send({reason: 'reason'})

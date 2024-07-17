@@ -7,10 +7,13 @@ import {
   CITIZEN_WHO_EMPLOYS_YOU_URL,
   CITIZEN_COURT_ORDERS_URL,
   CITIZEN_SELF_EMPLOYED_URL,
-} from '../../../../../../../main/routes/urls';
-import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
+} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import fullAdmitPayBySetDateMock from '../../../../../../utils/mocks/fullAdmitPayBySetDateMock.json';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+jest.mock('modules/draft-store/draftStoreService');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const mockEmployer = {rows: [{employerName: 'Felipe', jobTitle: 'Developer'}]};
 
@@ -43,27 +46,6 @@ const mockRedisEmployedAndSelfEmployed = getMockWithEmploymentType(['EMPLOYED', 
 
 const mockRedisSelfEmployed = getMockWithEmploymentType(['SELF-EMPLOYED']);
 
-const mockEmployed = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisEmployed))),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
-const mockEmployedAndSelfEmployed = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisEmployedAndSelfEmployed))),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
-const mockSelfEmployed = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisSelfEmployed))),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
 jest.mock('../../../../../../../main/modules/oidc');
 
 describe('Who employs you', () => {
@@ -74,12 +56,13 @@ describe('Who employs you', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
   describe('on Get', () => {
     it('should return who employs you page successfully', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app).get(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -88,7 +71,9 @@ describe('Who employs you', () => {
     });
 
     it('should return who employs you page with data from redis', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app).get(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -97,7 +82,9 @@ describe('Who employs you', () => {
     });
 
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .expect((res) => {
@@ -109,7 +96,9 @@ describe('Who employs you', () => {
 
   describe('on Post', () => {
     it('should return error message when form is empty', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .send({rows: [{employerName: '', jobTitle: ''}]})
         .expect((res) => {
@@ -120,7 +109,9 @@ describe('Who employs you', () => {
     });
 
     it('should return error message when jobTitle is empty', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .send({rows: [{employerName: 'Test', jobTitle: ''}]})
         .expect((res) => {
@@ -131,7 +122,9 @@ describe('Who employs you', () => {
     });
 
     it('should create statementOfMeans if empty', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), fullAdmitPayBySetDateMock.case_data);
+      });
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .send(mockEmployer)
         .expect((res) => {
@@ -141,7 +134,9 @@ describe('Who employs you', () => {
     });
 
     it('should redirect to self-employment page when employment type is employed and self-employed', async () => {
-      app.locals.draftStoreClient = mockEmployedAndSelfEmployed;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), mockRedisEmployedAndSelfEmployed.case_data);
+      });
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .send(mockEmployer)
         .expect((res) => {
@@ -151,7 +146,9 @@ describe('Who employs you', () => {
     });
 
     it('should redirect to courts order page when employment type is employed', async () => {
-      app.locals.draftStoreClient = mockEmployed;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), mockRedisEmployed.case_data);
+      });
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .send(mockEmployer)
         .expect((res) => {
@@ -161,7 +158,9 @@ describe('Who employs you', () => {
     });
 
     it('should redirect to error page when employment type is self-employed and user is on this page', async () => {
-      app.locals.draftStoreClient = mockSelfEmployed;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), mockRedisSelfEmployed.case_data);
+      });
       await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .send(mockEmployer)
         .expect((res) => {
@@ -171,7 +170,9 @@ describe('Who employs you', () => {
     });
 
     it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CITIZEN_WHO_EMPLOYS_YOU_URL)
         .send(mockEmployer)

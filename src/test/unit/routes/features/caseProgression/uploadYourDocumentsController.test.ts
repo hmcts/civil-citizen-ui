@@ -5,8 +5,10 @@ import {UPLOAD_YOUR_DOCUMENTS_URL} from 'routes/urls';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import Module from 'module';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -15,12 +17,13 @@ export const USER_DETAILS = {
   accessToken: citizenRoleToken,
   roles: ['citizen'],
 };
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
 }));
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('"upload your documents" page test', () => {
   const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
@@ -50,7 +53,9 @@ describe('"upload your documents" page test', () => {
   describe('on GET', () => {
     it('should return expected page when claim exists', async () => {
       //Given
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claim);
@@ -67,7 +72,9 @@ describe('"upload your documents" page test', () => {
 
     it('should return expected page when claim exists', async () => {
       //Given
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
         .reply(200, claim);
@@ -84,7 +91,9 @@ describe('"upload your documents" page test', () => {
 
     it('should return "Something went wrong" page when claim does not exist', async () => {
       //Given
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + '1111')
         .reply(404, null);
