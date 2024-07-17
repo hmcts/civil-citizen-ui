@@ -6,20 +6,23 @@ import {app} from '../../../../../main/app';
 import {
   CLAIMANT_RESPONSE_TASK_LIST_URL,
   CLAIMANT_SIGN_SETTLEMENT_AGREEMENT,
-} from '../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ResponseType} from 'common/form/models/responseType';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import { PartyType } from 'common/models/partyType';
+import { Claim } from 'common/models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import { civilClaimResponseMock } from '../../../../utils/mockDraftStore';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
   getRedisStoreForSession: jest.fn(),
 }));
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 describe('Sign Settlement Agreement', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -56,11 +59,9 @@ describe('Sign Settlement Agreement', () => {
           },
         },
       };
-      app.locals.draftStoreClient = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
-      };
-
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.TITLE'));
@@ -102,11 +103,9 @@ describe('Sign Settlement Agreement', () => {
           },
         },
       };
-      app.locals.draftStoreClient = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
-      };
-
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
       await request(app).get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.TITLE'));
@@ -117,7 +116,9 @@ describe('Sign Settlement Agreement', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT)
         .expect((res) => {
@@ -129,7 +130,9 @@ describe('Sign Settlement Agreement', () => {
 
   describe('on POST', () => {
     beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return Object.assign(new Claim(), civilClaimResponseMock.case_data);
+      });
     });
 
     it('should return error on empty post', async () => {
@@ -148,7 +151,9 @@ describe('Sign Settlement Agreement', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetCaseData.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app)
         .post(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT)
         .send({signed: true})
