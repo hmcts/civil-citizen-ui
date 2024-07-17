@@ -344,7 +344,7 @@ ccd:
         ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
         ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 12000
         DEFINITION_STORE_DB_OPTIONS: "?stringtype=unspecified"
-          DEFINITION_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
+        DEFINITION_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
       secrets:
         DEFINITION_STORE_DB_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
