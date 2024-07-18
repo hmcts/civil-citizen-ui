@@ -28,7 +28,7 @@ Before(async ({api}) => {
   }
 });
 
-Scenario.skip('Fast Track case is struck out due to hearing fee not being paid', async () => {
+Scenario('Fast Track case is struck out due to hearing fee not being paid', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     if (isDashboardServiceEnabled) {
