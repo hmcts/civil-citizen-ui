@@ -12,7 +12,7 @@ const applicationFeePaymentSuccessfulController: Router = Router();
 const paymentSuccessfulViewPath = 'features/generalApplication/payment-successful';
 
 async function renderView(res: Response, req: AppRequest, claimId: string, appId: string) {
-  let claim = await getClaimById(claimId, req, true);
+  const claim = await getClaimById(claimId, req, true);
   const applicationResponse = await getApplicationFromGAService(req, appId);
   const calculatedAmountInPence = applicationResponse?.case_data?.generalAppPBADetails?.fee?.calculatedAmountInPence;
   const lng = req.query.lang ? req.query.lang : req.cookies.lang;
