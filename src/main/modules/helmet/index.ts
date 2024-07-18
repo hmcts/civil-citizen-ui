@@ -59,6 +59,7 @@ const connectSrc = [
   '*.gov.uk',
   '*.google-analytics.com',
   '*.analytics.google.com',
+  dynatraceDomain,
 ];
 
 /**

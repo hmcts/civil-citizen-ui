@@ -1240,8 +1240,8 @@
       "WHEN_PAY_TITLE": "Pryd fyddwch chi'n talu?",
       "WHERE_DO_YOU_LIVE": "Ble rydych chi'n byw?",
       "WITNESS": "Tyst",
-      "WILL_REPAY_IN_INSTALLMENTS": "Bydd {{ fullName }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ instalmentAmount }} bob {{ frequency }}. Bydd y rhandaliad cyntaf yn cael ei dalu erbyn {{ instalmentDate }}",
-      "WILL_PAY_BY_PAYMENT_DATE": " Bydd {{ fullName }} yn talu £{{ amount }}, heb fod yn hwyrach na {{ paymentDate }}",
+      "WILL_REPAY_IN_INSTALLMENTS": "Bydd {{ fullName }} yn ad-dalu {{ amount }} mewn rhandaliadau o £{{ instalmentAmount }} bob {{ frequency }}. Bydd y rhandaliad cyntaf yn cael ei dalu erbyn {{ instalmentDate }}",
+      "WILL_PAY_BY_PAYMENT_DATE": " Bydd {{ fullName }} yn talu {{ amount }}, heb fod yn hwyrach na {{ paymentDate }}",
       "WILL_PAY_IMMEDIATELY": "Bydd {{ fullName }} yn talu ar unwaith",
       "YOUR_FINANCIAL_DETAILS_TITLE": "Eich manylion ariannol",
       "YOUR_RESPONSE": "Eich ymateb"
@@ -1764,8 +1764,8 @@
           "LABEL": "Y cytundeb",
           "REPAYMENT_PLAN_PART_ONE": "Bydd {{ defendant }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ paymentAmount }} pob  ",
           "REPAYMENT_PLAN_PART_TWO": "Telir y rhandaliad cyntaf erbyn {{ firstRepaymentDate }}",
-          "PAYMENT_TEXT": "Bydd {{ fullName }} yn ad-dalu £{{ amount }} mewn rhandaliadau o £{{ instalmentAmount }} pob {{ frequency }}. Telir y rhandaliad cyntaf erbyn {{ instalmentDate }}",
-          "IMMEDIATE_PLAN": "Bydd {{ fullName }} yn talu £{{ amount }} ar unwaith. Bydd {{ claimant }} yn derbyn yr arian erbyn {{ paymentDate }} fan bellaf. Bydd unrhyw sieciau neu drosglwyddiadau banc wedi clirio ac yng nghyfrif {{ fullName }}'s erbyn y dyddiad hwn."
+          "PAYMENT_TEXT": "Bydd {{ fullName }} yn ad-dalu {{ amount }} mewn rhandaliadau o £{{ instalmentAmount }} pob {{ frequency }}. Telir y rhandaliad cyntaf erbyn {{ instalmentDate }}",
+          "IMMEDIATE_PLAN": "Bydd {{ fullName }} yn talu {{ amount }} ar unwaith. Bydd {{ claimant }} yn derbyn yr arian erbyn {{ paymentDate }} fan bellaf. Bydd unrhyw sieciau neu drosglwyddiadau banc wedi clirio ac yng nghyfrif {{ fullName }}'s erbyn y dyddiad hwn."
         },
         "COMPLETION_DATE": {
           "LABEL": "Dyddiad cwblhau",
@@ -2062,12 +2062,12 @@
         "CLAIM_ENDED": "Mae'r hawliad hwn wedi dod i ben.",
         "CLAIM_SENT_TO_CLAIMANT": "Rydym wedi anfon eich cynnig at yr hawlydd. Rydych wedi gwrthod yr hawliad.",
         "CLAIM_SETTLED": "Mae'r hawliad hwn wedi'i setlo.",
-        "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "Mae {{ claimantName }}  yn derbyn eich cynnig o £{{ amount }}.",
+        "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "Mae {{ claimantName }}  yn derbyn eich cynnig o {{ amount }}.",
         "CLAIMANT_ACCEPTED_SETTLE_IN_COURT": "Mae’r hawlydd wedi derbyn eich cynnig. Mae angen i chi lofnodi cytundeb cyfreithiol i setlo y tu allan i'r llys. Rydych wedi gwrthod yr hawliad.",
         "CLAIMANT_ASKED_TO_SIGN_AGREEMENT": "Mae {{ claimantName }} yn gofyn i chi lofnodi cytundeb setlo.",
         "CLAIMANT_CONFIRMED_PAYMENT": "Mae {{ claimantName }} wedi cadarnhau eich bod wedi talu.",
         "CLAIMANT_REJECT_OFFER": "Mae’r hawlydd wedi gwrthod eich cynnig. Rydych wedi gwrthod yr hawliad.",
-        "CLAIMANT_REJECT_PARTIAL_ADMISSION": "Mae {{ claimantName }} wedi gwrthod eich addefiad o £{{ amount }}.",
+        "CLAIMANT_REJECT_PARTIAL_ADMISSION": "Mae {{ claimantName }} wedi gwrthod eich addefiad o {{ amount }}.",
         "CLAIMANT_REQUESTED_CCJ": "Gofynnodd {{ claimantName }}  am Ddyfarniad Llys Sirol yn eich erbyn ar {{ccjRequestedDate}}.",
         "CLAIMANT_REQUESTED_CCJ_BY_DETERMINATION": "Gofynnodd {{ claimantName }} am Ddyfarniad Llys Sirol yn eich erbyn.",
         "DECISION_ON_RECONSIDERATION": "An order has been made.",
@@ -3557,11 +3557,11 @@
       "WHEN_DID": "Pryd y gwnaethoch dalu’r swm hwn?"
     },
     "PARTIAL_ADMISSION_SETTLE_ADMITTED": {
-      "PAGE_TITLE": "Ydych chi eisiau setlo'r cais am 'y/yr £{{ admittedAmount }} a addefir gan y diffynnydd?",
+      "PAGE_TITLE": "Ydych chi eisiau setlo'r cais am 'y/yr {{ admittedAmount }} a addefir gan y diffynnydd?",
       "AGREE_THEIR_REPAYMENT_PLAN": "Gallwch gytuno i'w cynllun ad-dalu neu awgrymu eich cynllun eich hun",
       "CONTINUE_AMOUNT_YOU_CLAIMED": "Bydd yr hawliad yn parhau am y cyfanswm a hawliwyd gennych",
       "THIS_IS_THE_TOTAL_AMOUNT": "Dyma'r cyfanswm a delir i chi, gan gynnwys ffi'r hawliad a'r llog os yw'n berthnasol",
-      "TITLE": "Ydych chi eisiau setlo'r cais am 'y/yr £{{ admittedAmount }} a addefir gan y diffynnydd?"
+      "TITLE": "Ydych chi eisiau setlo'r cais am 'y/yr {{ admittedAmount }} a addefir gan y diffynnydd?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Pam rydych chi'n anghytuno?",
@@ -3806,10 +3806,10 @@
       "PAGE_TITLE": "Adolygu ymateb y diffynnydd",
       "PART_ADMIT_ALREADY_PAID_STATEMENT": "Dywedodd {{ defendant }} ei fod wedi talu £{{ paidAmount }} ichi. Dywedodd mai dyma'r cyfan sydd arno, nid y swm yr oeddech chi'n ei hawlio.",
       "PART_ADMIT_NOT_PAID": {
-        "DEFENDANT_ADMITS_THEY_OWE": "Mae {{ defendant }} yn cyfaddef bod arnynt £{{ paidAmount }} ichi. Nid ydynt yn credu bod arnynt y swm llawn a hawlir.",
-        "THEY_OFFERED_TO_PAY_YOU": "Mae wedi cynnig talu £{{ paidAmount }} i chi mewn rhandaliadau. Dyma'r cyfanswm a delir ichi, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
-        "THEY_OFFERED_TO_PAY_YOU_BY_DATE": "Maen nhw wedi cynnig talu £{{ paidAmount }} i chi erbyn {{datePaid}}. Dyma'r cyfanswm y byddwch yn cael eich talu, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
-        "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "Mae wedi cynnig talu £{{ paidAmount }} i chi ar unwaith. Dyma'r cyfanswm a delir ichi, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
+        "DEFENDANT_ADMITS_THEY_OWE": "Mae {{ defendant }} yn cyfaddef bod arnynt {{ paidAmount }} ichi. Nid ydynt yn credu bod arnynt y swm llawn a hawlir.",
+        "THEY_OFFERED_TO_PAY_YOU": "Mae wedi cynnig talu {{ paidAmount }} i chi mewn rhandaliadau. Dyma'r cyfanswm a delir ichi, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
+        "THEY_OFFERED_TO_PAY_YOU_BY_DATE": "Maen nhw wedi cynnig talu {{ paidAmount }} i chi erbyn {{datePaid}}. Dyma'r cyfanswm y byddwch yn cael eich talu, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
+        "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "Mae wedi cynnig talu {{ paidAmount }} i chi ar unwaith. Dyma'r cyfanswm a delir ichi, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
         "WHY_THEY_DONT_OWE": "Pam nad oes arnynt y swm sy'n cael ei hawlio?"
       },
       "PAY_EXPENSES": "A ydynt yn talu unrhyw dreuliau?",
@@ -3831,7 +3831,7 @@
       "WHY_THEY_DISAGREE_CLAIM": "Pam ei fod yn anghytuno â’r hawliad?",
       "WHY_THEY_DISAGREE_EVIDENCE": "Pam ei fod anghytuno â’ch tystiolaeth?",
       "WHY_THEY_DISAGREE_TIMELINE": "Pam eu bod yn anghytuno â’ch llinell amser?",
-      "HOW_THEY_WANT_TO_PAY_RESPONSE": "Maen nhw wedi cynnig talu £{{ amount }} i chi erbyn {{ paymentDate }}. Dyma'r cyfanswm y byddwch yn cael eich talu, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
+      "HOW_THEY_WANT_TO_PAY_RESPONSE": "Maen nhw wedi cynnig talu {{ amount }} i chi erbyn {{ paymentDate }}. Dyma'r cyfanswm y byddwch yn cael eich talu, gan gynnwys ffi’r hawliad a'r llog os yw'n berthnasol.",
       "PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE": {
         "TITLE": "Sut mae am dalu?",
         "SUGGESTED_REPAYMENT": "Awgrymodd y diffynnydd y cynllun ad-dalu hwn",
