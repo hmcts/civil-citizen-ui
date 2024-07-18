@@ -21,12 +21,13 @@ import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getJudgmentAmountSummary} from '../ccj/judgmentAmountSummaryService';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {noGroupingCurrencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 export const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lng: string,isClaimantPlanAccepted: boolean): SummarySection => {
   const date = claim.claimantResponse?.suggestedPaymentIntention?.paymentDate as unknown as PaymentDate;
   const paymentDate = t(formatDateToFullDate(isClaimantPlanAccepted? date.date:getPaymentDate(claim), lng));
   const fullName = claim.getDefendantFullName();
-  const amount = getAmount(claim);
+  const amount = noGroupingCurrencyFormatWithNoTrailingZeros(getAmount(claim));
   return summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.SETTLEMENT_AGREEMENT', { lng }),
     summaryRows: [
@@ -38,7 +39,7 @@ export const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lng: 
 
 export const buildSummaryForPayByInstalments = (claim: Claim, claimId: string, lng: string,isClaimantPlanAccepted: boolean): SummarySection => {
   const fullName = claim.getDefendantFullName();
-  const amount = getAmount(claim);
+  const amount = noGroupingCurrencyFormatWithNoTrailingZeros(getAmount(claim));
   const instalmentAmount = isClaimantPlanAccepted ? getPaymentAmountClaimantPlan(claim) : getPaymentAmount(claim);
   const paymentFrequency= isClaimantPlanAccepted ? getRepaymentFrequencyForClaimantPlan(claim) : getRepaymentFrequency(claim);
   const frequency = t(`COMMON.PAYMENT_FREQUENCY.${paymentFrequency}`, { lng })?.toLowerCase();
