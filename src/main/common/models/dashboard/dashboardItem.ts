@@ -4,6 +4,7 @@ import {t} from 'i18next';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
 import {BASE_ELIGIBILITY_URL, DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {noGroupingCurrencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -140,7 +141,8 @@ export class DashboardDefendantItem extends DashboardItem {
     const paramClaimantName = {key: 'claimantName', value: this.claimantName};
     const paramCCJRequestedDate = {key: 'ccjRequestedDate', value: formatDateToFullDate(this.ccjRequestedDate, lang)};
     const paramResponseDeadline = {key: 'responseDeadline', value: formatDateToFullDate(this.responseDeadline, lang)};
-    const paramAdmittedAmount = {key: 'amount', value: this.respondToAdmittedClaimOwingAmountPounds?.toString() ?? this.admittedAmount?.toString()};
+    const displayedAmount = noGroupingCurrencyFormatWithNoTrailingZeros(this.respondToAdmittedClaimOwingAmountPounds ?? this.admittedAmount);
+    const paramAdmittedAmount = {key: 'amount', value: displayedAmount};
 
     return {
       NO_STATUS: {translationKey: ''},
