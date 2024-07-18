@@ -1239,8 +1239,8 @@
       "WHEN_PAY_TITLE": "When you'll pay?",
       "WHERE_DO_YOU_LIVE": "Where do you live?",
       "WITNESS": "Witness",
-      "WILL_REPAY_IN_INSTALLMENTS": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
-      "WILL_PAY_BY_PAYMENT_DATE": " {{ fullName }} will pay £{{ amount }}, no later than {{ paymentDate }}",
+      "WILL_REPAY_IN_INSTALLMENTS": "{{ fullName }} will repay {{ amount }} in instalments of £{{ instalmentAmount }} {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
+      "WILL_PAY_BY_PAYMENT_DATE": " {{ fullName }} will pay {{ amount }}, no later than {{ paymentDate }}",
       "WILL_PAY_IMMEDIATELY": "{{ fullName }} will pay immediately",
       "YOUR_FINANCIAL_DETAILS_TITLE": "Your financial details",
       "YOUR_RESPONSE": "Your response"
@@ -1763,8 +1763,8 @@
           "LABEL": "The agreement",
           "REPAYMENT_PLAN_PART_ONE": "{{ defendant }} will repay £{{ amount }} in instalments of £{{ paymentAmount }} every ",
           "REPAYMENT_PLAN_PART_TWO": "The first instalment will be paid by {{ firstRepaymentDate }}",
-          "PAYMENT_TEXT": "{{ fullName }} will repay £{{ amount }} in instalments of £{{ instalmentAmount }} every {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
-          "IMMEDIATE_PLAN": "{{ fullName }} will pay £{{ amount }} immediately. {{ claimant }} will receive the money no later than {{ paymentDate }}. Any cheques or transfers will be clear in {{ fullName }}’s account by this date."
+          "PAYMENT_TEXT": "{{ fullName }} will repay {{ amount }} in instalments of £{{ instalmentAmount }} every {{ frequency }}. The first instalment will be paid by {{ instalmentDate }}",
+          "IMMEDIATE_PLAN": "{{ fullName }} will pay {{ amount }} immediately. {{ claimant }} will receive the money no later than {{ paymentDate }}. Any cheques or transfers will be clear in {{ fullName }}’s account by this date."
         },
         "COMPLETION_DATE": {
           "LABEL": "Completion date",
@@ -2061,12 +2061,12 @@
         "CLAIM_ENDED": "This claim has ended.",
         "CLAIM_SENT_TO_CLAIMANT": "We've sent your offer to the claimant. You have rejected the claim.",
         "CLAIM_SETTLED": "This claim is settled.",
-        "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "{{ claimantName }} accepted your admission of £{{ amount }}.",
+        "CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT": "{{ claimantName }} accepted your admission of {{ amount }}.",
         "CLAIMANT_ACCEPTED_SETTLE_IN_COURT": "The claimant has accepted your offer. You need to sign a legal agreement to settle out of court. You have rejected the claim.",
         "CLAIMANT_ASKED_TO_SIGN_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "CLAIMANT_CONFIRMED_PAYMENT": "{{ claimantName }} confirmed you’ve paid",
         "CLAIMANT_REJECT_OFFER": "The claimant has rejected you offer. You have rejected the claim.",
-        "CLAIMANT_REJECT_PARTIAL_ADMISSION": "{{ claimantName }} rejected your admission of £{{ amount }}.",
+        "CLAIMANT_REJECT_PARTIAL_ADMISSION": "{{ claimantName }} rejected your admission of {{ amount }}.",
         "CLAIMANT_REQUESTED_CCJ": "{{ claimantName }} requested a County Court Judgment against you on {{ccjRequestedDate}}.",
         "CLAIMANT_REQUESTED_CCJ_BY_DETERMINATION": "{{ claimantName }} requested a County Court Judgment against you.",
         "DECISION_ON_RECONSIDERATION": "An order has been made.",
@@ -3543,11 +3543,11 @@
       "WHEN_DID": "When did you pay this amount?"
     },
     "PARTIAL_ADMISSION_SETTLE_ADMITTED": {
-      "PAGE_TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?",
+      "PAGE_TITLE": "Do you want to settle the claim for the {{ admittedAmount }} the defendant admitted?",
       "AGREE_THEIR_REPAYMENT_PLAN": "You can agree to their repayment plan or suggest your own",
       "CONTINUE_AMOUNT_YOU_CLAIMED": "The claim will continue for the total amount you claimed",
       "THIS_IS_THE_TOTAL_AMOUNT": "This is the total amount you'll be paid, including the claim fee and interest if applicable",
-      "TITLE": "Do you want to settle the claim for the £{{ admittedAmount }} the defendant admitted?"
+      "TITLE": "Do you want to settle the claim for the {{ admittedAmount }} the defendant admitted?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Why do you disagree?",
@@ -3792,10 +3792,10 @@
       "PAGE_TITLE": "Review defendant’s response",
       "PART_ADMIT_ALREADY_PAID_STATEMENT": "{{ defendant }} said they paid you £{{ paidAmount }}. They said this is all they owe, not the amount you claimed.",
       "PART_ADMIT_NOT_PAID": {
-        "DEFENDANT_ADMITS_THEY_OWE": "{{ defendant }} admits they owe you £{{ paidAmount }}. They don’t believe they owe the full amount claimed.",
-        "THEY_OFFERED_TO_PAY_YOU": "They’ve offered to pay you £{{ paidAmount }} in instalments. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
-        "THEY_OFFERED_TO_PAY_YOU_BY_DATE": "They’ve offered to pay you £{{ paidAmount }} by {{datePaid}}. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
-        "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "They’ve offered to pay you £{{ paidAmount }} immediately. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+        "DEFENDANT_ADMITS_THEY_OWE": "{{ defendant }} admits they owe you {{ paidAmount }}. They don’t believe they owe the full amount claimed.",
+        "THEY_OFFERED_TO_PAY_YOU": "They’ve offered to pay you {{ paidAmount }} in instalments. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+        "THEY_OFFERED_TO_PAY_YOU_BY_DATE": "They’ve offered to pay you {{ paidAmount }} by {{datePaid}}. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
+        "THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY": "They’ve offered to pay you {{ paidAmount }} immediately. This is the total amount you’ll be paid, including the claim fee and interest if applicable.",
         "WHY_THEY_DONT_OWE": "Why they don’t owe the amount claimed?"
       },
       "PAY_EXPENSES": "Do they pay any expenses?",
@@ -3817,7 +3817,7 @@
       "WHY_THEY_DISAGREE_CLAIM": "Why they disagree with the claim?",
       "WHY_THEY_DISAGREE_EVIDENCE": "Why they disagree with your evidence?",
       "WHY_THEY_DISAGREE_TIMELINE": "Why they disagree with your timeline?",
-      "HOW_THEY_WANT_TO_PAY_RESPONSE": "They’ve offered to pay you £{{ amount }} by {{ paymentDate }}. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
+      "HOW_THEY_WANT_TO_PAY_RESPONSE": "They’ve offered to pay you {{ amount }} by {{ paymentDate }}. This is the total amount you'll be paid, including the claim fee and interest if applicable.",
       "PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE": {
         "TITLE": "How they want to pay?",
         "SUGGESTED_REPAYMENT": "The defendant suggested this repayment plan",
