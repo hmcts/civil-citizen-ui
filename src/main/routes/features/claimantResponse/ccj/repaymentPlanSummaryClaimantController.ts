@@ -11,13 +11,13 @@ import {getAmount} from 'common/utils/repaymentUtils';
 const repaymentPlanSummaryClaimantController = Router();
 const repaymentPlanInstalmentsPath = 'features/claimantResponse/ccj/repayment-plan-summary-claimant';
 
-function renderView(repaymentPlan: RepaymentPlanSummary, paymentOption: PaymentOptionType, paymentDate: string, amount: number, title: string, res: Response): void {
+function renderView(repaymentPlan: RepaymentPlanSummary, paymentOption: PaymentOptionType, paymentDate: string, amount: number, pageTitle: string, res: Response): void {
   res.render(repaymentPlanInstalmentsPath, {
     repaymentPlan,
     paymentOption,
     paymentDate,
     amount,
-    title,
+    pageTitle,
   });
 }
 

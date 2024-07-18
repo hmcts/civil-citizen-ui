@@ -178,5 +178,5 @@ export class Nunjucks {
 }
 
 const replaceSpace = (title: string): string => {
-  return title.replace(/ /g, '_');
+  return title.replace(/ /g, '_').replace('\'','');
 };
