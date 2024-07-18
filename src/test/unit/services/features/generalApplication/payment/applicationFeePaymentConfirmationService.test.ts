@@ -25,30 +25,38 @@ declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 const claimId = '1';
 const applicationId = '12';
-const applicationResponse: ApplicationResponse = {
-  case_data: {
-    applicationTypes: undefined,
-    generalAppType: undefined,
-    generalAppRespondentAgreement: undefined,
-    generalAppInformOtherParty: undefined,
-    generalAppAskForCosts: undefined,
-    generalAppDetailsOfOrder: undefined,
-    generalAppReasonsOfOrder: undefined,
-    generalAppEvidenceDocument: undefined,
-    gaAddlDoc: undefined,
-    generalAppHearingDetails: undefined,
-    generalAppStatementOfTruth: undefined,
-    generalAppPBADetails: undefined,
-    applicationFeeAmountInPence: undefined,
-    parentClaimantIsApplicant: undefined,
-  },
-  created_date: '',
-  id: '',
-  last_modified: '',
-  state: undefined,
-};
+let applicationResponse: ApplicationResponse;
 
 describe('Application Fee PaymentConfirmation Service', () => {
+  beforeEach(() => {
+    applicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: {
+          fee: undefined,
+          paymentDetails: undefined,
+          serviceRequestReference: undefined,
+        },
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: undefined,
+      },
+      created_date: '',
+      id: '',
+      last_modified: '',
+      state: undefined,
+    };
+  });
+
   app.locals.draftStoreClient = mockCivilClaim;
   jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
 
@@ -78,7 +86,7 @@ describe('Application Fee PaymentConfirmation Service', () => {
       paymentReference: 'RC-1701-0909-0602-0418',
     };
 
-    applicationResponse.case_data.applicationFeeAmountInPence = '12300';
+    applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'ref';
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
     jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
 
@@ -97,7 +105,6 @@ describe('Application Fee PaymentConfirmation Service', () => {
       paymentReference: 'RC-1701-0909-0602-0418',
       errorDescription: 'Payment Failed',
     };
-    applicationResponse.case_data.applicationFeeAmountInPence = undefined;
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
     jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
     //when
@@ -115,7 +122,6 @@ describe('Application Fee PaymentConfirmation Service', () => {
       paymentReference: 'RC-1701-0909-0602-0418',
       errorDescription: 'Payment was cancelled by the user',
     };
-    applicationResponse.case_data.applicationFeeAmountInPence = undefined;
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
     jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
     //when
@@ -133,7 +139,7 @@ describe('Application Fee PaymentConfirmation Service', () => {
       paymentReference: 'RC-1701-0909-0602-0418',
       errorDescription: 'Payment was cancelled by the user',
     };
-    applicationResponse.case_data.applicationFeeAmountInPence = '12300';
+    applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'ref';
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
     jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockResolvedValueOnce(mockclaimFeePaymentInfo);
     //when

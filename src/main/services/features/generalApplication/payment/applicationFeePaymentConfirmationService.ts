@@ -24,7 +24,7 @@ export const getRedirectUrl = async (claimId: string, applicationId: string, req
     const paymentStatus = await getGaFeePaymentStatus(applicationId, paymentReference, req);
 
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
-    const isAdditionalFee = !!applicationResponse.case_data.applicationFeeAmountInPence;
+    const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
 
     if(paymentStatus.status === success) {
       return GA_PAYMENT_SUCCESSFUL_URL;

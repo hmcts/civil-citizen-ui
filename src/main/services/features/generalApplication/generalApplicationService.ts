@@ -386,7 +386,7 @@ export const saveRespondentWantToUploadDoc = async (claimId: string, claim: Clai
 };
 
 export const shouldDisplaySyncWarning = (applicationResponse: ApplicationResponse): boolean => {
-  const isAdditionalFee = !!applicationResponse?.case_data?.applicationFeeAmountInPence;
+  const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
   if (isAdditionalFee) {
     return applicationResponse?.state === ApplicationState.APPLICATION_ADD_PAYMENT
       || applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentDetails?.status !== 'SUCCESS';

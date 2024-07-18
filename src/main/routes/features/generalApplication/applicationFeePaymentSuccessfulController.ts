@@ -16,7 +16,7 @@ async function renderView(res: Response, req: AppRequest, claimId: string, appId
   const applicationResponse = await getApplicationFromGAService(req, appId);
   const calculatedAmountInPence = applicationResponse?.case_data?.generalAppPBADetails?.fee?.calculatedAmountInPence;
   const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-  const isAdditionalFee = !!applicationResponse?.case_data?.applicationFeeAmountInPence;
+  const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
   res.render(paymentSuccessfulViewPath,
     {
       gaPaymentSuccessfulPanel: getGaPaymentSuccessfulPanelContent(claim, lng),

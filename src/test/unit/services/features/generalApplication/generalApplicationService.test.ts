@@ -709,7 +709,7 @@ describe('Should display sync warning', () => {
 
   it('should not display if is additional fee and state not awaiting payment', async () => {
     //Given
-    applicationResponse.case_data.applicationFeeAmountInPence = '10000';
+    applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'ref';
     applicationResponse.state = ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION;
     //When
     const result = shouldDisplaySyncWarning(applicationResponse);
@@ -728,7 +728,7 @@ describe('Should display sync warning', () => {
 
   it('should display if is additional fee and state is awaiting payment', async () => {
     //Given
-    applicationResponse.case_data.applicationFeeAmountInPence = '10000';
+    applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'ref';
     applicationResponse.state = ApplicationState.APPLICATION_ADD_PAYMENT;
     //When
     const result = shouldDisplaySyncWarning(applicationResponse);
@@ -748,7 +748,7 @@ describe('Should display sync warning', () => {
 
   it('should display if is additional fee and payment success not updated', async () => {
     //Given
-    applicationResponse.case_data.applicationFeeAmountInPence = '10000';
+    applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'ref';
     applicationResponse.state = ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION;
     applicationResponse.case_data.generalAppPBADetails.additionalPaymentDetails.status = undefined;
     //When
