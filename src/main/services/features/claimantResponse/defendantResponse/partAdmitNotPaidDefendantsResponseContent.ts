@@ -9,6 +9,7 @@ import {
 } from './fullDisputeDefendantsResponseContent';
 import {formatDateToFullDate} from '../../../../common/utils/dateUtils';
 import {t} from 'i18next';
+import {noGroupingCurrencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 const getResponseStatement = (claim: Claim, lng: string) => {
   switch(claim.responseStatus) {
@@ -28,13 +29,13 @@ const getResponseStatementPayInstallments = (claim: Claim, lng: string): ClaimSu
     type: ClaimSummaryType.PARAGRAPH,
     data: {
       text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.DEFENDANT_ADMITS_THEY_OWE', {lng}),
-      variables: {defendant: claim.getDefendantFullName(), paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount},
+      variables: {defendant: claim.getDefendantFullName(), paidAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission.howMuchDoYouOwe.amount)},
     }},
   {
     type: ClaimSummaryType.PARAGRAPH,
     data: {
       text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU', {lng}),
-      variables: {paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount},
+      variables: {paidAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission.howMuchDoYouOwe.amount)},
     },
   }];
 };
@@ -44,13 +45,13 @@ const getResponseStatementPayImmediately = (claim: Claim, lng: string): ClaimSum
     type: ClaimSummaryType.PARAGRAPH,
     data: {
       text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.DEFENDANT_ADMITS_THEY_OWE', {lng}),
-      variables: {defendant: claim.getDefendantFullName(), paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount},
+      variables: {defendant: claim.getDefendantFullName(), paidAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission.howMuchDoYouOwe.amount)},
     }},
   {
     type: ClaimSummaryType.PARAGRAPH,
     data: {
       text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_IMMEDIATELY', {lng}),
-      variables: {paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount},
+      variables: {paidAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission.howMuchDoYouOwe.amount)},
     },
   }];
 };
@@ -60,13 +61,16 @@ const getResponseStatementPayByDate = (claim: Claim, lng: string): ClaimSummaryS
     type: ClaimSummaryType.PARAGRAPH,
     data: {
       text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.DEFENDANT_ADMITS_THEY_OWE', {lng}),
-      variables: {defendant: claim.getDefendantFullName(), paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount},
+      variables: {defendant: claim.getDefendantFullName(), paidAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission.howMuchDoYouOwe.amount)},
     }},
   {
     type: ClaimSummaryType.PARAGRAPH,
     data: {
       text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_BY_DATE', {lng}),
-      variables: {paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount, datePaid: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lng)},
+      variables: {
+        paidAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission.howMuchDoYouOwe.amount),
+        datePaid: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lng),
+      },
     },
   }];
 };
@@ -98,7 +102,10 @@ const getPayByDateResponseForHowTheyWantToPay = (claim: Claim, lng: string): Cla
       type: ClaimSummaryType.PARAGRAPH,
       data: {
         text: t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_NOT_PAID.THEY_OFFERED_TO_PAY_YOU_BY_DATE', {lng}),
-        variables: {paidAmount: claim.partialAdmission.howMuchDoYouOwe.amount, datePaid: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lng)},
+        variables: {
+          paidAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission.howMuchDoYouOwe.amount),
+          datePaid: formatDateToFullDate(claim.partialAdmission.paymentIntention.paymentDate, lng),
+        },
       },
     }];
 };
