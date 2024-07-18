@@ -74,7 +74,7 @@ export const saveRespondentAgreement = async (redisKey: string, respondentAgreem
         ...generalApplication.response,
         respondentAgreement,
       },
-    };
+    } as GeneralApplication;
     await saveDraftClaim(redisKey, claim);
   } catch (error) {
     logger.error(error);
@@ -377,7 +377,7 @@ export const saveRespondentWantToUploadDoc = async (claimId: string, claim: Clai
         ...generalApplication.response,
         wantToUploadDocuments,
       },
-    };
+    } as GeneralApplication;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);

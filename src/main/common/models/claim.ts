@@ -166,7 +166,7 @@ export class Claim {
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
-  generalApplication?: GeneralApplication;
+  generalApplication?: GeneralApplication; // this model responsibility to support make  the application  and other model has to be created for basic details of general application based on the parent case data
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
   defendantResponseDocuments: SystemGeneratedCaseDocuments[];

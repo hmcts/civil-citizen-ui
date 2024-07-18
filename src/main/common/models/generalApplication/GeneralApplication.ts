@@ -36,7 +36,8 @@ export class GeneralApplication {
   helpWithFees?: GaHelpWithFees;
   applicationFeePaymentDetails : PaymentInformation;
   caseLink?: CaseLink;
-
+  id?: string;
+  draftResponseCreatedAt?: Date;
   constructor(
     applicationType?: ApplicationType,
     agreementFromOtherParty?: YesNo,
@@ -72,4 +73,21 @@ export class GeneralApplication {
     this.informOtherParties = informOtherParties;
     this.applicationFee = applicationFee;
   }
+
+  isEmptyGA() {
+    return this.applicationTypes.length < 1;
+  }
 }
+
+// legacyCaseReference?: string;
+// generalAppType: CcdGeneralApplicationTypes;
+// generalAppRespondentAgreement: CcdGeneralApplicationRespondentAgreement;
+// generalAppInformOtherParty: CcdGeneralApplicationInformOtherParty;
+// generalAppAskForCosts: YesNoUpperCamelCase;
+// generalAppDetailsOfOrder: string;
+// generalAppReasonsOfOrder: string;
+// generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
+// gaAddlDoc: CcdGeneralApplicationAddlDocument[];
+// generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
+// generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
+// parentClaimantIsApplicant: YesNoUpperCamelCase;

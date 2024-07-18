@@ -62,3 +62,4 @@ const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, appli
   return ((claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
     || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
 };
+

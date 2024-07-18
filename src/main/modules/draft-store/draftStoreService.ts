@@ -7,6 +7,8 @@ import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
 import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils';
 import {AppRequest} from 'common/models/AppRequest';
+import { ApplicationResponse } from 'common/models/generalApplication/applicationResponse';
+import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -35,6 +37,26 @@ const convertRedisDataToCivilClaimResponse = (data: string) => {
   }
   return Object.assign(new CivilClaimResponse(), jsonData);
 };
+export const getDraftClaimFromStoreForGA = async (redisKey: string, doNotThrowErrror = false) => {
+  const dataFromRedis = await app.locals.draftStoreClient.get(redisKey);
+  if (dataFromRedis === null && !doNotThrowErrror) {
+    throw new Error('Case not found...');
+  }
+  return convertRedisDataToApplicationResponse(dataFromRedis);
+};
+
+const convertRedisDataToApplicationResponse = (data: string) => {
+  let jsonData = undefined;
+  if (data) {
+    try {
+      jsonData = JSON.parse(data);
+    } catch (err: unknown) {
+      logger.error(`${(err as Error).stack || err}`);
+    }
+  }
+  return Object.assign(new ApplicationResponse(), jsonData);
+};
+
 /**
  * Gets only case data.
  * @param claimId
@@ -47,6 +69,13 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
   return claim;
 };
 
+export const getCaseDataFromStoreForGA = async (claimId: string, doNotThrowError = false): Promise<GeneralApplication> => {
+  const civilClaimResponse = await getDraftClaimFromStoreForGA(claimId, doNotThrowError);
+  const gaApplication: GeneralApplication = new GeneralApplication();
+  Object.assign(gaApplication, civilClaimResponse?.case_data);
+  gaApplication.id = civilClaimResponse?.id;
+  return gaApplication;
+};
 /**
  * Saves claim in Draft store. If the claim does not exist
  * it creates a new CivilClaimResponse object and passes the claim in parameter to it
@@ -67,6 +96,21 @@ export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowErr
     await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(claim.draftClaimCreatedAt));
   }
 };
+
+
+export const saveDraftForGA = async (redisKey: string, gaApplicationData: GeneralApplication, doNotThrowError = false) => {
+  let storedClaimResponse = await getDraftClaimFromStore(redisKey, doNotThrowError);
+  if (isUndefined(storedClaimResponse.case_data)) {
+    storedClaimResponse = new ApplicationResponse();
+  }
+  storedClaimResponse.case_data = gaApplicationData;
+  const draftStoreClient = app.locals.draftStoreClient;
+  draftStoreClient.set(redisKey, JSON.stringify(storedClaimResponse));
+  if (gaApplicationData.draftResponseCreatedAt) {
+    await draftStoreClient.expireat(redisKey, calculateExpireTimeForDraftClaimInSeconds(gaApplicationData.draftResponseCreatedAt));
+  }
+};
+
 
 const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
@@ -99,4 +143,8 @@ export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
 
 export function generateRedisKey(req: AppRequest) {
   return req.params.id + req.session.user?.id;
+}
+
+export function generateRedisKeyForGA(req: AppRequest) {
+  return req.params.appID + req.session.user?.id;
 }
