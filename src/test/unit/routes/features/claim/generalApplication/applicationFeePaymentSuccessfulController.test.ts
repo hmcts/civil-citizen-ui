@@ -21,6 +21,7 @@ jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('services/features/generalApplication/generalApplicationService', () => ({
   getCancelUrl: jest.fn(),
   getApplicationFromGAService: jest.fn(),
+  shouldDisplaySyncWarning: jest.fn(),
 }));
 
 describe('Claim fee payment confirmation', () => {
