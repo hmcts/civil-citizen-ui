@@ -16,7 +16,7 @@ export const defaultCookiePreferences = {
 
 cookiesController.get(COOKIES_URL, (req: AppRequest, res: Response) => {
   const cookiePreferences = req.cookies['money-claims-cookie-preferences'] ? JSON.parse(req.cookies['money-claims-cookie-preferences']) : defaultCookiePreferences;
-  res.render(cookiesViewPath, {redirectUrl: DASHBOARD_URL, cookiePreferences});
+  res.render(cookiesViewPath, {redirectUrl: DASHBOARD_URL, cookiePreferences, pageTitle: 'PAGES.COOKIES.TITLE'});
 });
 
 cookiesController.post(COOKIES_URL, (async (req: AppRequest<CookiesModel>, res: Response) => {
