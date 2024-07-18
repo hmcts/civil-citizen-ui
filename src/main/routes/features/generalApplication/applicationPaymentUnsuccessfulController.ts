@@ -1,5 +1,5 @@
 import {NextFunction, Response, Router} from 'express';
-import {GA_APPLY_HELP_WITH_FEE_SELECTION, GA_PAY_ADDITIONAL_FEE_URL, GA_PAYMENT_UNSUCCESSFUL_URL} from 'routes/urls';
+import {GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL, GA_PAYMENT_UNSUCCESSFUL_URL} from 'routes/urls';
 import {
   getApplicationFromGAService,
   getCancelUrl,
@@ -21,7 +21,7 @@ applicationPaymentUnsuccessfulController.get(GA_PAYMENT_UNSUCCESSFUL_URL, (req: 
       const isAdditionalFee = !!applicationResponse?.case_data?.applicationFeeAmountInPence;
       const cancelUrl = await getCancelUrl(claimId, claim);
       const makePaymentAgainUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, isAdditionalFee
-        ? GA_PAY_ADDITIONAL_FEE_URL : GA_APPLY_HELP_WITH_FEE_SELECTION);
+        ? GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL : GA_APPLY_HELP_WITH_FEE_SELECTION);
       res.render(applicationPaymentUnsuccessfulViewPath, {cancelUrl, makePaymentAgainUrl});
     } catch (error) {
       next(error);

@@ -7,7 +7,7 @@ import {
   GA_PAYMENT_SUCCESSFUL_URL,
   GA_PAYMENT_UNSUCCESSFUL_URL,
   GA_APPLY_HELP_WITH_FEE_SELECTION,
-  GA_PAY_ADDITIONAL_FEE_URL,
+  GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL,
 } from 'routes/urls';
 import { getRedirectUrl } from 'services/features/generalApplication/payment/applicationFeePaymentConfirmationService';
 import { GaServiceClient } from 'client/gaServiceClient';
@@ -140,7 +140,7 @@ describe('Application Fee PaymentConfirmation Service', () => {
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
 
     //Then
-    expect(actualPaymentRedirectUrl).toBe(GA_PAY_ADDITIONAL_FEE_URL);
+    expect(actualPaymentRedirectUrl).toBe(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL);
   });
 
   it('should return 500 error page for any service error', async () => {

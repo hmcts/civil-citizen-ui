@@ -2871,6 +2871,7 @@
         "TITLE": "Application hearing arrangements"
       },
       "GA_PAYMENT_SUCCESSFUL" : {
+        "ACCOUNT_NOT_UPDATED": "Your payment was successful but your account might not have been updated yet. Try refreshing your account later on.",
         "APPLICATION_SUBMITTED": "Application Submitted",
         "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_1": "If you have not provided a valid reason, a judge may order that the other parties should be informed. If this happens, you'll need to pay an additional fee and your application may also be delayed.",
         "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_2": "If a judge agrees that the other parties should not be informed, the other parties will not be able to respond to the application before the judge makes a decision.",

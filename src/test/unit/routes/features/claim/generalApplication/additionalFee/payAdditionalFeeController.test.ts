@@ -2,7 +2,7 @@ import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_PAY_ADDITIONAL_FEE_URL} from 'routes/urls';
+import {GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
@@ -40,7 +40,7 @@ describe('General Application - Pay additional fee Page', () => {
     it('should return Do you want to apply for help with fees page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .get(GA_PAY_ADDITIONAL_FEE_URL)
+        .get(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING'));
@@ -53,7 +53,7 @@ describe('General Application - Pay additional fee Page', () => {
       mockClaim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .get(GA_PAY_ADDITIONAL_FEE_URL)
+        .get(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING'));
@@ -65,7 +65,7 @@ describe('General Application - Pay additional fee Page', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .get(GA_PAY_ADDITIONAL_FEE_URL)
+        .get(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -78,7 +78,7 @@ describe('General Application - Pay additional fee Page', () => {
       mockGetRedirectUrl.mockImplementation(() => 'redirecturl');
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(GA_PAY_ADDITIONAL_FEE_URL)
+        .post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
         .send({option: new GenericYesNo(YesNo.YES)})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -89,7 +89,7 @@ describe('General Application - Pay additional fee Page', () => {
       mockGetRedirectUrl.mockImplementation(() => 'test');
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(GA_PAY_ADDITIONAL_FEE_URL)
+        .post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
         .send({option: new GenericYesNo(YesNo.YES)})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -100,7 +100,7 @@ describe('General Application - Pay additional fee Page', () => {
     it('should show error message if no value selected', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(GA_PAY_ADDITIONAL_FEE_URL)
+        .post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
         .send({option: null})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -113,7 +113,7 @@ describe('General Application - Pay additional fee Page', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .post(GA_PAY_ADDITIONAL_FEE_URL)
+        .post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
         .send({option: new GenericYesNo(YesNo.YES)})
         .expect((res) => {
           expect(res.status).toBe(500);

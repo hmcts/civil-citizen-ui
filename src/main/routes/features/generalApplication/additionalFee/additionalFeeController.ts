@@ -2,8 +2,8 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
-  GA_ADDITIONAL_FEE_URL,
   GA_PAY_ADDITIONAL_FEE_URL,
+  GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
@@ -15,7 +15,7 @@ import {convertToPoundsFilter, currencyFormatWithNoTrailingZeros} from 'common/u
 const additionalFeeController = Router();
 const viewPath = 'features/generalApplication/additionalFee/additional-fee';
 
-additionalFeeController.get(GA_ADDITIONAL_FEE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+additionalFeeController.get(GA_PAY_ADDITIONAL_FEE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const appId = req.params.appId;
@@ -26,7 +26,7 @@ additionalFeeController.get(GA_ADDITIONAL_FEE_URL, (async (req: AppRequest, res:
     const alreadyPaid = currencyFormatWithNoTrailingZeros(alreadyPaidPounds);
     const additionalFee = currencyFormatWithNoTrailingZeros(additionalFeePounds);
     const withNoticeCost = currencyFormatWithNoTrailingZeros(alreadyPaidPounds + additionalFeePounds);
-    const urlNextView = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_PAY_ADDITIONAL_FEE_URL);
+    const urlNextView = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL);
     res.render(viewPath, {
       withNoticeCost,
       alreadyPaid,

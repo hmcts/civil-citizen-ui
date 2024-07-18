@@ -1,7 +1,7 @@
 import {AppRequest} from 'models/AppRequest';
 import {
   GA_APPLY_HELP_WITH_FEE_SELECTION,
-  GA_PAY_ADDITIONAL_FEE_URL,
+  GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL,
   GA_PAYMENT_SUCCESSFUL_URL,
   GA_PAYMENT_UNSUCCESSFUL_URL,
 } from 'routes/urls';
@@ -31,7 +31,7 @@ export const getRedirectUrl = async (claimId: string, applicationId: string, req
     }
 
     const paymentCancelledUrl = isAdditionalFee
-      ? GA_PAY_ADDITIONAL_FEE_URL
+      ? GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL
       : GA_APPLY_HELP_WITH_FEE_SELECTION;
     return paymentStatus.errorDescription !== paymentCancelledByUser ?
       GA_PAYMENT_UNSUCCESSFUL_URL : paymentCancelledUrl;
