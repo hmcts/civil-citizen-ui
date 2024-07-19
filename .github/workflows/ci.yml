@@ -43,4 +43,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: integration-tests-results
-          path: build/reports/tests/integration
+          path: test-results/functional
