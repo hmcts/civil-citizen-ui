@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
-import {DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {APPLICATION_TYPE_URL, DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'common/models/partyType';
 import {PartyDetails} from 'common/form/models/partyDetails';
@@ -22,6 +22,8 @@ import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchD
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {Dashboard} from 'models/dashboard/dashboard';
+import { applicationNoticeUrl } from 'common/utils/externalURLs';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
@@ -367,7 +369,7 @@ describe('claimant Dashboard Controller', () => {
         });
       });
     });
-    it('should show support links for claimant whit links hidden', async () => {
+    it('should show support links for claimant with links hidden', async () => {
 
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
@@ -376,12 +378,14 @@ describe('claimant Dashboard Controller', () => {
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
       jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
-
+      jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
+      
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).not.toContain('Tell us you&#39;ve ended the claim');
         expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
+        expect(res.text).toContain(applicationNoticeUrl);
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT'));
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'));
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_MEDIATION'));
@@ -389,6 +393,23 @@ describe('claimant Dashboard Controller', () => {
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF'));
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE'));
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'));
+      });
+    });
+
+    it('should show \'want to\' link with linking to general application when general application is enabled', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.CASE_ISSUED;
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+      jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(true);
+
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
+        expect(res.text).toContain(constructResponseUrlWithIdParams(':id', APPLICATION_TYPE_URL));
       });
     });
 
