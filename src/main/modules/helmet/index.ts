@@ -62,7 +62,7 @@ const connectSrc = [
 
 const manifestSrc = [
   self,
-  'idam-api.aat.platform.hmcts.net',
+  'idam-web-public.aat.platform.hmcts.net',
 ];
 
 /**
