@@ -9,7 +9,6 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {configureSpy} from '../../../../../utils/spyConfiguration';
 import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import * as carmToggleUtils from 'common/utils/carmToggleUtils';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
