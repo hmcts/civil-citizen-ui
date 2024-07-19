@@ -39,3 +39,8 @@ jobs:
         run: sleep 10
       - name: Executing e2e tests
         run: yarn test:e2e
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-tests-results
+          path: build/reports/tests/integration
