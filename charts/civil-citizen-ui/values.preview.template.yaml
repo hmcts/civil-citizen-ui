@@ -41,7 +41,7 @@ civil-service:
         resourceGroup: civil
         secrets:
           - name: civil-idam-client-secret
-            alias: idam.client.secret
+            alias: CIVIL_CLIENT_SECRET
           - name: microservicekey-civil-service
             alias: idam.s2s-auth.totp_secret
           - name: system-update-user-username
@@ -56,14 +56,12 @@ civil-service:
             alias: CIVIL_PRD_ADMIN_USERNAME
           - name: prd-admin-user-password
             alias: CIVIL_PRD_ADMIN_PASSWORD
+          - name: appinsights-connection-string
+            alias: appinsights-connection-string
+          - name: AppInsightsInstrumentationKey
+            alias: azure.application-insights.instrumentation-key
           - name: docmosis-api-key
             alias: docmosis.tornado.key
-          - name: cmc-db-password-v15
-            alias: CMC_DB_PASSWORD
-          - name: cmc-db-username-v15
-            alias: CMC_DB_USERNAME
-          - name: cmc-db-host-v15
-            alias: CMC_DB_HOST
           - name: gov-notify-pretends-api-key
             alias: GOV_NOTIFY_API_KEY
           - name: sendgrid-api-key
