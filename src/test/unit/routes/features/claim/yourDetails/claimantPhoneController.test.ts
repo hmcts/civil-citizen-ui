@@ -6,20 +6,21 @@ import {CITIZEN_PHONE_NUMBER_URL, CLAIMANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_
 import {t} from 'i18next';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {configureSpy} from '../../../../../utils/spyConfiguration';
-import * as carmToggleUtils from 'common/utils/carmToggleUtils';
 import {Claim} from 'models/claim';
+import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const PHONE_NUMBER = '01632960001';
 
-const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(carmToggleUtils, 'isCarmEnabledForCase')
+const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(launchDarklyClient, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
 
 function getClaim() {

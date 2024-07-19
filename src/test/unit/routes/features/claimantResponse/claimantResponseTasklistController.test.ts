@@ -4,7 +4,7 @@ import config from 'config';
 import {app} from '../../../../../main/app';
 import {CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {configureSpy} from '../../../../utils/spyConfiguration';
-import * as carmToggleUtils from 'common/utils/carmToggleUtils';
+import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import civilClaimResponseClaimantIntentMock from '../../../../utils/mocks/civilClaimResponseClaimantIntentionMock.json';
 import {Claim} from 'models/claim';
@@ -14,9 +14,11 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
-const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(carmToggleUtils, 'isCarmEnabledForCase')
+const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(launchDarklyClient, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
 
 describe('Claimant response task list', () => {
