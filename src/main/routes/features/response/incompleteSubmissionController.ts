@@ -5,7 +5,7 @@ import {Task} from 'models/taskList/task';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 const incompleteSubmissionViewPath = 'features/response/incomplete-submission';
 const incompleteSubmissionController = Router();
 
