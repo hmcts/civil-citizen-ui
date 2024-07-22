@@ -1,3 +1,5 @@
+import { DocumentType } from "../document/documentType";
+
 export interface CcdGeneralApplicationAddlDocument {
   id: string,
   value: CcdDocumentValue,
@@ -6,6 +8,8 @@ export interface CcdGeneralApplicationAddlDocument {
 export interface CcdDocumentValue {
   createdBy: string,
   documentLink: CcdDocument,
+  documentName: string,
+  documentType: DocumentType,
 }
 
 export interface CcdDocument {

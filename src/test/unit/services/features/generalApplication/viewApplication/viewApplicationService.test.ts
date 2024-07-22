@@ -7,6 +7,7 @@ import {Claim} from 'models/claim';
 import * as utilityService from 'modules/utilityService';
 import {CaseRole} from 'form/models/caseRoles';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import { DocumentType } from 'common/models/document/documentType';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('../../../../../../main/app/client/gaServiceClient');
@@ -104,7 +105,24 @@ describe('View Application service', () => {
   describe('getJudgeResponseSummary', () => {
     it('should return judge response summary', async () => {
       //given
-      const applicationResponse = new ApplicationResponse();
+      const applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = applicationResponse.case_data;
+      caseData.requestForInformationDocument = [{
+          'id': 'ad9fd4a0-8294-414d-bcce-b66e742d809f',
+          'value': {
+            'createdBy': 'Civil',
+            'documentLink': {
+              'category_id': 'applications',
+              'document_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098',
+              'document_filename': 'make-with-notice_2024-07-22 11:01:54.pdf',
+              'document_binary_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098/binary'
+            },
+            'documentName': 'make-with-notice_2024-07-22 11:01:54.pdf',
+            'documentType': DocumentType.SEND_APP_TO_OTHER_PARTY,
+          }
+        }];
+
+      applicationResponse.case_data = caseData;
       applicationResponse.created_date = new Date('2024-01-01').toString();
       //when
       const result = getJudgeResponseSummary(applicationResponse, 'en');
@@ -114,7 +132,7 @@ describe('View Application service', () => {
       expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
       expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT');
+      expect(result[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
     });
   });
 });
