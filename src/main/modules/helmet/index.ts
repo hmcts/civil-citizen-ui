@@ -86,7 +86,7 @@ export class Helmet {
         'Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept, Authorization',
       );
-      next()
+      next();
     });
     this.setContentSecurityPolicy(app);
   }
