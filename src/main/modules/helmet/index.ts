@@ -77,7 +77,9 @@ export class Helmet {
 
     // include default helmet functions
     app.use(helmet(this.config));
-    app.use('.*.dynatrace.com', function (_req, res, next){
+    
+    const dynatraceUrl = config.get<string>('dynatrace.url');
+    app.use(dynatraceUrl, function (_req, res, next){
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Credentials', 'true');
       res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
