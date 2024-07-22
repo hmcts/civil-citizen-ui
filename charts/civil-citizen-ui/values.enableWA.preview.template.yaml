@@ -25,6 +25,18 @@ wa:
     postgresHost: ${SERVICE_NAME}-postgresql
   #    postgresHost: civil-preview.postgres.database.azure.com
   #    databaseNamePrefix: "pr-${CHANGE_ID}-"
+  wa-initiation-batch:
+    job:
+      releaseNameOverride: "{{ .Release.Name }}-wa-task-batch"
+    wa-reconfiguration-batch:
+      job:
+        releaseNameOverride: "{{ .Release.Name }}-reconfiguration"
+    wa-termination-batch:
+      job:
+        releaseNameOverride: "{{ .Release.Name }}-termination-batch"
+    wa-message-cron-service:
+      job:
+        releaseNameOverride: "{{ .Release.Name }}-wa-message-cron"
   wa:
     postgresql:
       enabled: false
