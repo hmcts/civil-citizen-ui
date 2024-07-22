@@ -5,7 +5,6 @@ export class GaHelpWithFees {
   applyHelpWithFees?: YesNo;
   helpWithFeesRequested: string;
   helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm;
-
   applyAdditionalHelpWithFees?: YesNo;
 
   constructor(applyHelpWithFees?: YesNo, helpWithFeesRequested?: string, helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm,
@@ -13,7 +12,6 @@ export class GaHelpWithFees {
     this.applyHelpWithFees = applyHelpWithFees;
     this.helpWithFeesRequested = helpWithFeesRequested;
     this.helpFeeReferenceNumberForm = helpFeeReferenceNumberForm;
-
     this.applyAdditionalHelpWithFees = applyAdditionalHelpWithFees;
   }
 }

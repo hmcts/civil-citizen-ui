@@ -33,7 +33,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       redirectUrl = paymentRedirectInformation?.nextUrl;
     } else {
       const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, generalApplicationId);
-      const isAdditionalFee = !!applicationResponse.case_data.applicationFeeAmountInPence;
+      const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
       redirectUrl = isAdditionalFee
         ? 'test' // TODO Add URL
         : constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES);

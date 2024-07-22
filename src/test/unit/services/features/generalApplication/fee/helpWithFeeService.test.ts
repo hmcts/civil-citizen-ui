@@ -61,7 +61,11 @@ describe('apply help with application fee selection', () => {
         gaAddlDoc: undefined,
         generalAppHearingDetails: undefined,
         generalAppStatementOfTruth: undefined,
-        generalAppPBADetails: undefined,
+        generalAppPBADetails: {
+          fee: undefined,
+          paymentDetails: undefined,
+          serviceRequestReference: undefined,
+        },
         applicationFeeAmountInPence: undefined,
         parentClaimantIsApplicant: undefined,
       },
@@ -107,7 +111,7 @@ describe('apply help with application fee selection', () => {
     jest
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
       .mockResolvedValueOnce(ccdClaim);
-    applicationResponse.case_data.applicationFeeAmountInPence = '12300';
+    applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'ref';
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(applicationResponse);
     //when
     const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), mockedAppRequest);

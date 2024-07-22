@@ -17,10 +17,15 @@ export const getGaPaymentSuccessfulPanelContent = (claim: Claim, lng?: string) =
   return panelBuilder.build();
 };
 
-export const getGaPaymentSuccessfulBodyContent = (claim: Claim, calculatedAmountInPence : string, isAdditionalFee: boolean, lng?: string) => {
+export const getGaPaymentSuccessfulBodyContent = (claim: Claim, calculatedAmountInPence : string, isAdditionalFee: boolean, displaySyncWarning: boolean, lng?: string) => {
   const withoutFee = isApplicationSubmittedWithoutFee(claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option, claim.caseProgressionHearing);
   const contentBuilder = new PaymentSuccessfulSectionBuilder()
-    .addParagraph('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.CONFIRMATION', { lng: getLng(lng) })
+    .addParagraph('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.CONFIRMATION', { lng: getLng(lng) });
+  if (displaySyncWarning) {
+    contentBuilder
+      .addWarning('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.ACCOUNT_NOT_UPDATED');
+  }
+  contentBuilder
     .addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT',{ lng: getLng(lng) });
   if (isAdditionalFee) {
     contentBuilder

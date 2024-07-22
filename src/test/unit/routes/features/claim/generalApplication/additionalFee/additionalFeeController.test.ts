@@ -2,7 +2,7 @@ import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_ADDITIONAL_FEE_URL} from 'routes/urls';
+import {GA_PAY_ADDITIONAL_FEE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
@@ -61,7 +61,7 @@ describe('General Application - Pay additional fee Page', () => {
     it('should return additional fee page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .get(GA_ADDITIONAL_FEE_URL)
+        .get(GA_PAY_ADDITIONAL_FEE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('Additional fee'));
@@ -75,7 +75,7 @@ describe('General Application - Pay additional fee Page', () => {
       });
       //When //Then
       await request(app)
-        .get(GA_ADDITIONAL_FEE_URL)
+        .get(GA_PAY_ADDITIONAL_FEE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

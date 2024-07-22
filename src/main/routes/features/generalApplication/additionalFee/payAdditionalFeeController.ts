@@ -1,5 +1,5 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {DASHBOARD_CLAIMANT_URL, GA_ADDITIONAL_FEE_URL, GA_PAY_ADDITIONAL_FEE_URL} from 'routes/urls';
+import {DASHBOARD_CLAIMANT_URL, GA_PAY_ADDITIONAL_FEE_URL, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL} from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
@@ -23,7 +23,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
     const claim: Claim = await getClaimById(claimId, req, true);
     form = new GenericForm(new GenericYesNo(claim.generalApplication?.helpWithFees?.applyAdditionalHelpWithFees));
   }
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_ADDITIONAL_FEE_URL);
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_PAY_ADDITIONAL_FEE_URL);
   res.render(applyHelpWithApplicationFeeViewPath,
     {
       form,
@@ -34,7 +34,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
     });
 }
 
-payAdditionalFeeController.get(GA_PAY_ADDITIONAL_FEE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+payAdditionalFeeController.get(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
@@ -45,14 +45,14 @@ payAdditionalFeeController.get(GA_PAY_ADDITIONAL_FEE_URL, (async (req: AppReques
   }
 }) as RequestHandler);
 
-payAdditionalFeeController.post(GA_PAY_ADDITIONAL_FEE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+payAdditionalFeeController.post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
     await form.validate();
     if (form.hasErrors()) {
-      const redirectUrl = constructResponseUrlWithIdParams(claimId, GA_PAY_ADDITIONAL_FEE_URL);
+      const redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL);
       await renderView(res, req, form, claimId, redirectUrl, lng);
     } else {
       const redisKey = generateRedisKey(<AppRequest>req);
