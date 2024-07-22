@@ -78,7 +78,7 @@ export class Helmet {
 
     // include default helmet functions
     app.use(helmet(this.config));
-    app.all('*', function(req, res, next) {
+    app.use('/assets/manifest.json', function(req, res, next) {
       res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Credentials', 'true');
       res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
@@ -86,6 +86,7 @@ export class Helmet {
         'Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept, Authorization',
       );
+      next()
     });
     this.setContentSecurityPolicy(app);
   }
