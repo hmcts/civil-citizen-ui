@@ -1,4 +1,4 @@
-import { DocumentType } from "../document/documentType";
+import { DocumentType } from '../document/documentType';
 
 export interface CcdGeneralApplicationAddlDocument {
   id: string,

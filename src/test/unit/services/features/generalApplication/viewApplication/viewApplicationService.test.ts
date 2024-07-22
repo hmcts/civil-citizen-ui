@@ -108,19 +108,19 @@ describe('View Application service', () => {
       const applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
       const caseData = applicationResponse.case_data;
       caseData.requestForInformationDocument = [{
-          'id': 'ad9fd4a0-8294-414d-bcce-b66e742d809f',
-          'value': {
-            'createdBy': 'Civil',
-            'documentLink': {
-              'category_id': 'applications',
-              'document_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098',
-              'document_filename': 'make-with-notice_2024-07-22 11:01:54.pdf',
-              'document_binary_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098/binary'
-            },
-            'documentName': 'make-with-notice_2024-07-22 11:01:54.pdf',
-            'documentType': DocumentType.SEND_APP_TO_OTHER_PARTY,
-          }
-        }];
+        'id': 'ad9fd4a0-8294-414d-bcce-b66e742d809f',
+        'value': {
+          'createdBy': 'Civil',
+          'documentLink': {
+            'category_id': 'applications',
+            'document_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098',
+            'document_filename': 'make-with-notice_2024-07-22 11:01:54.pdf',
+            'document_binary_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098/binary',
+          },
+          'documentName': 'make-with-notice_2024-07-22 11:01:54.pdf',
+          'documentType': DocumentType.SEND_APP_TO_OTHER_PARTY,
+        },
+      }];
 
       applicationResponse.case_data = caseData;
       applicationResponse.created_date = new Date('2024-01-01').toString();

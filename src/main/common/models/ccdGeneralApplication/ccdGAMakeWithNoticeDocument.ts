@@ -1,4 +1,4 @@
-import { CcdDocumentValue } from "./ccdGeneralApplicationAddlDocument";
+import { CcdDocumentValue } from './ccdGeneralApplicationAddlDocument';
 
 export interface CcdGAMakeWithNoticeDocument {
   id: string,
