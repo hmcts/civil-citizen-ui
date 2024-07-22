@@ -1,38 +1,3 @@
-civil-wa:
-  enabled: true
-
-global:
-  jobKind: CronJob
-
-ccd-message-publisher:
-  java:
-    ingressHost: ccd-message-publisher-${SERVICE_FQDN}
-    releaseNameOverride: ${SERVICE_NAME}-ccd-message-publisher
-    keyVaults:
-      ccd:
-        secrets:
-          - name: AppInsightsInstrumentationKey
-            alias: azure.application-insights.instrumentation-key
-    environment:
-      #      DATA_STORE_DB_HOST: civil-preview.postgres.database.azure.com
-      #      DATA_STORE_DB_NAME: "pr-${CHANGE_ID}-data-store"
-      #      DATA_STORE_DB_USERNAME: hmcts
-      #      DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
-      DATA_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
-      DATA_STORE_DB_NAME: "data-store"
-      DATA_STORE_DB_USERNAME: hmcts
-      DATA_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
-      DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
-      CCD_CASE_EVENTS_DESTINATION: ${SERVICE_NAME}-asb-ccd-case-events
-    secrets:
-      SERVICE_BUS_CONNECTION_STRING:
-        secretRef: civil-sb-preview
-        key: connectionString
-      DATA_STORE_DB_PASSWORD:
-        secretRef: postgres
-        key: PASSWORD
-        disabled: true
-
 servicebus:
   enabled: true
   releaseNameOverride: ${SERVICE_NAME}-asb
@@ -44,8 +9,14 @@ servicebus:
         subscriptionNeeded: yes
         requiresSession: true
 
+global:
+  jobKind: CronJob
+
 camunda-bpm:
   enabled: false
+
+civil-wa:
+  enabled: true
 
 wa:
   global:
@@ -134,6 +105,34 @@ wa:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
           disabled: true
+ccd-message-publisher:
+  java:
+    ingressHost: ccd-message-publisher-${SERVICE_FQDN}
+    releaseNameOverride: ${SERVICE_NAME}-ccd-message-publisher
+    keyVaults:
+      ccd:
+        secrets:
+          - name: AppInsightsInstrumentationKey
+            alias: azure.application-insights.instrumentation-key
+    environment:
+      #      DATA_STORE_DB_HOST: civil-preview.postgres.database.azure.com
+      #      DATA_STORE_DB_NAME: "pr-${CHANGE_ID}-data-store"
+      #      DATA_STORE_DB_USERNAME: hmcts
+      #      DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
+      DATA_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
+      DATA_STORE_DB_NAME: "data-store"
+      DATA_STORE_DB_USERNAME: hmcts
+      DATA_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
+      CCD_CASE_EVENTS_DESTINATION: ${SERVICE_NAME}-asb-ccd-case-events
+    secrets:
+      SERVICE_BUS_CONNECTION_STRING:
+        secretRef: civil-sb-preview
+        key: connectionString
+      DATA_STORE_DB_PASSWORD:
+        secretRef: postgres
+        key: PASSWORD
+        disabled: true
 
 xui-webapp:
   nodejs:
