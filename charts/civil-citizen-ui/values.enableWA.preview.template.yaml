@@ -19,6 +19,7 @@ civil-wa:
   enabled: true
 
 wa:
+  enabled: true
   global:
     postgresUsername: hmcts
     postgresSecret: postgres

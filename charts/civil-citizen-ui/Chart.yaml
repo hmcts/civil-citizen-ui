@@ -44,6 +44,10 @@ dependencies:
     version: 1.0.5
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
+  - name: postgresql
+    version: 1.0.2
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    condition: postgresql.enabled
   # CCD message publisher
   - name: ccd-message-publisher
     version: 0.1.18
