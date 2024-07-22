@@ -32,6 +32,7 @@ wa:
     java:
       ingressHost: wa-case-event-handler-${SERVICE_FQDN}
       releaseNameOverride: ${SERVICE_NAME}-wa-case-event-handler
+      keyVaults: []
       secrets:
         AZURE_SERVICE_BUS_CONNECTION_STRING:
           secretRef: civil-sb-preview
