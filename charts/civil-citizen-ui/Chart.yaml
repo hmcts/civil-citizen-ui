@@ -46,7 +46,7 @@ dependencies:
     condition: civil-wa.enabled
   # CCD message publisher
   - name: ccd-message-publisher
-    version: ~0.1.7
+    version: 0.1.18
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
   - name: aac-manage-case-assignment
