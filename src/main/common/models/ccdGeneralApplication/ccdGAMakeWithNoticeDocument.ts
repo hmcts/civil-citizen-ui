@@ -4,7 +4,3 @@ export interface CcdGAMakeWithNoticeDocument {
   id: string,
   value: CcdDocumentValue
 }
-
-
-
-
