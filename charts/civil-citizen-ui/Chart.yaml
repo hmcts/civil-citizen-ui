@@ -41,7 +41,7 @@ dependencies:
     condition: civil-general-applications.enabled
 # WA
   - name: wa
-    version: 1.0.5
+    version: ~1.0.5
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
   - name: postgresql
@@ -50,11 +50,11 @@ dependencies:
     condition: postgresql.enabled
   # CCD message publisher
   - name: ccd-message-publisher
-    version: 0.1.18
+    version: ~0.1.7
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
   - name: aac-manage-case-assignment
-    version: ~0.2.13
+    version: ~0.2.9
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: aac-manage-case-assignment.enabled
 

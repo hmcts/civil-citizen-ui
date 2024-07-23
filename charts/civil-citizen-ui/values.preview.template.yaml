@@ -261,6 +261,7 @@ ccd:
     postgresUsername: hmcts
     postgresPassword: ${POSTGRES_PASSWORD}
     postgresSecret: postgres
+    postgresHostname: ${SERVICE_NAME}-postgresql
     s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
   ccd-api-gateway-web:
@@ -359,15 +360,23 @@ camunda-bpm:
   enabled: true
   java:
     disableKeyVaults: true
+    devcpuRequests: 500m
+    devmemoryRequests: 512Mi
+    devcpuLimits: 1
+    devmemoryLimits: 1Gi
     releaseNameOverride: ${SERVICE_NAME}-camunda
     ingressHost: camunda-${SERVICE_FQDN}
     environment:
-      CAMUNDA_DB_PASSWORD: ${POSTGRES_PASSWORD}
-      CAMUNDA_DB_USER_NAME: ${POSTGRES_USER}
+      CAMUNDA_API_AUTH_ENABLED: false
+      CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
+      CAMUNDA_DB_NAME: camunda
+      CAMUNDA_DB_USER_NAME: "{{ .Values.postgresql.auth.username}}"
+      CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified"
+      CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
       TEMP_VAR: false
     secrets:
       CAMUNDA_DB_PASSWORD:
-        secretRef: postgres
+        secretRef: "{{ .Values.global.postgresSecret }}"
         key: PASSWORD
         disabled: true
 
