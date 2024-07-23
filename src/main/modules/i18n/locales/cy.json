@@ -2814,7 +2814,7 @@
         "STATES": {
           "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
           "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
-          "APPLICATION_ADD_PAYMENT": "Application Additional Payment",
+          "APPLICATION_ADD_PAYMENT": "Pay the additional application fee",
           "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application Submitted - Awaiting Judicial Decision",
           "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
           "ADDITIONAL_RESPONSE_TIME_PROVIDED": "Additional Response Time Provided",
@@ -2835,7 +2835,7 @@
         "THE_STATUS_CHANGE": "The status of an application will change as it progresses. An application with a 'To do' status means you need to take action. For example, paying an application fee or responding.",
         "THESE_ARE_APPS": "These are the applications that have been made by you or the other parties. The 'other parties' are the other side or sides involved in your claim.",
         "TITLE": "All applications",
-        "TO_DO": "To do",
+        "TO_DO": "To Do",
         "VIEW_APPLICATION": "View application"
       },
       "INFORM_OTHER_PARTIES": {
