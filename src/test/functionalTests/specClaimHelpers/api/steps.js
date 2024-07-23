@@ -333,16 +333,6 @@ module.exports = {
     }
     caseId = await apiRequest.startEventForLiPCitizen(payload);
     await waitForFinishedBusinessProcess(caseId, user);
-    let newPayload = {
-      event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
-      caseDataUpdate: {
-        issueDate: currentDate,
-        respondent1ResponseDeadline: currentDate,
-      },
-    };
-    await apiRequest.startEventForCitizen('', caseId, newPayload);
-    await waitForFinishedBusinessProcess(caseId, user);
-    await assignSpecCase(caseId, null);
 
     if (carmEnabled) {
       console.log('carm enabled, updating submitted date');
@@ -364,6 +354,18 @@ module.exports = {
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after minti date');
     }
+
+    await apiRequest.setupTokens(user);
+    let newPayload = {
+      event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
+      caseDataUpdate: {
+        issueDate: currentDate,
+        respondent1ResponseDeadline: currentDate,
+      },
+    };
+    await apiRequest.startEventForCitizen('', caseId, newPayload);
+    await waitForFinishedBusinessProcess(caseId, user);
+    await assignSpecCase(caseId, null);
     return caseId;
   },
 
