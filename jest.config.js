@@ -37,5 +37,7 @@ module.exports = {
       lines: 80,
       statements: -10,
     },
-  }
+  },
+  cache: true,
+  cacheDirectory: ".jest/cache",
 };
