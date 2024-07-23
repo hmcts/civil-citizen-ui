@@ -40,4 +40,5 @@ module.exports = {
   },
   cache: true,
   cacheDirectory: ".jest/cache",
+  coveragePathIgnorePatterns: ['/node_modules/'],
 };
