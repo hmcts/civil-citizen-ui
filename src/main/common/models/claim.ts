@@ -175,6 +175,7 @@ export class Claim {
   flightDetails?: FlightDetails;
   judgmentOnline?: JudgmentOnline;
   claimType?: string;
+  paymentSyncError?: boolean;
 
   // Index signature to allow dynamic property access
   [key: string]: any;
