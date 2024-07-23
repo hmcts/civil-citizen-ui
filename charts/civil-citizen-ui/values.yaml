@@ -19,6 +19,9 @@ elastic:
 civil-wa:
   enabled: false
 
+servicebus:
+  enabled: false
+
 aac-manage-case-assignment:
   enabled: false
 
