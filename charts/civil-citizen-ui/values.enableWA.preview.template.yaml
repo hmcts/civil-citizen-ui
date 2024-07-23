@@ -26,22 +26,6 @@ wa:
     postgresHost: ${SERVICE_NAME}-postgresql
   #    postgresHost: civil-preview.postgres.database.azure.com
   #    databaseNamePrefix: "pr-${CHANGE_ID}-"
-  wa-initiation-batch:
-    job:
-      releaseNameOverride: "{{ .Release.Name }}-wa-task-batch"
-      keyVaults: []
-    wa-reconfiguration-batch:
-      job:
-        releaseNameOverride: "{{ .Release.Name }}-reconfiguration"
-        keyVaults: []
-    wa-termination-batch:
-      job:
-        releaseNameOverride: "{{ .Release.Name }}-termination-batch"
-        keyVaults: []
-    wa-message-cron-service:
-      job:
-        releaseNameOverride: "{{ .Release.Name }}-wa-message-cron"
-        keyVaults: []
   wa:
     postgresql:
       enabled: false
@@ -49,7 +33,6 @@ wa:
     java:
       ingressHost: wa-case-event-handler-${SERVICE_FQDN}
       releaseNameOverride: ${SERVICE_NAME}-wa-case-event-handler
-      keyVaults: []
       secrets:
         AZURE_SERVICE_BUS_CONNECTION_STRING:
           secretRef: civil-sb-preview
