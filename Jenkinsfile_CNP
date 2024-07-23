@@ -8,9 +8,9 @@ def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
 def camundaBranch = "master"
-def dmnBranch = "master"
+def dmnBranch = "CIV-14661--Review-Case-Flags-task-are-not-appearing-for-Defendant-in-LipVLip"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "CIV-14661Review-Case-Flags-task-defendant-lip"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
