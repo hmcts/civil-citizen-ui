@@ -16,7 +16,7 @@ const interestTypeViewPath = 'features/claim/interest/interest-type';
 const propertyName = 'interestClaimOptions';
 
 function renderView(form: GenericForm<InterestClaimOption>, res: Response) {
-  res.render(interestTypeViewPath, {form});
+  res.render(interestTypeViewPath, {form, pageTitle: 'PAGES.INTEREST_CLAIM_OPTIONS.PAGE_TITLE'});
 }
 
 interestTypeController.get(CLAIM_INTEREST_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

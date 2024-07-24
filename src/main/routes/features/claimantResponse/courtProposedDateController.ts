@@ -28,7 +28,7 @@ const crPropertyName = 'decision';
 const crParentName = 'courtProposedDate';
 
 function renderView(form: GenericForm<CourtProposedDate>, paymentDate: string, res: Response): void {
-  res.render(courtProposedDateViewPath, { form, paymentDate });
+  res.render(courtProposedDateViewPath, { form, paymentDate, pageTitle:'PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.PAGE_TITLE' });
 }
 
 courtProposedDateController.get(CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
