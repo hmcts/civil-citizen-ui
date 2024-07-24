@@ -25,6 +25,7 @@ function renderView(req: Request, res: Response, form: GenericForm<StatementOfTr
     form,
     summarySections,
     signatureType,
+    pageTitle: 'PAGES.CHECK_YOUR_ANSWER.TITLE',
   });
 }
 

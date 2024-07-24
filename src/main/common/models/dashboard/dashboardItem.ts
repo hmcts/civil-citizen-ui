@@ -4,6 +4,7 @@ import {t} from 'i18next';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
 import {BASE_ELIGIBILITY_URL, DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {noGroupingCurrencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -114,7 +115,7 @@ export class DashboardClaimantItem extends DashboardItem {
       CLAIMANT_DOCUMENTS_BEING_TRANSLATED: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.DOCUMENTS_BEING_TRANSLATED' },
       WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD'},
       CLAIM_SUBMITTED_NOT_PAID_OR_FAILED: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIM_FEE_NOT_PAID'},
-      CLAIM_SUBMITTED_WAITING_TRANSLATED_DOCUMENTS: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD'},      
+      CLAIM_SUBMITTED_WAITING_TRANSLATED_DOCUMENTS: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD'},
       DEFENDANT_APPLY_NOC: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.RESPONSE_BY_POST'},
       DECISION_FOR_RECONSIDERATION_MADE: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.DECISION_ON_RECONSIDERATION' },
       HEARING_FEE_UNPAID: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.HEARING_FEE_UNPAID'},
@@ -140,7 +141,8 @@ export class DashboardDefendantItem extends DashboardItem {
     const paramClaimantName = {key: 'claimantName', value: this.claimantName};
     const paramCCJRequestedDate = {key: 'ccjRequestedDate', value: formatDateToFullDate(this.ccjRequestedDate, lang)};
     const paramResponseDeadline = {key: 'responseDeadline', value: formatDateToFullDate(this.responseDeadline, lang)};
-    const paramAdmittedAmount = {key: 'amount', value: this.respondToAdmittedClaimOwingAmountPounds?.toString() ?? this.admittedAmount?.toString()};
+    const displayedAmount = noGroupingCurrencyFormatWithNoTrailingZeros(this.respondToAdmittedClaimOwingAmountPounds ?? this.admittedAmount);
+    const paramAdmittedAmount = {key: 'amount', value: displayedAmount};
 
     return {
       NO_STATUS: {translationKey: ''},
@@ -231,6 +233,7 @@ export class DashboardDefendantItem extends DashboardItem {
       DEFENDANT_APPLY_NOC: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.RESPONSE_BY_POST'},
       DECISION_FOR_RECONSIDERATION_MADE: { translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.DECISION_ON_RECONSIDERATION' },
       HEARING_FEE_UNPAID: { translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.HEARING_FEE_UNPAID'},
+      WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD'},
     };
   }
 }
