@@ -2,22 +2,26 @@ import { NextFunction, RequestHandler, Response, Router } from 'express';
 import { GA_PAYMENT_SUCCESSFUL_URL } from 'routes/urls';
 import { AppRequest } from 'models/AppRequest';
 import { getGaPaymentSuccessfulBodyContent, getGaPaymentSuccessfulButtonContent, getGaPaymentSuccessfulPanelContent } from 'services/features/generalApplication/applicationFeePaymentConfirmationContent';
-import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
-import { deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import {
+  getApplicationFromGAService,
+  getCancelUrl, shouldDisplaySyncWarning,
+} from 'services/features/generalApplication/generalApplicationService';
+import {getClaimById} from 'modules/utilityService';
 const applicationFeePaymentSuccessfulController: Router = Router();
 
 const paymentSuccessfulViewPath = 'features/generalApplication/payment-successful';
 
-async function renderView(res: Response, req: AppRequest, claimId: string) {
-  const redisKey = generateRedisKey(req);
-  const claim = await getCaseDataFromStore(redisKey);
-  const calculatedAmountInPence = claim.generalApplication?.applicationFee?.calculatedAmountInPence;
+async function renderView(res: Response, req: AppRequest, claimId: string, appId: string) {
+  const claim = await getClaimById(claimId, req, true);
+  const applicationResponse = await getApplicationFromGAService(req, appId);
+  const calculatedAmountInPence = applicationResponse?.case_data?.generalAppPBADetails?.fee?.calculatedAmountInPence;
   const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-  await deleteDraftClaimFromStore(redisKey);
+  const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
   res.render(paymentSuccessfulViewPath,
     {
       gaPaymentSuccessfulPanel: getGaPaymentSuccessfulPanelContent(claim, lng),
-      gaPaymentSuccessfulBody: getGaPaymentSuccessfulBodyContent(claim, String(calculatedAmountInPence), lng),
+      gaPaymentSuccessfulBody: getGaPaymentSuccessfulBodyContent(claim, String(calculatedAmountInPence), isAdditionalFee,
+        shouldDisplaySyncWarning(applicationResponse), lng),
       gaPaymentSuccessfulButton: getGaPaymentSuccessfulButtonContent(await getCancelUrl(claimId, claim)),
     });
 }
@@ -25,7 +29,8 @@ async function renderView(res: Response, req: AppRequest, claimId: string) {
 applicationFeePaymentSuccessfulController.get(GA_PAYMENT_SUCCESSFUL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    await renderView(res, req, claimId);
+    const applicationId = req.params.appId;
+    await renderView(res, req, claimId, applicationId);
   } catch (error) {
     next(error);
   }
