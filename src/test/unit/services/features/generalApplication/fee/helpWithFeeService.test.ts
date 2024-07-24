@@ -68,7 +68,7 @@ describe('apply help with application fee selection', () => {
         },
         applicationFeeAmountInPence: undefined,
         parentClaimantIsApplicant: undefined,
-        judicialDecision: undefined
+        judicialDecision: undefined,
       },
       created_date: '',
       id: '',

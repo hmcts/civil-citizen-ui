@@ -690,7 +690,7 @@ describe('Should display sync warning', () => {
         },
         applicationFeeAmountInPence: undefined,
         parentClaimantIsApplicant: undefined,
-        judicialDecision: undefined
+        judicialDecision: undefined,
       },
       created_date: '',
       id: '',
