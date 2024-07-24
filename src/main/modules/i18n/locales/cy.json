@@ -68,6 +68,7 @@
     "YEAR": "Blwyddyn",
     "YEARS": "Blwyddyn",
     "YES": "Oes",
+    "OPENS_IN_NEW_TAB": "(yn agor mewn tab newydd)",
     "ADDRESS_FORM": {
       "ADDRESS_CHANGES_SHARED": "Bydd unrhyw newidiadau yn cael eu rhannu â'r hawlydd pan fyddwch yn cyflwyno eich ymateb.",
       "BUILDING_AND_STREET": "Adeilad a stryd",
@@ -164,7 +165,7 @@
       "BETA": "BETA",
       "MONEY_CLAIMS": "Hawliadau am Arian",
       "MY_ACCOUNT": "Fy nghyfrif",
-      "NEW_SERVICE": "Mae hwn yn wasanaeth newydd – bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>adborth <span class='govuk-visually-hidden'>(agor mewn ffenestr newydd)</span></a> yn ein helpu i’w wella.",
+      "NEW_SERVICE": "Mae hwn yn wasanaeth newydd – bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>adborth <span class='govuk-visually-hidden'>(yn agor mewn tab newydd)</span></a> yn ein helpu i’w wella.",
       "SIGN_IN": "Mewngofnodi",
       "SIGN_OUT": "Allgofnodi"
     },
