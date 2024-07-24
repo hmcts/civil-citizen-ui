@@ -1,5 +1,6 @@
 nodejs:
   # Don't modify below here
+  #
   image: ${IMAGE_NAME}
   memoryLimits: 768Mi
   ingressHost: ${SERVICE_FQDN}
