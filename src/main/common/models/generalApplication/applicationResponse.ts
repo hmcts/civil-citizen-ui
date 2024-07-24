@@ -1,5 +1,5 @@
 import {ApplicationUpdate} from 'models/generalApplication/events/eventDto';
-import {CaseState} from 'form/models/claimDetails';
+import { ApplicationState } from './applicationSummary';
 import {CcdGeneralApplicationTypes} from 'models/ccdGeneralApplication/ccdGeneralApplicationTypes';
 import {
   CcdGeneralApplicationRespondentAgreement,
@@ -16,18 +16,19 @@ import {
   CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
 import {CcdGeneralApplicationAddlDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
+import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 
 export class ApplicationResponse {
   id: string;
   case_data: CCDApplication;
-  state: CaseState;
+  state: ApplicationState;
   last_modified: string;
   created_date: string;
 
   constructor(
     id?: string,
     case_data?: CCDApplication,
-    state?: CaseState,
+    state?: ApplicationState,
     last_modified?: string,
     created_date?: string,
   ) {
@@ -40,6 +41,7 @@ export class ApplicationResponse {
 }
 
 export interface CCDApplication extends ApplicationUpdate {
+  applicationTypes: string;
   legacyCaseReference?: string;
   generalAppType: CcdGeneralApplicationTypes;
   generalAppRespondentAgreement: CcdGeneralApplicationRespondentAgreement;
@@ -51,4 +53,7 @@ export interface CCDApplication extends ApplicationUpdate {
   gaAddlDoc: CcdGeneralApplicationAddlDocument[];
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
   generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
+  generalAppPBADetails: CcdGeneralApplicationPBADetails;
+  applicationFeeAmountInPence: string;
+  parentClaimantIsApplicant: YesNoUpperCamelCase;
 }
