@@ -56,10 +56,6 @@ civil-service:
             alias: CIVIL_PRD_ADMIN_USERNAME
           - name: prd-admin-user-password
             alias: CIVIL_PRD_ADMIN_PASSWORD
-          - name: appinsights-connection-string
-            alias: appinsights-connection-string
-          - name: AppInsightsInstrumentationKey
-            alias: azure.application-insights.instrumentation-key
           - name: docmosis-api-key
             alias: docmosis.tornado.key
           - name: gov-notify-pretends-api-key
@@ -145,7 +141,7 @@ civil-service:
           enabled: false
         resources:
           requests:
-            cpu: 25m
+            cpu: 100m
         initdb:
           scripts:
             init.sql: |
@@ -310,26 +306,7 @@ ccd:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
           disabled: true
-  am-role-assignment-service:
-    java:
-      releaseNameOverride: ${SERVICE_NAME}-am-role-assignment-service
-      secrets:
-        LD_SDK_KEY:
-          secretRef: role-assignment-service-LD-SDK-KEY
-          key: key
-          disabled: true
-        ROLE_ASSIGNMENT_DB_PASSWORD:
-          secretRef: "{{ .Values.global.postgresSecret }}"
-          key: PASSWORD
-          disabled: true
-      environment:
-        RELEASE_REVISION: "{{ .Release.Revision }}"
-        ROLE_ASSIGNMENT_DB_PASSWORD: "{{ .Values.postgresql.auth.postgresPassword}}"
-        ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
-      keyVaults:
-        am:
-          secrets:
-            - role-assignment-service-LD-SDK-KEY
+
   ccd-definition-store-api:
     java:
       imagePullPolicy: Always
@@ -457,5 +434,3 @@ civil-general-applications:
       GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
       CUI_URL: https://${SERVICE_FQDN}
 
-postgresql:
-  enabled: false

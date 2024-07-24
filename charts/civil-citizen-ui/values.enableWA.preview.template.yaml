@@ -117,10 +117,6 @@ ccd-message-publisher:
           - name: AppInsightsInstrumentationKey
             alias: azure.application-insights.instrumentation-key
     environment:
-      #      DATA_STORE_DB_HOST: civil-preview.postgres.database.azure.com
-      #      DATA_STORE_DB_NAME: "pr-${CHANGE_ID}-data-store"
-      #      DATA_STORE_DB_USERNAME: hmcts
-      #      DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       DATA_STORE_DB_HOST: "{{ .Release.Name }}-postgresql"
       DATA_STORE_DB_NAME: "data-store"
       DATA_STORE_DB_USERNAME: hmcts

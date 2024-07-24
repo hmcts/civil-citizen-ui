@@ -25,9 +25,6 @@ servicebus:
 aac-manage-case-assignment:
   enabled: false
 
-postgresql:
-  enabled: false
-
 civil-general-applications:
   enabled: false
 
