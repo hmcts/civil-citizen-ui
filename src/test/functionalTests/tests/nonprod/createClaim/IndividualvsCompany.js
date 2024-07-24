@@ -2,17 +2,22 @@ const steps  =  require('../../../citizenFeatures/createClaim/steps/createLipvLi
 const config = require('../../../../config');
 
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
+const { isDashboardServiceToggleEnabled } = require('../../../specClaimHelpers/api/testingSupport');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 
 let caseRef, selectedHWF;
 
-Feature('Create Lip v Company claim - Individual vs Company @claimCreation').tag('@regression-r2');
+const createGAAppSteps = require('../../../citizenFeatures/response/steps/createGAAppSteps');
+
+Feature('Create Lip v Company claim - Individual vs Company @claimCreationc').tag('@regression-r2');
 
 Scenario('Create Claim -  Individual vs Company - small claims - no interest - no hwf - flightdelay claim', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     selectedHWF = false;
     const defaultClaimFee = 455;
     const defaultClaimAmount = 9000;
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+    console.log('isDashboardServiceEnabled..', isDashboardServiceEnabled);
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
@@ -24,5 +29,17 @@ Scenario('Create Claim -  Individual vs Company - small claims - no interest - n
     await steps.clickPayClaimFee();
     await steps.verifyAndPayClaimFee(defaultClaimAmount, defaultClaimFee);
     await api.waitForFinishedBusinessProcess();
+    const caseData = await api.retrieveCaseData(config.adminUser, caseRef);
+    const claimNumber = await caseData.legacyCaseReference;
+    await api.assignToLipDefendant(caseRef);
+    console.log('Creating GA app as claimant');
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef);
+    console.log('Creating GA app as defendant');
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef);
   }
 });

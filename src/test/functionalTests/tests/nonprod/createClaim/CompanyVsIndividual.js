@@ -9,7 +9,9 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115, claimantPartyType = 'Company';
 
-Feature('Create Lip v Lip claim - Company vs Individual @claimCreation').tag('@nightly-regression-r2');
+const createGAAppSteps = require('../../../citizenFeatures/response/steps/createGAAppSteps');
+
+Feature('Create Lip v Lip claim - Company vs Individual @claimCreation ').tag('@nightly-regression-r2');
 
 Scenario('Create Claim -  Company vs Individual - small claims - no interest - no hwf', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -42,6 +44,16 @@ Scenario('Create Claim -  Company vs Individual - small claims - no interest - n
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
     }
   }
+  await api.assignToLipDefendant(caseRef);
+  console.log('Creating GA app as claimant');
+  await I.amOnPage('/dashboard');
+  await I.click(legacyCaseReference);
+  await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef);
+  console.log('Creating GA app as defendant');
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(legacyCaseReference);
+  await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef);
 });
 
 Scenario('Create Claim -  Company vs Individual - small claims - with standard interest - no hwf', async ({I, api}) => {

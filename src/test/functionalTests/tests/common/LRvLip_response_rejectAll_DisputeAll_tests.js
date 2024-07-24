@@ -6,12 +6,15 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
 
+
+const createGAAppSteps = require('../../citizenFeatures/response/steps/createGAAppSteps');
+
 let claimRef;
 let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with RejectAll and DisputeAll');
+Feature('Response with RejectAll and DisputeAll @testing');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -27,7 +30,18 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @nightly', async ({api}) => {
+Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @nightly', async ({api, I}) => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    console.log('Creating GA app as claimant');
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(claimRef);
+    console.log('Creating GA app as defendant');
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(claimNumber);
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(claimRef);
+  }
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
@@ -45,4 +59,5 @@ Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @nightly'
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAllDisputeAll, config.claimState.IN_MEDIATION);
   await api.mediationUnsuccessful(config.caseWorker);
   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
+
 }).tag('@regression-cui-r1');

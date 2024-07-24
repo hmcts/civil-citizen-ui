@@ -8,8 +8,10 @@ const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers
 const { payClaimFee, hwfSubmission } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115, claimantPartyType = 'Company';
+const createGAAppSteps = require('../../../citizenFeatures/response/steps/createGAAppSteps');
 
-Feature('Create Lip v Lip claim - Company vs Org - @claimCreation').tag('@egression-r2');
+
+Feature('Create Lip v Lip claim - Company vs Org - @claimCreation ').tag('@egression-r2');
 
 Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -38,6 +40,17 @@ Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf', a
     }
     await steps.verifyAndPayClaimFee(defaultClaimAmount, defaultClaimFee);
     await api.waitForFinishedBusinessProcess();
+
+    await api.assignToLipDefendant(caseRef);
+    console.log('Creating GA app as claimant');
+    await I.amOnPage('/dashboard');
+    await I.click(legacyCaseReference);
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef);
+    console.log('Creating GA app as defendant');
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(legacyCaseReference);
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef);
   }
 });
 

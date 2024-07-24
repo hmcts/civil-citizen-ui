@@ -9,6 +9,9 @@ const { payClaimFee, hwfSubmission } = require('../../../specClaimHelpers/dashbo
 
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115, claimantPartyType = 'Org';
 
+
+const createGAAppSteps = require('../../../citizenFeatures/response/steps/createGAAppSteps');
+
 Feature('Create Lip v Lip claim - Org vs Sole trader @claimCreation').tag('@nightly-regression-r2');
 
 Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf', async ({I, api}) => {
@@ -38,6 +41,17 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf
     }
     await steps.verifyAndPayClaimFee(defaultClaimAmount, 455);
     await api.waitForFinishedBusinessProcess();
+
+    await api.assignToLipDefendant(caseRef);
+    console.log('Creating GA app as claimant');
+    await I.amOnPage('/dashboard');
+    await I.click(legacyCaseReference);
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef);
+    console.log('Creating GA app as defendant');
+    await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await I.amOnPage('/dashboard');
+    await I.click(legacyCaseReference);
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef);
   }
 });
 
