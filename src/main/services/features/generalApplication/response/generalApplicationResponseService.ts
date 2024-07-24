@@ -17,7 +17,7 @@ const logger = Logger.getLogger('claimantResponseService');
 
 export const saveRespondentAgreeToOrder = async (redisKey: string, agreeToOrder: YesNo): Promise<void> => {
   try {
-    const gaResponse = await getDraftGARespondentResponse(redisKey)
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
     gaResponse.agreeToOrder = agreeToOrder;
     await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
@@ -38,7 +38,7 @@ export function getRespondToApplicationCaption(claim: Claim, gaApplicationId: st
 
 export const saveRespondentHearingArrangement = async (redisKey: string, hearingArrangement: HearingArrangement): Promise<void> => {
   try {
-    const gaResponse = await getDraftGARespondentResponse(redisKey)
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
     gaResponse.hearingArrangement = hearingArrangement;
     await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
@@ -49,7 +49,7 @@ export const saveRespondentHearingArrangement = async (redisKey: string, hearing
 
 export const saveRespondentHearingContactDetails = async (redisKey: string, hearingContactDetails: HearingContactDetails): Promise<void> => {
   try {
-    const gaResponse = await getDraftGARespondentResponse(redisKey)
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
     gaResponse.hearingContactDetails = hearingContactDetails;
     await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
@@ -60,7 +60,7 @@ export const saveRespondentHearingContactDetails = async (redisKey: string, hear
 
 export const saveRespondentHearingSupport = async (redisKey: string, hearingSupport: HearingSupport): Promise<void> => {
   try {
-    const gaResponse = await getDraftGARespondentResponse(redisKey)
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
     gaResponse.hearingSupport = hearingSupport;
     await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
@@ -71,9 +71,7 @@ export const saveRespondentHearingSupport = async (redisKey: string, hearingSupp
 
 export const saveRespondentUnavailableDates = async (redisKey: string, unavailableDates: UnavailableDatesGaHearing): Promise<void> => {
   try {
-    // claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    //claim.generalApplication.response = Object.assign(new GaResponse(), claim.generalApplication.response);
-    const gaResponse = await getDraftGARespondentResponse(redisKey)
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
     while (unavailableDates?.items?.length > 0 && !unavailableDates.items[unavailableDates.items.length - 1].type) {
       unavailableDates?.items.pop();
     }
@@ -87,11 +85,7 @@ export const saveRespondentUnavailableDates = async (redisKey: string, unavailab
 
 export const saveRespondentStatementOfTruth = async (redisKey: string, statementOfTruth: StatementOfTruthForm): Promise<void> => {
   try {
-    //   const claim = await getCaseDataFromStore(redisKey, true);
-    //   claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    // const gaResponse = Object.assign(new GaResponse(), claim.generalApplication?.response);
-    const gaResponse = await getDraftGARespondentResponse(redisKey)
-    ///   claim.generalApplication.response = gaResponse;
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
     gaResponse.statementOfTruth = statementOfTruth;
     await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {

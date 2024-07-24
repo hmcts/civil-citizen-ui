@@ -13,7 +13,7 @@ import * as draftStoreService from 'services/features/generalApplication/respons
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
-  getDraftGARespondentResponse: jest.fn()
+  getDraftGARespondentResponse: jest.fn(),
 }));
 const mockCaseDocument: CaseDocument = <CaseDocument>{
   createdBy: 'test',
@@ -86,7 +86,7 @@ describe('Upload Respondent Evidence Document service', () => {
 
   describe('Save document', () => {
     it('should save document successfully', async () => {
-      jest.spyOn(draftStoreService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse())
+      jest.spyOn(draftStoreService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
       const spy = jest.spyOn(draftStoreService, 'saveDraftGARespondentResponse');
       const uploadDocument = new UploadGAFiles();
       uploadDocument.caseDocument = mockCaseDocument;
@@ -98,10 +98,10 @@ describe('Upload Respondent Evidence Document service', () => {
     });
     it('should throw error when draft store throws error', async () => {
       //Given
-      jest.spyOn(draftStoreService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse())
+      jest.spyOn(draftStoreService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
       jest.spyOn(draftStoreService, 'saveDraftGARespondentResponse').mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
-      });;
+      });
 
       //Then
       await expect(saveDocumentsToUploaded('123', undefined)).rejects.toThrow(TestMessages.REDIS_FAILURE);

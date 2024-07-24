@@ -79,7 +79,7 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
     const redisKeyForGA = generateRedisKeyForGA(req);
     const redisKey = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
-    const gaResponse = await getDraftGARespondentResponse(redisKeyForGA)
+    const gaResponse = await getDraftGARespondentResponse(redisKeyForGA);
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
 
     const formattedSummary = summarySection(

@@ -22,8 +22,8 @@ jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
-  getDraftGARespondentResponse: jest.fn()
-}))
+  getDraftGARespondentResponse: jest.fn(),
+}));
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockGenerateRedisKey = generateRedisKeyForGA as jest.Mock;
@@ -40,11 +40,10 @@ describe('General application - response - check your answers', () => {
 
   });
 
-
   describe('on GET', () => {
 
     it('displays claim summary', async () => {
-      const mockClaim = new Claim()
+      const mockClaim = new Claim();
       mockClaim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
       mockGetCaseData.mockResolvedValueOnce(mockClaim);
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
@@ -59,10 +58,10 @@ describe('General application - response - check your answers', () => {
     });
 
     it('displays response data', async () => {
-      const gaResponse = new GaResponse()
+      const gaResponse = new GaResponse();
       gaResponse.respondentAgreement = new RespondentAgreement(YesNo.YES);
       gaResponse.hearingSupport = new HearingSupport([SupportType.HEARING_LOOP]);
-      const mockClaim = new Claim()
+      const mockClaim = new Claim();
       mockClaim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
       mockGetCaseData.mockResolvedValueOnce(mockClaim);
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
@@ -96,7 +95,7 @@ describe('General application - response - check your answers', () => {
       const statementOfTruth: StatementOfTruthForm = {signed: true, name: 'Mr Applicant'};
       const gaResponse = new GaResponse();
       gaResponse.statementOfTruth = statementOfTruth;
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse)
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
       await request(app)
         .post(constructResponseUrlWithIdAndAppIdParams('1234567', '345', GA_RESPONSE_CHECK_ANSWERS_URL))
         .send(statementOfTruth)
@@ -108,7 +107,7 @@ describe('General application - response - check your answers', () => {
     });
     it('should show validation errors when statement of truth not filled in', async () => {
       mockGetCaseData.mockResolvedValueOnce(new Claim());
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse())
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
       await request(app)
         .post(GA_RESPONSE_CHECK_ANSWERS_URL)
         .send({signed: undefined, name: ''})

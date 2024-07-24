@@ -19,7 +19,7 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
 export const getSummaryList = async (formattedSummary: SummarySection, redisKey: string, claimId: string, appId: string): Promise<void> => {
-  const gaResponse = await getDraftGARespondentResponse(redisKey)
+  const gaResponse = await getDraftGARespondentResponse(redisKey);
   let index = 0;
   gaResponse?.uploadEvidenceDocuments?.forEach((uploadDocument: UploadGAFiles) => {
     index= index+ 1;
@@ -42,7 +42,7 @@ export const saveDocumentsToUploaded = async (redisKey: string, uploadDocument: 
 
 export const removeDocumentFromRedis = async (redisKey: string, index: number) : Promise<void> => {
   try {
-    const gaResponse = await getDraftGARespondentResponse(redisKey)
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
     gaResponse?.uploadEvidenceDocuments?.splice(index, 1);
     await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch(error) {

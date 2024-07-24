@@ -19,7 +19,7 @@ jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
-  getDraftGARespondentResponse: jest.fn()
+  getDraftGARespondentResponse: jest.fn(),
 }));
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
@@ -35,7 +35,6 @@ describe('General Application - Respondent Application hearing preference', () =
       .reply(200, {id_token: citizenRoleToken});
     (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
-
 
   describe('on GET', () => {
     it('should return Respondent Application hearing preference page', async () => {

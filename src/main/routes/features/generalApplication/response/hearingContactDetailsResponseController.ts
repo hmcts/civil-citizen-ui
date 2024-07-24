@@ -29,7 +29,7 @@ hearingContactDetailsResponseController.get(GA_RESPONSE_HEARING_CONTACT_DETAILS_
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req))
+    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const hearingContactDetails = gaResponse?.hearingContactDetails || new HearingContactDetails();
     const form = new GenericForm(hearingContactDetails);
     await renderView(claimId, claim, form, req, res);
@@ -42,7 +42,6 @@ hearingContactDetailsResponseController.post(GA_RESPONSE_HEARING_CONTACT_DETAILS
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    // const redisKey = generateRedisKey(<AppRequest>req);
     const hearingContactDetails: HearingContactDetails = new HearingContactDetails(req.body.telephoneNumber, req.body.emailAddress);
     const form = new GenericForm(hearingContactDetails);
     await form.validate();

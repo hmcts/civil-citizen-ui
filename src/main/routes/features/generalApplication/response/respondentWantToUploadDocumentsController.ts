@@ -41,7 +41,7 @@ respondentWantToUploadDocumentsController.get(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUM
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req))
+    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const form = new GenericForm(new GenericYesNo(gaResponse.wantToUploadDocuments));
     await renderView(req, form, claim, claimId, res);
   } catch (error) {

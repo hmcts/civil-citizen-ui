@@ -29,7 +29,7 @@ jest.mock('../../../../../../../main/services/features/generalApplication/unavai
 
 jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
-  getDraftGARespondentResponse: jest.fn()
+  getDraftGARespondentResponse: jest.fn(),
 }));
 
 const mockGetClaim = utilityService.getClaimById as jest.Mock;
@@ -50,7 +50,7 @@ describe('General Application Response- Unavailable hearing dates', () => {
     mockClaim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
     mockGetClaim.mockResolvedValueOnce(mockClaim);
     jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
-  })
+  });
   describe('on GET', () => {
     it('should return page', async () => {
 

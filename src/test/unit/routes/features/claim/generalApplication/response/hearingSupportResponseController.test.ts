@@ -21,8 +21,8 @@ jest.mock('../../../../../../../main/services/features/claim/details/claimDetail
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
-  getDraftGARespondentResponse: jest.fn()
-}))
+  getDraftGARespondentResponse: jest.fn(),
+}));
 
 const mockGetClaim = utilityService.getClaimById as jest.Mock;
 
@@ -39,9 +39,9 @@ describe('General Application Response- Hearing support', () => {
   beforeEach(() => {
     const claim = new Claim();
     claim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
-    mockGetClaim.mockResolvedValueOnce(claim)
+    mockGetClaim.mockResolvedValueOnce(claim);
     jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
-  })
+  });
 
   describe('on GET', () => {
     it('should return page', async () => {

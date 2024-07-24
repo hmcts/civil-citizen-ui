@@ -31,7 +31,7 @@ hearingArrangementResponseController.get(GA_RESPONSE_HEARING_ARRANGEMENT_URL, (a
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req))
+    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const hearingArrangement = gaResponse?.hearingArrangement || new HearingArrangement();
     const form = new GenericForm(hearingArrangement);
     await renderView(claimId, claim, form, req, res);
@@ -44,7 +44,6 @@ hearingArrangementResponseController.post(GA_RESPONSE_HEARING_ARRANGEMENT_URL, (
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    // const redisKey = generateRedisKey(<AppRequest>req);
     const hearingArrangement: HearingArrangement = new HearingArrangement(req.body.option, req.body.reasonForPreferredHearingType, req.body.courtLocation);
     const form = new GenericForm(hearingArrangement);
     await form.validate();

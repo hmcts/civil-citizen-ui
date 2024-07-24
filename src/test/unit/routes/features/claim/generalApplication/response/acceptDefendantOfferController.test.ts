@@ -21,8 +21,8 @@ jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
-  getDraftGARespondentResponse: jest.fn()
-}))
+  getDraftGARespondentResponse: jest.fn(),
+}));
 
 describe('General Application - Accept defendant offer', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -49,8 +49,8 @@ describe('General Application - Accept defendant offer', () => {
   afterEach(
     () => {
       jest.clearAllMocks();
-    }
-  )
+    },
+  );
   describe('on GET', () => {
     it('should return page', async () => {
       await request(app)

@@ -19,7 +19,7 @@ jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
-  getDraftGARespondentResponse: jest.fn()
+  getDraftGARespondentResponse: jest.fn(),
 }));
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;

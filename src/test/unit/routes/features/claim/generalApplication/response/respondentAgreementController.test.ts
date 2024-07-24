@@ -18,8 +18,8 @@ jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
-  getDraftGARespondentResponse: jest.fn()
-}))
+  getDraftGARespondentResponse: jest.fn(),
+}));
 
 describe('General Application - inform other parties', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

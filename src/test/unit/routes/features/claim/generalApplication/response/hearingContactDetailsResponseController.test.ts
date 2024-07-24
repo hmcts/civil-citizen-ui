@@ -18,8 +18,8 @@ jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
-  getDraftGARespondentResponse: jest.fn()
-}))
+  getDraftGARespondentResponse: jest.fn(),
+}));
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 const mockClaim = new Claim();
@@ -37,10 +37,10 @@ describe('General Application Response- Contact Details', () => {
   });
   beforeEach(() => {
     jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
-  })
+  });
   afterAll(() => {
     jest.clearAllMocks();
-  })
+  });
   describe('on GET', () => {
     it('should return Contact Details page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);

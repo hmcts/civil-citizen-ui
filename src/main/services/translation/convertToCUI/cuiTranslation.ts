@@ -164,11 +164,11 @@ function toCUIRespondentGADetails(respondentSolGaAppDetails: RespondentSolGaAppD
       generalAppTypes: gaAppInfo.value.generalApplicationType.split(',').map((applicationType: string) => displayToEnumKey(applicationType)),
       gaApplicationId: gaAppInfo.value.caseLink.CaseReference,
       caseState: gaAppInfo.value.caseState,
-      generalAppSubmittedDateGAspec: gaAppInfo.value.generalAppSubmittedDateGAspec
-    }
-  })
+      generalAppSubmittedDateGAspec: gaAppInfo.value.generalAppSubmittedDateGAspec,
+    };
+  });
 }
 
 const displayToEnumKey = (displayValue: string): ApplicationTypeOption => {
   return (Object.keys(GeneralApplicationTypesDisplayFromCCD) as Array<keyof typeof GeneralApplicationTypesDisplayFromCCD>).find(key => GeneralApplicationTypesDisplayFromCCD[key] === displayValue) as ApplicationTypeOption | undefined;
-}
+};

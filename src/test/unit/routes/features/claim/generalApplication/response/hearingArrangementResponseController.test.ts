@@ -21,8 +21,8 @@ jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('modules/draft-store/courtLocationCache');
 jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
-  getDraftGARespondentResponse: jest.fn()
-}))
+  getDraftGARespondentResponse: jest.fn(),
+}));
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockCachedLocations = cache.getCourtLocationsFromCache as jest.Mock;
 
@@ -43,11 +43,11 @@ describe('General Application Response - Application hearing arrangements', () =
 
   beforeEach(() => {
     jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
-  })
+  });
 
   afterAll(() => {
     jest.clearAllMocks();
-  })
+  });
 
   describe('on GET', () => {
     it('should return Application hearing arrangements page', async () => {

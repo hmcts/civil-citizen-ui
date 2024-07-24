@@ -28,7 +28,7 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
     headerTitle: getTitle(claim, req.params.appId, lang), 
     claimIdPrettified: caseNumberPrettify(claimId), 
     claim, 
-    summaryRows: getSummarySections(claimId, req.params.appId, gaResponse, lang)
+    summaryRows: getSummarySections(claimId, req.params.appId, gaResponse, lang),
   });
 }
 
@@ -72,5 +72,5 @@ const getTitle = (claim: Claim, appId: string, lng: string) => {
   (application && application.generalAppTypes.length == 1)
     ? getRespondToApplicationCaption(claim, appId, lng)
     : t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.RESPOND_TO_AN_APPLICATION', {lng});
-}
+};
 export default gaCheckAnswersResponseController;

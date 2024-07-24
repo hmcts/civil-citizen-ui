@@ -468,18 +468,18 @@ describe('translateCCDCaseDataToCUIModel', () => {
             generalApplicationType: 'Strike out',
             caseState: 'awaiting respondent response',
             caseLink: {
-              CaseReference: '1234567'
+              CaseReference: '1234567',
             },
-            generalAppSubmittedDateGAspec: dateString
+            generalAppSubmittedDateGAspec: dateString,
           },
-        }
-      ]
-    }
+        },
+      ],
+    };
 
     // When
     const claim = translateCCDCaseDataToCUIModel(input);
   
     //Then
-    expect(claim.respondentGaAppDetails).toEqual([{ generalAppTypes: ['STRIKE_OUT'], gaApplicationId: '1234567', caseState: 'awaiting respondent response', generalAppSubmittedDateGAspec: dateString }])
-  })
+    expect(claim.respondentGaAppDetails).toEqual([{ generalAppTypes: ['STRIKE_OUT'], gaApplicationId: '1234567', caseState: 'awaiting respondent response', generalAppSubmittedDateGAspec: dateString }]);
+  });
 });

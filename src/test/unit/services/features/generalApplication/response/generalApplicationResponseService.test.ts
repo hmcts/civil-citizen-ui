@@ -24,8 +24,8 @@ jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
-  getDraftGARespondentResponse: jest.fn()
-}))
+  getDraftGARespondentResponse: jest.fn(),
+}));
 jest.mock('i18next', () => ({
   t: (i: string | unknown) => i,
   use: jest.fn(),
@@ -34,10 +34,10 @@ jest.mock('i18next', () => ({
 describe('General Application Response service', () => {
   beforeEach(() => {
     jest.spyOn(draftStoreService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
-  })
+  });
   afterEach(() => {
     jest.clearAllMocks();
-  })
+  });
 
   describe('Save defendant agree to order', () => {
     it('should save respondent agree to order', async () => {
@@ -141,7 +141,7 @@ describe('General Application Response service', () => {
       //Given
       const mockSaveGaResponse = draftStoreService.saveDraftGARespondentResponse as jest.Mock;
       //When
-      mockSaveGaResponse.mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));;
+      mockSaveGaResponse.mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
       //Then
       await expect(saveRespondentUnavailableDates('123', new UnavailableDatesGaHearing())).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
