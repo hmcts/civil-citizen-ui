@@ -32,7 +32,7 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (as
     const {completed, total} = calculateTotalAndCompleted(taskLists);
     const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total, lng});
     const title = completed < total ? t('PAGES.CLAIM_TASK_LIST.APPLICATION_COMPLETE', {lng}) : t('PAGES.CLAIM_TASK_LIST.APPLICATION_INCOMPLETE', {lng});
-    res.render(taskListViewPath, {taskLists, title, description});
+    res.render(taskListViewPath, {taskLists, title, description, pageTitle:'PAGES.CLAIM_TASK_LIST.PAGE_TITLE'});
   } catch (error) {
     next(error);
   }

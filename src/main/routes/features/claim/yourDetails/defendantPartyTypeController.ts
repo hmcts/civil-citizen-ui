@@ -14,6 +14,7 @@ import {deleteDelayedFlight} from 'services/features/claim/delayedFlightService'
 
 const defendantPartyTypeViewPath = 'features/claim/defendant-party-type';
 const defendantPartyTypeController = Router();
+const pageTitle= 'PAGES.DEFENDANT_PARTY_TYPE.PAGE_TITLE';
 
 defendantPartyTypeController.get(CLAIM_DEFENDANT_PARTY_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -21,7 +22,7 @@ defendantPartyTypeController.get(CLAIM_DEFENDANT_PARTY_TYPE_URL, (async (req: Ap
     const defendant: Party = await getDefendantInformation(caseId);
     const defendantPartyType = defendant?.type;
     const form = new GenericForm(new PartyTypeSelection(defendantPartyType));
-    res.render(defendantPartyTypeViewPath, {form});
+    res.render(defendantPartyTypeViewPath, {form, pageTitle});
   } catch (error) {
     next(error);
   }
@@ -34,7 +35,7 @@ defendantPartyTypeController.post(CLAIM_DEFENDANT_PARTY_TYPE_URL, (async (req: A
     form.validateSync();
 
     if (form.hasErrors()) {
-      res.render(defendantPartyTypeViewPath, {form});
+      res.render(defendantPartyTypeViewPath, {form, pageTitle});
     } else {
       if (form.model.option !== PartyType.COMPANY) {
         await deleteDelayedFlight(caseId);

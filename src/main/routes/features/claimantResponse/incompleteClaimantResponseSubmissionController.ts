@@ -24,6 +24,7 @@ incompleteClaimantResponseSubmissionController.get(CLAIMANT_RESPONSE_INCOMPLETE_
     res.render(incompleteSubmissionViewPath, {
       tasks: taskLists,
       taskListUri: constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_TASK_LIST_URL),
+      pageTitle: 'PAGES.INCOMPLETE_SUBMISSION.TITLE',
     });
   } catch (error) {
     next(error);

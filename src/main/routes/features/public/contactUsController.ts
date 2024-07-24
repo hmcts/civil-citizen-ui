@@ -5,7 +5,7 @@ const contactUsController = Router();
 const contactUsViewPath = 'features/public/contact-us';
 
 contactUsController.get(CONTACT_US_URL, (req, res) => {
-  res.render(contactUsViewPath, { dashboardUrl: DASHBOARD_URL });
+  res.render(contactUsViewPath, { dashboardUrl: DASHBOARD_URL , pageTitle: 'PAGES.CONTACT_US.TITLE'});
 });
 
 export default contactUsController;

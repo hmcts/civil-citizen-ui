@@ -20,6 +20,7 @@ function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, 
     claimAmount: claimAmountAccepted.toFixed(2),
     claimFee: claimFee.toFixed(2),
     judgmentSummaryDetails,
+    pageTitle: 'PAGES.JUDGMENT_AMOUNT.PAGE_TITLE',
   });
 }
 

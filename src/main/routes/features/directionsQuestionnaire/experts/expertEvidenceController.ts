@@ -22,7 +22,7 @@ const dqPropertyName = 'expertEvidence';
 const dqParentName = 'experts';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(expertEvidenceViewPath, {form});
+  res.render(expertEvidenceViewPath, {form, pageTitle: 'PAGES.DEFENDANT_EXPERT_EVIDENCE.PAGE_TITLE'});
 }
 
 expertEvidenceController.get(DQ_DEFENDANT_EXPERT_EVIDENCE_URL, (async (req, res, next: NextFunction) => {
