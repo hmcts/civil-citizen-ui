@@ -398,6 +398,12 @@ import respondentWantToUploadDocumentsController
   from 'routes/features/generalApplication/response/respondentWantToUploadDocumentsController';
 import respondentUploadEvidenceDocumentsController
   from 'routes/features/generalApplication/response/respondentUploadEvidenceDocmentsController';
+import uploadDocumentsForRequestMoreInfoController
+  from 'routes/features/generalApplication/additionalInfoUpload/uploadDocumentsForRequestMoreInfoController';
+import gaRequestMoreInfoCheckAnswersController
+  from 'routes/features/generalApplication/additionalInfoUpload/checkAnswerController';
+import moreInfoSubmittedConfirmationController
+  from 'routes/features/generalApplication/additionalInfoUpload/moreInfoSubmittedConfirmationController';
 
 export default [
   homeController,
@@ -721,4 +727,7 @@ export default [
   respondentHearingPreferenceController,
   respondentWantToUploadDocumentsController,
   respondentUploadEvidenceDocumentsController,
+  uploadDocumentsForRequestMoreInfoController,
+  gaRequestMoreInfoCheckAnswersController,
+  moreInfoSubmittedConfirmationController,
 ];
