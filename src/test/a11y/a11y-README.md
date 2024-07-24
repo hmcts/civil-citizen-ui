@@ -40,9 +40,10 @@ The names of the file use the url, and follow the format:
 1. starts with: 'mock-'
 2. every '/' becomes '-'
 3. ':id' becomes '1645882162449409'
-4. 'documentId' becomes '2'
-5. 'uniqueId' becomes '3'
-6. ends in .html
+4. ':appId' becomes '1720536653906339'
+5. 'documentId' becomes '2'
+6. 'uniqueId' becomes '3'
+7. ends in .html
 
 As an example
 ```bash
