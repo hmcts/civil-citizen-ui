@@ -20,7 +20,7 @@ const dqParentName = 'hearing';
 const dqPropertyName = 'specificCourtLocation';
 const renderView = async (form: GenericForm<SpecificCourtLocation>, req: Request, res: Response) => {
   const courtLocations = await getListOfCourtLocations(<AppRequest> req);
-  res.render(viewPath, {form, courtLocations});
+  res.render(viewPath, {form, courtLocations, pageTitle: 'PAGES.SPECIFIC_COURT.PAGE_TITLE'});
 };
 
 specificCourtController.get(DQ_COURT_LOCATION_URL, (async (req: Request, res: Response, next: NextFunction) =>{

@@ -6,7 +6,6 @@
 {% from "./macro/cookie-banner.njk" import cookieBanner %}
 {% from "./macro/back.njk" import back %}
 
-{% set bannerText = t('COMMON.HEADER.NEW_SERVICE') %}
 {% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=en'>English</a>"%}
 {% extends "govuk/template.njk" %}
 {% block head %}
@@ -24,7 +23,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {% include "webpack/css.njk" %}
 {% endblock %}
 {% block pageTitle %}
-  {{setPageTitle(t)}}
+  {{setPageTitle(t, pageTitle)}}
 {% endblock %}
 {% block skipLink %}
   {{ govukSkipLink({
@@ -36,6 +35,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {{ headerComponent(t, user) }}
 {% endblock %}
 
+{% set bannerText =  t('COMMON.HEADER.NEW_SERVICE', {pageTitle: t(pageTitle) | replaceSpaces}) %}
 {% block beforeContent %}
 {{ govukPhaseBanner({
         tag: {

@@ -122,6 +122,7 @@ export class Nunjucks {
     nunjucksEnv.addFilter('addDaysTranslated', addDaysFilterTranslated);
     nunjucksEnv.addFilter('date', dateFilter);
     nunjucksEnv.addFilter('formatDate', formatDate);
+    nunjucksEnv.addFilter('replaceSpaces', replaceSpace);
     nunjucksEnv.addGlobal('t', t);
     nunjucksEnv.addGlobal('getLanguage', getLanguage);
     nunjucksEnv.addGlobal('translateErrors', translateErrors);
@@ -175,3 +176,7 @@ export class Nunjucks {
     });
   }
 }
+
+const replaceSpace = (title: string): string => {
+  return title.replace(/ /g, '_').replace('\'','');
+};
