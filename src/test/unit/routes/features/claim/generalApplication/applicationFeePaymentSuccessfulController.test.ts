@@ -60,6 +60,7 @@ describe('Claim fee payment confirmation', () => {
         generalAppPBADetails: undefined,
         applicationFeeAmountInPence: undefined,
         parentClaimantIsApplicant: undefined,
+        judicialDecision: undefined
       },
       created_date: '',
       id: '',
