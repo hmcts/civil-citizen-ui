@@ -17,7 +17,7 @@ const languageProperty = 'language';
 const welshLanguageRequirementsProperty = 'welshLanguageRequirements';
 
 function renderView(form: GenericForm<Language>, res: express.Response): void {
-  res.render(welshLanguageViewPath, {form});
+  res.render(welshLanguageViewPath, {form, pageTitle: 'PAGES.WELSH_LANGUAGE.PAGE_TITLE'});
 }
 
 welshLanguageController.get(DQ_WELSH_LANGUAGE_URL, (async (req, res, next) => {

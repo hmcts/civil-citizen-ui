@@ -16,7 +16,7 @@ const expertSmallClaimsViewPath = 'features/directionsQuestionnaire/experts/expe
 expertSmallClaimsController.get(DQ_EXPERT_SMALL_CLAIMS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
-    res.render(expertSmallClaimsViewPath);
+    res.render(expertSmallClaimsViewPath, {pageTitle: 'PAGES.EXPERT_SMALL_CLAIMS.TITLE'});
   } catch (error) {
     next(error);
   }

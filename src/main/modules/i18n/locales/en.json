@@ -165,7 +165,7 @@
       "BETA": "BETA",
       "MONEY_CLAIMS": "Money Claims",
       "MY_ACCOUNT": "My account",
-      "NEW_SERVICE": "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>feedback</a> will help us to improve it.",
+      "NEW_SERVICE": "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/CMC_Feedback?pageurl={{ pageTitle }}' target='_blank'>feedback</a> will help us to improve it.",
       "SIGN_IN": "Sign in",
       "SIGN_OUT": "Sign out"
     },
@@ -4462,6 +4462,7 @@
       },
       "CONFIRMATION_PAGE": {
         "TITLE": "Confirmation of your hearing fee payment",
+        "TITLE_CLAIM_FEE": "Confirmation of your claim fee payment",
         "CONFIRMATION_TITLE.HEARING": "Your application for help with the hearing fee is complete ",
         "REFERENCE_NUMBER": "Your reference number",
         "WHAT_HAPPENS_NEXT": "What happens next",
