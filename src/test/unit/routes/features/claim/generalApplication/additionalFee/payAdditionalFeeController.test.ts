@@ -2,7 +2,7 @@ import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
+import {GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
@@ -26,7 +26,7 @@ const mockGetRedirectUrl = getRedirectUrl as jest.Mock;
 
 const mockClaim = new Claim();
 mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
-describe('General Application - Do you want to apply for help with fees Page', () => {
+describe('General Application - Pay additional fee Page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   beforeAll(() => {
@@ -40,11 +40,11 @@ describe('General Application - Do you want to apply for help with fees Page', (
     it('should return Do you want to apply for help with fees page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
+        .get(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_TITLE'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.WANT_TO_APPLY_HWF_TITLE'));
         });
     });
 
@@ -53,10 +53,10 @@ describe('General Application - Do you want to apply for help with fees Page', (
       mockClaim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
+        .get(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING'));
         });
     });
 
@@ -65,7 +65,7 @@ describe('General Application - Do you want to apply for help with fees Page', (
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
+        .get(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -78,7 +78,7 @@ describe('General Application - Do you want to apply for help with fees Page', (
       mockGetRedirectUrl.mockImplementation(() => 'redirecturl');
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(GA_APPLY_HELP_WITH_FEE_SELECTION)
+        .post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
         .send({option: new GenericYesNo(YesNo.YES)})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -86,21 +86,21 @@ describe('General Application - Do you want to apply for help with fees Page', (
     });
 
     it('should redirect to Do you want to continue to apply for Help with Fees if option is YES', async () => {
-      mockGetRedirectUrl.mockImplementation(() => GA_APPLY_HELP_WITH_FEES);
+      mockGetRedirectUrl.mockImplementation(() => 'test');
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(GA_APPLY_HELP_WITH_FEE_SELECTION)
+        .post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
         .send({option: new GenericYesNo(YesNo.YES)})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(GA_APPLY_HELP_WITH_FEES);
+          expect(res.header.location).toEqual('test');
         });
     });
 
     it('should show error message if no value selected', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(GA_APPLY_HELP_WITH_FEE_SELECTION)
+        .post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
         .send({option: null})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -113,7 +113,7 @@ describe('General Application - Do you want to apply for help with fees Page', (
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
-        .post(GA_APPLY_HELP_WITH_FEE_SELECTION)
+        .post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
         .send({option: new GenericYesNo(YesNo.YES)})
         .expect((res) => {
           expect(res.status).toBe(500);
