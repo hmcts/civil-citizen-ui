@@ -6,7 +6,6 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
 
-
 const createGAAppSteps = require('../../citizenFeatures/response/steps/createGAAppSteps');
 
 let claimRef;
