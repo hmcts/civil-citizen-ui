@@ -4,7 +4,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
-import {getRedirectUrl} from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeService';
+import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
 import {getClaimById} from 'modules/utilityService';
 import {t} from 'i18next';
 import {AppRequest} from 'models/AppRequest';
