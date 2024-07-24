@@ -83,6 +83,7 @@ import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directi
 import {GeneralApplication} from './generalApplication/GeneralApplication';
 import {FlightDetails} from './flightDetails';
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
+import { ApplicationTypeOption } from './generalApplication/applicationType';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -166,6 +167,7 @@ export class Claim {
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
+  respondentGaAppDetails?: { generalAppTypes?: ApplicationTypeOption[], gaApplicationId: string, caseState: string, generalAppSubmittedDateGAspec: string }[];
   generalApplication?: GeneralApplication;
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;

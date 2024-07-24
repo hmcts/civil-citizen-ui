@@ -28,7 +28,7 @@ export class GeneralApplication {
   unavailableDatesHearing?: UnavailableDatesGaHearing;
   hearingArrangement?: HearingArrangement;
   hearingContactDetails?: HearingContactDetails;
-  response?: GaResponse;
+  //response?: GaResponse;
   wantToUploadDocuments?: YesNo;
   uploadEvidenceForApplication?: UploadGAFiles[];
   statementOfTruth?: StatementOfTruthForm;
@@ -63,7 +63,7 @@ export class GeneralApplication {
     this.unavailableDatesHearing = unavailableDatesHearing;
     this.hearingArrangement = hearingArrangement;
     this.hearingContactDetails = hearingContactDetails;
-    this.response = response;
+    //this.response = response;
     this.statementOfTruth = statementOfTruth;
     this.wantToUploadDocuments = wantToUploadDocuments;
     this.uploadEvidenceForApplication = uploadEvidenceForApplication ? [uploadEvidenceForApplication] : [];
