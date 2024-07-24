@@ -45,6 +45,8 @@ describe('General Application - Application costs', () => {
         gaAddlDoc: null,
         generalAppHearingDetails: null,
         generalAppStatementOfTruth: null,
+        generalAppPBADetails: null,
+        applicationFeeAmountInPence: null,
         parentClaimantIsApplicant: null,
       },
       state: ApplicationState.AWAITING_RESPONDENT_RESPONSE,
