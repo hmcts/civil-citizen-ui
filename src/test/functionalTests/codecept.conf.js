@@ -5,9 +5,18 @@ const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
 
 //const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 process.env.PLAYWRIGHT_SERVICE_RUN_ID = process.env.PLAYWRIGHT_SERVICE_RUN_ID || new Date().toISOString();
-
+let startTime;
 exports.config = {
-
+  bootstrapAll: async () => {
+    startTime = new Date();
+    console.log(`Starting the tests at ${startTime}`);
+  },
+  teardownAll: async () => {
+    const endTime = new Date();
+    const executionTime = (endTime - startTime) / 1000; // in seconds
+    console.log(`Finished the tests at ${endTime}`);
+    console.log(`Total execution time: ${executionTime} seconds`);
+  },
   async teardown() {
     console.log('Current worker has finished running tests so we should clean up the user roles');
     await unAssignAllUsers();
@@ -15,9 +24,11 @@ exports.config = {
   },
   tests: process.env.ENVIRONMENT == 'aat' ?
     [ '../functionalTests/tests/prod/**/*.js',
-      '../functionalTests/tests/common/**/*.js'  ] :
+      '../functionalTests/tests/common/**/*.js',
+      '../e2eTests/tests/**/*.js'] :
     [ '../functionalTests/tests/nonprod/**/*.js',
-      '../functionalTests/tests/common/**/*.js' ],
+      '../functionalTests/tests/common/**/*.js',
+      '../e2eTests/tests/**/*.js'],
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
     Playwright: {
