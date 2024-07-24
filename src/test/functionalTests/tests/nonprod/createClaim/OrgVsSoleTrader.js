@@ -9,7 +9,6 @@ const { payClaimFee, hwfSubmission } = require('../../../specClaimHelpers/dashbo
 
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115, claimantPartyType = 'Org';
 
-
 const createGAAppSteps = require('../../../citizenFeatures/response/steps/createGAAppSteps');
 
 Feature('Create Lip v Lip claim - Org vs Sole trader @claimCreation').tag('@nightly-regression-r2');

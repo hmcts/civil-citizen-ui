@@ -8,7 +8,7 @@ class createGAAppSteps {
   async askForMoreTimeCourtOrderGA(caseRef, informOtherParty = false) {
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
-    await I.amOnPage(`case/${caseRef}/general-application/application-type`)
+    await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await I.waitForContent('Select application', 60);
     await I.click('Ask for more time to do what is required by a court order'); //#option-5
     await I.click('Continue');
