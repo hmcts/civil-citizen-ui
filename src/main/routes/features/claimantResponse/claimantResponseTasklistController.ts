@@ -24,6 +24,7 @@ claimantResponseTasklistController.get(CLAIMANT_RESPONSE_TASK_LIST_URL, async (r
       taskLists,
       title: getTitle(taskLists, lang),
       description: getDescription(taskLists, lang),
+      pageTitle: 'PAGES.CLAIMANT_RESPONSE_TASK_LIST.PAGE_TITLE',
     });
   } catch (error) {
     next(error); //
