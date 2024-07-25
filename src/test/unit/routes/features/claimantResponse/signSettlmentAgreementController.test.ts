@@ -105,6 +105,7 @@ describe('Sign Settlement Agreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
+        del: jest.fn(() => Promise.resolve({})),
       };
 
       await request(app).get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
