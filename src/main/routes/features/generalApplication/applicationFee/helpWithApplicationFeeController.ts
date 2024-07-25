@@ -1,5 +1,5 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {DASHBOARD_CLAIMANT_URL, GA_APPLY_HELP_WITH_FEE_SELECTION} from 'routes/urls';
+import {DASHBOARD_CLAIMANT_URL, GA_APPLY_HELP_WITH_FEE_SELECTION, GENERAL_APPLICATION_CONFIRM_URL} from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
@@ -16,7 +16,6 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee';
 const helpWithApplicationFeeController = Router();
 const hwfPropertyName = 'applyHelpWithFees';
-const backLinkUrl = 'test'; // TODO: add url
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, redirectUrl: string, lng: string) {
   if (!form) {
     const claim: Claim = await getClaimById(claimId, req, true);
@@ -25,7 +24,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   res.render(applyHelpWithApplicationFeeViewPath,
     {
       form,
-      backLinkUrl,
+      backLinkUrl: constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL),
       redirectUrl,
       applyHelpWithFeeSelectionContents: getHelpApplicationFeeSelectionPageContents(lng),
       applyHelpWithFeeSelectionButtonContents: getButtonsContents(claimId),
