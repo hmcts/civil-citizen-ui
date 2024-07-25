@@ -141,7 +141,7 @@ civil-service:
           enabled: false
         resources:
           requests:
-            cpu: 100m
+            cpu: 200m
         initdb:
           scripts:
             init.sql: |
@@ -278,8 +278,8 @@ ccd:
       releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
       imagePullPolicy: Always
       devcpuRequests: 1000m
-      devmemoryRequests: 2048Mi
-      devmemoryLimits: 4096Mi
+      devmemoryRequests: 4048Mi
+      devmemoryLimits: 6096Mi
       environment:
         CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: false
         DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
@@ -338,10 +338,10 @@ camunda-bpm:
   enabled: true
   java:
     disableKeyVaults: true
-    devcpuRequests: 500m
-    devmemoryRequests: 512Mi
-    devcpuLimits: 1
-    devmemoryLimits: 1Gi
+    devcpuRequests: 1000m
+    devmemoryRequests: 1024Mi
+    devcpuLimits: 2
+    devmemoryLimits: 2Gi
     releaseNameOverride: ${SERVICE_NAME}-camunda
     ingressHost: camunda-${SERVICE_FQDN}
     environment:
