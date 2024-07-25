@@ -13,6 +13,7 @@ import { AppRequest } from 'common/models/AppRequest';
 
 const claimantRejectionReasonPath = 'features/claimantResponse/rejection-reason';
 const rejectionReasonController = Router();
+const pageTitle= 'PAGES.CLAIMANT_RESPONSE_REJECTION_REASON.PAGE_TITLE';
 
 rejectionReasonController.get(CLAIMANT_RESPONSE_REJECTION_REASON_URL, async (req, res, next: NextFunction) => {
   try {
@@ -20,7 +21,7 @@ rejectionReasonController.get(CLAIMANT_RESPONSE_REJECTION_REASON_URL, async (req
     const courtProposedPlanDecision = claimantResponse.isRequestJudgePaymentPlan ? CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN : '';
     const rejectionReason = claimantResponse ?
       claimantResponse.rejectionReason : new RejectionReason();
-    res.render(claimantRejectionReasonPath, {form: new GenericForm(rejectionReason), courtProposedPlanDecision: courtProposedPlanDecision});
+    res.render(claimantRejectionReasonPath, {form: new GenericForm(rejectionReason), courtProposedPlanDecision: courtProposedPlanDecision, pageTitle});
   } catch (error) {
     next(error);
   }
@@ -29,12 +30,12 @@ rejectionReasonController.get(CLAIMANT_RESPONSE_REJECTION_REASON_URL, async (req
 rejectionReasonController.post(CLAIMANT_RESPONSE_REJECTION_REASON_URL, async (req, res, next: NextFunction) => {
   const reason: RejectionReason = new RejectionReason(req.body.text);
   const form: GenericForm<RejectionReason> = new GenericForm(reason);
-  const redisKey = generateRedisKey(req as unknown as AppRequest); 
+  const redisKey = generateRedisKey(req as unknown as AppRequest);
   await form.validate();
   if (form.hasErrors()) {
     const claimantResponse = await getClaimantResponse(redisKey);
     const courtProposedPlanDecision = claimantResponse.isRequestJudgePaymentPlan ? CourtProposedPlanOptions.JUDGE_REPAYMENT_PLAN : '';
-    res.render(claimantRejectionReasonPath, { form, courtProposedPlanDecision: courtProposedPlanDecision });
+    res.render(claimantRejectionReasonPath, { form, courtProposedPlanDecision: courtProposedPlanDecision, pageTitle});
   } else {
     try {
       await saveClaimantResponse(redisKey, reason, 'rejectionReason');
