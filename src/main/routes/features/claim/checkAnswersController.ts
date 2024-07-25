@@ -38,6 +38,7 @@ function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | Gen
   res.render(checkAnswersViewPath, {
     form, summarySections, signatureType,
     payment,
+    pageTitle: 'PAGES.CHECK_YOUR_ANSWER.TITLE',
   });
 }
 

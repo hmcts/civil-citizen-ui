@@ -22,14 +22,14 @@ const dqPropertyName = 'otherWitnesses';
 const dqParentName = 'witnesses';
 
 function renderView(form: GenericForm<OtherWitnesses>, res: Response): void {
-  res.render(otherWitnessesViewPath, {form});
+  res.render(otherWitnessesViewPath, {form, pageTitle: 'PAGES.OTHER_WITNESSES.TITLE'});
 }
 
 otherWitnessesController.get(DQ_DEFENDANT_WITNESSES_URL, async (req: AppRequest, res, next: NextFunction) => {
   try {
     const claim = await getCaseDataFromStore(generateRedisKey(req));
     const form = new GenericForm(await getOtherWitnesses(req));
-    res.render(otherWitnessesViewPath, {form, isDefendant: claim.isDefendantNotResponded() });
+    res.render(otherWitnessesViewPath, {form, isDefendant: claim.isDefendantNotResponded(), pageTitle: 'PAGES.OTHER_WITNESSES.TITLE'});
   } catch (error) {
     next(error);
   }
