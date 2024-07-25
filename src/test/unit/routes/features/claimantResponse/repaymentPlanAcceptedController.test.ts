@@ -10,6 +10,13 @@ jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
   getRedisStoreForSession: jest.fn(),
 }));
+
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  getCaseDataFromStore: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true,isEmpty: jest.fn().mockReturnValue(true) }),
+  deleteDraftClaimFromStore: jest.fn(),
+  generateRedisKey:jest.fn,
+}));
+
 describe('Claimant Response - Rejection reason', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');

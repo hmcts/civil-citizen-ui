@@ -29,7 +29,7 @@ const claimantViewPath = 'features/directionsQuestionnaire/experts/expert-report
 const defendantViewPath = 'features/directionsQuestionnaire/experts/expert-report-details';
 
 function renderView(viewPath: string, form: GenericForm<ExpertReportDetails>, res: Response): void {
-  res.render(viewPath, {form, today: new Date()});
+  res.render(viewPath, {form, today: new Date(), pageTitle: 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE'});
 }
 
 expertReportDetailsController.get(DQ_EXPERT_REPORT_DETAILS_URL, (async (req, res, next) => {

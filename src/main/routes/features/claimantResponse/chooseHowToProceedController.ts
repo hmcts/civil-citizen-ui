@@ -14,7 +14,7 @@ const crPropertyName = 'option';
 const crParentName = 'chooseHowToProceed';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(chooseHowToProceedViewPath, {form});
+  res.render(chooseHowToProceedViewPath, {form, pageTitle: 'PAGES.CLAIMANT_FORMALISE_REPAYMENT_TYPE.PAGE_TITLE'});
 }
 
 chooseHowToProceedController.get(CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL, async (req: Request, res: Response, next: NextFunction) => {

@@ -24,7 +24,7 @@ const partPaymentReceivedViewPath = 'features/claimantResponse/part-payment-rece
 const claimantResponsePropertyName = 'hasDefendantPaidYou';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response, paidAmount: number): void {
-  res.render(partPaymentReceivedViewPath, {form, paidAmount});
+  res.render(partPaymentReceivedViewPath, {form, paidAmount, pageTitle: 'PAGES.CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED.PAGE_TITLE'});
 }
 
 let paidAmount: number;
