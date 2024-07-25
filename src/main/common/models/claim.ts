@@ -83,7 +83,7 @@ import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directi
 import {GeneralApplication} from './generalApplication/GeneralApplication';
 import {FlightDetails} from './flightDetails';
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
-import { RespondentGaAppDetail } from './generalApplication/response/RespondentGaAppDetail';
+import { RespondentGaAppDetail } from './generalApplication/response/respondentGaAppDetail';
 
 export class Claim {
   resolvingDispute: boolean;
