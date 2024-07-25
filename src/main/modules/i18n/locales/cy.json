@@ -2072,6 +2072,7 @@
         "CLAIMANT_REQUESTED_CCJ": "Gofynnodd {{ claimantName }}  am Ddyfarniad Llys Sirol yn eich erbyn ar {{ccjRequestedDate}}.",
         "CLAIMANT_REQUESTED_CCJ_BY_DETERMINATION": "Gofynnodd {{ claimantName }} am Ddyfarniad Llys Sirol yn eich erbyn.",
         "DECISION_ON_RECONSIDERATION": "An order has been made.",
+        "DEFAULT_JUDGEMENT_ISSUED_STATUS": "The claimant has requested a County Court Judgment (CCJ) against you on {{ defaultJudgementIssuedDate }}",
         "DOCUMENTS_BEING_TRANSLATED": "Mae’r dogfennau yn cael eu cyfieithu.",
         "IN_MEDIATION": "Bydd eich apwyntiad cyfryngu yn cael ei drefnu o fewn 28 diwrnod.",
         "MORE_DETAILS_REQUIRED": "Anfonwch fwy o fanylion atom cyn y gwrandawiad",
