@@ -165,7 +165,7 @@
       "BETA": "BETA",
       "MONEY_CLAIMS": "Money Claims",
       "MY_ACCOUNT": "My account",
-      "NEW_SERVICE": "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>feedback</a> will help us to improve it.",
+      "NEW_SERVICE": "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/CMC_Feedback?pageurl={{ pageTitle }}' target='_blank'>feedback</a> will help us to improve it.",
       "SIGN_IN": "Sign in",
       "SIGN_OUT": "Sign out"
     },
@@ -2071,6 +2071,7 @@
         "CLAIMANT_REQUESTED_CCJ": "{{ claimantName }} requested a County Court Judgment against you on {{ccjRequestedDate}}.",
         "CLAIMANT_REQUESTED_CCJ_BY_DETERMINATION": "{{ claimantName }} requested a County Court Judgment against you.",
         "DECISION_ON_RECONSIDERATION": "An order has been made.",
+        "DEFAULT_JUDGEMENT_ISSUED_STATUS": "The claimant has requested a County Court Judgment (CCJ) against you on {{ defaultJudgementIssuedDate }}",
         "DOCUMENTS_BEING_TRANSLATED": "The documents are being translated.",
         "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days.",
         "MORE_DETAILS_REQUIRED": "Send us more details before the hearing.",
@@ -2089,6 +2090,7 @@
         "SETTLEMENT_SIGNED": "You’ve both signed a settlement agreement.",
         "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline.",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
@@ -4462,6 +4464,7 @@
       },
       "CONFIRMATION_PAGE": {
         "TITLE": "Confirmation of your hearing fee payment",
+        "TITLE_CLAIM_FEE": "Confirmation of your claim fee payment",
         "CONFIRMATION_TITLE.HEARING": "Your application for help with the hearing fee is complete ",
         "REFERENCE_NUMBER": "Your reference number",
         "WHAT_HAPPENS_NEXT": "What happens next",

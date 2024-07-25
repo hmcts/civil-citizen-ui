@@ -18,7 +18,7 @@ const dqPropertyName = 'phoneOrVideoHearing';
 const dqParentName = 'hearing';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(phoneOrVideoHearingViewPath, {form});
+  res.render(phoneOrVideoHearingViewPath, {form, pageTitle: 'PAGES.PHONE_OR_VIDEO_HEARING.PAGE_TITLE'});
 }
 
 phoneOrVideoHearingController.get(DQ_PHONE_OR_VIDEO_HEARING_URL, (async (req, res, next: NextFunction) => {

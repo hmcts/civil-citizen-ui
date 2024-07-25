@@ -19,7 +19,7 @@ const defendantYourselfEvidenceViewPath = 'features/directionsQuestionnaire/defe
 const dqPropertyName = 'defendantYourselfEvidence';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(defendantYourselfEvidenceViewPath, {form});
+  res.render(defendantYourselfEvidenceViewPath, {form, pageTitle: 'PAGES.DEFENDANT_YOURSELF_EVIDENCE.PAGE_TITLE'});
 }
 
 defendantYourselfEvidenceController.get(DQ_GIVE_EVIDENCE_YOURSELF_URL, (async (req, res, next: NextFunction) => {

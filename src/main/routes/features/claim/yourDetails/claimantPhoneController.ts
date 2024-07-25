@@ -13,7 +13,7 @@ const claimantPhoneViewPath = 'features/claim/claimant-phone';
 const claimantPhoneController = Router();
 
 function renderView(form: GenericForm<CitizenTelephoneNumber>, res: Response, carmEnabled: boolean): void {
-  res.render(claimantPhoneViewPath, {form, carmEnabled: carmEnabled});
+  res.render(claimantPhoneViewPath, {form, carmEnabled: carmEnabled, pageTitle: 'PAGES.CLAIMANT_PHONE.PAGE_TITLE'});
 }
 
 claimantPhoneController.get(CLAIMANT_PHONE_NUMBER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
