@@ -77,13 +77,12 @@ import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncom
 import {toCCDYesNo, toCCDYesNoReverse} from 'services/translation/response/convertToCCDYesNo';
 import {AdditionalLipPartyDetails} from './additionalLipPartyDetails';
 import {BusinessProcess} from 'models/businessProcess';
-import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
+import {MediationUploadDocumentsCCD, RespondentGaAppDetail} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import {GeneralApplication} from './generalApplication/GeneralApplication';
 import {FlightDetails} from './flightDetails';
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
-import { ApplicationTypeOption } from './generalApplication/applicationType';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -167,7 +166,7 @@ export class Claim {
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
-  respondentGaAppDetails?: { generalAppTypes?: ApplicationTypeOption[], gaApplicationId: string, caseState: string, generalAppSubmittedDateGAspec: string }[];
+  respondentGaAppDetails?: RespondentGaAppDetail[];
   generalApplication?: GeneralApplication;
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;

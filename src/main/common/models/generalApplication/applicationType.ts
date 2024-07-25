@@ -70,18 +70,18 @@ export const selectedApplicationTypeDescription: Partial<{ [key in ApplicationTy
 };
 
 export const GeneralApplicationTypesDisplayFromCCD: { [key in ApplicationTypeOption]: string } = {
-  [ApplicationTypeOption.STRIKE_OUT]: 'Strike out',
-  [ApplicationTypeOption.STAY_THE_CLAIM]: 'Stay the claim',
-  [ApplicationTypeOption.EXTEND_TIME]: 'Extend time',
+  [ApplicationTypeOption.ADJOURN_HEARING]: 'Adjourn a hearing',
   [ApplicationTypeOption.AMEND_A_STMT_OF_CASE]: 'Amend a statement of case',
-  [ApplicationTypeOption.RELIEF_FROM_SANCTIONS]: 'Relief from sanctions',
+  [ApplicationTypeOption.EXTEND_TIME]: 'Extend time',
+  [ApplicationTypeOption.OTHER]: 'Other',
   [ApplicationTypeOption.PROCEEDS_IN_HERITAGE]: 'Proceeds In Heritage',
+  [ApplicationTypeOption.RELIEF_FROM_SANCTIONS]: 'Relief from sanctions',
   [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]: 'Set aside judgment',
   [ApplicationTypeOption.SETTLE_BY_CONSENT]: 'Settle by consent',
-  [ApplicationTypeOption.VARY_ORDER]: 'Vary order',
-  [ApplicationTypeOption.ADJOURN_HEARING]: 'Adjourn a hearing',
-  [ApplicationTypeOption.UNLESS_ORDER]: 'Unless order',
-  [ApplicationTypeOption.OTHER]: 'Other',
+  [ApplicationTypeOption.STAY_THE_CLAIM]: 'Stay the claim',
+  [ApplicationTypeOption.STRIKE_OUT]: 'Strike out',
   [ApplicationTypeOption.SUMMARY_JUDGMENT]: 'Summary judgment',
+  [ApplicationTypeOption.UNLESS_ORDER]: 'Unless order',
+  [ApplicationTypeOption.VARY_ORDER]: 'Vary order',
   [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'Vary payment terms of judgment',
 };

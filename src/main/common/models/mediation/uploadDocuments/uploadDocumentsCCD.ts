@@ -1,4 +1,5 @@
 
+import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import {Document} from 'models/document/document';
 
 export class MediationUploadDocumentsCCD {
@@ -32,3 +33,5 @@ export class MediationMediationNonAttendanceDocs{
     this.documentUploadedDatetime = documentUploadedDatetime;
   }
 }
+
+export interface RespondentGaAppDetail { generalAppTypes?: ApplicationTypeOption[]; gaApplicationId: string; caseState: string; generalAppSubmittedDateGAspec: string };

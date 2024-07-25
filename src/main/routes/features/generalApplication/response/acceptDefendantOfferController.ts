@@ -28,7 +28,6 @@ acceptDefendantOfferController.get(GA_ACCEPT_DEFENDANT_OFFER_URL, async (req: Ap
     const claimId = req.params.id;
     const lang = req.query.lang || req.cookies.lang;
     const redisKey = generateRedisKey(req);
-    //const redisKeyForGA = generateRedisKeyForGA(req);
     const claim = await getCaseDataFromStore(redisKey);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const acceptDefendantOffer = gaResponse?.acceptDefendantOffer || new AcceptDefendantOffer();

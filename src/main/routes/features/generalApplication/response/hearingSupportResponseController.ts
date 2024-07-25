@@ -42,7 +42,6 @@ hearingSupportResponseController.post(GA_RESPONSE_HEARING_SUPPORT_URL, (async (r
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    // const redisKey = generateRedisKey(<AppRequest>req);
     const hearingSupport: HearingSupport = new HearingSupport(HearingSupport.convertToArray(req.body.requiredSupport),
       req.body.signLanguageContent, req.body.languageContent, req.body.otherContent);
 
