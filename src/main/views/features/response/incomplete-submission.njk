@@ -5,7 +5,7 @@
 {% from "../../macro/page-title.njk" import setPageTitle %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.INCOMPLETE_SUBMISSION.TITLE') }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% block content %}
@@ -13,7 +13,7 @@
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row govuk-!-margin-bottom-6">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.INCOMPLETE_SUBMISSION.TITLE') }}</h1>
+          <h1 class="govuk-heading-l">{{ t(pageTitle) }}</h1>
           {{ csrfProtection(csrf) }}
           {{ remainingTasksFragment(
             tasks = tasks,

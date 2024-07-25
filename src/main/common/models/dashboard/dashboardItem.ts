@@ -238,6 +238,7 @@ export class DashboardDefendantItem extends DashboardItem {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.DEFAULT_JUDGEMENT_ISSUED_STATUS',
         parameter: [paramDefaultJudgementIssuedDate],
       },
+      WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD'},
     };
   }
 }

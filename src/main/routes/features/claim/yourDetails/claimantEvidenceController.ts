@@ -17,7 +17,7 @@ const evidenceViewPath = 'features/claim/claimant-evidences';
 const evidenceController = Router();
 
 function renderView(form: GenericForm<Evidence>, res: Response): void {
-  res.render(evidenceViewPath, {form});
+  res.render(evidenceViewPath, {form, pageTitle: 'PAGES.EVIDENCE.PAGE_TITLE'});
 }
 
 evidenceController.get(CLAIM_EVIDENCE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
