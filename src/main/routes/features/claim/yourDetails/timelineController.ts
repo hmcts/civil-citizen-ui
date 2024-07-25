@@ -12,6 +12,7 @@ import {
 
 const timelineController = Router();
 const timelineViewPath = 'features/claim/yourDetails/timeline';
+const pageTitle= 'PAGES.TIMELINE.TITLE';
 
 timelineController.get(CLAIM_TIMELINE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -23,7 +24,7 @@ timelineController.get(CLAIM_TIMELINE_URL, (async (req: AppRequest, res: Respons
       getDateInThePast(lang, 88),
       getDateInThePast(lang, 60),
     ];
-    res.render(timelineViewPath, {form, dates});
+    res.render(timelineViewPath, {form, dates, pageTitle });
   } catch (error) {
     next(error);
   }
@@ -42,7 +43,7 @@ timelineController.post(CLAIM_TIMELINE_URL, (async (req: AppRequest, res: Respon
         getDateInThePast(lang, 88),
         getDateInThePast(lang, 60),
       ];
-      res.render(timelineViewPath, {form, dates});
+      res.render(timelineViewPath, {form, dates, pageTitle});
     } else {
       await saveTimeline(req.session?.user?.id, form.model);
       res.redirect(CLAIM_EVIDENCE_URL);

@@ -19,7 +19,7 @@ eligibleController.get([ELIGIBILITY_HWF_ELIGIBLE_URL, ELIGIBILITY_HWF_ELIGIBLE_R
   }
   const youCanUseContent = getYouCanUseContent(req.url, getLng(lang));
   const claimTaskListUrl = CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL;
-  res.render(youCanUseViewPath, {youCanUseContent, claimTaskListUrl});
+  res.render(youCanUseViewPath, {youCanUseContent, claimTaskListUrl, pageTitle: 'PAGES.YOU_CAN_USE.PAGE_TITLE'});
 });
 
 export default eligibleController;
