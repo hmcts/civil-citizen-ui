@@ -15,7 +15,7 @@ const defendantAgeEligibilityController = Router();
 const defendantEligibilityViewPath = 'features/public/eligibility/defendant-age';
 
 function renderView(form: GenericForm<DefendantAgeEligibility>, res: Response): void {
-  res.render(defendantEligibilityViewPath, {form});
+  res.render(defendantEligibilityViewPath, {form, pageTitle: 'PAGES.ELIGIBILITY_DEFENDANT_AGE.PAGE_TITLE'});
 }
 
 defendantAgeEligibilityController.get(ELIGIBILITY_DEFENDANT_AGE_URL, (req, res) => {
