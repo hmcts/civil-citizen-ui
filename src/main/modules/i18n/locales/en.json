@@ -2071,6 +2071,7 @@
         "CLAIMANT_REQUESTED_CCJ": "{{ claimantName }} requested a County Court Judgment against you on {{ccjRequestedDate}}.",
         "CLAIMANT_REQUESTED_CCJ_BY_DETERMINATION": "{{ claimantName }} requested a County Court Judgment against you.",
         "DECISION_ON_RECONSIDERATION": "An order has been made.",
+        "DEFAULT_JUDGEMENT_ISSUED_STATUS": "The claimant has requested a County Court Judgment (CCJ) against you on {{ defaultJudgementIssuedDate }}",
         "DOCUMENTS_BEING_TRANSLATED": "The documents are being translated.",
         "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days.",
         "MORE_DETAILS_REQUIRED": "Send us more details before the hearing.",
