@@ -38,11 +38,13 @@ function renderPage(res: Response, req: Request, claimantDetails: GenericForm<Pa
       party: claimantDetails,
       type: partyType,
       carmEnabled: carmEnabled,
+      pageTitle: 'PAGES.COMPANY_DETAILS.CLAIMANT_PAGE_TITLE',
     });
   } else {
     res.render(claimantIndividualDetailsPath, {
       party: claimantDetails,
       type: partyType,
+      pageTitle: 'PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.PAGE_TITLE',
     });
   }
 }

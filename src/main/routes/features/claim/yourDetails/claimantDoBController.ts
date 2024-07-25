@@ -12,6 +12,7 @@ import { DOBDate } from 'common/form/models/claim/claimant/dobDate';
 
 const claimantDoBController = Router();
 const claimantDoBViewPath = 'features/response/citizenDob/citizen-dob';
+const pageTitle= 'PAGES.CLAIMANT_DOB.PAGE_TITLE';
 
 claimantDoBController.get(CLAIMANT_DOB_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -22,7 +23,7 @@ claimantDoBController.get(CLAIMANT_DOB_URL, (async (req: AppRequest, res: Respon
       const dateOfBirth = new Date(claim.applicant1.dateOfBirth as unknown as string);
       form = new GenericForm(new DOBDate(dateOfBirth.getDate().toString(), (dateOfBirth.getMonth() + 1).toString(), dateOfBirth.getFullYear().toString()));
     }
-    res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true, maxDateForAge18: getDOBforAgeFromCurrentTime(18)});
+    res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true, maxDateForAge18: getDOBforAgeFromCurrentTime(18), pageTitle });
   } catch (error) {
     next(error);
   }
@@ -36,7 +37,7 @@ claimantDoBController.post(CLAIMANT_DOB_URL, (async (req: AppRequest | Request, 
     form.validateSync();
 
     if (form.hasErrors()) {
-      res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true, maxDateForAge18: getDOBforAgeFromCurrentTime(18)});
+      res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true, maxDateForAge18: getDOBforAgeFromCurrentTime(18), pageTitle});
     } else {
       const claim = await getCaseDataFromStore(claimId);
       claim.applicant1.dateOfBirth = new DOBDate(day, month, year);
