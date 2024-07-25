@@ -1,4 +1,5 @@
-import {IsEmail, IsNotEmpty, Validate} from 'class-validator';
+import {IsNotEmpty, Validate} from 'class-validator';
+import { EmailValidator } from 'common/form/validators/emailValidator';
 import {PhoneUKValidator} from 'form/validators/phoneUKValidator';
 
 export class HearingContactDetails {
@@ -7,7 +8,7 @@ export class HearingContactDetails {
     telephoneNumber?: string;
 
   @IsNotEmpty({message: 'ERRORS.GENERAL_APPLICATION.ENTER_VALID_EMAIL'})
-  @IsEmail({allow_display_name: true}, {message: 'ERRORS.GENERAL_APPLICATION.ENTER_VALID_EMAIL'})
+  @Validate(EmailValidator, {message: 'ERRORS.GENERAL_APPLICATION.ENTER_VALID_EMAIL'})
     emailAddress?: string;
 
   constructor(telephoneNumber?: string, emailAddress?: string) {

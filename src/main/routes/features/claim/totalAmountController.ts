@@ -15,7 +15,7 @@ const totalAmountController = Router();
 const totalAmountViewPath = 'features/claim/total-amount';
 
 function renderView(form: object, res: Response): void {
-  res.render(totalAmountViewPath, {form});
+  res.render(totalAmountViewPath, {form, pageTitle: 'PAGES.TOTAL_AMOUNT.PAGE_TITLE'});
 }
 
 totalAmountController.get(CLAIM_TOTAL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

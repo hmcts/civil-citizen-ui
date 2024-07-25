@@ -51,6 +51,7 @@ describe('on GET', () => {
           interest: mockClaimData.interest.totalInterest.amount,
           claimFee: mockClaimFee,
           hasInterest: true,
+          pageTitle: 'PAGES.FEE_AMOUNT.TITLE',
           totalAmount: mockTotalAmount.toFixed(2),
         });
       });
