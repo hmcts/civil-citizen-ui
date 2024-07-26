@@ -7,20 +7,26 @@ import { GenericForm } from 'common/form/models/genericForm';
 import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { getClaimantResponse, saveClaimantResponse } from 'services/features/claimantResponse/claimantResponseService';
-import { currencyFormatWithNoTrailingZeros } from 'common/utils/currencyFormat';
+import {
+  currencyFormatWithNoTrailingZeros,
+  noGroupingCurrencyFormatWithNoTrailingZeros,
+} from 'common/utils/currencyFormat';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { AppRequest } from 'common/models/AppRequest';
+import {t} from 'i18next';
 
 const settleAdmittedController = Router();
 const settleClaimViewPath = 'features/claimantResponse/settle-admitted';
 
 async function renderView(form: GenericForm<GenericYesNo>, claimId: string, res: Response): Promise<void> {
   const claim = await getCaseDataFromStore(claimId);
-  const admittedAmount = claim.isFullDefence() ? (claim.isRejectAllOfClaimAlreadyPaid() / 100) : claim.partialAdmissionPaymentAmount();
+  const admittedAmount = noGroupingCurrencyFormatWithNoTrailingZeros(
+    claim.isFullDefence() ? (claim.isRejectAllOfClaimAlreadyPaid() / 100) : claim.partialAdmissionPaymentAmount());
   res.render(settleClaimViewPath, {
     form,
     totalAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount),
     admittedAmount,
+    pageTitle: t('PAGES.PARTIAL_ADMISSION_SETTLE_ADMITTED.PAGE_TITLE', {admittedAmount: admittedAmount}),
   });
 }
 

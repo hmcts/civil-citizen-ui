@@ -105,13 +105,14 @@ describe('Sign Settlement Agreement', () => {
       app.locals.draftStoreClient = {
         set: jest.fn(() => Promise.resolve({})),
         get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
+        del: jest.fn(() => Promise.resolve({})),
       };
 
       await request(app).get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.TITLE'));
         expect(res.text).toContain(t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THE_AGREEMENT.IMMEDIATE_PLAN',
-          {fullName: 'John White', amount: '200', claimant: 'James White', paymentDate: formatDateToFullDate(new Date())},
+          {fullName: 'John White', amount: '£200', claimant: 'James White', paymentDate: formatDateToFullDate(new Date())},
         ));
       });
     });
