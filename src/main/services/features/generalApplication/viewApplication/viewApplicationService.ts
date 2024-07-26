@@ -72,6 +72,7 @@ const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, appli
 export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
   const rows: SummaryRow[] = [];
   const documentUrl = getMakeWithNoticeDocumentUrl(applicationResponse);
+  
   rows.push(
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
