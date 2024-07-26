@@ -12,7 +12,7 @@ const helpWithFeesEligibilityController = Router();
 const helpWithFeesEligibilityViewPath = 'features/public/eligibility/help-with-fees';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(helpWithFeesEligibilityViewPath, {form});
+  res.render(helpWithFeesEligibilityViewPath, {form, pageTitle: 'PAGES.ELIGIBILITY_HELP_WITH_FEES.PAGE_TITLE'});
 }
 
 helpWithFeesEligibilityController.get(ELIGIBILITY_HELP_WITH_FEES_URL, (req: Request, res: Response) => {

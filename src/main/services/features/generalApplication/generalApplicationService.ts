@@ -397,3 +397,14 @@ export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
     throw error;
   }
 };
+  
+export const shouldDisplaySyncWarning = (applicationResponse: ApplicationResponse): boolean => {
+  const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
+  if (isAdditionalFee) {
+    return applicationResponse?.state === ApplicationState.APPLICATION_ADD_PAYMENT
+      || applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentDetails?.status !== 'SUCCESS';
+  } else {
+    return applicationResponse?.state === ApplicationState.AWAITING_APPLICATION_PAYMENT
+      || applicationResponse?.case_data?.generalAppPBADetails?.paymentDetails?.status !== 'SUCCESS';
+  }
+};

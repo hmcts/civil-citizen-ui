@@ -924,6 +924,19 @@ export class Claim {
     return new Date(dateAtStartOfDay);
   }
 
+  fourWeeksBeforeHearingDate() {
+    const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
+    const threeWeeksMilli = 28 * 24 * 60 * 60 * 1000;
+    const dateAtStartOfDay = new Date(hearingDateTime - threeWeeksMilli).setHours(0, 0, 0, 0);
+    return new Date(dateAtStartOfDay);
+  }
+
+  fourWeeksBeforeHearingDateString() {
+    const fourWeeksBefore = this.fourWeeksBeforeHearingDate();
+    const options: DateTimeFormatOptions = {day: 'numeric', month: 'long', year: 'numeric'};
+    return fourWeeksBefore.toLocaleDateString('en-GB', options);
+  }
+
   private sixWeeksBeforeHearingDate(): Date {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const sixWeeksMilli = 42 * 24 * 60 * 60 * 1000;

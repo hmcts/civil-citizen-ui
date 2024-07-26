@@ -13,13 +13,16 @@ import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/l
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 import {t} from 'i18next';
+import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../../main/services/features/generalApplication/fee/helpWithFeeService');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;
+const mockGetRedirectUrl = getRedirectUrl as jest.Mock;
 
 const mockClaim = new Claim();
 mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
@@ -72,6 +75,7 @@ describe('General Application - Do you want to apply for help with fees Page', (
 
   describe('on POST', () => {
     it('should send the value and redirect', async () => {
+      mockGetRedirectUrl.mockImplementation(() => 'redirecturl');
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEE_SELECTION)
@@ -82,6 +86,7 @@ describe('General Application - Do you want to apply for help with fees Page', (
     });
 
     it('should redirect to Do you want to continue to apply for Help with Fees if option is YES', async () => {
+      mockGetRedirectUrl.mockImplementation(() => GA_APPLY_HELP_WITH_FEES);
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEE_SELECTION)
@@ -91,7 +96,7 @@ describe('General Application - Do you want to apply for help with fees Page', (
           expect(res.header.location).toEqual(GA_APPLY_HELP_WITH_FEES);
         });
     });
-      
+
     it('should show error message if no value selected', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
