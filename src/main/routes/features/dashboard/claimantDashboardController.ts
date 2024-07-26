@@ -87,6 +87,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         helpSupportTitle,
         helpSupportLinks,
         lng,
+        pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
       });
 
     } else {

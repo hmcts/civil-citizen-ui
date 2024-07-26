@@ -19,6 +19,7 @@ incompleteSubmissionController.get(RESPONSE_INCOMPLETE_SUBMISSION_URL, (async (r
     res.render(incompleteSubmissionViewPath, {
       tasks: tasks,
       taskListUri: constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL),
+      pageTitle: 'PAGES.INCOMPLETE_SUBMISSION.TITLE',
     });
   } catch (error) {
     next(error);
