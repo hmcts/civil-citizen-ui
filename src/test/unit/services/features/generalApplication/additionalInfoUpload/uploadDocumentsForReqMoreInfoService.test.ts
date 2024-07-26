@@ -211,7 +211,7 @@ describe('Upload Evidence Document service', () => {
         const result = buildSummarySection(uploadDocuments, '1', '123', 'en');
         expect(result).toHaveLength(1);
         expect(result[0].value.html).toContain('<ul class="no-list-style"><li>Additional information1</li><li>Additional information2</li></ul>');
-        expect(result[0].actions.items[0].href).toContain('/case/1/general-application/123/upload-additional-documents');
+        expect(result[0].actions.items[0].href).toContain('/case/1/general-application/123/upload-documents-for-addln-info');
       });
     });
   });
