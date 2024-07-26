@@ -2,7 +2,7 @@ import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_APPLY_HELP_WITH_FEE_REFERENCE, GA_APPLY_HELP_WITH_FEE_SELECTION, GA_CHECK_ANSWERS_URL} from 'routes/urls';
+import {GA_APPLY_HELP_WITH_FEE_REFERENCE, GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLICATION_FEE_CONFIRMATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
@@ -99,7 +99,7 @@ describe('General Application - Do you have a help with fees reference number', 
         .send({option: YesNo.YES,referenceNumber: 'HWF-123-86D'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(GA_CHECK_ANSWERS_URL);
+          expect(res.header.location).toEqual(GA_APPLICATION_FEE_CONFIRMATION_URL);
         });
     });
 
