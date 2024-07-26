@@ -1,6 +1,6 @@
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {getApplicationSections} from 'services/features/generalApplication/viewApplication/viewApplicationService';
+import {getApplicationSections, getJudgeResponseSummary} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {GaServiceClient} from 'client/gaServiceClient';
 import * as requestModels from 'models/AppRequest';
 import {Claim} from 'models/claim';
@@ -100,5 +100,21 @@ describe('View Application service', () => {
       expect(result[11].value.html).toEqual('<ul class="no-list-style"><li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li></ul>');
     });
   });
-});
 
+  describe('getJudgeResponseSummary', () => {
+    it('should return judge response summary', async () => {
+      //given
+      const applicationResponse = new ApplicationResponse();
+      applicationResponse.created_date = new Date('2024-01-01').toString();
+      //when
+      const result = getJudgeResponseSummary(applicationResponse, 'en');
+      //then
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].value.html).toEqual('1 January 2024');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
+      expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT');
+    });
+  });
+});
