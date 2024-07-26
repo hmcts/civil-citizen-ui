@@ -10,6 +10,7 @@ import {GaServiceClient} from 'client/gaServiceClient';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicationSections} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
+import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
@@ -30,17 +31,39 @@ describe('General Application - View application', () => {
   });
 
   describe('on GET', () => {
-    it('should return Check your answers page', async () => {
+    it('should return view application page', async () => {
       mockedSummaryRows.mockImplementation(() => []);
+        const paidApplication = Object.assign(new ApplicationResponse(), mockApplication);
+      paidApplication.state = ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION;
+      paidApplication.case_data.generalAppPBADetails.paymentDetails = {
+        'status': 'SUCCESS',
+        'reference' : '123-REF',
+      };
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(paidApplication);
       await request(app)
         .get(GA_VIEW_APPLICATION_URL)
         .query({applicationId: '1718105701451856'})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
+          expect(res.text).toContain(t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD'));
         });
     });
 
+    it('should return view application page with pay application fee button', async () => {
+      mockedSummaryRows.mockImplementation(() => []);
+
+      await request(app)
+        .get(GA_VIEW_APPLICATION_URL)
+        .query({applicationId: '1718105701451856'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
+          expect(res.text).toContain(t('COMMON.BUTTONS.PAY_APPLICATION_FEE'));
+        });
+    });
+    
     it('should return http 500 when has error in the get method', async () => {
       mockedSummaryRows.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);

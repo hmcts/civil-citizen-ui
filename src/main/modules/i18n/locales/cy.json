@@ -85,6 +85,7 @@
       "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Go back and try payment again",
       "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
       "I_CONFIRM_IVE_READ_THIS": "Cadarnhaf fy mod wedi darllen hwn",
+      "PAY_APPLICATION_FEE": "Pay application fee",
       "RESPOND_TO_APPLICATION": "Respond to application",
       "RESPOND_TO_CLAIM": "Ymateb i'r hawliad",
       "SAVE": "Cadw",
@@ -99,7 +100,8 @@
       "SUBMIT": "Cyflwyno",
       "START_NOW": "Dechrau nawr",
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos",
-      "CLOSE_AND_RETURN_TO_DASHBOARD": "Close and return to dashboard"
+      "CLOSE_AND_RETURN_TO_DASHBOARD": "Close and return to dashboard",
+     
     },
     "MICRO_TEXT": {
       "HEARING_FEE": "Ffi gwrandawiad",
