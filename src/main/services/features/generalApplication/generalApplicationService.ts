@@ -34,7 +34,7 @@ import {ApplicationState, ApplicationStatus} from 'common/models/generalApplicat
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import config from 'config';
 import {GaServiceClient} from 'client/gaServiceClient';
-import {getClaimById} from "modules/utilityService";
+import {getClaimById} from 'modules/utilityService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
