@@ -20,7 +20,7 @@ import {CaseLink} from 'models/generalApplication/CaseLink';
 
 export interface EventDto {
   event: ApplicationEvent,
-  caseDataUpdate?: CCDGeneralApplication;
+  caseDataUpdate?: CCDGeneralApplication | CCDGaHelpWithFees;
 }
 
 export interface CCDGeneralApplication extends ClaimUpdate {
@@ -33,6 +33,12 @@ export interface CCDGeneralApplication extends ClaimUpdate {
   generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
   generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
-  generalAppHelpWithFees: CCDHelpWithFees;
+  generalAppHelpWithFees?: CCDHelpWithFees;
   caseLink?: CaseLink;
+}
+
+export interface CCDGaHelpWithFees {
+
+  generalAppHelpWithFees?: CCDHelpWithFees;
+
 }
