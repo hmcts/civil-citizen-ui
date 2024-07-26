@@ -756,5 +756,14 @@ describe('Should display sync warning', () => {
     //Then
     expect(result).toEqual(true);
   });
+
+  it('should not display if no GA response', async () => {
+    //Given
+    applicationResponse = undefined;
+    //When
+    const result = shouldDisplaySyncWarning(applicationResponse);
+    //Then
+    expect(result).toEqual(false);
+  });
 });
 

@@ -4,7 +4,7 @@ import {
   GA_CHECK_ANSWERS_URL,
   GENERAL_APPLICATION_CONFIRM_URL,
   GA_APPLY_HELP_WITH_FEE_REFERENCE,
-  PAYING_FOR_APPLICATION_URL,
+  PAYING_FOR_APPLICATION_URL, GA_APPLICATION_SUBMITTED_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
@@ -18,6 +18,8 @@ import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthFo
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {submitApplication} from 'services/features/generalApplication/submitApplication';
 import {checkYourAnswersGAGuard} from 'routes/guards/checkYourAnswersGAGuard';
+import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -61,11 +63,27 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
       await saveStatementOfTruth(redisKey, statementOfTruth);
       await submitApplication(req);
       await deleteDraftClaimFromStore(redisKey);
-      res.redirect(constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL));
+      res.redirect(getRedirectUrl(claimId, claim));
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
+
+function getRedirectUrl(claimId: string, claim: Claim): string {
+  if (claim.generalApplication?.applicationTypes?.length === 1 && claim.generalApplication.applicationTypes[0].option === ApplicationTypeOption.ADJOURN_HEARING
+    && hearingMoreThan14DaysInFuture(claim)) {
+    return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUBMITTED_URL);
+  } else {
+    return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL);
+  }
+}
+
+function hearingMoreThan14DaysInFuture(claim: Claim): boolean {
+  const today = new Date();
+  const hearingDate = claim.caseProgressionHearing?.hearingDate;
+  const future = hearingDate && getNumberOfDaysBetweenTwoDays(today, hearingDate) > 14;
+  return future;
+}
 
 export default gaCheckAnswersController;
