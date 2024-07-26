@@ -18,7 +18,7 @@ const crPropertyName = 'signed';
 const crParentName = 'signSettlementAgreement';
 
 function renderView(form: GenericForm<SignSettlmentAgreement>, res: Response, data?: object): void {
-  res.render(signSettlementAgreementViewPath, {form, data});
+  res.render(signSettlementAgreementViewPath, {form, data, pageTitle: 'PAGES.CLAIMANT_TERMS_OF_AGREEMENT.PAGE_TITLE'});
 }
 
 signSettlementAgreementController.get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT, SignSettlmentAgreementGuard.apply(CLAIMANT_RESPONSE_TASK_LIST_URL), async (req: Request, res: Response, next: NextFunction) => {

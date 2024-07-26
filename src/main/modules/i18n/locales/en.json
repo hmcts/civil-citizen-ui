@@ -104,7 +104,8 @@
     "MICRO_TEXT": {
       "HEARING_FEE": "Hearing fee",
       "CLAIM_FEE": "Claim fee",
-      "APPLICATION_FEE" : "Application fee"
+      "APPLICATION_FEE" : "Application fee",
+      "ADDITIONAL_APPLICATION_FEE" : "Additional application fee"
     },
     "CHECKBOX_FIELDS": {
       "COUNCIL_TAX_AND_COMMUNITY_CHARGE": "Council Tax or Community Charge",
@@ -164,7 +165,7 @@
       "BETA": "BETA",
       "MONEY_CLAIMS": "Money Claims",
       "MY_ACCOUNT": "My account",
-      "NEW_SERVICE": "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>feedback</a> will help us to improve it.",
+      "NEW_SERVICE": "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/CMC_Feedback?pageurl={{ pageTitle }}' target='_blank'>feedback</a> will help us to improve it.",
       "SIGN_IN": "Sign in",
       "SIGN_OUT": "Sign out"
     },
@@ -2070,6 +2071,7 @@
         "CLAIMANT_REQUESTED_CCJ": "{{ claimantName }} requested a County Court Judgment against you on {{ccjRequestedDate}}.",
         "CLAIMANT_REQUESTED_CCJ_BY_DETERMINATION": "{{ claimantName }} requested a County Court Judgment against you.",
         "DECISION_ON_RECONSIDERATION": "An order has been made.",
+        "DEFAULT_JUDGEMENT_ISSUED_STATUS": "The claimant has requested a County Court Judgment (CCJ) against you on {{ defaultJudgementIssuedDate }}",
         "DOCUMENTS_BEING_TRANSLATED": "The documents are being translated.",
         "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days.",
         "MORE_DETAILS_REQUIRED": "Send us more details before the hearing.",
@@ -2088,6 +2090,7 @@
         "SETTLEMENT_SIGNED": "You’ve both signed a settlement agreement.",
         "SDO_ORDER_STATUS": "An order has been issued by the court, this claim will now proceed offline.",
         "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case.",
+        "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
@@ -2575,6 +2578,21 @@
         "WHY_NOT_ACCEPT": "Why do you not accept the defendant's offer?",
         "WHY_NOT_ACCEPT_2": "Why you do not accept the defendant's offer?"
       },
+      "ADDITIONAL_FEE": {
+        "CLOSE_AND_RETURN": "Close and return to case details",
+        "COURT_DECIDED": "The court has decided that your application must be submitted 'with notice'. This means that the other parties will receive a copy of the application and will be able to respond to what you have said.",
+        "DO_NEXT": "What you need to do next",
+        "HWF_LINK": "Help with Fees",
+        "IF_NOT_PAY": "If you do not pay the fee, your application will not be considered.",
+        "LOW_INCOME": "If you're on a low income, receive benefits or have limited savings, you may be eligible for ",
+        "MAKE_PAYMENT": "Make the payment",
+        "MEET_CRITERIA": "If you meet the criteria, you can apply for this support when you make the payment.",
+        "PAGE_TITLE": "Additional fee",
+        "PAY_ADDITIONAL_FEE": "Pay the additional fee of {{additionalFee}}.",
+        "TITLE": "You must pay an additional fee",
+        "WITH_NOTICE_COST": "A 'with notice' application costs {{withNoticeCost}}. You've already paid {{alreadyPaid}}, but you'll now need to pay an additional fee to make up the full amount.",
+        "WITHOUT_NOTICE": "Your application was submitted without giving notice to the other parties."
+      },
       "AGREE_TO_ORDER": {
         "MADE_AWARE": "If you have not been made aware of this application by the other parties, select 'No'.",
         "RESPOND_TO": "Respond to an application to {{applicationType}}",
@@ -2668,6 +2686,10 @@
           "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
         },
         "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
+      },
+      "PAY_ADDITIONAL_FEE": {
+        "HEADING": "Additional application fee",
+        "WANT_TO_APPLY_HWF_TITLE": "Pay additional application fee"
       },
       "PAYMENT_FOR_APPLICATION": {
         "APPLICATION_FEE": "Application fee to pay:",
@@ -2851,6 +2873,7 @@
         "TITLE": "Application hearing arrangements"
       },
       "GA_PAYMENT_SUCCESSFUL" : {
+        "ACCOUNT_NOT_UPDATED": "Your payment was successful but your account might not have been updated yet. Try refreshing your account later on.",
         "APPLICATION_SUBMITTED":"Application Submitted",
         "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_1": "If you have not provided a valid reason, a judge may order that the other parties should be informed. If this happens, you'll need to pay an additional fee and your application may also be delayed.",
         "CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_2": "If a judge agrees that the other parties should not be informed, the other parties will not be able to respond to the application before the judge makes a decision.",
@@ -2862,6 +2885,7 @@
         "WHAT_HAPPENS_NEXT_PARA_3": "You'll receive a notification letting you know if an application hearing has been scheduled.",
         "WHAT_HAPPENS_NEXT_PARA_4" : "If you've made an application to change a hearing date, the trial or hearing will go ahead as planned on the original date unless a judge makes an order changing the date of the hearing.",
         "WHAT_HAPPENS_NEXT_PARA_5": "The other parties will have 5 working days to respond to your application. If you have a hearing in the next 10 days, your application will be treated urgently.",
+        "WHAT_HAPPENS_NEXT_PARA_6": "You may be required to attend a hearing so that the judge can consider your application with you and the other parties and decide what the next steps should be.",
         "WHAT_HAPPENS_NEXT": "What happens next"
       },
       "HEARING_SUPPORT": {
@@ -3032,9 +3056,15 @@
         "APPLICATION": "Application",
         "APPLICATION_DETAILS": "Application details submitted by the applicant.",
         "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
-        "EITHER_PARTIES": "Applications and responses can be made by either parties in a case.",
+        "COURT_DOCUMENT": "Court document",
+        "COURTS_RESPONSE": "Court's response to the application",
+        "DATE_RESPONSE": "Date of response",
+        "DIRECTION_WITH_NOTICE": "Direction to make the application with notice",
+        "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "PAGE_TITLE": "View application",
         "RESPONSE": "Response from the other parties",
+        "READ_RESPONSE": "Read the response",
+        "RESPONSE_COURT": "Response from the court",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
@@ -3042,6 +3072,8 @@
         },
         "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
         "TITLE": "Application {{applicationIndex}}",
+        "TYPE_RESPONSE": "Type of response",
+        "PAY_ADDITIONAL_FEE": "Pay the additional fee",
         "UPLOAD_DOCUMENTS_1": "You can also ",
         "UPLOAD_DOCUMENTS_2": "upload additional documents",
         "UPLOAD_DOCUMENTS_3": " if you need to."
@@ -3131,7 +3163,7 @@
       "CASE_PROGRESSION": {
         "HEARING_FEE": {
           "APPLY_HELP_FEE_SELECTION": {
-            "LINK_BEFORE": "If you're on a low income, have limited savings or are claiming benefits, you may able to get ",
+            "LINK_BEFORE": "If you're on a low income, have limited savings or are claiming benefits, you may be able to get ",
             "LINK_TEXT": "help with fees (opens in a new tab).",
             "PARAGRAPH": "If you meet the criteria, you may get support to pay some or all of the fee.",
             "QUESTION_TITLE": "Do you want to apply for help with fees?",
@@ -4440,6 +4472,7 @@
       },
       "CONFIRMATION_PAGE": {
         "TITLE": "Confirmation of your hearing fee payment",
+        "TITLE_CLAIM_FEE": "Confirmation of your claim fee payment",
         "CONFIRMATION_TITLE.HEARING": "Your application for help with the hearing fee is complete ",
         "REFERENCE_NUMBER": "Your reference number",
         "WHAT_HAPPENS_NEXT": "What happens next",

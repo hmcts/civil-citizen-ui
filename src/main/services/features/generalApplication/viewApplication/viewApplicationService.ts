@@ -12,13 +12,15 @@ import {
   addRequestingReasonRows,
   addUnavailableDatesRows,
 } from './addViewApplicationRows';
-import {SummaryRow} from 'models/summaryList/summaryList';
+import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {AppRequest} from 'models/AppRequest';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
+import { t } from 'i18next';
+import { formatDateToFullDate } from 'common/utils/dateUtils';
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -61,4 +63,15 @@ export const getApplicationSections = async (req: AppRequest, applicationId: str
 const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {
   return ((claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
     || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
+};
+
+export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
+  const rows: SummaryRow[] = [];
+  const documentUrl = 'test';
+  rows.push(
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng})}</a>`),
+  );
+  return rows;
 };
