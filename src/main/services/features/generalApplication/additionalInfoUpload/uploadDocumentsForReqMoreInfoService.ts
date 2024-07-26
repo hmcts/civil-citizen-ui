@@ -11,7 +11,7 @@ import {
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
-import {GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL} from 'routes/urls';
+import {GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL} from 'routes/urls';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
 import {getCancelUrl, getClaimDetailsById} from 'services/features/generalApplication/generalApplicationService';
@@ -59,7 +59,7 @@ export const getSummaryList = async (formattedSummary: SummarySection, redisKey:
   let index = 0;
   claim?.generalApplication?.generalAppAddlnInfoUpload?.forEach((uploadDocument: UploadGAFiles) => {
     index= index+ 1;
-    formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL+'?id='+index), 'Remove document'));
+    formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL+'?id='+index), 'Remove document'));
   });
 };
 
@@ -83,7 +83,7 @@ export const buildSummarySection = (uploadDocumentsList: UploadGAFiles[], claimI
     rowValue += `<li>${doc.caseDocument.documentName}</li>`;
   });
   rowValue += '</ul>';
-  rows.push(summaryRow(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.UPLOAD_DOC_CYA_TITLE', {lng}), rowValue , constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL), changeLabel()));
+  rows.push(summaryRow(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.UPLOAD_DOC_CYA_TITLE', {lng}), rowValue , constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL), changeLabel()));
   return rows;
 };
 

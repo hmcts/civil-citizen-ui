@@ -6,7 +6,7 @@ import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { getClaimById } from 'modules/utilityService';
 import { deleteDraftClaimFromStore, generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
-import {GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_CONFIRMATION_URL} from 'routes/urls';
+import {GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL} from 'routes/urls';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../..../../../../../../main/modules/utilityService');
@@ -38,7 +38,7 @@ describe('General Application - Request More Information Confirmation', () => {
       (generateRedisKey as jest.Mock).mockReturnValue(redisKey);
       (deleteDraftClaimFromStore as jest.Mock).mockResolvedValue(undefined);
 
-      const res = await request(app).get(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_CONFIRMATION_URL.replace(':id', claimId));
+      const res = await request(app).get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL.replace(':id', claimId));
 
       expect(res.status).toBe(200);
       expect(getClaimById).toHaveBeenCalledWith(claimId, expect.anything(), true);
@@ -50,7 +50,7 @@ describe('General Application - Request More Information Confirmation', () => {
     it('should handle errors', async () => {
       (getClaimById as jest.Mock).mockRejectedValue(new Error('Error'));
 
-      const res = await request(app).get(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_CONFIRMATION_URL.replace(':id', '123'));
+      const res = await request(app).get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL.replace(':id', '123'));
 
       expect(res.status).toBe(500);
     });

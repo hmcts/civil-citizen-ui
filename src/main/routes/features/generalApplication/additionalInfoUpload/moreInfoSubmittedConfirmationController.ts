@@ -3,7 +3,7 @@ import { NextFunction, RequestHandler, Response, Router } from 'express';
 import { deleteDraftClaimFromStore, generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import {
-  GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_CONFIRMATION_URL,
+  GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL,
 } from 'routes/urls';
 import {
   getConfirmationContent,
@@ -13,7 +13,7 @@ import {t} from 'i18next';
 const moreInfoSubmittedConfirmationController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/confirmation-screen';
 
-moreInfoSubmittedConfirmationController.get(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_CONFIRMATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+moreInfoSubmittedConfirmationController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const { id: claimId } = req.params;

@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_CYA_URL,
-  GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL,
+  GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL,
+  GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
@@ -28,7 +28,7 @@ const upload = multer({
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, gaId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL);
+  const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, 'Test');
   res.render(viewPath, {
     form,
@@ -40,7 +40,7 @@ async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimI
   });
 }
 
-uploadDocumentsForRequestMoreInfoController.get(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadDocumentsForRequestMoreInfoController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const { appId, id:claimId } = req.params;
     const claim = await getClaimById(claimId, req, true);
@@ -68,11 +68,11 @@ uploadDocumentsForRequestMoreInfoController.get(GA_UPLOAD_DOCUMENT_FOR_REQUEST_M
   }
 }) as RequestHandler);
 
-uploadDocumentsForRequestMoreInfoController.post(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadDocumentsForRequestMoreInfoController.post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const { appId, id:claimId } = req.params;
     const claim = await getClaimDetailsById(req);
-    const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL);
+    const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
     const gaApplications = claim?.generalApplication;
 
     const formattedSummary = summarySection(
@@ -104,7 +104,7 @@ uploadDocumentsForRequestMoreInfoController.post(GA_UPLOAD_DOCUMENT_FOR_REQUEST_
       req.session.fileUpload = JSON.stringify(errors);
       return res.redirect(`${currentUrl}`);
     } else {
-      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId,  GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_CYA_URL));
+      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId,  GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL));
     }
   } catch (error) {
     next(error);

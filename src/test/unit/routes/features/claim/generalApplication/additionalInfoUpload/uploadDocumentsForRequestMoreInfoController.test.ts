@@ -5,7 +5,7 @@ import * as draftService from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import {GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL} from 'routes/urls';
+import {GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL} from 'routes/urls';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { CaseDocument } from 'common/models/document/caseDocument';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
@@ -57,7 +57,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
   describe('on GET', () => {
     it('should return upload document page', async () => {
       await request(app)
-        .get(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL)
+        .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE_TO_UPLOAD'));
@@ -73,7 +73,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
       claim.generalApplication.generalAppAddlnInfoUpload.push(uploadDocument);
       const currentDocuments = 2;
       await request(app)
-        .get(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL+'?id=1')
+        .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL+'?id=1')
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE_TO_UPLOAD'));
@@ -95,7 +95,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
 
       app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
       await request(app)
-        .get(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL)
+        .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_MIME_TYPE_FILE'));
@@ -117,7 +117,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
 
       app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
       await request(app)
-        .get(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL)
+        .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_SIZE_FILE'));
@@ -138,7 +138,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
 
       app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
       await request(app)
-        .get(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL)
+        .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_CHOOSE_THE_FILE'));
@@ -148,7 +148,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
     it('should return http 500 when has error in the get method', async () => {
       mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
-        .get(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL)
+        .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -159,23 +159,23 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
   describe('on POST', () => {
     it('should throw the error if user click upload file button without uploading', async () => {
       await request(app)
-        .post(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL)
+        .post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
         .field('action', 'uploadButton')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL);
+          expect(res.text).toContain(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
         });
     });
 
     it('should save the file and display', async () => {
       jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
       await request(app)
-        .post(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL)
+        .post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
         .field('action', 'uploadButton')
         .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL);
+          expect(res.text).toContain(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
         });
     });
     it('should return http 500 when has error in the get method', async () => {
@@ -188,7 +188,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
       };
       jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
-        .post(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL)
+        .post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)
         .field('action', 'uploadButton')
         .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
         .expect((res) => {
