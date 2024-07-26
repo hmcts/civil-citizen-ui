@@ -33,7 +33,7 @@ describe('General Application - View application', () => {
   describe('on GET', () => {
     it('should return view application page', async () => {
       mockedSummaryRows.mockImplementation(() => []);
-        const paidApplication = Object.assign(new ApplicationResponse(), mockApplication);
+      const paidApplication = Object.assign(new ApplicationResponse(), mockApplication);
       paidApplication.state = ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION;
       paidApplication.case_data.generalAppPBADetails.paymentDetails = {
         'status': 'SUCCESS',
@@ -63,7 +63,7 @@ describe('General Application - View application', () => {
           expect(res.text).toContain(t('COMMON.BUTTONS.PAY_APPLICATION_FEE'));
         });
     });
-    
+
     it('should return http 500 when has error in the get method', async () => {
       mockedSummaryRows.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
