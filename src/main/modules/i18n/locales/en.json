@@ -2932,11 +2932,12 @@
         "WAYS_TO_COMPLETE": "There are two ways to complete the form. You can either:"
       },
       "UPLOAD_MORE_INFO_DOCUMENTS": {
-        "PAGE_TITLE": "Request for more information",
-        "UPLOAD_DOC_CYA_TITLE": "Upload documents",
         "CONFIRMATION_PAGE_TITLE": "You've submitted the information",
         "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will consider the information you've provided. You'll receive an update with their decision or next steps.",
-        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next"
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
+        "PAGE_TITLE": "Request for more information",
+        "PAGE_TITLE_TO_UPLOAD": "Upload additional documents",
+        "UPLOAD_DOC_CYA_TITLE": "Upload documents"
       },
       "APPLICATION_HEARING_ARRANGEMENTS": {
         "HEARING_TYPE": {

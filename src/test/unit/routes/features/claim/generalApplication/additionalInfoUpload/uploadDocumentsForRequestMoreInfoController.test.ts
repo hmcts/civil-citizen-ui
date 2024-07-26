@@ -60,7 +60,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
         .get(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE_TO_UPLOAD'));
         });
     });
 
@@ -76,7 +76,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
         .get(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL+'?id=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE_TO_UPLOAD'));
           expect(claim.generalApplication.generalAppAddlnInfoUpload.length).toBe(currentDocuments - 1);
         });
     });

@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_CONFIRMATION_URL,
-  GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_CYA_URL,
+  GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_CYA_URL, GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {
@@ -29,7 +29,7 @@ gaRequestMoreInfoCheckAnswersController.get(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getClaimDetailsById(req);
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_CYA_URL);
+    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL);
     const summaryRows = buildSummarySection(claim.generalApplication.generalAppAddlnInfoUpload, claimId, appId, lng);
     res.render(viewPath, { backLinkUrl, cancelUrl, claimIdPrettified, claim, summaryRows });
   } catch (error) {

@@ -7,7 +7,7 @@
 {% from "../../../macro/heading-with-caption.njk" import headingWithCaption %}
 {% from "../../../macro/button.njk" import addButton %}
 
-{{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE') }}
+{{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE_TO_UPLOAD') }}
 
 {% block nestedContent %}
   {% set errors = "" %}
@@ -57,7 +57,7 @@
         </dl>
       {% endfor %}
     {% endif %}
-    <div class="govuk-button-group govuk-!-margin-top-8">
+    <div class="givuk-body govuk-button-group govuk-!-margin-top-8">
       {{ addButton(t, 'CONTINUE', cancelUrl) }}
     </div>
   </form>
