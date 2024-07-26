@@ -39,6 +39,7 @@ describe('General Application - Pay additional fee Page', () => {
       generalAppPBADetails: undefined,
       applicationFeeAmountInPence: undefined,
       parentClaimantIsApplicant: undefined,
+      judicialDecision: undefined,
     },
     created_date: '',
     id: '',
