@@ -17,31 +17,47 @@ export const getGaPaymentSuccessfulPanelContent = (claim: Claim, lng?: string) =
   return panelBuilder.build();
 };
 
-export const getGaPaymentSuccessfulBodyContent = (claim: Claim, calculatedAmountInPence : string, lng?: string) => {
-  let contentBuilder = new PaymentSuccessfulSectionBuilder()
-    .addParagraph('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.CONFIRMATION', { lng: getLng(lng) })
-    .addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT',{ lng: getLng(lng) })
-    .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_1', { lng: getLng(lng) })
-    .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_2', { lng: getLng(lng) })
-    .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_3', { lng: getLng(lng) })
-    .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_4', { lng: getLng(lng) })
-    .addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.CHOOSEN_NOT_TO_INFORM_OTHER_PARTY', { lng: getLng(lng) })
-    .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_1', { lng: getLng(lng) })
-    .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_2', { lng: getLng(lng) });
-  if (isApplicationSubmittedWithoutFee(claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option, claim.caseProgressionHearing)) {
-    contentBuilder = new PaymentSuccessfulSectionBuilder()
-      .addParagraph('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.CONFIRMATION', { lng: getLng(lng) })
-      .addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT', { lng: getLng(lng) })
-      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_5', { lng: getLng(lng) })
-      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_2', { lng: getLng(lng) })
-      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_3', { lng: getLng(lng) })
-      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_4', { lng: getLng(lng) });
+export const getGaPaymentSuccessfulBodyContent = (claim: Claim, calculatedAmountInPence : string, isAdditionalFee: boolean, displaySyncWarning: boolean, lng?: string) => {
+  const withoutFee = isApplicationSubmittedWithoutFee(claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option, claim.caseProgressionHearing);
+  const contentBuilder = new PaymentSuccessfulSectionBuilder()
+    .addParagraph('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.CONFIRMATION', { lng: getLng(lng) });
+  if (displaySyncWarning) {
+    contentBuilder
+      .addWarning('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.ACCOUNT_NOT_UPDATED');
+  }
+  contentBuilder
+    .addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT',{ lng: getLng(lng) });
+  if (isAdditionalFee) {
+    contentBuilder
+      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_5', {lng: getLng(lng)})
+      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_6', {lng: getLng(lng)})
+      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_3', {lng: getLng(lng)})
+      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_4', {lng: getLng(lng)});
+  } else {
+    if (withoutFee) {
+      contentBuilder
+        .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_5', {lng: getLng(lng)});
+    } else {
+      contentBuilder
+        .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_1', { lng: getLng(lng) });
+    }
+    contentBuilder
+      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_2', {lng: getLng(lng)})
+      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_3', {lng: getLng(lng)})
+      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_4', {lng: getLng(lng)});
+    if (!withoutFee) {
+      contentBuilder
+        .addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.CHOOSEN_NOT_TO_INFORM_OTHER_PARTY', {lng: getLng(lng)})
+        .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_1', {lng: getLng(lng)})
+        .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_2', {lng: getLng(lng)});
+    }
   }
 
   contentBuilder.addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.PAYMENT_SUMMARY_TITLE', { lng: getLng(lng) })
     .addSummary(currencyFormatWithNoTrailingZeros(convertToPoundsFilter(
       calculatedAmountInPence)),
-    'COMMON.MICRO_TEXT.APPLICATION_FEE',lng);
+    isAdditionalFee ? 'COMMON.MICRO_TEXT.ADDITIONAL_APPLICATION_FEE' : 'COMMON.MICRO_TEXT.APPLICATION_FEE',
+    lng);
   return contentBuilder.build();
 };
 

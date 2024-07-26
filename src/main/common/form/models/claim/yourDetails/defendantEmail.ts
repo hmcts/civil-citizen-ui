@@ -1,9 +1,10 @@
-import {IsEmail, ValidateIf} from 'class-validator';
+import {Validate, ValidateIf} from 'class-validator';
+import { EmailValidator } from 'common/form/validators/emailValidator';
 
 export class DefendantEmail {
 
   @ValidateIf(o => o.emailAddress)
-  @IsEmail({allow_display_name: true}, {message: 'ERRORS.ENTER_VALID_EMAIL'})
+  @Validate(EmailValidator, {message: 'ERRORS.ENTER_VALID_EMAIL'})
     emailAddress?: string;
 
   constructor(emailAddress?: string) {

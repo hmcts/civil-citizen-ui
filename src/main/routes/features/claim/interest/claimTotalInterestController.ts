@@ -14,6 +14,7 @@ claimTotalInterestController.get(CLAIM_INTEREST_TOTAL_URL, (async (req: AppReque
     const interest = await getInterest(req.session?.user?.id);
     res.render(claimTotalInterestViewPath, {
       form: new GenericForm(new TotalInterest(interest?.totalInterest?.amount.toString(), interest?.totalInterest?.reason)),
+      pageTitle: 'PAGES.TOTAL_INTEREST.PAGE_TITLE',
     });
   } catch (error) {
     next(error);
