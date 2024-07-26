@@ -14,9 +14,7 @@ import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_INFO_URL} from 'routes/urls';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
-import {getClaimById} from 'modules/utilityService';
-import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl, getClaimDetailsById} from 'services/features/generalApplication/generalApplicationService';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -50,18 +48,6 @@ export const saveDocuments = async (req: AppRequest, redisKey: string, uploadDoc
     const claim = await getClaimDetailsById(req);
     claim.generalApplication.generalAppAddlnInfoUpload.push(uploadDocument);
     await saveDraftClaim(redisKey, claim);
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
-};
-
-export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
-  try {
-    const claim = await getClaimById(req.params.id, req, true);
-    const gaApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication = gaApplication;
-    return claim;
   } catch (error) {
     logger.error(error);
     throw error;

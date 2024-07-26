@@ -5,13 +5,13 @@ import {
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {
-  getCancelUrl,
+  getCancelUrl, getClaimDetailsById,
 } from 'services/features/generalApplication/generalApplicationService';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {
   buildSummarySection,
-  getClaimDetailsById, translateCUItoCCD,
+  translateCUItoCCD,
 } from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {GaServiceClient} from 'client/gaServiceClient';

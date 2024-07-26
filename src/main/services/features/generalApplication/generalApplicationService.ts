@@ -34,6 +34,7 @@ import {ApplicationState, ApplicationStatus} from 'common/models/generalApplicat
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import config from 'config';
 import {GaServiceClient} from 'client/gaServiceClient';
+import {getClaimById} from "modules/utilityService";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -379,6 +380,18 @@ export const saveRespondentWantToUploadDoc = async (claimId: string, claim: Clai
       },
     };
     await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
+  try {
+    const claim = await getClaimById(req.params.id, req, true);
+    const gaApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = gaApplication;
+    return claim;
   } catch (error) {
     logger.error(error);
     throw error;

@@ -8,6 +8,7 @@ import {
 import {
   getConfirmationContent,
 } from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
+import {t} from 'i18next';
 
 const moreInfoSubmittedConfirmationController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/confirmation-screen';
@@ -20,7 +21,7 @@ moreInfoSubmittedConfirmationController.get(GA_UPLOAD_DOCUMENT_FOR_REQUEST_MORE_
     const redisKey = generateRedisKey(req);
     await deleteDraftClaimFromStore(redisKey);
     res.render(viewPath, {
-      confirmationTitle : 'PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.CONFIRMATION_PAGE_TITLE',
+      confirmationTitle : t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.CONFIRMATION_PAGE_TITLE', {lng}),
       confirmationContent: await getConfirmationContent(claimId, claim, lng),
     });
   } catch (err) {
