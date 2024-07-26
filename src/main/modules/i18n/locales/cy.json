@@ -68,6 +68,7 @@
     "YEAR": "Blwyddyn",
     "YEARS": "Blwyddyn",
     "YES": "Oes",
+    "OPENS_IN_NEW_TAB": "(yn agor mewn tab newydd)",
     "ADDRESS_FORM": {
       "ADDRESS_CHANGES_SHARED": "Bydd unrhyw newidiadau yn cael eu rhannu â'r hawlydd pan fyddwch yn cyflwyno eich ymateb.",
       "BUILDING_AND_STREET": "Adeilad a stryd",
@@ -165,7 +166,7 @@
       "BETA": "BETA",
       "MONEY_CLAIMS": "Hawliadau am Arian",
       "MY_ACCOUNT": "Fy nghyfrif",
-      "NEW_SERVICE": "Mae hwn yn wasanaeth newydd – bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl={{ pageTitle }}' target='_blank'>adborth</a> yn ein helpu i’w wella.",
+      "NEW_SERVICE": "Mae hwn yn wasanaeth newydd – bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl={{ pageTitle }}' target='_blank'>adborth <span class='govuk-visually-hidden'>(yn agor mewn tab newydd)</span></a> yn ein helpu i’w wella.",
       "SIGN_IN": "Mewngofnodi",
       "SIGN_OUT": "Allgofnodi"
     },
@@ -3740,8 +3741,8 @@
     "REPAYMENT_PLAN_SUMMARY": {
       "CLAIMANTS_REPAYMENT_PLAN": "The repayment plan",
       "DEFENDANT_WILL_PAY_SET_DATE": "The defendant will pay £{{amount}} by {{paymentDate}}",
-      "IF_THINK_DEFENDANT_CAN_REPAY": "If you think the defendant can repay you sooner, you can ask a judge to set out a new repayment plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 working days.",
-      "IF_THINK_YOU_CANT_AFFORD": "If you think you can't afford the repayment plan, you can ask a judge to make a new repayment plan by emailing contactocmc@justice.gov.uk",
+      "IF_THINK_DEFENDANT_CAN_REPAY": "If you think the defendant can repay you sooner, you can ask a judge to set out a new repayment plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 days.",
+      "IF_THINK_YOU_CANT_AFFORD": "If you think you will not be able to afford the repayment plan, you can ask a judge to set out a new plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 days.",
       "REPAYMENT_PLAN": "The repayment plan",
       "THEY_HAVE_SUGGESTED_THIS": "They've suggested this repayment plan based on the financial details you have"
     },
