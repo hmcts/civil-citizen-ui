@@ -22,7 +22,7 @@ const dqPropertyName = 'requestExtra4weeks';
 const dqParentName = 'hearing';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render('features/directionsQuestionnaire/request-extra-4weeks', {form});
+  res.render('features/directionsQuestionnaire/request-extra-4weeks', {form, pageTitle: 'PAGES.REQUEST_EXTRA_4WEEKS.PAGE_TITLE'});
 }
 
 requestExtra4WeeksController.get(DQ_REQUEST_EXTRA_4WEEKS_URL, (async (req, res, next) => {

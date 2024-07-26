@@ -23,6 +23,7 @@ function renderView(form: GenericForm<ExpertCanStillExamine>, res: Response): vo
   res.render(defendantDOBViewPath, {
     form,
     maxDateForAge18: getDOBforAgeFromCurrentTime(18),
+    pageTitle: 'PAGES.CCJ_DEFENDANT_DOB.PAGE_TITLE',
   });
 }
 
