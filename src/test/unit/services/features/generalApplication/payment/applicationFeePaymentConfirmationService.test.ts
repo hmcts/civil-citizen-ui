@@ -49,6 +49,7 @@ describe('Application Fee PaymentConfirmation Service', () => {
         },
         applicationFeeAmountInPence: undefined,
         parentClaimantIsApplicant: undefined,
+        judicialDecision: undefined,
       },
       created_date: '',
       id: '',
