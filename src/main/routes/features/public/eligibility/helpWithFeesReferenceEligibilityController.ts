@@ -10,7 +10,7 @@ const helpWithFeesReferenceEligibilityController = Router();
 const helpWithFeesViewPath = 'features/public/eligibility/help-with-fees-reference';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(helpWithFeesViewPath, {form});
+  res.render(helpWithFeesViewPath, {form, pageTitle: 'PAGES.ELIGIBILITY_HWF_REFERENCE.PAGE_TITLE'});
 }
 
 helpWithFeesReferenceEligibilityController.get(ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL, (req, res) => {
