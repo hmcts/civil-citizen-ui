@@ -1399,7 +1399,7 @@
         "PAGE_TITLE": "Eu cyfeiriad e-bost (dewisol)",
         "PERSONAL_EMAIL": "Rhaid mai dyma yw eu cyfeiriad e-bost personol",
         "TITLE": "Eu cyfeiriad e-bost (dewisol)",
-        "USE_THIS_EMAIL": "Byddwn yn defnyddio hwn i ddweud wrthynt eich bod wedi gwneud hawliad, yn ogystal  'a'u' hysbysu drwy'r post."
+        "USE_THIS_EMAIL": "Byddwn yn defnyddio hwn i ddweud wrthynt eich bod wedi gwneud hawliad, yn ogystal a'u hysbysu drwy'r post."
       },
       "HOW_MUCH_CONTINUE": {
         "DAILY_INTEREST_AMOUNT": "Swm llog dyddiol",
@@ -3578,11 +3578,11 @@
       "WHEN_DID": "Pryd y gwnaethoch dalu’r swm hwn?"
     },
     "PARTIAL_ADMISSION_SETTLE_ADMITTED": {
-      "PAGE_TITLE": "Ydych chi eisiau setlo'r cais am 'y/yr {{ admittedAmount }} a addefir gan y diffynnydd?",
+      "PAGE_TITLE": "Ydych chi eisiau setlo'r cais am y/yr {{ admittedAmount }} a addefir gan y diffynnydd?",
       "AGREE_THEIR_REPAYMENT_PLAN": "Gallwch gytuno i'w cynllun ad-dalu neu awgrymu eich cynllun eich hun",
       "CONTINUE_AMOUNT_YOU_CLAIMED": "Bydd yr hawliad yn parhau am y cyfanswm a hawliwyd gennych",
       "THIS_IS_THE_TOTAL_AMOUNT": "Dyma'r cyfanswm a delir i chi, gan gynnwys ffi'r hawliad a'r llog os yw'n berthnasol",
-      "TITLE": "Ydych chi eisiau setlo'r cais am 'y/yr {{ admittedAmount }} a addefir gan y diffynnydd?"
+      "TITLE": "Ydych chi eisiau setlo'r cais am y/yr {{ admittedAmount }} a addefir gan y diffynnydd?"
     },
     "PARTIAL_ADMISSION_WHY_DO_YOU_DISAGREE": {
       "PAGE_TITLE": "Pam rydych chi'n anghytuno?",
