@@ -9,7 +9,7 @@ const rejectAll = 'rejectAll';
 
 let claimRef, caseData, claimNumber, securityCode;
 
-Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey @nightly @minti');
+Feature('Multi and Intermediate Track - LIP - Defendant and Claimant Journey @nightly @minti @test');
 
 Before(async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -30,6 +30,22 @@ Scenario('MT Defendant and Claimant responses', async ({api}) => {
     console.log('claim number', claimNumber);
     console.log('Security code', securityCode);
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await ResponseSteps.RespondToClaim(claimRef);
+    await ResponseSteps.EnterPersonalDetails(claimRef, true);
+    await ResponseSteps.EnterYourOptionsForDeadline(claimRef, 'dontWantMoreTime');
+    await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
+    await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
+    await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 100000);
+    await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
+    await ResponseSteps.AddYourTimeLineEvents();
+    await ResponseSteps.EnterYourEvidenceDetails();
+    await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, 'immediate');
+    await ResponseSteps.EnterDQForMultiTrackClaims(claimRef);
+    await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+    await api.waitForFinishedBusinessProcess();
+
+    // Respond as claimant user
+    await LoginSteps.EnterCitizenCredentials(config.applicantSolicitorUser.email, config.applicantSolicitorUser.password);
     await ResponseSteps.RespondToClaim(claimRef);
     await ResponseSteps.EnterPersonalDetails(claimRef, true);
     await ResponseSteps.EnterYourOptionsForDeadline(claimRef, 'dontWantMoreTime');
@@ -73,9 +89,19 @@ Scenario('IT Defendant and Claimant responses', async ({api}) => {
     await api.waitForFinishedBusinessProcess();
 
     // Respond as claimant user
-    // To do later
-    // await LoginSteps.EnterCitizenCredentials(config.applicantSolicitorUser.email, config.applicantSolicitorUser.password);
-    // await ResponseSteps.RespondToClaim(claimRef);
-
+    await LoginSteps.EnterCitizenCredentials(config.applicantSolicitorUser.email, config.applicantSolicitorUser.password);
+    await ResponseSteps.RespondToClaim(claimRef);
+    await ResponseSteps.EnterCompDetails(true);
+    await ResponseSteps.EnterYourOptionsForDeadline(claimRef, 'dontWantMoreTime');
+    await ResponseSteps.EnterResponseToClaim(claimRef, rejectAll);
+    await ResponseSteps.SelectOptionInRejectAllClaim('alreadyPaid');
+    await ResponseSteps.EnterHowMuchYouHavePaid(claimRef, 15000, rejectAll);
+    await ResponseSteps.VerifyPaidLessPage();
+    await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, rejectAll);
+    await ResponseSteps.AddYourTimeLineEvents();
+    await ResponseSteps.EnterYourEvidenceDetails();
+    await ResponseSteps.EnterDQForIntTrackClaims(claimRef, false);
+    await ResponseSteps.CheckAndSubmit(claimRef, rejectAll, 'Intermediate');
+    await api.waitForFinishedBusinessProcess();
   }
 }).tag('@regression-minti').tag('@nightly');
