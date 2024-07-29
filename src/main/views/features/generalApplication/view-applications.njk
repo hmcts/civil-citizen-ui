@@ -2,6 +2,7 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set applicationHeaderHtml %}
@@ -10,7 +11,7 @@
 
 {% set applicationHtml %}
   <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
-    <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DETAILS')}}</p>
+    <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DETAILS') }}</p>
     <div class="govuk-form-group">
         {{ govukSummaryList({
             rows: summaryRows
@@ -25,7 +26,24 @@
 
 {% set responseHtml %}
 {# TODO: add response show/hidde content here #}
-  <p class="govuk-body">Response from the other parties</p>
+  <p class="govuk-body">Response from the other parties</p> 
+{% endset %}
+
+{% set courtResponseHeaderHtml %}
+  <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT')}}</h1>
+{% endset %}
+
+{% set courtResponseHtml %}
+  <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
+
+  {{ govukSummaryList({
+    rows: responseFromCourt
+  }) }}
+
+  {{ govukButton({
+    text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAY_ADDITIONAL_FEE'),
+    href: payAdditionalFeeUrl
+  }) }}
 {% endset %}
 
 {% block nestedContent %}
@@ -41,6 +59,12 @@
       summaryHtml: applicationHeaderHtml,
       html: applicationHtml
     }) }}
+    {% if isResponseFromCourt %}
+      {{ govukDetails({
+        summaryHtml: courtResponseHeaderHtml,
+        html: courtResponseHtml
+      }) }}
+    {% endif %}
     {{ govukDetails({
       summaryHtml: responseHeaderHtml,
       html: responseHtml
