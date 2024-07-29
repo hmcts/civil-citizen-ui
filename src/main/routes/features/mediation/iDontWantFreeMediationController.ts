@@ -14,7 +14,7 @@ const iDontWantFreeMediationViewPath = 'features/mediation/i-dont-want-free-medi
 const iDontWantFreeMediationController = Router();
 
 function renderView(form: GenericForm<NoMediationReason>, redirectUrl: string, res: Response): void {
-  res.render(iDontWantFreeMediationViewPath, {form, redirectUrl, NoMediationReasonOptions: NoMediationReasonOptions});
+  res.render(iDontWantFreeMediationViewPath, {form, redirectUrl, NoMediationReasonOptions: NoMediationReasonOptions, pageTitle: 'PAGES.I_DON_T_WANT_FREE_MEDIATION.PAGE_TITLE'});
 }
 
 iDontWantFreeMediationController.get(DONT_WANT_FREE_MEDIATION_URL, (async (req, res, next: NextFunction) => {

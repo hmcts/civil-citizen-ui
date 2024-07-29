@@ -25,6 +25,7 @@ function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], cl
     paginationArgumentDefendant,
     lang,
     newOcmcClaimUrl: draftClaimUrl,
+    pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
   });
 }
 

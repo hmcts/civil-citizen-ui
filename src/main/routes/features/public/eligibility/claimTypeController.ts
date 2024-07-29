@@ -1,14 +1,14 @@
 import {Request, Response, Router} from 'express';
-import {GenericForm} from '../../../../common/form/models/genericForm';
+import {GenericForm} from 'form/models/genericForm';
 import {
   ELIGIBILITY_CLAIM_TYPE_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
   ELIGIBILITY_CLAIMANT_ADDRESS_URL,
-} from '../../../../routes/urls';
-import {ClaimType} from '../../../../common/models/eligibility/claimType';
-import {ClaimTypeOptions} from '../../../../common/models/eligibility/claimTypeOptions';
-import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
-import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
+} from 'routes/urls';
+import {ClaimType} from 'models/eligibility/claimType';
+import {ClaimTypeOptions} from 'models/eligibility/claimTypeOptions';
+import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
+import {NotEligibleReason} from 'form/models/eligibility/NotEligibleReason';
 
 const claimTypeController = Router();
 const claimTypeViewPath = 'features/public/eligibility/claim-type';
@@ -16,7 +16,7 @@ const claimTypeViewPath = 'features/public/eligibility/claim-type';
 claimTypeController.get(ELIGIBILITY_CLAIM_TYPE_URL, (req: Request, res: Response) => {
   const claimType = req.cookies?.eligibility?.claimType;
   const form = new GenericForm(new ClaimType(claimType));
-  res.render(claimTypeViewPath, { form });
+  res.render(claimTypeViewPath, { form, pageTitle: 'PAGES.ELIGIBILITY_CLAIM_TYPE.TITLE'});
 });
 
 claimTypeController.post(ELIGIBILITY_CLAIM_TYPE_URL, async (req: Request, res: Response) => {

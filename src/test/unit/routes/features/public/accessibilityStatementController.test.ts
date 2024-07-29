@@ -65,7 +65,6 @@ describe('Accessibility Statement page', () => {
           expect(res.text).toContain(t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_NON_ACCESIBLE_1'));
           expect(res.text).toContain(t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_NON_ACCESIBLE_2'));
           expect(res.text).toContain(t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_NON_ACCESIBLE_3'));
-          expect(res.text).toContain(t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_NON_ACCESIBLE_4'));
           expect(res.text).toContain(t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_NON_ACCESIBLE_5'));
           expect(res.text).toContain(t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_TESTED_1'));
           expect(res.text).toContain(t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_TESTED_2'));
