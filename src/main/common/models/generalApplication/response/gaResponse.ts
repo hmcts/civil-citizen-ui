@@ -8,6 +8,7 @@ import {AcceptDefendantOffer} from './acceptDefendantOffer';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 
+// CUI GA respondent response
 export class GaResponse {
   hearingArrangement?: HearingArrangement;
   hearingContactDetails?: HearingContactDetails;
