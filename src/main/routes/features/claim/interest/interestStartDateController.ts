@@ -11,7 +11,7 @@ const interestStartDateViewPath = 'features/claim/interest/interest-start-date';
 const interestPropertyName = 'interestStartDate';
 
 function renderView(form: GenericForm<InterestStartDate>, res: Response): void {
-  res.render(interestStartDateViewPath, {form, today: new Date()});
+  res.render(interestStartDateViewPath, {form, today: new Date(), pageTitle: 'PAGES.INTEREST_START_DATE.PAGE_TITLE'});
 }
 
 interestStartDateController.get(CLAIM_INTEREST_START_DATE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

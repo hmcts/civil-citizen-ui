@@ -30,6 +30,7 @@ async function renderView(req: AppRequest, res: Response, form: GenericForm<Stat
   res.render(checkAnswersViewPath, {
     form,
     summarySections,
+    pageTitle: 'PAGES.CHECK_YOUR_ANSWER.CLAIMANT_INTENT_PAGE_TITLE',
   });
 }
 
