@@ -9,13 +9,12 @@ class Eligibility {
   }
 
   ClaimValue(optionValue) {
-    I.seeInCurrentUrl('/eligibility/claim-value');
+    I.amOnPage('/eligibility/claim-value');
     I.checkOption(`#${optionValue}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
   }
 
   OpenNotEligible(notEligibleReason){
-    I.waitForNavigation();
     I.seeInCurrentUrl(`/not-eligible?reason=${notEligibleReason}`);
   }
 
@@ -71,29 +70,6 @@ class Eligibility {
     I.seeInCurrentUrl('/eligibility/help-with-fees');
     I.checkOption(`#${optionValue}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
-  }
-
-  informationAboutHelpWithFees(optionValue) {
-    I.seeInCurrentUrl('/eligibility/information-about-help-with-fees');
-    I.checkOption(`#${optionValue}`);
-    clickButton(buttonType.SAVE_AND_CONTINUE);
-  }
-
-  applyForHelpWithFees() {
-    I.seeInCurrentUrl('/eligibility/apply-for-help-with-fees');
-    clickButton(buttonType.SAVE_AND_CONTINUE);
-  }
-
-  helpWithFeesReference(optionValue) {
-    I.seeInCurrentUrl('/eligibility/help-with-fees-reference');
-    I.checkOption(`#${optionValue}`);
-    clickButton(buttonType.SAVE_AND_CONTINUE);
-  }
-
-  hwfEligibleReference(optionValue) {
-    I.seeInCurrentUrl('/eligibility/hwf-eligible-reference');
-    I.checkOption(`#${optionValue}`);
-    clickButton(buttonType.CONTINUE);
   }
 
   eligible() {
