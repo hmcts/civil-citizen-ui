@@ -103,9 +103,14 @@ describe('View Application service', () => {
   });
 
   describe('getJudgeResponseSummary', () => {
+    let applicationResponse : ApplicationResponse;
+    beforeEach(() => {
+       applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
+    });
+
     it('should return judge response summary', async () => {
       //given
-      const applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
+     
       const caseData = applicationResponse.case_data;
       caseData.requestForInformationDocument = [{
         'id': 'ad9fd4a0-8294-414d-bcce-b66e742d809f',
@@ -134,5 +139,38 @@ describe('View Application service', () => {
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
     });
+
+    it('should return judge response summary with undefined link when requestForInformationDocument doesn\'t contain senp app to other party doc', async () => {
+      //given
+      applicationResponse.created_date = new Date('2024-01-01').toString();
+      const caseData = applicationResponse.case_data;
+      caseData.requestForInformationDocument = [];
+      applicationResponse.case_data = caseData;
+      applicationResponse.created_date = new Date('2024-01-01').toString();
+      //when
+      const result = getJudgeResponseSummary(applicationResponse, 'en');
+      //then
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].value.html).toEqual('1 January 2024');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
+      expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/undefined">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
+    });
+
+    it('should return judge response summary with undefined link when requestForInformationDocument is not present', async () => {
+      //given
+      applicationResponse.created_date = new Date('2024-01-01').toString();
+      const caseData = applicationResponse.case_data;
+      caseData.requestForInformationDocument = undefined;
+      applicationResponse.case_data = caseData;
+      applicationResponse.created_date = new Date('2024-01-01').toString();
+      //when
+      const result = getJudgeResponseSummary(applicationResponse, 'en');
+      //then
+       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[2].value.html).toContain('<a href="undefined">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
+    });
+
   });
 });

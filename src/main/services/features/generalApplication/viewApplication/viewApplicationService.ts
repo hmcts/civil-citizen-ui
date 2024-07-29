@@ -80,7 +80,7 @@ export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse
   return rows;
 };
 
-export const getMakeWithNoticeDocumentUrl = (applicationResponse: ApplicationResponse) : string => {
+const getMakeWithNoticeDocumentUrl = (applicationResponse: ApplicationResponse) : string => {
   const requestForInformationDocument = applicationResponse?.case_data?.requestForInformationDocument;
   const applicationId = applicationResponse.id;
   if(requestForInformationDocument) {
