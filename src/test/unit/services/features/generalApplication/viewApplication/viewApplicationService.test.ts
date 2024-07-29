@@ -105,7 +105,7 @@ describe('View Application service', () => {
   describe('getJudgeResponseSummary', () => {
     let applicationResponse : ApplicationResponse;
     beforeEach(() => {
-       applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
+      applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
     });
 
     it('should return judge response summary', async () => {
@@ -171,7 +171,7 @@ describe('View Application service', () => {
       //when
       const result = getJudgeResponseSummary(applicationResponse, 'en');
       //then
-       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result[2].value.html).toContain('<a href="undefined">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
     });
 
