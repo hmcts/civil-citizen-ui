@@ -18,29 +18,32 @@ jest.mock('../../../../../../main/app/client/gaServiceClient');
 
 const mockedSummaryRows = getApplicationSections as jest.Mock;
 
+
 describe('General Application - View application', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  const application = Object.assign(new ApplicationResponse(), mockApplication);
+  let application : ApplicationResponse;
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
+  beforeEach(() => {
+     application = Object.assign(new ApplicationResponse(), mockApplication);
+     jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValue(application);
+  });
+
   describe('on GET', () => {
-    it('should return view application page', async () => {
+    it('should return view application page with close and return to dashboard button', async () => {
       mockedSummaryRows.mockImplementation(() => []);
-      const paidApplication = Object.assign(new ApplicationResponse(), mockApplication);
-      paidApplication.state = ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION;
-      paidApplication.case_data.generalAppPBADetails.paymentDetails = {
+      application.state = ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION;
+      application.case_data.generalAppPBADetails.paymentDetails = {
         'status': 'SUCCESS',
         'reference' : '123-REF',
       };
 
-      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(paidApplication);
       await request(app)
         .get(GA_VIEW_APPLICATION_URL)
         .query({applicationId: '1718105701451856'})
@@ -53,7 +56,11 @@ describe('General Application - View application', () => {
 
     it('should return view application page with pay application fee button', async () => {
       mockedSummaryRows.mockImplementation(() => []);
-
+      application.state = ApplicationState.AWAITING_APPLICATION_PAYMENT;
+      application.case_data.generalAppPBADetails.paymentDetails = {
+        'status': 'FAIL',
+        'reference' : '123-REF',
+      };
       await request(app)
         .get(GA_VIEW_APPLICATION_URL)
         .query({applicationId: '1718105701451856'})
