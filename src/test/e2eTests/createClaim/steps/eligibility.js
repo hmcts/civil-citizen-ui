@@ -96,6 +96,11 @@ class Eligibility {
     clickButton(buttonType.CONTINUE);
   }
 
+  eligible() {
+    I.seeInCurrentUrl('/eligibility/eligible');
+    clickButton(buttonType.CONTINUE);
+  }
+
 }
 
 module.exports = new Eligibility();

@@ -3,6 +3,7 @@ const Eligibility = require('../../createClaim/steps/eligibility');
 const {notEligibleReason, eligibleCheckBoxValue, yesAndNoCheckBoxOptionValue, claimTypeValue, defendantAgeCheckBoxValue} = require('../../commons/eligibleVariables');
 Feature('Eligibility Journey').tag('@e2e');
 
+//R2
 Scenario('I don`t know the amount', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     Eligibility.start();
@@ -10,6 +11,7 @@ Scenario('I don`t know the amount', async () => {
     Eligibility.OpenNotEligible(notEligibleReason.CLAIM_VALUE_NOT_KNOWN);
   }
 });
+//Mint
 
 Scenario('Over £25,000', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -133,7 +135,7 @@ Scenario('£25,000 or less and claim is not against more than one person or orga
   }
 });
 
-Scenario('£25,000 or less and claim is not against more than one person or organization and is in England or Wales and A client - I`m their solicitor and claimant does have Uk post code and no for Is your claim for a tenancy deposit? and No for Are you claiming against a government department? and Yes for Do you believe the person you’re claiming against is 18 or over? and Yes For Are you 18 or over? and Yes for Do you need help paying your court fee?', async () => {
+Scenario('Happy path', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     Eligibility.start();
     Eligibility.ClaimValue(eligibleCheckBoxValue.LESS_OR_25000);
@@ -146,11 +148,6 @@ Scenario('£25,000 or less and claim is not against more than one person or orga
     Eligibility.governmentDepartment(yesAndNoCheckBoxOptionValue.NO);
     Eligibility.defendantAge(defendantAgeCheckBoxValue.YES);
     Eligibility.over18(yesAndNoCheckBoxOptionValue.YES);
-    Eligibility.helpWithFees(yesAndNoCheckBoxOptionValue.YES);
-    //help with fees journey
-    Eligibility.informationAboutHelpWithFees(yesAndNoCheckBoxOptionValue.YES);
-    Eligibility.applyForHelpWithFees(yesAndNoCheckBoxOptionValue.YES);
-    Eligibility.helpWithFeesReference(yesAndNoCheckBoxOptionValue.YES);
-    Eligibility.hwfEligibleReference(yesAndNoCheckBoxOptionValue.YES);
+    Eligibility.eligible();
   }
 });
