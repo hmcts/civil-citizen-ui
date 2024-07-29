@@ -20,7 +20,7 @@ const dqParentName = 'hearing';
 let days = 0;
 
 function renderView(form: GenericForm<WhyUnavailableForHearing>, res: Response, days: number): void {
-  res.render(whyUnavailableForHearingViewPath, {form, days});
+  res.render(whyUnavailableForHearingViewPath, {form, days, pageTitle: 'PAGES.WHY_UNAVAILABLE_FOR_HEARING.PAGE_TITLE'});
 }
 
 whyUnavailableForHearingController.get(DQ_UNAVAILABLE_FOR_HEARING_URL, (async (req: Request, res: Response, next: NextFunction) => {

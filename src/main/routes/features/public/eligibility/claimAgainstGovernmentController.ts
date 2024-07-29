@@ -14,7 +14,7 @@ const claimAgainstGovernmentController = Router();
 const defendantEligibilityViewPath = 'features/public/eligibility/claim-against-government';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(defendantEligibilityViewPath, {form});
+  res.render(defendantEligibilityViewPath, {form, pageTitle: 'PAGES.ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT.PAGE_TITLE'});
 }
 
 claimAgainstGovernmentController.get(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL, (req, res) => {

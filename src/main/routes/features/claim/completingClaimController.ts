@@ -10,7 +10,7 @@ const completingClaimViewPath = 'features/claim/completing-claim';
 const completingClaimController = Router();
 
 completingClaimController.get(CLAIM_COMPLETING_CLAIM_URL, (_req, res) => {
-  res.render(completingClaimViewPath);
+  res.render(completingClaimViewPath, {pageTitle: 'PAGES.COMPLETING_CLAIM.PAGE_TITLE'});
 });
 
 completingClaimController.post(CLAIM_COMPLETING_CLAIM_URL, (async (req: AppRequest, res: Response, next: NextFunction): Promise<void> => {
