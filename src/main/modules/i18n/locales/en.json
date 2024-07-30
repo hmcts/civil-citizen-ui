@@ -598,7 +598,7 @@
       "PARAGRAPH_FEEDBACK_1": "Feedback and contact information",
       "PARAGRAPH_FEEDBACK_2": "If you need information on this website in a different format like accessible PDF, large print, easy read, audio recording or braille:",
       "PARAGRAPH_HOW_1": "How accessible this website is",
-      "PARAGRAPH_HOW_2": "We know some parts of this service are not fully accessible. The digital service is accessible and meets the Web Content Accessibility Guidelines (WCAG) 2.2 AA standard. However, some error messages are not accessible because:",
+      "PARAGRAPH_HOW_2": "We know some parts of this service are not fully accessible:",
       "PARAGRAPH_HOW_3": "Error messages are not specific to the field where the error was made.",
       "PARAGRAPH_IMPROVE_1": "What we’re doing to improve accessibility",
       "PARAGRAPH_IMPROVE_2": "We continually run automated accessibility testing as part of our development practices. This helps us to resolve issues before we launch new pages or features.",
@@ -606,7 +606,6 @@
       "PARAGRAPH_NON_ACCESIBLE_1": "Non-accessible content",
       "PARAGRAPH_NON_ACCESIBLE_2": "The content listed below is non-accessible for the following reasons.",
       "PARAGRAPH_NON_ACCESIBLE_3": "Non-compliance with the accessibility regulations",
-      "PARAGRAPH_NON_ACCESIBLE_4": "Online Civil Money Claims (OCMC) digital service has been tested for accessibility and does meet the Web Content Accessibility Guidelines (WCAG) 2.2 AA requirement. However, some error messages are not accessible because:",
       "PARAGRAPH_NON_ACCESIBLE_5": "Screen reader users might have difficulty navigating error messages as some error messages are not specific to the field where the error was made. This fails Web Content Accessibility Guidelines (WCAG) 2.2 [3.3.1] success criterion (Error Identification). We plan to fix this by late 2024.",
       "PARAGRAPH_PREPARATION_1": "Preparation of this accessibility statement",
       "PARAGRAPH_PREPARATION_2": "This statement was prepared on 24 May 2024. It was last reviewed on 15 March 2024.",
@@ -2579,6 +2578,16 @@
         "WHY_NOT_ACCEPT": "Why do you not accept the defendant's offer?",
         "WHY_NOT_ACCEPT_2": "Why you do not accept the defendant's offer?"
       },
+      "ADDITIONAL_DOCUMENTS": {
+        "ADDITIONAL_DOCUMENTS_CAPTION": "Upload additional documents",
+        "ADDITIONAL_DOCUMENTS_ROW1": "You should only upload documents that are relevant to your application, for example if the judge has ordered a hearing and instructed you to provide documents ahead of this.",
+        "ADDITIONAL_DOCUMENTS_ROW2": "Before you upload the document you will need to describe the type of document you are uploading, for example, Bundle, witness statement or costs schedule.",
+        "JUDGE_WILL_REVIEW": "A judge will review the additional documents that you’ve uploaded. You’ll receive an update with their decision or next steps.",
+        "TYPE_OF_DOCUMENT_HINT": "For example, contract, invoice receipt, email, text message, photo, social media message",
+        "TYPE_OF_DOCUMENT": "Type of document",
+        "UPLOAD_DOCUMENTS_TITLE": "Upload documents",
+        "UPLOADED_ADDITIONAL_DOCS": "You've uploaded additional documents"
+      },
       "ADDITIONAL_FEE": {
         "CLOSE_AND_RETURN": "Close and return to case details",
         "COURT_DECIDED": "The court has decided that your application must be submitted 'with notice'. This means that the other parties will receive a copy of the application and will be able to respond to what you have said.",
@@ -3733,8 +3742,8 @@
     "REPAYMENT_PLAN_SUMMARY": {
       "CLAIMANTS_REPAYMENT_PLAN": "The claimant’s repayment plan",
       "DEFENDANT_WILL_PAY_SET_DATE": "The defendant will pay £{{amount}} by {{paymentDate}}",
-      "IF_THINK_DEFENDANT_CAN_REPAY": "If you think the defendant can repay you sooner, you can ask a judge to set out a new repayment plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 working days.",
-      "IF_THINK_YOU_CANT_AFFORD": "If you think you will not be able to afford the repayment plan, you can ask a judge to set out a new plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 working days",
+      "IF_THINK_DEFENDANT_CAN_REPAY": "If you think the defendant can repay you sooner, you can ask a judge to set out a new repayment plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 days.",
+      "IF_THINK_YOU_CANT_AFFORD": "If you think you will not be able to afford the repayment plan, you can ask a judge to set out a new plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 days.",
       "REPAYMENT_PLAN": "The repayment plan",
       "THEY_HAVE_SUGGESTED_THIS": "They've suggested this repayment plan based on the financial details you have"
     },
@@ -4986,7 +4995,9 @@
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
         "EXPLAIN_WHY_DISAGREE_APPLICATION": "You need to explain why you disagree with the application"
       },
+      "TYPE_OF_DOC": "You need to tell us what type of document you are uploading.",
       "UPLOAD_FILE_MESSAGE": "You need to choose a file before clicking 'Upload file'",
+      "UPLOAD_ONE_FILE": "You need to upload at least one file.",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
       "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
