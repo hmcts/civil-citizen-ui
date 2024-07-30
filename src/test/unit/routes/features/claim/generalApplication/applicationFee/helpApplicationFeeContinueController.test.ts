@@ -118,7 +118,6 @@ describe('General Application - Do you want to continue to apply for Help with F
         });
     });
 
-
     it('should redirect to Apply for help with fees if option is NO', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)

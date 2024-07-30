@@ -10,7 +10,7 @@ export const getHelpWithApplicationFeeReferenceContents = (feeTypeFlag: boolean)
   }
   pageBuilder.addMainTitle('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.TITLE')
     .addTitle('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.REFERENCE_NUMBER.TITLE');
-  return pageBuilder.build()
+  return pageBuilder.build();
 };
 export const getButtonsContents  = (claimId : string) => {
   return new PageSectionBuilder()
