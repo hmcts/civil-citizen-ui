@@ -363,7 +363,7 @@ export const getApplicationStatus = (status: ApplicationState): ApplicationStatu
     case ApplicationState.AWAITING_ADDITIONAL_INFORMATION:
     case ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS:
     case ApplicationState.APPLICATION_ADD_PAYMENT:
-        return ApplicationStatus.TO_DO;
+      return ApplicationStatus.TO_DO;
     case ApplicationState.ORDER_MADE:
     case ApplicationState.APPLICATION_DISMISSED:
     case ApplicationState.APPLICATION_CLOSED:
