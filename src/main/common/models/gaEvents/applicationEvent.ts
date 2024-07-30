@@ -1,4 +1,4 @@
 export enum ApplicationEvent {
-  // TODO: Add events here for use by GA client
+  UPLOAD_ADDL_DOCUMENTS = 'UPLOAD_ADDL_DOCUMENTS',
   RESPOND_TO_JUDGE_ADDITIONAL_INFO = 'RESPOND_TO_JUDGE_ADDITIONAL_INFO',
 }
