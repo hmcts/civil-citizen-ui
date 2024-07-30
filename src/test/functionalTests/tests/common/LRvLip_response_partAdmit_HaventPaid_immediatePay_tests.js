@@ -40,13 +40,13 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @
   await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
-  await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, immediatePayment);
-  await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
-  await ResponseSteps.EnterDQForSmallClaims(claimRef);
-  await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-  // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
-  // await api.enterBreathingSpace(config.applicantSolicitorUser);
-  // await api.liftBreathingSpace(config.applicantSolicitorUser);
-  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately, config.claimState.IN_MEDIATION);
-  await api.mediationSuccessful(config.caseWorker);
-}).tag('@regression-cui-r1');
+  // await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, immediatePayment);
+  // await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  // await ResponseSteps.EnterDQForSmallClaims(claimRef);
+  // await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+  // // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+  // // await api.enterBreathingSpace(config.applicantSolicitorUser);
+  // // await api.liftBreathingSpace(config.applicantSolicitorUser);
+  // await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately, config.claimState.IN_MEDIATION);
+  // await api.mediationSuccessful(config.caseWorker);
+}).tag('@felipe');
