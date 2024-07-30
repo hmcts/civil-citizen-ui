@@ -17,7 +17,7 @@ const claimAmountBreakdownController = Router();
 const viewPath = 'features/claim/amount/claim-amount-breakdown';
 
 function renderView(form: GenericForm<AmountBreakdown>, res: Response) {
-  res.render(viewPath, {form});
+  res.render(viewPath, {form, pageTitle: 'PAGES.CLAIM_AMOUNT_BREAKDOWN.TITLE'});
 }
 
 claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

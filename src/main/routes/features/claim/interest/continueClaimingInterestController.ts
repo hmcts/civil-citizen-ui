@@ -15,7 +15,7 @@ const continueClaimingInterestController = Router();
 const continueClaimingInterestPath = 'features/claim/interest/continue-claiming-interest';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(continueClaimingInterestPath, {form});
+  res.render(continueClaimingInterestPath, {form, pageTitle: 'PAGES.CLAIM_JOURNEY.CONTINUE_CLAIMING_INTEREST.PAGE_TITLE'});
 }
 
 continueClaimingInterestController.get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, (async (req:AppRequest, res:Response, next: NextFunction) => {
