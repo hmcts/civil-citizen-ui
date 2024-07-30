@@ -3,7 +3,7 @@ appVersion: "1.1"
 description: Helm chart for the HMCTS Civil Citizen Frontend service
 name: civil-citizen-ui
 home: https://github.com/hmcts/civil-citizen-ui
-version: 0.0.92
+version: 0.0.93
 maintainers:
   - name: HMCTS Civil Citizen Ui team
 
@@ -12,11 +12,11 @@ dependencies:
     version: 3.1.0
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
   - name: civil-service
-    version: 0.0.57
+    version: 0.0.67
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-service.enabled
   - name: ccd
-    version: 8.0.29
+    version: 9.0.21
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: ccd.enabled
   - name: xui-webapp
@@ -28,41 +28,20 @@ dependencies:
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: idam-pr.enabled
   - name: camunda-bpm
-    version: 0.0.43
+    version: 0.0.44
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: camunda-bpm.enabled
   - name: servicebus
-    version: 1.0.4
+    version: 1.0.7
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: servicebus.enabled
   - name: civil-general-applications
-    version: 0.0.60
+    version: 0.0.64
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-general-applications.enabled
 # WA
-  - name: wa-task-management-api
-    version: ~0.0.37
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
-    condition: civil-wa.enabled
-  - name: wa-task-monitor
-    version: ~0.0.27
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
-    condition: civil-wa.enabled
-  - name: wa-case-event-handler
-    version: 0.0.37
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
-    condition: civil-wa.enabled
-  - name: wa-workflow-api
-    version: 0.0.36
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
-    condition: civil-wa.enabled
-  # WA Crons
-  - name: wa-task-batch-service
-    version: ~0.0.15
-    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
-    condition: civil-wa.enabled
-  - name: wa-message-cron-service
-    version: ~0.0.3
+  - name: wa
+    version: 1.0.6
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: civil-wa.enabled
   # CCD message publisher

@@ -384,8 +384,13 @@ import whyNotSubjectToFRCController
   from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/whyNotSubjectToFRCController';
 import backController from 'routes/common/backController';
 import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
+import uploadAdditionalDocumentsController from './features/generalApplication/additionalDocuments/uploadAdditionalDocumentsController';
+import gaAdditionalDocCheckAnswerController from './features/generalApplication/additionalDocuments/checkAnswersController';
+import additionalDocSubmittedController from './features/generalApplication/additionalDocuments/submittedController';
 import viewApplicationToRespondentController from 'routes/features/generalApplication/response/viewApplicationController';
 import applicationSummaryController from './features/generalApplication/applicationSummaryController';
+import additionalFeeController from './features/generalApplication/additionalFee/additionalFeeController';
+import payAdditionalFeeController from 'routes/features/generalApplication/additionalFee/payAdditionalFeeController';
 import requestForReviewCommentsController
   from 'routes/features/caseProgression/requestForReconsideration/requestForReviewCommentsController';
 import checkAnswersCommentsController
@@ -715,10 +720,15 @@ export default [
   applicationFeePaymentConfirmationController,
   viewApplicationToRespondentController,
   applicationSummaryController,
+  additionalFeeController,
+  payAdditionalFeeController,
   requestForReviewCommentsController,
   checkAnswersCommentsController,
   commentsConfirmationController,
   respondentHearingPreferenceController,
   respondentWantToUploadDocumentsController,
   respondentUploadEvidenceDocumentsController,
+  uploadAdditionalDocumentsController,
+  gaAdditionalDocCheckAnswerController,
+  additionalDocSubmittedController,
 ];

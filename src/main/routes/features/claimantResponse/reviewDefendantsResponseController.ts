@@ -24,6 +24,7 @@ const reviewDefendantsResponseController = Router();
 const reviewDefendantResponseViewPath = 'features/claimantResponse/review-defendants-response';
 const crPropertyName = 'defendantResponseViewed';
 const pageParam = 'how-they-want-to-pay-response';
+const pageTitle= 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PAGE_TITLE';
 
 const renderHowTheyWantPay = (req: Request, res: Response, claim: Claim) => {
   const claimId = req.params.id;
@@ -36,6 +37,7 @@ const renderHowTheyWantPay = (req: Request, res: Response, claim: Claim) => {
     defendantsResponseContent,
     continueLink,
     financialDetails,
+    pageTitle,
   });
 };
 
@@ -63,6 +65,7 @@ reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPO
       claimId,
       originalUrl,
       admittedAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission?.howMuchDoYouOwe?.amount),
+      pageTitle,
     });
   } catch (error) {
     next(error);
