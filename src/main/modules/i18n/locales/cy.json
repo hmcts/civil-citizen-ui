@@ -621,7 +621,9 @@
       "TITLE": "Datganiad hygyrchedd ar gyfer y gwasanaeth Hawliadau am Arian yn y Llys Sifil Ar-lein"
     },
     "CONTACT_US": {
-      "TITLE": "Contact us"
+      "OPENING_HOURS": "Dydd Llun i ddydd Iau 8.30am - 5pm, dydd Gwener 9am - 4.30pm.",
+      "TELEPHONE": "Rhif ffôn",
+      "TITLE": "Cysylltu â ni"
     },
     "PRIVACY_POLICY": {
       "TITLE": "Polisi preifatrwydd",
@@ -657,7 +659,7 @@
       "P_28": "y porwr gwe rydych yn ei ddefnyddio",
       "P_29": "Rhannu eich data",
       "P_30": "Pan fydd eich hawliad neu eich cais yn cael ei brosesu, mae’n bosib y byddwn angen cysylltu ag adran, asiantaeth neu sefydliad arall yn y llywodraeth ac efallai y byddwn yn rhannu eich data gyda nhw.",
-      "P_31": "Bydd unrhyw ddata a gyflwynir gennych chi neu’r partïon eraill i gefnogi’r hawliad ac i fwrw ymlaen yn cael ei rannu gyda Exela Technologies Limited ac, os bydd angen argraffu, gyda Xerox (UK) Ltd",
+      "P_31": "Bydd unrhyw ddata a gyflwynir gennych chi neu’r partïon eraill i gefnogi’r hawliad ac i fwrw ymlaen yn cael ei rannu gyda Exela Technologies Limited ac, os bydd angen argraffu, gyda Xerox (UK) Ltd.",
       "P_32": "Os byddwch yn cysylltu â ni ac yn gofyn am help gyda'r gwasanaeth rydych yn ei ddefnyddio, efallai y byddwn yn rhannu eich data personol gyda’r Good Things Foundation. Rydym yn gweithio mewn partneriaeth â'r cwmni hwn i gynnig cefnogaeth wyneb yn wyneb.",
       "P_33": "Mewn rhai amgylchiadau efallai y byddwn yn rhannu eich data, er enghraifft er mwyn atal neu ganfod trosedd, neu i gynhyrchu ystadegau cyffredinol am unigolion sy’n defnyddio'r gwasanaeth.",
       "P_34": "Rydym yn defnyddio Google Analytics i gasglu data am sut y defnyddir gwefan. Mae'r data cyffredinol hwn yn cael ei rannu â Google. Mae rhagor o wybodaeth am hyn yn ein ",
@@ -743,7 +745,7 @@
       "P_114": "5. Mae'r Rheolwr Diogelu Data yn gyfrifol am sicrhau bod gwybodaeth y defnyddiwr yn cael ei hadolygu o bryd i'w gilydd (yn flynyddol) i benderfynu a oes unrhyw gyfnodau cadw wedi dod i ben. Unwaith y bydd y cyfnod cadw wedi dod i ben, rhaid adolygu’r cofnod a chytunir ar ‘gamau gwaredu'. ‘Camau gwaredu' yw;",
       "P_115": "dinistrio’r cofnod; neu",
       "P_116": "cadw'r cofnod am gyfnod pellach o dan gyfarwyddyd Rheolwr Data y data",
-      "P_117": "6. Ni fydd unrhyw gofnod yn cael ei ddinistrio heb sicrwydd",
+      "P_117": "6. Ni fydd unrhyw gofnod yn cael ei ddinistrio heb sicrwydd:",
       "P_118": "nad oes ar GLlTEF angen y cofnod mwyach",
       "P_119": "nid oes unrhyw ymgyfreitha neu ymchwiliad yn mynd rhagddo neu ar y gweill sy'n effeithio ar yr hawliad",
       "P_120": "nid oes unrhyw geisiadau DRhG neu GDPR yn mynd rhagddynt neu ar y gweill yn effeithio ar y cofnod.",
@@ -794,7 +796,7 @@
       "P_39": "data genetig neu ddata biometrig",
       "P_40": "data am eich iechyd",
       "P_41": "Rydych yn rhoi caniatâd inni brosesu'r wybodaeth hon er mwyn inni allu ymdrin â’ch cais.",
-      "P_42": "I gael rhagor o wybodaeth am sut rydym yn casglu a storio eich data personol, gweler y .",
+      "P_42": "I gael rhagor o wybodaeth am sut rydym yn casglu a storio eich data personol, gweler y ",
       "P_43": "Ymwrthodiad",
       "P_44": "Er ein bod yn ymdrechu i gadw GOV.UK yn gyfredol, nid ydym yn darparu unrhyw warantau, amodau neu sicrwydd bod yr wybodaeth:",
       "P_45": "yn gyfredol",
