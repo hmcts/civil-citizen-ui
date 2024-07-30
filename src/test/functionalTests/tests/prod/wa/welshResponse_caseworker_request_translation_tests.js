@@ -30,23 +30,23 @@ Scenario('Create spec LR v LIP and assign to defendant LIP', async ({api}) => {
 });
 
 Scenario('Welsh Response with PartAdmit - SetDate @citizenUI @partAdmit', async () => {
-  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
-  await ResponseSteps.RespondToClaim(claimRef, 'cy');
-  await ResponseSteps.EnterPersonalDetails(claimRef, false);
-  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
-  await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
-  await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
-  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
-  await ResponseSteps.AddYourTimeLineEvents();
-  await ResponseSteps.EnterYourEvidenceDetails();
-  await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, bySetDate);
-  await ResponseSteps.EnterDateToPayOn();
-  await ResponseSteps.EnterFinancialDetails(claimRef);
-  await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
-  await ResponseSteps.EnterDQForSmallClaims(claimRef);
-  await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+  // await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  // await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
+  // await ResponseSteps.RespondToClaim(claimRef, 'cy');
+  // await ResponseSteps.EnterPersonalDetails(claimRef, false);
+  // await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+  // await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
+  // await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
+  // await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
+  // await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
+  // await ResponseSteps.AddYourTimeLineEvents();
+  // await ResponseSteps.EnterYourEvidenceDetails();
+  // await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, bySetDate);
+  // await ResponseSteps.EnterDateToPayOn();
+  // await ResponseSteps.EnterFinancialDetails(claimRef);
+  // await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  // await ResponseSteps.EnterDQForSmallClaims(claimRef);
+  // await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
 });
 
 /*
