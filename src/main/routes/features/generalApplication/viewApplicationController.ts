@@ -1,7 +1,17 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {DASHBOARD_URL, GA_PAY_ADDITIONAL_FEE_URL, GA_VIEW_APPLICATION_URL,GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL} from 'routes/urls';
+import {
+  DASHBOARD_URL,
+  GA_PAY_ADDITIONAL_FEE_URL,
+  GA_VIEW_APPLICATION_URL,
+  GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
+  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL
+} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
-import {getApplicationSections, getJudgeResponseSummary} from 'services/features/generalApplication/viewApplication/viewApplicationService';
+import {
+  getApplicationSections,
+  getJudgeResponseSummary,
+  getJudgesDirectionsOrder
+} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
@@ -22,24 +32,35 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, req.params.appId);
     const isResponseFromCourt = !!applicationResponse.case_data?.judicialDecision?.decision;
+    const isJudgesDirectionsOrder = applicationResponse.case_data?.judicialDecisionMakeOrder?.directionsResponseByDate != undefined;
     let responseFromCourt: SummaryRow[] = [];
+    let judgesDirectionsOrder: SummaryRow[] = [];
     let payAdditionalFeeUrl: string = null;
+    let judgesDirectionsOrderUrl: string = null;
 
     if(isResponseFromCourt) {
       responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
       payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
     }
-    
+
+    if(isJudgesDirectionsOrder) {
+      judgesDirectionsOrder = getJudgesDirectionsOrder(applicationResponse, lang);
+      judgesDirectionsOrderUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
+    }
+
     res.render(viewPath, {
-      backLinkUrl, 
-      summaryRows, 
-      pageTitle, 
-      dashboardUrl: DASHBOARD_URL, 
-      applicationIndex, 
-      isResponseFromCourt, 
+      backLinkUrl,
+      summaryRows,
+      pageTitle,
+      dashboardUrl: DASHBOARD_URL,
+      applicationIndex,
+      isResponseFromCourt,
       responseFromCourt,
       additionalDocUrl,
       payAdditionalFeeUrl,
+      isJudgesDirectionsOrder,
+      judgesDirectionsOrder,
+      judgesDirectionsOrderUrl,
     });
   } catch (error) {
     next(error);
