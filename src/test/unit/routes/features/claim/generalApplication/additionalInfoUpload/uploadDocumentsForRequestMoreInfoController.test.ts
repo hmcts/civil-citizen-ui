@@ -2,6 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import * as draftService from 'modules/draft-store/draftStoreService';
+import * as draftServiceGA from 'modules/draft-store/draftGADocumentService';
 import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
@@ -13,9 +14,11 @@ import {Session} from 'express-session';
 import {app} from '../../../../../../../main/app';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {FileUpload} from 'models/caseProgression/fileUpload';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../../main/modules/draft-store/draftGADocumentService');
 jest.mock('../../../../../../../main/modules/draft-store');
 
 const mockCaseDocument: CaseDocument = <CaseDocument>{
@@ -38,7 +41,9 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   const mockDataFromStore = jest.spyOn(draftService, 'getCaseDataFromStore');
+  const mockGADocDataFromStore = jest.spyOn(draftServiceGA, 'getGADocumentsFromDraftStore');
   let claim: Claim;
+  let uploadDocuments: UploadGAFiles[];
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -52,6 +57,38 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
     claim.id ='id';
     claim.generalApplication = new GeneralApplication();
     mockDataFromStore.mockResolvedValue(claim);
+
+    uploadDocuments = [
+      {
+        caseDocument: {
+          documentName: 'Additional information1',
+          createdBy: 'Applicant',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1046',
+            document_binary_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1046',
+            document_filename: 'filename1',
+          },
+          documentType: null,
+          documentSize: 123,
+        } as CaseDocument,
+        fileUpload: {} as FileUpload,
+      },
+      {
+        caseDocument: {
+          documentName: 'Additional information2',
+          createdBy: 'Applicant',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1047',
+            document_binary_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1047',
+            document_filename: 'filename2',
+          },
+          documentType: null,
+          documentSize: 1223,
+        } as CaseDocument,
+        fileUpload: {} as FileUpload,
+      },
+    ];
+    mockGADocDataFromStore.mockResolvedValue(uploadDocuments);
   });
 
   describe('on GET', () => {
@@ -64,20 +101,13 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
         });
     });
 
-    it('should remove the requested file', async () => {
-      const uploadDocument = new UploadGAFiles();
-      uploadDocument.caseDocument = mockCaseDocument;
-      uploadDocument.fileUpload = file;
-
-      claim.generalApplication.generalAppAddlnInfoUpload.push(uploadDocument);
-      claim.generalApplication.generalAppAddlnInfoUpload.push(uploadDocument);
-      const currentDocuments = 2;
+    it('should remove the 2nd file from list', async () => {
       await request(app)
-        .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL+'?id=1')
+        .get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL+'?id=2')
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE_TO_UPLOAD'));
-          expect(claim.generalApplication.generalAppAddlnInfoUpload.length).toBe(currentDocuments - 1);
+          expect(res.text).toContain(uploadDocuments[0].caseDocument.documentName);
         });
     });
 

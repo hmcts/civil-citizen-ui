@@ -1,63 +1,77 @@
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
-import {
-  getSummaryList,
-} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {CaseDocument} from 'models/document/caseDocument';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {summarySection} from 'models/summaryList/summarySections';
 import {
-  buildSummarySection,
+  buildSummarySection, getSummaryList,
   removeSelectedDocument,
   saveDocuments, translateCUItoCCD,
 } from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
 import {AppRequest} from 'models/AppRequest';
 import {FileUpload} from 'models/caseProgression/fileUpload';
+import * as draftService from 'modules/draft-store/draftStoreService';
+import * as draftServiceGA from 'modules/draft-store/draftGADocumentService';
 
-const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-
-const mockCaseDocument: CaseDocument = <CaseDocument>{
-  createdBy: 'test',
-  documentLink: { document_url: 'http://test', document_binary_url: 'http://test/binary', document_filename: 'test.png' },
-  documentName: 'test.text',
-  documentType: null,
-  documentSize: 12345,
-  createdDatetime: new Date(),
-};
-const file = {
-  fieldname: 'selectedFile',
-  originalname: 'test.text',
-  mimetype: 'text/plain',
-  size: 123,
-  buffer: Buffer.from('Test file content'),
-};
+jest.mock('../../../../../../main/modules/draft-store/draftGADocumentService');
 
 describe('Upload Evidence Document service', () => {
+  const mockDataFromStore = jest.spyOn(draftService, 'getCaseDataFromStore');
+  const mockGADocDataFromStore = jest.spyOn(draftServiceGA, 'getGADocumentsFromDraftStore');
+  let uploadDocuments: UploadGAFiles[];
+  beforeEach(() => {
+    const claim = new Claim();
+    claim.id ='id';
+    claim.generalApplication = new GeneralApplication();
+    mockDataFromStore.mockResolvedValue(claim);
+
+    uploadDocuments = [
+      {
+        caseDocument: {
+          documentName: 'Additional information1',
+          createdBy: 'Applicant',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1046',
+            document_binary_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1046',
+            document_filename: 'filename1',
+          },
+          documentType: null,
+          documentSize: 123,
+        } as CaseDocument,
+        fileUpload: {} as FileUpload,
+      },
+      {
+        caseDocument: {
+          documentName: 'Additional information2',
+          createdBy: 'Applicant',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1047',
+            document_binary_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1047',
+            document_filename: 'filename2',
+          },
+          documentType: null,
+          documentSize: 1223,
+        } as CaseDocument,
+        fileUpload: {} as FileUpload,
+      },
+    ];
+    mockGADocDataFromStore.mockResolvedValue(uploadDocuments);
+  });
+
   describe('Save document', () => {
     it('should save document successfully', async () => {
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.generalApplication = new GeneralApplication();
-        return claim;
-      });
       const req: AppRequest = {
         params: { id: '1', appId: '89' },
       } as unknown as AppRequest;
 
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
-      const uploadDocument = new UploadGAFiles();
-      uploadDocument.caseDocument = mockCaseDocument;
-      uploadDocument.fileUpload = file;
+      const spy = jest.spyOn(draftServiceGA, 'saveGADocumentsInDraftStore');
       //When
-      await saveDocuments(req, '123', uploadDocument);
+      await saveDocuments(req, uploadDocuments[0]);
       //Then
       expect(spy).toBeCalled();
     });
@@ -66,106 +80,52 @@ describe('Upload Evidence Document service', () => {
       const req: AppRequest = {
         params: { id: '1', appId: '89' },
       } as unknown as AppRequest;
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      const mockSaveDocuments = draftServiceGA.saveGADocumentsInDraftStore as jest.Mock;
       //When
-      mockSaveClaim.mockImplementation(async () => {
+      mockSaveDocuments.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveDocuments(req, '123', undefined)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveDocuments(req, undefined)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
   describe('Remove document', () => {
     it('should remove document successfully', async () => {
-      const claim = new Claim();
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        claim.generalApplication = new GeneralApplication();
-        const uploadDocument = new UploadGAFiles();
-        uploadDocument.caseDocument = mockCaseDocument;
-        uploadDocument.fileUpload = file;
-        claim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
-        claim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
-        return claim;
-      });
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      const spy = jest.spyOn(draftServiceGA, 'saveGADocumentsInDraftStore');
+      const mockSaveDocument = draftServiceGA.saveGADocumentsInDraftStore as jest.Mock;
+      mockSaveDocument.mockResolvedValue(() => { return uploadDocuments; });
 
       //When
       await removeSelectedDocument('123', 0);
       //Then
       expect(spy).toBeCalled();
-      expect(claim.generalApplication.uploadEvidenceForApplication.length).toEqual(2);
+      expect(uploadDocuments.length).toEqual(1);
     });
   });
   describe('Get SummaryList', () => {
     it('should get Summary List when has content', async () => {
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.generalApplication = new GeneralApplication();
-        const uploadDocument = new UploadGAFiles();
-        uploadDocument.caseDocument = mockCaseDocument;
-        uploadDocument.fileUpload = file;
-        claim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
-        claim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
-        return claim;
-      });
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      const mockSaveDocument = draftServiceGA.saveGADocumentsInDraftStore as jest.Mock;
+      mockSaveDocument.mockResolvedValue(() => { return uploadDocuments; });
       const formattedSummary = summarySection(
         {
           title: '',
           summaryRows: [],
         });
       //When
-      await getSummaryList(formattedSummary, '123', '1');
+      await getSummaryList(formattedSummary, 'redis-key', '123', '1');
       //Then
-      expect(formattedSummary.summaryList.rows[0].key.text).toEqual('test.text');
-      expect(formattedSummary.summaryList.rows[0].actions.items[0].href).toEqual('/case/1/general-application/upload-documents?id=1');
+      expect(formattedSummary.summaryList.rows[0].key.text).toEqual('Additional information1');
+      expect(formattedSummary.summaryList.rows[0].actions.items[0].href).toEqual('/case/123/general-application/1/upload-documents-for-addln-info?id=1');
       expect(formattedSummary.summaryList.rows[0].actions.items[0].text).toEqual('Remove document');
-      expect(formattedSummary.summaryList.rows[1].key.text).toEqual('test.text');
-      expect(formattedSummary.summaryList.rows[1].actions.items[0].href).toEqual('/case/1/general-application/upload-documents?id=2');
+      expect(formattedSummary.summaryList.rows[1].key.text).toEqual('Additional information2');
+      expect(formattedSummary.summaryList.rows[1].actions.items[0].href).toEqual('/case/123/general-application/1/upload-documents-for-addln-info?id=2');
       expect(formattedSummary.summaryList.rows[1].actions.items[0].text).toEqual('Remove document');
     });
 
     describe('Translate CUI to CCD', () => {
       it('should correctly map translate CUI fields to CCD format', () => {
-        const uploadDocuments: UploadGAFiles[] = [
-          {
-            caseDocument: {
-              documentName: 'Additional information1',
-              createdBy: 'Applicant',
-              documentLink: {
-                document_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1046',
-                document_binary_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1046',
-                document_filename: 'filename1',
-              },
-              documentType: null,
-              documentSize: 123,
-            } as CaseDocument,
-            fileUpload: {} as FileUpload,
-          },
-          {
-            caseDocument: {
-              documentName: 'Additional information2',
-              createdBy: 'Applicant',
-              documentLink: {
-                document_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1048',
-                document_binary_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1048',
-                document_filename: 'filename2',
-              },
-              documentType: null,
-              documentSize: 456,
-            } as CaseDocument,
-            fileUpload: {} as FileUpload,
-          },
-        ];
-
         const result = translateCUItoCCD(uploadDocuments);
 
         expect(result).toHaveLength(2);
@@ -178,36 +138,6 @@ describe('Upload Evidence Document service', () => {
     });
     describe('Build summary Section ', () => {
       it('Should build the summary section: ', () => {
-        const uploadDocuments: UploadGAFiles[] = [
-          {
-            caseDocument: {
-              documentName: 'Additional information1',
-              createdBy: 'Applicant',
-              documentLink: {
-                document_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1046',
-                document_binary_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1046',
-                document_filename: 'filename1',
-              },
-              documentType: null,
-              documentSize: 123,
-            } as CaseDocument,
-            fileUpload: {} as FileUpload,
-          },
-          {
-            caseDocument: {
-              documentName: 'Additional information2',
-              createdBy: 'Applicant',
-              documentLink: {
-                document_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1048',
-                document_binary_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1048',
-                document_filename: 'filename2',
-              },
-              documentType: null,
-              documentSize: 456,
-            } as CaseDocument,
-            fileUpload: {} as FileUpload,
-          },
-        ];
         const result = buildSummarySection(uploadDocuments, '1', '123', 'en');
         expect(result).toHaveLength(1);
         expect(result[0].value.html).toContain('<ul class="no-list-style"><li>Additional information1</li><li>Additional information2</li></ul>');

@@ -1,7 +1,9 @@
 import {AppRequest} from 'models/AppRequest';
 import {SummarySection} from 'models/summaryList/summarySections';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {
+  generateRedisKeyForGA,
+} from 'modules/draft-store/draftStoreService';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import {GenericForm} from 'form/models/genericForm';
 import {t} from 'i18next';
@@ -14,8 +16,12 @@ import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL} from 'routes/urls';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
-import {getCancelUrl, getClaimDetailsById} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+import {
+  getGADocumentsFromDraftStore,
+  saveGADocumentsInDraftStore,
+} from 'modules/draft-store/draftGADocumentService';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -24,14 +30,14 @@ const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceCli
 export const uploadSelectedFile = async (req: AppRequest, summarySection: SummarySection, claimId: string, gaId: string): Promise<void> => {
   try {
     const uploadDocument = new UploadGAFiles();
-    const redisKey = generateRedisKey(req);
+    const redisKey = generateRedisKeyForGA(req);
     const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
     uploadDocument.fileUpload = fileUpload;
     const form = new GenericForm(uploadDocument);
     form.validateSync();
     if (!form.hasErrors()) {
       uploadDocument.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
-      await saveDocuments(req, redisKey, uploadDocument);
+      await saveDocuments(req, uploadDocument);
       await getSummaryList(summarySection, redisKey, claimId, gaId);
     } else {
       const errors = translateErrors(form.getAllErrors(), t);
@@ -43,11 +49,12 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
   }
 };
 
-export const saveDocuments = async (req: AppRequest, redisKey: string, uploadDocument: UploadGAFiles): Promise<void> => {
+export const saveDocuments = async (req: AppRequest, uploadDocument: UploadGAFiles): Promise<void> => {
   try {
-    const claim = await getClaimDetailsById(req);
-    claim.generalApplication.generalAppAddlnInfoUpload.push(uploadDocument);
-    await saveDraftClaim(redisKey, claim);
+    const redisKey = generateRedisKeyForGA(req);
+    const uploadDocuments = await getGADocumentsFromDraftStore(redisKey);
+    uploadDocuments.push(uploadDocument);
+    await saveGADocumentsInDraftStore(redisKey, uploadDocuments);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -55,9 +62,9 @@ export const saveDocuments = async (req: AppRequest, redisKey: string, uploadDoc
 };
 
 export const getSummaryList = async (formattedSummary: SummarySection, redisKey: string, claimId: string, gaId: string): Promise<void> => {
-  const claim = await getCaseDataFromStore(redisKey);
+  const uploadedDocuments = await getGADocumentsFromDraftStore(redisKey);
   let index = 0;
-  claim?.generalApplication?.generalAppAddlnInfoUpload?.forEach((uploadDocument: UploadGAFiles) => {
+  uploadedDocuments.forEach((uploadDocument: UploadGAFiles) => {
     index= index+ 1;
     formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL+'?id='+index), 'Remove document'));
   });
@@ -65,9 +72,9 @@ export const getSummaryList = async (formattedSummary: SummarySection, redisKey:
 
 export const removeSelectedDocument = async (redisKey: string, index: number) : Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(redisKey, true);
-    claim?.generalApplication?.generalAppAddlnInfoUpload?.splice(index, 1);
-    await saveDraftClaim(redisKey, claim);
+    const uploadedDocuments = await getGADocumentsFromDraftStore(redisKey);
+    uploadedDocuments.splice(index, 1);
+    await saveGADocumentsInDraftStore(redisKey, uploadedDocuments);
   } catch(error) {
     logger.error(error);
     throw error;

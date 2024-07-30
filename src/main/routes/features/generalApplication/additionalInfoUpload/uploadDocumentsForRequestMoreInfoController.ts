@@ -6,16 +6,17 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
-import {getCancelUrl, getClaimDetailsById} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
 import {
   getSummaryList, removeSelectedDocument, uploadSelectedFile,
 } from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
+import {getGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentService';
 
 const uploadDocumentsForRequestMoreInfoController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/upload-documents';
@@ -42,9 +43,10 @@ async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimI
 
 uploadDocumentsForRequestMoreInfoController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const { appId, id:claimId } = req.params;
+    const { appId, id:claimId } =
+      req.params;
     const claim = await getClaimById(claimId, req, true);
-    const redisKey = generateRedisKey(req);
+    const redisKey = generateRedisKeyForGA(req);
     const uploadDocuments = new UploadGAFiles();
     let form = new GenericForm(uploadDocuments);
     const formattedSummary = summarySection(
@@ -71,9 +73,8 @@ uploadDocumentsForRequestMoreInfoController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONA
 uploadDocumentsForRequestMoreInfoController.post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const { appId, id:claimId } = req.params;
-    const claim = await getClaimDetailsById(req);
+    const uploadedDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
-    const gaApplications = claim?.generalApplication;
 
     const formattedSummary = summarySection(
       {
@@ -88,7 +89,7 @@ uploadDocumentsForRequestMoreInfoController.post(GA_UPLOAD_DOCUMENT_FOR_ADDITION
     const uploadDoc = new UploadGAFiles();
     const form = new GenericForm(uploadDoc);
     form.validateSync();
-    if (form.hasFieldError('fileUpload') && gaApplications?.generalAppAddlnInfoUpload?.length === 0) {
+    if (form.hasFieldError('fileUpload') && uploadedDocuments?.length === 0) {
       const errors = [{
         target: {
           fileUpload: '',

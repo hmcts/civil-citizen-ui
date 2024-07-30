@@ -4,7 +4,10 @@ import request from 'supertest';
 import { app } from '../../../../../../../main/app';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { getClaimById } from 'modules/utilityService';
-import { deleteDraftClaimFromStore, generateRedisKey } from 'modules/draft-store/draftStoreService';
+import {
+  deleteDraftClaimFromStore,
+  generateRedisKeyForGA,
+} from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
 import {GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL} from 'routes/urls';
 
@@ -12,7 +15,7 @@ jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../..../../../../../../main/modules/utilityService');
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService', () => ({
-  generateRedisKey: jest.fn((key) => key),
+  generateRedisKeyForGA: jest.fn((key) => key),
   deleteDraftClaimFromStore: jest.fn((key) => { key; }),
 }));
 
@@ -35,14 +38,14 @@ describe('General Application - Request More Information Confirmation', () => {
       const redisKey = 'redis-key';
 
       (getClaimById as jest.Mock).mockResolvedValue(claim);
-      (generateRedisKey as jest.Mock).mockReturnValue(redisKey);
+      (generateRedisKeyForGA as jest.Mock).mockReturnValue(redisKey);
       (deleteDraftClaimFromStore as jest.Mock).mockResolvedValue(undefined);
 
       const res = await request(app).get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL.replace(':id', claimId));
 
       expect(res.status).toBe(200);
       expect(getClaimById).toHaveBeenCalledWith(claimId, expect.anything(), true);
-      expect(generateRedisKey).toHaveBeenCalledWith(expect.anything());
+      expect(generateRedisKeyForGA).toHaveBeenCalledWith(expect.anything());
       expect(deleteDraftClaimFromStore).toHaveBeenCalledWith(redisKey);
       expect(res.text).toContain('submitted the information');
     });
