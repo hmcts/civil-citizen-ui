@@ -39,6 +39,7 @@ export class GeneralApplication {
   caseLink?: CaseLink;
   uploadAdditionalDocuments?: UploadAdditionalDocument[] = [];
   generalAppAddlnInfoUpload?: UploadGAFiles[];
+  generalAppDirOrderUpload?: UploadGAFiles[];
 
   constructor(
     applicationType?: ApplicationType,
@@ -57,7 +58,8 @@ export class GeneralApplication {
     uploadN245Form?: UploadGAFiles,
     informOtherParties?: InformOtherParties,
     applicationFee?: ClaimFeeData,
-    generalAppAddlnInfoUpload?: UploadGAFiles) {
+    generalAppAddlnInfoUpload?: UploadGAFiles,
+    generalAppDirOrderUpload?: UploadGAFiles) {
     this.applicationTypes = applicationType ? [applicationType] : [];
     this.agreementFromOtherParty = agreementFromOtherParty;
     this.applicationCosts = applicationCosts;
@@ -75,5 +77,6 @@ export class GeneralApplication {
     this.informOtherParties = informOtherParties;
     this.applicationFee = applicationFee;
     this.generalAppAddlnInfoUpload = generalAppAddlnInfoUpload ? [generalAppAddlnInfoUpload] : [];
+    this.generalAppDirOrderUpload = generalAppDirOrderUpload ? [generalAppDirOrderUpload] : [];
   }
 }
