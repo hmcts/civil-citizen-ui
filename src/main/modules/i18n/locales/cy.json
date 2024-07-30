@@ -68,6 +68,7 @@
     "YEAR": "Blwyddyn",
     "YEARS": "Blwyddyn",
     "YES": "Oes",
+    "OPENS_IN_NEW_TAB": "(yn agor mewn tab newydd)",
     "ADDRESS_FORM": {
       "ADDRESS_CHANGES_SHARED": "Bydd unrhyw newidiadau yn cael eu rhannu â'r hawlydd pan fyddwch yn cyflwyno eich ymateb.",
       "BUILDING_AND_STREET": "Adeilad a stryd",
@@ -165,7 +166,7 @@
       "BETA": "BETA",
       "MONEY_CLAIMS": "Hawliadau am Arian",
       "MY_ACCOUNT": "Fy nghyfrif",
-      "NEW_SERVICE": "Mae hwn yn wasanaeth newydd – bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl={{ pageTitle }}' target='_blank'>adborth</a> yn ein helpu i’w wella.",
+      "NEW_SERVICE": "Mae hwn yn wasanaeth newydd – bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl={{ pageTitle }}' target='_blank'>adborth <span class='govuk-visually-hidden'>(yn agor mewn tab newydd)</span></a> yn ein helpu i’w wella.",
       "SIGN_IN": "Mewngofnodi",
       "SIGN_OUT": "Allgofnodi"
     },
@@ -597,7 +598,7 @@
       "PARAGRAPH_FEEDBACK_1": "Adborth a gwybodaeth gyswllt",
       "PARAGRAPH_FEEDBACK_2": "Os ydych angen gwybodaeth sydd ar y wefan hon mewn fformat arall megis ar ffurf PDF hygyrch, print bras, fformat hawdd ei ddeall, recordiad sain neu braille:",
       "PARAGRAPH_HOW_1": "Pa mor hygyrch yw'r wefan hon",
-      "PARAGRAPH_HOW_2": "Gwyddwn nad yw rhai rhannau o’r gwasanaeth hwn yn gwbl hygyrch. Mae’r gwasanaeth digidol hwn yn hygyrch ac yn bodloni safon AA Canllawiau Hygyrchedd Cynnwys Gwe (WCAG) fersiwn 2.2.’’ Fodd bynnag, nid yw rhai negeseuon gwall yn hygyrch oherwydd:",
+      "PARAGRAPH_HOW_2": "Gwyddwn nad yw rhai rhannau o’r gwasanaeth hwn yn gwbl hygyrch:",
       "PARAGRAPH_HOW_3": "Nid yw negeseuon gwall yn benodol i'r maes lle gwnaed y gwall.",
       "PARAGRAPH_IMPROVE_1": "Beth rydym yn ei wneud i wella hygyrchedd",
       "PARAGRAPH_IMPROVE_2": "Rydym yn cynnal profion hygyrchedd awtomataidd yn barhaus fel rhan o'n harferion datblygu. Mae hyn yn ein helpu i ddatrys problemau cyn i ni lansio tudalennau neu nodweddion newydd.",
@@ -605,7 +606,6 @@
       "PARAGRAPH_NON_ACCESIBLE_1": "Cynnwys anhygyrch",
       "PARAGRAPH_NON_ACCESIBLE_2": "Mae’r cynnwys a restrir isod yn anhygyrch am y rhesymau canlynol.",
       "PARAGRAPH_NON_ACCESIBLE_3": "Anghydymffurfio â’r rheoliadau hygyrchedd",
-      "PARAGRAPH_NON_ACCESIBLE_4": "Mae gwasanaeth digidol Hawliadau am Arian yn y Llys Sifil Ar-lein (OCMC) wedi’i brofi am hygyrchedd ac mae’n bodloni gofyniad AA Canllawiau Hygyrchedd Cynnwys Gwe (WCAG) fersiwn 2.2. Fodd bynnag, nid yw rhai negeseuon gwall yn hygyrch oherwydd:",
       "PARAGRAPH_NON_ACCESIBLE_5": "Efallai y bydd defnyddwyr darllenwyr sgrin yn cael anhawster i lywio negeseuon gwall gan nad yw rhai negeseuon gwall yn benodol i’r maes lle gwnaed y gwall. Nid yw hyn yn bodloni maen prawf llwyddiant Canllawiau Hygyrchedd Cynnwys Gwe (WCAG) fersiwn 2.2 [3.3.1] (Adnabod Gwallau). Rydym yn bwriadu datrys hyn erbyn diwedd 2024.",
       "PARAGRAPH_PREPARATION_1": "Paratoi’r datganiad hygyrchedd hwn",
       "PARAGRAPH_PREPARATION_2": "Cafodd y datganiad hwn ei baratoi ar 24 Mai 2024. Cafodd ei adolygu ddiwethaf ar 15 Mawrth 2024.",
@@ -3733,8 +3733,8 @@
     "REPAYMENT_PLAN_SUMMARY": {
       "CLAIMANTS_REPAYMENT_PLAN": "The repayment plan",
       "DEFENDANT_WILL_PAY_SET_DATE": "The defendant will pay £{{amount}} by {{paymentDate}}",
-      "IF_THINK_DEFENDANT_CAN_REPAY": "If you think the defendant can repay you sooner, you can ask a judge to set out a new repayment plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 working days.",
-      "IF_THINK_YOU_CANT_AFFORD": "If you think you can't afford the repayment plan, you can ask a judge to make a new repayment plan by emailing contactocmc@justice.gov.uk",
+      "IF_THINK_DEFENDANT_CAN_REPAY": "If you think the defendant can repay you sooner, you can ask a judge to set out a new repayment plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 days.",
+      "IF_THINK_YOU_CANT_AFFORD": "If you think you will not be able to afford the repayment plan, you can ask a judge to set out a new plan by emailing contactocmc@justice.gov.uk with your request. You’ll need to do this within the next 19 days.",
       "REPAYMENT_PLAN": "The repayment plan",
       "THEY_HAVE_SUGGESTED_THIS": "They've suggested this repayment plan based on the financial details you have"
     },
