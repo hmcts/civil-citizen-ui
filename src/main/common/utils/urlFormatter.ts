@@ -4,7 +4,7 @@ export function constructResponseUrlWithIdParams(id: string, path: string): stri
   return path.replace(/(:id)/i, id);
 }
 
-export function constructResponseUrlWithIdAndAppIdParams(id: string, appId: string, path: string): string{
+export function constructResponseUrlWithIdAndAppIdParams(id: string, appId: string, path: string): string {
   return path.replace(/(:id)/i, id).replace(/(:appId)/i, appId);
 }
 
