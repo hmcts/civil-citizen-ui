@@ -54,7 +54,7 @@ import {DraftStoreCliente2e, getRedisStoreForSessione2e} from 'modules/e2eConfig
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
-const cors = require('cors/lib/index');
+// const cors = require('cors/lib/index');
 
 const env = process.env.NODE_ENV || 'development';
 const productionMode = env === 'production';
