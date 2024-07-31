@@ -21,8 +21,10 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
 import { t } from 'i18next';
 import { formatDateToFullDate } from 'common/utils/dateUtils';
-import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
-import {documentIdExtractor} from 'common/utils/stringUtils';
+import { DocumentType } from 'common/models/document/documentType';
+import { GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL, CASE_DOCUMENT_VIEW_URL } from 'routes/urls';
+import { documentIdExtractor } from 'common/utils/stringUtils';
+import { constructDocumentUrlWithIdParamsAndDocumentId } from 'common/utils/urlFormatter';
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -69,13 +71,25 @@ const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, appli
 
 export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
   const rows: SummaryRow[] = [];
-  const documentUrl = 'test';
+  const documentUrl = getMakeWithNoticeDocumentUrl(applicationResponse);
+
   rows.push(
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng})}</a>`),
   );
   return rows;
+};
+
+const getMakeWithNoticeDocumentUrl = (applicationResponse: ApplicationResponse) : string => {
+  const requestForInformationDocument = applicationResponse?.case_data?.requestForInformationDocument;
+  const applicationId = applicationResponse.id;
+  if(requestForInformationDocument) {
+    const makeWithNoticeDoc = requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY);
+    const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);
+    return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
+  }
+  return undefined;
 };
 
 export const getJudgesDirectionsOrder = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
