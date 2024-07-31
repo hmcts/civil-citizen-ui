@@ -14,6 +14,7 @@ import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {CaseLink} from 'models/generalApplication/CaseLink';
+import { UploadAdditionalDocument } from './UploadAdditionalDocument';
 
 export class GeneralApplication {
 
@@ -36,6 +37,7 @@ export class GeneralApplication {
   helpWithFees?: GaHelpWithFees;
   applicationFeePaymentDetails : PaymentInformation;
   caseLink?: CaseLink;
+  uploadAdditionalDocuments?: UploadAdditionalDocument[] = [];
 
   constructor(
     applicationType?: ApplicationType,
