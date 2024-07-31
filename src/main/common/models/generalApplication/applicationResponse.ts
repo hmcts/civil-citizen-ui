@@ -17,9 +17,7 @@ import {
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
 import {CcdGeneralApplicationAddlDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
-import {
-  CcdGeneralApplicationDirectionsOrderDocument
-} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
+import {CcdGeneralApplicationDirectionsOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
 
 export class ApplicationResponse {
   id: string;

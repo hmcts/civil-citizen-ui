@@ -19,7 +19,7 @@ export const getDirectionOrderDocumentUrl = (claimId: string, applicationRespons
   const documentId = documentIdExtractor(directionOrderDocument?.slice()?.reverse()
     ?.find(doc => doc.value?.documentType === 'DIRECTION_ORDER')?.value?.documentLink?.document_binary_url);
   return CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentId);
-}
+};
 
 export const getSummaryList = async (formattedSummary: SummarySection, redisKey: string, claimId: string, gaId: string): Promise<void> => {
   const uploadedDocuments = await getGADocumentsFromDraftStore(redisKey);

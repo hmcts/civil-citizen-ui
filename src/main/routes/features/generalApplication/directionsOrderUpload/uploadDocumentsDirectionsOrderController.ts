@@ -24,7 +24,7 @@ import {
 import {getGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentService';
 import {
   removeSelectedDocument,
-  uploadSelectedFile
+  uploadSelectedFile,
 } from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 
 const uploadDocumentsDirectionsOrderController = Router();

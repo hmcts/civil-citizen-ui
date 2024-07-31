@@ -17,7 +17,7 @@ import {getSummaryList} from 'services/features/generalApplication/additionalInf
 import {getGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentService';
 import {
   removeSelectedDocument,
-  uploadSelectedFile
+  uploadSelectedFile,
 } from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 
 const uploadDocumentsForRequestMoreInfoController = Router();
