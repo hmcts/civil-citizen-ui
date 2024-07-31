@@ -47,7 +47,6 @@ import {getLanguage} from 'modules/i18n/languageService';
 
 const packageDotJson = require('../../../../package.json');
 
-const moneyClaimBaseUrl = config.get<string>('services.cmc.url');
 const dynatraceUrl = config.get<string>('dynatrace.url');
 
 const appAssetPaths = {
@@ -123,6 +122,7 @@ export class Nunjucks {
     nunjucksEnv.addFilter('addDaysTranslated', addDaysFilterTranslated);
     nunjucksEnv.addFilter('date', dateFilter);
     nunjucksEnv.addFilter('formatDate', formatDate);
+    nunjucksEnv.addFilter('replaceSpaces', replaceSpace);
     nunjucksEnv.addGlobal('t', t);
     nunjucksEnv.addGlobal('getLanguage', getLanguage);
     nunjucksEnv.addGlobal('translateErrors', translateErrors);
@@ -157,10 +157,6 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('today', new Date());
     nunjucksEnv.addGlobal('nextMonth', nextMonth);
     nunjucksEnv.addGlobal('PaymentOptionType', PaymentOptionType);
-    nunjucksEnv.addGlobal('ContactUsUrl', `${moneyClaimBaseUrl}/contact-us`);
-    nunjucksEnv.addGlobal('AccessibilityStatementUrl', `${moneyClaimBaseUrl}/accessibility-statement`);
-    nunjucksEnv.addGlobal('TermsAndConditionsUrl', `${moneyClaimBaseUrl}/terms-and-conditions`);
-    nunjucksEnv.addGlobal('PrivacyPolicyUrl', `${moneyClaimBaseUrl}/privacy-policy`);
     nunjucksEnv.addGlobal('TestingSupportUrl', '/testing-support/create-draft-claim');
     nunjucksEnv.addGlobal('developmentMode', this.developmentMode);
     nunjucksEnv.addGlobal('nonceValue', nonceValue);
@@ -180,3 +176,7 @@ export class Nunjucks {
     });
   }
 }
+
+const replaceSpace = (title: string): string => {
+  return title.replace(/ /g, '_').replace('\'','');
+};

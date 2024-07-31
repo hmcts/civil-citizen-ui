@@ -1,7 +1,7 @@
 import {
   addApplicationStatus,
+  addApplicationTypesAndDescriptionRows,
   addApplicationTypesRows,
-  addAskForCostsRow,
   addDocumentUploadRow,
   addHearingArrangementsRows,
   addHearingContactDetailsRows,
@@ -12,10 +12,19 @@ import {
   addRequestingReasonRows,
   addUnavailableDatesRows,
 } from './addViewApplicationRows';
-import {SummaryRow} from 'models/summaryList/summaryList';
+import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {AppRequest} from 'models/AppRequest';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
+import {getClaimById} from 'modules/utilityService';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {Claim} from 'models/claim';
+import { t } from 'i18next';
+import { formatDateToFullDate } from 'common/utils/dateUtils';
+import { DocumentType } from 'common/models/document/documentType';
+import { GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL } from 'routes/urls';
+import { documentIdExtractor } from 'common/utils/stringUtils';
+import { constructDocumentUrlWithIdParamsAndDocumentId } from 'common/utils/urlFormatter';
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -23,7 +32,21 @@ const buildApplicationSections = (application: ApplicationResponse, lang: string
     ...addApplicationTypesRows(application, lang),
     ...addOtherPartiesAgreedRow(application, lang),
     ...addInformOtherPartiesRow(application, lang),
-    ...addAskForCostsRow(application, lang),
+    ...addOrderJudgeRows(application, lang),
+    ...addRequestingReasonRows(application, lang),
+    ...addDocumentUploadRow(application, lang),
+    ...addHearingArrangementsRows(application, lang),
+    ...addHearingContactDetailsRows(application, lang),
+    ...addUnavailableDatesRows(application, lang),
+    ...addHearingSupportRows(application, lang),
+  ];
+};
+
+const buildViewApplicationToRespondentSections = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  return [
+    ...addApplicationTypesAndDescriptionRows(application, lang),
+    ...addOtherPartiesAgreedRow(application, lang),
+    ...addInformOtherPartiesRow(application, lang),
     ...addOrderJudgeRows(application, lang),
     ...addRequestingReasonRows(application, lang),
     ...addDocumentUploadRow(application, lang),
@@ -36,5 +59,35 @@ const buildApplicationSections = (application: ApplicationResponse, lang: string
 
 export const getApplicationSections = async (req: AppRequest, applicationId: string, lang?: string): Promise<SummaryRow[]> => {
   const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
-  return buildApplicationSections(applicationResponse, lang);
+  const claim = await getClaimById(req.params.id, req, true);
+  return toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, applicationResponse) ? buildApplicationSections(applicationResponse, lang)
+    : buildViewApplicationToRespondentSections(applicationResponse, lang);
+};
+
+const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {
+  return ((claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
+    || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
+};
+
+export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
+  const rows: SummaryRow[] = [];
+  const documentUrl = getMakeWithNoticeDocumentUrl(applicationResponse);
+
+  rows.push(
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng})}</a>`),
+  );
+  return rows;
+};
+
+const getMakeWithNoticeDocumentUrl = (applicationResponse: ApplicationResponse) : string => {
+  const requestForInformationDocument = applicationResponse?.case_data?.requestForInformationDocument;
+  const applicationId = applicationResponse.id;
+  if(requestForInformationDocument) {
+    const makeWithNoticeDoc = requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY);
+    const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);    
+    return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
+  }
+  return undefined;
 };

@@ -6,7 +6,9 @@ import {RespondentAgreement} from './respondentAgreement';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 import {AcceptDefendantOffer} from './acceptDefendantOffer';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 
+// CUI GA respondent response
 export class GaResponse {
   hearingArrangement?: HearingArrangement;
   hearingContactDetails?: HearingContactDetails;
@@ -16,10 +18,12 @@ export class GaResponse {
   respondentAgreement?: RespondentAgreement;
   acceptDefendantOffer?: AcceptDefendantOffer;
   statementOfTruth?: StatementOfTruthForm;
+  wantToUploadDocuments?: YesNo;
+  uploadEvidenceDocuments?: UploadGAFiles[];
 
-  constructor(hearingArrangement?: HearingArrangement, hearingContactDetails?: HearingContactDetails, agreeToOrder?: YesNo, 
+  constructor(hearingArrangement?: HearingArrangement, hearingContactDetails?: HearingContactDetails, agreeToOrder?: YesNo,
     hearingSupport?: HearingSupport, unavailableDatesHearing?: UnavailableDatesGaHearing, respondentAgreement?: RespondentAgreement,
-    acceptDefendantOffer?: AcceptDefendantOffer, statementOfTruth?: StatementOfTruthForm) {
+    acceptDefendantOffer?: AcceptDefendantOffer, statementOfTruth?: StatementOfTruthForm, wantToUploadDocuments?: YesNo, uploadEvidenceDocuments?: UploadGAFiles) {
     this.hearingArrangement = hearingArrangement;
     this.hearingContactDetails = hearingContactDetails;
     this.agreeToOrder = agreeToOrder;
@@ -28,5 +32,7 @@ export class GaResponse {
     this.respondentAgreement = respondentAgreement;
     this.acceptDefendantOffer = acceptDefendantOffer;
     this.statementOfTruth = statementOfTruth;
+    this.wantToUploadDocuments = wantToUploadDocuments;
+    this.uploadEvidenceDocuments = uploadEvidenceDocuments ? [uploadEvidenceDocuments] : [];
   }
 }

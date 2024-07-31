@@ -319,6 +319,9 @@ import delayedFlightController from './features/claim/airlines/delayedFlightCont
 import respondentRequestChangeInformationController
   from 'routes/features/generalApplication/respondentRequestChangeInformationController';
 import accessibilityStatementController from './features/public/accessibilityStatementController';
+import termsAndConditionsController from './features/public/termsAndConditionsController';
+import contactUsController from './features/public/contactUsController';
+import privacyPolicyController from './features/public/privacyPolicyController';
 import hearingArrangementsGuidanceController
   from 'routes/features/generalApplication/hearingArrangementsGuidanceController';
 import wantToUploadDocumentsController from 'routes/features/generalApplication/wantToUploadDocuments';
@@ -381,6 +384,25 @@ import whyNotSubjectToFRCController
   from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/whyNotSubjectToFRCController';
 import backController from 'routes/common/backController';
 import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
+import uploadAdditionalDocumentsController from './features/generalApplication/additionalDocuments/uploadAdditionalDocumentsController';
+import gaAdditionalDocCheckAnswerController from './features/generalApplication/additionalDocuments/checkAnswersController';
+import additionalDocSubmittedController from './features/generalApplication/additionalDocuments/submittedController';
+import viewApplicationToRespondentController from 'routes/features/generalApplication/response/viewApplicationController';
+import applicationSummaryController from './features/generalApplication/applicationSummaryController';
+import additionalFeeController from './features/generalApplication/additionalFee/additionalFeeController';
+import payAdditionalFeeController from 'routes/features/generalApplication/additionalFee/payAdditionalFeeController';
+import requestForReviewCommentsController
+  from 'routes/features/caseProgression/requestForReconsideration/requestForReviewCommentsController';
+import checkAnswersCommentsController
+  from 'routes/features/caseProgression/requestForReconsideration/checkAnswersCommentsController';
+import commentsConfirmationController
+  from 'routes/features/caseProgression/requestForReconsideration/commentsConfirmationController';
+import respondentHearingPreferenceController
+  from 'routes/features/generalApplication/response/respondentHearingPreferenceController';
+import respondentWantToUploadDocumentsController
+  from 'routes/features/generalApplication/response/respondentWantToUploadDocumentsController';
+import respondentUploadEvidenceDocumentsController
+  from 'routes/features/generalApplication/response/respondentUploadEvidenceDocmentsController';
 
 export default [
   homeController,
@@ -656,6 +678,9 @@ export default [
   delayedFlightController,
   respondentRequestChangeInformationController,
   accessibilityStatementController,
+  termsAndConditionsController,
+  privacyPolicyController,
+  contactUsController,
   hearingArrangementsGuidanceController,
   wantToUploadDocumentsController,
   uploadEvidenceDocumentsForApplicationController,
@@ -693,4 +718,17 @@ export default [
   whyNotSubjectToFRCController,
   backController,
   applicationFeePaymentConfirmationController,
+  viewApplicationToRespondentController,
+  applicationSummaryController,
+  additionalFeeController,
+  payAdditionalFeeController,
+  requestForReviewCommentsController,
+  checkAnswersCommentsController,
+  commentsConfirmationController,
+  respondentHearingPreferenceController,
+  respondentWantToUploadDocumentsController,
+  respondentUploadEvidenceDocumentsController,
+  uploadAdditionalDocumentsController,
+  gaAdditionalDocCheckAnswerController,
+  additionalDocSubmittedController,
 ];

@@ -18,11 +18,13 @@ import { getClaimById } from 'modules/utilityService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
 import {ClaimResponseStatus} from 'models/claimResponseStatus';
+import {noGroupingCurrencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 const reviewDefendantsResponseController = Router();
-const revieDefendantResponseViewPath = 'features/claimantResponse/review-defendants-response';
+const reviewDefendantResponseViewPath = 'features/claimantResponse/review-defendants-response';
 const crPropertyName = 'defendantResponseViewed';
 const pageParam = 'how-they-want-to-pay-response';
+const pageTitle= 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PAGE_TITLE';
 
 const renderHowTheyWantPay = (req: Request, res: Response, claim: Claim) => {
   const claimId = req.params.id;
@@ -35,6 +37,7 @@ const renderHowTheyWantPay = (req: Request, res: Response, claim: Claim) => {
     defendantsResponseContent,
     continueLink,
     financialDetails,
+    pageTitle,
   });
 };
 
@@ -52,7 +55,7 @@ reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPO
       return renderHowTheyWantPay(req, res, claim);
     }
 
-    res.render(revieDefendantResponseViewPath, {
+    res.render(reviewDefendantResponseViewPath, {
       claim,
       downloadResponseLink,
       financialDetails,
@@ -61,6 +64,8 @@ reviewDefendantsResponseController.get(CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPO
       repaymentPlan,
       claimId,
       originalUrl,
+      admittedAmount: noGroupingCurrencyFormatWithNoTrailingZeros(claim.partialAdmission?.howMuchDoYouOwe?.amount),
+      pageTitle,
     });
   } catch (error) {
     next(error);

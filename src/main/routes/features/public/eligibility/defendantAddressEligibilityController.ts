@@ -12,7 +12,7 @@ const defendantAddressEligibilityController = Router();
 const defendantEligibilityViewPath = 'features/public/eligibility/defendant-eligible-address';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(defendantEligibilityViewPath, {form});
+  res.render(defendantEligibilityViewPath, {form, pageTitle: 'PAGES.ELIGIBILITY_DEFENDANT_ADDRESS.PAGE_TITLE'});
 }
 
 defendantAddressEligibilityController.get(ELIGIBILITY_DEFENDANT_ADDRESS_URL, (req, res) => {
@@ -23,7 +23,7 @@ defendantAddressEligibilityController.get(ELIGIBILITY_DEFENDANT_ADDRESS_URL, (re
 });
 
 defendantAddressEligibilityController.post(ELIGIBILITY_DEFENDANT_ADDRESS_URL, (req, res) => {
-  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
+  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_OPTION_COMMON'));
   genericYesNoForm.validateSync();
 
   if (genericYesNoForm.hasErrors()) {

@@ -10,13 +10,14 @@ import {Party} from 'models/party';
 
 const claimantPartyTypeViewPath = 'features/claim/claimant-party-type';
 const claimantPartyTypeController = Router();
+const pageTitle= 'PAGES.CLAIMANT_PARTY_TYPE_SELECTION.PAGE_TITLE';
 
 claimantPartyTypeController.get(CLAIMANT_PARTY_TYPE_SELECTION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     const claimant: Party = await getClaimantInformation(userId);
     const form = new GenericForm(new PartyTypeSelection(claimant?.type));
-    res.render(claimantPartyTypeViewPath, {form});
+    res.render(claimantPartyTypeViewPath, {form, pageTitle});
   } catch (error) {
     next(error);
   }
@@ -29,7 +30,7 @@ claimantPartyTypeController.post(CLAIMANT_PARTY_TYPE_SELECTION_URL, (async (req:
     const form = new GenericForm(new PartyTypeSelection(reqBody.option as PartyType));
     form.validateSync();
     if (form.hasErrors()) {
-      res.render(claimantPartyTypeViewPath, {form});
+      res.render(claimantPartyTypeViewPath, {form, pageTitle});
     } else {
       await saveClaimantProperty(userId, 'type', form.model.option);
       redirectToPage(form.model.option, res, ClaimantOrDefendant.CLAIMANT);

@@ -47,11 +47,12 @@ describe('on GET', () => {
       .get(CLAIM_FEE_BREAKUP.replace(':id', claimId)).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.body).toEqual({
-          totalClaimAmount: mockClaimData.totalClaimAmount,
+          totalClaimAmount: mockClaimData.totalClaimAmount.toFixed(2),
           interest: mockClaimData.interest.totalInterest.amount,
           claimFee: mockClaimFee,
           hasInterest: true,
-          totalAmount: mockTotalAmount,
+          pageTitle: 'PAGES.FEE_AMOUNT.TITLE',
+          totalAmount: mockTotalAmount.toFixed(2),
         });
       });
   });

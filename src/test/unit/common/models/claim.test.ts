@@ -1002,6 +1002,26 @@ describe('Documents', () => {
     });
   });
 
+  describe('getDocumentDetailsList', () => {
+    it('should return undefined with empty claim', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const result = claim.getDocumentDetailsList(DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
+      //Then
+      expect(result).toBeUndefined;
+    });
+
+    it('should return document details list', () => {
+      //Given
+      const claim = mockClaim;
+      //When
+      const result = claim.getDocumentDetailsList(DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
+      //Then
+      expect(result).toStrictEqual([mockClaim.systemGeneratedCaseDocuments[4], mockClaim.systemGeneratedCaseDocuments[5]]);
+    });
+  });
+
   describe('isDefendantNotResponded', () => {
     const claim = new Claim();
     it('should return false with empty claim', () => {
@@ -1623,6 +1643,20 @@ describe('Documents', () => {
       claim.caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, new Date(2023, 6, 9), null);
       //When
       const actualDate = claim.finalisingTrialArrangementsDeadline;
+      //Then
+      expect(expectedDate).toEqual(actualDate);
+    });
+  });
+
+  describe('test of method fourWeeksBeforeHearingDate', () => {
+    const claim = new Claim();
+
+    it('should return formatted date 4 weeks prior to 29 July 2023', () => {
+      //Given
+      const expectedDate = '1 July 2023';
+      claim.caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, new Date(2023, 6, 29), null);
+      //When
+      const actualDate = claim.fourWeeksBeforeHearingDateString();
       //Then
       expect(expectedDate).toEqual(actualDate);
     });

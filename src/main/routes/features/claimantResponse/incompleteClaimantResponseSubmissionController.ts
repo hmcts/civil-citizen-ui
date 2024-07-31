@@ -7,8 +7,7 @@ import {AppRequest} from 'models/AppRequest';
 import { outstandingClaimantResponseTasks } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
 import { getClaimById } from 'modules/utilityService';
 import { Claim } from 'common/models/claim';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
-import {isMintiEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const incompleteSubmissionViewPath = 'features/response/incomplete-submission';
 const incompleteClaimantResponseSubmissionController = Router();
@@ -25,6 +24,7 @@ incompleteClaimantResponseSubmissionController.get(CLAIMANT_RESPONSE_INCOMPLETE_
     res.render(incompleteSubmissionViewPath, {
       tasks: taskLists,
       taskListUri: constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_TASK_LIST_URL),
+      pageTitle: 'PAGES.INCOMPLETE_SUBMISSION.TITLE',
     });
   } catch (error) {
     next(error);

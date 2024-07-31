@@ -32,6 +32,7 @@ function renderView(form: GenericForm<GenericYesNo>, repaymentPlan: RepaymentPla
     isPayBySetDate,
     defendantName,
     proposedSetDate,
+    pageTitle: 'PAGES.ACCEPT_REPAYMENT_PLAN.PAGE_TITLE',
   });
 }
 
@@ -62,7 +63,7 @@ acceptRepaymentPlanController.post(CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, 
     const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
     const propertyName = 'fullAdmitSetDateAcceptPayment';
-    const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
+    const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION_VARIATION1'));
     const claim: Claim = await getCaseDataFromStore(redisKey);
     const details = await getSetDatePaymentDetails(claim, lang);
     const displayHintTextForNoOption = claim.isBusiness();

@@ -40,6 +40,7 @@
   {% set callChargesWidget = _widget(openingHours,Telephone,externalURLs.callChargesUrl,'',callCharges,'0300 123 7050', '_blank') %}
   {% set webChatUnavailableWidget = _widget(webChatUnavailable,webChat,'','','','') %}
   {% set webChatClosedWidget =  _widget(webChatClosed,webChat,'','','','') %}
+  {% set contactUsForHelpComponentId = 'contact-us-for-help' %}
 
   {% if widget ==='Web_chat' %}
     {% set content = webChatUnavailableWidget + webChatClosedWidget %}
@@ -53,7 +54,8 @@
   {% else %}
     {{ govukDetails({
       summaryText: ContactUs,
-      html: content
+      html: content,
+      id: contactUsForHelpComponentId
     }) }}
   {% endif %}
 {% endmacro %}

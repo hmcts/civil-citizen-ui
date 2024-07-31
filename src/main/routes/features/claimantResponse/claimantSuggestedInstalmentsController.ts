@@ -9,6 +9,7 @@ import {getFinancialDetails, saveClaimantResponse} from 'services/features/claim
 import {
   getClaimantSuggestedInstalmentsForm,
   getClaimantSuggestedInstalmentsPlan,
+  updateDayErrorMsg,
 } from 'services/features/claimantResponse/claimantSuggestedInstalmentsService';
 import {generateRedisKey } from 'modules/draft-store/draftStoreService';
 import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
@@ -24,7 +25,7 @@ const crPropertyName = 'repaymentPlan';
 function renderView(form: GenericForm<RepaymentPlanForm>, res: Response, req: Request, claim:Claim): void {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const financialDetails = getFinancialDetails(claim, lang);
-  res.render(claimantSuggestedInstalmentsViewPath, {form, claim, financialDetails});
+  res.render(claimantSuggestedInstalmentsViewPath, {form, claim, financialDetails, pageTitle: 'PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.TITLE'});
 }
 
 claimantSuggestedInstalmentsController.get(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,  (async (req, res, next: NextFunction) => {
@@ -46,6 +47,7 @@ claimantSuggestedInstalmentsController.post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,
       const form = new GenericForm(claimantSuggestedInstalments);
       form.validateSync();
       if (form.hasErrors()) {
+        updateDayErrorMsg(form.errors);
         const claimId = req.params.id;
         const claim: Claim = await getClaimById(claimId, req, true);
         renderView(form, res, req, claim);
