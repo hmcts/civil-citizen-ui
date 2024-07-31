@@ -10,18 +10,22 @@ import {Claim} from 'models/claim';
 import {
   getApplicationFromGAService,
   getCancelUrl,
-  getClaimDetailsById
 } from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
 import {
   getDirectionOrderDocumentUrl,
-  getSummaryList, removeSelectedDocument, uploadSelectedFile,
+  getSummaryList,
 } from 'services/features/generalApplication/directionsOrderUpload/uploadDocumentsDirectionsOrderService';
+import {getGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentService';
+import {
+  removeSelectedDocument,
+  uploadSelectedFile
+} from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 
 const uploadDocumentsDirectionsOrderController = Router();
 const viewPath = 'features/generalApplication/directionsOrderUpload/upload-documents';
@@ -53,7 +57,7 @@ uploadDocumentsDirectionsOrderController.get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER
   try {
     const { appId, id:claimId } = req.params;
     const claim = await getClaimById(claimId, req, true);
-    const redisKey = generateRedisKey(req);
+    const redisKey = generateRedisKeyForGA(req);
     const uploadDocuments = new UploadGAFiles();
     let form = new GenericForm(uploadDocuments);
     const formattedSummary = summarySection(
@@ -80,24 +84,17 @@ uploadDocumentsDirectionsOrderController.get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER
 uploadDocumentsDirectionsOrderController.post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const { appId, id:claimId } = req.params;
-    const claim = await getClaimDetailsById(req);
+    const uploadedDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
-    const gaApplications = claim?.generalApplication;
-
-    const formattedSummary = summarySection(
-      {
-        title: '',
-        summaryRows: [],
-      });
 
     if (req.body.action === 'uploadButton') {
-      await uploadSelectedFile(req, formattedSummary, claimId, appId);
+      await uploadSelectedFile(req);
       return res.redirect(`${currentUrl}`);
     }
     const uploadDoc = new UploadGAFiles();
     const form = new GenericForm(uploadDoc);
     form.validateSync();
-    if (form.hasFieldError('fileUpload') && gaApplications?.generalAppDirOrderUpload?.length === 0) {
+    if (form.hasFieldError('fileUpload') && uploadedDocuments?.length === 0) {
       const errors = [{
         target: {
           fileUpload: '',

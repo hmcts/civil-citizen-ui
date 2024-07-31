@@ -13,10 +13,12 @@ import multer from 'multer';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
-import {
-  getSummaryList, removeSelectedDocument, uploadSelectedFile,
-} from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
+import {getSummaryList} from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
 import {getGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentService';
+import {
+  removeSelectedDocument,
+  uploadSelectedFile
+} from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 
 const uploadDocumentsForRequestMoreInfoController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/upload-documents';
@@ -76,14 +78,8 @@ uploadDocumentsForRequestMoreInfoController.post(GA_UPLOAD_DOCUMENT_FOR_ADDITION
     const uploadedDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
 
-    const formattedSummary = summarySection(
-      {
-        title: '',
-        summaryRows: [],
-      });
-
     if (req.body.action === 'uploadButton') {
-      await uploadSelectedFile(req, formattedSummary, claimId, appId);
+      await uploadSelectedFile(req);
       return res.redirect(`${currentUrl}`);
     }
     const uploadDoc = new UploadGAFiles();
