@@ -2,7 +2,7 @@ const config = require('../../../config');
 const Response = require('../../response/steps/response');
 const {yesAndNoCheckBoxOptionValue} = require('../../commons/eligibleVariables');
 
-Feature('Response').tag('@leo');
+Feature('Response').tag('@e2e');
 
 Scenario('Response journey', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
