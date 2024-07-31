@@ -25,7 +25,6 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
   getApplicationFromGAService: jest.fn(),
 }));
 
-
 const mockCaseDocument: CaseDocument = <CaseDocument>{
   createdBy: 'test',
   documentLink: { document_url: 'http://test', document_binary_url: 'http://test/binary', document_filename: 'test.png' },
