@@ -6,7 +6,7 @@ const {claimantPartyType, defendantPartyType, yesAndNoCheckBoxOptionValue,
 
 const I = actor();
 
-class Response {
+class ClaimCreation {
   start(optionValue) {
     I.amOnPage('/claim/bilingual-language-preference');
     I.checkOption(`#${optionValue}`);
@@ -177,4 +177,4 @@ class Response {
 
 }
 
-module.exports = new Response();
+module.exports = new ClaimCreation();
