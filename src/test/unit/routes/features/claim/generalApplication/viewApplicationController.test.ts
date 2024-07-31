@@ -11,6 +11,7 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import {getApplicationSections} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
+import {DocumentType} from 'models/document/documentType';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
@@ -82,6 +83,8 @@ describe('General Application - View application', () => {
                     document_filename: fileName,
                     category_id: '1',
                   },
+                  documentName: 'test',
+                  documentType: DocumentType.DIRECTION_ORDER,
                 },
               },
             ],
