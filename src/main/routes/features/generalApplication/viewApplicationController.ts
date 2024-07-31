@@ -1,12 +1,13 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {DASHBOARD_URL, GA_PAY_ADDITIONAL_FEE_URL, GA_VIEW_APPLICATION_URL,GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
-import {getApplicationSections, getCourtDocuments, getJudgeResponseSummary} from 'services/features/generalApplication/viewApplication/viewApplicationService';
+import {getApplicantDocuments, getApplicationSections, getCourtDocuments, getJudgeResponseSummary, getRespondentDocuments} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {SummaryRow} from 'common/models/summaryList/summaryList';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import { DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 
 const viewApplicationController = Router();
 const viewPath = 'features/generalApplication/view-applications';
@@ -24,7 +25,9 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const isResponseFromCourt = !!applicationResponse.case_data?.judicialDecision?.decision;
     let responseFromCourt: SummaryRow[] = [];
     let payAdditionalFeeUrl: string = null;
+    const applicantDocuments : DocumentsViewComponent = getApplicantDocuments(applicationResponse, lang);
     const courtDocuments = getCourtDocuments(applicationResponse, lang);
+    const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
 
     if(isResponseFromCourt) {
       responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
@@ -41,7 +44,9 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       responseFromCourt,
       additionalDocUrl,
       payAdditionalFeeUrl,
+      applicantDocuments,
       courtDocuments,
+      respondentDocuments,
     });
   } catch (error) {
     next(error);

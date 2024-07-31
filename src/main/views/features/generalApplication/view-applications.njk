@@ -101,15 +101,16 @@
       summaryHtml: responseHeaderHtml,
       html: responseHtml
     }) }}
-    {{ govukDetails({
-      summaryHtml: applicationDocuments,
-      html: applicationDocumentsHtml
-    }) }}
+    {% if (applicantDocuments.documents.length + courtDocuments.documents.length + respondentDocuments.documents.length) > 0 %}
+     {{ govukDetails({
+        summaryHtml: applicationDocuments,
+        html: applicationDocumentsHtml
+      }) }}
+    {% endif %}
   </div>
-
   {{ govukButton({
     text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD'),
     href: dashboardUrl
   }) }}
-
+  
 {% endblock %}

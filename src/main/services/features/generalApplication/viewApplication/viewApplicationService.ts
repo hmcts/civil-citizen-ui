@@ -87,6 +87,17 @@ export const getCourtDocuments = (applicationResponse : ApplicationResponse, lan
   return new DocumentsViewComponent('CourtDocument', courtDocumentsArray);
 };
 
+export const getApplicantDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
+  const applicantDocumentsArray: DocumentInformation[] = [];
+  return new DocumentsViewComponent('ApplicantDocuments', applicantDocumentsArray);
+};
+
+export const getRespondentDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
+  const respondentDocumentsArray: DocumentInformation[] = [];
+ 
+  return new DocumentsViewComponent('RespondentDocuments', respondentDocumentsArray);
+};
+
 const getHearingOrder = (applicationResponse: ApplicationResponse, lang: string) => {
   const hearingOrderDocs = applicationResponse?.case_data?.hearingOrderDocument;
   let hearingOrderDocInfoArray : DocumentInformation[] = [];
