@@ -15,7 +15,7 @@ class ClaimCreation {
   }
 
   considerOtherOptions() {
-    I.click(taskListItems.RESOLVING_THIS_DISPUTE, checkTaskList(taskListItems.RESOLVING_THIS_DISPUTE, taskListStatus.INCOMPLETE)); // Ensure the element exists
+    I.click(taskListItems.RESOLVING_THIS_DISPUTE); // Ensure the element exists
     I.seeInCurrentUrl('/claim/resolving-this-dispute');
     clickButton(buttonType.I_CONFIRM_I_HAVE_READ_THIS);
     I.seeInCurrentUrl('/claim/task-list');
@@ -23,7 +23,7 @@ class ClaimCreation {
   }
 
   completingYourClaim() {
-    I.click(taskListItems.COMPLETING_YOUR_CLAIM, checkTaskList(taskListItems.COMPLETING_YOUR_CLAIM, taskListStatus.INCOMPLETE)); // Ensure the element exists
+    I.click(taskListItems.COMPLETING_YOUR_CLAIM); // Ensure the element exists
     I.seeInCurrentUrl('/claim/completing-claim');
     clickButton(buttonType.I_CONFIRM_I_HAVE_READ_THIS);
     I.seeInCurrentUrl('/claim/task-list');
@@ -31,7 +31,7 @@ class ClaimCreation {
   }
 
   yourDetails() {
-    I.click(taskListItems.YOUR_DETAILS, checkTaskList(taskListItems.YOUR_DETAILS, taskListStatus.INCOMPLETE)); // Ensure the element exists
+    I.click(taskListItems.YOUR_DETAILS); // Ensure the element exists
 
     //claimant-party-type-selection as An individual
     I.seeInCurrentUrl('/claim/claimant-party-type-selection');
@@ -65,7 +65,7 @@ class ClaimCreation {
   }
 
   theirDetails() {
-    I.click(taskListItems.THEIR_DETAILS, checkTaskList(taskListItems.THEIR_DETAILS, taskListStatus.INCOMPLETE)); // Ensure the element exists
+    I.click(taskListItems.THEIR_DETAILS); // Ensure the element exists
 
     //defendant-party-type-selection
     I.seeInCurrentUrl('/claim/defendant-party-type-selection');
@@ -97,7 +97,7 @@ class ClaimCreation {
   }
 
   claimAmount(withInterest, helpWithFeesReferenceNumber) {
-    I.click(taskListItems.CLAIM_AMOUNT, checkTaskList(taskListItems.CLAIM_AMOUNT, taskListStatus.INCOMPLETE)); // Ensure the element exists
+    I.click(taskListItems.CLAIM_AMOUNT); // Ensure the element exists
 
     //amount
     I.seeInCurrentUrl('/claim/amount');
@@ -143,7 +143,7 @@ class ClaimCreation {
   }
 
   claimDetails() {
-    I.click(taskListItems.CLAIM_DETAILS, checkTaskList(taskListItems.CLAIM_DETAILS, taskListStatus.INCOMPLETE)); // Ensure the element exists
+    I.click(taskListItems.CLAIM_DETAILS); // Ensure the element exists
 
     //reason
     I.seeInCurrentUrl('/claim/reason');
@@ -166,8 +166,8 @@ class ClaimCreation {
   }
 
   checkAndSubmitYourClaim() {
-    I.click(taskListItems.CHECK_AND_SUBMIT_YOUR_CLAIM, checkTaskList(taskListItems.CHECK_AND_SUBMIT_YOUR_CLAIM, taskListStatus.INCOMPLETE)); // Ensure the element exists
-
+    I.amOnPage('/claim/task-list');
+    I.click(taskListItems.CHECK_AND_SUBMIT_YOUR_CLAIM, checkTaskList(taskListItems.CHECK_AND_SUBMIT_YOUR_CLAIM, taskListStatus.INCOMPLETE));
     //check-and-send
     I.seeInCurrentUrl('/claim/check-and-send');
     I.checkOption('#signed');
