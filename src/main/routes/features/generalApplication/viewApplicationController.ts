@@ -4,13 +4,13 @@ import {
   GA_PAY_ADDITIONAL_FEE_URL,
   GA_VIEW_APPLICATION_URL,
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
-  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL
+  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {
   getApplicationSections,
   getJudgeResponseSummary,
-  getJudgesDirectionsOrder
+  getJudgesDirectionsOrder,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
