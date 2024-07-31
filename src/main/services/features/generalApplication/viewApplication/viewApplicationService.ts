@@ -82,8 +82,8 @@ export const getJudgesDirectionsOrder = (applicationResponse: ApplicationRespons
   const rows: SummaryRow[] = [];
   let documentUrl = '';
 
-  applicationResponse.case_data.directionOrderDocument.forEach(uploadGAFile => {
-    documentUrl += `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(uploadGAFile?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER_DOCUMENT', {lng})}</a><br>`;
+  applicationResponse.case_data.directionOrderDocument.forEach(directionOrderDocument => {
+    documentUrl += `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(directionOrderDocument?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER_DOCUMENT', {lng})}</a><br>`;
   });
 
   if (applicationResponse.case_data?.judicialDecisionMakeOrder?.directionsResponseByDate != undefined) {
