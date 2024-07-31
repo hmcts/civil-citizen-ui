@@ -114,7 +114,7 @@ describe('View Application service', () => {
 
     it('should return judge response summary', async () => {
       //given
-     
+
       const caseData = applicationResponse.case_data;
       caseData.requestForInformationDocument = [{
         'id': 'ad9fd4a0-8294-414d-bcce-b66e742d809f',
@@ -133,10 +133,10 @@ describe('View Application service', () => {
 
       applicationResponse.case_data = caseData;
       applicationResponse.created_date = new Date('2024-01-01').toString();
-      
+
       //when
       const result = getJudgeResponseSummary(applicationResponse, 'en');
-      
+
       //then
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[0].value.html).toEqual('1 January 2024');
@@ -218,6 +218,8 @@ describe('View Application service', () => {
                 document_filename: fileName,
                 category_id: '1',
               },
+              documentName: 'test',
+              documentType: DocumentType.DIRECTION_ORDER,
             },
           },
         ],
