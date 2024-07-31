@@ -62,7 +62,7 @@ const developmentMode = env === 'development';
 const e2eTestMode = env === 'e2eTest';
 const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();
-app.use(cors());
+// app.use(cors());
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(express.static(path.join(__dirname, 'public')));
