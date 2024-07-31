@@ -21,6 +21,10 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
 import { t } from 'i18next';
 import { formatDateToFullDate } from 'common/utils/dateUtils';
+import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
+import { CASE_DOCUMENT_VIEW_URL } from 'routes/urls';
+import { CcdDocument } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
+import { documentIdExtractor } from 'common/utils/stringUtils';
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -74,4 +78,36 @@ export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng})}</a>`),
   );
   return rows;
+};
+
+export const getCourtDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
+  const courtDocumentsArray: DocumentInformation[] = [];
+  courtDocumentsArray.push(...getHearingOrder(applicationResponse, lang));
+ 
+  return new DocumentsViewComponent('CourtDocument', courtDocumentsArray);
+};
+
+const getHearingOrder = (applicationResponse: ApplicationResponse, lang: string) => {
+  const hearingOrderDocs = applicationResponse?.case_data?.hearingOrderDocument;
+  let hearingOrderDocInfoArray : DocumentInformation[] = [];
+  if(hearingOrderDocs) {
+  hearingOrderDocInfoArray = hearingOrderDocs.sort((item1,item2) => {
+   return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime()
+  })
+  .map(hearingOrder => {
+    return setUpDocumentLinkObject(hearingOrder?.value?.documentLink, hearingOrder?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER');
+  });
+ }
+  return hearingOrderDocInfoArray;
+};
+
+const setUpDocumentLinkObject = (document: CcdDocument, documentDate: Date, applicationId: string, lang: string, fileName: string) => {
+  return new DocumentInformation(
+    fileName,
+    formatDateToFullDate(documentDate, lang),
+    new DocumentLinkInformation(
+      CASE_DOCUMENT_VIEW_URL.replace(':id', applicationId)
+        .replace(':documentId',
+          documentIdExtractor(document.document_binary_url)),
+      document.document_filename));
 };

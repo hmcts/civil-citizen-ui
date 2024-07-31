@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {DASHBOARD_URL, GA_PAY_ADDITIONAL_FEE_URL, GA_VIEW_APPLICATION_URL,GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
-import {getApplicationSections, getJudgeResponseSummary} from 'services/features/generalApplication/viewApplication/viewApplicationService';
+import {getApplicationSections, getCourtDocuments, getJudgeResponseSummary} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
@@ -24,6 +24,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const isResponseFromCourt = !!applicationResponse.case_data?.judicialDecision?.decision;
     let responseFromCourt: SummaryRow[] = [];
     let payAdditionalFeeUrl: string = null;
+    const courtDocuments = getCourtDocuments(applicationResponse, lang);
 
     if(isResponseFromCourt) {
       responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
@@ -40,6 +41,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       responseFromCourt,
       additionalDocUrl,
       payAdditionalFeeUrl,
+      courtDocuments,
     });
   } catch (error) {
     next(error);
