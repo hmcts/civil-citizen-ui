@@ -16,6 +16,7 @@ import {
   CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
 import {CcdGeneralApplicationAddlDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
+import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 import {CcdGeneralApplicationDirectionsOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
 
@@ -57,7 +58,8 @@ export interface CCDApplication extends ApplicationUpdate {
   generalAppPBADetails: CcdGeneralApplicationPBADetails;
   applicationFeeAmountInPence: string;
   parentClaimantIsApplicant: YesNoUpperCamelCase;
-  judicialDecision: JudicialDecision;
+  judicialDecision: JudicialDecision,
+  requestForInformationDocument?: CcdGAMakeWithNoticeDocument[];
   directionOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
 }
 

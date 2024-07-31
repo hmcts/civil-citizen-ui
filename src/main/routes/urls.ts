@@ -383,3 +383,4 @@ export const GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL = `${BASE_G
 export const GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL = `${BASE_GENERAL_APPLICATION_URL}/:appId/upload-documents-directions-order`;
 export const GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL = `${BASE_GENERAL_APPLICATION_URL}/:appId/upload-documents-directions-order/check-and-send`;
 export const GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_URL}/:appId/upload-documents-directions-order/confirmation`;
+export const GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL = `${BASE_CASE_URL}/view-documents/:documentId`;
