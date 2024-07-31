@@ -25,6 +25,10 @@ import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } 
 import { CASE_DOCUMENT_VIEW_URL } from 'routes/urls';
 import { CcdDocument } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
 import { documentIdExtractor } from 'common/utils/stringUtils';
+import { DocumentType } from 'common/models/document/documentType';
+import { GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL } from 'routes/urls';
+import { documentIdExtractor } from 'common/utils/stringUtils';
+import { constructDocumentUrlWithIdParamsAndDocumentId } from 'common/utils/urlFormatter';
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -71,7 +75,8 @@ const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, appli
 
 export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
   const rows: SummaryRow[] = [];
-  const documentUrl = 'test';
+  const documentUrl = getMakeWithNoticeDocumentUrl(applicationResponse);
+
   rows.push(
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
@@ -109,4 +114,15 @@ const setUpDocumentLinkObject = (document: CcdDocument, documentDate: Date, appl
         .replace(':documentId',
           documentIdExtractor(document.document_binary_url)),
       document.document_filename));
+};
+
+const getMakeWithNoticeDocumentUrl = (applicationResponse: ApplicationResponse) : string => {
+  const requestForInformationDocument = applicationResponse?.case_data?.requestForInformationDocument;
+  const applicationId = applicationResponse.id;
+  if(requestForInformationDocument) {
+    const makeWithNoticeDoc = requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY);
+    const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);    
+    return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
+  }
+  return undefined;
 };
