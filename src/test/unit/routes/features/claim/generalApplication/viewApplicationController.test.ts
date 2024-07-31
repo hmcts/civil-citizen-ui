@@ -10,6 +10,7 @@ import {GaServiceClient} from 'client/gaServiceClient';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicationSections} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
+import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
@@ -39,6 +40,69 @@ describe('General Application - View application', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
         });
+    });
+
+    describe('on Judges Direction', () => {
+      it('should return Check your answers page for judges direction', async () => {
+        const fileName = 'Name of file';
+        const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
+        const binary_url = `http://dm-store:8080/documents/${binary}/binary`;
+        const applicationResponse: ApplicationResponse = {
+          case_data: {
+            applicationTypes: undefined,
+            generalAppType: undefined,
+            generalAppRespondentAgreement: undefined,
+            generalAppInformOtherParty: undefined,
+            generalAppAskForCosts: undefined,
+            generalAppDetailsOfOrder: undefined,
+            generalAppReasonsOfOrder: undefined,
+            generalAppEvidenceDocument: undefined,
+            gaAddlDoc: undefined,
+            generalAppHearingDetails: undefined,
+            generalAppStatementOfTruth: undefined,
+            generalAppPBADetails: {
+              fee: undefined,
+              paymentDetails: undefined,
+              serviceRequestReference: undefined,
+            },
+            applicationFeeAmountInPence: undefined,
+            parentClaimantIsApplicant: undefined,
+            judicialDecision: undefined,
+            judicialDecisionMakeOrder: {
+              directionsResponseByDate: new Date('2024-01-01').toString(),
+            },
+            directionOrderDocument: [
+              {
+                id: '1',
+                value: {
+                  createdBy: 'test',
+                  documentLink: {
+                    document_url: 'test',
+                    document_binary_url: binary_url,
+                    document_filename: fileName,
+                    category_id: '1',
+                  },
+                },
+              },
+            ],
+          },
+          created_date: '',
+          id: '',
+          last_modified: '',
+          state: undefined,
+        };
+
+        mockedSummaryRows.mockImplementation(() => []);
+        jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
+
+        await request(app)
+          .get(GA_VIEW_APPLICATION_URL)
+          .query({applicationId: '1718105701451856'})
+          .expect((res) => {
+            expect(res.status).toBe(200);
+            expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
+          });
+      });
     });
 
     it('should return http 500 when has error in the get method', async () => {

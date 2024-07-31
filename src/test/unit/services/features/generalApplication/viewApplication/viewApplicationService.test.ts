@@ -122,8 +122,8 @@ describe('View Application service', () => {
     });
   });
 
-  describe('getJudgeResponseSummary', () => {
-    it('should return judge response summary', async () => {
+  describe('getJudgesDirectionsOrder', () => {
+    it('should return judge directions order', async () => {
       //given
       const applicationResponse = new ApplicationResponse();
       const fileName = 'Name of file';
