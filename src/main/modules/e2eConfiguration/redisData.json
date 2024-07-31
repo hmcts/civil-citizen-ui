@@ -298,7 +298,7 @@
     }
   },
   {
-    "id": 1645882162449408,
+    "id": "1645882162449408someID",
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -366,6 +366,7 @@
           "primaryAddress": {
             "county": "Kent",
             "country": "United Kingdom",
+            "city": "London",
             "postCode": "RG4 7AA",
             "postTown": "Reading",
             "addressLine1": "Flat 2",

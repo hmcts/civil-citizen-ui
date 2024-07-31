@@ -8,6 +8,14 @@ const taskListItems = Object.freeze({
   CHECK_AND_SUBMIT_YOUR_CLAIM: 'Check and submit your claim',
 });
 
+const responseTaskListItems = Object.freeze({
+  CONFIRM_YOUR_DETAILS: 'Confirm your details',
+  VIEW_YOUR_OPTIONS_BEFORE_RESPONSE_DEADLINE: 'View your options before response deadline',
+  CHOOSE_A_RESPONSE: 'Choose a response',
+  CHECK_AND_SUBMIT_YOUR_RESPONSE: 'Check and submit your response',
+  DECIDE_HOW_YOU_WILL_PAY: 'Decide how you\'ll pay',
+});
+
 const taskListStatus = Object.freeze({
   COMPLETE: 'Complete',
   INCOMPLETE: 'Incomplete',
@@ -19,4 +27,5 @@ module.exports = {
   taskListItems,
   taskListStatus,
   checkTaskList,
+  responseTaskListItems
 };

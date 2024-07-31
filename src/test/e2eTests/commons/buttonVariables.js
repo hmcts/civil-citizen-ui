@@ -3,7 +3,7 @@ const buttonType = Object.freeze({
   CONTINUE: 'Continue',
   I_CONFIRM_I_HAVE_READ_THIS: 'I confirm I\'ve read this',
   SUBMIT_CLAIM: 'Submit claim',
-
+  SUBMIT_RESPONSE: 'Submit Response',
 });
 
 module.exports = {
