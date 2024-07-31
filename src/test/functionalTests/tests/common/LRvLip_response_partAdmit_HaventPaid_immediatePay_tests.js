@@ -3,9 +3,9 @@ const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendant
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const partAdmit = 'partial-admission';
-const immediatePayment = 'immediate';
-const dontWantMoreTime = 'dontWantMoreTime';
+// const partAdmit = 'partial-admission';
+// const immediatePayment = 'immediate';
+// const dontWantMoreTime = 'dontWantMoreTime';
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 
@@ -31,6 +31,7 @@ Before(async ({api}) => {
 });
 
 Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @nightly', async ({api}) => {
+  console.log(api);
   // await ResponseSteps.RespondToClaim(claimRef);
   // await ResponseSteps.EnterPersonalDetails(claimRef);
   // await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
