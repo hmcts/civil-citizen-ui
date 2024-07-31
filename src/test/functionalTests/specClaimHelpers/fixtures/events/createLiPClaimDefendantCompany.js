@@ -1,3 +1,5 @@
+const { getClaimFee } = require('./claimAmountAndFee');
+
 const createLipClaimDefendantCompany = (user, userId, totalClaimAmount) => {
   const eventDto = {
     event: 'CREATE_LIP_CLAIM',
@@ -135,11 +137,7 @@ const createLipClaimDefendantCompany = (user, userId, totalClaimAmount) => {
           },
         },
       ],
-      claimFee: {
-        calculatedAmountInPence: '45500',
-        version: '3',
-        code: 'FEE0208',
-      },
+      claimFee: getClaimFee(totalClaimAmount),
       claimantBilingualLanguagePreference: undefined,
     },
   };
