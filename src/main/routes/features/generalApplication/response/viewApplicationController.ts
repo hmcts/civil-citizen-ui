@@ -13,9 +13,10 @@ const redirectUrl = 'test'; //TODO: add url
 
 viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
+    const applicationId = req.query.applicationId ? String(req.query.applicationId) : null;
     const applicationIndex = queryParamNumber(req, 'index');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const summaryRows = await getApplicationSections(req, req.params.appId, lang);
+    const summaryRows = await getApplicationSections(req, applicationId, lang);
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
     res.render(viewPath, {backLinkUrl, summaryRows, pageTitle, redirectUrl, applicationIndex });
   } catch (error) {
