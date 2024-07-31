@@ -4,8 +4,7 @@ import request from 'supertest';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {
-  GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL,
-  GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL,
+  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CONFIRMATION_URL, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL,
 } from 'routes/urls';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
@@ -14,7 +13,7 @@ import { ApplicationEvent } from 'common/models/gaEvents/applicationEvent';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import {
   buildSummarySection,
-} from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
+} from 'services/features/generalApplication/directionsOrderUpload/uploadDocumentsDirectionsOrderService';
 import {app} from '../../../../../../../main/app';
 import {getClaimById} from 'modules/utilityService';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -31,7 +30,7 @@ jest.mock('modules/utilityService', () => ({
 jest.mock('../../../../../../../main/modules/draft-store/draftGADocumentService', () => ({
   getGADocumentsFromDraftStore: jest.fn(),
 }));
-jest.mock('../../../../../../../main/services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService', () => ({
+jest.mock('../../../../../../../main/services/features/generalApplication/directionsOrderUpload/uploadDocumentsDirectionsOrderService', () => ({
   buildSummarySection: jest.fn(),
 }));
 jest.mock('../../../../../../../main/services/features/generalApplication/documentUpload/uploadDocumentsService', () => ({
@@ -95,7 +94,7 @@ describe('General Application - additional docs check answer controller ', () =>
       (buildSummarySection as jest.Mock).mockReturnValue([]);
       (getGADocumentsFromDraftStore as jest.Mock).mockReturnValue(uploadDocuments);
 
-      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL));
+      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL));
 
       expect(res.status).toBe(200);
       expect(getCancelUrl).toHaveBeenCalledWith(claimId, claim);
@@ -108,7 +107,7 @@ describe('General Application - additional docs check answer controller ', () =>
       const gaId = '456';
       (getClaimById as jest.Mock).mockRejectedValue(new Error('Error'));
 
-      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL));
+      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL));
 
       expect(res.status).toBe(500);
     });
@@ -124,12 +123,12 @@ describe('General Application - additional docs check answer controller ', () =>
       (getGADocumentsFromDraftStore as jest.Mock).mockReturnValue(uploadDocuments);
       const mockGaServiceClient = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
 
-      const res = await request(app).post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL));
+      const res = await request(app).post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL));
 
       expect(res.status).toBe(302);
-      expect(res.header.location).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL));
+      expect(res.header.location).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CONFIRMATION_URL));
       expect(translateCUItoCCD).toHaveBeenCalledWith(uploadDocuments);
-      expect(mockGaServiceClient).toHaveBeenCalledWith(ApplicationEvent.RESPOND_TO_JUDGE_ADDITIONAL_INFO, gaId, { generalAppAddlnInfoUpload: [] }, expect.anything());
+      expect(mockGaServiceClient).toHaveBeenCalledWith(ApplicationEvent.RESPOND_TO_JUDGE_DIRECTIONS, gaId, { generalAppDirOrderUpload: [] }, expect.anything());
     });
 
     it('should handle errors', async () => {
@@ -137,7 +136,7 @@ describe('General Application - additional docs check answer controller ', () =>
       const gaId = '456';
       (getClaimById as jest.Mock).mockRejectedValue(new Error('Error'));
 
-      const res = await request(app).post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL)).send({});
+      const res = await request(app).post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL)).send({});
 
       expect(res.status).toBe(500);
     });

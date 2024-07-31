@@ -48,7 +48,7 @@ async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimI
     cancelUrl,
     backLinkUrl,
     directionOrderDocUrl,
-    headerTitle: 'PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE',
+    headerTitle: 'PAGES.GENERAL_APPLICATION.UPLOAD_DIRECTIONS_ORDER_DOCUMENTS.PAGE_TITLE',
     currentUrl,
   });
 }

@@ -15,7 +15,7 @@ import {documentIdExtractor} from 'common/utils/stringUtils';
 import {getGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentService';
 
 export const getDirectionOrderDocumentUrl = (claimId: string, applicationResponse: ApplicationResponse): string => {
-  const directionOrderDocument = applicationResponse.case_data?.directionOrderDocument;
+  const directionOrderDocument = applicationResponse?.case_data?.directionOrderDocument;
   const documentId = documentIdExtractor(directionOrderDocument?.slice()?.reverse()
     ?.find(doc => doc.value?.documentType === 'DIRECTION_ORDER')?.value?.documentLink?.document_binary_url);
   return CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentId);
