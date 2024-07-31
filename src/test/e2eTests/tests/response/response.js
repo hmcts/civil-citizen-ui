@@ -8,11 +8,13 @@ Scenario('Response journey', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     //bilingual-language-preference and open task list
     Response.start(yesAndNoCheckBoxOptionValue.YES);
-    //Response.considerOtherOptions();
-    //Response.completingYourClaim();
-    //Response.yourDetails();
-    //Response.theirDetails();
-    Response.claimAmount(true);
+    Response.considerOtherOptions();
+    Response.completingYourClaim();
+    Response.yourDetails();
+    Response.theirDetails();
+    Response.claimAmount(true, true);
+    Response.claimDetails();
+    Response.checkAndSubmitYourClaim();
   }
 });
 

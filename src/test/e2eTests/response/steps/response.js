@@ -96,13 +96,13 @@ class Response {
     I.see(taskListItems.THEIR_DETAILS, checkTaskList(taskListItems.THEIR_DETAILS, taskListStatus.COMPLETE));
   }
 
-  claimAmount(withInterest) {
+  claimAmount(withInterest, helpWithFeesReferenceNumber) {
     I.click(taskListItems.CLAIM_AMOUNT, checkTaskList(taskListItems.CLAIM_AMOUNT, taskListStatus.INCOMPLETE)); // Ensure the element exists
 
     //amount
     I.seeInCurrentUrl('/claim/amount');
-    I.fillField('#claimAmountRows[0][reason]', 'test');
-    I.fillField('#claimAmountRows[0][amount]', '10000');
+    I.fillField('input[id="claimAmountRows[0][reason]"]', 'test');
+    I.fillField('input[id="claimAmountRows[0][amount]"]', '10000');
     clickButton(buttonType.SAVE_AND_CONTINUE);
     I.seeInCurrentUrl('/claim/interest');
     if (withInterest) {
@@ -120,15 +120,62 @@ class Response {
       I.seeInCurrentUrl('/claim/interest-date');
       I.checkOption(`#${interestClaimFrom.THE_DATE_YOU_SUBMIT_THE_CLAIM}`);
       clickButton(buttonType.SAVE_AND_CONTINUE);
-
     } else {
       I.checkOption(`#${yesAndNoCheckBoxOptionValue.NO}`);
       clickButton(buttonType.SAVE_AND_CONTINUE);
     }
+
+    //help-with-fees
+    I.seeInCurrentUrl('/claim/help-with-fees');
+    if(helpWithFeesReferenceNumber){
+      I.checkOption(`#${yesAndNoCheckBoxOptionValue.YES}`);
+      I.fillField('input[id="referenceNumber"]', '00000');
+    } else {
+      I.checkOption(`#${yesAndNoCheckBoxOptionValue.NO}`);
+    }
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+
+    //claim/total
+    I.seeInCurrentUrl('/claim/total');
     clickButton(buttonType.SAVE_AND_CONTINUE);
     I.seeInCurrentUrl('/claim/task-list');
     I.see(taskListItems.CLAIM_AMOUNT, checkTaskList(taskListItems.CLAIM_AMOUNT, taskListStatus.COMPLETE));
   }
+
+  claimDetails() {
+    I.click(taskListItems.CLAIM_DETAILS, checkTaskList(taskListItems.CLAIM_DETAILS, taskListStatus.INCOMPLETE)); // Ensure the element exists
+
+    //reason
+    I.seeInCurrentUrl('/claim/reason');
+    I.fillField('textarea[id="text"]', 'test');
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+    //timeline
+    I.seeInCurrentUrl('/claim/timeline');
+    I.fillField('input[id="day"]', '01');
+    I.fillField('input[id="month"]', '01');
+    I.fillField('input[id="year"]', '2024');
+    I.fillField('textarea[id="rows[0][description]"]', 'test');
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+    //evidence
+    I.seeInCurrentUrl('/claim/evidence');
+    I.selectOption('//fieldset[1]//select[@class=\'govuk-select\']','Contracts and agreements');
+    I.fillField('//fieldset[1]//textarea[@class=\'govuk-textarea\']', 'Signed Contract');
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+    I.seeInCurrentUrl('/claim/task-list');
+    I.see(taskListItems.CLAIM_DETAILS, checkTaskList(taskListItems.CLAIM_DETAILS, taskListStatus.COMPLETE));
+  }
+
+  checkAndSubmitYourClaim() {
+    I.click(taskListItems.CHECK_AND_SUBMIT_YOUR_CLAIM, checkTaskList(taskListItems.CHECK_AND_SUBMIT_YOUR_CLAIM, taskListStatus.INCOMPLETE)); // Ensure the element exists
+
+    //check-and-send
+    I.seeInCurrentUrl('/claim/check-and-send');
+    I.checkOption('#signed');
+    clickButton(buttonType.SUBMIT_CLAIM);
+    I.seeInCurrentUrl('/confirmation');
+    //I.see(taskListItems.CLAIM_DETAILS, checkTaskList(taskListItems.CLAIM_DETAILS, taskListStatus.COMPLETE));
+  }
+
 }
 
 module.exports = new Response();
