@@ -173,7 +173,6 @@ class Response {
     I.checkOption('#signed');
     clickButton(buttonType.SUBMIT_CLAIM);
     I.seeInCurrentUrl('/confirmation');
-    //I.see(taskListItems.CLAIM_DETAILS, checkTaskList(taskListItems.CLAIM_DETAILS, taskListStatus.COMPLETE));
   }
 
 }

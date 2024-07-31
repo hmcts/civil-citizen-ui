@@ -1,7 +1,7 @@
 const config = require('../../../config');
 const Response = require('../../response/steps/response');
 const {yesAndNoCheckBoxOptionValue} = require('../../commons/eligibleVariables');
-
+const I = actor();
 Feature('Response').tag('@e2e');
 
 Scenario('Response journey', async () => {
