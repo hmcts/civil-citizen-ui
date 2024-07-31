@@ -31,15 +31,15 @@ Before(async ({api}) => {
 });
 
 Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @nightly', async ({api}) => {
-  await ResponseSteps.RespondToClaim(claimRef);
-  await ResponseSteps.EnterPersonalDetails(claimRef);
-  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
-  await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
-  await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
-  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
-  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
-  await ResponseSteps.AddYourTimeLineEvents();
-  await ResponseSteps.EnterYourEvidenceDetails();
+  // await ResponseSteps.RespondToClaim(claimRef);
+  // await ResponseSteps.EnterPersonalDetails(claimRef);
+  // await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+  // await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
+  // await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
+  // await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
+  // await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
+  // await ResponseSteps.AddYourTimeLineEvents();
+  // await ResponseSteps.EnterYourEvidenceDetails();
   // await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, immediatePayment);
   // await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
   // await ResponseSteps.EnterDQForSmallClaims(claimRef);
@@ -50,3 +50,9 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @
   // await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately, config.claimState.IN_MEDIATION);
   // await api.mediationSuccessful(config.caseWorker);
 }).tag('@felipe');
+
+// SET THESE ENV VARIABLES IN CMC
+// set S2S_SECRET=BTZQFPGY4TUMAFGL
+// set ENVIRONMENT=preview
+// set NODE_TLS_REJECT_UNAUTHORIZED=0
+// set CITIZEN_PASSWORD=Password12!
