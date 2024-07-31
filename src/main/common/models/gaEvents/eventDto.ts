@@ -34,6 +34,22 @@ export interface CCDGeneralApplication extends ClaimUpdate {
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
   generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
   caseLink?: CaseLink;
+  uploadDocument?: AdditionalDocuments[]
+}
+interface DocumentDetails {
+  document_url: string;
+  document_binary_url: string;
+  document_filename: string;
+}
+
+interface AdditionDocDetails {
+  typeOfDocument: string,
+  documentUpload: DocumentDetails
+}
+
+export interface AdditionalDocuments {
+  id: string;
+  value: AdditionDocDetails
 }
 
 export interface CCDGaHelpWithFees {
