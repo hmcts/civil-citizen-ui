@@ -18,7 +18,6 @@ jest.mock('../../../../../../main/app/client/gaServiceClient');
 
 const mockedSummaryRows = getApplicationSections as jest.Mock;
 
-
 describe('General Application - View application', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -31,8 +30,8 @@ describe('General Application - View application', () => {
   });
 
   beforeEach(() => {
-     application = Object.assign(new ApplicationResponse(), mockApplication);
-     jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValue(application);
+    application = Object.assign(new ApplicationResponse(), mockApplication);
+    jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValue(application);
   });
 
   describe('on GET', () => {
