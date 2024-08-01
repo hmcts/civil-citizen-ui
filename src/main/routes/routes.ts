@@ -384,6 +384,9 @@ import whyNotSubjectToFRCController
   from 'routes/features/directionsQuestionnaire/fixedRecoverableCosts/whyNotSubjectToFRCController';
 import backController from 'routes/common/backController';
 import applicationFeePaymentConfirmationController from './features/generalApplication/payment/applicationFeePaymentConfirmationController';
+import uploadAdditionalDocumentsController from './features/generalApplication/additionalDocuments/uploadAdditionalDocumentsController';
+import gaAdditionalDocCheckAnswerController from './features/generalApplication/additionalDocuments/checkAnswersController';
+import additionalDocSubmittedController from './features/generalApplication/additionalDocuments/submittedController';
 import viewApplicationToRespondentController from 'routes/features/generalApplication/response/viewApplicationController';
 import applicationSummaryController from './features/generalApplication/applicationSummaryController';
 import additionalFeeController from './features/generalApplication/additionalFee/additionalFeeController';
@@ -400,6 +403,12 @@ import respondentWantToUploadDocumentsController
   from 'routes/features/generalApplication/response/respondentWantToUploadDocumentsController';
 import respondentUploadEvidenceDocumentsController
   from 'routes/features/generalApplication/response/respondentUploadEvidenceDocmentsController';
+import uploadDocumentsForRequestMoreInfoController
+  from 'routes/features/generalApplication/additionalInfoUpload/uploadDocumentsForRequestMoreInfoController';
+import gaRequestMoreInfoCheckAnswersController
+  from 'routes/features/generalApplication/additionalInfoUpload/checkAnswerController';
+import moreInfoSubmittedConfirmationController
+  from 'routes/features/generalApplication/additionalInfoUpload/moreInfoSubmittedConfirmationController';
 
 export default [
   homeController,
@@ -725,4 +734,10 @@ export default [
   respondentHearingPreferenceController,
   respondentWantToUploadDocumentsController,
   respondentUploadEvidenceDocumentsController,
+  uploadAdditionalDocumentsController,
+  gaAdditionalDocCheckAnswerController,
+  additionalDocSubmittedController,
+  uploadDocumentsForRequestMoreInfoController,
+  gaRequestMoreInfoCheckAnswersController,
+  moreInfoSubmittedConfirmationController,
 ];
