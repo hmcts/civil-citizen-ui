@@ -750,5 +750,5 @@ export default [
   gaDirectionOrderCheckAnswersController,
   directionOrderSubmittedConfirmationController,
   uploadDocumentsForRequestWrittenRepresentation,
-  gaWrittenRepresentationCheckAnswersController
+  gaWrittenRepresentationCheckAnswersController,
 ];
