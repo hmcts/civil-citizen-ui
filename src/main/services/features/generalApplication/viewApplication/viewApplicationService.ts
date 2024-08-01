@@ -101,7 +101,7 @@ export const getJudgesDirectionsOrder = (applicationResponse: ApplicationRespons
   });
 
   rows.push(
-    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.case_data.judicialDecisionMakeOrder.directionsResponseByDate), lng)),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(applicationResponse.case_data.directionOrderDocument[0].value.createdDatetime, lng)),
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER', {lng})),
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl));
   return rows;

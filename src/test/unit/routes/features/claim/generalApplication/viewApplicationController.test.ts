@@ -86,6 +86,7 @@ describe('General Application - View application', () => {
                   },
                   documentName: 'test',
                   documentType: DocumentType.DIRECTION_ORDER,
+                  createdDatetime: new Date('2024-01-01'),
                 },
               },
             ],
