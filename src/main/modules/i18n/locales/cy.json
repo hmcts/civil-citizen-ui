@@ -2985,6 +2985,9 @@
         "PAGE_TITLE_TO_UPLOAD": "Upload additional documents",
         "UPLOAD_DOC_CYA_TITLE": "Upload documents"
       },
+      "UPLOAD_WRITTEN_REPRESENTATION_DOCUMENTS": {
+        "PAGE_TITLE": "Request for written representation"
+      },
       "APPLICATION_HEARING_ARRANGEMENTS": {
         "HEARING_TYPE": {
           "PERSON_AT_COURT": "In person at the court",
