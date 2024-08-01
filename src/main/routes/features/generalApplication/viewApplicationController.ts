@@ -15,7 +15,7 @@ import {
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {
   ApplicationResponse,
-  JudicialDecisionMakeAnOrderOptions
+  JudicialDecisionMakeAnOrderOptions,
 } from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {SummaryRow} from 'common/models/summaryList/summaryList';
