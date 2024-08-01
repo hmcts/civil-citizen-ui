@@ -21,6 +21,7 @@ claimantResponseConfirmationController.get(CLAIMANT_RESPONSE_CONFIRMATION_URL, c
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, getLng(lang), carmApplicable, respondToSettlementAgreementDeadLine);
     res.render('features/claimantResponse/claimant-response-confirmation', {
       claimantResponseConfirmationContent,
+      pageTitle: 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PAGE_TITLE',
     });
   } catch (error) {
     next(error);
