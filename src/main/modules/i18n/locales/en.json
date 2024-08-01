@@ -4840,7 +4840,7 @@
     "TEXT_TOO_MANY": "You've entered too many characters",
     "FULL_NAME_TOO_LONG": "Full name must be no longer than 70 characters",
     "JOB_TITLE_TOO_LONG": "Job title must be no longer than 70 characters",
-    "ADDRESS_LINE_TOO_MANY": "Each address line must be no longer than 50 characters",
+    "ADDRESS_LINE_TOO_MANY": "Each address line must be no longer than 35 characters",
     "TOWN_CITY_TOO_MANY": "Town or City must no longer than 50 characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
     "THERE_IS_A_PROBLEM": "There is a problem",

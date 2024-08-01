@@ -4,8 +4,9 @@ import { ADDRESS_LINE_MAX_LENGTH } from '../validators/validationConstraints';
 
 export class Address {
   @IsNotEmpty({ message: 'ERRORS.VALID_ADDRESS_LINE_1' })
+  @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.ADDRESS_LINE_TOO_MANY' })
     addressLine1?: string;
-  @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.ADDRESS_LINE_TOO_MANY' })  
+  @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.ADDRESS_LINE_TOO_MANY' })
     addressLine2?: string;
   @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.ADDRESS_LINE_TOO_MANY' })
     addressLine3?: string;
@@ -22,11 +23,11 @@ export class Address {
     addressLine3?: string,
     city?: string,
     postCode?: string) {
-    this.addressLine1 = addressLine1;
-    this.addressLine2 = addressLine2;
-    this.addressLine3 = addressLine3;
-    this.city = city;
-    this.postCode = postCode;
+    this.addressLine1 = addressLine1.trim();
+    this.addressLine2 = addressLine2.trim();
+    this.addressLine3 = addressLine3.trim();
+    this.city = city.trim();
+    this.postCode = postCode.trim();
   }
 
   isEmpty() {

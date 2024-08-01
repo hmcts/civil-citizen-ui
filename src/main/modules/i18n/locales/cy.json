@@ -4841,7 +4841,7 @@
     "TEXT_TOO_MANY": "Rydych wedi defnyddio gormod o nodau",
     "FULL_NAME_TOO_LONG": "Ni ddylai enw llawn fod yn hirach na 70 o nodau",
     "JOB_TITLE_TOO_LONG": "Ni ddylai teitl y swydd fod yn hirach na 70 o nodau",
-    "ADDRESS_LINE_TOO_MANY": "Ni ddylai bob llinell y cyfeiriad fod yn hirach na 50 o nodau",
+    "ADDRESS_LINE_TOO_MANY": "Ni ddylai bob llinell y cyfeiriad fod yn hirach na 35 o nodau",
     "TOWN_CITY_TOO_MANY": "Ni ddylai tref neu ddinas fod yn hirach na 50 o nodau",
     "TEXT400_TOO_LONG": "Rhaid i'r rheswm fod yn 400 o nodau neu'n llai",
     "THERE_IS_A_PROBLEM": "Mae yna broblem",
