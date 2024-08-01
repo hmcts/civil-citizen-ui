@@ -50,7 +50,7 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately, config.claimState.IN_MEDIATION);
   await api.mediationSuccessful(config.caseWorker);
-}).tag('@felipe');
+}).tag('@regression-cui-r1');
 
 // SET THESE ENV VARIABLES IN CMC
 // set S2S_SECRET=BTZQFPGY4TUMAFGL
