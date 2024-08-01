@@ -13,7 +13,10 @@ import {
   getJudgesDirectionsOrder,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
-import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
+import {
+  ApplicationResponse,
+  JudicialDecisionMakeAnOrderOptions
+} from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {SummaryRow} from 'common/models/summaryList/summaryList';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
@@ -43,7 +46,8 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
     }
 
-    if(isJudgesDirectionsOrder) {
+    if(applicationResponse.case_data?.judicialDecisionMakeOrder?.makeAnOrder == JudicialDecisionMakeAnOrderOptions.GIVE_DIRECTIONS_WITHOUT_HEARING
+      && applicationResponse.case_data?.judicialDecisionMakeOrder?.directionsResponseByDate != undefined) {
       judgesDirectionsOrder = getJudgesDirectionsOrder(applicationResponse, lang);
       judgesDirectionsOrderUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
     }
