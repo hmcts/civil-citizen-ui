@@ -35,7 +35,8 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, req.params.appId);
     const isResponseFromCourt = !!applicationResponse.case_data?.judicialDecision?.decision;
-    const isJudgesDirectionsOrder = applicationResponse.case_data?.judicialDecisionMakeOrder?.directionsResponseByDate != undefined;
+    const isJudgesDirectionsOrder = applicationResponse.case_data?.judicialDecisionMakeOrder?.makeAnOrder == JudicialDecisionMakeAnOrderOptions.GIVE_DIRECTIONS_WITHOUT_HEARING
+      && applicationResponse.case_data?.judicialDecisionMakeOrder?.directionsResponseByDate != undefined;
     let responseFromCourt: SummaryRow[] = [];
     let judgesDirectionsOrder: SummaryRow[] = [];
     let payAdditionalFeeUrl: string = null;
@@ -46,8 +47,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
     }
 
-    if(applicationResponse.case_data?.judicialDecisionMakeOrder?.makeAnOrder == JudicialDecisionMakeAnOrderOptions.GIVE_DIRECTIONS_WITHOUT_HEARING
-      && applicationResponse.case_data?.judicialDecisionMakeOrder?.directionsResponseByDate != undefined) {
+    if(isJudgesDirectionsOrder) {
       judgesDirectionsOrder = getJudgesDirectionsOrder(applicationResponse, lang);
       judgesDirectionsOrderUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
     }
