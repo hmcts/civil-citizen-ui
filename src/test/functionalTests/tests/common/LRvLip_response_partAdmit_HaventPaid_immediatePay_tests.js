@@ -3,9 +3,9 @@ const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendant
 const LoginSteps = require('../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-// const partAdmit = 'partial-admission';
-// const immediatePayment = 'immediate';
-// const dontWantMoreTime = 'dontWantMoreTime';
+const partAdmit = 'partial-admission';
+const immediatePayment = 'immediate';
+const dontWantMoreTime = 'dontWantMoreTime';
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 
@@ -32,24 +32,24 @@ Before(async ({api}) => {
 
 Scenario('Response with PartAdmit-havent paid and Immediate payment @citizenUI @partAdmit @nightly', async ({api}) => {
   console.log(api);
-  // await ResponseSteps.RespondToClaim(claimRef);
-  // await ResponseSteps.EnterPersonalDetails(claimRef);
-  // await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
-  // await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
-  // await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
-  // await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
-  // await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
-  // await ResponseSteps.AddYourTimeLineEvents();
-  // await ResponseSteps.EnterYourEvidenceDetails();
-  // await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, immediatePayment);
-  // await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
-  // await ResponseSteps.EnterDQForSmallClaims(claimRef);
-  // await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-  // // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
-  // // await api.enterBreathingSpace(config.applicantSolicitorUser);
-  // // await api.liftBreathingSpace(config.applicantSolicitorUser);
-  // await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately, config.claimState.IN_MEDIATION);
-  // await api.mediationSuccessful(config.caseWorker);
+  await ResponseSteps.RespondToClaim(claimRef);
+  await ResponseSteps.EnterPersonalDetails(claimRef);
+  await ResponseSteps.EnterYourOptionsForDeadline(claimRef, dontWantMoreTime);
+  await ResponseSteps.EnterResponseToClaim(claimRef, partAdmit);
+  await ResponseSteps.SelectPartAdmitAlreadyPaid('no');
+  await ResponseSteps.EnterHowMuchMoneyYouOwe(claimRef, 500, partAdmit);
+  await ResponseSteps.EnterWhyYouDisagreeTheClaimAmount(claimRef, partAdmit);
+  await ResponseSteps.AddYourTimeLineEvents();
+  await ResponseSteps.EnterYourEvidenceDetails();
+  await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, immediatePayment);
+  await ResponseSteps.EnterFreeTelephoneMediationDetails(claimRef);
+  await ResponseSteps.EnterDQForSmallClaims(claimRef);
+  await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
+  // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
+  // await api.enterBreathingSpace(config.applicantSolicitorUser);
+  // await api.liftBreathingSpace(config.applicantSolicitorUser);
+  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately, config.claimState.IN_MEDIATION);
+  await api.mediationSuccessful(config.caseWorker);
 }).tag('@felipe');
 
 // SET THESE ENV VARIABLES IN CMC
