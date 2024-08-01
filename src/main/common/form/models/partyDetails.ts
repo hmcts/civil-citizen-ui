@@ -1,6 +1,7 @@
-import {IsDefined, IsNotEmpty, MaxLength, ValidateIf, ValidateNested} from 'class-validator';
+import {IsDefined, IsNotEmpty, MaxLength, Validate, ValidateIf, ValidateNested} from 'class-validator';
 import {Address} from 'form/models/address';
 import {GenericForm} from 'form/models/genericForm';
+import {FullNameValidator} from 'form/validators/fullNameValidator';
 
 export class PartyDetails {
 
@@ -11,7 +12,7 @@ export class PartyDetails {
   @ValidateIf(o => o.firstName !== undefined)
   @IsDefined({message: 'ERRORS.ENTER_FIRST_NAME'})
   @IsNotEmpty({message: 'ERRORS.ENTER_FIRST_NAME'})
-  @MaxLength(70, {message: 'ERRORS.TEXT_TOO_MANY'})
+  @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
     firstName?: string;
 
   @ValidateIf(o => o.lastName !== undefined)
@@ -19,6 +20,9 @@ export class PartyDetails {
   @IsNotEmpty({message: 'ERRORS.ENTER_LAST_NAME'})
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
     lastName?: string;
+
+  @Validate(FullNameValidator)
+    nameLength?: number;
 
   @ValidateIf(o => o.soleTraderTradingAs !== undefined)
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
@@ -42,8 +46,8 @@ export class PartyDetails {
   carmEnabled?: boolean;
 
   constructor(value: Record<string, string>, carmEnabled?: boolean) {
-    this.title = value?.title;
-    this.lastName = value?.lastName;
+    this.title = value?.title.trim();
+    this.lastName = value?.lastName.trim();
     this.firstName = value?.firstName.trim();
     this.soleTraderTradingAs = value?.soleTraderTradingAs;
     this.partyName = value?.partyName;
@@ -57,7 +61,8 @@ export class PartyDetails {
       this.primaryAddress = new Address(value?.addressLine1.trim(), value?.addressLine2.trim(), value?.addressLine3.trim(), value?.city.trim(), value?.postCode.trim());
     }
     this.carmEnabled = carmEnabled;
-
+    this.nameLength = value?.title.trim().length === 0? value?.firstName.trim().length + value?.lastName.trim().length + 1
+      : value?.title.trim().length + value?.firstName.trim().length + value?.lastName.trim().length + 2;
   }
 
 }

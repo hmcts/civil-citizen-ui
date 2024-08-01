@@ -9,9 +9,16 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
   readonly UK_POSTCODE_REGEX = /^(([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2}))$/; // NOSONAR
   readonly START_CODE_REGEX = /^(.*?)[0-9]{1,2}/;
 
+  lengthError: boolean;
+
   validate(value: string) {
     const ukPostCodePattern = this.UK_POSTCODE_REGEX;
     const normalised = value?.toString().replace(/\s/g, '').toUpperCase();
+    if (value.length > 8) {
+      this.lengthError = true;
+      return false;
+    }
+    this.lengthError = false;
     if (!value) {
       return true;
     }
@@ -28,7 +35,7 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return 'ERRORS.DEFENDANT_POSTCODE_NOT_VALID';
+    return !this.lengthError ? 'ERRORS.DEFENDANT_POSTCODE_NOT_VALID' : 'ERRORS.VALID_POSTCODE';
   }
 }
 
