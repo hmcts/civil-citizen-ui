@@ -38,7 +38,6 @@ export class GeneralApplication {
   applicationFeePaymentDetails : PaymentInformation;
   caseLink?: CaseLink;
   uploadAdditionalDocuments?: UploadAdditionalDocument[] = [];
-  generalAppAddlnInfoUpload?: UploadGAFiles[];
 
   constructor(
     applicationType?: ApplicationType,
@@ -56,8 +55,7 @@ export class GeneralApplication {
     wantToUploadDocuments?: YesNo,
     uploadN245Form?: UploadGAFiles,
     informOtherParties?: InformOtherParties,
-    applicationFee?: ClaimFeeData,
-    generalAppAddlnInfoUpload?: UploadGAFiles) {
+    applicationFee?: ClaimFeeData) {
     this.applicationTypes = applicationType ? [applicationType] : [];
     this.agreementFromOtherParty = agreementFromOtherParty;
     this.applicationCosts = applicationCosts;
@@ -74,6 +72,5 @@ export class GeneralApplication {
     this.uploadN245Form = uploadN245Form;
     this.informOtherParties = informOtherParties;
     this.applicationFee = applicationFee;
-    this.generalAppAddlnInfoUpload = generalAppAddlnInfoUpload ? [generalAppAddlnInfoUpload] : [];
   }
 }

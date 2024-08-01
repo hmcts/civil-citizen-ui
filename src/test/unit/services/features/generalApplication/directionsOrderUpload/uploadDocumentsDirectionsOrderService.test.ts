@@ -5,7 +5,7 @@ import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {summarySection} from 'models/summaryList/summarySections';
 import {
   buildSummarySection, getSummaryList,
-} from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
+} from 'services/features/generalApplication/directionsOrderUpload/uploadDocumentsDirectionsOrderService';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import * as draftService from 'modules/draft-store/draftStoreService';
 import * as draftServiceGA from 'modules/draft-store/draftGADocumentService';
@@ -15,7 +15,7 @@ jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/modules/draft-store/draftGADocumentService');
 
-describe('Upload Evidence Document service', () => {
+describe('Upload Directions Order Document service', () => {
   const mockDataFromStore = jest.spyOn(draftService, 'getCaseDataFromStore');
   const mockGADocDataFromStore = jest.spyOn(draftServiceGA, 'getGADocumentsFromDraftStore');
   let uploadDocuments: UploadGAFiles[];
@@ -28,7 +28,7 @@ describe('Upload Evidence Document service', () => {
     uploadDocuments = [
       {
         caseDocument: {
-          documentName: 'Additional information1',
+          documentName: 'Directions order1',
           createdBy: 'Applicant',
           documentLink: {
             document_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1046',
@@ -42,7 +42,7 @@ describe('Upload Evidence Document service', () => {
       },
       {
         caseDocument: {
-          documentName: 'Additional information2',
+          documentName: 'Directions order2',
           createdBy: 'Applicant',
           documentLink: {
             document_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1047',
@@ -71,11 +71,11 @@ describe('Upload Evidence Document service', () => {
       //When
       await getSummaryList(formattedSummary, 'redis-key', '123', '1');
       //Then
-      expect(formattedSummary.summaryList.rows[0].key.text).toEqual('Additional information1');
-      expect(formattedSummary.summaryList.rows[0].actions.items[0].href).toEqual('/case/123/general-application/1/upload-documents-for-addln-info?id=1');
+      expect(formattedSummary.summaryList.rows[0].key.text).toEqual('Directions order1');
+      expect(formattedSummary.summaryList.rows[0].actions.items[0].href).toEqual('/case/123/general-application/1/upload-documents-directions-order?id=1');
       expect(formattedSummary.summaryList.rows[0].actions.items[0].text).toEqual('Remove document');
-      expect(formattedSummary.summaryList.rows[1].key.text).toEqual('Additional information2');
-      expect(formattedSummary.summaryList.rows[1].actions.items[0].href).toEqual('/case/123/general-application/1/upload-documents-for-addln-info?id=2');
+      expect(formattedSummary.summaryList.rows[1].key.text).toEqual('Directions order2');
+      expect(formattedSummary.summaryList.rows[1].actions.items[0].href).toEqual('/case/123/general-application/1/upload-documents-directions-order?id=2');
       expect(formattedSummary.summaryList.rows[1].actions.items[0].text).toEqual('Remove document');
     });
 
@@ -83,8 +83,8 @@ describe('Upload Evidence Document service', () => {
       it('Should build the summary section: ', () => {
         const result = buildSummarySection(uploadDocuments, '1', '123', 'en');
         expect(result).toHaveLength(1);
-        expect(result[0].value.html).toContain('<ul class="no-list-style"><li>Additional information1</li><li>Additional information2</li></ul>');
-        expect(result[0].actions.items[0].href).toContain('/case/1/general-application/123/upload-documents-for-addln-info');
+        expect(result[0].value.html).toContain('<ul class="no-list-style"><li>Directions order1</li><li>Directions order2</li></ul>');
+        expect(result[0].actions.items[0].href).toContain('/case/1/general-application/123/upload-documents-directions-order');
       });
     });
   });
