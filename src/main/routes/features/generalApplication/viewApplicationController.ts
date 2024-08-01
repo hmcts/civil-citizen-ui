@@ -15,7 +15,6 @@ import {
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {
   ApplicationResponse,
-  JudicialDecisionMakeAnOrderOptions,
 } from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {SummaryRow} from 'common/models/summaryList/summaryList';
@@ -35,8 +34,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, req.params.appId);
     const isResponseFromCourt = !!applicationResponse.case_data?.judicialDecision?.decision;
-    const isJudgesDirectionsOrder = applicationResponse.case_data?.judicialDecisionMakeOrder?.makeAnOrder == JudicialDecisionMakeAnOrderOptions.GIVE_DIRECTIONS_WITHOUT_HEARING
-      && applicationResponse.case_data?.judicialDecisionMakeOrder?.directionsResponseByDate != undefined;
+    const isJudgesDirectionsOrder = applicationResponse.case_data?.judicialDecisionMakeOrder?.directionsResponseByDate != undefined;
     let responseFromCourt: SummaryRow[] = [];
     let judgesDirectionsOrder: SummaryRow[] = [];
     let payAdditionalFeeUrl: string = null;

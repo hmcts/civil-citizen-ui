@@ -19,12 +19,13 @@ import {getApplicationFromGAService} from 'services/features/generalApplication/
 import {getClaimById} from 'modules/utilityService';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
-import { t } from 'i18next';
-import { formatDateToFullDate } from 'common/utils/dateUtils';
-import { DocumentType } from 'common/models/document/documentType';
-import { GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL, CASE_DOCUMENT_VIEW_URL } from 'routes/urls';
-import { documentIdExtractor } from 'common/utils/stringUtils';
-import { constructDocumentUrlWithIdParamsAndDocumentId } from 'common/utils/urlFormatter';
+import {t} from 'i18next';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {DocumentType} from 'common/models/document/documentType';
+import {CASE_DOCUMENT_VIEW_URL, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL} from 'routes/urls';
+import {documentIdExtractor} from 'common/utils/stringUtils';
+import {constructDocumentUrlWithIdParamsAndDocumentId} from 'common/utils/urlFormatter';
+import {CcdGeneralApplicationAddlDocument} from "models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument";
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -95,14 +96,20 @@ const getMakeWithNoticeDocumentUrl = (applicationResponse: ApplicationResponse) 
 export const getJudgesDirectionsOrder = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
   const rows: SummaryRow[] = [];
   let documentUrl = '';
-
-  applicationResponse.case_data.directionOrderDocument.forEach(directionOrderDocument => {
-    documentUrl += `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(directionOrderDocument?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER_DOCUMENT', {lng})}</a><br>`;
-  });
+  const directionOrderDocument = getDirectionOrderDocument(applicationResponse);
+  documentUrl += `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(directionOrderDocument?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER_DOCUMENT', {lng})}</a>`;
 
   rows.push(
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(applicationResponse.case_data.directionOrderDocument[0].value.createdDatetime, lng)),
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER', {lng})),
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl));
   return rows;
+};
+
+const getDirectionOrderDocument = (applicationResponse: ApplicationResponse) : CcdGeneralApplicationAddlDocument => {
+  const requestForInformationDocument = applicationResponse?.case_data?.directionOrderDocument;
+  if(requestForInformationDocument) {
+    return requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.DIRECTION_ORDER);
+  }
+  return undefined;
 };
