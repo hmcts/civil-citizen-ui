@@ -24,8 +24,8 @@ const viewResponseToClaim = 'features/dashboard/orders-and-notices';
 
 const renderView = async (res: Response, claimId: string, claim: Claim, lang: string): Promise<void> => {
 
-  const claimantDocuments = getClaimantDocuments(claim, claimId, lang);
-  const defendantDocuments = getDefendantDocuments(claim, claimId, lang);
+  const claimantDocuments = await getClaimantDocuments(claim, claimId, lang);
+  const defendantDocuments = await getDefendantDocuments(claim, claimId, lang);
   const courtDocuments = await getCourtDocuments(claim, claimId, lang);
 
   res.render(viewResponseToClaim, {

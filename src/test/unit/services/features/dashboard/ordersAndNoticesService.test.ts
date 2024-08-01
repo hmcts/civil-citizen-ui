@@ -20,6 +20,7 @@ import {
 } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {CaseDocument} from 'models/document/caseDocument';
+import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialArrangements';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
@@ -508,6 +509,48 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
+    it('should get data array for Claimant Trial Arrangements', async () => {
+      //given
+      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      claim.caseProgression = new CaseProgression();
+      claim.caseProgression.claimantTrialArrangements = new TrialArrangements();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.TRIAL_READY_DOCUMENT);
+      claim.caseProgression.claimantTrialArrangements.trialArrangementsDocument = document;
+      //When
+      const result = await getClaimantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.TRIAL_ARRANGEMENTS',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Claimant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for Claimant Trial Arrangements', async () => {
+      //given
+      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      claim.caseProgression = new CaseProgression();
+      claim.caseProgression.defendantTrialArrangements = new TrialArrangements();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.TRIAL_READY_DOCUMENT);
+      claim.caseProgression.defendantTrialArrangements.trialArrangementsDocument = document;
+      //When
+      const result = await getDefendantDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.TRIAL_ARRANGEMENTS',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should get data array for decision on reconsideration', async () => {
       //given
       (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
@@ -554,6 +597,27 @@ describe('View Orders And Notices Service', () => {
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.TRANSLATED_ORDER',
+        '21 June 2022',
+        new DocumentLinkInformation(documentUrl, documentName),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array for final order', async () => {
+      //given
+      (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+      const documentName = 'test_000MC001.pdf';
+      const claim = new Claim();
+      claim.caseProgression = new CaseProgression();
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.JUDGE_FINAL_ORDER);
+
+      claim.caseProgression.finalOrderDocumentCollection = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.ORDERS_AND_NOTICES.FINAL_ORDER',
         '21 June 2022',
         new DocumentLinkInformation(documentUrl, documentName),
       );
