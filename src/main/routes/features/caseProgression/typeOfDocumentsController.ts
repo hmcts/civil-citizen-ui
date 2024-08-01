@@ -5,7 +5,7 @@ import {
 } from '../../urls';
 import {AppRequest} from 'common/models/AppRequest';
 
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {
@@ -14,6 +14,7 @@ import {
 import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {getTypeOfDocumentsContents} from 'services/features/caseProgression/evidenceUploadDocumentsContent';
+import {getClaimById} from 'modules/utilityService';
 
 const typeOfDocumentsViewPath = 'features/caseProgression/typeOfDocuments';
 const typeOfDocumentsController = Router();
@@ -38,7 +39,8 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
   (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
-      const documentsList = await getDocuments(claimId);
+      const redisKey= generateRedisKey(req);
+      const documentsList = await getDocuments(redisKey);
       const form = new GenericForm(documentsList);
       req.session.previousUrl = req.originalUrl;
       await renderView(res, claimId,form, constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL));
@@ -50,7 +52,7 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
 typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const claim = await getCaseDataFromStore(claimId);
+    const claim =  await getClaimById(claimId, req,true);
     const typeDocumentList= getTypeDocumentForm(req);
     const form = new GenericForm(typeDocumentList);
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
@@ -59,7 +61,7 @@ typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) =
     if (form.hasErrors()) {
       await renderView(res, claimId,form, constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL));
     } else {
-      await saveCaseProgression(claimId, form.model, isClaimant);
+      await saveCaseProgression(claimId,req, form.model, isClaimant);
       await deleteUntickedDocumentsFromStore(claimId, claim.isClaimant());
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL));
     }
