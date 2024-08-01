@@ -24,15 +24,31 @@ export interface EventDto {
 }
 
 export interface CCDGeneralApplication extends ClaimUpdate {
-  generalAppType: CcdGeneralApplicationTypes;
-  generalAppRespondentAgreement: CcdGeneralApplicationRespondentAgreement;
-  generalAppInformOtherParty: CcdGeneralApplicationInformOtherParty;
-  generalAppAskForCosts: YesNoUpperCamelCase;
-  generalAppDetailsOfOrder: string;
-  generalAppReasonsOfOrder: string;
-  generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
-  generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
-  generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
-  generalAppHelpWithFees: CCDHelpWithFees;
+  generalAppType?: CcdGeneralApplicationTypes;
+  generalAppRespondentAgreement?: CcdGeneralApplicationRespondentAgreement;
+  generalAppInformOtherParty?: CcdGeneralApplicationInformOtherParty;
+  generalAppAskForCosts?: YesNoUpperCamelCase;
+  generalAppDetailsOfOrder?: string;
+  generalAppReasonsOfOrder?: string;
+  generalAppEvidenceDocument?: CcdGeneralApplicationEvidenceDocument[];
+  generalAppHearingDetails?: CcdGeneralApplicationHearingDetails;
+  generalAppStatementOfTruth?: CcdGeneralApplicationStatementOfTruth;
+  generalAppHelpWithFees?: CCDHelpWithFees;
   caseLink?: CaseLink;
+  uploadDocument?: AdditionalDocuments[]
+}
+interface DocumentDetails {
+  document_url: string;
+  document_binary_url: string;
+  document_filename: string;
+}
+
+interface AdditionDocDetails {
+  typeOfDocument: string,
+  documentUpload: DocumentDetails
+}
+
+export interface AdditionalDocuments {
+  id: string;
+  value: AdditionDocDetails
 }
