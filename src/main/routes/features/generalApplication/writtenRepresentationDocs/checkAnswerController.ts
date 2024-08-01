@@ -45,7 +45,6 @@ gaWrittenRepresentationCheckAnswersController.post(GA_UPLOAD_WRITTEN_REPRESENTAT
     const { appId, id: claimId } = req.params;
     const uploadedDocumentList = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const uploadedDocument = translateCUItoCCD(uploadedDocumentList);
-    console.log(uploadedDocument);
     const generalApplication = {
       generalAppWrittenRepUpload: uploadedDocument,
     };
