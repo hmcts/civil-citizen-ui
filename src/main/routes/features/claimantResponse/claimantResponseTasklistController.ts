@@ -5,8 +5,7 @@ import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {getClaimantResponseTaskLists} from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
 import {Claim} from 'models/claim';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
-import {isMintiEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const claimantResponseTasklistViewPath = 'features/claimantResponse/claimant-response-task-list';
 const claimantResponseTasklistController = Router();
@@ -25,6 +24,7 @@ claimantResponseTasklistController.get(CLAIMANT_RESPONSE_TASK_LIST_URL, async (r
       taskLists,
       title: getTitle(taskLists, lang),
       description: getDescription(taskLists, lang),
+      pageTitle: 'PAGES.CLAIMANT_RESPONSE_TASK_LIST.PAGE_TITLE',
     });
   } catch (error) {
     next(error); //

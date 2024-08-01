@@ -18,7 +18,7 @@ const crPropertyName = 'ccjPaymentOption';
 const crParentName = 'ccjRequest';
 
 function renderView(form: GenericForm<CcjPaymentOption>, res: Response): void {
-  res.render(ccjPaymentOptionViewPath, {form});
+  res.render(ccjPaymentOptionViewPath, {form, pageTitle: 'PAGES.CCJ_PAYMENT_TYPE.PAGE_TITLE'});
 }
 
 ccjPaymentOptionController.get(CCJ_PAYMENT_OPTIONS_URL, async (req, res, next: NextFunction) => {

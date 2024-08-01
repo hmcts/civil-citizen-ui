@@ -17,8 +17,7 @@ import {submitClaimantResponse} from 'services/features/claimantResponse/submitC
 import {YesNo} from 'common/form/models/yesNo';
 import {claimantResponsecheckYourAnswersGuard } from 'routes/guards/claimantResponseCheckYourAnswersGuard';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
-import {isMintiEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const checkAnswersViewPath = 'features/claimantResponse/check-answers';
 const claimantResponseCheckAnswersController = Router();
@@ -31,6 +30,7 @@ async function renderView(req: AppRequest, res: Response, form: GenericForm<Stat
   res.render(checkAnswersViewPath, {
     form,
     summarySections,
+    pageTitle: 'PAGES.CHECK_YOUR_ANSWER.CLAIMANT_INTENT_PAGE_TITLE',
   });
 }
 

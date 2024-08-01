@@ -17,7 +17,7 @@ const dqPropertyName = 'sentExpertReports';
 const dqParentName = 'experts';
 
 function renderView(form: GenericForm<SentExpertReports>, res: Response): void {
-  res.render(expertReportsViewPath, {form});
+  res.render(expertReportsViewPath, {form, pageTitle: 'PAGES.SENT_EXPERT_REPORTS.PAGE_TITLE'});
 }
 
 sentExpertReportsController.get(DQ_SENT_EXPERT_REPORTS_URL, (async (req, res, next) => {
