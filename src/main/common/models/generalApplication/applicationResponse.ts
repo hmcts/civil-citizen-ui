@@ -77,4 +77,11 @@ export enum JudicialDecisionOptions {
 
 export interface JudicialDecisionMakeOrder {
   directionsResponseByDate?: string;
+  makeAnOrder?: JudicialDecisionMakeAnOrderOptions;
+}
+
+export enum JudicialDecisionMakeAnOrderOptions {
+  APPROVE_OR_EDIT = 'APPROVE_OR_EDIT',
+  DISMISS_THE_APPLICATION = 'DISMISS_THE_APPLICATION',
+  GIVE_DIRECTIONS_WITHOUT_HEARING = 'GIVE_DIRECTIONS_WITHOUT_HEARING',
 }

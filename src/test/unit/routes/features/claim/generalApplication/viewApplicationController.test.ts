@@ -7,7 +7,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GaServiceClient} from 'client/gaServiceClient';
-import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {ApplicationResponse, JudicialDecisionMakeAnOrderOptions} from 'models/generalApplication/applicationResponse';
 import {getApplicationSections} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
@@ -71,6 +71,7 @@ describe('General Application - View application', () => {
             judicialDecision: undefined,
             judicialDecisionMakeOrder: {
               directionsResponseByDate: new Date('2024-01-01').toString(),
+              makeAnOrder: JudicialDecisionMakeAnOrderOptions.GIVE_DIRECTIONS_WITHOUT_HEARING,
             },
             directionOrderDocument: [
               {
