@@ -2,27 +2,33 @@ import {IsDefined, IsNotEmpty, MaxLength, Validate, ValidateIf, ValidateNested} 
 import {Address} from 'form/models/address';
 import {GenericForm} from 'form/models/genericForm';
 import {FullNameValidator} from 'form/validators/fullNameValidator';
+import {SpecialCharValidator} from 'form/validators/specialCharValidator';
 
 export class PartyDetails {
 
   @ValidateIf(o => o.title !== undefined)
   @MaxLength(35, {message: 'ERRORS.ENTER_VALID_TITLE'})
+  @Validate(SpecialCharValidator)
+  @Validate(FullNameValidator,['nameLength', 'ERRORS.TEXT_TOO_MANY'])
     title?: string;
 
   @ValidateIf(o => o.firstName !== undefined)
   @IsDefined({message: 'ERRORS.ENTER_FIRST_NAME'})
   @IsNotEmpty({message: 'ERRORS.ENTER_FIRST_NAME'})
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
+  @Validate(SpecialCharValidator)
+  @Validate(FullNameValidator,['nameLength', ' '])
     firstName?: string;
 
   @ValidateIf(o => o.lastName !== undefined)
   @IsDefined({message: 'ERRORS.ENTER_LAST_NAME'})
   @IsNotEmpty({message: 'ERRORS.ENTER_LAST_NAME'})
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
+  @Validate(SpecialCharValidator)
+  @Validate(FullNameValidator,['nameLength', ' '])
     lastName?: string;
 
-  @Validate(FullNameValidator)
-    nameLength?: number;
+  nameLength?: number;
 
   @ValidateIf(o => o.soleTraderTradingAs !== undefined)
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})

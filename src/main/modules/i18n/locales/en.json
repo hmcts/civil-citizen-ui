@@ -4560,6 +4560,7 @@
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
     "DETAILS_REQUIRED": "Enter details",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
+    "SPECIAL_CHARACTERS": "Special characters are not allowed",
     "DELAYED_FLIGHT": {
       "CLAIMING_FOR_DELAY_REQUIRED": "'Are you claiming for a delayed flight?' is required"
     },

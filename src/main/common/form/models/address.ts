@@ -1,17 +1,22 @@
 import { IsNotEmpty, MaxLength, Validate } from 'class-validator';
 import {PostcodeValidator} from '../validators/postcodeValidator';
 import { ADDRESS_LINE_MAX_LENGTH } from '../validators/validationConstraints';
+import {SpecialCharValidator} from 'form/validators/specialCharValidator';
 
 export class Address {
   @IsNotEmpty({ message: 'ERRORS.VALID_ADDRESS_LINE_1' })
   @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.ADDRESS_LINE_TOO_MANY' })
+  @Validate(SpecialCharValidator)
     addressLine1?: string;
   @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.ADDRESS_LINE_TOO_MANY' })
+  @Validate(SpecialCharValidator)
     addressLine2?: string;
   @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.ADDRESS_LINE_TOO_MANY' })
+  @Validate(SpecialCharValidator)
     addressLine3?: string;
   @IsNotEmpty({message: 'ERRORS.VALID_CITY'})
   @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.TOWN_CITY_TOO_MANY' })
+  @Validate(SpecialCharValidator)
     city?: string;
   @IsNotEmpty({message: 'ERRORS.VALID_POSTCODE'})
   @Validate(PostcodeValidator)

@@ -14,14 +14,14 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
   validate(value: string) {
     const ukPostCodePattern = this.UK_POSTCODE_REGEX;
     const normalised = value?.toString().replace(/\s/g, '').toUpperCase();
+    if (!value) {
+      return true;
+    }
     if (value.length > 8) {
       this.lengthError = true;
       return false;
     }
     this.lengthError = false;
-    if (!value) {
-      return true;
-    }
     const isValidFormat = ukPostCodePattern.test(normalised);
     if (!isValidFormat) {
       return false;

@@ -4561,6 +4561,7 @@
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
     "DETAILS_REQUIRED": "Rhowch fanylion",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod manylion yr anghenion ar gyfer y gwrandawiad ar y dudalen hon yn wir",
+    "SPECIAL_CHARACTERS": "Special characters are not allowed",
     "DELAYED_FLIGHT": {
       "CLAIMING_FOR_DELAY_REQUIRED": "Mae angen dewis opsiwn ar gyfer A ydych yn hawlio am oedi wrth hedfan"
     },
