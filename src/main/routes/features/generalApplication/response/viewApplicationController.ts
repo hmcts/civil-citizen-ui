@@ -3,11 +3,12 @@ import {GA_RESPONSE_VIEW_APPLICATION_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {
   getApplicantDocuments,
-  getApplicationSections, getRespondentDocuments,
+  getApplicationSections, getCourtDocuments, getRespondentDocuments,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
+import {DocumentsViewComponent} from 'form/models/documents/DocumentsViewComponent';
 
 const viewApplicationToRespondentController = Router();
 const viewPath = 'features/generalApplication/response/view-application';
@@ -22,9 +23,10 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const summaryRows = await getApplicationSections(req, applicationId, lang);
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
-    const applicantDocuments = getApplicantDocuments(applicationResponse, lang);
-    const respondentDocuments = getRespondentDocuments(applicationResponse, lang);
-    res.render(viewPath, {backLinkUrl, summaryRows, pageTitle, redirectUrl, applicationIndex, applicantDocuments, respondentDocuments });
+    const applicantDocuments: DocumentsViewComponent = getApplicantDocuments(applicationResponse, lang);
+    const courtDocuments: DocumentsViewComponent = getCourtDocuments(applicationResponse, lang);
+    const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
+    res.render(viewPath, {backLinkUrl, summaryRows, pageTitle, redirectUrl, applicationIndex, applicantDocuments, courtDocuments, respondentDocuments });
   } catch (error) {
     next(error);
   }

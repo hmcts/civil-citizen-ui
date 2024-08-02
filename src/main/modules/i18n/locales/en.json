@@ -60,7 +60,6 @@
     "ORDER_AND_NOTICES": "orders and notices",
     "MANDATORY_CONTACT_PERSON": "Contact person",
     "PARTIES": "{{ claimantName }} v {{ defendantName }}",
-    "RESPONDENTS_DOCUMENTS": "Respondent's documents",
     "REASON": "Reason",
     "REMOVE": "Remove",
     "REMOVE_CARM": "Remove",
