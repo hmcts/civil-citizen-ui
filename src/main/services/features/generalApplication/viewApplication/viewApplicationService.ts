@@ -22,9 +22,10 @@ import {Claim} from 'models/claim';
 import { t } from 'i18next';
 import { formatDateToFullDate } from 'common/utils/dateUtils';
 import { DocumentType } from 'common/models/document/documentType';
-import { GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL } from 'routes/urls';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL} from 'routes/urls';
 import { documentIdExtractor } from 'common/utils/stringUtils';
 import { constructDocumentUrlWithIdParamsAndDocumentId } from 'common/utils/urlFormatter';
+import {Request} from "express";
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -86,8 +87,39 @@ const getMakeWithNoticeDocumentUrl = (applicationResponse: ApplicationResponse) 
   const applicationId = applicationResponse.id;
   if(requestForInformationDocument) {
     const makeWithNoticeDoc = requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY);
-    const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);    
+    const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);
     return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
   }
   return undefined;
+};
+
+export const getJudgeApproveEdit = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
+  const rows: SummaryRow[] = [];
+  const documentUrl ='test';
+
+  rows.push(
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_APPROVE_EDIT', {lng})),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPROVE_EDIT_DOCUMENT', {lng})}</a>`),
+  );
+  return rows;
+};
+
+export const getJudgeDismiss = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
+  const rows: SummaryRow[] = [];
+  const documentUrl ='test';
+
+  rows.push(
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DISMISSED', {lng})),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSED_DOCUMENT', {lng})}</a>`),
+  );
+  return rows;
+};
+
+export const getReturnDashboardUrl = async (claimId: string, req: Request) : Promise<string> => {
+  const claim = await getClaimById(claimId, req);
+  return claim.isClaimant()
+    ? DASHBOARD_CLAIMANT_URL.replace(':id', claimId)
+    : DEFENDANT_SUMMARY_URL.replace(':id', claimId);
 };

@@ -26,7 +26,7 @@
 
 {% set responseHtml %}
 {# TODO: add response show/hidde content here #}
-  <p class="govuk-body">Response from the other parties</p> 
+  <p class="govuk-body">Response from the other parties</p>
 {% endset %}
 
 {% set courtResponseHeaderHtml %}
@@ -46,6 +46,26 @@
   }) }}
 {% endset %}
 
+{% set judgesApproveEditDismissHtml %}
+  <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
+
+  {% if isJudgesApproveEdit %}
+    {{ govukSummaryList({
+      rows: judgesApproveEdit
+    }) }}
+  {% endif %}
+  {% if isJudgesDismiss %}
+    {{ govukSummaryList({
+      rows: judgesDismiss
+    }) }}
+  {% endif %}
+
+  {{ govukButton({
+    text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD'),
+    href: returnDashboardUrl
+  }) }}
+{% endset %}
+
 {% block nestedContent %}
   <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TITLE', { applicationIndex : applicationIndex }) }}</h1>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REVIEW') }}</p>
@@ -55,14 +75,16 @@
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_1')}}<a href="{{additionalDocUrl}}">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_2') }}</a>{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_3') }}</p>
 
   <div class="govuk-!-padding-top-5">
-    {{ govukDetails({
-      summaryHtml: applicationHeaderHtml,
-      html: applicationHtml
-    }) }}
     {% if isResponseFromCourt %}
       {{ govukDetails({
         summaryHtml: courtResponseHeaderHtml,
         html: courtResponseHtml
+      }) }}
+    {% endif %}
+    {% if isJudgesApproveEdit or isJudgesDismiss %}
+      {{ govukDetails({
+        summaryHtml: courtResponseHeaderHtml,
+        html: judgesApproveEditDismissHtml
       }) }}
     {% endif %}
     {{ govukDetails({

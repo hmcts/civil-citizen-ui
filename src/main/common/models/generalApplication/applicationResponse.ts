@@ -59,6 +59,9 @@ export interface CCDApplication extends ApplicationUpdate {
   parentClaimantIsApplicant: YesNoUpperCamelCase;
   judicialDecision: JudicialDecision,
   requestForInformationDocument?: CcdGAMakeWithNoticeDocument[];
+  judicialDecisionMakeOrder?: JudicialDecisionMakeOrder;
+  generalOrderDocument?: CcdGeneralApplicationAddlDocument[];
+  dismissalOrderDocument?: CcdGeneralApplicationAddlDocument[];
 }
 
 export interface JudicialDecision {
@@ -71,4 +74,14 @@ export enum JudicialDecisionOptions {
   REQUEST_MORE_INFO = 'REQUEST_MORE_INFO',
   LIST_FOR_A_HEARING = 'LIST_FOR_A_HEARING',
   MAKE_ORDER_FOR_WRITTEN_REPRESENTATIONS = 'MAKE_ORDER_FOR_WRITTEN_REPRESENTATIONS',
+}
+export interface JudicialDecisionMakeOrder {
+  directionsResponseByDate?: string;
+  makeAnOrder?: JudicialDecisionMakeAnOrderOptions;
+}
+
+export enum JudicialDecisionMakeAnOrderOptions {
+  APPROVE_OR_EDIT = 'APPROVE_OR_EDIT',
+  DISMISS_THE_APPLICATION = 'DISMISS_THE_APPLICATION',
+  GIVE_DIRECTIONS_WITHOUT_HEARING = 'GIVE_DIRECTIONS_WITHOUT_HEARING',
 }
