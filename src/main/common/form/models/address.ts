@@ -14,7 +14,7 @@ export class Address {
   @MaxLength(ADDRESS_LINE_MAX_LENGTH, { message: 'ERRORS.TOWN_CITY_TOO_MANY' })
     city?: string;
   @IsNotEmpty({message: 'ERRORS.VALID_POSTCODE'})
-  @Validate(PostcodeValidator, {message: 'ERRORS.DEFENDANT_POSTCODE_NOT_VALID'})
+  @Validate(PostcodeValidator)
     postCode?: string;
 
   constructor(

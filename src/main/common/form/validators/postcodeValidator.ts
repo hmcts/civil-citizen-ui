@@ -35,7 +35,7 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return !this.lengthError ? 'ERRORS.DEFENDANT_POSTCODE_NOT_VALID' : 'ERRORS.VALID_POSTCODE';
+    return !this.lengthError ? 'ERRORS.DEFENDANT_POSTCODE_NOT_VALID' : 'ERRORS.TEXT_TOO_MANY';
   }
 }
 
