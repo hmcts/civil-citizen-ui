@@ -1,5 +1,6 @@
 {
   "COMMON": {
+    "APPLICANTS_DOCUMENTS": "Applicant's documents",
     "HOME": "Home",
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Upload file",
@@ -60,6 +61,7 @@
     "ORDER_AND_NOTICES": "orders and notices",
     "MANDATORY_CONTACT_PERSON": "Contact person",
     "PARTIES": "{{ claimantName }} v {{ defendantName }}",
+    "RESPONDENTS_DOCUMENTS": "Respondent's documents",
     "REASON": "Reason",
     "REMOVE": "Remove",
     "REMOVE_CARM": "Remove",
@@ -100,6 +102,7 @@
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
       "SUBMIT": "Submit",
       "START_NOW": "Start now",
+      "UPLOAD_ADDITIONAL_DOCUMENTS": "Upload additional documents",
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview",
       "CLOSE_AND_RETURN_TO_DASHBOARD": "Close and return to dashboard"
     },
@@ -3067,6 +3070,8 @@
       },
       "VIEW_APPLICATION": {
         "APPLICATION": "Application",
+        "APPLICATION_DOCUMENTS": "Application Documents",
+        "APPLICANT_DOCUMENTS": "Applicant's documents",
         "APPLICATION_DETAILS": "Application details submitted by the applicant.",
         "APPLICATION_DOCUMENTS": "Application Documents",
         "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
@@ -3081,6 +3086,7 @@
         "RESPONSE": "Response from the other parties",
         "READ_RESPONSE": "Read the response",
         "RESPONSE_COURT": "Response from the court",
+        "RESPONDENT_DOCUMENTS": "Respondent's documents",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",

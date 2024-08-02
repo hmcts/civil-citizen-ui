@@ -1,7 +1,16 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {DASHBOARD_URL, GA_PAY_ADDITIONAL_FEE_URL, GA_VIEW_APPLICATION_URL,GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
+<<<<<<< Updated upstream
 import {getApplicantDocuments, getApplicationSections, getCourtDocuments, getJudgeResponseSummary, getRespondentDocuments} from 'services/features/generalApplication/viewApplication/viewApplicationService';
+=======
+import {
+  getApplicantDocuments,
+  getApplicationSections,
+  getJudgeResponseSummary,
+  getRespondentDocuments,
+} from 'services/features/generalApplication/viewApplication/viewApplicationService';
+>>>>>>> Stashed changes
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
@@ -22,6 +31,9 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, req.params.appId);
+    const applicantDocuments = getApplicantDocuments(applicationResponse, lang);
+    const respondentDocuments = getRespondentDocuments(applicationResponse, lang);
+
     const isResponseFromCourt = !!applicationResponse.case_data?.judicialDecision?.decision;
     let responseFromCourt: SummaryRow[] = [];
     let payAdditionalFeeUrl: string = null;
@@ -33,16 +45,18 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
       payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
     }
-    
+
     res.render(viewPath, {
-      backLinkUrl, 
-      summaryRows, 
-      pageTitle, 
-      dashboardUrl: DASHBOARD_URL, 
-      applicationIndex, 
-      isResponseFromCourt, 
+      backLinkUrl,
+      summaryRows,
+      pageTitle,
+      dashboardUrl: DASHBOARD_URL,
+      applicationIndex,
+      isResponseFromCourt,
       responseFromCourt,
       additionalDocUrl,
+      applicantDocuments,
+      respondentDocuments,
       payAdditionalFeeUrl,
       applicantDocuments,
       courtDocuments,

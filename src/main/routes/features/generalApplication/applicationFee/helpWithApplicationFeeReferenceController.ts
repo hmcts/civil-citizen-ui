@@ -72,6 +72,6 @@ export default helpWithApplicationFeeReferenceController;
 function getRedirectUrl(claimId: string, isHelpWithFee: GenericYesNo): string {
   if (isHelpWithFee.option === YesNo.YES) {
     return constructResponseUrlWithIdParams(claimId, GA_CHECK_ANSWERS_URL);
-  } 
+  }
   return constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
 }
