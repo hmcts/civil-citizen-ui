@@ -160,6 +160,28 @@ export const addDocumentUploadRow = (application: ApplicationResponse, lang: str
   return rows;
 };
 
+export const addViewApplicationRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  let rowValue: string;
+  if (application.case_data.requestForInformationDocument) {
+    rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION.YES', {lng})}</p>`;
+    rowValue += '<ul class="no-list-style">';
+    application.case_data.requestForInformationDocument.forEach(uploadGAFile => {
+      rowValue += `<li><a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', application.id).replace(':documentId', generalApplicationDocumentIdExtractor(uploadGAFile?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${uploadGAFile.value.documentLink.document_filename}</a></li>`;
+
+    });
+    rowValue += '</ul>';
+
+  } else {
+    rowValue = t('COMMON.VARIATION.NO', {lng});
+  }
+  rows.push(
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), rowValue),
+  );
+  return rows;
+};
+
 export const addHearingArrangementsRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];

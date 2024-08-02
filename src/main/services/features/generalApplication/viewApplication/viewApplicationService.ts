@@ -11,20 +11,21 @@ import {
   addOtherPartiesAgreedRow,
   addRequestingReasonRows,
   addUnavailableDatesRows,
+  addViewApplicationRow,
 } from './addViewApplicationRows';
 import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
-import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {ApplicationResponse, JudicialDecisionOptions} from 'models/generalApplication/applicationResponse';
 import {AppRequest} from 'models/AppRequest';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
-import { t } from 'i18next';
-import { formatDateToFullDate } from 'common/utils/dateUtils';
-import { DocumentType } from 'common/models/document/documentType';
-import { GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL } from 'routes/urls';
-import { documentIdExtractor } from 'common/utils/stringUtils';
-import { constructDocumentUrlWithIdParamsAndDocumentId } from 'common/utils/urlFormatter';
+import {t} from 'i18next';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {DocumentType} from 'common/models/document/documentType';
+import {GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL} from 'routes/urls';
+import {documentIdExtractor} from 'common/utils/stringUtils';
+import {constructDocumentUrlWithIdParamsAndDocumentId} from 'common/utils/urlFormatter';
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -35,6 +36,7 @@ const buildApplicationSections = (application: ApplicationResponse, lang: string
     ...addOrderJudgeRows(application, lang),
     ...addRequestingReasonRows(application, lang),
     ...addDocumentUploadRow(application, lang),
+    ...addViewApplicationRow(application, lang),
     ...addHearingArrangementsRows(application, lang),
     ...addHearingContactDetailsRows(application, lang),
     ...addUnavailableDatesRows(application, lang),
@@ -50,6 +52,7 @@ const buildViewApplicationToRespondentSections = (application: ApplicationRespon
     ...addOrderJudgeRows(application, lang),
     ...addRequestingReasonRows(application, lang),
     ...addDocumentUploadRow(application, lang),
+    ...addViewApplicationRow(application, lang),
     ...addHearingArrangementsRows(application, lang),
     ...addHearingContactDetailsRows(application, lang),
     ...addUnavailableDatesRows(application, lang),
@@ -75,10 +78,18 @@ export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse
 
   rows.push(
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
-    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
-    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng})}</a>`),
   );
-  return rows;
+  if(applicationResponse.case_data.judicialDecision.decision === JudicialDecisionOptions.MAKE_AN_ORDER) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng})}</a>`),
+    );
+  } else if(applicationResponse.case_data.judicialDecision.decision === JudicialDecisionOptions.REQUEST_MORE_INFO) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO', {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${getRequestMoreInfoDocumentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng})}</a>`),
+    );
+  } return rows;
 };
 
 const getMakeWithNoticeDocumentUrl = (applicationResponse: ApplicationResponse) : string => {
@@ -86,7 +97,18 @@ const getMakeWithNoticeDocumentUrl = (applicationResponse: ApplicationResponse) 
   const applicationId = applicationResponse.id;
   if(requestForInformationDocument) {
     const makeWithNoticeDoc = requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY);
-    const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);    
+    const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);
+    return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
+  }
+  return undefined;
+};
+
+const getRequestMoreInfoDocumentUrl = (applicationResponse: ApplicationResponse) : string => {
+  const requestForInformationDocument = applicationResponse?.case_data?.requestForInformationDocument;
+  const applicationId = applicationResponse.id;
+  if(requestForInformationDocument) {
+    const makeWithNoticeDoc = requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.REQUEST_MORE_INFO);
+    const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);
     return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
   }
   return undefined;
