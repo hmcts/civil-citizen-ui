@@ -41,6 +41,7 @@ import {
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {getClaimById} from 'modules/utilityService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -422,6 +423,18 @@ export const saveRespondentWantToUploadDoc = async (claimId: string, claim: Clai
   }
 };
 
+export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
+  try {
+    const claim = await getClaimById(req.params.id, req, true);
+    const gaApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = gaApplication;
+    return claim;
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+  
 export const shouldDisplaySyncWarning = (applicationResponse: ApplicationResponse): boolean => {
   const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
   if (isAdditionalFee) {
