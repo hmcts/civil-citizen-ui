@@ -47,7 +47,7 @@
     "TELEPHONE_MEDIATION": "Cyfryngu dros y ffôn",
     "AVAILABILITY_FOR_MEDIATION": "Pryd rydych ar gael ar gyfer cyfryngu",
     "MEDIATION": "Mediation",
-    "GIVE_DETAILS": "Rhowch fanylion",
+    "GIVE_DETAILS": "Rhowch fanylion os gwelwch yn dda",
     "GO_TO_HOMEPAGE": "Ewch i’r dudalen hafan",
     "JOB_TITLE": "Teitl swydd",
     "MONTH": "Mis",
@@ -394,12 +394,12 @@
   "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : {
     "DETAILS": {
       "TITLE": "Beth yw Datgeliad?",
-      "PARAGRAPH1": "Mae'n ofynnol i chi rannu (datgelu) yr holl ddogfennau sy'n berthnasol i'r hawliad gyda'r holl bartïon dan sylw.",
+      "PARAGRAPH1": "Mae’n ofynnol i chi rannu (datgelu) yr holl ddogfennau sy’n berthnasol i’r hawliad gyda phob parti.",
       "PARAGRAPH2": "Mae hyn yn cynnwys yr holl ddogfennau ffisegol ac electronig, megis anfonebau a chontractau, yn ogystal â delweddau, fideos, negeseuon testun, a negeseuon cyfryngau cymdeithasol.",
-      "PARAGRAPH3": "Rhaid i chi ddatgelu'r holl ddogfennau perthnasol, hyd yn oed os nad ydych yn bwriadu dibynnu arnynt yn ystod gwrandawiad neu os ydynt yn niweidiol i'ch cais.",
-      "PARAGRAPH4": "Bydd rhestr o ddyblu gan y partïon eraill ar gael i chi, a gallwch ofyn am gopïau o unrhyw un o'r dogfennau hyn. Gall y partïon eraill sy'n ymwneud â'r hawliad hefyd ofyn am weld ac archwilio copïau o ddogfennau rydych chi'n eu datgelu.",
+      "PARAGRAPH3": "Rhaid i chi ddatgelu pob dogfen berthnasol, hyd yn oed os nad ydych yn bwriadu dibynnu arnynt yn ystod gwrandawiad neu os ydynt yn niweidiol i’ch hawliad.",
+      "PARAGRAPH4": "Bydd rhestr o ddogfennau gan y partïon eraill ar gael i chi, a gallwch ofyn am gopïau o unrhyw un o’r dogfennau hyn. Gall y partïon eraill sy’n ymwneud â’r hawliad hefyd ofyn am gael gweld ac archwilio copïau o’r dogfennau y byddwch chi yn eu datgelu.",
       "URL" : {
-        "BEFORE": "Darganfyddwch fwy o wybodaeth am ",
+        "BEFORE": "Darllenwch fwy am ",
         "TEXT": "ddatgelu dogfennau (yn agor mewn tab newydd)",
         "AFTER": "."
       }
@@ -408,87 +408,87 @@
   "HOW_TO_AGREE_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS": {
     "DETAILS": {
       "TITLE": "Sut i gytuno i ddatgelu dogfennau electronig",
-      "PARAGRAPH1": "Gall partïon gytuno ymlaen llaw pa ddogfennau electronig a ddatgelir gan yr holl bartïon sy'n ymwneud â'r hawliad.",
+      "PARAGRAPH1": "Gall partïon gytuno o flaen llaw pa ddogfennau electronig fydd yn cael eu datgelu gan bob parti sy’n ymwneud â’r hawliad.",
       "URL1": {
-        "BEFORE": "Gellir gwneud hyn drwy ddefnyddio'r ",
+        "BEFORE": "Gellir gwneud hyn gan ddefnyddio’r ",
         "TEXT": "Holiadur Dogfennau Electronig ar Gov.uk (yn agor mewn tab newydd)",
         "AFTER": "."
       },
       "URL2": {
-        "BEFORE": "Mae mwy o wybodaeth am yr Holiadur Dogfennau Electronig ym mharagraff 10 o ",
-        "TEXT": "Gyfarwyddyd Ymarfer 31B (opens in a new tab)",
+        "BEFORE": "Mae yna ragor o wybodaeth am yr Holiadur Dogfennau Electronig ym mharagraff 10 o ",
+        "TEXT": "Gyfarwyddyd Ymarfer 31B (yn agor mewn tab newydd)",
         "AFTER": "."
       },
       "URL3": {
-        "BEFORE": "Gallwch hefyd ddarparu hyn yn ddigidol fel y nodir ym mharagraff 31 o ",
-        "TEXT": "Gyfarwyddyd Ymarfer 31B (opens in a new tab)",
+        "BEFORE": "Gallwch hefyd ddarparu hwn yn ddigidol fel y nodir ym mharagraff 31 o ",
+        "TEXT": "Gyfarwyddyd Ymarfer 31B (yn agor mewn tab newydd)",
         "AFTER": "."
       }
     }
   },
   "WHAT_ARE_FIXED_RECOVERABLE_COSTS": {
-    "TITLE": "Beth yw Costau Adennill Sefydlog?",
-    "PARA_1":  "Rhan fwyaf o hawliadau arian sifil sydd â gwerth hyd at ac yn cynnwys £100,000 yn ddarostyngedig i’r Drefn Costau Adennill Sefydlog (FRCS).",
-    "PARA_2":  "Mae FRCS yn gosod terfynau ar faint o gostau cyfreithiol y gall y partïon llwyddiannus eu hawlio yn ôl o bartïon aflwyddiannus.",
-    "PARA_3":  "Yn darparu sicrwydd i’r holl bartïon dan sylw drwy bennu ymlaen llaw’r swm mwyaf o gostau y bydd y parti colli yn gorfod ei dalu.",
+    "TITLE": "Beth yw’r Costau Adferadwy a Bennwyd?",
+    "PARA_1":  "Mae’r Gyfundrefn Costau Adferadwy a Bennwyd (FRCS) yn berthnasol i ran fwyaf o hawliadau am arian sifil gwerth hyd at ac yn cynnwys £100,000.",
+    "PARA_2":  "Mae FRCS yn gosod terfynau ar faint o gostau cyfreithiol y gall partïon llwyddiannus eu hawlio’n ôl gan bartïon aflwyddiannus.",
+    "PARA_3":  "Maent yn rhoi sicrwydd i bob parti dan sylw trwy osod ymlaen llaw uchafswm y costau y bydd yn rhaid i’r parti sy’n colli eu talu.",
     "URL": {
-      "BEFORE": "Am fwy o wybodaeth am derfynau FRCS gweler ",
+      "BEFORE": "I gael rhagor o wybodaeth am derfynau FRCS gweler ",
       "TEXT": "Tabl 14 (yn agor mewn tab newydd)",
       "AFTER": "."
     },
-    "PARA_4": "Mae angen penodi pob hawliad sy’n destun FRCS i fand cymhlethdod o 1 i 4.",
-    "PARA_5": "Mae Band 1 ar gyfer y hawliadau lleiaf cymhleth lle mae dim ond un mater yn destun anghydfod. Er enghraifft, hawliadau lle mae naill ai’r swm o arian sy’n cael ei hawlio neu atebolrwydd (cyfrifoldeb cyfreithiol) yn destun anghydfod.",
-    "PARA_6": "Mae Band 2 ar gyfer y rhan fwyaf o hawliadau eraill lle mae mwy nag un mater yn destun anghydfod. Er enghraifft, mae’r swm o arian sy’n cael ei hawlio a’r atebolrwydd yn destun anghydfod.",
-    "PARA_7": "Band 3 ar gyfer hawliadau mwy cymhleth lle mwy nag un mater yn destun anghydfod. Er enghraifft, colli clyw a achosir gan sŵn neu achosion atebolrwydd cyflogwr.",
-    "PARA_8": "Band 4 ar gyfer yr achosion mwyaf cymhleth gyda materion difrifol o amgylch ffeithiau’r gyfraith.",
-    "PARA_9": "Efallai y byddwch yn cytuno ar y cymhlethdod y mae’r hawliad hwn yn syrthio iddo cyn neu yn dweud pa fand yr ydych chi’n meddwl bod y band hwn gyda phartïon eraill.",
-    "PARA_10": "Fodd bynnag, os bydd y Llys yn anghytuno, mae ganddo’r pŵer i neilltuo hawliad i ba bynnag band y teimla sy’n briodol"
+    "PARA_4": "Mae angen neilltuo pob hawliad sy’n destun FRCS i fand cymhlethdod rhwng 1 a 4.",
+    "PARA_5": "Mae Band 1 ar gyfer yr hawliadau lleiaf cymhleth lle mai dim ond un mater sy’n destun anghydfod. Er enghraifft, hawliadau lle mae anghydfod naill ai ynghylch faint o arian a hawlir neu ynghylch atebolrwydd (cyfrifoldeb cyfreithiol).",
+    "PARA_6": "Mae Band 2 ar gyfer y rhan fwyaf o hawliadau eraill lle mae mwy nag un mater yn destun anghydfod. Er enghraifft, mae anghydfod ynghylch faint o arian sy’n cael ei hawlio ac ynghylch atebolrwydd.",
+    "PARA_7": "Mae Band 3 ar gyfer hawliadau mwy cymhleth lle mae mwy nag un mater yn destun anghydfod. Er enghraifft, achosion o golli clyw a achosir gan sŵn neu achosion atebolrwydd cyflogwr.",
+    "PARA_8": "Mae Band 4 ar gyfer yr achosion mwyaf cymhleth gyda materion difrifol yn ymwneud â ffeithiau’r gyfraith.",
+    "PARA_9": "Gallwch gytuno ar gymhlethdod yr hawliad hwn ymlaen llaw gyda’r partïon eraill neu ddweud pa fand rydych chi’n meddwl y dylai gael ei neilltuo iddo.",
+    "PARA_10": "Fodd bynnag, os bydd y Llys yn anghytuno, mae ganddo’r pŵer i aseinio hawliad i ba bynnag fand y mae’n teimlo sy’n briodol."
   },
   "WHICH_COMPLEXITY_BAND_TO_CHOOSE": {
     "TITLE": "Pa fand cymhlethdod ddylwn i ei ddefnyddio?",
     "PARA_1_TITLE": "Band 1",
-    "PARA_1": "Unrhyw hawliad lle dim ond un mater sy’n destun anghydfod. Er enghraifft, hawliadau lle dim ond y swm o arian, neu atebolrwydd (cyfrifoldeb cyfreithiol) sy’n destun anghydfod. Enghreifftiau yn cynnwys:",
-    "PARA_1_POINT_1": "Hawliadau am anafiadau personol lle mae atebolrwydd neu’r swm o arian sy’n cael ei hawlio yn destun anghydfod.",
-    "PARA_1_POINT_2": "Damweiniau traffig ffordd heb hawliad am anafiadau personol.",
-    "PARA_1_POINT_3": "Hawliadau dyled lle mae anghytundeb dros ffeithiau’r hawliad.",
+    "PARA_1": "Unrhyw hawliad lle mae un mater yn unig sy’n destun anghydfod. Er enghraifft, hawliadau lle mai dim ond swm yr arian, neu atebolrwydd (cyfrifoldeb cyfreithiol) sy'n destun anghydfod. Mae'r enghreifftiau yn cynnwys:",
+    "PARA_1_POINT_1": "Hawliadau anaf personol lle mae anghydfod ynghylch atebolrwydd neu’r swm o arian a hawlir.",
+    "PARA_1_POINT_2": "Damweiniau ffordd heb unrhyw hawliad am anaf personol.",
+    "PARA_1_POINT_3": "Hawliadau dyled lle mae anghytundeb ynghylch ffeithiau’r hawliad.",
     "PARA_2_TITLE": "Band 2",
-    "PARA_2": "Y rhan fwyaf o hawliadau lle mae mwy nag un mater yn destun anghydfod. Er enghraifft, hawliadau lle mae’r swm o arian sy’n cael ei hawlio, a’r atebolrwydd (cyfrifoldeb cyfreithiol) yn destun anghydfod. Enghreifftiau yn cynnwys:",
-    "PARA_2_POINT_1": "Hawliadau am anafiadau personol lle mae atebolrwydd a’r swm o arian sy’n cael ei hawlio yn destun anghydfod.",
-    "PARA_2_POINT_2": "Damweiniau traffig ffordd sy’n cynnwys hawliad am anafiadau personol.",
+    "PARA_2": "Mae’r rhan fwyaf o hawliadau lle mae mwy nag un mater yn destun anghydfod. Er enghraifft, hawliadau lle mae anghydfod ynghylch y swm o arian a hawlir, ac ynghylch atebolrwydd (cyfrifoldeb cyfreithiol). Mae'r enghreifftiau yn cynnwys:",
+    "PARA_2_POINT_1": "Hawliadau anaf personol lle mae anghydfod ynghylch atebolrwydd a’r swm o arian a hawlir.",
+    "PARA_2_POINT_2": "Damweiniau ffordd sy’n cynnwys hawliad am anaf personol.",
     "PARA_3_TITLE": "Band 3",
     "PARA_3": "Unrhyw hawliad arall lle mae mwy nag un mater yn destun anghydfod. Er enghraifft:",
     "PARA_3_POINT_1": "Colli clyw a achosir gan sŵn.",
-    "PARA_3_POINT_2": "Atebolrwydd cyflogwr am glefydau.",
+    "PARA_3_POINT_2": "Atebolrwydd cyflogwr am afiechydon.",
     "PARA_4_TITLE": "Band 4",
     "PARA_4": "Unrhyw hawliad nad yw’n addas ar gyfer bandiau 1 i 3. Er enghraifft:",
-    "PARA_4_POINT_1": "Hawliadau anafiadau personol cymhleth gyda materion difrifol o amgylch y ffeithiau neu’r gyfraith.",
+    "PARA_4_POINT_1": "Hawliadau anaf personol cymhleth gyda materion difrifol yn ymwneud â ffeithiau’r gyfraith.",
     "URL": {
-      "TITLE": "Rhagor o wybodaeth am fandiau cymhlethdod",
-      "BEFORE": "Am wybodaeth am fandiau cymhlethdod gwele",
+      "TITLE": "Am ragor o wybodaeth am fandiau cymhlethdod",
+      "BEFORE": "Am ragor o wybodaeth am fandiau cymhlethdod gweler",
       "TEXT": "CPR 26.16 Table 2 (yn agor mewn tab newydd)",
       "AFTER": "."
     }
   },
   "DOCUMENTS_TO_BE_CONSIDERED" : {
-    "TITLE_WITH_CLAIMANT": "Dogfennau hawlydd i'w hystyried",
-    "TITLE_WITH_DEFENDANT": "Dogfennau diffynnydd i'w hystyried"
+    "TITLE_WITH_CLAIMANT": "Dogfennau’r hawlydd i'w hystyried",
+    "TITLE_WITH_DEFENDANT": "Dogfennau’r diffynnydd i'w hystyried"
   },
   "PAGES": {
     "SUBJECT_TO_FRC": {
-      "PAGE_TITLE": "A yw’r hawliad yn ddarostyngedig i’r Drefn Costau Adennill Sefydlog?",
-      "TITLE": "Costau Adennill Sefydlog",
-      "BUTTON_TITLE": "A yw’r hawliad yn ddarostyngedig i’r Drefn Costau Adennill Sefydlog?"
+      "PAGE_TITLE": "A yw’r Gyfundrefn Costau Adferadwy a Bennwyd  yn berthnasol i’r hawliad hwn?",
+      "TITLE": "Costau Adferadwy a Bennwyd",
+      "BUTTON_TITLE": "A yw’r Gyfundrefn Costau Adferadwy a Bennwyd  yn berthnasol i’r hawliad hwn?"
     },
     "FRC_BAND_AGREED": {
-      "PAGE_TITLE": "A yw’r band cymhlethdod wedi’i gytuno gyda’r partïon eraill?",
-      "TITLE": "Cytundeb y band cymhlethdod",
-      "BUTTON_TITLE": "A yw’r band cymhlethdod wedi’i gytuno gyda’r partïon eraill?"
+      "PAGE_TITLE": "Ydy’r band cymhlethdod wedi cael ei gytuno gyda’r partïon eraill?",
+      "TITLE": "Cytundeb band cymhlethdod",
+      "BUTTON_TITLE": "Ydy’r band cymhlethdod wedi cael ei gytuno gyda’r partïon eraill?"
     },
     "CHOOSE_COMPLEXITY_BAND": {
-      "PAGE_TITLE": "Pa fand cymhlethdod ydych chi’n credu bod y hawliad hwn yn syrthio iddo?",
+      "PAGE_TITLE": "Pa fand cymhlethdod ydych chi’n credu sy’n berthnasol ar gyfer yr hawliad hwn?",
       "TITLE": "Band cymhlethdod",
       "COMBO_BOX" : {
-        "TITLE": "Pa fand cymhlethdod ydych chi’n credu bod y hawliad hwn yn syrthio iddo?",
+        "TITLE": "Pa fand cymhlethdod ydych chi’n credu sy’n berthnasol ar gyfer yr hawliad hwn?",
         "ITEM1": {
           "TEXT": "Band 1"
         },
@@ -515,21 +515,21 @@
       "PAGE_TITLE": "Rheoliad Costau Adferadwy Penodol",
       "TITLE": "Rheoliad Costau Adferadwy Penodol",
       "TEXT_AREA": {
-        "LABEL": "Pam nad yw’r hawliad yn destun y Rheoliad Costau Adferadwy Penodol?",
+        "LABEL": "Pam nad yw’r Gyfundrefn Adferadwy a Bennwyd yn berthnasol i’r hawliad hwn?",
         "HINT": "Rhowch eich rhesymau (dewisol)"
       }
     },
     "DOCS_FOR_DISCLOSURE" : {
       "PAGE_TITLE_WITH_CLAIMANT": "A oes unrhyw ddogfennau sydd gan yr hawlydd yr hoffech i’r llys eu hystyried?",
-      "COMPONENT_TEXT_WITH_CLAIMANT": "A oes unrhyw ddogfennau sydd gan yr hawlwyr yr hoffech i'r llys eu hystyried?",
+      "COMPONENT_TEXT_WITH_CLAIMANT": "A oes yna unrhyw ddogfennau sydd gan yr hawlydd yr ydych am i'r llys eu hystyried?",
       "PAGE_TITLE_WITH_DEFENDANT": "A oes unrhyw ddogfennau sydd gan y diffynnydd yr hoffech i'r llys eu hystyried?",
-      "COMPONENT_TEXT_WITH_DEFENDANT": "A oes unrhyw ddogfennau sydd gan ddiffynyddion yr ydych am i'r llys eu hystyried?"
+      "COMPONENT_TEXT_WITH_DEFENDANT": "A oes yna unrhyw ddogfennau sydd gan y diffynnydd yr ydych am i'r llys eu hystyried?"
     },
     "HAS_AN_AGREEMENT_BEEN_REACHED" : {
       "PAGE_TITLE": "A ddaethpwyd i gytundeb ynghylch datgelu dogfennau electronig?",
       "TITLE": "Datgelu dogfennau electronig",
       "COMBO_BOX" : {
-        "TITLE": "A gytunwyd rhwng y partïon sy'n ymwneud â'r hawliad ynghylch pa ddogfennau electronig fydd yn cael eu datgelu?",
+        "TITLE": "A ddaethpwyd i gytundeb rhwng y partïon sy’n ymwneud â’r hawliad ynghylch pa ddogfennau electronig fydd yn cael eu datgelu?",
         "ITEM1": {
           "TEXT": "Ie"
         },
@@ -537,15 +537,15 @@
           "TEXT": "Na, ond mae'n debygol y bydd cytundeb"
         },
         "ITEM3": {
-          "TEXT": "Na"
+          "TEXT": "Naddo"
         }
       }
     },
     "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : {
       "PAGE_TITLE": "Datgelu dogfennau nad ydynt yn electronig",
       "TEXT_AREA" : {
-        "LABEL": "Pa ddogfennau nad ydynt yn electronig sy'n cael eu cynnig i'w datgelu?",
-        "HINT": "Rhowch fanylion"
+        "LABEL": "Pa ddogfennau nad ydynt yn electronig y bwriedir eu datgelu?",
+        "HINT": "Rhowch fanylion os gwelwch yn dda"
       }
     },
     "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : {
@@ -553,16 +553,16 @@
       "TITLE": "Datgelu dogfennau electronig",
       "TEXT_AREA" : {
         "LABEL": "Beth yw'r materion sy'n ymwneud â datgelu dogfennau electronig",
-        "HINT": "Rhowch fanylion"
+        "HINT": "Rhowch fanylion os gwelwch yn dda"
       }
     },
     "DOCUMENTS_CONSIDERED_DETAILS" : {
-      "PAGE_TITLE_WITH_CLAIMANT": "Beth yw'r dogfennau sydd gan yr hawlwyr rydych chi am i'r llys eu hystyried?",
-      "PAGE_TITLE_WITH_DEFENDANT": "Beth yw'r dogfennau sydd gan y diffynyddion rydych chi am i'r llys eu hystyried?",
+      "PAGE_TITLE_WITH_CLAIMANT": "Beth yw’r dogfennau sydd gan yr hawlydd yr ydych am i'r llys eu hystyried?",
+      "PAGE_TITLE_WITH_DEFENDANT": "Beth yw’r dogfennau sydd gan y diffynnydd yr ydych am i'r llys eu hystyried?",
       "TEXT_AREA" : {
-        "LABEL_WITH_CLAIMANT": "Beth yw'r dogfennau sydd gan yr hawlwyr rydych chi am i'r llys eu hystyried?",
-        "LABEL_WITH_DEFENDANT": "Beth yw'r dogfennau sydd gan y diffynyddion rydych chi am i'r llys eu hystyried?",
-        "HINT": "Rhowch fanylion"
+        "LABEL_WITH_CLAIMANT": "Beth yw’r dogfennau sydd gan yr hawlydd yr ydych am i'r llys eu hystyried?",
+        "LABEL_WITH_DEFENDANT": "Beth yw’r dogfennau sydd gan y diffynnydd yr ydych am i'r llys eu hystyried?",
+        "HINT": "Rhowch fanylion os gwelwch yn dda"
       }
     },
     "ACCESSIBILITY_STATEMENT": {
@@ -1827,23 +1827,23 @@
     "DISCLOSURE_OF_DOCUMENTS": {
       "PAGE_TITLE": "Datgelu dogfennau",
       "TITLE": "Datgelu dogfennau",
-      "CHECKBOX_TITLE": "Gallwch ofyn i'r llys orchymyn datgelu dogfennau gan y partïon eraill. Ydych chi am ofyn am y datgeliad neu ddogfennau electronig neu anelectronig, neu'r ddau? (dewisol)",
-      "WHAT_IS_THE_DIFFERENCE": "Beth yw'r gwahaniaeth rhwng dogfennau electronig ac anelectronig?",
+      "CHECKBOX_TITLE": "Gallwch ofyn i’r llys orchymyn bod y partïon eraill yn datgelu dogfennau. Ydych chi eisiau gwneud cais am orchymyn datgelu dogfennau electronig neu ddogfennau nad ydynt yn electronig, neu'r ddau? (dewisol)",
+      "WHAT_IS_THE_DIFFERENCE": "Beth yw’r gwahaniaeth rhwng dogfennau electronig a dogfennau nad ydynt yn electronig?",
       "TITLE_1": "Dogfennau electronig",
-      "PARAGRAPH_1.1": "Dogfennau electronig yw unrhyw ddogfennau y gellir eu darparu mewn unrhyw fformat digidol neu electronig. Mae hyn yn cynnwys dogfennau ffisegol y gellir eu darparu mewn fformat electronig.",
-      "PARAGRAPH_1.2": "Mae fformatau yn cynnwys DOC/DOCX (Word), XLS / XLSX (Excel), PPT / PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG / JPEG, PNG, BMP, TIF / TIFF.",
-      "PARAGRAPH_1.3": "Er enghraifft, mae anfoneb neu gyswllt a oedd yn ddogfen gorfforol, ond sydd wedi'i sganio neu ei ffotograffio a gellir ei chyflwyno'n electronig yn ddogfen electronig.",
+      "PARAGRAPH_1.1": "Dogfennau electronig yw unrhyw ddogfennau y gellir eu cyflwyno mewn unrhyw fformat digidol neu electronig. Mae hyn yn cynnwys dogfennau ffisegol y gellir eu darparu mewn fformat electronig.",
+      "PARAGRAPH_1.2": "Mae’r fformatau yn cynnwys DOC/DOCX (Word), XLS / XLSX (Excel), PPT / PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG / JPEG, PNG, BMP, TIF / TIFF.",
+      "PARAGRAPH_1.3": "Er enghraifft, mae anfoneb neu gyswllt a oedd yn ddogfen ffisegol, ond sydd wedi’i sganio neu wedi tynnu llun ohoni ac y gellir ei chyflwyno’n electronig yn ddogfen electronig.",
       "TITLE_2": "Dogfennau nad ydynt yn electronig",
-      "PARAGRAPH_2.1": "Mae dogfennau nad ydynt yn rhai eletronic yn ddogfennau ffisegol nad ydynt mewn fformat digidol nac electronig. Mae hyn yn cynnwys dogfennau electronig, sy'n digwydd bod mewn fformat ffisegol.",
-      "PARAGRAPH_2.2": "Er enghraifft, mae print allan o e-bost yn ddogfen anelectronig.",
-      "TITLE_3": "Mwy o wybodaeth",
+      "PARAGRAPH_2.1": "Mae dogfennau nad ydynt yn electronig yn ddogfennau ffisegol nad ydynt mewn fformat digidol nac electronig. Mae hyn yn cynnwys dogfennau electronig, sy’n digwydd bod mewn fformat ffisegol.",
+      "PARAGRAPH_2.2": "Er enghraifft, nid yw e-bost wedi’i argraffu yn ddogfen electronig.",
+      "TITLE_3": "Rhagor o wybodaeth",
       "URL": {
-        "BEFORE": "Darganfyddwch fwy am ",
-        "TEXT": "Cyfarwyddyd Ymarfer 31B (yn agor mewn tab newydd)",
+        "BEFORE": "Rhagor o wybodaeth ",
+        "TEXT": "Gyfarwyddyd Ymarfer 31B (yn agor mewn tab newydd)",
         "AFTER": "."
       },
-      "ELECTRONIC_DOCS_OPTION": "Dogfennau electronig i'w datgelu",
-      "NON_ELECTRONIC_DOCS_OPTION": "Dogfennau nad ydynt yn electronig i'w datgelu"
+      "ELECTRONIC_DOCS_OPTION": "Dogfennau electronig i’w datgelu",
+      "NON_ELECTRONIC_DOCS_OPTION": "Dogfennau nad ydynt yn electronig i’w datgelu"
     },
     "CONTACT_THEM": {
       "ABOUT": "Ynghylch yr Hawliad",
@@ -2375,7 +2375,7 @@
     },
     "ELIGIBILITY_KNOWN_CLAIM_AMOUNT": {
       "PAGE_TITLE": "Do you know the amount you are claiming?",
-      "TITLE": "Ydych chi'n gwybod faint rydych chi'n hawlio amdano?"
+      "TITLE": "Ydych chi'n gwybod beth yw’r swm rydych yn gwneud hawliad amdano?"
     },
     "ELIGIBILITY_OVER_18_CLAIMANT": {
       "PAGE_TITLE": "Ydych chi'n 18 oed neu'n hŷn?",
@@ -4530,16 +4530,16 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
-    "SUBJECT_TO_FRC": "Nodwch a yw'r hawliad yn amodol ar y Gyfundrefn Costau Adenilladwy Sefydlog",
-    "FRC_BAND_AGREED": "Nodwch a yw'r band cymhlethdod wedi'i gytuno gyda'r partïon eraill",
-    "CHOOSE_COMPLEXITY_BAND": "Nodwch pa fand cymhlethdod y credwch y mae’r hawliad hwn yn perthyn iddo",
-    "HAS_AN_AGREEMENT_BEEN_REACHED" : "Nodi a daethpwyd i gytundeb ynghylch pa ddogfennau electronig a fydd yn cael eu datgelu",
-    "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Nodwch os oes unrhyw ddogfennau sydd gan yr hawlwyr eich bod am i'r llys eu hystyried",
-    "DEFENDANT_DOCS_FOR_DISCLOSURE" : "Nodwch os oes unrhyw ddogfennau sydd gan y diffynyddion eich bod am i'r llys eu hystyried",
-    "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau nad ydynt yn electronig",
-    "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : "Rhoi manylion am y materion sy'n ymwneud â datgelu dogfennau electronig",
-    "CLAIMANT_DOCUMENTS_CONSIDERED" : "Rhowch fanylion y dogfennau sydd gan yr hawlwyr yr ydych am i'r llys eu hystyried",
-    "DEFENDANT_DOCUMENTS_CONSIDERED" : "Rhowch fanylion am y dogfennau sydd gan y diffynyddion rydych chi am i'r llys eu hystyried",
+    "SUBJECT_TO_FRC": "Nodwch a yw’r Gyfundrefn Costau Adferadwy a Bennwyd yn berthnasol i’r hawliad hwn",
+    "FRC_BAND_AGREED": "Nodwch a yw’r band cymhlethdod wedi cael ei gytuno â’r partïon eraill",
+    "CHOOSE_COMPLEXITY_BAND": "Nodwch pa fand cymhlethdod rydych chi'n credu y mae'r hawliad hwn yn berthnasol iddo",
+    "HAS_AN_AGREEMENT_BEEN_REACHED" : "Nodwch a ddaethpwyd i gytundeb ynghylch pa ddogfennau electronig fydd yn cael eu datgelu",
+    "CLAIMANT_DOCS_FOR_DISCLOSURE" : "Nodwch a oes yna unrhyw ddogfennau sydd gan yr hawlydd yr ydych am i'r llys eu hystyried",
+    "DEFENDANT_DOCS_FOR_DISCLOSURE" : "Nodwch a oes yna unrhyw ddogfennau sydd gan y diffynnydd yr ydych am i'r llys eu hystyried",
+    "DISCLOSURE_NON_ELECTRONIC_DOCUMENTS" : "Rhowch fanylion y materion sy’n ymwneud â datgelu dogfennau nad ydynt yn electronig",
+    "DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES" : "Rhowch fanylion y materion sy'n ymwneud â datgelu dogfennau electronig",
+    "CLAIMANT_DOCUMENTS_CONSIDERED" : "Rhowch fanylion y dogfennau sydd gan yr hawlydd yr ydych am i'r llys eu hystyried",
+    "DEFENDANT_DOCUMENTS_CONSIDERED" : "Rhowch fanylion y dogfennau sydd gan y diffynnydd yr ydych am i'r llys eu hystyried",
     "ACCEPT_REPAYMENT_PLAN": "Dewiswch dderbyn y cynllun ad-dalu hwn i dderbyn cynllun ad-dalu arfaethedig y llys",
     "ADDRESS_NOT_FOUND": "Ni allwn ddod o hyd i gyfeiriad ar gyfer y cod post hwnnw.",
     "AMOUNT_INVALID_DECIMALS": "Rhowch swm, dim mwy na dau le degol",
@@ -4569,7 +4569,7 @@
     "DEFENDANT_WITNESS_WHAT_THEY_WITNESSED": "Dywedwch wrthym beth oeddynt yn dyst iddo",
     "DEFENDANT_YOURSELF_EVIDENCE_REQUIRED": "Dewiswch ‘ydw’ os ydych eisiau rhoi tystiolaeth eich hun",
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
-    "DETAILS_REQUIRED": "Rhowch fanylion",
+    "DETAILS_REQUIRED": "Rhowch fanylion os gwelwch yn dda",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod manylion yr anghenion ar gyfer y gwrandawiad ar y dudalen hon yn wir",
     "DELAYED_FLIGHT": {
       "CLAIMING_FOR_DELAY_REQUIRED": "Mae angen dewis opsiwn ar gyfer A ydych yn hawlio am oedi wrth hedfan"
@@ -4743,7 +4743,7 @@
     "INVALID_AMOUNT": "Swm annilys",
     "HOW_YOU_CALCULATED_AMOUNT": "Rhaid i chi ddweud wrthym sut y cyfrifoch chi'r swm",
     "JOB_TITLE_REQUIRED": "Rhowch deitl swydd",
-    "KNOWN_CLAIM_AMOUNT": "Nodwch os ydych chi'n gwybod faint rydych chi'n hawlio amdano",
+    "KNOWN_CLAIM_AMOUNT": "Nodwch os ydych chi'n gwybod y swm rydych yn ei hawlio",
     "NAME_REQUIRED": "Nodwch enw os gwelwch yn dda",
     "NO_LANGUAGE_ENTERED": "Rhowch yr iaith sydd angen ei chyfieithu",
     "NO_OTHER_SUPPORT": "Dywedwch wrthym pa gymorth arall sydd ei angen arnynt",
