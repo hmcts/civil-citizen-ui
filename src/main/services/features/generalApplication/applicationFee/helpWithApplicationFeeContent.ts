@@ -26,11 +26,15 @@ export const getButtonsContents  = (claimId : string) => {
     .build();
 };
 
-export const getHelpApplicationFeeContinuePageContents = (gaFeeData: ClaimFeeData) => {
+export const getHelpApplicationFeeContinuePageContents = (gaFeeData: ClaimFeeData, feeTypeFlag: boolean) => {
   const feeAmount = convertToPoundsFilter(gaFeeData?.calculatedAmountInPence.toString());
-  return new PageSectionBuilder()
-    .addMicroText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING')
-    .addMainTitle('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.TITLE')
+  const pageBuilder=new PageSectionBuilder();
+  if (feeTypeFlag) {
+    pageBuilder.addMicroText('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING');
+  } else{
+    pageBuilder .addMicroText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING');
+  }
+  pageBuilder.addMainTitle('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.TITLE')
     .addInsetText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.GENERAL_APPLICATION_FEE_INSET',
       {feeAmount: feeAmount})
     .addLink('PAGES.APPLY_HELP_WITH_FEES.START.ELIGIBILITY_LINK', HELP_WITH_FEES_ELIGIBILITY, 'PAGES.APPLY_HELP_WITH_FEES.START.ELIGIBILITY', null, null, true)
@@ -43,18 +47,24 @@ export const getHelpApplicationFeeContinuePageContents = (gaFeeData: ClaimFeeDat
     .addParagraph('PAGES.APPLY_HELP_WITH_FEES.START.REJECTED')
     .addTitle('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION')
     .build();
+  return pageBuilder.build();
 };
 
-export const getApplicationFeeContentPageDetails = (claimId: string) => {
-  const nextPageUrl = GA_APPLY_HELP_WITH_FEE_REFERENCE.replace(':id', claimId);
+export const getApplicationFeeContentPageDetails = (claimId: string, feeType: boolean) => {
+  const nextPageUrl = GA_APPLY_HELP_WITH_FEE_REFERENCE.replace(':id', claimId) + '?additionalFeeTypeFlag='+ feeType;
   const dashBoardClaimantUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
-  return new PageSectionBuilder()
-    .addMicroText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING')
-    .addMainTitle('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.TITLE')
+  const pageBuilder = new PageSectionBuilder();
+  if (feeType) {
+    pageBuilder.addMicroText('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING');
+  } else {
+    pageBuilder.addMicroText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING');
+  }
+  pageBuilder.addMainTitle('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.TITLE')
     .addParagraph('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_IF')
     .addParagraph('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_INSTEAD')
     .addParagraph('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.APPLICATION_FEE_PARAGRAPH_DURING')
     .addParagraph('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_ONCE')
     .addLink('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.LINK','https://www.gov.uk/get-help-with-court-fees','','','',true)
-    .addButtonWithCancelLink('COMMON.BUTTONS.CONTINUE', nextPageUrl,false, dashBoardClaimantUrl).build();
+    .addButtonWithCancelLink('COMMON.BUTTONS.CONTINUE', nextPageUrl,false, dashBoardClaimantUrl);
+  return pageBuilder.build();
 };
