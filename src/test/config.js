@@ -34,13 +34,13 @@ module.exports = {
     // waTaskMgmtApi: process.env.WA_TASK_MGMT_URL || 'http://wa-task-management-api-aat.service.core-compute-aat.internal',
     // paymentApi: process.env.PAYMENT_API_URL || 'http://payment-api-aat.service.core-compute-aat.internal',
 
-    manageCase: process.env.URL || 'https://xui-civil-citizen-ui-pr-4284.preview.platform.hmcts.net',
+    manageCase: process.env.URL || 'https://xui-civil-citizen-ui-pr-4224.preview.platform.hmcts.net',
     authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
-    ccdDataStore: process.env.CCD_DATA_STORE_URL || 'https://ccd-data-store-api-civil-citizen-ui-pr-4284.preview.platform.hmcts.net',
+    ccdDataStore: process.env.CCD_DATA_STORE_URL || 'https://ccd-data-store-api-civil-citizen-ui-pr-4224.preview.platform.hmcts.net',
     dmStore:process.env.DM_STORE_URL || 'http://dm-store-aat.service.core-compute-aat.internal',
     idamApi:  'https://idam-api.aat.platform.hmcts.net',
     idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
-    civilService: process.env.CIVIL_SERVICE_URL || 'https://civil-citizen-ui-pr-4284-civil-service.preview.platform.hmcts.net',
+    civilService: process.env.CIVIL_SERVICE_URL || 'https://civil-citizen-ui-pr-4224-civil-service.preview.platform.hmcts.net',
     
     // manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
     // authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
@@ -82,12 +82,12 @@ module.exports = {
   claimantCitizenUser: {
     password: defaultPassword,
     //email:'civilmoneyclaimsdemo@gmail.com',
-    email: `youonlytestonce1@gmail.com`,
+    email: 'youonlytestonce1@gmail.com',
     type: 'claimant',
   },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: `youonlytestonce@gmail.com`,
+    email: 'youonlytestonce@gmail.com',
     type: 'defendant',
   },
   defendantLRCitizenUser:{

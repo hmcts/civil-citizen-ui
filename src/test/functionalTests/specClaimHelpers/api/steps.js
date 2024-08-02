@@ -267,10 +267,10 @@ module.exports = {
       console.log('Service request update sent to callback URL');
     }
     await waitForFinishedBusinessProcess(caseId);
-    // if (claimType !== 'pinInPost') {
+    if (claimType !== 'pinInPost') {
       await assignSpecCase(caseId, multipartyScenario);
-    // }
-    //await waitForFinishedBusinessProcess(caseId);
+    }
+    await waitForFinishedBusinessProcess(caseId);
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
