@@ -59,6 +59,7 @@ export interface CCDApplication extends ApplicationUpdate {
   parentClaimantIsApplicant: YesNoUpperCamelCase;
   judicialDecision: JudicialDecision;
   hearingOrderDocument? : CcdHearingDocument[];
+  hearingNoticeDocument? : CcdHearingDocument[];
   requestForInformationDocument?: CcdGAMakeWithNoticeDocument[];
 }
 

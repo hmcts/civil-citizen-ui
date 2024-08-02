@@ -89,6 +89,7 @@ export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse
 
 export const getCourtDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const courtDocumentsArray: DocumentInformation[] = [];
+  courtDocumentsArray.push(...getHearingNotice(applicationResponse, lang));
   courtDocumentsArray.push(...getHearingOrder(applicationResponse, lang));
   return new DocumentsViewComponent('CourtDocument', courtDocumentsArray);
 };
@@ -127,6 +128,19 @@ const getHearingOrder = (applicationResponse: ApplicationResponse, lang: string)
       return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
     }).map(hearingOrder => {
       return setUpDocumentLinkObject(hearingOrder?.value?.documentLink, hearingOrder?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER');
+    });
+  }
+  return hearingOrderDocInfoArray;
+};
+
+const getHearingNotice = (applicationResponse: ApplicationResponse, lang: string) => {
+  const hearingNoticeDocs = applicationResponse?.case_data?.hearingNoticeDocument;
+  let hearingOrderDocInfoArray : DocumentInformation[] = [];
+  if(hearingNoticeDocs) {
+    hearingOrderDocInfoArray = hearingNoticeDocs.sort((item1,item2) => {
+      return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
+    }).map(hearingNotice => {
+      return setUpDocumentLinkObject(hearingNotice?.value?.documentLink, hearingNotice?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE');
     });
   }
   return hearingOrderDocInfoArray;
