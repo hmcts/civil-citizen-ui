@@ -38,6 +38,7 @@ export class GeneralApplication {
   applicationFeePaymentDetails : PaymentInformation;
   caseLink?: CaseLink;
   uploadAdditionalDocuments?: UploadAdditionalDocument[] = [];
+  generalAppAddlnInfoUpload?: UploadGAFiles[];
 
   constructor(
     applicationType?: ApplicationType,
