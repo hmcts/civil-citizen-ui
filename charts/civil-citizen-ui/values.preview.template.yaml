@@ -229,7 +229,7 @@ ccd:
   enabled: true
   ccd:
     adminWeb:
-      enabled: true
+      enabled: false
     apiGatewayWeb:
       enabled: true
     definitionImporter:
