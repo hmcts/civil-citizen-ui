@@ -1,6 +1,5 @@
 {
   "COMMON": {
-    "APPLICANTS_DOCUMENTS": "Applicant's documents",
     "HOME": "Home",
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Upload file",
@@ -3071,22 +3070,20 @@
       "VIEW_APPLICATION": {
         "APPLICATION": "Application",
         "APPLICATION_DOCUMENTS": "Application Documents",
-        "APPLICANT_DOCUMENTS": "Applicant's documents",
+        "APPLICANTS_DOCUMENTS": "Applicant's documents",
         "APPLICATION_DETAILS": "Application details submitted by the applicant.",
-        "APPLICATION_DOCUMENTS": "Application Documents",
         "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Court's response to the application",
         "DATE_RESPONSE": "Date of response",
         "DIRECTION_WITH_NOTICE": "Direction to make the application with notice",
-        "DOCUMENT_FROM_COURT": "Documents from court",
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "HEARING_ORDER" : "Hearing Order",
         "PAGE_TITLE": "View application",
         "RESPONSE": "Response from the other parties",
         "READ_RESPONSE": "Read the response",
         "RESPONSE_COURT": "Response from the court",
-        "RESPONDENT_DOCUMENTS": "Respondent's documents",
+        "RESPONDENTS_DOCUMENTS": "Respondent's documents",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
