@@ -82,7 +82,7 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, (async (req, res, next) 
     if (form.hasErrors()) {
       await renderView(res, claim, claimId, form);
     } else {
-      await saveCaseProgression(claimId, req,form.model, isClaimant);
+      await saveCaseProgression(req,form.model, isClaimant);
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
     }
   } catch (error) {

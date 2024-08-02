@@ -74,7 +74,7 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
         await civilServiceClient.updateTaskStatus((<AppRequest>req)?.session?.dashboard?.taskIdHearingUploadDocuments, <AppRequest>req);
       }
       await deleteDraftClaimFromStore(redisKey);
-      res.redirect(constructResponseUrlWithIdParams(claim.id, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
     }
   } catch (error) {
     next(error);
