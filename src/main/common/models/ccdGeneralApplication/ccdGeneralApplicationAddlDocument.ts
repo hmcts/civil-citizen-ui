@@ -13,9 +13,9 @@ export interface CcdHearingDocument {
 export interface CcdDocumentValue {
   createdBy: string,
   documentLink: CcdDocument,
-  createdDatetime: Date,
+  createdDatetime?: Date,
   documentName?: string,
-  documentType: DocumentType,
+  documentType?: DocumentType,
 }
 
 export interface CcdDocument {
