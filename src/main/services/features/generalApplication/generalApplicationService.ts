@@ -34,6 +34,14 @@ import {ApplicationState, ApplicationStatus} from 'common/models/generalApplicat
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import config from 'config';
 import {GaServiceClient} from 'client/gaServiceClient';
+import {CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
+import {
+  triggerNotifyHwfEvent,
+} from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
+import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {getClaimById} from 'modules/utilityService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -351,6 +359,36 @@ export const saveHelpWithFeesDetails = async (claimId: string, value: any, hwfPr
   }
 };
 
+export const saveAndTriggerNotifyGaHwfEvent = async (claimId: string, req: AppRequest, gaHwf: ApplyHelpFeesReferenceForm): Promise<void> => {
+  try {
+    const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+    const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+    /**
+     * The below code of fetching the claimDetails from civilService will be removed once url with GA CaseId is implemented
+     */
+    const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
+    const ccdGeneralApplications = ccdClaim.generalApplications;
+    const generalApplicationId = ccdGeneralApplications[ccdGeneralApplications.length-1].value.caseLink.CaseReference;
+
+    const gaHelpWithFees: CCDGaHelpWithFees = {
+      generalAppHelpWithFees: toCCDGeneralAppHelpWithFees(gaHwf),
+    };
+    await triggerNotifyHwfEvent(generalApplicationId, gaHelpWithFees, req);
+  }
+  catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+const toCCDGeneralAppHelpWithFees = (helpWithFees: ApplyHelpFeesReferenceForm | undefined) => {
+  if (!helpWithFees) return undefined;
+  return {
+    helpWithFee: toCCDYesNo(helpWithFees.option),
+    helpWithFeesReferenceNumber: helpWithFees.referenceNumber,
+  };
+};
+
 export const getApplicationStatus = (status: ApplicationState): ApplicationStatus => {
   switch (status) {
     case ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION:
@@ -385,6 +423,18 @@ export const saveRespondentWantToUploadDoc = async (claimId: string, claim: Clai
   }
 };
 
+export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
+  try {
+    const claim = await getClaimById(req.params.id, req, true);
+    const gaApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = gaApplication;
+    return claim;
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+  
 export const shouldDisplaySyncWarning = (applicationResponse: ApplicationResponse): boolean => {
   const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
   if (isAdditionalFee) {
