@@ -1,4 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {DASHBOARD_URL, GA_APPLY_HELP_WITH_FEE_SELECTION, GA_PAY_ADDITIONAL_FEE_URL, GA_VIEW_APPLICATION_URL,GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL} from 'routes/urls';
 import {
   DASHBOARD_URL,
   GA_PAY_ADDITIONAL_FEE_URL,
@@ -18,7 +19,8 @@ import {
 } from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {SummaryRow} from 'common/models/summaryList/summaryList';
-import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 
 const viewApplicationController = Router();
 const viewPath = 'features/generalApplication/view-applications';
@@ -38,12 +40,19 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     let responseFromCourt: SummaryRow[] = [];
     let judgesDirectionsOrder: SummaryRow[] = [];
     let payAdditionalFeeUrl: string = null;
+    const isApplicationFeeAmountNotPaid = isApplicationFeeNotPaid(applicationResponse);
+    let applicationFeeOptionUrl : string = null;
     let judgesDirectionsOrderUrl: string = null;
 
     if(isResponseFromCourt) {
       responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
       payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
     }
+
+    if(isApplicationFeeAmountNotPaid) {
+      applicationFeeOptionUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+    }
+
 
     if(isJudgesDirectionsOrder) {
       judgesDirectionsOrder = getJudgesDirectionsOrder(applicationResponse, lang);
@@ -60,6 +69,8 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       responseFromCourt,
       additionalDocUrl,
       payAdditionalFeeUrl,
+      isApplicationFeeAmountNotPaid,
+      applicationFeeOptionUrl,
       isJudgesDirectionsOrder,
       judgesDirectionsOrder,
       judgesDirectionsOrderUrl,
@@ -68,5 +79,9 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     next(error);
   }
 }) as RequestHandler);
+
+const isApplicationFeeNotPaid = (applicationResponse : ApplicationResponse) => {
+  return applicationResponse?.case_data?.generalAppPBADetails?.paymentDetails?.status !== 'SUCCESS' && applicationResponse?.state === ApplicationState.AWAITING_APPLICATION_PAYMENT;
+};
 
 export default viewApplicationController;

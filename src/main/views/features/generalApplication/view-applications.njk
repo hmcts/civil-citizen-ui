@@ -90,10 +90,17 @@
       html: responseHtml
     }) }}
   </div>
-
-  {{ govukButton({
-    text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD'),
-    href: dashboardUrl
-  }) }}
+  
+  {% if isApplicationFeeAmountNotPaid %}
+    {{ govukButton({
+      text: t('COMMON.BUTTONS.PAY_APPLICATION_FEE'),
+      href: applicationFeeOptionUrl
+    }) }}
+  {% else %}
+    {{ govukButton({
+      text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD'),
+      href: dashboardUrl
+    }) }}
+  {% endif %}
 
 {% endblock %}
