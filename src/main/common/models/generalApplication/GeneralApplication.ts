@@ -14,6 +14,7 @@ import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {CaseLink} from 'models/generalApplication/CaseLink';
+import { UploadAdditionalDocument } from './UploadAdditionalDocument';
 
 export class GeneralApplication {
 
@@ -36,6 +37,8 @@ export class GeneralApplication {
   helpWithFees?: GaHelpWithFees;
   applicationFeePaymentDetails : PaymentInformation;
   caseLink?: CaseLink;
+  uploadAdditionalDocuments?: UploadAdditionalDocument[] = [];
+  generalAppAddlnInfoUpload?: UploadGAFiles[];
 
   constructor(
     applicationType?: ApplicationType,
@@ -54,7 +57,7 @@ export class GeneralApplication {
     uploadN245Form?: UploadGAFiles,
     informOtherParties?: InformOtherParties,
     applicationFee?: ClaimFeeData,
-  ) {
+    generalAppAddlnInfoUpload?: UploadGAFiles) {
     this.applicationTypes = applicationType ? [applicationType] : [];
     this.agreementFromOtherParty = agreementFromOtherParty;
     this.applicationCosts = applicationCosts;
@@ -71,5 +74,6 @@ export class GeneralApplication {
     this.uploadN245Form = uploadN245Form;
     this.informOtherParties = informOtherParties;
     this.applicationFee = applicationFee;
+    this.generalAppAddlnInfoUpload = generalAppAddlnInfoUpload ? [generalAppAddlnInfoUpload] : [];
   }
 }
