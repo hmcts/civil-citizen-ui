@@ -85,13 +85,8 @@ const getMakeWithNoticeDocumentUrl = (applicationResponse: ApplicationResponse) 
   const requestForInformationDocument = applicationResponse?.case_data?.requestForInformationDocument;
   const applicationId = applicationResponse.id;
   if(requestForInformationDocument) {
-    let makeWithNoticeDoc;
-    if (requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY)) {
-      makeWithNoticeDoc = requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY);
-    } else {
-      makeWithNoticeDoc = requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.REQUEST_MORE_INFORMATION);
-    }
-    const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);
+    const makeWithNoticeDoc = requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY);
+    const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);    
     return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
   }
   return undefined;
