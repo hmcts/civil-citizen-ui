@@ -65,7 +65,3 @@ Scenario('Response with PartAdmit-Defendant pay by installments - Claimant rejec
     await ClaimantResponseSteps.resetWiremockScenario();
   }
 });
-
-AfterSuite(async () => {
-  await ClaimantResponseSteps.resetWiremockScenario();
-});
