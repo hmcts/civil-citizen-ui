@@ -33,7 +33,7 @@ describe(('For Address Form'), () => {
 
   it('should throw an error in case of exceeded max length and flag OFF', async () => {
     //Given
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
 
     const address = new Address(string51charLong, string51charLong, string51charLong, string51charLong, postCode);
     const form = new GenericForm(address);
