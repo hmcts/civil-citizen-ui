@@ -1,6 +1,7 @@
 {
   "mappings": [
     {
+      "priority": 1,
       "request": {
         "method": "POST",
         "urlPattern": "/cases/draft/citizen/.*?/event",
@@ -23,7 +24,66 @@
     {
       "request": {
         "method": "GET",
-        "urlPattern": "/cases/.*?",
+        "urlPattern": "/cases/.*/userCaseRoles",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": [
+          "APPLICANTSOLICITORONE",
+          "DEFENDANT",
+          "CLAIMANT"
+        ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/locations/courtLocations",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "courtLocationsResponse.json"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/dashboard/notifications/.*/role/.*",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "dashboardNotification.json"
+      }
+    },
+    {
+      "priority": 10,
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/.*?",
         "headers": {
           "Content-Type": {
             "equalTo": "application/json"
@@ -48,7 +108,7 @@
     {
       "request": {
         "method": "GET",
-        "urlPattern": "/cases/.*?/userCaseRoles",
+        "urlPattern": "/dashboard/taskList/.*/role/.*",
         "headers": {
           "Authorization": {
             "matches": "Bearer .*"
@@ -60,9 +120,43 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "jsonBody": [
-          "APPLICANTSOLICITORONE"
-        ]
+        "bodyFileName": "dashboardTask.json"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPattern": ".*/courtDecision",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "dashboardTask.json"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/cases/response/deadline",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "ssaResponseDeadline.json"
       }
     }
   ]
