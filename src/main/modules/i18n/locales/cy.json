@@ -3060,6 +3060,7 @@
         "CONTINUE_TO_APPLY_HWF_PAGE_TITLE": "Do you want to continue to apply for Help with Fees",
         "CONFIRMATION_PAGE_TITLE": "Confirmation of your application fee payment",
         "CONFIRMATION_TITLE": "Your application for help with the application fee is complete",
+        "CONFIRMATION_ADDITIONAL_TITLE": "Your application for help with the additional application fee is complete",
         "GENERAL_APPLICATION_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The application fee is: £{{ feeAmount }}</span>",
         "HEADING": "Application fee",
         "REFERENCE_NUMBER": {
