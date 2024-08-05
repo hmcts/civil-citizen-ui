@@ -3068,15 +3068,16 @@
         "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
       },
       "VIEW_APPLICATION": {
+        "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
         "APPLICATION": "Application",
+        "APPLICANTS_DOCUMENTS": "Applicant's documents",
         "APPLICATION_DETAILS": "Application details submitted by the applicant.",
         "APPLICATION_DOCUMENTS": "Application Documents",
-        "APPLICANTS_DOCUMENTS": "Applicant's documents",
-        "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Court's response to the application",
         "DATE_RESPONSE": "Date of response",
         "DIRECTION_WITH_NOTICE": "Direction to make the application with notice",
+        "DOCUMENTS_FROM_COURT": "Documents from the court",
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "HEARING_NOTICE" : "Hearing Notice",
         "HEARING_ORDER" : "Hearing Order",

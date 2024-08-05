@@ -42,7 +42,7 @@
 {% if applicantDocuments.documents.length > 0 %}
   {% set applicantDocRows = (applicantDocRows.push([
     {
-      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICANTS_DOCUMENTS'),
+      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICANTS_DOCUMENTS') | safe,
       classes: "govuk-body govuk-!-font-weight-bold"
     },
     {
@@ -63,7 +63,7 @@
 {% if respondentDocuments.documents.length > 0 %}
   {% set respondentDocRows = (respondentDocRows.push([
     {
-      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONDENTS_DOCUMENTS'),
+      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONDENTS_DOCUMENTS') | safe,
       classes: "govuk-body govuk-!-font-weight-bold"
     },
     {
@@ -84,7 +84,7 @@
 {% if courtDocuments.documents.length > 0 %}
   {% set courtDocRows = (courtDocRows.push([
     {
-      text: t('PAGES.ORDERS_AND_NOTICES.COURT_DOCUMENTS'),
+      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENTS_FROM_COURT'),
       classes: "govuk-body govuk-!-font-weight-bold"
     },
     {
