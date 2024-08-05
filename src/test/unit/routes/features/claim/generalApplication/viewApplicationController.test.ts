@@ -11,6 +11,7 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import {getApplicationSections , getRespondentDocuments, getCourtDocuments, getApplicantDocuments} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
 import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
+import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
@@ -54,6 +55,23 @@ describe('General Application - View application', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
+        });
+    });
+
+    it('should return view application page with pay application fee button', async () => {
+      mockedSummaryRows.mockImplementation(() => []);
+      application.state = ApplicationState.AWAITING_APPLICATION_PAYMENT;
+      application.case_data.generalAppPBADetails.paymentDetails = {
+        'status': 'FAIL',
+        'reference' : '123-REF',
+      };
+      await request(app)
+        .get(GA_VIEW_APPLICATION_URL)
+        .query({index: '1'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
+          expect(res.text).toContain(t('COMMON.BUTTONS.PAY_APPLICATION_FEE'));
         });
     });
 

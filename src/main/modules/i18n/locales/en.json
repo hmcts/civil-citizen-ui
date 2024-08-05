@@ -87,6 +87,7 @@
       "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Go back and try payment again",
       "GO_TO_ACCOUNT": "Go to your account",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
+      "PAY_APPLICATION_FEE": "Pay application fee",
       "RESPOND_TO_APPLICATION": "Respond to application",
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE": "Save",
@@ -464,7 +465,7 @@
     "PARA_4": "Any claim which is not suitable for bands 1 to 3. For example:",
     "PARA_4_POINT_1": "Complex personal injury claims with serious issues around the facts or law.",
     "URL": {
-      "TITLE": "More information on complexity bands",
+      "TITLE": "For more information on complexity bands",
       "BEFORE": "For more information on complexity bands see ",
       "TEXT": "CPR 26.16 Table 2 (opens in a new tab)",
       "AFTER": "."
@@ -2969,6 +2970,14 @@
         "UPLOAD_HERE": "You need to LINK_FOR_N245_FORM and upload it here.",
         "WAYS_TO_COMPLETE": "There are two ways to complete the form. You can either:"
       },
+      "UPLOAD_MORE_INFO_DOCUMENTS": {
+        "CONFIRMATION_PAGE_TITLE": "You've submitted the information",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will consider the information you've provided. You'll receive an update with their decision or next steps.",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
+        "PAGE_TITLE": "Request for more information",
+        "PAGE_TITLE_TO_UPLOAD": "Upload additional documents",
+        "UPLOAD_DOC_CYA_TITLE": "Upload documents"
+      },
       "APPLICATION_HEARING_ARRANGEMENTS": {
         "HEARING_TYPE": {
           "PERSON_AT_COURT": "In person at the court",
@@ -3052,6 +3061,7 @@
         "CONTINUE_TO_APPLY_HWF_PAGE_TITLE": "Do you want to continue to apply for Help with Fees",
         "CONFIRMATION_PAGE_TITLE": "Confirmation of your application fee payment",
         "CONFIRMATION_TITLE": "Your application for help with the application fee is complete",
+        "CONFIRMATION_ADDITIONAL_TITLE": "Your application for help with the additional application fee is complete",
         "GENERAL_APPLICATION_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The application fee is: £{{ feeAmount }}</span>",
         "HEADING": "Application fee",
         "REFERENCE_NUMBER": {
