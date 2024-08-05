@@ -1,5 +1,5 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import { Claim } from 'models/claim';
+import {Claim} from 'models/claim';
 import {
   getApplicationStatus,
   getByIndex,
@@ -7,7 +7,7 @@ import {
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
   saveAcceptDefendantOffer,
-  saveAgreementFromOtherParty,
+  saveAgreementFromOtherParty, saveAndTriggerNotifyGaHwfEvent,
   saveApplicationCosts,
   saveApplicationType,
   saveHearingArrangement,
@@ -22,45 +22,38 @@ import {
   updateByIndexOrAppend,
   validateAdditionalApplicationtType,
 } from 'services/features/generalApplication/generalApplicationService';
+import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import {CaseRole} from 'common/form/models/caseRoles';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
+import {RequestingReason} from 'models/generalApplication/requestingReason';
+import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
+import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
+import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
+import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
+import {ValidationError} from 'class-validator';
+import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
+import {AcceptDefendantOffer} from 'common/models/generalApplication/response/acceptDefendantOffer';
+import {isCUIReleaseTwoEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {ApplicationState, ApplicationStatus} from 'common/models/generalApplication/applicationSummary';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {
-  ApplicationType,
-  ApplicationTypeOption,
-} from 'common/models/generalApplication/applicationType';
-import { TestMessages } from '../../../../utils/errorMessageTestConstants';
-import { YesNo } from 'common/form/models/yesNo';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { CaseRole } from 'common/form/models/caseRoles';
-import {
-  DASHBOARD_CLAIMANT_URL,
-  DEFENDANT_SUMMARY_URL,
-  OLD_DASHBOARD_CLAIMANT_URL,
-} from 'routes/urls';
-import {
-  HearingSupport,
-  SupportType,
-} from 'models/generalApplication/hearingSupport';
-import { RequestingReason } from 'models/generalApplication/requestingReason';
-import {
-  HearingArrangement,
-  HearingTypeOptions,
-} from 'models/generalApplication/hearingArrangement';
-import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
-import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
-import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { ValidationError } from 'class-validator';
-import { ApplyHelpFeesReferenceForm } from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
-import { GaHelpWithFees } from 'models/generalApplication/gaHelpWithFees';
-import { AcceptDefendantOffer } from 'common/models/generalApplication/response/acceptDefendantOffer';
-import { isCUIReleaseTwoEnabled } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {
-  ApplicationState,
-  ApplicationStatus,
-} from 'common/models/generalApplication/applicationSummary';
-import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
+  triggerNotifyHwfEvent,
+} from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
+import {GaServiceClient} from 'client/gaServiceClient';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
+import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
+import {CCDHelpWithFees} from 'form/models/claimDetails';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../main/app/client/civilServiceClient');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
@@ -538,6 +531,34 @@ describe('General Application service', () => {
       await expect(spy).toBeCalledWith('123', claim);
     });
 
+    it('should save help with hwf application fee selection', async () => {
+      const  claim = new Claim();
+      const  ccdClaim = new Claim();
+      ccdClaim.generalApplications = [
+        {
+          'id': 'test',
+          'value': {
+            'caseLink': {
+              'CaseReference': 'testApp1',
+            },
+          },
+        },
+      ];
+      //Given
+      mockGetCaseData.mockImplementation(async () => {
+        claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.helpWithFees = new GaHelpWithFees();
+        claim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
+        return claim;
+      });
+      const spy = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(ccdClaim);
+      const spyOnGA = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
+      //When
+      await saveAndTriggerNotifyGaHwfEvent('123', undefined, new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-A1B-36C'));
+      expect(spyOnGA).toHaveBeenCalled();
+      await expect(spy).toBeCalledWith('123', undefined);
+    });
+
     it('should save help with application fee continue selection', async () => {
       const  claim = new Claim();
       //Given
@@ -766,5 +787,36 @@ describe('Should display sync warning', () => {
     //Then
     expect(result).toEqual(false);
   });
-});
 
+  it('should trigger Event NotifyHelpWithFee', async () => {
+    const mockClaimId = '123456';
+    const spyTriggerEvent = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
+    const helpWithFeeInfo:CCDHelpWithFees = {helpWithFee: YesNoUpperCamelCase.YES, helpWithFeesReferenceNumber: 'HWF-123-86D'};
+    const gaHwf:CCDGaHelpWithFees =  {generalAppHelpWithFees: helpWithFeeInfo};
+    //When
+    await triggerNotifyHwfEvent(mockClaimId, gaHwf, undefined);
+    //Then
+    expect(spyTriggerEvent).toHaveBeenCalled();
+    expect(spyTriggerEvent).toHaveBeenCalledWith(ApplicationEvent.NOTIFY_HELP_WITH_FEE, mockClaimId, gaHwf, undefined);
+  });
+
+  it('should call Save and Notify event', async () => {
+    const mockClaimId = '123456';
+    const spyTriggerEvent = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
+    const helpWithFeeInfo:CCDHelpWithFees = {helpWithFee: YesNoUpperCamelCase.YES, helpWithFeesReferenceNumber: 'HWF-123-86D'};
+    const gaHwf:CCDGaHelpWithFees =  {generalAppHelpWithFees: helpWithFeeInfo};
+    //When
+    await triggerNotifyHwfEvent(mockClaimId, gaHwf, undefined);
+    //Then
+    expect(spyTriggerEvent).toHaveBeenCalled();
+    expect(spyTriggerEvent).toHaveBeenCalledWith(ApplicationEvent.NOTIFY_HELP_WITH_FEE, mockClaimId, gaHwf, undefined);
+
+    //Given
+    applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'ref';
+    applicationResponse.state = ApplicationState.APPLICATION_ADD_PAYMENT;
+    //When
+    const result = shouldDisplaySyncWarning(applicationResponse);
+    //Then
+    expect(result).toEqual(true);
+  });
+});
