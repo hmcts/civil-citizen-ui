@@ -40,3 +40,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant rejects 
     await ClaimantResponseSteps.resetWiremockScenario();
   }
 });
+
+AfterSuite(async () => {
+  await ClaimantResponseSteps.resetWiremockScenario();
+});

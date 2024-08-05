@@ -14,3 +14,7 @@ Scenario('Response with PartAdmit-Defendant pay immediately - Claimant rejects a
     await ClaimantResponseSteps.resetWiremockScenario();
   }
 });
+
+AfterSuite(async () => {
+  await ClaimantResponseSteps.resetWiremockScenario();
+});

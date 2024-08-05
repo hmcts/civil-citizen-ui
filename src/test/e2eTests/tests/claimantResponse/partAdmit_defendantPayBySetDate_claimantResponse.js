@@ -64,3 +64,7 @@ Scenario('Response with PartAdmit-Defendant pay by set date - Claimant rejects p
     await ClaimantResponseSteps.resetWiremockScenario();
   }
 });
+
+AfterSuite(async () => {
+  await ClaimantResponseSteps.resetWiremockScenario();
+});
