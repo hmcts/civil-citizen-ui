@@ -28,45 +28,14 @@ import {
   ApplicationTypeOption,
 } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../utils/errorMessageTestConstants';
-import { YesNo } from 'common/form/models/yesNo';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { CaseRole } from 'common/form/models/caseRoles';
-import {
-  DASHBOARD_CLAIMANT_URL,
-  DEFENDANT_SUMMARY_URL,
-  OLD_DASHBOARD_CLAIMANT_URL,
-} from 'routes/urls';
-import {
-  HearingSupport,
-  SupportType,
-} from 'models/generalApplication/hearingSupport';
 import { RequestingReason } from 'models/generalApplication/requestingReason';
-import {
-  HearingArrangement,
-  HearingTypeOptions,
-} from 'models/generalApplication/hearingArrangement';
-import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
-import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
-import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { ValidationError } from 'class-validator';
-import { ApplyHelpFeesReferenceForm } from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
-import { GaHelpWithFees } from 'models/generalApplication/gaHelpWithFees';
-import { AcceptDefendantOffer } from 'common/models/generalApplication/response/acceptDefendantOffer';
-import { isCUIReleaseTwoEnabled } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {
-  ApplicationState,
-  ApplicationStatus,
-} from 'common/models/generalApplication/applicationSummary';
 import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
-import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
-import {CaseRole} from 'common/form/models/caseRoles';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
-import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
@@ -77,7 +46,6 @@ import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {AcceptDefendantOffer} from 'common/models/generalApplication/response/acceptDefendantOffer';
 import {isCUIReleaseTwoEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ApplicationState, ApplicationStatus} from 'common/models/generalApplication/applicationSummary';
-import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {
   triggerNotifyHwfEvent,
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
