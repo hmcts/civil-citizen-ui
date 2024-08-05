@@ -1,15 +1,13 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL,
-  GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL,
+  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CONFIRMATION_URL,
+  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
-import {
-  getCancelUrl,
-} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
-import {buildSummarySection} from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
+import {buildSummarySection} from 'services/features/generalApplication/directionsOrderUpload/uploadDocumentsDirectionsOrderService';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {GaServiceClient} from 'client/gaServiceClient';
 import config from 'config';
@@ -18,12 +16,12 @@ import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {translateCUItoCCD} from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 
-const gaRequestMoreInfoCheckAnswersController = Router();
-const viewPath = 'features/generalApplication/additionalInfoUpload/checkYourAnswer';
+const gaDirectionOrderCheckAnswersController = Router();
+const viewPath = 'features/generalApplication/directionsOrderUpload/check-answers';
 const generalAppApiBaseUrl = config.get<string>('services.generalApplication.url');
 const gaServiceClient: GaServiceClient = new GaServiceClient(generalAppApiBaseUrl);
 
-gaRequestMoreInfoCheckAnswersController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+gaDirectionOrderCheckAnswersController.get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const { appId, id: claimId } = req.params;
     const claimIdPrettified = caseNumberPrettify(claimId);
@@ -31,7 +29,7 @@ gaRequestMoreInfoCheckAnswersController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_IN
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const additionalDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
+    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
     const summaryRows = buildSummarySection(additionalDocuments, claimId, appId, lng);
     res.render(viewPath, { backLinkUrl, cancelUrl, claimIdPrettified, claim, summaryRows });
   } catch (error) {
@@ -39,19 +37,19 @@ gaRequestMoreInfoCheckAnswersController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_IN
   }
 }) as RequestHandler);
 
-gaRequestMoreInfoCheckAnswersController.post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+gaDirectionOrderCheckAnswersController.post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const { appId, id: claimId } = req.params;
     const uploadedDocumentList = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const uploadedDocument = translateCUItoCCD(uploadedDocumentList);
     const generalApplication = {
-      generalAppAddlnInfoUpload: uploadedDocument,
+      generalAppDirOrderUpload: uploadedDocument,
     };
-    await gaServiceClient.submitEvent(ApplicationEvent.RESPOND_TO_JUDGE_ADDITIONAL_INFO, appId, generalApplication , req);
-    res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL));
+    await gaServiceClient.submitEvent(ApplicationEvent.RESPOND_TO_JUDGE_DIRECTIONS, appId, generalApplication, req);
+    res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CONFIRMATION_URL));
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-export default  gaRequestMoreInfoCheckAnswersController;
+export default  gaDirectionOrderCheckAnswersController;

@@ -2953,6 +2953,16 @@
         "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
         "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
       },
+      "UPLOAD_DIRECTIONS_ORDER_DOCUMENTS": {
+        "CONFIRMATION_PAGE_TITLE": "You've uploaded additional documents",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will review the additional documents that you've uploaded. You'll receive an update with their decision or next steps.",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
+        "COURT_DOCUMENT": "court document",
+        "IF_NOT_SURE_END": "that sets out what the court has requested from you.",
+        "IF_NOT_SURE_START": "If you're not sure what to upload, refer to the",
+        "NEED_TO_UPLOAD": "You need to upload the documents requested by the court.",
+        "PAGE_TITLE": "Upload additional documents"
+      },
       "UPLOAD_N245_FORM": {
         "COMPLETE_N245_FORM":"complete the N245 Form",
         "FILE_FORMAT": "the file is in a DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
