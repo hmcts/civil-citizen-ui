@@ -241,7 +241,6 @@ describe('View Application service', () => {
     it('should get empty array if there is no data', async () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);
-      application.case_data.gaAddlDoc.push();
       jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
       //When
       const result = getApplicantDocuments(application, 'en');
