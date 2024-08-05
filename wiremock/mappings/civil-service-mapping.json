@@ -158,6 +158,24 @@
         },
         "bodyFileName": "ssaResponseDeadline.json"
       }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/response/agreeddeadline/.*",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "ssaResponseDeadline.json"
+      }
     }
   ]
 }
