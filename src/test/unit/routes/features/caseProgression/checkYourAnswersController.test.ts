@@ -17,6 +17,7 @@ jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 const mockSummarySections = checkAnswersService.getSummarySections as jest.Mock;
 mockSummarySections.mockReturnValue({} as SummarySections);
 const mockDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
 
 const session = require('supertest-session');
 const testSession = session(app);
@@ -28,7 +29,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
 
   const civilClaimResponse = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedMock.json');
   const civilClaimResponseClaimant = require('../../../../utils/mocks/civilClaimResponseMock.json');
-  const claimId = civilClaimResponse .id;
+  const claimId = civilClaimResponse.id;
 
   beforeAll((done) => {
     testSession
@@ -198,14 +199,16 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
 
     test('If the form is not missing, redirect to new page', async () => {
       //given
-      app.locals.draftStoreClient = mockCivilClaim;
-
-      mockDraftStore.mockReturnValue('');
+      const claim: Claim = new Claim();
+      Object.assign(civilClaimResponse, mockCivilClaim);
+      Object.assign(claim, civilClaimResponse.case_data);
+      mockDraftStore.mockReturnValue(claim);
+      mockGenerateRedisKey.mockReturnValue('12345');
 
       //when
       await testSession.post(CP_CHECK_ANSWERS_URL).send({signed: true}).expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(302);
-        expect(res.text).toContain('Found. Redirecting to /case/undefined/case-progression/documents-uploaded');
+        expect(res.text).toContain('Found. Redirecting to /case/:id/case-progression/documents-uploaded');
       });
     });
     test('Throw error', async () => {
