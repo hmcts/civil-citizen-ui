@@ -5,7 +5,8 @@ import {
   getApplicationSections,
   getJudgeApproveEdit,
   getJudgeDismiss,
-  getJudgeResponseSummary, getReturnDashboardUrl
+  getJudgeResponseSummary,
+  getReturnDashboardUrl,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {
