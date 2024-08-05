@@ -27,7 +27,6 @@ import { CcdDocument } from 'common/models/ccdGeneralApplication/ccdGeneralAppli
 import { documentIdExtractor } from 'common/utils/stringUtils';
 import { DocumentType } from 'common/models/document/documentType';
 import { GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL } from 'routes/urls';
-import { documentIdExtractor } from 'common/utils/stringUtils';
 import { constructDocumentUrlWithIdParamsAndDocumentId } from 'common/utils/urlFormatter';
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
@@ -88,6 +87,7 @@ export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse
 export const getCourtDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const courtDocumentsArray: DocumentInformation[] = [];
   courtDocumentsArray.push(...getHearingOrder(applicationResponse, lang));
+  courtDocumentsArray.push(...getGeneralOrder(applicationResponse, lang));
  
   return new DocumentsViewComponent('CourtDocument', courtDocumentsArray);
 };
@@ -114,6 +114,19 @@ const getHearingOrder = (applicationResponse: ApplicationResponse, lang: string)
     });
   }
   return hearingOrderDocInfoArray;
+};
+
+const getGeneralOrder = (applicationResponse: ApplicationResponse, lang: string) => {
+  const generalOrderDocs = applicationResponse?.case_data?.generalOrderDocument;
+  let generalOrderDocInfoArray : DocumentInformation[] = [];
+  if(generalOrderDocs) {
+    generalOrderDocInfoArray = generalOrderDocs.sort((item1,item2) => {
+      return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
+    }).map(hearingOrder => {
+      return setUpDocumentLinkObject(hearingOrder?.value?.documentLink, hearingOrder?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER');
+    });
+  }
+  return generalOrderDocInfoArray;
 };
 
 const setUpDocumentLinkObject = (document: CcdDocument, documentDate: Date, applicationId: string, lang: string, fileName: string) => {
