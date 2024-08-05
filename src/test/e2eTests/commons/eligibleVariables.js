@@ -35,10 +35,44 @@ const claimTypeValue = Object.freeze({
   A_CLIENT_IM_THEIR_SOLICITOR: 'claimType-3',
 });
 
+const claimantPartyType = Object.freeze({
+  AN_INDIVIDUAL: 'claimantPartyType',
+  A_SOLE_TRADER_OR_SELF_EMPLOYED_PERSON : 'claimantPartyType-2',
+  A_LIMITED_COMPANY: 'claimantPartyType-3',
+  ANOTHER_TYPE_OF_ORGANISATION: 'claimantPartyType-4',
+});
+
+const defendantPartyType = Object.freeze({
+  AN_INDIVIDUAL: 'defendantPartyType',
+  A_SOLE_TRADER_OR_SELF_EMPLOYED_PERSON : 'defendantPartyType-2',
+  A_LIMITED_COMPANY: 'defendantPartyType-3',
+  ANOTHER_TYPE_OF_ORGANISATION: 'defendantPartyType-4',
+});
+
+const interestType = Object.freeze({
+  SAME_RATE_FOR_THE_WHOLE_PERIOD: 'interestType',
+  BREAK_DOWN_INTEREST_FOR_DIFFERENT_TIME_PERIODS_OR_ITEMS : 'interestType-2',
+});
+
+const sameRateInterestType = Object.freeze({
+  EIGHT_PERCENT: 'sameRateInterestType',
+  A_DIFFERENT_RATE : 'sameRateInterestType-2',
+});
+
+const interestClaimFrom = Object.freeze({
+  THE_DATE_YOU_SUBMIT_THE_CLAIM: 'interestClaimFrom',
+  A_PARTICULAR_DATE : 'interestClaimFrom-2',
+});
+
 module.exports = {
   notEligibleReason,
   eligibleCheckBoxValue,
   yesAndNoCheckBoxOptionValue,
   claimTypeValue,
   defendantAgeCheckBoxValue,
+  claimantPartyType,
+  defendantPartyType,
+  interestType,
+  sameRateInterestType,
+  interestClaimFrom,
 };
