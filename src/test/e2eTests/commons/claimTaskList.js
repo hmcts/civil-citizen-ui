@@ -27,5 +27,5 @@ module.exports = {
   taskListItems,
   taskListStatus,
   checkTaskList,
-  responseTaskListItems
+  responseTaskListItems,
 };

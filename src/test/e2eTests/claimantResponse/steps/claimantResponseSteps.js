@@ -1,8 +1,7 @@
 const I = actor();
 const {clickButton} = require('../../commons/clickButton');
 const {buttonType} = require('../../commons/buttonVariables');
-const {resetScenarios} = require("../../../functionalTests/specClaimHelpers/api/wiremock");
-
+const {resetScenarios} = require('../../../functionalTests/specClaimHelpers/api/wiremock');
 
 const paths = {
   links: {
@@ -27,7 +26,7 @@ const paths = {
     document_language : '#documentsLanguage',
     directionsQuestionnaireSigned: '#directionsQuestionnaireSigned',
     ssaSigned: '#signed',
-  }
+  },
 };
 
 class ClaimantResponseSteps {

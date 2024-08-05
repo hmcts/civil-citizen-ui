@@ -58,5 +58,5 @@ module.exports = {
   getStubByRequestUrl,
   updateStubById,
   updateStubResponseFileByRequestUrl,
-  resetScenarios
+  resetScenarios,
 };

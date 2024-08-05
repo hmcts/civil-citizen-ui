@@ -47,9 +47,9 @@ Scenario('Response with PartAdmit-Defendant pay by set date - Claimant rejects c
 Scenario('Response with PartAdmit-Defendant pay by set date - Defendant signs SSA', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const caseId = 1777777777777764;
-      await DefendantResponseSteps.signSettlementAgreement(caseId);
-      await DefendantResponseSteps.partAdmitPayBySetDateDefendantSignsSettlementAgreementConfirmation();
-      await DefendantResponseSteps.resetWiremockScenario();
+    await DefendantResponseSteps.signSettlementAgreement(caseId);
+    await DefendantResponseSteps.partAdmitPayBySetDateDefendantSignsSettlementAgreementConfirmation();
+    await DefendantResponseSteps.resetWiremockScenario();
   }
 });
 

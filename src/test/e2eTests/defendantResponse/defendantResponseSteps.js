@@ -1,34 +1,7 @@
 const I = actor();
 const {clickButton} = require('../commons/clickButton');
 const {buttonType} = require('../commons/buttonVariables');
-const {resetScenarios} = require("../../functionalTests/specClaimHelpers/api/wiremock");
-
-
-const paths = {
-  links: {
-    view_defendants_response: '//a[.="View the defendant\'s response"]',
-    accept_or_reject: '//a[.=\'Accept or reject the £1000.00\']',
-    accept_or_reject_their_response: '//a[.=\'Accept or reject their response\']',
-    accept_or_reject_the_payment_plan: '//a[contains(.,\'Accept or reject their repayment plan\')]',
-    accept_or_reject_the_plan: '//a[contains(.,\'Accept or reject\')]',
-    how_to_formalise_repayment: '//a[.=\'Choose how to formalise repayment\']',
-    sign_a_settlements_agreement: '//a[.=\'Sign a settlement agreement\']',
-    request_a_CCJ: '//a[.=\'Request a County Court Judgment\']',
-    check_and_submit_your_response : '//a[.=\'Check and submit your response\']',
-    decide_whether_to_proceed : '//a[.=\'Decide whether to proceed\']',
-    free_mediation: '//a[.=\'Free telephone mediation\']',
-    details_in_case_of_a_hearing : '//a[.="Give us details in case there\'s a hearing"]',
-    have_you_been_paid: '//a[contains(text(), \'Have you been paid the\')]',
-    settle_the_claim_for: '//a[contains(text(), \'Settle the claim for\')]',
-    propose_alternative_plan: '//a[contains(text(), \'Propose an alternative repayment plan\')]',
-  },
-  options: {
-    english_language : '#speakLanguage',
-    document_language : '#documentsLanguage',
-    directionsQuestionnaireSigned: '#directionsQuestionnaireSigned',
-    ssaSigned: '#signed',
-  }
-};
+const {resetScenarios} = require('../../functionalTests/specClaimHelpers/api/wiremock');
 
 class DefendantResponseSteps {
   async signSettlementAgreement(caseId) {
