@@ -55,7 +55,6 @@ import {CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {CCDHelpWithFees} from 'form/models/claimDetails';
 
-
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
