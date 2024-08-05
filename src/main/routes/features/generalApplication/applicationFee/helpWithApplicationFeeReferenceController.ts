@@ -31,7 +31,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   if (!form.hasErrors()) {
     form = new GenericForm(claim.generalApplication?.helpWithFees?.helpFeeReferenceNumberForm);
   }
-  const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_APPLY_HELP_WITH_FEES_START);
+  const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_APPLY_HELP_WITH_FEES_START+ '?additionalFeeTypeFlag='+ feeTypeFlag);
   const genericHelpFeeUrl : string = GENERIC_HELP_FEES_URL;
   res.render(applyHelpWithFeeReferenceViewPath,
     {
