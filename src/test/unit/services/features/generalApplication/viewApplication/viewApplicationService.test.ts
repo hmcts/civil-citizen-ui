@@ -3,7 +3,7 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import {
   getApplicationSections, getJudgeApproveEdit,
   getJudgeDismiss,
-  getJudgeResponseSummary,
+  getJudgeResponseSummary, getReturnDashboardUrl,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {GaServiceClient} from 'client/gaServiceClient';
 import * as requestModels from 'models/AppRequest';
@@ -12,6 +12,7 @@ import * as utilityService from 'modules/utilityService';
 import {CaseRole} from 'form/models/caseRoles';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import { DocumentType } from 'common/models/document/documentType';
+import {getClaimById} from 'modules/utilityService';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('../../../../../../main/app/client/gaServiceClient');
@@ -233,6 +234,41 @@ describe('View Application service', () => {
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSED_DOCUMENT');
     });
+
+    it('should return empty if no data in applicationResponse', async () => {
+      //given
+      const applicationResponse = new ApplicationResponse();
+      //when
+      const result = getJudgeDismiss(applicationResponse, 'en');
+      //then
+      expect(result.length).toEqual(0);
+    });
+
+    it('should return empty if no data in applicationResponse caseData', async () => {
+      //given
+      const applicationResponse = new ApplicationResponse();
+      applicationResponse.case_data = {
+        applicationFeeAmountInPence: '',
+        applicationTypes: '',
+        gaAddlDoc: [],
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: '',
+        generalAppEvidenceDocument: [],
+        generalAppHearingDetails: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppPBADetails: undefined,
+        generalAppReasonsOfOrder: '',
+        generalAppRespondentAgreement: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppType: undefined,
+        judicialDecision: undefined,
+        parentClaimantIsApplicant: undefined,
+      };
+      //when
+      const result = getJudgeDismiss(applicationResponse, 'en');
+      //then
+      expect(result.length).toEqual(0);
+    });
   });
 
   describe('getJudgeApproveEdit', () => {
@@ -286,6 +322,67 @@ describe('View Application service', () => {
       expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_APPROVE_EDIT');
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPROVE_EDIT_DOCUMENT');
+    });
+
+    it('should return empty if no data in applicationResponse', async () => {
+      //given
+      const applicationResponse = new ApplicationResponse();
+      //when
+      const result = getJudgeApproveEdit(applicationResponse, 'en');
+      //then
+      expect(result.length).toEqual(0);
+    });
+
+    it('should return empty if no data in applicationResponse caseData', async () => {
+      //given
+      const applicationResponse = new ApplicationResponse();
+      applicationResponse.case_data = {
+        applicationFeeAmountInPence: '',
+        applicationTypes: '',
+        gaAddlDoc: [],
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: '',
+        generalAppEvidenceDocument: [],
+        generalAppHearingDetails: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppPBADetails: undefined,
+        generalAppReasonsOfOrder: '',
+        generalAppRespondentAgreement: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppType: undefined,
+        judicialDecision: undefined,
+        parentClaimantIsApplicant: undefined,
+      };
+      //when
+      const result = getJudgeApproveEdit(applicationResponse, 'en');
+      //then
+      expect(result.length).toEqual(0);
+    });
+  });
+
+  describe('getReturnDashboardUrl', () => {
+    it('should return claimant link', async () => {
+      //given
+      const claimId = '123';
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+      //when
+      const result = await getReturnDashboardUrl(claimId, mockedAppRequest);
+      //then
+      expect(result).toContain('claimantNewDesign');
+    });
+
+    it('should return defendant link', async () => {
+      //given
+      const claimId = '123';
+      const claim = new Claim();
+      claim.caseRole = CaseRole.DEFENDANT;
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+      //when
+      const result = await getReturnDashboardUrl(claimId, mockedAppRequest);
+      //then
+      expect(result).toContain('defendant');
     });
   });
 });
