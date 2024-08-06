@@ -112,7 +112,7 @@ describe('case Progression service', () => {
         claim.applicant1 = new Party();
         claim.id = req.params.id;
         claim.caseProgression = new CaseProgression();
-        claim.caseProgression.defendantDocuments = getMockFullUploadDocumentsUserForm();
+        claim.caseProgression.defendantDocuments = getMockEmptyUploadDocumentsUserForm();
         claim.caseProgression.defendantUploadDocuments = getMockUploadDocumentsSelected(false);
 
         return claim;
