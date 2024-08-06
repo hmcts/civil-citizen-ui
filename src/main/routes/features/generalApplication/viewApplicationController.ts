@@ -11,7 +11,7 @@ import {
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {
   ApplicationResponse,
-  JudicialDecisionMakeAnOrderOptions
+  JudicialDecisionMakeAnOrderOptions,
 } from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {SummaryRow} from 'common/models/summaryList/summaryList';
@@ -50,7 +50,6 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     if(isApplicationFeeAmountNotPaid) {
       applicationFeeOptionUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
     }
-
 
     if(isJudgesApproveEdit) {
       judgesApproveEdit = getJudgeApproveEdit(applicationResponse, lang);

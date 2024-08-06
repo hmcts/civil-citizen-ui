@@ -26,7 +26,7 @@ import {
   CASE_DOCUMENT_VIEW_URL,
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
-  GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL
+  GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL,
 } from 'routes/urls';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {constructDocumentUrlWithIdParamsAndDocumentId} from 'common/utils/urlFormatter';
@@ -106,7 +106,7 @@ export const getJudgeApproveEdit = (applicationResponse: ApplicationResponse, ln
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(judgeApproveEditDocument.value.createdDatetime), lng)),
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_APPROVE_EDIT', {lng})),
-      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl)
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl),
     );
   }
   return rows;
@@ -128,7 +128,7 @@ export const getJudgeDismiss = (applicationResponse: ApplicationResponse, lng: s
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(judgeDismissDocument.value.createdDatetime), lng)),
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DISMISSED', {lng})),
-      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl)
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl),
     );
   }
   return rows;
