@@ -5,6 +5,7 @@ import {
   getApplicationSections, getCourtDocuments,
   getJudgeResponseSummary,
   getRespondentDocuments,
+  getHearingNotice,
   getGeneralOrder,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {GaServiceClient} from 'client/gaServiceClient';
@@ -358,10 +359,12 @@ describe('View Application service', () => {
 
       jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
       //When
-      const result = getGeneralOrder(application, 'en');
+      const resultGeneralOrder = getGeneralOrder(application, 'en');
+      const resultHearingNotice = getHearingNotice(application, 'en');
       //Then
 
-      expect(result.length).toEqual(0);
+      expect(resultGeneralOrder.length).toEqual(0);
+      expect(resultHearingNotice.length).toEqual(0);
     });
   });
 });
