@@ -29,11 +29,11 @@ import {
   AcceptDefendantOffer,
   ProposedPaymentPlanOption,
 } from 'common/models/generalApplication/response/acceptDefendantOffer';
-import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
 import {ApplicationState, ApplicationStatus} from 'common/models/generalApplication/applicationSummary';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import config from 'config';
 import {GaServiceClient} from 'client/gaServiceClient';
+import { getDraftGARespondentResponse, saveDraftGARespondentResponse } from './response/generalApplicationResponseStoreService';
 import {CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
 import {
   triggerNotifyHwfEvent,
@@ -74,16 +74,10 @@ export const saveInformOtherParties = async (redisKey: string, informOtherPartie
 
 export const saveRespondentAgreement = async (redisKey: string, respondentAgreement: RespondentAgreement): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(redisKey);
-    const generalApplication = claim.generalApplication || new GeneralApplication();
-    claim.generalApplication = {
-      ...generalApplication,
-      response: {
-        ...generalApplication.response,
-        respondentAgreement,
-      },
-    };
-    await saveDraftClaim(redisKey, claim);
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.respondentAgreement = respondentAgreement;
+
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -92,9 +86,7 @@ export const saveRespondentAgreement = async (redisKey: string, respondentAgreem
 
 export const saveAcceptDefendantOffer = async (redisKey: string, acceptDefendantOffer: AcceptDefendantOffer): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(redisKey);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.response = Object.assign(new GaResponse(), claim.generalApplication.response);
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
     if (acceptDefendantOffer.option === YesNo.YES) {
       delete acceptDefendantOffer.type;
       delete acceptDefendantOffer.amountPerMonth;
@@ -114,8 +106,8 @@ export const saveAcceptDefendantOffer = async (redisKey: string, acceptDefendant
         delete acceptDefendantOffer.reasonProposedInstalment;
       }
     }
-    claim.generalApplication.response.acceptDefendantOffer = Object.assign(new AcceptDefendantOffer(), acceptDefendantOffer);
-    await saveDraftClaim(redisKey, claim);
+    gaResponse.acceptDefendantOffer = Object.assign(new AcceptDefendantOffer(), acceptDefendantOffer);
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -406,17 +398,11 @@ export const getApplicationFromGAService = async (req: AppRequest, applicationId
   return await generalApplicationClient.getApplication(req, applicationId);
 };
 
-export const saveRespondentWantToUploadDoc = async (claimId: string, claim: Claim, wantToUploadDocuments: YesNo): Promise<void> => {
+export const saveRespondentWantToUploadDoc = async (redisKey: string, wantToUploadDocuments: YesNo): Promise<void> => {
   try {
-    const generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication = {
-      ...generalApplication,
-      response: {
-        ...generalApplication.response,
-        wantToUploadDocuments,
-      },
-    };
-    await saveDraftClaim(claimId, claim);
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.wantToUploadDocuments = wantToUploadDocuments;
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
     logger.error(error);
     throw error;
