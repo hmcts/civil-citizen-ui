@@ -14,13 +14,13 @@ import { ApplicationEvent } from 'common/models/gaEvents/applicationEvent';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import {
   buildSummarySection,
-  translateCUItoCCD,
 } from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
 import {app} from '../../../../../../../main/app';
 import {getClaimById} from 'modules/utilityService';
 import {CaseDocument} from 'models/document/caseDocument';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import {getGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentService';
+import {translateCUItoCCD} from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
@@ -32,8 +32,10 @@ jest.mock('../../../../../../../main/modules/draft-store/draftGADocumentService'
   getGADocumentsFromDraftStore: jest.fn(),
 }));
 jest.mock('../../../../../../../main/services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService', () => ({
-  translateCUItoCCD: jest.fn(),
   buildSummarySection: jest.fn(),
+}));
+jest.mock('../../../../../../../main/services/features/generalApplication/documentUpload/uploadDocumentsService', () => ({
+  translateCUItoCCD: jest.fn(),
 }));
 jest.mock('../../../../../../../main/services/features/generalApplication/generalApplicationService', () => ({
   getCancelUrl: jest.fn(),
