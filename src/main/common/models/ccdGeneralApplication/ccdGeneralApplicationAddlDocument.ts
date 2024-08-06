@@ -10,7 +10,6 @@ export interface CcdDocumentValue {
   documentLink: CcdDocument,
   documentName: string,
   documentType: DocumentType,
-  createdDatetime?: Date;
 }
 
 export interface CcdDocument {

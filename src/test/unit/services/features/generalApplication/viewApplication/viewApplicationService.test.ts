@@ -211,14 +211,12 @@ describe('View Application service', () => {
           {
             id: '1',
             value: {
-              createdBy: 'test',
               documentLink: {
                 document_url: 'test',
                 document_binary_url: binary_url,
                 document_filename: fileName,
                 category_id: '1',
               },
-              documentName: 'test',
               documentType: DocumentType.DIRECTION_ORDER,
               createdDatetime: new Date('2024-01-01'),
             },

@@ -25,7 +25,9 @@ import {DocumentType} from 'common/models/document/documentType';
 import {CASE_DOCUMENT_VIEW_URL, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL} from 'routes/urls';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {constructDocumentUrlWithIdParamsAndDocumentId} from 'common/utils/urlFormatter';
-import {CcdGeneralApplicationAddlDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
+import {
+  CcdGeneralApplicationDirectionsOrderDocument
+} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -106,7 +108,7 @@ export const getJudgesDirectionsOrder = (applicationResponse: ApplicationRespons
   return rows;
 };
 
-const getDirectionOrderDocument = (applicationResponse: ApplicationResponse) : CcdGeneralApplicationAddlDocument => {
+const getDirectionOrderDocument = (applicationResponse: ApplicationResponse) : CcdGeneralApplicationDirectionsOrderDocument => {
   const requestForInformationDocument = applicationResponse?.case_data?.directionOrderDocument;
   if(requestForInformationDocument) {
     return requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.DIRECTION_ORDER);
