@@ -5,17 +5,17 @@ import {MaxLengthValidator} from 'form/validators/maxLengthValidator';
 
 export class Address {
   @IsNotEmpty({ message: 'ERRORS.VALID_ADDRESS_LINE_1' })
-  @Validate(MaxLengthValidator)
+  @Validate(MaxLengthValidator, {message: 'ERRORS.ADDRESS_LINE_TOO_MANY'})
   @Validate(SpecialCharValidator)
     addressLine1?: string;
-  @Validate(MaxLengthValidator)
+  @Validate(MaxLengthValidator, {message: 'ERRORS.ADDRESS_LINE_TOO_MANY'})
   @Validate(SpecialCharValidator)
     addressLine2?: string;
-  @Validate(MaxLengthValidator)
+  @Validate(MaxLengthValidator, {message: 'ERRORS.ADDRESS_LINE_TOO_MANY'})
   @Validate(SpecialCharValidator)
     addressLine3?: string;
   @IsNotEmpty({message: 'ERRORS.VALID_CITY'})
-  @Validate(MaxLengthValidator)
+  @Validate(MaxLengthValidator, {message: 'ERRORS.TOWN_CITY_TOO_MANY'})
   @Validate(SpecialCharValidator)
     city?: string;
   @IsNotEmpty({message: 'ERRORS.VALID_POSTCODE'})

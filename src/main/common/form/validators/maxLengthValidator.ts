@@ -1,26 +1,37 @@
-import {ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
+import {ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface} from 'class-validator';
 import {isJudgmentOnlineLive} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {ADDRESS_LINE_MAX_LENGTH, ADDRESS_LINE_MAX_LENGTH_JO} from 'form/validators/validationConstraints';
 
 /**
- * Validates that the input value does not contain special characters ˆ ` ´ ¨
+ * Validates the input max length
  */
 @ValidatorConstraint({name: 'maxLengthValidator', async: false})
 export class MaxLengthValidator implements ValidatorConstraintInterface {
 
+  ADDRESS_MAX_LENGTH: number;
+  errorMessage: string;
+
   async getJudgmentOnlineFlag() {
     return await isJudgmentOnlineLive();
   }
-  async validate(text: string) {
+  async validate(text: string, validationArguments?: ValidationArguments) {
     if (!text) {
       return true;
     }
+
+    if (validationArguments.constraints && validationArguments.constraints.length > 0) {
+      this.errorMessage = validationArguments.constraints[1];
+    }
+
     if (await this.getJudgmentOnlineFlag()) {
-      console.log('TRUE');
-    } else {console.log('FALSE');}
-    return false; // Add max length check here ADDRESS_LINE_MAX_LENGTH_JO : ADDRESS_LINE_MAX_LENGTH
+      this.ADDRESS_MAX_LENGTH = ADDRESS_LINE_MAX_LENGTH_JO;
+    } else {
+      this.ADDRESS_MAX_LENGTH = ADDRESS_LINE_MAX_LENGTH;
+    }
+    return text.length <= this.ADDRESS_MAX_LENGTH;
   }
-  // ERRORS.TOWN_CITY_TOO_MANY error for city
+
   defaultMessage() {
-    return 'ERRORS.ADDRESS_LINE_TOO_MANY';
+    return this.errorMessage;
   }
 }
