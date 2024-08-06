@@ -26,7 +26,7 @@ import {CASE_DOCUMENT_VIEW_URL, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL} from 'rou
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {constructDocumentUrlWithIdParamsAndDocumentId} from 'common/utils/urlFormatter';
 import {
-  CcdGeneralApplicationDirectionsOrderDocument
+  CcdGeneralApplicationDirectionsOrderDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
