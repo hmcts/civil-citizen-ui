@@ -2116,6 +2116,7 @@
         "WHAT_EXPECT_HEARING": "Beth i'w ddisgwyl mewn gwrandawiad"
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
+      "UPDATING_STATUS": "Diweddaru statws, adnewyddwch y dudalen.",
       "VIEW": "Weiv",
       "VIEW_CLAIM_NUMBER": "Rhif yr Hawliad {{ claimNumber }}"
     },

@@ -2116,6 +2116,7 @@
         "WHAT_EXPECT_HEARING": "What to expect at a hearing"
       },
       "TITLE": "Your money claims account",
+      "UPDATING_STATUS": "Updating status, please refresh page.",
       "VIEW": "View",
       "VIEW_CLAIM_NUMBER": "claim number {{ claimNumber }}"
     },

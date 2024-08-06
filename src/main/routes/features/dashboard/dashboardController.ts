@@ -14,7 +14,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: DashboardClaimantItem,
   claimsAsDefendant: DashboardDefendantItem[], responseDraftSaved: boolean, draftClaimUrl: string,
-  paginationArgumentClaimant: object, paginationArgumentDefendant: object, lang: string ): void {
+  paginationArgumentClaimant: object, paginationArgumentDefendant: object, showUpdateStatus: boolean, lang: string ): void {
 
   res.render('features/dashboard/dashboard', {
     claimsAsClaimant,
@@ -23,6 +23,7 @@ function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], cl
     responseDraftSaved,
     paginationArgumentClaimant,
     paginationArgumentDefendant,
+    showUpdateStatus,
     lang,
     newOcmcClaimUrl: draftClaimUrl,
     pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
@@ -38,6 +39,7 @@ dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
   try{
     const draftClaimData: DraftClaimData = await getDraftClaimData(user?.accessToken, user?.id);
     const claimsAsClaimant: DashboardClaimantResponse = await civilServiceClient.getClaimsForClaimant(appRequest);
+    const showUpdateStatus = claimsAsClaimant.claims.some(item => item.status === 'NO_STATUS') ? true : false;
     const claimDraftSaved = draftClaimData?.draftClaim;
     const claimsAsDefendant: DashboardDefendantResponse = await civilServiceClient.getClaimsForDefendant(appRequest);
     const claimantPage = req.query?.claimantPage ? 'claimantPage=' + req.query?.claimantPage : '';
@@ -46,7 +48,7 @@ dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
     const responseDraftSaved = false;
     const paginationArgumentClaimant = buildPagination(claimsAsClaimant.totalPages, req.query?.claimantPage as string, lang, 'claimantPage', defendantPage);
     const draftClaimUrl = draftClaimData?.claimCreationUrl;
-    renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang);
+    renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, showUpdateStatus, lang);
   }catch(error){
     next(error);
   }
