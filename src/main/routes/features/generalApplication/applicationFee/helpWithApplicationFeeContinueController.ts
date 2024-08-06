@@ -59,13 +59,14 @@ helpWithApplicationFeeContinueController.post(GA_APPLY_HELP_WITH_FEES, (async (r
     const claimId = req.params.id;
     const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
+    const genAppId = req.query.id;
     const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
     await form.validate();
     if (form.hasErrors()) {
       await renderView(res, req, form, claimId, false);
     } else {
       await saveHelpWithFeesDetails(generateRedisKey(req as unknown as AppRequest), req.body.option, hwfPropertyName);
-      res.redirect(getRedirectUrl(claimId, form.model, isAdditionalFeeType));
+      res.redirect(getRedirectUrl(claimId, form.model, isAdditionalFeeType) + (genAppId ? `?id=${genAppId}` : ''));
     }
   } catch (error) {
     next(error);

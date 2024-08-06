@@ -16,12 +16,13 @@ applicationPaymentUnsuccessfulController.get(GA_PAYMENT_UNSUCCESSFUL_URL, (req: 
     try {
       const claimId = req.params.id;
       const appId = req.params.appId;
+      const genAppId = req.query.id;
       const claim = await getClaimById(claimId, req, true);
       const applicationResponse = await getApplicationFromGAService(req, appId);
       const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
       const cancelUrl = await getCancelUrl(claimId, claim);
       const makePaymentAgainUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, isAdditionalFee
-        ? GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL : GA_APPLY_HELP_WITH_FEE_SELECTION);
+        ? GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL : GA_APPLY_HELP_WITH_FEE_SELECTION + (genAppId ? `?id=${genAppId}` : ''));
       res.render(applicationPaymentUnsuccessfulViewPath, {cancelUrl, makePaymentAgainUrl});
     } catch (error) {
       next(error);

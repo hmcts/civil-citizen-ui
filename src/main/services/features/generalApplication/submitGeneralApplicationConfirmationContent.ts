@@ -6,10 +6,10 @@ import {getCancelUrl} from 'services/features/generalApplication/generalApplicat
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GA_APPLY_HELP_WITH_FEE_SELECTION} from 'routes/urls';
 
-export const getGeneralApplicationConfirmationContent = (async (claimId: string, claim: Claim, lng: string) => {
+export const getGeneralApplicationConfirmationContent = (async (claimId: string, genAppId: string, claim: Claim, lng: string) => {
   const applicationFee = convertToPoundsFilter(claim.generalApplication?.applicationFee?.calculatedAmountInPence?.toString());
   const dashboardUrl = await getCancelUrl(claimId, claim);
-  const payApplicationFeeUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+  const payApplicationFeeUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION) + genAppId ? `?id=${genAppId}` : '';
 
   return new PageSectionBuilder()
     .addTitle('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT')

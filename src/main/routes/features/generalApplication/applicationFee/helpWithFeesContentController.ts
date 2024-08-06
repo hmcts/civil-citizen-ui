@@ -13,6 +13,7 @@ const helpWithFeesContentController: Router = Router();
 
 helpWithFeesContentController.get(GA_APPLY_HELP_WITH_FEES_START, (async (req: AppRequest, res: Response) => {
   const claimId = req.params.id;
+  const genAppId = req.query.id as string;
   const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
   const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
   const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_APPLY_HELP_WITH_FEES);
@@ -20,7 +21,7 @@ helpWithFeesContentController.get(GA_APPLY_HELP_WITH_FEES_START, (async (req: Ap
     {
       backLinkUrl,
       redirectUrl,
-      applyHelpWithFeeContents:getApplicationFeeContentPageDetails(claimId, isAdditionalFeeType),
+      applyHelpWithFeeContents: getApplicationFeeContentPageDetails(claimId, isAdditionalFeeType, genAppId),
     });
 }) as RequestHandler);
 
