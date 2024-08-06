@@ -13,12 +13,20 @@ import {
   getClaimWithClaimantTrialArrangements,
   getClaimWithDefendantTrialArrangements,
 } from '../../../../utils/mockClaimForCheckAnswers';
+import {request} from 'express';
+import {Party} from 'models/party';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+
 const REDIS_FAILURE = 'Redis DraftStore failure.';
+const req = request;
+req.params = {
+  id: '12345',
+};
 describe('case Progression service', () => {
   describe('getBreathingSpace', () => {
 
@@ -35,6 +43,7 @@ describe('case Progression service', () => {
     });
     const mockClaimId = '1645882162449409';
     const caseData = new Claim();
+    caseData.applicant1 = new Party();
     caseData.caseProgression = new CaseProgression();
     caseData.caseProgression.claimantUploadDocuments = new UploadDocuments();
     caseData.caseProgression.defendantUploadDocuments = new UploadDocuments();
@@ -74,9 +83,11 @@ describe('case Progression service', () => {
   describe('deleteUntickedDocumentsFromStore', () => {
     it('should save Draftclaim with existing files for all selected documents', async() => {
       //given
-      const claimId = 'claimId';
+      const claimId = req.params.id;
+      mockGenerateRedisKey.mockReturnValue(claimId);
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
+        claim.applicant1 = new Party();
         claim.id = claimId;
         claim.caseProgression = new CaseProgression();
         claim.caseProgression.defendantDocuments = getMockFullUploadDocumentsUserForm();
@@ -84,10 +95,9 @@ describe('case Progression service', () => {
 
         return claim;
       });
-
       //when
       const spySave = jest.spyOn(caseProgressionService, 'saveCaseProgression');
-      await caseProgressionService.deleteUntickedDocumentsFromStore(claimId, false);
+      await caseProgressionService.deleteUntickedDocumentsFromStore(req, false);
 
       //then
       expect(spySave).toHaveBeenCalledWith(claimId, getMockFullUploadDocumentsUserForm(), 'defendantDocuments');
@@ -95,10 +105,12 @@ describe('case Progression service', () => {
     });
     it('should save Draftclaim with pre-existing files of unselected documents removed', async() => {
       //given
-      const claimId = 'claimId';
+      const claimId = req.params.id;
+      mockGenerateRedisKey.mockReturnValue(claimId);
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
-        claim.id = claimId;
+        claim.applicant1 = new Party();
+        claim.id = req.params.id;
         claim.caseProgression = new CaseProgression();
         claim.caseProgression.defendantDocuments = getMockFullUploadDocumentsUserForm();
         claim.caseProgression.defendantUploadDocuments = getMockUploadDocumentsSelected(false);
@@ -108,7 +120,7 @@ describe('case Progression service', () => {
 
       //when
       const spySave = jest.spyOn(caseProgressionService, 'saveCaseProgression');
-      await caseProgressionService.deleteUntickedDocumentsFromStore(claimId, false);
+      await caseProgressionService.deleteUntickedDocumentsFromStore(req, false);
 
       //then
       expect(spySave).toHaveBeenCalledWith(claimId, getMockEmptyUploadDocumentsUserForm(), 'defendantDocuments');
@@ -116,9 +128,11 @@ describe('case Progression service', () => {
 
     it('should save Draftclaim without pre-existing files as empty arrays for selected documents', async() => {
       //given
-      const claimId = 'claimId';
+      const claimId = req.params.id;
+      mockGenerateRedisKey.mockReturnValue(claimId);
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
+        claim.applicant1 = new Party();
         claim.id = claimId;
         claim.caseProgression = new CaseProgression();
         claim.caseProgression.defendantDocuments = getMockEmptyUploadDocumentsUserForm();
@@ -126,10 +140,9 @@ describe('case Progression service', () => {
 
         return claim;
       });
-
       //when
       const spySave = jest.spyOn(caseProgressionService, 'saveCaseProgression');
-      await caseProgressionService.deleteUntickedDocumentsFromStore(claimId, false);
+      await caseProgressionService.deleteUntickedDocumentsFromStore(req, false);
 
       //then
       expect(spySave).toHaveBeenCalledWith(claimId, getMockEmptyUploadDocumentsUserForm(), 'defendantDocuments');
@@ -143,40 +156,45 @@ describe('case Progression service', () => {
     it('should save defendantUploadDocuments expert successfully', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
+        claim.applicant1 = new Party();
         claim.caseProgression = new CaseProgression();
         claim.caseProgression.defendantUploadDocuments = new UploadDocuments();
 
         return claim;
       });
+      mockGenerateRedisKey.mockReturnValue('12345');
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-
       const documentUploadToSave  = new Claim();
+      documentUploadToSave.applicant1 = new Party();
       documentUploadToSave.caseProgression = new CaseProgression();
       documentUploadToSave.caseProgression.defendantUploadDocuments = new UploadDocuments();
       documentUploadToSave.caseProgression.defendantUploadDocuments.expert = [];
       documentUploadToSave.caseProgression.defendantUploadDocuments.expert.push(new UploadDocumentTypes(true,undefined,EvidenceUploadExpert.ANSWERS_FOR_EXPERTS));
-
-      await caseProgressionService.saveCaseProgression('validClaimId', uploadDocuments, 'defendantUploadDocuments');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', documentUploadToSave);
+      //'validClaimId'
+      await caseProgressionService.saveCaseProgression(req, uploadDocuments, 'defendantUploadDocuments');
+      expect(spySave).toHaveBeenCalledWith('12345', documentUploadToSave);
     });
     it('should save claimantUploadDocuments expert successfully', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         const claim = new Claim();
+        claim.applicant1 = new Party();
         claim.caseProgression = new CaseProgression();
         claim.caseProgression.claimantUploadDocuments = new UploadDocuments();
 
         return claim;
       });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+      mockGenerateRedisKey.mockReturnValue('12345');
 
+      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const documentUploadToSave  = new Claim();
+      documentUploadToSave.applicant1 = new Party();
       documentUploadToSave.caseProgression = new CaseProgression();
       documentUploadToSave.caseProgression.claimantUploadDocuments = new UploadDocuments();
       documentUploadToSave.caseProgression.claimantUploadDocuments.expert = [];
       documentUploadToSave.caseProgression.claimantUploadDocuments.expert.push(new UploadDocumentTypes(true,undefined,EvidenceUploadExpert.ANSWERS_FOR_EXPERTS));
-
-      await caseProgressionService.saveCaseProgression('validClaimId', uploadDocuments, 'claimantUploadDocuments');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', documentUploadToSave);
+      //'validClaimId'
+      await caseProgressionService.saveCaseProgression(req, uploadDocuments, 'claimantUploadDocuments');
+      expect(spySave).toHaveBeenCalledWith('12345', documentUploadToSave);
     });
 
     it('should save defendantTrialArrangements successfully', async () => {
@@ -184,12 +202,12 @@ describe('case Progression service', () => {
         const claim = getClaimWithDefendantTrialArrangements();
         return claim;
       });
+      mockGenerateRedisKey.mockReturnValue('12345');
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-
       const claimToSave  = getClaimWithDefendantTrialArrangements();
-
-      await caseProgressionService.saveCaseProgression('validClaimId', claimToSave.caseProgression.defendantTrialArrangements, 'defendantTrialArrangements');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', claimToSave);
+      //'validClaimId'
+      await caseProgressionService.saveCaseProgression(req, claimToSave.caseProgression.defendantTrialArrangements, 'defendantTrialArrangements');
+      expect(spySave).toHaveBeenCalledWith('12345', claimToSave);
     });
 
     it('should save claimantTrialArrangements successfully', async () => {
@@ -197,46 +215,49 @@ describe('case Progression service', () => {
         const claim = getClaimWithClaimantTrialArrangements();
         return claim;
       });
+      mockGenerateRedisKey.mockReturnValue('12345');
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
 
       const claimToSave  = getClaimWithClaimantTrialArrangements();
-
-      await caseProgressionService.saveCaseProgression('validClaimId', claimToSave.caseProgression.claimantTrialArrangements, 'claimantTrialArrangements');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', claimToSave);
+      //'validClaimId'
+      await caseProgressionService.saveCaseProgression(req, claimToSave.caseProgression.claimantTrialArrangements, 'claimantTrialArrangements');
+      expect(spySave).toHaveBeenCalledWith('12345', claimToSave);
     });
 
     it('should save defendantTrialArrangements successfully, when no Trial arrangements', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();
       });
+      mockGenerateRedisKey.mockReturnValue('12345');
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-
       const claimToSave  = getClaimWithDefendantTrialArrangements();
 
-      await caseProgressionService.saveCaseProgression('validClaimId', claimToSave.caseProgression.defendantTrialArrangements, 'defendantTrialArrangements');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', claimToSave);
+      await caseProgressionService.saveCaseProgression(req, claimToSave.caseProgression.defendantTrialArrangements, 'defendantTrialArrangements');
+      expect(spySave).toHaveBeenCalledWith('12345', claimToSave);
     });
 
     it('should save claimantTrialArrangements successfully, when no Trial arrangements', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();
       });
+      mockGenerateRedisKey.mockReturnValue('12345');
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-
       const claimToSave  = getClaimWithClaimantTrialArrangements();
-
-      await caseProgressionService.saveCaseProgression('validClaimId', claimToSave.caseProgression.claimantTrialArrangements, 'claimantTrialArrangements');
-      expect(spySave).toHaveBeenCalledWith('validClaimId', claimToSave);
+      //'validClaimId'
+      await caseProgressionService.saveCaseProgression(req, claimToSave.caseProgression.claimantTrialArrangements, 'claimantTrialArrangements');
+      expect(spySave).toHaveBeenCalledWith('12345', claimToSave);
     });
 
     it('should return an error on redis failure', async () => {
+      mockGenerateRedisKey.mockReturnValue('12345');
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return new Claim();
       });
       mockSaveDraftClaim.mockImplementation(async () => {
         throw new Error(REDIS_FAILURE);
       });
-      await expect(caseProgressionService.saveCaseProgression('claimId', mockGetCaseDataFromDraftStore, ''))
+
+      await expect(caseProgressionService.saveCaseProgression(req, mockGetCaseDataFromDraftStore, ''))
         .rejects.toThrow(REDIS_FAILURE);
     });
   });
