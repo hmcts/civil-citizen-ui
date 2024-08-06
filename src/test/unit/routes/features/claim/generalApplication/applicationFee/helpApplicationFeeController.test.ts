@@ -14,7 +14,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 import {t} from 'i18next';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
-import {CivilServiceClient} from "client/civilServiceClient";
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
