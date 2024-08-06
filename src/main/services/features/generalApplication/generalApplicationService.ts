@@ -29,11 +29,19 @@ import {
   AcceptDefendantOffer,
   ProposedPaymentPlanOption,
 } from 'common/models/generalApplication/response/acceptDefendantOffer';
-import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
 import {ApplicationState, ApplicationStatus} from 'common/models/generalApplication/applicationSummary';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import config from 'config';
 import {GaServiceClient} from 'client/gaServiceClient';
+import { getDraftGARespondentResponse, saveDraftGARespondentResponse } from './response/generalApplicationResponseStoreService';
+import {CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
+import {
+  triggerNotifyHwfEvent,
+} from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
+import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {getClaimById} from 'modules/utilityService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -66,16 +74,10 @@ export const saveInformOtherParties = async (redisKey: string, informOtherPartie
 
 export const saveRespondentAgreement = async (redisKey: string, respondentAgreement: RespondentAgreement): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(redisKey);
-    const generalApplication = claim.generalApplication || new GeneralApplication();
-    claim.generalApplication = {
-      ...generalApplication,
-      response: {
-        ...generalApplication.response,
-        respondentAgreement,
-      },
-    };
-    await saveDraftClaim(redisKey, claim);
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.respondentAgreement = respondentAgreement;
+
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -84,9 +86,7 @@ export const saveRespondentAgreement = async (redisKey: string, respondentAgreem
 
 export const saveAcceptDefendantOffer = async (redisKey: string, acceptDefendantOffer: AcceptDefendantOffer): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(redisKey);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.response = Object.assign(new GaResponse(), claim.generalApplication.response);
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
     if (acceptDefendantOffer.option === YesNo.YES) {
       delete acceptDefendantOffer.type;
       delete acceptDefendantOffer.amountPerMonth;
@@ -106,8 +106,8 @@ export const saveAcceptDefendantOffer = async (redisKey: string, acceptDefendant
         delete acceptDefendantOffer.reasonProposedInstalment;
       }
     }
-    claim.generalApplication.response.acceptDefendantOffer = Object.assign(new AcceptDefendantOffer(), acceptDefendantOffer);
-    await saveDraftClaim(redisKey, claim);
+    gaResponse.acceptDefendantOffer = Object.assign(new AcceptDefendantOffer(), acceptDefendantOffer);
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -351,14 +351,54 @@ export const saveHelpWithFeesDetails = async (claimId: string, value: any, hwfPr
   }
 };
 
+export const saveAndTriggerNotifyGaHwfEvent = async (claimId: string, req: AppRequest, gaHwf: ApplyHelpFeesReferenceForm): Promise<void> => {
+  try {
+    const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+    const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+    /**
+     * The below code of fetching the claimDetails from civilService will be removed once url with GA CaseId is implemented
+     */
+    const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
+    const ccdGeneralApplications = ccdClaim.generalApplications;
+    const generalApplicationId = ccdGeneralApplications[ccdGeneralApplications.length-1].value.caseLink.CaseReference;
+
+    const gaHelpWithFees: CCDGaHelpWithFees = {
+      generalAppHelpWithFees: toCCDGeneralAppHelpWithFees(gaHwf),
+    };
+    await triggerNotifyHwfEvent(generalApplicationId, gaHelpWithFees, req);
+  }
+  catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+const toCCDGeneralAppHelpWithFees = (helpWithFees: ApplyHelpFeesReferenceForm | undefined) => {
+  if (!helpWithFees) return undefined;
+  return {
+    helpWithFee: toCCDYesNo(helpWithFees.option),
+    helpWithFeesReferenceNumber: helpWithFees.referenceNumber,
+  };
+};
+
 export const getApplicationStatus = (status: ApplicationState): ApplicationStatus => {
   switch (status) {
     case ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION:
-      return ApplicationStatus.IN_PROGRESS;
+    case ApplicationState.LISTING_FOR_A_HEARING:
     case ApplicationState.AWAITING_RESPONDENT_RESPONSE:
       return ApplicationStatus.IN_PROGRESS;
     case ApplicationState.AWAITING_APPLICATION_PAYMENT:
+    case ApplicationState.HEARING_SCHEDULED:
+    case ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS:
+    case ApplicationState.AWAITING_ADDITIONAL_INFORMATION:
+    case ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS:
+    case ApplicationState.APPLICATION_ADD_PAYMENT:
       return ApplicationStatus.TO_DO;
+    case ApplicationState.ORDER_MADE:
+    case ApplicationState.APPLICATION_DISMISSED:
+    case ApplicationState.APPLICATION_CLOSED:
+    case ApplicationState.PROCEEDS_IN_HERITAGE:
+      return ApplicationStatus.COMPLETE;
     default:
       return ApplicationStatus.TO_DO;
   }
@@ -368,23 +408,29 @@ export const getApplicationFromGAService = async (req: AppRequest, applicationId
   return await generalApplicationClient.getApplication(req, applicationId);
 };
 
-export const saveRespondentWantToUploadDoc = async (claimId: string, claim: Claim, wantToUploadDocuments: YesNo): Promise<void> => {
+export const saveRespondentWantToUploadDoc = async (redisKey: string, wantToUploadDocuments: YesNo): Promise<void> => {
   try {
-    const generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication = {
-      ...generalApplication,
-      response: {
-        ...generalApplication.response,
-        wantToUploadDocuments,
-      },
-    };
-    await saveDraftClaim(claimId, claim);
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.wantToUploadDocuments = wantToUploadDocuments;
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
+export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
+  try {
+    const claim = await getClaimById(req.params.id, req, true);
+    const gaApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = gaApplication;
+    return claim;
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+  
 export const shouldDisplaySyncWarning = (applicationResponse: ApplicationResponse): boolean => {
   const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
   if (isAdditionalFee) {

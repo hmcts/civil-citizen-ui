@@ -19,15 +19,18 @@ import {getApplicationFromGAService} from 'services/features/generalApplication/
 import {getClaimById} from 'modules/utilityService';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
-import { t } from 'i18next';
-import { formatDateToFullDate } from 'common/utils/dateUtils';
-import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
-import { CASE_DOCUMENT_VIEW_URL } from 'routes/urls';
-import { CcdDocument } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
-import { documentIdExtractor } from 'common/utils/stringUtils';
-import { DocumentType } from 'common/models/document/documentType';
-import { GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL } from 'routes/urls';
-import { constructDocumentUrlWithIdParamsAndDocumentId } from 'common/utils/urlFormatter';
+import {t} from 'i18next';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {
+  DocumentInformation,
+  DocumentLinkInformation,
+  DocumentsViewComponent,
+} from 'form/models/documents/DocumentsViewComponent';
+import {CcdDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
+import {CASE_DOCUMENT_VIEW_URL, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL} from 'routes/urls';
+import {documentIdExtractor} from 'common/utils/stringUtils';
+import {constructDocumentUrlWithIdParamsAndDocumentId} from 'common/utils/urlFormatter';
+import {DocumentType} from 'models/document/documentType';
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -86,21 +89,37 @@ export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse
 
 export const getCourtDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const courtDocumentsArray: DocumentInformation[] = [];
+  courtDocumentsArray.push(...getHearingNotice(applicationResponse, lang));
   courtDocumentsArray.push(...getHearingOrder(applicationResponse, lang));
   courtDocumentsArray.push(...getGeneralOrder(applicationResponse, lang));
- 
+
   return new DocumentsViewComponent('CourtDocument', courtDocumentsArray);
 };
 
 export const getApplicantDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const applicantDocumentsArray: DocumentInformation[] = [];
+  applicantDocumentsArray.push(...getAddlnDocuments(applicationResponse, lang, 'Applicant'));
   return new DocumentsViewComponent('ApplicantDocuments', applicantDocumentsArray);
 };
 
 export const getRespondentDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const respondentDocumentsArray: DocumentInformation[] = [];
- 
+  respondentDocumentsArray.push(...getAddlnDocuments(applicationResponse, lang, 'Respondent One'));
   return new DocumentsViewComponent('RespondentDocuments', respondentDocumentsArray);
+};
+
+const getAddlnDocuments = (applicationResponse: ApplicationResponse, lang: string, createdBy: string) => {
+  const gaAddlDocuments = applicationResponse?.case_data?.gaAddlDoc;
+  let addlnDocInfoArray : DocumentInformation[] = [];
+  if(gaAddlDocuments) {
+    addlnDocInfoArray = gaAddlDocuments.filter(gaAddlDocument => gaAddlDocument.value.createdBy === createdBy)
+      .sort((item1,item2) => {
+        return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
+      }).map(gaAddlDoc => {
+        return setUpDocumentLinkObject(gaAddlDoc?.value?.documentLink, gaAddlDoc?.value?.createdDatetime, applicationResponse?.id, lang,  gaAddlDoc?.value?.documentName);
+      });
+  }
+  return addlnDocInfoArray;
 };
 
 const getHearingOrder = (applicationResponse: ApplicationResponse, lang: string) => {
@@ -111,6 +130,19 @@ const getHearingOrder = (applicationResponse: ApplicationResponse, lang: string)
       return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
     }).map(hearingOrder => {
       return setUpDocumentLinkObject(hearingOrder?.value?.documentLink, hearingOrder?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER');
+    });
+  }
+  return hearingOrderDocInfoArray;
+};
+
+const getHearingNotice = (applicationResponse: ApplicationResponse, lang: string) => {
+  const hearingNoticeDocs = applicationResponse?.case_data?.hearingNoticeDocument;
+  let hearingOrderDocInfoArray : DocumentInformation[] = [];
+  if(hearingNoticeDocs) {
+    hearingOrderDocInfoArray = hearingNoticeDocs.sort((item1,item2) => {
+      return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
+    }).map(hearingNotice => {
+      return setUpDocumentLinkObject(hearingNotice?.value?.documentLink, hearingNotice?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE');
     });
   }
   return hearingOrderDocInfoArray;
@@ -145,7 +177,7 @@ const getMakeWithNoticeDocumentUrl = (applicationResponse: ApplicationResponse) 
   const applicationId = applicationResponse.id;
   if(requestForInformationDocument) {
     const makeWithNoticeDoc = requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY);
-    const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);    
+    const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);
     return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
   }
   return undefined;

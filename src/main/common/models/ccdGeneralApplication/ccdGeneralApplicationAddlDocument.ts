@@ -18,12 +18,12 @@ export interface CcdGeneralOrderDocument {
 export interface CcdDocumentValue {
   createdBy: string,
   documentLink: CcdDocument,
-  createdDatetime: Date,
-  documentName: string,
-  documentType: DocumentType,
+  createdDatetime?: Date,
+  documentName?: string,
+  documentType?: DocumentType,
 }
 
-export interface CcdDocument { 
+export interface CcdDocument {
   document_url: string,
   document_binary_url: string,
   document_filename: string,
