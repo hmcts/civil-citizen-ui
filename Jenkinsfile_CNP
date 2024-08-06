@@ -4,6 +4,7 @@
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 
+// comment so that a change is detected
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
