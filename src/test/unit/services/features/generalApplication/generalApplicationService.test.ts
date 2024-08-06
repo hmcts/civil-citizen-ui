@@ -609,6 +609,14 @@ describe('General Application service', () => {
       //Then
       expect(status).toBe(ApplicationStatus.IN_PROGRESS);
     });
+    it('should return IN_PROGRESS when LISTING_FOR_A_HEARING', () => {
+      //Given
+      const applicationState = ApplicationState.LISTING_FOR_A_HEARING;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
+    });
     it('should return TO_DO when AWAITING_APPLICATION_PAYMENT', () => {
       //Given
       const applicationState = ApplicationState.AWAITING_APPLICATION_PAYMENT;
@@ -616,6 +624,86 @@ describe('General Application service', () => {
       const status = getApplicationStatus(applicationState);
       //Then
       expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return TO_DO when AWAITING_APPLICATION_PAYMENT', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_APPLICATION_PAYMENT;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return TO_DO when HEARING_SCHEDULED', () => {
+      //Given
+      const applicationState = ApplicationState.HEARING_SCHEDULED;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return TO_DO when AWAITING_WRITTEN_REPRESENTATIONS', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return TO_DO when AWAITING_ADDITIONAL_INFORMATION', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_ADDITIONAL_INFORMATION;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return TO_DO when AWAITING_DIRECTIONS_ORDER_DOCS', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return TO_DO when APPLICATION_ADD_PAYMENT', () => {
+      //Given
+      const applicationState = ApplicationState.APPLICATION_ADD_PAYMENT;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return COMPLETE when ORDER_MADE', () => {
+      //Given
+      const applicationState = ApplicationState.ORDER_MADE;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.COMPLETE);
+    });
+    it('should return COMPLETE when APPLICATION_DISMISSED', () => {
+      //Given
+      const applicationState = ApplicationState.APPLICATION_DISMISSED;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.COMPLETE);
+    });
+    it('should return COMPLETE when APPLICATION_CLOSED', () => {
+      //Given
+      const applicationState = ApplicationState.APPLICATION_CLOSED;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.COMPLETE);
+    });
+    it('should return COMPLETE when PROCEEDS_IN_HERITAGE', () => {
+      //Given
+      const applicationState = ApplicationState.PROCEEDS_IN_HERITAGE;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.COMPLETE);
     });
   });
 });
