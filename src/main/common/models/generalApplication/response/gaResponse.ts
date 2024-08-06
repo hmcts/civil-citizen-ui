@@ -20,7 +20,7 @@ export class GaResponse {
   statementOfTruth?: StatementOfTruthForm;
   wantToUploadDocuments?: YesNo;
   uploadEvidenceDocuments?: UploadGAFiles[];
-
+  draftResponseCreatedAt?: Date;
   constructor(hearingArrangement?: HearingArrangement, hearingContactDetails?: HearingContactDetails, agreeToOrder?: YesNo,
     hearingSupport?: HearingSupport, unavailableDatesHearing?: UnavailableDatesGaHearing, respondentAgreement?: RespondentAgreement,
     acceptDefendantOffer?: AcceptDefendantOffer, statementOfTruth?: StatementOfTruthForm, wantToUploadDocuments?: YesNo, uploadEvidenceDocuments?: UploadGAFiles) {
