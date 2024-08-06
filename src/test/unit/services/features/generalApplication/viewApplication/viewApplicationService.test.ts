@@ -5,6 +5,7 @@ import {
   getApplicationSections, getCourtDocuments,
   getJudgeResponseSummary,
   getRespondentDocuments,
+  getGeneralOrder,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {GaServiceClient} from 'client/gaServiceClient';
 import * as requestModels from 'models/AppRequest';
@@ -98,23 +99,7 @@ function setMockGeneralOrderDocuments(): CcdHearingDocument[] {
       'documentType': DocumentType.HEARING_NOTICE,
       'createdDatetime':  new Date('2024-08-01'),
     },
-  },
-  {
-    'id': 'b4b50368-84dc-4c05-b9e7-7d01bd6a9119',
-    'value': {
-      'createdBy': 'Civil',
-      'documentLink': {
-        'category_id': 'applications',
-        'document_url': 'http://dm-store:8080/documents/b4b50368-84dc-4c05-b9e7-7d01bd6a9119',
-        'document_filename': 'General_order_for_application_2024-08-02 11:59:58.pdf',
-        'document_binary_url': 'http://dm-store:8080/documents/b4b50368-84dc-4c05-b9e7-7d01bd6a9119/binary',
-      },
-      'documentName': 'General_order_for_application_2024-08-02 11:59:58.pdf',
-      'documentType': DocumentType.HEARING_NOTICE,
-      'createdDatetime':  new Date('2024-08-02'),
-    },
-  },
-  ];
+  }];
 }
 
 describe('View Application service', () => {
@@ -346,18 +331,25 @@ describe('View Application service', () => {
       //When
       const result = getCourtDocuments(application, 'en');
       //Then
-      const expectedDocument1 = new DocumentInformation(
+      const expectedDocument = new DocumentInformation(
         'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf831', 'General_order_for_application_2024-08-01 11:59:58.pdf'),
       );
-      expect(result.documents[2]).toEqual(expectedDocument1);
-      const expectedDocument2 = new DocumentInformation(
-        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER',
-        '2 August 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/b4b50368-84dc-4c05-b9e7-7d01bd6a9119', 'General_order_for_application_2024-08-02 11:59:58.pdf'),
-      );
-      expect(result.documents[1]).toEqual(expectedDocument2);
+      expect(result.documents[1]).toEqual(expectedDocument);
+    });
+    it('should get empty data array if there is no general order documents', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.generalOrderDocument= null;
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      //When
+      const result = getGeneralOrder(application, 'en');
+      //Then
+
+      expect(result.length).toEqual(0);
     });
   });
 });

@@ -148,7 +148,7 @@ const getHearingNotice = (applicationResponse: ApplicationResponse, lang: string
   return hearingOrderDocInfoArray;
 };
 
-const getGeneralOrder = (applicationResponse: ApplicationResponse, lang: string) => {
+export const getGeneralOrder = (applicationResponse: ApplicationResponse, lang: string) => {
   const generalOrderDocs = applicationResponse?.case_data?.generalOrderDocument;
   let generalOrderDocInfoArray : DocumentInformation[] = [];
   if(generalOrderDocs) {
