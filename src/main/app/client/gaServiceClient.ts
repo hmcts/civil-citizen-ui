@@ -112,7 +112,6 @@ export class GaServiceClient {
 
   async getApplication(req: AppRequest, applicationId: string): Promise<ApplicationResponse> {
     const config = this.getConfig(req);
-    applicationId = '1722509983300281';
     try {
       const response = await this.client.get(GA_GET_APPLICATION_URL.replace(':caseId', applicationId), config);
       const caseData = Object.assign(new Application(), response.data.case_data);
