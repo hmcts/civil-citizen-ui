@@ -303,7 +303,7 @@ class ResponseToDefence {
   async verifyAboutTheRepaymentPlan() {
     I.waitForContent('No - I\'ll suggest my own', 60);
     I.see('How they want to pay?', 'h1');
-    I.see('Mrs Jane Doe has offered to pay you in full by');
+    I.see('Mrs Jane Doe has offered to pay you by');
     I.see('Do you accept the repayment plan?');
     I.see('Yes');
     await I.click(paths.options.yes);
@@ -313,7 +313,7 @@ class ResponseToDefence {
   async verifyRepaymentPlanForFullAdmitPayBySetDate() {
     I.waitForContent('No - I\'ll suggest my own',60);
     I.see('How they want to pay?', 'h1');
-    I.see('Sir John Doe has offered to pay you in full by');
+    I.see('Sir John Doe has offered to pay you by');
     I.see('Do you accept the repayment plan?');
     I.see('Yes');
     await I.click(paths.options.yes);
@@ -323,7 +323,7 @@ class ResponseToDefence {
   async verifyRepaymentPlanForPartAdmitPayBySetDate(acceptOrReject) {
     I.waitForContent('No - I\'ll suggest my own',60);
     I.see('How they want to pay?', 'h1');
-    I.see('Sir John Doe has offered to pay you in full by');
+    I.see('Sir John Doe has offered to pay you by');
     I.see('Do you accept the repayment plan?');
     I.see('Yes');
     if (acceptOrReject == 'accept') {
