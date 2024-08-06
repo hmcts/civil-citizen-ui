@@ -5,18 +5,24 @@ import request from 'supertest';
 import {GA_AGREE_TO_ORDER_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import * as utilityService from 'modules/utilityService';
 import {Claim} from 'common/models/claim';
-import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {decode} from 'punycode';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/modules/utilityService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  saveDraftGARespondentResponse: jest.fn(),
+  getDraftGARespondentResponse: jest.fn(),
+}));
 
 const mockGetClaim = utilityService.getClaimById as jest.Mock;
 
@@ -34,16 +40,17 @@ describe('General Application - Respondent Agree to order', () => {
   beforeEach(() => {
     mockGetClaim.mockImplementation(() => {
       const claim = new Claim();
-      claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+      claim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
       return claim;
     });
+    jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
   });
 
   describe('on GET', () => {
     it('should return page', async () => {
 
       await request(app)
-        .get(GA_AGREE_TO_ORDER_URL)
+        .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_AGREE_TO_ORDER_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           const decodedText = decode(res.text);
@@ -68,9 +75,8 @@ describe('General Application - Respondent Agree to order', () => {
 
   describe('on POST', () => {
     it('should save the value and redirect', async () => {
-
       await request(app)
-        .post(GA_AGREE_TO_ORDER_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_AGREE_TO_ORDER_URL))
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -78,9 +84,8 @@ describe('General Application - Respondent Agree to order', () => {
     });
 
     it('should return errors on no input', async () => {
-
       await request(app)
-        .post(GA_AGREE_TO_ORDER_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_AGREE_TO_ORDER_URL))
         .send({option: null})
         .expect((res) => {
           expect(res.status).toBe(200);

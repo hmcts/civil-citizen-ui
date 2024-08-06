@@ -34,6 +34,7 @@ gaRequestMoreInfoCheckAnswersController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_IN
     const additionalDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
     const summaryRows = buildSummarySection(additionalDocuments, claimId, appId, lng);
+    
     res.render(viewPath, { backLinkUrl, cancelUrl, claimIdPrettified, claim, summaryRows, headerCaption });
   } catch (error) {
     next(error);
