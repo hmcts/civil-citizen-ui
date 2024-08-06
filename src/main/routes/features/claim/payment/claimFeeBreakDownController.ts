@@ -9,7 +9,7 @@ import {getFeePaymentRedirectInformation} from 'services/features/feePayment/fee
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {getClaimById} from 'modules/utilityService';
 import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
-import {constructResponseUrlWithIdParams} from "common/utils/urlFormatter";
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const claimFeeBreakDownController = Router();
 const viewPath = 'features/claim/payment/claim-fee-breakdown';
@@ -34,7 +34,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
       hasInterest,
       totalAmount: totalAmount?.toFixed(2),
       pageTitle: 'PAGES.FEE_AMOUNT.TITLE',
-      paymentSyncError
+      paymentSyncError,
     });
   } catch (error) {
     next(error);

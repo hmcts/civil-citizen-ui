@@ -6,18 +6,18 @@ import {CLAIM_FEE_BREAKUP} from 'routes/urls';
 import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
 import {getClaimById} from 'modules/utilityService';
-import {CivilServiceClient} from "client/civilServiceClient";
-import {Claim} from "models/claim";
-import nock from "nock";
-import config from "config";
-import {getCaseDataFromStore} from "modules/draft-store/draftStoreService";
-import {ClaimDetails} from "form/models/claim/details/claimDetails";
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {Claim} from 'models/claim';
+import nock from 'nock';
+import config from 'config';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
   getCaseDataFromStore: jest.fn(),
   generateRedisKey: jest.fn(),
-  saveDraftClaim: jest.fn()
+  saveDraftClaim: jest.fn(),
 }));
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
@@ -92,7 +92,7 @@ describe('on POST', () => {
     const claim = new Claim();
     claim.claimDetails = new ClaimDetails();
     (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
-    jest.spyOn(CivilServiceClient.prototype, "getFeePaymentRedirectInformation").mockResolvedValueOnce({});
+    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce({});
 
     await request(app)
       .post(CLAIM_FEE_BREAKUP)
@@ -101,12 +101,12 @@ describe('on POST', () => {
       });
   });
   it('should enable the warning text if payment request is failed', async () => {
-    jest.spyOn(CivilServiceClient.prototype, "getFeePaymentRedirectInformation").mockRejectedValueOnce(new Error('something went wrong'));
+    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockRejectedValueOnce(new Error('something went wrong'));
     (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
     await request(app)
       .post(CLAIM_FEE_BREAKUP).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CLAIM_FEE_BREAKUP);
-      })
-  })
+      });
+  });
 });
