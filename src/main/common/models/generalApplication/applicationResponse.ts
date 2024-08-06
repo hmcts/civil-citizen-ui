@@ -18,6 +18,7 @@ import {
 import {CcdGeneralApplicationAddlDocument, CcdHearingDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
+import {CcdGeneralApplicationDirectionsOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
 
 export class ApplicationResponse {
   id: string;
@@ -61,6 +62,7 @@ export interface CCDApplication extends ApplicationUpdate {
   hearingOrderDocument? : CcdHearingDocument[];
   hearingNoticeDocument? : CcdHearingDocument[];
   requestForInformationDocument?: CcdGAMakeWithNoticeDocument[];
+  directionOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
 }
 
 export interface JudicialDecision {

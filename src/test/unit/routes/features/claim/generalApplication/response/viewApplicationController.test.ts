@@ -11,6 +11,7 @@ import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/l
 import {app} from '../../../../../../../main/app';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
@@ -47,8 +48,7 @@ describe('General Application - View application', () => {
     it('should return Application view page', async () => {
       mockedSummaryRows.mockImplementation(() => []);
       await request(app)
-        .get(GA_RESPONSE_VIEW_APPLICATION_URL)
-        .query({applicationId: '1718105701451856'})
+        .get(constructResponseUrlWithIdAndAppIdParams('123','1718105701451856',GA_RESPONSE_VIEW_APPLICATION_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
