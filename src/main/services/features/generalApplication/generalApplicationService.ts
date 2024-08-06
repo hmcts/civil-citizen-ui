@@ -384,11 +384,21 @@ const toCCDGeneralAppHelpWithFees = (helpWithFees: ApplyHelpFeesReferenceForm | 
 export const getApplicationStatus = (status: ApplicationState): ApplicationStatus => {
   switch (status) {
     case ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION:
-      return ApplicationStatus.IN_PROGRESS;
+    case ApplicationState.LISTING_FOR_A_HEARING:
     case ApplicationState.AWAITING_RESPONDENT_RESPONSE:
       return ApplicationStatus.IN_PROGRESS;
     case ApplicationState.AWAITING_APPLICATION_PAYMENT:
+    case ApplicationState.HEARING_SCHEDULED:
+    case ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS:
+    case ApplicationState.AWAITING_ADDITIONAL_INFORMATION:
+    case ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS:
+    case ApplicationState.APPLICATION_ADD_PAYMENT:
       return ApplicationStatus.TO_DO;
+    case ApplicationState.ORDER_MADE:
+    case ApplicationState.APPLICATION_DISMISSED:
+    case ApplicationState.APPLICATION_CLOSED:
+    case ApplicationState.PROCEEDS_IN_HERITAGE:
+      return ApplicationStatus.COMPLETE;
     default:
       return ApplicationStatus.TO_DO;
   }
