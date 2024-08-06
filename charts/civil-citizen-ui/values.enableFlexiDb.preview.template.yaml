@@ -11,7 +11,7 @@ civil-service:
     devmemoryLimits: 4096Mi
     secrets:
       CMC_DB_PASSWORD:
-        secretRef: "{{ .Values.global.postgresSecret }}"
+        secretRef: postgres
         key: PASSWORD
         disabled: false
     keyVaults:
