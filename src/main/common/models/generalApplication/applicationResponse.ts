@@ -62,8 +62,8 @@ export interface CCDApplication extends ApplicationUpdate {
   requestForInformationDocument?: CcdGAMakeWithNoticeDocument[];
   directionOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
   judicialDecisionMakeOrder?: JudicialDecisionMakeOrder;
-  generalOrderDocument?: CcdGeneralApplicationAddlDocument[];
-  dismissalOrderDocument?: CcdGeneralApplicationAddlDocument[];
+  generalOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
+  dismissalOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
 }
 
 export interface JudicialDecision {
