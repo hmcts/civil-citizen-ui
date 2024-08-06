@@ -14,6 +14,7 @@ export class MaxLengthValidator implements ValidatorConstraintInterface {
   async getJudgmentOnlineFlag() {
     return await isJudgmentOnlineLive();
   }
+
   async validate(text: string, validationArguments?: ValidationArguments) {
     if (!text) {
       return true;
