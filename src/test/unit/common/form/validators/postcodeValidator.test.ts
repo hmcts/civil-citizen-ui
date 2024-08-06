@@ -32,17 +32,19 @@ describe('PostcodeValidator', () => {
     it('should return true for a postCode 8 chars long and flag ON', async () => {
       //Given
       jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
-
+      //When
       const result = await validator.validate('EC1A 1BB');
+      //Then
       expect(result).toEqual(true);
     });
     it('should return false for a postCode more than 8 chars long and flag ON', async () => {
       //Given
       jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
-
+      //When
       const result = await validator.validate('EC1A 1BBD');
-      expect(result).toEqual(false);
       const defaultMessage = await validator.defaultMessage();
+      //Then
+      expect(result).toEqual(false);
       expect(defaultMessage).toEqual('ERRORS.TEXT_TOO_MANY');
     });
   });
@@ -51,10 +53,11 @@ describe('PostcodeValidator', () => {
     it('should return the default error message when flag is OFF', async () => {
       //Given
       jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
-
+      //When
       const result = await validator.validate('EC1A 1BBD');
-      expect(result).toEqual(false);
       const defaultMessage = await validator.defaultMessage();
+      //Then
+      expect(result).toEqual(false);
       expect(defaultMessage).toEqual('ERRORS.DEFENDANT_POSTCODE_NOT_VALID');
     });
   });
