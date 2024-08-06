@@ -18,6 +18,7 @@ import {
 import {CcdGeneralApplicationAddlDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
+import {CcdGeneralApplicationDirectionsOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
 
 export class ApplicationResponse {
   id: string;
@@ -59,6 +60,7 @@ export interface CCDApplication extends ApplicationUpdate {
   parentClaimantIsApplicant: YesNoUpperCamelCase;
   judicialDecision: JudicialDecision,
   requestForInformationDocument?: CcdGAMakeWithNoticeDocument[];
+  directionOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
   judicialDecisionMakeOrder?: JudicialDecisionMakeOrder;
   directionOrderDocument?: CcdGeneralApplicationAddlDocument[];
 }
