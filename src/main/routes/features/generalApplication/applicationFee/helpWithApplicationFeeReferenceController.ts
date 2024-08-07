@@ -86,4 +86,4 @@ function getRedirectUrl(claimId: string, isHelpWithFee: GenericYesNo, feeType: b
     return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_FEE_CONFIRMATION_URL+ '?additionalFeeTypeFlag='+ feeType);
   }
   return constructResponseUrlWithIdAndAppIdParams(claimId, genAppId, GA_APPLY_HELP_WITH_FEE_SELECTION);
-};
+}

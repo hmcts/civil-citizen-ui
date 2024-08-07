@@ -3,7 +3,7 @@ import {
   //DASHBOARD_CLAIMANT_URL,
   GA_APPLY_HELP_WITH_FEE_SELECTION,
   GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION, GA_VIEW_APPLICATION_URL,
-  GENERAL_APPLICATION_CONFIRM_URL
+  GENERAL_APPLICATION_CONFIRM_URL,
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';

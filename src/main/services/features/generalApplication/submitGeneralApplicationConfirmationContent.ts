@@ -6,7 +6,7 @@ import {getCancelUrl} from 'services/features/generalApplication/generalApplicat
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION} from 'routes/urls';
 
-export const getGeneralApplicationConfirmationContent = (async (claimId: string, genAppId: string, claim: Claim, lng: string,) => {
+export const getGeneralApplicationConfirmationContent = (async (claimId: string, genAppId: string, claim: Claim, lng: string) => {
   const applicationFee = convertToPoundsFilter(claim.generalApplication?.applicationFee?.calculatedAmountInPence?.toString());
   const dashboardUrl = await getCancelUrl(claimId, claim);
   let payApplicationFeeUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION);

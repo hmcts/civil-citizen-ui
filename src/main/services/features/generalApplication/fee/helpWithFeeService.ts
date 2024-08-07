@@ -22,7 +22,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, req: AppRequest): Promise<string> => {
   try {
     let redirectUrl;
-    let generalApplicationId: string
+    let generalApplicationId: string;
     const claim: Claim = await getClaimById(claimId, req, true);
     if (req.query.id) {
       const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
