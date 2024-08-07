@@ -1,13 +1,12 @@
 import {RequestHandler, Response, Router} from 'express';
-
 import config from 'config';
 import {DASHBOARD_URL} from '../../urls';
 import {AppRequest, UserDetails} from 'models/AppRequest';
 import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {DraftClaimData, getDraftClaimData} from 'services/dashboard/draftClaimService';
-import { buildPagination } from 'services/features/dashboard/claimPaginationService';
-import { DashboardClaimantResponse, DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
+import {buildPagination} from 'services/features/dashboard/claimPaginationService';
+import {DashboardClaimantResponse, DashboardDefendantResponse} from 'common/models/dashboard/dashboarddefendantresponse';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
