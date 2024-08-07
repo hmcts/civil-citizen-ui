@@ -1,6 +1,6 @@
 import {t} from 'i18next';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DASHBOARD_CLAIMANT_URL, GA_APPLY_HELP_WITH_FEE_REFERENCE, HELP_WITH_FEES_ELIGIBILITY} from 'routes/urls';
 import {ClaimFeeData} from 'models/civilClaimResponse';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
@@ -51,7 +51,7 @@ export const getHelpApplicationFeeContinuePageContents = (gaFeeData: ClaimFeeDat
 };
 
 export const getApplicationFeeContentPageDetails = (claimId: string, feeType: boolean, genAppId: string) => {
-  const nextPageUrl = GA_APPLY_HELP_WITH_FEE_REFERENCE.replace(':id', claimId) + '?additionalFeeTypeFlag=' + feeType + (genAppId ? `?id=${genAppId}` : '');
+  const nextPageUrl = constructResponseUrlWithIdAndAppIdParams(claimId, genAppId, GA_APPLY_HELP_WITH_FEE_REFERENCE) + '?additionalFeeTypeFlag=' + feeType;
   const dashBoardClaimantUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
   const pageBuilder = new PageSectionBuilder();
   if (feeType) {

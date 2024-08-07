@@ -1,7 +1,7 @@
 import {AppRequest} from 'models/AppRequest';
 import {YesNo} from 'form/models/yesNo';
 import {GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -19,15 +19,20 @@ const logger = Logger.getLogger('applicationFeeHelpSelectionService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getRedirectUrl = async (claimId: string, genAppId: string, applyHelpWithFees: GenericYesNo, req: AppRequest): Promise<string> => {
+export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, req: AppRequest): Promise<string> => {
   try {
     let redirectUrl;
+    let generalApplicationId: string
     const claim: Claim = await getClaimById(claimId, req, true);
-    const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    const ccdGeneralApplications = ccdClaim.generalApplications;
-    //const generalApplicationId = ccdGeneralApplications[ccdGeneralApplications.length-1].value.caseLink.CaseReference;
-    const ga = ccdGeneralApplications?.find((ga: { id: string }) => ga.id === genAppId);
-    const generalApplicationId = ga.value.caseLink.CaseReference;
+    if (req.query.id) {
+      const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+      const ccdGeneralApplications = ccdClaim.generalApplications;
+      const ga = ccdGeneralApplications?.find((ga: { id: string }) => ga.id === (req.query.id as string));
+      generalApplicationId = ga.value.caseLink.CaseReference;
+    } else {
+      generalApplicationId = req.params.appId;
+    }
+
     if (applyHelpWithFees.option === YesNo.NO) {
       const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
@@ -37,9 +42,9 @@ export const getRedirectUrl = async (claimId: string, genAppId: string, applyHel
       const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, generalApplicationId);
       const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
       redirectUrl = isAdditionalFee
-        ? constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag='+ isAdditionalFee)
-        : constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES);
-        redirectUrl = redirectUrl  + (genAppId ? `?id=${genAppId}` : '');
+        ? constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag=' + isAdditionalFee)
+        : constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEES);
+      // redirectUrl = redirectUrl  + (genAppId ? `?id=${genAppId}` : '');
     }
     return redirectUrl;
   }
