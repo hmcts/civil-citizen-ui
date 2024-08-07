@@ -22,25 +22,23 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, req.params.appId);
-    const decisionFromCourt = !!applicationResponse.case_data?.judicialDecision?.decision;
-    const judgeResponseType = applicationResponse.case_data.judicialDecision.decision;
     const isResponseFromCourt = !!applicationResponse.case_data?.judicialDecision?.decision;
-    // const responseDocument = applicationResponse.case_data?.requestForInformationDocument;
     let showRequestMoreInfoButton = false;
     let responseFromCourt: SummaryRow[] = [];
     let payAdditionalFeeUrl: string = null;
     const isApplicationFeeAmountNotPaid = isApplicationFeeNotPaid(applicationResponse);
     let applicationFeeOptionUrl : string = null;
-    // let requestMoreInfoUrl: string = null;
 
-    if(judgeResponseType === JudicialDecisionOptions.MAKE_AN_ORDER) {
-      responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
-      payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
-    } else {
-      if(judgeResponseType === JudicialDecisionOptions.REQUEST_MORE_INFO) {
-        showRequestMoreInfoButton = true;
+    if(isResponseFromCourt) {
+      const judgeResponseType = applicationResponse.case_data?.judicialDecision?.decision;
+      if (judgeResponseType === JudicialDecisionOptions.MAKE_AN_ORDER) {
         responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
-        // requestMoreInfoUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, responseDocument);
+        payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
+      } else {
+        if (judgeResponseType === JudicialDecisionOptions.REQUEST_MORE_INFO) {
+          showRequestMoreInfoButton = true;
+          responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
+        }
       }
     }
 
@@ -56,14 +54,11 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       applicationIndex,
       isResponseFromCourt,
       responseFromCourt,
-      decisionFromCourt,
-      judgeResponseType,
       additionalDocUrl,
       payAdditionalFeeUrl,
       isApplicationFeeAmountNotPaid,
       applicationFeeOptionUrl,
       showRequestMoreInfoButton,
-      // requestMoreInfoUrl,
     });
   } catch (error) {
     next(error);
