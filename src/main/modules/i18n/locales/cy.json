@@ -3116,7 +3116,7 @@
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
-      "DEFENDANT_OFFERED_TO_PAY": "Mae {{ defendantName }}  wedi cynnig eich talu'n llawn erbyn {{ proposedSetDate }}",
+      "DEFENDANT_OFFERED_TO_PAY": "Mae {{ defendantName }}  wedi cynnig eich talu erbyn {{ proposedSetDate }}",
       "DO_YOU_ACCEPT": "Ydych chi'n derbyn y cynllun ad-dalu?",
       "NO_OPTION": "Nac ydw – byddaf yn awgrymu fy nghynllun fy hun",
       "PAGE_TITLE": "Sut mae am dalu?",
