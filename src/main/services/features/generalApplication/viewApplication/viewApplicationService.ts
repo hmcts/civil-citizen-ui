@@ -11,7 +11,6 @@ import {
   addOtherPartiesAgreedRow,
   addRequestingReasonRows,
   addUnavailableDatesRows,
-  addViewApplicationRow,
 } from './addViewApplicationRows';
 import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
 import {ApplicationResponse, JudicialDecisionOptions} from 'models/generalApplication/applicationResponse';
@@ -36,7 +35,6 @@ const buildApplicationSections = (application: ApplicationResponse, lang: string
     ...addOrderJudgeRows(application, lang),
     ...addRequestingReasonRows(application, lang),
     ...addDocumentUploadRow(application, lang),
-    ...addViewApplicationRow(application, lang),
     ...addHearingArrangementsRows(application, lang),
     ...addHearingContactDetailsRows(application, lang),
     ...addUnavailableDatesRows(application, lang),
@@ -52,7 +50,6 @@ const buildViewApplicationToRespondentSections = (application: ApplicationRespon
     ...addOrderJudgeRows(application, lang),
     ...addRequestingReasonRows(application, lang),
     ...addDocumentUploadRow(application, lang),
-    ...addViewApplicationRow(application, lang),
     ...addHearingArrangementsRows(application, lang),
     ...addHearingContactDetailsRows(application, lang),
     ...addUnavailableDatesRows(application, lang),
