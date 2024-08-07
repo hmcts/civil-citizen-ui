@@ -117,6 +117,6 @@ describe('apply help with application fee selection', () => {
     //when
     const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), mockedAppRequest);
     //Then
-    expect(actualRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, 'test'));
+    expect(actualRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES+'?additionalFeeTypeFlag=true'));
   });
 });

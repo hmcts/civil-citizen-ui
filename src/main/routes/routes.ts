@@ -409,6 +409,10 @@ import gaRequestMoreInfoCheckAnswersController
   from 'routes/features/generalApplication/additionalInfoUpload/checkAnswerController';
 import moreInfoSubmittedConfirmationController
   from 'routes/features/generalApplication/additionalInfoUpload/moreInfoSubmittedConfirmationController';
+import uploadDocumentsDirectionsOrderController
+  from 'routes/features/generalApplication/directionsOrderUpload/uploadDocumentsDirectionsOrderController';
+import gaDirectionOrderCheckAnswersController from './features/generalApplication/directionsOrderUpload/checkAnswerController';
+import directionOrderSubmittedConfirmationController from './features/generalApplication/directionsOrderUpload/directionOrderSubmittedConfirmationController';
 
 export default [
   homeController,
@@ -740,4 +744,7 @@ export default [
   uploadDocumentsForRequestMoreInfoController,
   gaRequestMoreInfoCheckAnswersController,
   moreInfoSubmittedConfirmationController,
+  uploadDocumentsDirectionsOrderController,
+  gaDirectionOrderCheckAnswersController,
+  directionOrderSubmittedConfirmationController,
 ];

@@ -9,16 +9,14 @@ import {
 } from 'services/features/generalApplication/generalApplicationService';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
-import {
-  buildSummarySection,
-  translateCUItoCCD,
-} from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
+import {buildSummarySection} from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {GaServiceClient} from 'client/gaServiceClient';
 import config from 'config';
 import {getGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentService';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
+import {translateCUItoCCD} from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 
 const gaRequestMoreInfoCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/checkYourAnswer';
