@@ -34,14 +34,14 @@
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <div class="govuk-form-group {% if atLeastOneRequired %} govuk-form-group--error {% endif %}">
+            <div id="rows" class="govuk-form-group {% if atLeastOneRequired %} govuk-form-group--error {% endif %}">
               {% if atLeastOneRequired %}
                 <p class="govuk-error-message" id="atLeastOneFieldRequired">
                   <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(atLeastOneRequired) }}
                 </p>
               {% endif %}
               <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-                <label class="govuk-label--s">
+                <label class="govuk-label govuk-label--s">
                   {{ t('COMMON.DATE') }}
                 </label>
                 <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
@@ -49,7 +49,7 @@
                 </p>
               </div>
               <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-                <label class="govuk-label--s">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</label>
+                <label class="govuk-label govuk-label--s">{{ t('COMMON.TIMELINE.WHAT_HAPPENED') }}</label>
                 <p
                   class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">{{ t('COMMON.TIMELINE.EXAMPLE_EVENT') }}</p>
               </div>
