@@ -4,7 +4,7 @@ import {isJudgmentOnlineLive} from '../../../app/auth/launchdarkly/launchDarklyC
 /**
  * Validates that the input value is in correct post code format
  */
-@ValidatorConstraint({name: 'customInt', async: false})
+@ValidatorConstraint({name: 'customInt', async: true})
 export class PostcodeValidator implements ValidatorConstraintInterface {
 
   readonly UK_POSTCODE_REGEX = /^(([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9]?[A-Za-z]))))[0-9][A-Za-z]{2}))$/; // NOSONAR

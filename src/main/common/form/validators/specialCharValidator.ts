@@ -4,7 +4,7 @@ import {isJudgmentOnlineLive} from '../../../app/auth/launchdarkly/launchDarklyC
 /**
  * Validates that the input value does not contain special characters ˆ ` ´ ¨
  */
-@ValidatorConstraint({name: 'specialCharValidator', async: false})
+@ValidatorConstraint({name: 'specialCharValidator', async: true})
 export class SpecialCharValidator implements ValidatorConstraintInterface {
 
   readonly SPECIAL_CHARS = /[ˆ`´¨]/;

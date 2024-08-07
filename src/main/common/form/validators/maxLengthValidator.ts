@@ -5,7 +5,7 @@ import {ADDRESS_LINE_MAX_LENGTH, ADDRESS_LINE_MAX_LENGTH_JO} from 'form/validato
 /**
  * Validates the input max length
  */
-@ValidatorConstraint({name: 'maxLengthValidator', async: false})
+@ValidatorConstraint({name: 'maxLengthValidator', async: true})
 export class MaxLengthValidator implements ValidatorConstraintInterface {
 
   ADDRESS_MAX_LENGTH: number;

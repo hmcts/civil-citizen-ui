@@ -4,7 +4,7 @@ import {isJudgmentOnlineLive} from '../../../app/auth/launchdarkly/launchDarklyC
 /**
  * Validates that the combined inputs length for the name (title, firstName and lastName) is <= 70
  */
-@ValidatorConstraint({name: 'fullNameValidator', async: false})
+@ValidatorConstraint({name: 'fullNameValidator', async: true})
 export class FullNameValidator implements ValidatorConstraintInterface {
   errorMessage: string;
 
