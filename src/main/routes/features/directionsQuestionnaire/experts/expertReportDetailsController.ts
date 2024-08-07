@@ -13,7 +13,7 @@ import {
 } from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
-import {GenericYesNo} from "form/models/genericYesNo";
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 const expertReportDetailsController = Router();
 const dqPropertyName = 'expertReportDetails';
