@@ -98,10 +98,23 @@ describe('General Application - Do you want to continue to apply for Help with F
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEES)
+        .query({additionalFeeTypeFlag: 'false'})
         .send({option: YesNo.YES})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(GA_APPLY_HELP_WITH_FEES_START);
+          expect(res.header.location).toEqual(GA_APPLY_HELP_WITH_FEES_START+'?additionalFeeTypeFlag=false');
+        });
+    });
+
+    it('should redirect to Additional payment Apply for help with fees if option is YES', async () => {
+      mockGetCaseData.mockImplementation(async () => mockClaim);
+      await request(app)
+        .post(GA_APPLY_HELP_WITH_FEES)
+        .query({additionalFeeTypeFlag: 'true'})
+        .send({option: YesNo.YES})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(GA_APPLY_HELP_WITH_FEES_START+'?additionalFeeTypeFlag=true');
         });
     });
 
@@ -127,7 +140,7 @@ describe('General Application - Do you want to continue to apply for Help with F
           expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION_UPPER'));
         });
     });
-      
+
     it('should return http 500 when has error in the post method', async () => {
       mockSaveCaseData.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);

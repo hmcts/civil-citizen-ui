@@ -31,8 +31,6 @@ import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthFo
 import {
   CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
-import {CCDHelpWithFees} from 'form/models/claimDetails';
-import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
@@ -59,7 +57,6 @@ export const translateDraftApplicationToCCD = (
       application.hearingSupport,
     ),
     generalAppStatementOfTruth: toCCDStatementOfTruth(application.statementOfTruth),
-    generalAppHelpWithFees: toCCDGeneralAppHelpWithFees(application.helpWithFees?.helpFeeReferenceNumberForm),
   };
 };
 
@@ -185,13 +182,5 @@ const toCCDSupportRequirements = (hearingSupport: HearingSupport): CcdSupportReq
 const toCCDStatementOfTruth = (statementOfTruth: StatementOfTruthForm): CcdGeneralApplicationStatementOfTruth => {
   return {
     name: statementOfTruth?.name,
-  };
-};
-
-const toCCDGeneralAppHelpWithFees = (helpWithFees: ApplyHelpFeesReferenceForm | undefined): CCDHelpWithFees => {
-  if (!helpWithFees) return undefined;
-  return {
-    helpWithFee: toCCDYesNo(helpWithFees.option),
-    helpWithFeesReferenceNumber: helpWithFees.referenceNumber,
   };
 };

@@ -1,6 +1,7 @@
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AppRequest} from 'common/models/AppRequest';
-import {EventDto, CCDGeneralApplication} from 'models/gaEvents/eventDto';
+import {CCDGaHelpWithFees, EventDto} from 'models/gaEvents/eventDto';
+import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {GeneralApplicationResponse} from 'models/generalApplicationResponse';
 import {Application} from 'models/application';
@@ -51,7 +52,7 @@ export class GaServiceClient {
     };
   }
 
-  async submitEvent(event: ApplicationEvent, claimId: string, updatedApplication?: CCDGeneralApplication, req?: AppRequest): Promise<Application> {
+  async submitEvent(event: ApplicationEvent, claimId: string, updatedApplication?: CCDGeneralApplication| CCDGaHelpWithFees, req?: AppRequest): Promise<Application> {
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
     const data: EventDto = {
