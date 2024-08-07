@@ -59,7 +59,6 @@ documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL, (async (req: AppRe
 documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Request | AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const redisKey= generateRedisKey(<AppRequest>req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const form = new GenericForm(new DocumentUploadSubmissionForm(req.body.signed));
     const claim = await getClaimById(claimId, req, true);
@@ -73,7 +72,7 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
       if((<AppRequest>req).session?.dashboard?.taskIdHearingUploadDocuments){
         await civilServiceClient.updateTaskStatus((<AppRequest>req)?.session?.dashboard?.taskIdHearingUploadDocuments, <AppRequest>req);
       }
-      await deleteDraftClaimFromStore(redisKey);
+      await deleteDraftClaimFromStore(generateRedisKey(<AppRequest>req));
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
     }
   } catch (error) {

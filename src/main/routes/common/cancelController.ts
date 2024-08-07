@@ -14,7 +14,7 @@ cancelController.get(CANCEL_URL, (async (req, res, next) => {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
     const propertyName = req.params.propertyName;
-    const claim = await getClaimById(redisKey, req);
+    const claim = await getClaimById(claimId, req,true);
     await deleteFieldDraftClaimFromStore(redisKey, claim, propertyName);
 
     if (claim.isClaimant()){

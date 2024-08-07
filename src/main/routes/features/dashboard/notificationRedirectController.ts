@@ -48,7 +48,7 @@ notificationRedirectController.get(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, (as
 async function getDashboardNotificationRedirectUrl(locationName: string, claimId: string, req: AppRequest) : Promise<string> {
 
   let redirectUrl;
-  const claim = await getClaimById(claimId, req);
+  const claim = await getClaimById(claimId, req,true);
 
   switch(locationName) {
     case 'VIEW_BUNDLE':
