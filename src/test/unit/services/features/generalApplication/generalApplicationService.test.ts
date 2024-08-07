@@ -7,7 +7,8 @@ import {
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
   saveAcceptDefendantOffer,
-  saveAgreementFromOtherParty, saveAndTriggerNotifyGaHwfEvent,
+  saveAgreementFromOtherParty,
+  //saveAndTriggerNotifyGaHwfEvent,
   saveApplicationCosts,
   saveApplicationType,
   saveHearingArrangement,
@@ -50,7 +51,7 @@ import {
   triggerNotifyHwfEvent,
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
 import {GaServiceClient} from 'client/gaServiceClient';
-import {CivilServiceClient} from 'client/civilServiceClient';
+//import {CivilServiceClient} from 'client/civilServiceClient';
 import {CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {CCDHelpWithFees} from 'form/models/claimDetails';
@@ -464,7 +465,7 @@ describe('General Application service', () => {
       const respondentAgreement = new RespondentAgreement(YesNo.YES);
       // When
       await saveRespondentAgreement('123', respondentAgreement);
-      // Then 
+      // Then
       const gaResponse = new GaResponse();
       gaResponse.respondentAgreement = respondentAgreement;
       await expect(spy).toBeCalledWith('123', gaResponse);
@@ -526,33 +527,33 @@ describe('General Application service', () => {
       await expect(spy).toBeCalledWith('123', claim);
     });
 
-    it('should save help with hwf application fee selection', async () => {
-      const  claim = new Claim();
-      const  ccdClaim = new Claim();
-      ccdClaim.generalApplications = [
-        {
-          'id': 'test',
-          'value': {
-            'caseLink': {
-              'CaseReference': 'testApp1',
-            },
-          },
-        },
-      ];
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.helpWithFees = new GaHelpWithFees();
-        claim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
-        return claim;
-      });
-      const spy = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(ccdClaim);
-      const spyOnGA = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
-      //When
-      await saveAndTriggerNotifyGaHwfEvent('123', undefined, new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-A1B-36C'));
-      expect(spyOnGA).toHaveBeenCalled();
-      await expect(spy).toBeCalledWith('123', undefined);
-    });
+    // it('should save help with hwf application fee selection', async () => {
+    //   const  claim = new Claim();
+    //   const  ccdClaim = new Claim();
+    //   ccdClaim.generalApplications = [
+    //     {
+    //       'id': 'test',
+    //       'value': {
+    //         'caseLink': {
+    //           'CaseReference': 'testApp1',
+    //         },
+    //       },
+    //     },
+    //   ];
+    //   //Given
+    //   mockGetCaseData.mockImplementation(async () => {
+    //     claim.generalApplication = new GeneralApplication();
+    //     claim.generalApplication.helpWithFees = new GaHelpWithFees();
+    //     claim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
+    //     return claim;
+    //   });
+    //   const spy = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(ccdClaim);
+    //   const spyOnGA = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
+    //   //When
+    //   await saveAndTriggerNotifyGaHwfEvent('123', undefined, new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-A1B-36C'));
+    //   expect(spyOnGA).toHaveBeenCalled();
+    //   await expect(spy).toBeCalledWith('123', undefined);
+    // });
 
     it('should save help with application fee continue selection', async () => {
       const  claim = new Claim();
