@@ -456,4 +456,30 @@ describe('translateCCDCaseDataToCUIModel', () => {
     //Then
     expect(claim.claimantEvidence.evidenceItem).toEqual(evidenceCUI);
   });
+
+  it('should translate the respondent general app details', () => {
+    //Given
+    const dateString = new Date().toISOString();
+    const input: CCDClaim = {
+      respondentSolGaAppDetails: [
+        {
+          id: '1234',
+          value: {
+            generalApplicationType: 'Strike out',
+            caseState: 'awaiting respondent response',
+            caseLink: {
+              CaseReference: '1234567',
+            },
+            generalAppSubmittedDateGAspec: dateString,
+          },
+        },
+      ],
+    };
+
+    // When
+    const claim = translateCCDCaseDataToCUIModel(input);
+  
+    //Then
+    expect(claim.respondentGaAppDetails).toEqual([{ generalAppTypes: ['STRIKE_OUT'], gaApplicationId: '1234567', caseState: 'awaiting respondent response', generalAppSubmittedDateGAspec: dateString }]);
+  });
 });
