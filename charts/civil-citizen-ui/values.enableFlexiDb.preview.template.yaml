@@ -441,10 +441,12 @@ camunda-bpm:
         key: PASSWORD
         disabled: false
     environment:
+      CAMUNDA_API_AUTH_ENABLED: false
       CAMUNDA_DB_HOST: civil-preview.postgres.database.azure.com
       CAMUNDA_DB_USER_NAME: hmcts
       CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       CAMUNDA_DB_NAME: "pr-${CHANGE_ID}-camunda"
+      CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
       TEMP_VAR: false
 
 
