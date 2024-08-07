@@ -1,6 +1,4 @@
 import { YesNo } from 'common/form/models/yesNo';
-import { Claim } from 'common/models/claim';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { HearingArrangement, HearingTypeOptions } from 'common/models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'common/models/generalApplication/hearingContactDetails';
 import { HearingSupport, SupportType } from 'common/models/generalApplication/hearingSupport';
@@ -17,11 +15,8 @@ jest.mock('i18next', () => ({
 }));
 
 const claimAndResponse = () => {
-  const claim = new Claim();
-  claim.generalApplication = new GeneralApplication();
   const response = new GaResponse();
-  claim.generalApplication.response = response;
-  return {claim, response};
+  return { response };
 };
 
 const unavailableHearingDate = (dateType: UnavailableDateType, from: string, until?: string) => {
@@ -36,24 +31,23 @@ describe('Check Answers response service', () => {
   describe('getSummarySections', () => {
 
     it('returns no sections when no general application', () => {
-      expect(getSummarySections('123', new Claim(), 'en')).toEqual([]);
+      expect(getSummarySections('123','345' ,new GaResponse(), 'en')).toEqual([]);
     });
 
     it('returns no sections when general application is empty', () => {
-      const {claim} = claimAndResponse();
-      expect(getSummarySections('123', claim, 'en')).toEqual([]);
+      expect(getSummarySections('123','345', new GaResponse(), 'en')).toEqual([]);
     });
 
     it('returns accept offer rows - yes', () => {
-      const {claim, response} = claimAndResponse();
+      const { response } = claimAndResponse();
       response.acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES);
 
-      expect(getSummarySections('123', claim, 'en')).toEqual([{ 
+      expect(getSummarySections('123','345', response, 'en')).toEqual([{ 
         key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'}, 
         value: { html: 'COMMON.VARIATION.YES' },
         actions: {
           items: [{
-            href: '/case/123/response/general-application/accept-defendant-offer',
+            href: '/case/123/response/general-application/345/accept-defendant-offer',
             text: 'COMMON.BUTTONS.CHANGE',
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE',
           }],
@@ -62,15 +56,15 @@ describe('Check Answers response service', () => {
     });
 
     it('returns accept offer rows - yes (ignoring other fields)', () => {
-      const {claim, response} = claimAndResponse();
+      const { response } = claimAndResponse();
       response.acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES, ProposedPaymentPlanOption.ACCEPT_INSTALMENTS, '500', 'reason');
 
-      expect(getSummarySections('123', claim, 'en')).toEqual([{ 
+      expect(getSummarySections('123','345', response, 'en')).toEqual([{ 
         key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'}, 
         value: { html: 'COMMON.VARIATION.YES' },
         actions: {
           items: [{
-            href: '/case/123/response/general-application/accept-defendant-offer',
+            href: '/case/123/response/general-application/345/accept-defendant-offer',
             text: 'COMMON.BUTTONS.CHANGE',
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE',
           }],
@@ -79,7 +73,7 @@ describe('Check Answers response service', () => {
     });
 
     it('returns accept offer rows - no - installments', () => {
-      const {claim, response} = claimAndResponse();
+      const { response } = claimAndResponse();
       response.acceptDefendantOffer = new AcceptDefendantOffer(YesNo.NO, ProposedPaymentPlanOption.ACCEPT_INSTALMENTS, '500.05', 'Reason Proposed Instalments');
 
       const expectedPaymentHtml = '<ul class="no-list-style">'
@@ -88,12 +82,12 @@ describe('Check Answers response service', () => {
       + '<li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT</li>'
       + '<li>Reason Proposed Instalments</li>'
       + '</ul>';
-      expect(getSummarySections('123', claim, 'en')).toEqual([{ 
+      expect(getSummarySections('123', '345',response, 'en')).toEqual([{ 
         key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'}, 
         value: { html: 'COMMON.VARIATION.NO' },
         actions: {
           items: [{
-            href: '/case/123/response/general-application/accept-defendant-offer',
+            href: '/case/123/response/general-application/345/accept-defendant-offer',
             text: 'COMMON.BUTTONS.CHANGE',
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE',
           }],
@@ -103,7 +97,7 @@ describe('Check Answers response service', () => {
         value: { html: expectedPaymentHtml },
         actions: {
           items: [{
-            href: '/case/123/response/general-application/accept-defendant-offer',
+            href: '/case/123/response/general-application/345/accept-defendant-offer',
             text: 'COMMON.BUTTONS.CHANGE',
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
           }],
@@ -112,7 +106,7 @@ describe('Check Answers response service', () => {
     });
 
     it('returns accept offer rows - no - set date', () => {
-      const {claim, response} = claimAndResponse();
+      const { response } = claimAndResponse();
       response.acceptDefendantOffer = Object.assign(new AcceptDefendantOffer(), {
         option: YesNo.NO,
         type: ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE,
@@ -126,12 +120,12 @@ describe('Check Answers response service', () => {
       + '<li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT</li>'
       + '<li>reason for set day proposal</li>'
       + '</ul>';
-      expect(getSummarySections('123', claim, 'en')).toEqual([{ 
+      expect(getSummarySections('123', '345',response, 'en')).toEqual([{ 
         key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'}, 
         value: { html: 'COMMON.VARIATION.NO' },
         actions: {
           items: [{
-            href: '/case/123/response/general-application/accept-defendant-offer',
+            href: '/case/123/response/general-application/345/accept-defendant-offer',
             text: 'COMMON.BUTTONS.CHANGE',
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE',
           }],
@@ -141,7 +135,7 @@ describe('Check Answers response service', () => {
         value: { html: expectedPaymentHtml },
         actions: {
           items: [{
-            href: '/case/123/response/general-application/accept-defendant-offer',
+            href: '/case/123/response/general-application/345/accept-defendant-offer',
             text: 'COMMON.BUTTONS.CHANGE',
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
           }],
@@ -150,15 +144,15 @@ describe('Check Answers response service', () => {
     });
 
     it('returns respondent agreement rows', () => {
-      const {claim, response} = claimAndResponse();
+      const { response } = claimAndResponse();
       response.respondentAgreement = new RespondentAgreement(YesNo.YES);
       
-      expect(getSummarySections('123', claim, 'en')).toEqual([{ 
+      expect(getSummarySections('123','345', response, 'en')).toEqual([{ 
         key: { text: 'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE'}, 
         value: { html: 'COMMON.VARIATION.YES' },
         actions: {
           items: [{
-            href: '/case/123/response/general-application/respondent-agreement',
+            href: '/case/123/response/general-application/345/respondent-agreement',
             text: 'COMMON.BUTTONS.CHANGE',
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE',
           }],
@@ -167,12 +161,12 @@ describe('Check Answers response service', () => {
     });
 
     it('returns hearing arrangement sections', () => {
-      const {claim, response} = claimAndResponse();
+      const { response } = claimAndResponse();
       response.hearingArrangement = new HearingArrangement(HearingTypeOptions.TELEPHONE, 'I prefer phone', 
         "Barnet Civil and Family Centre - St Mary's Court, Regents Park Road - N3 1BQ");
 
-      const href = '/case/123/response/general-application/hearing-arrangement';
-      expect(getSummarySections('123', claim, 'en')).toEqual([
+      const href = '/case/123/response/general-application/345/hearing-arrangement';
+      expect(getSummarySections('123','345', response, 'en')).toEqual([
         { 
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE'}, 
           value: { html: 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.TELEPHONE' },
@@ -207,11 +201,11 @@ describe('Check Answers response service', () => {
     });
 
     it('returns hearing arrangement sections - no location', () => {
-      const {claim, response} = claimAndResponse();
+      const { response } = claimAndResponse();
       response.hearingArrangement = new HearingArrangement(HearingTypeOptions.TELEPHONE, 'I prefer phone');
 
-      const href = '/case/123/response/general-application/hearing-arrangement';
-      expect(getSummarySections('123', claim, 'en')).toEqual([
+      const href = '/case/123/response/general-application/345/hearing-arrangement';
+      expect(getSummarySections('123','345', response, 'en')).toEqual([
         { 
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE'}, 
           value: { html: 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.TELEPHONE' },
@@ -236,11 +230,11 @@ describe('Check Answers response service', () => {
     });
 
     it('returns hearing contact details', () => {
-      const {claim, response} = claimAndResponse();
+      const { response } = claimAndResponse();
       response.hearingContactDetails = new HearingContactDetails('077070707', 'email@addre.ss');
 
-      const href = '/case/123/response/general-application/hearing-contact-details';
-      expect(getSummarySections('123', claim, 'en')).toEqual([
+      const href = '/case/123/response/general-application/345/hearing-contact-details';
+      expect(getSummarySections('123','345' ,response, 'en')).toEqual([
         { 
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE'}, 
           value: { html: '077070707' },
@@ -265,12 +259,12 @@ describe('Check Answers response service', () => {
     });
 
     it('returns unavailable dates - simple date', () => {
-      const {claim, response} = claimAndResponse();
+      const { response } = claimAndResponse();
       response.unavailableDatesHearing = new UnavailableDatesGaHearing(
         [unavailableHearingDate(UnavailableDateType.SINGLE_DATE, '2024-01-01')]);
 
-      const href = '/case/123/response/general-application/unavailable-dates';
-      expect(getSummarySections('123', claim, 'en')).toEqual([
+      const href = '/case/123/response/general-application/345/unavailable-dates';
+      expect(getSummarySections('123','345', response, 'en')).toEqual([
         { 
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'}, 
           value: { html: '<ul class="no-list-style"><li>1 January 2024</li></ul>' },
@@ -285,12 +279,12 @@ describe('Check Answers response service', () => {
     });
 
     it('returns unavailable dates - longer period', () => {
-      const {claim, response} = claimAndResponse();
+      const { response } = claimAndResponse();
       response.unavailableDatesHearing = new UnavailableDatesGaHearing(
         [unavailableHearingDate(UnavailableDateType.LONGER_PERIOD, '2024-01-01', '2024-02-29')]);
 
-      const href = '/case/123/response/general-application/unavailable-dates';
-      expect(getSummarySections('123', claim, 'en')).toEqual([
+      const href = '/case/123/response/general-application/345/unavailable-dates';
+      expect(getSummarySections('123','345', response, 'en')).toEqual([
         { 
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'}, 
           value: { html: '<ul class="no-list-style"><li>1 January 2024 - 29 February 2024</li></ul>' },
@@ -305,15 +299,15 @@ describe('Check Answers response service', () => {
     });
 
     it('returns unavailable dates - several', () => {
-      const {claim, response} = claimAndResponse();
+      const { response } = claimAndResponse();
       response.unavailableDatesHearing = new UnavailableDatesGaHearing(
         [unavailableHearingDate(UnavailableDateType.LONGER_PERIOD, '2024-01-01', '2024-02-29'),
           unavailableHearingDate(UnavailableDateType.SINGLE_DATE, '2024-03-01'),
           unavailableHearingDate(UnavailableDateType.LONGER_PERIOD, '2024-05-01', '2024-06-01'),
         ]);
 
-      const href = '/case/123/response/general-application/unavailable-dates';
-      expect(getSummarySections('123', claim, 'en')).toEqual([
+      const href = '/case/123/response/general-application/345/unavailable-dates';
+      expect(getSummarySections('123', '345',response, 'en')).toEqual([
         { 
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'}, 
           value: { html: '<ul class="no-list-style"><li>1 January 2024 - 29 February 2024</li><li>1 March 2024</li><li>1 May 2024 - 1 June 2024</li></ul>' },
@@ -328,23 +322,23 @@ describe('Check Answers response service', () => {
     });
 
     it('returns unavailable dates - empty list', () => {
-      const {claim, response} = claimAndResponse();
+      const { response } = claimAndResponse();
       response.unavailableDatesHearing = new UnavailableDatesGaHearing([]);
 
-      expect(getSummarySections('123', claim, 'en')).toEqual([]);
+      expect(getSummarySections('123','345', response, 'en')).toEqual([]);
     });
 
     it('returns selected support options - one', () => {
-      const {claim, response} = claimAndResponse();
+      const { response } = claimAndResponse();
       response.hearingSupport = new HearingSupport([SupportType.STEP_FREE_ACCESS]);
 
-      expect(getSummarySections('123', claim, 'en')).toEqual([
+      expect(getSummarySections('123','345', response, 'en')).toEqual([
         { 
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS'}, 
           value: { html: '<ul class="no-list-style"><li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS</li></ul>' },
           actions: {
             items: [{
-              href: '/case/123/response/general-application/hearing-support',
+              href: '/case/123/response/general-application/345/hearing-support',
               text: 'COMMON.BUTTONS.CHANGE',
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
             }],
@@ -353,10 +347,10 @@ describe('Check Answers response service', () => {
     });
 
     it('returns selected support options - several', () => {
-      const {claim, response} = claimAndResponse();
+      const { response } = claimAndResponse();
       response.hearingSupport = new HearingSupport([SupportType.HEARING_LOOP, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT, SupportType.SIGN_LANGUAGE_INTERPRETER]);
 
-      expect(getSummarySections('123', claim, 'en')).toEqual([
+      expect(getSummarySections('123','345', response, 'en')).toEqual([
         { 
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS'}, 
           value: { html: '<ul class="no-list-style">'
@@ -367,7 +361,7 @@ describe('Check Answers response service', () => {
             + '</ul>' },
           actions: {
             items: [{
-              href: '/case/123/response/general-application/hearing-support',
+              href: '/case/123/response/general-application/345/hearing-support',
               text: 'COMMON.BUTTONS.CHANGE',
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
             }],
