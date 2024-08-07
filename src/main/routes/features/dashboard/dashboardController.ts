@@ -38,7 +38,7 @@ dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
   try{
     const draftClaimData: DraftClaimData = await getDraftClaimData(user?.accessToken, user?.id);
     const claimsAsClaimant: DashboardClaimantResponse = await civilServiceClient.getClaimsForClaimant(appRequest);
-    const showUpdateStatus = claimsAsClaimant.claims.some(item => item.status === 'NO_STATUS') ? true : false;
+    const showUpdateStatus = claimsAsClaimant.claims?.some(item => item?.status === 'NO_STATUS') ? true : false;
     const claimDraftSaved = draftClaimData?.draftClaim;
     const claimsAsDefendant: DashboardDefendantResponse = await civilServiceClient.getClaimsForDefendant(appRequest);
     const claimantPage = req.query?.claimantPage ? 'claimantPage=' + req.query?.claimantPage : '';
