@@ -160,6 +160,8 @@ ccd:
       enabled: false
     userProfile:
       enabled: false
+    elastic:
+      enabled: true
 
   global:
     postgresUsername: hmcts
@@ -246,6 +248,58 @@ ccd:
           disabled: false
       keyVaults: []
       ingressHost: ccd-definition-store-${SERVICE_NAME}.preview.platform.hmcts.net
+  elasticsearch:
+    nameOverride: ${SERVICE_NAME}-es
+    imageTag: "7.17.1"
+    initResources:
+      limits:
+        cpu: "500m"
+        memory: "512Mi"
+      requests:
+        cpu: "25m"
+        memory: "512Mi"
+  logstash:
+    image: hmctspublic.azurecr.io/ccd/logstash
+    imageTag: "latest"
+    secrets:
+      DATA_STORE_PASS:
+        secretRef: postgres
+        key: PASSWORD
+        disabled: false
+      DB_PWD:
+        secretRef: postgres
+        key: PASSWORD
+        disabled: false
+    extraEnvs:
+      - name: DATA_STORE_URL
+        value: jdbc:postgresql://civil-preview.postgres.database.azure.com:5432/data-store?ssl=disable&stringtype=unspecified
+      - name: DATA_STORE_USER
+        value: ${POSTGRES_USER}
+      - name: DB_URL
+        value: jdbc:postgresql://civil-preview.postgres.database.azure.com:5432/data-store?ssl=disable&stringtype=unspecified
+      - name: DB_USER
+        value: ${POSTGRES_USER}
+      - name: ES_HOSTS
+        value: http://${SERVICE_NAME}-es-master:9200
+      - name: ES_DATA_NODES_URL
+        value: http://${SERVICE_NAME}-es-master:9200
+      - name: ELASTIC_SEARCH_DATA_NODES_HOSTS
+        value: http://${SERVICE_NAME}-es-master:9200
+      - name: ES_URL
+        value: http://${SERVICE_NAME}-es-master:9200
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "1024Mi"
+      limits:
+        cpu: "2500m"
+        memory: "1024Mi"
+    configTpl:
+      db.url: jdbc:postgresql://civil-preview.postgres.database.azure.com:5432/data-store?ssl=disable&stringtype=unspecified
+      db.user: ${POSTGRES_USER}
+      es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
+    livenessProbe:
+      initialDelaySeconds: 90
 
 
   postgresql:
