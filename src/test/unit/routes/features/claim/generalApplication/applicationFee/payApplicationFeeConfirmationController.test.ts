@@ -46,6 +46,34 @@ describe('Pay GA Application Fee Confirmation Screen Controller', () => {
       });
   });
 
+  it('should return pay application fee confirmation page when HWF reference exists when flag is false ', async () => {
+    //Given
+    mockGetCaseData.mockImplementation(async () => mockClaim);
+    //When //Then
+    await request(app)
+      .get(GA_APPLICATION_FEE_CONFIRMATION_URL)
+      .query({additionalFeeTypeFlag: 'false'})
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Your reference number');
+        expect(res.text).toContain('application fee');
+      });
+  });
+
+  it('should return pay additional application fee confirmation page when HWF reference exists when flag is true ', async () => {
+    //Given
+    mockGetCaseData.mockImplementation(async () => mockClaim);
+    //When //Then
+    await request(app)
+      .get(GA_APPLICATION_FEE_CONFIRMATION_URL)
+      .query({additionalFeeTypeFlag: 'true'})
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Your reference number');
+        expect(res.text).toContain('additional application fee');
+      });
+  });
+
   it('should return 500 error page for redis failure', async () => {
     //Given
     mockGetCaseData.mockImplementation(() => {

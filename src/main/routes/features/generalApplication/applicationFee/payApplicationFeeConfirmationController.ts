@@ -22,12 +22,13 @@ const getApplicationFeeConfirmationContent = (claimId: string, lng: string) => {
 payApplicationFeeConfirmationController.get(GA_APPLICATION_FEE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
+    const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
     const redisClaimId = generateRedisKey(<AppRequest>req);
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const claimId = req.params.id;
 
     res.render(payFeeConfirmationScreenViewPath, {
-      confirmationTitle : t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONFIRMATION_TITLE', {lng}),
+      confirmationTitle : isAdditionalFeeType ? t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONFIRMATION_ADDITIONAL_TITLE', {lng}):t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONFIRMATION_TITLE', {lng}),
       referenceNumber: claim.generalApplication?.helpWithFees?.helpFeeReferenceNumberForm?.referenceNumber,
       confirmationContent: getApplicationFeeConfirmationContent(claimId, lng),
     });
