@@ -2581,7 +2581,6 @@
         "WHY_NOT_ACCEPT": "Why do you not accept the defendant's offer?",
         "WHY_NOT_ACCEPT_2": "Why you do not accept the defendant's offer?"
       },
-
       "ADDITIONAL_DOCUMENTS": {
         "ADDITIONAL_DOCUMENTS_CAPTION": "Upload additional documents",
         "ADDITIONAL_DOCUMENTS_ROW1": "You should only upload documents that are relevant to your application, for example if the judge has ordered a hearing and instructed you to provide documents ahead of this.",
@@ -2823,28 +2822,30 @@
         "APPLICATION": "Application",
         "APPLICATION_ID": "Application ID",
         "APPLICATION_TYPE": "Application type",
+        "COMPLETE": "Complete",
         "DETAILS": "Details",
         "IN_PROGRESS": "In progress",
         "MY_APPLICATIONS": "My applications",
         "STATUS": "Status",
+        "APPLICATION_STATUS": "Application Status",
         "STATES": {
-          "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
-          "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
-          "APPLICATION_ADD_PAYMENT": "Pay the additional application fee",
-          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application Submitted - Awaiting Judicial Decision",
           "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
           "ADDITIONAL_RESPONSE_TIME_PROVIDED": "Additional Response Time Provided",
-          "AWAITING_DIRECTIONS_ORDER_DOCS": "Directions Order Made",
-          "ORDER_MADE": "Order Made",
-          "LISTING_FOR_A_HEARING": "Listed for a Hearing",
-          "HEARING_SCHEDULED": "Hearing Scheduled",
+          "APPLICATION_ADD_PAYMENT": "Awaiting additional payment",
+          "APPLICATION_CLOSED": "Application closed",
+          "APPLICATION_DISMISSED": "Application dismissed",
           "APPLICATION_PAYMENT_FAILED": "Application Payment Failed",
+          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application submitted - Awaiting Judicial decision",
+          "AWAITING_ADDITIONAL_INFORMATION": "Awaiting additional information",
           "AWAITING_APPLICATION_PAYMENT": "Awaiting Application Payment",
-          "AWAITING_WRITTEN_REPRESENTATIONS": "Awaiting Written Representations",
-          "AWAITING_ADDITIONAL_INFORMATION": "Additional Information Required",
-          "APPLICATION_DISMISSED": "Application Dismissed",
-          "APPLICATION_CLOSED": "Application Closed",
-          "PROCEEDS_IN_HERITAGE": "Proceeds In Heritage",
+          "AWAITING_DIRECTIONS_ORDER_DOCS": "Awaiting directions order document",
+          "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
+          "AWAITING_WRITTEN_REPRESENTATIONS": "Awaiting written representations",
+          "HEARING_SCHEDULED": "Hearing Scheduled",
+          "LISTING_FOR_A_HEARING": "Listing for a hearing",
+          "ORDER_MADE": "Order made",
+          "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
+          "PROCEEDS_IN_HERITAGE": "Proceeds in heritage",
           "RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION": "Respond to judge for Written Representations"
         },
         "SUBMITTED_ON": "Submitted on",
@@ -2953,6 +2954,16 @@
       "ADD_ANOTHER_APPLICATION": {
         "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
         "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
+      },
+      "UPLOAD_DIRECTIONS_ORDER_DOCUMENTS": {
+        "CONFIRMATION_PAGE_TITLE": "You've uploaded additional documents",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will review the additional documents that you've uploaded. You'll receive an update with their decision or next steps.",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
+        "COURT_DOCUMENT": "court document",
+        "IF_NOT_SURE_END": "that sets out what the court has requested from you.",
+        "IF_NOT_SURE_START": "If you're not sure what to upload, refer to the",
+        "NEED_TO_UPLOAD": "You need to upload the documents requested by the court.",
+        "PAGE_TITLE": "Upload additional documents"
       },
       "UPLOAD_N245_FORM": {
         "COMPLETE_N245_FORM":"complete the N245 Form",
@@ -3103,7 +3114,7 @@
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
-      "DEFENDANT_OFFERED_TO_PAY": "Mae {{ defendantName }}  wedi cynnig eich talu'n llawn erbyn {{ proposedSetDate }}",
+      "DEFENDANT_OFFERED_TO_PAY": "Mae {{ defendantName }}  wedi cynnig eich talu erbyn {{ proposedSetDate }}",
       "DO_YOU_ACCEPT": "Ydych chi'n derbyn y cynllun ad-dalu?",
       "NO_OPTION": "Nac ydw – byddaf yn awgrymu fy nghynllun fy hun",
       "PAGE_TITLE": "Sut mae am dalu?",
