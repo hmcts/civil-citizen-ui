@@ -1,14 +1,14 @@
-import {Claim} from 'models/claim';
-import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import {CaseDocument} from 'models/document/caseDocument';
-import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import {summarySection} from 'models/summaryList/summarySections';
-import {
-  buildSummarySection, getSummaryList,
-} from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
-import {FileUpload} from 'models/caseProgression/fileUpload';
+import { Claim } from 'models/claim';
+import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
+import { CaseDocument } from 'models/document/caseDocument';
+import { GeneralApplication } from 'models/generalApplication/GeneralApplication';
+import { summarySection } from 'models/summaryList/summarySections';
+import { FileUpload } from 'models/caseProgression/fileUpload';
 import * as draftService from 'modules/draft-store/draftStoreService';
 import * as draftServiceGA from 'modules/draft-store/draftGADocumentService';
+import { getSummaryList, buildSummarySection } from 'services/features/generalApplication/writtenRepresentation/writtenRepresentationDocsService';
+import { GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL } from 'routes/urls';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -21,7 +21,7 @@ describe('Upload Evidence Document service', () => {
   let uploadDocuments: UploadGAFiles[];
   beforeEach(() => {
     const claim = new Claim();
-    claim.id ='id';
+    claim.id = 'id';
     claim.generalApplication = new GeneralApplication();
     mockDataFromStore.mockResolvedValue(claim);
 
@@ -69,22 +69,22 @@ describe('Upload Evidence Document service', () => {
           summaryRows: [],
         });
       //When
-      await getSummaryList(formattedSummary, 'redis-key', '123', '1');
+      await getSummaryList(formattedSummary, 'redis-key', constructResponseUrlWithIdAndAppIdParams('123', '1', GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL));
       //Then
       expect(formattedSummary.summaryList.rows[0].key.text).toEqual('Additional information1');
-      expect(formattedSummary.summaryList.rows[0].actions.items[0].href).toEqual('/case/123/general-application/1/upload-documents-for-addln-info?id=1');
+      expect(formattedSummary.summaryList.rows[0].actions.items[0].href).toEqual('/case/123/general-application/1/upload-written-representation-docs?id=1');
       expect(formattedSummary.summaryList.rows[0].actions.items[0].text).toEqual('Remove document');
       expect(formattedSummary.summaryList.rows[1].key.text).toEqual('Additional information2');
-      expect(formattedSummary.summaryList.rows[1].actions.items[0].href).toEqual('/case/123/general-application/1/upload-documents-for-addln-info?id=2');
+      expect(formattedSummary.summaryList.rows[1].actions.items[0].href).toEqual('/case/123/general-application/1/upload-written-representation-docs?id=2');
       expect(formattedSummary.summaryList.rows[1].actions.items[0].text).toEqual('Remove document');
     });
 
     describe('Build summary Section ', () => {
       it('Should build the summary section: ', () => {
-        const result = buildSummarySection(uploadDocuments, '1', '123', 'en');
+        const result = buildSummarySection(uploadDocuments, constructResponseUrlWithIdAndAppIdParams('1', '123', GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL), 'en');
         expect(result).toHaveLength(1);
         expect(result[0].value.html).toContain('<ul class="no-list-style"><li>Additional information1</li><li>Additional information2</li></ul>');
-        expect(result[0].actions.items[0].href).toContain('/case/1/general-application/123/upload-documents-for-addln-info');
+        expect(result[0].actions.items[0].href).toContain('/case/1/general-application/123/upload-written-representation-docs');
       });
     });
   });
