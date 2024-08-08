@@ -5,7 +5,8 @@ export class RespondAddInfo {
   @IsNotEmpty({ message: 'ERRORS.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.EMPTY_OPTION' })
     option?: YesNo;
 
-  @ValidateIf(o => o.option === YesNo.NO && o.additionalText.length === 0, { message: 'ERRORS.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.ERROR_INPUT' })
+  @ValidateIf(o => o.option === YesNo.NO && o.additionalText.length < 1)
+  @IsNotEmpty({ message: 'ERRORS.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.ERROR_INPUT' })
     additionalText?: string;
 
   constructor(option?: YesNo, additionalText?: string) {
