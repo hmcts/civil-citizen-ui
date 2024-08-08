@@ -1,15 +1,12 @@
 import {app} from '../../../../../../main/app';
 import request from 'supertest';
 import {Claim} from 'models/claim';
-import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {req} from '../../../../../utils/UserDetails';
 import {AppRequest} from 'models/AppRequest';
 import {submitApplicationResponse} from 'services/features/generalApplication/response/submitApplicationResponse';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {GaServiceClient} from 'client/gaServiceClient';
-import { ApplicationResponse, CCDApplication } from 'common/models/generalApplication/applicationResponse';
 import { CCDGeneralApplication, CCDRespondToApplication } from 'common/models/gaEvents/eventDto';
-import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import { CcdGARespondentDebtorOfferGAspec, CcdGeneralApplicationHearingDetails } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import * as CcdTraslation from 'services/translation/generalApplication/ccdTranslation';
 import { configureSpy } from '../../../../../utils/spyConfiguration';
@@ -29,13 +26,7 @@ describe('Submit application to ccd', () => {
   afterAll(() => jest.clearAllMocks());
 
   it('should submit claim successfully when there are no errors', async () => {
-    const ccdGeneralApplication: Partial<CCDApplication> = {
-      generalAppType: {types: [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]},
-      generalAppRespondentAgreement: { hasAgreed: YesNoUpperCamelCase.NO },
-      generalAppInformOtherParty: { isWithNotice: YesNoUpperCamelCase.NO, reasonsForWithoutNotice: ''},
-    };
     const ccdGaWithResponse: Partial<CCDRespondToApplication> = {
-      ...ccdGeneralApplication, 
       hearingDetailsResp: {} as CcdGeneralApplicationHearingDetails,
       gaRespondentDebtorOffer: {} as CcdGARespondentDebtorOfferGAspec,
     };
@@ -44,9 +35,7 @@ describe('Submit application to ccd', () => {
 
     const submitRespondToApplicationEventMock = configureSpy(GaServiceClient.prototype, 'submitRespondToApplicationEvent')
       .mockResolvedValue({id: '17012012' });
-    
-    configureSpy(GaServiceClient.prototype, 'getApplication')
-      .mockResolvedValue(new ApplicationResponse('17012012', ccdGeneralApplication as CCDApplication));
+
     (req as AppRequest).params = { id: '123', appId: '17012012'};
     req.session.user ={...req.session?.user, id: 'a1b2'};
 
@@ -55,7 +44,7 @@ describe('Submit application to ccd', () => {
 
     //then
     expect(result).toMatchObject({id: '17012012' });
-    expect(ccdTranslationServiceMock).toBeCalledWith(ccdGeneralApplication, claim.generalApplication);
+    expect(ccdTranslationServiceMock).toBeCalledWith(claim.generalApplication);
     expect(submitRespondToApplicationEventMock).toHaveBeenCalled();
     expect(submitRespondToApplicationEventMock).toBeCalledWith(
       '17012012', ccdGaWithResponse, req);
