@@ -413,6 +413,8 @@ import uploadDocumentsDirectionsOrderController
   from 'routes/features/generalApplication/directionsOrderUpload/uploadDocumentsDirectionsOrderController';
 import gaDirectionOrderCheckAnswersController from './features/generalApplication/directionsOrderUpload/checkAnswerController';
 import directionOrderSubmittedConfirmationController from './features/generalApplication/directionsOrderUpload/directionOrderSubmittedConfirmationController';
+import respondAddInfoController
+  from 'routes/features/generalApplication/additionalInfoUpload/respondController';
 
 export default [
   homeController,
@@ -738,6 +740,7 @@ export default [
   respondentHearingPreferenceController,
   respondentWantToUploadDocumentsController,
   respondentUploadEvidenceDocumentsController,
+  respondAddInfoController,
   uploadAdditionalDocumentsController,
   gaAdditionalDocCheckAnswerController,
   additionalDocSubmittedController,
