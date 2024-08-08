@@ -44,7 +44,6 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       redirectUrl = isAdditionalFee
         ? constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag=' + isAdditionalFee)
         : constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEES);
-      // redirectUrl = redirectUrl  + (genAppId ? `?id=${genAppId}` : '');
     }
     return redirectUrl;
   }
