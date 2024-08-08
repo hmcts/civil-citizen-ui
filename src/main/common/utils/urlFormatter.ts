@@ -8,6 +8,10 @@ export function constructResponseUrlWithIdAndAppIdParams(id: string, appId: stri
   return path.replace(/(:id)/i, id).replace(/(:appId)/i, appId);
 }
 
+export function constructDocumentUrlWithIdParamsAndDocumentId(id: string, documentId: string, path: string): string{
+  return path.replace(/(:id)/i, id).replace(/(:documentId)/i, documentId);
+}
+
 export function constructUrlWithNotEligibleReason(path: string, reason: NotEligibleReason): string {
   return `${path}?reason=${reason}`;
 }

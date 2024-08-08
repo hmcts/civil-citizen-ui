@@ -86,6 +86,7 @@
       "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Go back and try payment again",
       "GO_TO_ACCOUNT": "Go to your account",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
+      "PAY_APPLICATION_FEE": "Pay application fee",
       "RESPOND_TO_APPLICATION": "Respond to application",
       "RESPOND_TO_CLAIM": "Respond to claim",
       "SAVE": "Save",
@@ -462,7 +463,7 @@
     "PARA_4": "Any claim which is not suitable for bands 1 to 3. For example:",
     "PARA_4_POINT_1": "Complex personal injury claims with serious issues around the facts or law.",
     "URL": {
-      "TITLE": "More information on complexity bands",
+      "TITLE": "For more information on complexity bands",
       "BEFORE": "For more information on complexity bands see ",
       "TEXT": "CPR 26.16 Table 2 (opens in a new tab)",
       "AFTER": "."
@@ -622,6 +623,8 @@
       "TITLE": "Accessibility statement for the Online Civil Money Claims service"
     },
     "CONTACT_US": {
+      "OPENING_HOURS": "Monday to Friday, 8.30am to 5pm.",
+      "TELEPHONE": "Telephone",
       "TITLE": "Contact us"
     },
     "PRIVACY_POLICY": {
@@ -2819,28 +2822,30 @@
         "APPLICATION": "Application",
         "APPLICATION_ID": "Application ID",
         "APPLICATION_TYPE": "Application type",
+        "COMPLETE": "Complete",
         "DETAILS": "Details",
         "IN_PROGRESS": "In progress",
         "MY_APPLICATIONS": "My applications",
         "STATUS": "Status",
+        "APPLICATION_STATUS": "Application Status",
         "STATES": {
-          "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
-          "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
-          "APPLICATION_ADD_PAYMENT": "Pay the additional application fee",
-          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application Submitted - Awaiting Judicial Decision",
           "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
           "ADDITIONAL_RESPONSE_TIME_PROVIDED": "Additional Response Time Provided",
-          "AWAITING_DIRECTIONS_ORDER_DOCS": "Directions Order Made",
-          "ORDER_MADE": "Order Made",
-          "LISTING_FOR_A_HEARING": "Listed for a Hearing",
-          "HEARING_SCHEDULED": "Hearing Scheduled",
+          "APPLICATION_ADD_PAYMENT": "Awaiting additional payment",
+          "APPLICATION_CLOSED": "Application closed",
+          "APPLICATION_DISMISSED": "Application dismissed",
           "APPLICATION_PAYMENT_FAILED": "Application Payment Failed",
+          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application submitted - Awaiting Judicial decision",
+          "AWAITING_ADDITIONAL_INFORMATION": "Awaiting additional information",
           "AWAITING_APPLICATION_PAYMENT": "Awaiting Application Payment",
-          "AWAITING_WRITTEN_REPRESENTATIONS": "Awaiting Written Representations",
-          "AWAITING_ADDITIONAL_INFORMATION": "Additional Information Required",
-          "APPLICATION_DISMISSED": "Application Dismissed",
-          "APPLICATION_CLOSED": "Application Closed",
-          "PROCEEDS_IN_HERITAGE": "Proceeds In Heritage",
+          "AWAITING_DIRECTIONS_ORDER_DOCS": "Awaiting directions order document",
+          "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
+          "AWAITING_WRITTEN_REPRESENTATIONS": "Awaiting written representations",
+          "HEARING_SCHEDULED": "Hearing Scheduled",
+          "LISTING_FOR_A_HEARING": "Listing for a hearing",
+          "ORDER_MADE": "Order made",
+          "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
+          "PROCEEDS_IN_HERITAGE": "Proceeds in heritage",
           "RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION": "Respond to judge for Written Representations"
         },
         "SUBMITTED_ON": "Submitted on",
@@ -2950,6 +2955,16 @@
         "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
         "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
       },
+      "UPLOAD_DIRECTIONS_ORDER_DOCUMENTS": {
+        "CONFIRMATION_PAGE_TITLE": "You've uploaded additional documents",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will review the additional documents that you've uploaded. You'll receive an update with their decision or next steps.",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
+        "COURT_DOCUMENT": "court document",
+        "IF_NOT_SURE_END": "that sets out what the court has requested from you.",
+        "IF_NOT_SURE_START": "If you're not sure what to upload, refer to the",
+        "NEED_TO_UPLOAD": "You need to upload the documents requested by the court.",
+        "PAGE_TITLE": "Upload additional documents"
+      },
       "UPLOAD_N245_FORM": {
         "COMPLETE_N245_FORM":"complete the N245 Form",
         "FILE_FORMAT": "the file is in a DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
@@ -2964,6 +2979,17 @@
         "TITLE": "Upload N245 form",
         "UPLOAD_HERE": "You need to LINK_FOR_N245_FORM and upload it here.",
         "WAYS_TO_COMPLETE": "There are two ways to complete the form. You can either:"
+      },
+      "UPLOAD_MORE_INFO_DOCUMENTS": {
+        "CONFIRMATION_PAGE_TITLE": "You've submitted the information",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will consider the information you've provided. You'll receive an update with their decision or next steps.",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
+        "PAGE_TITLE": "Request for more information",
+        "PAGE_TITLE_TO_UPLOAD": "Upload additional documents",
+        "UPLOAD_DOC_CYA_TITLE": "Uploaded documents"
+      },
+      "UPLOAD_WRITTEN_REPRESENTATION_DOCUMENTS": {
+        "PAGE_TITLE": "Request for written representation"
       },
       "APPLICATION_HEARING_ARRANGEMENTS": {
         "HEARING_TYPE": {
@@ -3048,6 +3074,7 @@
         "CONTINUE_TO_APPLY_HWF_PAGE_TITLE": "Do you want to continue to apply for Help with Fees",
         "CONFIRMATION_PAGE_TITLE": "Confirmation of your application fee payment",
         "CONFIRMATION_TITLE": "Your application for help with the application fee is complete",
+        "CONFIRMATION_ADDITIONAL_TITLE": "Your application for help with the additional application fee is complete",
         "GENERAL_APPLICATION_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The application fee is: £{{ feeAmount }}</span>",
         "HEADING": "Application fee",
         "REFERENCE_NUMBER": {
@@ -3090,7 +3117,7 @@
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
-      "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
+      "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you by {{ proposedSetDate }}",
       "DO_YOU_ACCEPT": "Do you accept the repayment plan?",
       "NO_OPTION": "No - I'll suggest my own",
       "PAGE_TITLE": "How they want to pay?",
