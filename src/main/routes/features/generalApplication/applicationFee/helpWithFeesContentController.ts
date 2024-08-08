@@ -15,7 +15,7 @@ helpWithFeesContentController.get(GA_APPLY_HELP_WITH_FEES_START, (async (req: Ap
   const claimId = req.params.id;
   const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
   const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-  const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_APPLY_HELP_WITH_FEES);
+  const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_APPLY_HELP_WITH_FEES+ '?additionalFeeTypeFlag='+ isAdditionalFeeType);
   res.render(applyHelpWithFeeViewPath,
     {
       backLinkUrl,
