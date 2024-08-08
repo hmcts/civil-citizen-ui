@@ -12,7 +12,7 @@ import {getHelpApplicationFeeSelectionPageContents, getButtonsContents}
   from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
 import {
   getApplicationIndex, getFirstUnpaidApplication,
-  saveHelpWithFeesDetails
+  saveHelpWithFeesDetails,
 } from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 

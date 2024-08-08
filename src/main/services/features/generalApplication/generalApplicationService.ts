@@ -35,7 +35,7 @@ import config from 'config';
 import {GaServiceClient} from 'client/gaServiceClient';
 import {
   getDraftGARespondentResponse,
-  saveDraftGARespondentResponse
+  saveDraftGARespondentResponse,
 } from './response/generalApplicationResponseStoreService';
 import {CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
 import {
@@ -448,10 +448,10 @@ export const shouldDisplaySyncWarning = (applicationResponse: ApplicationRespons
 export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest) : Promise<number> => {
   const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
   return applications.findIndex(application => application.id == applicationId);
-}
+};
 
 export const getFirstUnpaidApplication = async(claimId: string, req: AppRequest) : Promise<string> => {
   const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
   const unpaidApplication = applications.find(application => application.state === ApplicationState.AWAITING_APPLICATION_PAYMENT);
   return unpaidApplication ? unpaidApplication.id : undefined;
-}
+};

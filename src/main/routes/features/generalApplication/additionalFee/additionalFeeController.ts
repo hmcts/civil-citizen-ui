@@ -10,7 +10,7 @@ import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdParams, constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {
   getApplicationFromGAService,
-  getApplicationIndex
+  getApplicationIndex,
 } from 'services/features/generalApplication/generalApplicationService';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {convertToPoundsFilter, currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
