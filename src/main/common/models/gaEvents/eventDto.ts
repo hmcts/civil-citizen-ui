@@ -17,11 +17,10 @@ import {
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
 import {CCDHelpWithFees} from 'form/models/claimDetails';
 import {CaseLink} from 'models/generalApplication/CaseLink';
-import { CCDApplication } from '../generalApplication/applicationResponse';
 
 export interface EventDto {
   event: ApplicationEvent,
-  caseDataUpdate?: CCDGeneralApplication | CCDApplication | CCDGaHelpWithFees;
+  caseDataUpdate?: CCDGeneralApplication | CCDRespondToApplication | CCDGaHelpWithFees;
 }
 
 export interface CCDGeneralApplication extends ClaimUpdate {
@@ -62,7 +61,7 @@ export interface CCDGaHelpWithFees {
 
 }
 
-export type CCDRespondToApplication = CCDApplication & {
+export type CCDRespondToApplication = {
   hearingDetailsResp: CcdGeneralApplicationHearingDetails,
   gaRespondentDebtorOffer: CcdGARespondentDebtorOfferGAspec,
 }

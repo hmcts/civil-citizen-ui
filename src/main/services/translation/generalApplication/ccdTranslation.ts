@@ -34,7 +34,6 @@ import {
   CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
-import { CCDApplication } from 'common/models/generalApplication/applicationResponse';
 import { convertToPenceFromStringToString } from '../claim/moneyConversation';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 
@@ -207,10 +206,9 @@ const toCcdDebtorOfferOptions = (acceptDefendantOfferOption: YesNo): CcdGARespon
   }
 };
 
-export const toCcdGeneralApplicationWithResponse = (ccdApplication: CCDApplication, response: GaResponse): CCDRespondToApplication => {
+export const toCcdGeneralApplicationWithResponse = (response: GaResponse): CCDRespondToApplication => {
   const acceptDefendantOffer = response?.acceptDefendantOffer;
   return {
-    ...ccdApplication,
     hearingDetailsResp: toCCDGeneralAppHearingDetails(
       response?.hearingArrangement, 
       response?.hearingContactDetails, 
