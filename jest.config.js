@@ -24,6 +24,6 @@ module.exports = {
   coverageProvider: 'v8',
   workerIdleMemoryLimit: '1024MB',
   testPathIgnorePatterns: [
-    '(/src/test/.*|\\.(test|spec))\\.(ts|js)$',
+    '*/src/test/.*'
   ]
 };
