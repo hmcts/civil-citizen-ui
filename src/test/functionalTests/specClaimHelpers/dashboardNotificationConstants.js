@@ -46,7 +46,7 @@ module.exports = {
   respondToClaim: () => {
     return {
       title: 'You haven\'t responded to the claim',
-      content: 'days remaining. Respond to the claim.',
+      content: 'days remaining.',
       nextSteps: 'Respond to the claim',
     };
   },
@@ -203,7 +203,7 @@ module.exports = {
   orderMade: () => {
     return {
       title: 'An order has been made',
-      content: 'The judge has made an order on your claim. View the order.',
+      content: 'The judge has made an order on your claim.',
       nextSteps: 'View the order',
     };
   },
@@ -212,7 +212,7 @@ module.exports = {
   hearingScheduled: (hearingDate) => {
     return {
       title: 'A hearing has been scheduled',
-      content: `Your hearing has been scheduled for ${hearingDate} at Central London County Court. Please keep your contact details and anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050. View the hearing notice.`,
+      content: `Your hearing has been scheduled for ${hearingDate} at Central London County Court. Please keep your contact details and anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050.`,
       nextSteps: 'View the hearing notice',
     };
   },
@@ -316,7 +316,7 @@ module.exports = {
   defendantAcceptsSettlementDefendant: () => {
     return {
       title: 'Settlement agreement',
-      content: ['You have accepted the settlement agreement.',
+      content: ['You have accepted the settlement agreement (opens in a new tab).',
         'The claimant cannot request a County Court Judgment (CCJ), unless you break the terms of the agreement.'],
     };
   },
