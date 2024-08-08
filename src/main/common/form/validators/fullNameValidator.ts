@@ -6,7 +6,7 @@ import {isJudgmentOnlineLive} from '../../../app/auth/launchdarkly/launchDarklyC
  */
 @ValidatorConstraint({name: 'fullNameValidator', async: true})
 export class FullNameValidator implements ValidatorConstraintInterface {
-  errorMessage: string;
+  errorMessage: string[] = [];
 
   async getJudgmentOnlineFlag() {
     return await isJudgmentOnlineLive();
@@ -19,7 +19,7 @@ export class FullNameValidator implements ValidatorConstraintInterface {
 
     if (validationArguments.constraints && validationArguments.constraints.length > 0) {
       const property = validationArguments.constraints[0];
-      this.errorMessage = validationArguments.constraints[1];
+      this.errorMessage.push(validationArguments.constraints[1]);
       const value = (validationArguments.object as never)[property];
       return value <= 70;
     }
@@ -27,6 +27,6 @@ export class FullNameValidator implements ValidatorConstraintInterface {
   }
 
   defaultMessage() {
-    return this.errorMessage;
+    return this.errorMessage.pop();
   }
 }

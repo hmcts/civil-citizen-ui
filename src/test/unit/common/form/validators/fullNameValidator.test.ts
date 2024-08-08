@@ -20,12 +20,12 @@ describe('FullNameValidator', () => {
       jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
       //When
       const result1 = await validator.validate(' ', {
-        constraints: ['nameLength', 'CUSTOM_MESSAGE'], object: {nameLength: 71}
+        constraints: ['nameLength', 'ERRORS.TEXT_TOO_MANY'], object: {nameLength: 71}
         , property: '', targetName: '', value: undefined});
       const defaultMessage = await validator.defaultMessage();
       //Then
       expect(result1).toEqual(false);
-      expect(defaultMessage).toEqual('CUSTOM_MESSAGE');
+      expect(defaultMessage).toEqual('ERRORS.TEXT_TOO_MANY');
     });
     it('should return true for a 71 char full name and flag OFF', async () => {
       //Given

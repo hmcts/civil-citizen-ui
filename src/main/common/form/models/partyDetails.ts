@@ -9,7 +9,7 @@ export class PartyDetails {
   @ValidateIf(o => o.title !== undefined)
   @MaxLength(35, {message: 'ERRORS.ENTER_VALID_TITLE'})
   @Validate(SpecialCharValidator)
-  @Validate(FullNameValidator,['nameLength', 'ERRORS.TEXT_TOO_MANY'])
+  @Validate(FullNameValidator,['nameLength', ' '])
     title?: string;
 
   @ValidateIf(o => o.firstName !== undefined)
@@ -25,7 +25,7 @@ export class PartyDetails {
   @IsNotEmpty({message: 'ERRORS.ENTER_LAST_NAME'})
   @MaxLength(255, {message: 'ERRORS.TEXT_TOO_MANY'})
   @Validate(SpecialCharValidator)
-  @Validate(FullNameValidator,['nameLength', ' '])
+  @Validate(FullNameValidator,['nameLength', 'ERRORS.TEXT_TOO_MANY'])
     lastName?: string;
 
   nameLength?: number;
