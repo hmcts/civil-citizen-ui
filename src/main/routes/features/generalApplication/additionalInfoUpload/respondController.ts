@@ -1,5 +1,4 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-
 import {
   GA_RESPOND_ADDITIONAL_INFO_URL,
 } from 'routes/urls';
@@ -45,7 +44,6 @@ respondAddInfoController.post(GA_RESPOND_ADDITIONAL_INFO_URL, (async (req: AppRe
     const form = new GenericForm(respondAddInfo);
     await form.validate();
     if (form.hasErrors()) {
-      const { appId, id: claimId } = req.params;
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claim = await getClaimById(claimId, req, true);
       const cancelUrl = await getCancelUrl(claimId, claim);

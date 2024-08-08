@@ -7,18 +7,18 @@
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.RESPONDENT_WANT_TO_UPLOAD_DOC.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.PAGE_TITLE') }}
 {% endblock %}
 
 {% block nestedContent %}
-  {{ headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.RESPONDENT_WANT_TO_UPLOAD_DOC.TITLE') }}
+  {{ headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.TITLE') }}
   <form method="post" novalidate>
     {{ csrfProtection(csrf) }}
     {{ govukTextarea({
           name: "additionalText",
           id: "additionalText",
           label: {
-            text: t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT'),
+            text: t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.TEXT_INPUT'),
             classes: "govuk-!-font-weight-bold"
           },
           value: form.model.additionalText,
