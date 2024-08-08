@@ -19,9 +19,11 @@ export class FullNameValidator implements ValidatorConstraintInterface {
 
     if (validationArguments.constraints && validationArguments.constraints.length > 0) {
       const property = validationArguments.constraints[0];
-      this.errorMessage.push(validationArguments.constraints[1]);
-      const value = (validationArguments.object as never)[property];
-      return value <= 70;
+      if (validationArguments.value.length > 0) {
+        this.errorMessage.push(validationArguments.constraints[1]);
+        const value = (validationArguments.object as never)[property];
+        return value <= 70;
+      }
     }
     return true;
   }

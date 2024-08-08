@@ -11,7 +11,7 @@ describe('FullNameValidator', () => {
       //When
       const result = await validator.validate(' ', {
         constraints: ['nameLength', 'ERRORS.TEXT_TOO_MANY'], object: {nameLength: 70}
-        , property: '', targetName: '', value: undefined});
+        , property: '', targetName: '', value: 'text'});
       //Then
       expect(result).toEqual(true);
     });
@@ -21,7 +21,7 @@ describe('FullNameValidator', () => {
       //When
       const result1 = await validator.validate(' ', {
         constraints: ['nameLength', 'ERRORS.TEXT_TOO_MANY'], object: {nameLength: 71}
-        , property: '', targetName: '', value: undefined});
+        , property: '', targetName: '', value: 'text'});
       const defaultMessage = await validator.defaultMessage();
       //Then
       expect(result1).toEqual(false);
@@ -33,7 +33,7 @@ describe('FullNameValidator', () => {
       //When
       const result1 = await validator.validate(' ', {
         constraints: ['nameLength', 'ERRORS.TEXT_TOO_MANY'], object: {nameLength: 71}
-        , property: '', targetName: '', value: undefined});
+        , property: '', targetName: '', value: 'text'});
       //Then
       expect(result1).toEqual(true);
     });
