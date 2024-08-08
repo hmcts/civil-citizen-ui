@@ -33,7 +33,10 @@ import {ApplicationState, ApplicationStatus} from 'common/models/generalApplicat
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import config from 'config';
 import {GaServiceClient} from 'client/gaServiceClient';
-import { getDraftGARespondentResponse, saveDraftGARespondentResponse } from './response/generalApplicationResponseStoreService';
+import {
+  getDraftGARespondentResponse,
+  saveDraftGARespondentResponse
+} from './response/generalApplicationResponseStoreService';
 import {CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
 import {
   triggerNotifyHwfEvent,
@@ -430,7 +433,7 @@ export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
     throw error;
   }
 };
-  
+
 export const shouldDisplaySyncWarning = (applicationResponse: ApplicationResponse): boolean => {
   const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
   if (isAdditionalFee) {
@@ -441,3 +444,14 @@ export const shouldDisplaySyncWarning = (applicationResponse: ApplicationRespons
       || applicationResponse?.case_data?.generalAppPBADetails?.paymentDetails?.status !== 'SUCCESS';
   }
 };
+
+export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest) : Promise<number> => {
+  const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
+  return applications.findIndex(application => application.id == applicationId);
+}
+
+export const getFirstUnpaidApplication = async(claimId: string, req: AppRequest) : Promise<string> => {
+  const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
+  const unpaidApplication = applications.find(application => application.state === ApplicationState.AWAITING_APPLICATION_PAYMENT);
+  return unpaidApplication ? unpaidApplication.id : undefined;
+}
