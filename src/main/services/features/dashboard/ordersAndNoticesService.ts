@@ -216,7 +216,7 @@ const getDecisionOnReconsideration = (claim: Claim, claimId: string, lang: strin
 };
 
 const getFinalOrders = (claim: Claim, claimId: string, lang: string) => {
-  const documents = claim.caseProgression.finalOrderDocumentCollection;
+  const documents = claim.caseProgression?.finalOrderDocumentCollection;
   const caseDocuments: DocumentInformation[] = [];
   if (documents && documents.length > 0) {
     documents.forEach((documentElement) => {

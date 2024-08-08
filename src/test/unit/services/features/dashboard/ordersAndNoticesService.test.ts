@@ -33,7 +33,7 @@ describe('View Orders And Notices Service', () => {
       //given
       const claim = new Claim();
       //When
-      const result = getClaimantDocuments(claim, claimId, 'en');
+      const result = await getClaimantDocuments(claim, claimId, 'en');
       //Then
       const expectedResult = new DocumentsViewComponent('Claimant', []);
       expect(result).toEqual(expectedResult);
@@ -46,7 +46,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DIRECTIONS_QUESTIONNAIRE);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getClaimantDocuments(claim, claimId, 'en');
+      const result = await getClaimantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.CLAIMANT_DQ',
@@ -65,7 +65,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CLAIMANT_INTENTION_TRANSLATED_DOCUMENT);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getClaimantDocuments(claim, claimId, 'en');
+      const result = await getClaimantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.CLAIMANT_DQ',
@@ -83,7 +83,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.SEALED_CLAIM);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getClaimantDocuments(claim, claimId, 'en');
+      const result = await getClaimantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.SEALED_CLAIM',
@@ -102,7 +102,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CLAIM_ISSUE_TRANSLATED_DOCUMENT);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getClaimantDocuments(claim, claimId, 'en');
+      const result = await getClaimantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.SEALED_CLAIM',
@@ -121,7 +121,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CLAIMANT_CLAIM_FORM);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getClaimantDocuments(claim, claimId, 'en');
+      const result = await getClaimantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.UNSEALED_CLAIM',
@@ -140,7 +140,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CLAIMANT_CLAIM_FORM);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getClaimantDocuments(claim, claimId, 'en');
+      const result = await getClaimantDocuments(claim, claimId, 'en');
       //Then
       const expectedResult = new DocumentsViewComponent('Claimant', []);
       expect(result).toEqual(expectedResult);
@@ -154,7 +154,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DRAFT_CLAIM_FORM);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getClaimantDocuments(claim, claimId, 'en');
+      const result = await getClaimantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.DRAFT_CLAIM',
@@ -173,7 +173,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DRAFT_CLAIM_FORM);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getClaimantDocuments(claim, claimId, 'en');
+      const result = await getClaimantDocuments(claim, claimId, 'en');
       //Then
       const expectedResult = new DocumentsViewComponent('Claimant', []);
       expect(result).toEqual(expectedResult);
@@ -187,7 +187,7 @@ describe('View Orders And Notices Service', () => {
       claim.specParticularsOfClaimDocumentFiles = setUpDocument(documentName);
       claim.submittedDate = new Date('2022-06-21T14:15:19');
       //When
-      const result = getClaimantDocuments(claim, claimId, 'en');
+      const result = await getClaimantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.PARTICULARS_CLAIM',
@@ -206,7 +206,7 @@ describe('View Orders And Notices Service', () => {
       claim.specClaimTemplateDocumentFiles = setUpDocument(documentName);
       claim.submittedDate = new Date('2022-06-21T14:15:19');
       //When
-      const result = getClaimantDocuments(claim, claimId, 'en');
+      const result = await getClaimantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.CLAIMANT_TIMELINE',
@@ -228,7 +228,7 @@ describe('View Orders And Notices Service', () => {
       };
       claim.claimantResponse.submittedDate = new Date('2022-06-21T14:15:19');
       //When
-      const result = getClaimantDocuments(claim, claimId, 'en');
+      const result = await getClaimantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.RESPOND_TO_DEFENCE',
@@ -247,7 +247,7 @@ describe('View Orders And Notices Service', () => {
       claim.caseProgression = new CaseProgression();
       claim.caseProgression.requestForReconsiderationDocument = document;
       //When
-      const result = getClaimantDocuments(claim, claimId, 'en');
+      const result = await getClaimantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MICRO_TEXT',
@@ -266,7 +266,7 @@ describe('View Orders And Notices Service', () => {
       //given
       const claim = new Claim();
       //When
-      const result = getDefendantDocuments(claim, claimId, 'en');
+      const result = await getDefendantDocuments(claim, claimId, 'en');
       //Then
       const expectedResult = new DocumentsViewComponent('Defendant', []);
       expect(result).toEqual(expectedResult);
@@ -280,7 +280,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.SEALED_CLAIM);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getDefendantDocuments(claim, claimId, 'en');
+      const result = await getDefendantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
@@ -299,7 +299,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFENDANT_DEFENCE);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getDefendantDocuments(claim, claimId, 'en');
+      const result = await getDefendantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
@@ -319,7 +319,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFENCE_TRANSLATED_DOCUMENT);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getDefendantDocuments(claim, claimId, 'en');
+      const result = await getDefendantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
@@ -338,7 +338,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DIRECTIONS_QUESTIONNAIRE);
       claim.systemGeneratedCaseDocuments = new Array(document);
       //When
-      const result = getDefendantDocuments(claim, claimId, 'en');
+      const result = await getDefendantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.DEFENDANT_DQ',
@@ -357,7 +357,7 @@ describe('View Orders And Notices Service', () => {
       const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DIRECTIONS_QUESTIONNAIRE);
       claim.defendantResponseDocuments = new Array(document);
       //When
-      const result = getDefendantDocuments(claim, claimId, 'en');
+      const result = await getDefendantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.ORDERS_AND_NOTICES.DEFENDANT_SUPPORT_DOC',
@@ -376,7 +376,7 @@ describe('View Orders And Notices Service', () => {
       claim.caseProgression = new CaseProgression();
       claim.caseProgression.requestForReconsiderationDocumentRes = document;
       //When
-      const result = getDefendantDocuments(claim, claimId, 'en');
+      const result = await getDefendantDocuments(claim, claimId, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
         'PAGES.REQUEST_FOR_RECONSIDERATION.REQUEST_FOR_REVIEW.MICRO_TEXT',
