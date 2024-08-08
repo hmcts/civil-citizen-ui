@@ -19,12 +19,18 @@ import {getApplicationFromGAService} from 'services/features/generalApplication/
 import {getClaimById} from 'modules/utilityService';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
-import { t } from 'i18next';
-import { formatDateToFullDate } from 'common/utils/dateUtils';
-import { DocumentType } from 'common/models/document/documentType';
-import { GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL } from 'routes/urls';
-import { documentIdExtractor } from 'common/utils/stringUtils';
-import { constructDocumentUrlWithIdParamsAndDocumentId } from 'common/utils/urlFormatter';
+import {t} from 'i18next';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {DocumentType} from 'common/models/document/documentType';
+import {GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL} from 'routes/urls';
+import {documentIdExtractor} from 'common/utils/stringUtils';
+import {constructDocumentUrlWithIdParamsAndDocumentId} from 'common/utils/urlFormatter';
+import {buildResponseSummaries} from './addViewApplicationResponseRows';
+
+export type ViewApplicationSummaries = {
+  summaryRows: SummaryRow[],
+  responseSummaries?: SummaryRow[],
+}
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -57,11 +63,13 @@ const buildViewApplicationToRespondentSections = (application: ApplicationRespon
   ];
 };
 
-export const getApplicationSections = async (req: AppRequest, applicationId: string, lang?: string): Promise<SummaryRow[]> => {
+export const getApplicationSections = async (req: AppRequest, applicationId: string, lang?: string): Promise<ViewApplicationSummaries> => {
   const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
   const claim = await getClaimById(req.params.id, req, true);
-  return toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, applicationResponse) ? buildApplicationSections(applicationResponse, lang)
-    : buildViewApplicationToRespondentSections(applicationResponse, lang);
+  return toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, applicationResponse) 
+    ? { summaryRows: buildApplicationSections(applicationResponse, lang),
+      responseSummaries: buildResponseSummaries(applicationResponse.case_data, lang) } 
+    : { summaryRows: buildViewApplicationToRespondentSections(applicationResponse, lang) };
 };
 
 const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {

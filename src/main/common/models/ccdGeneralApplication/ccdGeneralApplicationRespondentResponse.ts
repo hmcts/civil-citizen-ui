@@ -3,9 +3,9 @@ import { CcdGeneralApplicationHearingDetails } from './ccdGeneralApplicationHear
 
 export interface CcdGeneralApplicationRespondentResponse {
   value: {
-    generalAppRespondent1Representative: YesNoUpperCamelCase,
-    gaHearingDetails: CcdGeneralApplicationHearingDetails,
-    gaRespondentDetails: string,
-    gaRespondentResponseReason: string,
+    generalAppRespondent1Representative?: YesNoUpperCamelCase,
+    gaHearingDetails?: CcdGeneralApplicationHearingDetails,
+    gaRespondentDetails?: string,
+    gaRespondentResponseReason?: string,
   }
 }
