@@ -23,6 +23,9 @@ export const getDraftGARespondentResponse = async (redisKey: string): Promise<Ga
   return convertRedisDataToGaRespondentResponse(dataFromRedis);
 };
 
+export const deleteDraftGARespondentResponseFromStore = async (redisKey: string): Promise<void> => 
+  await app.locals.draftStoreClient.del(redisKey);
+
 const convertRedisDataToGaRespondentResponse = (data: string) => {
   let jsonData = undefined;
   if (data) {
