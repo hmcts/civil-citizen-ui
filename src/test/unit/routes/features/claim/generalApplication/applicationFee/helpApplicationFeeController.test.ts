@@ -14,9 +14,6 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 import {t} from 'i18next';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
-import {GaServiceClient} from 'client/gaServiceClient';
-import {ApplicationResponse, JudicialDecisionOptions} from 'models/generalApplication/applicationResponse';
-import {ApplicationState} from 'models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -32,31 +29,6 @@ mockClaim.generalApplication = new GeneralApplication(new ApplicationType(Applic
 describe('General Application - Do you want to apply for help with fees Page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-  const applicationMock: ApplicationResponse = {
-    id: '1234567890',
-    case_data: {
-      applicationTypes: 'Adjourn a hearing',
-      generalAppType: null,
-      generalAppRespondentAgreement: null,
-      generalAppInformOtherParty: null,
-      generalAppAskForCosts: null,
-      generalAppDetailsOfOrder: null,
-      generalAppReasonsOfOrder: null,
-      generalAppEvidenceDocument: null,
-      gaAddlDoc: null,
-      generalAppHearingDetails: null,
-      generalAppStatementOfTruth: null,
-      generalAppPBADetails: null,
-      applicationFeeAmountInPence: null,
-      parentClaimantIsApplicant: null,
-      judicialDecision: {
-        decision: JudicialDecisionOptions.MAKE_AN_ORDER,
-      },
-    },
-    state: ApplicationState.AWAITING_APPLICATION_PAYMENT,
-    last_modified: '2024-05-29T14:39:28.483971',
-    created_date: '2024-05-29T14:39:28.483971',
-  };
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -67,9 +39,6 @@ describe('General Application - Do you want to apply for help with fees Page', (
   describe('on GET', () => {
     it('should return Do you want to apply for help with fees page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
-      jest
-        .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
-        .mockResolvedValue([applicationMock]);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
         .expect((res) => {
@@ -83,9 +52,6 @@ describe('General Application - Do you want to apply for help with fees Page', (
       mockClaim.generalApplication.helpWithFees = new GaHelpWithFees();
       mockClaim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
       mockGetCaseData.mockImplementation(async () => mockClaim);
-      jest
-        .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
-        .mockResolvedValue([applicationMock]);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
         .expect((res) => {

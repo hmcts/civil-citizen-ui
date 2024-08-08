@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {DASHBOARD_CLAIMANT_URL, GA_APPLY_HELP_WITH_FEE_SELECTION, GA_VIEW_APPLICATION_URL} from 'routes/urls';
+import {DASHBOARD_CLAIMANT_URL, GA_APPLY_HELP_WITH_FEE_SELECTION} from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
-import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
@@ -10,24 +10,17 @@ import {t} from 'i18next';
 import {AppRequest} from 'models/AppRequest';
 import {getHelpApplicationFeeSelectionPageContents, getButtonsContents}
   from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
-import {
-  getApplicationIndex, getFirstUnpaidApplication,
-  saveHelpWithFeesDetails,
-} from 'services/features/generalApplication/generalApplicationService';
+import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee';
 const helpWithApplicationFeeController = Router();
 const hwfPropertyName = 'applyHelpWithFees';
-
+const backLinkUrl = 'test'; // TODO: add url
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, redirectUrl: string, lng: string) {
-  let backLinkUrl;
   if (!form) {
     const claim: Claim = await getClaimById(claimId, req, true);
     form = new GenericForm(new GenericYesNo(claim.generalApplication?.helpWithFees?.applyHelpWithFees));
-    const applicationId = await getFirstUnpaidApplication(claimId, <AppRequest>req);
-    const index = await getApplicationIndex(claimId, applicationId, <AppRequest>req);
-    backLinkUrl = `${constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_VIEW_APPLICATION_URL)}?index=${index + 1}`;
   }
   res.render(applyHelpWithApplicationFeeViewPath,
     {

@@ -449,9 +449,3 @@ export const getApplicationIndex = async(claimId: string, applicationId: string,
   const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
   return applications.findIndex(application => application.id == applicationId);
 };
-
-export const getFirstUnpaidApplication = async(claimId: string, req: AppRequest) : Promise<string> => {
-  const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
-  const unpaidApplication = applications.find(application => application.state === ApplicationState.AWAITING_APPLICATION_PAYMENT);
-  return unpaidApplication ? unpaidApplication.id : undefined;
-};
