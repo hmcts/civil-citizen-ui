@@ -15,8 +15,7 @@ import { CcdGADebtorPaymentPlanGAspec, CcdGARespondentDebtorOfferGAspec, CcdHear
 import { CcdSupportRequirement } from 'common/models/ccdGeneralApplication/ccdSupportRequirement';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { CCDGeneralApplication, CCDRespondToApplication } from 'common/models/gaEvents/eventDto';
-import { CCDApplication } from 'common/models/generalApplication/applicationResponse';
+import { CCDRespondToApplication } from 'common/models/gaEvents/eventDto';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 
 describe('translate draft application to ccd', () => {
@@ -153,11 +152,6 @@ describe('translate draft application to ccd', () => {
   });
 
   describe('toCcdGeneralApplicationRespondentResponse', () => {
-    const ccdGeneralApplication: Partial<CCDGeneralApplication> = {
-      generalAppType: {types: [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]},
-      generalAppRespondentAgreement: { hasAgreed: YesNoUpperCamelCase.NO },
-      generalAppInformOtherParty: { isWithNotice: YesNoUpperCamelCase.NO, reasonsForWithoutNotice: ''},
-    };
 
     it('should transform respondent response', () => {
       //When
@@ -189,7 +183,7 @@ describe('translate draft application to ccd', () => {
       );
 
       //Then
-      expect(toCcdGeneralApplicationWithResponse(ccdGeneralApplication as CCDApplication, gaResponse))
+      expect(toCcdGeneralApplicationWithResponse(gaResponse))
         .toStrictEqual({
           gaRespondentDebtorOffer: {
             debtorObjections: 'reason for disagreement',
@@ -197,16 +191,6 @@ describe('translate draft application to ccd', () => {
             paymentPlan: undefined,
             paymentSetDate: undefined,
             respondentDebtorOffer: undefined,
-          },
-          generalAppInformOtherParty: {
-            isWithNotice: YesNoUpperCamelCase.NO,
-            reasonsForWithoutNotice: '',
-          },
-          generalAppRespondentAgreement: {
-            hasAgreed: YesNoUpperCamelCase.NO,
-          },
-          generalAppType: {
-            types: [ApplicationTypeOption.SET_ASIDE_JUDGEMENT],
           },
           hearingDetailsResp: {
             HearingDetailsEmailID: 'email',
@@ -235,7 +219,7 @@ describe('translate draft application to ccd', () => {
             }],
             unavailableTrialRequiredYesOrNo: YesNoUpperCamelCase.YES,
           },
-        } satisfies Partial<CCDRespondToApplication>);
+        } satisfies CCDRespondToApplication);
     });
 
     it('should convert monthly instalments to pence', () => {
@@ -247,7 +231,7 @@ describe('translate draft application to ccd', () => {
         },
       };
 
-      expect(toCcdGeneralApplicationWithResponse(ccdGeneralApplication as CCDApplication, gaResponse))
+      expect(toCcdGeneralApplicationWithResponse(gaResponse))
         .toMatchObject({
           gaRespondentDebtorOffer: {
             debtorObjections: undefined,
