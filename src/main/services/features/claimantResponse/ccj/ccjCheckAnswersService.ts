@@ -42,14 +42,14 @@ export const getSignatureType = (claim: Claim): SignatureType => {
   return isCounterpartyIndividual(claim.applicant1) ? SignatureType.BASIC : SignatureType.QUALIFIED;
 };
 
-export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {
+export const saveStatementOfTruth = async (redisKey: string, claimantStatementOfTruth: StatementOfTruthForm) => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const claim = await getCaseDataFromStore(redisKey);
     if (!claim.claimantResponse) {
       claim.claimantResponse = new ClaimantResponse();
     }
     claim.claimantResponse.ccjRequest.statementOfTruth = claimantStatementOfTruth;
-    await saveDraftClaim(claimId, claim, true);
+    await saveDraftClaim(redisKey, claim, true);
   } catch (error) {
     logger.error(error);
     throw error;

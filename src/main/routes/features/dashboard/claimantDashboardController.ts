@@ -27,12 +27,14 @@ import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import { applicationNoticeUrl } from 'common/utils/externalURLs';
+import {updateFieldDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const HearingUploadDocuments = 'Upload hearing documents';
+const ResponseClaimTrack = 'responseClaimTrack';
 
 claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -49,7 +51,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       if(claimId === 'draft') {
         caseRole = ClaimantOrDefendant.CLAIMANT;
         const userId = (<AppRequest>req)?.session?.user?.id.toString();
-        claim = await getClaimById(userId, req);
+        claim = await getClaimById(userId, req,true);
         dashboardId = userId;
       } else {
         claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
@@ -65,6 +67,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const isGAFlagEnable = await isGaForLipsEnabled();
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable, isGAFlagEnable);
+      await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
         = getSupportLinks(claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable);
       const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];

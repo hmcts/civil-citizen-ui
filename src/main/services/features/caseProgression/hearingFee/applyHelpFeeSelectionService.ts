@@ -28,8 +28,8 @@ export const getRedirectUrl = async (claimId: string, IsApplyHelpFeeModel: Gener
     } else {
       redirectUrl = constructResponseUrlWithIdParams(claimId, APPLY_HELP_WITH_FEES);
     }
-    await saveCaseProgression(redisClaimId, paymentRedirectInformation, paymentInformation, hearing);
-    await saveCaseProgression(redisClaimId, IsApplyHelpFeeModel, hearingFeeHelpSelection);
+    await saveCaseProgression(req, paymentRedirectInformation, paymentInformation, hearing);
+    await saveCaseProgression(req, IsApplyHelpFeeModel, hearingFeeHelpSelection);
     const claim: Claim = await getClaimById(claimId, req, true);
     claim.feeTypeHelpRequested = FeeType.HEARING;
     await saveDraftClaim(redisClaimId, claim);

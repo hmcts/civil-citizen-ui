@@ -6,7 +6,6 @@ import {
   TYPES_OF_DOCUMENTS_URL,
 } from '../../urls';
 import {Claim} from 'models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
 import {
   getDisclosureContent,
@@ -19,6 +18,7 @@ import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
 import {AppRequest} from 'common/models/AppRequest';
 import {getUploadDocumentsContents} from 'services/features/caseProgression/evidenceUploadDocumentsContent';
+import {getClaimById} from 'modules/utilityService';
 
 const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
@@ -63,7 +63,7 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, 
   try {
     const claimId = req.params.id;
     req.session.previousUrl = req.originalUrl;
-    const claim: Claim = await getCaseDataFromStore(claimId);
+    const claim: Claim = await getClaimById(claimId, req, true);
     await renderView(res, claim, claimId, null);
   } catch (error) {
     next(error);
@@ -73,7 +73,7 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, 
 uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, (async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const claim: Claim = await getCaseDataFromStore(claimId);
+    const claim: Claim = await getClaimById(claimId, req, true);
     const uploadDocumentsForm = getUploadDocumentsForm(req);
     const form = new GenericForm(uploadDocumentsForm);
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
@@ -82,7 +82,7 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, (async (req, res, next) 
     if (form.hasErrors()) {
       await renderView(res, claim, claimId, form);
     } else {
-      await saveCaseProgression(claimId, form.model, isClaimant);
+      await saveCaseProgression(req,form.model, isClaimant);
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_CHECK_ANSWERS_URL));
     }
   } catch (error) {

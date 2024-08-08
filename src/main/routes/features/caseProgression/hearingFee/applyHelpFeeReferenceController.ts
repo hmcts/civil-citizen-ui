@@ -7,7 +7,6 @@ import {
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getButtonsContents} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionButtonContents';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {Claim} from 'models/claim';
@@ -55,7 +54,6 @@ applyHelpFeeReferenceController.get(APPLY_HELP_WITH_FEES_REFERENCE, (async (req,
 applyHelpFeeReferenceController.post(APPLY_HELP_WITH_FEES_REFERENCE, (async (req:AppRequest | Request, res, next) => {
   try{
     const claimId = req.params.id;
-    const redisClaimId = generateRedisKey(<AppRequest>req);
     const form = new GenericForm(new ApplyHelpFeesReferenceForm(req.body.option, req.body.referenceNumber));
     form.validateSync();
     await form.validate();
@@ -64,9 +62,9 @@ applyHelpFeeReferenceController.post(APPLY_HELP_WITH_FEES_REFERENCE, (async (req
       await renderView(res, req, form, claimId, redirectUrl);
     } else {
       let redirectUrl = HEARING_FEE_APPLY_HELP_FEE_SELECTION;
-      await saveCaseProgression(redisClaimId, form.model, helpFeeReferenceNumberForm);
+      await saveCaseProgression(req, form.model, helpFeeReferenceNumberForm);
       if (form.model.option === YesNo.YES) {
-        const claim: Claim = await getCaseDataFromStore(redisClaimId);
+        const claim: Claim = await getClaimById(claimId, req,true);
         await triggerNotifyEvent(claimId, req, claim);
         redirectUrl = HEARING_FEE_CONFIRMATION_URL;
       }

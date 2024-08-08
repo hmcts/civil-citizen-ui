@@ -1,6 +1,4 @@
-
 import {AppRequest} from 'models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getFeePaymentRedirectInformation} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 
@@ -13,9 +11,8 @@ const paymentInformation = 'paymentInformation';
 const hearing = 'hearing';
 export const getRedirectUrl = async (claimId: string,  req: AppRequest): Promise<string> => {
   try{
-    const redisClaimId = generateRedisKey(req);
     const paymentRedirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.HEARING, req);
-    await saveCaseProgression(redisClaimId, paymentRedirectInformation, paymentInformation, hearing);
+    await saveCaseProgression(req, paymentRedirectInformation, paymentInformation, hearing);
     return paymentRedirectInformation?.nextUrl;
   }
   catch (error) {
