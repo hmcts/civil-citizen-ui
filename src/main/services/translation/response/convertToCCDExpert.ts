@@ -22,7 +22,7 @@ const toCCDExpertRequiredResponse = (claim: Claim) => {
   if (!claim.isSmallClaimsTrackDQ) {
     return toCCDYesNo(referenceDQ?.experts?.expertEvidence?.option);
   } else {
-    if (claim.isClaimant() && referenceDQ?.experts?.expertReportDetails?.option === YesNo.YES) {
+    if (referenceDQ?.experts?.expertReportDetails?.option === YesNo.YES) {
       return toCCDYesNo(referenceDQ?.experts?.expertReportDetails?.option);
     } else {
       return toCCDYesNo(referenceDQ?.experts?.expertCanStillExamine?.option);

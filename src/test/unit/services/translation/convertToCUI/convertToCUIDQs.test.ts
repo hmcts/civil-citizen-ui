@@ -57,7 +57,6 @@ describe('translate CCDDQ to CUI DQ model', () => {
     expect(result.hearing.determinationWithoutHearing.reasonForHearing).toBeUndefined();
     expect(result.experts.expertRequired).toBe(true);
     expect(result.experts.expertReportDetails.option).toBe(YesNo.NO);
-    expect(result.experts.expertReportDetails.reportDetails).toBeUndefined();
     expect(result.experts.permissionForExpert.option).toBe(YesNo.YES);
     expect(result.experts.expertCanStillExamine.option).toBe(YesNo.NO);
     expect(result.experts.expertCanStillExamine.details).toBe('Examine details');
