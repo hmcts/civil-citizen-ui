@@ -19,6 +19,10 @@ const buttons = {
 
 class LoginPage {
 
+  async openCitizenLogin() {
+    await I.amOnPage('/');
+  }
+  
   async openOCMC() {
     await I.setCookie([...idamCookies, ...cmcCookies]);
     await I.amOnPage('https://moneyclaims.aat.platform.hmcts.net');
