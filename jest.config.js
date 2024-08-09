@@ -1,5 +1,10 @@
 module.exports = {
+  roots: ['<rootDir>/src/test/unit'],
+  testRegex: '(/src/test/.*|\\.(test|spec))\\.(ts|js)$',
   testEnvironment: 'node',
+  transform: {
+    '^.+\\.ts?$': 'ts-jest',
+  },
   globals: {
     'ts-jest': {
       isolatedModules: true
@@ -18,6 +23,5 @@ module.exports = {
   },
   setupFilesAfterEnv: ['./jest.setup.redis-mock.js'],
   coverageProvider: 'v8',
-  workerIdleMemoryLimit: '1024MB',
-  testPathIgnorePatterns: ['<rootDir>/src/test/']
+  workerIdleMemoryLimit: '1024MB'
 };
