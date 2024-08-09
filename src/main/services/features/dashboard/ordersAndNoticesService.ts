@@ -13,7 +13,8 @@ import {Document} from 'models/document/document';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
-export const getClaimantDocuments = (claim: Claim, claimId: string, lang: string) => {
+export const getClaimantDocuments = async (claim: Claim, claimId: string, lang: string) => {
+  const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
   const claimantDocumentsArray: DocumentInformation[] = [];
   claimantDocumentsArray.push(...getClaimantDirectionQuestionnaire(claim, claimId, lang));
   claimantDocumentsArray.push(...getClaimantSealClaimForm(claim, claimId, lang));
@@ -23,18 +24,26 @@ export const getClaimantDocuments = (claim: Claim, claimId: string, lang: string
     claimantDocumentsArray.push(...getClaimantUnsealClaimForm(claim, claimId, lang));
     claimantDocumentsArray.push(...getClaimantDraftClaim(claim, claimId, lang));
   }
+  if (isCaseProgressionEnabled) {
+    claimantDocumentsArray.push(...getTrialArrangementsDocument(claim, claimId, lang, true));
+  }
   // Documents for LR only
   claimantDocumentsArray.push(...getClaimantParticularsOfClaim(claim, claimId, lang));
   claimantDocumentsArray.push(...getClaimantTimelineEventsDocument(claim, claimId, lang));
   claimantDocumentsArray.push(...getClaimantResponseToDefenceDocument(claim, claimId, lang));
+
   return new DocumentsViewComponent('Claimant', claimantDocumentsArray);
 };
 
-export const getDefendantDocuments = (claim: Claim, claimId: string, lang: string) => {
+export const getDefendantDocuments = async (claim: Claim, claimId: string, lang: string) => {
+  const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
   const defendantDocumentsArray: DocumentInformation[] = [];
   defendantDocumentsArray.push(...getDefendantResponse(claim, claimId, lang));
   defendantDocumentsArray.push(...getDefendantDirectionQuestionnaire(claim, claimId, lang));
   defendantDocumentsArray.push(...getDefendantRequestForReconsideration(claim, claimId, lang));
+  if (isCaseProgressionEnabled) {
+    defendantDocumentsArray.push(...getTrialArrangementsDocument(claim, claimId, lang, false));
+  }
   // Documents for LR only
   defendantDocumentsArray.push(...getDefendantSupportDocument(claim, claimId, lang));
   return new DocumentsViewComponent('Defendant', defendantDocumentsArray);
@@ -54,6 +63,7 @@ export const getCourtDocuments = async (claim: Claim, claimId: string, lang: str
   if (isCaseProgressionEnabled) {
     courtDocumentsArray.push(...getDecisionOnReconsideration(claim, claimId, lang));
     courtDocumentsArray.push(...getTranslatedOrders(claim, claimId, lang));
+    courtDocumentsArray.push(...getFinalOrders(claim, claimId, lang));
   }
 
   return new DocumentsViewComponent('CourtDocument', courtDocumentsArray);
@@ -103,6 +113,14 @@ const getClaimantResponseToDefenceDocument = (claim: Claim, claimId: string, lan
   const responseToDefenceDocument = claim.claimantResponse?.applicant1DefenceResponseDocumentSpec?.file;
   return responseToDefenceDocument ? Array.of(setUpDocumentLinkObject(
     responseToDefenceDocument, claim.claimantResponse?.submittedDate, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.RESPOND_TO_DEFENCE')) : [];
+};
+
+const getTrialArrangementsDocument = (claim: Claim, claimId: string, lang: string, isClaimant: boolean) => {
+  const trialArrangementsDocument = isClaimant
+    ? claim?.caseProgression?.claimantTrialArrangements?.trialArrangementsDocument
+    : claim?.caseProgression?.defendantTrialArrangements?.trialArrangementsDocument;
+  return trialArrangementsDocument ? Array.of(setUpDocumentLinkObject(
+    trialArrangementsDocument.value?.documentLink, trialArrangementsDocument.value?.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.TRIAL_ARRANGEMENTS')) : [];
 };
 
 const getDefendantResponse = (claim: Claim, claimId: string, lang: string) => {
@@ -195,6 +213,18 @@ const getDecisionOnReconsideration = (claim: Claim, claimId: string, lang: strin
   const settlementAgreement = claim.getDocumentDetails(DocumentType.DECISION_MADE_ON_APPLICATIONS);
   return settlementAgreement ? Array.of(
     setUpDocumentLinkObject(settlementAgreement.documentLink, settlementAgreement.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.DECISION_ON_RECONSIDERATION')) : [];
+};
+
+const getFinalOrders = (claim: Claim, claimId: string, lang: string) => {
+  const documents = claim.caseProgression?.finalOrderDocumentCollection;
+  const caseDocuments: DocumentInformation[] = [];
+  if (documents && documents.length > 0) {
+    documents.forEach((documentElement) => {
+      const document = documentElement.value;
+      caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.ORDERS_AND_NOTICES.FINAL_ORDER'));
+    });
+  }
+  return caseDocuments;
 };
 
 const setUpDocumentLinkObject = (document: Document, documentDate: Date, claimId: string, lang: string, fileName: string) => {
