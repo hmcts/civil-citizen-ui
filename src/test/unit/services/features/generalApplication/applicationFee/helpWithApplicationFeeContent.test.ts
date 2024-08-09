@@ -2,7 +2,7 @@ import {t} from 'i18next';
 import {
   getHelpApplicationFeeSelectionPageContents,
   getButtonsContents,
-  // getApplicationFeeContentPageDetails,
+  getApplicationFeeContentPageDetails,
   getHelpApplicationFeeContinuePageContents,
 } from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
@@ -61,26 +61,26 @@ describe('Help with Application fee content', () => {
     expect(actualContent[0].data.text).toEqual('COMMON.BUTTONS.CONTINUE');
   });
 
-  // it('should return all the content for getHelpWithApplicationFeeContent', () => {
-  //   //Given
-  //   //When
-  //   const actualContent = getApplicationFeeContentPageDetails('123', false);
-  //   //Then
-  //   expect(actualContent[0].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING');
-  //   expect(actualContent[1].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.TITLE');
-  //   expect(actualContent[2].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_IF');
-  //   expect(actualContent[3].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_INSTEAD');
-  //   expect(actualContent[4].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.APPLICATION_FEE_PARAGRAPH_DURING');
-  //   expect(actualContent[5].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_ONCE');
-  //   expect(actualContent[6].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.LINK');
-  //   expect(actualContent[7].data.text).toEqual('COMMON.BUTTONS.CONTINUE');
-  // });
-  //
-  // it('should return all the content for getHelpWithApplicationFeeContent for Additional Pay', () => {
-  //   //Given
-  //   //When
-  //   const actualContent = getApplicationFeeContentPageDetails('123', true);
-  //   //Then
-  //   expect(actualContent[0].data.text).toEqual('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING');
-  // });
+  it('should return all the content for getHelpWithApplicationFeeContent', () => {
+    //Given
+    //When
+    const actualContent = getApplicationFeeContentPageDetails('123', false, '3456');
+    //Then
+    expect(actualContent[0].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING');
+    expect(actualContent[1].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.TITLE');
+    expect(actualContent[2].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_IF');
+    expect(actualContent[3].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_INSTEAD');
+    expect(actualContent[4].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.APPLICATION_FEE_PARAGRAPH_DURING');
+    expect(actualContent[5].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_ONCE');
+    expect(actualContent[6].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.LINK');
+    expect(actualContent[7].data.text).toEqual('COMMON.BUTTONS.CONTINUE');
+  });
+
+  it('should return all the content for getHelpWithApplicationFeeContent for Additional Pay', () => {
+    //Given
+    //When
+    const actualContent = getApplicationFeeContentPageDetails('123', true, '345');
+    //Then
+    expect(actualContent[0].data.text).toEqual('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING');
+  });
 });
