@@ -3,7 +3,7 @@ const config = require('../../../../../config');
 const sharedData = require('../../../../sharedData');
 const cButtons = require('../../../../commonComponents/cButtons');
 
-const fields = {
+const  fields = {
   en: 'input[id="option"]',
   cy: 'input[id="option-2"]',
 };

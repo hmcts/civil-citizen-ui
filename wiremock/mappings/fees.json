@@ -1,0 +1,46 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/fees/claim/.*?",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"calculatedAmountInPence\": 1000, \"code\": \"SUCCESS\", \"version\": 1}"
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/fees/hearing/.*?",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          },
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\n  \"hearingFee\": {\n    \"calculatedAmountInPence\": \"1000\",\n    \"code\": \"FEE0123\",\n    \"version\": \"1\"\n  },\n  \"hearingDueDate\": \"2024-08-01T00:00:00Z\"\n}"
+      }
+    }
+  ]
+}
