@@ -15,12 +15,14 @@ export class FullNameValidator implements ValidatorConstraintInterface {
 
   async validate(text: string, validationArguments?: ValidationArguments) {
     if (text) {
-      if (!await this.getJudgmentOnlineFlag()) { // Old validation in case isJudgmentOnlineLive flag is off
+      if (validationArguments.property == 'title' && text.length > 35) { // Always validate this
+        this.errorMessage.push('ERRORS.ENTER_VALID_TITLE');
+        return false;
+      }
+
+      if (!await this.getJudgmentOnlineFlag()) { // Old validation, in case isJudgmentOnlineLive flag is off
         this.isJudgmentOnlineLiveFlagOff = true;
-        if (validationArguments.property == 'title' && text.length > 35) {
-          this.errorMessage.push('ERRORS.ENTER_VALID_TITLE');
-          return false;
-        } else if ((validationArguments.property == 'firstName' || validationArguments.property == 'lastName')
+        if ((validationArguments.property == 'firstName' || validationArguments.property == 'lastName')
         && text.length > 255) {
           this.errorMessage.push('ERRORS.TEXT_TOO_MANY');
           return false;
@@ -28,7 +30,7 @@ export class FullNameValidator implements ValidatorConstraintInterface {
         return true;
       }
 
-      this.isJudgmentOnlineLiveFlagOff = false;
+      this.isJudgmentOnlineLiveFlagOff = false; // New validation
       if (validationArguments.constraints && text.length > 0) {
         const property = validationArguments.constraints[0];
         const value = (validationArguments.object as never)[property];

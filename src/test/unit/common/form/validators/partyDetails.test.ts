@@ -7,6 +7,8 @@ const valid70charNamePart2of3 = ' qrstu vwxyzAbcdefg hijklm ';
 const valid70charNamePart3of3 = ' opqrstu vwxyzAbcdefgh ijklm ';
 const valid70charNamePart1of2 = ' Abcdefghi jklmnopqrstu vwxyz ';
 const valid70charNamePart2of2 = ' Abcdefg hijklmnopqrstu vwxyzAbcdefgh ijkl ';
+const valid70charPartyName = ' This is a 70 char Party Name 789 0123456789 0123456789 0123456789 0123 ';
+const string71charLong = valid70charPartyName + 'A';
 const string51charLong = 'This is a 51 char address aAbBcCdDeEfFgGhHiIjJkKlLm';
 const string50charLong = 'This is a 50 char address aAbBcCdDeEfFgGhHiIjJkKlL';
 const string36charLong = 'This is a 36 char address aAbBcCdDeE';
@@ -55,6 +57,30 @@ describe(('For PartyDetails Form'), () => {
     const partyDetails = new PartyDetails({title: '', firstName: valid70charNamePart1of2
       , lastName: valid70charNamePart2of2, addressLine1: string35charLong, addressLine2: string35charLong
       , addressLine3: string35charLong,city: string35charLong, postCode: postCode},false);
+    const form = new GenericForm(partyDetails);
+    //When
+    await form.validate();
+    //Then
+    expect(form.hasErrors()).toBeFalsy();
+  });
+  it('should not throw error for partyName if flag OFF', async () => {
+    //Given
+    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
+    const partyDetails = new PartyDetails({partyName: string256charLong
+      , addressLine1: string50charLong, addressLine2: string50charLong, addressLine3: string50charLong
+      ,city: string50charLong, postCode: postCode},false);
+    const form = new GenericForm(partyDetails);
+    //When
+    await form.validate();
+    //Then
+    expect(form.hasErrors()).toBeFalsy();
+  });
+  it('should not throw error if partyName length OK and flag ON', async () => {
+    //Given
+    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+    const partyDetails = new PartyDetails({partyName: valid70charPartyName
+      , addressLine1: string35charLong, addressLine2: string35charLong, addressLine3: string35charLong
+      ,city: string35charLong, postCode: postCode},false);
     const form = new GenericForm(partyDetails);
     //When
     await form.validate();
@@ -143,6 +169,20 @@ describe(('For PartyDetails Form'), () => {
     expect(form.errorFor('primaryAddress[addressLine2]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
     expect(form.errorFor('primaryAddress[addressLine3]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
     expect(form.errorFor('primaryAddress[city]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
+  });
+  it('should throw error if partyName length not OK and flag ON', async () => {
+    //Given
+    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+    const partyDetails = new PartyDetails({partyName: string71charLong
+      , addressLine1: string35charLong, addressLine2: string35charLong, addressLine3: string35charLong
+      ,city: string35charLong, postCode: postCode},false);
+    const form = new GenericForm(partyDetails);
+    //When
+    await form.validate();
+    //Then
+    expect(form.errors.length).toEqual(1);
+    expect(form.errorFor('partyName')).toEqual('ERRORS.TEXT_TOO_MANY');
+
   });
 });
 
