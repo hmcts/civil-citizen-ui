@@ -115,10 +115,10 @@ describe('General Application - Check your answers', () => {
         .post(GA_CHECK_ANSWERS_URL)
         .send({signed: 'yes', name: 'Mr Applicant'})
         .expect((res) => {
-          expect(res.header.location).toBe(GENERAL_APPLICATION_CONFIRM_URL + `?id=123456`)
+          expect(res.header.location).toBe(GENERAL_APPLICATION_CONFIRM_URL + '?id=123456');
           expect(res.status).toBe(302);
         });
-    })
+    });
 
     it('should return http 500 when has error in the post method', async () => {
       mockSaveCaseData.mockImplementation(async () => {
