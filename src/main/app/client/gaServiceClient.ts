@@ -1,7 +1,6 @@
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AppRequest} from 'common/models/AppRequest';
-import {CCDGaHelpWithFees, EventDto} from 'models/gaEvents/eventDto';
-import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
+import {EventDto, CCDGeneralApplication,CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {GeneralApplicationResponse} from 'models/generalApplicationResponse';
 import {Application} from 'models/application';

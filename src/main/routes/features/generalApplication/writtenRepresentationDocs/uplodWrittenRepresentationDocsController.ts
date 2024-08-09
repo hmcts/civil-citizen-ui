@@ -1,26 +1,26 @@
-import {NextFunction, RequestHandler, Response, Router} from 'express';
+import { NextFunction, RequestHandler, Response, Router } from 'express';
 import {
-  GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL,
-  GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL,
+  GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL,
+  GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL,
 } from 'routes/urls';
-import {AppRequest} from 'models/AppRequest';
-import {GenericForm} from 'form/models/genericForm';
-import {Claim} from 'models/claim';
-import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
-import {getClaimById} from 'modules/utilityService';
-import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import { AppRequest } from 'models/AppRequest';
+import { GenericForm } from 'form/models/genericForm';
+import { Claim } from 'models/claim';
+import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
+import { getClaimById } from 'modules/utilityService';
+import { constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import multer from 'multer';
-import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
-import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import {summarySection, SummarySection} from 'models/summaryList/summarySections';
-import {getSummaryList} from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
-import {getGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentService';
+import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
+import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
+import { summarySection, SummarySection } from 'models/summaryList/summarySections';
+import { getGADocumentsFromDraftStore } from 'modules/draft-store/draftGADocumentService';
 import {
   removeSelectedDocument,
   uploadSelectedFile,
 } from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
+import { getSummaryList } from 'services/features/generalApplication/writtenRepresentation/writtenRepresentationDocsService';
 
-const uploadDocumentsForRequestMoreInfoController = Router();
+const uploadDocumentsForRequestWrittenRepresentation = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/upload-documents';
 const fileSize = Infinity;
 const upload = multer({
@@ -31,7 +31,7 @@ const upload = multer({
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, gaId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
+  const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL);
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, 'Test');
   res.render(viewPath, {
     form,
@@ -43,16 +43,15 @@ async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimI
   });
 }
 
-uploadDocumentsForRequestMoreInfoController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadDocumentsForRequestWrittenRepresentation.get(GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const { appId, id:claimId } =
+    const { appId, id: claimId } =
       req.params;
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKeyForGA(req);
     const uploadDocuments = new UploadGAFiles();
     let form = new GenericForm(uploadDocuments);
-    const formattedSummary = summarySection({title: '', summaryRows: []});
-    
+    const formattedSummary = summarySection({ title: '', summaryRows: [] });
     if (req?.session?.fileUpload) {
       const parsedData = JSON.parse(req?.session?.fileUpload);
       form = new GenericForm(uploadDocuments, parsedData);
@@ -60,20 +59,20 @@ uploadDocumentsForRequestMoreInfoController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONA
     }
     if (req.query?.id) {
       const index = req.query.id;
-      await removeSelectedDocument(redisKey, Number(index)-1);
+      await removeSelectedDocument(redisKey, Number(index) - 1);
     }
-    await getSummaryList(formattedSummary, redisKey, claimId, appId);
+    await getSummaryList(formattedSummary, redisKey, constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL));
     await renderView(form, claim, claimId, appId, res, formattedSummary);
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-uploadDocumentsForRequestMoreInfoController.post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadDocumentsForRequestWrittenRepresentation.post(GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const { appId, id:claimId } = req.params;
+    const { appId, id: claimId } = req.params;
     const uploadedDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
-    const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
+    const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL);
 
     if (req.body.action === 'uploadButton') {
       await uploadSelectedFile(req);
@@ -97,11 +96,11 @@ uploadDocumentsForRequestMoreInfoController.post(GA_UPLOAD_DOCUMENT_FOR_ADDITION
       req.session.fileUpload = JSON.stringify(errors);
       return res.redirect(`${currentUrl}`);
     } else {
-      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId,  GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL));
+      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL));
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-export default uploadDocumentsForRequestMoreInfoController;
+export default uploadDocumentsForRequestWrittenRepresentation;
