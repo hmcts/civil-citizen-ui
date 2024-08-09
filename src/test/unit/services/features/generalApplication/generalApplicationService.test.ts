@@ -38,7 +38,7 @@ import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
-  OLD_DASHBOARD_CLAIMANT_URL
+  OLD_DASHBOARD_CLAIMANT_URL,
 } from 'routes/urls';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
