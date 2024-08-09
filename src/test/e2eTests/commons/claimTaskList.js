@@ -17,6 +17,7 @@ const responseTaskListItems = Object.freeze({
   TELL_US_HOW_MUCH_YOU_HAVE_PAID: 'Tell us how much you\'ve paid',
   FREE_TELEPHONE_MEDIATION: 'Free telephone mediation',
   GIVE_US_DETAILS_IN_CASE_THERE_IS_A_HEARING: 'Give us details in case there\'s a hearing',
+  TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM : 'Tell us why you disagree with the claim',
 });
 
 const taskListStatus = Object.freeze({

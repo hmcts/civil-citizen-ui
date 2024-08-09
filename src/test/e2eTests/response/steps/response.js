@@ -73,6 +73,20 @@ class Response {
     I.see(responseTaskListItems.TELL_US_HOW_MUCH_YOU_HAVE_PAID, checkTaskList(responseTaskListItems.TELL_US_HOW_MUCH_YOU_HAVE_PAID, taskListStatus.COMPLETE));
   }
 
+  tellUsWhyYouDisagreeWithTheClaim(){
+    I.click(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, checkTaskList(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, taskListStatus.INCOMPLETE));
+    I.seeInCurrentUrl('/response/your-defence');
+    I.fillField('textarea[id="text"]', 'test');
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+
+    I.seeInCurrentUrl('/response/timeline');
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+
+    I.seeInCurrentUrl('/response/evidence');
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+    I.see(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, checkTaskList(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, taskListStatus.COMPLETE));
+  }
+
   freeTelephoneMediation(){
     I.click(responseTaskListItems.FREE_TELEPHONE_MEDIATION, checkTaskList(responseTaskListItems.FREE_TELEPHONE_MEDIATION, taskListStatus.INCOMPLETE));
     I.seeInCurrentUrl('/mediation/free-telephone-mediation');
@@ -130,14 +144,17 @@ class Response {
     I.see(responseTaskListItems.GIVE_US_DETAILS_IN_CASE_THERE_IS_A_HEARING, checkTaskList(responseTaskListItems.GIVE_US_DETAILS_IN_CASE_THERE_IS_A_HEARING, taskListStatus.COMPLETE));
   }
 
-  checkAndSubmitYourResponse() {
+  checkAndSubmitYourResponse(withDirectionsQuestionnaire) {
     I.click(responseTaskListItems.CHECK_AND_SUBMIT_YOUR_RESPONSE, checkTaskList(responseTaskListItems.CHECK_AND_SUBMIT_YOUR_RESPONSE, taskListStatus.INCOMPLETE)); // Ensure the element exists
     I.seeInCurrentUrl('/response/check-and-send');
     I.fillField('#signerName', 'Full name');
     I.fillField('#signerRole', 'Job title');
     I.checkOption('#signed');
+    if (withDirectionsQuestionnaire){
+      I.checkOption('#directionsQuestionnaireSigned');
+    }
     clickButton(buttonType.SUBMIT_RESPONSE);
-    //TODO ADD MOCK FOR /cases/response/deadline
+    I.seeInCurrentUrl('/response/confirmation');
   }
 }
 
