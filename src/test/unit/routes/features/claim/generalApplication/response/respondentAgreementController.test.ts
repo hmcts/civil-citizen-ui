@@ -6,15 +6,20 @@ import { app } from '../../../../../../../main/app';
 import * as draftService from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
+import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  saveDraftGARespondentResponse: jest.fn(),
+  getDraftGARespondentResponse: jest.fn(),
+}));
 
 describe('General Application - inform other parties', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -30,16 +35,16 @@ describe('General Application - inform other parties', () => {
 
   beforeEach(() => {
     claim = new Claim();
-    claim.generalApplication = new GeneralApplication();
-    claim.generalApplication.applicationTypes.push(new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM));
-    claim.generalApplication.response = {respondentAgreement: new RespondentAgreement()};
+    claim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.STAY_THE_CLAIM], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
+    const gaResponse = { respondentAgreement: new RespondentAgreement() };
+    jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
     mockDataFromStore.mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
     it('should return page', async () => {
       await request(app)
-        .get(GA_RESPONDENT_AGREEMENT_URL)
+        .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_AGREEMENT_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE'));
@@ -62,7 +67,7 @@ describe('General Application - inform other parties', () => {
   describe('on POST', () => {
     it('should save the value and redirect', async () => {
       await request(app)
-        .post(GA_RESPONDENT_AGREEMENT_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_AGREEMENT_URL))
         .send({ option: 'yes' })
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -71,7 +76,7 @@ describe('General Application - inform other parties', () => {
 
     it('should return errors on no input', async () => {
       await request(app)
-        .post(GA_RESPONDENT_AGREEMENT_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_AGREEMENT_URL))
         .send({ option: null })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -80,7 +85,7 @@ describe('General Application - inform other parties', () => {
     });
     it('should return errors when selected no and not provided the reason', async () => {
       await request(app)
-        .post(GA_RESPONDENT_AGREEMENT_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_AGREEMENT_URL))
         .send({ option: 'no' })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -88,7 +93,7 @@ describe('General Application - inform other parties', () => {
         });
     });
     it('should return http 500 when has error in the post method', async () => {
-      mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
+      jest.spyOn(gaStoreResponseService, 'saveDraftGARespondentResponse').mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
         .post(GA_RESPONDENT_AGREEMENT_URL)
         .send({ option: 'yes' })

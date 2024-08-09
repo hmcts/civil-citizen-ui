@@ -68,3 +68,20 @@ export const selectedApplicationTypeDescription: Partial<{ [key in ApplicationTy
   [ApplicationTypeOption.VARY_ORDER]: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_RECONSIDER_DESCRIPTION',
   [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_VARY_JUDGMENT_DESCRIPTION',
 };
+
+export const GeneralApplicationTypesDisplayFromCCD: { [key in ApplicationTypeOption]: string } = {
+  [ApplicationTypeOption.ADJOURN_HEARING]: 'Adjourn a hearing',
+  [ApplicationTypeOption.AMEND_A_STMT_OF_CASE]: 'Amend a statement of case',
+  [ApplicationTypeOption.EXTEND_TIME]: 'Extend time',
+  [ApplicationTypeOption.OTHER]: 'Other',
+  [ApplicationTypeOption.PROCEEDS_IN_HERITAGE]: 'Proceeds In Heritage',
+  [ApplicationTypeOption.RELIEF_FROM_SANCTIONS]: 'Relief from sanctions',
+  [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]: 'Set aside judgment',
+  [ApplicationTypeOption.SETTLE_BY_CONSENT]: 'Settle by consent',
+  [ApplicationTypeOption.STAY_THE_CLAIM]: 'Stay the claim',
+  [ApplicationTypeOption.STRIKE_OUT]: 'Strike out',
+  [ApplicationTypeOption.SUMMARY_JUDGMENT]: 'Summary judgment',
+  [ApplicationTypeOption.UNLESS_ORDER]: 'Unless order',
+  [ApplicationTypeOption.VARY_ORDER]: 'Vary order',
+  [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'Vary payment terms of judgment',
+};
