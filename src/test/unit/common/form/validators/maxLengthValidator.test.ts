@@ -10,50 +10,50 @@ describe('MaxLengthValidator', () => {
   const validator = new MaxLengthValidator();
 
   describe('validate', () => {
-    it('should return true for a string with 50 chars and flag OFF', async () => {
+    it('should return true for addressLine2 with 50 chars and flag OFF', async () => {
       //Given
       jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
       //When
       const result = await validator.validate(string50charLong, {
-        constraints: ['','CUSTOM_MESSAGE'], object: undefined
-        , property: '', targetName: '', value: undefined});
+        constraints: [''], object: undefined
+        , property: 'addressLine2', targetName: '', value: undefined});
       //Then
       expect(result).toEqual(true);
     });
-    it('should return true for a string with 35 chars and flag ON', async () => {
+    it('should return true for addressLine1 with 35 chars and flag ON', async () => {
       //Given
       jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
       //When
       const result = await validator.validate(string35charLong, {
-        constraints: ['','CUSTOM_MESSAGE'], object: undefined
-        , property: '', targetName: '', value: undefined});
+        constraints: [''], object: undefined
+        , property: 'addressLine1', targetName: '', value: undefined});
       //Then
       expect(result).toEqual(true);
     });
 
-    it('should return false for a string with 51 chars and flag OFF', async () => {
+    it('should return false for addressLine3 with 51 chars and flag OFF', async () => {
       //Given
       jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
       //When
       const result = await validator.validate(string51charLong, {
-        constraints: ['','CUSTOM_MESSAGE'], object: undefined
-        , property: '', targetName: '', value: undefined});
+        constraints: [''], object: undefined
+        , property: 'addressLine3', targetName: '', value: undefined});
       const defaultMessage = await validator.defaultMessage();
       //Then
       expect(result).toEqual(false);
-      expect(defaultMessage).toEqual('CUSTOM_MESSAGE');
+      expect(defaultMessage).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY');
     });
-    it('should return false for a string with 36 chars and flag ON', async () => {
+    it('should return false for addressLine1 with 36 chars and flag ON', async () => {
       //Given
       jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
       //When
       const result = await validator.validate(string36charLong, {
-        constraints: ['','CUSTOM_MESSAGE'], object: undefined
-        , property: '', targetName: '', value: undefined});
+        constraints: [''], object: undefined
+        , property: 'addressLine1', targetName: '', value: undefined});
       const defaultMessage = await validator.defaultMessage();
       //Then
       expect(result).toEqual(false);
-      expect(defaultMessage).toEqual('CUSTOM_MESSAGE');
+      expect(defaultMessage).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
     });
   });
 });

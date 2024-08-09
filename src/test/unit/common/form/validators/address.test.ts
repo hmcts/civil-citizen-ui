@@ -68,7 +68,7 @@ describe(('For Address Form'), () => {
     //When
     await form.validate();
     //Then
-    expect(form.hasErrors()).toBeTruthy();
+    expect(form.errors.length).toEqual(3);
     expect(form.errorFor('addressLine2')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY');
     expect(form.errorFor('addressLine3')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY');
     expect(form.errorFor('city')).toEqual('ERRORS.TOWN_CITY_TOO_MANY');
@@ -82,7 +82,7 @@ describe(('For Address Form'), () => {
     //When
     await form.validate();
     //Then
-    expect(form.hasErrors()).toBeTruthy();
+    expect(form.errors.length).toEqual(4);
     expect(form.errorFor('addressLine1')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
     expect(form.errorFor('addressLine2')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
     expect(form.errorFor('addressLine3')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
@@ -98,7 +98,7 @@ describe(('For Address Form'), () => {
     //When
     await form.validate();
     //Then
-    expect(form.hasErrors()).toBeTruthy();
+    expect(form.errors.length).toEqual(4);
     expect(form.errorFor('addressLine1')).toEqual('ERRORS.SPECIAL_CHARACTERS');
     expect(form.errorFor('addressLine2')).toEqual('ERRORS.SPECIAL_CHARACTERS');
     expect(form.errorFor('addressLine3')).toEqual('ERRORS.SPECIAL_CHARACTERS');

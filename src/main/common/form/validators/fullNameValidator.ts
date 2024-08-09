@@ -8,34 +8,34 @@ import {isJudgmentOnlineLive} from '../../../app/auth/launchdarkly/launchDarklyC
 export class FullNameValidator implements ValidatorConstraintInterface {
   errorMessage: string[] = [];
   isJudgmentOnlineLiveFlagOff: boolean;
+
   async getJudgmentOnlineFlag() {
     return await isJudgmentOnlineLive();
   }
 
-  async validate(fieldText: string, validationArguments?: ValidationArguments) {
-    if (!await this.getJudgmentOnlineFlag()) { // Old validation in case isJudgmentOnlineLive flag is off
-      this.isJudgmentOnlineLiveFlagOff = true;
-      if (validationArguments.property == 'title' && validationArguments.value.length > 35) {
-        this.errorMessage.push('ERRORS.ENTER_VALID_TITLE');
-        return false;
-      } else if ((validationArguments.property == 'firstName' || validationArguments.property == 'lastName')
-        && validationArguments.value.length > 255) {
-        this.errorMessage.push('ERRORS.TEXT_TOO_MANY');
-        return false;
+  async validate(text: string, validationArguments?: ValidationArguments) {
+    if (text) {
+      if (!await this.getJudgmentOnlineFlag()) { // Old validation in case isJudgmentOnlineLive flag is off
+        this.isJudgmentOnlineLiveFlagOff = true;
+        if (validationArguments.property == 'title' && text.length > 35) {
+          this.errorMessage.push('ERRORS.ENTER_VALID_TITLE');
+          return false;
+        } else if ((validationArguments.property == 'firstName' || validationArguments.property == 'lastName')
+        && text.length > 255) {
+          this.errorMessage.push('ERRORS.TEXT_TOO_MANY');
+          return false;
+        }
+        return true;
       }
-      return true;
-    }
 
-    this.isJudgmentOnlineLiveFlagOff = false;
-    if (validationArguments.constraints && validationArguments.constraints.length > 0) {
-      const property = validationArguments.constraints[0];
-      if (validationArguments.value.length > 0) {
+      this.isJudgmentOnlineLiveFlagOff = false;
+      if (validationArguments.constraints && text.length > 0) {
+        const property = validationArguments.constraints[0];
         const value = (validationArguments.object as never)[property];
         if (value > 70) {
           this.errorMessage.push(validationArguments.constraints[1]);
           return false;
         }
-        return true;
       }
     }
     return true;

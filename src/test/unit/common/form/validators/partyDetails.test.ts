@@ -72,7 +72,8 @@ describe(('For PartyDetails Form'), () => {
     //When
     await form.validate();
     //Then
-    expect(form.hasErrors()).toBeTruthy();
+    expect(form.errors.length).toEqual(4);
+    expect(form.errors[3].children.length).toEqual(4);
     expect(form.errorFor('title')).toEqual('ERRORS.ENTER_VALID_TITLE');
     expect(form.errorFor('firstName')).toEqual('ERRORS.TEXT_TOO_MANY');
     expect(form.errorFor('lastName')).toEqual('ERRORS.TEXT_TOO_MANY');
@@ -91,7 +92,8 @@ describe(('For PartyDetails Form'), () => {
     //When
     await form.validate();
     //Then
-    expect(form.hasErrors()).toBeTruthy();
+    expect(form.errors.length).toEqual(4);
+    expect(form.errors[3].children.length).toEqual(5);
     expect(form.errorFor('title')).toEqual('ERRORS.TEXT_TOO_MANY');
     expect(form.errorFor('firstName')).toEqual(' ');
     expect(form.errorFor('lastName')).toEqual(' ');
@@ -111,7 +113,8 @@ describe(('For PartyDetails Form'), () => {
     //When
     await form.validate();
     //Then
-    expect(form.hasErrors()).toBeTruthy();
+    expect(form.errors.length).toEqual(3);
+    expect(form.errors[2].children.length).toEqual(5);
     expect(form.errorFor('firstName')).toEqual('ERRORS.TEXT_TOO_MANY');
     expect(form.errorFor('lastName')).toEqual(' ');
     expect(form.errorFor('primaryAddress[addressLine1]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
@@ -131,7 +134,8 @@ describe(('For PartyDetails Form'), () => {
     //When
     await form.validate();
     //Then
-    expect(form.hasErrors()).toBeTruthy();
+    expect(form.errors.length).toEqual(4);
+    expect(form.errors[3].children.length).toEqual(4);
     expect(form.errorFor('title')).toEqual('ERRORS.SPECIAL_CHARACTERS');
     expect(form.errorFor('firstName')).toEqual('ERRORS.SPECIAL_CHARACTERS');
     expect(form.errorFor('lastName')).toEqual('ERRORS.SPECIAL_CHARACTERS');
