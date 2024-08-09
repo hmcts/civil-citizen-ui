@@ -31,233 +31,233 @@ const paths = {
 
 class ClaimantResponseSteps {
   async viewDefendantResponse(caseId, includesRepaymentPlan) {
-    await I.amOnPage(`/case/${caseId}/claimant-response/task-list`);
-    await I.click(paths.links.view_defendants_response);
-    await I.waitForContent('The defendant’s response');
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/defendants-response`);
+    I.amOnPage(`/case/${caseId}/claimant-response/task-list`);
+    I.click(paths.links.view_defendants_response);
+    I.waitForContent('The defendant’s response');
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/defendants-response`);
     clickButton(buttonType.CONTINUE);
     if (includesRepaymentPlan) {
-      await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/defendants-response?page=how-they-want-to-pay-response`);
-      await I.waitForContent('How they want to pay?');
+      I.seeInCurrentUrl(`/case/${caseId}/claimant-response/defendants-response?page=how-they-want-to-pay-response`);
+      I.waitForContent('How they want to pay?');
       clickButton(buttonType.CONTINUE);
     }
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
   async acceptOrRejectPartAdmitPaid(caseId, option) {
-    await I.click(paths.links.have_you_been_paid);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/part-payment-received`);
-    await I.click(option);
+    I.click(paths.links.have_you_been_paid);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/part-payment-received`);
+    I.click(option);
     clickButton(buttonType.SAVE_AND_CONTINUE);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
   async acceptOrRejectRepaymentPlan(caseId, option) {
-    await I.click(paths.links.accept_or_reject_the_payment_plan);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/accept-payment-method`);
+    I.click(paths.links.accept_or_reject_the_payment_plan);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/accept-payment-method`);
     if (option) {
-      await I.click('Yes');
+      I.click('Yes');
     } else {
-      await I.click('No - I\'ll suggest my own');
+      I.click('No - I\'ll suggest my own');
     }
     clickButton(buttonType.SAVE_AND_CONTINUE);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
   async proposeAlternativePaymentPlan(caseId) {
-    await I.click(paths.links.propose_alternative_plan);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/payment-option`);
-    await I.click('Immediately');
+    I.click(paths.links.propose_alternative_plan);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/payment-option`);
+    I.click('Immediately');
     clickButton(buttonType.SAVE_AND_CONTINUE);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/counter-offer-accepted`);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/counter-offer-accepted`);
     clickButton(buttonType.CONTINUE);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
   async acceptOrRejectPartAdmitPayImmediately(caseId, option) {
-    await I.click(paths.links.accept_or_reject);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/settle-admitted`);
-    await I.click(option);
+    I.click(paths.links.accept_or_reject);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/settle-admitted`);
+    I.click(option);
     clickButton(buttonType.SAVE_AND_CONTINUE);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
   async formaliseRepayment(caseId, option) {
-    await I.click(paths.links.how_to_formalise_repayment);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/choose-how-to-proceed`);
-    await I.click(option);
+    I.click(paths.links.how_to_formalise_repayment);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/choose-how-to-proceed`);
+    I.click(option);
     clickButton(buttonType.SAVE_AND_CONTINUE);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
   async requestCCJ(caseId) {
-    await I.click(paths.links.request_a_CCJ);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/county-court-judgement/paid-amount`);
-    await I.click('No');
+    I.click(paths.links.request_a_CCJ);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/county-court-judgement/paid-amount`);
+    I.click('No');
     clickButton(buttonType.SAVE_AND_CONTINUE);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/county-court-judgement/paid-amount-summary`);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/county-court-judgement/paid-amount-summary`);
     clickButton(buttonType.CONTINUE);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
   async signSettlementAgreement(caseId) {
-    await I.click(paths.links.sign_a_settlements_agreement);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/sign-settlement-agreement`);
-    await I.waitForElement(paths.options.ssaSigned);
-    await I.checkOption(paths.options.ssaSigned);
+    I.click(paths.links.sign_a_settlements_agreement);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/sign-settlement-agreement`);
+    I.waitForElement(paths.options.ssaSigned);
+    I.checkOption(paths.options.ssaSigned);
     clickButton(buttonType.SAVE_AND_CONTINUE);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
   async settleTheClaim(caseId, option) {
-    await I.click(paths.links.settle_the_claim_for);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/settle-claim`);
-    await I.click(option);
+    I.click(paths.links.settle_the_claim_for);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/settle-claim`);
+    I.click(option);
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
     if (option === 'No') {
-      await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/rejection-reason`);
+      I.seeInCurrentUrl(`/case/${caseId}/claimant-response/rejection-reason`);
       I.fillField('//*[@id="text"]', 'reasons');
       clickButton(buttonType.SAVE_AND_CONTINUE);
     }
 
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
   async freeTelephoneMediation(caseId) {
-    await I.click(paths.links.free_mediation);
-    await I.seeInCurrentUrl(`/case/${caseId}/mediation/free-telephone-mediation`);
+    I.click(paths.links.free_mediation);
+    I.seeInCurrentUrl(`/case/${caseId}/mediation/free-telephone-mediation`);
     clickButton(buttonType.CONTINUE);
-    await I.seeInCurrentUrl(`/case/${caseId}/mediation/can-we-use`);
-    await I.click('Yes');
+    I.seeInCurrentUrl(`/case/${caseId}/mediation/can-we-use`);
+    I.click('Yes');
     clickButton(buttonType.SAVE_AND_CONTINUE);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
   async fillDQ(caseId, fastTrackDQ) {
-    await I.click(paths.links.details_in_case_of_a_hearing);
+    I.click(paths.links.details_in_case_of_a_hearing);
     if (!fastTrackDQ) {
-      await I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/determination-without-hearing`);
-      await I.click('Yes');
+      I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/determination-without-hearing`);
+      I.click('Yes');
       clickButton(buttonType.SAVE_AND_CONTINUE);
     }
 
     if (fastTrackDQ) {
-      await I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/tried-to-settle`);
-      await I.click('Yes');
+      I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/tried-to-settle`);
+      I.click('Yes');
       clickButton(buttonType.SAVE_AND_CONTINUE);
 
-      await I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/request-extra-4-weeks`);
-      await I.click('No');
+      I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/request-extra-4-weeks`);
+      I.click('No');
       clickButton(buttonType.SAVE_AND_CONTINUE);
 
-      await I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/consider-claimant-documents`);
-      await I.click('No');
+      I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/consider-claimant-documents`);
+      I.click('No');
       clickButton(buttonType.SAVE_AND_CONTINUE);
 
-      await I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/expert-evidence`);
-      await I.click('No');
+      I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/expert-evidence`);
+      I.click('No');
       clickButton(buttonType.SAVE_AND_CONTINUE);
     }
 
     if (!fastTrackDQ) {
-      await I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/expert`);
-      await I.click('Continue without an expert');
+      I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/expert`);
+      I.click('Continue without an expert');
     }
 
-    await I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/give-evidence-yourself`);
-    await I.click('No');
+    I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/give-evidence-yourself`);
+    I.click('No');
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
-    await I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/other-witnesses`);
-    await I.click('No');
+    I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/other-witnesses`);
+    I.click('No');
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
-    await I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/cant-attend-hearing-in-next-12-months`);
-    await I.click('No');
+    I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/cant-attend-hearing-in-next-12-months`);
+    I.click('No');
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
-    await I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/phone-or-video-hearing`);
-    await I.click('No');
+    I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/phone-or-video-hearing`);
+    I.click('No');
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
-    await I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/vulnerability`);
-    await I.click('No');
+    I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/vulnerability`);
+    I.click('No');
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
-    await I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/support-required`);
-    await I.click('No');
+    I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/support-required`);
+    I.click('No');
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
-    await I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/court-location`);
-    await I.click('No');
+    I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/court-location`);
+    I.click('No');
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
-    await I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/welsh-language`);
-    await I.click(paths.options.english_language);
-    await I.click(paths.options.document_language);
+    I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/welsh-language`);
+    I.click(paths.options.english_language);
+    I.click(paths.options.document_language);
     clickButton(buttonType.SAVE_AND_CONTINUE);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
   async checkAndSubmit(caseId) {
-    await I.click(paths.links.check_and_submit_your_response);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/check-and-send`);
+    I.click(paths.links.check_and_submit_your_response);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/check-and-send`);
     clickButton(buttonType.SUBMIT_RESPONSE);
   }
 
   async checkAndSubmitSigned(caseId) {
-    await I.click(paths.links.check_and_submit_your_response);
-    await I.seeInCurrentUrl(`/case/${caseId}/claimant-response/check-and-send`);
-    await I.waitForElement(paths.options.directionsQuestionnaireSigned);
-    await I.checkOption(paths.options.directionsQuestionnaireSigned);
+    I.click(paths.links.check_and_submit_your_response);
+    I.seeInCurrentUrl(`/case/${caseId}/claimant-response/check-and-send`);
+    I.waitForElement(paths.options.directionsQuestionnaireSigned);
+    I.checkOption(paths.options.directionsQuestionnaireSigned);
     clickButton(buttonType.SUBMIT_RESPONSE);
   }
 
   async partAdmitSettleClaimConfirmation() {
-    await I.see('You\'ve accepted their response');
-    await I.see('The claim is now settled. We\'ve emailed Sir John Doe to tell them.');
-    await I.see('Go to your account');
+    I.see('You\'ve accepted their response');
+    I.see('The claim is now settled. We\'ve emailed Sir John Doe to tell them.');
+    I.see('Go to your account');
   }
 
   async partAdmitClaimantDoesNotSettleConfirmation() {
-    await I.see('You\'ve rejected their response');
-    await I.see('What happens next');
-    await I.see('We\'ll review the case. We\'ll contact you to tell you what to do next.');
-    await I.see('Go to your account');
+    I.see('You\'ve rejected their response');
+    I.see('What happens next');
+    I.see('We\'ll review the case. We\'ll contact you to tell you what to do next.');
+    I.see('Go to your account');
   }
 
   async partAdmitClaimantRejectsAndAgreesToMediationConfirmation() {
-    await I.see('You\'ve rejected their response');
-    await I.see('What happens next');
-    await I.see('You agreed to try free mediation.');
-    await I.see('Your mediation appointment will be arranged within 28 days.');
+    I.see('You\'ve rejected their response');
+    I.see('What happens next');
+    I.see('You agreed to try free mediation.');
+    I.see('Your mediation appointment will be arranged within 28 days.');
   }
 
   async partAdmitClaimantRequestsCCJConfirmation() {
-    await I.see('You\'ve accepted their response');
-    await I.see('What happens next');
-    await I.see('You\'ve requested a County Court Judgment against the defendant.');
-    await I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
+    I.see('You\'ve accepted their response');
+    I.see('What happens next');
+    I.see('You\'ve requested a County Court Judgment against the defendant.');
+    I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
   }
 
   async partAdmitClaimantSignsSettlementAgreementConfirmation() {
-    await I.see('You\'ve signed a settlement agreement');
-    await I.see('What happens next');
-    await I.see('We\'ve emailed Sir John Doe your proposed repayment plan and settlement agreement for them to sign.');
-    await I.see('They must respond before 4pm on 13 August 2024. We\'ll email you when they respond.');
-    await I.see('If they sign the agreement, this claim is put on hold.');
-    await I.see('If they don\'t sign the agreement or reject it, you can request a CCJ against them which orders them to pay in line with the terms of the repayment plan.');
-    await I.see('If they don\'t think they can afford the plan, they can ask for a judge to make a different plan.');
+    I.see('You\'ve signed a settlement agreement');
+    I.see('What happens next');
+    I.see('We\'ve emailed Sir John Doe your proposed repayment plan and settlement agreement for them to sign.');
+    I.see('They must respond before 4pm on 13 August 2024. We\'ll email you when they respond.');
+    I.see('If they sign the agreement, this claim is put on hold.');
+    I.see('If they don\'t sign the agreement or reject it, you can request a CCJ against them which orders them to pay in line with the terms of the repayment plan.');
+    I.see('If they don\'t think they can afford the plan, they can ask for a judge to make a different plan.');
   }
 
   async partAdmitClaimantProposesRepaymentPlanConfirmation() {
-    await I.see('You\'ve proposed a different repayment plan');
-    await I.see('What happens next');
-    await I.see('You\'ve requested a County Court Judgment against Sir John Doe.');
-    await I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
-    await I.see('A judge will decide what Sir John Doe can afford to pay, based on their financial details.');
-    await I.see('We\'ll contact both you and Sir John Doe to tell you what to do next.');
+    I.see('You\'ve proposed a different repayment plan');
+    I.see('What happens next');
+    I.see('You\'ve requested a County Court Judgment against Sir John Doe.');
+    I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
+    I.see('A judge will decide what Sir John Doe can afford to pay, based on their financial details.');
+    I.see('We\'ll contact both you and Sir John Doe to tell you what to do next.');
   }
 
   async resetWiremockScenario() {

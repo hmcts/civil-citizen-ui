@@ -5,25 +5,25 @@ const {resetScenarios} = require('../../functionalTests/specClaimHelpers/api/wir
 
 class DefendantResponseSteps {
   async signSettlementAgreement(caseId) {
-    await I.amOnPage(`/case/${caseId}/settlement-agreement/sign-settlement-agreement`);
-    await I.click('Yes - I confirm I\'ve read and accept the terms of the agreement.');
+    I.amOnPage(`/case/${caseId}/settlement-agreement/sign-settlement-agreement`);
+    I.click('Yes - I confirm I\'ve read and accept the terms of the agreement.');
     clickButton(buttonType.SAVE_AND_CONTINUE);
   }
 
   async partAdmitPayBySetDateDefendantSignsSettlementAgreementConfirmation() {
-    await I.see('You\'ve both signed a settlement agreement');
-    await I.see('The agreement says you\'ll repay by');
-    await I.see('The claimant can\'t request a County Court Judgment against you unless you break the terms.');
-    await I.see('Contact Miss Jane Doe if you need their payment details.');
-    await I.see('Make sure you get receipts for any payments.');
+    I.see('You\'ve both signed a settlement agreement');
+    I.see('The agreement says you\'ll repay by');
+    I.see('The claimant can\'t request a County Court Judgment against you unless you break the terms.');
+    I.see('Contact Miss Jane Doe if you need their payment details.');
+    I.see('Make sure you get receipts for any payments.');
   }
 
   async partAdmitPayByInstallmentsDefendantSignsSettlementAgreementConfirmation() {
-    await I.see('You\'ve both signed a settlement agreement');
-    await I.see('The claimant can\'t request a County Court Judgment against you unless you break the terms.');
-    await I.see('What happens next');
-    await I.see('Contact Miss Jane Doe if you need their payment details.');
-    await I.see('Make sure you get receipts for any payments.');
+    I.see('You\'ve both signed a settlement agreement');
+    I.see('The claimant can\'t request a County Court Judgment against you unless you break the terms.');
+    I.see('What happens next');
+    I.see('Contact Miss Jane Doe if you need their payment details.');
+    I.see('Make sure you get receipts for any payments.');
   }
 
   async resetWiremockScenario() {
