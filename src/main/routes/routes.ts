@@ -389,6 +389,7 @@ import gaAdditionalDocCheckAnswerController from './features/generalApplication/
 import additionalDocSubmittedController from './features/generalApplication/additionalDocuments/submittedController';
 import viewApplicationToRespondentController from 'routes/features/generalApplication/response/viewApplicationController';
 import applicationSummaryController from './features/generalApplication/applicationSummaryController';
+import applicationResponseSummaryController from './features/generalApplication/response/applicationResponseSummaryController';
 import additionalFeeController from './features/generalApplication/additionalFee/additionalFeeController';
 import payAdditionalFeeController from 'routes/features/generalApplication/additionalFee/payAdditionalFeeController';
 import requestForReviewCommentsController
@@ -732,6 +733,7 @@ export default [
   applicationFeePaymentConfirmationController,
   viewApplicationToRespondentController,
   applicationSummaryController,
+  applicationResponseSummaryController,
   additionalFeeController,
   payAdditionalFeeController,
   requestForReviewCommentsController,
