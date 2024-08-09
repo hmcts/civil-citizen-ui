@@ -4,6 +4,8 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 
+const carmEnabled = false;
+const manualPIP = 'yes';
 let claimRef;
 let claimType = 'FastTrack';
 let caseData;
@@ -14,7 +16,7 @@ Feature('Negative Scenarios for Defendant Response');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, null, claimType);
+  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, null, claimType, carmEnabled, '', manualPIP);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
