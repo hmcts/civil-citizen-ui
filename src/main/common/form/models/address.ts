@@ -8,16 +8,20 @@ export class Address {
   @Validate(MaxLengthValidator)
   @Validate(SpecialCharValidator)
     addressLine1?: string;
+
   @Validate(MaxLengthValidator)
   @Validate(SpecialCharValidator)
     addressLine2?: string;
+
   @Validate(MaxLengthValidator)
   @Validate(SpecialCharValidator)
     addressLine3?: string;
+
   @IsNotEmpty({message: 'ERRORS.VALID_CITY'})
   @Validate(MaxLengthValidator)
   @Validate(SpecialCharValidator)
     city?: string;
+
   @IsNotEmpty({message: 'ERRORS.VALID_POSTCODE'})
   @Validate(PostcodeValidator)
     postCode?: string;
