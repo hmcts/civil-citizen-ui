@@ -19,11 +19,11 @@ module.exports = {
     await I.waitForVisible(selectors.contentClass, 60);
     if (Array.isArray(content)) {
       for (let i = 0; i < content.length; i++) {
-        //await I.see(content[i]);
+        await I.see(content[i]);
         console.log('content to be verified ..', content[i]);
       }
     } else {
-      //await I.see(content);
+      await I.see(content);
       console.log('content to be verified ..', content);
     }
   },
