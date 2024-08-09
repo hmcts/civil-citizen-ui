@@ -2051,6 +2051,7 @@
         "SDO_ORDER_IN_REVIEW": "Arhoswch i'r llys adolygu'r gorchymyn.",
         "SDO_ORDER_IN_REVIEW_OTHER_PARTY_CLAIMANT": "Darllenwch geisiadau'r hawlydd i farnwr adolygu'r gorchymyn.",
         "SDO_ORDER_IN_REVIEW_OTHER_PARTY_DEFENDANT": "Darllenwch geisiadau'r diffynnydd i farnwr adolygu'r gorchymyn.",
+        "TRIAL_OR_HEARING_SCHEDULED": "Mae Gwrandawiad neu Dreial wedi'i drefnu ar gyfer yr achos hwn.",
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "Mae'r dogfennau'n cael eu cyfieithu.",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos.",
         "HEARING_FEE_UNPAID": "Mae'r hawliad wedi cael ei ddileu."

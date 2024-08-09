@@ -2039,6 +2039,7 @@
         "IN_MEDIATION": "Your mediation appointment will be arranged within 28 days.",
         "MEDIATION_SUCCESSFUL": "You both agreed a settlement through mediation.",
         "MEDIATION_UNSUCCESSFUL":"Mediation was unsuccessful.",
+        "MORE_DETAILS_REQUIRED": "Send us more details before the hearing.",
         "NO_RESPONSE_ON_TIME": "Wait for the defendant to respond.",
         "NO_RESPONSE_ELIGIBLE_CCJ":  "The defendant has not responded to your claim. You can request a County Court Judgment against them.",
         "NOT_ADMITTED_CLAIMANT": "Respond to the defendant.",
@@ -2051,6 +2052,7 @@
         "SDO_ORDER_IN_REVIEW": "Wait for court to review the order.",
         "SDO_ORDER_IN_REVIEW_OTHER_PARTY_CLAIMANT": "Read the claimant’s requests for a judge to review the order.",
         "SDO_ORDER_IN_REVIEW_OTHER_PARTY_DEFENDANT": "Read the defendant’s requests for a judge to review the order.",
+        "TRIAL_OR_HEARING_SCHEDULED": "A Trial or Hearing has been scheduled for this case.",
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
         "HEARING_FEE_UNPAID": "This claim has been struck out."
