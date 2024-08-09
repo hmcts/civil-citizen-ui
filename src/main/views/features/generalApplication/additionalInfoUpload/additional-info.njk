@@ -11,7 +11,15 @@
 {% endblock %}
 
 {% block nestedContent %}
-  {{ headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.TITLE') }}
+  {{ headingWithCaption(t,'PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.TITLE','PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.TITLE') }}
+  <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.CONTENT_1') }}</p>
+  <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.CONTENT_2_1') }}
+  <a class="govuk-link"
+  href="{{ docUrl }}">{{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.CONTENT_2_2') }}
+  <span class="govuk-visually-hidden">
+  </a>
+  {{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.CONTENT_2_3') }}
+  </p>
   <form method="post" novalidate>
     {{ csrfProtection(csrf) }}
     {{ govukTextarea({
@@ -21,12 +29,18 @@
             text: t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.TEXT_INPUT'),
             classes: "govuk-!-font-weight-bold"
           },
+          hint: {
+            text: t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.TEXT_INPUT_HINT')
+          },
           value: form.model.additionalText,
           classes:"govuk-!-width-three-quarters",
           errorMessage: {
             text: t(form.errorFor('additionalText'))
           } if form.hasFieldError('additionalText')
     }) }}
+    <label class="govuk-label govuk-!-font-weight-bold" for="option">
+      {{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.OPTION') }}
+    </label>
     {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO'}) }}
     <div class="govuk-button-group">
       {{ addButton(t, 'CONTINUE', cancelUrl) }}

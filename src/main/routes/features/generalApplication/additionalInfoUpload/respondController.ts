@@ -1,6 +1,6 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  GA_RESPOND_ADDITIONAL_INFO_URL,
+  GA_RESPOND_ADDITIONAL_INFO_URL, GA_VIEW_APPLICATION_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
@@ -23,9 +23,10 @@ respondAddInfoController.get(GA_RESPOND_ADDITIONAL_INFO_URL, (async (req: AppReq
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPOND_ADDITIONAL_INFO_URL);
+    const docUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_VIEW_APPLICATION_URL).concat('?index=1');
     const respondAddInfo = new RespondAddInfo();
     const form = new GenericForm(respondAddInfo);
-    res.render(viewPath, { currentUrl, backLinkUrl, cancelUrl, claimIdPrettified, claim, form});
+    res.render(viewPath, { currentUrl, backLinkUrl, cancelUrl, claimIdPrettified, claim, form, docUrl});
   } catch (error) {
     next(error);
   }
@@ -48,7 +49,8 @@ respondAddInfoController.post(GA_RESPOND_ADDITIONAL_INFO_URL, (async (req: AppRe
       const claim = await getClaimById(claimId, req, true);
       const cancelUrl = await getCancelUrl(claimId, claim);
       const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPOND_ADDITIONAL_INFO_URL);
-      return await res.render(viewPath, { currentUrl, backLinkUrl, cancelUrl, claimIdPrettified, claim, form});
+      const docUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_VIEW_APPLICATION_URL).concat('?index=1');
+      return await res.render(viewPath, { currentUrl, backLinkUrl, cancelUrl, claimIdPrettified, claim, form, docUrl});
     }
     //await saveAcceptDefendantOffer(generateRedisKeyForGA(req), acceptDefendantOffer);
     res.redirect('test'); // TODO: add url
