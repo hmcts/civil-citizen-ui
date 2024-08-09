@@ -1,9 +1,18 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {DASHBOARD_URL, GA_APPLY_HELP_WITH_FEE_SELECTION, GA_PAY_ADDITIONAL_FEE_URL, GA_VIEW_APPLICATION_URL,GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
-import {getApplicationSections, getJudgeResponseSummary} from 'services/features/generalApplication/viewApplication/viewApplicationService';
+import {
+  getApplicationSections,
+  getJudgeApproveEdit,
+  getJudgeDismiss,
+  getJudgeResponseSummary,
+  getReturnDashboardUrl,
+} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
-import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
+import {
+  ApplicationResponse,
+  JudicialDecisionMakeAnOrderOptions,
+} from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {SummaryRow} from 'common/models/summaryList/summaryList';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -23,10 +32,15 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, req.params.appId);
     const isResponseFromCourt = !!applicationResponse.case_data?.judicialDecision?.decision;
+    const isJudgesApproveEdit = applicationResponse.case_data?.judicialDecisionMakeOrder?.makeAnOrder == JudicialDecisionMakeAnOrderOptions.APPROVE_OR_EDIT;
+    const isJudgesDismiss = applicationResponse.case_data?.judicialDecisionMakeOrder?.makeAnOrder == JudicialDecisionMakeAnOrderOptions.DISMISS_THE_APPLICATION;
     let responseFromCourt: SummaryRow[] = [];
     let payAdditionalFeeUrl: string = null;
     const isApplicationFeeAmountNotPaid = isApplicationFeeNotPaid(applicationResponse);
     let applicationFeeOptionUrl : string = null;
+    let judgesApproveEdit: SummaryRow[] = [];
+    let judgesDismiss: SummaryRow[] = [];
+    let returnDashboardUrl: string = null;
 
     if(isResponseFromCourt) {
       responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
@@ -35,6 +49,16 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
 
     if(isApplicationFeeAmountNotPaid) {
       applicationFeeOptionUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+    }
+
+    if(isJudgesApproveEdit) {
+      judgesApproveEdit = getJudgeApproveEdit(applicationResponse, lang);
+      returnDashboardUrl = await getReturnDashboardUrl(claimId, req);
+    }
+
+    if(isJudgesDismiss) {
+      judgesDismiss = getJudgeDismiss(applicationResponse, lang);
+      returnDashboardUrl = await getReturnDashboardUrl(claimId, req);
     }
 
     res.render(viewPath, {
@@ -49,6 +73,11 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       payAdditionalFeeUrl,
       isApplicationFeeAmountNotPaid,
       applicationFeeOptionUrl,
+      isJudgesApproveEdit,
+      judgesApproveEdit,
+      isJudgesDismiss,
+      judgesDismiss,
+      returnDashboardUrl,
     });
   } catch (error) {
     next(error);

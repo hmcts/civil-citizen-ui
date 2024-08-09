@@ -1,10 +1,12 @@
 export interface CcdGeneralApplicationDirectionsOrderDocument {
+  id?: string,
   value: CcdDocument,
 }
 
 export interface CcdDocument {
   documentType: string,
   documentLink: CcdDocumentLink,
+  createdDatetime?: Date;
 }
 
 export interface CcdDocumentLink {
