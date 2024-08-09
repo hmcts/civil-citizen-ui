@@ -72,7 +72,7 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, (async (req: Request, res: Re
     const partyDetails = new GenericForm(new PartyDetails(req.body, carmEnabled));
     const partyPhone = new GenericForm<PartyPhone>(new PartyPhone(req.body.partyPhone, respondent?.partyPhone?.ccdPhoneExist));
 
-    partyDetails.validateSync();
+    await partyDetails.validate();
     partyPhone.validateSync();
 
     if (partyDetails.hasErrors() || partyPhone.hasErrors()) {
