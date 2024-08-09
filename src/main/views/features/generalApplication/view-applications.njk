@@ -26,7 +26,7 @@
 
 {% set responseHtml %}
 {# TODO: add response show/hidde content here #}
-  <p class="govuk-body">Response from the other parties</p> 
+  <p class="govuk-body">Response from the other parties</p>
 {% endset %}
 
 {% set courtResponseHeaderHtml %}
@@ -40,10 +40,17 @@
     rows: responseFromCourt
   }) }}
 
-  {{ govukButton({
-    text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAY_ADDITIONAL_FEE'),
-    href: payAdditionalFeeUrl
-  }) }}
+  {% if showRequestMoreInfoButton %}
+    {{ govukButton({
+      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST'),
+      href: requestMoreInfoUrl
+    }) }}
+  {% else %}
+    {{ govukButton({
+      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAY_ADDITIONAL_FEE'),
+      href: payAdditionalFeeUrl
+    }) }}
+  {% endif %}
 {% endset %}
 
 {% block nestedContent %}
@@ -55,22 +62,22 @@
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_1')}}<a href="{{additionalDocUrl}}">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_2') }}</a>{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_3') }}</p>
 
   <div class="govuk-!-padding-top-5">
+    {% if isResponseFromCourt %}
+      {{ govukDetails({
+         summaryHtml: courtResponseHeaderHtml,
+         html: courtResponseHtml
+         }) }}
+     {% endif %}
     {{ govukDetails({
       summaryHtml: applicationHeaderHtml,
       html: applicationHtml
     }) }}
-    {% if isResponseFromCourt %}
-      {{ govukDetails({
-        summaryHtml: courtResponseHeaderHtml,
-        html: courtResponseHtml
-      }) }}
-    {% endif %}
     {{ govukDetails({
       summaryHtml: responseHeaderHtml,
       html: responseHtml
     }) }}
   </div>
-  
+
   {% if isApplicationFeeAmountNotPaid %}
     {{ govukButton({
       text: t('COMMON.BUTTONS.PAY_APPLICATION_FEE'),

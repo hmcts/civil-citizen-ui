@@ -3,7 +3,7 @@ import {DASHBOARD_URL, GA_APPLY_HELP_WITH_FEE_SELECTION, GA_PAY_ADDITIONAL_FEE_U
 import {AppRequest} from 'common/models/AppRequest';
 import {getApplicationSections, getJudgeResponseSummary} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
-import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
+import {ApplicationResponse, JudicialDecisionOptions} from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {SummaryRow} from 'common/models/summaryList/summaryList';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -23,14 +23,23 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, req.params.appId);
     const isResponseFromCourt = !!applicationResponse.case_data?.judicialDecision?.decision;
+    let showRequestMoreInfoButton = false;
     let responseFromCourt: SummaryRow[] = [];
     let payAdditionalFeeUrl: string = null;
     const isApplicationFeeAmountNotPaid = isApplicationFeeNotPaid(applicationResponse);
     let applicationFeeOptionUrl : string = null;
 
     if(isResponseFromCourt) {
-      responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
-      payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
+      const judgeResponseType = applicationResponse.case_data?.judicialDecision?.decision;
+      if (judgeResponseType === JudicialDecisionOptions.MAKE_AN_ORDER) {
+        responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
+        payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
+      } else {
+        if (judgeResponseType === JudicialDecisionOptions.REQUEST_MORE_INFO) {
+          showRequestMoreInfoButton = true;
+          responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
+        }
+      }
     }
 
     if(isApplicationFeeAmountNotPaid) {
@@ -49,6 +58,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       payAdditionalFeeUrl,
       isApplicationFeeAmountNotPaid,
       applicationFeeOptionUrl,
+      showRequestMoreInfoButton,
     });
   } catch (error) {
     next(error);

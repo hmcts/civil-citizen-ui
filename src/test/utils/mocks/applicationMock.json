@@ -115,7 +115,10 @@
     },
     "isMultiParty": "No",
     "isCcmccLocation": "Yes",
-    "gaApplicantDisplayName": "Mr Claimant person - Claimant"
+    "gaApplicantDisplayName": "Mr Claimant person - Claimant",
+    "judicialDecision": {
+      "decision": "MAKE_AN_ORDER"
+    }
   },
   "security_classification": "PUBLIC"
 }

@@ -13,18 +13,18 @@ import {
   addUnavailableDatesRows,
 } from './addViewApplicationRows';
 import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
-import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {ApplicationResponse, JudicialDecisionOptions} from 'models/generalApplication/applicationResponse';
 import {AppRequest} from 'models/AppRequest';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
-import { t } from 'i18next';
-import { formatDateToFullDate } from 'common/utils/dateUtils';
-import { DocumentType } from 'common/models/document/documentType';
-import { GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL } from 'routes/urls';
-import { documentIdExtractor } from 'common/utils/stringUtils';
-import { constructDocumentUrlWithIdParamsAndDocumentId } from 'common/utils/urlFormatter';
+import {t} from 'i18next';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {DocumentType} from 'common/models/document/documentType';
+import {GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL} from 'routes/urls';
+import {documentIdExtractor} from 'common/utils/stringUtils';
+import {constructDocumentUrlWithIdParamsAndDocumentId} from 'common/utils/urlFormatter';
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -71,23 +71,39 @@ const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, appli
 
 export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
   const rows: SummaryRow[] = [];
-  const documentUrl = getMakeWithNoticeDocumentUrl(applicationResponse);
 
   rows.push(
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
-    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
-    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng})}</a>`),
   );
-  return rows;
+  if(applicationResponse.case_data.judicialDecision.decision === JudicialDecisionOptions.MAKE_AN_ORDER) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), formatDocumentLinkHtml(applicationResponse, DocumentType.SEND_APP_TO_OTHER_PARTY, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng}))),
+    );
+  } else if(applicationResponse.case_data.judicialDecision.decision === JudicialDecisionOptions.REQUEST_MORE_INFO) {
+    const documentName = getRequestForInfoDocument(applicationResponse, DocumentType.REQUEST_MORE_INFORMATION).value.documentName;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO', {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), formatDocumentLinkHtml(applicationResponse, DocumentType.REQUEST_MORE_INFORMATION, documentName)),
+    );
+  } return rows;
 };
 
-const getMakeWithNoticeDocumentUrl = (applicationResponse: ApplicationResponse) : string => {
+const getRequestForInfoDocument = (applicationResponse: ApplicationResponse, documentType: DocumentType) => {
   const requestForInformationDocument = applicationResponse?.case_data?.requestForInformationDocument;
-  const applicationId = applicationResponse.id;
   if(requestForInformationDocument) {
-    const makeWithNoticeDoc = requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY);
-    const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);    
-    return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
+    return requestForInformationDocument.find(doc => doc?.value?.documentType === documentType);
   }
   return undefined;
+};
+
+const getRequestForInfoDocumentUrl = (applicationResponse: ApplicationResponse, documentType: DocumentType) : string => {
+  const applicationId = applicationResponse.id;
+  const document = getRequestForInfoDocument(applicationResponse, documentType);
+  const documentId = documentIdExtractor(document?.value?.documentLink?.document_binary_url);
+  return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
+};
+
+const formatDocumentLinkHtml = (applicationResponse: ApplicationResponse, documentType: DocumentType, documentName: string) : string => {
+  return `<a href="${getRequestForInfoDocumentUrl(applicationResponse, documentType)}">${documentName}</a>`;
 };
