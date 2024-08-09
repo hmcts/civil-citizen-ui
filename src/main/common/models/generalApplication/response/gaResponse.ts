@@ -21,6 +21,8 @@ export class GaResponse {
   wantToUploadDocuments?: YesNo;
   uploadEvidenceDocuments?: UploadGAFiles[];
   draftResponseCreatedAt?: Date;
+  additionalText?: string;
+  wantToUploadAddlDocuments?: YesNo;
   constructor(hearingArrangement?: HearingArrangement, hearingContactDetails?: HearingContactDetails, agreeToOrder?: YesNo,
     hearingSupport?: HearingSupport, unavailableDatesHearing?: UnavailableDatesGaHearing, respondentAgreement?: RespondentAgreement,
     acceptDefendantOffer?: AcceptDefendantOffer, statementOfTruth?: StatementOfTruthForm, wantToUploadDocuments?: YesNo, uploadEvidenceDocuments?: UploadGAFiles) {
