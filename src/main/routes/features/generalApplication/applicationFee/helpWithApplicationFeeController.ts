@@ -1,6 +1,5 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  //DASHBOARD_CLAIMANT_URL,
   GA_APPLY_HELP_WITH_FEE_SELECTION,
   GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION, GA_VIEW_APPLICATION_URL,
   GENERAL_APPLICATION_CONFIRM_URL,
