@@ -24,7 +24,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     let redirectUrl;
     let generalApplicationId: string;
     const claim: Claim = await getClaimById(claimId, req, true);
-    if (req.query.id) {
+    if (req.query?.id) {
       const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
       const ccdGeneralApplications = ccdClaim.generalApplications;
       const ga = ccdGeneralApplications?.find((ga: { id: string }) => ga.id === (req.query.id as string));
