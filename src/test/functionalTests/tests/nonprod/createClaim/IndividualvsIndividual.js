@@ -37,7 +37,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
     await steps.verifyAndPayClaimFee(defaultClaimAmount, defaultClaimFee);
     await api.waitForFinishedBusinessProcess();
   }
-});
+}).tag('@pavi');
 
 Scenario('Create Claim -  Individual vs Individual - small claims - with standard interest - no hwf', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
