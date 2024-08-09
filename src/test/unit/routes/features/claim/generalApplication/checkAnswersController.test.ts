@@ -2,7 +2,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_CHECK_ANSWERS_URL} from 'routes/urls';
+import {GA_CHECK_ANSWERS_URL, GENERAL_APPLICATION_CONFIRM_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
@@ -104,6 +104,19 @@ describe('General Application - Check your answers', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.STATEMENT_OF_TRUTH_REQUIRED_MESSAGE'));
           expect(res.text).toContain(t('ERRORS.SIGNER_NAME_REQUIRED'));
+        });
+    });
+
+    it('should add the id in the url of the ga application', async () => {
+      const claim = new Claim();
+      mockGetCaseData.mockImplementation(async () => claim);
+      mockSubmitApplication.mockResolvedValueOnce({generalApplications: [{id: '123456', value: {gaApp: 'yes'}}]});
+      await request(app)
+        .post(GA_CHECK_ANSWERS_URL)
+        .send({signed: 'yes', name: 'Mr Applicant'})
+        .expect((res) => {
+          expect(res.header.location).toBe(GENERAL_APPLICATION_CONFIRM_URL + '?id=123456');
+          expect(res.status).toBe(302);
         });
     });
 

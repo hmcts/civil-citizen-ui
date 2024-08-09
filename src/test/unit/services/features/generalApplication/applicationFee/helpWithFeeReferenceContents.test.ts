@@ -1,5 +1,6 @@
 import {
-  getHelpWithApplicationFeeReferenceContents, getButtonsContents,
+  getHelpWithApplicationFeeReferenceContents,
+  getButtonsContents,
 } from 'services/features/generalApplication/applicationFee/helpWithFeeReferenceContents';
 
 describe('Help with Application fee content', () => {
@@ -14,7 +15,7 @@ describe('Help with Application fee content', () => {
 
   it('should return all the content for getHelpWithApplicationFeeContinueContent', () => {
     //When
-    const actualContent = getButtonsContents('123');
+    const actualContent = getButtonsContents('123', '456');
     //Then
     expect(actualContent[0].data.text).toEqual('COMMON.BUTTONS.CONTINUE');
   });
