@@ -84,5 +84,6 @@ function getRedirectUrl(claimId: string, isHelpWithFee: GenericYesNo, feeType: b
   if (isHelpWithFee.option === YesNo.YES) {
     return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_FEE_CONFIRMATION_URL+ '?additionalFeeTypeFlag='+ feeType);
   }
+  
   return constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
 }
