@@ -22,6 +22,26 @@
     },
     {
       "request": {
+        "method": "POST",
+        "urlPattern": "/cases/.*?/citizen/.*?/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "1111222233334444"
+        }
+      }
+    },
+    {
+      "request": {
         "method": "GET",
         "urlPattern": "/cases/.*?",
         "headers": {
@@ -38,7 +58,8 @@
         "jsonBody": {
           "id": "12345",
           "case_data": {
-            "legacyCaseReference": "legacyCaseReference"
+            "legacyCaseReference": "legacyCaseReference",
+            "respondent1ResponseDate": "2023-06-03T07:30:38"
           },
           "state": "ACTIVE",
           "last_modified": "2023-07-10T10:00:00Z"
@@ -63,6 +84,42 @@
         "jsonBody": [
           "APPLICANTSOLICITORONE"
         ]
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/locations/courtLocations",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "courtLocationsResponse.json"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/cases/response/deadline",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "ssaResponseDeadline.json"
       }
     }
   ]
