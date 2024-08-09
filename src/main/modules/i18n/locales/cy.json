@@ -2017,6 +2017,7 @@
       "STATUS_CLAIMANT": {
         "ACCEPTED_PARTIAL_ADMISSION": "Rydych wedi derbyn addefiad rhannol y diffynnydd. Maent wedi dweud y byddant yn talu ar unwaith.",
         "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Arhoswch i'r diffynnydd eich talu.",
+        "All_FINAL_ORDERS_ISSUED": "",
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "Mae'r ddau ohonoch wedi llofnodi cytundeb setlo.",
         "CLAIM_ENDED": "Bu ichi stopio’r hawliad hwn.",
         "CLAIM_FEE_NOT_PAID": "Talu’r ffi hawliad.",
@@ -2059,6 +2060,7 @@
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
         "ADMIT_PAY_BY_INSTALLMENTS": "Rydych wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn mewn rhandaliadau.",
         "ADMIT_PAY_IMMEDIATELY": "Rydych wedi derbyn yr hawliad yn ei gyfanrwydd a dweud y byddwch yn talu'r swm llawn ar unwaith.",
+        "All_FINAL_ORDERS_ISSUED": "",
         "AWAITING_CLAIMANT_RESPONSE": "Aros i'r hawlydd ymateb.",
         "CASE_PASSED_TO_COURT_ORDER_BUSINESS_CENTRE": "Achos wedi ei basio i Ganolfan Fusnes y Llys Sirol.",
         "CASE_SENT_TO_COURT": "Achos wedi ei anfon i'r llys.",

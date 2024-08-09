@@ -61,6 +61,7 @@ export class DashboardClaimantItem extends DashboardItem {
     const paramDefendantName = {key: 'defendantName', value: this.defendantName};
 
     return {
+      All_FINAL_ORDERS_ISSUED: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.All_FINAL_ORDERS_ISSUED'},
       NO_STATUS: {translationKey: ''},
       NO_RESPONSE: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME'},
       ELIGIBLE_FOR_CCJ: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ELIGIBLE_CCJ'},
@@ -146,6 +147,7 @@ export class DashboardDefendantItem extends DashboardItem {
     const paramAdmittedAmount = {key: 'amount', value: displayedAmount};
 
     return {
+      All_FINAL_ORDERS_ISSUED: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.All_FINAL_ORDERS_ISSUED'},
       NO_STATUS: {translationKey: ''},
       NO_RESPONSE: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ON_TIME', parameter: [paramNumberOfDays]},
       RESPONSE_OVERDUE: {
