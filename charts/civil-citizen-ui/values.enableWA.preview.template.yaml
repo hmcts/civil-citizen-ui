@@ -69,7 +69,7 @@ wa:
         POSTGRES_REPLICA_HOST: "{{ .Release.Name }}-postgresql"
         POSTGRES_REPLICA_PORT: 5432
         POSTGRES_NAME: "cft_task_db"
-        POSTGRES_REPLICA_NAME: "cft_task_db"
+        POSTGRES_REPLICA_NAME: "cft_task_db_replica"
         POSTGRES_USERNAME: postgres
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         REPLICATION_USERNAME: postgres
