@@ -30,7 +30,7 @@ const paths = {
 };
 
 class ClaimantResponseSteps {
-  async viewDefendantResponse(caseId, includesRepaymentPlan) {
+  viewDefendantResponse(caseId, includesRepaymentPlan) {
     I.amOnPage(`/case/${caseId}/claimant-response/task-list`);
     I.click(paths.links.view_defendants_response);
     I.waitForContent('The defendant’s response');
@@ -44,7 +44,7 @@ class ClaimantResponseSteps {
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
-  async acceptOrRejectPartAdmitPaid(caseId, option) {
+  acceptOrRejectPartAdmitPaid(caseId, option) {
     I.click(paths.links.have_you_been_paid);
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/part-payment-received`);
     I.click(option);
@@ -52,7 +52,7 @@ class ClaimantResponseSteps {
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
-  async acceptOrRejectRepaymentPlan(caseId, option) {
+  acceptOrRejectRepaymentPlan(caseId, option) {
     I.click(paths.links.accept_or_reject_the_payment_plan);
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/accept-payment-method`);
     if (option) {
@@ -64,7 +64,7 @@ class ClaimantResponseSteps {
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
-  async proposeAlternativePaymentPlan(caseId) {
+  proposeAlternativePaymentPlan(caseId) {
     I.click(paths.links.propose_alternative_plan);
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/payment-option`);
     I.click('Immediately');
@@ -74,7 +74,7 @@ class ClaimantResponseSteps {
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
-  async acceptOrRejectPartAdmitPayImmediately(caseId, option) {
+  acceptOrRejectPartAdmitPayImmediately(caseId, option) {
     I.click(paths.links.accept_or_reject);
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/settle-admitted`);
     I.click(option);
@@ -82,7 +82,7 @@ class ClaimantResponseSteps {
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
-  async formaliseRepayment(caseId, option) {
+  formaliseRepayment(caseId, option) {
     I.click(paths.links.how_to_formalise_repayment);
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/choose-how-to-proceed`);
     I.click(option);
@@ -90,7 +90,7 @@ class ClaimantResponseSteps {
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
-  async requestCCJ(caseId) {
+  requestCCJ(caseId) {
     I.click(paths.links.request_a_CCJ);
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/county-court-judgement/paid-amount`);
     I.click('No');
@@ -100,7 +100,7 @@ class ClaimantResponseSteps {
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
-  async signSettlementAgreement(caseId) {
+  signSettlementAgreement(caseId) {
     I.click(paths.links.sign_a_settlements_agreement);
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/sign-settlement-agreement`);
     I.waitForElement(paths.options.ssaSigned);
@@ -109,7 +109,7 @@ class ClaimantResponseSteps {
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
-  async settleTheClaim(caseId, option) {
+  settleTheClaim(caseId, option) {
     I.click(paths.links.settle_the_claim_for);
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/settle-claim`);
     I.click(option);
@@ -124,7 +124,7 @@ class ClaimantResponseSteps {
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
-  async freeTelephoneMediation(caseId) {
+  freeTelephoneMediation(caseId) {
     I.click(paths.links.free_mediation);
     I.seeInCurrentUrl(`/case/${caseId}/mediation/free-telephone-mediation`);
     clickButton(buttonType.CONTINUE);
@@ -134,7 +134,7 @@ class ClaimantResponseSteps {
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
-  async fillDQ(caseId, fastTrackDQ) {
+  fillDQ(caseId, fastTrackDQ) {
     I.click(paths.links.details_in_case_of_a_hearing);
     if (!fastTrackDQ) {
       I.seeInCurrentUrl(`/case/${caseId}/directions-questionnaire/determination-without-hearing`);
@@ -200,13 +200,13 @@ class ClaimantResponseSteps {
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/task-list`);
   }
 
-  async checkAndSubmit(caseId) {
+  checkAndSubmit(caseId) {
     I.click(paths.links.check_and_submit_your_response);
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/check-and-send`);
     clickButton(buttonType.SUBMIT_RESPONSE);
   }
 
-  async checkAndSubmitSigned(caseId) {
+  checkAndSubmitSigned(caseId) {
     I.click(paths.links.check_and_submit_your_response);
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/check-and-send`);
     I.waitForElement(paths.options.directionsQuestionnaireSigned);
@@ -214,34 +214,34 @@ class ClaimantResponseSteps {
     clickButton(buttonType.SUBMIT_RESPONSE);
   }
 
-  async partAdmitSettleClaimConfirmation() {
+  partAdmitSettleClaimConfirmation() {
     I.see('You\'ve accepted their response');
     I.see('The claim is now settled. We\'ve emailed Sir John Doe to tell them.');
     I.see('Go to your account');
   }
 
-  async partAdmitClaimantDoesNotSettleConfirmation() {
+  partAdmitClaimantDoesNotSettleConfirmation() {
     I.see('You\'ve rejected their response');
     I.see('What happens next');
     I.see('We\'ll review the case. We\'ll contact you to tell you what to do next.');
     I.see('Go to your account');
   }
 
-  async partAdmitClaimantRejectsAndAgreesToMediationConfirmation() {
+  partAdmitClaimantRejectsAndAgreesToMediationConfirmation() {
     I.see('You\'ve rejected their response');
     I.see('What happens next');
     I.see('You agreed to try free mediation.');
     I.see('Your mediation appointment will be arranged within 28 days.');
   }
 
-  async partAdmitClaimantRequestsCCJConfirmation() {
+  partAdmitClaimantRequestsCCJConfirmation() {
     I.see('You\'ve accepted their response');
     I.see('What happens next');
     I.see('You\'ve requested a County Court Judgment against the defendant.');
     I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
   }
 
-  async partAdmitClaimantSignsSettlementAgreementConfirmation() {
+  partAdmitClaimantSignsSettlementAgreementConfirmation() {
     I.see('You\'ve signed a settlement agreement');
     I.see('What happens next');
     I.see('We\'ve emailed Sir John Doe your proposed repayment plan and settlement agreement for them to sign.');
@@ -251,7 +251,7 @@ class ClaimantResponseSteps {
     I.see('If they don\'t think they can afford the plan, they can ask for a judge to make a different plan.');
   }
 
-  async partAdmitClaimantProposesRepaymentPlanConfirmation() {
+  partAdmitClaimantProposesRepaymentPlanConfirmation() {
     I.see('You\'ve proposed a different repayment plan');
     I.see('What happens next');
     I.see('You\'ve requested a County Court Judgment against Sir John Doe.');

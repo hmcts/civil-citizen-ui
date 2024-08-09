@@ -4,13 +4,13 @@ const {buttonType} = require('../commons/buttonVariables');
 const {resetScenarios} = require('../../functionalTests/specClaimHelpers/api/wiremock');
 
 class DefendantResponseSteps {
-  async signSettlementAgreement(caseId) {
+  signSettlementAgreement(caseId) {
     I.amOnPage(`/case/${caseId}/settlement-agreement/sign-settlement-agreement`);
     I.click('Yes - I confirm I\'ve read and accept the terms of the agreement.');
     clickButton(buttonType.SAVE_AND_CONTINUE);
   }
 
-  async partAdmitPayBySetDateDefendantSignsSettlementAgreementConfirmation() {
+  partAdmitPayBySetDateDefendantSignsSettlementAgreementConfirmation() {
     I.see('You\'ve both signed a settlement agreement');
     I.see('The agreement says you\'ll repay by');
     I.see('The claimant can\'t request a County Court Judgment against you unless you break the terms.');
@@ -18,7 +18,7 @@ class DefendantResponseSteps {
     I.see('Make sure you get receipts for any payments.');
   }
 
-  async partAdmitPayByInstallmentsDefendantSignsSettlementAgreementConfirmation() {
+  partAdmitPayByInstallmentsDefendantSignsSettlementAgreementConfirmation() {
     I.see('You\'ve both signed a settlement agreement');
     I.see('The claimant can\'t request a County Court Judgment against you unless you break the terms.');
     I.see('What happens next');
