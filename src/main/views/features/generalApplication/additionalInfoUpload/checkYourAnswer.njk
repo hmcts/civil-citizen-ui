@@ -20,7 +20,7 @@
 {% set defendantName = claim.getDefendantFullName() %}
 
 {% block nestedContent %}
-  {{ headingWithCaption(t,'PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE', 'PAGES.CHECK_YOUR_ANSWER.TITLE') }}
+  {{ headingWithCaption(t,headerCaption, 'PAGES.CHECK_YOUR_ANSWER.TITLE') }}
   {% if claimIdPrettified %}
     <p class="govuk-body-m govuk-!-margin-bottom-0">
       {{ t('COMMON.CASE_NUMBER') }}
