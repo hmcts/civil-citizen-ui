@@ -10,7 +10,7 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType, caseData, claimNumber;
 
-Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track ').tag('@r2-regression').tag('@nightly');
+Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track ').tag('@nightly');
 
 Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject @citizenUI @partAdmit @nightly - @api', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

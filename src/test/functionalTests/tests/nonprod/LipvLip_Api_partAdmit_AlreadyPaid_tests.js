@@ -27,7 +27,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle t
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaid(claimRef, claimNumber, 'disagree');
     await api.waitForFinishedBusinessProcess();
-    
+
     if (isDashboardServiceEnabled) {
       const notification = claimIsSettledClaimant(700, '1 January 2020');
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
@@ -40,7 +40,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle t
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
-}).tag('@regression-r2');
+});
 
 Scenario('Response with PartAdmit-AlreadyPaid Fast Track and Claimant Not to settle the claim @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -56,7 +56,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Fast Track and Claimant Not to set
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidAndProceed(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+});
 
 Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant decides to go for Mediation @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -72,4 +72,4 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant decides 
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfPartAdmitAlreadyPaidGoToMediation(claimRef, claimNumber, 'disagree');
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+});

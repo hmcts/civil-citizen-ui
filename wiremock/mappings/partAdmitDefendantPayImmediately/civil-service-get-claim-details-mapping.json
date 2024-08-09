@@ -1,0 +1,68 @@
+{
+  "mappings": [
+    {
+      "priority": 1,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/177777777777778\\d",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPayImmediately/beforeClaimantResponse.json"
+      }
+    },
+    {
+      "priority": 2,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "GET",
+        "url": "/cases/1777777777777788",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPayImmediately/claimantRejectsAgreesToMediation.json"
+      }
+    },
+    {
+      "priority": 3,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "POST",
+        "urlPath": "/cases/1777777777777788/citizen/someID/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPayImmediately/claimantRejectsAgreesToMediation.json"
+      }
+    }
+  ]
+}

@@ -2,6 +2,7 @@ const restHelper = require('./restHelper');
 const {url} = require('../../../config');
 
 const wireMockUrl = `${url.wiremockService}/__admin/mappings`;
+const wireMockResetUrl = `${url.wiremockServiceE2e}/__admin/scenarios/reset`;
 const headers = {
   'Content-Type': 'application/json',
 };
@@ -44,9 +45,18 @@ const updateStubResponseFileByRequestUrl = async (stubRequestUrl, bodyFileName) 
     );
 };
 
+const resetScenarios = async () => {
+  return restHelper.request(
+    wireMockResetUrl, headers, {}, 'POST', 200)
+    .then(response => {
+      response.json();
+    });
+};
+
 module.exports = {
   getStubs,
   getStubByRequestUrl,
   updateStubById,
   updateStubResponseFileByRequestUrl,
+  resetScenarios,
 };
