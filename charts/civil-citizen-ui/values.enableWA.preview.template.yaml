@@ -72,7 +72,7 @@ wa:
         POSTGRES_REPLICA_NAME: "cft_task_db"
         POSTGRES_USERNAME: postgres
         POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-        REPLICATION_USERNAME: cft_task_db
+        REPLICATION_USERNAME: postgres
         REPLICATION_PASSWORD: ${POSTGRES_PASSWORD}
         SPRING_PROFILES_ACTIVE: "preview"
         DB_READER_USERNAME: postgres
