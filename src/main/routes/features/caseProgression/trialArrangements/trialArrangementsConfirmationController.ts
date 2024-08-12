@@ -27,7 +27,7 @@ trialArrangementsConfirmationController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_CONFI
       } else {
         latestUpdateUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
       }
-      res.render('features/caseProgression/trialArrangements/finalise-trial-arrangements-confirmation', {readyForTrialOrHearing, trialArrangementsConfirmationContent, latestUpdateUrl});
+      res.render('features/caseProgression/trialArrangements/finalise-trial-arrangements-confirmation', {readyForTrialOrHearing, trialArrangementsConfirmationContent, latestUpdateUrl, noCrumbs: true});
     }
   } catch (error) {
     next(error);

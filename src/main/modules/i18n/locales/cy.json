@@ -2116,6 +2116,7 @@
         "WHAT_EXPECT_HEARING": "Beth i'w ddisgwyl mewn gwrandawiad"
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
+      "UPDATING_STATUS": "Diweddaru statws, adnewyddwch y dudalen.",
       "VIEW": "Weiv",
       "VIEW_CLAIM_NUMBER": "Rhif yr Hawliad {{ claimNumber }}"
     },
@@ -2986,7 +2987,10 @@
         "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
         "PAGE_TITLE": "Request for more information",
         "PAGE_TITLE_TO_UPLOAD": "Upload additional documents",
-        "UPLOAD_DOC_CYA_TITLE": "Upload documents"
+        "UPLOAD_DOC_CYA_TITLE": "Uploaded documents"
+      },
+      "UPLOAD_WRITTEN_REPRESENTATION_DOCUMENTS": {
+        "PAGE_TITLE": "Request for written representation"
       },
       "APPLICATION_HEARING_ARRANGEMENTS": {
         "HEARING_TYPE": {
@@ -3056,7 +3060,7 @@
         "TO": "To"
       },
       "CONFIRMATION_PAGE": {
-        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}",
+        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}.",
         "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
         "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
         "PAGE_TITLE": "Application created",
@@ -4142,7 +4146,8 @@
     "FEE_AMOUNT": {
       "TITLE": "Talu eich ffi hawlio",
       "MESSAGE": "Os byddwch yn setlo y tu allan i’r llys, ni fyddwn yn ad-dalu ffi’r hawliad. Gallwch ofyn i'r diffynnydd dalu eich ffi yn ôl fel rhan o'r setliad.",
-      "CONTINUE_TO_PAYMENT": "parhau i dalu"
+      "CONTINUE_TO_PAYMENT": "parhau i dalu",
+      "SYNC_WARNING": "Yn anffodus, nid ydym wedi gallu mynd â chi i'r dudalen dalu, rhowch gynnig arall arni."
     },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "Byddwn yn ei ychwanegu at swm yr hawliad.",

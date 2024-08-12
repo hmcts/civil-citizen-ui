@@ -9,6 +9,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {SummarySection, SummarySections} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
 import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/caseProgression/checkYourAnswers/checkAnswersService');
@@ -187,6 +188,21 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       //given
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
+      mockDraftStore.mockReturnValueOnce(claim);
+
+      //when
+      await testSession.post(CP_CHECK_ANSWERS_URL).query({lang: 'cy'}).expect((res: { status: unknown; text: unknown; }) => {
+        //then
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Gwiriwch eich atebion');
+      });
+    });
+
+    test('If the right form is missing, send back to check your answers page on claimant request.', async () => {
+      //given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      claim.caseRole = CaseRole.CLAIMANT;
       mockDraftStore.mockReturnValueOnce(claim);
 
       //when
