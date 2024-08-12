@@ -31,12 +31,6 @@ import {CASE_DOCUMENT_VIEW_URL, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL} from 'rou
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {constructDocumentUrlWithIdParamsAndDocumentId} from 'common/utils/urlFormatter';
 import {DocumentType} from 'models/document/documentType';
-import {t} from 'i18next';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
-import {DocumentType} from 'common/models/document/documentType';
-import {CASE_DOCUMENT_VIEW_URL, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL} from 'routes/urls';
-import {documentIdExtractor} from 'common/utils/stringUtils';
-import {constructDocumentUrlWithIdParamsAndDocumentId} from 'common/utils/urlFormatter';
 import {
   CcdGeneralApplicationDirectionsOrderDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
