@@ -5,6 +5,7 @@
     "UPLOAD_FILE": "Llwytho ffeil i fyny",
     "UPLOAD_FILE_LABEL":"Upload a file",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
+    "DATE_UPLOADED": "Date Uploaded [{{ uploadedDate }}]",
     "DOCUMENTS_UPLOADED": "Dogfennau wedi’u llwytho",
     "CASE_REFERENCE_NUMBER": "Cyfeirnod eich achos",
     "CONTACT_NAME": "Enw cyswllt",
@@ -100,6 +101,7 @@
       "SUBMIT_RESPONSE_PAYMENT": "Cyflwyno a symud ymlaen i'r adran dalu (£{{ payment }})",
       "SUBMIT": "Cyflwyno",
       "START_NOW": "Dechrau nawr",
+      "UPLOAD_ADDITIONAL_DOCUMENTS": "Upload additional documents",
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos",
       "CLOSE_AND_RETURN_TO_DASHBOARD": "Close and return to dashboard"
     },
@@ -2116,6 +2118,7 @@
         "WHAT_EXPECT_HEARING": "Beth i'w ddisgwyl mewn gwrandawiad"
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
+      "UPDATING_STATUS": "Diweddaru statws, adnewyddwch y dudalen.",
       "VIEW": "Weiv",
       "VIEW_CLAIM_NUMBER": "Rhif yr Hawliad {{ claimNumber }}"
     },
@@ -3059,7 +3062,7 @@
         "TO": "To"
       },
       "CONFIRMATION_PAGE": {
-        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}",
+        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}.",
         "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
         "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
         "PAGE_TITLE": "Application created",
@@ -3090,18 +3093,24 @@
         "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
       },
       "VIEW_APPLICATION": {
-        "APPLICATION": "Application",
-        "APPLICATION_DETAILS": "Application details submitted by the applicant.",
         "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
+        "APPLICATION": "Application",
+        "APPLICANTS_DOCUMENTS": "Applicant's documents",
+        "APPLICATION_DETAILS": "Application details submitted by the applicant.",
+        "APPLICATION_DOCUMENTS": "Application Documents",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Court's response to the application",
         "DATE_RESPONSE": "Date of response",
         "DIRECTION_WITH_NOTICE": "Direction to make the application with notice",
+        "DOCUMENTS_FROM_COURT": "Documents from the court",
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
+        "HEARING_NOTICE" : "Hearing Notice",
+        "HEARING_ORDER" : "Hearing Order",
         "PAGE_TITLE": "View application",
         "RESPONSE": "Response from the other parties",
         "READ_RESPONSE": "Read the response",
         "RESPONSE_COURT": "Response from the court",
+        "RESPONDENTS_DOCUMENTS": "Respondent's documents",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
@@ -4145,7 +4154,8 @@
     "FEE_AMOUNT": {
       "TITLE": "Talu eich ffi hawlio",
       "MESSAGE": "Os byddwch yn setlo y tu allan i’r llys, ni fyddwn yn ad-dalu ffi’r hawliad. Gallwch ofyn i'r diffynnydd dalu eich ffi yn ôl fel rhan o'r setliad.",
-      "CONTINUE_TO_PAYMENT": "parhau i dalu"
+      "CONTINUE_TO_PAYMENT": "parhau i dalu",
+      "SYNC_WARNING": "Yn anffodus, nid ydym wedi gallu mynd â chi i'r dudalen dalu, rhowch gynnig arall arni."
     },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "Byddwn yn ei ychwanegu at swm yr hawliad.",
