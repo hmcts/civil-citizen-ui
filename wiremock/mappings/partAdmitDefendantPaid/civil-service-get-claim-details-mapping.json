@@ -1,0 +1,154 @@
+{
+  "mappings": [
+    {
+      "priority": 1,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/177777777777777\\d",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPaid/beforeClaimantResponse.json"
+      }
+    },
+    {
+      "priority": 2,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "GET",
+        "url": "/cases/1777777777777777",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPaid/claimantAcceptsPaymentAndSettles.json"
+      }
+    },
+    {
+      "priority": 2,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "GET",
+        "url": "/cases/1777777777777778",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPaid/claimantAgreesDefendantPaidClaimantDoesNotSettle.json"
+      }
+    },
+    {
+      "priority": 2,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "GET",
+        "url": "/cases/1777777777777779",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPaid/claimantRejectsDefendantPaidAgreesToMediation.json"
+      }
+    },
+    {
+      "priority": 3,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "POST",
+        "urlPath": "/cases/1777777777777777/citizen/someID/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPaid/claimantAcceptsPaymentAndSettles.json"
+      }
+    },
+    {
+      "priority": 3,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "POST",
+        "urlPattern": "/cases/1777777777777778/citizen/someID/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPaid/claimantAgreesDefendantPaidClaimantDoesNotSettle.json"
+      }
+    },
+    {
+      "priority": 3,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "POST",
+        "urlPattern": "/cases/1777777777777779/citizen/someID/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPaid/claimantRejectsDefendantPaidAgreesToMediation.json"
+      }
+    }
+  ]
+}
