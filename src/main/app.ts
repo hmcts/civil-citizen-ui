@@ -151,6 +151,22 @@ app.use((_req, res, next) => {
     'Cache-Control',
     'no-cache, max-age=0, must-revalidate, no-store',
   );
+
+  res.setHeader(
+    'Access-Control-Allow-Origin',
+    '*',
+  );
+
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept',
+  );
+
+  res.setHeader(
+    'access-control-allow-methods',
+    'GET,POST,OPTIONS,PUT,DELETE',
+  );
+
   next();
 });
 
