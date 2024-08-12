@@ -33,8 +33,7 @@ describe(('For PartyDetails Form'), () => {
       const partyDetails = new PartyDetails({
         title: string35charLong, firstName: string255charLong
         , lastName: string255charLong, addressLine1: string50charLong, addressLine2: string50charLong
-        , addressLine3: string50charLong, city: string50charLong, postCode: postCode
-      }, false);
+        , addressLine3: string50charLong, city: string50charLong, postCode: postCode}, false);
       const form = new GenericForm(partyDetails);
       //When
       await form.validate();
