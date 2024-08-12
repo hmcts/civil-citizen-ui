@@ -10,12 +10,17 @@ import {
 import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from '../../../../../../../../main/modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import * as utilService from 'modules/utilityService';
+import * as paymentOptionService from '../../../../../../../../main/services/features/response/admission/paymentOptionService';
 
 jest.mock('../../../../../../../../main/modules/oidc');
+jest.mock('../../../../../../../../main/modules/draft-store/draftStoreService');
 
 describe('Payment Option Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
   beforeAll(() => {
     nock(idamUrl)
@@ -26,7 +31,10 @@ describe('Payment Option Controller', () => {
 
   describe('on Get', () => {
     it('should return payment option page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCaseData.mockImplementation(async () => {
+        return new Claim();
+      });
+      jest.spyOn(utilService, 'getClaimById').mockResolvedValue(new Claim());
       await request(app)
         .get(CITIZEN_PAYMENT_OPTION_URL)
         .expect((res) => {
@@ -36,7 +44,7 @@ describe('Payment Option Controller', () => {
     });
 
     it('should return status 500 when there is an error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      jest.spyOn(utilService, 'getClaimById').mockRejectedValueOnce(mockRedisFailure);
       await request(app)
         .get(CITIZEN_PAYMENT_OPTION_URL)
         .expect((res) => {
@@ -47,11 +55,8 @@ describe('Payment Option Controller', () => {
   });
 
   describe('on Post', () => {
-    beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-    });
-
     it('should validate when option is not selected', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PAYMENT_OPTION_URL)
         .send('')
@@ -61,6 +66,7 @@ describe('Payment Option Controller', () => {
         });
     });
     it('should redirect to claim list when immediately option is selected', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PAYMENT_OPTION_URL)
         .send('paymentType=IMMEDIATELY')
@@ -70,6 +76,7 @@ describe('Payment Option Controller', () => {
         });
     });
     it('should redirect to claim list when instalments option is selected', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PAYMENT_OPTION_URL)
         .send('paymentType=IMMEDIATELY')
@@ -79,6 +86,7 @@ describe('Payment Option Controller', () => {
         });
     });
     it('should redirect to claim list when instalments option is selected', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PAYMENT_OPTION_URL)
         .send('paymentType=BY_SET_DATE')
@@ -88,10 +96,10 @@ describe('Payment Option Controller', () => {
         });
     });
     it('should return 500 status when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      jest.spyOn(paymentOptionService, 'savePaymentOptionData').mockRejectedValueOnce(mockRedisFailure);
       await request(app)
         .post(CITIZEN_PAYMENT_OPTION_URL)
-        .send('paymentType=BY_SET_DATE')
+        .send({paymentType:'BY_SET_DATE'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
