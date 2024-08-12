@@ -6,7 +6,7 @@ Feature('Response journey').tag('@e2e');
 
 Scenario('Response defendant with admit all of the claim', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    const claimId = '1645882162449408';
+    const claimId = '1645882162449488';
     Response.start(claimId);
     Response.confirmYourDetails(claimId);
     Response.chooseResponseAdmitAllOfTheClaim(responseType.I_ADMIT_ALL_OF_THE_CLAIM);
