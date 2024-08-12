@@ -1,41 +1,39 @@
 import {SummarySection} from 'models/summaryList/summarySections';
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {summaryRow} from 'models/summaryList/summaryList';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {GA_RESPONDENT_UPLOAD_DOCUMENT_URL} from 'routes/urls';
-import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import { GA_RESPONDENT_UPLOAD_DOCUMENT_URL } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'models/AppRequest';
 import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {t} from 'i18next';
-import {GaResponse} from 'models/generalApplication/response/gaResponse';
+import { t } from 'i18next';
 import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import { getDraftGARespondentResponse, saveDraftGARespondentResponse } from './generalApplicationResponseStoreService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
-export const getSummaryList = async (formattedSummary: SummarySection, redisKey: string, claimId: string): Promise<void> => {
-  const claim = await getCaseDataFromStore(redisKey);
+export const getSummaryList = async (formattedSummary: SummarySection, redisKey: string, claimId: string, appId: string): Promise<void> => {
+  const gaResponse = await getDraftGARespondentResponse(redisKey);
   let index = 0;
-  claim?.generalApplication?.response?.uploadEvidenceDocuments?.forEach((uploadDocument: UploadGAFiles) => {
+  gaResponse?.uploadEvidenceDocuments?.forEach((uploadDocument: UploadGAFiles) => {
     index= index+ 1;
-    return formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL+'?id='+index), 'Remove document'));
+    return formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL + '?id=' + index), 'Remove document'));
   });
   return undefined;
 };
 
-export const saveDocumentsToUploaded = async (claimId: string, uploadDocument: UploadGAFiles): Promise<void> => {
+export const saveDocumentsToUploaded = async (redisKey: string, uploadDocument: UploadGAFiles): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(claimId, true);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    claim.generalApplication.response = Object.assign(new GaResponse(), claim.generalApplication.response);
-    claim.generalApplication.response.uploadEvidenceDocuments.push(uploadDocument);
-    await saveDraftClaim(claimId, claim);
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
+    gaResponse.uploadEvidenceDocuments.push(uploadDocument);
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -44,19 +42,19 @@ export const saveDocumentsToUploaded = async (claimId: string, uploadDocument: U
 
 export const removeDocumentFromRedis = async (redisKey: string, index: number) : Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(redisKey, true);
-    claim?.generalApplication?.response?.uploadEvidenceDocuments?.splice(index, 1);
-    await saveDraftClaim(redisKey, claim);
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse?.uploadEvidenceDocuments?.splice(index, 1);
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch(error) {
     logger.error(error);
     throw error;
   }
 };
 
-export const uploadSelectedFile = async (req: AppRequest, summarySection: SummarySection, claimId: string): Promise<void> => {
+export const uploadSelectedFile = async (req: AppRequest, summarySection: SummarySection, claimId: string, appId: string): Promise<void> => {
   try {
     const uploadDocument = new UploadGAFiles();
-    const redisKey = generateRedisKey(req);
+    const redisKey = generateRedisKeyForGA(req);
     const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
     uploadDocument.fileUpload = fileUpload;
     const form = new GenericForm(uploadDocument);
@@ -64,7 +62,7 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
     if (!form.hasErrors()) {
       uploadDocument.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
       await saveDocumentsToUploaded(redisKey, uploadDocument);
-      await getSummaryList(summarySection, redisKey, claimId);
+      await getSummaryList(summarySection, redisKey, claimId, appId);
     } else {
       const errors = translateErrors(form.getAllErrors(), t);
       req.session.fileUpload = JSON.stringify(errors);

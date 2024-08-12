@@ -64,8 +64,8 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
     await form.validate();
 
     if (form.hasErrors()) {
-      const isSmallClaims = claim.isSmallClaimsTrackDQ;
-      renderView(res, form, claim, claimId, isSmallClaims, lang);
+      const isClaimant = claim.isClaimant();
+      renderView(res, form, claim, claimId, isClaimant, lang);
     } else {
       await saveUploadedDocuments(claim, <AppRequest>req);
       if((<AppRequest>req).session?.dashboard?.taskIdHearingUploadDocuments){

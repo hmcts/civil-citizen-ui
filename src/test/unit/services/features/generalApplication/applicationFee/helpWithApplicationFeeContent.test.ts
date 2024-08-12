@@ -36,7 +36,7 @@ describe('Help with Application fee content', () => {
       version: 1,
     };
     //When
-    const actualContent = getHelpApplicationFeeContinuePageContents(gaFeeData);
+    const actualContent = getHelpApplicationFeeContinuePageContents(gaFeeData, false);
     //Then
     expect(actualContent[0].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING');
     expect(actualContent[1].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.TITLE');
@@ -63,7 +63,7 @@ describe('Help with Application fee content', () => {
   it('should return all the content for getHelpWithApplicationFeeContent', () => {
     //Given
     //When
-    const actualContent = getApplicationFeeContentPageDetails('123');
+    const actualContent = getApplicationFeeContentPageDetails('123', false);
     //Then
     expect(actualContent[0].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING');
     expect(actualContent[1].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.TITLE');
@@ -73,5 +73,13 @@ describe('Help with Application fee content', () => {
     expect(actualContent[5].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_ONCE');
     expect(actualContent[6].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.LINK');
     expect(actualContent[7].data.text).toEqual('COMMON.BUTTONS.CONTINUE');
+  });
+
+  it('should return all the content for getHelpWithApplicationFeeContent for Additional Pay', () => {
+    //Given
+    //When
+    const actualContent = getApplicationFeeContentPageDetails('123', true);
+    //Then
+    expect(actualContent[0].data.text).toEqual('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING');
   });
 });

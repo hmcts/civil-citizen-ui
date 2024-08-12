@@ -10,7 +10,10 @@ jest.mock('../../../../main/modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
 }));
-
+jest.mock('../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  saveDraftGARespondentResponse: jest.fn(),
+  getDraftGARespondentResponse: jest.fn(),
+}));
 describe('GAFlagGuard', () => {
   let req: Partial<Request>;
   let res: Partial<Response> & { redirect: jest.Mock };
