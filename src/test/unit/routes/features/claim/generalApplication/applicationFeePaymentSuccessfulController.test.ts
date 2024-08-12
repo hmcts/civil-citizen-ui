@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import { GA_PAYMENT_SUCCESSFUL_URL } from 'routes/urls';
+import {GA_APPLICATION_SUBMITTED_URL, GA_PAYMENT_SUCCESSFUL_URL} from 'routes/urls';
 import { Claim } from 'common/models/claim';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import * as draftService from 'modules/draft-store/draftStoreService';
@@ -91,7 +91,7 @@ describe('Claim fee payment confirmation', () => {
       claim.caseProgressionHearing.hearingDate = new Date('2026-01-01');
       mockDataFromStore.mockResolvedValueOnce(claim);
       await request(app)
-        .get(GA_PAYMENT_SUCCESSFUL_URL)
+        .get(GA_APPLICATION_SUBMITTED_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Application fee');
