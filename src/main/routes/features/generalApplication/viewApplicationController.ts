@@ -9,8 +9,11 @@ import {
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {
+  getApplicantDocuments,
   getApplicationSections,
+  getCourtDocuments,
   getJudgeResponseSummary,
+  getRespondentDocuments,
   getJudgesDirectionsOrder,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
@@ -21,6 +24,7 @@ import {getApplicationFromGAService} from 'services/features/generalApplication/
 import {SummaryRow} from 'common/models/summaryList/summaryList';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
+import { DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 
 const viewApplicationController = Router();
 const viewPath = 'features/generalApplication/view-applications';
@@ -38,6 +42,9 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const isResponseFromCourt = !!applicationResponse.case_data?.judicialDecision?.decision;
     const isJudgesDirectionsOrder = applicationResponse.case_data?.judicialDecisionMakeOrder?.directionsResponseByDate != undefined;
     let responseFromCourt: SummaryRow[] = [];
+    const applicantDocuments : DocumentsViewComponent = getApplicantDocuments(applicationResponse, lang);
+    const courtDocuments: DocumentsViewComponent = getCourtDocuments(applicationResponse, lang);
+    const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
     let judgesDirectionsOrder: SummaryRow[] = [];
     let payAdditionalFeeUrl: string = null;
     const isApplicationFeeAmountNotPaid = isApplicationFeeNotPaid(applicationResponse);
@@ -70,6 +77,9 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       payAdditionalFeeUrl,
       isApplicationFeeAmountNotPaid,
       applicationFeeOptionUrl,
+      applicantDocuments,
+      courtDocuments,
+      respondentDocuments,
       isJudgesDirectionsOrder,
       judgesDirectionsOrder,
       judgesDirectionsOrderUrl,
