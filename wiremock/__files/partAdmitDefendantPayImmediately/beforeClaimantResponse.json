@@ -1,0 +1,635 @@
+{
+  "id": 1777777777777788,
+  "jurisdiction": "CIVIL",
+  "state": "AWAITING_APPLICANT_INTENTION",
+  "case_type_id": "CIVIL",
+  "created_date": "2024-08-02T14:30:34",
+  "last_modified": "2024-08-02T14:41:12",
+  "case_data": {
+    "respondent1ClaimResponseTypeForSpec": "PART_ADMISSION",
+    "respondent1ClaimResponseDocumentSpec": {
+      "documentSize": 0
+    },
+    "addRespondent2": "No",
+    "respondent1LiPResponse": {
+      "respondent1MediationLiPResponse": {
+        "canWeUseMediationLiP": "Yes"
+      },
+      "respondent1DQExtraDetails": {
+        "wantPhoneOrVideoHearing": "No",
+        "giveEvidenceYourSelf": "No",
+        "determinationWithoutHearingRequired": "Yes"
+      },
+      "respondent1DQHearingSupportLip": {
+        "supportRequirementLip": "No"
+      },
+      "respondent1ResponseLanguage": "ENGLISH"
+    },
+    "submittedDate": "2022-05-10T15:59:50",
+    "specRespondent1Represented": "No",
+    "respondent1ResponseDeadline": "2024-08-30T16:00:00",
+    "respondToAdmittedClaimOwingAmount": "100000",
+    "respondToAdmittedClaimOwingAmountPounds": "1000",
+    "applicantSolicitor1UserDetails": {
+      "email": "civilmoneyclaimsdemo@gmail.com",
+      "id": "b9911982-e0e0-4b48-bb4b-2b8b854f697f"
+    },
+    "applicantSolicitor1PbaAccounts": {
+      "value": {
+        "code": "b2c9bc40-50db-11ef-b6e6-3bd826e27b8c",
+        "label": "PBA0088192"
+      },
+      "list_items": [
+        {
+          "code": "b2c9bc40-50db-11ef-b6e6-3bd826e27b8c",
+          "label": "PBA0088192"
+        },
+        {
+          "code": "b2c9bc41-50db-11ef-b6e6-3bd826e27b8c",
+          "label": "PBA0078095"
+        }
+      ]
+    },
+    "addApplicant2": "No",
+    "respondent1DQHearing": {
+      "unavailableDatesRequired": "No"
+    },
+    "timelineOfEvents": [
+      {
+        "value": {
+          "timelineDate": "2021-02-01",
+          "timelineDescription": "event 1"
+        },
+        "id": "37caf589-1a97-4379-b3c0-5f724d06e0d3"
+      }
+    ],
+    "totalInterest": 0,
+    "detailsOfClaim": "Test details of claim",
+    "claimFee": {
+      "calculatedAmountInPence": "8000",
+      "code": "FEE0205",
+      "version": "4"
+    },
+    "specDefenceAdmittedRequired": "No",
+    "specClaimResponseTimelineList": "MANUAL",
+    "respondent1DQVulnerabilityQuestions": {
+      "vulnerabilityAdjustmentsRequired": "No"
+    },
+    "specAoSApplicantCorrespondenceAddressRequired": "Yes",
+    "applicantSolicitor1ClaimStatementOfTruth": {
+      "name": "John Doe",
+      "role": "Test Solicitor"
+    },
+    "detailsOfWhyDoesYouDisputeTheClaim": "reasons",
+    "claimIssuedPaymentDetails": {
+      "status": "SUCCESS",
+      "reference": "13213223",
+      "customerReference": "Applicant reference"
+    },
+    "responseClaimTrack": "SMALL_CLAIM",
+    "specApplicantCorrespondenceAddressRequired": "No",
+    "defenceAdmitPartPaymentTimeRouteRequired": "IMMEDIATELY",
+    "respondent1DQLanguage": {
+      "court": "ENGLISH",
+      "documents": "ENGLISH"
+    },
+    "totalClaimAmount": 1500,
+    "respondent1ResponseDate": "2024-08-02T15:41:11",
+    "respondToClaimAdmitPartLRspec": {
+      "whenWillThisAmountBePaid": "2024-08-09"
+    },
+    "CaseAccessCategory": "SPEC_CLAIM",
+    "defendantUserDetails": {
+      "email": "jane.smith@gmail.com",
+      "id": "af43b7d6-4607-459e-be2b-2b1fe9740063"
+    },
+    "applicant1": {
+      "partyID": "78fb6206-df36-41",
+      "type": "COMPANY",
+      "companyName": "Test Inc",
+      "primaryAddress": {
+        "AddressLine1": "Flat 2 - applicant",
+        "AddressLine2": "Caversham House 15-17",
+        "AddressLine3": "Church Road",
+        "PostTown": "Reading",
+        "County": "Kent",
+        "Country": "United Kingdom",
+        "PostCode": "RG4 7AA"
+      },
+      "partyName": "Test Inc",
+      "partyTypeDisplayValue": "Company",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "partyPhone": "01632960001",
+      "flags": {
+        "partyName": "Test Inc",
+        "roleOnCase": "Claimant 1"
+      }
+    },
+    "issueDate": "2024-08-02",
+    "respondent1DQHearingSmallClaim": {
+      "unavailableDatesRequired": "No"
+    },
+    "systemGeneratedCaseDocuments": [
+      {
+        "value": {
+          "documentLink": {
+            "document_url": "http://dm-store:8080/documents/450e664a-229c-4ac5-bc58-15c40b404aca",
+            "document_binary_url": "http://dm-store:8080/documents/450e664a-229c-4ac5-bc58-15c40b404aca/binary",
+            "document_filename": "sealed_claim_form_000MC006.pdf",
+            "category_id": "detailsOfClaim"
+          },
+          "documentName": "sealed_claim_form_000MC006.pdf",
+          "documentType": "SEALED_CLAIM",
+          "documentSize": 44955,
+          "createdDatetime": "2024-08-02T15:30:59",
+          "createdBy": "Civil"
+        },
+        "id": "cc60d046-2edf-443e-9f4c-a5e5d0662866"
+      }
+    ],
+    "claimInterest": "No",
+    "legacyCaseReference": "000MC006",
+    "applicant1ResponseDeadline": "2024-08-30T16:00:00",
+    "respondent1DQHearingSupport": {
+      "supportRequirements": "No"
+    },
+    "respondent1GeneratedResponseDocument": {
+      "documentSize": 0
+    },
+    "businessProcess": {
+      "status": "READY",
+      "camundaEvent": "DEFENDANT_RESPONSE_CUI",
+      "readyOn": "2024-08-02T15:41:11.8091906"
+    },
+    "respondent1DQRequestedCourt": {
+      "requestHearingAtSpecificCourt": "No"
+    },
+    "respondent1PinToPostLRspec": {
+      "accessCode": "P87VX76BT83Y",
+      "respondentCaseRole": "[DEFENDANT]",
+      "expiryDate": "2025-01-29"
+    },
+    "respondent1": {
+      "partyID": "01946e99-af23-4a",
+      "type": "INDIVIDUAL",
+      "individualTitle": "Sir",
+      "individualFirstName": "John",
+      "individualLastName": "Doe",
+      "individualDateOfBirth": "2000-01-01",
+      "primaryAddress": {
+        "AddressLine1": "Flat 2 - respondent",
+        "AddressLine2": "Caversham House 15-17",
+        "AddressLine3": "Church Road",
+        "PostTown": "Reading",
+        "County": "Kent",
+        "Country": "United Kingdom",
+        "PostCode": "RG4 7AA"
+      },
+      "partyName": "Sir John Doe",
+      "partyTypeDisplayValue": "Individual",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "partyPhone": "01632960001",
+      "flags": {
+        "partyName": "Sir John Doe",
+        "roleOnCase": "Defendant 1"
+      }
+    },
+    "speclistYourEvidenceList": [
+      {
+        "value": {
+          "evidenceType": "CONTRACTS_AND_AGREEMENTS",
+          "contractAndAgreementsEvidence": "evidence details"
+        },
+        "id": "17fa33c4-a3d0-4e6c-b2e1-1b1c234c4dd2"
+      }
+    ],
+    "applicant1OrganisationPolicy": {
+      "Organisation": {
+        "OrganisationID": "Q1KOKP2"
+      },
+      "OrgPolicyReference": "Claimant policy reference",
+      "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+    },
+    "flightDelayDetails": {
+      "airlineList": {
+        "list_items": [
+          {
+            "code": "Aegean",
+            "label": "Aegean"
+          },
+          {
+            "code": "Aer Lingus",
+            "label": "Aer Lingus"
+          },
+          {
+            "code": "Aeroflot",
+            "label": "Aeroflot"
+          },
+          {
+            "code": "Aeromexico",
+            "label": "Aeromexico"
+          },
+          {
+            "code": "Air Algerie",
+            "label": "Air Algerie"
+          },
+          {
+            "code": "Air Baltic",
+            "label": "Air Baltic"
+          },
+          {
+            "code": "Air Canada",
+            "label": "Air Canada"
+          },
+          {
+            "code": "Air China",
+            "label": "Air China"
+          },
+          {
+            "code": "Air Europa",
+            "label": "Air Europa"
+          },
+          {
+            "code": "Air France",
+            "label": "Air France"
+          },
+          {
+            "code": "Air India",
+            "label": "Air India"
+          },
+          {
+            "code": "Air Malta",
+            "label": "Air Malta"
+          },
+          {
+            "code": "Air Moldova",
+            "label": "Air Moldova"
+          },
+          {
+            "code": "Air New Zealand",
+            "label": "Air New Zealand"
+          },
+          {
+            "code": "Air Portugal",
+            "label": "Air Portugal"
+          },
+          {
+            "code": "Air Transat",
+            "label": "Air Transat"
+          },
+          {
+            "code": "All Nippon Airways",
+            "label": "All Nippon Airways"
+          },
+          {
+            "code": "American Airlines",
+            "label": "American Airlines"
+          },
+          {
+            "code": "Aurigny",
+            "label": "Aurigny"
+          },
+          {
+            "code": "Austrian Airways",
+            "label": "Austrian Airways"
+          },
+          {
+            "code": "Avianca",
+            "label": "Avianca"
+          },
+          {
+            "code": "Azerbaijan Airlines",
+            "label": "Azerbaijan Airlines"
+          },
+          {
+            "code": "BA/Cityflyer",
+            "label": "BA/Cityflyer"
+          },
+          {
+            "code": "Biman Bangladesh",
+            "label": "Biman Bangladesh"
+          },
+          {
+            "code": "Blue Air",
+            "label": "Blue Air"
+          },
+          {
+            "code": "Brussels",
+            "label": "Brussels"
+          },
+          {
+            "code": "Bulgaria Air",
+            "label": "Bulgaria Air"
+          },
+          {
+            "code": "Cathay Pacific",
+            "label": "Cathay Pacific"
+          },
+          {
+            "code": "China Airlines",
+            "label": "China Airlines"
+          },
+          {
+            "code": "China Eastern",
+            "label": "China Eastern"
+          },
+          {
+            "code": "China Southern",
+            "label": "China Southern"
+          },
+          {
+            "code": "Condor",
+            "label": "Condor"
+          },
+          {
+            "code": "Croatia Airlines",
+            "label": "Croatia Airlines"
+          },
+          {
+            "code": "Delta",
+            "label": "Delta"
+          },
+          {
+            "code": "Eastern",
+            "label": "Eastern"
+          },
+          {
+            "code": "Easyjet",
+            "label": "Easyjet"
+          },
+          {
+            "code": "Egyptair",
+            "label": "Egyptair"
+          },
+          {
+            "code": "El Al",
+            "label": "El Al"
+          },
+          {
+            "code": "Emirates",
+            "label": "Emirates"
+          },
+          {
+            "code": "Etihad",
+            "label": "Etihad"
+          },
+          {
+            "code": "Eurowings",
+            "label": "Eurowings"
+          },
+          {
+            "code": "Eva Air",
+            "label": "Eva Air"
+          },
+          {
+            "code": "Finnair",
+            "label": "Finnair"
+          },
+          {
+            "code": "Garuda",
+            "label": "Garuda"
+          },
+          {
+            "code": "Gulf Air",
+            "label": "Gulf Air"
+          },
+          {
+            "code": "Iberia/Express",
+            "label": "Iberia/Express"
+          },
+          {
+            "code": "Icelandair",
+            "label": "Icelandair"
+          },
+          {
+            "code": "Iran Air",
+            "label": "Iran Air"
+          },
+          {
+            "code": "ITA",
+            "label": "ITA"
+          },
+          {
+            "code": "Japan Airlines",
+            "label": "Japan Airlines"
+          },
+          {
+            "code": "Jet2.com",
+            "label": "Jet2.com"
+          },
+          {
+            "code": "JetBlue",
+            "label": "JetBlue"
+          },
+          {
+            "code": "Kenya Airways",
+            "label": "Kenya Airways"
+          },
+          {
+            "code": "KLM",
+            "label": "KLM"
+          },
+          {
+            "code": "Korean",
+            "label": "Korean"
+          },
+          {
+            "code": "Kuwait Airways",
+            "label": "Kuwait Airways"
+          },
+          {
+            "code": "LATAM/JJ",
+            "label": "LATAM/JJ"
+          },
+          {
+            "code": "Loganair",
+            "label": "Loganair"
+          },
+          {
+            "code": "LOT",
+            "label": "LOT"
+          },
+          {
+            "code": "Lufthansa",
+            "label": "Lufthansa"
+          },
+          {
+            "code": "Luxair",
+            "label": "Luxair"
+          },
+          {
+            "code": "Malaysian",
+            "label": "Malaysian"
+          },
+          {
+            "code": "Middle East",
+            "label": "Middle East"
+          },
+          {
+            "code": "Norse",
+            "label": "Norse"
+          },
+          {
+            "code": "Norweigan",
+            "label": "Norweigan"
+          },
+          {
+            "code": "Oman",
+            "label": "Oman"
+          },
+          {
+            "code": "Pakistan",
+            "label": "Pakistan"
+          },
+          {
+            "code": "Pegasus",
+            "label": "Pegasus"
+          },
+          {
+            "code": "Phillipine Airlines",
+            "label": "Phillipine Airlines"
+          },
+          {
+            "code": "Play",
+            "label": "Play"
+          },
+          {
+            "code": "Qatar",
+            "label": "Qatar"
+          },
+          {
+            "code": "Quantas",
+            "label": "Quantas"
+          },
+          {
+            "code": "Royal Air Maroc",
+            "label": "Royal Air Maroc"
+          },
+          {
+            "code": "Royal Brunei",
+            "label": "Royal Brunei"
+          },
+          {
+            "code": "Royal Jordanian",
+            "label": "Royal Jordanian"
+          },
+          {
+            "code": "Ryanair",
+            "label": "Ryanair"
+          },
+          {
+            "code": "SAS",
+            "label": "SAS"
+          },
+          {
+            "code": "SAS",
+            "label": "SAS"
+          },
+          {
+            "code": "Saudi Arabian Airlines",
+            "label": "Saudi Arabian Airlines"
+          },
+          {
+            "code": "Saudia",
+            "label": "Saudia"
+          },
+          {
+            "code": "Singapore Airlines",
+            "label": "Singapore Airlines"
+          },
+          {
+            "code": "Sky Express",
+            "label": "Sky Express"
+          },
+          {
+            "code": "Smartwings",
+            "label": "Smartwings"
+          },
+          {
+            "code": "South African Airways",
+            "label": "South African Airways"
+          },
+          {
+            "code": "Sri Lankan",
+            "label": "Sri Lankan"
+          },
+          {
+            "code": "Swiss International",
+            "label": "Swiss International"
+          },
+          {
+            "code": "Thai Airways",
+            "label": "Thai Airways"
+          },
+          {
+            "code": "TUI / Thomson ",
+            "label": "TUI / Thomson "
+          },
+          {
+            "code": "Tunisair",
+            "label": "Tunisair"
+          },
+          {
+            "code": "Turkish",
+            "label": "Turkish"
+          },
+          {
+            "code": "Ukraine International",
+            "label": "Ukraine International"
+          },
+          {
+            "code": "United",
+            "label": "United"
+          },
+          {
+            "code": "Vietnam Airlines",
+            "label": "Vietnam Airlines"
+          },
+          {
+            "code": "Virgin",
+            "label": "Virgin"
+          },
+          {
+            "code": "Vistara",
+            "label": "Vistara"
+          },
+          {
+            "code": "Vueling",
+            "label": "Vueling"
+          },
+          {
+            "code": "WestJet",
+            "label": "WestJet"
+          },
+          {
+            "code": "Wideroe",
+            "label": "Wideroe"
+          },
+          {
+            "code": "WizzAir",
+            "label": "WizzAir"
+          },
+          {
+            "code": "OTHER",
+            "label": "OTHER"
+          }
+        ]
+      }
+    },
+    "responseClaimMediationSpecRequired": "Yes",
+    "claimAmountBreakup": [
+      {
+        "value": {
+          "claimAmount": "150000",
+          "claimReason": "amount reason"
+        },
+        "id": "46944fcd-9704-48e9-a6bd-7d03d13696d7"
+      }
+    ],
+    "respondent1DQWitnesses": {
+      "witnessesToAppear": "No"
+    }
+  },
+  "security_classification": "PUBLIC",
+  "callback_response_status": "CALLBACK_COMPLETED"
+}

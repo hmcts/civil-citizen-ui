@@ -17,17 +17,21 @@ import {Claim} from 'models/claim';
 import {gaApplicationFeeDetails} from 'services/features/generalApplication/feeDetailsService';
 import {getButtonsContents, getHelpApplicationFeeContinuePageContents}
   from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
-import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
+import {
+  saveHelpWithFeesDetails,
+} from 'services/features/generalApplication/generalApplicationService';
 
 const helpWithApplicationFeeContinueController = Router();
 const applyHelpWithFeesViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee-continue';
 const hwfPropertyName = 'helpWithFeesRequested';
 
-async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string) {
+async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, feeTypeFlag: boolean) {
   const claim: Claim = await getClaimById(claimId, req, true);
+
   const gaFeeData = await gaApplicationFeeDetails(claim, <AppRequest>req);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
   const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_APPLY_HELP_WITH_FEE_SELECTION);
+
   if (!form) {
     form = new GenericForm(new GenericYesNo(claim.generalApplication?.helpWithFees?.helpWithFeesRequested));
   }
@@ -35,7 +39,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
     form,
     backLinkUrl,
     cancelUrl,
-    applyHelpWithFeeContinueContents : getHelpApplicationFeeContinuePageContents(gaFeeData),
+    applyHelpWithFeeContinueContents : getHelpApplicationFeeContinuePageContents(gaFeeData, feeTypeFlag),
     applyHelpWithFeeContinueButtonContents: getButtonsContents(claimId),
   });
 }
@@ -43,7 +47,8 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
 helpWithApplicationFeeContinueController.get(GA_APPLY_HELP_WITH_FEES, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    await renderView(res, req, null, claimId);
+    const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
+    await renderView(res, req, null, claimId, isAdditionalFeeType);
   } catch (error) {
     next(error);
   }
@@ -52,14 +57,15 @@ helpWithApplicationFeeContinueController.get(GA_APPLY_HELP_WITH_FEES, (async (re
 helpWithApplicationFeeContinueController.post(GA_APPLY_HELP_WITH_FEES, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
     await form.validate();
     if (form.hasErrors()) {
-      await renderView(res, req, form, claimId);
+      await renderView(res, req, form, claimId, false);
     } else {
       await saveHelpWithFeesDetails(generateRedisKey(req as unknown as AppRequest), req.body.option, hwfPropertyName);
-      res.redirect(getRedirectUrl(claimId, form.model));
+      res.redirect(getRedirectUrl(claimId, form.model, isAdditionalFeeType));
     }
   } catch (error) {
     next(error);
@@ -67,9 +73,9 @@ helpWithApplicationFeeContinueController.post(GA_APPLY_HELP_WITH_FEES, (async (r
 }) as RequestHandler);
 export default helpWithApplicationFeeContinueController;
 
-function getRedirectUrl(claimId: string, isHWFContinue: GenericYesNo): string {
+function getRedirectUrl(claimId: string, isHWFContinue: GenericYesNo,feeType: boolean): string {
   if (isHWFContinue.option === YesNo.YES) {
-    return constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES_START);
+    return constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES_START + '?additionalFeeTypeFlag='+ feeType);
   }
   return constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
 }

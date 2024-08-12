@@ -2,14 +2,10 @@ import { Claim } from 'common/models/claim';
 import {convertToPoundsFilter, currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {PaymentSuccessfulSectionBuilder} from 'services/features/claim/paymentSuccessfulSectionBuilder';
 import { getLng } from 'common/utils/languageToggleUtils';
-import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
-import { CaseProgressionHearing } from 'common/models/caseProgression/caseProgressionHearing';
 
-const daysForHearingAdjournWithoutFee =14;
-
-export const getGaPaymentSuccessfulPanelContent = (claim: Claim, lng?: string) => {
+export const getGaPaymentSuccessfulPanelContent = (claim: Claim, withoutFee: boolean, lng?: string) => {
   const panelBuilder = new PaymentSuccessfulSectionBuilder();
-  if (isApplicationSubmittedWithoutFee(claim.generalApplication.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option, claim.caseProgressionHearing)) {
+  if (withoutFee) {
     panelBuilder.addPanelForConfirmation('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.APPLICATION_SUBMITTED', lng);
   } else {
     panelBuilder.addPanel(claim.generalApplication?.applicationFeePaymentDetails?.paymentReference, lng);
@@ -17,8 +13,7 @@ export const getGaPaymentSuccessfulPanelContent = (claim: Claim, lng?: string) =
   return panelBuilder.build();
 };
 
-export const getGaPaymentSuccessfulBodyContent = (claim: Claim, calculatedAmountInPence : string, isAdditionalFee: boolean, displaySyncWarning: boolean, lng?: string) => {
-  const withoutFee = isApplicationSubmittedWithoutFee(claim.generalApplication?.applicationTypes[claim.generalApplication.applicationTypes.length - 1]?.option, claim.caseProgressionHearing);
+export const getGaPaymentSuccessfulBodyContent = (claim: Claim, calculatedAmountInPence : string, isAdditionalFee: boolean, withoutFee: boolean, displaySyncWarning: boolean, lng?: string) => {
   const contentBuilder = new PaymentSuccessfulSectionBuilder()
     .addParagraph('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.CONFIRMATION', { lng: getLng(lng) });
   if (displaySyncWarning) {
@@ -65,9 +60,4 @@ export const getGaPaymentSuccessfulButtonContent = (redirectUrl : string) => {
   return new PaymentSuccessfulSectionBuilder()
     .addButton('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD', redirectUrl)
     .build();
-};
-
-const isApplicationSubmittedWithoutFee = (applicationType: ApplicationTypeOption, caseProgressionHearing: CaseProgressionHearing) => {
-  const caseProgressionHearingDetails = Object.assign(new CaseProgressionHearing(), caseProgressionHearing);
-  return applicationType === ApplicationTypeOption.ADJOURN_HEARING && (caseProgressionHearingDetails.getDurationOfDaysForHearing() >= daysForHearingAdjournWithoutFee || !caseProgressionHearingDetails.hearingDate);
 };
