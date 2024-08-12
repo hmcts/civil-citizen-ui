@@ -2,8 +2,10 @@ import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
 import {app} from '../../app';
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
+const docKey = 'DOCKEY';
 export const saveGADocumentsInDraftStore = async (redisKey: string, uploadGAFiles: UploadGAFiles[]) => {
   try {
+    redisKey += docKey;
     const draftStoreClient = app.locals.draftStoreClient;
     draftStoreClient.set(redisKey, JSON.stringify(uploadGAFiles));
   } catch (err) {
@@ -12,6 +14,7 @@ export const saveGADocumentsInDraftStore = async (redisKey: string, uploadGAFile
   }
 };
 export const getGADocumentsFromDraftStore = async (redisKey: string): Promise<UploadGAFiles[]> => {
+  redisKey += docKey;
   const dataFromRedis = await app.locals.draftStoreClient.get(redisKey);
   return convertRedisDataToGaDocumentsResponse(dataFromRedis);
 };

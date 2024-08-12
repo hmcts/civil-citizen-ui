@@ -1,6 +1,8 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  GA_RESPOND_ADDITIONAL_INFO_URL, GA_VIEW_APPLICATION_URL,
+  GA_RESPOND_ADDITIONAL_INFO_URL, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL,
+  GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL,
+  GA_VIEW_APPLICATION_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
@@ -15,6 +17,7 @@ import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {YesNo} from 'form/models/yesNo';
 
 const respondAddInfoController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/additional-info';
@@ -60,7 +63,13 @@ respondAddInfoController.post(GA_RESPOND_ADDITIONAL_INFO_URL, (async (req: AppRe
       return res.render(viewPath, { currentUrl, backLinkUrl, cancelUrl, claimIdPrettified, claim, form, docUrl});
     }
     await saveAdditionalText(generateRedisKeyForGA(req), text, option);
-    res.redirect('test'); // TODO: add url
+    let redirectUrl;
+    if (option == YesNo.YES) {
+      redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
+    } else if (option == YesNo.NO) {
+      redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL);
+    }
+    res.redirect(redirectUrl);
   } catch (error) {
     next(error);
   }
