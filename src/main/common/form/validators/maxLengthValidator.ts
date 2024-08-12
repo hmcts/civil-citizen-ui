@@ -3,7 +3,7 @@ import {isJudgmentOnlineLive} from '../../../app/auth/launchdarkly/launchDarklyC
 import {ADDRESS_LINE_MAX_LENGTH, ADDRESS_LINE_MAX_LENGTH_JO} from 'form/validators/validationConstraints';
 
 /**
- * Validates the input max length
+ * Validates the address and city fields inputs max length
  */
 @ValidatorConstraint({name: 'maxLengthValidator', async: true})
 export class MaxLengthValidator implements ValidatorConstraintInterface {
