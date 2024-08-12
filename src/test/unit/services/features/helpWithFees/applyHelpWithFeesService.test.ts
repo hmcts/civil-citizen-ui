@@ -20,7 +20,7 @@ describe('hasAnythingChanged', () => {
     //Then
     expect(actualHelpWithFeesContent[0].data.text).toEqual('PAGES.DASHBOARD.HEARINGS.HEARING');
     expect(actualHelpWithFeesContent[1].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.TITLE');
-    expect(actualHelpWithFeesContent[2].data.text).toEqual('COMMON.CASE_NUMBER');
+    expect(actualHelpWithFeesContent[2].data.text).toEqual('COMMON.CASE_NUMBER_PARAM');
     expect(actualHelpWithFeesContent[3].data.text).toEqual('COMMON.CLAIM_AMOUNT_WITH_VALUE');
     expect(actualHelpWithFeesContent[4].data.html).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.HEARING_FEE_INSET');
     expect(actualHelpWithFeesContent[4].data.variables).toEqual({'feeAmount': 70});
