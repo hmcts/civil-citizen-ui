@@ -32,11 +32,11 @@ export class Address {
     addressLine3?: string,
     city?: string,
     postCode?: string) {
-    this.addressLine1 = addressLine1.trim();
-    this.addressLine2 = addressLine2.trim();
-    this.addressLine3 = addressLine3.trim();
-    this.city = city.trim();
-    this.postCode = postCode.trim();
+    this.addressLine1 = addressLine1;
+    this.addressLine2 = addressLine2;
+    this.addressLine3 = addressLine3;
+    this.city = city;
+    this.postCode = postCode;
   }
 
   isEmpty() {

@@ -12,7 +12,7 @@ const string71charLong = valid70charPartyName + 'A';
 const string51charLong = 'This is a 51 char address aAbBcCdDeEfFgGhHiIjJkKlLm';
 const string50charLong = 'This is a 50 char address aAbBcCdDeEfFgGhHiIjJkKlL';
 const string36charLong = 'This is a 36 char address aAbBcCdDeE';
-const string35charLong = 'This is a 35 char address aAbBcCdDe';
+const string35charLong = ' This is a 35 char address aAbBcCdDe ';
 const string256charLong = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, ' +
   'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, ' +
   'quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in';
@@ -26,163 +26,183 @@ const stringWithSpecialChar3 = ' SpecialChar ´ 3';
 const stringWithSpecialChar4 = ' SpecialChar ¨ 4';
 
 describe(('For PartyDetails Form'), () => {
-  it('should not throw error if input lengths OK and flag OFF', async () => {
-    //Given
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
-    const partyDetails = new PartyDetails({title:string35charLong, firstName: string255charLong
-      , lastName: string255charLong, addressLine1: string50charLong, addressLine2: string50charLong
-      , addressLine3: string50charLong,city: string50charLong, postCode: postCode},false);
-    const form = new GenericForm(partyDetails);
-    //When
-    await form.validate();
-    //Then
-    expect(form.hasErrors()).toBeFalsy();
-  });
-  it('should not throw error if title+firstName+lastName length OK and flag ON', async () => {
-    //Given
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
-    const partyDetails = new PartyDetails({title: valid70charNamePart1of3
-      , firstName: valid70charNamePart2of3, lastName: valid70charNamePart3of3, addressLine1: string35charLong
-      , addressLine2: string35charLong, addressLine3: string35charLong,city: string35charLong
-      , postCode: postCode},false);
-    const form = new GenericForm(partyDetails);
-    //When
-    await form.validate();
-    //Then
-    expect(form.hasErrors()).toBeFalsy();
-  });
-  it('should not throw error if no title and firstName+lastName length OK and flag ON', async () => {
-    //Given
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
-    const partyDetails = new PartyDetails({title: '', firstName: valid70charNamePart1of2
-      , lastName: valid70charNamePart2of2, addressLine1: string35charLong, addressLine2: string35charLong
-      , addressLine3: string35charLong,city: string35charLong, postCode: postCode},false);
-    const form = new GenericForm(partyDetails);
-    //When
-    await form.validate();
-    //Then
-    expect(form.hasErrors()).toBeFalsy();
-  });
-  it('should not throw error for partyName if flag OFF', async () => {
-    //Given
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
-    const partyDetails = new PartyDetails({partyName: string256charLong
-      , addressLine1: string50charLong, addressLine2: string50charLong, addressLine3: string50charLong
-      ,city: string50charLong, postCode: postCode},false);
-    const form = new GenericForm(partyDetails);
-    //When
-    await form.validate();
-    //Then
-    expect(form.hasErrors()).toBeFalsy();
-  });
-  it('should not throw error if partyName length OK and flag ON', async () => {
-    //Given
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
-    const partyDetails = new PartyDetails({partyName: valid70charPartyName
-      , addressLine1: string35charLong, addressLine2: string35charLong, addressLine3: string35charLong
-      ,city: string35charLong, postCode: postCode},false);
-    const form = new GenericForm(partyDetails);
-    //When
-    await form.validate();
-    //Then
-    expect(form.hasErrors()).toBeFalsy();
+  describe('isJudgmentOnlineLive flag OFF', () => {
+    it('should not throw error if inputs lengths OK and flag OFF', async () => {
+      //Given
+      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
+      const partyDetails = new PartyDetails({
+        title: string35charLong, firstName: string255charLong
+        , lastName: string255charLong, addressLine1: string50charLong, addressLine2: string50charLong
+        , addressLine3: string50charLong, city: string50charLong, postCode: postCode
+      }, false);
+      const form = new GenericForm(partyDetails);
+      //When
+      await form.validate();
+      //Then
+      expect(form.hasErrors()).toBeFalsy();
+    });
+    it('should not throw error for partyName if flag OFF', async () => {
+      //Given
+      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
+      const partyDetails = new PartyDetails({partyName: string256charLong
+        , addressLine1: string50charLong, addressLine2: string50charLong, addressLine3: string50charLong
+        ,city: string50charLong, postCode: postCode},false);
+      const form = new GenericForm(partyDetails);
+      //When
+      await form.validate();
+      //Then
+      expect(form.hasErrors()).toBeFalsy();
+    });
+
+    it('should throw error if inputs lengths not OK and flag OFF', async () => {
+      //Given
+      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
+      const partyDetails = new PartyDetails({title: string36charLong, firstName: string256charLong
+        , lastName: string256charLong, addressLine1: string51charLong, addressLine2: string51charLong
+        , addressLine3: string51charLong,city: string51charLong, postCode: string35charLong},false);
+      const form = new GenericForm(partyDetails);
+      //When
+      await form.validate();
+      //Then
+      expect(form.errors.length).toEqual(4);
+      expect(form.errors[3].children.length).toEqual(4);
+      expect(form.errorFor('title')).toEqual('ERRORS.ENTER_VALID_TITLE');
+      expect(form.errorFor('firstName')).toEqual('ERRORS.TEXT_TOO_MANY');
+      expect(form.errorFor('lastName')).toEqual('ERRORS.TEXT_TOO_MANY');
+      expect(form.errorFor('primaryAddress[addressLine2]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY');
+      expect(form.errorFor('primaryAddress[addressLine3]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY');
+      expect(form.errorFor('primaryAddress[city]')).toEqual('ERRORS.TOWN_CITY_TOO_MANY');
+      expect(form.errorFor('primaryAddress[postCode]')).toEqual('ERRORS.DEFENDANT_POSTCODE_NOT_VALID');
+    });
   });
 
-  it('should throw error if length not OK and flag OFF', async () => {
-    //Given
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
-    const partyDetails = new PartyDetails({title: string36charLong, firstName: string256charLong
-      , lastName: string256charLong, addressLine1: string51charLong, addressLine2: string51charLong
-      , addressLine3: string51charLong,city: string51charLong, postCode: string35charLong},false);
-    const form = new GenericForm(partyDetails);
-    //When
-    await form.validate();
-    //Then
-    expect(form.errors.length).toEqual(4);
-    expect(form.errors[3].children.length).toEqual(4);
-    expect(form.errorFor('title')).toEqual('ERRORS.ENTER_VALID_TITLE');
-    expect(form.errorFor('firstName')).toEqual('ERRORS.TEXT_TOO_MANY');
-    expect(form.errorFor('lastName')).toEqual('ERRORS.TEXT_TOO_MANY');
-    expect(form.errorFor('primaryAddress[addressLine2]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY');
-    expect(form.errorFor('primaryAddress[addressLine3]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY');
-    expect(form.errorFor('primaryAddress[city]')).toEqual('ERRORS.TOWN_CITY_TOO_MANY');
-    expect(form.errorFor('primaryAddress[postCode]')).toEqual('ERRORS.DEFENDANT_POSTCODE_NOT_VALID');
-  });
-  it('should throw error if length not OK and flag ON', async () => {
-    //Given
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
-    const partyDetails = new PartyDetails({title: string35charLong, firstName: string51charLong
-      , lastName: string51charLong, addressLine1: string36charLong, addressLine2: string36charLong
-      , addressLine3: string36charLong,city: string36charLong, postCode: string35charLong},false);
-    const form = new GenericForm(partyDetails);
-    //When
-    await form.validate();
-    //Then
-    expect(form.errors.length).toEqual(4);
-    expect(form.errors[3].children.length).toEqual(5);
-    expect(form.errorFor('title')).toEqual('ERRORS.TEXT_TOO_MANY');
-    expect(form.errorFor('firstName')).toEqual(' ');
-    expect(form.errorFor('lastName')).toEqual(' ');
-    expect(form.errorFor('primaryAddress[addressLine1]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
-    expect(form.errorFor('primaryAddress[addressLine2]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
-    expect(form.errorFor('primaryAddress[addressLine3]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
-    expect(form.errorFor('primaryAddress[city]')).toEqual('ERRORS.TOWN_CITY_TOO_MANY_JO');
-    expect(form.errorFor('primaryAddress[postCode]')).toEqual('ERRORS.TEXT_TOO_MANY');
-  });
-  it('should throw error if no title, length not OK and flag ON', async () => {
-    //Given
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
-    const partyDetails = new PartyDetails({title: '', firstName: string51charLong
-      , lastName: string51charLong, addressLine1: string36charLong, addressLine2: string36charLong
-      , addressLine3: string36charLong,city: string36charLong, postCode: string35charLong},false);
-    const form = new GenericForm(partyDetails);
-    //When
-    await form.validate();
-    //Then
-    expect(form.errors.length).toEqual(3);
-    expect(form.errors[2].children.length).toEqual(5);
-    expect(form.errorFor('firstName')).toEqual('ERRORS.TEXT_TOO_MANY');
-    expect(form.errorFor('lastName')).toEqual(' ');
-    expect(form.errorFor('primaryAddress[addressLine1]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
-    expect(form.errorFor('primaryAddress[addressLine2]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
-    expect(form.errorFor('primaryAddress[addressLine3]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
-    expect(form.errorFor('primaryAddress[city]')).toEqual('ERRORS.TOWN_CITY_TOO_MANY_JO');
-    expect(form.errorFor('primaryAddress[postCode]')).toEqual('ERRORS.TEXT_TOO_MANY');
-  });
-  it('should throw error if special characters present and flag ON', async () => {
-    //Given
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
-    const partyDetails = new PartyDetails({title: stringWithSpecialChar1
-      , firstName: stringWithSpecialChar2, lastName: stringWithSpecialChar3, addressLine1: stringWithSpecialChar4
-      , addressLine2: stringWithSpecialChar1, addressLine3: stringWithSpecialChar2,city: stringWithSpecialChar3
-      , postCode: postCode},false);
-    const form = new GenericForm(partyDetails);
-    //When
-    await form.validate();
-    //Then
-    expect(form.errors.length).toEqual(4);
-    expect(form.errors[3].children.length).toEqual(4);
-    expect(form.errorFor('title')).toEqual('ERRORS.SPECIAL_CHARACTERS');
-    expect(form.errorFor('firstName')).toEqual('ERRORS.SPECIAL_CHARACTERS');
-    expect(form.errorFor('lastName')).toEqual('ERRORS.SPECIAL_CHARACTERS');
-    expect(form.errorFor('primaryAddress[addressLine1]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
-    expect(form.errorFor('primaryAddress[addressLine2]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
-    expect(form.errorFor('primaryAddress[addressLine3]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
-    expect(form.errorFor('primaryAddress[city]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
-  });
-  it('should throw error if partyName length not OK and flag ON', async () => {
-    //Given
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
-    const partyDetails = new PartyDetails({partyName: string71charLong
-      , addressLine1: string35charLong, addressLine2: string35charLong, addressLine3: string35charLong
-      ,city: string35charLong, postCode: postCode},false);
-    const form = new GenericForm(partyDetails);
-    //When
-    await form.validate();
-    //Then
-    expect(form.errors.length).toEqual(1);
-    expect(form.errorFor('partyName')).toEqual('ERRORS.TEXT_TOO_MANY');
+  describe('isJudgmentOnlineLive flag ON', () => {
+    it('should not throw error if title+firstName+lastName length OK and flag ON', async () => {
+      //Given
+      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+      const partyDetails = new PartyDetails({title: valid70charNamePart1of3
+        , firstName: valid70charNamePart2of3, lastName: valid70charNamePart3of3, addressLine1: string35charLong
+        , addressLine2: string35charLong, addressLine3: string35charLong,city: string35charLong
+        , postCode: postCode},false);
+      const form = new GenericForm(partyDetails);
+      //When
+      await form.validate();
+      //Then
+      expect(form.hasErrors()).toBeFalsy();
+    });
+    it('should not throw error if no title and firstName+lastName length OK and flag ON', async () => {
+      //Given
+      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+      const partyDetails = new PartyDetails({title: '', firstName: valid70charNamePart1of2
+        , lastName: valid70charNamePart2of2, addressLine1: string35charLong, addressLine2: string35charLong
+        , addressLine3: string35charLong,city: string35charLong, postCode: postCode},false);
+      const form = new GenericForm(partyDetails);
+      //When
+      await form.validate();
+      //Then
+      expect(form.hasErrors()).toBeFalsy();
+    });
+    it('should not throw error if partyName length OK and flag ON', async () => {
+      //Given
+      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+      const partyDetails = new PartyDetails({partyName: valid70charPartyName
+        , addressLine1: string35charLong, addressLine2: string35charLong, addressLine3: string35charLong
+        ,city: string35charLong, postCode: postCode},false);
+      const form = new GenericForm(partyDetails);
+      //When
+      await form.validate();
+      //Then
+      expect(form.hasErrors()).toBeFalsy();
+    });
+    it('should not throw error if title length OK and flag ON', async () => {
+      //Given
+      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+      const partyDetails = new PartyDetails({title: string35charLong
+        , firstName: 'test', lastName: 'test', addressLine1: string35charLong
+        , addressLine2: string35charLong, addressLine3: string35charLong,city: string35charLong
+        , postCode: postCode},false);
+      const form = new GenericForm(partyDetails);
+      //When
+      await form.validate();
+      //Then
+      expect(form.hasErrors()).toBeFalsy();
+    });
 
+    it('should throw error if input lengths not OK and flag ON', async () => {
+      //Given
+      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+      const partyDetails = new PartyDetails({title: string35charLong, firstName: string51charLong
+        , lastName: string51charLong, addressLine1: string36charLong, addressLine2: string36charLong
+        , addressLine3: string36charLong,city: string36charLong, postCode: string35charLong},false);
+      const form = new GenericForm(partyDetails);
+      //When
+      await form.validate();
+      //Then
+      expect(form.errors.length).toEqual(4);
+      expect(form.errors[3].children.length).toEqual(5);
+      expect(form.errorFor('title')).toEqual('ERRORS.TEXT_TOO_MANY');
+      expect(form.errorFor('firstName')).toEqual(' ');
+      expect(form.errorFor('lastName')).toEqual(' ');
+      expect(form.errorFor('primaryAddress[addressLine1]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
+      expect(form.errorFor('primaryAddress[addressLine2]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
+      expect(form.errorFor('primaryAddress[addressLine3]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
+      expect(form.errorFor('primaryAddress[city]')).toEqual('ERRORS.TOWN_CITY_TOO_MANY_JO');
+      expect(form.errorFor('primaryAddress[postCode]')).toEqual('ERRORS.TEXT_TOO_MANY');
+    });
+    it('should throw error if no title, lengths not OK and flag ON', async () => {
+      //Given
+      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+      const partyDetails = new PartyDetails({title: '', firstName: string51charLong
+        , lastName: string51charLong, addressLine1: string36charLong, addressLine2: string36charLong
+        , addressLine3: string36charLong,city: string36charLong, postCode: string35charLong},false);
+      const form = new GenericForm(partyDetails);
+      //When
+      await form.validate();
+      //Then
+      expect(form.errors.length).toEqual(3);
+      expect(form.errors[2].children.length).toEqual(5);
+      expect(form.errorFor('firstName')).toEqual('ERRORS.TEXT_TOO_MANY');
+      expect(form.errorFor('lastName')).toEqual(' ');
+      expect(form.errorFor('primaryAddress[addressLine1]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
+      expect(form.errorFor('primaryAddress[addressLine2]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
+      expect(form.errorFor('primaryAddress[addressLine3]')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
+      expect(form.errorFor('primaryAddress[city]')).toEqual('ERRORS.TOWN_CITY_TOO_MANY_JO');
+      expect(form.errorFor('primaryAddress[postCode]')).toEqual('ERRORS.TEXT_TOO_MANY');
+    });
+    it('should throw error if special characters present and flag ON', async () => {
+      //Given
+      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+      const partyDetails = new PartyDetails({title: stringWithSpecialChar1
+        , firstName: stringWithSpecialChar2, lastName: stringWithSpecialChar3, addressLine1: stringWithSpecialChar4
+        , addressLine2: stringWithSpecialChar1, addressLine3: stringWithSpecialChar2,city: stringWithSpecialChar3
+        , postCode: postCode},false);
+      const form = new GenericForm(partyDetails);
+      //When
+      await form.validate();
+      //Then
+      expect(form.errors.length).toEqual(4);
+      expect(form.errors[3].children.length).toEqual(4);
+      expect(form.errorFor('title')).toEqual('ERRORS.SPECIAL_CHARACTERS');
+      expect(form.errorFor('firstName')).toEqual('ERRORS.SPECIAL_CHARACTERS');
+      expect(form.errorFor('lastName')).toEqual('ERRORS.SPECIAL_CHARACTERS');
+      expect(form.errorFor('primaryAddress[addressLine1]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
+      expect(form.errorFor('primaryAddress[addressLine2]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
+      expect(form.errorFor('primaryAddress[addressLine3]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
+      expect(form.errorFor('primaryAddress[city]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
+    });
+    it('should throw error if partyName length not OK and flag ON', async () => {
+      //Given
+      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+      const partyDetails = new PartyDetails({partyName: string71charLong
+        , addressLine1: string35charLong, addressLine2: string35charLong, addressLine3: string35charLong
+        ,city: string35charLong, postCode: postCode},false);
+      const form = new GenericForm(partyDetails);
+      //When
+      await form.validate();
+      //Then
+      expect(form.errors.length).toEqual(1);
+      expect(form.errorFor('partyName')).toEqual('ERRORS.TEXT_TOO_MANY');
+    });
   });
 });
 

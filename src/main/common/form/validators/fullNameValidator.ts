@@ -15,7 +15,7 @@ export class FullNameValidator implements ValidatorConstraintInterface {
 
   async validate(text: string, validationArguments?: ValidationArguments) {
     if (text) {
-      if (validationArguments.property == 'title' && text.length > 35) { // Always validate this
+      if (validationArguments.property == 'title' && text.trim().length > 35) { // Always validate this
         this.errorMessage.push('ERRORS.ENTER_VALID_TITLE');
         return false;
       }
@@ -30,7 +30,7 @@ export class FullNameValidator implements ValidatorConstraintInterface {
         return true;
       }
 
-      this.isJudgmentOnlineLiveFlagOff = false; // New validation
+      this.isJudgmentOnlineLiveFlagOff = false; // New validation, in case isJudgmentOnlineLive flag is on
       if (validationArguments.constraints && text.length > 0) {
         const property = validationArguments.constraints[0];
         const value = (validationArguments.object as never)[property];

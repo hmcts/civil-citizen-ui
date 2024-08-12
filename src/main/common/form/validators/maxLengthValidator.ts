@@ -17,16 +17,18 @@ export class MaxLengthValidator implements ValidatorConstraintInterface {
 
   async validate(text: string, validationArguments?: ValidationArguments) {
     this.isJudgmentOnlineLiveFlagOff = !await this.getJudgmentOnlineFlag(); // Old validation in case isJudgmentOnlineLive flag is off
+    const textLength = text.trim().length;
     this.ADDRESS_LINE_MAX_LENGTH_ACTUAL = this.isJudgmentOnlineLiveFlagOff ? ADDRESS_LINE_MAX_LENGTH : ADDRESS_LINE_MAX_LENGTH_JO;
+
     if (!this.isJudgmentOnlineLiveFlagOff && validationArguments.property == 'addressLine1'
-      && text.length > this.ADDRESS_LINE_MAX_LENGTH_ACTUAL) {
+      && textLength > this.ADDRESS_LINE_MAX_LENGTH_ACTUAL) {
       this.errorMessage.push('ERRORS.ADDRESS_LINE_TOO_MANY_JO');
       return false;
     } else if ((validationArguments.property == 'addressLine2' || validationArguments.property == 'addressLine3')
-          && text.length > this.ADDRESS_LINE_MAX_LENGTH_ACTUAL) {
+          && textLength > this.ADDRESS_LINE_MAX_LENGTH_ACTUAL) {
       this.errorMessage.push(this.isJudgmentOnlineLiveFlagOff ? 'ERRORS.ADDRESS_LINE_TOO_MANY' : 'ERRORS.ADDRESS_LINE_TOO_MANY_JO');
       return false;
-    } else if (validationArguments.property == 'city' && text.length > this.ADDRESS_LINE_MAX_LENGTH_ACTUAL) {
+    } else if (validationArguments.property == 'city' && textLength > this.ADDRESS_LINE_MAX_LENGTH_ACTUAL) {
       this.errorMessage.push(this.isJudgmentOnlineLiveFlagOff ? 'ERRORS.TOWN_CITY_TOO_MANY' : 'ERRORS.TOWN_CITY_TOO_MANY_JO');
       return false;
     } else {

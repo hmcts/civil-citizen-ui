@@ -52,9 +52,9 @@ export class PartyDetails {
   carmEnabled?: boolean;
 
   constructor(value: Record<string, string>, carmEnabled?: boolean) {
-    this.title = value?.title?.trim();
-    this.lastName = value?.lastName?.trim();
-    this.firstName = value?.firstName?.trim();
+    this.title = value?.title;
+    this.lastName = value?.lastName;
+    this.firstName = value?.firstName;
     this.soleTraderTradingAs = value?.soleTraderTradingAs;
     this.partyName = value?.partyName;
     this.contactPerson = value?.contactPerson;
@@ -64,7 +64,7 @@ export class PartyDetails {
       this.primaryAddress = Address.fromObject(value, 0);
       this.correspondenceAddress = Address.fromObject(value, 1);
     }else{
-      this.primaryAddress = new Address(value?.addressLine1?.trim(), value?.addressLine2?.trim(), value?.addressLine3?.trim(), value?.city?.trim(), value?.postCode?.trim());
+      this.primaryAddress = new Address(value?.addressLine1, value?.addressLine2, value?.addressLine3, value?.city, value?.postCode);
     }
     this.carmEnabled = carmEnabled;
     this.nameLength = value?.title?.trim().length === 0? value?.firstName?.trim().length + value?.lastName?.trim().length + 1

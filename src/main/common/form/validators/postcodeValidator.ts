@@ -23,8 +23,8 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
       return true;
     }
 
-    if (await this.getJudgmentOnlineFlag()) { // Do not validate length in case isJudgmentOnlineLive flag is off
-      if (value.length > 8) {
+    if (await this.getJudgmentOnlineFlag()) { // Validate length only if isJudgmentOnlineLive flag is on
+      if (value.trim().length > 8) {
         this.lengthError = true;
         return false;
       }
