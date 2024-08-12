@@ -49,6 +49,17 @@ describe(('For Address Form'), () => {
       expect(form.errorFor('addressLine3')).toEqual('ERRORS.ADDRESS_LINE_TOO_MANY');
       expect(form.errorFor('city')).toEqual('ERRORS.TOWN_CITY_TOO_MANY');
     });
+    it('should throw error in case addressLine1 is blank and flag OFF', async () => {
+      //Given
+      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
+      const address = new Address('', string50charLong, string50charLong, string50charLong, postCode);
+      const form = new GenericForm(address);
+      //When
+      await form.validate();
+      //Then
+      expect(form.errors.length).toEqual(1);
+      expect(form.errorFor('addressLine1')).toEqual('ERRORS.VALID_ADDRESS_LINE_1');
+    });
   });
 
   describe('isJudgmentOnlineLive flag ON', () => {

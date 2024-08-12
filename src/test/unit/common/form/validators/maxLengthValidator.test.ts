@@ -29,6 +29,16 @@ describe('MaxLengthValidator', () => {
       //Then
       expect(result).toEqual(true);
     });
+    it('should return true for addressLine3 with 0 chars and flag OFF', async () => {
+      //Given
+      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
+      //When
+      const result = await validator.validate('', {
+        constraints: [''], object: undefined
+        , property: 'addressLine3', targetName: '', value: undefined});
+      //Then
+      expect(result).toEqual(true);
+    });
     it('should return true for city with 50 chars and flag OFF', async () => {
       //Given
       jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
