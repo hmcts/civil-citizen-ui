@@ -5,6 +5,7 @@
     "UPLOAD_FILE": "Llwytho ffeil i fyny",
     "UPLOAD_FILE_LABEL":"Upload a file",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
+    "DATE_UPLOADED": "Date Uploaded [{{ uploadedDate }}]",
     "DOCUMENTS_UPLOADED": "Dogfennau wedi’u llwytho",
     "CASE_REFERENCE_NUMBER": "Cyfeirnod eich achos",
     "CONTACT_NAME": "Enw cyswllt",
@@ -100,6 +101,7 @@
       "SUBMIT_RESPONSE_PAYMENT": "Cyflwyno a symud ymlaen i'r adran dalu (£{{ payment }})",
       "SUBMIT": "Cyflwyno",
       "START_NOW": "Dechrau nawr",
+      "UPLOAD_ADDITIONAL_DOCUMENTS": "Upload additional documents",
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Cau a dychwelyd i drosolwg o'r achos",
       "CLOSE_AND_RETURN_TO_DASHBOARD": "Close and return to dashboard"
     },
@@ -2118,6 +2120,7 @@
         "WHAT_EXPECT_HEARING": "Beth i'w ddisgwyl mewn gwrandawiad"
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
+      "UPDATING_STATUS": "Diweddaru statws, adnewyddwch y dudalen.",
       "VIEW": "Weiv",
       "VIEW_CLAIM_NUMBER": "Rhif yr Hawliad {{ claimNumber }}"
     },
@@ -2583,7 +2586,6 @@
         "WHY_NOT_ACCEPT": "Why do you not accept the defendant's offer?",
         "WHY_NOT_ACCEPT_2": "Why you do not accept the defendant's offer?"
       },
-
       "ADDITIONAL_DOCUMENTS": {
         "ADDITIONAL_DOCUMENTS_CAPTION": "Upload additional documents",
         "ADDITIONAL_DOCUMENTS_ROW1": "You should only upload documents that are relevant to your application, for example if the judge has ordered a hearing and instructed you to provide documents ahead of this.",
@@ -2825,28 +2827,30 @@
         "APPLICATION": "Application",
         "APPLICATION_ID": "Application ID",
         "APPLICATION_TYPE": "Application type",
+        "COMPLETE": "Complete",
         "DETAILS": "Details",
         "IN_PROGRESS": "In progress",
         "MY_APPLICATIONS": "My applications",
         "STATUS": "Status",
+        "APPLICATION_STATUS": "Application Status",
         "STATES": {
-          "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
-          "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
-          "APPLICATION_ADD_PAYMENT": "Pay the additional application fee",
-          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application Submitted - Awaiting Judicial Decision",
           "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
           "ADDITIONAL_RESPONSE_TIME_PROVIDED": "Additional Response Time Provided",
-          "AWAITING_DIRECTIONS_ORDER_DOCS": "Directions Order Made",
-          "ORDER_MADE": "Order Made",
-          "LISTING_FOR_A_HEARING": "Listed for a Hearing",
-          "HEARING_SCHEDULED": "Hearing Scheduled",
+          "APPLICATION_ADD_PAYMENT": "Awaiting additional payment",
+          "APPLICATION_CLOSED": "Application closed",
+          "APPLICATION_DISMISSED": "Application dismissed",
           "APPLICATION_PAYMENT_FAILED": "Application Payment Failed",
+          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application submitted - Awaiting Judicial decision",
+          "AWAITING_ADDITIONAL_INFORMATION": "Awaiting additional information",
           "AWAITING_APPLICATION_PAYMENT": "Awaiting Application Payment",
-          "AWAITING_WRITTEN_REPRESENTATIONS": "Awaiting Written Representations",
-          "AWAITING_ADDITIONAL_INFORMATION": "Additional Information Required",
-          "APPLICATION_DISMISSED": "Application Dismissed",
-          "APPLICATION_CLOSED": "Application Closed",
-          "PROCEEDS_IN_HERITAGE": "Proceeds In Heritage",
+          "AWAITING_DIRECTIONS_ORDER_DOCS": "Awaiting directions order document",
+          "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
+          "AWAITING_WRITTEN_REPRESENTATIONS": "Awaiting written representations",
+          "HEARING_SCHEDULED": "Hearing Scheduled",
+          "LISTING_FOR_A_HEARING": "Listing for a hearing",
+          "ORDER_MADE": "Order made",
+          "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
+          "PROCEEDS_IN_HERITAGE": "Proceeds in heritage",
           "RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION": "Respond to judge for Written Representations"
         },
         "SUBMITTED_ON": "Submitted on",
@@ -2956,6 +2960,16 @@
         "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
         "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
       },
+      "UPLOAD_DIRECTIONS_ORDER_DOCUMENTS": {
+        "CONFIRMATION_PAGE_TITLE": "You've uploaded additional documents",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will review the additional documents that you've uploaded. You'll receive an update with their decision or next steps.",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
+        "COURT_DOCUMENT": "court document",
+        "IF_NOT_SURE_END": "that sets out what the court has requested from you.",
+        "IF_NOT_SURE_START": "If you're not sure what to upload, refer to the",
+        "NEED_TO_UPLOAD": "You need to upload the documents requested by the court.",
+        "PAGE_TITLE": "Upload additional documents"
+      },
       "UPLOAD_N245_FORM": {
         "COMPLETE_N245_FORM":"complete the N245 Form",
         "FILE_FORMAT": "the file is in a DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
@@ -2977,7 +2991,10 @@
         "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
         "PAGE_TITLE": "Request for more information",
         "PAGE_TITLE_TO_UPLOAD": "Upload additional documents",
-        "UPLOAD_DOC_CYA_TITLE": "Upload documents"
+        "UPLOAD_DOC_CYA_TITLE": "Uploaded documents"
+      },
+      "UPLOAD_WRITTEN_REPRESENTATION_DOCUMENTS": {
+        "PAGE_TITLE": "Request for written representation"
       },
       "APPLICATION_HEARING_ARRANGEMENTS": {
         "HEARING_TYPE": {
@@ -3047,7 +3064,7 @@
         "TO": "To"
       },
       "CONFIRMATION_PAGE": {
-        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}",
+        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}.",
         "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
         "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
         "PAGE_TITLE": "Application created",
@@ -3078,18 +3095,24 @@
         "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
       },
       "VIEW_APPLICATION": {
-        "APPLICATION": "Application",
-        "APPLICATION_DETAILS": "Application details submitted by the applicant.",
         "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
+        "APPLICATION": "Application",
+        "APPLICANTS_DOCUMENTS": "Applicant's documents",
+        "APPLICATION_DETAILS": "Application details submitted by the applicant.",
+        "APPLICATION_DOCUMENTS": "Application Documents",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Court's response to the application",
         "DATE_RESPONSE": "Date of response",
         "DIRECTION_WITH_NOTICE": "Direction to make the application with notice",
+        "DOCUMENTS_FROM_COURT": "Documents from the court",
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
+        "HEARING_NOTICE" : "Hearing Notice",
+        "HEARING_ORDER" : "Hearing Order",
         "PAGE_TITLE": "View application",
         "RESPONSE": "Response from the other parties",
         "READ_RESPONSE": "Read the response",
         "RESPONSE_COURT": "Response from the court",
+        "RESPONDENTS_DOCUMENTS": "Respondent's documents",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
@@ -3105,7 +3128,7 @@
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
-      "DEFENDANT_OFFERED_TO_PAY": "Mae {{ defendantName }}  wedi cynnig eich talu'n llawn erbyn {{ proposedSetDate }}",
+      "DEFENDANT_OFFERED_TO_PAY": "Mae {{ defendantName }}  wedi cynnig eich talu erbyn {{ proposedSetDate }}",
       "DO_YOU_ACCEPT": "Ydych chi'n derbyn y cynllun ad-dalu?",
       "NO_OPTION": "Nac ydw – byddaf yn awgrymu fy nghynllun fy hun",
       "PAGE_TITLE": "Sut mae am dalu?",
@@ -4133,7 +4156,8 @@
     "FEE_AMOUNT": {
       "TITLE": "Talu eich ffi hawlio",
       "MESSAGE": "Os byddwch yn setlo y tu allan i’r llys, ni fyddwn yn ad-dalu ffi’r hawliad. Gallwch ofyn i'r diffynnydd dalu eich ffi yn ôl fel rhan o'r setliad.",
-      "CONTINUE_TO_PAYMENT": "parhau i dalu"
+      "CONTINUE_TO_PAYMENT": "parhau i dalu",
+      "SYNC_WARNING": "Yn anffodus, nid ydym wedi gallu mynd â chi i'r dudalen dalu, rhowch gynnig arall arni."
     },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "Byddwn yn ei ychwanegu at swm yr hawliad.",

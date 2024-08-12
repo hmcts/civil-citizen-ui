@@ -17,7 +17,7 @@ describe('getPayHearingFeeStartScreenContent en', () => {
     //Then
     expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual('PAGES.DASHBOARD.HEARINGS.HEARING');
     expect(payHearingFeeStartScreenContentActual[1].data.text).toEqual('PAGES.PAY_HEARING_FEE.START_PAGE.TITLE');
-    expect(payHearingFeeStartScreenContentActual[2].data.text).toEqual('COMMON.CASE_NUMBER');
+    expect(payHearingFeeStartScreenContentActual[2].data.text).toEqual('COMMON.CASE_NUMBER_PARAM');
     expect(payHearingFeeStartScreenContentActual[3].data.text).toEqual('COMMON.CLAIM_AMOUNT_WITH_VALUE');
     expect(payHearingFeeStartScreenContentActual[4].data.text).toEqual(t('PAGES.PAY_HEARING_FEE.START_PAGE.YOU_MUST_PAY',{lng:'en'}));
     expect(payHearingFeeStartScreenContentActual[5].data.text).toEqual(t('PAGES.PAY_HEARING_FEE.START_PAGE.IF_YOU_DO_NOT_PAY',{lng:'en'}));
@@ -34,7 +34,7 @@ describe('getPayHearingFeeStartScreenContent en', () => {
     //Then
     expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual('PAGES.DASHBOARD.HEARINGS.HEARING');
     expect(payHearingFeeStartScreenContentActual[1].data.text).toEqual('PAGES.PAY_HEARING_FEE.START_PAGE.TITLE');
-    expect(payHearingFeeStartScreenContentActual[2].data.text).toEqual('COMMON.CASE_NUMBER');
+    expect(payHearingFeeStartScreenContentActual[2].data.text).toEqual('COMMON.CASE_NUMBER_PARAM');
     expect(payHearingFeeStartScreenContentActual[3].data.text).toEqual('COMMON.CLAIM_AMOUNT_WITH_VALUE');
     expect(payHearingFeeStartScreenContentActual[4].data.text).toEqual(t('PAGES.PAY_HEARING_FEE.START_PAGE.YOU_MUST_PAY',{lng:'cy'}));
     expect(payHearingFeeStartScreenContentActual[5].data.text).toEqual(t('PAGES.PAY_HEARING_FEE.START_PAGE.IF_YOU_DO_NOT_PAY',{lng:'cy'}));

@@ -409,6 +409,12 @@ import gaRequestMoreInfoCheckAnswersController
   from 'routes/features/generalApplication/additionalInfoUpload/checkAnswerController';
 import moreInfoSubmittedConfirmationController
   from 'routes/features/generalApplication/additionalInfoUpload/moreInfoSubmittedConfirmationController';
+import uploadDocumentsDirectionsOrderController
+  from 'routes/features/generalApplication/directionsOrderUpload/uploadDocumentsDirectionsOrderController';
+import gaDirectionOrderCheckAnswersController from './features/generalApplication/directionsOrderUpload/checkAnswerController';
+import directionOrderSubmittedConfirmationController from './features/generalApplication/directionsOrderUpload/directionOrderSubmittedConfirmationController';
+import uploadDocumentsForRequestWrittenRepresentation from './features/generalApplication/writtenRepresentationDocs/uplodWrittenRepresentationDocsController';
+import gaWrittenRepresentationCheckAnswersController from './features/generalApplication/writtenRepresentationDocs/checkAnswerController';
 
 export default [
   homeController,
@@ -740,4 +746,9 @@ export default [
   uploadDocumentsForRequestMoreInfoController,
   gaRequestMoreInfoCheckAnswersController,
   moreInfoSubmittedConfirmationController,
+  uploadDocumentsDirectionsOrderController,
+  gaDirectionOrderCheckAnswersController,
+  directionOrderSubmittedConfirmationController,
+  uploadDocumentsForRequestWrittenRepresentation,
+  gaWrittenRepresentationCheckAnswersController,
 ];
