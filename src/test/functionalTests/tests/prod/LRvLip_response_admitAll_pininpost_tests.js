@@ -8,8 +8,6 @@ const admitAll = 'full-admission';
 const immediatePayment = 'immediate';
 const dontWantMoreTime = 'dontWantMoreTime';
 
-const carmEnabled = false;
-const manualPIP = 'yes';
 let claimRef;
 let caseData;
 let claimNumber;
@@ -19,7 +17,7 @@ Feature('Response with AdmitAll');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', '', carmEnabled, '', manualPIP);
+  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, 'pinInPost');
   console.log('Claim has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;

@@ -9,8 +9,6 @@ const dontWantMoreTime = 'dontWantMoreTime';
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
 
-const carmEnabled = false;
-const manualPIP = 'yes';
 let claimRef;
 let caseData;
 let claimNumber;
@@ -20,7 +18,7 @@ Feature('Response with PartAdmit and Repayment plan - Small Claims');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', '', carmEnabled, '', manualPIP);
+  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
