@@ -1,0 +1,240 @@
+{
+  "mappings": [
+    {
+      "priority": 1,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/177777777777775\\d",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPayByInstallments/beforeClaimantResponse.json"
+      }
+    },
+    {
+      "priority": 2,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "GET",
+        "url": "/cases/1777777777777751",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPayByInstallments/claimantProposesNewRepaymentPlanAndCCJ.json"
+      }
+    },
+    {
+      "priority": 2,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "GET",
+        "url": "/cases/1777777777777752",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPayByInstallments/claimantAcceptsRepaymentPlanAndRequestsCCJ.json"
+      }
+    },
+    {
+      "priority": 2,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "GET",
+        "url": "/cases/1777777777777753",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPayByInstallments/claimantAcceptsRepaymentPlanAndSignsSettlementAgreement.json"
+      }
+    },
+    {
+      "priority": 2,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "GET",
+        "url": "/cases/1777777777777754",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPayByInstallments/defendantSignsSettlementAgreement.json"
+      }
+    },
+    {
+      "priority": 2,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "GET",
+        "url": "/cases/1777777777777755",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPayByInstallments/claimantRejectsPartAdmit.json"
+      }
+    },
+    {
+      "priority": 3,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "POST",
+        "urlPath": "/cases/1777777777777751/citizen/someID/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPayByInstallments/claimantProposesNewRepaymentPlanAndCCJ.json"
+      }
+    },
+    {
+      "priority": 3,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "POST",
+        "urlPath": "/cases/1777777777777752/citizen/someID/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPayByInstallments/claimantAcceptsRepaymentPlanAndRequestsCCJ.json"
+      }
+    },
+    {
+      "priority": 3,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "POST",
+        "urlPath": "/cases/1777777777777753/citizen/someID/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPayByInstallments/claimantAcceptsRepaymentPlanAndSignsSettlementAgreement.json"
+      }
+    },
+    {
+      "priority": 3,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "POST",
+        "urlPath": "/cases/1777777777777754/citizen/someID/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPayByInstallments/defendantSignsSettlementAgreement.json"
+      }
+    },
+    {
+      "priority": 3,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "POST",
+        "urlPath": "/cases/1777777777777755/citizen/someID/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "partAdmitDefendantPayByInstallments/claimantRejectsPartAdmit.json"
+      }
+    }
+  ]
+}
