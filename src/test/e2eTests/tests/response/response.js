@@ -2,7 +2,7 @@ const config = require('../../../config');
 const Response = require('../../response/steps/response');
 const {responseType, paymentType, rejectOfClaimType} = require('../../commons/responseVariables');
 
-Feature('Response journey').tag('@leo');
+Feature('Response journey').tag('@e2e');
 
 Scenario('Response defendant with admit all of the claim', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
