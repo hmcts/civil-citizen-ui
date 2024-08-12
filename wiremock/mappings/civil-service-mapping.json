@@ -197,42 +197,6 @@
         },
         "bodyFileName": "ssaResponseDeadline.json"
       }
-    },
-    {
-      "request": {
-        "method": "GET",
-        "urlPattern": "/locations/courtLocations",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .*"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "bodyFileName": "courtLocationsResponse.json"
-      }
-    },
-    {
-      "request": {
-        "method": "POST",
-        "url": "/cases/response/deadline",
-        "headers": {
-          "Authorization": {
-            "matches": "Bearer .*"
-          }
-        }
-      },
-      "response": {
-        "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
-        "bodyFileName": "ssaResponseDeadline.json"
-      }
     }
   ]
 }
