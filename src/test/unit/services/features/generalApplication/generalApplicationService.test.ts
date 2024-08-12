@@ -852,6 +852,15 @@ describe('Should display sync warning', () => {
     expect(result).toEqual(true);
   });
 
+  it('should not display if no GA response', async () => {
+    //Given
+    applicationResponse = undefined;
+    //When
+    const result = shouldDisplaySyncWarning(applicationResponse);
+    //Then
+    expect(result).toEqual(false);
+  });
+
   it('should trigger Event NotifyHelpWithFee', async () => {
     const mockClaimId = '123456';
     const spyTriggerEvent = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
