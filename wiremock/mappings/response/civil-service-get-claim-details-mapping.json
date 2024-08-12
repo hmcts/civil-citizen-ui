@@ -6,7 +6,7 @@
       "requiredScenarioState": "Started",
       "request": {
         "method": "GET",
-        "urlPattern": "/cases/1645882162449409",
+        "urlPattern": "/cases/1645882162449408",
         "headers": {
           "Content-Type": {
             "equalTo": "application/json"
