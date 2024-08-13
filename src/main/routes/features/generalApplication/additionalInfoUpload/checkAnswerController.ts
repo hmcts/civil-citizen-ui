@@ -47,7 +47,7 @@ gaRequestMoreInfoCheckAnswersController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_IN
       backLinkUrl = backLinkUrlDoc;
     }
     const summaryRows = buildSummarySection(additionalText, additionalDocuments, claimId, appId, lng);
-    res.render(viewPath, { backLinkUrl, cancelUrl, claimIdPrettified, claim, summaryRows });
+    res.render(viewPath, { backLinkUrl, cancelUrl, claimIdPrettified, claim, summaryRows, headerCaption });
   } catch (error) {
     next(error);
   }
