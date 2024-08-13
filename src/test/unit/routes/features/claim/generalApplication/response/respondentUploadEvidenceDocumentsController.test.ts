@@ -175,6 +175,15 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
         });
     });
 
+    it('should throw the error if user click continue button without uploading a file', async () => {
+      await request(app)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL));
+        });
+    });
+
     it('should save the file and display', async () => {
       jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
