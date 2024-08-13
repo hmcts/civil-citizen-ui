@@ -26,6 +26,47 @@ const stringWithSpecialChar3 = ' SpecialChar ´ 3';
 const stringWithSpecialChar4 = ' SpecialChar ¨ 4';
 
 describe(('For PartyDetails Form'), () => {
+  describe(('Constructor test'), () => {
+    it('should trim values and calculate lengths', async () => {
+      //Given
+      const trimmedString = 'This is a 35 char address aAbBcCdDe';
+      const trimmedPostCode = 'EC1A 1BB';
+      const partyDetails = new PartyDetails({
+        partyName: string35charLong, title: string35charLong, firstName: string35charLong
+        , lastName: string35charLong, addressLine1: string35charLong, addressLine2: string35charLong
+        , addressLine3: string35charLong, city: string35charLong, postCode: postCode
+        , soleTraderTradingAs: string35charLong, contactPerson: string35charLong
+        , postToThisAddress: string35charLong, provideCorrespondenceAddress: string35charLong}, false);
+      //When
+      const form = new GenericForm(partyDetails);
+      //Then
+      expect(form.model.partyName).toEqual(trimmedString);
+      expect(form.model.title).toEqual(trimmedString);
+      expect(form.model.firstName).toEqual(trimmedString);
+      expect(form.model.lastName).toEqual(trimmedString);
+      expect(form.model.primaryAddress.addressLine1).toEqual(trimmedString);
+      expect(form.model.primaryAddress.addressLine2).toEqual(trimmedString);
+      expect(form.model.primaryAddress.addressLine3).toEqual(trimmedString);
+      expect(form.model.primaryAddress.city).toEqual(trimmedString);
+      expect(form.model.primaryAddress.postCode).toEqual(trimmedPostCode);
+      expect(form.model.soleTraderTradingAs).toEqual(string35charLong);
+      expect(form.model.contactPerson).toEqual(string35charLong);
+      expect(form.model.postToThisAddress).toEqual(string35charLong);
+      expect(form.model.provideCorrespondenceAddress).toEqual(string35charLong);
+      expect(form.model.nameLength).toEqual(107);
+      expect(form.model.partyNameLength).toEqual(35);
+    });
+    it('should calculate length when no title present', async () => {
+      //Given
+      const partyDetails = new PartyDetails({
+        title: '', firstName: string35charLong
+        , lastName: string35charLong }, false);
+      //When
+      const form = new GenericForm(partyDetails);
+      //Then
+      expect(form.model.nameLength).toEqual(71);
+    });
+  });
   describe('isJudgmentOnlineLive flag OFF', () => {
     it('should not throw error if inputs lengths OK and flag OFF', async () => {
       //Given
