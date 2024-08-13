@@ -11,10 +11,10 @@ import {getCancelUrl, saveAcceptDefendantOffer} from 'services/features/generalA
 import {Claim} from 'common/models/claim';
 import {AcceptDefendantOffer} from 'common/models/generalApplication/response/acceptDefendantOffer';
 import {
-  getRespondToApplicationCaption
+  getRespondToApplicationCaption,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {
-  getDraftGARespondentResponse
+  getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 
@@ -69,7 +69,7 @@ acceptDefendantOfferController.post(GA_ACCEPT_DEFENDANT_OFFER_URL, (async (req: 
       return await renderView(claimId, claim, form, lang, req.params.appId, res);
     }
     await saveAcceptDefendantOffer(generateRedisKeyForGA(req), acceptDefendantOffer);
-    res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL)); // TODO: add url
+    res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL));
   } catch (error) {
     next(error);
   }
