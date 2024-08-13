@@ -20,9 +20,10 @@ jest.mock('../../../../../../../main/modules/draft-store/draftGADocumentService'
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
 }));
 
-describe('General Application - uploadDocumentsForRequestMoreInfoController.ts', () => {
+describe('General Application - uploadDocumentsForRequestMoreInfoController', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   const mockDataFromStore = jest.spyOn(draftService, 'getCaseDataFromStore');
@@ -48,6 +49,12 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
     response.additionalText = 'More info';
     mockGADocResponseStoreService.mockResolvedValue(response);
   });
+
+  afterEach(
+    () => {
+      jest.clearAllMocks();
+    },
+  );
 
   describe('on GET', () => {
     it('should return respond page', async () => {
@@ -75,7 +82,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
 
     await request(app)
       .post(GA_RESPOND_ADDITIONAL_INFO_URL)
-      .send({option: 'yes', additionalText: null})
+      .send({option: 'no', additionalText: null})
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('You need to either enter the information requested in the box or select Yes to upload documents to support your response.');

@@ -893,7 +893,7 @@ describe('Save Additional Text and Option', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
-  it('should save acceptDefendantOffer successfully', async () => {
+  it('should save GARespondentResponse successfully', async () => {
     //Given
     jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
     const spy = jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse');
