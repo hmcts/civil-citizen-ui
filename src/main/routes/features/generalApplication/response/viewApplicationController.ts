@@ -1,19 +1,15 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {
-  GA_ACCEPT_DEFENDANT_OFFER_URL,
-  GA_AGREE_TO_ORDER_URL,
-  GA_RESPONDENT_AGREEMENT_URL,
-  GA_RESPONDENT_INFORMATION_URL,
-  GA_RESPONSE_VIEW_APPLICATION_URL,
-} from 'routes/urls';
+import {GA_RESPONSE_VIEW_APPLICATION_URL, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
-import {getApplicationSections,} from 'services/features/generalApplication/viewApplication/viewApplicationService';
+import {
+  getApplicantDocuments,
+  getApplicationSections, getCourtDocuments, getRespondentDocuments,
+} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
-import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
-import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
-import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {DocumentsViewComponent} from 'form/models/documents/DocumentsViewComponent';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 
 const viewApplicationToRespondentController = Router();
 const viewPath = 'features/generalApplication/response/view-application';
@@ -28,7 +24,12 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationId, GA_RESPONDENT_INFORMATION_URL);
     const redirectUrl = await getRedirectUrl(req, applicationId, claimId);
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
-    res.render(viewPath, {backLinkUrl, summaryRows, pageTitle, redirectUrl, applicationIndex });
+    const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
+    const applicantDocuments: DocumentsViewComponent = getApplicantDocuments(applicationResponse, lang);
+    const courtDocuments: DocumentsViewComponent = getCourtDocuments(applicationResponse, lang);
+    const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
+    const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
+    res.render(viewPath, {backLinkUrl, summaryRows, pageTitle, redirectUrl, applicationIndex, applicantDocuments, courtDocuments, respondentDocuments, additionalDocUrl });
   } catch (error) {
     next(error);
   }
