@@ -31,7 +31,7 @@ import {
   VIEW_MEDIATION_DOCUMENTS,
   CONFIRM_YOU_HAVE_BEEN_PAID_URL,
   APPLICATION_TYPE_URL,
-  GA_APPLICATION_SUMMARY_URL, REQUEST_FOR_RECONSIDERATION_COMMENTS_URL,
+  GA_APPLICATION_SUMMARY_URL, REQUEST_FOR_RECONSIDERATION_COMMENTS_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -120,6 +120,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{CONFIRM_YOU_HAVE_BEEN_PAID_URL}', CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_REQUEST_FOR_RECONSIDERATION_DOCUMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(getRequestForReconsiderationDocument(claim))));
   valuesMap.set('{GENERAL_APPLICATIONS_APPLICATION_SUMMARY_URL}', GA_APPLICATION_SUMMARY_URL.replace(':id', claimId));
+  valuesMap.set('{GENERAL_APPLICATIONS_RESPONSE_APPLICATION_SUMMARY_URL}', GA_APPLICATION_RESPONSE_SUMMARY_URL.replace(':id', claimId));
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
