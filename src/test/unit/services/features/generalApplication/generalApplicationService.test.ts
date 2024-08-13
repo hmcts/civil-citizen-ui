@@ -6,7 +6,7 @@ import {
   getByIndexOrLast,
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
-  saveAcceptDefendantOffer,
+  saveAcceptDefendantOffer, saveAdditionalText,
   saveAgreementFromOtherParty, saveAndTriggerNotifyGaHwfEvent,
   saveApplicationCosts,
   saveApplicationType,
@@ -886,5 +886,22 @@ describe('Should display sync warning', () => {
     const result = shouldDisplaySyncWarning(applicationResponse);
     //Then
     expect(result).toEqual(true);
+  });
+});
+
+describe('Save Additional Text and Option', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  it('should save acceptDefendantOffer successfully', async () => {
+    //Given
+    jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+    const spy = jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse');
+    const uploadFile = YesNo.YES;
+    const input = 'More info';
+    //When
+    await saveAdditionalText('123', input, uploadFile);
+    //Then
+    expect(spy).toBeCalled();
   });
 });
