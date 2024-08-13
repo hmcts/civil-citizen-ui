@@ -181,6 +181,14 @@ describe('General Application - upload evidence docs to support application', ()
           expect(res.text).toContain(GA_UPLOAD_DOCUMENTS_URL);
         });
     });
+    it('should throw the error if user click continue button without uploading a file', async () => {
+      await request(app)
+        .post(GA_UPLOAD_DOCUMENTS_URL)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).toContain(GA_UPLOAD_DOCUMENTS_URL);
+        });
+    });
     it('should return http 500 when has error in the get method', async () => {
       const file = {
         fieldname: 'selectedFile',
