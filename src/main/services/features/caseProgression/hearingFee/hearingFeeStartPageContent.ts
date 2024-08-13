@@ -11,7 +11,7 @@ export const getHearingFeeStartPageContent = (claimId: string, lng:string, total
   return new PageSectionBuilder()
     .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
     .addMainTitle('PAGES.PAY_HEARING_FEE.START_PAGE.TITLE')
-    .addLeadParagraph('COMMON.CASE_NUMBER', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
+    .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
     .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(totalClaimAmount)})
     .addParagraph(t('PAGES.PAY_HEARING_FEE.START_PAGE.YOU_MUST_PAY',{lng}), {
       hearingFee: hearingFeeInformation.getHearingFeeFormatted(),
