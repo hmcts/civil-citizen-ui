@@ -3,7 +3,7 @@ import {
   GA_AGREE_TO_ORDER_URL,
   GA_RESPONDENT_AGREEMENT_URL,
   GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL,
-  GA_RESPONSE_VIEW_APPLICATION_URL
+  GA_RESPONSE_VIEW_APPLICATION_URL,
 } from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
@@ -16,7 +16,7 @@ import {
   saveRespondentAgreeToOrder,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {
-  getDraftGARespondentResponse
+  getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';

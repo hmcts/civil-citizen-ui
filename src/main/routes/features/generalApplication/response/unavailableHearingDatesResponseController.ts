@@ -21,7 +21,7 @@ import {
   saveRespondentUnavailableDates,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {
-  getDraftGARespondentResponse
+  getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 

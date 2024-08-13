@@ -22,7 +22,7 @@ import {
   getRespondToApplicationCaption,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {
-  getDraftGARespondentResponse
+  getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';

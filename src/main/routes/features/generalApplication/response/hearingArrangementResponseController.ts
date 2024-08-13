@@ -18,7 +18,7 @@ import {
   saveRespondentHearingArrangement,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {
-  getDraftGARespondentResponse
+  getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 
 const hearingArrangementResponseController = Router();
