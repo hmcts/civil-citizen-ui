@@ -29,7 +29,7 @@ requestForReconsiderationCommentsConfirmationController.get(REQUEST_FOR_RECONSID
 
     res.render(requestForReconsiderationConfirmationViewPath, {
       confirmationContents:getRequestForReconsiderationCommentsConfirmationContent(claim, lang, dashboardUrl),
-      dashboardUrl});
+      noCrumbs: true});
   } catch (error) {
     next(error);
   }
