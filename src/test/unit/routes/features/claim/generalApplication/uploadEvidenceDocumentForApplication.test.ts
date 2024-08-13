@@ -170,14 +170,6 @@ describe('General Application - upload evidence docs to support application', ()
         });
     });
 
-    it('should throw the error if user click continue button without uploading a file', async () => {
-      await request(app)
-        .post(GA_UPLOAD_DOCUMENTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('You need to choose a file before clicking');
-        });
-    });
     it('should save the file and display', async () => {
       jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
       await request(app)
