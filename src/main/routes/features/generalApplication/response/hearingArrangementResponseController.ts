@@ -1,29 +1,36 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {GA_RESPONSE_HEARING_ARRANGEMENT_URL, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL} from 'routes/urls';
+import {
+  GA_RESPONDENT_HEARING_PREFERENCE_URL,
+  GA_RESPONSE_HEARING_ARRANGEMENT_URL,
+  GA_RESPONSE_HEARING_CONTACT_DETAILS_URL,
+} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
-import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
+import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {getListOfCourtLocations} from 'services/features/directionsQuestionnaire/hearing/specificCourtLocationService';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {
   getRespondToApplicationCaption,
   saveRespondentHearingArrangement,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
-import { getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {
+  getDraftGARespondentResponse
+} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 
 const hearingArrangementResponseController = Router();
 const viewPath = 'features/generalApplication/hearing-arrangement';
-const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingArrangement>, req: AppRequest | Request, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const headerTitle = getRespondToApplicationCaption(claim, req.params.appId, lang);
   const cancelUrl = await getCancelUrl(claimId, claim);
   const courtLocations = await getListOfCourtLocations(<AppRequest> req);
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_HEARING_PREFERENCE_URL);
+
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, courtLocations });
 }
 

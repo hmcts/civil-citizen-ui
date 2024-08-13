@@ -1,18 +1,24 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {GA_RESPONSE_HEARING_ARRANGEMENT_URL, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL} from 'routes/urls';
+import {
+  GA_RESPONSE_HEARING_ARRANGEMENT_URL,
+  GA_RESPONSE_HEARING_CONTACT_DETAILS_URL,
+  GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
+} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
-import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
+import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {
   getRespondToApplicationCaption,
   saveRespondentHearingContactDetails,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
-import { getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {
+  getDraftGARespondentResponse
+} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 
 const hearingContactDetailsResponseController = Router();
 const viewPath = 'features/generalApplication/hearing-contact-details';
@@ -49,7 +55,7 @@ hearingContactDetailsResponseController.post(GA_RESPONSE_HEARING_CONTACT_DETAILS
       await renderView(claimId, claim, form, req, res);
     } else {
       await saveRespondentHearingContactDetails(generateRedisKeyForGA(<AppRequest>req), hearingContactDetails);
-      res.redirect('test'); // TODO: add url
+      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL));
     }
   } catch (error) {
     next(error);

@@ -1,9 +1,13 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
-import {GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL} from 'routes/urls';
+import {
+  GA_RESPONSE_HEARING_CONTACT_DETAILS_URL,
+  GA_RESPONSE_HEARING_SUPPORT_URL,
+  GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
+} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
-import { generateRedisKey, generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {t} from 'i18next';
 import {Claim} from 'models/claim';
@@ -16,16 +20,19 @@ import {
   getRespondToApplicationCaption,
   saveRespondentUnavailableDates,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
-import { getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {
+  getDraftGARespondentResponse
+} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 
 const unavailableHearingDatesResponseController = Router();
 const viewPath = 'features/generalApplication/unavailable-dates-hearing';
-const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<UnavailableDatesGaHearing>,  req: AppRequest | Request, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const headerTitle = getRespondToApplicationCaption(claim, req.params.appId, lang);
   const cancelUrl = await getCancelUrl(claimId, claim);
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL);
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, headingTitle: t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.TITLE') });
 }
 
@@ -63,7 +70,7 @@ unavailableHearingDatesResponseController.post(GA_RESPONSE_UNAVAILABLE_HEARING_D
         await renderView(claimId, claim, form, req, res);
       } else {
         await saveRespondentUnavailableDates(redisKey, unavailableDatesForHearing);
-        res.redirect('test'); // TODO: add url
+        res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_SUPPORT_URL));
       }
     }
   } catch (error) {
