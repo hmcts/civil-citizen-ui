@@ -82,8 +82,8 @@ respondentWantToUploadDocumentsController.post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCU
 }) as RequestHandler);
 
 function getBackLinkUrl(claimId: string, applicationId: string, claim: Claim, gaResponse: GaResponse) {
-  const selectedApplication = claim.respondentGaAppDetails.find(application => application.gaApplicationId === applicationId);
-  const withConsent = selectedApplication.generalAppTypes?.includes(ApplicationTypeOption.SETTLE_BY_CONSENT);
-  return (gaResponse.agreeToOrder === YesNo.NO || withConsent) ? constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_AGREE_TO_ORDER_URL) : constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_AGREEMENT_URL);
+  const selectedApplication = claim.respondentGaAppDetails?.find(application => application.gaApplicationId === applicationId);
+  const withConsent = selectedApplication?.generalAppTypes?.includes(ApplicationTypeOption.SETTLE_BY_CONSENT);
+  return (gaResponse?.agreeToOrder === YesNo.NO || withConsent) ? constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_AGREE_TO_ORDER_URL) : constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_AGREEMENT_URL);
 }
 export default respondentWantToUploadDocumentsController;
