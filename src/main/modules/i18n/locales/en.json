@@ -3107,6 +3107,8 @@
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "HEARING_NOTICE" : "Hearing Notice",
         "HEARING_ORDER" : "Hearing Order",
+        "JUDGE_HAS_MADE_ORDER": "The Judge has made an order on your claim.",
+        "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
         "RESPONSE": "Response from the other parties",
         "READ_RESPONSE": "Read the response",
