@@ -15,7 +15,7 @@ jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/routes/guards/generalApplication/requestReasonControllerGuard.ts', () => ({
   requestingReasonControllerGuard: jest.fn((req, res, next) => {
     next();
-  })
+  }),
 }));
 
 describe('General Application - Requesting reason', () => {

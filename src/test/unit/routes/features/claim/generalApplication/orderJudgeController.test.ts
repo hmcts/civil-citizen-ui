@@ -15,7 +15,7 @@ jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/routes/guards/generalApplication/orderJudgeGuard.ts', () => ({
   orderJudgeGuard: jest.fn((req, res, next) => {
     next();
-  })
+  }),
 }));
 
 describe('General Application - Application type', () => {
