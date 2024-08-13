@@ -89,7 +89,7 @@ export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse
   );
   if (documentUrl && (applicationResponse.case_data.generalAppPBADetails.additionalPaymentDetails !== null || true)) {
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID', {lng}))
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID', {lng})),
     );
   }
   return rows;
