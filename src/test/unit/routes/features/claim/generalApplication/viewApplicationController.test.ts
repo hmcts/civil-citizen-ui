@@ -7,11 +7,13 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GaServiceClient} from 'client/gaServiceClient';
-import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {ApplicationResponse, JudicialDecisionMakeAnOrderOptions} from 'models/generalApplication/applicationResponse';
 import {getApplicationSections , getRespondentDocuments, getCourtDocuments, getApplicantDocuments} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
 import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
+import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
+import {DocumentType} from 'models/document/documentType';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
@@ -107,7 +109,7 @@ describe('General Application - View application', () => {
     });
 
     it('should return View application page with applicant documents section', async () => {
-    
+
       const applicantDocs =  new DocumentsViewComponent('ApplicantDocuments',[orderDocument]);
       mockApplicantDocs.mockImplementation(() => applicantDocs);
       mockCourtDocs.mockImplementation(() => new DocumentsViewComponent('court',[]));
@@ -155,7 +157,7 @@ describe('General Application - View application', () => {
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-applicant-doc.pdf'),
       );
-      
+
       const respondentDocument = new DocumentInformation(
         'Respondent-Document',
         '4 August 2024',
@@ -167,7 +169,7 @@ describe('General Application - View application', () => {
         '5 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-court-doc.pdf'),
       );
-      
+
       const applicantDocs =  new DocumentsViewComponent('ApplicantDocuments',[applicantDocument]);
       const courtDocs =  new DocumentsViewComponent('courtDocuments',[courtDocument]);
       const respondentDocs =  new DocumentsViewComponent('RespondentDocuments',[respondentDocument]);
@@ -194,6 +196,71 @@ describe('General Application - View application', () => {
           expect(res.text).toContain('5 August 2024');
           expect(res.text).toContain('000MC039-court-doc.pdf');
         });
+    });
+
+    describe('on Judges Direction', () => {
+      it('should return Check your answers page for judges direction', async () => {
+        const fileName = 'Name of file';
+        const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
+        const binary_url = `http://dm-store:8080/documents/${binary}/binary`;
+        const applicationResponse: ApplicationResponse = {
+          case_data: {
+            applicationTypes: undefined,
+            generalAppType: undefined,
+            generalAppRespondentAgreement: undefined,
+            generalAppInformOtherParty: undefined,
+            generalAppAskForCosts: undefined,
+            generalAppDetailsOfOrder: undefined,
+            generalAppReasonsOfOrder: undefined,
+            generalAppEvidenceDocument: undefined,
+            gaAddlDoc: undefined,
+            generalAppHearingDetails: undefined,
+            generalAppStatementOfTruth: undefined,
+            generalAppPBADetails: {
+              fee: undefined,
+              paymentDetails: undefined,
+              serviceRequestReference: undefined,
+            },
+            applicationFeeAmountInPence: undefined,
+            parentClaimantIsApplicant: undefined,
+            judicialDecision: undefined,
+            judicialDecisionMakeOrder: {
+              directionsResponseByDate: new Date('2024-01-01').toString(),
+              makeAnOrder: JudicialDecisionMakeAnOrderOptions.GIVE_DIRECTIONS_WITHOUT_HEARING,
+            },
+            directionOrderDocument: [
+              {
+                id: '1',
+                value: {
+                  documentLink: {
+                    document_url: 'test',
+                    document_binary_url: binary_url,
+                    document_filename: fileName,
+                    category_id: '1',
+                  },
+                  documentType: DocumentType.DIRECTION_ORDER,
+                  createdDatetime: new Date('2024-01-01'),
+                },
+              },
+            ],
+          },
+          created_date: '',
+          id: '',
+          last_modified: '',
+          state: undefined,
+        };
+
+        mockedSummaryRows.mockImplementation(() => []);
+        jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
+
+        await request(app)
+          .get(GA_VIEW_APPLICATION_URL)
+          .query({applicationId: '1718105701451856'})
+          .expect((res) => {
+            expect(res.status).toBe(200);
+            expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
+          });
+      });
     });
 
     it('should return http 500 when has error in the get method', async () => {
