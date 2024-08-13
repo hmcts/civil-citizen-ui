@@ -29,7 +29,7 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, requestingReasonControl
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const applicationIndex = queryParamNumber(req, 'index');
+    const applicationIndex = queryParamNumber(req, 'index') || 0;
     const generalApplication = claim.generalApplication;
     const applicationTypeOption = getByIndexOrLast(generalApplication?.applicationTypes, applicationIndex)?.option;
     const requestingReasonText = getByIndex(generalApplication?.requestingReasons, applicationIndex)?.text;
