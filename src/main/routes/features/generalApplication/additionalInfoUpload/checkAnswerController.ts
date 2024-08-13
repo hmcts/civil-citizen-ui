@@ -26,6 +26,7 @@ const gaRequestMoreInfoCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/checkYourAnswer';
 const generalAppApiBaseUrl = config.get<string>('services.generalApplication.url');
 const gaServiceClient: GaServiceClient = new GaServiceClient(generalAppApiBaseUrl);
+const headerCaption = 'PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE';
 
 gaRequestMoreInfoCheckAnswersController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {

@@ -413,6 +413,8 @@ import uploadDocumentsDirectionsOrderController
   from 'routes/features/generalApplication/directionsOrderUpload/uploadDocumentsDirectionsOrderController';
 import gaDirectionOrderCheckAnswersController from './features/generalApplication/directionsOrderUpload/checkAnswerController';
 import directionOrderSubmittedConfirmationController from './features/generalApplication/directionsOrderUpload/directionOrderSubmittedConfirmationController';
+import uploadDocumentsForRequestWrittenRepresentation from './features/generalApplication/writtenRepresentationDocs/uplodWrittenRepresentationDocsController';
+import gaWrittenRepresentationCheckAnswersController from './features/generalApplication/writtenRepresentationDocs/checkAnswerController';
 import respondAddInfoController
   from 'routes/features/generalApplication/additionalInfoUpload/respondController';
 
@@ -750,4 +752,6 @@ export default [
   uploadDocumentsDirectionsOrderController,
   gaDirectionOrderCheckAnswersController,
   directionOrderSubmittedConfirmationController,
+  uploadDocumentsForRequestWrittenRepresentation,
+  gaWrittenRepresentationCheckAnswersController,
 ];

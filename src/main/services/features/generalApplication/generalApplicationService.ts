@@ -444,6 +444,9 @@ export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
 };
   
 export const shouldDisplaySyncWarning = (applicationResponse: ApplicationResponse): boolean => {
+  if (!applicationResponse) {
+    return false;
+  }
   const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
   if (isAdditionalFee) {
     return applicationResponse?.state === ApplicationState.APPLICATION_ADD_PAYMENT
