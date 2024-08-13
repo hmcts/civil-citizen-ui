@@ -6,6 +6,7 @@ import {
   getCourtDocuments,
   getJudgeResponseSummary,
   getRespondentDocuments,
+  getJudgesDirectionsOrder,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {GaServiceClient} from 'client/gaServiceClient';
 import * as requestModels from 'models/AppRequest';
@@ -342,6 +343,60 @@ describe('View Application service', () => {
       );
       const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
       expect(result).toEqual(expectedResult);
+    });
+  });
+
+  describe('getJudgesDirectionsOrder', () => {
+    it('should return judge directions order', async () => {
+      //given
+      const applicationResponse = new ApplicationResponse();
+      const fileName = 'Name of file';
+      const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
+      const binary_url = `http://dm-store:8080/documents/${binary}/binary`;
+      applicationResponse.case_data = {
+        applicationFeeAmountInPence: '',
+        applicationTypes: '',
+        gaAddlDoc: [],
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: '',
+        generalAppEvidenceDocument: [],
+        generalAppHearingDetails: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppPBADetails: undefined,
+        generalAppReasonsOfOrder: '',
+        generalAppRespondentAgreement: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppType: undefined,
+        judicialDecision: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecisionMakeOrder: {
+          directionsResponseByDate: new Date('2024-01-01').toString(),
+        },
+        directionOrderDocument: [
+          {
+            id: '1',
+            value: {
+              documentLink: {
+                document_url: 'test',
+                document_binary_url: binary_url,
+                document_filename: fileName,
+                category_id: '1',
+              },
+              documentType: DocumentType.DIRECTION_ORDER,
+              createdDatetime: new Date('2024-01-01'),
+            },
+          },
+        ],
+      };
+      //when
+      const result = getJudgesDirectionsOrder(applicationResponse, 'en');
+      //then
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].value.html).toEqual('1 January 2024');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER');
+      expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER_DOCUMENT');
     });
   });
 });
