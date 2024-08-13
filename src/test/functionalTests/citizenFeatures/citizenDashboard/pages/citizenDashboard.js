@@ -11,7 +11,7 @@ class CitizenDashboardPage {
       await I.see('Claimant name');
       await I.see('Claim amount');
       await I.see('Status');
-      await I.see(claimNumber)
+      await I.see(claimNumber);
     }
     else {
       await I.refreshPage();
