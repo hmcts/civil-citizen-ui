@@ -1,15 +1,26 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {GA_RESPONSE_VIEW_APPLICATION_URL, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL} from 'routes/urls';
+import {
+  GA_ACCEPT_DEFENDANT_OFFER_URL,
+  GA_AGREE_TO_ORDER_URL,
+  GA_RESPONDENT_AGREEMENT_URL,
+  GA_RESPONDENT_INFORMATION_URL,
+  GA_RESPONSE_VIEW_APPLICATION_URL,
+  GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
+} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {
   getApplicantDocuments,
-  getApplicationSections, getCourtDocuments, getRespondentDocuments,
+  getApplicationSections,
+  getCourtDocuments,
+  getRespondentDocuments,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {DocumentsViewComponent} from 'form/models/documents/DocumentsViewComponent';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
 const viewApplicationToRespondentController = Router();
 const viewPath = 'features/generalApplication/response/view-application';
