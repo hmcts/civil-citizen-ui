@@ -708,6 +708,23 @@ describe('General Application service', () => {
   });
 });
 
+describe('Save Additional Text and Option', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  it('should save GARespondentResponse successfully', async () => {
+    //Given
+    jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+    const spy = jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse');
+    const uploadFile = YesNo.YES;
+    const input = 'More info';
+    //When
+    await saveAdditionalText('123', input, uploadFile);
+    //Then
+    expect(spy).toBeCalled();
+  });
+});
+
 describe('Save Accept defendant offer', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -889,19 +906,3 @@ describe('Should display sync warning', () => {
   });
 });
 
-describe('Save Additional Text and Option', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-  it('should save GARespondentResponse successfully', async () => {
-    //Given
-    jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
-    const spy = jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse');
-    const uploadFile = YesNo.YES;
-    const input = 'More info';
-    //When
-    await saveAdditionalText('123', input, uploadFile);
-    //Then
-    expect(spy).toBeCalled();
-  });
-});
