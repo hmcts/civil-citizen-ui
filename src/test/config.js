@@ -23,12 +23,14 @@ module.exports = {
   },
   url: {
     manageCase: 'https://xui-civil-citizen-ui-pr-4333.preview.platform.hmcts.net',
-    authProviderApi: 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
+    authProviderApi:'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
     ccdDataStore: 'https://ccd-data-store-api-civil-citizen-ui-pr-4333.preview.platform.hmcts.net',
     dmStore: 'http://dm-store-aat.service.core-compute-aat.internal',
     idamApi: 'https://idam-api.aat.platform.hmcts.net',
     civilService: 'https://civil-citizen-ui-pr-4333-civil-service.preview.platform.hmcts.net',
     caseAssignmentService: 'https://manage-case-assignment-civil-citizen-ui-pr-4333.preview.platform.hmcts.net',
+    idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
+
     // manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
     // authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-demo.service.core-compute-demo.internal',
     // ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-demo.service.core-compute-demo.internal',
