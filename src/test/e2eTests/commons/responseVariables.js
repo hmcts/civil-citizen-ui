@@ -10,7 +10,14 @@ const paymentType = Object.freeze({
   I_WILL_SUGGEST_A_REPAYMENT_PLAN: 'paymentType-3',
 });
 
+const rejectOfClaimType = Object.freeze({
+  I_HAVE_PAID_WHAT_I_BELIEVE_I_OWE: 'option',
+  I_DISPUTE_ALL_OF_THE_CLAIM: 'option-2',
+  I_DISPUTE_THE_CLAIM_AND_WANT_TO_MAKE_A_COUNTERCLAIM: 'option-3',
+});
+
 module.exports = {
   responseType,
   paymentType,
+  rejectOfClaimType,
 };
