@@ -176,6 +176,8 @@ export class Claim {
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
   judgmentOnline?: JudgmentOnline;
+  generalOrderDocClaimant?: SystemGeneratedCaseDocuments[];
+  generalOrderDocRespondentSol?: SystemGeneratedCaseDocuments[];
   claimType?: string;
 
   // Index signature to allow dynamic property access
