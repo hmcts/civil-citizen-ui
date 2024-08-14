@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const newRow = lastRow.cloneNode(true);
       const children = newRow.children;
       Array.from(children).forEach((child) => {
-        const elements = child.querySelectorAll(`div, input, textarea, select, label, button,${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
+        const elements = child.querySelectorAll(`div, input, textarea, select, label, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
         updateInputs(elements);
         removeErrors(child);
       });
@@ -130,15 +130,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const lastItem = elements[elements.length-1];
     const lastRadioInput = lastItem.getElementsByClassName('govuk-radios__input');
     const lastCheckboxInput = lastItem.getElementsByClassName('govuk-checkboxes__input');
-    const lastRemoveButton = lastItem.getElementsByClassName('remove-row');
+
     if (lastRadioInput.length) {
       const number = lastRadioInput[0].id.split('-')[1];
       return Number(number) + 1;
     } else if (lastCheckboxInput.length) {
       const number = lastCheckboxInput[0].id.split('-')[1];
-      return Number(number) + 1;
-    }else if (lastRemoveButton.length) {
-      const number = lastRemoveButton[0].id.split('-')[1];
       return Number(number) + 1;
     }
     return document.getElementsByClassName('multiple-row').length;

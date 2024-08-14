@@ -223,12 +223,9 @@
       {% if removeButton %}
         {% if removeButton.hidden %}
           {{ govukButton({
-            text: t('COMMON.REMOVE_CARM') if isCarm else t('COMMON.REMOVE'),
+            text: t('COMMON.REMOVE_CARM') if isCarm else t('COMMON.REMOVE') ,
             classes: "govuk-button--secondary remove-row govuk-visually-hidden",
-            type: "button" if not removeButton.noJs,
-            attributes: {
-            'aria-label' : t('COMMON.REMOVE_CARM') + ' ['+(index + 1)+']' if isCarm else t('COMMON.REMOVE') + ' ['+(index + 1)+']'
-          }
+            type: "button" if not removeButton.noJs
           }) }}
         {% else %}
           {{ govukButton({
@@ -236,10 +233,7 @@
             classes: "govuk-button--secondary remove-row",
             name: 'action',
             value: 'remove-unavailableDates' + index,
-            type: "button" if not removeButton.noJs,
-            attributes: {
-            'aria-label' : t('COMMON.REMOVE_CARM') + ' ['+(index + 1)+']' if isCarm else t('COMMON.REMOVE') + ' ['+(index + 1)+']'
-          }
+            type: "button" if not removeButton.noJs
           }) }}
         {% endif %}
       {% endif %}
