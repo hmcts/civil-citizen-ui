@@ -6,9 +6,6 @@ import {toCCDDQExtraDetails} from 'services/translation/response/convertToCCDDQE
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Experts} from 'models/directionsQuestionnaire/experts/experts';
-import {ReportDetail} from 'models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
-
-const mockReportDetail: ReportDetail = new ReportDetail('Joe', '2023', '5', '10' );
 
 describe('translate DQ extra details to CCD model', () => {
   const claim = new Claim();
@@ -69,7 +66,6 @@ describe('translate DQ extra details to CCD model', () => {
       expertRequired: true,
       expertReportDetails: {
         option: YesNo.YES,
-        reportDetails:[mockReportDetail],
       },
       expertEvidence: new GenericYesNo('Yes'),
       expertCanStillExamine: {
@@ -95,12 +91,6 @@ describe('translate DQ extra details to CCD model', () => {
         caseNeedsAnExpert: YesNoUpperCamelCase.YES,
         expertCanStillExamineDetails: 'details',
         expertReportRequired: YesNoUpperCamelCase.YES,
-        details: [{
-          value: {
-            'expertName': mockReportDetail.expertName,
-            'reportDate': mockReportDetail.reportDate,
-          },
-        }],
       },
     };
 
