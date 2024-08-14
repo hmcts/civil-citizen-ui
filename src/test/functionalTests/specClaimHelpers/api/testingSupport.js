@@ -112,7 +112,7 @@ module.exports = {
       {'Content-Type': 'application/json'},
       {
         microservice: config.s2s.microservice,
-        oneTimePassword: totp(config.s2s.secret)
+        oneTimePassword: totp(config.s2s.secret) ,
       })
       .then(response => response.text());
 
@@ -122,7 +122,7 @@ module.exports = {
         {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${authToken}`,
-          'ServiceAuthorization': s2sAuth
+          'ServiceAuthorization': s2sAuth ,
         },
         {
           caseIds,
