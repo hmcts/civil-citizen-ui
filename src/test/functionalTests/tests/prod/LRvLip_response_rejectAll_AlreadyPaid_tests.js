@@ -6,8 +6,6 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
 
-const carmEnabled = false;
-const manualPIP = 'yes';
 let claimRef;
 let caseData;
 let claimNumber;
@@ -17,7 +15,7 @@ Feature('Response with RejectAll and AlreadyPaid');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', '', carmEnabled, '', manualPIP);
+  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
