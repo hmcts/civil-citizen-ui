@@ -52,7 +52,7 @@ defendantDetailsController.post(detailsURLs, (async (req: AppRequest | Request, 
   try {
     const defendant: Party = await getDefendantInformation(userId);
     const partyDetails = new GenericForm(new PartyDetails(req.body));
-    partyDetails.validateSync();
+    await partyDetails.validate();
 
     if (partyDetails.hasErrors()) {
       renderView(res, partyDetails, defendant.type);
