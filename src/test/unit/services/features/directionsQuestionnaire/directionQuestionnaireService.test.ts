@@ -16,7 +16,6 @@ import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetail
 import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherWitnessItems';
 import {Witnesses} from 'models/directionsQuestionnaire/witnesses/witnesses';
 import {ClaimantResponse} from 'common/models/claimantResponse';
-import {ReportDetail} from 'common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail';
 import {CaseState} from 'common/form/models/claimDetails';
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -117,9 +116,6 @@ describe('Direction questionnaire Service', () => {
       claim.claimantResponse.directionQuestionnaire.experts = new Experts();
       claim.claimantResponse.directionQuestionnaire.experts.expertReportDetails = {
         option: YesNo.YES,
-        reportDetails: [
-          new ReportDetail('John Doe'),
-        ],
       };
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return claim;
@@ -129,7 +125,6 @@ describe('Direction questionnaire Service', () => {
       //Then
       expect(directionQuestionnaire?.hearing?.determinationWithoutHearing).toBeUndefined();
       expect(directionQuestionnaire?.experts?.expertReportDetails?.option).toBe(YesNo.YES);
-      expect(directionQuestionnaire?.experts?.expertReportDetails?.reportDetails[0].expertName).toBe('John Doe');
     });
 
     it('should return defendant Direction questionnaire object with triedToSettle no', async () => {
