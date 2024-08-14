@@ -20,7 +20,7 @@ import {submitApplication} from 'services/features/generalApplication/submitAppl
 import {checkYourAnswersGAGuard} from 'routes/guards/checkYourAnswersGAGuard';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import {convertToPoundsFilter} from "common/utils/currencyFormat";
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
