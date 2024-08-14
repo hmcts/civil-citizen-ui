@@ -404,6 +404,11 @@ export const getApplicationStatus = (status: ApplicationState): ApplicationStatu
   }
 };
 
+export const getRespondentApplicationStatus = (status: ApplicationState): ApplicationStatus => 
+  (status === ApplicationState.AWAITING_RESPONDENT_RESPONSE)
+    ? ApplicationStatus.TO_DO
+    : ApplicationStatus.IN_PROGRESS;
+
 export const getApplicationFromGAService = async (req: AppRequest, applicationId: string): Promise<ApplicationResponse> => {
   return await generalApplicationClient.getApplication(req, applicationId);
 };
@@ -432,6 +437,9 @@ export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
 };
   
 export const shouldDisplaySyncWarning = (applicationResponse: ApplicationResponse): boolean => {
+  if (!applicationResponse) {
+    return false;
+  }
   const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
   if (isAdditionalFee) {
     return applicationResponse?.state === ApplicationState.APPLICATION_ADD_PAYMENT

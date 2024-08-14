@@ -20,6 +20,7 @@ import {getGaAppId} from 'services/features/generalApplication/feeDetailsService
 const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee';
 const helpWithApplicationFeeController = Router();
 const hwfPropertyName = 'applyHelpWithFees';
+
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, genAppId: string, redirectUrl: string, lng: string) {
   if (!form) {
     const claim: Claim = await getClaimById(claimId, req, true);
