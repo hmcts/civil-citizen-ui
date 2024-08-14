@@ -26,7 +26,7 @@ Scenario('Response with RejectAll-AlreadyPaid-InFull Small claims and Claimant s
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceAlreadyPaidInFull(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+});
 
 Scenario('Response with RejectAll-AlreadyPaid-InFull Fast Track and Claimant proceeds @citizenUI @rejectAll @nightly', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -42,4 +42,4 @@ Scenario('Response with RejectAll-AlreadyPaid-InFull Fast Track and Claimant pro
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnRejectionOfFullDefenceAlreadyPaidInFull(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@r2-regression').tag('@nightly');
+}).tag('@nightly');
