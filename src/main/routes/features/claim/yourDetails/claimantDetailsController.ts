@@ -71,7 +71,7 @@ claimantDetailsController.post(detailsURLs, (async (req: AppRequest | Request, r
     const claimant = await getClaimantInformation(caseId);
     const partyDetails = new GenericForm<PartyDetails>(new PartyDetails(req.body, carmEnabled));
 
-    partyDetails.validateSync();
+    await partyDetails.validate();
 
     if (partyDetails.hasErrors()) {
       generateCorrespondenceAddressErrorMessages(partyDetails);
