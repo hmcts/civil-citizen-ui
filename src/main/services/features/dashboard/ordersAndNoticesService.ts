@@ -45,7 +45,6 @@ export const getDefendantDocuments = (claim: Claim, claimId: string, lang: strin
 
 export const getCourtDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
-  const isGaForLipsEnabled = await isGaForLipsEnabled();
   const courtDocumentsArray: DocumentInformation[] = [];
 
   courtDocumentsArray.push(...getStandardDirectionsOrder(claim, claimId, lang));
