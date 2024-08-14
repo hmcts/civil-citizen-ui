@@ -21,6 +21,7 @@ import {YesNo} from 'form/models/yesNo';
 
 const respondAddInfoController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/additional-info';
+const headerCaption = 'PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.TITLE';
 
 respondAddInfoController.get(GA_RESPOND_ADDITIONAL_INFO_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -36,7 +37,7 @@ respondAddInfoController.get(GA_RESPOND_ADDITIONAL_INFO_URL, (async (req: AppReq
     const wantToUploadAddlDocuments = gaResponse.wantToUploadAddlDocuments;
     const respondAddInfo = new RespondAddInfo(wantToUploadAddlDocuments, additionalText);
     const form = new GenericForm(respondAddInfo);
-    res.render(viewPath, { currentUrl, backLinkUrl, cancelUrl, claimIdPrettified, claim, form, docUrl});
+    res.render(viewPath, { currentUrl, backLinkUrl, cancelUrl, claimIdPrettified, claim, form, docUrl, headerCaption});
   } catch (error) {
     next(error);
   }
@@ -60,7 +61,7 @@ respondAddInfoController.post(GA_RESPOND_ADDITIONAL_INFO_URL, (async (req: AppRe
       const cancelUrl = await getCancelUrl(claimId, claim);
       const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPOND_ADDITIONAL_INFO_URL);
       const docUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_VIEW_APPLICATION_URL).concat('?index=1');
-      return res.render(viewPath, { currentUrl, backLinkUrl, cancelUrl, claimIdPrettified, claim, form, docUrl});
+      return res.render(viewPath, { currentUrl, backLinkUrl, cancelUrl, claimIdPrettified, claim, form, docUrl, headerCaption});
     }
     await saveAdditionalText(generateRedisKeyForGA(req), text, option);
     let redirectUrl;
