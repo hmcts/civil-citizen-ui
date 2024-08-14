@@ -1,16 +1,21 @@
 
 import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import {Claim} from 'models/claim';
-import {YesNo} from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
-import {getLast} from 'services/features/generalApplication/generalApplicationService';
+import {getLast, getRespondentApplicationStatus} from 'services/features/generalApplication/generalApplicationService';
 import {StatementOfTruthForm} from 'common/models/generalApplication/statementOfTruthForm';
 import { getDraftGARespondentResponse, saveDraftGARespondentResponse } from './generalApplicationResponseStoreService';
+import { ApplicationResponse } from 'common/models/generalApplication/applicationResponse';
+import { ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
+import { dateTimeFormat } from 'common/utils/dateUtils';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import { GA_RESPONSE_VIEW_APPLICATION_URL } from 'routes/urls';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -94,3 +99,19 @@ export const saveRespondentStatementOfTruth = async (redisKey: string, statement
   }
 };
 
+export const isApplicationVisibleToRespondent = (application: ApplicationResponse): boolean =>
+  application.case_data?.generalAppInformOtherParty?.isWithNotice == YesNoUpperCamelCase.YES
+|| application.case_data?.generalAppRespondentAgreement?.hasAgreed == YesNoUpperCamelCase.YES;
+
+export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string) => (application: ApplicationResponse, index: number): ApplicationSummary => {
+  const status = getRespondentApplicationStatus(application.state);
+  return {
+    state: t(`PAGES.GENERAL_APPLICATION.SUMMARY.STATES.${application.state}`, {lng}),
+    status: t(`PAGES.GENERAL_APPLICATION.SUMMARY.${status}`, {lng}),
+    statusColor: StatusColor[status],
+    types: application.case_data?.applicationTypes,
+    id: application.id,
+    createdDate: dateTimeFormat(application.created_date, lng),
+    applicationUrl: `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id, GA_RESPONSE_VIEW_APPLICATION_URL)}?index=${index + 1}`,
+  };
+};
