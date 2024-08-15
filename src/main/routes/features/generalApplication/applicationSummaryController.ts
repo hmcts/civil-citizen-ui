@@ -7,8 +7,8 @@ import { getApplicationStatus, getCancelUrl } from 'services/features/generalApp
 import { GaServiceClient } from 'client/gaServiceClient';
 import { ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
-import { dateTimeFormat } from 'common/utils/dateUtils';
 import { getClaimById } from 'modules/utilityService';
+import {dateTimeFormatForGbDisplay} from 'common/utils/dateUtils';
 
 const applicationSummaryController = Router();
 const viewPath = 'features/generalApplication/applications-summary';
@@ -22,7 +22,7 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req);
-    
+
     const applicationsRows: ApplicationSummary[] = [];
     applications.forEach((application, index) => {
       const status = getApplicationStatus(application.state);
@@ -32,7 +32,7 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
         statusColor: StatusColor[status],
         types: application.case_data?.applicationTypes,
         id: application.id,
-        createdDate: dateTimeFormat(application.created_date, lng),
+        createdDate: dateTimeFormatForGbDisplay(application.created_date, lng),
         applicationUrl: `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id,  GA_VIEW_APPLICATION_URL)}?index=${index + 1}`,
       });
     });

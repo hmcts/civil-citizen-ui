@@ -1,7 +1,13 @@
 import {
   addDaysBefore4pm,
-  addMonths, checkEvidenceUploadTime, dateTimeFormat, formatStringDateDMY, formatStringTimeHMS,
-  getDOBforAgeFromCurrentTime, isDateOnOrAfterSpecificDate,
+  addMonths,
+  checkEvidenceUploadTime,
+  dateTimeFormat,
+  dateTimeFormatForGbDisplay,
+  formatStringDateDMY,
+  formatStringTimeHMS,
+  getDOBforAgeFromCurrentTime,
+  isDateOnOrAfterSpecificDate,
 } from '../../../../main/common/utils/dateUtils';
 
 describe('addDaysBefore4pm', () => {
@@ -178,5 +184,18 @@ describe('dateTimeFormat', () => {
     const date = '2024-05-29T14:39:28.483971';
     const result = dateTimeFormat(date, 'cy');
     expect(result).toBe('29 Mai 2024, 2:39:28 yh');
+  });
+});
+
+describe('dateTimeFormatForGbDisplay', () => {
+  it('should return date formatted in en', () => {
+    const date = '2024-05-29T14:39:28.483971';
+    const result = dateTimeFormatForGbDisplay(date, 'en');
+    expect(result).toBe('29 May 2024, 3:39:28 pm');
+  });
+  it('should return date formatted in cy', () => {
+    const date = '2024-05-29T14:39:28.483971';
+    const result = dateTimeFormatForGbDisplay(date, 'cy');
+    expect(result).toBe('29 Mai 2024, 3:39:28 yh');
   });
 });

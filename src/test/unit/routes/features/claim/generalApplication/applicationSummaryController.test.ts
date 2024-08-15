@@ -78,7 +78,7 @@ describe('General Application - Application costs', () => {
           expect(decode(res.text)).toContain(t('PAGES.GENERAL_APPLICATION.SUMMARY.IN_PROGRESS'));
           expect(decode(res.text)).toContain(applicationMock.case_data.applicationTypes);
           expect(decode(res.text)).toContain(applicationMock.id);
-          expect(decode(res.text)).toContain('29 May 2024, 2:39:28 pm');
+          expect(decode(res.text)).toContain('29 May 2024, 3:39:28 pm');
           expect(decode(res.text)).toContain(t('PAGES.GENERAL_APPLICATION.SUMMARY.VIEW_APPLICATION'));
         });
     });

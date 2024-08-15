@@ -154,3 +154,9 @@ export function isDateOnOrAfterSpecificDate(date: Date, specificDate: Date) {
 export function convertDateToStringFormat(date: Date | string, format = 'yyyy-MM-dd') : string {
   return date ? DateTime.fromJSDate(new Date(date)).toFormat(format) : undefined;
 }
+
+export function dateTimeFormatForGbDisplay(value: string, lang?: string): string {
+  const language = lang === 'cy' ? 'cy' : 'en-gb';
+  const date = DateTime.fromJSDate(new Date(value)).plus({hours: 1});
+  return date.setLocale(language).toFormat('d LLLL yyyy, h:mm:ss a');
+}
