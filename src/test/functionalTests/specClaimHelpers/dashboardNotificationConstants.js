@@ -208,12 +208,13 @@ module.exports = {
     };
   },
 
-  //Notice.AAA6.CP.Hearing.Scheduled.Claimant
-  hearingScheduled: (hearingDate) => {
+  //Notice.AAA6.CP.HearingDocuments.Upload
+  uploadDocuments: () => {
     return {
-      title: 'A hearing has been scheduled',
-      content: `Your hearing has been scheduled for ${hearingDate} at Central London County Court. Please keep your contact details and anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050. View the hearing notice.`,
-      nextSteps: 'View the hearing notice',
+      title: 'Upload documents',
+      content: 'You can upload and submit documents to support your claim. Follow the instructions set out in the directions order. Any documents submitted after the deadlines in the directions order may not be considered by the judge.',
+      nextSteps: 'upload and submit documents',
+      nextSteps2: 'directions order',
     };
   },
 

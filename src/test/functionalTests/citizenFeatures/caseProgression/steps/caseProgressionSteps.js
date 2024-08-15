@@ -6,6 +6,9 @@ const WhatTypeOfDocumentsDoYouWantToUpload = require('../pages/uploadEvidence/wh
 const UploadYourDocument = require('../pages/uploadEvidence/uploadYourDocument');
 const CheckYourAnswers = require('../pages/uploadEvidence/checkYourAnswers');
 const UploadYourDocumentsConfirmation = require('../pages/uploadEvidence/uploadYourDocumentsConfirmation');
+const {isDashboardServiceToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
+const { orderMade, uploadDocuments } = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e2e/dashboardHelper');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const latestUpdateTab = new LatestUpdate();
@@ -38,15 +41,24 @@ const buttons = {
 
 class CaseProgressionSteps {
 
-  initiateUploadEvidenceJourney(claimRef, claimType, partyType, language = 'en') {
+  async initiateUploadEvidenceJourney(claimRef, claimType, partyType, claimNumber, language = 'en') {
     console.log('The value of the Claim Reference : '+claimRef);
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled(claimRef);
     let partiesOnTheCase;
-    if (partyType === 'LiPvLiP') {
-      partiesOnTheCase = 'Miss Jane Doe v Sir John Doe';
-      I.amOnPage('/case/' + claimRef + '/case-progression/upload-your-documents');
+    if (isDashboardServiceEnabled) {
+      let notification = orderMade();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      notification = uploadDocuments();
+      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+      await I.click(notification.nextSteps);
     } else {
-      partiesOnTheCase = 'Test Inc v Sir John Doe';
-      latestUpdateTab.nextAction('Upload documents');
+      if (partyType === 'LiPvLiP') {
+        partiesOnTheCase = 'Miss Jane Doe v Sir John Doe';
+        I.amOnPage('/case/' + claimRef + '/case-progression/upload-your-documents');
+      } else {
+        partiesOnTheCase = 'Test Inc v Sir John Doe';
+        latestUpdateTab.nextAction('Upload documents');
+      }
     }
     uploadYourDocumentsIntroduction.verifyPageContent(language);
     uploadYourDocumentsIntroduction.nextAction(buttons.startNow[language]);
