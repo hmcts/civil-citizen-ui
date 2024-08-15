@@ -189,13 +189,13 @@ describe('dateTimeFormat', () => {
 
 describe('dateTimeFormatForGbDisplay', () => {
   it('should return date formatted in en', () => {
-    const date = '2024-05-29T14:39:28.483971';
+    const date = '2024-05-29T15:39:28.483971';
     const result = dateTimeFormatForGbDisplay(date, 'en');
-    expect(result).toBe('29 May 2024, 3:39:28 pm');
+    expect(result).toBe('29 May 2024, 4:39:28 pm');
   });
   it('should return date formatted in cy', () => {
-    const date = '2024-05-29T14:39:28.483971';
+    const date = '2024-05-29T15:39:28.483971';
     const result = dateTimeFormatForGbDisplay(date, 'cy');
-    expect(result).toBe('29 Mai 2024, 3:39:28 yh');
+    expect(result).toBe('29 Mai 2024, 4:39:28 yh');
   });
 });
