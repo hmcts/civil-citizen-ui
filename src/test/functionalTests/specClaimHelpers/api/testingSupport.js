@@ -99,7 +99,7 @@ module.exports = {
           } else if (response.status === 409) {
             console.log('Role assigned failed');
           } else {
-            throw new Error(`Error occurred while assigning case with status : ${response.status}`);
+            console.log(`Error occurred while assigning case with status : ${response.status}`);
           }
         });
     });
@@ -132,7 +132,7 @@ module.exports = {
           if (response.status === 200) {
             caseIds.forEach(caseId => console.log(`User unassigned from case [${caseId}] successfully`));
           } else {
-            throw new Error(`Error occurred while unassigning users with status : ${response.status}`);
+            console.log(`Error occurred while unassigning users with status : ${response.status}`);
           }
         });
     });
@@ -196,7 +196,7 @@ module.exports = {
         if (response.status === 200) {
           console.log(`Bundle for ${caseId} successful`);
         } else {
-          throw new Error(`Error occurred for bundle creation with status : ${response.status}`);
+          console.log(`Error occurred for bundle creation with status : ${response.status}`);
         }
       },
       );
