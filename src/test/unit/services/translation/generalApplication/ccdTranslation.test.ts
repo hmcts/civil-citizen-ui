@@ -137,7 +137,7 @@ describe('translate draft application to ccd', () => {
       {
         value: {
           category_id: 'category',
-          document_binary_url: 'url',
+          document_binary_url: 'binary',
           document_filename: 'test',
           document_url: 'url',
         },

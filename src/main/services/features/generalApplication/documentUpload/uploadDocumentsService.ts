@@ -61,7 +61,7 @@ export const translateCUItoCCD = (uploadDocumentsList: UploadGAFiles[]) => {
     return {
       value: {
         document_url: uploadDocument?.caseDocument?.documentLink?.document_url,
-        document_binary_url: uploadDocument?.caseDocument?.documentLink?.document_url,
+        document_binary_url: uploadDocument?.caseDocument?.documentLink?.document_binary_url,
         document_filename: uploadDocument?.caseDocument?.documentLink?.document_filename,
         category_id: uploadDocument?.caseDocument?.documentLink?.category_id,
       },
