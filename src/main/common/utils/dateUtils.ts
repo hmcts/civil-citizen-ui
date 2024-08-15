@@ -157,6 +157,8 @@ export function convertDateToStringFormat(date: Date | string, format = 'yyyy-MM
 
 export function dateTimeFormatForGbDisplay(value: string, lang?: string): string {
   const language = lang === 'cy' ? 'cy' : 'en-gb';
-  const date = DateTime.fromJSDate(new Date(value)).plus({hours: 1});
+  const updatedDate = new Date(value);
+  updatedDate.setHours(updatedDate.getHours() + 1);
+  const date = DateTime.fromJSDate(new Date(updatedDate));
   return date.setLocale(language).toFormat('d LLLL yyyy, h:mm:ss a');
 }
