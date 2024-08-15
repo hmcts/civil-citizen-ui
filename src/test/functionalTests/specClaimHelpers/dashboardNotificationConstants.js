@@ -374,7 +374,7 @@ module.exports = {
   mediationUnsuccessfulClaimant1NonAttendance: () => {
     return {
       title: 'You did not attend mediation',
-      content: 'You did not attend your mediation appointment, and the judge may issue a penalty against you. Your case will not be reviewed by the court. Explain why you did not attend your appointment',
+      content: 'You did not attend your mediation appointment, and the judge may issue a penalty against you. Your case will now be reviewed by the court. Explain why you did not attend your appointment',
       nextSteps: 'Explain why you did not attend your appointment',
     };
   },
