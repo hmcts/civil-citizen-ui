@@ -6,7 +6,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
-import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {
   getGaFeePaymentRedirectInformation,
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
@@ -14,9 +14,9 @@ import {getClaimById} from 'modules/utilityService';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {
   getApplicationFromGAService,
-  saveHelpWithFeesDetails
 } from 'services/features/generalApplication/generalApplicationService';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
+import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
@@ -36,13 +36,20 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     } else {
       generalApplicationId = req.params.appId;
     }
-    await saveHelpWithFeesDetails(generalApplicationId + req.session.user?.id, applyHelpWithFees, hwfPropertyName);
+
     if (applyHelpWithFees.option === YesNo.NO) {
       const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       await saveDraftClaim(claim.id, claim, true);
+      deleteDraftClaimFromStore(generalApplicationId + req.session.user?.id);
       redirectUrl = paymentRedirectInformation?.nextUrl;
     } else {
+      const gaHwFDetails = await getDraftGAHWFDetails(generalApplicationId + req.session.user?.id)
+      if (req.query.appFee) {
+        gaHwFDetails.applicationFee = <string>req.query.appFee;
+      }
+      (<GenericYesNo>gaHwFDetails[hwfPropertyName]) = applyHelpWithFees;
+      await saveDraftGAHWFDetails(generalApplicationId + req.session.user?.id, gaHwFDetails);
       const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, generalApplicationId);
       const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
       redirectUrl = isAdditionalFee

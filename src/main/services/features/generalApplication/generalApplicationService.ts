@@ -1,6 +1,4 @@
 import {
-  deleteDraftClaimFromStore,
-  generateRedisKeyForGA,
   getCaseDataFromStore,
   saveDraftClaim
 } from 'modules/draft-store/draftStoreService';
@@ -355,7 +353,6 @@ export const saveAndTriggerNotifyGaHwfEvent = async (req: AppRequest, gaHwf: App
       generalAppHelpWithFees: toCCDGeneralAppHelpWithFees(gaHwf),
     };
     await triggerNotifyHwfEvent(req.params.appId, gaHelpWithFees, req);
-    await deleteDraftClaimFromStore(generateRedisKeyForGA(req));
   }
   catch (error) {
     logger.error(error);

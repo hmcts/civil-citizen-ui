@@ -10,10 +10,8 @@ import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
-// import {Claim} from 'models/claim';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import {YesNo} from 'form/models/yesNo';
-// import {getClaimById} from 'modules/utilityService';
 import {
   saveAndTriggerNotifyGaHwfEvent,
   saveHelpWithFeesDetails,
@@ -84,7 +82,7 @@ export default helpWithApplicationFeeReferenceController;
 
 function getRedirectUrl(claimId: string, isHelpWithFee: GenericYesNo, feeType: boolean, genAppId: string): string {
   if (isHelpWithFee.option === YesNo.YES) {
-    return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_FEE_CONFIRMATION_URL+ '?additionalFeeTypeFlag='+ feeType);
+    return constructResponseUrlWithIdAndAppIdParams(claimId, genAppId, GA_APPLICATION_FEE_CONFIRMATION_URL + '?additionalFeeTypeFlag=' + feeType);
   }
   return constructResponseUrlWithIdAndAppIdParams(claimId, genAppId, GA_APPLY_HELP_WITH_FEE_SELECTION);
 }

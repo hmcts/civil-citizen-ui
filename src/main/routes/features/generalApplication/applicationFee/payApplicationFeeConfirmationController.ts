@@ -5,9 +5,9 @@ import {
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
-import {Claim} from 'models/claim';
+import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 
 const payFeeConfirmationScreenViewPath = 'features/generalApplication/applicationFee/pay-application-fee-confirmation';
 const payApplicationFeeConfirmationController = Router();
@@ -23,13 +23,12 @@ payApplicationFeeConfirmationController.get(GA_APPLICATION_FEE_CONFIRMATION_URL,
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
-    const redisClaimId = generateRedisKey(<AppRequest>req);
-    const claim: Claim = await getCaseDataFromStore(redisClaimId);
+    const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
     const claimId = req.params.id;
-
+    await deleteDraftClaimFromStore(generateRedisKeyForGA(<AppRequest>req));
     res.render(payFeeConfirmationScreenViewPath, {
       confirmationTitle : isAdditionalFeeType ? t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONFIRMATION_ADDITIONAL_TITLE', {lng}):t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONFIRMATION_TITLE', {lng}),
-      referenceNumber: claim.generalApplication?.helpWithFees?.helpFeeReferenceNumberForm?.referenceNumber,
+      referenceNumber: gaHwFDetails.helpFeeReferenceNumberForm?.referenceNumber,
       confirmationContent: getApplicationFeeConfirmationContent(claimId, lng),
     });
   }catch (error) {

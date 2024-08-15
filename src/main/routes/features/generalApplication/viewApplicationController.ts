@@ -57,7 +57,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     }
 
     if(isApplicationFeeAmountNotPaid) {
-      applicationFeeOptionUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+      applicationFeeOptionUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION + '?appFee=' + applicationResponse?.case_data?.generalAppPBADetails?.fee.calculatedAmountInPence);
     }
 
     if(isJudgesDirectionsOrder) {

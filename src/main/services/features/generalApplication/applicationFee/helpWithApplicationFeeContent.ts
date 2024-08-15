@@ -2,7 +2,7 @@ import {t} from 'i18next';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DASHBOARD_CLAIMANT_URL, GA_APPLY_HELP_WITH_FEE_REFERENCE, HELP_WITH_FEES_ELIGIBILITY} from 'routes/urls';
-import {ClaimFeeData} from 'models/civilClaimResponse';
+// import {ClaimFeeData} from 'models/civilClaimResponse';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 export const getHelpApplicationFeeSelectionPageContents = (lng: string) => {
@@ -26,8 +26,8 @@ export const getButtonsContents  = (claimId : string) => {
     .build();
 };
 
-export const getHelpApplicationFeeContinuePageContents = (gaFeeData: ClaimFeeData, feeTypeFlag: boolean) => {
-  const feeAmount = convertToPoundsFilter(gaFeeData?.calculatedAmountInPence.toString());
+export const getHelpApplicationFeeContinuePageContents = (gaFee: string, feeTypeFlag: boolean) => {
+  const feeAmount = convertToPoundsFilter(gaFee);
   const pageBuilder=new PageSectionBuilder();
   if (feeTypeFlag) {
     pageBuilder.addMicroText('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING');
