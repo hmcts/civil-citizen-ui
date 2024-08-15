@@ -30,6 +30,7 @@ Before(async () => {
 
 Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'Company')
     console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
     await api.setCaseId(claimRef);
     await api.waitForFinishedBusinessProcess();
