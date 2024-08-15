@@ -13,7 +13,7 @@ import {StatementOfTruthForm} from 'common/models/generalApplication/statementOf
 import { getDraftGARespondentResponse, saveDraftGARespondentResponse } from './generalApplicationResponseStoreService';
 import { ApplicationResponse } from 'common/models/generalApplication/applicationResponse';
 import { ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
-import { dateTimeFormat } from 'common/utils/dateUtils';
+import {dateTimeFormatForGbDisplay} from 'common/utils/dateUtils';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import { GA_RESPONSE_VIEW_APPLICATION_URL } from 'routes/urls';
 
@@ -111,7 +111,7 @@ export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string
     statusColor: StatusColor[status],
     types: application.case_data?.applicationTypes,
     id: application.id,
-    createdDate: dateTimeFormat(application.created_date, lng),
+    createdDate: dateTimeFormatForGbDisplay(application.created_date, lng),
     applicationUrl: `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id, GA_RESPONSE_VIEW_APPLICATION_URL)}?index=${index + 1}`,
   };
 };

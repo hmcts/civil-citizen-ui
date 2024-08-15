@@ -52,7 +52,7 @@ describe('General Application Response service', () => {
     return {
       id: '6789',
       case_data: ccdApplication as CCDApplication,
-      state, 
+      state,
       last_modified: '2024-05-29T14:39:28.483971',
       created_date: '2024-05-29T14:39:28.483971',
     };
@@ -193,7 +193,7 @@ describe('General Application Response service', () => {
       expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, true)))
         .toBeTruthy();
     });
-    
+
     it('should return true when application is with consent', () => {
       expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, false, true)))
         .toBeTruthy();
@@ -217,7 +217,7 @@ describe('General Application Response service', () => {
           statusColor: 'govuk-tag--red',
           types: 'Vary order',
           id: '6789',
-          createdDate: '29 May 2024, 2:39:28 pm',
+          createdDate: '29 May 2024, 3:39:28 pm',
           applicationUrl: '/case/12345/response/general-application/6789/view-application?index=1',
         } as ApplicationSummary);
     });
@@ -232,7 +232,7 @@ describe('General Application Response service', () => {
           statusColor: 'govuk-tag--green',
           types: 'Vary order',
           id: '6789',
-          createdDate: '29 May 2024, 2:39:28 pm',
+          createdDate: '29 May 2024, 3:39:28 pm',
           applicationUrl: '/case/12345/response/general-application/6789/view-application?index=1',
         } as ApplicationSummary);
     });
