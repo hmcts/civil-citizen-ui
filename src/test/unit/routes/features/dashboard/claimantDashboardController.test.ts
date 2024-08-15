@@ -24,6 +24,7 @@ import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {Dashboard} from 'models/dashboard/dashboard';
 import { applicationNoticeUrl } from 'common/utils/externalURLs';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
@@ -106,6 +107,7 @@ const dashboard = new Dashboard(mockExpectedDashboardInfo);
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
 jest.mock('services/dashboard/dashboardService', () => ({
   getNotifications: jest.fn(),
@@ -379,7 +381,7 @@ describe('claimant Dashboard Controller', () => {
         .mockResolvedValueOnce(claim);
       jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
       jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
-      
+
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).not.toContain('Tell us you&#39;ve ended the claim');
@@ -405,6 +407,7 @@ describe('claimant Dashboard Controller', () => {
         .mockResolvedValueOnce(claim);
       jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
       jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(true);
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
 
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
