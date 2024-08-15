@@ -190,6 +190,15 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.DefResponse.FullDefenceOrPartAdmin.AlreadyPaid.Defendant
+  claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid: (amount, date) => {
+    return {
+      title: 'Response to the claim',
+      content: `The defendant has said they already paid £${amount} on ${date}. You can confirm payment and settle, or proceed with the claim.`,
+      nextSteps: 'View and respond',
+    };
+  },
+
   //Notice.AAA6.CP.StrikeOut.HearingFeeUnpaid.TrialReady.Claimant
   claimStruckOut: () => {
     return {
