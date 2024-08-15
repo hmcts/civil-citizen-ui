@@ -11,7 +11,7 @@ import {getClaimById} from 'modules/utilityService';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {t} from 'i18next';
 import {Claim} from 'models/claim';
 import {gaApplicationFeeDetails} from 'services/features/generalApplication/feeDetailsService';
@@ -20,6 +20,7 @@ import {getButtonsContents, getHelpApplicationFeeContinuePageContents}
 import {
   saveHelpWithFeesDetails,
 } from 'services/features/generalApplication/generalApplicationService';
+import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 
 const helpWithApplicationFeeContinueController = Router();
 const applyHelpWithFeesViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee-continue';
@@ -27,13 +28,13 @@ const hwfPropertyName = 'helpWithFeesRequested';
 
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, feeTypeFlag: boolean) {
   const claim: Claim = await getClaimById(claimId, req, true);
-
+  const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
   const gaFeeData = await gaApplicationFeeDetails(claim, <AppRequest>req);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
   const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION);
 
   if (!form) {
-    form = new GenericForm(new GenericYesNo(claim.generalApplication?.helpWithFees?.helpWithFeesRequested));
+    form = new GenericForm(new GenericYesNo(gaHwFDetails?.helpWithFeesRequested));
   }
   res.render(applyHelpWithFeesViewPath,{
     form,
@@ -65,7 +66,7 @@ helpWithApplicationFeeContinueController.post(GA_APPLY_HELP_WITH_FEES, (async (r
     if (form.hasErrors()) {
       await renderView(res, req, form, claimId, false);
     } else {
-      await saveHelpWithFeesDetails(generateRedisKey(req as unknown as AppRequest), req.body.option, hwfPropertyName);
+      await saveHelpWithFeesDetails(generateRedisKeyForGA(<AppRequest>req), req.body.option, hwfPropertyName);
       res.redirect(getRedirectUrl(claimId, form.model, isAdditionalFeeType, genAppId));
     }
   } catch (error) {

@@ -7,24 +7,24 @@ import {
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {Claim} from 'models/claim';
+// import {Claim} from 'models/claim';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
-import {getClaimById} from 'modules/utilityService';
+// import {getClaimById} from 'modules/utilityService';
 import {t} from 'i18next';
 import {AppRequest} from 'models/AppRequest';
 import {getHelpApplicationFeeSelectionPageContents, getButtonsContents}
   from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
-import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
+// import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
+import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 
 const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee';
 const helpWithApplicationFeeController = Router();
 const hwfPropertyName = 'applyHelpWithFees';
-
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, lng: string) {
   if (!form) {
-    const claim: Claim = await getClaimById(claimId, req, true);
-    form = new GenericForm(new GenericYesNo(claim.generalApplication?.helpWithFees?.applyHelpWithFees));
+    const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
+    form = new GenericForm(new GenericYesNo(gaHwFDetails?.applyHelpWithFees));
   }
   const backLinkUrl = req.query.id ? constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL) + '?id=' + req.query.id : constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_VIEW_APPLICATION_URL);
   res.render(applyHelpWithApplicationFeeViewPath,
@@ -55,9 +55,9 @@ helpWithApplicationFeeController.post([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPL
     if (form.hasErrors()) {
       await renderView(res, req, form, claimId, lng);
     } else {
-      const redisKey = generateRedisKey(<AppRequest>req);
-      await saveHelpWithFeesDetails(redisKey, req.body.option, hwfPropertyName);
-      const redirectUrl = await getRedirectUrl(claimId, form.model, <AppRequest>req);
+      // const redisKey = generateRedisKeyForGA(<AppRequest>req);
+      // await saveHelpWithFeesDetails(redisKey, req.body.option, hwfPropertyName);
+      const redirectUrl = await getRedirectUrl(claimId, form.model, hwfPropertyName, <AppRequest>req);
       res.redirect(redirectUrl);
     }
   }catch (error) {

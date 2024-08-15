@@ -9,11 +9,11 @@ import {GenericForm} from 'form/models/genericForm';
 
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
+import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
+// import {Claim} from 'models/claim';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import {YesNo} from 'form/models/yesNo';
-import {getClaimById} from 'modules/utilityService';
+// import {getClaimById} from 'modules/utilityService';
 import {
   saveAndTriggerNotifyGaHwfEvent,
   saveHelpWithFeesDetails,
@@ -21,15 +21,16 @@ import {
 import {getHelpWithApplicationFeeReferenceContents,getButtonsContents}
   from 'services/features/generalApplication/applicationFee/helpWithFeeReferenceContents';
 import {GenericYesNo} from 'form/models/genericYesNo';
+import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 
 const applyHelpWithFeeReferenceViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee-reference';
 const helpWithApplicationFeeReferenceController: Router = Router();
 const hwfPropertyName = 'helpFeeReferenceNumberForm';
 
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<ApplyHelpFeesReferenceForm>, claimId: string, redirectUrl: string, feeTypeFlag: boolean) {
-  const claim: Claim = await getClaimById(claimId, req, true);
+  const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
   if (!form.hasErrors()) {
-    form = new GenericForm(claim.generalApplication?.helpWithFees?.helpFeeReferenceNumberForm);
+    form = new GenericForm(gaHwFDetails?.helpFeeReferenceNumberForm);
   }
   const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_APPLY_HELP_WITH_FEES_START);
   const genericHelpFeeUrl : string = GENERIC_HELP_FEES_URL;
@@ -67,7 +68,7 @@ helpWithApplicationFeeReferenceController.post(GA_APPLY_HELP_WITH_FEE_REFERENCE,
       const redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_REFERENCE);
       await renderView(res, req, form, claimId, redirectUrl, false);
     } else {
-      const redisKey = generateRedisKey(<AppRequest>req);
+      const redisKey = generateRedisKeyForGA(<AppRequest>req);
       await saveHelpWithFeesDetails(redisKey, new ApplyHelpFeesReferenceForm(req.body.option, req.body.referenceNumber), hwfPropertyName);
 
       if (form.model.option === YesNo.YES) {

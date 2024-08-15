@@ -12,14 +12,18 @@ import {
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
 import {getClaimById} from 'modules/utilityService';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
+import {
+  getApplicationFromGAService,
+  saveHelpWithFeesDetails
+} from 'services/features/generalApplication/generalApplicationService';
+import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, req: AppRequest): Promise<string> => {
+export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, hwfPropertyName: keyof GaHelpWithFees, req: AppRequest): Promise<string> => {
   try {
     let redirectUrl;
     let generalApplicationId: string;
@@ -32,7 +36,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     } else {
       generalApplicationId = req.params.appId;
     }
-
+    await saveHelpWithFeesDetails(generalApplicationId + req.session.user?.id, applyHelpWithFees, hwfPropertyName);
     if (applyHelpWithFees.option === YesNo.NO) {
       const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
