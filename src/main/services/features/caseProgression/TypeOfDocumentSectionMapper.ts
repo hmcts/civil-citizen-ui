@@ -6,6 +6,10 @@ export class TypeOfDocumentSectionMapper {
   static mapToSingleFile(req: Request): FileUpload {
     const file = req.file;
     if (file) {
+      console.log('*********file type*********');
+      console.log(file.mimetype);
+      console.log(file.size);
+      console.log(file.originalname);
       return TypeOfDocumentSectionMapper.createFileUpload(file);
     }
     return undefined;
