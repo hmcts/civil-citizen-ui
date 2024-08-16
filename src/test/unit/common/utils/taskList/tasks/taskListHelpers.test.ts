@@ -36,6 +36,7 @@ import {ClaimantResponse} from 'common/models/claimantResponse';
 const mockClaim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
 const mockRespondent: Party = {
   dateOfBirth: {date: new Date('2000-12-12'), year: 1985, month: 2, day: 2},
+  emailAddress: {emailAddress: 'em@ail.com'},
   responseType: '',
   partyPhone: {phone: ''},
   partyDetails: {
@@ -65,8 +66,12 @@ describe('Task List Helpers', () => {
       mockRespondent.partyDetails.contactPerson = 'test';
       expect(hasAllCarmRequiredFields(mockRespondent)).toEqual(true);
     });
-    it('should return true if respondent is different of organisation', () => {
+    it('should return true if respondent is individual', () => {
       mockRespondent.type = PartyType.INDIVIDUAL;
+      expect(hasAllCarmRequiredFields(mockRespondent)).toEqual(true);
+    });
+    it('should return true if respondent is sole trader', () => {
+      mockRespondent.type = PartyType.SOLE_TRADER;
       expect(hasAllCarmRequiredFields(mockRespondent)).toEqual(true);
     });
   });
