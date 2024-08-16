@@ -13,8 +13,6 @@ import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdPara
 import {YesNo} from 'form/models/yesNo';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {t} from 'i18next';
-// import {Claim} from 'models/claim';
-// import {gaApplicationFeeDetails} from 'services/features/generalApplication/feeDetailsService';
 import {getButtonsContents, getHelpApplicationFeeContinuePageContents}
   from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
 import {
@@ -27,9 +25,7 @@ const applyHelpWithFeesViewPath  = 'features/generalApplication/applicationFee/h
 const hwfPropertyName = 'helpWithFeesRequested';
 
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, feeTypeFlag: boolean) {
-  //const claim: Claim = await getClaimById(claimId, req, true);
   const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
-  //const gaFeeData = await gaApplicationFeeDetails(claim, <AppRequest>req);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
   const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION);
 

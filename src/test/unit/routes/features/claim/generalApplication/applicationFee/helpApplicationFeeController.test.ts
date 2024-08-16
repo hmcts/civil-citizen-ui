@@ -50,7 +50,7 @@ describe('General Application - Do you want to apply for help with fees Page', (
 
     it('should return Do you want to apply for help with fees option selection', async () => {
       mockClaim.generalApplication.helpWithFees = new GaHelpWithFees();
-      mockClaim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
+      mockClaim.generalApplication.helpWithFees.applyHelpWithFees = {option: YesNo.YES};
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
