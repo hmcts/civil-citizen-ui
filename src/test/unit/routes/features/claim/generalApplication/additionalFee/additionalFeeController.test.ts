@@ -12,12 +12,15 @@ import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {t} from 'i18next';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {GaServiceClient} from 'client/gaServiceClient';
+import {ApplicationState} from 'models/generalApplication/applicationSummary';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('services/features/generalApplication/generalApplicationService', () => ({
   getApplicationFromGAService: jest.fn(),
+  getApplicationIndex: jest.fn(),
 }));
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockClaim = new Claim();
@@ -61,6 +64,11 @@ describe('General Application - Pay additional fee Page', () => {
   describe('on GET', () => {
     it('should return additional fee page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
+      applicationResponse.id = '1234567890';
+      applicationResponse.state = ApplicationState.AWAITING_APPLICATION_PAYMENT,
+      jest
+        .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
+        .mockResolvedValue([applicationResponse]);
       await request(app)
         .get(GA_PAY_ADDITIONAL_FEE_URL)
         .expect((res) => {
