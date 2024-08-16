@@ -10,7 +10,7 @@ import {GaServiceClient} from 'client/gaServiceClient';
 import {
   ApplicationResponse,
   JudicialDecisionMakeAnOrderOptions,
-  JudicialDecisionWrittenRepresentationsOptions
+  JudicialDecisionWrittenRepresentationsOptions,
 } from 'models/generalApplication/applicationResponse';
 import {getApplicationSections , getRespondentDocuments, getCourtDocuments, getApplicantDocuments} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
