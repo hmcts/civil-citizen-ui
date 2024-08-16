@@ -13,16 +13,16 @@ export const getHelpApplicationFeeSelectionPageContents = (lng: string, paymentS
   const contentBuilder = new PageSectionBuilder()
     .addMicroText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING')
     .addMainTitle('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_TITLE')
-    if (paymentSyncError) {
-      contentBuilder
-        .addWarning('PAGES.FEE_AMOUNT.SYNC_WARNING');
-    }
+  if (paymentSyncError) {
     contentBuilder
-      .addRawHtml(linkParagraph)
-      .addParagraph('')
-      .addParagraph(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.PARAGRAPH', {lng}))
-      .addTitle(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.QUESTION_TITLE', {lng}))
-    return contentBuilder.build();
+      .addWarning('PAGES.FEE_AMOUNT.SYNC_WARNING');
+  }
+  contentBuilder
+    .addRawHtml(linkParagraph)
+    .addParagraph('')
+    .addParagraph(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.PARAGRAPH', {lng}))
+    .addTitle(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.QUESTION_TITLE', {lng}));
+  return contentBuilder.build();
 };
 
 export const getButtonsContents  = (claimId : string) => {
