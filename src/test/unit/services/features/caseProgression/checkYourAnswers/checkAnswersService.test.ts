@@ -30,6 +30,8 @@ import {createCCDClaimForUploadedDocuments} from '../../../../../utils/caseProgr
 import {CaseRole} from 'form/models/caseRoles';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {AppRequest} from 'models/AppRequest';
+import {request} from 'express';
 
 jest.mock('i18next');
 jest.mock('client/civilServiceClient');
@@ -147,12 +149,16 @@ describe('checkAnswersServiceTest', () => {
         //given
         const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
         claimWithUploadedDocuments.caseRole = CaseRole.CLAIMANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
         //when
-        await saveUploadedDocuments(claimWithUploadedDocuments, null);
+        await saveUploadedDocuments(claimWithUploadedDocuments, <AppRequest>req);
 
         //then
         expect(mockSubmitEvent).toHaveBeenCalled();
-        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', undefined, createCCDClaimForUploadedDocuments(2,true), null);
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(2,true), <AppRequest>req);
 
       });
 
@@ -160,26 +166,34 @@ describe('checkAnswersServiceTest', () => {
         //given
         const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
         claimWithoutUploadedDocuments.caseRole = CaseRole.CLAIMANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
 
         //when
-        await saveUploadedDocuments(claimWithoutUploadedDocuments, null);
+        await saveUploadedDocuments(claimWithoutUploadedDocuments, <AppRequest>req);
 
         //then
         expect(mockSubmitEvent).toHaveBeenCalled();
-        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', undefined, createCCDClaimForUploadedDocuments(0,true), null);
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(0,true),  <AppRequest>req);
 
       });
       test('For defendant - all arrays filled', async ()=> {
         //given
         const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
         claimWithUploadedDocuments.caseRole = CaseRole.DEFENDANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
 
         //when
-        await saveUploadedDocuments(claimWithUploadedDocuments, null);
+        await saveUploadedDocuments(claimWithUploadedDocuments, <AppRequest>req);
 
         //then
         expect(mockSubmitEvent).toHaveBeenCalled();
-        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', undefined, createCCDClaimForUploadedDocuments(2,false), null);
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(2,false),  <AppRequest>req);
 
       });
 
@@ -187,13 +201,17 @@ describe('checkAnswersServiceTest', () => {
         //given
         const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
         claimWithoutUploadedDocuments.caseRole = CaseRole.DEFENDANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
 
         //when
-        await saveUploadedDocuments(claimWithoutUploadedDocuments, null);
+        await saveUploadedDocuments(claimWithoutUploadedDocuments, <AppRequest>req);
 
         //then
         expect(mockSubmitEvent).toHaveBeenCalled();
-        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', undefined, createCCDClaimForUploadedDocuments(0,false), null);
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(0,false),  <AppRequest>req);
       });
     });
   });
