@@ -271,7 +271,7 @@ describe('View Application service', () => {
       applicationResponse.case_data= caseData;
       applicationResponse.created_date = new Date('2024-01-01').toString();
       //when
-      const result = getJudgeResponseSummary(applicationResponse, 'en');
+      const result = getMakeWithNotice(applicationResponse, 'en');
       //then
       expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[3].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID');
