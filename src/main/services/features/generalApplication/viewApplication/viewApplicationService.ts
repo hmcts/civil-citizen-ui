@@ -34,6 +34,7 @@ import {DocumentType} from 'models/document/documentType';
 import {
   CcdGeneralApplicationDirectionsOrderDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
+import {CcdGARequestWrittenRepDocument} from 'models/ccdGeneralApplication/ccdGARequestWrittenRepDocument';
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -78,7 +79,7 @@ const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, appli
     || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
 };
 
-export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
+export const getMakeWithNotice = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
   const rows: SummaryRow[] = [];
   const documentUrl = getMakeWithNoticeDocumentUrl(applicationResponse);
 
@@ -188,6 +189,31 @@ const getDirectionOrderDocument = (applicationResponse: ApplicationResponse) : C
   const requestForInformationDocument = applicationResponse?.case_data?.directionOrderDocument;
   if(requestForInformationDocument) {
     return requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.DIRECTION_ORDER);
+  }
+  return undefined;
+};
+
+export const getRequestWrittenRepresentations = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
+  const rows: SummaryRow[] = [];
+  let documentUrl = '';
+  const writtenRepresentationsDocument = getRequestWrittenRepresentationsDocument(applicationResponse);
+  documentUrl += `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(writtenRepresentationsDocument?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION_DOCUMENT', {lng})}</a>`;
+
+  rows.push(
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(writtenRepresentationsDocument.value.createdDatetime, lng)),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng})),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl));
+  return rows;
+};
+
+const getRequestWrittenRepresentationsDocument = (applicationResponse: ApplicationResponse) : CcdGARequestWrittenRepDocument => {
+  const requestForWrittenRepsSequentialDocument = applicationResponse?.case_data?.writtenRepSequentialDocument;
+  if(requestForWrittenRepsSequentialDocument) {
+    return requestForWrittenRepsSequentialDocument.find(doc => doc?.value?.documentType === DocumentType.WRITTEN_REPRESENTATION_SEQUENTIAL);
+  }
+  const requestForWrittenRepsConcurrentDocument = applicationResponse?.case_data?.writtenRepConcurrentDocument;
+  if(requestForWrittenRepsConcurrentDocument) {
+    return requestForWrittenRepsConcurrentDocument.find(doc => doc?.value?.documentType === DocumentType.WRITTEN_REPRESENTATION_CONCURRENT);
   }
   return undefined;
 };
