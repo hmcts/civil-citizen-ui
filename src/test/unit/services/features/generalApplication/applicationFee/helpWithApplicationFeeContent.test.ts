@@ -31,13 +31,9 @@ describe('Help with Application fee content', () => {
 
   it('should return all the content for getHelpApplicationFeeContinuePageContents', () => {
     //Given
-    const gaFeeData = {
-      calculatedAmountInPence: 23000,
-      code: 'code',
-      version: 1,
-    };
+    const calculatedAmountInPence = '23000';
     //When
-    const actualContent = getHelpApplicationFeeContinuePageContents(gaFeeData, false);
+    const actualContent = getHelpApplicationFeeContinuePageContents(calculatedAmountInPence, false);
     //Then
     expect(actualContent[0].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING');
     expect(actualContent[1].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.TITLE');
