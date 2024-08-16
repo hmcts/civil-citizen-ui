@@ -16,10 +16,7 @@ const assignCaseRoleToUser = async (caseId, role, user) => {
 const unAssignAllUsers = async () => {
   console.log('Removing case role allocations...');
   for (const userRole of Object.values(userCaseMappings)) {
-    await unAssignUserFromCases(userRole.map(({caseId}) => {
-      console.log('CaseId in unAssignUserFromCases : ' + caseId);
-      caseId;
-    }), userRole[0].user);
+    await unAssignUserFromCases(userRole.map(({caseId}) => caseId), userRole[0].user);
   }
   userCaseMappings = {};
 };
