@@ -6,10 +6,10 @@ import {
   PAY_HEARING_FEE_SUCCESSFUL_URL,
   PAY_HEARING_FEE_UNSUCCESSFUL_URL,
 } from 'routes/urls';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {Claim} from 'models/claim';
+import {getClaimById} from 'modules/utilityService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('PaymentConfirmationService');
@@ -22,15 +22,14 @@ const paymentCancelledByUser = 'Payment was cancelled by the user';
 
 export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<string> => {
   try {
-    const redisClaimId = generateRedisKey(req);
-    const claim: Claim = await getCaseDataFromStore(redisClaimId);
+    const claim: Claim = await getClaimById(claimId, req,true);
     const paymentInfo = claim.caseProgression.hearing.paymentInformation;
 
     const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo.paymentReference, FeeType.HEARING, req);
     paymentInfo.status = paymentStatus.status;
     paymentInfo.errorCode = paymentStatus.errorCode;
     paymentInfo.errorDescription = paymentStatus.errorDescription;
-    await saveCaseProgression(redisClaimId, paymentInfo, paymentInformation, hearing);
+    await saveCaseProgression(req, paymentInfo, paymentInformation, hearing);
     if (paymentStatus.status === success) {
       return PAY_HEARING_FEE_SUCCESSFUL_URL;
     } else if (paymentStatus.status === failed && paymentStatus.errorDescription !== paymentCancelledByUser) {
