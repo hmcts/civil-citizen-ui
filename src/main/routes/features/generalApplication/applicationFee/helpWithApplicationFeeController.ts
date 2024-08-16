@@ -11,22 +11,28 @@ import {AppRequest} from 'models/AppRequest';
 import {getHelpApplicationFeeSelectionPageContents, getButtonsContents}
   from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
 import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 
 const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee';
 const helpWithApplicationFeeController = Router();
 const hwfPropertyName = 'applyHelpWithFees';
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, redirectUrl: string, lng: string) {
+  let paymentSyncError = false;
   if (!form) {
     const claim: Claim = await getClaimById(claimId, req, true);
     form = new GenericForm(new GenericYesNo(claim.generalApplication?.helpWithFees?.applyHelpWithFees));
+    if (claim.paymentSyncError) {
+      paymentSyncError = true;
+      claim.paymentSyncError = undefined;
+      await saveDraftClaim(claim.id, claim);
+    }
   }
   res.render(applyHelpWithApplicationFeeViewPath,
     {
       form,
       backLinkUrl: constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL),
       redirectUrl,
-      applyHelpWithFeeSelectionContents: getHelpApplicationFeeSelectionPageContents(lng),
+      applyHelpWithFeeSelectionContents: getHelpApplicationFeeSelectionPageContents(lng, paymentSyncError),
       applyHelpWithFeeSelectionButtonContents: getButtonsContents(claimId),
     });
 }

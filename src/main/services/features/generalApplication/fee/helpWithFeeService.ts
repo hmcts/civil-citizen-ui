@@ -1,6 +1,6 @@
 import {AppRequest} from 'models/AppRequest';
 import {YesNo} from 'form/models/yesNo';
-import {GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
+import {GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
@@ -42,6 +42,9 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
   }
   catch (error) {
     logger.error(error);
-    throw error;
+    const claim = await getClaimById(req.params.id, req, true);
+    claim.paymentSyncError = true;
+    await saveDraftClaim(claim.id, claim, true);
+    return constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
   }
 };
