@@ -8,6 +8,9 @@ import { ApplicationTypeOption } from 'common/models/generalApplication/applicat
 import { convertDateToStringFormat } from 'common/utils/dateUtils';
 import config from 'config';
 import { generateRedisKey, saveDraftClaim } from 'modules/draft-store/draftStoreService';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
+import {CcdFee} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 export interface GAFeeRequestBody {
   applicationTypes: ApplicationTypeOption[],
   withConsent: boolean,
@@ -38,3 +41,18 @@ export const gaApplicationFeeDetails = async (claim: Claim, req: AppRequest): Pr
     return gaFeeData;
   }
 };
+
+export const getGaAppFeeDetails = async (claimId: string, req: AppRequest): Promise<CcdFee> => {
+  const genAppId = await getGaAppId(claimId, req);
+  const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, genAppId);
+  return applicationResponse.case_data.generalAppPBADetails?.fee;
+};
+
+export const getGaAppId = async (claimId: string, req: AppRequest): Promise<string> => {
+
+  const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
+  const ccdGeneralApplications = ccdClaim.generalApplications;
+  return ccdGeneralApplications[ccdGeneralApplications.length-1].value.caseLink.CaseReference;
+
+};
+
