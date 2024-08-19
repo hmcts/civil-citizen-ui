@@ -6,7 +6,6 @@ import {
   getHelpApplicationFeeContinuePageContents,
 } from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {CcdFee} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 
 describe('Help with Application fee content', () => {
   it('should return getHelpApplicationFeeSelectionPageContents related content ', () => {
