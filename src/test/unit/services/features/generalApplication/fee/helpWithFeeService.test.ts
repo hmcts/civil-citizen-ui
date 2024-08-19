@@ -1,7 +1,7 @@
 import * as requestModels from 'models/AppRequest';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
-import {GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
+import {GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
 import {getClaimById} from 'modules/utilityService';
@@ -27,6 +27,7 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
 
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
+mockedAppRequest.params = {id:'1'};
 const claimId = '1';
 const gaAppId = 'testApp1';
 const nextUrl= 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960';
@@ -119,5 +120,18 @@ describe('apply help with application fee selection', () => {
     const actualRedirectUrl = await getRedirectUrl(claimId, gaAppId, new GenericYesNo(YesNo.YES), mockedAppRequest);
     //Then
     expect(actualRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES+'?additionalFeeTypeFlag=true'));
+  });
+  it('should enable the warning text if payment request is failed', async () => {
+    claim.paymentSyncError = false;
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(ccdClaim);
+    applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'ref';
+    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockRejectedValueOnce(new Error('something went wrong'));
+    //when
+    const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), mockedAppRequest);
+    //Then
+    expect(actualRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION));
   });
 });

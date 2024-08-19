@@ -61,6 +61,20 @@ describe('General Application - Do you want to apply for help with fees Page', (
         });
     });
 
+    it('should return Do you want to apply for help with fees page with not sync payment', async () => {
+      const claim = mockClaim;
+      claim.paymentSyncError = true;
+      mockGetCaseData.mockImplementation(async () => claim);
+      await request(app)
+        .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING'));
+          expect(res.text).toContain(t('PAGES.FEE_AMOUNT.SYNC_WARNING'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_TITLE'));
+        });
+    });
+
     it('should return Do you want to apply for help with fees option selection', async () => {
       mockClaim.generalApplication.helpWithFees = new GaHelpWithFees();
       mockClaim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
