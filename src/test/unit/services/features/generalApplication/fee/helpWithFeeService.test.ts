@@ -35,7 +35,6 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 const claimId = '1';
-const gaAppId = 'testApp1';
 const nextUrl= 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960';
 let claim: Claim;
 let ccdClaim: Claim;
@@ -86,6 +85,7 @@ describe('apply help with application fee selection', () => {
     mockedAppRequest.session = <AppSession>{user: <UserDetails>{id: '1235'}}
     mockGAHwFDraftStore.mockResolvedValueOnce(new GaHelpWithFees());
   });
+  
   it('should return test url if applyHelpWithFees option is No', async () => {
     //given
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim);

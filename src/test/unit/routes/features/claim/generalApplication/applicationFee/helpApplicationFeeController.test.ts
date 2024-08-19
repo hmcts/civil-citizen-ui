@@ -11,12 +11,12 @@ import {YesNo} from 'form/models/yesNo';
 import {t} from 'i18next';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
-
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/services/features/generalApplication/fee/helpWithFeeService');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService')
+jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/draft-store/gaHwFeesDraftStore', () => ({
   saveDraftGAHWFDetails: jest.fn(),
   getDraftGAHWFDetails: jest.fn(),

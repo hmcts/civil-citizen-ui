@@ -528,7 +528,7 @@ describe('General Application service', () => {
         return gaHwfFees;
       });
 
-      const mockSaveGAHwFDetails = saveDraftGAHWFDetails as jest.Mock
+      const mockSaveGAHwFDetails = saveDraftGAHWFDetails as jest.Mock;
       //When
       await saveHelpWithFeesDetails('123', YesNo.YES, 'applyHelpWithFees');
       //Then
@@ -568,7 +568,7 @@ describe('General Application service', () => {
         gaHwfFees.helpWithFeesRequested = YesNo.YES;
         return gaHwfFees;
       });
-      const mockSaveGAHwFDetails = saveDraftGAHWFDetails as jest.Mock
+      const mockSaveGAHwFDetails = saveDraftGAHWFDetails as jest.Mock;
       //When
       await saveHelpWithFeesDetails('123', YesNo.YES, 'helpWithFeesRequested');
       //Then
@@ -584,7 +584,7 @@ describe('General Application service', () => {
         gaHwfFees.helpFeeReferenceNumberForm = hwfReferenceNumberForm;
         return gaHwfFees;
       });
-      const mockSaveGAHwFDetails = saveDraftGAHWFDetails as jest.Mock
+      const mockSaveGAHwFDetails = saveDraftGAHWFDetails as jest.Mock;
       //When
       await saveHelpWithFeesDetails('123', hwfReferenceNumberForm, 'helpFeeReferenceNumberForm');
       //Then

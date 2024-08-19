@@ -8,8 +8,7 @@ export class GaHelpWithFees {
   applyAdditionalHelpWithFees?: GenericYesNo;
   applicationFee?: string;
 
-  constructor(applyHelpWithFees?: GenericYesNo, helpWithFeesRequested?: string, helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm,
-              applyAdditionalHelpWithFees?: GenericYesNo) {
+  constructor(applyHelpWithFees?: GenericYesNo, helpWithFeesRequested?: string, helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm, applyAdditionalHelpWithFees?: GenericYesNo) {
     this.applyHelpWithFees = applyHelpWithFees;
     this.helpWithFeesRequested = helpWithFeesRequested;
     this.helpFeeReferenceNumberForm = helpFeeReferenceNumberForm;

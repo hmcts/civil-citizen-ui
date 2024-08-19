@@ -9,7 +9,7 @@ export const getGeneralApplicationConfirmationContent = (async (claimId: string,
   const dashboardUrl = await getCancelUrl(claimId, claim);
   let payApplicationFeeUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION);
   payApplicationFeeUrl = genAppId ? payApplicationFeeUrl + `?id=${genAppId}` : payApplicationFeeUrl;
-  payApplicationFeeUrl = payApplicationFeeUrl + '&appFee=' + applicationFee
+  payApplicationFeeUrl = payApplicationFeeUrl + '&appFee=' + applicationFee;
   return new PageSectionBuilder()
     .addTitle('PAGES.SUBMIT_CONFIRMATION.WHAT_HAPPENS_NEXT')
     .addParagraph('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.APPLICATION_SAVE', {applicationFee})

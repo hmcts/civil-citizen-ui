@@ -20,7 +20,6 @@ jest.mock('../../../../../../../main/modules/draft-store/gaHwFeesDraftStore', ()
 
 const mockGetCaseData = getDraftGAHWFDetails as jest.Mock;
 
-
 const gaHwFDetails = new GaHelpWithFees({option: YesNo.YES}, 'yes',
   new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-176A-32B'));
 

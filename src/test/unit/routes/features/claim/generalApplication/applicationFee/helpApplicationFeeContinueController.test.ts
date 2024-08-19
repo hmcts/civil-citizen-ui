@@ -11,6 +11,7 @@ import {YesNo} from 'form/models/yesNo';
 import {t} from 'i18next';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -26,12 +27,7 @@ const gaFeeDetails = {
   calculatedAmountInPence: 1400,
   code: 'Fe124',
   version: 0,
-}
-const mockClaim = new Claim();
-mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
-mockClaim.generalApplication.agreementFromOtherParty = YesNo.YES;
-mockClaim.generalApplication.informOtherParties = new InformOtherParties();
-mockClaim.generalApplication.informOtherParties.option = YesNo.NO;
+};
 const ccdClaim = new Claim();
 ccdClaim.generalApplications = [
   {
@@ -44,40 +40,6 @@ ccdClaim.generalApplications = [
   },
 ];
 
-const applicationResponse: ApplicationResponse = {
-  case_data: {
-    applicationTypes: undefined,
-    generalAppType: undefined,
-    generalAppRespondentAgreement: undefined,
-    generalAppInformOtherParty: undefined,
-    generalAppAskForCosts: undefined,
-    generalAppDetailsOfOrder: undefined,
-    generalAppReasonsOfOrder: undefined,
-    generalAppEvidenceDocument: undefined,
-    gaAddlDoc: undefined,
-    generalAppHearingDetails: undefined,
-    generalAppStatementOfTruth: undefined,
-    generalAppPBADetails: {
-      fee: {
-        code: 'FEE0443',
-        version: '2',
-        calculatedAmountInPence: '10800',
-      },
-      paymentDetails: {
-        status: 'SUCCESS',
-        reference: undefined,
-      },
-      serviceRequestReference: undefined,
-    },
-    applicationFeeAmountInPence: undefined,
-    parentClaimantIsApplicant: undefined,
-    judicialDecision: undefined,
-  },
-  created_date: '',
-  id: '',
-  last_modified: '',
-  state: undefined,
-};
 
 describe('General Application - Do you want to continue to apply for Help with Fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

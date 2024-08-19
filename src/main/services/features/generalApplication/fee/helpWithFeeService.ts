@@ -45,7 +45,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       deleteDraftClaimFromStore(generalApplicationId + req.session.user?.id);
       redirectUrl = paymentRedirectInformation?.nextUrl;
     } else {
-      const gaHwFDetails = await getDraftGAHWFDetails(generalApplicationId + req.session.user?.id)
+      const gaHwFDetails = await getDraftGAHWFDetails(generalApplicationId + req.session.user?.id);
       if (req.query.appFee) {
         gaHwFDetails.applicationFee = <string>req.query.appFee;
       }

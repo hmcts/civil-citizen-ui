@@ -14,7 +14,7 @@ import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/services/features/generalApplication/fee/helpWithFeeService');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService')
+jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/draft-store/gaHwFeesDraftStore', () => ({
   saveDraftGAHWFDetails: jest.fn(),
   getDraftGAHWFDetails: jest.fn(),
