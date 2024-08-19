@@ -389,6 +389,7 @@ import gaAdditionalDocCheckAnswerController from './features/generalApplication/
 import additionalDocSubmittedController from './features/generalApplication/additionalDocuments/submittedController';
 import viewApplicationToRespondentController from 'routes/features/generalApplication/response/viewApplicationController';
 import applicationSummaryController from './features/generalApplication/applicationSummaryController';
+import applicationResponseSummaryController from './features/generalApplication/response/applicationResponseSummaryController';
 import additionalFeeController from './features/generalApplication/additionalFee/additionalFeeController';
 import payAdditionalFeeController from 'routes/features/generalApplication/additionalFee/payAdditionalFeeController';
 import requestForReviewCommentsController
@@ -413,6 +414,8 @@ import uploadDocumentsDirectionsOrderController
   from 'routes/features/generalApplication/directionsOrderUpload/uploadDocumentsDirectionsOrderController';
 import gaDirectionOrderCheckAnswersController from './features/generalApplication/directionsOrderUpload/checkAnswerController';
 import directionOrderSubmittedConfirmationController from './features/generalApplication/directionsOrderUpload/directionOrderSubmittedConfirmationController';
+import uploadDocumentsForRequestWrittenRepresentation from './features/generalApplication/writtenRepresentationDocs/uplodWrittenRepresentationDocsController';
+import gaWrittenRepresentationCheckAnswersController from './features/generalApplication/writtenRepresentationDocs/checkAnswerController';
 
 export default [
   homeController,
@@ -730,6 +733,7 @@ export default [
   applicationFeePaymentConfirmationController,
   viewApplicationToRespondentController,
   applicationSummaryController,
+  applicationResponseSummaryController,
   additionalFeeController,
   payAdditionalFeeController,
   requestForReviewCommentsController,
@@ -747,4 +751,6 @@ export default [
   uploadDocumentsDirectionsOrderController,
   gaDirectionOrderCheckAnswersController,
   directionOrderSubmittedConfirmationController,
+  uploadDocumentsForRequestWrittenRepresentation,
+  gaWrittenRepresentationCheckAnswersController,
 ];

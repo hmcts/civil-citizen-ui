@@ -110,6 +110,14 @@ if(!e2eTestMode){
   new OidcMiddleware().enableFor(app);
 }
 
+if(e2eTestMode){
+  // Use your custom middleware to add the session information
+  app.use((req, res, next) => {
+    const session = ((req.session) as AppSession);
+    session.user = {accessToken: 'someAccessToken', email: '', familyName: '', givenName: '', roles: [], id: 'someID'};
+    next();
+  });
+}
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
 app.use([BASE_GENERAL_APPLICATION_URL, BASE_GENERAL_APPLICATION_RESPONSE_URL], isGAForLiPEnabled);
@@ -143,17 +151,24 @@ app.use((_req, res, next) => {
     'Cache-Control',
     'no-cache, max-age=0, must-revalidate, no-store',
   );
+
+  res.setHeader(
+    'Access-Control-Allow-Origin',
+    '*',
+  );
+
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept',
+  );
+
+  res.setHeader(
+    'access-control-allow-methods',
+    'GET,POST,OPTIONS,PUT,DELETE',
+  );
+
   next();
 });
-
-if(e2eTestMode){
-  // Use your custom middleware to add the session information
-  app.use((req, res, next) => {
-    const session = ((req.session) as AppSession);
-    session.user = {accessToken: 'someAccessToken', email: '', familyName: '', givenName: '', roles: [], id: 'someID'};
-    next();
-  });
-}
 
 const checkServiceAvailability = async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
   const serviceShuttered = await isServiceShuttered();

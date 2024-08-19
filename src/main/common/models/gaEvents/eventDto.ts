@@ -37,6 +37,7 @@ export interface CCDGeneralApplication extends ClaimUpdate {
   generalAppAddlnInfoUpload?: CcdGeneralApplicationEvidenceDocument[];
   generalAppDirOrderUpload?: CcdGeneralApplicationEvidenceDocument[];
   uploadDocument?: AdditionalDocuments[];
+  generalAppWrittenRepUpload?: CcdGeneralApplicationEvidenceDocument[];
 }
 interface DocumentDetails {
   document_url: string;

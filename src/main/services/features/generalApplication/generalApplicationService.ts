@@ -33,7 +33,10 @@ import {ApplicationState, ApplicationStatus} from 'common/models/generalApplicat
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import config from 'config';
 import {GaServiceClient} from 'client/gaServiceClient';
-import { getDraftGARespondentResponse, saveDraftGARespondentResponse } from './response/generalApplicationResponseStoreService';
+import {
+  getDraftGARespondentResponse,
+  saveDraftGARespondentResponse,
+} from './response/generalApplicationResponseStoreService';
 import {CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
 import {
   triggerNotifyHwfEvent,
@@ -404,6 +407,11 @@ export const getApplicationStatus = (status: ApplicationState): ApplicationStatu
   }
 };
 
+export const getRespondentApplicationStatus = (status: ApplicationState): ApplicationStatus => 
+  (status === ApplicationState.AWAITING_RESPONDENT_RESPONSE)
+    ? ApplicationStatus.TO_DO
+    : ApplicationStatus.IN_PROGRESS;
+
 export const getApplicationFromGAService = async (req: AppRequest, applicationId: string): Promise<ApplicationResponse> => {
   return await generalApplicationClient.getApplication(req, applicationId);
 };
@@ -430,8 +438,11 @@ export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
     throw error;
   }
 };
-  
+
 export const shouldDisplaySyncWarning = (applicationResponse: ApplicationResponse): boolean => {
+  if (!applicationResponse) {
+    return false;
+  }
   const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
   if (isAdditionalFee) {
     return applicationResponse?.state === ApplicationState.APPLICATION_ADD_PAYMENT
@@ -440,4 +451,9 @@ export const shouldDisplaySyncWarning = (applicationResponse: ApplicationRespons
     return applicationResponse?.state === ApplicationState.AWAITING_APPLICATION_PAYMENT
       || applicationResponse?.case_data?.generalAppPBADetails?.paymentDetails?.status !== 'SUCCESS';
   }
+};
+
+export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest) : Promise<number> => {
+  const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
+  return applications.findIndex(application => application.id == applicationId);
 };

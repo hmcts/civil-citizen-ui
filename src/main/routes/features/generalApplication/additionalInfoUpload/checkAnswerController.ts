@@ -22,6 +22,7 @@ const gaRequestMoreInfoCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/checkYourAnswer';
 const generalAppApiBaseUrl = config.get<string>('services.generalApplication.url');
 const gaServiceClient: GaServiceClient = new GaServiceClient(generalAppApiBaseUrl);
+const headerCaption = 'PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE';
 
 gaRequestMoreInfoCheckAnswersController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -33,7 +34,8 @@ gaRequestMoreInfoCheckAnswersController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_IN
     const additionalDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
     const summaryRows = buildSummarySection(additionalDocuments, claimId, appId, lng);
-    res.render(viewPath, { backLinkUrl, cancelUrl, claimIdPrettified, claim, summaryRows });
+    
+    res.render(viewPath, { backLinkUrl, cancelUrl, claimIdPrettified, claim, summaryRows, headerCaption });
   } catch (error) {
     next(error);
   }

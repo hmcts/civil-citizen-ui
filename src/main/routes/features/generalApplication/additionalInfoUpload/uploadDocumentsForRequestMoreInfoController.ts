@@ -52,7 +52,7 @@ uploadDocumentsForRequestMoreInfoController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONA
     const uploadDocuments = new UploadGAFiles();
     let form = new GenericForm(uploadDocuments);
     const formattedSummary = summarySection({title: '', summaryRows: []});
-
+    
     if (req?.session?.fileUpload) {
       const parsedData = JSON.parse(req?.session?.fileUpload);
       form = new GenericForm(uploadDocuments, parsedData);
