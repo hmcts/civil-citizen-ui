@@ -40,7 +40,6 @@ ccdClaim.generalApplications = [
   },
 ];
 
-
 describe('General Application - Do you want to continue to apply for Help with Fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
