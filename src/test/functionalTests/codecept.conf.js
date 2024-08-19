@@ -17,11 +17,11 @@ exports.config = {
     console.log(`Finished the tests at ${endTime}`);
     console.log(`Total execution time: ${executionTime} seconds`);
   },
-  async teardown() {
-    console.log('Current worker has finished running tests so we should clean up the user roles');
-    await unAssignAllUsers();
-    await deleteAllIdamTestUsers();
-  },
+  // async teardown() {
+  //   console.log('Current worker has finished running tests so we should clean up the user roles');
+  //   await unAssignAllUsers();
+  //   await deleteAllIdamTestUsers();
+  // },
   tests: process.env.ENVIRONMENT == 'aat' ?
     [ '../functionalTests/tests/prod/**/*.js',
       '../functionalTests/tests/common/**/*.js',

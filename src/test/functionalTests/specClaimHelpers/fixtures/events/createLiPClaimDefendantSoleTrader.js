@@ -31,7 +31,7 @@ const createLipClaimDefendantSoleTrader = (user, userId, totalClaimAmount) => {
         companyName: undefined,
         individualDateOfBirth: '1993-08-28',
         individualFirstName: 'defendant',
-        individualLastName: 'person',
+        individualLastName: 'sole_trader',
         individualTitle: 'mr',
         organisationName: undefined,
         partyEmail: 'civilmoneyclaimsdemo@gmail.com',
@@ -44,11 +44,11 @@ const createLipClaimDefendantSoleTrader = (user, userId, totalClaimAmount) => {
           PostTown: 'Liverpool',
         },
         soleTraderDateOfBirth: '1993-08-28',
-        soleTraderFirstName: 'person',
-        soleTraderLastName: 'defendant',
+        soleTraderFirstName: 'defendant',
+        soleTraderLastName: 'sole_trader',
         soleTraderTitle: 'mr',
         soleTraderTradingAs: 'Sole Trader Business',
-        type: 'INDIVIDUAL',
+        type: 'SOLE_TRADER',
       },
       defenceRouteRequired: undefined,
       respondToClaim: undefined,
@@ -153,5 +153,5 @@ const createLipClaimDefendantSoleTrader = (user, userId, totalClaimAmount) => {
   };
   return eventDto;
 };
-    
+
 module.exports = createLipClaimDefendantSoleTrader;

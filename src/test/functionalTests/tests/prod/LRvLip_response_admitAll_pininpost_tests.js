@@ -29,7 +29,7 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with AdmitAll and Immediate payment @dr', async ({api}) => {
+Scenario('Response with AdmitAll and Immediate payment @citizenUI @admitAll @nightly', async ({api}) => {
   await CitizenDashboardSteps.CitizenDashboardPage();
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);

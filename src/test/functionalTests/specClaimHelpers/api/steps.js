@@ -292,7 +292,7 @@ module.exports = {
     return caseId;
   },
 
-  createLiPClaim: async (user, claimType, carmEnabled = false, partyType = 'Individual') => {
+  createLiPClaim: async (user, claimType, carmEnabled = false, partyType = 'DefendantSoleTrader') => {
     console.log(' Creating LIP claim');
 
     const currentDate = new Date();
@@ -323,7 +323,9 @@ module.exports = {
     } else if (partyType === 'DefendantCompany') {
       payload = data.CREATE_LIP_CLAIM_DEFENDANT_COMPANY(user, userId, totalClaimAmount);
     } else if (partyType === 'DefendantSoleTrader') {
+      console.log('here');
       payload = data.CREATE_LIP_CLAIM_DEFENDANT_SOLE_TRADER(user, userId, totalClaimAmount);
+      console.log('payload>>> ',payload);
     } else if (partyType === 'SoleTraderVCompany') {
       payload = data.CREATE_LIP_CLAIM_SOLE_TRADER_V_COMPANY(user, userId, totalClaimAmount);
     } else if (partyType === 'IndividualVOrganisation') {

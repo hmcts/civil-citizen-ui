@@ -2,7 +2,7 @@
 const PropertiesVolume = require('./secretsConfig');
 
 const defaultPassword = 'Password12!';
-const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD;
+const defaultPasswordSystemUser = 'Password12';
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
 const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
@@ -22,13 +22,13 @@ module.exports = {
     url: 'http://localhost:5555',
   },
   url: {
-    manageCase: 'https://xui-civil-citizen-ui-pr-4333.preview.platform.hmcts.net',
+    manageCase: 'https://xui-civil-citizen-ui-pr-4386.preview.platform.hmcts.net',
     authProviderApi:'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
-    ccdDataStore: 'https://ccd-data-store-api-civil-citizen-ui-pr-4333.preview.platform.hmcts.net',
+    ccdDataStore: 'https://ccd-data-store-api-civil-citizen-ui-pr-4386.preview.platform.hmcts.net',
     dmStore: 'http://dm-store-aat.service.core-compute-aat.internal',
     idamApi: 'https://idam-api.aat.platform.hmcts.net',
-    civilService: 'https://civil-citizen-ui-pr-4333-civil-service.preview.platform.hmcts.net',
-    caseAssignmentService: 'https://manage-case-assignment-civil-citizen-ui-pr-4333.preview.platform.hmcts.net',
+    civilService: 'https://civil-citizen-ui-pr-4386-civil-service.preview.platform.hmcts.net',
+    caseAssignmentService: 'https://manage-case-assignment-civil-citizen-ui-pr-4386.preview.platform.hmcts.net',
     idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
 
     // manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
@@ -46,7 +46,7 @@ module.exports = {
   getDomain: (url) => new URL(url).host,
   s2s: {
     microservice: 'civil_service',
-    secret: process.env.S2S_SECRET || 'AABBCCDDEEFFGGHH',
+    secret: process.env.S2S_SECRET || 'BTZQFPGY4TUMAFGL',
   },
   s2sForXUI: {
     microservice: 'xui_webapp',
