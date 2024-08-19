@@ -1,5 +1,6 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
+  GA_RESPOND_ADDITIONAL_INFO_URL,
   GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL,
   GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL,
 } from 'routes/urls';
@@ -17,6 +18,9 @@ import {getGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentS
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {translateCUItoCCD} from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
+import {
+  getDraftGARespondentResponse,
+} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 
 const gaRequestMoreInfoCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/checkYourAnswer';
@@ -32,9 +36,17 @@ gaRequestMoreInfoCheckAnswersController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_IN
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const additionalDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
-    const summaryRows = buildSummarySection(additionalDocuments, claimId, appId, lng);
-    
+    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
+    const backLinkUrlDoc = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
+    const additionalText = gaResponse.additionalText;
+    const backLinkUrlText = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPOND_ADDITIONAL_INFO_URL);
+    let backLinkUrl;
+    if (additionalDocuments.length < 1) {
+      backLinkUrl = backLinkUrlText;
+    } else {
+      backLinkUrl = backLinkUrlDoc;
+    }
+    const summaryRows = buildSummarySection(additionalText, additionalDocuments, claimId, appId, lng);
     res.render(viewPath, { backLinkUrl, cancelUrl, claimIdPrettified, claim, summaryRows, headerCaption });
   } catch (error) {
     next(error);
@@ -46,8 +58,11 @@ gaRequestMoreInfoCheckAnswersController.post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_I
     const { appId, id: claimId } = req.params;
     const uploadedDocumentList = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const uploadedDocument = translateCUItoCCD(uploadedDocumentList);
+    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
+    const additionalText = gaResponse.additionalText;
     const generalApplication = {
       generalAppAddlnInfoUpload: uploadedDocument,
+      generalAppAddlnInfoText: additionalText,
     };
     await gaServiceClient.submitEvent(ApplicationEvent.RESPOND_TO_JUDGE_ADDITIONAL_INFO, appId, generalApplication , req);
     res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL));
