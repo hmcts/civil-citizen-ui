@@ -49,7 +49,7 @@ hasAnythingChangedController.post(HAS_ANYTHING_CHANGED_URL,(async (req, res, nex
         form.model.textArea = '';
       }
       const parentPropertyName = getNameTrialArrangements(claim);
-      await saveCaseProgression(claimId, form.model, dqPropertyName, parentPropertyName);
+      await saveCaseProgression(req, form.model, dqPropertyName, parentPropertyName);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, TRIAL_ARRANGEMENTS_HEARING_DURATION));
     }
   } catch (error) {

@@ -13,6 +13,7 @@ import {
 } from 'services/features/claimantResponse/ccj/ccjCheckAnswersService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {submitClaimantResponse} from 'services/features/claimantResponse/submission/submitClaimantResponse';
+import {getClaimById} from 'modules/utilityService';
 
 const checkAnswersViewPath = 'features/claimantResponse/ccj/check-answers';
 const ccjCheckAnswersController = Router();
@@ -50,7 +51,7 @@ ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | 
       : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
     await form.validate();
     if (form.hasErrors()) {
-      const claim = await getCaseDataFromStore(redisKey);
+      const claim = await getClaimById(claimId, req, true);
       renderView(req, res, form, claim);
     } else {
       await saveStatementOfTruth(redisKey, form.model);

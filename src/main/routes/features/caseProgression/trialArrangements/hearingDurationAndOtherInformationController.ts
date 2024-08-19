@@ -50,7 +50,7 @@ hearingDurationController.post(TRIAL_ARRANGEMENTS_HEARING_DURATION, (async (req,
     const form = new GenericForm(new OtherTrialInformation(otherInfo));
     const claim = await getClaimById(claimId, req);
     const parentPropertyName = getNameTrialArrangements(claim);
-    await saveCaseProgression(claimId, form.model.otherInformation, propertyName, parentPropertyName );
+    await saveCaseProgression(req, form.model.otherInformation, propertyName, parentPropertyName );
 
     res.redirect(constructResponseUrlWithIdParams(req.params.id, TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS));
 

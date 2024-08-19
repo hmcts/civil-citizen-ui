@@ -178,6 +178,8 @@ export class Claim {
   judgmentOnline?: JudgmentOnline;
   claimType?: string;
   paymentSyncError?: boolean;
+  responseClaimTrack?: string;
+
   // Index signature to allow dynamic property access
   [key: string]: any;
 
@@ -784,11 +786,17 @@ export class Claim {
   }
 
   get isFastTrackClaim(): boolean {
+    if (this.responseClaimTrack){
+      return this.responseClaimTrack === claimType.FAST_CLAIM;
+    }
     const claimTypeResult = analyseClaimType(this.totalClaimAmount);
     return claimTypeResult === claimType.FAST_TRACK_CLAIM;
   }
 
   get isSmallClaimsTrackDQ(): boolean {
+    if (this.responseClaimTrack){
+      return this.responseClaimTrack === claimType.SMALL_CLAIM;
+    }
     const claimTypeResult = analyseClaimType(this.totalClaimAmount);
     return claimTypeResult === claimType.SMALL_CLAIM;
   }
