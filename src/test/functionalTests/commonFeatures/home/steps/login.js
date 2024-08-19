@@ -1,5 +1,4 @@
 const LoginPage = require('../../../commonFeatures/home/pages/login');
-const I = actor();
 
 class LoginSteps {
   async AcceptCookies() {
