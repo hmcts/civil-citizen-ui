@@ -6,6 +6,8 @@ const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
 
+const carmEnabled = false;
+const manualPIP = 'yes';
 let claimRef;
 let caseData;
 let claimNumber;
@@ -15,14 +17,14 @@ Feature('Response with RejectAll and DisputeAll');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
+  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', '', carmEnabled, '', manualPIP);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
-  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
+  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode, manualPIP);
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
