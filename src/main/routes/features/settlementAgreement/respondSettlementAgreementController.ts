@@ -30,6 +30,7 @@ respondSettlementAgreementController.get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (a
   try {
     const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
     renderView(new GenericForm(new GenericYesNo(claim.defendantSignedSettlementAgreement, 'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION')), res, getRespondSettlementAgreementText(claim, req));
   } catch (error) {
     next(error);
@@ -44,12 +45,11 @@ respondSettlementAgreementController.post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (
     const respondSettlementAgreement = new GenericForm(respondSettlementAgreementOption);
     respondSettlementAgreement.validateSync();
 
-    const claim = await getClaimById(claimId, req,true);
+    const claim = await getClaimById(redisKey, req,false);
     if (respondSettlementAgreement.hasErrors()) {
       renderView(respondSettlementAgreement, res, getRespondSettlementAgreementText(claim, req));
     } else {
       claim.defendantSignedSettlementAgreement = respondSettlementAgreement.model.option as YesNo;
-      await saveDraftClaim(redisKey, claim, true);
       await civilServiceClient.submitDefendantSignSettlementAgreementEvent(claimId,{'respondentSignSettlementAgreement' : toCCDYesNo(claim.defendantSignedSettlementAgreement)}, <AppRequest>req);
       await deleteDraftClaimFromStore(redisKey);
       res.redirect(constructResponseUrlWithIdParams(claimId, DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION));
