@@ -1,13 +1,12 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  DASHBOARD_CLAIMANT_URL,
+  DASHBOARD_CLAIMANT_URL, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL,
   GA_APPLY_HELP_WITH_FEE_SELECTION,
   GA_APPLY_HELP_WITH_FEES,
   GA_APPLY_HELP_WITH_FEES_START,
 } from '../../../urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
-// import {getClaimById} from 'modules/utilityService';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
@@ -28,7 +27,13 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
   const cancelUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
   const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION);
-
+  
+  if (feeTypeFlag) {
+    backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id,  req.params.appId, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL + '?additionalFeeTypeFlag='+ feeTypeFlag);
+  } else {
+    backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION + '?additionalFeeTypeFlag='+ feeTypeFlag);
+  }
+  
   if (!form) {
     form = new GenericForm(new GenericYesNo(gaHwFDetails?.helpWithFeesRequested));
   }

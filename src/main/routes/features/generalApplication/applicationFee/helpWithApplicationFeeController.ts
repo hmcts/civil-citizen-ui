@@ -14,16 +14,20 @@ import {getHelpApplicationFeeSelectionPageContents, getButtonsContents}
   from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
+import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
 
 const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee';
 const helpWithApplicationFeeController = Router();
 const hwfPropertyName = 'applyHelpWithFees';
+
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, lng: string) {
   if (!form) {
     const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
     form = new GenericForm(new GenericYesNo(gaHwFDetails?.applyHelpWithFees?.option));
   }
+
   const backLinkUrl = req.query.id ? constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL) + '?id=' + req.query.id : constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_VIEW_APPLICATION_URL);
+
   res.render(applyHelpWithApplicationFeeViewPath,
     {
       form,
@@ -47,13 +51,14 @@ helpWithApplicationFeeController.post([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPL
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
+    const genAppId = await getGaAppId(claimId, <AppRequest>req);
     const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
     await form.validate();
     if (form.hasErrors()) {
       await renderView(res, req, form, claimId, lng);
     } else {
       const redirectUrl = await getRedirectUrl(claimId, form.model, hwfPropertyName, <AppRequest>req);
-      res.redirect(redirectUrl);
+      res.redirect(redirectUrl); 
     }
   }catch (error) {
     next(error);

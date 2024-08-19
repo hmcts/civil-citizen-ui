@@ -93,7 +93,7 @@ describe('General Application - Do you have a help with fees reference number', 
         .send({option: YesNo.NO})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(GA_APPLY_HELP_WITH_FEE_SELECTION);
+          expect(res.header.location).toEqual(GA_APPLY_HELP_WITH_FEE_SELECTION+'?additionalFeeTypeFlag=false');
         });
     });
 
