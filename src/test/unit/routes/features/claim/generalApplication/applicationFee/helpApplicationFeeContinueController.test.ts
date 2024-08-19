@@ -22,12 +22,63 @@ jest.mock('../../../../../../../main/modules/draft-store/gaHwFeesDraftStore', ()
 
 const mockGetCaseData = getDraftGAHWFDetails as jest.Mock;
 const mockSaveCaseData = saveDraftGAHWFDetails as jest.Mock;
-
 const gaFeeDetails = {
   calculatedAmountInPence: 1400,
   code: 'Fe124',
   version: 0,
+}
+const mockClaim = new Claim();
+mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+mockClaim.generalApplication.agreementFromOtherParty = YesNo.YES;
+mockClaim.generalApplication.informOtherParties = new InformOtherParties();
+mockClaim.generalApplication.informOtherParties.option = YesNo.NO;
+const ccdClaim = new Claim();
+ccdClaim.generalApplications = [
+  {
+    'id': 'test',
+    'value': {
+      'caseLink': {
+        'CaseReference': 'testApp1',
+      },
+    },
+  },
+];
+
+const applicationResponse: ApplicationResponse = {
+  case_data: {
+    applicationTypes: undefined,
+    generalAppType: undefined,
+    generalAppRespondentAgreement: undefined,
+    generalAppInformOtherParty: undefined,
+    generalAppAskForCosts: undefined,
+    generalAppDetailsOfOrder: undefined,
+    generalAppReasonsOfOrder: undefined,
+    generalAppEvidenceDocument: undefined,
+    gaAddlDoc: undefined,
+    generalAppHearingDetails: undefined,
+    generalAppStatementOfTruth: undefined,
+    generalAppPBADetails: {
+      fee: {
+        code: 'FEE0443',
+        version: '2',
+        calculatedAmountInPence: '10800',
+      },
+      paymentDetails: {
+        status: 'SUCCESS',
+        reference: undefined,
+      },
+      serviceRequestReference: undefined,
+    },
+    applicationFeeAmountInPence: undefined,
+    parentClaimantIsApplicant: undefined,
+    judicialDecision: undefined,
+  },
+  created_date: '',
+  id: '',
+  last_modified: '',
+  state: undefined,
 };
+
 describe('General Application - Do you want to continue to apply for Help with Fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -132,7 +183,6 @@ describe('General Application - Do you want to continue to apply for Help with F
       const mockGAHwF = new GaHelpWithFees();
       mockGetCaseData.mockImplementation(async () => mockGAHwF);
       jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
-
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEES)
         .send({})

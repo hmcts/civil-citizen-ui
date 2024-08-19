@@ -20,14 +20,11 @@ import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/g
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, hwfPropertyName: keyof GaHelpWithFees, req: AppRequest): Promise<string> => {
   try {
     let redirectUrl;
     let generalApplicationId: string;
-    const claim: Claim = await getClaimById(claimId, req, true);
     if (req.query?.id) {
       const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
       const ccdGeneralApplications = ccdClaim.generalApplications;
@@ -36,9 +33,9 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     } else {
       generalApplicationId = req.params.appId;
     }
-
+    
     if (applyHelpWithFees.option === YesNo.NO) {
-      const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+      const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(gaAppId, req);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       await saveDraftClaim(claim.id, claim, true);
       deleteDraftClaimFromStore(generalApplicationId + req.session.user?.id);
@@ -52,9 +49,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       await saveDraftGAHWFDetails(generalApplicationId + req.session.user?.id, gaHwFDetails);
       const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, generalApplicationId);
       const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
-      redirectUrl = isAdditionalFee
-        ? constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag=' + isAdditionalFee)
-        : constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEES);
+      redirectUrl =  constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag='+ isAdditionalFee);
     }
     return redirectUrl;
   }

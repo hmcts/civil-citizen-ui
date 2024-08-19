@@ -12,6 +12,7 @@ import {t} from 'i18next';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 
+
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/services/features/generalApplication/fee/helpWithFeeService');
@@ -23,6 +24,17 @@ jest.mock('../../../../../../../main/modules/draft-store/gaHwFeesDraftStore', ()
 
 const mockGetCaseData = getDraftGAHWFDetails as jest.Mock;
 const mockGetRedirectUrl = getRedirectUrl as jest.Mock;
+const ccdClaim = new Claim();
+ccdClaim.generalApplications = [
+  {
+    'id': 'test',
+    'value': {
+      'caseLink': {
+        'CaseReference': 'testApp1',
+      },
+    },
+  },
+];
 
 describe('General Application - Do you want to apply for help with fees Page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
