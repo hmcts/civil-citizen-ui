@@ -80,6 +80,7 @@ const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, appli
 
 export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
   const rows: SummaryRow[] = [];
+  const documentUrl = getMakeWithNoticeDocumentUrl(applicationResponse);
 
   rows.push(
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
@@ -193,6 +194,16 @@ const setUpDocumentLinkObject = (document: CcdDocument, documentDate: Date, appl
       document.document_filename));
 };
 
+const getMakeWithNoticeDocumentUrl = (applicationResponse: ApplicationResponse) : string => {
+  const requestForInformationDocument = applicationResponse?.case_data?.requestForInformationDocument;
+  const applicationId = applicationResponse.id;
+  if(requestForInformationDocument) {
+    const makeWithNoticeDoc = requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY);
+    const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);
+    return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
+  }
+  return undefined;
+};
 
 export const getJudgesDirectionsOrder = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
   const rows: SummaryRow[] = [];
