@@ -14,6 +14,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 import {t} from 'i18next';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -26,6 +27,17 @@ const mockGetRedirectUrl = getRedirectUrl as jest.Mock;
 
 const mockClaim = new Claim();
 mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+const ccdClaim = new Claim();
+ccdClaim.generalApplications = [
+  {
+    'id': 'test',
+    'value': {
+      'caseLink': {
+        'CaseReference': 'testApp1',
+      },
+    },
+  },
+];
 describe('General Application - Do you want to apply for help with fees Page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -39,6 +51,7 @@ describe('General Application - Do you want to apply for help with fees Page', (
   describe('on GET', () => {
     it('should return Do you want to apply for help with fees page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(ccdClaim);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
         .expect((res) => {
@@ -52,6 +65,7 @@ describe('General Application - Do you want to apply for help with fees Page', (
       mockClaim.generalApplication.helpWithFees = new GaHelpWithFees();
       mockClaim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
       mockGetCaseData.mockImplementation(async () => mockClaim);
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(ccdClaim);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
         .expect((res) => {
