@@ -67,14 +67,16 @@ describe('Claimant Response - Check answers', () => {
   describe('Get', () => {
 
     it('should return check answers page', async () => {
-      // (getClaimById as jest.Mock).mockResolvedValueOnce(noRespondentTelephoneClaimantIntentionMock.case_data);
+      (getClaimById as jest.Mock).mockClear();
       app.locals.draftStoreClient = mockCivilClaimantIntention;
+      (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data));
       const res = await request(app).get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain(checkYourAnswerEng);
     });
 
     it('should return http 500 when has error in the get method', async () => {
+      (getClaimById as jest.Mock).mockClear();
       app.locals.draftStoreClient = mockRedisFailure;
       const res = await request(app).get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL);
       expect(res.status).toBe(500);
@@ -82,6 +84,7 @@ describe('Claimant Response - Check answers', () => {
     });
 
     it('should pass english translation via query', async () => {
+      (getClaimById as jest.Mock).mockClear();
       app.locals.draftStoreClient = mockCivilClaimantIntention;
       await session(app).get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL)
         .query({lang: 'en'})
@@ -92,7 +95,9 @@ describe('Claimant Response - Check answers', () => {
     });
 
     it('should pass cy translation via query', async () => {
+      (getClaimById as jest.Mock).mockClear();
       app.locals.draftStoreClient = mockCivilClaimantIntention;
+      (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data));
       await session(app).get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL)
         .query({lang: 'cy'})
         .expect((res: Response) => {
@@ -104,8 +109,9 @@ describe('Claimant Response - Check answers', () => {
 
   describe('on Post', () => {
     it('should return errors when form is incomplete', async () => {
+      (getClaimById as jest.Mock).mockClear();
       app.locals.draftStoreClient = mockCivilClaimantIntention;
-      (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data));
+      (getClaimById as jest.Mock).mockResolvedValue(Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data));
       const data = {isClaimantRejectedDefendantOffer: 'true'};
       await request(app)
         .post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL)
@@ -117,6 +123,7 @@ describe('Claimant Response - Check answers', () => {
     });
 
     it('should return 500 when error in service', async () => {
+      (getClaimById as jest.Mock).mockClear();
       app.locals.draftStoreClient = mockRedisFailure;
       (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data));
       const data = {isClaimantRejectedDefendantOffer: 'true'};

@@ -1,6 +1,6 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  DASHBOARD_CLAIMANT_URL,
+  DASHBOARD_CLAIMANT_URL, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL,
   GA_APPLY_HELP_WITH_FEE_SELECTION,
   GA_APPLY_HELP_WITH_FEES,
   GA_APPLY_HELP_WITH_FEES_START,
@@ -9,17 +9,17 @@ import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {getClaimById} from 'modules/utilityService';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {t} from 'i18next';
 import {Claim} from 'models/claim';
-import {gaApplicationFeeDetails} from 'services/features/generalApplication/feeDetailsService';
 import {getButtonsContents, getHelpApplicationFeeContinuePageContents}
   from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
 import {
   saveHelpWithFeesDetails,
 } from 'services/features/generalApplication/generalApplicationService';
+import {getGaAppFeeDetails, getGaAppId} from 'services/features/generalApplication/feeDetailsService';
 
 const helpWithApplicationFeeContinueController = Router();
 const applyHelpWithFeesViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee-continue';
@@ -27,10 +27,15 @@ const hwfPropertyName = 'helpWithFeesRequested';
 
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, feeTypeFlag: boolean) {
   const claim: Claim = await getClaimById(claimId, req, true);
-
-  const gaFeeData = await gaApplicationFeeDetails(claim, <AppRequest>req);
+  let backLinkUrl: string;
+  const gaFeeData = await getGaAppFeeDetails(claimId, <AppRequest>req);
+  const genAppId = await getGaAppId(claimId, <AppRequest>req);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-  const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_APPLY_HELP_WITH_FEE_SELECTION);
+  if (feeTypeFlag) {
+    backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, genAppId, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL + '?additionalFeeTypeFlag='+ feeTypeFlag);
+  } else {
+    backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_APPLY_HELP_WITH_FEE_SELECTION + '?additionalFeeTypeFlag='+ feeTypeFlag);
+  }
 
   if (!form) {
     form = new GenericForm(new GenericYesNo(claim.generalApplication?.helpWithFees?.helpWithFeesRequested));
