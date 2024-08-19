@@ -4,7 +4,7 @@ import {
   GA_APPLY_HELP_WITH_FEE_SELECTION,
   GA_APPLY_HELP_WITH_FEES,
   GA_APPLY_HELP_WITH_FEES_START,
-} from '../../../urls';
+} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
@@ -26,14 +26,14 @@ const hwfPropertyName = 'helpWithFeesRequested';
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, feeTypeFlag: boolean) {
   const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
   const cancelUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION);
-  
+  let backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+
   if (feeTypeFlag) {
     backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id,  req.params.appId, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL + '?additionalFeeTypeFlag='+ feeTypeFlag);
   } else {
     backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION + '?additionalFeeTypeFlag='+ feeTypeFlag);
   }
-  
+
   if (!form) {
     form = new GenericForm(new GenericYesNo(gaHwFDetails?.helpWithFeesRequested));
   }

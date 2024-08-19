@@ -14,7 +14,6 @@ import {getHelpApplicationFeeSelectionPageContents, getButtonsContents}
   from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
-import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
 
 const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee';
 const helpWithApplicationFeeController = Router();
@@ -51,14 +50,13 @@ helpWithApplicationFeeController.post([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPL
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
-    const genAppId = await getGaAppId(claimId, <AppRequest>req);
     const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
     await form.validate();
     if (form.hasErrors()) {
       await renderView(res, req, form, claimId, lng);
     } else {
       const redirectUrl = await getRedirectUrl(claimId, form.model, hwfPropertyName, <AppRequest>req);
-      res.redirect(redirectUrl); 
+      res.redirect(redirectUrl);
     }
   }catch (error) {
     next(error);

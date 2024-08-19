@@ -47,7 +47,6 @@ payAdditionalFeeController.post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL, (asy
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
-    const gaAppId = req.params.appId;
     const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
     await form.validate();
     if (form.hasErrors()) {

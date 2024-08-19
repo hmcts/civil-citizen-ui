@@ -10,21 +10,24 @@ import {deleteDraftClaimFromStore, saveDraftClaim} from 'modules/draft-store/dra
 import {
   getGaFeePaymentRedirectInformation,
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
-import {getClaimById} from 'modules/utilityService';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {
   getApplicationFromGAService,
 } from 'services/features/generalApplication/generalApplicationService';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
+import {getClaimById} from 'modules/utilityService';
+import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
-
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, hwfPropertyName: keyof GaHelpWithFees, req: AppRequest): Promise<string> => {
   try {
     let redirectUrl;
     let generalApplicationId: string;
+    const claim: Claim = await getClaimById(claimId, req, true);
     if (req.query?.id) {
       const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
       const ccdGeneralApplications = ccdClaim.generalApplications;
@@ -33,9 +36,10 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     } else {
       generalApplicationId = req.params.appId;
     }
-    
+
     if (applyHelpWithFees.option === YesNo.NO) {
-      const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(gaAppId, req);
+      const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+      claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       await saveDraftClaim(claim.id, claim, true);
       deleteDraftClaimFromStore(generalApplicationId + req.session.user?.id);
