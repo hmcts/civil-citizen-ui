@@ -15,7 +15,7 @@ import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/
 import {
   CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
-import {CcdGeneralApplicationAddlDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
+import {CcdGeneralApplicationAddlDocument, CcdHearingDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 import {CcdGeneralApplicationDirectionsOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
@@ -58,9 +58,12 @@ export interface CCDApplication extends ApplicationUpdate {
   generalAppPBADetails: CcdGeneralApplicationPBADetails;
   applicationFeeAmountInPence: string;
   parentClaimantIsApplicant: YesNoUpperCamelCase;
-  judicialDecision: JudicialDecision,
+  judicialDecision: JudicialDecision;
+  hearingOrderDocument? : CcdHearingDocument[];
+  hearingNoticeDocument? : CcdHearingDocument[];
   requestForInformationDocument?: CcdGAMakeWithNoticeDocument[];
   directionOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
+  judicialDecisionMakeOrder?: JudicialDecisionMakeOrder;
 }
 
 export interface JudicialDecision {
@@ -73,4 +76,15 @@ export enum JudicialDecisionOptions {
   REQUEST_MORE_INFO = 'REQUEST_MORE_INFO',
   LIST_FOR_A_HEARING = 'LIST_FOR_A_HEARING',
   MAKE_ORDER_FOR_WRITTEN_REPRESENTATIONS = 'MAKE_ORDER_FOR_WRITTEN_REPRESENTATIONS',
+}
+
+export interface JudicialDecisionMakeOrder {
+  directionsResponseByDate?: string;
+  makeAnOrder?: JudicialDecisionMakeAnOrderOptions;
+}
+
+export enum JudicialDecisionMakeAnOrderOptions {
+  APPROVE_OR_EDIT = 'APPROVE_OR_EDIT',
+  DISMISS_THE_APPLICATION = 'DISMISS_THE_APPLICATION',
+  GIVE_DIRECTIONS_WITHOUT_HEARING = 'GIVE_DIRECTIONS_WITHOUT_HEARING',
 }
