@@ -5,6 +5,7 @@ import {
   getHelpApplicationFeeContinuePageContents,
 } from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+import {CcdFee} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 
 describe('Help with Application fee content', () => {
   it('should return getHelpApplicationFeeSelectionPageContents related content ', () => {
@@ -30,10 +31,10 @@ describe('Help with Application fee content', () => {
 
   it('should return all the content for getHelpApplicationFeeContinuePageContents', () => {
     //Given
-    const gaFeeData = {
-      calculatedAmountInPence: 23000,
+    const gaFeeData:CcdFee = {
+      calculatedAmountInPence: '23000',
       code: 'code',
-      version: 1,
+      version: '1',
     };
     //When
     const actualContent = getHelpApplicationFeeContinuePageContents(gaFeeData, false);
