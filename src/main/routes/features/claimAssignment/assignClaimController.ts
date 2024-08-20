@@ -3,7 +3,7 @@ import {ASSIGN_CLAIM_URL, DASHBOARD_URL} from 'routes/urls';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
-import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import { getFirstContactData } from 'services/firstcontact/firstcontactService';
 import { getClaimById } from 'modules/utilityService';
 import { Claim } from 'common/models/claim';
@@ -21,7 +21,7 @@ assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
     if (claimId) {
       const claim: Claim = await getClaimById(claimId, req);
       await civilServiceClient.assignDefendantToClaim(claimId, req, claim.respondent1PinToPostLRspec?.accessCode);
-      deleteDraftClaimFromStore(generateRedisKey(<AppRequest>req));
+      await deleteDraftClaimFromStore(claimId);
       req.session.firstContact = {};
     }
   } catch (error) {
