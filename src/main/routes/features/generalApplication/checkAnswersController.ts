@@ -79,7 +79,7 @@ function getRedirectUrl(claimId: string, claim: Claim, applicationFee: number, g
     && hearingMoreThan14DaysInFuture(claim)) {
     return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUBMITTED_URL);
   } else {
-  return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL)+ '?appFee='+ applicationFee + `&id=${genAppId}`;
+    return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL) + '?appFee=' + applicationFee + '&id=' + genAppId;
   }
 }
 
