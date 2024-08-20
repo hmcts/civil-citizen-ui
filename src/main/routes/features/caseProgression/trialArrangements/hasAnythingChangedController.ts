@@ -17,7 +17,6 @@ import {
   getHasAnythingChangedForm,
   getNameTrialArrangements,
 } from 'services/features/caseProgression/trialArrangements/trialArrangementsService';
-import {AppRequest} from 'models/AppRequest';
 
 const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/has-anything-changed';
 const hasAnythingChangedController = Router();
