@@ -99,7 +99,7 @@ module.exports = {
           } else if (response.status === 409) {
             console.log('Role assigned failed');
           } else {
-            throw new Error(`Error occurred with status : ${response.status}`);
+            console.log(`Error occurred while assigning case with status : ${response.status}`);
           }
         });
     });
@@ -107,6 +107,14 @@ module.exports = {
 
   unAssignUserFromCases: async (caseIds, user) => {
     const authToken = await idamHelper.accessToken(user);
+    const s2sAuth = await restHelper.retriedRequest(
+      `${config.url.authProviderApi}/lease`,
+      {'Content-Type': 'application/json'},
+      {
+        microservice: config.s2s.microservice,
+        oneTimePassword: totp(config.s2s.secret) ,
+      })
+      .then(response => response.text());
 
     await retry(() => {
       return restHelper.request(
@@ -114,6 +122,7 @@ module.exports = {
         {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${authToken}`,
+          'ServiceAuthorization': s2sAuth ,
         },
         {
           caseIds,
@@ -123,7 +132,7 @@ module.exports = {
           if (response.status === 200) {
             caseIds.forEach(caseId => console.log(`User unassigned from case [${caseId}] successfully`));
           } else {
-            throw new Error(`Error occurred with status : ${response.status}`);
+            console.log(`Error occurred while unassigning users with status : ${response.status}`);
           }
         });
     });
@@ -187,7 +196,7 @@ module.exports = {
         if (response.status === 200) {
           console.log(`Bundle for ${caseId} successful`);
         } else {
-          throw new Error(`Error occurred with status : ${response.status}`);
+          console.log(`Error occurred for bundle creation with status : ${response.status}`);
         }
       },
       );
