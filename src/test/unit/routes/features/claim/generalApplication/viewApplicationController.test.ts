@@ -268,6 +268,6 @@ describe('General Application - View application', () => {
         expect(res.status).toBe(200);
         expect(res.text).not.toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT'));
       });
-    });
+  });
 });
 
