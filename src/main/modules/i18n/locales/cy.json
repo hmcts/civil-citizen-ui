@@ -174,7 +174,17 @@
       "SIGN_OUT": "Allgofnodi"
     },
     "HEARING_DURATION": {
+      "MINUTES_5": "5 munud",
+      "MINUTES_10": "10 munud",
+      "MINUTES_15": "15 munud",
+      "MINUTES_20": "20 munud",
+      "MINUTES_25": "25 munud",
       "MINUTES_30": "30 munud",
+      "MINUTES_35": "35 munud",
+      "MINUTES_40": "40 munud",
+      "MINUTES_45": "45 munud",
+      "MINUTES_50": "50 munud",
+      "MINUTES_55": "55 munud",
       "MINUTES_60": "1 awr",
       "MINUTES_90": "1 awr a hanner",
       "MINUTES_120": "2 awr",
