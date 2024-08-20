@@ -7,6 +7,7 @@ import {
   getJudgeResponseSummary,
   getRespondentDocuments,
   getJudgesDirectionsOrder,
+  getGeneralOrder,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {GaServiceClient} from 'client/gaServiceClient';
 import * as requestModels from 'models/AppRequest';
@@ -79,6 +80,24 @@ function setMockHearingOrderDocuments(): CcdHearingDocument[] {
         'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831/binary',
       },
       'documentName': 'Application_Hearing_Notice_2024-08-02 12:15:34.pdf',
+      'documentType': DocumentType.HEARING_NOTICE,
+      'createdDatetime':  new Date('2024-08-01'),
+    },
+  }];
+}
+
+function setMockGeneralOrderDocuments(): CcdHearingDocument[] {
+  return [{
+    'id': '4810a582-2e16-48e9-8b64-9f96b4d12cc4',
+    'value': {
+      'createdBy': 'Civil',
+      'documentLink': {
+        'category_id': 'applications',
+        'document_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831',
+        'document_filename': 'General_order_for_application_2024-08-01 11:59:58.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831/binary',
+      },
+      'documentName': 'General_order_for_application_2024-08-01 11:59:58.pdf',
       'documentType': DocumentType.HEARING_NOTICE,
       'createdDatetime':  new Date('2024-08-01'),
     },
@@ -343,6 +362,48 @@ describe('View Application service', () => {
       );
       const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
       expect(result).toEqual(expectedResult);
+    });
+    it('should get data array if there is general order documents', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.generalOrderDocument= setMockGeneralOrderDocuments();
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      //When
+      const result = getCourtDocuments(application, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf831', 'General_order_for_application_2024-08-01 11:59:58.pdf'),
+      );
+      expect(result.documents[1]).toEqual(expectedDocument);
+    });
+    it('should get empty data array if there is no general order documents', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.generalOrderDocument= null;
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      //When
+      const result = getGeneralOrder(application, 'en');
+      //Then
+
+      expect(result.length).toEqual(0);
+    });
+    it('should get empty data array if there is no casedata', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      application.case_data = null;
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      //When
+      const resultGeneralOrder = getGeneralOrder(application, 'en');
+      //Then
+
+      expect(resultGeneralOrder.length).toEqual(0);
     });
   });
 

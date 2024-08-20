@@ -24,6 +24,7 @@ import {getApplicationFromGAService} from 'services/features/generalApplication/
 import {SummaryRow} from 'common/models/summaryList/summaryList';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
+import { DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 
 const viewApplicationController = Router();
 const viewPath = 'features/generalApplication/view-applications';
