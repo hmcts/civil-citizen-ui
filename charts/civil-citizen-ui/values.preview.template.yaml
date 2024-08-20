@@ -141,7 +141,7 @@ civil-service:
           enabled: false
         resources:
           requests:
-            cpu: 100m
+            cpu: 200m
         initdb:
           scripts:
             init.sql: |
