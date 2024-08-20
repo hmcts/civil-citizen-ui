@@ -603,6 +603,20 @@ describe('View Orders And Notices Service', () => {
       //Then
       expect(result.documents.length).toEqual(1);
     });
+
+    it('should get general application doc from def', async () => {
+      //given
+      (isGaForLipsEnabled as jest.Mock).mockReturnValueOnce(true);
+      const claim = new Claim();
+      claim.caseRole = CaseRole.DEFENDANT;
+      const documentName = 'test_000MC001.pdf';
+      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
+      claim.generalOrderDocRespondentSol = new Array(document);
+      //When
+      const result = await getCourtDocuments(claim, claimId, 'en');
+      //Then
+      expect(result.documents.length).toEqual(1);
+    });
   });
 
   function setUpMockSystemGeneratedCaseDocument(documentName: string, documentType: DocumentType) {
