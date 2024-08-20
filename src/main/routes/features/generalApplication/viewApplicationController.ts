@@ -12,7 +12,7 @@ import {
   getApplicationSections,
   getCourtDocuments,
   getRespondentDocuments,
-  getResponseFromCourtSection,
+  getClaimantResponseFromCourtSection,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {
@@ -49,7 +49,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       applicationFeeOptionUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
     }
 
-    const responseFromCourt = await getResponseFromCourtSection(req, req.params.appId, lang);
+    const responseFromCourt = await getClaimantResponseFromCourtSection(req, req.params.appId, lang);
     res.render(viewPath, {
       backLinkUrl,
       summaryRows,

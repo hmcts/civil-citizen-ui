@@ -76,13 +76,20 @@ const buildViewApplicationToRespondentSections = (application: ApplicationRespon
   ];
 };
 
+const buildClaimantResponseFromCourtSection = async (req : AppRequest, application: ApplicationResponse, lang: string): Promise<CourtResponseSummaryList[]> => {
+  
+  return [
+    ... await buildResponseFromCourtSection(req, application, lang),
+    getJudgeResponseSummary(req, application, lang),
+  ].filter(courtResponseSummary => courtResponseSummary.rows.length > 0);
+};
+
 const buildResponseFromCourtSection = async (req : AppRequest, application: ApplicationResponse, lang: string): Promise<CourtResponseSummaryList[]> => {
   const claimId = req.params.id;
   const returnDashboardUrl = await getReturnDashboardUrl(claimId, req);
   return [
     ...getHearingNoticeResponses(application, lang),
     ...getHearingOrderResponses(application, lang),
-    getJudgeResponseSummary(req, application, lang),
     getJudgesDirectionsOrder(req, application, lang),
     getJudgeApproveEdit(application, lang),
     getJudgeDismiss(returnDashboardUrl, application, lang),
@@ -101,7 +108,12 @@ const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, appli
     || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
 };
 
-export const getResponseFromCourtSection = async (req: AppRequest, applicationId: string, lang?: string): Promise<CourtResponseSummaryList[]> => {
+export const getClaimantResponseFromCourtSection = async (req: AppRequest, applicationId: string, lang?: string): Promise<CourtResponseSummaryList[]> => {
+  const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
+  return await buildClaimantResponseFromCourtSection(req, applicationResponse, lang);
+};
+
+export const getDefendantResponseFromCourtSection = async (req: AppRequest, applicationId: string, lang?: string): Promise<CourtResponseSummaryList[]> => {
   const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
   return await buildResponseFromCourtSection(req, applicationResponse, lang);
 };
