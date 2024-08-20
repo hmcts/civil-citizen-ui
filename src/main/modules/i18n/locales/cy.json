@@ -3045,7 +3045,9 @@
         "CONTENT_2_1": "If you're not sure what to write, refer to the ",
         "CONTENT_2_2": "court document",
         "CONTENT_2_3": " that sets out the information that the court has requested from you.",
-        "OPTION": "Do you want to upload documents to support your response? (Optional)"
+        "OPTION": "Do you want to upload documents to support your response? (Optional)",
+        "WRITTEN_REP_CONTENT_1": "Written representations are written statements that explain your case or your request to the court.",
+        "WRITTEN_REP_CONTENT_1_2": "You can either write the requested information in the box below or upload documents that contain it."
       },
       "RESPONDENT_WANT_TO_UPLOAD_DOC": {
         "PAGE_TITLE": "Do you want to upload documents to support your response?",
@@ -5057,7 +5059,7 @@
       "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
       "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your response. Choose Yes or No.",
       "RESPONDENT_UPLOAD_OPTION": {
-        "EMPTY_OPTION": "You need to tell up if you want to upload documents to support your response. Choose option: Yes or No.",
+        "EMPTY_OPTION": "You need to tell us if you want to upload documents to support your response. Choose option: Yes or No.",
         "ERROR_INPUT": "You need to either enter the information requested in the box or select Yes to upload documents to support your response."
       }
     }

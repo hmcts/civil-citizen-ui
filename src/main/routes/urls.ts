@@ -380,6 +380,7 @@ export const GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL = `${BASE_GENERAL_APPLICA
 export const GA_RESPONDENT_UPLOAD_DOCUMENT_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_URL}/upload-documents`;
 export const GA_APPLICATION_SUBMITTED_URL = `${BASE_GENERAL_APPLICATION_URL}/application-submitted`;
 export const GA_RESPOND_ADDITIONAL_INFO_URL = `${BASE_GENERAL_APPLICATION_URL}/:appId/respond-addln-info`;
+export const GA_PROVIDE_MORE_INFORMATION_URL  = `${BASE_GENERAL_APPLICATION_URL}/:appId/provide-more-information`;
 export const GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL = `${BASE_GENERAL_APPLICATION_URL}/:appId/upload-documents-for-addln-info`;
 export const GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL = `${BASE_GENERAL_APPLICATION_URL}/:appId/upload-documents-for-addln-info/check-and-send`;
 export const GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_URL}/:appId/upload-documents-for-addln-info/confirmation`;

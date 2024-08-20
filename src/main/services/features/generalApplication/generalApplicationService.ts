@@ -407,7 +407,7 @@ export const getApplicationStatus = (status: ApplicationState): ApplicationStatu
   }
 };
 
-export const getRespondentApplicationStatus = (status: ApplicationState): ApplicationStatus => 
+export const getRespondentApplicationStatus = (status: ApplicationState): ApplicationStatus =>
   (status === ApplicationState.AWAITING_RESPONDENT_RESPONSE)
     ? ApplicationStatus.TO_DO
     : ApplicationStatus.IN_PROGRESS;
@@ -432,6 +432,18 @@ export const saveAdditionalText = async (redisKey: string, additionalText: strin
     const gaResponse = await getDraftGARespondentResponse(redisKey);
     gaResponse.wantToUploadAddlDocuments = wantToUploadAddlDocuments;
     gaResponse.additionalText = additionalText;
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveWrittenRepText = async (redisKey: string, writtenRepText: string, wantToUploadAddlDocuments: YesNo): Promise<void> => {
+  try {
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.wantToUploadAddlDocuments = wantToUploadAddlDocuments;
+    gaResponse.writtenRepText = writtenRepText;
     await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
     logger.error(error);
