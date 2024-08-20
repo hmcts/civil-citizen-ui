@@ -59,7 +59,7 @@ export const getCourtDocuments = async (claim: Claim, claimId: string, lang: str
     courtDocumentsArray.push(...getTranslatedOrders(claim, claimId, lang));
   }
 
-  if (isGaForLipsEnabled) {
+  if (await isGaForLipsEnabled()) {
     courtDocumentsArray.push(...getGeneralApplicationOrders(claim, claimId, lang));
   }
 
