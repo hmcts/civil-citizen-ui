@@ -93,6 +93,21 @@
   {{ createDocumentsTableWithoutTableCaption(courtDocRows) }}
 {% endset %}
 
+{% set courtResponseHtml %}
+  <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
+  {% for item in responseFromCourt %}
+      {{ govukSummaryList({
+        rows: item.rows
+      }) }}
+      {% if item.responseButton %}
+        {{ govukButton({
+         text: item.responseButton.title,
+         href: item.responseButton.href
+        }) }}
+      {% endif %}
+  {% endfor %}
+      
+{% endset %}
 
 {% block nestedContent %}
   <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TITLE', { applicationIndex : applicationIndex }) }}</h1>
@@ -108,7 +123,12 @@
         rows: summaryRows
       }) }}
     </div>
+    
   </div>
+      {{ govukDetails({
+        summaryHtml: courtResponseHeaderHtml,
+        html: courtResponseHtml
+      }) }}
       {% if (applicantDocuments.documents.length + courtDocuments.documents.length + respondentDocuments.documents.length) > 0 %}
         {{ govukDetails({
           summaryHtml: applicationDocuments,

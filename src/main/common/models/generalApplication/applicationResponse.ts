@@ -19,6 +19,7 @@ import {CcdGeneralApplicationAddlDocument, CcdHearingDocument} from 'models/ccdG
 import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 import {CcdGeneralApplicationDirectionsOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
+import { DateTime } from 'luxon';
 
 export class ApplicationResponse {
   id: string;
@@ -66,6 +67,16 @@ export interface CCDApplication extends ApplicationUpdate {
   judicialDecisionMakeOrder?: JudicialDecisionMakeOrder;
   generalOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
   dismissalOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
+  judicialDecisionRequestMoreInfo?: JudicialRequestMoreInfo;
+}
+
+export interface JudicialRequestMoreInfo {
+  requestMoreInfoOption : JudgeRequestMoreInfoOption;
+  judgeRequestMoreInfoText : string;
+  judgeRequestMoreInfoByDate : Date;
+  deadlineForMoreInfoSubmission : DateTime;
+  isWithNotice : YesNoUpperCamelCase;
+  judgeRecitalText: string;
 }
 
 export interface JudicialDecision {
@@ -88,4 +99,9 @@ export enum JudicialDecisionMakeAnOrderOptions {
   APPROVE_OR_EDIT = 'APPROVE_OR_EDIT',
   DISMISS_THE_APPLICATION = 'DISMISS_THE_APPLICATION',
   GIVE_DIRECTIONS_WITHOUT_HEARING = 'GIVE_DIRECTIONS_WITHOUT_HEARING',
+}
+
+export enum JudgeRequestMoreInfoOption {
+  REQUEST_MORE_INFO = 'REQUEST_MORE_INFO',
+  SEND_APP_TO_OTHER_PARTY = 'SEND_APP_TO_OTHER_PARTY',
 }

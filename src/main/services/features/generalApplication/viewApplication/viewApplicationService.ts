@@ -32,14 +32,18 @@ import {
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
   GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL,
+  GA_PAY_ADDITIONAL_FEE_URL,
+  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
 } from 'routes/urls';
 import {documentIdExtractor} from 'common/utils/stringUtils';
-import {constructDocumentUrlWithIdParamsAndDocumentId} from 'common/utils/urlFormatter';
+import {constructDocumentUrlWithIdParamsAndDocumentId, constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {DocumentType} from 'models/document/documentType';
 import {
   CcdGeneralApplicationDirectionsOrderDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
 import {Request} from 'express';
+import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalApplication/CourtResponseSummary';
+import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -72,6 +76,19 @@ const buildViewApplicationToRespondentSections = (application: ApplicationRespon
   ];
 };
 
+const buildResponseFromCourtSection = async (req : AppRequest, application: ApplicationResponse, lang: string): Promise<CourtResponseSummaryList[]> => {
+  const claimId = req.params.id;
+  const returnDashboardUrl = await getReturnDashboardUrl(claimId, req);
+  return [
+    ...getHearingNoticeResponses(application, lang),
+    ...getHearingOrderResponses(application, lang),
+    getJudgeResponseSummary(req, application, lang),
+    getJudgesDirectionsOrder(req, application, lang),
+    getJudgeApproveEdit(application, lang),
+    getJudgeDismiss(returnDashboardUrl, application, lang),
+  ].filter(courtResponseSummary => courtResponseSummary.rows.length > 0);
+};
+
 export const getApplicationSections = async (req: AppRequest, applicationId: string, lang?: string): Promise<SummaryRow[]> => {
   const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
   const claim = await getClaimById(req.params.id, req, true);
@@ -84,16 +101,30 @@ const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, appli
     || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
 };
 
-export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
-  const rows: SummaryRow[] = [];
-  const documentUrl = getMakeWithNoticeDocumentUrl(applicationResponse);
+export const getResponseFromCourtSection = async (req: AppRequest, applicationId: string, lang?: string): Promise<CourtResponseSummaryList[]> => {
+  const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
+  return await buildResponseFromCourtSection(req, applicationResponse, lang);
+};
 
-  rows.push(
-    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
-    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
-    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng})}</a>`),
-  );
-  return rows;
+export const getJudgeResponseSummary = (req : AppRequest, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList => {
+  const rows: SummaryRow[] = [];
+  const claimId = req.params.id;
+  const requestForInformationDocument = applicationResponse?.case_data?.requestForInformationDocument;
+  if(requestForInformationDocument) {
+    const documentUrl = getMakeWithNoticeDocumentUrl(applicationResponse);
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}" target="_blank" rel="noopener noreferrer">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng})}</a>`),
+    );
+  }
+  
+  let payAdditionalFeeButton : ResponseButton = null;
+  if(applicationResponse.state === ApplicationState.APPLICATION_ADD_PAYMENT) {
+    const payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PAY_ADDITIONAL_FEE_URL);
+    payAdditionalFeeButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAY_ADDITIONAL_FEE', {lng}), payAdditionalFeeUrl);
+  }
+  return new CourtResponseSummaryList(rows,payAdditionalFeeButton);
 };
 
 export const getCourtDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
@@ -177,17 +208,24 @@ const getMakeWithNoticeDocumentUrl = (applicationResponse: ApplicationResponse) 
   return undefined;
 };
 
-export const getJudgesDirectionsOrder = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
+export const getJudgesDirectionsOrder = (req: AppRequest, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList => {
   const rows: SummaryRow[] = [];
   let documentUrl = '';
-  const directionOrderDocument = getDirectionOrderDocument(applicationResponse);
-  documentUrl += `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(directionOrderDocument?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER_DOCUMENT', {lng})}</a>`;
+  let judgeDirectionOrderButton = undefined;
+  const claimId = req.params.id;
+  const judgesDirectionsOrderUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
+  if(applicationResponse.case_data?.judicialDecisionMakeOrder?.directionsResponseByDate != undefined) {
+    const directionOrderDocument = getDirectionOrderDocument(applicationResponse);
+    documentUrl += `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(directionOrderDocument?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER_DOCUMENT', {lng})}</a>`;
 
-  rows.push(
-    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(directionOrderDocument.value.createdDatetime, lng)),
-    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER', {lng})),
-    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl));
-  return rows;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(directionOrderDocument.value.createdDatetime, lng)),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER', {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl));
+    judgeDirectionOrderButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), judgesDirectionsOrderUrl);
+  }
+ 
+  return new CourtResponseSummaryList(rows,judgeDirectionOrderButton);
 };
 
 const getDirectionOrderDocument = (applicationResponse: ApplicationResponse) : CcdGeneralApplicationDirectionsOrderDocument => {
@@ -198,10 +236,10 @@ const getDirectionOrderDocument = (applicationResponse: ApplicationResponse) : C
   return undefined;
 };
 
-export const getJudgeApproveEdit = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
+export const getJudgeApproveEdit = (applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList => {
   const rows: SummaryRow[] = [];
   const judgeApproveEditDocument = getJudgeApproveEditDocument(applicationResponse);
-  if (judgeApproveEditDocument) {
+  if(judgeApproveEditDocument) {
     const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(judgeApproveEditDocument?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPROVE_EDIT_DOCUMENT', {lng})}</a>`;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(judgeApproveEditDocument.value.createdDatetime), lng)),
@@ -209,7 +247,8 @@ export const getJudgeApproveEdit = (applicationResponse: ApplicationResponse, ln
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl),
     );
   }
-  return rows;
+
+  return new CourtResponseSummaryList(rows);
 };
 
 const getJudgeApproveEditDocument = (applicationResponse: ApplicationResponse) => {
@@ -220,9 +259,10 @@ const getJudgeApproveEditDocument = (applicationResponse: ApplicationResponse) =
   return undefined;
 };
 
-export const getJudgeDismiss = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
+export const getJudgeDismiss = (returnDashboardUrl: string, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList => {
   const rows: SummaryRow[] = [];
   const judgeDismissDocument = getJudgeDismissDocument(applicationResponse);
+  let returnDashboardButton = undefined;
   if (judgeDismissDocument) {
     const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(judgeDismissDocument?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSED_DOCUMENT', {lng})}</a>`;
     rows.push(
@@ -230,8 +270,10 @@ export const getJudgeDismiss = (applicationResponse: ApplicationResponse, lng: s
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DISMISSED', {lng})),
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl),
     );
+    returnDashboardButton = new ResponseButton(t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD', {lng}), returnDashboardUrl);
   }
-  return rows;
+
+  return new CourtResponseSummaryList(rows,returnDashboardButton);
 };
 
 const getJudgeDismissDocument = (applicationResponse: ApplicationResponse) => {
@@ -247,4 +289,40 @@ export const getReturnDashboardUrl = async (claimId: string, req: Request) : Pro
   return claim.isClaimant()
     ? DASHBOARD_CLAIMANT_URL.replace(':id', claimId)
     : DEFENDANT_SUMMARY_URL.replace(':id', claimId);
+};
+
+export const getHearingOrderResponses = (applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
+  const rows: SummaryRow[] = [];
+  const hearingOrders = applicationResponse?.case_data?.hearingOrderDocument;
+  let courtResponseSummaryList : CourtResponseSummaryList[] = [];
+  if(hearingOrders) {
+    courtResponseSummaryList = hearingOrders.map(hearingOrder => {
+      const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(hearingOrder?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER', {lng})}</a>`;
+      rows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(hearingOrder?.value?.createdDatetime), lng)),
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER_DESC', {lng})),
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl),
+      );
+      return new CourtResponseSummaryList(rows);
+    });
+  }
+  return courtResponseSummaryList;
+};
+
+export const getHearingNoticeResponses = (applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
+  const rows: SummaryRow[] = [];
+  const hearingNotices = applicationResponse?.case_data?.hearingNoticeDocument;
+  let courtResponseSummaryList : CourtResponseSummaryList[] = [];
+  if(hearingNotices) {
+    courtResponseSummaryList = hearingNotices.map(hearingNotice => {
+      const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(hearingNotice?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE', {lng})}</a>`;
+      rows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(hearingNotice?.value?.createdDatetime), lng)),
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC', {lng})),
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl),
+      );
+      return new CourtResponseSummaryList(rows);
+    });
+  }
+  return courtResponseSummaryList;
 };

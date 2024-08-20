@@ -5,27 +5,20 @@ import {
   GA_VIEW_APPLICATION_URL,
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
   GA_APPLY_HELP_WITH_FEE_SELECTION,
-  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {
   getApplicantDocuments,
   getApplicationSections,
   getCourtDocuments,
-  getJudgeResponseSummary,
   getRespondentDocuments,
-  getJudgesDirectionsOrder,
-  getJudgeApproveEdit,
-  getJudgeDismiss,
-  getReturnDashboardUrl,
+  getResponseFromCourtSection,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {
   ApplicationResponse,
-  JudicialDecisionMakeAnOrderOptions,
 } from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
-import {SummaryRow} from 'common/models/summaryList/summaryList';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 import { DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
@@ -43,54 +36,26 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, req.params.appId);
-    const isResponseFromCourt = !!applicationResponse.case_data?.judicialDecision?.decision;
-    const isJudgesDirectionsOrder = applicationResponse.case_data?.judicialDecisionMakeOrder?.directionsResponseByDate != undefined;
-    const isJudgesApproveEdit = applicationResponse.case_data?.judicialDecisionMakeOrder?.makeAnOrder == JudicialDecisionMakeAnOrderOptions.APPROVE_OR_EDIT;
-    const isJudgesDismiss = applicationResponse.case_data?.judicialDecisionMakeOrder?.makeAnOrder == JudicialDecisionMakeAnOrderOptions.DISMISS_THE_APPLICATION;
-    let responseFromCourt: SummaryRow[] = [];
     const applicantDocuments : DocumentsViewComponent = getApplicantDocuments(applicationResponse, lang);
     const courtDocuments: DocumentsViewComponent = getCourtDocuments(applicationResponse, lang);
     const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
-    let judgesDirectionsOrder: SummaryRow[] = [];
-    let payAdditionalFeeUrl: string = null;
-    const isApplicationFeeAmountNotPaid = isApplicationFeeNotPaid(applicationResponse);
     let applicationFeeOptionUrl : string = null;
-    let judgesDirectionsOrderUrl: string = null;
-    let judgesApproveEdit: SummaryRow[] = [];
-    let judgesDismiss: SummaryRow[] = [];
-    let returnDashboardUrl: string = null;
-
-    if(isResponseFromCourt) {
-      responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
-      payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
-    }
+    
+    const isApplicationFeeAmountNotPaid = isApplicationFeeNotPaid(applicationResponse);
+   
+    const payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
 
     if(isApplicationFeeAmountNotPaid) {
       applicationFeeOptionUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
     }
 
-    if(isJudgesDirectionsOrder) {
-      judgesDirectionsOrder = getJudgesDirectionsOrder(applicationResponse, lang);
-      judgesDirectionsOrderUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
-    }
-
-    if(isJudgesApproveEdit) {
-      judgesApproveEdit = getJudgeApproveEdit(applicationResponse, lang);
-      returnDashboardUrl = await getReturnDashboardUrl(claimId, req);
-    }
-
-    if(isJudgesDismiss) {
-      judgesDismiss = getJudgeDismiss(applicationResponse, lang);
-      returnDashboardUrl = await getReturnDashboardUrl(claimId, req);
-    }
-
+    const responseFromCourt = await getResponseFromCourtSection(req, req.params.appId, lang);
     res.render(viewPath, {
       backLinkUrl,
       summaryRows,
       pageTitle,
       dashboardUrl: DASHBOARD_URL,
       applicationIndex,
-      isResponseFromCourt,
       responseFromCourt,
       additionalDocUrl,
       payAdditionalFeeUrl,
@@ -98,17 +63,10 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       applicationFeeOptionUrl,
       applicantDocuments,
       courtDocuments,
-      respondentDocuments,
-      isJudgesDirectionsOrder,
-      judgesDirectionsOrder,
-      judgesDirectionsOrderUrl,
-      isJudgesApproveEdit,
-      judgesApproveEdit,
-      isJudgesDismiss,
-      judgesDismiss,
-      returnDashboardUrl,
+      respondentDocuments,    
     });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 }) as RequestHandler);

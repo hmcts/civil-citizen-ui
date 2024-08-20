@@ -120,49 +120,18 @@
 
 {% set courtResponseHtml %}
   <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
-
-  {{ govukSummaryList({
-    rows: responseFromCourt
-  }) }}
-
-  {{ govukButton({
-    text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAY_ADDITIONAL_FEE'),
-    href: payAdditionalFeeUrl
-  }) }}
-{% endset %}
-
-{% set judgesDirectionsOrderHtml %}
-  <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
-
-  {{ govukSummaryList({
-    rows: judgesDirectionsOrder
-  }) }}
-
-  {{ govukButton({
-    text: 'Respond to the request',
-    href: judgesDirectionsOrderUrl
-  }) }}
-{% endset %}
-
-
-{% set judgesApproveEditDismissHtml %}
-  <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
-
-  {% if isJudgesApproveEdit %}
-    {{ govukSummaryList({
-      rows: judgesApproveEdit
-    }) }}
-  {% endif %}
-  {% if isJudgesDismiss %}
-    {{ govukSummaryList({
-      rows: judgesDismiss
-    }) }}
-  {% endif %}
-
-  {{ govukButton({
-    text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD'),
-    href: returnDashboardUrl
-  }) }}
+  {% for item in responseFromCourt %}
+      {{ govukSummaryList({
+        rows: item.rows
+      }) }}
+      {% if item.responseButton %}
+        {{ govukButton({
+         text: item.responseButton.title,
+         href: item.responseButton.href
+        }) }}
+      {% endif %}
+  {% endfor %}
+      
 {% endset %}
 
 {% block nestedContent %}
@@ -174,32 +143,23 @@
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_1')}}<a href="{{additionalDocUrl}}">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_2') }}</a>{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_3') }}</p>
 
   <div class="govuk-!-padding-top-5">
-    {% if isResponseFromCourt %}
+    {% if responseFromCourt.length > 0 %}
       {{ govukDetails({
-        summaryHtml: courtResponseHeaderHtml,
-        html: courtResponseHtml
-      }) }}
+          summaryHtml: courtResponseHeaderHtml,
+          html: courtResponseHtml
+        }) }}
     {% endif %}
-    {% if isJudgesDirectionsOrder %}
-      {{ govukDetails({
-        summaryHtml: courtResponseHeaderHtml,
-        html: judgesDirectionsOrderHtml
-      }) }}
-    {% endif %}
-    {% if isJudgesApproveEdit or isJudgesDismiss %}
-      {{ govukDetails({
-        summaryHtml: courtResponseHeaderHtml,
-        html: judgesApproveEditDismissHtml
-      }) }}
-    {% endif %}
+
     {{ govukDetails({
       summaryHtml: applicationHeaderHtml,
       html: applicationHtml
     }) }}
+
     {{ govukDetails({
       summaryHtml: responseHeaderHtml,
       html: responseHtml
     }) }}
+    
     {% if (applicantDocuments.documents.length + courtDocuments.documents.length + respondentDocuments.documents.length) > 0 %}
      {{ govukDetails({
         summaryHtml: applicationDocuments,

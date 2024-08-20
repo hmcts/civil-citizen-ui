@@ -8,12 +8,14 @@ import {t} from 'i18next';
 import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GaServiceClient} from 'client/gaServiceClient';
 import {ApplicationResponse, JudicialDecisionMakeAnOrderOptions} from 'models/generalApplication/applicationResponse';
-import {getApplicationSections , getRespondentDocuments, getCourtDocuments, getApplicantDocuments} from 'services/features/generalApplication/viewApplication/viewApplicationService';
+import {getApplicationSections , getRespondentDocuments, getCourtDocuments, getApplicantDocuments, getResponseFromCourtSection} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
 import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
 import {DocumentType} from 'models/document/documentType';
+import { SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
+import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalApplication/CourtResponseSummary';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
@@ -23,6 +25,7 @@ const mockedSummaryRows = getApplicationSections as jest.Mock;
 const mockRespondentDocs = getRespondentDocuments as jest.Mock;
 const mockApplicantDocs = getApplicantDocuments as jest.Mock;
 const mockCourtDocs = getCourtDocuments as jest.Mock;
+const mockResponseFromCourt = getResponseFromCourtSection as jest.Mock;
 
 describe('General Application - View application', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -404,6 +407,62 @@ describe('General Application - View application', () => {
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
+  });
+
+  it('should return response from court section', async () => {
+    const judgeDirectionRows : SummaryRow[] = [];
+    const responseFromCourt : CourtResponseSummaryList[] = [];
+    const hearinNoticeRows : SummaryRow[] = [];
+
+    mockResponseFromCourt.mockImplementation(() => {
+      const judgeDirections = new CourtResponseSummaryList(judgeDirectionRows, new ResponseButton('Judge Direction', ''));
+      judgeDirectionRows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '1 Aug 2024'),
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Judge has made order'),
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Judge Order</a>'));
+      
+      const hearinNotices = new CourtResponseSummaryList(hearinNoticeRows);
+      hearinNoticeRows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '2 Aug 2024'),
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Hearing Notice has been generated'),
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Hearing Notice</a>'));
+      
+      responseFromCourt.push(judgeDirections); 
+      responseFromCourt.push(hearinNotices); 
+  
+      return Promise.resolve(responseFromCourt);
+    });
+
+    await request(app)
+      .get(GA_VIEW_APPLICATION_URL)
+      .query({index: '1'})
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT'));
+        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'));
+        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'));
+        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'));
+        expect(res.text).toContain('Judge has made order');
+        expect(res.text).toContain('1 Aug 2024');
+        expect(res.text).toContain('<a href="#">Judge Order</a>');
+        expect(res.text).toContain('Hearing Notice has been generated');
+        expect(res.text).toContain('2 Aug 2024');
+        expect(res.text).toContain('<a href="#">Hearing Notice</a>');
+      });
+  });
+
+  it('should not display response from court section', async () => {
+    mockResponseFromCourt.mockImplementation(() => {
+      return Promise.resolve([]);
+    });
+
+    await request(app)
+      .get(GA_VIEW_APPLICATION_URL)
+      .query({index: '1'})
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT'));
+      });
   });
 });
 
