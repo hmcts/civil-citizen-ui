@@ -4,8 +4,6 @@ import {GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import config from 'config';
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {
   getGaFeePaymentRedirectInformation,
@@ -16,10 +14,8 @@ import {getApplicationFromGAService} from 'services/features/generalApplication/
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, req: AppRequest): Promise<string> => {
+export const getRedirectUrl = async (claimId: string, gaAppId: string, applyHelpWithFees: GenericYesNo, req: AppRequest): Promise<string> => {
   try {
     let redirectUrl;
     let generalApplicationId: string;
@@ -34,16 +30,14 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     }
 
     if (applyHelpWithFees.option === YesNo.NO) {
-      const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+      const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(gaAppId, req);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       await saveDraftClaim(claim.id, claim, true);
       redirectUrl = paymentRedirectInformation?.nextUrl;
     } else {
-      const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, generalApplicationId);
+      const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, gaAppId);
       const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
-      redirectUrl = isAdditionalFee
-        ? constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag=' + isAdditionalFee)
-        : constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEES);
+      redirectUrl =constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag='+ isAdditionalFee);
     }
     return redirectUrl;
   }

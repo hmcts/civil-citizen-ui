@@ -31,7 +31,8 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   if (!form.hasErrors()) {
     form = new GenericForm(claim.generalApplication?.helpWithFees?.helpFeeReferenceNumberForm);
   }
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_APPLY_HELP_WITH_FEES_START);
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_APPLY_HELP_WITH_FEES_START)+ '?additionalFeeTypeFlag='+ feeTypeFlag;
+
   const genericHelpFeeUrl : string = GENERIC_HELP_FEES_URL;
   res.render(applyHelpWithFeeReferenceViewPath,
     {
@@ -64,7 +65,7 @@ helpWithApplicationFeeReferenceController.post(GA_APPLY_HELP_WITH_FEE_REFERENCE,
     const form = new GenericForm(new ApplyHelpFeesReferenceForm(req.body.option, req.body.referenceNumber));
     await form.validate();
     if (form.hasErrors()) {
-      const redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_REFERENCE);
+      const redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_REFERENCE+ '?additionalFeeTypeFlag='+ isAdditionalFeeType);
       await renderView(res, req, form, claimId, redirectUrl, false);
     } else {
       const redisKey = generateRedisKey(<AppRequest>req);
@@ -85,5 +86,5 @@ function getRedirectUrl(claimId: string, isHelpWithFee: GenericYesNo, feeType: b
   if (isHelpWithFee.option === YesNo.YES) {
     return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_FEE_CONFIRMATION_URL+ '?additionalFeeTypeFlag='+ feeType);
   }
-  return constructResponseUrlWithIdAndAppIdParams(claimId, genAppId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+  return constructResponseUrlWithIdAndAppIdParams(claimId, genAppId, GA_APPLY_HELP_WITH_FEE_SELECTION) + '?additionalFeeTypeFlag='+ feeType;
 }
