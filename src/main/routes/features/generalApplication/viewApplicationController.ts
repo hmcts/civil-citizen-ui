@@ -20,7 +20,7 @@ import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse, JudicialDecisionOptions} from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {SummaryRow} from 'common/models/summaryList/summaryList';
-import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 import { DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 
@@ -64,7 +64,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     }
 
     if(isApplicationFeeAmountNotPaid) {
-      applicationFeeOptionUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+      applicationFeeOptionUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION);
     }
 
     if(isJudgesDirectionsOrder) {
