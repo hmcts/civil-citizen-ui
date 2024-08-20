@@ -36,7 +36,7 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
 
     if (isHealthy && isElegible) {
       const pcqId = generatePcqId();
-      await savePcqId(pcqId,req, redisKey);
+      await savePcqId(pcqId,req, claimId);
 
       const pcqUrl = generatePcqUrl(
         pcqId,

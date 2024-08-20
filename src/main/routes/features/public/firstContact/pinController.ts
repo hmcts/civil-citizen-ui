@@ -6,7 +6,7 @@ import {PinType} from 'models/firstContact/pin';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import { AppRequest, AppSession } from 'models/AppRequest';
 import {YesNo} from 'form/models/yesNo';
-import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import { getFirstContactData, saveFirstContactData } from 'services/firstcontact/firstcontactService';
 
@@ -45,7 +45,7 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
         res.redirect(redirectUrl);
       } else if (firstContact?.claimReference) {
         const claim: Claim = await civilServiceClient.verifyPin(<AppRequest>req, pin, firstContact?.claimReference);
-        await saveDraftClaim(claim.id + ((req.session) as AppSession)?.user?.id, claim, true);
+        await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
         const ciphertext = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
         req.session = saveFirstContactData(req.session as AppSession, { claimId: claim.id, pin: ciphertext });
         res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
