@@ -38,6 +38,7 @@ requestForReconsiderationCheckAnswersController.get(REQUEST_FOR_RECONSIDERATION_
   (  async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
+      const redisKey = generateRedisKey(<AppRequest>req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getClaimById(claimId, req, true);
       renderView(res, claim, claimId, lang);

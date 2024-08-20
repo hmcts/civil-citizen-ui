@@ -17,6 +17,7 @@ import {
   getHasAnythingChangedForm,
   getNameTrialArrangements,
 } from 'services/features/caseProgression/trialArrangements/trialArrangementsService';
+import {AppRequest} from 'models/AppRequest';
 
 const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/has-anything-changed';
 const hasAnythingChangedController = Router();
@@ -25,7 +26,7 @@ const dqPropertyName = 'hasAnythingChanged';
 hasAnythingChangedController.get(HAS_ANYTHING_CHANGED_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req,true);
+    const claim = await getClaimById(claimId, req, true);
     const form = new GenericForm(getHasAnythingChangedForm(claim));
     await renderView(res, claimId, claim, form);
   } catch (error) {

@@ -39,6 +39,7 @@ trialCheckAnswersController.get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
       const claimId = req.params.id;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getClaimById(claimId, req, true);
+
       renderView(res, claim, claimId, lang);
     } catch (error) {
       next(error);
@@ -52,6 +53,7 @@ trialCheckAnswersController.post(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS, (async (
     const trialReadyCCD = translateDraftTrialArrangementsToCCD(claim);
     await civilServiceClient.submitTrialArrangement(claimId, trialReadyCCD, req);
     await deleteDraftClaimFromStore(generateRedisKey(<AppRequest>req));
+
     res.redirect(constructResponseUrlWithIdParams(claimId, CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL));
   } catch (error) {
     next(error);
