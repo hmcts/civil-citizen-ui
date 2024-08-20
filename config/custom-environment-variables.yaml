@@ -9,6 +9,7 @@ services:
     terminateSessionURL: IDAM_END_SESSION_URL
     signOutCallBackURL: IDAM_SIGN_OUT_REDIRECT_URL
   launchDarkly:
+    sdk: LAUNCH_DARKLY_SDK_KEY
     env: LAUNCH_DARKLY_ENV
   draftStore:
     redis:
