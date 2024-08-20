@@ -109,13 +109,17 @@ describe('General Application - Check your answers', () => {
 
     it('should add the id in the url of the ga application', async () => {
       const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationFee = {
+        calculatedAmountInPence: 25000,
+      };
       mockGetCaseData.mockImplementation(async () => claim);
       mockSubmitApplication.mockResolvedValueOnce({generalApplications: [{id: '123456', value: {gaApp: 'yes'}}]});
       await request(app)
         .post(GA_CHECK_ANSWERS_URL)
         .send({signed: 'yes', name: 'Mr Applicant'})
         .expect((res) => {
-          expect(res.header.location).toBe(GENERAL_APPLICATION_CONFIRM_URL + '?id=123456');
+          expect(res.header.location).toBe(GENERAL_APPLICATION_CONFIRM_URL + '?appFee=250&id=123456');
           expect(res.status).toBe(302);
         });
     });
