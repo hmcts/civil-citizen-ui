@@ -81,7 +81,6 @@ const getGeneralApplicationOrders = (claim: Claim, claimId: string, lang: string
     });
   }
   return caseDocuments;
-  return [];
 };
 
 const getClaimantDirectionQuestionnaire = (claim: Claim, claimId: string, lang: string) => {
