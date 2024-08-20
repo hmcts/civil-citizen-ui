@@ -10,11 +10,6 @@ export interface CcdHearingDocument {
   value: CcdDocumentValue,
 }
 
-export interface CcdHearingDocument {
-  id: string,
-  value: CcdDocumentValue,
-}
-
 export interface CcdGeneralOrderDocument {
   id: string,
   value: CcdDocumentValue,
