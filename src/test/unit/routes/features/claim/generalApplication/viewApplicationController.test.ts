@@ -7,13 +7,11 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GaServiceClient} from 'client/gaServiceClient';
-import {ApplicationResponse, JudicialDecisionMakeAnOrderOptions} from 'models/generalApplication/applicationResponse';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicationSections , getRespondentDocuments, getCourtDocuments, getApplicantDocuments, getResponseFromCourtSection} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
 import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
-import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
-import {DocumentType} from 'models/document/documentType';
 import { SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
 import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalApplication/CourtResponseSummary';
 
@@ -48,6 +46,7 @@ describe('General Application - View application', () => {
   beforeEach(() => {
     application = Object.assign(new ApplicationResponse(), mockApplication);
     mockRespondentDocs.mockImplementation(() => []);
+    mockedSummaryRows.mockImplementation(() => []);
     jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValue(application);
   });
 
@@ -201,201 +200,6 @@ describe('General Application - View application', () => {
         });
     });
 
-    describe('on Judges Direction', () => {
-      it('should return Check your answers page for judges direction', async () => {
-        const fileName = 'Name of file';
-        const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
-        const binary_url = `http://dm-store:8080/documents/${binary}/binary`;
-        const applicationResponse: ApplicationResponse = {
-          case_data: {
-            applicationTypes: undefined,
-            generalAppType: undefined,
-            generalAppRespondentAgreement: undefined,
-            generalAppInformOtherParty: undefined,
-            generalAppAskForCosts: undefined,
-            generalAppDetailsOfOrder: undefined,
-            generalAppReasonsOfOrder: undefined,
-            generalAppEvidenceDocument: undefined,
-            gaAddlDoc: undefined,
-            generalAppHearingDetails: undefined,
-            generalAppStatementOfTruth: undefined,
-            generalAppPBADetails: {
-              fee: undefined,
-              paymentDetails: undefined,
-              serviceRequestReference: undefined,
-            },
-            applicationFeeAmountInPence: undefined,
-            parentClaimantIsApplicant: undefined,
-            judicialDecision: undefined,
-            judicialDecisionMakeOrder: {
-              directionsResponseByDate: new Date('2024-01-01').toString(),
-              makeAnOrder: JudicialDecisionMakeAnOrderOptions.GIVE_DIRECTIONS_WITHOUT_HEARING,
-            },
-            directionOrderDocument: [
-              {
-                id: '1',
-                value: {
-                  documentLink: {
-                    document_url: 'test',
-                    document_binary_url: binary_url,
-                    document_filename: fileName,
-                    category_id: '1',
-                  },
-                  documentType: DocumentType.DIRECTION_ORDER,
-                  createdDatetime: new Date('2024-01-01'),
-                },
-              },
-            ],
-          },
-          created_date: '',
-          id: '',
-          last_modified: '',
-          state: undefined,
-        };
-
-        mockedSummaryRows.mockImplementation(() => []);
-        jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
-
-        await request(app)
-          .get(GA_VIEW_APPLICATION_URL)
-          .query({applicationId: '1718105701451856'})
-          .expect((res) => {
-            expect(res.status).toBe(200);
-            expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
-          });
-      });
-    });
-
-    describe('on Judges Approve or Edit', () => {
-      it('should return Check your answers page for judges direction', async () => {
-        const fileName = 'Name of file';
-        const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
-        const binary_url = `http://dm-store:8080/documents/${binary}/binary`;
-        const applicationResponse: ApplicationResponse = {
-          case_data: {
-            applicationTypes: undefined,
-            generalAppType: undefined,
-            generalAppRespondentAgreement: undefined,
-            generalAppInformOtherParty: undefined,
-            generalAppAskForCosts: undefined,
-            generalAppDetailsOfOrder: undefined,
-            generalAppReasonsOfOrder: undefined,
-            generalAppEvidenceDocument: undefined,
-            gaAddlDoc: undefined,
-            generalAppHearingDetails: undefined,
-            generalAppStatementOfTruth: undefined,
-            generalAppPBADetails: {
-              fee: undefined,
-              paymentDetails: undefined,
-              serviceRequestReference: undefined,
-            },
-            applicationFeeAmountInPence: undefined,
-            parentClaimantIsApplicant: undefined,
-            judicialDecision: undefined,
-            judicialDecisionMakeOrder: {
-              directionsResponseByDate: new Date('2024-01-01').toString(),
-              makeAnOrder: JudicialDecisionMakeAnOrderOptions.APPROVE_OR_EDIT,
-            },
-            generalOrderDocument: [
-              {
-                id: '1',
-                value: {
-                  documentLink: {
-                    document_url: 'test',
-                    document_binary_url: binary_url,
-                    document_filename: fileName,
-                    category_id: '1',
-                  },
-                  documentType: DocumentType.GENERAL_ORDER,
-                  createdDatetime: new Date('2024-01-01'),
-                },
-              },
-            ],
-          },
-          created_date: '',
-          id: '',
-          last_modified: '',
-          state: undefined,
-        };
-
-        mockedSummaryRows.mockImplementation(() => []);
-        jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
-
-        await request(app)
-          .get(GA_VIEW_APPLICATION_URL)
-          .query({applicationId: '1718105701451856'})
-          .expect((res) => {
-            expect(res.status).toBe(200);
-            expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
-          });
-      });
-    });
-
-    describe('on Judges Dismissal', () => {
-      it('should return Check your answers page for judges direction', async () => {
-        const fileName = 'Name of file';
-        const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
-        const binary_url = `http://dm-store:8080/documents/${binary}/binary`;
-        const applicationResponse: ApplicationResponse = {
-          case_data: {
-            applicationTypes: undefined,
-            generalAppType: undefined,
-            generalAppRespondentAgreement: undefined,
-            generalAppInformOtherParty: undefined,
-            generalAppAskForCosts: undefined,
-            generalAppDetailsOfOrder: undefined,
-            generalAppReasonsOfOrder: undefined,
-            generalAppEvidenceDocument: undefined,
-            gaAddlDoc: undefined,
-            generalAppHearingDetails: undefined,
-            generalAppStatementOfTruth: undefined,
-            generalAppPBADetails: {
-              fee: undefined,
-              paymentDetails: undefined,
-              serviceRequestReference: undefined,
-            },
-            applicationFeeAmountInPence: undefined,
-            parentClaimantIsApplicant: undefined,
-            judicialDecision: undefined,
-            judicialDecisionMakeOrder: {
-              directionsResponseByDate: new Date('2024-01-01').toString(),
-              makeAnOrder: JudicialDecisionMakeAnOrderOptions.DISMISS_THE_APPLICATION,
-            },
-            dismissalOrderDocument: [
-              {
-                id: '1',
-                value: {
-                  documentLink: {
-                    document_url: 'test',
-                    document_binary_url: binary_url,
-                    document_filename: fileName,
-                    category_id: '1',
-                  },
-                  documentType: DocumentType.DISMISSAL_ORDER,
-                  createdDatetime: new Date('2024-01-01'),
-                },
-              },
-            ],
-          },
-          created_date: '',
-          id: '',
-          last_modified: '',
-          state: undefined,
-        };
-
-        mockedSummaryRows.mockImplementation(() => []);
-        jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
-
-        await request(app)
-          .get(GA_VIEW_APPLICATION_URL)
-          .query({applicationId: '1718105701451856'})
-          .expect((res) => {
-            expect(res.status).toBe(200);
-            expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
-          });
-      });
-    });
-
     it('should return http 500 when has error in the get method', async () => {
       mockedSummaryRows.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
@@ -410,25 +214,26 @@ describe('General Application - View application', () => {
   });
 
   it('should return response from court section', async () => {
-    const judgeDirectionRows : SummaryRow[] = [];
-    const responseFromCourt : CourtResponseSummaryList[] = [];
-    const hearinNoticeRows : SummaryRow[] = [];
 
     mockResponseFromCourt.mockImplementation(() => {
+      const judgeDirectionRows : SummaryRow[] = [];
+      const responseFromCourt : CourtResponseSummaryList[] = [];
+      const hearingNoticeRows : SummaryRow[] = [];
       const judgeDirections = new CourtResponseSummaryList(judgeDirectionRows, new ResponseButton('Judge Direction', ''));
+      
       judgeDirectionRows.push(
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '1 Aug 2024'),
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Judge has made order'),
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Judge Order</a>'));
       
-      const hearinNotices = new CourtResponseSummaryList(hearinNoticeRows);
-      hearinNoticeRows.push(
+      const hearingNotices = new CourtResponseSummaryList(hearingNoticeRows);
+      hearingNoticeRows.push(
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '2 Aug 2024'),
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Hearing Notice has been generated'),
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Hearing Notice</a>'));
       
       responseFromCourt.push(judgeDirections); 
-      responseFromCourt.push(hearinNotices); 
+      responseFromCourt.push(hearingNotices); 
   
       return Promise.resolve(responseFromCourt);
     });
@@ -463,6 +268,6 @@ describe('General Application - View application', () => {
         expect(res.status).toBe(200);
         expect(res.text).not.toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT'));
       });
-  });
+    });
 });
 

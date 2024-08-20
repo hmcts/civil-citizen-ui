@@ -207,7 +207,7 @@ describe('View Application service', () => {
       expect(result.rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
       expect(result.rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
       expect(result.rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result.rows[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
+      expect(result.rows[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098" target="_blank" rel="noopener noreferrer">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
       expect(result.rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT');
     });
 
@@ -226,7 +226,47 @@ describe('View Application service', () => {
       expect(result.rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
       expect(result.rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
       expect(result.rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result.rows[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/undefined">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
+      expect(result.rows[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/undefined" target="_blank" rel="noopener noreferrer">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
+    });
+
+    it('should return judge response summary with correct status when requestForInformation isWithNotice is present', async () => {
+      //given
+      applicationResponse.created_date = new Date('2024-01-01').toString();
+      const caseData = applicationResponse.case_data;
+      caseData.requestForInformationDocument = [{
+        'id': 'ad9fd4a0-8294-414d-bcce-b66e742d809f',
+        'value': {
+          'createdBy': 'Civil',
+          'documentLink': {
+            'category_id': 'applications',
+            'document_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098',
+            'document_filename': 'make-with-notice_2024-07-22 11:01:54.pdf',
+            'document_binary_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098/binary',
+          },
+          'documentName': 'make-with-notice_2024-07-22 11:01:54.pdf',
+          'documentType': DocumentType.SEND_APP_TO_OTHER_PARTY,
+        },
+      }];
+
+      caseData.generalAppPBADetails = {
+        fee: undefined,
+        paymentDetails: {
+          status: 'SUCCESS',
+          reference: undefined,
+        },
+        additionalPaymentDetails: {
+          status: 'SUCCESS',
+          reference: undefined,
+        },
+        serviceRequestReference: undefined,
+      };
+      applicationResponse.case_data= caseData;
+      applicationResponse.created_date = new Date('2024-01-01').toString();
+      //when
+      const result = getJudgeResponseSummary(mockedAppRequest,  applicationResponse, 'en');
+      //then
+      expect(result.rows[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
+      expect(result.rows[3].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID');
     });
 
   });

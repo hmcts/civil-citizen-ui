@@ -125,10 +125,13 @@
     </div>
     
   </div>
-      {{ govukDetails({
-        summaryHtml: courtResponseHeaderHtml,
-        html: courtResponseHtml
-      }) }}
+      {% if responseFromCourt.length > 0 %}
+        {{ govukDetails({
+          summaryHtml: courtResponseHeaderHtml,
+          html: courtResponseHtml
+        }) }}
+      {% endif %}
+      
       {% if (applicantDocuments.documents.length + courtDocuments.documents.length + respondentDocuments.documents.length) > 0 %}
         {{ govukDetails({
           summaryHtml: applicationDocuments,

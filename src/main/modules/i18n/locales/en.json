@@ -3125,6 +3125,7 @@
           "AWAITING_RESPONSE": "Awaiting other parties response",
           "TITLE": "Status"
         },
+        "ADDITIONAL_FEE_PAID": "Additional fee has been paid",
         "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
         "TITLE": "Application {{applicationIndex}}",
         "TYPE_RESPONSE": "Type of response",

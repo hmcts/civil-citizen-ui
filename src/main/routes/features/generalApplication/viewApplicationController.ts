@@ -66,7 +66,6 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       respondentDocuments,    
     });
   } catch (error) {
-    console.log(error);
     next(error);
   }
 }) as RequestHandler);
