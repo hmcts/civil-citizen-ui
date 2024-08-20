@@ -11,11 +11,14 @@ import {
 import {getClaimById} from 'modules/utilityService';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import config from 'config';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
-
-export const getRedirectUrl = async (claimId: string, gaAppId: string, applyHelpWithFees: GenericYesNo, req: AppRequest): Promise<string> => {
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, req: AppRequest): Promise<string> => {
   try {
     let redirectUrl;
     let generalApplicationId: string;
@@ -30,12 +33,12 @@ export const getRedirectUrl = async (claimId: string, gaAppId: string, applyHelp
     }
 
     if (applyHelpWithFees.option === YesNo.NO) {
-      const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(gaAppId, req);
+      const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       await saveDraftClaim(claim.id, claim, true);
       redirectUrl = paymentRedirectInformation?.nextUrl;
     } else {
-      const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, gaAppId);
+      const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, generalApplicationId);
       const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
       redirectUrl =constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag='+ isAdditionalFee);
     }

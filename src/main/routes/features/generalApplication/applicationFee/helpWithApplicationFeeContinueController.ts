@@ -19,7 +19,7 @@ import {getButtonsContents, getHelpApplicationFeeContinuePageContents}
 import {
   saveHelpWithFeesDetails,
 } from 'services/features/generalApplication/generalApplicationService';
-import {getGaAppFeeDetails, getGaAppId} from 'services/features/generalApplication/feeDetailsService';
+import {getGaAppFeeDetails} from 'services/features/generalApplication/feeDetailsService';
 
 const helpWithApplicationFeeContinueController = Router();
 const applyHelpWithFeesViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee-continue';
