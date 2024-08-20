@@ -6,7 +6,7 @@ import { getCancelUrl } from 'services/features/generalApplication/generalApplic
 import {
   GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL,
   GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL,
-  GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_SUBMITTED_URL
+  GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_SUBMITTED_URL,
 } from 'routes/urls';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';

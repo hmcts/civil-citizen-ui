@@ -3,8 +3,8 @@ import { SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
 import { SummarySection } from 'common/models/summaryList/summarySections';
 import { t } from 'i18next';
 import { getGADocumentsFromDraftStore } from 'modules/draft-store/draftGADocumentService';
-import {GA_PROVIDE_MORE_INFORMATION_URL, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL} from "routes/urls";
-import {constructResponseUrlWithIdAndAppIdParams} from "common/utils/urlFormatter";
+import {GA_PROVIDE_MORE_INFORMATION_URL, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL} from 'routes/urls';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 
 export const getSummaryList = async (formattedSummary: SummarySection, redisKey: string, url: string): Promise<void> => {
   const uploadedDocuments = await getGADocumentsFromDraftStore(redisKey);
