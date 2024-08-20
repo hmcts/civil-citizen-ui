@@ -174,8 +174,8 @@ const assignComplexityBand = new AssignComplexityBand();
 const reasonForComplexityBand = new ReasonForComplexityBand();
 
 class ResponseSteps {
-  async AssignCaseToLip(claimNumber, securityCode){
-    await assignCaseToLip.open(claimNumber, securityCode);
+  async AssignCaseToLip(claimNumber, securityCode, manualPIP){
+    await assignCaseToLip.open(claimNumber, securityCode, manualPIP);
   }
   async RespondToClaim(claimRef, languageOption = 'en'){
     await defendantLatestUpdate.open(claimRef);
@@ -675,11 +675,11 @@ class ResponseSteps {
   }
 
   async EnterExpertReportDetails() {
-    await expertReportDetails.enterExpertReportDetails();
+    await expertReportDetails.expertDetails();
   }
 
   async EnterClaimantExpertDetails() {
-    await expertReportDetails.claimantExpertDetails();
+    await expertReportDetails.expertDetails();
   }
 
   async SelectGiveEvidenceYourself() {

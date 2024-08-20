@@ -2118,6 +2118,7 @@
         "WHAT_EXPECT_HEARING": "Beth i'w ddisgwyl mewn gwrandawiad"
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
+      "UPDATING_STATUS": "Diweddaru statws, adnewyddwch y dudalen.",
       "VIEW": "Weiv",
       "VIEW_CLAIM_NUMBER": "Rhif yr Hawliad {{ claimNumber }}"
     },
@@ -3061,7 +3062,7 @@
         "TO": "To"
       },
       "CONFIRMATION_PAGE": {
-        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}",
+        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}.",
         "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
         "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
         "PAGE_TITLE": "Application created",
@@ -3105,6 +3106,8 @@
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "HEARING_NOTICE" : "Hearing Notice",
         "HEARING_ORDER" : "Hearing Order",
+        "JUDGE_HAS_MADE_ORDER": "Mae'r Barnwr wedi gwneud gorchymyn ar eich hawliad.",
+        "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "GENERAL_ORDER" : "General Order",
         "PAGE_TITLE": "View application",
         "RESPONSE": "Response from the other parties",
@@ -3116,6 +3119,7 @@
           "AWAITING_RESPONSE": "Awaiting other parties response",
           "TITLE": "Status"
         },
+        "ADDITIONAL_FEE_PAID": "Additional fee has been paid",
         "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
         "TITLE": "Application {{applicationIndex}}",
         "TYPE_RESPONSE": "Type of response",
@@ -4154,7 +4158,8 @@
     "FEE_AMOUNT": {
       "TITLE": "Talu eich ffi hawlio",
       "MESSAGE": "Os byddwch yn setlo y tu allan i’r llys, ni fyddwn yn ad-dalu ffi’r hawliad. Gallwch ofyn i'r diffynnydd dalu eich ffi yn ôl fel rhan o'r setliad.",
-      "CONTINUE_TO_PAYMENT": "parhau i dalu"
+      "CONTINUE_TO_PAYMENT": "parhau i dalu",
+      "SYNC_WARNING": "Yn anffodus, nid ydym wedi gallu mynd â chi i'r dudalen dalu, rhowch gynnig arall arni."
     },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "Byddwn yn ei ychwanegu at swm yr hawliad.",
@@ -4594,6 +4599,7 @@
     "DESCRIPTION_REQUIRED": "Rhowch ddisgrifiad o beth ddigwyddodd",
     "DETAILS_REQUIRED": "Rhowch fanylion os gwelwch yn dda",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Dywedwch wrthym os ydych yn credu bod manylion yr anghenion ar gyfer y gwrandawiad ar y dudalen hon yn wir",
+    "SPECIAL_CHARACTERS": "Special characters are not allowed",
     "DELAYED_FLIGHT": {
       "CLAIMING_FOR_DELAY_REQUIRED": "Mae angen dewis opsiwn ar gyfer A ydych yn hawlio am oedi wrth hedfan"
     },
@@ -4875,7 +4881,9 @@
     "FULL_NAME_TOO_LONG": "Ni ddylai enw llawn fod yn hirach na 70 o nodau",
     "JOB_TITLE_TOO_LONG": "Ni ddylai teitl y swydd fod yn hirach na 70 o nodau",
     "ADDRESS_LINE_TOO_MANY": "Ni ddylai bob llinell y cyfeiriad fod yn hirach na 50 o nodau",
+    "ADDRESS_LINE_TOO_MANY_JO": "Ni ddylai bob llinell y cyfeiriad fod yn hirach na 35 o nodau",
     "TOWN_CITY_TOO_MANY": "Ni ddylai tref neu ddinas fod yn hirach na 50 o nodau",
+    "TOWN_CITY_TOO_MANY_JO": "Ni ddylai tref neu ddinas fod yn hirach na 35 o nodau",
     "TEXT400_TOO_LONG": "Rhaid i'r rheswm fod yn 400 o nodau neu'n llai",
     "THERE_IS_A_PROBLEM": "Mae yna broblem",
     "THERE_WAS_A_PROBLEM": "Roedd yna broblem",

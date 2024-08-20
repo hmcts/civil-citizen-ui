@@ -2118,6 +2118,7 @@
         "WHAT_EXPECT_HEARING": "What to expect at a hearing"
       },
       "TITLE": "Your money claims account",
+      "UPDATING_STATUS": "Updating status, please refresh page.",
       "VIEW": "View",
       "VIEW_CLAIM_NUMBER": "claim number {{ claimNumber }}"
     },
@@ -3061,7 +3062,7 @@
         "TO": "To"
       },
       "CONFIRMATION_PAGE": {
-        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}",
+        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}.",
         "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
         "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
         "PAGE_TITLE": "Application created",
@@ -3106,6 +3107,8 @@
         "HEARING_NOTICE" : "Hearing Notice",
         "HEARING_ORDER" : "Hearing Order",
         "GENERAL_ORDER" : "General Order",
+        "JUDGE_HAS_MADE_ORDER": "The Judge has made an order on your claim.",
+        "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
         "RESPONSE": "Response from the other parties",
         "READ_RESPONSE": "Read the response",
@@ -3116,6 +3119,7 @@
           "AWAITING_RESPONSE": "Awaiting other parties response",
           "TITLE": "Status"
         },
+        "ADDITIONAL_FEE_PAID": "Additional fee has been paid",
         "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
         "TITLE": "Application {{applicationIndex}}",
         "TYPE_RESPONSE": "Type of response",
@@ -4154,7 +4158,8 @@
     "FEE_AMOUNT": {
       "TITLE": "Pay your claim fee",
       "MESSAGE": "If you settle out of court we won't refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.",
-      "CONTINUE_TO_PAYMENT": "continue to payment"
+      "CONTINUE_TO_PAYMENT": "continue to payment",
+      "SYNC_WARNING": "Unfortunately, we have been unable to take you to the payment page, please retry."
     },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "We’ll add it to your claim amount.",
@@ -4594,6 +4599,7 @@
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
     "DETAILS_REQUIRED": "Enter details",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
+    "SPECIAL_CHARACTERS": "Special characters are not allowed",
     "DELAYED_FLIGHT": {
       "CLAIMING_FOR_DELAY_REQUIRED": "'Are you claiming for a delayed flight?' is required"
     },
@@ -4875,7 +4881,9 @@
     "FULL_NAME_TOO_LONG": "Full name must be no longer than 70 characters",
     "JOB_TITLE_TOO_LONG": "Job title must be no longer than 70 characters",
     "ADDRESS_LINE_TOO_MANY": "Each address line must be no longer than 50 characters",
+    "ADDRESS_LINE_TOO_MANY_JO": "Each address line must be no longer than 35 characters",
     "TOWN_CITY_TOO_MANY": "Town or City must no longer than 50 characters",
+    "TOWN_CITY_TOO_MANY_JO": "Town or City must no longer than 35 characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
     "THERE_IS_A_PROBLEM": "There is a problem",
     "THERE_WAS_A_PROBLEM": "There was a problem",

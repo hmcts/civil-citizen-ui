@@ -2,11 +2,11 @@ import mockApplication from '../../../../../utils/mocks/applicationMock.json';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {
   getApplicantDocuments,
-  getApplicationSections, getCourtDocuments,
+  getApplicationSections,
+  getCourtDocuments,
   getJudgeResponseSummary,
   getRespondentDocuments,
-  getHearingNotice,
-  getGeneralOrder,
+  getJudgesDirectionsOrder,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {GaServiceClient} from 'client/gaServiceClient';
 import * as requestModels from 'models/AppRequest';
@@ -79,24 +79,6 @@ function setMockHearingOrderDocuments(): CcdHearingDocument[] {
         'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831/binary',
       },
       'documentName': 'Application_Hearing_Notice_2024-08-02 12:15:34.pdf',
-      'documentType': DocumentType.HEARING_NOTICE,
-      'createdDatetime':  new Date('2024-08-01'),
-    },
-  }];
-}
-
-function setMockGeneralOrderDocuments(): CcdHearingDocument[] {
-  return [{
-    'id': '4810a582-2e16-48e9-8b64-9f96b4d12cc4',
-    'value': {
-      'createdBy': 'Civil',
-      'documentLink': {
-        'category_id': 'applications',
-        'document_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831',
-        'document_filename': 'General_order_for_application_2024-08-01 11:59:58.pdf',
-        'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831/binary',
-      },
-      'documentName': 'General_order_for_application_2024-08-01 11:59:58.pdf',
       'documentType': DocumentType.HEARING_NOTICE,
       'createdDatetime':  new Date('2024-08-01'),
     },
@@ -255,6 +237,46 @@ describe('View Application service', () => {
       expect(result[2].value.html).toContain('<a href="undefined">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
     });
 
+    it('should return judge response summary with correct status when requestForInformation isWithNotice is present', async () => {
+      //given
+      applicationResponse.created_date = new Date('2024-01-01').toString();
+      const caseData = applicationResponse.case_data;
+      caseData.requestForInformationDocument = [{
+        'id': 'ad9fd4a0-8294-414d-bcce-b66e742d809f',
+        'value': {
+          'createdBy': 'Civil',
+          'documentLink': {
+            'category_id': 'applications',
+            'document_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098',
+            'document_filename': 'make-with-notice_2024-07-22 11:01:54.pdf',
+            'document_binary_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098/binary',
+          },
+          'documentName': 'make-with-notice_2024-07-22 11:01:54.pdf',
+          'documentType': DocumentType.SEND_APP_TO_OTHER_PARTY,
+        },
+      }];
+
+      caseData.generalAppPBADetails = {
+        fee: undefined,
+        paymentDetails: {
+          status: 'SUCCESS',
+          reference: undefined,
+        },
+        additionalPaymentDetails: {
+          status: 'SUCCESS',
+          reference: undefined,
+        },
+        serviceRequestReference: undefined,
+      };
+      applicationResponse.case_data= caseData;
+      applicationResponse.created_date = new Date('2024-01-01').toString();
+      //when
+      const result = getJudgeResponseSummary(applicationResponse, 'en');
+      //then
+      expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
+      expect(result[3].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID');
+    });
+
   });
 
   describe('Get Applicants Documents', () => {
@@ -322,49 +344,59 @@ describe('View Application service', () => {
       const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
-    it('should get data array if there is general order documents', async () => {
+  });
+
+  describe('getJudgesDirectionsOrder', () => {
+    it('should return judge directions order', async () => {
       //given
-      const application = Object.assign(new ApplicationResponse(), mockApplication);
-      const caseData = application.case_data;
-      caseData.generalOrderDocument= setMockGeneralOrderDocuments();
-
-      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
-      //When
-      const result = getCourtDocuments(application, 'en');
-      //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER',
-        '1 August 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf831', 'General_order_for_application_2024-08-01 11:59:58.pdf'),
-      );
-      expect(result.documents[1]).toEqual(expectedDocument);
-    });
-    it('should get empty data array if there is no general order documents', async () => {
-      //given
-      const application = Object.assign(new ApplicationResponse(), mockApplication);
-      const caseData = application.case_data;
-      caseData.generalOrderDocument= null;
-
-      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
-      //When
-      const result = getGeneralOrder(application, 'en');
-      //Then
-
-      expect(result.length).toEqual(0);
-    });
-    it('should get empty data array if there is no casedata', async () => {
-      //given
-      const application = Object.assign(new ApplicationResponse(), mockApplication);
-      application.case_data = null;
-
-      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
-      //When
-      const resultGeneralOrder = getGeneralOrder(application, 'en');
-      const resultHearingNotice = getHearingNotice(application, 'en');
-      //Then
-
-      expect(resultGeneralOrder.length).toEqual(0);
-      expect(resultHearingNotice.length).toEqual(0);
+      const applicationResponse = new ApplicationResponse();
+      const fileName = 'Name of file';
+      const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
+      const binary_url = `http://dm-store:8080/documents/${binary}/binary`;
+      applicationResponse.case_data = {
+        applicationFeeAmountInPence: '',
+        applicationTypes: '',
+        gaAddlDoc: [],
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: '',
+        generalAppEvidenceDocument: [],
+        generalAppHearingDetails: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppPBADetails: undefined,
+        generalAppReasonsOfOrder: '',
+        generalAppRespondentAgreement: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppType: undefined,
+        judicialDecision: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecisionMakeOrder: {
+          directionsResponseByDate: new Date('2024-01-01').toString(),
+        },
+        directionOrderDocument: [
+          {
+            id: '1',
+            value: {
+              documentLink: {
+                document_url: 'test',
+                document_binary_url: binary_url,
+                document_filename: fileName,
+                category_id: '1',
+              },
+              documentType: DocumentType.DIRECTION_ORDER,
+              createdDatetime: new Date('2024-01-01'),
+            },
+          },
+        ],
+      };
+      //when
+      const result = getJudgesDirectionsOrder(applicationResponse, 'en');
+      //then
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].value.html).toEqual('1 January 2024');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER');
+      expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER_DOCUMENT');
     });
   });
 });

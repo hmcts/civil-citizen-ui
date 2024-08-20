@@ -8,7 +8,7 @@ import {
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getHasAnythingChanged} from 'services/features/caseProgression/trialArrangements/hasAnythingChanged';
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
@@ -18,6 +18,7 @@ import {
   getHasAnythingChangedForm,
   getNameTrialArrangements,
 } from 'services/features/caseProgression/trialArrangements/trialArrangementsService';
+import {AppRequest} from 'models/AppRequest';
 
 const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/has-anything-changed';
 const hasAnythingChangedController = Router();
@@ -26,7 +27,7 @@ const dqPropertyName = 'hasAnythingChanged';
 hasAnythingChangedController.get(HAS_ANYTHING_CHANGED_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
+    const claim = await getClaimById(claimId, req, true);
     const form = new GenericForm(getHasAnythingChangedForm(claim));
     await renderView(res, claimId, claim, form);
   } catch (error) {
@@ -41,7 +42,8 @@ hasAnythingChangedController.post(HAS_ANYTHING_CHANGED_URL,(async (req, res, nex
     const form = new GenericForm(new HasAnythingChangedForm(option,textArea));
     await form.validate();
     const claimId = req.params.id;
-    const claim: Claim = await getCaseDataFromStore(req.params.id);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim: Claim = await getCaseDataFromStore(redisKey);
     if (form.hasErrors()) {
       await renderView(res, claimId, claim, form);
     } else {
@@ -49,7 +51,7 @@ hasAnythingChangedController.post(HAS_ANYTHING_CHANGED_URL,(async (req, res, nex
         form.model.textArea = '';
       }
       const parentPropertyName = getNameTrialArrangements(claim);
-      await saveCaseProgression(claimId, form.model, dqPropertyName, parentPropertyName);
+      await saveCaseProgression(req, form.model, dqPropertyName, parentPropertyName);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, TRIAL_ARRANGEMENTS_HEARING_DURATION));
     }
   } catch (error) {

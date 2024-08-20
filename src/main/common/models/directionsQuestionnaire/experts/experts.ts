@@ -1,11 +1,10 @@
 import {ExpertDetailsList} from './expertDetailsList';
-import {ExpertReportDetails} from './expertReportDetails/expertReportDetails';
 import {SentExpertReports} from './sentExpertReports';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {ExpertCanStillExamine} from './expertCanStillExamine';
 
 export class Experts {
-  expertReportDetails?: ExpertReportDetails;
+  expertReportDetails?: GenericYesNo;
   sentExpertReports?: SentExpertReports;
   sharedExpert?: GenericYesNo;
   expertEvidence?: GenericYesNo;

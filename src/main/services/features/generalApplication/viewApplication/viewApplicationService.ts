@@ -31,6 +31,9 @@ import {CASE_DOCUMENT_VIEW_URL, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL} from 'rou
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {constructDocumentUrlWithIdParamsAndDocumentId} from 'common/utils/urlFormatter';
 import {DocumentType} from 'models/document/documentType';
+import {
+  CcdGeneralApplicationDirectionsOrderDocument,
+} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -84,6 +87,11 @@ export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng})}</a>`),
   );
+  if (documentUrl && (applicationResponse.case_data.generalAppPBADetails.additionalPaymentDetails)) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID', {lng})),
+    );
+  }
   return rows;
 };
 
@@ -92,7 +100,6 @@ export const getCourtDocuments = (applicationResponse : ApplicationResponse, lan
   courtDocumentsArray.push(...getHearingNotice(applicationResponse, lang));
   courtDocumentsArray.push(...getHearingOrder(applicationResponse, lang));
   courtDocumentsArray.push(...getGeneralOrder(applicationResponse, lang));
-
   return new DocumentsViewComponent('CourtDocument', courtDocumentsArray);
 };
 
@@ -135,7 +142,7 @@ const getHearingOrder = (applicationResponse: ApplicationResponse, lang: string)
   return hearingOrderDocInfoArray;
 };
 
-export const getHearingNotice = (applicationResponse: ApplicationResponse, lang: string) => {
+const getHearingNotice = (applicationResponse: ApplicationResponse, lang: string) => {
   const hearingNoticeDocs = applicationResponse?.case_data?.hearingNoticeDocument;
   let hearingOrderDocInfoArray : DocumentInformation[] = [];
   if(hearingNoticeDocs) {
@@ -179,6 +186,27 @@ const getMakeWithNoticeDocumentUrl = (applicationResponse: ApplicationResponse) 
     const makeWithNoticeDoc = requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.SEND_APP_TO_OTHER_PARTY);
     const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);
     return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
+  }
+  return undefined;
+};
+
+export const getJudgesDirectionsOrder = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
+  const rows: SummaryRow[] = [];
+  let documentUrl = '';
+  const directionOrderDocument = getDirectionOrderDocument(applicationResponse);
+  documentUrl += `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(directionOrderDocument?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER_DOCUMENT', {lng})}</a>`;
+
+  rows.push(
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(directionOrderDocument.value.createdDatetime, lng)),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER', {lng})),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl));
+  return rows;
+};
+
+const getDirectionOrderDocument = (applicationResponse: ApplicationResponse) : CcdGeneralApplicationDirectionsOrderDocument => {
+  const requestForInformationDocument = applicationResponse?.case_data?.directionOrderDocument;
+  if(requestForInformationDocument) {
+    return requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.DIRECTION_ORDER);
   }
   return undefined;
 };
