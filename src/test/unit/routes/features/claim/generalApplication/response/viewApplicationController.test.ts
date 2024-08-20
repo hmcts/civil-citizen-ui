@@ -10,7 +10,7 @@ import {
   getApplicationSections,
   getCourtDocuments,
   getRequestWrittenRepresentations,
-  getRespondentDocuments
+  getRespondentDocuments,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../../utils/mocks/applicationMock.json';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
