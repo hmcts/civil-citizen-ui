@@ -33,7 +33,6 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   } else {
     backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION + '?additionalFeeTypeFlag='+ feeTypeFlag);
   }
-
   if (!form) {
     form = new GenericForm(new GenericYesNo(gaHwFDetails?.helpWithFeesRequested));
   }

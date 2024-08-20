@@ -85,7 +85,6 @@ describe('apply help with application fee selection', () => {
     mockedAppRequest.session = <AppSession>{user: <UserDetails>{id: '1235'}};
     mockGAHwFDraftStore.mockResolvedValueOnce(new GaHelpWithFees());
   });
-
   it('should return test url if applyHelpWithFees option is No', async () => {
     //given
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim);

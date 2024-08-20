@@ -24,7 +24,6 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
     const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
     form = new GenericForm(new GenericYesNo(gaHwFDetails?.applyHelpWithFees?.option));
   }
-
   const backLinkUrl = req.query.id ? constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL) + '?id=' + req.query.id : constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_VIEW_APPLICATION_URL);
 
   res.render(applyHelpWithApplicationFeeViewPath,
