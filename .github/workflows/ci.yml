@@ -19,6 +19,7 @@ env:
   IDAM_API_URL: http://localhost:1111
   ENVIRONMENT: preview
   LAUNCH_DARKLY_SDK_KEY: sdk-5dca6386-1fcd-48d5-b93a-60d13e22ee62
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -35,8 +36,6 @@ jobs:
         run: yarn wiremock:start &
       - name: Starting CUI
         run: yarn start:e2e &
-        env:
-          LAUNCH_DARKLY_SDK_KEY: sdk-5dca6386-1fcd-48d5-b93a-60d13e22ee62
       - name: Waiting CUI to get ready
         run: sleep 10
       - name: Executing e2e tests
