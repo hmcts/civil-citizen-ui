@@ -3,8 +3,9 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const ClaimantResponseSteps = require('../../citizenFeatures/response/steps/lipClaimantResponseSteps');
 const UploadDocSteps = require('../../citizenFeatures/response/steps/uploadDocSteps');
+const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
-const { claimantNotificationWithDefendantRejectMedidationWithRejectAll, mediationUnsuccessfulClaimant1NonAttendance} = require('../../specClaimHelpers/dashboardNotificationConstants');
+const { claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid, mediationUnsuccessfulClaimant1NonAttendance} = require('../../specClaimHelpers/dashboardNotificationConstants');
 const {verifyNotificationTitleAndContent, verifyTasklistLinkAndState} = require('../../specClaimHelpers/e2e/dashboardHelper');
 const {viewMediationDocuments, uploadMediationDocuments} = require('../../specClaimHelpers/dashboardTasklistConstants');
 
@@ -13,7 +14,10 @@ const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
 
 const carmEnabled = true;
-let claimRef, caseData, claimNumber, securityCode, taskListItem;
+let claimRef, caseData, claimNumber, securityCode, taskListItem, paidDate;
+
+const currentDate = new Date();
+const paymentDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), 1);
 
 Feature('LiP vs LiP - CARM - Claimant and Defendant Journey - Company @carm');
 
@@ -66,8 +70,9 @@ Scenario('LiP Defendant Response with Reject all claim', async ({api}) => {
 
 Scenario('LiP Claimant Response with Reject all claim', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
+    paidDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(paymentDate);
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, claimantNotificationWithDefendantRejectMedidationWithRejectAll());
+    await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid(500, paidDate));
     await ClaimantResponseSteps.verifyDefendantResponse();
     await ClaimantResponseSteps.isDefendantPaid('No');
     await ResponseSteps.EnterTelephoneMediationDetails();
