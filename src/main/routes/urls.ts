@@ -338,6 +338,7 @@ export const GA_HEARING_ARRANGEMENTS_GUIDANCE =`${BASE_GENERAL_APPLICATION_URL}/
 export const GA_WANT_TO_UPLOAD_DOCUMENTS = `${BASE_GENERAL_APPLICATION_URL}/want-to-upload-documents`;
 export const GA_UPLOAD_DOCUMENTS = `${BASE_GENERAL_APPLICATION_URL}/upload-documents`;
 export const GA_APPLICATION_SUMMARY_URL = `${BASE_GENERAL_APPLICATION_URL}/summary`;
+export const GA_APPLICATION_RESPONSE_SUMMARY_URL = `${BASE_CASE_RESPONSE_URL}/general-application/summary`;
 export const VIEW_THE_JUDGMENT_URL = `${BASE_CASE_URL}/view-the-judgment`;
 export const GA_RESPONSE_CONFIRMATION_URL = `${BASE_GENERAL_APPLICATION_RESPONSE_URL}/confirmation`;
 export const CONFIRM_YOU_HAVE_BEEN_PAID_URL = `${BASE_JUDGMENT_ONLINE_URL}/confirm-you-have-been-paid`;

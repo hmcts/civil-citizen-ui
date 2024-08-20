@@ -29,6 +29,11 @@ const yesAndNoCheckBoxOptionValue = Object.freeze({
   NO: 'option-2',
 });
 
+const supportRequired = Object.freeze({
+  YES: 'model\\[option\\]',
+  NO: 'model\\[option\\]-2',
+});
+
 const claimTypeValue = Object.freeze({
   JUST_MY_SELF_OR_MY_ORGANISATION: 'claimType',
   MORE_THAN_ONE_PERSON_OR_ORGANISATION: 'claimType-2',
@@ -64,6 +69,18 @@ const interestClaimFrom = Object.freeze({
   A_PARTICULAR_DATE : 'interestClaimFrom-2',
 });
 
+const speakLanguage = Object.freeze({
+  ENGLISH: 'speakLanguage',
+  WELSH : 'speakLanguage-2',
+  WELSH_AND_ENGLISH: 'speakLanguage-3',
+});
+
+const documentLanguage = Object.freeze({
+  ENGLISH: 'documentsLanguage',
+  WELSH : 'documentsLanguage-2',
+  WELSH_AND_ENGLISH: 'documentsLanguage-3',
+});
+
 module.exports = {
   notEligibleReason,
   eligibleCheckBoxValue,
@@ -75,4 +92,7 @@ module.exports = {
   interestType,
   sameRateInterestType,
   interestClaimFrom,
+  speakLanguage,
+  documentLanguage,
+  supportRequired,
 };
