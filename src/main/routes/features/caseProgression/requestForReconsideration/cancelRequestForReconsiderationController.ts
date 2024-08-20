@@ -16,7 +16,7 @@ cancelRequestForReconsiderationController.get(REQUEST_FOR_RECONSIDERATION_CANCEL
   try {
     const claimId = req.params.id;
     const propertyName = req.params.propertyName;
-    const claim = await getClaimById(claimId, req);
+    const claim = await getClaimById(claimId, req, true);
     await deleteFieldDraftClaimFromStore(claimId, claim, propertyName);
 
     if (claim.isClaimant()){
