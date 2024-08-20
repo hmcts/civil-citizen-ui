@@ -27,11 +27,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 21.6.1
-      - uses: Azure/get-keyvault-secrets@v1
-        with:
-          keyvault: 'civil-cui'
-          secrets: 'launch-darkly-sdk-key'
-        id: cuiKv
       - name: Install
         run: yarn install && yarn playwright install
       - name: Build
@@ -39,7 +34,7 @@ jobs:
       - name: Starting WireMock
         run: yarn wiremock:start &
         env:
-          LAUNCH_DARKLY_SDK_KEY:  ${{ steps.cuiKv.outputs.launch-darkly-sdk-key }}
+          LAUNCH_DARKLY_SDK_KEY:  sdk-5dca6386-1fcd-48d5-b93a-60d13e22ee62
       - name: Starting CUI
         run: yarn start:e2e &
       - name: Waiting CUI to get ready
