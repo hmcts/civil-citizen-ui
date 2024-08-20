@@ -74,7 +74,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController', ()
       .send({option: null, additionalText: null})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('You need to tell up if you want to upload documents to support your response. Choose option: Yes or No.');
+        expect(res.text).toContain('You need to tell us if you want to upload documents to support your response. Choose option: Yes or No.');
       });
   });
 
