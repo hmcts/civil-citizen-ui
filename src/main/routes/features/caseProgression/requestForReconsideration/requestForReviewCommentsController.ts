@@ -29,7 +29,7 @@ const requestForReviewCommentsController = Router();
 requestForReviewCommentsController.get(REQUEST_FOR_RECONSIDERATION_COMMENTS_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
+    const claim = await getClaimById(claimId, req, true);
     const form = new GenericForm(getRequestForReviewCommentsForm(claim));
     renderView(res, claimId, claim, form);
   } catch (error) {
