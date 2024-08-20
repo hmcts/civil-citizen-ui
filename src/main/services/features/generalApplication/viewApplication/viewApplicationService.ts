@@ -142,7 +142,7 @@ const getHearingOrder = (applicationResponse: ApplicationResponse, lang: string)
   return hearingOrderDocInfoArray;
 };
 
-const getHearingNotice = (applicationResponse: ApplicationResponse, lang: string) => {
+export const getHearingNotice = (applicationResponse: ApplicationResponse, lang: string) => {
   const hearingNoticeDocs = applicationResponse?.case_data?.hearingNoticeDocument;
   let hearingOrderDocInfoArray : DocumentInformation[] = [];
   if(hearingNoticeDocs) {
