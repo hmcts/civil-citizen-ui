@@ -2,7 +2,7 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   GA_PROVIDE_MORE_INFORMATION_URL,
   GA_RESPONSE_VIEW_APPLICATION_URL,
-  GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL
+  GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {
