@@ -6,7 +6,7 @@ import {getFinaliseTrialArrangementContents} from 'services/features/caseProgres
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {CaseRole} from 'form/models/caseRoles';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
@@ -20,7 +20,8 @@ finaliseTrialArrangementsController.get([CP_FINALISE_TRIAL_ARRANGEMENTS_URL], (a
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    await saveDraftClaim(claimId, claim);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    await saveDraftClaim(redisKey, claim);
 
     const dashboardUrl = claim.caseRole === CaseRole.CLAIMANT ? constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL) : constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 
