@@ -18,7 +18,7 @@ env:
   TEST_URL: http://localhost:3001
   IDAM_API_URL: http://localhost:1111
   ENVIRONMENT: preview
-  LAUNCH_DARKLY_SDK_KEY: sdk-5dca6386-1fcd-48d5-b93a-60d13e22ee62
+  LAUNCH_DARKLY_SDK_KEY: test
 
 jobs:
   build:
