@@ -1,13 +1,15 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {
+  getApplicationIndex,
   getApplicationStatus,
   getByIndex,
   getByIndexOrLast,
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
   saveAcceptDefendantOffer,
-  saveAgreementFromOtherParty, saveAndTriggerNotifyGaHwfEvent,
+  saveAgreementFromOtherParty,
+  saveAndTriggerNotifyGaHwfEvent,
   saveApplicationCosts,
   saveApplicationType,
   saveHearingArrangement,
@@ -34,7 +36,11 @@ import { RequestingReason } from 'models/generalApplication/requestingReason';
 import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {
+  DASHBOARD_CLAIMANT_URL,
+  DEFENDANT_SUMMARY_URL,
+  OLD_DASHBOARD_CLAIMANT_URL,
+} from 'routes/urls';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
@@ -50,10 +56,10 @@ import {
   triggerNotifyHwfEvent,
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
 import {GaServiceClient} from 'client/gaServiceClient';
-import {CivilServiceClient} from 'client/civilServiceClient';
 import {CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {CCDHelpWithFees} from 'form/models/claimDetails';
+import {AppRequest} from 'models/AppRequest';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -464,7 +470,7 @@ describe('General Application service', () => {
       const respondentAgreement = new RespondentAgreement(YesNo.YES);
       // When
       await saveRespondentAgreement('123', respondentAgreement);
-      // Then 
+      // Then
       const gaResponse = new GaResponse();
       gaResponse.respondentAgreement = respondentAgreement;
       await expect(spy).toBeCalledWith('123', gaResponse);
@@ -527,8 +533,8 @@ describe('General Application service', () => {
     });
 
     it('should save help with hwf application fee selection', async () => {
-      const  claim = new Claim();
-      const  ccdClaim = new Claim();
+      const claim = new Claim();
+      const ccdClaim = new Claim();
       ccdClaim.generalApplications = [
         {
           'id': 'test',
@@ -546,12 +552,10 @@ describe('General Application service', () => {
         claim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
         return claim;
       });
-      const spy = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(ccdClaim);
       const spyOnGA = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
       //When
-      await saveAndTriggerNotifyGaHwfEvent('123', undefined, new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-A1B-36C'));
+      await saveAndTriggerNotifyGaHwfEvent({params: {appId: '12334'}} as unknown as AppRequest, new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-A1B-36C'));
       expect(spyOnGA).toHaveBeenCalled();
-      await expect(spy).toBeCalledWith('123', undefined);
     });
 
     it('should save help with application fee continue selection', async () => {
@@ -886,5 +890,75 @@ describe('Should display sync warning', () => {
     const result = shouldDisplaySyncWarning(applicationResponse);
     //Then
     expect(result).toEqual(true);
+  });
+});
+
+describe('Should get the application index', () => {
+  it('should return index', async () => {
+    const applicationResponse: ApplicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: undefined,
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '1234',
+      last_modified: '',
+      state: undefined,
+    };
+
+    jest
+      .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
+      .mockResolvedValue([applicationResponse]);
+    //When
+    const result = await getApplicationIndex('123', '1234', undefined);
+    //Then
+    expect(result).toEqual(0);
+  });
+
+  it('should return undefine', async () => {
+    const applicationResponse: ApplicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: undefined,
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '',
+      last_modified: '',
+      state: undefined,
+    };
+
+    jest
+      .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
+      .mockResolvedValue([applicationResponse]);
+    //When
+    const result = await getApplicationIndex('123', '1234', undefined);
+    //Then
+    expect(result).toEqual(-1);
   });
 });
