@@ -48,7 +48,8 @@ requestForReviewCommentsController.post(REQUEST_FOR_RECONSIDERATION_COMMENTS_URL
     } else {
       const dqPropertyName = getNameRequestForReconsideration(claim);
       await saveCaseProgression(req, form.model, dqPropertyName);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL));
+
+      res.redirect(constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL));
     }
   } catch (error) {
     next(error);
