@@ -13,17 +13,18 @@ import {
   getApplicantDocuments,
   getApplicationSections,
   getCourtDocuments,
-  getMakeWithNotice,
+  getJudgeResponseSummary,
   getRespondentDocuments,
   getJudgesDirectionsOrder, getRequestWrittenRepresentations,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {
-  ApplicationResponse, JudicialDecisionRequestMoreInfoOptions,
+  ApplicationResponse,
+  JudicialDecisionOptions,
 } from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {SummaryRow} from 'common/models/summaryList/summaryList';
-import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 import { DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 
@@ -40,10 +41,12 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, req.params.appId);
-    const isMakeWithNotice = applicationResponse.case_data?.judicialDecisionRequestMoreInfo?.requestMoreInfoOption == JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY;
+    const isMakeWithNotice = applicationResponse.case_data?.judicialDecision?.decision === JudicialDecisionOptions.MAKE_AN_ORDER;
+    const isRequestMoreInfo = applicationResponse.case_data?.judicialDecision?.decision === JudicialDecisionOptions.REQUEST_MORE_INFO;
     const isJudgesDirectionsOrder = !!applicationResponse.case_data?.judicialDecisionMakeOrder?.directionsResponseByDate;
     const isRequestWrittenRepresentations = !!applicationResponse.case_data?.judicialDecisionMakeAnOrderForWrittenRepresentations?.makeAnOrderForWrittenRepresentations;
-    let makeWithNotice: SummaryRow[] = [];
+    let showRequestMoreInfoButton = false;
+    let responseFromCourt: SummaryRow[] = [];
     const applicantDocuments : DocumentsViewComponent = getApplicantDocuments(applicationResponse, lang);
     const courtDocuments: DocumentsViewComponent = getCourtDocuments(applicationResponse, lang);
     const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
@@ -56,12 +59,17 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     let requestWrittenRepresentationsUrl: string = null;
 
     if(isMakeWithNotice) {
-      makeWithNotice = getMakeWithNotice(applicationResponse, lang);
+      responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
       payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
     }
 
+    if(isRequestMoreInfo) {
+        showRequestMoreInfoButton = true;
+        responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
+    }
+
     if(isApplicationFeeAmountNotPaid) {
-      applicationFeeOptionUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+      applicationFeeOptionUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION);
     }
 
     if(isJudgesDirectionsOrder) {
@@ -80,8 +88,8 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       pageTitle,
       dashboardUrl: DASHBOARD_URL,
       applicationIndex,
-      isMakeWithNotice,
-      makeWithNotice,
+      isResponseFromCourt: isRequestMoreInfo || isMakeWithNotice,
+      responseFromCourt,
       additionalDocUrl,
       payAdditionalFeeUrl,
       isApplicationFeeAmountNotPaid,
@@ -95,6 +103,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       isRequestWrittenRepresentations,
       requestWrittenRepresentations,
       requestWrittenRepresentationsUrl,
+      showRequestMoreInfoButton,
     });
   } catch (error) {
     next(error);

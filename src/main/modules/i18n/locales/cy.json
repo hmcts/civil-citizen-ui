@@ -289,6 +289,7 @@
       "CORRECT_INFORMATION_CONFIRMATION": "Rwy'n cadarnhau fy mod i'n credu bod y manylion rwyf wedi'u darparu yn gywir.",
       "DETAILS_TRUTHY": "Mae manylion gofynion y gwrandawiad ar y dudalen hon yn wir hyd eithaf fy ngwybodaeth.",
       "INFORMATION_ON_PAGE": "Mae'r wybodaeth ar y dudalen hon yn ffurfio eich ymateb. Gallwch ei weld ar y ffurflen ymateb ar ôl i chi ei chyflwyno.",
+      "INFORMATION_ON_PAGE_CLAIM": "Mae’r wybodaeth ar y dudalen hon yn ffurfio eich hawliad. Gallwch ei gweld ar y ffurflen hawlio ar ôl ichi ei chyflwyno.",
       "MAKE_CHANGES_NOT_ALLOWED": "Unwaith y byddwch yn cyflwyno eich hawliad, ni fyddwch yn gallu gwneud unrhyw newidiadau pellach iddo. Ni fydd eich hawliad yn cychwyn neu'n cael ei anfon at y partïon eraill nes eich bod wedi talu ffi'r hawliad.",
       "SENIOR_POSITION_REQUIREMENT": "Mae'n rhaid i chi ddal swydd uwch yn eich sefydliad i lofnodi'r datganiad o wirionedd.",
       "STATEMENT_OF_WORK": "satganiad gwirionedd",
@@ -3115,6 +3116,8 @@
         "REQUEST_WRITTEN_REPRESENTATION_DOCUMENT": "request_for_written_representation.pdf",
         "RESPONSE_COURT": "Response from the court",
         "RESPONDENTS_DOCUMENTS": "Respondent's documents",
+        "RESPOND_TO_REQUEST": "Respond to the request",
+        "REQUEST_MORE_INFO": "Request for more information",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
@@ -4532,20 +4535,20 @@
       }
     },
     "CONFIRM_YOU_HAVE_BEEN_PAID": {
-      "PAGE_TITLE": "Confirm that you've been paid",
-      "TITLE": "Confirm that you've been paid",
-      "ENTER_THE_DATE": "Enter the date that you were paid the full amount that was specified on the judgment",
-      "HINT": "If you've been paid in installments, enter the date of the final payment you received. For example, 16 4 2021",
-      "CONFIRM": "I confirm that I've been paid the full amount that was specified on the judgment. Once you've confirmed this, it cannot be changed.",
-      "JUDGMENT_LINK": "View the judgment made against the defendant",
-      "CHECK_ERROR_MESSAGE": "Please confirm you've been paid the full amount"
+      "PAGE_TITLE": "Cadarnhau eich bod wedi cael eich talu",
+      "TITLE": "Cadarnhau eich bod wedi cael eich talu",
+      "ENTER_THE_DATE": "Nodwch y dyddiad y cawsoch eich talu’r swm llawn a nodwyd ar y dyfarniad",
+      "HINT": "Os ydych wedi cael eich talu mewn rhandaliadau, nodwch ddyddiad y taliad olaf a gawsoch. Er enghraifft, 16 04 2021",
+      "CONFIRM": "Rwy’n cadarnhau bod y swm llawn a nodwyd ar y dyfarniad wedi’i dalu i mi. Unwaith y byddwch yn cadarnhau hyn, ni ellir ei newid.",
+      "JUDGMENT_LINK": "Gweld y dyfarniad a wnaed yn erbyn y diffynnydd",
+      "CHECK_ERROR_MESSAGE": "Cadarnhewch fod y swm llawn wedi'i dalu i chi"
     },
     "CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM": {
-      "PAGE_TITLE": "Confirm that you've been paid - Confirmation",
-      "YOU_CONFIRMED": "You've confirmed that you've been paid",
-      "WHAT_NEXT": "What happens next",
-      "NO_FURTHER": "There's no further action you need to take.",
-      "CLOSE_AND_RETURN": "Close and return to case details"
+      "PAGE_TITLE": "Cadarnhau eich bod wedi cael eich talu - Cadarnhad",
+      "YOU_CONFIRMED": "Rydych wedi cadarnhau eich bod wedi cael eich talu",
+      "WHAT_NEXT": "Beth fydd yn digwydd nesaf",
+      "NO_FURTHER": "Nid oes rhaid i chi gymryd unrhyw gamau pellach.",
+      "CLOSE_AND_RETURN": "Cau a dychwelyd i fanylion yr achos"
     }
   },
   "FOOTER": {
