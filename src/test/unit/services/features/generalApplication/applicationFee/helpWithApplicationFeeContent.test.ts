@@ -1,7 +1,8 @@
 import {t} from 'i18next';
 import {
   getHelpApplicationFeeSelectionPageContents,
-  getButtonsContents, getApplicationFeeContentPageDetails,
+  getButtonsContents,
+  getApplicationFeeContentPageDetails,
   getHelpApplicationFeeContinuePageContents,
 } from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
@@ -86,7 +87,7 @@ describe('Help with Application fee content', () => {
   it('should return all the content for getHelpWithApplicationFeeContent', () => {
     //Given
     //When
-    const actualContent = getApplicationFeeContentPageDetails('123', false);
+    const actualContent = getApplicationFeeContentPageDetails('123', false, '3456');
     //Then
     expect(actualContent[0].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING');
     expect(actualContent[1].data.text).toEqual('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.TITLE');
@@ -101,7 +102,7 @@ describe('Help with Application fee content', () => {
   it('should return all the content for getHelpWithApplicationFeeContent for Additional Pay', () => {
     //Given
     //When
-    const actualContent = getApplicationFeeContentPageDetails('123', true);
+    const actualContent = getApplicationFeeContentPageDetails('123', true, '345');
     //Then
     expect(actualContent[0].data.text).toEqual('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING');
   });
