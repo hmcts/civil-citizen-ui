@@ -52,7 +52,7 @@ hearingDurationController.post(TRIAL_ARRANGEMENTS_HEARING_DURATION, (async (req,
     const parentPropertyName = getNameTrialArrangements(claim);
     await saveCaseProgression(req, form.model.otherInformation, propertyName, parentPropertyName );
 
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS));
+    res.redirect(constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS));
 
   } catch (error) {
     next(error);
