@@ -125,10 +125,17 @@
     rows: responseFromCourt
   }) }}
 
-  {{ govukButton({
-    text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAY_ADDITIONAL_FEE'),
-    href: payAdditionalFeeUrl
-  }) }}
+  {% if showRequestMoreInfoButton %}
+    {{ govukButton({
+      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST'),
+      href: requestMoreInfoUrl
+    }) }}
+  {% else %}
+    {{ govukButton({
+      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAY_ADDITIONAL_FEE'),
+      href: payAdditionalFeeUrl
+    }) }}
+  {% endif %}
 {% endset %}
 
 {% set judgesDirectionsOrderHtml %}
@@ -181,6 +188,7 @@
       }) }}
     {% endif %}
   </div>
+
   {% if isApplicationFeeAmountNotPaid %}
     {{ govukButton({
       text: t('COMMON.BUTTONS.PAY_APPLICATION_FEE'),
