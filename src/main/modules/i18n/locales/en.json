@@ -3114,6 +3114,8 @@
         "READ_RESPONSE": "Read the response",
         "RESPONSE_COURT": "Response from the court",
         "RESPONDENTS_DOCUMENTS": "Respondent's documents",
+        "RESPOND_TO_REQUEST": "Respond to the request",
+        "REQUEST_MORE_INFO": "Request for more information",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
