@@ -64,8 +64,8 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     }
 
     if(isRequestMoreInfo) {
-        showRequestMoreInfoButton = true;
-        responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
+      showRequestMoreInfoButton = true;
+      responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
     }
 
     if(isApplicationFeeAmountNotPaid) {
