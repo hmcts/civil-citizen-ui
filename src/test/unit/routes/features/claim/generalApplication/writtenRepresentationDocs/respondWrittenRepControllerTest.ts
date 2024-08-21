@@ -78,6 +78,17 @@ describe('General Application - uploadDocumentsForWrittenRepController', () => {
       });
   });
 
+  it('should return errors on undefined input', async () => {
+
+    await request(app)
+      .post(GA_PROVIDE_MORE_INFORMATION_URL)
+      .send({})
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('You need to either enter the information requested in the box or select Yes to upload documents to support your response.');
+      });
+  });
+
   it('should return errors on error input', async () => {
 
     await request(app)

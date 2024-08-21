@@ -9,7 +9,7 @@ import { GenericForm } from 'form/models/genericForm';
 import { Claim } from 'models/claim';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { getClaimById } from 'modules/utilityService';
-import { constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import multer from 'multer';
 import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
 import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
@@ -33,7 +33,7 @@ const upload = multer({
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, gaId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL);
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_PROVIDE_MORE_INFORMATION_URL);
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_PROVIDE_MORE_INFORMATION_URL);
   res.render(viewPath, {
     form,
     formattedSummary,
