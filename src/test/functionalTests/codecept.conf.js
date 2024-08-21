@@ -121,4 +121,5 @@ exports.config = {
       },
     },
   },
+  require: ['ts-node/register'], // Add this line to register ts-node
 };
