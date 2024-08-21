@@ -5,6 +5,8 @@ let ldClient: LDClient;
 let testData: TestData;
 
 async function getClient(): Promise<void> {
+  console.log('process.env.LAUNCH_DARKLY_SDK -->' + process.env.LAUNCH_DARKLY_SDK);
+  console.log('services.launchDarkly.sdk -->' + config.get<string>('services.launchDarkly.sdk'));
   const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
   if (launchDarklyTestSdk) {
     let client;
