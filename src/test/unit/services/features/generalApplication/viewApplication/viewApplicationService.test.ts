@@ -4,7 +4,7 @@ import {
   getApplicantDocuments,
   getApplicationSections,
   getCourtDocuments,
-  getJudgeResponseSummary,
+  getJudgeDirectionWithNotice,
   getRespondentDocuments,
   getJudgesDirectionsOrder,
   getJudgeApproveEdit,
@@ -12,6 +12,7 @@ import {
   getReturnDashboardUrl,
   getHearingNoticeResponses,
   getHearingOrderResponses,
+  getResponseFromCourtSection,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {GaServiceClient} from 'client/gaServiceClient';
 import * as requestModels from 'models/AppRequest';
@@ -27,6 +28,7 @@ import {
 } from 'form/models/documents/DocumentsViewComponent';
 import {CcdHearingDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import {getClaimById} from 'modules/utilityService';
+import { CcdGAMakeWithNoticeDocument } from 'common/models/ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('../../../../../../main/app/client/gaServiceClient');
@@ -73,7 +75,7 @@ function setMockAdditionalDocuments() {
   }];
 }
 
-function setMockHearingOrderDocuments(): CcdHearingDocument[] {
+function setMockHearingNoticeDocuments(): CcdHearingDocument[] {
   return [{
     'id': '4810a582-2e16-48e9-8b64-9f96b4d12cc4',
     'value': {
@@ -87,6 +89,26 @@ function setMockHearingOrderDocuments(): CcdHearingDocument[] {
       'documentName': 'Application_Hearing_Notice_2024-08-02 12:15:34.pdf',
       'documentType': DocumentType.HEARING_NOTICE,
       'createdDatetime':  new Date('2024-08-01'),
+    },
+  }];
+}
+
+function setMockRequestForInformationDocument(): CcdGAMakeWithNoticeDocument[] {
+  const fileName = 'Name of file';
+  const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
+  const binary_url = `http://dm-store:8080/documents/${binary}/binary`;
+  return [{
+    'id': '1',
+    'value': {
+      'documentLink': {
+        'document_url': 'test',
+        'document_binary_url': binary_url,
+        'document_filename': fileName,
+        'category_id': '1',
+      },
+      'documentType': DocumentType.SEND_APP_TO_OTHER_PARTY,
+      'createdDatetime': new Date('2024-03-02'),
+      'createdBy':'civils',
     },
   }];
 }
@@ -176,7 +198,7 @@ describe('View Application service', () => {
       applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
     });
 
-    it('should return judge response summary', async () => {
+    it('should return judge direction with notice summary', async () => {
       //given
 
       const caseData = applicationResponse.case_data;
@@ -192,6 +214,7 @@ describe('View Application service', () => {
           },
           'documentName': 'make-with-notice_2024-07-22 11:01:54.pdf',
           'documentType': DocumentType.SEND_APP_TO_OTHER_PARTY,
+          'createdDatetime' : new Date('2024-01-01'),
         },
       }];
 
@@ -199,7 +222,7 @@ describe('View Application service', () => {
       applicationResponse.created_date = new Date('2024-01-01').toString();
 
       //when
-      const result = getJudgeResponseSummary(mockedAppRequest, applicationResponse, 'en');
+      const result = getJudgeDirectionWithNotice(mockedAppRequest, applicationResponse, 'en');
 
       //then
       expect(result.rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
@@ -209,24 +232,6 @@ describe('View Application service', () => {
       expect(result.rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result.rows[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098" target="_blank" rel="noopener noreferrer">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
       expect(result.rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT');
-    });
-
-    it('should return judge response summary with undefined link when requestForInformationDocument doesn\'t contain senp app to other party doc', async () => {
-      //given
-      applicationResponse.created_date = new Date('2024-01-01').toString();
-      const caseData = applicationResponse.case_data;
-      caseData.requestForInformationDocument = [];
-      applicationResponse.case_data = caseData;
-      applicationResponse.created_date = new Date('2024-01-01').toString();
-      //when
-      const result = getJudgeResponseSummary(mockedAppRequest, applicationResponse, 'en');
-      //then
-      expect(result.rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result.rows[0].value.html).toEqual('1 January 2024');
-      expect(result.rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result.rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
-      expect(result.rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result.rows[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/undefined" target="_blank" rel="noopener noreferrer">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
     });
 
     it('should return judge response summary with correct status when requestForInformation isWithNotice is present', async () => {
@@ -263,7 +268,7 @@ describe('View Application service', () => {
       applicationResponse.case_data= caseData;
       applicationResponse.created_date = new Date('2024-01-01').toString();
       //when
-      const result = getJudgeResponseSummary(mockedAppRequest,  applicationResponse, 'en');
+      const result = getJudgeDirectionWithNotice(mockedAppRequest,  applicationResponse, 'en');
       //then
       expect(result.rows[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result.rows[3].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID');
@@ -322,14 +327,14 @@ describe('View Application service', () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       const caseData = application.case_data;
-      caseData.hearingOrderDocument= setMockHearingOrderDocuments();
+      caseData.hearingNoticeDocument = setMockHearingNoticeDocuments();
 
       jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
       //When
       const result = getCourtDocuments(application, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
-        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER',
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf831', 'Application_Hearing_Notice_2024-08-02 12:15:34.pdf'),
       );
@@ -607,7 +612,7 @@ describe('View Application service', () => {
                 document_filename: fileName,
                 category_id: '1',
               },
-              documentType: DocumentType.GENERAL_ORDER,
+              documentType: DocumentType.HEARING_NOTICE,
               createdDatetime: new Date('2024-01-01'),
               createdBy:'civils',
             },
@@ -697,7 +702,7 @@ describe('View Application service', () => {
                 document_filename: fileName,
                 category_id: '1',
               },
-              documentType: DocumentType.GENERAL_ORDER,
+              documentType: DocumentType.HEARING_NOTICE,
               createdDatetime: new Date('2024-01-01'),
               createdBy:'civils',
             },
@@ -750,30 +755,79 @@ describe('View Application service', () => {
       expect(result.length).toEqual(0);
     });
   });
-
+  
   describe('getReturnDashboardUrl', () => {
     it('should return claimant link', async () => {
       //given
-      const claimId = '123';
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
-      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
       //when
-      const result = await getReturnDashboardUrl(claimId, mockedAppRequest);
+      const result = await getReturnDashboardUrl(claim);
       //then
       expect(result).toContain('claimantNewDesign');
     });
 
     it('should return defendant link', async () => {
       //given
-      const claimId = '123';
       const claim = new Claim();
       claim.caseRole = CaseRole.DEFENDANT;
-      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+     
       //when
-      const result = await getReturnDashboardUrl(claimId, mockedAppRequest);
+      const result = await getReturnDashboardUrl(claim);
       //then
       expect(result).toContain('defendant');
+    });
+  });
+  describe('getResponseFromCourtSection', () => {
+    it('should return court from response section for applicant', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      application.case_data.hearingNoticeDocument = setMockHearingNoticeDocuments();
+      application.case_data.requestForInformationDocument = setMockRequestForInformationDocument();
+      application.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.YES;
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
+      //when
+      const result = await getResponseFromCourtSection(mockedAppRequest, '1', 'en');
+
+      //then
+      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].rows[0].value.html).toEqual('1 August 2024');
+      expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
+      expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[0].rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE');
+      expect(result[1].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[1].rows[0].value.html).toEqual('2 March 2024');
+      expect(result[1].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[1].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
+      expect(result[1].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[1].rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT');
+    });
+
+    it('should return court from response section for defendant', async () => {
+    //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      application.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
+      application.case_data.hearingNoticeDocument = setMockHearingNoticeDocuments();
+      application.case_data.requestForInformationDocument = setMockRequestForInformationDocument();
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+
+      const claim = new Claim();
+      claim.caseRole = CaseRole.DEFENDANT;
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
+      //when'
+      const result = await getResponseFromCourtSection(mockedAppRequest, '1', 'en');
+      //then
+      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].rows[0].value.html).toEqual('1 August 2024');
+      expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
+      expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[0].rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE');
     });
   });
 });

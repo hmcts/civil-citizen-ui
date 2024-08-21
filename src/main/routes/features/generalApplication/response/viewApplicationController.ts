@@ -3,7 +3,7 @@ import {GA_RESPONSE_VIEW_APPLICATION_URL, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL} fr
 import {AppRequest} from 'common/models/AppRequest';
 import {
   getApplicantDocuments,
-  getApplicationSections, getCourtDocuments, getRespondentDocuments, getDefendantResponseFromCourtSection,
+  getApplicationSections, getCourtDocuments, getRespondentDocuments, getResponseFromCourtSection,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
@@ -28,7 +28,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const courtDocuments: DocumentsViewComponent = getCourtDocuments(applicationResponse, lang);
     const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
-    const responseFromCourt = await getDefendantResponseFromCourtSection(req, req.params.appId, lang);
+    const responseFromCourt = await getResponseFromCourtSection(req, req.params.appId, lang);
     res.render(viewPath, {backLinkUrl, summaryRows, pageTitle, redirectUrl, applicationIndex, applicantDocuments, courtDocuments, respondentDocuments, additionalDocUrl,responseFromCourt });
   } catch (error) {
     next(error);

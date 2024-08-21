@@ -8,12 +8,13 @@ import {t} from 'i18next';
 import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GaServiceClient} from 'client/gaServiceClient';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {getApplicationSections , getRespondentDocuments, getCourtDocuments, getApplicantDocuments, getClaimantResponseFromCourtSection} from 'services/features/generalApplication/viewApplication/viewApplicationService';
+import {getApplicationSections , getRespondentDocuments, getCourtDocuments, getApplicantDocuments, getResponseFromCourtSection} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
 import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 import { SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
 import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalApplication/CourtResponseSummary';
+import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
@@ -23,7 +24,7 @@ const mockedSummaryRows = getApplicationSections as jest.Mock;
 const mockRespondentDocs = getRespondentDocuments as jest.Mock;
 const mockApplicantDocs = getApplicantDocuments as jest.Mock;
 const mockCourtDocs = getCourtDocuments as jest.Mock;
-const mockResponseFromCourt = getClaimantResponseFromCourtSection as jest.Mock;
+const mockResponseFromCourt = getResponseFromCourtSection as jest.Mock;
 
 describe('General Application - View application', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -214,7 +215,6 @@ describe('General Application - View application', () => {
   });
 
   it('should return response from court section', async () => {
-
     mockResponseFromCourt.mockImplementation(() => {
       const judgeDirectionRows : SummaryRow[] = [];
       const responseFromCourt : CourtResponseSummaryList[] = [];
@@ -256,7 +256,39 @@ describe('General Application - View application', () => {
       });
   });
 
+  it('should return response from court section for defendant', async () => {
+    mockResponseFromCourt.mockImplementation(() => {
+      const responseFromCourt : CourtResponseSummaryList[] = [];
+      const hearingNoticeRows : SummaryRow[] = [];
+         
+      const hearingNotices = new CourtResponseSummaryList(hearingNoticeRows);
+      hearingNoticeRows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '2 Aug 2024'),
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Hearing Notice has been generated'),
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Hearing Notice</a>'));
+ 
+      responseFromCourt.push(hearingNotices);   
+      return Promise.resolve(responseFromCourt);
+    });
+    application.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
+
+    await request(app)
+      .get(GA_VIEW_APPLICATION_URL)
+      .query({index: '1'})
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT'));
+        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'));
+        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'));
+        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'));
+        expect(res.text).toContain('Hearing Notice has been generated');
+        expect(res.text).toContain('2 Aug 2024');
+        expect(res.text).toContain('<a href="#">Hearing Notice</a>');
+      });
+  });
+
   it('should not display response from court section', async () => {
+    
     mockResponseFromCourt.mockImplementation(() => {
       return Promise.resolve([]);
     });
