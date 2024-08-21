@@ -13,11 +13,46 @@ class Response {
   confirmYourDetails() {
     I.click(responseTaskListItems.CONFIRM_YOUR_DETAILS, checkTaskList(responseTaskListItems.CONFIRM_YOUR_DETAILS, taskListStatus.INCOMPLETE));
     I.seeInCurrentUrl('/response/your-details');
+    I.seeInTitle('Company details - Your money claims account');
+    I.see('Confirm your details', 'h1.govuk-heading-l');
+    I.see('Your name and address were provided by the person, business or organisation claiming from you (the claimant).', 'p.govuk-body');
+
+    I.see('Organisation name', 'h2.govuk-heading-m');
+    I.see('Version 1', 'p.govuk-label');
+    I.see('Contact person (optional)', 'label.govuk-label');
+    I.seeElement('input.govuk-input#contactPerson');
+
+    I.see('Company address', 'h2.govuk-heading-m');
+    I.see('If your address is not correct you can change it here.Any changes will be shared with the claimant when you submit your response.', 'p.govuk-body');
+    I.see('Building and street', 'label.govuk-label');
+    I.seeElement('input[id="primaryAddress[addressLine1]"]');
+    I.seeElement('input[id="primaryAddress[addressLine2]"]');
+    I.seeElement('input[id="primaryAddress[addressLine3]"]');
+
+    I.see('Town or city', 'label.govuk-label');
+    I.seeElement('input[id="primaryAddress[city]"]');
+
+    I.see('Postcode', 'label.govuk-label');
+    I.seeElement('input[id="primaryAddress[postCode]"]');
+
+    I.see('Correspondence address', 'h2.govuk-heading-m');
+    I.see('Would you like correspondence sent to a different address?', 'legend.govuk-fieldset__legend');
+    I.seeElement('input[id="postToThisAddress"]');
+    I.seeElement('input[id="postToThisAddress-2"]');
+
     clickButton(buttonType.SAVE_AND_CONTINUE);
+
     //your-phone
     I.seeInCurrentUrl('/response/your-phone');
+    I.seeInTitle('Your phone number - Your money claims account');
+    I.see('Enter a phone number (optional)', 'h1.govuk-heading-l');
+    I.see('We will only call you if we need more information about this claim.', 'p.govuk-body');
+    I.see('We\'ll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.', 'p.govuk-body');
+    I.see('Use numbers only, for example, 01632960001.', 'div.govuk-hint');
+    I.seeElement('input[id="telephoneNumber"]');
     I.fillField('#telephoneNumber', '0123456789');
     clickButton(buttonType.SAVE_AND_CONTINUE);
+
     I.seeInCurrentUrl('/response/task-list');
     I.see(responseTaskListItems.CONFIRM_YOUR_DETAILS, checkTaskList(responseTaskListItems.CONFIRM_YOUR_DETAILS, taskListStatus.COMPLETE));
   }
