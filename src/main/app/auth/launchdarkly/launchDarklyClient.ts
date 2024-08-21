@@ -5,7 +5,7 @@ let ldClient: LDClient;
 let testData: TestData;
 
 async function getClient(): Promise<void> {
-  const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK_KEY || config.get<string>('services.launchDarkly.sdk');
+  const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
   if (launchDarklyTestSdk) {
     let client;
     if (process.env.NODE_ENV === 'e2eTest') {
