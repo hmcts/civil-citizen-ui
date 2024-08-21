@@ -219,7 +219,7 @@ describe('General Application - View application', () => {
       const judgeDirectionRows : SummaryRow[] = [];
       const responseFromCourt : CourtResponseSummaryList[] = [];
       const hearingNoticeRows : SummaryRow[] = [];
-      const judgeDirections = new CourtResponseSummaryList(judgeDirectionRows, new ResponseButton('Judge Direction', ''));
+      const judgeDirections = new CourtResponseSummaryList(judgeDirectionRows, new Date(), new ResponseButton('Judge Direction', ''));
       
       judgeDirectionRows.push(
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '1 Aug 2024'),
@@ -288,7 +288,7 @@ describe('General Application - View application', () => {
   });
 
   it('should not display response from court section', async () => {
-    
+
     mockResponseFromCourt.mockImplementation(() => {
       return Promise.resolve([]);
     });

@@ -12,7 +12,6 @@ import {app} from '../../../../../../../main/app';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
-import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import { SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
 import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalApplication/CourtResponseSummary';
 
@@ -185,7 +184,7 @@ describe('General Application - View application', () => {
         const judgeDirectionRows : SummaryRow[] = [];
         const responseFromCourt : CourtResponseSummaryList[] = [];
         const hearingNoticeRows : SummaryRow[] = [];
-        const judgeDirections = new CourtResponseSummaryList(judgeDirectionRows, new ResponseButton('Judge Direction', ''));
+        const judgeDirections = new CourtResponseSummaryList(judgeDirectionRows, new Date(),new ResponseButton('Judge Direction', ''));
         
         judgeDirectionRows.push(
           summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '1 Aug 2024'),
@@ -221,7 +220,7 @@ describe('General Application - View application', () => {
           expect(res.text).toContain('<a href="#">Hearing Notice</a>');
         });
     });
-    
+
     it('should return http 500 when has error in the get method', async () => {
       mockedSummaryRows.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
