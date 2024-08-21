@@ -128,11 +128,12 @@ describe('apply help with application fee selection', () => {
     jest
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
       .mockResolvedValueOnce(ccdClaim);
+    mockedAppRequest.params = {appId: '12345667'};
     applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'ref';
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockRejectedValueOnce(new Error('something went wrong'));
     //when
-    const actualRedirectUrl = await getRedirectUrl(claimId, gaAppId, new GenericYesNo(YesNo.YES), mockedAppRequest);
+    const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), mockedAppRequest);
     //Then
-    expect(actualRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION));
+    expect(actualRedirectUrl).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, '12345667', GA_APPLY_HELP_WITH_FEE_SELECTION));
   });
 });
