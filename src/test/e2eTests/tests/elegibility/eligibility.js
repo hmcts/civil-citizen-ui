@@ -5,6 +5,10 @@ const {toggleFlag} = require('../../commons/toggleFlag');
 
 Feature('Eligibility Journey R2').tag('@e2e');
 
+Before(() => { // or Background
+  toggleFlag('cuiReleaseTwoEnabled', true);
+});
+
 Scenario('I don`t know the amount', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     Eligibility.start();
