@@ -69,6 +69,9 @@ describe('Respond To Settlement Agreement', () => {
 
   describe('on GET', () => {
     const date = new Date(Date.now());
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockCivilClaim;
+    });
     it('should return respond to settlement agreement page', async () => {
       const mockClaim = getMockClaim();
       const claim = Object.assign(new Claim(), mockClaim);
@@ -78,6 +81,7 @@ describe('Respond To Settlement Agreement', () => {
           new Promise((resolve) => resolve(claim)),
         );
 
+      app.locals.draftStoreClient = mockCivilClaim;
       await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.TITLE'));

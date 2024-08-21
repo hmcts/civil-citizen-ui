@@ -44,7 +44,8 @@ isCaseReadyController.post([IS_CASE_READY_URL], (async (req, res, next) => {
     } else {
       const parentPropertyName = getNameTrialArrangements(claim);
       await saveCaseProgression(req, form.model.option, dqPropertyName, parentPropertyName);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, HAS_ANYTHING_CHANGED_URL));
+
+      res.redirect(constructResponseUrlWithIdParams(claimId, HAS_ANYTHING_CHANGED_URL));
     }
   } catch (error) {
     next(error);
