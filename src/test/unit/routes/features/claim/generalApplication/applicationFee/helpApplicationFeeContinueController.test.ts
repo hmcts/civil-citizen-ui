@@ -15,6 +15,8 @@ import {YesNo} from 'form/models/yesNo';
 import {t} from 'i18next';
 import {InformOtherParties} from 'models/generalApplication/informOtherParties';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -28,11 +30,53 @@ mockClaim.generalApplication = new GeneralApplication(new ApplicationType(Applic
 mockClaim.generalApplication.agreementFromOtherParty = YesNo.YES;
 mockClaim.generalApplication.informOtherParties = new InformOtherParties();
 mockClaim.generalApplication.informOtherParties.option = YesNo.NO;
-const gaFeeDetails = {
-  calculatedAmountInPence: 1400,
-  code: 'Fe124',
-  version: 0,
+const ccdClaim = new Claim();
+ccdClaim.generalApplications = [
+  {
+    'id': 'test',
+    'value': {
+      'caseLink': {
+        'CaseReference': 'testApp1',
+      },
+    },
+  },
+];
+
+const applicationResponse: ApplicationResponse = {
+  case_data: {
+    applicationTypes: undefined,
+    generalAppType: undefined,
+    generalAppRespondentAgreement: undefined,
+    generalAppInformOtherParty: undefined,
+    generalAppAskForCosts: undefined,
+    generalAppDetailsOfOrder: undefined,
+    generalAppReasonsOfOrder: undefined,
+    generalAppEvidenceDocument: undefined,
+    gaAddlDoc: undefined,
+    generalAppHearingDetails: undefined,
+    generalAppStatementOfTruth: undefined,
+    generalAppPBADetails: {
+      fee: {
+        code: 'FEE0443',
+        version: '2',
+        calculatedAmountInPence: '10800',
+      },
+      paymentDetails: {
+        status: 'SUCCESS',
+        reference: undefined,
+      },
+      serviceRequestReference: undefined,
+    },
+    applicationFeeAmountInPence: undefined,
+    parentClaimantIsApplicant: undefined,
+    judicialDecision: undefined,
+  },
+  created_date: '',
+  id: '',
+  last_modified: '',
+  state: undefined,
 };
+
 describe('General Application - Do you want to continue to apply for Help with Fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -46,7 +90,8 @@ describe('General Application - Do you want to continue to apply for Help with F
   describe('on GET', () => {
     it('should return Do you want to continue to apply for Help with Fees page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
-      jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(ccdClaim);
+      jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEES)
         .expect((res) => {
@@ -60,7 +105,8 @@ describe('General Application - Do you want to continue to apply for Help with F
       mockClaim.generalApplication.helpWithFees = new GaHelpWithFees();
       mockClaim.generalApplication.helpWithFees.helpWithFeesRequested = YesNo.YES;
       mockGetCaseData.mockImplementation(async () => mockClaim);
-      jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(ccdClaim);
+      jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEES)
         .expect((res) => {
@@ -129,9 +175,10 @@ describe('General Application - Do you want to continue to apply for Help with F
         });
     });
     it('should show error message if no value selected', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
 
+      mockGetCaseData.mockImplementation(async () => mockClaim);
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(ccdClaim);
+      jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEES)
         .send({})

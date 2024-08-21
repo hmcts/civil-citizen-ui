@@ -2,7 +2,7 @@ import * as requestModels from 'models/AppRequest';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 import {GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
@@ -76,7 +76,6 @@ describe('apply help with application fee selection', () => {
       state: undefined,
     };
   });
-
   it('should return test url if applyHelpWithFees option is No', async () => {
     //given
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
@@ -88,7 +87,7 @@ describe('apply help with application fee selection', () => {
       nextUrl: nextUrl,
     };
     jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
-
+    mockedAppRequest.query = {id: 'test'};
     //when
     const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), mockedAppRequest);
     //Then
@@ -101,10 +100,12 @@ describe('apply help with application fee selection', () => {
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
       .mockResolvedValueOnce(ccdClaim);
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(applicationResponse);
+    mockedAppRequest.params = {appId: '12345667'};
+    mockedAppRequest.query = {appFee: '1400'};
     //when
     const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), mockedAppRequest);
     //Then
-    expect(actualRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES));
+    expect(actualRedirectUrl).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, '12345667', GA_APPLY_HELP_WITH_FEES) + '?additionalFeeTypeFlag=false');
   });
 
   it('should return correct url - if applyHelpWithFees option is yes and paying for additional fee', async () => {
@@ -114,9 +115,10 @@ describe('apply help with application fee selection', () => {
       .mockResolvedValueOnce(ccdClaim);
     applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'ref';
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(applicationResponse);
+    mockedAppRequest.params = {appId: '12345667'};
     //when
     const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), mockedAppRequest);
     //Then
-    expect(actualRedirectUrl).toBe(constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEES+'?additionalFeeTypeFlag=true'));
+    expect(actualRedirectUrl).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, '12345667', GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag=true'));
   });
 });
