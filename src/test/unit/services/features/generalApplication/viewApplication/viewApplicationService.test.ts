@@ -4,7 +4,7 @@ import {
   getApplicantDocuments,
   getApplicationSections,
   getCourtDocuments,
-  getMakeWithNotice,
+  getJudgeResponseSummary,
   getRespondentDocuments,
   getJudgesDirectionsOrder, getRequestWrittenRepresentations,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
@@ -193,7 +193,7 @@ describe('View Application service', () => {
       applicationResponse.created_date = new Date('2024-01-01').toString();
 
       //when
-      const result = getMakeWithNotice(applicationResponse, 'en');
+      const result = getJudgeResponseSummary(applicationResponse, 'en');
 
       //then
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
@@ -213,7 +213,7 @@ describe('View Application service', () => {
       applicationResponse.case_data = caseData;
       applicationResponse.created_date = new Date('2024-01-01').toString();
       //when
-      const result = getMakeWithNotice(applicationResponse, 'en');
+      const result = getJudgeResponseSummary(applicationResponse, 'en');
       //then
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[0].value.html).toEqual('1 January 2024');
@@ -231,7 +231,7 @@ describe('View Application service', () => {
       applicationResponse.case_data = caseData;
       applicationResponse.created_date = new Date('2024-01-01').toString();
       //when
-      const result = getMakeWithNotice(applicationResponse, 'en');
+      const result = getJudgeResponseSummary(applicationResponse, 'en');
       //then
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/undefined">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
@@ -271,7 +271,7 @@ describe('View Application service', () => {
       applicationResponse.case_data= caseData;
       applicationResponse.created_date = new Date('2024-01-01').toString();
       //when
-      const result = getMakeWithNotice(applicationResponse, 'en');
+      const result = getJudgeResponseSummary(applicationResponse, 'en');
       //then
       expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
       expect(result[3].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID');
