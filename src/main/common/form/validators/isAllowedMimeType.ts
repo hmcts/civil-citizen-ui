@@ -23,6 +23,7 @@ export class IsAllowedMimeTypeValidator implements ValidatorConstraintInterface 
       'image/png',
       'image/bmp',
       'image/tiff',
+      'text/rtf',
     ];
     if (value && allowedMimeTypes.includes(value)) {
       return true;

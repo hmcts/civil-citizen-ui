@@ -8,7 +8,7 @@ import {
   saveStatementOfTruth,
 } from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 import {GenericForm} from 'form/models/genericForm';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -18,6 +18,7 @@ import {YesNo} from 'common/form/models/yesNo';
 import {claimantResponsecheckYourAnswersGuard } from 'routes/guards/claimantResponseCheckYourAnswersGuard';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {getClaimById} from 'modules/utilityService';
 
 const checkAnswersViewPath = 'features/claimantResponse/check-answers';
 const claimantResponseCheckAnswersController = Router();
@@ -37,7 +38,8 @@ async function renderView(req: AppRequest, res: Response, form: GenericForm<Stat
 claimantResponseCheckAnswersController.get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,claimantResponsecheckYourAnswersGuard,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
+      const claimId = req.params.id;
+      const claim = await getClaimById(claimId, req, true);
       const isClaimantRejectedDefendantOffer = claim?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
       const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer));
       const isCarmApplicable = await isCarmEnabledForCase(claim.submittedDate);
@@ -53,12 +55,13 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     const isClaimantRejectedDefendantOffer = req.body.isClaimantRejectedDefendantOffer === 'true';
     const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer, req.body.type, true, req.body.directionsQuestionnaireSigned));
     await form.validate();
+    const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getCaseDataFromStore(redisKey);
+    const claim = await getClaimById(claimId, req, true);
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     const mintiEnabled = await isMintiEnabledForCase(claim.submittedDate);
     if (form.hasErrors()) {
-      const claim = await getCaseDataFromStore(redisKey);
+      const claim = await getClaimById(claimId, req, true);
       await renderView(<AppRequest>req, res, form, claim, carmEnabled, mintiEnabled);
     } else {
       await saveStatementOfTruth(redisKey, form.model);

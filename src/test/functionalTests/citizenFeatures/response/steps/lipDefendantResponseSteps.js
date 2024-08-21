@@ -675,11 +675,11 @@ class ResponseSteps {
   }
 
   async EnterExpertReportDetails() {
-    await expertReportDetails.enterExpertReportDetails();
+    await expertReportDetails.expertDetails();
   }
 
   async EnterClaimantExpertDetails() {
-    await expertReportDetails.claimantExpertDetails();
+    await expertReportDetails.expertDetails();
   }
 
   async SelectGiveEvidenceYourself() {

@@ -29,7 +29,7 @@ describe('payment option service', () => {
         return claim;
       });
       //When
-      const form = await getPaymentOptionForm('123', ResponseType.FULL_ADMISSION);
+      const form = await getPaymentOptionForm(claim, ResponseType.FULL_ADMISSION);
       //Then
       expect(form.paymentType).toBe(PaymentOptionType.IMMEDIATELY);
     });
@@ -41,17 +41,9 @@ describe('payment option service', () => {
         return claim;
       });
       //When
-      const form = await getPaymentOptionForm('123', ResponseType.FULL_ADMISSION);
+      const form = await getPaymentOptionForm(claim, ResponseType.FULL_ADMISSION);
       //Then
       expect(form.paymentType).toBeUndefined();
-    });
-    it('should throw an error when error is thrown from draft store', async () => {
-      //When
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(getPaymentOptionForm('123', ResponseType.FULL_ADMISSION)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
   describe('save payment option when full admission', () => {
@@ -100,7 +92,7 @@ describe('payment option service', () => {
         return claim;
       });
       //When
-      const form = await getPaymentOptionForm('123', ResponseType.PART_ADMISSION);
+      const form = await getPaymentOptionForm(claim, ResponseType.PART_ADMISSION);
       //Then
       expect(form.paymentType).toBe(PaymentOptionType.INSTALMENTS);
     });
@@ -112,18 +104,11 @@ describe('payment option service', () => {
         return claim;
       });
       //When
-      const form = await getPaymentOptionForm('123', ResponseType.PART_ADMISSION);
+      const form = await getPaymentOptionForm(claim, ResponseType.PART_ADMISSION);
       //Then
       expect(form.paymentType).toBeUndefined();
     });
-    it('should throw an error when error is thrown from draft store', async () => {
-      //When
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(getPaymentOptionForm('123', ResponseType.PART_ADMISSION)).rejects.toThrow(TestMessages.REDIS_FAILURE);
-    });
+
   });
   describe('save payment option when part admission', () => {
     it('should save payment option successfully with existing claim', async () => {
