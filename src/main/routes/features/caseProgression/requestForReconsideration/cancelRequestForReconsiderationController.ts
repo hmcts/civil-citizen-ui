@@ -6,9 +6,10 @@ import {
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {RequestHandler, Router} from 'express';
 import {
-  deleteFieldDraftClaimFromStore,
+  deleteFieldDraftClaimFromStore, generateRedisKey,
 } from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
+import {AppRequest} from 'models/AppRequest';
 
 const cancelRequestForReconsiderationController = Router();
 
@@ -16,8 +17,8 @@ cancelRequestForReconsiderationController.get(REQUEST_FOR_RECONSIDERATION_CANCEL
   try {
     const claimId = req.params.id;
     const propertyName = req.params.propertyName;
-    const claim = await getClaimById(claimId, req, true);
-    await deleteFieldDraftClaimFromStore(claimId, claim, propertyName);
+    const claim = await getClaimById(claimId, req,true);
+    await deleteFieldDraftClaimFromStore(generateRedisKey(<AppRequest>req), claim, propertyName);
 
     if (claim.isClaimant()){
       res.redirect(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
