@@ -62,7 +62,7 @@ class ClaimantResponseSteps {
   viewDefendantResponseFullAdmit(caseId, repaymentOption) {
     I.amOnPage(`/case/${caseId}/claimant-response/task-list`);
     I.click(paths.links.view_defendants_response);
-    this.verifyDefendantsResponseFullAdmitPayByRepaymentPlan(repaymentOption)
+    this.verifyDefendantsResponseFullAdmitPayByRepaymentPlan(repaymentOption);
     I.waitForContent('The defendant’s response');
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/defendants-response`);
     clickButton(buttonType.CONTINUE);
