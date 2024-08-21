@@ -13,10 +13,10 @@
           {% endfor %}
 
           {% if summarySections.disclosureEvidenceSection.sections.length > 0 %}
-            <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE') }}</h1>
+            <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.DISCLOSURE') }}</h2>
             {% for section in summarySections.disclosureEvidenceSection.sections %}
               <div class="govuk-!-margin-bottom-9">
-                <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+                <h3 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h3>
                 <div class="govuk-form-group">
                   {{ govukSummaryList({
                     rows: section.summaryList.rows
@@ -27,10 +27,10 @@
           {% endif %}
 
           {% if summarySections.witnessEvidenceSection.sections.length > 0 %}
-            <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_EVIDENCE') }}</h1>
+            <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.WITNESS_EVIDENCE') }}</h2>
             {% for section in summarySections.witnessEvidenceSection.sections %}
                   <div class="govuk-!-margin-bottom-9">
-                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+                    <h3 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h3>
                     <div class="govuk-form-group">
                       {{ govukSummaryList({
                         rows: section.summaryList.rows
@@ -41,10 +41,10 @@
           {% endif %}
 
           {% if summarySections.expertEvidenceSection.sections.length > 0 %}
-            <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERT_EVIDENCE') }}</h1>
+            <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.EXPERT_EVIDENCE') }}</h2>
             {% for section in summarySections.expertEvidenceSection.sections %}
                   <div class="govuk-!-margin-bottom-9">
-                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+                    <h3 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h3>
                     <div class="govuk-form-group">
                       {{ govukSummaryList({
                         rows: section.summaryList.rows
@@ -57,13 +57,13 @@
 
           {% if summarySections.trialEvidenceSection.sections.length > 0 %}
             {% if isSmallClaims %}
-              <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.HEARING_DOCUMENTS') }}</h1>
+              <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.HEARING_DOCUMENTS') }}</h2>
             {% else %}
-              <h1 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TRIAL') }}</h1>
+              <h2 class="govuk-heading-l">{{ t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.TRIAL') }}</h2>
             {% endif %}
             {% for section in summarySections.trialEvidenceSection.sections %}
                   <div class="govuk-!-margin-bottom-9">
-                    <h2 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h2>
+                    <h3 class="govuk-heading-m govuk-!-margin-bottom-2">{{ section.title }}</h3>
                     <div class="govuk-form-group">
                       {{ govukSummaryList({
                         rows: section.summaryList.rows
@@ -73,7 +73,11 @@
             {% endfor %}
           {% endif %}
           {% for content in bottomPageContents %}
-            {{ itemContent(content,t) }}
+            {% if content.type === ClaimSummaryType.MAINTITLE %}
+                <h2 class="govuk-heading-l">{{ t(content.data.text) }}</h2>
+            {% else %}
+                {{ itemContent(content,t) }}
+            {% endif %}
           {% endfor %}
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
