@@ -6,6 +6,7 @@ import {
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
   GA_APPLY_HELP_WITH_FEE_SELECTION,
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
+  GA_APPLICATION_SUMMARY_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {
@@ -20,13 +21,12 @@ import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse, JudicialDecisionOptions} from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {SummaryRow} from 'common/models/summaryList/summaryList';
-import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 import { DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 
 const viewApplicationController = Router();
 const viewPath = 'features/generalApplication/view-applications';
-const backLinkUrl = 'test'; // TODO: add url
 
 viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -73,7 +73,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     }
 
     res.render(viewPath, {
-      backLinkUrl,
+      backLinkUrl: constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUMMARY_URL),
       summaryRows,
       pageTitle,
       dashboardUrl: DASHBOARD_URL,
