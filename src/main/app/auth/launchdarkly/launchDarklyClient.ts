@@ -5,8 +5,6 @@ let ldClient: LDClient;
 let testData: TestData;
 
 async function getClient(): Promise<void> {
-  console.log('process.env.LAUNCH_DARKLY_SDK -->' + process.env.LAUNCH_DARKLY_SDK);
-  console.log('services.launchDarkly.sdk -->' + config.get<string>('services.launchDarkly.sdk'));
   const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
   if (launchDarklyTestSdk) {
     let client;
@@ -23,7 +21,6 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag('is-dashboard-enabled-for-case').booleanFlag().variationForAll(false));
       await testData.update(testData.flag('cam-enabled-for-case').booleanFlag().variationForAll(false));
       await testData.update(testData.flag('multi-or-intermediate-track').booleanFlag().variationForAll(false));
-
       client = init(launchDarklyTestSdk, { updateProcessor: testData });
     } else {
       client = init(launchDarklyTestSdk);
