@@ -43,7 +43,6 @@ import {
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
-import {CivilServiceClient} from 'client/civilServiceClient';
 import {getClaimById} from 'modules/utilityService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -354,21 +353,12 @@ export const saveHelpWithFeesDetails = async (claimId: string, value: any, hwfPr
   }
 };
 
-export const saveAndTriggerNotifyGaHwfEvent = async (claimId: string, req: AppRequest, gaHwf: ApplyHelpFeesReferenceForm): Promise<void> => {
+export const saveAndTriggerNotifyGaHwfEvent = async (req: AppRequest, gaHwf: ApplyHelpFeesReferenceForm): Promise<void> => {
   try {
-    const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-    const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-    /**
-     * The below code of fetching the claimDetails from civilService will be removed once url with GA CaseId is implemented
-     */
-    const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
-    const ccdGeneralApplications = ccdClaim.generalApplications;
-    const generalApplicationId = ccdGeneralApplications[ccdGeneralApplications.length-1].value.caseLink.CaseReference;
-
     const gaHelpWithFees: CCDGaHelpWithFees = {
       generalAppHelpWithFees: toCCDGeneralAppHelpWithFees(gaHwf),
     };
-    await triggerNotifyHwfEvent(generalApplicationId, gaHelpWithFees, req);
+    await triggerNotifyHwfEvent(req.params.appId, gaHelpWithFees, req);
   }
   catch (error) {
     logger.error(error);
