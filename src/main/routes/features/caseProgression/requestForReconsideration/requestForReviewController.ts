@@ -43,7 +43,8 @@ requestForReviewController.post(REQUEST_FOR_RECONSIDERATION_URL,(async (req, res
     const claim: Claim = await getClaimById(claimId, req,true);
     const dqPropertyName = getNameRequestForReconsideration(claim);
     await saveCaseProgression(req, form.model, dqPropertyName);
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, REQUEST_FOR_RECONSIDERATION_CYA_URL));
+
+    res.redirect(constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_CYA_URL));
   } catch (error) {
     next(error);
   }

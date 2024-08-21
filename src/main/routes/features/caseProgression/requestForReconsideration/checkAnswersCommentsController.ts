@@ -1,5 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
 import {AppRequest} from 'common/models/AppRequest';
 import {
@@ -19,6 +19,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {
   getCommentsCYACaseInfoContents,
 } from 'services/features/caseProgression/requestForReconsideration/requestForReviewCommentsService';
+import {getClaimById} from 'modules/utilityService';
 
 const checkAnswersViewPath = 'features/caseProgression/requestForReconsideration/check-answers';
 const requestForReconsiderationCommentsCheckAnswersController = Router();
@@ -39,9 +40,9 @@ requestForReconsiderationCommentsCheckAnswersController.get(REQUEST_FOR_RECONSID
   (  async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
       const claimId = req.params.id;
-      const redisKey = generateRedisKey(<AppRequest>req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const claim = await getCaseDataFromStore(redisKey);
+      const claim = await getClaimById(claimId, req, true);
+
       renderView(res, claim, claimId, lang);
     } catch (error) {
       next(error);
@@ -51,11 +52,11 @@ requestForReconsiderationCommentsCheckAnswersController.get(REQUEST_FOR_RECONSID
 requestForReconsiderationCommentsCheckAnswersController.post(REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getCaseDataFromStore(redisKey);
+    const claim = await getClaimById(claimId, req, true);
     const requestForReconsiderationCCD = translateDraftRequestForReconsiderationToCCD(claim);
     await civilServiceClient.submitRequestForReconsideration(claimId, requestForReconsiderationCCD, req);
-    await deleteDraftClaimFromStore(redisKey);
+    await deleteDraftClaimFromStore(generateRedisKey(<AppRequest>req));
+
     res.redirect(constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_COMMENTS_CONFIRMATION_URL));
   } catch (error) {
     next(error);
