@@ -32,6 +32,7 @@ function renderView(form: GenericForm<GenericYesNo>, repaymentPlan: RepaymentPla
     isPayBySetDate,
     defendantName,
     proposedSetDate,
+    pageTitle: 'PAGES.ACCEPT_REPAYMENT_PLAN.PAGE_TITLE',
   });
 }
 

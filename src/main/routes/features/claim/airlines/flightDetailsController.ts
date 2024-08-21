@@ -12,6 +12,7 @@ const flightDetailsController = Router();
 const flightDetailsPath = 'features/claim/airlines/flight-details';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+const pageTitle= 'PAGES.FLIGHT_DETAILS.FLIGHT_DETAILS';
 
 flightDetailsController.get(FLIGHT_DETAILS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -21,7 +22,7 @@ flightDetailsController.get(FLIGHT_DETAILS_URL, (async (req: AppRequest, res: Re
     const form = new GenericForm(flightDetails);
     const airlines = await civilServiceClient.getAirlines(req);
     const datalist = buildDataList(airlines, form.hasFieldError('airline'), flightDetails.airline, lng);
-    res.render(flightDetailsPath, {form, today: new Date(), airlines, datalist});
+    res.render(flightDetailsPath, {form, today: new Date(), airlines, datalist, pageTitle});
   } catch (error) {
     next(error);
   }
@@ -39,7 +40,7 @@ flightDetailsController.post(FLIGHT_DETAILS_URL, (async (req: AppRequest, res: R
     form.validateSync();
     if (form.hasErrors()) {
       const datalist = buildDataList(airlines, form.hasFieldError('airline'), airline, lng);
-      res.render(flightDetailsPath, {form, today: new Date(), airlines, datalist});
+      res.render(flightDetailsPath, {form, today: new Date(), airlines, datalist, pageTitle});
     } else {
       await saveFlightDetails(userId, flightDetails);
       res.redirect(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);

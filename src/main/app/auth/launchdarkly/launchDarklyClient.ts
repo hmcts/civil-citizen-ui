@@ -76,6 +76,15 @@ export async function  isDashboardEnabledForCase(date: Date): Promise<boolean> {
   return await getFlagValue('is-dashboard-enabled-for-case', epoch) as boolean;
 }
 
+export async function isCarmEnabledForCase(date: Date): Promise<boolean> {
+  const { DateTime } = require('luxon');
+  const systemTimeZone = DateTime.local().zoneName;
+  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
+  const carmFlag = await getFlagValue('carm') as boolean;
+  const carmApplicable = await getFlagValue('cam-enabled-for-case', epoch) as boolean;
+  return carmFlag && carmApplicable;
+}
+
 export async function  isMintiEnabledForCase(date: Date): Promise<boolean> {
   const { DateTime } = require('luxon');
   const systemTimeZone = DateTime.local().zoneName;

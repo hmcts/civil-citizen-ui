@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import { GA_PAYMENT_SUCCESSFUL_URL } from 'routes/urls';
+import {GA_APPLICATION_SUBMITTED_URL, GA_PAYMENT_SUCCESSFUL_URL} from 'routes/urls';
 import { Claim } from 'common/models/claim';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import * as draftService from 'modules/draft-store/draftStoreService';
@@ -12,16 +12,24 @@ import { CaseProgressionHearing } from 'common/models/caseProgression/caseProgre
 import { t } from 'i18next';
 import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 import { PaymentInformation } from 'common/models/feePayment/paymentInformation';
+import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('services/features/generalApplication/generalApplicationService', () => ({
+  getCancelUrl: jest.fn(),
+  getApplicationFromGAService: jest.fn(),
+  shouldDisplaySyncWarning: jest.fn(),
+}));
 
 describe('Claim fee payment confirmation', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
   const mockDataFromStore = jest.spyOn(draftService, 'getCaseDataFromStore');
   let claim: Claim;
+  let applicationResponse: ApplicationResponse;
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -35,10 +43,35 @@ describe('Claim fee payment confirmation', () => {
     claim.generalApplication.applicationFeePaymentDetails = new PaymentInformation();
     claim.generalApplication.applicationFeePaymentDetails.paymentReference = 'REF-123-123';
     claim.caseProgressionHearing = new CaseProgressionHearing();
+
+    applicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: undefined,
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '',
+      last_modified: '',
+      state: undefined,
+    };
   });
 
   describe('on GET', () => {
     it('should return resolving successful payment page', async () => {
+      jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
       claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM)];
       mockDataFromStore.mockResolvedValueOnce(claim);
       await request(app)
@@ -58,7 +91,7 @@ describe('Claim fee payment confirmation', () => {
       claim.caseProgressionHearing.hearingDate = new Date('2026-01-01');
       mockDataFromStore.mockResolvedValueOnce(claim);
       await request(app)
-        .get(GA_PAYMENT_SUCCESSFUL_URL)
+        .get(GA_APPLICATION_SUBMITTED_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Application fee');

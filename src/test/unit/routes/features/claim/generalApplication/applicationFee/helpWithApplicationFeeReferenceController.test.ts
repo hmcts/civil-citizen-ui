@@ -2,25 +2,29 @@ import {app} from '../../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_APPLY_HELP_WITH_FEE_REFERENCE, GA_APPLY_HELP_WITH_FEE_SELECTION, GA_CHECK_ANSWERS_URL} from 'routes/urls';
+import {GA_APPLY_HELP_WITH_FEE_REFERENCE, GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLICATION_FEE_CONFIRMATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import { Claim } from 'common/models/claim';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 import {t} from 'i18next';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
+import {
+  saveHelpWithFeesDetails,
+} from 'services/features/generalApplication/generalApplicationService';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../../main/services/features/generalApplication/generalApplicationService', ()=> ({saveAndTriggerNotifyGaHwfEvent:jest.fn(), saveHelpWithFeesDetails:jest.fn() }));
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockSaveCaseData = saveDraftClaim as jest.Mock;
+const mockSaveHelpWithFeesDetails = saveHelpWithFeesDetails as jest.Mock;
 const mockClaim = new Claim();
 mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
 describe('General Application - Do you have a help with fees reference number', () => {
@@ -71,6 +75,7 @@ describe('General Application - Do you have a help with fees reference number', 
   });
 
   describe('on POST', () => {
+
     it('should return do you have a help with fees reference number with option marked', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
@@ -85,10 +90,11 @@ describe('General Application - Do you have a help with fees reference number', 
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEE_REFERENCE)
+        .query({additionalFeeTypeFlag: 'false'})
         .send({option: YesNo.NO})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(GA_APPLY_HELP_WITH_FEE_SELECTION);
+          expect(res.header.location).toEqual(GA_APPLY_HELP_WITH_FEE_SELECTION+'?additionalFeeTypeFlag=false');
         });
     });
 
@@ -96,10 +102,23 @@ describe('General Application - Do you have a help with fees reference number', 
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEE_REFERENCE)
+        .query({additionalFeeTypeFlag: 'false'})
         .send({option: YesNo.YES,referenceNumber: 'HWF-123-86D'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(GA_CHECK_ANSWERS_URL);
+          expect(res.header.location).toEqual(GA_APPLICATION_FEE_CONFIRMATION_URL+'?additionalFeeTypeFlag=false');
+        });
+    });
+
+    it('should redirect to additional application fee confirmation page if option is YES', async () => {
+      mockGetCaseData.mockImplementation(async () => mockClaim);
+      await request(app)
+        .post(GA_APPLY_HELP_WITH_FEE_REFERENCE)
+        .query({additionalFeeTypeFlag: 'true'})
+        .send({option: YesNo.YES,referenceNumber: 'HWF-123-86D'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(GA_APPLICATION_FEE_CONFIRMATION_URL+'?additionalFeeTypeFlag=true');
         });
     });
 
@@ -117,7 +136,7 @@ describe('General Application - Do you have a help with fees reference number', 
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      mockSaveCaseData.mockImplementation(async () => {
+      mockSaveHelpWithFeesDetails.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)

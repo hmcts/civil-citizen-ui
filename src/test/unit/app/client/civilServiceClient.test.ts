@@ -483,7 +483,7 @@ describe('Civil Service Client', () => {
     const ccdGApp:CCDGeneralApplication =  {generalAppInformOtherParty: undefined, generalAppAskForCosts: undefined
       , generalAppType: undefined, generalAppRespondentAgreement: undefined, generalAppDetailsOfOrder: undefined
       , generalAppReasonsOfOrder: undefined, generalAppHearingDetails: undefined, generalAppStatementOfTruth: undefined
-      , generalAppEvidenceDocument: undefined, generalAppHelpWithFees: undefined};
+      , generalAppEvidenceDocument: undefined};
 
     const mockResponse = new CivilClaimResponse();
     mockResponse.id = '1';

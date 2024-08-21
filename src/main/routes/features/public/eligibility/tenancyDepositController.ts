@@ -3,18 +3,18 @@ import {
   ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL,
   ELIGIBILITY_TENANCY_DEPOSIT_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
-} from '../../../../routes/urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
-import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
+import {NotEligibleReason} from 'form/models/eligibility/NotEligibleReason';
+import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
 
 const tenancyDepositController = Router();
 const tenancyDepositViewPath = 'features/public/eligibility/tenancy-deposit';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(tenancyDepositViewPath, {form});
+  res.render(tenancyDepositViewPath, {form, pageTitle: 'PAGES.TENANCY_DEPOSIT.TITLE'});
 }
 
 tenancyDepositController.get(ELIGIBILITY_TENANCY_DEPOSIT_URL, (req, res) => {

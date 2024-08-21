@@ -9,7 +9,7 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.CHECK_YOUR_ANSWER.TITLE') }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% block content %}
@@ -40,8 +40,8 @@
             {{ statementOfTruth(
             t,
             form,
-            statementOfTruthType = SignatureType.BASIC,
-            labelHtml = t('PAGES.CHECK_YOUR_ANSWER.DECLARATION'),
+            t('PAGES.CHECK_YOUR_ANSWER.DECLARATION'),
+            false,
             isQualified = (signatureType === SignatureType.QUALIFIED),
             isFullAmountRejected = isFullAmountRejected,
             title = t('PAGES.CHECK_YOUR_ANSWER.DECLARATION_TITLE')

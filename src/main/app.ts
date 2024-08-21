@@ -11,7 +11,6 @@ import {Nunjucks} from 'modules/nunjucks';
 import {PropertiesVolume} from 'modules/properties-volume';
 import {I18Next} from 'modules/i18n';
 import {HealthCheck} from 'modules/health';
-import {OidcMiddleware} from 'modules/oidc';
 import {DraftStoreClient} from 'modules/draft-store';
 import {CSRFToken} from 'modules/csrf';
 import routes from './routes/routes';
@@ -49,6 +48,9 @@ import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
 import {isCaseProgressionV1Enabled} from 'routes/guards/caseProgressionGuard';
 import config = require('config');
 import {trackHistory} from 'routes/guards/trackHistory';
+import {OidcMiddleware} from 'modules/oidc';
+import {AppSession} from 'models/AppRequest';
+import {DraftStoreCliente2e, getRedisStoreForSessione2e} from 'modules/e2eConfiguration';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -56,6 +58,7 @@ const {setupDev} = require('./development');
 const env = process.env.NODE_ENV || 'development';
 const productionMode = env === 'production';
 const developmentMode = env === 'development';
+const e2eTestMode = env === 'e2eTest';
 const cookieMaxAge = 21 * (60 * 1000); // 21 minutes
 export const app = express();
 app.use(cookieParser());
@@ -72,14 +75,19 @@ const logger = Logger.getLogger('app');
 new PropertiesVolume().enableFor(app);
 new AppInsights().enable();
 
-logger.info('Creating new draftStoreClient');
-new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
+if(e2eTestMode){
+  logger.info('Creating new draftStoreClient e2e');
+  new DraftStoreCliente2e(Logger.getLogger('draftStoreClient')).enableFor(app);
+}else {
+  logger.info('Creating new draftStoreClient');
+  new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
+}
 
 logger.info('Creating OSplaces Client Instance');
 createOSPlacesClientInstance();
 
 logger.info('Adding configuration for session store');
-const sessionStore = getRedisStoreForSession();
+const sessionStore = e2eTestMode? getRedisStoreForSessione2e() : getRedisStoreForSession();
 
 app.use(session({
   name: 'citizen-ui-session',
@@ -95,12 +103,21 @@ app.use(session({
 }));
 
 app.enable('trust proxy');
-
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
-new OidcMiddleware().enableFor(app);
+if(!e2eTestMode){
+  new OidcMiddleware().enableFor(app);
+}
 
+if(e2eTestMode){
+  // Use your custom middleware to add the session information
+  app.use((req, res, next) => {
+    const session = ((req.session) as AppSession);
+    session.user = {accessToken: 'someAccessToken', email: '', familyName: '', givenName: '', roles: [], id: 'someID'};
+    next();
+  });
+}
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
 app.use([BASE_GENERAL_APPLICATION_URL, BASE_GENERAL_APPLICATION_RESPONSE_URL], isGAForLiPEnabled);
@@ -134,6 +151,22 @@ app.use((_req, res, next) => {
     'Cache-Control',
     'no-cache, max-age=0, must-revalidate, no-store',
   );
+
+  res.setHeader(
+    'Access-Control-Allow-Origin',
+    '*',
+  );
+
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept',
+  );
+
+  res.setHeader(
+    'access-control-allow-methods',
+    'GET,POST,OPTIONS,PUT,DELETE',
+  );
+
   next();
 });
 

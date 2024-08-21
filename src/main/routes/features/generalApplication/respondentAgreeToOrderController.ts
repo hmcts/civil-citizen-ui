@@ -3,13 +3,14 @@ import {GA_AGREE_TO_ORDER_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {
   getRespondToApplicationCaption,
   saveRespondentAgreeToOrder,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
+import { getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 
 const respondentAgreeToOrderController = Router();
 const viewPath = 'features/generalApplication/agree-to-order';
@@ -21,8 +22,9 @@ respondentAgreeToOrderController.get(GA_AGREE_TO_ORDER_URL, (async (req: AppRequ
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const caption: string = getRespondToApplicationCaption(claim, lang);
-    const form = new GenericForm(new GenericYesNo(claim.generalApplication?.response?.agreeToOrder));
+    const caption: string = getRespondToApplicationCaption(claim, req.params.appId, lang);
+    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
+    const form = new GenericForm(new GenericYesNo(gaResponse?.agreeToOrder));
 
     res.render(viewPath, {
       form,
@@ -37,12 +39,12 @@ respondentAgreeToOrderController.get(GA_AGREE_TO_ORDER_URL, (async (req: AppRequ
 
 respondentAgreeToOrderController.post(GA_AGREE_TO_ORDER_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const redisKey = generateRedisKey(<AppRequest>req);
+    const redisKey = generateRedisKeyForGA(<AppRequest>req);
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const caption: string = getRespondToApplicationCaption(claim, lang);
+    const caption: string = getRespondToApplicationCaption(claim, req.params.appId, lang);
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.AGREE_TO_ORDER_NOT_SELECTED'));
 
     form.validateSync();
@@ -50,7 +52,7 @@ respondentAgreeToOrderController.post(GA_AGREE_TO_ORDER_URL, (async (req: AppReq
     if (form.hasErrors()) {
       res.render(viewPath, { form, caption,cancelUrl, backLinkUrl });
     } else {
-      await saveRespondentAgreeToOrder(redisKey, claim, req.body.option);
+      await saveRespondentAgreeToOrder(redisKey, req.body.option);
       res.redirect('test_url');
     }
   } catch (error) {

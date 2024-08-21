@@ -77,12 +77,13 @@ import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncom
 import {toCCDYesNo, toCCDYesNoReverse} from 'services/translation/response/convertToCCDYesNo';
 import {AdditionalLipPartyDetails} from './additionalLipPartyDetails';
 import {BusinessProcess} from 'models/businessProcess';
-import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
+import { MediationUploadDocumentsCCD } from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import {GeneralApplication} from './generalApplication/GeneralApplication';
 import {FlightDetails} from './flightDetails';
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
+import { RespondentGaAppDetail } from './generalApplication/response/respondentGaAppDetail';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -166,6 +167,7 @@ export class Claim {
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
+  respondentGaAppDetails?: RespondentGaAppDetail[];
   generalApplication?: GeneralApplication;
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
@@ -175,6 +177,8 @@ export class Claim {
   flightDetails?: FlightDetails;
   judgmentOnline?: JudgmentOnline;
   claimType?: string;
+  paymentSyncError?: boolean;
+  responseClaimTrack?: string;
 
   // Index signature to allow dynamic property access
   [key: string]: any;
@@ -782,11 +786,17 @@ export class Claim {
   }
 
   get isFastTrackClaim(): boolean {
+    if (this.responseClaimTrack){
+      return this.responseClaimTrack === claimType.FAST_CLAIM;
+    }
     const claimTypeResult = analyseClaimType(this.totalClaimAmount);
     return claimTypeResult === claimType.FAST_TRACK_CLAIM;
   }
 
   get isSmallClaimsTrackDQ(): boolean {
+    if (this.responseClaimTrack){
+      return this.responseClaimTrack === claimType.SMALL_CLAIM;
+    }
     const claimTypeResult = analyseClaimType(this.totalClaimAmount);
     return claimTypeResult === claimType.SMALL_CLAIM;
   }
@@ -922,6 +932,19 @@ export class Claim {
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
     const dateAtStartOfDay = new Date(hearingDateTime - threeWeeksMilli).setHours(0, 0, 0, 0);
     return new Date(dateAtStartOfDay);
+  }
+
+  fourWeeksBeforeHearingDate() {
+    const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
+    const threeWeeksMilli = 28 * 24 * 60 * 60 * 1000;
+    const dateAtStartOfDay = new Date(hearingDateTime - threeWeeksMilli).setHours(0, 0, 0, 0);
+    return new Date(dateAtStartOfDay);
+  }
+
+  fourWeeksBeforeHearingDateString() {
+    const fourWeeksBefore = this.fourWeeksBeforeHearingDate();
+    const options: DateTimeFormatOptions = {day: 'numeric', month: 'long', year: 'numeric'};
+    return fourWeeksBefore.toLocaleDateString('en-GB', options);
   }
 
   private sixWeeksBeforeHearingDate(): Date {

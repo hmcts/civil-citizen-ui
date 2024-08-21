@@ -10,7 +10,7 @@ const expertGuidanceController = Router();
 expertGuidanceController.get(EXPERT_GUIDANCE_URL, (async (req, res, next) => {
   try {
     await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
-    res.render('features/directionsQuestionnaire/experts/expert-guidance');
+    res.render('features/directionsQuestionnaire/experts/expert-guidance', {pageTitle: 'PAGES.EXPERT_GUIDANCE.PAGE_TITLE'});
   } catch (error) {
     next(error);
   }

@@ -6,7 +6,7 @@ import { GA_APPLICATION_SUMMARY_URL, GA_VIEW_APPLICATION_URL } from 'routes/urls
 import { getApplicationStatus, getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { GaServiceClient } from 'client/gaServiceClient';
 import { ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import { dateTimeFormat } from 'common/utils/dateUtils';
 import { getClaimById } from 'modules/utilityService';
 
@@ -33,7 +33,7 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
         types: application.case_data?.applicationTypes,
         id: application.id,
         createdDate: dateTimeFormat(application.created_date, lng),
-        applicationUrl: `${constructResponseUrlWithIdParams(claimId, GA_VIEW_APPLICATION_URL)}?applicationId=${application.id}&index=${index + 1}`,
+        applicationUrl: `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id,  GA_VIEW_APPLICATION_URL)}?index=${index + 1}`,
       });
     });
 

@@ -8,7 +8,7 @@ const applyForHelpWithFeesController = Router();
 const applyForHelpWithFeesControllerViewPath = 'features/public/eligibility/apply-for-help-with-fees';
 
 applyForHelpWithFeesController.get(ELIGIBILITY_APPLY_HELP_WITH_FEES_URL, (req, res) => {
-  res.render(applyForHelpWithFeesControllerViewPath);
+  res.render(applyForHelpWithFeesControllerViewPath, {pageTitle: 'PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.TITLE'});
 });
 
 applyForHelpWithFeesController.post(ELIGIBILITY_APPLY_HELP_WITH_FEES_URL, (req, res) => {

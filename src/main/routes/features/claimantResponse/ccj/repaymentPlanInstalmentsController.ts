@@ -20,6 +20,7 @@ function renderView(form: GenericForm<RepaymentPlanInstalments>, totalClaimAmoun
     form,
     totalClaimAmount: totalClaimAmount,
     exampleDate: new Date(),
+    pageTitle: 'PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.PAGE_TITLE',
   });
 }
 

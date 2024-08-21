@@ -16,8 +16,7 @@ import {submitResponse} from 'services/features/response/submission/submitRespon
 import {AppRequest} from 'models/AppRequest';
 import {SignatureType} from 'models/signatureType';
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuard';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
-import {isMintiEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const checkAnswersController = Router();

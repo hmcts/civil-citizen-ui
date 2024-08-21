@@ -22,7 +22,7 @@ const dqPropertyName = 'permissionForExpert';
 const dqParentName = 'experts';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(permissionForExpertViewPath, {form});
+  res.render(permissionForExpertViewPath, {form, pageTitle: 'PAGES.PERMISSION_FOR_EXPERT.TITLE'});
 }
 
 permissionForExpertController.get(PERMISSION_FOR_EXPERT_URL, (async (req, res, next) => {

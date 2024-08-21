@@ -16,7 +16,7 @@ const dqPropertyName = 'triedToSettle';
 const dqParentName = 'hearing';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render('features/directionsQuestionnaire/tried-to-settle-claim', {form});
+  res.render('features/directionsQuestionnaire/tried-to-settle-claim', {form, pageTitle: 'PAGES.TRIED_TO_SETTLE.TITLE'});
 }
 
 triedToSettleController.get(DQ_TRIED_TO_SETTLE_CLAIM_URL, (async (req, res, next) => {

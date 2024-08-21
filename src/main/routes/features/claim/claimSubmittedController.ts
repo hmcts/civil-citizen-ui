@@ -30,6 +30,7 @@ claimSubmittedController.get(CLAIM_CONFIRMATION_URL, (async (req: AppRequest, re
         helpWithFee,
         claimId,
         redirectUrl,
+        pageTitle: 'PAGES.CLAIM_SUBMITTED.PAGE_TITLE',
       });
     }
   } catch (error) {

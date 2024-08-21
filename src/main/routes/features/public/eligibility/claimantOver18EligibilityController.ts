@@ -3,18 +3,18 @@ import {
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
   ELIGIBILITY_CLAIMANT_AGE_URL,
   ELIGIBILITY_HELP_WITH_FEES_URL,
-} from '../../../../routes/urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {YesNo} from '../../../../common/form/models/yesNo';
-import {constructUrlWithNotEligibleReason} from '../../../../common/utils/urlFormatter';
-import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotEligibleReason';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
+import {constructUrlWithNotEligibleReason} from 'common/utils/urlFormatter';
+import {NotEligibleReason} from 'form/models/eligibility/NotEligibleReason';
 
 const claimantOver18EligibilityController = Router();
 const over18EligibilityViewPath = 'features/public/eligibility/over-18';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(over18EligibilityViewPath, {form});
+  res.render(over18EligibilityViewPath, {form, pageTitle: 'PAGES.ELIGIBILITY_OVER_18_CLAIMANT.PAGE_TITLE'});
 }
 
 claimantOver18EligibilityController.get(ELIGIBILITY_CLAIMANT_AGE_URL, (req, res) => {

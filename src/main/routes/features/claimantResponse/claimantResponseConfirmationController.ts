@@ -6,7 +6,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {claimantResponseConfirmationGuard} from 'routes/guards/claimantResponseConfirmationGuard';
 import {AppRequest} from 'common/models/AppRequest';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {getRespondToSettlementAgreementDeadline} from 'services/features/claimantResponse/signSettlmentAgreementService';
 
 const claimantResponseConfirmationController = Router();
@@ -21,6 +21,7 @@ claimantResponseConfirmationController.get(CLAIMANT_RESPONSE_CONFIRMATION_URL, c
     const claimantResponseConfirmationContent = getClaimantResponseConfirmationContent(claim, getLng(lang), carmApplicable, respondToSettlementAgreementDeadLine);
     res.render('features/claimantResponse/claimant-response-confirmation', {
       claimantResponseConfirmationContent,
+      pageTitle: 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.PAGE_TITLE',
     });
   } catch (error) {
     next(error);

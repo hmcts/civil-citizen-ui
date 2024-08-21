@@ -19,7 +19,7 @@ const title = 'PAGES.CCJ_DEFENDANT_PAYMENT_DATE.TITLE';
 const insetText = 'PAGES.CCJ_DEFENDANT_PAYMENT_DATE.INSET';
 
 function renderView(form: GenericForm<PaymentDate | Date>, res: Response): void {
-  res.render(paymentDatePath, {form, title, insetText});
+  res.render(paymentDatePath, {form, title, insetText, pageTitle: 'PAGES.ADMISSION_PAYMENT_DATE.PAGE_TITLE'});
 }
 
 claimantSuggestedPaymentDateController.get(CLAIMANT_RESPONSE_PAYMENT_DATE_URL, (async (req: Request, res: Response, next: NextFunction) => {

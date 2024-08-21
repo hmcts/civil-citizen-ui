@@ -6,7 +6,7 @@
 {% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{  t('COMMON.PAGE_TITLE_PART1') + ' - ' + t('PAGES.PARTIAL_ADMISSION_SETTLE_ADMITTED.PAGE_TITLE', { admittedAmount: admittedAmount }) }}
+  {{  t('COMMON.PAGE_TITLE_PART1') + ' - ' + pageTitle }}
 {% endblock %}
 
 {% set yesHint = t('PAGES.PARTIAL_ADMISSION_SETTLE_ADMITTED.AGREE_THEIR_REPAYMENT_PLAN') %}

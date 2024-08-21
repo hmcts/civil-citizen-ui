@@ -21,7 +21,7 @@ const dqPropertyName = 'unavailableDatesForHearing';
 const dqParentName = 'hearing';
 
 function renderView(form: GenericForm<SupportRequiredList|UnavailableDates>, res: Response) {
-  res.render(unavailableDatesForHearingViewPath, { form });
+  res.render(unavailableDatesForHearingViewPath, { form , pageTitle: 'PAGES.UNAVAILABLE_DATES_FOR_HEARING.PAGE_TITLE'});
 }
 
 unavailableDatesForHearingController.get(DQ_AVAILABILITY_DATES_FOR_HEARING_URL, (async (req, res, next) => {

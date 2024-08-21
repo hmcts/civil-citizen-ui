@@ -3,11 +3,22 @@ import express from 'express';
 import {app} from '../../../../../../main/app';
 import claimFeeBreakDownController from 'routes/features/claim/payment/claimFeeBreakDownController';
 import {CLAIM_FEE_BREAKUP} from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
 import {getClaimById} from 'modules/utilityService';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {Claim} from 'models/claim';
+import nock from 'nock';
+import config from 'config';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/oidc');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
+  getCaseDataFromStore: jest.fn(),
+  generateRedisKey: jest.fn(),
+  saveDraftClaim: jest.fn(),
+}));
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
@@ -50,7 +61,9 @@ describe('on GET', () => {
           totalClaimAmount: mockClaimData.totalClaimAmount.toFixed(2),
           interest: mockClaimData.interest.totalInterest.amount,
           claimFee: mockClaimFee,
+          paymentSyncError: false,
           hasInterest: true,
+          pageTitle: 'PAGES.FEE_AMOUNT.TITLE',
           totalAmount: mockTotalAmount.toFixed(2),
         });
       });
@@ -68,12 +81,32 @@ describe('on GET', () => {
   });
 });
 describe('on POST', () => {
+  const idamServiceUrl: string = config.get('services.idam.url');
+  const citizenRoleToken: string = config.get('citizenRoleToken');
+  beforeAll(() => {
+    nock(idamServiceUrl)
+      .post('/o/token')
+      .reply(200, {id_token: citizenRoleToken});
+  });
   it('should handle the get call of fee summary details', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    const claim = new Claim();
+    claim.claimDetails = new ClaimDetails();
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce({});
+
     await request(app)
       .post(CLAIM_FEE_BREAKUP)
       .expect((res) => {
         expect(res.status).toBe(302);
+      });
+  });
+  it('should enable the warning text if payment request is failed', async () => {
+    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockRejectedValueOnce(new Error('something went wrong'));
+    (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+    await request(app)
+      .post(CLAIM_FEE_BREAKUP).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(CLAIM_FEE_BREAKUP);
       });
   });
 });

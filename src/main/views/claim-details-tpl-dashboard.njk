@@ -9,10 +9,13 @@
 {% from "./macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "./macro/error-summary.njk" import errorSummary %}
 
-{% set bannerText = t('COMMON.HEADER.NEW_SERVICE') %}
 {% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=en'>English</a>"%}
 {% extends "govuk/template.njk" %}
 {% block head %}
+
+<!-- Dynatrace -->
+  <script type="text/javascript" src="{{ dynatraceUrl }}" crossorigin="anonymous"></script>
+<!-- End Dynatrace -->
 
 <!-- Google Tag Manager -->
 <script nonce={{ nonceValue }}>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -39,6 +42,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {{ headerComponent(t, user) }}
 {% endblock %}
 
+{% set bannerText =  t('COMMON.HEADER.NEW_SERVICE', {pageTitle: t(pageTitle) | replaceSpaces})  %}
 {% block beforeContent %}
 
 {{ govukPhaseBanner({
@@ -62,6 +66,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       }
     ]
   }) }}
+{% elseif noCrumbs %}
 {% else %}
     {{ govukBreadcrumbs({
       items: [

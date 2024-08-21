@@ -20,7 +20,7 @@ const mediationDisagreementViewPath = 'features/mediation/mediation-disagreement
 const mediationDisagreementController = Router();
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response, claimStatus: CaseState): void {
-  res.render(mediationDisagreementViewPath, {form, claimStatus});
+  res.render(mediationDisagreementViewPath, {form, claimStatus, pageTitle: 'PAGES.MEDIATION_DISAGREEMENT.PAGE_TITLE'});
 }
 
 mediationDisagreementController.get(MEDIATION_DISAGREEMENT_URL, (async (req, res, next: NextFunction) => {

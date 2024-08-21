@@ -11,7 +11,7 @@ ccjConfirmationController.get(CCJ_CONFIRMATION_URL, ccjConfirmationGuard, (async
     const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     const defendantName = claim.getDefendantFullName();
     const isJudgmentOnline = claim.isCCJCompleteForJo(await isJudgmentOnlineLive());
-    res.render('features/claimantResponse/ccj/ccj-confirmation', {defendantName, isJudgmentOnline});
+    res.render('features/claimantResponse/ccj/ccj-confirmation', {defendantName, isJudgmentOnline, pageTitle: 'PAGES.CCJ_CONFIRMATION.PAGE_TITLE'});
   } catch (error) {
     next(error);
   }

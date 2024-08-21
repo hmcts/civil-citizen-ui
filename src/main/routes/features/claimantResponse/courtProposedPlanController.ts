@@ -35,7 +35,7 @@ const crParentName = 'courtProposedPlan';
 let repaymentPlan= {};
 
 function renderView(form: GenericForm<CourtProposedPlan>, repaymentPlan: object, res: Response): void {
-  res.render(courtProposedPlanViewPath, { form, repaymentPlan });
+  res.render(courtProposedPlanViewPath, { form, repaymentPlan, pageTitle: 'PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_PLAN.PAGE_TITLE'});
 }
 
 courtProposedPlanController.get(CLAIMANT_RESPONSE_COURT_OFFERED_INSTALMENTS_URL, async (req: Request, res: Response, next: NextFunction) => {

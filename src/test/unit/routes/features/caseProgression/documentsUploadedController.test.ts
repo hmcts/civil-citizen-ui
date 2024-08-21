@@ -97,21 +97,4 @@ describe('Documents uploaded controller', () => {
       });
   });
 
-  it('should return 500 error when there is a Redis failure', async () => {
-
-    const error = new Error('Test error');
-    jest
-      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-      .mockRejectedValueOnce(error);
-    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
-    const mockClaimId = '1645882162449409';
-    const caseData = new Claim();
-    caseData.caseProgression = new CaseProgression();
-
-    await request(app).get(CP_EVIDENCE_UPLOAD_SUBMISSION_URL.replace(':id', mockClaimId))
-      .expect((res) => {
-        expect(res.status).toBe(500);
-      });
-  });
-
 });

@@ -14,7 +14,7 @@ import {saveTelephone} from 'services/features/claim/yourDetails/phoneService';
 import {CitizenTelephoneNumber} from 'form/models/citizenTelephoneNumber';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmEnabledForCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 
 const citizenDetailsController = Router();
 
@@ -53,7 +53,7 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, (async (req: Request, res: Res
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
-    const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
+    const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     const respondent: Party = await getDefendantInformation(generateRedisKey(<AppRequest>req));
     const partyDetails = new GenericForm(respondent.partyDetails);
     const partyPhoneForm = new GenericForm<PartyPhone>(new PartyPhone(respondent.partyPhone?.phone, respondent.partyPhone?.ccdPhoneExist));
@@ -67,12 +67,12 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, (async (req: Request, res: Re
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
-    const carmEnabled = await isCarmEnabledForCase(new Date(claim.submittedDate));
+    const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     const respondent = await getDefendantInformation(redisKey);
     const partyDetails = new GenericForm(new PartyDetails(req.body, carmEnabled));
     const partyPhone = new GenericForm<PartyPhone>(new PartyPhone(req.body.partyPhone, respondent?.partyPhone?.ccdPhoneExist));
 
-    partyDetails.validateSync();
+    await partyDetails.validate();
     partyPhone.validateSync();
 
     if (partyDetails.hasErrors() || partyPhone.hasErrors()) {

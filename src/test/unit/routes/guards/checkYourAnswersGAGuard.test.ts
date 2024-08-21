@@ -15,7 +15,6 @@ import {
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {CURRENT_DAY, CURRENT_MONTH, CURRENT_YEAR} from '../../../utils/dateUtils';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {GaHelpWithFees} from 'common/models/generalApplication/gaHelpWithFees';
@@ -56,7 +55,6 @@ describe('Check your Answers GA Guard', () => {
       new UnavailableDatesGaHearing([unavailableDates]),
       new HearingArrangement(HearingTypeOptions.PERSON_AT_COURT, 'test'),
       new HearingContactDetails('test', 'test'),
-      new GaResponse(),
       new UploadGAFiles(),
       new StatementOfTruthForm(false, ''),
       new GaHelpWithFees(),
@@ -98,7 +96,6 @@ describe('Check your Answers GA Guard', () => {
       new UnavailableDatesGaHearing([unavailableDates]),
       new HearingArrangement(HearingTypeOptions.PERSON_AT_COURT, 'test'),
       new HearingContactDetails('test', 'test'),
-      new GaResponse(),
       new UploadGAFiles(),
       new StatementOfTruthForm(false, ''),
       new GaHelpWithFees(),
@@ -136,7 +133,6 @@ describe('Check your Answers GA Guard', () => {
       new UnavailableDatesGaHearing([unavailableDates]),
       new HearingArrangement(HearingTypeOptions.PERSON_AT_COURT, 'test'),
       new HearingContactDetails('test', 'test'),
-      new GaResponse(),
       new UploadGAFiles(),
       new StatementOfTruthForm(false, ''),
       new GaHelpWithFees(),
@@ -172,7 +168,6 @@ describe('Check your Answers GA Guard', () => {
       new UnavailableDatesGaHearing([unavailableDates]),
       new HearingArrangement(HearingTypeOptions.PERSON_AT_COURT, 'test'),
       new HearingContactDetails('test', 'test'),
-      new GaResponse(),
       new UploadGAFiles(),
       new StatementOfTruthForm(false, ''),
       new GaHelpWithFees(),
@@ -209,7 +204,6 @@ describe('Check your Answers GA Guard', () => {
       new UnavailableDatesGaHearing([unavailableDates]),
       new HearingArrangement(HearingTypeOptions.PERSON_AT_COURT, 'test'),
       new HearingContactDetails('test', 'test'),
-      new GaResponse(),
       new UploadGAFiles(),
       new StatementOfTruthForm(false, ''),
       new GaHelpWithFees(),
@@ -247,7 +241,6 @@ describe('Check your Answers GA Guard', () => {
       new UnavailableDatesGaHearing([unavailableDates]),
       new HearingArrangement(HearingTypeOptions.PERSON_AT_COURT, 'test'),
       new HearingContactDetails('test', 'test'),
-      new GaResponse(),
       new UploadGAFiles(),
       new StatementOfTruthForm(false, ''),
       new GaHelpWithFees(),
@@ -285,7 +278,6 @@ describe('Check your Answers GA Guard', () => {
       new UnavailableDatesGaHearing([unavailableDates]),
       new HearingArrangement(HearingTypeOptions.PERSON_AT_COURT, 'test'),
       new HearingContactDetails('test', 'test'),
-      new GaResponse(),
       new UploadGAFiles(),
       new StatementOfTruthForm(false, ''),
       new GaHelpWithFees(),

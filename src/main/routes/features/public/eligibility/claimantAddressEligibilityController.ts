@@ -12,7 +12,7 @@ const claimantAddressEligibilityController = Router();
 const claimantEligibilityViewPath = 'features/public/eligibility/claimant-address-eligibility';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(claimantEligibilityViewPath, {form});
+  res.render(claimantEligibilityViewPath, {form, pageTitle: 'PAGES.ELIGIBILITY_CLAIMANT_ADDRESS.PAGE_TITLE'});
 }
 
 claimantAddressEligibilityController.get(ELIGIBILITY_CLAIMANT_ADDRESS_URL, (req: Request, res: Response) => {

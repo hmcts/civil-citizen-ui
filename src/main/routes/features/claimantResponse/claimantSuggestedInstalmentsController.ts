@@ -25,7 +25,7 @@ const crPropertyName = 'repaymentPlan';
 function renderView(form: GenericForm<RepaymentPlanForm>, res: Response, req: Request, claim:Claim): void {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const financialDetails = getFinancialDetails(claim, lang);
-  res.render(claimantSuggestedInstalmentsViewPath, {form, claim, financialDetails});
+  res.render(claimantSuggestedInstalmentsViewPath, {form, claim, financialDetails, pageTitle: 'PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.TITLE'});
 }
 
 claimantSuggestedInstalmentsController.get(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,  (async (req, res, next: NextFunction) => {

@@ -14,7 +14,6 @@ import civilClaimResponseMock from '../../../../utils/mocks/civilClaimResponseMo
 import {Claim} from 'models/claim';
 import {deepCopy} from '../../../../utils/deepCopy';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import * as carmToggleUtils from 'common/utils/carmToggleUtils';
 import * as taskListService from 'services/features/common/taskListService';
 import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
@@ -24,7 +23,7 @@ jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 
-const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(carmToggleUtils, 'isCarmEnabledForCase')
+const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(launchDarklyClient, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
 
 const isMintiEnabledForCase = launchDarklyClient.isMintiEnabledForCase as jest.Mock;

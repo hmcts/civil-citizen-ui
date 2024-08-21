@@ -7,7 +7,7 @@
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.DELAYED_FLIGHT.CLAIMING_FOR_DELAYED') }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% block content %}
@@ -16,7 +16,7 @@
       {% if form.hasErrors() %}
           {{ errorSummary(form.getErrors(), t) }}
         {% endif %}
-      
+
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate autocomplete="off">

@@ -27,7 +27,7 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(bilingualLangPreferenceViewPath, {form});
+  res.render(bilingualLangPreferenceViewPath, {form, pageTitle: 'PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.PAGE_TITLE'});
 }
 
 claimBilingualLangPreferenceController.get(

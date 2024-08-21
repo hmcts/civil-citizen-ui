@@ -7,7 +7,7 @@
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.CLAIMANT_TERMS_OF_AGREEMENT.PAGE_TITLE') }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 {% set labelHtml = t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.CONFIRMATION') %}
 {% set signed = 'signed' %}

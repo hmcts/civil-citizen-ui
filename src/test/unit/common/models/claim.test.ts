@@ -1648,6 +1648,20 @@ describe('Documents', () => {
     });
   });
 
+  describe('test of method fourWeeksBeforeHearingDate', () => {
+    const claim = new Claim();
+
+    it('should return formatted date 4 weeks prior to 29 July 2023', () => {
+      //Given
+      const expectedDate = '1 July 2023';
+      claim.caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, new Date(2023, 6, 29), null);
+      //When
+      const actualDate = claim.fourWeeksBeforeHearingDateString();
+      //Then
+      expect(expectedDate).toEqual(actualDate);
+    });
+  });
+
   describe('test of method isSixWeeksOrLessFromTrial', () => {
     const claim = new Claim();
 

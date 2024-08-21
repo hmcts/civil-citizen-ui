@@ -2,7 +2,7 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {GA_RESPONDENT_HEARING_PREFERENCE_URL, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import {
   getRespondToApplicationCaption,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
@@ -16,8 +16,8 @@ respondentHearingPreferenceController.get(GA_RESPONDENT_HEARING_PREFERENCE_URL, 
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const applicationType: string = getRespondToApplicationCaption(claim, lang);
-    const continueLinkUrl = constructResponseUrlWithIdParams(claimId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL); // TODO: add url
+    const applicationType: string = getRespondToApplicationCaption(claim, req.params.appId, lang);
+    const continueLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL); // TODO: add url
 
     res.render(viewPath, {applicationType, backLinkUrl, continueLinkUrl});
   } catch (error) {

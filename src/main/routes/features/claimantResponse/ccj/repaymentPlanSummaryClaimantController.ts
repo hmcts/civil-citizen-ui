@@ -11,13 +11,13 @@ import {getAmount} from 'common/utils/repaymentUtils';
 const repaymentPlanSummaryClaimantController = Router();
 const repaymentPlanInstalmentsPath = 'features/claimantResponse/ccj/repayment-plan-summary-claimant';
 
-function renderView(repaymentPlan: RepaymentPlanSummary, paymentOption: PaymentOptionType, paymentDate: string, amount: number, title: string, res: Response): void {
+function renderView(repaymentPlan: RepaymentPlanSummary, paymentOption: PaymentOptionType, paymentDate: string, amount: number, pageTitle: string, res: Response): void {
   res.render(repaymentPlanInstalmentsPath, {
     repaymentPlan,
     paymentOption,
     paymentDate,
     amount,
-    title,
+    pageTitle,
   });
 }
 
@@ -25,11 +25,11 @@ repaymentPlanSummaryClaimantController.get(CCJ_REPAYMENT_PLAN_CLAIMANT_URL, (asy
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
-    const title = t('PAGES.REPAYMENT_PLAN_SUMMARY.REPAYMENT_PLAN', {lng});
+    const claim = await getClaimById(claimId, req,true);
+    const pageTitle = t('PAGES.REPAYMENT_PLAN_SUMMARY.REPAYMENT_PLAN', {lng});
     const paymentInfo = getRepaymentInfo(claim, lng);
     const amount = getAmount(claim);
-    renderView(paymentInfo?.repaymentPlan, paymentInfo?.paymentOption, paymentInfo?.paymentDate, amount, title, res);
+    renderView(paymentInfo?.repaymentPlan, paymentInfo?.paymentOption, paymentInfo?.paymentDate, amount, pageTitle, res);
   } catch (error) {
     next(error);
   }

@@ -4,7 +4,7 @@ import {AppRequest} from 'models/AppRequest';
 import {APPLICATION_TYPE_URL, CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
-  isCaseProgressionV1Enable, isDashboardEnabledForCase,
+  isCaseProgressionV1Enable, isDashboardEnabledForCase, isCarmEnabledForCase, isGaForLipsEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
@@ -19,11 +19,14 @@ import {DocumentType} from 'common/models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/systemGeneratedCaseDocuments';
 import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
 import {getBundlesContent} from 'services/features/caseProgression/bundles/bundlesService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {
+  generateRedisKey,
+  updateFieldDraftClaimFromStore,
+} from 'modules/draft-store/draftStoreService';
 import {extractOrderDocumentIdFromNotification, getDashboardForm, getHelpSupportLinks, getHelpSupportTitle, getNotifications} from 'services/dashboard/dashboardService';
 import {getClaimWithExtendedPaymentDeadline} from 'services/features/response/submitConfirmation/submitConfirmationService';
 import {ClaimantOrDefendant} from 'models/partyType';
-import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 import {t} from 'i18next';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
@@ -36,6 +39,7 @@ const claimSummaryController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const HearingUploadDocuments = 'Upload hearing documents';
+const ResponseClaimTrack = 'responseClaimTrack';
 
 claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -43,16 +47,20 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     const isDashboardEnabled = await isDashboardEnabledForCase(claim.submittedDate);
+    const isGAFlagEnable = await isGaForLipsEnabled();
+
     if (isDashboardEnabled) {
       const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
       const dashboardNotifications = await getNotifications(claimId, claim, caseRole, req as AppRequest, lang);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
-      const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest, isCarmApplicable);
+      const dashboardTaskList = await getDashboardForm(caseRole, claim, claimId, req as AppRequest, isCarmApplicable, isGAFlagEnable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = getSupportLinks(claim, lang, claimId);
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
+
+      await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
 
       const hearing = dashboardTaskList?.items[2]?.tasks ? dashboardTaskList?.items[2]?.tasks : [];
       hearing.forEach((task) => {

@@ -9,6 +9,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {SummarySection, SummarySections} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
 import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/caseProgression/checkYourAnswers/checkAnswersService');
@@ -17,6 +18,7 @@ jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 const mockSummarySections = checkAnswersService.getSummarySections as jest.Mock;
 mockSummarySections.mockReturnValue({} as SummarySections);
 const mockDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
 
 const session = require('supertest-session');
 const testSession = session(app);
@@ -28,7 +30,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
 
   const civilClaimResponse = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedMock.json');
   const civilClaimResponseClaimant = require('../../../../utils/mocks/civilClaimResponseMock.json');
-  const claimId = civilClaimResponse .id;
+  const claimId = civilClaimResponse.id;
 
   beforeAll((done) => {
     testSession
@@ -196,16 +198,33 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       });
     });
 
+    test('If the right form is missing, send back to check your answers page on claimant request.', async () => {
+      //given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      claim.caseRole = CaseRole.CLAIMANT;
+      mockDraftStore.mockReturnValueOnce(claim);
+
+      //when
+      await testSession.post(CP_CHECK_ANSWERS_URL).query({lang: 'cy'}).expect((res: { status: unknown; text: unknown; }) => {
+        //then
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Gwiriwch eich atebion');
+      });
+    });
+
     test('If the form is not missing, redirect to new page', async () => {
       //given
-      app.locals.draftStoreClient = mockCivilClaim;
-
-      mockDraftStore.mockReturnValue('');
+      const claim: Claim = new Claim();
+      Object.assign(civilClaimResponse, mockCivilClaim);
+      Object.assign(claim, civilClaimResponse.case_data);
+      mockDraftStore.mockReturnValue(claim);
+      mockGenerateRedisKey.mockReturnValue('12345');
 
       //when
       await testSession.post(CP_CHECK_ANSWERS_URL).send({signed: true}).expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(302);
-        expect(res.text).toContain('Found. Redirecting to /case/undefined/case-progression/documents-uploaded');
+        expect(res.text).toContain('Found. Redirecting to /case/:id/case-progression/documents-uploaded');
       });
     });
     test('Throw error', async () => {

@@ -13,6 +13,10 @@ import {t} from 'i18next';
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('services/features/generalApplication/generalApplicationService', () => ({
+  getCancelUrl: jest.fn(),
+  getApplicationFromGAService: jest.fn(),
+}));
 
 describe('Claim fee unsuccessful payment confirmation', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

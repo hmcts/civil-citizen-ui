@@ -278,6 +278,12 @@
   margin: 0;
 }
 
+.table-link {
+  &:focus {
+    @include govuk-focused-text;
+  }
+}
+
 // sass-lint:disable nesting-depth
 .dashboard-notification {
   .govuk-notification-banner {

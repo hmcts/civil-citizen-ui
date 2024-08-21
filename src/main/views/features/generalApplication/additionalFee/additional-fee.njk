@@ -1,0 +1,41 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% import "external-urls.njk" as externalURLs %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.ADDITIONAL_FEE.PAGE_TITLE') }}
+{% endblock %}
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.ADDITIONAL_FEE.TITLE') }}</h1>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ADDITIONAL_FEE.WITHOUT_NOTICE') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ADDITIONAL_FEE.COURT_DECIDED') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ADDITIONAL_FEE.WITH_NOTICE_COST', {withNoticeCost: withNoticeCost, alreadyPaid: alreadyPaid}) }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ADDITIONAL_FEE.IF_NOT_PAY') }}</p>
+          <h2 class="govuk-heading-m">{{ t('PAGES.GENERAL_APPLICATION.ADDITIONAL_FEE.DO_NEXT') }}</h2>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ADDITIONAL_FEE.PAY_ADDITIONAL_FEE', {additionalFee: additionalFee}) }}</p>
+          <p class="govuk-body">
+            {{ t('PAGES.GENERAL_APPLICATION.ADDITIONAL_FEE.LOW_INCOME') }}
+            <a class="govuk-link" href={{ externalURLs.feesHelpUrl }} target="_blank" rel="noreferrer noopener">{{ t('PAGES.GENERAL_APPLICATION.ADDITIONAL_FEE.HWF_LINK') }}</a>.
+          </p>
+          <p class="govuk-body govuk-!-margin-bottom-8">{{ t('PAGES.GENERAL_APPLICATION.ADDITIONAL_FEE.MEET_CRITERIA') }}</p>
+          {{ govukButton({
+            text: t("PAGES.GENERAL_APPLICATION.ADDITIONAL_FEE.MAKE_PAYMENT"),
+            href: urlNextView
+          }) }}
+          <p class="govuk-body">
+            <a href={{ dashboardUrl }}>{{ t("PAGES.GENERAL_APPLICATION.ADDITIONAL_FEE.CLOSE_AND_RETURN") }}</a>
+          </p>
+        </div>
+        <div class="govuk-grid-column-one-third">
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

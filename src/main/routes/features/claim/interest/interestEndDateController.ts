@@ -14,7 +14,7 @@ const interestEndDateViewPath = 'features/claim/interest/interest-end-date';
 const dqPropertyName = 'interestEndDate';
 
 function renderView(form: GenericForm<InterestEndDate>, res: Response): void {
-  res.render(interestEndDateViewPath, {form});
+  res.render(interestEndDateViewPath, {form, pageTitle: 'PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.TITLE'});
 }
 
 interestEndDateController.get(CLAIM_INTEREST_END_DATE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

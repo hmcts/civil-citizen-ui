@@ -95,6 +95,21 @@ Update required secrets on your machine then run below command
 ```bash
 $ yarn test:functional
 ```
+Running E2E tests:
+
+For that we need to follow three steps:
+1) Start wiremock server
+```bash
+$ yarn wiremock:start
+```
+2) Start the application as E2E
+```bash
+$ yarn start:e2e
+```
+3) Execute E2E test
+```bash
+$ yarn test:e2e
+```
 
 Running Preview pipeline :
 

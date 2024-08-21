@@ -19,7 +19,7 @@ import {PartyType} from 'models/partyType';
 import {generateCorrespondenceAddressErrorMessages, PartyDetails} from 'form/models/partyDetails';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmEnabledForCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 
 const claimantDetailsController = Router();
 const claimantOrganisationDetailsPath = 'features/claim/yourDetails/claimant-organisation-details';
@@ -38,11 +38,13 @@ function renderPage(res: Response, req: Request, claimantDetails: GenericForm<Pa
       party: claimantDetails,
       type: partyType,
       carmEnabled: carmEnabled,
+      pageTitle: 'PAGES.COMPANY_DETAILS.CLAIMANT_PAGE_TITLE',
     });
   } else {
     res.render(claimantIndividualDetailsPath, {
       party: claimantDetails,
       type: partyType,
+      pageTitle: 'PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.PAGE_TITLE',
     });
   }
 }
@@ -69,7 +71,7 @@ claimantDetailsController.post(detailsURLs, (async (req: AppRequest | Request, r
     const claimant = await getClaimantInformation(caseId);
     const partyDetails = new GenericForm<PartyDetails>(new PartyDetails(req.body, carmEnabled));
 
-    partyDetails.validateSync();
+    await partyDetails.validate();
 
     if (partyDetails.hasErrors()) {
       generateCorrespondenceAddressErrorMessages(partyDetails);

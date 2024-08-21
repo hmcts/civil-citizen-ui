@@ -11,7 +11,7 @@ import { GaServiceClient } from 'client/gaServiceClient';
 import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { decode } from 'punycode';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
-import { ApplicationResponse } from 'common/models/generalApplication/applicationResponse';
+import { ApplicationResponse, JudicialDecisionOptions } from 'common/models/generalApplication/applicationResponse';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -45,7 +45,12 @@ describe('General Application - Application costs', () => {
         gaAddlDoc: null,
         generalAppHearingDetails: null,
         generalAppStatementOfTruth: null,
+        generalAppPBADetails: null,
+        applicationFeeAmountInPence: null,
         parentClaimantIsApplicant: null,
+        judicialDecision: {
+          decision: JudicialDecisionOptions.MAKE_AN_ORDER,
+        },
       },
       state: ApplicationState.AWAITING_RESPONDENT_RESPONSE,
       last_modified: '2024-05-29T14:39:28.483971',

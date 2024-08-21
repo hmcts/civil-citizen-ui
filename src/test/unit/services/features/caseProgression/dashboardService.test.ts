@@ -245,6 +245,61 @@ describe('dashboardService', () => {
         //Then
         expect(claimantDashboard).toEqual(dashboardExpected);
       });
+      
+      it.each([
+        false,
+        true,
+      ])('should include/exclude Applications section when general Application is %s', async (isGeneralApplicationEnabled) => {
+        //Given
+        const mockGet = jest.fn().mockResolvedValue({
+          data: Array.of(
+            new CivilServiceDashboardTask(
+              'test',
+              'test',
+              'test',
+              'test',
+              'test',
+              DashboardTaskStatus.COMPLETE,
+              'test',
+              'test',
+              'test'),
+          ),
+        });
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+
+        const dashboard = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('Applications', 'Applications', []),
+          ));
+
+        const dashboardExpected = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('test', 'test', []),
+          ));
+
+        if(isGeneralApplicationEnabled) {
+          dashboardExpected.items.push(new DashboardTaskList('Applications', 'Applications', []));
+        }
+
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
+
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        //When
+        const claimantDashboard = await getDashboardForm(
+          ClaimantOrDefendant.DEFENDANT
+          , claim
+          , '1234567890'
+          , appReq
+          , false
+          , isGeneralApplicationEnabled);
+
+        //Then
+        expect(claimantDashboard).toEqual(dashboardExpected);
+      });
 
       it('ExtractDocumentFromNotificationList', async () => {
         //Given

@@ -8,13 +8,14 @@ import {YesNo} from 'common/form/models/yesNo';
 
 const delayedFlightController = Router();
 const delayedFlightPath = 'features/claim/airlines/delayed-flight';
+const pageTitle = 'PAGES.DELAYED_FLIGHT.CLAIMING_FOR_DELAYED';
 
 delayedFlightController.get(DELAYED_FLIGHT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     const delayedFlight = await getDelayedFlight(userId);
     const form = new GenericForm(delayedFlight);
-    res.render(delayedFlightPath, {form});
+    res.render(delayedFlightPath, {form, pageTitle});
   } catch (error) {
     next(error);
   }
@@ -26,17 +27,17 @@ delayedFlightController.post(DELAYED_FLIGHT_URL, (async (req: AppRequest, res: R
     const delayedFlight = new GenericYesNo(req.body.option, 'ERRORS.DELAYED_FLIGHT.CLAIMING_FOR_DELAY_REQUIRED');
     const form = new GenericForm(delayedFlight);
     form.validateSync();
-  
+
     if (form.hasErrors()) {
-      res.render(delayedFlightPath, {form});
+      res.render(delayedFlightPath, {form, pageTitle});
     } else {
       await saveDelayedFlight(userId, delayedFlight);
 
-      delayedFlight.option === YesNo.YES 
+      delayedFlight.option === YesNo.YES
         ? res.redirect(FLIGHT_DETAILS_URL)
         : res.redirect(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
     }
-  
+
   } catch (error) {
     next(error);
   }

@@ -8,9 +8,10 @@ import {ClaimantOrDefendant} from 'models/partyType';
 
 const defendantPhoneViewPath = 'features/public/claim/defendant-phone';
 const defendantPhoneController = Router();
+const pageTitle = 'PAGES.DEFENDANT_PHONE_NUMBER.PAGE_TITLE';
 
 function renderView(form: GenericForm<CitizenTelephoneNumber>, res: Response): void {
-  res.render(defendantPhoneViewPath, {form});
+  res.render(defendantPhoneViewPath, {form, pageTitle});
 }
 
 defendantPhoneController.get(CLAIM_DEFENDANT_PHONE_NUMBER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

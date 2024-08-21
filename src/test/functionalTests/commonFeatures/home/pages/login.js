@@ -61,7 +61,7 @@ class LoginPage {
 
   async caseworkerLogin(email, password) {
     const exuiCookies = await generateExuiCookies({email, password});
-    await I.setCookie(exuiCookies); 
+    await I.setCookie(exuiCookies);
     await this.#login(email, password, '/work/my-work/list');
   }
 }

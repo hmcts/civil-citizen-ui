@@ -14,7 +14,7 @@ const knownClaimAmountController = Router();
 const knownAmountEligibilityViewPath = 'features/public/eligibility/known-claim-amount';
 
 function renderView(form: GenericForm<GenericYesNoKnownClaimAmount>, res: Response): void {
-  res.render(knownAmountEligibilityViewPath, {form});
+  res.render(knownAmountEligibilityViewPath, {form, pageTitle: 'PAGES.ELIGIBILITY_KNOWN_CLAIM_AMOUNT.PAGE_TITLE'});
 }
 
 knownClaimAmountController.get(ELIGIBILITY_KNOWN_CLAIM_AMOUNT_URL, (req, res) => {

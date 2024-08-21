@@ -9,12 +9,13 @@ import {
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
 import {configureSpy} from '../../../../utils/spyConfiguration';
-import * as carmToggleUtils from 'common/utils/carmToggleUtils';
+import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
-const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(carmToggleUtils, 'isCarmEnabledForCase')
+const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(launchDarklyClient, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
 
 describe('Claimant response task list', () => {

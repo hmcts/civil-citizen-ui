@@ -11,6 +11,7 @@ import config from 'config';
 import {AppRequest} from 'common/models/AppRequest';
 
 const tryNewServiceController = Router();
+const pageTitle= 'PAGES.TRY_NEW_SERVICE.PAGE_TITLE';
 
 tryNewServiceController.get([BASE_ELIGIBILITY_URL, MAKE_CLAIM], (async (req: AppRequest, res: Response) => {
   const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
@@ -25,9 +26,9 @@ tryNewServiceController.get([BASE_ELIGIBILITY_URL, MAKE_CLAIM], (async (req: App
     return res.redirect(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL);
   }
   if (mintiEnabled) {
-    res.render('features/public/eligibility/try-new-service', {urlNextView: ELIGIBILITY_KNOWN_CLAIM_AMOUNT_URL});
+    res.render('features/public/eligibility/try-new-service', {urlNextView: ELIGIBILITY_KNOWN_CLAIM_AMOUNT_URL, pageTitle});
   } else {
-    res.render('features/public/eligibility/try-new-service', {urlNextView: ELIGIBILITY_CLAIM_VALUE_URL});
+    res.render('features/public/eligibility/try-new-service', {urlNextView: ELIGIBILITY_CLAIM_VALUE_URL, pageTitle});
   }
 }) as RequestHandler);
 

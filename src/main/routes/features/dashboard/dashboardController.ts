@@ -1,20 +1,19 @@
 import {RequestHandler, Response, Router} from 'express';
-
 import config from 'config';
 import {DASHBOARD_URL} from '../../urls';
 import {AppRequest, UserDetails} from 'models/AppRequest';
 import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {DraftClaimData, getDraftClaimData} from 'services/dashboard/draftClaimService';
-import { buildPagination } from 'services/features/dashboard/claimPaginationService';
-import { DashboardClaimantResponse, DashboardDefendantResponse } from 'common/models/dashboard/dashboarddefendantresponse';
+import {buildPagination} from 'services/features/dashboard/claimPaginationService';
+import {DashboardClaimantResponse, DashboardDefendantResponse} from 'common/models/dashboard/dashboarddefendantresponse';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], claimDraftSaved: DashboardClaimantItem,
   claimsAsDefendant: DashboardDefendantItem[], responseDraftSaved: boolean, draftClaimUrl: string,
-  paginationArgumentClaimant: object, paginationArgumentDefendant: object, lang: string ): void {
+  paginationArgumentClaimant: object, paginationArgumentDefendant: object, showUpdateStatus: boolean, lang: string ): void {
 
   res.render('features/dashboard/dashboard', {
     claimsAsClaimant,
@@ -23,8 +22,10 @@ function renderPage(res: Response, claimsAsClaimant: DashboardClaimantItem[], cl
     responseDraftSaved,
     paginationArgumentClaimant,
     paginationArgumentDefendant,
+    showUpdateStatus,
     lang,
     newOcmcClaimUrl: draftClaimUrl,
+    pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
   });
 }
 
@@ -37,6 +38,7 @@ dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
   try{
     const draftClaimData: DraftClaimData = await getDraftClaimData(user?.accessToken, user?.id);
     const claimsAsClaimant: DashboardClaimantResponse = await civilServiceClient.getClaimsForClaimant(appRequest);
+    const showUpdateStatus = claimsAsClaimant.claims?.some(item => item?.status === 'NO_STATUS') ? true : false;
     const claimDraftSaved = draftClaimData?.draftClaim;
     const claimsAsDefendant: DashboardDefendantResponse = await civilServiceClient.getClaimsForDefendant(appRequest);
     const claimantPage = req.query?.claimantPage ? 'claimantPage=' + req.query?.claimantPage : '';
@@ -45,7 +47,7 @@ dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
     const responseDraftSaved = false;
     const paginationArgumentClaimant = buildPagination(claimsAsClaimant.totalPages, req.query?.claimantPage as string, lang, 'claimantPage', defendantPage);
     const draftClaimUrl = draftClaimData?.claimCreationUrl;
-    renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, lang);
+    renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, showUpdateStatus, lang);
   }catch(error){
     next(error);
   }

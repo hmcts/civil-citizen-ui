@@ -26,6 +26,8 @@ async function renderView(res: Response, req:  AppRequest | Request, claimId: st
       paymentSuccessfulPanel: getPaymentSuccessfulPanelContent(claim,lng),
       paymentSuccessfulBody: getPaymentSuccessfulBodyContent(claim, calculatedAmountInPence,lng),
       paymentSuccessfulButton: getPaymentSuccessfulButtonContent(redirectUrl),
+      pageTitle: 'PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.TITLE',
+      noCrumbs: true,
     });
 }
 

@@ -21,7 +21,7 @@ feeChangeController.get(CLAIM_FEE_CHANGE_URL, (async (req: AppRequest, res: Resp
     const claimFee =  convertToPoundsFilter(newClaimFeeData.calculatedAmountInPence);
     const draftClaimData: DraftClaimData = await getDraftClaimData(user?.accessToken, user?.id);
     const redirectUrl = draftClaimData?.draftClaim ? CLAIMANT_TASK_LIST_URL : draftClaimData.claimCreationUrl;
-    return res.render(feeChangeViewPath, {claimFee, redirectUrl});
+    return res.render(feeChangeViewPath, {claimFee, redirectUrl, pageTitle: 'PAGES.FEE_CHANGE.PAGE_TITLE'});
   } catch (error) {
     next(error);
   }

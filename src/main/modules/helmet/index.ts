@@ -5,7 +5,6 @@ import config from 'config';
 
 const googleAnalyticsDomain = '*.google-analytics.com';
 const self = "'self'";
-const inline = '\'unsafe-inline\'';
 const loginUrl: string = config.get('services.idam.authorizationURL');
 const govPayUrl: string = config.get('services.govPay.url');
 const ocmcBaseUrl: string = config.get('services.cmc.url');
@@ -13,25 +12,24 @@ const dynatraceDomain = '*.dynatrace.com';
 
 const scriptSrcElem = [
   self,
-  inline,
-  '*.google-analytics.com',
+  googleAnalyticsDomain,
   '*.googletagmanager.com',
   dynatraceDomain,
+  "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
+  (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
 ];
 
 const styleSrc = [
   self,
-  inline,
   '*.googletagmanager.com',
   'fonts.googleapis.com',
-  '*.google-analytics.com',
+  googleAnalyticsDomain,
   '*.analytics.google.com',
 ];
 
 const imgSrc = [
   self,
-  inline,
-  '*.google-analytics.com',
+  googleAnalyticsDomain,
   '*.analytics.google.com',
   'vcc-eu4.8x8.com',
   'vcc-eu4b.8x8.com',
@@ -39,26 +37,31 @@ const imgSrc = [
   '*.gstatic.com',
   'stats.g.doubleclick.net',
   'data:',
+  "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
+  (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
 ];
 
 const mediaSrc = [
   self,
-  inline,
   'vcc-eu4.8x8.com',
   'vcc-eu4b.8x8.com',
   'ssl.gstatic.com',
   'www.gstatic.com',
   'stats.g.doubleclick.net',
-  '*.google-analytics.com',
+  googleAnalyticsDomain,
   '*.analytics.google.com',
 ];
 
 const connectSrc = [
   self,
-  inline,
   '*.gov.uk',
-  '*.google-analytics.com',
+  googleAnalyticsDomain,
   '*.analytics.google.com',
+  dynatraceDomain,
+];
+
+const manifestSrc = [
+  self,
 ];
 
 /**
@@ -74,7 +77,18 @@ export class Helmet {
 
     // include default helmet functions
     app.use(helmet(this.config));
-
+    
+    const dynatraceUrl = config.get<string>('dynatrace.url');
+    app.use(dynatraceUrl, function (_req, res, next){
+      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Credentials', 'true');
+      res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+      res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+      );
+      next();
+    });
     this.setContentSecurityPolicy(app);
   }
 
@@ -97,6 +111,7 @@ export class Helmet {
           ],
           scriptSrcElem: scriptSrcElem,
           styleSrc: styleSrc,
+          manifestSrc: manifestSrc,
           formAction: [self, loginUrl, ocmcBaseUrl, govPayUrl],
         },
       }),

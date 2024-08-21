@@ -16,11 +16,12 @@ import {t} from 'i18next';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {CCDBundle} from 'models/caseProgression/bundles/ccdBundle';
 import {CaseRole} from 'form/models/caseRoles';
-import {isCarmApplicableAndSmallClaim, isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {Dashboard} from 'models/dashboard/dashboard';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -29,7 +30,7 @@ const testSession = session(app);
 const isCaseProgressionV1EnableMock = isCaseProgressionV1Enable as jest.Mock;
 const getLatestUpdateContentMock = getLatestUpdateContent as jest.Mock;
 const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.Mock;
-const isCarmEnabledForCaseMock = isCarmEnabledForCase as jest.Mock;
+const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest.Mock;
 const isCUIReleaseTwoEnabledMock = launchDarklyClient.isCUIReleaseTwoEnabled as jest.Mock;
 const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
 const mockExpectedDashboardInfo=
@@ -111,6 +112,7 @@ jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   getUserDetails: jest.fn(() => USER_DETAILS),
 }));
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('services/features/dashboard/claimSummary/latestUpdateService');
 jest.mock('services/features/dashboard/claimSummaryService');
@@ -409,6 +411,7 @@ describe('Claim Summary Controller Defendant', () => {
       isDashboardEnabledForCase.mockResolvedValue(true);
       isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
       isCarmEnabledForCaseMock.mockResolvedValue(true);
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
       //when
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
@@ -437,6 +440,7 @@ describe('Claim Summary Controller Defendant', () => {
       isDashboardEnabledForCase.mockResolvedValue(true);
       isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
       isCarmEnabledForCaseMock.mockResolvedValue(true);
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
       //when
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
@@ -472,6 +476,7 @@ describe('Claim Summary Controller Defendant', () => {
       isDashboardEnabledForCase.mockResolvedValue(true);
       isCaseProgressionV1EnableMock.mockResolvedValue(true);
       getLatestUpdateContentMock.mockReturnValue([]);
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
       //when
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)

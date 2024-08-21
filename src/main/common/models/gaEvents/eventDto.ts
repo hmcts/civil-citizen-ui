@@ -20,19 +20,43 @@ import {CaseLink} from 'models/generalApplication/CaseLink';
 
 export interface EventDto {
   event: ApplicationEvent,
-  caseDataUpdate?: CCDGeneralApplication;
+  caseDataUpdate?: CCDGeneralApplication | CCDGaHelpWithFees;
 }
 
 export interface CCDGeneralApplication extends ClaimUpdate {
-  generalAppType: CcdGeneralApplicationTypes;
-  generalAppRespondentAgreement: CcdGeneralApplicationRespondentAgreement;
-  generalAppInformOtherParty: CcdGeneralApplicationInformOtherParty;
-  generalAppAskForCosts: YesNoUpperCamelCase;
-  generalAppDetailsOfOrder: string;
-  generalAppReasonsOfOrder: string;
-  generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
-  generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
-  generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
-  generalAppHelpWithFees: CCDHelpWithFees;
+  generalAppType?: CcdGeneralApplicationTypes;
+  generalAppRespondentAgreement?: CcdGeneralApplicationRespondentAgreement;
+  generalAppInformOtherParty?: CcdGeneralApplicationInformOtherParty;
+  generalAppAskForCosts?: YesNoUpperCamelCase;
+  generalAppDetailsOfOrder?: string;
+  generalAppReasonsOfOrder?: string;
+  generalAppEvidenceDocument?: CcdGeneralApplicationEvidenceDocument[];
+  generalAppHearingDetails?: CcdGeneralApplicationHearingDetails;
+  generalAppStatementOfTruth?: CcdGeneralApplicationStatementOfTruth;
   caseLink?: CaseLink;
+  generalAppAddlnInfoUpload?: CcdGeneralApplicationEvidenceDocument[];
+  generalAppDirOrderUpload?: CcdGeneralApplicationEvidenceDocument[];
+  uploadDocument?: AdditionalDocuments[];
+  generalAppWrittenRepUpload?: CcdGeneralApplicationEvidenceDocument[];
+}
+interface DocumentDetails {
+  document_url: string;
+  document_binary_url: string;
+  document_filename: string;
+}
+
+interface AdditionDocDetails {
+  typeOfDocument: string,
+  documentUpload: DocumentDetails
+}
+
+export interface AdditionalDocuments {
+  id: string;
+  value: AdditionDocDetails
+}
+
+export interface CCDGaHelpWithFees {
+
+  generalAppHelpWithFees?: CCDHelpWithFees;
+
 }

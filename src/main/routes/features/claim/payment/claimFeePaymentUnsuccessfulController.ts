@@ -17,6 +17,7 @@ paymentUnsuccessfulController.get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL, (async (req: A
     res.render(paymentUnsuccessfulViewPath, {
       claimNumber,
       makePaymentAgainUrl,
+      pageTitle: 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.UNSUCCESSFUL.PAGE_TITLE',
     });
   } catch (error) {
     next(error);

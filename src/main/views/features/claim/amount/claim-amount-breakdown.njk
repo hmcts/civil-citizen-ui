@@ -7,7 +7,7 @@
 {% from "../../../macro/claim-amount.njk" import claimAmount %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.CLAIM_AMOUNT_BREAKDOWN.TITLE', t) }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% set length = form.model.claimAmountRows.length %}
@@ -30,30 +30,28 @@
           </ul>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop">
-              <label class="govuk-label--s">
-                {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') }}
-              </label>
-              <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
-                {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.HINT') }}
-              </p>
-            </div>
-            <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
-              <label class="govuk-label--s">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT') }}</label>
-              <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0"></p>
-            </div>
-            <div
-              class="govuk-form-group {% if claimAmountError %} govuk-form-group--error {% endif %}">
+            <div id="claimAmountRows" class="govuk-form-group {% if claimAmountError %} govuk-form-group--error {% endif %}">
               {% if claimAmountError %}
                 <p class="govuk-error-message">
                   <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(claimAmountError) }}
                 </p>
               {% endif %}
+              <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop govuk-form-group">
+                <label class="govuk-label govuk-label--s">
+                  {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') }}
+                </label>
+                <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">
+                  {{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.HINT') }}
+                </p>
+              </div>
+              <div class="govuk-label govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
+                <label class="govuk-label--s">{{ t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT') }}</label>
+                <p class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0"></p>
+              </div>
+              {% for claimAmountRow in form.model.claimAmountRows %}
+                {{ claimAmount(claimAmountRow, loop.index0, form, t) }}
+              {% endfor %}
             </div>
-            {% for claimAmountRow in form.model.claimAmountRows %}
-              {{ claimAmount(claimAmountRow, loop.index0, form, t) }}
-            {% endfor %}
-
             <div class="govuk-grid-column-full">
               {{ govukButton({
                 text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.ADD_ANOTHER_ROW'),

@@ -22,6 +22,7 @@ function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, 
     claimAmount: claimAmountAccepted,
     claimFee,
     judgmentSummaryDetails,
+    pageTitle: 'PAGES.JUDGMENT_AMOUNT.PAGE_TITLE',
   });
 }
 

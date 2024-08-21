@@ -9,7 +9,7 @@ import {ClaimantOrDefendant} from 'models/partyType';
 import {getTelephone, saveTelephone} from 'services/features/claim/yourDetails/phoneService';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isCarmEnabledForCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 
 const citizenPhoneViewPath = 'features/response/citizenPhoneNumber/citizen-phone';
 const citizenPhoneController = Router();

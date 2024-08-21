@@ -10,10 +10,10 @@ import {HearingContactDetails} from 'models/generalApplication/hearingContactDet
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {ClaimFeeData} from '../civilClaimResponse';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {CaseLink} from 'models/generalApplication/CaseLink';
+import { UploadAdditionalDocument } from './UploadAdditionalDocument';
 
 export class GeneralApplication {
 
@@ -28,7 +28,6 @@ export class GeneralApplication {
   unavailableDatesHearing?: UnavailableDatesGaHearing;
   hearingArrangement?: HearingArrangement;
   hearingContactDetails?: HearingContactDetails;
-  response?: GaResponse;
   wantToUploadDocuments?: YesNo;
   uploadEvidenceForApplication?: UploadGAFiles[];
   statementOfTruth?: StatementOfTruthForm;
@@ -36,6 +35,8 @@ export class GeneralApplication {
   helpWithFees?: GaHelpWithFees;
   applicationFeePaymentDetails : PaymentInformation;
   caseLink?: CaseLink;
+  uploadAdditionalDocuments?: UploadAdditionalDocument[] = [];
+  generalAppAddlnInfoUpload?: UploadGAFiles[];
 
   constructor(
     applicationType?: ApplicationType,
@@ -46,15 +47,13 @@ export class GeneralApplication {
     unavailableDatesHearing?: UnavailableDatesGaHearing,
     hearingArrangement?: HearingArrangement,
     hearingContactDetails?: HearingContactDetails,
-    response?: GaResponse,
     uploadEvidenceForApplication?: UploadGAFiles,
     statementOfTruth?: StatementOfTruthForm,
     helpWithFees?: GaHelpWithFees,
     wantToUploadDocuments?: YesNo,
     uploadN245Form?: UploadGAFiles,
     informOtherParties?: InformOtherParties,
-    applicationFee?: ClaimFeeData,
-  ) {
+    applicationFee?: ClaimFeeData) {
     this.applicationTypes = applicationType ? [applicationType] : [];
     this.agreementFromOtherParty = agreementFromOtherParty;
     this.applicationCosts = applicationCosts;
@@ -63,7 +62,6 @@ export class GeneralApplication {
     this.unavailableDatesHearing = unavailableDatesHearing;
     this.hearingArrangement = hearingArrangement;
     this.hearingContactDetails = hearingContactDetails;
-    this.response = response;
     this.statementOfTruth = statementOfTruth;
     this.wantToUploadDocuments = wantToUploadDocuments;
     this.uploadEvidenceForApplication = uploadEvidenceForApplication ? [uploadEvidenceForApplication] : [];

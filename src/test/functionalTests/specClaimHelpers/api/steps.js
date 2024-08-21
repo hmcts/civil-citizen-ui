@@ -279,7 +279,7 @@ module.exports = {
       console.log('carm enabled, updating submitted date');
       console.log('carm enabled, updating submitted date');
       await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2024-08-10T15:59:50'};
+      const submittedDate = {'submittedDate':'2024-11-25T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after carm date');
     } else {
@@ -333,21 +333,11 @@ module.exports = {
     }
     caseId = await apiRequest.startEventForLiPCitizen(payload);
     await waitForFinishedBusinessProcess(caseId, user);
-    let newPayload = {
-      event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
-      caseDataUpdate: {
-        issueDate: currentDate,
-        respondent1ResponseDeadline: currentDate,
-      },
-    };
-    await apiRequest.startEventForCitizen('', caseId, newPayload);
-    await waitForFinishedBusinessProcess(caseId, user);
-    await assignSpecCase(caseId, null);
 
     if (carmEnabled) {
       console.log('carm enabled, updating submitted date');
       await apiRequest.setupTokens(config.systemUpdate);
-      const submittedDate = {'submittedDate':'2024-08-10T15:59:50'};
+      const submittedDate = {'submittedDate':'2024-11-25T15:59:50'};
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after carm date');
     } else {
@@ -364,6 +354,18 @@ module.exports = {
       await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after minti date');
     }
+
+    await apiRequest.setupTokens(user);
+    let newPayload = {
+      event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
+      caseDataUpdate: {
+        issueDate: currentDate,
+        respondent1ResponseDeadline: currentDate,
+      },
+    };
+    await apiRequest.startEventForCitizen('', caseId, newPayload);
+    await waitForFinishedBusinessProcess(caseId, user);
+    await assignSpecCase(caseId, null);
     return caseId;
   },
 

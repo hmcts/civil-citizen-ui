@@ -6,7 +6,7 @@
 {% from "../../../macro/repayment-plan-summary.njk" import repaymentPlanSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, title) }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% block content %}
@@ -14,7 +14,7 @@
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ title }}</h1>
+          <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
         </div>
       </div>
       <div class="govuk-grid-row">
@@ -28,6 +28,10 @@
             <p class="govuk-body">{{ t('PAGES.REPAYMENT_PLAN_SUMMARY.THEY_HAVE_SUGGESTED_THIS') }}</p>
             {{ repaymentPlanSummary(repaymentPlan, t) }}
           {% endif %}
+
+          <p class="govuk-body">{{ t('PAGES.REPAYMENT_PLAN_SUMMARY.IF_THINK_DEFENDANT_CAN_REPAY') }}
+            <a href="mailto:contactocmc@justice.gov.uk">contactocmc@justice.gov.uk</a>
+          </p>
 
         </div>
       </div>

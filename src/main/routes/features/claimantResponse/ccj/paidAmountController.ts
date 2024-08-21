@@ -19,7 +19,7 @@ const crPropertyName = 'paidAmount';
 const crParentName = 'ccjRequest';
 export const urlFromTaskList = 'county-court-judgement';
 function renderView(form: GenericForm<PaidAmount>, res: Response): void {
-  res.render(paidAmountViewPath, {form});
+  res.render(paidAmountViewPath, {form, pageTitle: 'PAGES.CCJ_PAID_AMOUNT.PAGE_TITLE'});
 }
 
 paidAmountController.get([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], async (req, res, next: NextFunction) => {

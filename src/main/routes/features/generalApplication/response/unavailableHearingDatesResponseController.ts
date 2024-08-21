@@ -3,7 +3,7 @@ import {GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL} from 'routes/urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import { generateRedisKey, generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {t} from 'i18next';
 import {Claim} from 'models/claim';
@@ -16,6 +16,7 @@ import {
   getRespondToApplicationCaption,
   saveRespondentUnavailableDates,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
+import { getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 
 const unavailableHearingDatesResponseController = Router();
 const viewPath = 'features/generalApplication/unavailable-dates-hearing';
@@ -23,7 +24,7 @@ const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<UnavailableDatesGaHearing>,  req: AppRequest | Request, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const headerTitle = getRespondToApplicationCaption(claim,lang);
+  const headerTitle = getRespondToApplicationCaption(claim, req.params.appId, lang);
   const cancelUrl = await getCancelUrl(claimId, claim);
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, headingTitle: t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.TITLE') });
 }
@@ -32,7 +33,8 @@ unavailableHearingDatesResponseController.get(GA_RESPONSE_UNAVAILABLE_HEARING_DA
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const unavailableDates = claim.generalApplication?.response?.unavailableDatesHearing || new UnavailableDatesGaHearing();
+    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
+    const unavailableDates = gaResponse?.unavailableDatesHearing || new UnavailableDatesGaHearing();
     const form = new GenericForm(unavailableDates);
     await renderView(claimId, claim, form, req, res);
   } catch (error) {
@@ -60,7 +62,7 @@ unavailableHearingDatesResponseController.post(GA_RESPONSE_UNAVAILABLE_HEARING_D
       if (form.hasErrors()) {
         await renderView(claimId, claim, form, req, res);
       } else {
-        await saveRespondentUnavailableDates(redisKey, claim, unavailableDatesForHearing);
+        await saveRespondentUnavailableDates(redisKey, unavailableDatesForHearing);
         res.redirect('test'); // TODO: add url
       }
     }
