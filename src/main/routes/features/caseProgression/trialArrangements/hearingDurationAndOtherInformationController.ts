@@ -28,7 +28,7 @@ const propertyName = 'otherTrialInformation';
 hearingDurationController.get(TRIAL_ARRANGEMENTS_HEARING_DURATION, (async (req, res, next: NextFunction) => {
   try {
     const claimId: string = req.params.id;
-    const claim: Claim = await getClaimById(claimId, req);
+    const claim: Claim = await getClaimById(claimId, req, true);
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const backLinkUrl: string = constructResponseUrlWithIdParams(claimId, HAS_ANYTHING_CHANGED_URL);
 
@@ -48,11 +48,11 @@ hearingDurationController.post(TRIAL_ARRANGEMENTS_HEARING_DURATION, (async (req,
     let otherInfo = req.body.otherInformation;
     otherInfo = removeWhiteSpacesIfNoText(otherInfo);
     const form = new GenericForm(new OtherTrialInformation(otherInfo));
-    const claim = await getClaimById(claimId, req);
+    const claim = await getClaimById(claimId, req, true);
     const parentPropertyName = getNameTrialArrangements(claim);
     await saveCaseProgression(req, form.model.otherInformation, propertyName, parentPropertyName );
 
-    res.redirect(constructResponseUrlWithIdParams(req.params.id, TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS));
+    res.redirect(constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS));
 
   } catch (error) {
     next(error);

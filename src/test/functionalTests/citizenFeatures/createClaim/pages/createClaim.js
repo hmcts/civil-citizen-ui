@@ -516,8 +516,8 @@ class CreateClaim {
     I.see('Expenses Receipt');
 
     I.see('Statement of truth');
-    I.see('The information on this page forms your response.');
-    I.see('You can see it on the response form after you submit.');
+    I.see('The information on this page forms your claim.');
+    I.see('You can see it on the claim form after you submit.');
     I.see('When you\'re satisfied that your answers are accurate,');
     I.see('I believe that the facts stated in this claim are true.');
     I.see('I understand that proceedings for contempt of court may be brought against anyone who makes,');
