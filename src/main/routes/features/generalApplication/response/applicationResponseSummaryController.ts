@@ -6,8 +6,8 @@ import { getCancelUrl } from 'services/features/generalApplication/generalApplic
 import { GaServiceClient } from 'client/gaServiceClient';
 import { getClaimById } from 'modules/utilityService';
 import { buildRespondentApplicationSummaryRow, isApplicationVisibleToRespondent } from 'services/features/generalApplication/response/generalApplicationResponseService';
-import {Claim} from "models/claim";
-import {CivilServiceClient} from "client/civilServiceClient";
+import {Claim} from 'models/claim';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const applicationSummaryController = Router();
 const viewPath = 'features/generalApplication/applications-summary';

@@ -453,7 +453,7 @@ export const getApplicationCreatedDate = (ccdClaim: Claim, applicationId: string
   for (let i = 0; i < ccdGeneralApplications.length; i++) {
     if (ccdGeneralApplications[i].value.caseLink.CaseReference.toString() === applicationId.toString()){
       return ccdGeneralApplications[i].value.generalAppSubmittedDateGAspec;
-    };
-  };
+    }
+  }
   return undefined;
 };

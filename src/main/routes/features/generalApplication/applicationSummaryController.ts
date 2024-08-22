@@ -6,15 +6,15 @@ import { GA_APPLICATION_SUMMARY_URL, GA_VIEW_APPLICATION_URL } from 'routes/urls
 import {
   getApplicationCreatedDate,
   getApplicationStatus,
-  getCancelUrl
+  getCancelUrl,
 } from 'services/features/generalApplication/generalApplicationService';
 import { GaServiceClient } from 'client/gaServiceClient';
 import { ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import { getClaimById } from 'modules/utilityService';
 import {dateTimeFormat} from 'common/utils/dateUtils';
-import {Claim} from "models/claim";
-import {CivilServiceClient} from "client/civilServiceClient";
+import {Claim} from 'models/claim';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const applicationSummaryController = Router();
 const viewPath = 'features/generalApplication/applications-summary';
