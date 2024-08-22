@@ -1,9 +1,10 @@
 const {clickButton} = require('../../commons/clickButton');
 const {buttonType} = require('../../commons/buttonVariables');
 const {responseTaskListItems, checkTaskList, taskListStatus} = require('../../commons/claimTaskList');
-const {responseType} = require('../../commons/responseVariables');
-const {yesAndNoCheckBoxOptionValue, speakLanguage, documentLanguage, supportRequired} = require('../../commons/eligibleVariables');
+const {responseType, paymentType} = require('../../commons/responseVariables');
+const {yesAndNoCheckBoxOptionValue, speakLanguage, documentLanguage, supportRequired, howOftenYouMakePayments} = require('../../commons/eligibleVariables');
 const {seeInTitle} = require('../../commons/seeInTitle');
+const {checkDateFields} = require('../../commons/checkDateFields');
 const I = actor();
 
 class Response {
@@ -89,17 +90,22 @@ class Response {
     I.see(responseTaskListItems.CHOOSE_A_RESPONSE, checkTaskList(responseTaskListItems.CHOOSE_A_RESPONSE, taskListStatus.COMPLETE));
   }
 
-  decideHowYouWillPay(paymentType) {
+  decideHowYouWillPay(typeOfPayment) {
     I.click(responseTaskListItems.DECIDE_HOW_YOU_WILL_PAY, checkTaskList(responseTaskListItems.DECIDE_HOW_YOU_WILL_PAY, taskListStatus.INCOMPLETE));
     I.seeInCurrentUrl('/response/full-admission/payment-option');
     seeInTitle('Payment option');
 
-    I.checkOption(`#${paymentType}`);
+    I.checkOption(`#${typeOfPayment}`);
     I.seeElement('//label[contains(., "Immediately")]');
     I.seeElement('//label[contains(., "By a set date")]');
     I.seeElement('//label[contains(., "I\'ll suggest a repayment plan")]');
 
     clickButton(buttonType.SAVE_AND_CONTINUE);
+
+    if(typeOfPayment === paymentType.BY_A_SET_DATE){
+      this.paymentDate();
+    }
+
     I.seeInCurrentUrl('/response/task-list');
     I.see(responseTaskListItems.DECIDE_HOW_YOU_WILL_PAY, checkTaskList(responseTaskListItems.DECIDE_HOW_YOU_WILL_PAY, taskListStatus.COMPLETE));
   }
@@ -199,16 +205,88 @@ class Response {
     I.see(responseTaskListItems.GIVE_US_DETAILS_IN_CASE_THERE_IS_A_HEARING, checkTaskList(responseTaskListItems.GIVE_US_DETAILS_IN_CASE_THERE_IS_A_HEARING, taskListStatus.COMPLETE));
   }
 
+  paymentDate(){
+    let futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 1);
+
+    I.seeInCurrentUrl('/full-admission/payment-date');
+    I.seeInTitle('Your money claims account - Money Claims');
+
+    I.see('What date will you pay on?', 'h1.govuk-fieldset__heading');
+    I.see('For example, 22 9 2024', 'div.govuk-hint');
+
+    I.see('Day', 'label.govuk-label');
+    I.fillField('#day', futureDate.getDate());
+    I.see('Month', 'label.govuk-label');
+    I.fillField('#month', futureDate.getMonth() + 1);
+    I.see('Year', 'label.govuk-label');
+    I.fillField('#year', futureDate.getFullYear());
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+  }
+
+  shareYourFinancialDetails() {
+    I.click(responseTaskListItems.SHARE_YOUR_FINANCIAL_DETAILS, checkTaskList(responseTaskListItems.SHARE_YOUR_FINANCIAL_DETAILS, taskListStatus.INCOMPLETE));
+    I.seeInCurrentUrl('/response/statement-of-means/intro');
+    seeInTitle('Your financial details');
+    I.see('Send Mr. Jan Clark your financial details', 'h1.govuk-heading-l');
+    I.see('\'You need to send \' Mr. Jan Clark your company or organisation\'s most recent statement of accounts.', 'p.govuk-body');
+    I.see('They\'ll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.', 'p.govuk-body');
+    I.see('If they reject your plan, the court will make a new plan based on your financial details.', 'p.govuk-body');
+    I.seeElement('a', 'Get Mr. Jan Clark \'s contact details.');
+
+    clickButton(buttonType.CONTINUE);
+
+    I.seeInCurrentUrl('/response/task-list');
+    I.see(responseTaskListItems.SHARE_YOUR_FINANCIAL_DETAILS, checkTaskList(responseTaskListItems.SHARE_YOUR_FINANCIAL_DETAILS, taskListStatus.COMPLETE));
+  }
+
+  yourRepaymentPlan(){
+    let futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 1);
+
+    I.click(responseTaskListItems.YOUR_REPAYMENT_PLAN, checkTaskList(responseTaskListItems.YOUR_REPAYMENT_PLAN, taskListStatus.INCOMPLETE));
+    I.seeInCurrentUrl('/response/full-admission/payment-plan');
+    seeInTitle('Your repayment plan');
+    I.see('Your repayment plan', 'h1.govuk-fieldset__heading');
+    I.see('The total amount claimed is £1000. This includes the claim fee and any interest.', 'p.govuk-body-m');
+
+    I.see('Regular payments of:', 'p.govuk-body-m');
+    I.see('For example, £200', 'div.govuk-hint');
+    I.fillField('#paymentAmount', '500');
+
+    I.see('How often you\'ll make these payments?', 'legend.govuk-fieldset__legend');
+    I.checkOption(`#${howOftenYouMakePayments.EACH_WEEK}`);
+
+    I.waitForElement('#two-months_schedule', 1); // wait for 1 second
+    I.see('2 weeks', '#two-weeks_schedule');
+
+    I.see('When will you make the first payment?','legend.govuk-fieldset__legend');
+    I.see('For example, 22/09/2024','div.govuk-hint');
+    checkDateFields(futureDate);
+
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+
+    I.seeInCurrentUrl('/response/task-list');
+    I.see(responseTaskListItems.YOUR_REPAYMENT_PLAN, checkTaskList(responseTaskListItems.YOUR_REPAYMENT_PLAN, taskListStatus.COMPLETE));
+  }
+
   checkAndSubmitYourResponse(withDirectionsQuestionnaire) {
     I.click(responseTaskListItems.CHECK_AND_SUBMIT_YOUR_RESPONSE, checkTaskList(responseTaskListItems.CHECK_AND_SUBMIT_YOUR_RESPONSE, taskListStatus.INCOMPLETE)); // Ensure the element exists
     I.seeInCurrentUrl('/response/check-and-send');
     seeInTitle('Check your answers');
     I.see('Statement of truth', 'h2.govuk-heading-m');
-    I.see('Statement of truth', 'h2.govuk-heading-m');
-    I.see('Statement of truth', 'h2.govuk-heading-m');
-    I.see('Statement of truth', 'h2.govuk-heading-m');
+    I.see('The information on this page forms your response. You can see it on the response form after you submit.', 'p.govuk-body');
+    I.see('When you\'re satisfied that your answers are accurate, you should tick to "sign" this statement of truth on the form', 'p.govuk-body');
+    I.see('You must hold a senior position in your organisation to sign the statement of truth.', 'p.govuk-body');
+    I.see('Types of senior position', '.govuk-details__summary-text');
+
+    I.see('Full name', 'label.govuk-label');
+    I.see('Job title', 'label.govuk-label');
     I.fillField('#signerName', 'Full name');
     I.fillField('#signerRole', 'Job title');
+
+    I.see('I believe that the facts stated in this response are true.', 'label.govuk-label');
+    I.see('I understand that proceedings for contempt of court may be brought against anyone who makes, or causes to be made, a false statement in a document verified by a statement of truth without an honest belief in its truth.', 'label.govuk-label');
     I.checkOption('#signed');
     if (withDirectionsQuestionnaire){
       I.checkOption('#directionsQuestionnaireSigned');

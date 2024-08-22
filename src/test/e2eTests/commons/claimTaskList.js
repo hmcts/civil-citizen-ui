@@ -18,6 +18,8 @@ const responseTaskListItems = Object.freeze({
   FREE_TELEPHONE_MEDIATION: 'Free telephone mediation',
   GIVE_US_DETAILS_IN_CASE_THERE_IS_A_HEARING: 'Give us details in case there\'s a hearing',
   TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM : 'Tell us why you disagree with the claim',
+  SHARE_YOUR_FINANCIAL_DETAILS: 'Share your financial details',
+  YOUR_REPAYMENT_PLAN: 'Your repayment plan',
 });
 
 const taskListStatus = Object.freeze({
