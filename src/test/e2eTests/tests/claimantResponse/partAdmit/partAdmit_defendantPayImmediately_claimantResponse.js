@@ -6,9 +6,8 @@ Scenario('Response with PartAdmit-Defendant pay immediately - Claimant rejects a
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const caseId = 1777777777777788;
     ClaimantResponseSteps.viewDefendantResponse(caseId);
-    ClaimantResponseSteps.acceptOrRejectFullAdmitPayImmediately(caseId);
-    ClaimantResponseSteps.formaliseRepayment(caseId, 'Request a CCJ');
-    ClaimantResponseSteps.requestCCJ(caseId);
+    ClaimantResponseSteps.acceptOrRejectPartAdmitPayImmediately(caseId, 'No');
+    ClaimantResponseSteps.freeTelephoneMediation(caseId);
     ClaimantResponseSteps.fillDQ(caseId, false);
     ClaimantResponseSteps.checkAndSubmitSigned(caseId);
     ClaimantResponseSteps.partAdmitClaimantRejectsAndAgreesToMediationConfirmation();
