@@ -7,15 +7,13 @@ import {
 } from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {GA_CANCEL_URL} from 'routes/urls';
 import {YesNo} from 'common/form/models/yesNo';
-import {isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ValidationError} from 'class-validator';
 import {InformOtherParties} from 'common/models/generalApplication/informOtherParties';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {OrderJudge} from 'common/models/generalApplication/orderJudge';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
@@ -176,14 +174,18 @@ export const saveIfPartyWantsToUploadDoc = async (redisKey: string, wantToSaveDo
 };
 
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
-  if (claim.isClaimant()) {
-    const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
-    if (isCUIR2Enabled) {
-      return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-    }
-    return constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL);
-  }
-  return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+  return GA_CANCEL_URL
+    .replace(':id', claimId)
+    .replace(':propertyName', 'generalApplication');
+
+  // if (claim.isClaimant()) {
+  //   const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
+  //   if (isCUIR2Enabled) {
+  //     return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
+  //   }
+  //   return constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL);
+  // }
+  // return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 };
 
 export function validateNoConsentOption(req: AppRequest, errors: ValidationError[], applicationTypeOption: string) {
