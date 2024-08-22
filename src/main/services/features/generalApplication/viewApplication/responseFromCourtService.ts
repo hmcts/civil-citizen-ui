@@ -40,6 +40,7 @@ export const buildResponseFromCourtSection = async (req : AppRequest, applicatio
     judgeDirectionWithNotice,
     ...getHearingNoticeResponses(application, lang),
     ...getHearingOrderResponses(application, lang),
+    ...getRequestMoreInfoResponse(application, lang),
     getJudgesDirectionsOrder(req, application, lang),
     getJudgeApproveEdit(application, lang),
     getJudgeDismiss(returnDashboardUrl, application, lang),
@@ -55,7 +56,6 @@ export const getJudgeDirectionWithNotice = (req : AppRequest, applicationRespons
   const makeWithNoticeDoc = getMakeWithNoticeDocument(applicationResponse);
   const createdDateTime = makeWithNoticeDoc?.value?.createdDatetime;
   if(makeWithNoticeDoc) {
-
     const documentId = documentIdExtractor(makeWithNoticeDoc?.value?.documentLink?.document_binary_url);
     const documentUrl = constructDocumentUrlWithIdParamsAndDocumentId(applicationResponse.id, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
     rows.push(
@@ -171,6 +171,32 @@ export const getHearingNoticeResponses = (applicationResponse: ApplicationRespon
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl),
       );
       return new CourtResponseSummaryList(rows,createdDatetime);
+    });
+  }
+  return courtResponseSummaryList;
+};
+
+export const getRequestMoreInfoResponse = (applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
+  const rows: SummaryRow[] = [];
+  const requestMoreInfos = applicationResponse?.case_data?.requestForInformationDocument;
+  let courtResponseSummaryList : CourtResponseSummaryList[] = [];
+  
+  if(requestMoreInfos) {
+    courtResponseSummaryList = requestMoreInfos
+    .filter(requestMoreInfo => {
+      return requestMoreInfo?.value?.documentType === DocumentType.REQUEST_MORE_INFORMATION;
+    })
+    .map(requestMoreInfo => {
+      const documentName = requestMoreInfo?.value?.documentName;
+      const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(requestMoreInfo?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${documentName}</a>`;
+      const createdDatetime = requestMoreInfo?.value?.createdDatetime;
+      rows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(createdDatetime, lng)),
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO', {lng})),
+        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl),
+      );
+      const respondToRequestButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), "");
+      return new CourtResponseSummaryList(rows, createdDatetime, respondToRequestButton);
     });
   }
   return courtResponseSummaryList;

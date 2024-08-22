@@ -289,6 +289,7 @@
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
       "DETAILS_TRUTHY": "The hearing requirement details on this page are true to the best of my knowledge.",
       "INFORMATION_ON_PAGE": "The information on this page forms your response. You can see it on the response form after you submit.",
+      "INFORMATION_ON_PAGE_CLAIM": "The information on this page forms your claim. You can see it on the claim form after you submit.",
       "MAKE_CHANGES_NOT_ALLOWED": "Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
       "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the statement of truth.",
       "STATEMENT_OF_WORK": "statement of truth",
@@ -3120,6 +3121,7 @@
         "RESPOND_TO_REQUEST": "Respond to the request",
         "RESPONSE_COURT": "Response from the court",
         "RESPONDENTS_DOCUMENTS": "Respondent's documents",
+        "REQUEST_MORE_INFO": "Request for more information",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",

@@ -9,6 +9,7 @@ import {
   getHearingNoticeResponses,
   getHearingOrderResponses,
   buildResponseFromCourtSection,
+  getRequestMoreInfoResponse,
 } from 'services/features/generalApplication/viewApplication/responseFromCourtService';
 import * as requestModels from 'models/AppRequest';
 import {Claim} from 'models/claim';
@@ -68,6 +69,21 @@ function setMockRequestForInformationDocument(): CcdGAMakeWithNoticeDocument[] {
       'documentType': DocumentType.SEND_APP_TO_OTHER_PARTY,
       'createdDatetime': new Date('2024-03-02'),
       'createdBy':'civils',
+    },
+  },
+  {
+    'id': 'ad9fd4a0-8294-414d-bcce-b66e742d809f',
+    'value': {
+      'createdBy': 'Civil',
+      'documentLink': {
+        'category_id': 'applications',
+        'document_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098',
+        'document_filename': 'Request_for_information_for_application_2024-07-22 11:01:54.pdf',
+        'document_binary_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098/binary',
+      },
+      'documentName': 'Request_for_information_for_application_2024-07-22 11:01:54.pdf',
+      'documentType': DocumentType.REQUEST_MORE_INFORMATION,
+      'createdDatetime': new Date('2024-05-02'),
     },
   }];
 }
@@ -615,11 +631,17 @@ describe('View Application service', () => {
       expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result[0].rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE');
       expect(result[1].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result[1].rows[0].value.html).toEqual('2 March 2024');
+      expect(result[1].rows[0].value.html).toEqual('2 May 2024');
       expect(result[1].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result[1].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
+      expect(result[1].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO');
       expect(result[1].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[1].rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT');
+      expect(result[1].rows[2].value.html).toContain('<a href=/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098 target="_blank" rel="noopener noreferrer" class="govuk-link">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
+      expect(result[2].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[2].rows[0].value.html).toEqual('2 March 2024');
+      expect(result[2].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[2].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
+      expect(result[2].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[2].rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT');
     });
 
     it('should return court from response section for defendant', async () => {
@@ -641,6 +663,41 @@ describe('View Application service', () => {
       expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE_DESC');
       expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result[0].rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE');
+      expect(result[1].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[1].rows[0].value.html).toEqual('2 May 2024');
+      expect(result[1].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[1].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO');
+      expect(result[1].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[1].rows[2].value.html).toContain('<a href=/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098 target="_blank" rel="noopener noreferrer" class="govuk-link">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
+   
     });
+  });
+
+  describe('getRequestMoreInfoResponse', () => {
+    it('should return request more info response', async () => {
+      //given
+      const applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
+      applicationResponse.case_data.requestForInformationDocument = setMockRequestForInformationDocument();
+      
+      //when
+      const result = getRequestMoreInfoResponse(applicationResponse, 'en');
+      //then
+      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].rows[0].value.html).toEqual('2 May 2024');
+      expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO');
+      expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[0].rows[2].value.html).toContain('<a href=/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098 target="_blank" rel="noopener noreferrer" class="govuk-link">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
+    });
+
+    it('should return empty if no data in applicationResponse', async () => {
+      //given
+      const applicationResponse = new ApplicationResponse();
+      //when
+      const result = getRequestMoreInfoResponse(applicationResponse, 'en');
+      //then
+      expect(result.length).toEqual(0);
+    });
+    
   });
 });
