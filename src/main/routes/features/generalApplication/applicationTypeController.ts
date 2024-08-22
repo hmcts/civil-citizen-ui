@@ -2,6 +2,7 @@ import { NextFunction, Request, RequestHandler, Response, Router } from 'express
 import {
   APPLICATION_TYPE_URL, GA_ADD_ANOTHER_APPLICATION_URL,
   GA_AGREEMENT_FROM_OTHER_PARTY_URL,
+  GA_CANCEL_URL,
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
@@ -11,7 +12,6 @@ import {
 } from 'common/models/generalApplication/applicationType';
 import {
   getByIndex,
-  getCancelUrl,
   saveApplicationType, validateAdditionalApplicationtType,
 } from 'services/features/generalApplication/generalApplicationService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
@@ -31,7 +31,9 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
-    const cancelUrl = await getCancelUrl(claimId, claim);
+    const cancelUrl = GA_CANCEL_URL
+      .replace(':id', claimId)
+      .replace(':propertyName', 'generalApplication');
     const backLinkUrl = await getBackLinkUrl(claimId, claim, cancelUrl);
     res.render(viewPath, {
       form,
@@ -61,7 +63,10 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     if(!applicationIndex && applicationIndex != 0) {
       validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
     }
-    const cancelUrl = await getCancelUrl( req.params.id, claim);
+    const claimId = req.params.id;
+    const cancelUrl = GA_CANCEL_URL
+      .replace(':id', claimId)
+      .replace(':propertyName', 'generalApplication');
     const backLinkUrl = await getBackLinkUrl(req.params.id, claim, cancelUrl);
 
     if (form.hasErrors()) {

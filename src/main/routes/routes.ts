@@ -416,6 +416,7 @@ import gaDirectionOrderCheckAnswersController from './features/generalApplicatio
 import directionOrderSubmittedConfirmationController from './features/generalApplication/directionsOrderUpload/directionOrderSubmittedConfirmationController';
 import uploadDocumentsForRequestWrittenRepresentation from './features/generalApplication/writtenRepresentationDocs/uplodWrittenRepresentationDocsController';
 import gaWrittenRepresentationCheckAnswersController from './features/generalApplication/writtenRepresentationDocs/checkAnswerController';
+import cancelGeneralApplicationController from './features/generalApplication/cancelGeneralApplicationController';
 
 export default [
   homeController,
@@ -753,4 +754,5 @@ export default [
   directionOrderSubmittedConfirmationController,
   uploadDocumentsForRequestWrittenRepresentation,
   gaWrittenRepresentationCheckAnswersController,
+  cancelGeneralApplicationController,
 ];

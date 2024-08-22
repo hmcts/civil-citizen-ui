@@ -77,4 +77,5 @@ export const IGNORED_URLS = [
   urls.RESPONSE_DEADLINE_OPTIONS_URL,
   urls.GA_VIEW_APPLICATION_URL, //TODO: remove this once finished the page
   urls.GA_PAY_ADDITIONAL_FEE_URL, //TODO: remove this once finished the page
+  urls.GA_CANCEL_URL,
 ];
