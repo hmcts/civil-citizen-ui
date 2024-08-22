@@ -183,21 +183,22 @@ export const getRequestMoreInfoResponse = (applicationResponse: ApplicationRespo
   
   if(requestMoreInfos) {
     courtResponseSummaryList = requestMoreInfos
-    .filter(requestMoreInfo => {
-      return requestMoreInfo?.value?.documentType === DocumentType.REQUEST_MORE_INFORMATION;
-    })
-    .map(requestMoreInfo => {
-      const documentName = requestMoreInfo?.value?.documentName;
-      const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(requestMoreInfo?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${documentName}</a>`;
-      const createdDatetime = requestMoreInfo?.value?.createdDatetime;
-      rows.push(
-        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(createdDatetime, lng)),
-        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO', {lng})),
-        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl),
-      );
-      const respondToRequestButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), "");
-      return new CourtResponseSummaryList(rows, createdDatetime, respondToRequestButton);
-    });
+      .filter(requestMoreInfo => {
+        return requestMoreInfo?.value?.documentType === DocumentType.REQUEST_MORE_INFORMATION;
+      })
+      .map(requestMoreInfo => {
+        const documentName = requestMoreInfo?.value?.documentName;
+        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(requestMoreInfo?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${documentName}</a>`;
+        const createdDatetime = requestMoreInfo?.value?.createdDatetime;
+        rows.push(
+          summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(createdDatetime, lng)),
+          summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO', {lng})),
+          summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl),
+        );
+        const respondToRequestHref = '';
+        const respondToRequestButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), respondToRequestHref);
+        return new CourtResponseSummaryList(rows, createdDatetime, respondToRequestButton);
+      });
   }
   return courtResponseSummaryList;
 };
