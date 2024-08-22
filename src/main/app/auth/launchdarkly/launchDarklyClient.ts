@@ -50,7 +50,7 @@ export async function isPcqShutterOn(): Promise<boolean> {
 }
 
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
-  return true;
+  return await getFlagValue('cuiReleaseTwoEnabled') as boolean;
 }
 
 export async function isCARMEnabled(): Promise<boolean> {
@@ -58,7 +58,7 @@ export async function isCARMEnabled(): Promise<boolean> {
 }
 
 export async function isGaForLipsEnabled(): Promise<boolean> {
-  return true;
+  return await getFlagValue('GaForLips') as boolean;
 }
 
 export async function isMintiEnabled(): Promise<boolean> {
@@ -70,7 +70,10 @@ export async function isJudgmentOnlineLive(): Promise<boolean> {
 }
 
 export async function  isDashboardEnabledForCase(date: Date): Promise<boolean> {
-  return true;
+  const { DateTime } = require('luxon');
+  const systemTimeZone = DateTime.local().zoneName;
+  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
+  return await getFlagValue('is-dashboard-enabled-for-case', epoch) as boolean;
 }
 
 export async function isCarmEnabledForCase(date: Date): Promise<boolean> {
