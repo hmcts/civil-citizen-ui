@@ -99,9 +99,14 @@ export const saveRespondentStatementOfTruth = async (redisKey: string, statement
   }
 };
 
-export const isApplicationVisibleToRespondent = (application: ApplicationResponse): boolean =>
-  application.case_data?.generalAppInformOtherParty?.isWithNotice == YesNoUpperCamelCase.YES
-|| application.case_data?.generalAppRespondentAgreement?.hasAgreed == YesNoUpperCamelCase.YES;
+export const isApplicationVisibleToRespondent = (application: ApplicationResponse): boolean => {
+  const parentClaimantIsApplicant = application.case_data?.parentClaimantIsApplicant;
+  const isWithNotice = application.case_data?.generalAppInformOtherParty?.isWithNotice;
+  return ((parentClaimantIsApplicant === YesNoUpperCamelCase.YES && isWithNotice === YesNoUpperCamelCase.YES)
+    || (parentClaimantIsApplicant === YesNoUpperCamelCase.NO && isWithNotice === YesNoUpperCamelCase.YES)
+    || (parentClaimantIsApplicant === YesNoUpperCamelCase.NO && isWithNotice === YesNoUpperCamelCase.NO)
+    || (application.case_data?.generalAppRespondentAgreement?.hasAgreed === YesNoUpperCamelCase.YES));
+};
 
 export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string) => (application: ApplicationResponse, index: number): ApplicationSummary => {
   const status = getRespondentApplicationStatus(application.state);

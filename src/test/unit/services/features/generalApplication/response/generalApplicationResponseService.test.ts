@@ -43,16 +43,16 @@ describe('General Application Response service', () => {
     jest.clearAllMocks();
   });
 
-  const applicationResponse = (state: ApplicationState, withNotice?: boolean, withConsent?: boolean): ApplicationResponse => {
+  const applicationResponse = (state: ApplicationState, withNotice?: boolean, withConsent?: boolean, parentClaimantIsApplicant?: boolean): ApplicationResponse => {
     const ccdApplication: Partial<CCDApplication> = {
       applicationTypes: 'Vary order',
-      generalAppInformOtherParty: withNotice ? {isWithNotice: YesNoUpperCamelCase.YES, reasonsForWithoutNotice: undefined} : undefined,
-      generalAppRespondentAgreement: withConsent ? {hasAgreed: YesNoUpperCamelCase.YES} : undefined,
-    };
-    return {
+      generalAppInformOtherParty: withNotice ? {isWithNotice: YesNoUpperCamelCase.YES, reasonsForWithoutNotice: undefined} : {isWithNotice: YesNoUpperCamelCase.NO, reasonsForWithoutNotice: 'reasons'},
+      generalAppRespondentAgreement: withConsent ? {hasAgreed: YesNoUpperCamelCase.YES} : {hasAgreed: YesNoUpperCamelCase.NO},
+      parentClaimantIsApplicant: parentClaimantIsApplicant ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+    };    return {
       id: '6789',
       case_data: ccdApplication as CCDApplication,
-      state, 
+      state,
       last_modified: '2024-05-29T14:39:28.483971',
       created_date: '2024-05-29T14:39:28.483971',
     };
@@ -189,19 +189,39 @@ describe('General Application Response service', () => {
 
   describe('isApplicationVisibleToRespondent', () => {
 
-    it('should return true when application is with notice', () => {
-      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, true)))
-        .toBeTruthy();
-    });
-    
-    it('should return true when application is with consent', () => {
-      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, false, true)))
+    it('should return true when Claimant application is with notice', () => {
+      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, true, false, true)))
         .toBeTruthy();
     });
 
-    it('should return false when application is without notice nor consent', () => {
-      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE)))
+    it('should return true when Claimant application is with consent', () => {
+      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, false, true, true)))
+        .toBeTruthy();
+    });
+
+    it('should return false when Claimant application is without notice nor consent', () => {
+      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, false, false, true)))
         .toBeFalsy();
+    });
+
+    it('should return true when Defendant application is without notice or consent', () => {
+      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION, false, false, false)))
+        .toBeTruthy();
+    });
+
+    it('should return true when Defendant application is with notice and with consent', () => {
+      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION, true, true, false)))
+        .toBeTruthy();
+    });
+
+    it('should return true when Defendant application is with notice and without consent', () => {
+      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION, true, false, false)))
+        .toBeTruthy();
+    });
+
+    it('should return true when Defendant application is without notice and with consent', () => {
+      expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION, false, true, false)))
+        .toBeTruthy();
     });
   });
 
