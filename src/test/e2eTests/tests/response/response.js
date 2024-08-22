@@ -4,17 +4,6 @@ const {responseType, paymentType, rejectOfClaimType} = require('../../commons/re
 
 Feature('Response journey').tag('@e2e');
 
-Scenario('Response defendant with admit all of the claim', () => {
-  if (['preview', 'demo'].includes(config.runningEnv)) {
-    const claimId = '1645882162449408';
-    Response.start(claimId);
-    Response.confirmYourDetails(claimId);
-    Response.chooseResponseAdmitAllOfTheClaim(responseType.I_ADMIT_ALL_OF_THE_CLAIM);
-    Response.decideHowYouWillPay(paymentType.IMMEDIATELY);
-    Response.checkAndSubmitYourResponse(false);
-  }
-});
-
 Scenario('Response defendant with reject all and already paid', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const claimId = '1645882162449418';

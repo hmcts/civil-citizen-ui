@@ -3,6 +3,7 @@ const {buttonType} = require('../../commons/buttonVariables');
 const {responseTaskListItems, checkTaskList, taskListStatus} = require('../../commons/claimTaskList');
 const {responseType} = require('../../commons/responseVariables');
 const {yesAndNoCheckBoxOptionValue, speakLanguage, documentLanguage, supportRequired} = require('../../commons/eligibleVariables');
+const {seeInTitle} = require('../../commons/seeInTitle');
 const I = actor();
 
 class Response {
@@ -13,7 +14,7 @@ class Response {
   confirmYourDetails() {
     I.click(responseTaskListItems.CONFIRM_YOUR_DETAILS, checkTaskList(responseTaskListItems.CONFIRM_YOUR_DETAILS, taskListStatus.INCOMPLETE));
     I.seeInCurrentUrl('/response/your-details');
-    I.seeInTitle('Company details - Your money claims account');
+    seeInTitle('Company details');
     I.see('Confirm your details', 'h1.govuk-heading-l');
     I.see('Your name and address were provided by the person, business or organisation claiming from you (the claimant).', 'p.govuk-body');
 
@@ -44,7 +45,7 @@ class Response {
 
     //your-phone
     I.seeInCurrentUrl('/response/your-phone');
-    I.seeInTitle('Your phone number - Your money claims account');
+    seeInTitle('Your phone number');
     I.see('Enter a phone number (optional)', 'h1.govuk-heading-l');
     I.see('We will only call you if we need more information about this claim.', 'p.govuk-body');
     I.see('We\'ll give your phone number to the person, business, or organisation claiming from you, or to their legal representative, if they have one.', 'p.govuk-body');
@@ -68,7 +69,20 @@ class Response {
   chooseResponseAdmitAllOfTheClaim() {
     I.click(responseTaskListItems.CHOOSE_A_RESPONSE, checkTaskList(responseTaskListItems.CHOOSE_A_RESPONSE, taskListStatus.INCOMPLETE));
     I.seeInCurrentUrl('/response/response-type');
+    seeInTitle('Your claim response');
+    I.see('How do you respond to the claim?', 'h1.govuk-heading-l');
+    I.see('Find out what each response means', '.govuk-details__summary-text');
+
     I.checkOption(`#${responseType.I_ADMIT_ALL_OF_THE_CLAIM}`);
+    I.seeElement('//span[contains(., "I admit all of the claim")]');
+    I.see('You agree you owe the full amount claimed.', 'div.govuk-hint');
+
+    I.seeElement('//span[contains(., "I admit part of the claim")]');
+    I.see('You agree you owe some money but not the full amount claimed.', 'div.govuk-hint');
+
+    I.seeElement('//span[contains(., "I reject all of the claim")]');
+    I.see('You\'ve either paid what you believe you owe or you reject the claim.', 'div.govuk-hint');
+
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
     I.seeInCurrentUrl('/response/task-list');
@@ -78,7 +92,13 @@ class Response {
   decideHowYouWillPay(paymentType) {
     I.click(responseTaskListItems.DECIDE_HOW_YOU_WILL_PAY, checkTaskList(responseTaskListItems.DECIDE_HOW_YOU_WILL_PAY, taskListStatus.INCOMPLETE));
     I.seeInCurrentUrl('/response/full-admission/payment-option');
+    seeInTitle('Payment option');
+
     I.checkOption(`#${paymentType}`);
+    I.seeElement('//label[contains(., "Immediately")]');
+    I.seeElement('//label[contains(., "By a set date")]');
+    I.seeElement('//label[contains(., "I\'ll suggest a repayment plan")]');
+
     clickButton(buttonType.SAVE_AND_CONTINUE);
     I.seeInCurrentUrl('/response/task-list');
     I.see(responseTaskListItems.DECIDE_HOW_YOU_WILL_PAY, checkTaskList(responseTaskListItems.DECIDE_HOW_YOU_WILL_PAY, taskListStatus.COMPLETE));
@@ -182,6 +202,11 @@ class Response {
   checkAndSubmitYourResponse(withDirectionsQuestionnaire) {
     I.click(responseTaskListItems.CHECK_AND_SUBMIT_YOUR_RESPONSE, checkTaskList(responseTaskListItems.CHECK_AND_SUBMIT_YOUR_RESPONSE, taskListStatus.INCOMPLETE)); // Ensure the element exists
     I.seeInCurrentUrl('/response/check-and-send');
+    seeInTitle('Check your answers');
+    I.see('Statement of truth', 'h2.govuk-heading-m');
+    I.see('Statement of truth', 'h2.govuk-heading-m');
+    I.see('Statement of truth', 'h2.govuk-heading-m');
+    I.see('Statement of truth', 'h2.govuk-heading-m');
     I.fillField('#signerName', 'Full name');
     I.fillField('#signerRole', 'Job title');
     I.checkOption('#signed');
