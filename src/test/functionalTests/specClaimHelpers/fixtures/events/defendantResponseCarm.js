@@ -223,7 +223,7 @@ module.exports = {
           soleTraderLastName: 'defendant',
           soleTraderTitle: 'mr',
           soleTraderTradingAs: 'Sole Trader Business',
-          type: 'INDIVIDUAL',
+          type: 'SOLE_TRADER',
         },
         respondent1LiPResponse: {
           timelineComment: 'Add any comments about their timeline (optional)',

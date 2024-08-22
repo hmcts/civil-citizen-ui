@@ -25,7 +25,7 @@ repaymentPlanSummaryDefendantController.get(CCJ_REPAYMENT_PLAN_DEFENDANT_URL, (a
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
+    const claim = await getClaimById(claimId, req,true);
     const pageTitle = t('PAGES.REPAYMENT_PLAN_SUMMARY.CLAIMANTS_REPAYMENT_PLAN', {lng: lang});
     const paymentInfo = getRepaymentInfo(claim,lang);
     const amount = getAmount(claim);
