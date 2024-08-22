@@ -450,9 +450,9 @@ export const getApplicationIndex = async(claimId: string, applicationId: string,
 
 export const getApplicationCreatedDate = (ccdClaim: Claim, applicationId: string): string => {
   const ccdGeneralApplications = ccdClaim.generalApplications;
-  for (let i = 0; i < ccdGeneralApplications.length; i++) {
-    if (ccdGeneralApplications[i].value.caseLink.CaseReference.toString() === applicationId.toString()){
-      return ccdGeneralApplications[i].value.generalAppSubmittedDateGAspec;
+  for (const ccdGeneralApplication of ccdGeneralApplications) {
+    if (ccdGeneralApplication.value.caseLink.CaseReference.toString() === applicationId.toString()){
+      return ccdGeneralApplication.value.generalAppSubmittedDateGAspec;
     }
   }
   return undefined;
