@@ -7,7 +7,7 @@ import {DEFENDANT_SUMMARY_URL} from 'routes/urls';
 export const trialArrangementsGuard = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const claimId = req.params.id;
-    const caseData: Claim = await getClaimById(claimId, req);
+    const caseData: Claim = await getClaimById(claimId, req,true);
     if (caseData.isFastTrackClaim) {
       next();
     } else {
