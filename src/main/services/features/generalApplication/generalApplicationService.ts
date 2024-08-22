@@ -397,7 +397,7 @@ export const getApplicationStatus = (status: ApplicationState): ApplicationStatu
   }
 };
 
-export const getRespondentApplicationStatus = (status: ApplicationState): ApplicationStatus => 
+export const getRespondentApplicationStatus = (status: ApplicationState): ApplicationStatus =>
   (status === ApplicationState.AWAITING_RESPONDENT_RESPONSE)
     ? ApplicationStatus.TO_DO
     : ApplicationStatus.IN_PROGRESS;
@@ -446,4 +446,14 @@ export const shouldDisplaySyncWarning = (applicationResponse: ApplicationRespons
 export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest) : Promise<number> => {
   const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
   return applications.findIndex(application => application.id == applicationId);
+};
+
+export const getApplicationCreatedDate = (ccdClaim: Claim, applicationId: string): string => {
+  const ccdGeneralApplications = ccdClaim.generalApplications;
+  for (let i = 0; i < ccdGeneralApplications.length; i++) {
+    if (ccdGeneralApplications[i].value.caseLink.CaseReference.toString() === applicationId.toString()){
+      return ccdGeneralApplications[i].value.generalAppSubmittedDateGAspec;
+    };
+  };
+  return undefined;
 };
