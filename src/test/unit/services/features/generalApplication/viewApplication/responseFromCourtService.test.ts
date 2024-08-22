@@ -520,7 +520,7 @@ describe('View Application service', () => {
       applicationResponse.case_data.hearingOrderDocument = setMockHearingOrderDocuments();
 
       //when
-      const result = getHearingOrderResponses(applicationResponse, 'en');
+      const result = getHearingOrderResponses(mockedAppRequest, applicationResponse, 'en');
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[0].rows[0].value.html).toEqual('1 August 2024');
@@ -534,7 +534,7 @@ describe('View Application service', () => {
       //given
       const applicationResponse = new ApplicationResponse();
       //when
-      const result = getHearingOrderResponses(applicationResponse, 'en');
+      const result = getHearingOrderResponses(mockedAppRequest, applicationResponse, 'en');
       //then
       expect(result.length).toEqual(0);
     });
@@ -560,7 +560,7 @@ describe('View Application service', () => {
         parentClaimantIsApplicant: undefined,
       };
       //when
-      const result = getHearingOrderResponses(applicationResponse, 'en');
+      const result = getHearingOrderResponses(mockedAppRequest, applicationResponse, 'en');
       //then
       expect(result.length).toEqual(0);
     });
