@@ -63,21 +63,23 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
       await renderView(claimId, claim, form, req, res);
     } else {
       await saveStatementOfTruth(redisKey, statementOfTruth);
-      await submitApplication(req);
+      const claimResponse = await submitApplication(req);
+      const genApps = claimResponse.generalApplications;
+      const genAppId = genApps ? genApps[genApps.length - 1].id : undefined;
       await deleteDraftClaimFromStore(redisKey);
-      res.redirect(getRedirectUrl(claimId, claim, applicationFee));
+      res.redirect(getRedirectUrl(claimId, claim, applicationFee,genAppId));
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-function getRedirectUrl(claimId: string, claim: Claim, applicationFee: number ): string {
+function getRedirectUrl(claimId: string, claim: Claim, applicationFee: number, genAppId: string ): string {
   if (claim.generalApplication?.applicationTypes?.length === 1 && claim.generalApplication.applicationTypes[0].option === ApplicationTypeOption.ADJOURN_HEARING
     && hearingMoreThan14DaysInFuture(claim)) {
     return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUBMITTED_URL);
   } else {
-    return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL+ '?appFee='+ applicationFee);
+    return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL) + '?appFee=' + applicationFee + '&id=' + genAppId;
   }
 }
 
