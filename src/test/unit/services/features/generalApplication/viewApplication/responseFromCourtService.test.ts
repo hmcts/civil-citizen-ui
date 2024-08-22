@@ -53,6 +53,23 @@ function setMockHearingNoticeDocuments(): CcdHearingDocument[] {
   }];
 }
 
+function setMockHearingOrderDocuments(): CcdHearingDocument[] {
+  return [{
+    'id': '4810a582-2e16-48e9-8b64-9f96b4d12cc4',
+    'value': {
+      'createdBy': 'Civil',
+      'documentLink': {
+        'category_id': 'applications',
+        'document_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831',
+        'document_filename': 'Application_Hearing_order_2024-08-02 12:15:34.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831/binary',
+      },
+      'documentName': 'Application_Hearing_Notice_2024-08-02 12:15:34.pdf',
+      'documentType': DocumentType.HEARING_ORDER,
+      'createdDatetime':  new Date('2024-08-01'),
+    },
+  }];
+}
 function setMockRequestForInformationDocument(): CcdGAMakeWithNoticeDocument[] {
   const fileName = 'Name of file';
   const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
@@ -219,12 +236,12 @@ describe('View Application service', () => {
       //when
       const result = getJudgesDirectionsOrder(mockedAppRequest, applicationResponse, 'en');
       //then
-      expect(result.rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result.rows[0].value.html).toEqual('1 January 2024');
-      expect(result.rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result.rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER');
-      expect(result.rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result.rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER_DOCUMENT');
+      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].rows[0].value.html).toEqual('1 January 2024');
+      expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER');
+      expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[0].rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER_DOCUMENT');
     });
   });
 
@@ -273,12 +290,12 @@ describe('View Application service', () => {
       //when
       const result = getJudgeDismiss('', applicationResponse, 'en');
       //then
-      expect(result.rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result.rows[0].value.html).toEqual('1 January 2024');
-      expect(result.rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result.rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DISMISSED');
-      expect(result.rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result.rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSED_DOCUMENT');
+      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].rows[0].value.html).toEqual('1 January 2024');
+      expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DISMISSED');
+      expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[0].rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DISMISSED_DOCUMENT');
     });
 
     it('should return empty if no data in applicationResponse', async () => {
@@ -287,7 +304,7 @@ describe('View Application service', () => {
       //when
       const result = getJudgeDismiss('', applicationResponse, 'en');
       //then
-      expect(result.rows.length).toEqual(0);
+      expect(result.length).toEqual(0);
     });
 
     it('should return empty if no data in applicationResponse caseData', async () => {
@@ -314,7 +331,7 @@ describe('View Application service', () => {
       //when
       const result = getJudgeDismiss(returnDashboardUrl, applicationResponse, 'en');
       //then
-      expect(result.rows.length).toEqual(0);
+      expect(result.length).toEqual(0);
     });
   });
 
@@ -363,12 +380,12 @@ describe('View Application service', () => {
       //when
       const result = getJudgeApproveEdit(applicationResponse, 'en');
       //then
-      expect(result.rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result.rows[0].value.html).toEqual('1 January 2024');
-      expect(result.rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
-      expect(result.rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_APPROVE_EDIT');
-      expect(result.rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result.rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPROVE_EDIT_DOCUMENT');
+      expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].rows[0].value.html).toEqual('1 January 2024');
+      expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_APPROVE_EDIT');
+      expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[0].rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPROVE_EDIT_DOCUMENT');
     });
 
     it('should return empty if no data in applicationResponse', async () => {
@@ -377,7 +394,7 @@ describe('View Application service', () => {
       //when
       const result = getJudgeApproveEdit(applicationResponse, 'en');
       //then
-      expect(result.rows.length).toEqual(0);
+      expect(result.length).toEqual(0);
     });
 
     it('should return empty if no data in applicationResponse caseData', async () => {
@@ -403,7 +420,7 @@ describe('View Application service', () => {
       //when
       const result = getJudgeApproveEdit(applicationResponse, 'en');
       //then
-      expect(result.rows.length).toEqual(0);
+      expect(result.length).toEqual(0);
     });
   });
 
@@ -499,52 +516,14 @@ describe('View Application service', () => {
 
   describe('getHearingOrderResponses', () => {
     it('should return hearing order response', async () => {
-      //given
-      const applicationResponse = new ApplicationResponse();
-      const fileName = 'Name of file';
-      const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
-      const binary_url = `http://dm-store:8080/documents/${binary}/binary`;
-      applicationResponse.case_data = {
-        applicationFeeAmountInPence: '',
-        applicationTypes: '',
-        gaAddlDoc: [],
-        generalAppAskForCosts: undefined,
-        generalAppDetailsOfOrder: '',
-        generalAppEvidenceDocument: [],
-        generalAppHearingDetails: undefined,
-        generalAppInformOtherParty: undefined,
-        generalAppPBADetails: undefined,
-        generalAppReasonsOfOrder: '',
-        generalAppRespondentAgreement: undefined,
-        generalAppStatementOfTruth: undefined,
-        generalAppType: undefined,
-        judicialDecision: undefined,
-        parentClaimantIsApplicant: undefined,
-        judicialDecisionMakeOrder: {
-          directionsResponseByDate: new Date('2024-01-01').toString(),
-        },
-        hearingOrderDocument: [
-          {
-            id: '1',
-            value: {
-              documentLink: {
-                document_url: 'test',
-                document_binary_url: binary_url,
-                document_filename: fileName,
-                category_id: '1',
-              },
-              documentType: DocumentType.HEARING_NOTICE,
-              createdDatetime: new Date('2024-01-01'),
-              createdBy:'civils',
-            },
-          },
-        ],
-      };
+      const applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
+      applicationResponse.case_data.hearingOrderDocument = setMockHearingOrderDocuments();
+
       //when
       const result = getHearingOrderResponses(applicationResponse, 'en');
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
-      expect(result[0].rows[0].value.html).toEqual('1 January 2024');
+      expect(result[0].rows[0].value.html).toEqual('1 August 2024');
       expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
       expect(result[0].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER_DESC');
       expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
@@ -614,6 +593,7 @@ describe('View Application service', () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.case_data.hearingNoticeDocument = setMockHearingNoticeDocuments();
+      application.case_data.hearingOrderDocument = undefined;
       application.case_data.requestForInformationDocument = setMockRequestForInformationDocument();
       application.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.YES;
 
@@ -649,6 +629,7 @@ describe('View Application service', () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
       application.case_data.hearingNoticeDocument = setMockHearingNoticeDocuments();
+      application.case_data.hearingOrderDocument = undefined;
       application.case_data.requestForInformationDocument = setMockRequestForInformationDocument();
     
       const claim = new Claim();

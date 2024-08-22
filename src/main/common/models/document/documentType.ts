@@ -41,6 +41,7 @@ export enum DocumentType {
   HEARING_NOTICE = 'HEARING_NOTICE',
   DISMISSAL_ORDER = 'DISMISSAL_ORDER',
   GENERAL_ORDER = 'GENERAL_ORDER',
+  HEARING_ORDER = 'HEARING_ORDER',
 }
 export enum DocumentUri {
   SEALED_CLAIM = 'sealed-claim',

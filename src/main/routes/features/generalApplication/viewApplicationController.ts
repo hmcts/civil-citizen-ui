@@ -19,7 +19,7 @@ import {
   ApplicationResponse,
 } from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
-import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 import { DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 
@@ -46,7 +46,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
 
     if(isApplicationFeeAmountNotPaid) {
-      applicationFeeOptionUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+      applicationFeeOptionUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION);
     }
 
     const responseFromCourt =  await getResponseFromCourtSection(req, req.params.appId, lang);
