@@ -7,8 +7,6 @@ const rejectAll = 'rejectAll';
 const dontWantMoreTime = 'dontWantMoreTime';
 
 const createGAAppSteps = require('../../citizenFeatures/response/steps/createGAAppSteps');
-const carmEnabled = false;
-const manualPIP = 'yes';
 
 let claimRef;
 let caseData;
