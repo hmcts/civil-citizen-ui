@@ -28,6 +28,7 @@ exports.config = {
       '../e2eTests/tests/**/*.js'] :
     [ '../functionalTests/tests/nonprod/**/*.js',
       '../functionalTests/tests/common/**/*.js',
+      '../e2eTests/tests/**/**/*.js',
       '../e2eTests/tests/**/*.js'],
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
