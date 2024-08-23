@@ -8,9 +8,9 @@ def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
 def camundaBranch = "master"
-def dmnBranch = "master"
+def dmnBranch = "bug_fix"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "bug_fix"
 def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
