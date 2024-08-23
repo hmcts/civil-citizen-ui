@@ -22,4 +22,4 @@ Scenario('Create LipvLip claim and defendant responded FullAdmit and PayImmediat
     await ClaimantResponseSteps.verifyJudgmentByAdmission(claimRef);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+}).tag('@nightly');
