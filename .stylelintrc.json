@@ -3,7 +3,7 @@
   "ignoreFiles": ["**/node_modules/**", ".yarn/**"],
   "maxWarnings": 0,
   "rules": {
-    "string-quotes": null,
-    "selector-class-pattern": null
+    "selector-class-pattern": null,
+    "scss/at-if-no-null": null
   }
 }
