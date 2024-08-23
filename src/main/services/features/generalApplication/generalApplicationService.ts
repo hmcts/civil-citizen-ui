@@ -454,4 +454,4 @@ export const saveApplicationTypesToGaResponse = async (gaState: ApplicationState
     gaResponse.generalApplicationType = applicationTypes;
     await saveDraftGARespondentResponse(gaRedisKey, gaResponse);
   }
-}
+};

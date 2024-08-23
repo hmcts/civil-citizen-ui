@@ -62,7 +62,7 @@ import {CCDHelpWithFees} from 'form/models/claimDetails';
 import {AppRequest} from 'models/AppRequest';
 import {
   getDraftGARespondentResponse,
-  saveDraftGARespondentResponse
+  saveDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 
 jest.mock('../../../../../main/modules/draft-store');
@@ -976,5 +976,3 @@ describe('Should get the application index', () => {
     expect(result).toEqual(-1);
   });
 });
-
-
