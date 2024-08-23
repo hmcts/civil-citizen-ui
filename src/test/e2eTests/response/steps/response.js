@@ -224,35 +224,61 @@ class Response {
     clickButton(buttonType.CONTINUE_WITHOUT_AN_EXPERT);
 
     I.seeInCurrentUrl('/directions-questionnaire/give-evidence-yourself');
+    seeInTitle('Defendant yourself evidence');
+    I.see('Do you want to give evidence yourself?', 'h1.govuk-heading-l');
+
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.NO}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
     I.seeInCurrentUrl('/directions-questionnaire/other-witnesses');
+    seeInTitle('Do you have other witnesses?');
+    I.see('Do you have other witnesses?', 'h1.govuk-heading-l');
+    I.see('This is someone who can confirm your version of events.', 'p.govuk-body');
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.NO}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
     I.seeInCurrentUrl('/directions-questionnaire/cant-attend-hearing-in-next-12-months');
+    seeInTitle('Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?');
+    I.see('Are there any dates in the next 12 months when you, your experts or witnesses cannot go to a hearing?', 'h1.govuk-heading-l');
+    I.see('These should only be the dates of important events like medical appointments, other court hearing, or holidays you have already booked', 'p.govuk-body');
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.NO}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
     I.seeInCurrentUrl('/directions-questionnaire/phone-or-video-hearing');
+    seeInTitle('Do you want to ask for a telephone or video hearing?');
+    I.see('Do you want to ask for a telephone or video hearing?', 'h1.govuk-heading-l');
+    I.see('The judge will decide if the hearing can be held by telephone or video.', 'p.govuk-body');
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.NO}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
     I.seeInCurrentUrl('/directions-questionnaire/vulnerability');
+    seeInTitle('Vulnerability questions');
+    I.see('Are you, your experts or witnesses vulnerable in a way that the court needs to consider?', 'h1.govuk-heading-l');
+    I.see('This is someone who has been the victim of domestic or other abuse, has a learning disability, physical or mental illness or reduced mental capacity. The court will look at what adjustments or support the person needs.', 'p.govuk-body');
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.NO}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
     I.seeInCurrentUrl('/directions-questionnaire/support-required');
+    seeInTitle('Support required');
+    I.see('Do you, your experts or witnesses need support to attend a hearing?', 'h1.govuk-fieldset__heading');
     I.checkOption(`#${supportRequired.NO}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
     I.seeInCurrentUrl('/directions-questionnaire/court-location');
+    seeInTitle('Specific court');
+    I.see('Do you want to ask for the hearing to be held at a specific court?', 'h1.govuk-heading-l');
+    I.see('You can ask for the hearing to be held at a specific court, for example, if you spend weekdays a long distance from your home. The court will consider both parties\' circumstances when deciding where to hold the hearing.', 'p.govuk-body');
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.NO}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
     I.seeInCurrentUrl('/directions-questionnaire/welsh-language');
+    seeInTitle('Welsh language');
+    I.see('Welsh language', 'h1.govuk-heading-l');
+    I.see('Welsh is an official language of Wales. You can use Welsh in court hearings. Asking to speak in Welsh in your hearing will not delay the hearing or have any effect on proceedings or the outcome of a case.', 'p.govuk-body');
+
+    I.see('What languages will you, your experts and your witnesses speak at the hearing?', 'p.govuk-body');
     I.checkOption(`#${speakLanguage.ENGLISH}`);
+    I.see('What languages will the documents be provided in?', 'p.govuk-body');
     I.checkOption(`#${documentLanguage.ENGLISH}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
 

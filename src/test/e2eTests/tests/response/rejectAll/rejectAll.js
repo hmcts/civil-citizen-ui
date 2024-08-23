@@ -4,16 +4,16 @@ const {rejectOfClaimType} = require('../../../commons/responseVariables');
 
 Feature('Response journey defendant reject all').tag('@leo');
 
-Scenario.only('already paid', () => {
+Scenario('already paid', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const claimId = '1645882162449418';
     RejectAll.start(claimId);
-    //RejectAll.confirmYourDetails(claimId);
-    //RejectAll.chooseResponseRejectAllOfClaim(rejectOfClaimType.I_HAVE_PAID_WHAT_I_BELIEVE_I_OWE);
-    //RejectAll.tellUsHowMuchYouHavePaid();
-    //RejectAll.freeTelephoneMediation();
+    RejectAll.confirmYourDetails(claimId);
+    RejectAll.chooseResponseRejectAllOfClaim(rejectOfClaimType.I_HAVE_PAID_WHAT_I_BELIEVE_I_OWE);
+    RejectAll.tellUsHowMuchYouHavePaid();
+    RejectAll.freeTelephoneMediation();
     RejectAll.giveUsDetailsInCaseThereIsAHearing();
-    //RejectAll.checkAndSubmitYourResponse(true);
+    RejectAll.checkAndSubmitYourResponse(true);
   }
 });
 
