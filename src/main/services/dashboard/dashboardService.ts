@@ -56,6 +56,10 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
   for (const generalApplication of claim.generalApplications) {
     const gaNotifications = await civilServiceClient.retrieveNotification(generalApplication.value.caseLink.CaseReference, caseRole, req);
     dashboardNotifications.items.push(...gaNotifications.items);
+    dashboardNotifications.items.forEach((notification) => {
+      notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, generalApplication.value.caseLink.CaseReference);
+      notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, generalApplication.value.caseLink.CaseReference);
+    });
   }
   if (dashboardNotifications) {
     dashboardNotifications.items.forEach((notification) => {
