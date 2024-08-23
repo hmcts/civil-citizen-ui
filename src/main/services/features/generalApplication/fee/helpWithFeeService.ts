@@ -24,7 +24,6 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, req: AppRequest, additionalFee: boolean): Promise<string> => {
   try {
-    throw 'Empty';
     let redirectUrl;
     let generalApplicationId: string;
     const claim: Claim = await getClaimById(claimId, req, true);
