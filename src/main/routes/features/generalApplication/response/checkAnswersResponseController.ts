@@ -22,7 +22,7 @@ const viewPath = 'features/generalApplication/response/check-answers';
 async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, gaResponse: GaResponse, req: AppRequest, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_SUPPORT_URL)
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_SUPPORT_URL);
   res.render(viewPath, {
     form,
     cancelUrl,
