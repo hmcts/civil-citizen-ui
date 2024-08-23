@@ -5,6 +5,7 @@ const {responseType, paymentType} = require('../../commons/responseVariables');
 const {yesAndNoCheckBoxOptionValue, speakLanguage, documentLanguage, supportRequired, howOftenYouMakePayments} = require('../../commons/eligibleVariables');
 const {seeInTitle} = require('../../commons/seeInTitle');
 const {checkDateFields} = require('../../commons/checkDateFields');
+const {checkResponseTypeFields} = require("../../commons/checkResponseTypeFields");
 const I = actor();
 
 class Response {
@@ -90,6 +91,20 @@ class Response {
     I.see(responseTaskListItems.CHOOSE_A_RESPONSE, checkTaskList(responseTaskListItems.CHOOSE_A_RESPONSE, taskListStatus.COMPLETE));
   }
 
+  chooseResponsePartAdmitOfTheClaim(partialAdmitType) {
+    I.click(responseTaskListItems.CHOOSE_A_RESPONSE, checkTaskList(responseTaskListItems.CHOOSE_A_RESPONSE, taskListStatus.INCOMPLETE));
+    I.seeInCurrentUrl('/response/response-type');
+    checkResponseTypeFields(responseType.I_ADMIT_PART_OF_THE_CLAIM);
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+
+    I.seeInCurrentUrl('/response/partial-admission/already-paid');
+    seeInTitle('Already paid');
+    I.see('Have you paid the claimant the amount you admit you owe?', 'h1.govuk-heading-l');
+    I.checkOption(`#${partialAdmitType}`);
+    I.seeInCurrentUrl('/response/task-list');
+    I.see(responseTaskListItems.CHOOSE_A_RESPONSE, checkTaskList(responseTaskListItems.CHOOSE_A_RESPONSE, taskListStatus.COMPLETE));
+  }
+
   decideHowYouWillPay(typeOfPayment) {
     I.click(responseTaskListItems.DECIDE_HOW_YOU_WILL_PAY, checkTaskList(responseTaskListItems.DECIDE_HOW_YOU_WILL_PAY, taskListStatus.INCOMPLETE));
     I.seeInCurrentUrl('/response/full-admission/payment-option');
@@ -146,7 +161,45 @@ class Response {
     I.see(responseTaskListItems.TELL_US_HOW_MUCH_YOU_HAVE_PAID, checkTaskList(responseTaskListItems.TELL_US_HOW_MUCH_YOU_HAVE_PAID, taskListStatus.COMPLETE));
   }
 
+  howMuchYouHavePaid(){
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    I.click(responseTaskListItems.HOW_MUCH_HAVE_YOU_PAID, checkTaskList(responseTaskListItems.HOW_MUCH_HAVE_YOU_PAID, taskListStatus.INCOMPLETE));
+    I.seeInCurrentUrl('/response/partial-admission/how-much-have-you-paid');
+    seeInTitle('How much have you paid?');
+
+    I.see('How much have you paid the claimant?\n', 'h1.govuk-fieldset__heading');
+    I.see('The total amount claimed is £1000. This includes the claim fee and any interest.', 'p.govuk-body-m');
+    I.see('How much have you paid?', 'label.govuk-label');
+    I.fillField('#amount', '1000');
+
+    I.see('When did you pay this amount?', 'legend.govuk-fieldset__legend');
+    I.see('For example, 23 7 2024', 'div.govuk-hint');
+    checkDateFields(yesterday);
+
+    I.see('How did you pay this amount?', 'label.govuk-label');
+    I.fillField('textarea[id="text"]', 'test');
+
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+    I.see(responseTaskListItems.HOW_MUCH_HAVE_YOU_PAID, checkTaskList(responseTaskListItems.HOW_MUCH_HAVE_YOU_PAID, taskListStatus.COMPLETE));
+  }
+
   tellUsWhyYouDisagreeWithTheClaim(){
+    I.click(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, checkTaskList(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, taskListStatus.INCOMPLETE));
+    I.seeInCurrentUrl('/response/your-defence');
+    I.fillField('textarea[id="text"]', 'test');
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+
+    I.seeInCurrentUrl('/response/timeline');
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+
+    I.seeInCurrentUrl('/response/evidence');
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+    I.see(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, checkTaskList(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, taskListStatus.COMPLETE));
+  }
+
+  WhyYouDisagreeWithTheAmountClaimed(){
     I.click(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, checkTaskList(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, taskListStatus.INCOMPLETE));
     I.seeInCurrentUrl('/response/your-defence');
     I.fillField('textarea[id="text"]', 'test');

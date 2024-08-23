@@ -20,6 +20,7 @@ const responseTaskListItems = Object.freeze({
   TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM : 'Tell us why you disagree with the claim',
   SHARE_YOUR_FINANCIAL_DETAILS: 'Share your financial details',
   YOUR_REPAYMENT_PLAN: 'Your repayment plan',
+  HOW_MUCH_HAVE_YOU_PAID: 'How much have you paid?',
 });
 
 const taskListStatus = Object.freeze({
