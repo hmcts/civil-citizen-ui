@@ -10,7 +10,7 @@ import {
   getRespondToApplicationCaption,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {
-  getDraftGARespondentResponse
+  getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 

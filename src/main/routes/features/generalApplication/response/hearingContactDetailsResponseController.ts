@@ -21,7 +21,6 @@ import {
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
 
-
 const hearingContactDetailsResponseController = Router();
 const viewPath = 'features/generalApplication/hearing-contact-details';
 

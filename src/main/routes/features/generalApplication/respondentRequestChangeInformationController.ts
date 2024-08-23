@@ -4,7 +4,7 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {
   DASHBOARD_URL,
   GA_RESPONDENT_INFORMATION_URL,
-  GA_RESPONSE_VIEW_APPLICATION_URL
+  GA_RESPONSE_VIEW_APPLICATION_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';

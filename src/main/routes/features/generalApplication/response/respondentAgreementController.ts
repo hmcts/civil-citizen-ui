@@ -6,7 +6,7 @@ import {
   GA_AGREE_TO_ORDER_URL,
   GA_RESPONDENT_AGREEMENT_URL,
   GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL,
-  GA_RESPONSE_VIEW_APPLICATION_URL
+  GA_RESPONSE_VIEW_APPLICATION_URL,
 } from 'routes/urls';
 import {getCancelUrl, saveRespondentAgreement} from 'services/features/generalApplication/generalApplicationService';
 import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';

@@ -18,7 +18,7 @@ import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {
   getApplicationFromGAService,
-  saveApplicationTypesToGaResponse
+  saveApplicationTypesToGaResponse,
 } from 'services/features/generalApplication/generalApplicationService';
 import {DocumentsViewComponent} from 'form/models/documents/DocumentsViewComponent';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
@@ -44,7 +44,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const courtDocuments: DocumentsViewComponent = getCourtDocuments(applicationResponse, lang);
     const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
-    await saveApplicationTypesToGaResponse(applicationResponse.state, generateRedisKeyForGA(req), applicationResponse.case_data.generalAppType.types,);
+    await saveApplicationTypesToGaResponse(applicationResponse.state, generateRedisKeyForGA(req), applicationResponse.case_data.generalAppType.types);
     res.render(viewPath, {backLinkUrl, summaryRows, pageTitle, redirectUrl, applicationIndex, applicantDocuments, courtDocuments, respondentDocuments, additionalDocUrl });
   } catch (error) {
     next(error);
