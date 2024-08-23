@@ -561,7 +561,7 @@ class CreateClaim {
     I.see('Total claim amount');
     I.see(claimAmount+claimFee);
     I.see('If you settle out of court we won\'t refund your claim fee.');
-    await I.waitForText(`continue to payment(£${String(claimFee)})`);
+    await I.waitForText(`continue to payment(£${claimFee})`);
     await I.click('continue to payment');
   }
 
