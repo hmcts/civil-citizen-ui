@@ -60,7 +60,6 @@ describe('General Application - Pay additional fee Page', () => {
         });
     });
 
-
     it('should return Do you want to apply for help with fees page with not sync payment', async () => {
       const claim = mockClaim;
       claim.paymentSyncError = true;
