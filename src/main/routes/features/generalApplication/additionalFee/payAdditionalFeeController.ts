@@ -63,7 +63,7 @@ payAdditionalFeeController.post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL, (asy
     } else {
       const redisKey = generateRedisKey(<AppRequest>req);
       await saveHelpWithFeesDetails(redisKey, req.body.option, hwfPropertyName);
-      const redirectUrl = await getRedirectUrl(claimId, form.model, <AppRequest>req, true);
+      const redirectUrl = await getRedirectUrl(claimId, form.model, <AppRequest>req);
       res.redirect(redirectUrl);
     }
   }catch (error) {

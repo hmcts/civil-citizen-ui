@@ -22,7 +22,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, req: AppRequest, additionalFee: boolean): Promise<string> => {
+export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, req: AppRequest): Promise<string> => {
   try {
     let redirectUrl;
     let generalApplicationId: string;
@@ -60,9 +60,11 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     } else {
       generalApplicationId = req.params.appId;
     }
+    const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, generalApplicationId);
+    const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
     claim.paymentSyncError = true;
     await saveDraftClaim(claim.id, claim, true);
-    if (additionalFee) {
+    if (isAdditionalFee) {
       return constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL);
     }
     return constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEE_SELECTION);
