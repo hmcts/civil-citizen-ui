@@ -114,3 +114,27 @@ export function generateRedisKey(req: AppRequest) {
 export function generateRedisKeyForGA(req: AppRequest) {
   return req.params.appId + req.session.user?.id;
 }
+
+export const findClaimIdsbyUserId = async (userId: string) => {
+  
+  // const claims = await app.locals.draftStoreClient.scan('*'+userId);
+  // return claims;
+
+  console.log('userId', userId);
+  
+  const found = [];
+  let cursor = '0';
+
+  do {
+    const reply = await app.locals.draftStoreClient.scan(cursor, 'MATCH', '*' + userId);
+
+    cursor = reply[0];
+    // delete reply[1].generalApplication;
+    found.push(...reply[1]);
+  } while (cursor !== '0');
+
+  return found;
+
+  // await deleteFieldDraftClaimFromStore(claimId, claim, 'generalApplication');
+  // await app.locals.draftStoreClient.del(claimId, field);
+};

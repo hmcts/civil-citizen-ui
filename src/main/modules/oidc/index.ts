@@ -19,6 +19,7 @@ import {
   TERMS_AND_CONDITIONS_URL,
   PRIVACY_POLICY_URL,
 } from 'routes/urls';
+import { deleteGAFromClaimsByUserId } from 'services/features/generalApplication/generalApplicationService';
 
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
   return req.originalUrl.startsWith(ASSIGN_CLAIM_URL);
@@ -102,15 +103,33 @@ export class OidcMiddleware {
           return res.redirect(CLAIMANT_TASK_LIST_URL);
         }
         if (req.session.user?.roles?.includes(citizenRole)) {
+          // const claimsIds = await findClaimsbyUserId(req.session?.user?.id);
+          // claimsIds.forEach(async claimId => {
+          //   const claim = await getCaseDataFromStore(claimId);
+          //   await deleteFieldDraftClaimFromStore(claimId, claim, 'generalApplication');
+          // });
+          await deleteGAFromClaimsByUserId(req.session?.user?.id);
           return res.redirect(DASHBOARD_URL);
         }
         return res.redirect(UNAUTHORISED_URL);
       } else {
+        await deleteGAFromClaimsByUserId(req.session?.user?.id);
         res.redirect(DASHBOARD_URL);
       }
     });
 
-    app.get(SIGN_OUT_URL, (req: AppRequest, res: Response) => {
+    app.get(SIGN_OUT_URL, async (req: AppRequest, res: Response) => {
+
+      // // TODO:
+      // if (req.session?.claimId) {
+      //   console.log(req.session?.claimId);
+      //   console.log(req.session?.user?.id);
+      //   req.params.id = req.session?.claimId;
+      //   const redisKey = req.session?.claimId + req.session?.user?.id;
+      //   const claim = await getClaimById(req.session?.claimId, req, true);
+      //   await deleteFieldDraftClaimFromStore(redisKey, claim, 'generalApplication');
+      // }
+
       const params = new URLSearchParams({
         'id_token_hint': req.session.user?.accessToken,
         'post_logout_redirect_uri': applicationUrl,

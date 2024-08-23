@@ -1,4 +1,9 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {
+  deleteFieldDraftClaimFromStore, 
+  findClaimIdsbyUserId, 
+  getCaseDataFromStore, 
+  saveDraftClaim,
+} from 'modules/draft-store/draftStoreService';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {
   ApplicationType,
@@ -177,15 +182,6 @@ export const getCancelUrl = async (claimId: string, claim: Claim): Promise<strin
   return GA_CANCEL_URL
     .replace(':id', claimId)
     .replace(':propertyName', 'generalApplication');
-
-  // if (claim.isClaimant()) {
-  //   const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
-  //   if (isCUIR2Enabled) {
-  //     return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-  //   }
-  //   return constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL);
-  // }
-  // return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 };
 
 export function validateNoConsentOption(req: AppRequest, errors: ValidationError[], applicationTypeOption: string) {
@@ -448,4 +444,12 @@ export const shouldDisplaySyncWarning = (applicationResponse: ApplicationRespons
 export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest) : Promise<number> => {
   const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
   return applications.findIndex(application => application.id == applicationId);
+};
+
+export const deleteGAFromClaimsByUserId = async(userId: string) : Promise<void> => {
+  const claimsIds = await findClaimIdsbyUserId(userId);
+  claimsIds.forEach(async (claimId: string) => {
+    const claim = await getCaseDataFromStore(claimId);
+    await deleteFieldDraftClaimFromStore(claimId, claim, 'generalApplication');
+  });
 };
