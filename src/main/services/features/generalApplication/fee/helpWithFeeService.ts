@@ -61,7 +61,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       generalApplicationId = req.params.appId;
     }
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, generalApplicationId);
-    const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
+    const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
     claim.paymentSyncError = true;
     await saveDraftClaim(claim.id, claim, true);
     if (isAdditionalFee) {
