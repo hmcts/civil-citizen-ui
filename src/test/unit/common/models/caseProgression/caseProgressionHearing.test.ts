@@ -2,6 +2,7 @@ import {CaseProgressionHearing, HearingLocation} from 'models/caseProgression/ca
 import {HearingDuration} from 'models/caseProgression/hearingDuration';
 import {t} from 'i18next';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
+import {HearingDurationFormatter} from 'services/features/caseProgression/hearingDurationFormatter';
 
 jest.mock('../../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -70,5 +71,22 @@ describe('testing of caseProgressionHearingFee class', ()=> {
     const resultDateExpected = caseProgressionHearing.hearingFeeInformation.getHearingDueDateFormatted('en');
     //Then
     expect(resultDateExpected).toBe('26 April 2023');
+  });
+});
+
+describe('CaseProgressionHearing', () => {
+  it.each(Object.values(HearingDuration))('should getHearingDurationFormatted returns correct information for %s', (duration) => {
+    // Given
+    const mockGetHearingDuration = HearingDurationFormatter.formatHearingDuration as jest.Mock;
+    const formattedDuration = `COMMON.HEARING_DURATION.${duration}`;
+    mockGetHearingDuration.mockImplementation(() => formattedDuration);
+
+    const caseProgressionHearing = new CaseProgressionHearing(null, null, null, null, duration);
+
+    // When
+    const result = caseProgressionHearing.getHearingDurationFormatted('en');
+
+    // Then
+    expect(result).toBe(formattedDuration);
   });
 });
