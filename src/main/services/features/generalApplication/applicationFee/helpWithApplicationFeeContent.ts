@@ -14,8 +14,7 @@ export const getHelpApplicationFeeSelectionPageContents = (lng: string, paymentS
     .addMicroText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING')
     .addMainTitle('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_TITLE');
   if (paymentSyncError) {
-    contentBuilder
-      .addWarning('PAGES.FEE_AMOUNT.SYNC_WARNING');
+    contentBuilder.addWarning('PAGES.FEE_AMOUNT.SYNC_WARNING');
   }
   contentBuilder
     .addRawHtml(linkParagraph)

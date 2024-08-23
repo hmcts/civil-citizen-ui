@@ -1,6 +1,10 @@
 import {AppRequest} from 'models/AppRequest';
 import {YesNo} from 'form/models/yesNo';
-import {GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
+import {
+  GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL,
+  GA_APPLY_HELP_WITH_FEE_SELECTION,
+  GA_APPLY_HELP_WITH_FEES,
+} from 'routes/urls';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
@@ -18,8 +22,9 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, req: AppRequest): Promise<string> => {
+export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, req: AppRequest, additionalFee: boolean): Promise<string> => {
   try {
+    throw 'Empty';
     let redirectUrl;
     let generalApplicationId: string;
     const claim: Claim = await getClaimById(claimId, req, true);
@@ -58,6 +63,9 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     }
     claim.paymentSyncError = true;
     await saveDraftClaim(claim.id, claim, true);
+    if (additionalFee) {
+      return constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL);
+    }
     return constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEE_SELECTION);
   }
 };

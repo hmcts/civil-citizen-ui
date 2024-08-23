@@ -3,19 +3,12 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_PAGE_TITLE') }}
 {% endblock %}
 
 {% block nestedContent %}
-          {% if paymentSyncError %}
-            {{ govukWarningText({
-              text: t('PAGES.FEE_AMOUNT.SYNC_WARNING'),
-              iconFallbackText: "Warning"
-            }) }}
-          {% endif %}
           {% for content in applyHelpWithFeeSelectionContents %}
             {{ itemContent(content,t) }}
           {% endfor %}
