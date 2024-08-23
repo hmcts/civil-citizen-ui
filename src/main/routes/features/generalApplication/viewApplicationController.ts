@@ -20,10 +20,7 @@ import {
   getReturnDashboardUrl,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
-import {
-  ApplicationResponse,
-  JudicialDecisionMakeAnOrderOptions,
-} from 'common/models/generalApplication/applicationResponse';
+import {ApplicationResponse, JudicialDecisionOptions, JudicialDecisionMakeAnOrderOptions} from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {SummaryRow} from 'common/models/summaryList/summaryList';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
@@ -45,6 +42,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, req.params.appId);
     const isResponseFromCourt = !!applicationResponse.case_data?.judicialDecision?.decision;
     const isJudgesDirectionsOrder = applicationResponse.case_data?.judicialDecisionMakeOrder?.directionsResponseByDate != undefined;
+    let showRequestMoreInfoButton = false;
     const isJudgesApproveEdit = applicationResponse.case_data?.judicialDecisionMakeOrder?.makeAnOrder == JudicialDecisionMakeAnOrderOptions.APPROVE_OR_EDIT;
     const isJudgesDismiss = applicationResponse.case_data?.judicialDecisionMakeOrder?.makeAnOrder == JudicialDecisionMakeAnOrderOptions.DISMISS_THE_APPLICATION;
     let responseFromCourt: SummaryRow[] = [];
@@ -61,8 +59,16 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     let returnDashboardUrl: string = null;
 
     if(isResponseFromCourt) {
-      responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
-      payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
+      const judgeResponseType = applicationResponse.case_data?.judicialDecision?.decision;
+      if (judgeResponseType === JudicialDecisionOptions.MAKE_AN_ORDER) {
+        responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
+        payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
+      } else {
+        if (judgeResponseType === JudicialDecisionOptions.REQUEST_MORE_INFO) {
+          showRequestMoreInfoButton = true;
+          responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
+        }
+      }
     }
 
     if(isApplicationFeeAmountNotPaid) {
@@ -102,6 +108,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       isJudgesDirectionsOrder,
       judgesDirectionsOrder,
       judgesDirectionsOrderUrl,
+      showRequestMoreInfoButton,
       isJudgesApproveEdit,
       judgesApproveEdit,
       isJudgesDismiss,
