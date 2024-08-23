@@ -60,6 +60,21 @@ describe('General Application - Pay additional fee Page', () => {
         });
     });
 
+
+    it('should return Do you want to apply for help with fees page with not sync payment', async () => {
+      const claim = mockClaim;
+      claim.paymentSyncError = true;
+      mockGetCaseData.mockImplementation(async () => claim);
+      await request(app)
+        .get(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING'));
+          expect(res.text).toContain(t('PAGES.FEE_AMOUNT.SYNC_WARNING'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.WANT_TO_APPLY_HWF_TITLE'));
+        });
+    });
+
     it('should return http 500 when has error in the get method', async () => {
       mockGetCaseData.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
