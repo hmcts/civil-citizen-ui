@@ -4,8 +4,7 @@ import {
 import {
   FinaliseYourTrialSectionBuilder,
 } from 'models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
-import {DEFENDANT_SUMMARY_TAB_URL, VIEW_ORDERS_AND_NOTICES_URL} from 'routes/urls';
-import {TabId} from 'routes/tabs';
+import {VIEW_ORDERS_AND_NOTICES_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
 import {plainToInstance} from 'class-transformer';
 import {CaseRole} from 'form/models/caseRoles';
@@ -24,7 +23,7 @@ describe('Trial arrangements confirmation service', () => {
     const readyTrialArrangementsConfirmationContentExpected = new FinaliseYourTrialSectionBuilder()
       .addMainTitle(TITLE)
       .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.NOTICES_AND_ORDERS',
-        DEFENDANT_SUMMARY_TAB_URL.replace(':id', claimId).replace(':tab', TabId.NOTICES),
+        VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId),
         'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_CAN_VIEW_TRIAL_ARRANGEMENTS',
         'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IN_THE_CASE_DETAILS')
       .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.MAKE_AN_APPLICATION',
@@ -60,7 +59,7 @@ describe('Trial arrangements confirmation service', () => {
         true)
       .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_WILL_NEED_TO_CALL')
       .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.NOTICES_AND_ORDERS',
-        DEFENDANT_SUMMARY_TAB_URL.replace(':id', claimId).replace(':tab', TabId.NOTICES),
+        VIEW_ORDERS_AND_NOTICES_URL.replace(':id', claimId),
         'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.YOU_CAN_VIEW_TRIAL_ARRANGEMENTS',
         'PAGES.FINALISE_TRIAL_ARRANGEMENTS.CONFIRMATION.IN_THE_CASE_DETAILS')
       .build();
