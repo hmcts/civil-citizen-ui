@@ -12,6 +12,11 @@ jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/services/features/claim/details/claimDetailsService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../main/routes/guards/generalApplication/orderJudgeGuard.ts', () => ({
+  orderJudgeGuard: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('General Application - Application type', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
