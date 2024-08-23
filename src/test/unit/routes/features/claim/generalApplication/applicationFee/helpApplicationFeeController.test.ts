@@ -8,22 +8,28 @@ import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import { Claim } from 'common/models/claim';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 import {t} from 'i18next';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/services/features/generalApplication/fee/helpWithFeeService');
 
+jest.mock('services/features/generalApplication/generalApplicationService', () => ({
+  getApplicationIndex: jest.fn(),
+  saveHelpWithFeesDetails: jest.fn(),
+}));
+
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockSaveCaseData = saveDraftClaim as jest.Mock;
 const mockGetRedirectUrl = getRedirectUrl as jest.Mock;
+const mockSaveHelpWithFeesDetails = saveHelpWithFeesDetails as jest.Mock;
 
 const mockClaim = new Claim();
 mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
@@ -123,7 +129,7 @@ describe('General Application - Do you want to apply for help with fees Page', (
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      mockSaveCaseData.mockImplementation(async () => {
+      mockSaveHelpWithFeesDetails.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)

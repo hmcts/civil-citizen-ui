@@ -14,7 +14,10 @@ import {t} from 'i18next';
 import {AppRequest} from 'models/AppRequest';
 import {getHelpApplicationFeeSelectionPageContents, getButtonsContents}
   from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
-import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
+import {
+  getApplicationIndex,
+  saveHelpWithFeesDetails,
+} from 'services/features/generalApplication/generalApplicationService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee';
@@ -26,7 +29,13 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
     const claim: Claim = await getClaimById(claimId, req, true);
     form = new GenericForm(new GenericYesNo(claim.generalApplication?.helpWithFees?.applyHelpWithFees));
   }
-  const backLinkUrl = req.query.id ? constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL) + '?id=' + req.query.id : constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_VIEW_APPLICATION_URL);
+  let backLinkUrl;
+  if (req.query.id) {
+    backLinkUrl = constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL) + '?id=' + req.query.id
+  } else {
+    const index = await getApplicationIndex(claimId, req.params.appId, <AppRequest>req);
+    backLinkUrl =`${constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_VIEW_APPLICATION_URL)}?index=${index + 1}`;
+  }
   res.render(applyHelpWithApplicationFeeViewPath,
     {
       form,
