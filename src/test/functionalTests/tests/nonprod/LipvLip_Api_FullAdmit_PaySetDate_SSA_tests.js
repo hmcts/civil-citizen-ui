@@ -48,7 +48,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
-}).tag('@regression-r2');
+}).tag('@nightly');
 
 Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date and SSA by Claimant and reject by Defendant - @api', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -94,4 +94,4 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
-}).tag('@r2-regression').tag('@nightly');
+}).tag('@nightly');
