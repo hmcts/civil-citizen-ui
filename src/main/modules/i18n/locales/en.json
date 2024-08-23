@@ -4380,6 +4380,7 @@
       "DEFENDANT_TIMELINE": "Defendant timeline of events",
       "DETERMINATION_REQUEST": "Determination request",
       "DRAFT_CLAIM": "Draft claim form",
+      "FINAL_ORDER": "Judge final order",
       "PAGE_CAPTION": "Orders and notices from the court",
       "PAGE_TITLE": "View orders and notices",
       "PARTICULARS_CLAIM": "Particulars of claim",
@@ -4388,6 +4389,7 @@
       "SETTLEMENT_AGREEMENT": "Settlement agreement",
       "STANDARD_DIRECTIONS_ORDER": "Standard Directions Order",
       "TRANSLATED_ORDER": "Translated order",
+      "TRIAL_ARRANGEMENTS": "Trial Ready",
       "UNSEALED_CLAIM":"Unsealed Claim form"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
