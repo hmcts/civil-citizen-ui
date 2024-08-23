@@ -1,6 +1,6 @@
 import { NextFunction, RequestHandler, Response, Router } from 'express';
 import { AppRequest } from 'common/models/AppRequest';
-import { GA_RESPONSE_CHECK_ANSWERS_URL } from 'routes/urls';
+import {GA_RESPONSE_CHECK_ANSWERS_URL, GA_RESPONSE_HEARING_SUPPORT_URL} from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
 import { StatementOfTruthForm } from 'common/models/generalApplication/statementOfTruthForm';
 import { GenericForm } from 'common/form/models/genericForm';
@@ -14,14 +14,15 @@ import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
 import { getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 
 const gaCheckAnswersResponseController = Router();
 const viewPath = 'features/generalApplication/response/check-answers';
-const backLinkUrl = 'test'; // TODO: add url
 
 async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, gaResponse: GaResponse, req: AppRequest, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_SUPPORT_URL)
   res.render(viewPath, {
     form,
     cancelUrl,

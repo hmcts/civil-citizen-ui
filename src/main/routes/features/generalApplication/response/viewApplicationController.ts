@@ -52,7 +52,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
 }) as RequestHandler);
 
 async function getRedirectUrl(applicationResponse: ApplicationResponse, applicationId: string, claimId: string) {
-  const claimantRespondingToDefendantVaryAJudgment =  applicationResponse.case_data.generalAppType.types.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) && (applicationResponse.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO);
+  const claimantRespondingToDefendantVaryAJudgment = applicationResponse.case_data.generalAppType.types.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT);
   const withConsent = applicationResponse.case_data.generalAppRespondentAgreement.hasAgreed === YesNoUpperCamelCase.YES;
   if(claimantRespondingToDefendantVaryAJudgment){
     return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_ACCEPT_DEFENDANT_OFFER_URL);
