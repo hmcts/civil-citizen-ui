@@ -15,13 +15,12 @@ const finaliseTrialArrangementsController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-finaliseTrialArrangementsController.get([CP_FINALISE_TRIAL_ARRANGEMENTS_URL], (async (req, res, next: NextFunction) => {
+finaliseTrialArrangementsController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    const redisKey = generateRedisKey(<AppRequest>req);
-    await saveDraftClaim(redisKey, claim);
+    await saveDraftClaim(generateRedisKey(<AppRequest>req), claim);
 
     const dashboardUrl = claim.caseRole === CaseRole.CLAIMANT ? constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL) : constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 

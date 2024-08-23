@@ -35,13 +35,14 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: Response)
 let admittedPaymentAmount: number;
 
 partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, PartAdmitGuard.apply(RESPONSE_TASK_LIST_URL), (async (req, res, next: NextFunction) => {
-  const claimId = generateRedisKey(<AppRequest>req);
+  const claimId = req.params.id;
+  const redisKey = generateRedisKey(<AppRequest>req);
   try {
-    const claim: Claim = await getCaseDataFromStore(claimId);
+    const claim: Claim = await getCaseDataFromStore(redisKey);
     if (!claim.partialAdmissionPaymentAmount() || !claim.isPartialAdmission()) {
       res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     } else {
-      const paymentOption = await getPaymentOptionForm(claimId, ResponseType.PART_ADMISSION);
+      const paymentOption = await getPaymentOptionForm(claim, ResponseType.PART_ADMISSION);
       admittedPaymentAmount = claim.partialAdmissionPaymentAmount();
       renderView(new GenericForm(paymentOption), res, admittedPaymentAmount);
     }

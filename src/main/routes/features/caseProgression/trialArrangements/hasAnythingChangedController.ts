@@ -8,7 +8,6 @@ import {
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getHasAnythingChanged} from 'services/features/caseProgression/trialArrangements/hasAnythingChanged';
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
@@ -18,7 +17,6 @@ import {
   getHasAnythingChangedForm,
   getNameTrialArrangements,
 } from 'services/features/caseProgression/trialArrangements/trialArrangementsService';
-import {AppRequest} from 'models/AppRequest';
 
 const hasAnythingChangedViewPath = 'features/caseProgression/trialArrangements/has-anything-changed';
 const hasAnythingChangedController = Router();
@@ -42,8 +40,7 @@ hasAnythingChangedController.post(HAS_ANYTHING_CHANGED_URL,(async (req, res, nex
     const form = new GenericForm(new HasAnythingChangedForm(option,textArea));
     await form.validate();
     const claimId = req.params.id;
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const claim: Claim = await getCaseDataFromStore(redisKey);
+    const claim: Claim =  await getClaimById(claimId, req,true);
     if (form.hasErrors()) {
       await renderView(res, claimId, claim, form);
     } else {

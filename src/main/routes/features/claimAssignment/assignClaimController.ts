@@ -21,7 +21,7 @@ assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
     if (claimId) {
       const claim: Claim = await getClaimById(claimId, req);
       await civilServiceClient.assignDefendantToClaim(claimId, req, claim.respondent1PinToPostLRspec?.accessCode);
-      deleteDraftClaimFromStore(claimId);
+      await deleteDraftClaimFromStore(claimId);
       req.session.firstContact = {};
     }
   } catch (error) {
