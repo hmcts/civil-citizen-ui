@@ -4386,6 +4386,7 @@
       "DEFENDANT_TIMELINE": "Amserlen o ddigwyddiadau'r Diffynnydd",
       "DETERMINATION_REQUEST": "Gofyn i benderfyniad gael ei wneud",
       "DRAFT_CLAIM": "Ffurflen hawlio drafft",
+      "FINAL_ORDER": "Gorchymyn terfynol y barnwr",
       "PAGE_CAPTION": "Gorchmynion a rhybuddion gan y llys",
       "PAGE_TITLE": "Gweld gorchmynion a rhybuddion",
       "PARTICULARS_CLAIM": "Manylion yr hawliad",
@@ -4394,6 +4395,7 @@
       "SETTLEMENT_AGREEMENT": "Cytundeb setlo",
       "STANDARD_DIRECTIONS_ORDER": "Gorchymyn Cyfarwyddo Safonol",
       "TRANSLATED_ORDER": "Translated order",
+      "TRIAL_ARRANGEMENTS": "Barod ar gyfer Treial",
       "UNSEALED_CLAIM": "Ffurflen Hawlio heb ei selio"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
