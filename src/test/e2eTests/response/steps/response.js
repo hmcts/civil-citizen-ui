@@ -123,13 +123,25 @@ class Response {
   }
 
   tellUsHowMuchYouHavePaid(){
+    let yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+
     I.click(responseTaskListItems.TELL_US_HOW_MUCH_YOU_HAVE_PAID, checkTaskList(responseTaskListItems.TELL_US_HOW_MUCH_YOU_HAVE_PAID, taskListStatus.INCOMPLETE));
     I.seeInCurrentUrl('/response/full-rejection/how-much-have-you-paid');
+    seeInTitle('How much have you paid?');
+
+    I.see('How much have you paid?', 'h1.govuk-fieldset__heading');
+    I.see('The total amount claimed is £1000. This includes the claim fee and any interest.', 'p.govuk-body-m');
+    I.see('How much have you paid?', 'label.govuk-label');
     I.fillField('#amount', '1000');
-    I.fillField('#day', '01');
-    I.fillField('#month', '01');
-    I.fillField('#year', '2024');
+
+    I.see('When did you pay this amount?', 'legend.govuk-fieldset__legend');
+    I.see('For example, 23 7 2024', 'div.govuk-hint');
+    checkDateFields(yesterday);
+
+    I.see('How did you pay this amount?', 'label.govuk-label');
     I.fillField('textarea[id="text"]', 'test');
+
     clickButton(buttonType.SAVE_AND_CONTINUE);
     I.see(responseTaskListItems.TELL_US_HOW_MUCH_YOU_HAVE_PAID, checkTaskList(responseTaskListItems.TELL_US_HOW_MUCH_YOU_HAVE_PAID, taskListStatus.COMPLETE));
   }
@@ -151,9 +163,38 @@ class Response {
   freeTelephoneMediation(){
     I.click(responseTaskListItems.FREE_TELEPHONE_MEDIATION, checkTaskList(responseTaskListItems.FREE_TELEPHONE_MEDIATION, taskListStatus.INCOMPLETE));
     I.seeInCurrentUrl('/mediation/free-telephone-mediation');
+    seeInTitle('Free telephone mediation');
+
+    I.see('Free telephone mediation', 'h1.govuk-heading-l');
+    I.see('We have automatically registered you for free telephone mediation from HM Courts and Tribunals Service.', 'p.govuk-body');
+
+    I.see('How free mediation works', 'h2.govuk-heading-m');
+    I.see('A trained, neutral mediator from HM Courts and Tribunals Service will listen to your views and help you to negotiate a settlement of your dispute.', 'p.govuk-body');
+    I.see('Mediation can be quicker, cheaper and less stressful than going to court.', 'div.govuk-inset-text');
+    I.see('Mediation is confidential, and nothing said in the mediation can be used in court proceedings if the dispute cannot be settled. The mediator speaks to each party separately, this is not a conference call.', 'p.govuk-body');
+    I.see('The claimant must agree to mediation. We\'ll contact you within 28 days after the claimant\'s confirmation, to arrange a free appointment.', 'p.govuk-body');
+    I.see('Your mediation appointment will last for no more than an hour.', 'p.govuk-body');
+    I.see('Find out more about', 'p.govuk-body');
+    I.see('free telephone mediation (opens in new tab).', 'a.govuk-link');
+
+    I.see('Reaching a settlement', 'h2.govuk-heading-m');
+    I.see('If mediation is successful, you\'ll make a verbal agreement over the phone. This is legally binding which means that you must comply with it. You will be given the terms of the agreement in a document – this is called a settlement agreement.', 'p.govuk-body');
+    I.see('If either party breaks the terms the other party can go to court to ask for a judgment or hearing.', 'p.govuk-body');
+    I.see('If mediation fails and a court hearing is needed, what happened during the mediation appointment cannot be mentioned in court.', 'p.govuk-body');
+    I.see('You will not have to wait longer for a court hearing if you choose mediation.', 'div.govuk-inset-text');
+
+    I.see('I do not agree to free mediation', 'a.govuk-link');
+
     clickButton(buttonType.CONTINUE);
     I.seeInCurrentUrl('/mediation/can-we-use-company');
+    seeInTitle('Mediation - Provide company contact number');
+
+    I.see('Who should the mediation service call?', 'h1.govuk-fieldset__heading');
+    I.see('Who should the mediation service call?', 'label.govuk-label');
     I.fillField('#mediationContactPerson', 'TEST');
+
+    I.see('Enter this person’s phone number, including extension if required', 'label.govuk-label');
+    I.see('For example, 02012346788 ext. 153', 'div.govuk-hint');
     I.fillField('#mediationPhoneNumber', '0123456789');
     clickButton(buttonType.SAVE_AND_CONTINUE);
     I.see(responseTaskListItems.FREE_TELEPHONE_MEDIATION, checkTaskList(responseTaskListItems.FREE_TELEPHONE_MEDIATION, taskListStatus.COMPLETE));
@@ -162,11 +203,24 @@ class Response {
   giveUsDetailsInCaseThereIsAHearing(){
     I.click(responseTaskListItems.GIVE_US_DETAILS_IN_CASE_THERE_IS_A_HEARING, checkTaskList(responseTaskListItems.GIVE_US_DETAILS_IN_CASE_THERE_IS_A_HEARING, taskListStatus.INCOMPLETE));
     I.seeInCurrentUrl('/directions-questionnaire/determination-without-hearing');
+    seeInTitle('Determination without hearing');
+    I.see('Determination without Hearing Questions', 'h1.govuk-heading-l');
+    I.seeElement('//span[contains(., "Do you consider that this claim is suitable for determination without a hearing")]');
+    I.see('i.e. by a judge reading and considering the case papers, witness statements and other documents filled by the parties, making a decision, and giving a note of reason for that decision?','p.govuk-body');
+
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.NO}`);
+    I.see('Tell us why', 'label.govuk-label');
     I.fillField('textarea[id="reasonForHearing"]', 'test');
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
     I.seeInCurrentUrl('/directions-questionnaire/expert');
+    seeInTitle('Using an expert');
+    I.see('Using an expert', 'h1.govuk-heading-l');
+    I.see('It\'s rare for a judge to allow you to use an expert in a small claim. Most small claims don\'t need an expert.', 'p.govuk-body');
+    I.see('An expert is not a legal representative.', 'p.govuk-body');
+
+    I.see('An expert is not a legal representative.', 'p.govuk-body');
+    I.seeElement('input.link-button#expertYes');
     clickButton(buttonType.CONTINUE_WITHOUT_AN_EXPERT);
 
     I.seeInCurrentUrl('/directions-questionnaire/give-evidence-yourself');

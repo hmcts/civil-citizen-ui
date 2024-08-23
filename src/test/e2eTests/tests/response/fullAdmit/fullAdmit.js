@@ -2,7 +2,7 @@ const config = require('../../../../config');
 const Response = require('../../../response/steps/response');
 const {responseType, paymentType} = require('../../../commons/responseVariables');
 
-Feature('Response journey defendant Full admit').tag('@leo');
+Feature('Response journey defendant Full admit').tag('@e2e');
 
 Scenario('Pay immediately', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -27,7 +27,7 @@ Scenario('By a set date', () => {
   }
 });
 
-Scenario.only(' by installments', () => {
+Scenario(' by installments', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const claimId = '1645882162449408';
     Response.start(claimId);
