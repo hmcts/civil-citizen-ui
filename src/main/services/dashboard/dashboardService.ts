@@ -38,12 +38,12 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     if (!isCarmApplicable){
       dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
-    
+
     //exclude Applications sections
     if (!isGAFlagEnable){
       dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
-    
+
     return dashboard;
   } else {
     throw new Error('Dashboard not found...');
@@ -52,6 +52,11 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
 
 export const getNotifications = async (claimId: string, claim: Claim, caseRole: ClaimantOrDefendant, req: AppRequest, lng: string): Promise<DashboardNotificationList> => {
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
+  // Add notifications for all GAs
+  for (const generalApplication of claim.generalApplications) {
+    const gaNotifications = await civilServiceClient.retrieveNotification(generalApplication.value.caseLink.CaseReference, caseRole, req);
+    dashboardNotifications.items.push(...gaNotifications.items);
+  }
   if (dashboardNotifications) {
     dashboardNotifications.items.forEach((notification) => {
       notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng);
