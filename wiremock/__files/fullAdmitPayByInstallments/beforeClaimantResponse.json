@@ -1,0 +1,209 @@
+{
+  "id": 1777777777777731,
+  "jurisdiction": "CIVIL",
+  "state": "AWAITING_APPLICANT_INTENTION",
+  "case_type_id": "CIVIL",
+  "created_date": "2024-08-14T21:30:11",
+  "last_modified": "2024-08-14T21:32:07",
+  "case_data": {
+    "pcqId": "4c10fec5-1278-45f3-89f0-d3d016d47f95",
+    "respondent1ClaimResponseTypeForSpec": "FULL_ADMISSION",
+    "defenceAdmitPartPaymentTimeRouteRequired": "SUGGESTION_OF_REPAYMENT_PLAN",
+    "totalClaimAmount": 1500,
+    "respondent1ClaimResponseDocumentSpec": {
+      "documentSize": 0
+    },
+    "respondent1LiPResponse": {
+      "respondent1ResponseLanguage": "ENGLISH"
+    },
+    "submittedDate": "2024-08-14T22:30:11",
+    "specRespondent1Represented": "No",
+    "respondent1ResponseDeadline": "2024-09-12T16:00:00",
+    "respondent1DQHomeDetails": {
+      "type": "OWNED_HOME"
+    },
+    "respondent1ResponseDate": "2024-08-14T22:32:07",
+    "CaseAccessCategory": "SPEC_CLAIM",
+    "defendantUserDetails": {
+      "email": "jane.smith@gmail.com",
+      "id": "af43b7d6-4607-459e-be2b-2b1fe9740063"
+    },
+    "responseToClaimAdmitPartWhyNotPayLRspec": "asd",
+    "applicant1": {
+      "partyID": "fc031586-6217-40",
+      "type": "INDIVIDUAL",
+      "individualTitle": "Miss",
+      "individualFirstName": "Jane",
+      "individualLastName": "Doe",
+      "individualDateOfBirth": "1995-08-28",
+      "primaryAddress": {
+        "AddressLine1": "123",
+        "AddressLine2": "Fake Street",
+        "PostTown": "sheffield",
+        "PostCode": "S12eu"
+      },
+      "partyName": "Miss Jane Doe",
+      "partyTypeDisplayValue": "Individual",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "partyPhone": "07446777177",
+      "flags": {
+        "partyName": "Miss Jane Doe",
+        "roleOnCase": "Claimant 1"
+      }
+    },
+    "timelineOfEvents": [
+      {
+        "value": {
+          "timelineDate": "2000-01-01",
+          "timelineDescription": "test"
+        },
+        "id": "0"
+      }
+    ],
+    "serviceRequestReference": "2022-1655915218557",
+    "applicant1Represented": "No",
+    "issueDate": "2024-08-14",
+    "disabilityPremiumPayments": "No",
+    "detailsOfClaim": "Injury",
+    "claimFee": {
+      "calculatedAmountInPence": "8000",
+      "code": "FEE0206",
+      "version": "6"
+    },
+    "respondent1DQCarerAllowanceCreditFullAdmission": "No",
+    "systemGeneratedCaseDocuments": [
+      {
+        "value": {
+          "documentLink": {
+            "document_url": "http://dm-store:8080/documents/e82bf1cf-1ae7-4d48-aa75-717a2cbde1f5",
+            "document_binary_url": "http://dm-store:8080/documents/e82bf1cf-1ae7-4d48-aa75-717a2cbde1f5/binary",
+            "document_filename": "000MC009-claim-form-claimant-copy.pdf"
+          },
+          "documentName": "000MC009-claim-form-claimant-copy.pdf",
+          "documentType": "CLAIMANT_CLAIM_FORM",
+          "documentSize": 34692,
+          "createdDatetime": "2024-08-14T22:30:25",
+          "createdBy": "Civil"
+        },
+        "id": "b7d58df4-b14a-4c67-9bce-9be0788e6b63"
+      },
+      {
+        "value": {
+          "documentLink": {
+            "document_url": "http://dm-store:8080/documents/21e6e8d7-cd83-4167-8319-df70632fd64c",
+            "document_binary_url": "http://dm-store:8080/documents/21e6e8d7-cd83-4167-8319-df70632fd64c/binary",
+            "document_filename": "000MC009-sealed-claim-form.pdf"
+          },
+          "documentName": "000MC009-sealed-claim-form.pdf",
+          "documentType": "SEALED_CLAIM",
+          "documentSize": 43266,
+          "createdDatetime": "2024-08-14T22:30:26",
+          "createdBy": "Civil"
+        },
+        "id": "bf8b45c7-fdd9-4522-92eb-43542b018ae7"
+      }
+    ],
+    "specClaimResponseTimelineList": "MANUAL",
+    "applicant1AdditionalLipPartyDetails": {
+      "correspondenceAddress": {
+        "AddressLine1": "123",
+        "AddressLine2": "Test Street",
+        "PostTown": "Liverpool",
+        "PostCode": "L7 2pz"
+      },
+      "contactPerson": "Test Company"
+    },
+    "helpWithFees": {
+      "helpWithFee": "No"
+    },
+    "claimInterest": "No",
+    "specAoSApplicantCorrespondenceAddressRequired": "Yes",
+    "respondToClaimAdmitPartUnemployedLRspec": {
+      "unemployedComplexTypeRequired": "RETIRED"
+    },
+    "claimantUserDetails": {
+      "email": "civilmoneyclaimsdemo@gmail.com",
+      "id": "371de4cf-e524-44d7-9902-4798bfa91321"
+    },
+    "legacyCaseReference": "000MC009",
+    "applicant1ResponseDeadline": "2024-09-12T16:00:00",
+    "respondent1RepaymentPlan": {
+      "paymentAmount": "25000",
+      "repaymentFrequency": "ONCE_ONE_MONTH",
+      "firstRepaymentDate": "2024-10-10"
+    },
+    "respondent1PartnerAndDependent": {
+      "liveWithPartnerRequired": "No",
+      "haveAnyChildrenRequired": "No",
+      "supportedAnyoneFinancialRequired": "No"
+    },
+    "respondent1CourtOrderPaymentOption": "No",
+    "respondent1GeneratedResponseDocument": {
+      "documentSize": 0
+    },
+    "businessProcess": {
+      "status": "READY",
+      "camundaEvent": "DEFENDANT_RESPONSE_CUI",
+      "readyOn": "2024-08-14T22:32:07.7252088"
+    },
+    "respondent1LoanCreditOption": "No",
+    "respondent1BankAccountList": [
+      {
+        "value": {
+          "balance": "100000",
+          "jointAccount": "No",
+          "accountType": "CURRENT"
+        },
+        "id": "ec61e2ab-bfee-41c8-9450-8de5738ff6b7"
+      }
+    ],
+    "respondent1PinToPostLRspec": {
+      "accessCode": "LYX7TCVPR9K2",
+      "respondentCaseRole": "[DEFENDANT]",
+      "expiryDate": "2025-02-10"
+    },
+    "respondent1": {
+      "partyID": "217b3483-af77-4a",
+      "type": "INDIVIDUAL",
+      "individualTitle": "Sir",
+      "individualFirstName": "John",
+      "individualLastName": "Doe",
+      "individualDateOfBirth": "2000-01-01",
+      "primaryAddress": {
+        "AddressLine1": "TestAddressLine1",
+        "AddressLine2": "TestAddressLine2",
+        "AddressLine3": "TestAddressLine3",
+        "PostTown": "TestCity",
+        "PostCode": "IG61JD"
+      },
+      "partyName": "Sir John Doe",
+      "partyTypeDisplayValue": "Individual",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "partyPhone": "07800000000",
+      "flags": {
+        "partyName": "Sir John Doe",
+        "roleOnCase": "Defendant 1"
+      }
+    },
+    "applicant1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+    },
+    "defenceAdmitPartEmploymentTypeRequired": "No",
+    "responseClaimTrack": "SMALL_CLAIM",
+    "respondent1AdditionalLipPartyDetails": {
+      "contactPerson": "Test Company"
+    },
+    "responseClaimMediationSpecRequired": "No",
+    "claimAmountBreakup": [
+      {
+        "value": {
+          "claimAmount": "150000",
+          "claimReason": "Injury"
+        },
+        "id": "0"
+      }
+    ]
+  },
+  "security_classification": "PUBLIC",
+  "callback_response_status": "CALLBACK_COMPLETED"
+}

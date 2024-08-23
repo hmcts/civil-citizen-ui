@@ -893,7 +893,7 @@
     },
     "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
       "PAGE_TITLE": "Unavailability dates for mediation",
-      "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend meditation",
+      "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend mediation",
       "PAGE_HINT_TEXT1": "Provide all dates in the next 3 months when you cannot attend a mediation appointment as accurately as you can. Once a date for your appointment has been set, it can be difficult to re-arrange.",
       "PAGE_HINT_TEXT2": "The Small claims Mediation Service operates Monday to Friday, 8am to 5pm, except bank holidays."
     },
@@ -4380,6 +4380,7 @@
       "DEFENDANT_TIMELINE": "Defendant timeline of events",
       "DETERMINATION_REQUEST": "Determination request",
       "DRAFT_CLAIM": "Draft claim form",
+      "FINAL_ORDER": "Judge final order",
       "PAGE_CAPTION": "Orders and notices from the court",
       "PAGE_TITLE": "View orders and notices",
       "PARTICULARS_CLAIM": "Particulars of claim",
@@ -4388,6 +4389,7 @@
       "SETTLEMENT_AGREEMENT": "Settlement agreement",
       "STANDARD_DIRECTIONS_ORDER": "Standard Directions Order",
       "TRANSLATED_ORDER": "Translated order",
+      "TRIAL_ARRANGEMENTS": "Trial Ready",
       "UNSEALED_CLAIM":"Unsealed Claim form"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
