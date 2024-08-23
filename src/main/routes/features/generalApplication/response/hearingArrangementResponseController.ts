@@ -20,16 +20,17 @@ import {
 import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {GaResponse} from 'models/generalApplication/response/gaResponse';
 
 const hearingArrangementResponseController = Router();
 const viewPath = 'features/generalApplication/hearing-arrangement';
 
-async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingArrangement>, req: AppRequest | Request, res: Response): Promise<void> {
+async function renderView(gaResponse: GaResponse, claim: Claim, form: GenericForm<HearingArrangement>, req: AppRequest | Request, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const headerTitle = getRespondToApplicationCaption(claim, req.params.appId, lang);
-  const cancelUrl = await getCancelUrl(claimId, claim);
+  const headerTitle = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
+  const cancelUrl = await getCancelUrl(req.params.id, claim);
   const courtLocations = await getListOfCourtLocations(<AppRequest> req);
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_HEARING_PREFERENCE_URL);
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_RESPONDENT_HEARING_PREFERENCE_URL);
 
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, courtLocations });
 }
@@ -41,7 +42,7 @@ hearingArrangementResponseController.get(GA_RESPONSE_HEARING_ARRANGEMENT_URL, (a
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const hearingArrangement = gaResponse?.hearingArrangement || new HearingArrangement();
     const form = new GenericForm(hearingArrangement);
-    await renderView(claimId, claim, form, req, res);
+    await renderView(gaResponse, claim, form, req, res);
   } catch (error) {
     next(error);
   }
@@ -55,7 +56,8 @@ hearingArrangementResponseController.post(GA_RESPONSE_HEARING_ARRANGEMENT_URL, (
     const form = new GenericForm(hearingArrangement);
     await form.validate();
     if (form.hasErrors()) {
-      await renderView(claimId, claim, form, req, res);
+      const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
+      await renderView(gaResponse, claim, form, req, res);
     } else {
       await saveRespondentHearingArrangement(generateRedisKeyForGA(<AppRequest>req), hearingArrangement);
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL));

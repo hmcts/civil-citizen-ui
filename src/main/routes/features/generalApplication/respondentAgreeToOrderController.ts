@@ -28,11 +28,12 @@ respondentAgreeToOrderController.get(GA_AGREE_TO_ORDER_URL, (async (req: AppRequ
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
+    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const caption: string = getRespondToApplicationCaption(claim, req.params.appId, lang);
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId,req.params.id,GA_RESPONSE_VIEW_APPLICATION_URL);
-    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
+    const caption: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
+    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_VIEW_APPLICATION_URL);
+
     const form = new GenericForm(new GenericYesNo(gaResponse?.agreeToOrder));
 
     res.render(viewPath, {
@@ -54,13 +55,15 @@ respondentAgreeToOrderController.post(GA_AGREE_TO_ORDER_URL, (async (req: AppReq
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const caption: string = getRespondToApplicationCaption(claim, req.params.appId, lang);
+
     const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId,req.params.id,GA_RESPONSE_VIEW_APPLICATION_URL);
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.AGREE_TO_ORDER_NOT_SELECTED'));
 
     form.validateSync();
 
     if (form.hasErrors()) {
+      const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
+      const caption: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
       res.render(viewPath, { form, caption,cancelUrl, backLinkUrl });
     } else {
       await saveRespondentAgreeToOrder(redisKey, req.body.option);

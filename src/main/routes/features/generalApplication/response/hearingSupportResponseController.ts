@@ -20,15 +20,16 @@ import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {GaResponse} from 'models/generalApplication/response/gaResponse';
 
 const hearingSupportResponseController = Router();
 const viewPath = 'features/generalApplication/hearing-support';
 
-async function renderView(claimId: string, claim: Claim, form: GenericForm<HearingSupport>,  req: AppRequest | Request, res: Response): Promise<void> {
+async function renderView(gaResponse: GaResponse, claim: Claim, form: GenericForm<HearingSupport>, req: AppRequest | Request, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const headerTitle = getRespondToApplicationCaption(claim, req.params.appId, lang);
-  const cancelUrl = await getCancelUrl(claimId, claim);
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL);
+  const headerTitle = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
+  const cancelUrl = await getCancelUrl(req.params.id, claim);
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL);
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, headingTitle: t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE') });
 }
 
@@ -39,7 +40,7 @@ hearingSupportResponseController.get(GA_RESPONSE_HEARING_SUPPORT_URL, (async (re
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const hearingSupport = gaResponse?.hearingSupport || new HearingSupport([]);
     const form = new GenericForm(hearingSupport);
-    await renderView(claimId, claim, form, req, res);
+    await renderView(gaResponse, claim, form, req, res);
   } catch (error) {
     next(error);
   }
@@ -55,7 +56,8 @@ hearingSupportResponseController.post(GA_RESPONSE_HEARING_SUPPORT_URL, (async (r
     const form = new GenericForm(hearingSupport);
     await form.validate();
     if (form.hasErrors()) {
-      await renderView(claimId, claim, form, req, res);
+      const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
+      await renderView(gaResponse, claim, form, req, res);
     } else {
       await saveRespondentHearingSupport(generateRedisKeyForGA(req), hearingSupport);
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_CHECK_ANSWERS_URL));

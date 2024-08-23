@@ -1,7 +1,11 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {t} from 'i18next';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {DASHBOARD_URL, GA_RESPONDENT_INFORMATION_URL, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL} from 'routes/urls';
+import {
+  DASHBOARD_URL,
+  GA_RESPONDENT_INFORMATION_URL,
+  GA_RESPONSE_VIEW_APPLICATION_URL
+} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
@@ -30,7 +34,7 @@ respondentRequestChangeInformationController.get(GA_RESPONDENT_INFORMATION_URL, 
 }) as RequestHandler);
 
 const getUploadFormContent = (lng: string, claimId: string, appId: string) => {
-  const startUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL);
+  const startUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_VIEW_APPLICATION_URL);
   return new PageSectionBuilder()
     .addParagraph('PAGES.GENERAL_APPLICATION.RESPONDENT_INFORMATION.OTHER_PARTY_REQUEST')
     .addParagraph('PAGES.GENERAL_APPLICATION.RESPONDENT_INFORMATION.REQUEST_BY_APPLICATION')

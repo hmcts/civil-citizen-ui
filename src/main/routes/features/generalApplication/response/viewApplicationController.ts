@@ -16,11 +16,15 @@ import {
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
+import {
+  getApplicationFromGAService,
+  saveApplicationTypesToGaResponse
+} from 'services/features/generalApplication/generalApplicationService';
 import {DocumentsViewComponent} from 'form/models/documents/DocumentsViewComponent';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 
 const viewApplicationToRespondentController = Router();
 const viewPath = 'features/generalApplication/response/view-application';
@@ -33,23 +37,23 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const summaryRows = await getApplicationSections(req, applicationId, lang);
     const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationId, GA_RESPONDENT_INFORMATION_URL);
-    const redirectUrl = await getRedirectUrl(req, applicationId, claimId);
-    const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
+    const redirectUrl = await getRedirectUrl(applicationResponse, applicationId, claimId);
+    const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
     const applicantDocuments: DocumentsViewComponent = getApplicantDocuments(applicationResponse, lang);
     const courtDocuments: DocumentsViewComponent = getCourtDocuments(applicationResponse, lang);
     const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
+    await saveApplicationTypesToGaResponse(applicationResponse.state, generateRedisKeyForGA(req), applicationResponse.case_data.generalAppType.types,);
     res.render(viewPath, {backLinkUrl, summaryRows, pageTitle, redirectUrl, applicationIndex, applicantDocuments, courtDocuments, respondentDocuments, additionalDocUrl });
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-async function getRedirectUrl(req: AppRequest, applicationId: string, claimId: string) {
-  const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
+async function getRedirectUrl(applicationResponse: ApplicationResponse, applicationId: string, claimId: string) {
   const claimantRespondingToDefendantVaryAJudgment =  applicationResponse.case_data.generalAppType.types.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) && (applicationResponse.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO);
-  const withConsent = applicationResponse.case_data.generalAppType.types.includes(ApplicationTypeOption.SETTLE_BY_CONSENT);
+  const withConsent = applicationResponse.case_data.generalAppRespondentAgreement.hasAgreed === YesNoUpperCamelCase.YES;
   if(claimantRespondingToDefendantVaryAJudgment){
     return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_ACCEPT_DEFENDANT_OFFER_URL);
   }else if(withConsent){

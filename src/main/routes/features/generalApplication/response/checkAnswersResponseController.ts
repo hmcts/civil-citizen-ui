@@ -13,6 +13,7 @@ import { getRespondToApplicationCaption, saveRespondentStatementOfTruth } from '
 import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
 import { getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 
 const gaCheckAnswersResponseController = Router();
 const viewPath = 'features/generalApplication/response/check-answers';
@@ -21,13 +22,13 @@ const backLinkUrl = 'test'; // TODO: add url
 async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, gaResponse: GaResponse, req: AppRequest, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  res.render(viewPath, { 
-    form, 
-    cancelUrl, 
-    backLinkUrl, 
-    headerTitle: getTitle(claim, req.params.appId, lang), 
-    claimIdPrettified: caseNumberPrettify(claimId), 
-    claim, 
+  res.render(viewPath, {
+    form,
+    cancelUrl,
+    backLinkUrl,
+    headerTitle: getTitle(gaResponse.generalApplicationType, lang),
+    claimIdPrettified: caseNumberPrettify(claimId),
+    claim,
     summaryRows: getSummarySections(claimId, req.params.appId, gaResponse, lang),
   });
 }
@@ -60,17 +61,17 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
     } else {
       const redisKey = generateRedisKeyForGA(req);
       await saveRespondentStatementOfTruth(redisKey, statementOfTruth);
-      res.redirect('test'); // TODO: correct URL      
+      res.redirect('test'); // TODO: correct URL
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-const getTitle = (claim: Claim, appId: string, lng: string) => {
-  const application = claim.respondentGaAppDetails?.find((application) => application.gaApplicationId === appId);
-  return (application && application.generalAppTypes.length == 1)
-    ? getRespondToApplicationCaption(claim, appId, lng)
+const getTitle = (generalAppTypes: ApplicationTypeOption[], lng: string) => {
+
+  return (generalAppTypes.length == 1)
+    ? getRespondToApplicationCaption(generalAppTypes, lng)
     : t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.RESPOND_TO_AN_APPLICATION', {lng});
 };
 export default gaCheckAnswersResponseController;
