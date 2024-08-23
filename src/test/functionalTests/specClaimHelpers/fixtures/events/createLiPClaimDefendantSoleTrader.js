@@ -48,7 +48,7 @@ const createLipClaimDefendantSoleTrader = (user, userId, totalClaimAmount) => {
         soleTraderLastName: 'defendant',
         soleTraderTitle: 'mr',
         soleTraderTradingAs: 'Sole Trader Business',
-        type: 'INDIVIDUAL',
+        type: 'SOLE_TRADER',
       },
       defenceRouteRequired: undefined,
       respondToClaim: undefined,
@@ -153,5 +153,5 @@ const createLipClaimDefendantSoleTrader = (user, userId, totalClaimAmount) => {
   };
   return eventDto;
 };
-    
+
 module.exports = createLipClaimDefendantSoleTrader;
