@@ -4,7 +4,6 @@
 
 .moj-add-another {
 
-  // sass-lint:disable class-name-format
   &__remove-button {
     display: none;
   }
@@ -17,7 +16,6 @@
     position: relative;
   }
 
-  // sass-lint:disable property-sort-order
   .moj-add-another__remove-button {
     display: block;
     position: absolute;
@@ -91,7 +89,6 @@
 
 .language {
   float: right;
-  // sass-lint:disable zero-unit
   margin-bottom: 0px;
 }
 
@@ -284,7 +281,6 @@
   }
 }
 
-// sass-lint:disable nesting-depth
 .dashboard-notification {
   .govuk-notification-banner {
     .govuk-notification-banner__content {
