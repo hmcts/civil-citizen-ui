@@ -38,12 +38,13 @@ describe('General Application - Respondent want to upload document ', () => {
     (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
   beforeEach(() => {
-    jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+    const mockGaResponse = new GaResponse();
+    mockGaResponse.generalApplicationType = [];
+    jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(mockGaResponse);
   });
 
   describe('on GET', () => {
     it('should return Do you want to upload documents to support your response page', async () => {
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL))
