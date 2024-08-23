@@ -4,7 +4,7 @@ import {YesNo} from 'form/models/yesNo';
 import {
   GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL,
   GA_APPLY_HELP_WITH_FEE_SELECTION,
-  GA_APPLY_HELP_WITH_FEES
+  GA_APPLY_HELP_WITH_FEES,
 } from 'routes/urls';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
@@ -126,19 +126,6 @@ describe('apply help with application fee selection', () => {
     //Then
     expect(actualRedirectUrl).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, '12345667', GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag=true'));
   });
-  it('should enable the warning text if payment request is failed', async () => {
-    claim.paymentSyncError = false;
-    (getClaimById as jest.Mock).mockResolvedValue(claim);
-    jest
-      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-      .mockResolvedValueOnce(ccdClaim);
-    mockedAppRequest.params = {appId: '12345667'};
-    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockRejectedValueOnce(new Error('something went wrong'));
-    //when
-    const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), mockedAppRequest);
-    //Then
-    expect(actualRedirectUrl).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, '12345667', GA_APPLY_HELP_WITH_FEE_SELECTION));
-  });
   it('should enable the warning text if payment request is failed for additional fee', async () => {
     claim.paymentSyncError = false;
     (getClaimById as jest.Mock).mockResolvedValue(claim);
@@ -147,10 +134,26 @@ describe('apply help with application fee selection', () => {
       .mockResolvedValueOnce(ccdClaim);
     mockedAppRequest.params = {appId: '12345667'};
     applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'ref';
-    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockRejectedValueOnce(new Error('something went wrong'));
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockRejectedValueOnce(new Error('something went wrong'));
+    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(applicationResponse);
     //when
-    const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), mockedAppRequest);
+    const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), mockedAppRequest);
     //Then
     expect(actualRedirectUrl).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, '12345667', GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL));
+  });
+  it('should enable the warning text if payment request is failed', async () => {
+    claim.paymentSyncError = false;
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(ccdClaim);
+    mockedAppRequest.params = {appId: '123456678'};
+    applicationResponse = new ApplicationResponse();
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockRejectedValueOnce(new Error('something went wrong'));
+    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(applicationResponse);
+    //when
+    const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), mockedAppRequest);
+    //Then
+    expect(actualRedirectUrl).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, '123456678', GA_APPLY_HELP_WITH_FEE_SELECTION));
   });
 });
