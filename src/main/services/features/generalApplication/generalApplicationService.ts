@@ -12,7 +12,7 @@ import {
 } from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
-import {GA_CANCEL_URL} from 'routes/urls';
+import {CANCEL_URL} from 'routes/urls';
 import {YesNo} from 'common/form/models/yesNo';
 import {AppRequest} from 'common/models/AppRequest';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
@@ -179,7 +179,7 @@ export const saveIfPartyWantsToUploadDoc = async (redisKey: string, wantToSaveDo
 };
 
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
-  return GA_CANCEL_URL
+  return CANCEL_URL
     .replace(':id', claimId)
     .replace(':propertyName', 'generalApplication');
 };
