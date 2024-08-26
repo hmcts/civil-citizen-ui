@@ -7,7 +7,7 @@ Feature('Response journey defendant Part Admin').tag('@e2e');
 
 Scenario('already paid', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    const claimId = '1645882162449418';
+    const claimId = '1645882162449438';
     PartAdmit.start(claimId);
     PartAdmit.confirmYourDetails(claimId);
     PartAdmit.chooseResponsePartAdmitOfTheClaim(yesAndNoCheckBoxOptionValue.YES);
@@ -21,7 +21,7 @@ Scenario('already paid', () => {
 
 Scenario('pay immediately', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    const claimId = '1645882162449428';
+    const claimId = '1645882162449448';
     PartAdmit.start(claimId);
     PartAdmit.confirmYourDetails(claimId);
     PartAdmit.chooseResponsePartAdmitOfTheClaim(yesAndNoCheckBoxOptionValue.NO);
@@ -36,7 +36,7 @@ Scenario('pay immediately', () => {
 
 Scenario('By set date', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    const claimId = '1645882162449438';
+    const claimId = '1645882162449458';
     PartAdmit.start(claimId);
     PartAdmit.confirmYourDetails(claimId);
     PartAdmit.chooseResponsePartAdmitOfTheClaim(yesAndNoCheckBoxOptionValue.NO);
