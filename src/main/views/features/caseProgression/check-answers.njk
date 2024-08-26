@@ -73,11 +73,7 @@
             {% endfor %}
           {% endif %}
           {% for content in bottomPageContents %}
-            {% if content.type === ClaimSummaryType.MAINTITLE %}
-                <h2 class="govuk-heading-l">{{ t(content.data.text) }}</h2>
-            {% else %}
                 {{ itemContent(content,t) }}
-            {% endif %}
           {% endfor %}
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
