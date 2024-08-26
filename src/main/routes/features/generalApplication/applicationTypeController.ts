@@ -27,7 +27,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
   try {
     const claimId = req.params.id;
     // TODO: set claimID in AppRequest so when user logout 
-    req.session.claimId = claimId;
+    // req.session.claimId = claimId;
     const claim = await getClaimById(claimId, req, true);
     const applicationIndex = queryParamNumber(req, 'index');
     const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;

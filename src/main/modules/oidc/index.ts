@@ -113,7 +113,7 @@ export class OidcMiddleware {
       }
     });
 
-    app.get(SIGN_OUT_URL, async (req: AppRequest, res: Response) => {
+    app.get(SIGN_OUT_URL, (req: AppRequest, res: Response) => {
       const params = new URLSearchParams({
         'id_token_hint': req.session.user?.accessToken,
         'post_logout_redirect_uri': applicationUrl,
