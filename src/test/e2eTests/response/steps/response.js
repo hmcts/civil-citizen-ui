@@ -101,6 +101,7 @@ class Response {
     seeInTitle('Already paid');
     I.see('Have you paid the claimant the amount you admit you owe?', 'h1.govuk-heading-l');
     I.checkOption(`#${partialAdmitType}`);
+    clickButton(buttonType.SAVE_AND_CONTINUE);
     I.seeInCurrentUrl('/response/task-list');
     I.see(responseTaskListItems.CHOOSE_A_RESPONSE, checkTaskList(responseTaskListItems.CHOOSE_A_RESPONSE, taskListStatus.COMPLETE));
   }
@@ -169,13 +170,13 @@ class Response {
     I.seeInCurrentUrl('/response/partial-admission/how-much-have-you-paid');
     seeInTitle('How much have you paid?');
 
-    I.see('How much have you paid the claimant?\n', 'h1.govuk-fieldset__heading');
+    I.see('How much have you paid the claimant?', 'h1.govuk-fieldset__heading');
     I.see('The total amount claimed is £1000. This includes the claim fee and any interest.', 'p.govuk-body-m');
     I.see('How much have you paid?', 'label.govuk-label');
     I.fillField('#amount', '1000');
 
     I.see('When did you pay this amount?', 'legend.govuk-fieldset__legend');
-    I.see('For example, 23 7 2024', 'div.govuk-hint');
+    I.see('For example, 26 7 2024', 'div.govuk-hint');
     checkDateFields(yesterday);
 
     I.see('How did you pay this amount?', 'label.govuk-label');
@@ -183,6 +184,34 @@ class Response {
 
     clickButton(buttonType.SAVE_AND_CONTINUE);
     I.see(responseTaskListItems.HOW_MUCH_HAVE_YOU_PAID, checkTaskList(responseTaskListItems.HOW_MUCH_HAVE_YOU_PAID, taskListStatus.COMPLETE));
+  }
+
+  whyDoYouDisagreeWithTheAmountClaimed(){
+
+    I.click(responseTaskListItems.WHY_DO_YOU_DISAGREE_WITH_THE_AMOUNT_CLAIMED, checkTaskList(responseTaskListItems.WHY_DO_YOU_DISAGREE_WITH_THE_AMOUNT_CLAIMED, taskListStatus.INCOMPLETE));
+    I.seeInCurrentUrl('/response/partial-admission/why-do-you-disagree');
+    seeInTitle('Why do you disagree?');
+
+    I.see('Why do you disagree with the claim amount?', 'h1.govuk-heading-l');
+    I.see('The total amount claimed is £1000. This includes the claim fee and any interest.', 'p.govuk-body');
+
+    I.fillField('textarea[id="text"]', 'test');
+
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+
+    //add your timeline of events
+    I.seeInCurrentUrl('/response/timeline');
+    seeInTitle('Add your timeline of events');
+    I.see('Add your timeline of events', 'h1.govuk-heading-l');
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+
+    //List your evidence
+    I.seeInCurrentUrl('/response/evidence');
+    seeInTitle('List your evidence');
+    I.see('List your evidence', 'h1.govuk-heading-l');
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+
+    I.see(responseTaskListItems.WHY_DO_YOU_DISAGREE_WITH_THE_AMOUNT_CLAIMED, checkTaskList(responseTaskListItems.WHY_DO_YOU_DISAGREE_WITH_THE_AMOUNT_CLAIMED, taskListStatus.COMPLETE));
   }
 
   tellUsWhyYouDisagreeWithTheClaim(){
@@ -199,18 +228,38 @@ class Response {
     I.see(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, checkTaskList(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, taskListStatus.COMPLETE));
   }
 
-  WhyYouDisagreeWithTheAmountClaimed(){
-    I.click(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, checkTaskList(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, taskListStatus.INCOMPLETE));
-    I.seeInCurrentUrl('/response/your-defence');
-    I.fillField('textarea[id="text"]', 'test');
+  howMuchMoneyDoYouAdmitYouOwe(){
+    I.click(responseTaskListItems.HOW_MUCH_MONEY_DO_YOU_ADMIT_YOU_OWE, checkTaskList(responseTaskListItems.HOW_MUCH_MONEY_DO_YOU_ADMIT_YOU_OWE, taskListStatus.INCOMPLETE));
+    I.seeInCurrentUrl('/response/partial-admission/how-much-do-you-owe');
+    seeInTitle('How much do you owe?');
+    I.see('How much money do you admit you owe?', 'h1.govuk-fieldset__heading');
+    I.see('The total amount claimed is £1000. This includes the claim fee and any interest.', 'div.govuk-hint');
+    I.fillField('#amount', '500');
+
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
-    I.seeInCurrentUrl('/response/timeline');
+    I.see(responseTaskListItems.HOW_MUCH_MONEY_DO_YOU_ADMIT_YOU_OWE, checkTaskList(responseTaskListItems.HOW_MUCH_MONEY_DO_YOU_ADMIT_YOU_OWE, taskListStatus.COMPLETE));
+  }
+
+  whenWillYouPay(typeOfPayment){
+    I.click(responseTaskListItems.WHEN_WILL_YOU_PAY, checkTaskList(responseTaskListItems.WHEN_WILL_YOU_PAY, taskListStatus.INCOMPLETE));
+    I.seeInCurrentUrl('/response/partial-admission/payment-option');
+    seeInTitle('Part Admit - Payment option');
+    I.see('When do you want to pay the £500.00?', 'h1.govuk-fieldset__heading');
+
+    I.seeElement('//label[contains(., "Immediately")]');
+    I.seeElement('//label[contains(., "By a set date")]');
+    I.seeElement('//label[contains(., "I\'ll suggest a repayment plan")]');
+    I.checkOption(`#${typeOfPayment}`);
+
     clickButton(buttonType.SAVE_AND_CONTINUE);
 
-    I.seeInCurrentUrl('/response/evidence');
-    clickButton(buttonType.SAVE_AND_CONTINUE);
-    I.see(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, checkTaskList(responseTaskListItems.TELL_US_WHY_YOU_DISAGREE_WITH_THE_CLAIM, taskListStatus.COMPLETE));
+    if(typeOfPayment === paymentType.BY_A_SET_DATE){
+      this.paymentDatePartialAdmit();
+    }
+
+    I.seeInCurrentUrl('/response/task-list');
+    I.see(responseTaskListItems.WHEN_WILL_YOU_PAY, checkTaskList(responseTaskListItems.WHEN_WILL_YOU_PAY, taskListStatus.COMPLETE));
   }
 
   freeTelephoneMediation(){
@@ -357,6 +406,20 @@ class Response {
     clickButton(buttonType.SAVE_AND_CONTINUE);
   }
 
+  paymentDatePartialAdmit(){
+    let futureDate = new Date();
+    futureDate.setMonth(futureDate.getMonth() + 1);
+
+    I.seeInCurrentUrl('/partial-admission/payment-date');
+    I.seeInTitle('Your money claims account - Money Claims');
+
+    I.see('What date will you pay on?', 'h1.govuk-fieldset__heading');
+    I.see('For example, 26 9 2024', 'div.govuk-hint');
+
+    checkDateFields(futureDate);
+    clickButton(buttonType.SAVE_AND_CONTINUE);
+  }
+
   shareYourFinancialDetails() {
     I.click(responseTaskListItems.SHARE_YOUR_FINANCIAL_DETAILS, checkTaskList(responseTaskListItems.SHARE_YOUR_FINANCIAL_DETAILS, taskListStatus.INCOMPLETE));
     I.seeInCurrentUrl('/response/statement-of-means/intro');
@@ -373,19 +436,26 @@ class Response {
     I.see(responseTaskListItems.SHARE_YOUR_FINANCIAL_DETAILS, checkTaskList(responseTaskListItems.SHARE_YOUR_FINANCIAL_DETAILS, taskListStatus.COMPLETE));
   }
 
-  yourRepaymentPlan(){
+  yourRepaymentPlan(isPartial){
     let futureDate = new Date();
     futureDate.setDate(futureDate.getDate() + 1);
 
     I.click(responseTaskListItems.YOUR_REPAYMENT_PLAN, checkTaskList(responseTaskListItems.YOUR_REPAYMENT_PLAN, taskListStatus.INCOMPLETE));
-    I.seeInCurrentUrl('/response/full-admission/payment-plan');
+    I.seeInCurrentUrl('/payment-plan');
     seeInTitle('Your repayment plan');
     I.see('Your repayment plan', 'h1.govuk-fieldset__heading');
-    I.see('The total amount claimed is £1000. This includes the claim fee and any interest.', 'p.govuk-body-m');
+
+    if(isPartial){
+      I.see('You admit you owe £500.', 'p.govuk-body-m');
+      I.fillField('#paymentAmount', '250');
+      futureDate.setMonth(futureDate.getMonth() + 1);
+    } else {
+      I.see('The total amount claimed is £1000. This includes the claim fee and any interest.', 'p.govuk-body-m');
+      I.fillField('#paymentAmount', '500');
+    }
 
     I.see('Regular payments of:', 'p.govuk-body-m');
     I.see('For example, £200', 'div.govuk-hint');
-    I.fillField('#paymentAmount', '500');
 
     I.see('How often you\'ll make these payments?', 'legend.govuk-fieldset__legend');
     I.checkOption(`#${howOftenYouMakePayments.EACH_WEEK}`);
@@ -394,7 +464,6 @@ class Response {
     I.see('2 weeks', '#two-weeks_schedule');
 
     I.see('When will you make the first payment?','legend.govuk-fieldset__legend');
-    I.see('For example, 22/09/2024','div.govuk-hint');
     checkDateFields(futureDate);
 
     clickButton(buttonType.SAVE_AND_CONTINUE);
