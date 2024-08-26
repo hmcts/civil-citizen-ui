@@ -231,6 +231,35 @@
           "last_modified": "2023-07-10T10:00:00Z"
         }
       }
+    },
+    {
+      "priority": 1,
+      "scenarioName": "Defendant-response",
+      "requiredScenarioState": "Started",
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/1645882162449488",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "12345",
+          "case_data": {
+            "legacyCaseReference": "legacyCaseReference",
+            "respondent1ResponseDate": "2023-06-03T07:30:38"
+          },
+          "state": "ACTIVE",
+          "last_modified": "2023-07-10T10:00:00Z"
+        }
+      }
     }
   ]
 }

@@ -5,7 +5,7 @@ const {responseType, paymentType} = require('../../commons/responseVariables');
 const {yesAndNoCheckBoxOptionValue, speakLanguage, documentLanguage, supportRequired, howOftenYouMakePayments} = require('../../commons/eligibleVariables');
 const {seeInTitle} = require('../../commons/seeInTitle');
 const {checkDateFields} = require('../../commons/checkDateFields');
-const {checkResponseTypeFields} = require("../../commons/checkResponseTypeFields");
+const {checkResponseTypeFields} = require('../../commons/checkResponseTypeFields');
 const I = actor();
 
 class Response {
@@ -411,7 +411,6 @@ class Response {
     I.seeInTitle('Your money claims account - Money Claims');
 
     I.see('What date will you pay on?', 'h1.govuk-fieldset__heading');
-
 
     checkDateFields(futureDate);
     clickButton(buttonType.SAVE_AND_CONTINUE);
