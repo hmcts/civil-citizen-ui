@@ -103,11 +103,6 @@ export class OidcMiddleware {
           return res.redirect(CLAIMANT_TASK_LIST_URL);
         }
         if (req.session.user?.roles?.includes(citizenRole)) {
-          // const claimsIds = await findClaimsbyUserId(req.session?.user?.id);
-          // claimsIds.forEach(async claimId => {
-          //   const claim = await getCaseDataFromStore(claimId);
-          //   await deleteFieldDraftClaimFromStore(claimId, claim, 'generalApplication');
-          // });
           await deleteGAFromClaimsByUserId(req.session?.user?.id);
           return res.redirect(DASHBOARD_URL);
         }
@@ -119,17 +114,6 @@ export class OidcMiddleware {
     });
 
     app.get(SIGN_OUT_URL, async (req: AppRequest, res: Response) => {
-
-      // // TODO:
-      // if (req.session?.claimId) {
-      //   console.log(req.session?.claimId);
-      //   console.log(req.session?.user?.id);
-      //   req.params.id = req.session?.claimId;
-      //   const redisKey = req.session?.claimId + req.session?.user?.id;
-      //   const claim = await getClaimById(req.session?.claimId, req, true);
-      //   await deleteFieldDraftClaimFromStore(redisKey, claim, 'generalApplication');
-      // }
-
       const params = new URLSearchParams({
         'id_token_hint': req.session.user?.accessToken,
         'post_logout_redirect_uri': applicationUrl,
