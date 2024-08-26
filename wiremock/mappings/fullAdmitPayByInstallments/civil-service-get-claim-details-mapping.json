@@ -1,0 +1,197 @@
+{
+  "mappings": [
+    {
+      "priority": 1,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/177777777777773\\d",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "fullAdmitPayByInstallments/beforeClaimantResponse.json"
+      }
+    },
+    {
+      "priority": 2,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "GET",
+        "url": "/cases/1777777777777731",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "fullAdmitPayByInstallments/claimantAcceptsAndFormalisesWithCCJ.json"
+      }
+    },
+    {
+      "priority": 2,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "GET",
+        "url": "/cases/1777777777777732",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "fullAdmitPayByInstallments/claimantAcceptsAndFormalisesWithSSA.json"
+      }
+    },
+    {
+      "priority": 2,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "GET",
+        "url": "/cases/1777777777777733",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "fullAdmitPayByInstallments/defendantSignsSettlementAgreement.json"
+      }
+    },
+    {
+      "priority": 2,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "GET",
+        "url": "/cases/1777777777777734",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "fullAdmitPayByInstallments/claimantRejectsAndProposesNewRepaymentPlan.json"
+      }
+    },
+    {
+      "priority": 3,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "POST",
+        "urlPath": "/cases/1777777777777731/citizen/someID/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "fullAdmitPayByInstallments/claimantAcceptsAndFormalisesWithCCJ.json"
+      }
+    },
+    {
+      "priority": 3,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "POST",
+        "urlPath": "/cases/1777777777777732/citizen/someID/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "fullAdmitPayByInstallments/claimantAcceptsAndFormalisesWithSSA.json"
+      }
+    },
+    {
+      "priority": 3,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "POST",
+        "urlPath": "/cases/1777777777777733/citizen/someID/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "fullAdmitPayByInstallments/defendantSignsSettlementAgreement.json"
+      }
+    },
+    {
+      "priority": 3,
+      "scenarioName": "Claimant-response",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Post-claimant-response",
+      "request": {
+        "method": "POST",
+        "urlPath": "/cases/1777777777777734/citizen/someID/event",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "fullAdmitPayByInstallments/claimantRejectsAndProposesNewRepaymentPlan.json"
+      }
+    }
+  ]
+}
