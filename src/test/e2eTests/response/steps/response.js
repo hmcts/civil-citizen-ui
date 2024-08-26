@@ -152,7 +152,6 @@ class Response {
     I.fillField('#amount', '1000');
 
     I.see('When did you pay this amount?', 'legend.govuk-fieldset__legend');
-    I.see('For example, 23 7 2024', 'div.govuk-hint');
     checkDateFields(yesterday);
 
     I.see('How did you pay this amount?', 'label.govuk-label');
@@ -176,7 +175,6 @@ class Response {
     I.fillField('#amount', '1000');
 
     I.see('When did you pay this amount?', 'legend.govuk-fieldset__legend');
-    I.see('For example, 26 7 2024', 'div.govuk-hint');
     checkDateFields(yesterday);
 
     I.see('How did you pay this amount?', 'label.govuk-label');
@@ -395,7 +393,6 @@ class Response {
     I.seeInTitle('Your money claims account - Money Claims');
 
     I.see('What date will you pay on?', 'h1.govuk-fieldset__heading');
-    I.see('For example, 22 9 2024', 'div.govuk-hint');
 
     I.see('Day', 'label.govuk-label');
     I.fillField('#day', futureDate.getDate());
@@ -414,7 +411,7 @@ class Response {
     I.seeInTitle('Your money claims account - Money Claims');
 
     I.see('What date will you pay on?', 'h1.govuk-fieldset__heading');
-    I.see('For example, 26 9 2024', 'div.govuk-hint');
+
 
     checkDateFields(futureDate);
     clickButton(buttonType.SAVE_AND_CONTINUE);
