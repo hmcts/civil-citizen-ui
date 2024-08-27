@@ -10,9 +10,8 @@ import {FullAdmission} from 'common/models/fullAdmission';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentOptionService');
 
-const getPaymentOptionForm = async (claimId: string, responseType : ResponseType): Promise<PaymentOption> => {
+const getPaymentOptionForm = async (claim: Claim, responseType : ResponseType): Promise<PaymentOption> => {
   try {
-    const claim: Claim = await getCaseDataFromStore(claimId);
     if (isFullAdmission(responseType) && claim.isFullAdmissionPaymentOptionExists()) {
       return new PaymentOption(PaymentOptionType[claim.fullAdmission.paymentIntention.paymentOption as keyof typeof PaymentOptionType]);
     } else if (isPartAdmission(responseType) && claim.isPartialAdmissionPaymentOptionExists()) {

@@ -174,7 +174,17 @@
       "SIGN_OUT": "Sign out"
     },
     "HEARING_DURATION": {
+      "MINUTES_05": "5 minutes",
+      "MINUTES_10": "10 minutes",
+      "MINUTES_15": "15 minutes",
+      "MINUTES_20": "20 minutes",
+      "MINUTES_25": "25 minutes",
       "MINUTES_30": "30 minutes",
+      "MINUTES_35": "35 minutes",
+      "MINUTES_40": "40 minutes",
+      "MINUTES_45": "45 minutes",
+      "MINUTES_50": "50 minutes",
+      "MINUTES_55": "55 minutes",
       "MINUTES_60": "1 hour",
       "MINUTES_90": "1 and a half hours",
       "MINUTES_120": "2 hours",
@@ -289,6 +299,7 @@
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
       "DETAILS_TRUTHY": "The hearing requirement details on this page are true to the best of my knowledge.",
       "INFORMATION_ON_PAGE": "The information on this page forms your response. You can see it on the response form after you submit.",
+      "INFORMATION_ON_PAGE_CLAIM": "The information on this page forms your claim. You can see it on the claim form after you submit.",
       "MAKE_CHANGES_NOT_ALLOWED": "Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
       "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the statement of truth.",
       "STATEMENT_OF_WORK": "statement of truth",
@@ -892,7 +903,7 @@
     },
     "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
       "PAGE_TITLE": "Unavailability dates for mediation",
-      "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend meditation",
+      "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend mediation",
       "PAGE_HINT_TEXT1": "Provide all dates in the next 3 months when you cannot attend a mediation appointment as accurately as you can. Once a date for your appointment has been set, it can be difficult to re-arrange.",
       "PAGE_HINT_TEXT2": "The Small claims Mediation Service operates Monday to Friday, 8am to 5pm, except bank holidays."
     },
@@ -3113,6 +3124,8 @@
         "READ_RESPONSE": "Read the response",
         "RESPONSE_COURT": "Response from the court",
         "RESPONDENTS_DOCUMENTS": "Respondent's documents",
+        "RESPOND_TO_REQUEST": "Respond to the request",
+        "REQUEST_MORE_INFO": "Request for more information",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
@@ -4377,6 +4390,7 @@
       "DEFENDANT_TIMELINE": "Defendant timeline of events",
       "DETERMINATION_REQUEST": "Determination request",
       "DRAFT_CLAIM": "Draft claim form",
+      "FINAL_ORDER": "Judge final order",
       "PAGE_CAPTION": "Orders and notices from the court",
       "PAGE_TITLE": "View orders and notices",
       "PARTICULARS_CLAIM": "Particulars of claim",
@@ -4385,6 +4399,7 @@
       "SETTLEMENT_AGREEMENT": "Settlement agreement",
       "STANDARD_DIRECTIONS_ORDER": "Standard Directions Order",
       "TRANSLATED_ORDER": "Translated order",
+      "TRIAL_ARRANGEMENTS": "Trial Ready",
       "UNSEALED_CLAIM":"Unsealed Claim form"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
