@@ -121,9 +121,8 @@ const getRequestForInfoDocumentUrl = (applicationResponse: ApplicationResponse, 
   return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
 };
 
-const formatDocumentLinkHtml = (applicationResponse: ApplicationResponse, documentType: DocumentType, documentName: string) : string => {
-  return `<a href="${getRequestForInfoDocumentUrl(applicationResponse, documentType)}">${documentName}</a>`;
-};
+const formatDocumentLinkHtml = (applicationResponse: ApplicationResponse, documentType: DocumentType, documentName: string) : string =>
+  `<a target="_blank" href="${getRequestForInfoDocumentUrl(applicationResponse, documentType)}">${documentName}</a>`;
 
 export const getCourtDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const courtDocumentsArray: DocumentInformation[] = [];
