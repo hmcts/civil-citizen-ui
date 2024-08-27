@@ -15,7 +15,7 @@ import {DraftStoreClient} from 'modules/draft-store';
 import {CSRFToken} from 'modules/csrf';
 import routes from './routes/routes';
 import {setLanguage} from 'modules/i18n/languageService';
-import {isServiceShuttered} from './app/auth/launchdarkly/launchDarklyClient';
+import {isServiceShuttered, updateE2EKey} from './app/auth/launchdarkly/launchDarklyClient';
 import {getRedisStoreForSession} from 'modules/utilityService';
 import {
   ASSIGN_FRC_BAND_URL,
@@ -35,7 +35,7 @@ import {
   DQ_REQUEST_EXTRA_4WEEKS_URL, FRC_BAND_AGREED_URL,
   HAS_ANYTHING_CHANGED_URL,
   IS_CASE_READY_URL, REASON_FOR_FRC_BAND_URL, RESPONSE_CHECK_ANSWERS_URL,
-  STATEMENT_OF_MEANS_URL, SUBJECT_TO_FRC_URL,
+  STATEMENT_OF_MEANS_URL, SUBJECT_TO_FRC_URL, TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
 import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
@@ -109,6 +109,18 @@ if(!e2eTestMode){
 }
 
 if(e2eTestMode){
+  app.get(TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT, async (req, res, next) => {
+    try {
+      const key = req.params.key;
+      const booleanValue: boolean = JSON.parse(req.params.value);
+      await updateE2EKey(key, booleanValue);
+      // Send a response back to the client
+      res.status(200).json({ message: 'Flag updated successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error changing the flag', error });
+    }
+  });
+
   // Use your custom middleware to add the session information
   app.use((req, res, next) => {
     const session = ((req.session) as AppSession);
