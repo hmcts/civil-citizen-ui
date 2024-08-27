@@ -447,8 +447,9 @@ export const getApplicationIndex = async(claimId: string, applicationId: string,
 };
 
 export const deleteGAFromClaimsByUserId = async(userId: string) : Promise<void> => {
+  if (!userId) return;
   const claimsIds = await findClaimIdsbyUserId(userId);
-  claimsIds.forEach(async (claimId: string) => {
+  claimsIds?.forEach(async (claimId: string) => {
     const claim = await getCaseDataFromStore(claimId);
     await deleteFieldDraftClaimFromStore(claimId, claim, 'generalApplication');
   });
