@@ -5,7 +5,6 @@ import {
   getJudgesDirectionsOrder,
   getJudgeApproveEdit,
   getJudgeDismiss,
-  getReturnDashboardUrl,
   getHearingNoticeResponses,
   getHearingOrderResponses,
   buildResponseFromCourtSection,
@@ -288,7 +287,7 @@ describe('View Application service', () => {
         ],
       };
       //when
-      const result = getJudgeDismiss('', applicationResponse, 'en');
+      const result = getJudgeDismiss(applicationResponse, 'en');
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[0].rows[0].value.html).toEqual('1 January 2024');
@@ -302,14 +301,13 @@ describe('View Application service', () => {
       //given
       const applicationResponse = new ApplicationResponse();
       //when
-      const result = getJudgeDismiss('', applicationResponse, 'en');
+      const result = getJudgeDismiss(applicationResponse, 'en');
       //then
       expect(result.length).toEqual(0);
     });
 
     it('should return empty if no data in applicationResponse caseData', async () => {
       //given
-      const returnDashboardUrl = '';
       const applicationResponse = new ApplicationResponse();
       applicationResponse.case_data = {
         applicationFeeAmountInPence: '',
@@ -329,7 +327,7 @@ describe('View Application service', () => {
         parentClaimantIsApplicant: undefined,
       };
       //when
-      const result = getJudgeDismiss(returnDashboardUrl, applicationResponse, 'en');
+      const result = getJudgeDismiss(applicationResponse, 'en');
       //then
       expect(result.length).toEqual(0);
     });
@@ -378,7 +376,7 @@ describe('View Application service', () => {
         ],
       };
       //when
-      const result = getJudgeApproveEdit('returnUrl', applicationResponse, 'en');
+      const result = getJudgeApproveEdit(applicationResponse, 'en');
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[0].rows[0].value.html).toEqual('1 January 2024');
@@ -392,7 +390,7 @@ describe('View Application service', () => {
       //given
       const applicationResponse = new ApplicationResponse();
       //when
-      const result = getJudgeApproveEdit('returnUrl', applicationResponse, 'en');
+      const result = getJudgeApproveEdit(applicationResponse, 'en');
       //then
       expect(result.length).toEqual(0);
     });
@@ -418,7 +416,7 @@ describe('View Application service', () => {
         parentClaimantIsApplicant: undefined,
       };
       //when
-      const result = getJudgeApproveEdit('returnUrl', applicationResponse, 'en');
+      const result = getJudgeApproveEdit(applicationResponse, 'en');
       //then
       expect(result.length).toEqual(0);
     });
@@ -566,28 +564,6 @@ describe('View Application service', () => {
     });
   });
   
-  describe('getReturnDashboardUrl', () => {
-    it('should return claimant link', async () => {
-      //given
-      const claim = new Claim();
-      claim.caseRole = CaseRole.CLAIMANT;
-      //when
-      const result = await getReturnDashboardUrl('123', claim);
-      //then
-      expect(result).toContain('/dashboard/123/claimantNewDesign');
-    });
-
-    it('should return defendant link', async () => {
-      //given
-      const claim = new Claim();
-      claim.caseRole = CaseRole.DEFENDANT;
-     
-      //when
-      const result = await getReturnDashboardUrl('123', claim);
-      //then
-      expect(result).toContain('/dashboard/123/defendant');
-    });
-  });
   describe('getResponseFromCourtSection', () => {
     it('should return court from response section for applicant', async () => {
       //given

@@ -1,10 +1,10 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  DASHBOARD_URL,
   GA_PAY_ADDITIONAL_FEE_URL,
   GA_VIEW_APPLICATION_URL,
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
   GA_APPLY_HELP_WITH_FEE_SELECTION,
+  DASHBOARD_CLAIMANT_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {
@@ -19,7 +19,7 @@ import {
   ApplicationResponse,
 } from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
-import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 import { DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 
@@ -48,13 +48,15 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     if(isApplicationFeeAmountNotPaid) {
       applicationFeeOptionUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION);
     }
-
+    
     const responseFromCourt =  await getResponseFromCourtSection(req, req.params.appId, lang);
+    const dashboardUrl = constructResponseUrlWithIdParams(claimId,DASHBOARD_CLAIMANT_URL);
+    
     res.render(viewPath, {
       backLinkUrl,
       summaryRows,
       pageTitle,
-      dashboardUrl: DASHBOARD_URL,
+      dashboardUrl,
       applicationIndex,
       responseFromCourt,
       additionalDocUrl,
