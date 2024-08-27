@@ -7,7 +7,7 @@ import {
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
@@ -31,7 +31,8 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   if (!form.hasErrors()) {
     form = new GenericForm(claim.generalApplication?.helpWithFees?.helpFeeReferenceNumberForm);
   }
-  const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_APPLY_HELP_WITH_FEES_START);
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_APPLY_HELP_WITH_FEES_START)+ '?additionalFeeTypeFlag='+ feeTypeFlag;
+
   const genericHelpFeeUrl : string = GENERIC_HELP_FEES_URL;
   res.render(applyHelpWithFeeReferenceViewPath,
     {
@@ -40,7 +41,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
       genericHelpFeeUrl,
       redirectUrl,
       applyHelpWithFeeReferenceContents: getHelpWithApplicationFeeReferenceContents(feeTypeFlag),
-      applyHelpWithFeeReferenceButtonContents: getButtonsContents(claimId),
+      applyHelpWithFeeReferenceButtonContents: getButtonsContents(claimId, req.params.appId),
     });
 }
 
@@ -60,19 +61,20 @@ helpWithApplicationFeeReferenceController.post(GA_APPLY_HELP_WITH_FEE_REFERENCE,
 
     const claimId = req.params.id;
     const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
+    const genAppId = req.params.appId;
     const form = new GenericForm(new ApplyHelpFeesReferenceForm(req.body.option, req.body.referenceNumber));
     await form.validate();
     if (form.hasErrors()) {
-      const redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_REFERENCE);
+      const redirectUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_REFERENCE+ '?additionalFeeTypeFlag='+ isAdditionalFeeType);
       await renderView(res, req, form, claimId, redirectUrl, false);
     } else {
       const redisKey = generateRedisKey(<AppRequest>req);
       await saveHelpWithFeesDetails(redisKey, new ApplyHelpFeesReferenceForm(req.body.option, req.body.referenceNumber), hwfPropertyName);
 
       if (form.model.option === YesNo.YES) {
-        await saveAndTriggerNotifyGaHwfEvent(claimId, <AppRequest>req, form.model);
+        await saveAndTriggerNotifyGaHwfEvent(<AppRequest>req, form.model);
       }
-      res.redirect(getRedirectUrl(claimId, form.model, isAdditionalFeeType));
+      res.redirect(getRedirectUrl(claimId, form.model, isAdditionalFeeType, genAppId));
     }
   }catch (error) {
     next(error);
@@ -80,9 +82,9 @@ helpWithApplicationFeeReferenceController.post(GA_APPLY_HELP_WITH_FEE_REFERENCE,
 })as RequestHandler);
 export default helpWithApplicationFeeReferenceController;
 
-function getRedirectUrl(claimId: string, isHelpWithFee: GenericYesNo, feeType: boolean): string {
+function getRedirectUrl(claimId: string, isHelpWithFee: GenericYesNo, feeType: boolean, genAppId: string): string {
   if (isHelpWithFee.option === YesNo.YES) {
     return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_FEE_CONFIRMATION_URL+ '?additionalFeeTypeFlag='+ feeType);
   }
-  return constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+  return constructResponseUrlWithIdAndAppIdParams(claimId, genAppId, GA_APPLY_HELP_WITH_FEE_SELECTION) + '?additionalFeeTypeFlag='+ feeType;
 }

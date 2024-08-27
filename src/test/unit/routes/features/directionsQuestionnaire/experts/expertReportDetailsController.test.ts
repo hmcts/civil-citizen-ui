@@ -5,7 +5,7 @@ import {app} from '../../../../../../main/app';
 import {
   DQ_EXPERT_DETAILS_URL,
   DQ_EXPERT_GUIDANCE_URL,
-  DQ_EXPERT_REPORT_DETAILS_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL,
+  DQ_EXPERT_REPORT_DETAILS_URL,
 } from '../../../../../../main/routes/urls';
 import {
   mockCivilClaim,
@@ -68,13 +68,13 @@ describe('Expert Report Details Controller', () => {
         });
     });
 
-    it('should redirect to give evidence yourself if option yes is selected - defendant', async () => {
+    it('should redirect to expert details if option yes is selected - defendant', async () => {
       app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
       await request(app).post(DQ_EXPERT_REPORT_DETAILS_URL)
-        .send({option: 'yes', reportDetails: [{expertName: 'Ahmet', day: '1', month: '3', year: '2022'}]})
+        .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_GIVE_EVIDENCE_YOURSELF_URL);
+          expect(res.get('location')).toBe(DQ_EXPERT_DETAILS_URL);
         });
     });
 
@@ -90,7 +90,7 @@ describe('Expert Report Details Controller', () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(DQ_EXPERT_REPORT_DETAILS_URL)
-        .send({option: 'yes', reportDetails: [{expertName: 'Ahmet', day: '1', month: '3', year: '2022'}]})
+        .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

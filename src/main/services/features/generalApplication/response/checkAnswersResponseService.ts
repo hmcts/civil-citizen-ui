@@ -1,11 +1,11 @@
 import { YesNo } from 'common/form/models/yesNo';
-import { Claim } from 'common/models/claim';
 import { HearingSupport, SupportType } from 'common/models/generalApplication/hearingSupport';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
+import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { UnavailableDateType } from 'common/models/generalApplication/unavailableDatesGaHearing';
 import { CSS_CLASS_SUMMARY_LIST_KEY, SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
 import { formatDateSlash, formatDateToFullDate } from 'common/utils/dateUtils';
-import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import { t } from 'i18next';
 import {
   GA_ACCEPT_DEFENDANT_OFFER_URL,
@@ -17,11 +17,11 @@ import {
 } from 'routes/urls';
 import { exhaustiveMatchingGuard } from 'services/genericService';
 
-export const getSummarySections = (claimId: string, claim: Claim, lng: string ): SummaryRow[] => {
+export const getSummarySections = (claimId: string, appId: string, gaResponse: GaResponse, lng: string): SummaryRow[] => {
 
   const acceptOfferSection = (): SummaryRow[] => {
 
-    const acceptOffer = claim.generalApplication?.response?.acceptDefendantOffer;
+    const acceptOffer = gaResponse?.acceptDefendantOffer;
 
     const proposedInstallmentsHtml = (): string =>
       [listItemCaption('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_INSTALMENTS', CSS_CLASS_SUMMARY_LIST_KEY),
@@ -44,24 +44,24 @@ export const getSummarySections = (claimId: string, claim: Claim, lng: string ):
       formattedRow('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE',
         acceptOffer?.option,
         yesNoFormatter,
-        GA_ACCEPT_DEFENDANT_OFFER_URL),
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_ACCEPT_DEFENDANT_OFFER_URL)),
       (acceptOffer?.option === YesNo.NO)
         ? row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
           `<ul class="no-list-style">${proposedPaymentPlanHtml()}</ul>`,
-          GA_ACCEPT_DEFENDANT_OFFER_URL)
+          constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_ACCEPT_DEFENDANT_OFFER_URL))
         : undefined,
     ];
   };
 
   const respondentAgreementSection = (): SummaryRow[] =>
     [formattedRow('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE',
-      claim.generalApplication?.response?.respondentAgreement?.option,
+      gaResponse?.respondentAgreement?.option,
       yesNoFormatter,
-      GA_RESPONDENT_AGREEMENT_URL)];
+      constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_AGREEMENT_URL))];
 
   const hearingArrangementSections = (): SummaryRow[] => {
-    const hearingArrangement = claim.generalApplication?.response?.hearingArrangement;
-    const hearingArrangementUrl = constructResponseUrlWithIdParams(claimId, GA_RESPONSE_HEARING_ARRANGEMENT_URL);
+    const hearingArrangement = gaResponse?.hearingArrangement;
+    const hearingArrangementUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_HEARING_ARRANGEMENT_URL);
     return [
       formattedRow('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
         hearingArrangement?.option,
@@ -78,19 +78,19 @@ export const getSummarySections = (claimId: string, claim: Claim, lng: string ):
   };
 
   const contactDetailsSections = (): SummaryRow[] => {
-    const contactDetails = claim.generalApplication?.response?.hearingContactDetails;
+    const contactDetails = gaResponse?.hearingContactDetails;
     return [
       row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE',
         contactDetails?.telephoneNumber,
         GA_RESPONSE_HEARING_CONTACT_DETAILS_URL),
       row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
         contactDetails?.emailAddress,
-        GA_RESPONSE_HEARING_CONTACT_DETAILS_URL),
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL)),
     ];
   };
 
   const unavailableDatesSection = (): SummaryRow[] => {
-    const unavailableDates = claim.generalApplication?.response?.unavailableDatesHearing?.items;
+    const unavailableDates = gaResponse?.unavailableDatesHearing?.items;
     if (unavailableDates?.length > 0) {
       const unavailableDatesHtml = unavailableDates
         .map(({type, from, until}) => (type === UnavailableDateType.SINGLE_DATE)
@@ -119,7 +119,7 @@ export const getSummarySections = (claimId: string, claim: Claim, lng: string ):
       }
     };
 
-    const hearingSupport = claim.generalApplication?.response?.hearingSupport;
+    const hearingSupport = gaResponse?.hearingSupport;
     if (hearingSupport) {
       const selectedHtml = Object.keys(hearingSupport)
         .filter((key: keyof HearingSupport) => !!hearingSupport[key].selected)
@@ -142,7 +142,7 @@ export const getSummarySections = (claimId: string, claim: Claim, lng: string ):
       ? summaryRow(
         t(title, {lng}),
         formatter(value),
-        constructResponseUrlWithIdParams(claimId, url),
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, url),
         t('COMMON.BUTTONS.CHANGE', {lng}))
       : undefined;
   

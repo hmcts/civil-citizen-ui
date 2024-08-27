@@ -10,23 +10,26 @@ import { caseNumberPrettify } from 'common/utils/stringUtils';
 import { getSummarySections } from 'services/features/generalApplication/response/checkAnswersResponseService';
 import { t } from 'i18next';
 import { getRespondToApplicationCaption, saveRespondentStatementOfTruth } from 'services/features/generalApplication/response/generalApplicationResponseService';
-import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
+import { getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 
 const gaCheckAnswersResponseController = Router();
 const viewPath = 'features/generalApplication/response/check-answers';
 const backLinkUrl = 'test'; // TODO: add url
 
-async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, req: AppRequest, res: Response): Promise<void> {
+async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, gaResponse: GaResponse, req: AppRequest, res: Response): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   res.render(viewPath, { 
     form, 
     cancelUrl, 
     backLinkUrl, 
-    headerTitle: getTitle(claim, lang), 
+    headerTitle: getTitle(claim, req.params.appId, lang), 
     claimIdPrettified: caseNumberPrettify(claimId), 
     claim, 
-    summaryRows: getSummarySections(claimId, claim, lang) });
+    summaryRows: getSummarySections(claimId, req.params.appId, gaResponse, lang),
+  });
 }
 
 gaCheckAnswersResponseController.get(
@@ -35,9 +38,10 @@ gaCheckAnswersResponseController.get(
     try {
       const claimId = req.params.id;
       const claim = await getClaimById(claimId, req, true);
-      const statementOfTruthForm = claim.generalApplication?.response?.statementOfTruth || new StatementOfTruthForm();
+      const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
+      const statementOfTruthForm = gaResponse.statementOfTruth || new StatementOfTruthForm();
       const form = new GenericForm(statementOfTruthForm);
-      await renderView(claimId, claim, form, req, res);
+      await renderView(claimId, claim, form, gaResponse, req, res);
     } catch (error) {
       next(error);
     }
@@ -51,9 +55,10 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
     if (form.hasErrors()) {
       const claimId = req.params.id;
       const claim = await getClaimById(claimId, req, true);
-      await renderView(claimId, claim, form, req, res);
+      const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
+      await renderView(claimId, claim, form, gaResponse, req, res);
     } else {
-      const redisKey = generateRedisKey(req);
+      const redisKey = generateRedisKeyForGA(req);
       await saveRespondentStatementOfTruth(redisKey, statementOfTruth);
       res.redirect('test'); // TODO: correct URL      
     }
@@ -62,9 +67,10 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
   }
 }) as RequestHandler);
 
-const getTitle = (claim: Claim, lng: string) =>
-  (claim.generalApplication?.applicationTypes?.length == 1)
-    ? getRespondToApplicationCaption(claim, lng)
+const getTitle = (claim: Claim, appId: string, lng: string) => {
+  const application = claim.respondentGaAppDetails?.find((application) => application.gaApplicationId === appId);
+  return (application && application.generalAppTypes.length == 1)
+    ? getRespondToApplicationCaption(claim, appId, lng)
     : t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.RESPOND_TO_AN_APPLICATION', {lng});
-
+};
 export default gaCheckAnswersResponseController;

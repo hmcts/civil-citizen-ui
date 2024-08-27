@@ -4,20 +4,25 @@ import request from 'supertest';
 import { GA_ACCEPT_DEFENDANT_OFFER_URL } from 'routes/urls';
 import { app } from '../../../../../../../main/app';
 import * as draftService from 'modules/draft-store/draftStoreService';
+import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
+import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { YesNo } from 'common/form/models/yesNo';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { decode } from 'punycode';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  saveDraftGARespondentResponse: jest.fn(),
+  getDraftGARespondentResponse: jest.fn(),
+}));
 
 describe('General Application - Accept defendant offer', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -33,16 +38,23 @@ describe('General Application - Accept defendant offer', () => {
 
   beforeEach(() => {
     claim = new Claim();
-    claim.generalApplication = new GeneralApplication();
-    claim.generalApplication.applicationTypes.push(new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT));
-    claim.generalApplication.response = {respondentAgreement: new RespondentAgreement()};
+
+    const gaResponse = { respondentAgreement: new RespondentAgreement() };
+    claim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
     mockDataFromStore.mockResolvedValue(claim);
+
+    jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
   });
 
+  afterEach(
+    () => {
+      jest.clearAllMocks();
+    },
+  );
   describe('on GET', () => {
     it('should return page', async () => {
       await request(app)
-        .get(GA_ACCEPT_DEFENDANT_OFFER_URL)
+        .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_ACCEPT_DEFENDANT_OFFER_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(decode(res.text)).toContain(t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'));
@@ -64,7 +76,7 @@ describe('General Application - Accept defendant offer', () => {
   describe('on POST', () => {
     it('should save the value when YES and redirect', async () => {
       await request(app)
-        .post(GA_ACCEPT_DEFENDANT_OFFER_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_ACCEPT_DEFENDANT_OFFER_URL))
         .send({ option: YesNo.YES })
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -72,7 +84,7 @@ describe('General Application - Accept defendant offer', () => {
     });
     it('should save the value when No and ACCEPT_INSTALMENTS and redirect', async () => {
       await request(app)
-        .post(GA_ACCEPT_DEFENDANT_OFFER_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_ACCEPT_DEFENDANT_OFFER_URL))
         .send({ 
           option: YesNo.NO, 
           type: ProposedPaymentPlanOption.ACCEPT_INSTALMENTS, 
@@ -85,7 +97,7 @@ describe('General Application - Accept defendant offer', () => {
     });
     it('should save the value when No and PROPOSE_BY_SET_DATE and redirect', async () => {
       await request(app)
-        .post(GA_ACCEPT_DEFENDANT_OFFER_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_ACCEPT_DEFENDANT_OFFER_URL))
         .send({ 
           option: YesNo.NO, 
           type: ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE, 
@@ -101,7 +113,7 @@ describe('General Application - Accept defendant offer', () => {
 
     it('should return errors on no input', async () => {
       await request(app)
-        .post(GA_ACCEPT_DEFENDANT_OFFER_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_ACCEPT_DEFENDANT_OFFER_URL))
         .send({ option: null })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -111,7 +123,7 @@ describe('General Application - Accept defendant offer', () => {
 
     it('should return errors when selected no and not provided the type', async () => {
       await request(app)
-        .post(GA_ACCEPT_DEFENDANT_OFFER_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_ACCEPT_DEFENDANT_OFFER_URL))
         .send({ option: YesNo.NO })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -120,7 +132,7 @@ describe('General Application - Accept defendant offer', () => {
     });
     it('should return errors when type is ACCEPT_INSTALMENTS', async () => {
       await request(app)
-        .post(GA_ACCEPT_DEFENDANT_OFFER_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_ACCEPT_DEFENDANT_OFFER_URL))
         .send({ option: YesNo.NO, type: ProposedPaymentPlanOption.ACCEPT_INSTALMENTS })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -130,7 +142,7 @@ describe('General Application - Accept defendant offer', () => {
     });
     it('should return errors when type is PROPOSE_BY_SET_DATE', async () => {
       await request(app)
-        .post(GA_ACCEPT_DEFENDANT_OFFER_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_ACCEPT_DEFENDANT_OFFER_URL))
         .send({ option: YesNo.NO, type: ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE })
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -141,7 +153,7 @@ describe('General Application - Accept defendant offer', () => {
         });
     });
     it('should return http 500 when has error in the post method', async () => {
-      mockDataFromStore.mockImplementation(() => {
+      jest.spyOn(gaStoreResponseService, 'saveDraftGARespondentResponse').mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });      
       await request(app)

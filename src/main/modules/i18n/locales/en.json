@@ -5,6 +5,7 @@
     "UPLOAD_FILE": "Upload file",
     "UPLOAD_FILE_LABEL":"Upload a file",
     "VIEW_DOCUMENTS": "View documents",
+    "DATE_UPLOADED": "Date Uploaded [{{ uploadedDate }}]",
     "DOCUMENTS_UPLOADED": "Documents uploaded",
     "CASE_REFERENCE_NUMBER": "Your case reference number",
     "CONTACT_NAME": "Contact name",
@@ -100,6 +101,7 @@
       "SUBMIT_RESPONSE_PAYMENT": "Submit and continue to payment (£{{ payment }})",
       "SUBMIT": "Submit",
       "START_NOW": "Start now",
+      "UPLOAD_ADDITIONAL_DOCUMENTS": "Upload additional documents",
       "CLOSE_AND_RETURN_TO_CASE_OVERVIEW": "Close and return to case overview",
       "CLOSE_AND_RETURN_TO_DASHBOARD": "Close and return to dashboard"
     },
@@ -172,7 +174,17 @@
       "SIGN_OUT": "Sign out"
     },
     "HEARING_DURATION": {
+      "MINUTES_05": "5 minutes",
+      "MINUTES_10": "10 minutes",
+      "MINUTES_15": "15 minutes",
+      "MINUTES_20": "20 minutes",
+      "MINUTES_25": "25 minutes",
       "MINUTES_30": "30 minutes",
+      "MINUTES_35": "35 minutes",
+      "MINUTES_40": "40 minutes",
+      "MINUTES_45": "45 minutes",
+      "MINUTES_50": "50 minutes",
+      "MINUTES_55": "55 minutes",
       "MINUTES_60": "1 hour",
       "MINUTES_90": "1 and a half hours",
       "MINUTES_120": "2 hours",
@@ -287,6 +299,7 @@
       "CORRECT_INFORMATION_CONFIRMATION": "I confirm that I believe the details I have provided are correct.",
       "DETAILS_TRUTHY": "The hearing requirement details on this page are true to the best of my knowledge.",
       "INFORMATION_ON_PAGE": "The information on this page forms your response. You can see it on the response form after you submit.",
+      "INFORMATION_ON_PAGE_CLAIM": "The information on this page forms your claim. You can see it on the claim form after you submit.",
       "MAKE_CHANGES_NOT_ALLOWED": "Once your claim is submitted you will not be able to make any changes. Your claim will not be issued and sent to the other parties until you have paid the claim fee.",
       "SENIOR_POSITION_REQUIREMENT": "You must hold a senior position in your organisation to sign the statement of truth.",
       "STATEMENT_OF_WORK": "statement of truth",
@@ -890,7 +903,7 @@
     },
     "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
       "PAGE_TITLE": "Unavailability dates for mediation",
-      "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend meditation",
+      "PAGE_TEXT": "Add a single date or longer period of time that you cannot attend mediation",
       "PAGE_HINT_TEXT1": "Provide all dates in the next 3 months when you cannot attend a mediation appointment as accurately as you can. Once a date for your appointment has been set, it can be difficult to re-arrange.",
       "PAGE_HINT_TEXT2": "The Small claims Mediation Service operates Monday to Friday, 8am to 5pm, except bank holidays."
     },
@@ -2116,6 +2129,7 @@
         "WHAT_EXPECT_HEARING": "What to expect at a hearing"
       },
       "TITLE": "Your money claims account",
+      "UPDATING_STATUS": "Updating status, please refresh page.",
       "VIEW": "View",
       "VIEW_CLAIM_NUMBER": "claim number {{ claimNumber }}"
     },
@@ -2822,28 +2836,30 @@
         "APPLICATION": "Application",
         "APPLICATION_ID": "Application ID",
         "APPLICATION_TYPE": "Application type",
+        "COMPLETE": "Complete",
         "DETAILS": "Details",
         "IN_PROGRESS": "In progress",
         "MY_APPLICATIONS": "My applications",
         "STATUS": "Status",
+        "APPLICATION_STATUS": "Application Status",
         "STATES": {
-          "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
-          "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
-          "APPLICATION_ADD_PAYMENT": "Pay the additional application fee",
-          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application Submitted - Awaiting Judicial Decision",
           "ADDITIONAL_RESPONSE_TIME_EXPIRED": "Additional Response Time Expired",
           "ADDITIONAL_RESPONSE_TIME_PROVIDED": "Additional Response Time Provided",
-          "AWAITING_DIRECTIONS_ORDER_DOCS": "Directions Order Made",
-          "ORDER_MADE": "Order Made",
-          "LISTING_FOR_A_HEARING": "Listed for a Hearing",
-          "HEARING_SCHEDULED": "Hearing Scheduled",
+          "APPLICATION_ADD_PAYMENT": "Awaiting additional payment",
+          "APPLICATION_CLOSED": "Application closed",
+          "APPLICATION_DISMISSED": "Application dismissed",
           "APPLICATION_PAYMENT_FAILED": "Application Payment Failed",
+          "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION": "Application submitted - Awaiting Judicial decision",
+          "AWAITING_ADDITIONAL_INFORMATION": "Awaiting additional information",
           "AWAITING_APPLICATION_PAYMENT": "Awaiting Application Payment",
-          "AWAITING_WRITTEN_REPRESENTATIONS": "Awaiting Written Representations",
-          "AWAITING_ADDITIONAL_INFORMATION": "Additional Information Required",
-          "APPLICATION_DISMISSED": "Application Dismissed",
-          "APPLICATION_CLOSED": "Application Closed",
-          "PROCEEDS_IN_HERITAGE": "Proceeds In Heritage",
+          "AWAITING_DIRECTIONS_ORDER_DOCS": "Awaiting directions order document",
+          "AWAITING_RESPONDENT_RESPONSE": "Awaiting Respondent Response",
+          "AWAITING_WRITTEN_REPRESENTATIONS": "Awaiting written representations",
+          "HEARING_SCHEDULED": "Hearing Scheduled",
+          "LISTING_FOR_A_HEARING": "Listing for a hearing",
+          "ORDER_MADE": "Order made",
+          "PENDING_APPLICATION_ISSUED": "General Application Issue Pending",
+          "PROCEEDS_IN_HERITAGE": "Proceeds in heritage",
           "RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION": "Respond to judge for Written Representations"
         },
         "SUBMITTED_ON": "Submitted on",
@@ -2953,6 +2969,16 @@
         "DO_YOU_ADD_ANOTHER_APPLICATION": "Do you want to add another application?",
         "ADDITIONAL_FEE": "There’s no additional fee for making more than one application."
       },
+      "UPLOAD_DIRECTIONS_ORDER_DOCUMENTS": {
+        "CONFIRMATION_PAGE_TITLE": "You've uploaded additional documents",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will review the additional documents that you've uploaded. You'll receive an update with their decision or next steps.",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
+        "COURT_DOCUMENT": "court document",
+        "IF_NOT_SURE_END": "that sets out what the court has requested from you.",
+        "IF_NOT_SURE_START": "If you're not sure what to upload, refer to the",
+        "NEED_TO_UPLOAD": "You need to upload the documents requested by the court.",
+        "PAGE_TITLE": "Upload additional documents"
+      },
       "UPLOAD_N245_FORM": {
         "COMPLETE_N245_FORM":"complete the N245 Form",
         "FILE_FORMAT": "the file is in a DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
@@ -2974,7 +3000,10 @@
         "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
         "PAGE_TITLE": "Request for more information",
         "PAGE_TITLE_TO_UPLOAD": "Upload additional documents",
-        "UPLOAD_DOC_CYA_TITLE": "Upload documents"
+        "UPLOAD_DOC_CYA_TITLE": "Uploaded documents"
+      },
+      "UPLOAD_WRITTEN_REPRESENTATION_DOCUMENTS": {
+        "PAGE_TITLE": "Request for written representation"
       },
       "APPLICATION_HEARING_ARRANGEMENTS": {
         "HEARING_TYPE": {
@@ -3044,7 +3073,7 @@
         "TO": "To"
       },
       "CONFIRMATION_PAGE": {
-        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}",
+        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}.",
         "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
         "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
         "PAGE_TITLE": "Application created",
@@ -3075,23 +3104,34 @@
         "WANT_TO_APPLY_HWF_PAGE_TITLE": "Do you want to apply for Help with Fees"
       },
       "VIEW_APPLICATION": {
-        "APPLICATION": "Application",
-        "APPLICATION_DETAILS": "Application details submitted by the applicant.",
         "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
+        "APPLICATION": "Application",
+        "APPLICANTS_DOCUMENTS": "Applicant's documents",
+        "APPLICATION_DETAILS": "Application details submitted by the applicant.",
+        "APPLICATION_DOCUMENTS": "Application Documents",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Court's response to the application",
         "DATE_RESPONSE": "Date of response",
         "DIRECTION_WITH_NOTICE": "Direction to make the application with notice",
+        "DOCUMENTS_FROM_COURT": "Documents from the court",
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
+        "HEARING_NOTICE" : "Hearing Notice",
+        "HEARING_ORDER" : "Hearing Order",
+        "JUDGE_HAS_MADE_ORDER": "The Judge has made an order on your claim.",
+        "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
         "RESPONSE": "Response from the other parties",
         "READ_RESPONSE": "Read the response",
         "RESPONSE_COURT": "Response from the court",
+        "RESPONDENTS_DOCUMENTS": "Respondent's documents",
+        "RESPOND_TO_REQUEST": "Respond to the request",
+        "REQUEST_MORE_INFO": "Request for more information",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
           "AWAITING_RESPONSE": "Awaiting other parties response",
           "TITLE": "Status"
         },
+        "ADDITIONAL_FEE_PAID": "Additional fee has been paid",
         "SUBMITTED": "If you submitted the application to make a change to your case, then you're the 'applicant'. The 'other parties' are the other side or sides involved in your claim.",
         "TITLE": "Application {{applicationIndex}}",
         "TYPE_RESPONSE": "Type of response",
@@ -3102,7 +3142,7 @@
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
-      "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you in full by {{ proposedSetDate }}",
+      "DEFENDANT_OFFERED_TO_PAY": "{{ defendantName }} has offered to pay you by {{ proposedSetDate }}",
       "DO_YOU_ACCEPT": "Do you accept the repayment plan?",
       "NO_OPTION": "No - I'll suggest my own",
       "PAGE_TITLE": "How they want to pay?",
@@ -4130,7 +4170,8 @@
     "FEE_AMOUNT": {
       "TITLE": "Pay your claim fee",
       "MESSAGE": "If you settle out of court we won't refund your claim fee. You can ask the defendant to pay back your claim fee as part of the settlement.",
-      "CONTINUE_TO_PAYMENT": "continue to payment"
+      "CONTINUE_TO_PAYMENT": "continue to payment",
+      "SYNC_WARNING": "Unfortunately, we have been unable to take you to the payment page, please retry."
     },
     "TOTAL_INTEREST": {
       "ADD_TO_CLAIM_AMOUNT": "We’ll add it to your claim amount.",
@@ -4349,6 +4390,7 @@
       "DEFENDANT_TIMELINE": "Defendant timeline of events",
       "DETERMINATION_REQUEST": "Determination request",
       "DRAFT_CLAIM": "Draft claim form",
+      "FINAL_ORDER": "Judge final order",
       "PAGE_CAPTION": "Orders and notices from the court",
       "PAGE_TITLE": "View orders and notices",
       "PARTICULARS_CLAIM": "Particulars of claim",
@@ -4357,6 +4399,7 @@
       "SETTLEMENT_AGREEMENT": "Settlement agreement",
       "STANDARD_DIRECTIONS_ORDER": "Standard Directions Order",
       "TRANSLATED_ORDER": "Translated order",
+      "TRIAL_ARRANGEMENTS": "Trial Ready",
       "UNSEALED_CLAIM":"Unsealed Claim form"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
@@ -4570,6 +4613,7 @@
     "DESCRIPTION_REQUIRED": "Enter a description of what happened",
     "DETAILS_REQUIRED": "Enter details",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
+    "SPECIAL_CHARACTERS": "Special characters are not allowed",
     "DELAYED_FLIGHT": {
       "CLAIMING_FOR_DELAY_REQUIRED": "'Are you claiming for a delayed flight?' is required"
     },
@@ -4851,7 +4895,9 @@
     "FULL_NAME_TOO_LONG": "Full name must be no longer than 70 characters",
     "JOB_TITLE_TOO_LONG": "Job title must be no longer than 70 characters",
     "ADDRESS_LINE_TOO_MANY": "Each address line must be no longer than 50 characters",
+    "ADDRESS_LINE_TOO_MANY_JO": "Each address line must be no longer than 35 characters",
     "TOWN_CITY_TOO_MANY": "Town or City must no longer than 50 characters",
+    "TOWN_CITY_TOO_MANY_JO": "Town or City must no longer than 35 characters",
     "TEXT400_TOO_LONG": "Reason must be 400 characters or fewer",
     "THERE_IS_A_PROBLEM": "There is a problem",
     "THERE_WAS_A_PROBLEM": "There was a problem",

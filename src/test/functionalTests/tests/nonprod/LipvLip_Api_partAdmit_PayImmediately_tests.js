@@ -22,7 +22,7 @@ Scenario('Response with PartAdmit-PayImmediately Small claims @citizenUI @partAd
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitImmediatePayment(claimRef, '200');
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+});
 
 Scenario('Response with PartAdmit-PayImmediately Fast Track @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -37,4 +37,4 @@ Scenario('Response with PartAdmit-PayImmediately Fast Track @citizenUI @partAdmi
     await ResponseToDefenceLipVsLipSteps.claimantRejectForDefRespPartAdmitImmediatePayment(claimRef, '569');
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+});

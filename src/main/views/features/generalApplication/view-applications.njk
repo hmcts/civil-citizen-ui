@@ -4,6 +4,7 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/create-table-documents.njk" import addDateUploadedFileInformation, addFileLink, createDocumentsTableWithoutTableCaption %}
 
 {% set applicationHeaderHtml %}
   <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION')}}</h1>
@@ -13,9 +14,9 @@
   <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
     <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DETAILS') }}</p>
     <div class="govuk-form-group">
-        {{ govukSummaryList({
-            rows: summaryRows
-        }) }}
+      {{ govukSummaryList({
+        rows: summaryRows
+      }) }}
     </div>
   </div>
 {% endset %}
@@ -25,12 +26,96 @@
 {% endset %}
 
 {% set responseHtml %}
-{# TODO: add response show/hidde content here #}
-  <p class="govuk-body">Response from the other parties</p> 
+  {# TODO: add response show/hidde content here #}
+  <p class="govuk-body">Response from the other parties</p>
 {% endset %}
 
 {% set courtResponseHeaderHtml %}
   <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT')}}</h1>
+{% endset %}
+
+{% set applicantDocRows = [] %}
+{% set respondentDocRows = [] %}
+{% set courtDocRows = [] %}
+
+
+{% if applicantDocuments.documents.length > 0 %}
+  {% set applicantDocRows = (applicantDocRows.push([
+    {
+      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICANTS_DOCUMENTS') | safe,
+      classes: "govuk-body govuk-!-font-weight-bold"
+    },
+    {
+      text: t(responseType)
+    }
+  ]), applicantDocRows) %}
+  {% for item in applicantDocuments.documents %}
+    {% set applicantDocRows = (applicantDocRows.push([
+      {
+        html: addDateUploadedFileInformation(t(item.fileName), t(item.uploadDate))
+      },
+      {
+        html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+      }]), applicantDocRows) %}
+  {% endfor %}
+{% endif %}
+
+{% if respondentDocuments.documents.length > 0 %}
+  {% set respondentDocRows = (respondentDocRows.push([
+    {
+      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONDENTS_DOCUMENTS') | safe,
+      classes: "govuk-body govuk-!-font-weight-bold"
+    },
+    {
+      text: t(responseType)
+    }
+  ]), respondentDocRows) %}
+  {% for item in respondentDocuments.documents %}
+    {% set respondentDocRows = (respondentDocRows.push([
+      {
+        html: addDateUploadedFileInformation(t(item.fileName), t(item.uploadDate))
+      },
+      {
+        html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+      }]), respondentDocRows) %}
+  {% endfor %}
+{% endif %}
+
+{% if courtDocuments.documents.length > 0 %}
+  {% set courtDocRows = (courtDocRows.push([
+    {
+      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENTS_FROM_COURT'),
+      classes: "govuk-body govuk-!-font-weight-bold"
+    },
+    {
+      text: t(responseType)
+    }
+  ]), courtDocRows) %}
+  {% for item in courtDocuments.documents %}
+    {% set courtDocRows = (courtDocRows.push([
+      {
+        html: addDateUploadedFileInformation(t(item.fileName), t(item.uploadDate))
+      },
+      {
+        html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+      }]), courtDocRows) %}
+  {% endfor %}
+{% endif %}
+
+{% set applicationDocuments %}
+  <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DOCUMENTS')}}</h1>
+{% endset %}
+
+{% set applicationDocumentsHtml %}
+  {{ createDocumentsTableWithoutTableCaption(applicantDocRows) }}
+  {% if applicantDocuments.documents.length > 0 %}
+  {{ govukButton({
+    text: t('COMMON.BUTTONS.UPLOAD_ADDITIONAL_DOCUMENTS'),
+    href: additionalDocUrl
+  }) }}
+  {% endif %}
+  {{ createDocumentsTableWithoutTableCaption(respondentDocRows) }}
+  {{ createDocumentsTableWithoutTableCaption(courtDocRows) }}
 {% endset %}
 
 {% set courtResponseHtml %}
@@ -40,11 +125,32 @@
     rows: responseFromCourt
   }) }}
 
+  {% if showRequestMoreInfoButton %}
+    {{ govukButton({
+      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST'),
+      href: requestMoreInfoUrl
+    }) }}
+  {% else %}
+    {{ govukButton({
+      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAY_ADDITIONAL_FEE'),
+      href: payAdditionalFeeUrl
+    }) }}
+  {% endif %}
+{% endset %}
+
+{% set judgesDirectionsOrderHtml %}
+  <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
+
+  {{ govukSummaryList({
+    rows: judgesDirectionsOrder
+  }) }}
+
   {{ govukButton({
-    text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAY_ADDITIONAL_FEE'),
-    href: payAdditionalFeeUrl
+    text: 'Respond to the request',
+    href: judgesDirectionsOrderUrl
   }) }}
 {% endset %}
+
 
 {% block nestedContent %}
   <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TITLE', { applicationIndex : applicationIndex }) }}</h1>
@@ -55,22 +161,34 @@
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_1')}}<a href="{{additionalDocUrl}}">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_2') }}</a>{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_3') }}</p>
 
   <div class="govuk-!-padding-top-5">
-    {{ govukDetails({
-      summaryHtml: applicationHeaderHtml,
-      html: applicationHtml
-    }) }}
     {% if isResponseFromCourt %}
       {{ govukDetails({
         summaryHtml: courtResponseHeaderHtml,
         html: courtResponseHtml
       }) }}
     {% endif %}
+    {% if isJudgesDirectionsOrder %}
+      {{ govukDetails({
+        summaryHtml: courtResponseHeaderHtml,
+        html: judgesDirectionsOrderHtml
+      }) }}
+    {% endif %}
+    {{ govukDetails({
+      summaryHtml: applicationHeaderHtml,
+      html: applicationHtml
+    }) }}
     {{ govukDetails({
       summaryHtml: responseHeaderHtml,
       html: responseHtml
     }) }}
+    {% if (applicantDocuments.documents.length + courtDocuments.documents.length + respondentDocuments.documents.length) > 0 %}
+     {{ govukDetails({
+        summaryHtml: applicationDocuments,
+        html: applicationDocumentsHtml
+      }) }}
+    {% endif %}
   </div>
-  
+
   {% if isApplicationFeeAmountNotPaid %}
     {{ govukButton({
       text: t('COMMON.BUTTONS.PAY_APPLICATION_FEE'),
@@ -82,5 +200,4 @@
       href: dashboardUrl
     }) }}
   {% endif %}
-
 {% endblock %}
