@@ -16,7 +16,7 @@ import {
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
 } from 'routes/urls';
 import {documentIdExtractor} from 'common/utils/stringUtils';
-import {constructDocumentUrlWithIdParamsAndDocumentId, constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {constructDocumentUrlWithIdParamsAndDocumentId, constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DocumentType} from 'models/document/documentType';
 import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalApplication/CourtResponseSummary';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
@@ -26,8 +26,9 @@ import { CcdGAMakeWithNoticeDocument } from 'common/models/ccdGeneralApplication
  * Creates Response from court summary list by sorting on response time.
  */
 export const buildResponseFromCourtSection = async (req : AppRequest, application: ApplicationResponse, lang: string): Promise<CourtResponseSummaryList[]> => {
-  const claim = await getClaimById(req.params.id, req, true);
-  const returnDashboardUrl = getReturnDashboardUrl(claim);
+  const claimId = req.params.id;
+  const claim = await getClaimById(claimId, req, true);
+  const returnDashboardUrl = getReturnDashboardUrl(claimId, claim);
   let judgeDirectionWithNotice : CourtResponseSummaryList = undefined;
   
   if(toggleViewApplicationBuilderBasedOnUserAndApplicant(claim,application)) {
@@ -40,7 +41,7 @@ export const buildResponseFromCourtSection = async (req : AppRequest, applicatio
     ...getHearingOrderResponses(req, application, lang),
     ...getRequestMoreInfoResponse(application, lang),
     ...getJudgesDirectionsOrder(req, application, lang),
-    ...getJudgeApproveEdit(application, lang),
+    ...getJudgeApproveEdit(returnDashboardUrl, application, lang),
     ...getJudgeDismiss(returnDashboardUrl, application, lang),
   ].filter(courtResponseSummary =>  courtResponseSummary && courtResponseSummary.rows.length > 0)
     .sort((summaryList1,summaryList2) => {
@@ -99,9 +100,10 @@ export const getJudgesDirectionsOrder = (req: AppRequest, applicationResponse: A
   return courtResponseSummaryList;
 };
 
-export const getJudgeApproveEdit = (applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
+export const getJudgeApproveEdit = (returnDashboardUrl: string, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
   const judgeApproveEditDocuments = applicationResponse?.case_data?.generalOrderDocument;
+  const returnDashboardButton = new ResponseButton(t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD', {lng}), returnDashboardUrl);
 
   if(judgeApproveEditDocuments) {
     courtResponseSummaryList = judgeApproveEditDocuments
@@ -112,7 +114,7 @@ export const getJudgeApproveEdit = (applicationResponse: ApplicationResponse, ln
         const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(judgeApproveEditDocument?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPROVE_EDIT_DOCUMENT', {lng})}</a>`;
         const createdDatetime = judgeApproveEditDocument?.value?.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_APPROVE_EDIT', {lng}), createdDatetime, lng);
-        return new CourtResponseSummaryList(rows,createdDatetime);
+        return new CourtResponseSummaryList(rows, createdDatetime, returnDashboardButton);
       });
   }
   return courtResponseSummaryList;
@@ -138,10 +140,10 @@ export const getJudgeDismiss = (returnDashboardUrl: string, applicationResponse:
   return courtResponseSummaryList;
 };
 
-export const getReturnDashboardUrl = (claim: Claim) : string => {
+export const getReturnDashboardUrl = (claimId : string, claim: Claim) : string => {
   return claim.isClaimant()
-    ? DASHBOARD_CLAIMANT_URL.replace(':id', claim.id)
-    : DEFENDANT_SUMMARY_URL.replace(':id', claim.id);
+    ? constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)
+    : constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 };
 
 export const getHearingOrderResponses = (req: AppRequest, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {

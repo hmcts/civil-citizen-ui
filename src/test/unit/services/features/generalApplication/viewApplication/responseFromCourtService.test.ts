@@ -378,7 +378,7 @@ describe('View Application service', () => {
         ],
       };
       //when
-      const result = getJudgeApproveEdit(applicationResponse, 'en');
+      const result = getJudgeApproveEdit('returnUrl', applicationResponse, 'en');
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[0].rows[0].value.html).toEqual('1 January 2024');
@@ -392,7 +392,7 @@ describe('View Application service', () => {
       //given
       const applicationResponse = new ApplicationResponse();
       //when
-      const result = getJudgeApproveEdit(applicationResponse, 'en');
+      const result = getJudgeApproveEdit('returnUrl', applicationResponse, 'en');
       //then
       expect(result.length).toEqual(0);
     });
@@ -418,7 +418,7 @@ describe('View Application service', () => {
         parentClaimantIsApplicant: undefined,
       };
       //when
-      const result = getJudgeApproveEdit(applicationResponse, 'en');
+      const result = getJudgeApproveEdit('returnUrl', applicationResponse, 'en');
       //then
       expect(result.length).toEqual(0);
     });
@@ -572,7 +572,7 @@ describe('View Application service', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       //when
-      const result = await getReturnDashboardUrl(claim);
+      const result = await getReturnDashboardUrl("123", claim);
       //then
       expect(result).toContain('claimantNewDesign');
     });
@@ -583,7 +583,7 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.DEFENDANT;
      
       //when
-      const result = await getReturnDashboardUrl(claim);
+      const result = await getReturnDashboardUrl("123", claim);
       //then
       expect(result).toContain('defendant');
     });
