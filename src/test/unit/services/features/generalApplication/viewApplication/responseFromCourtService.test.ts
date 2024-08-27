@@ -572,9 +572,9 @@ describe('View Application service', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       //when
-      const result = await getReturnDashboardUrl("123", claim);
+      const result = await getReturnDashboardUrl('123', claim);
       //then
-      expect(result).toContain('claimantNewDesign');
+      expect(result).toContain('/dashboard/123/claimantNewDesign');
     });
 
     it('should return defendant link', async () => {
@@ -583,9 +583,9 @@ describe('View Application service', () => {
       claim.caseRole = CaseRole.DEFENDANT;
      
       //when
-      const result = await getReturnDashboardUrl("123", claim);
+      const result = await getReturnDashboardUrl('123', claim);
       //then
-      expect(result).toContain('defendant');
+      expect(result).toContain('/dashboard/123/defendant');
     });
   });
   describe('getResponseFromCourtSection', () => {
