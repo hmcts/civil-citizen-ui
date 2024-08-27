@@ -126,6 +126,7 @@ describe('apply help with application fee selection', () => {
     //Then
     expect(actualRedirectUrl).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, '12345667', GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag=true'));
   });
+
   it('should enable the warning text if payment request is failed for additional fee', async () => {
     claim.paymentSyncError = false;
     (getClaimById as jest.Mock).mockResolvedValue(claim);
@@ -141,6 +142,7 @@ describe('apply help with application fee selection', () => {
     //Then
     expect(actualRedirectUrl).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, '12345667', GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL));
   });
+
   it('should enable the warning text if payment request is failed', async () => {
     claim.paymentSyncError = false;
     (getClaimById as jest.Mock).mockResolvedValue(claim);
