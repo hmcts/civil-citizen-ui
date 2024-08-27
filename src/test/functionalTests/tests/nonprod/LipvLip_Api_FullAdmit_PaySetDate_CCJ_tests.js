@@ -38,7 +38,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
     }
-    
+
     await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullAdmitPayBySetDateCCJ(claimRef, claimNumber);
     await api.waitForFinishedBusinessProcess();
 
@@ -47,4 +47,4 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set da
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
-}).tag('@r2-regression').tag('@nightly');
+}).tag('@nightly');

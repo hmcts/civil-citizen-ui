@@ -1,0 +1,163 @@
+{
+  "id": 1777777777777741,
+  "jurisdiction": "CIVIL",
+  "state": "AWAITING_APPLICANT_INTENTION",
+  "case_type_id": "CIVIL",
+  "created_date": "2024-08-21T17:21:04",
+  "last_modified": "2024-08-21T18:03:17",
+  "case_data": {
+    "respondent1ClaimResponseTypeForSpec": "FULL_ADMISSION",
+    "defenceAdmitPartPaymentTimeRouteRequired": "IMMEDIATELY",
+    "totalClaimAmount": 1500,
+    "respondent1ClaimResponseDocumentSpec": {
+      "documentSize": 0
+    },
+    "respondent1LiPResponse": {
+      "respondent1LiPContactPerson": "contacto",
+      "respondent1ResponseLanguage": "ENGLISH"
+    },
+    "submittedDate": "2025-08-10T15:59:50",
+    "specRespondent1Represented": "No",
+    "respondent1ResponseDeadline": "2024-09-19T16:00:00",
+    "respondent1ResponseDate": "2024-08-21T19:03:17",
+    "respondToClaimAdmitPartLRspec": {
+      "whenWillThisAmountBePaid": "2024-08-29"
+    },
+    "CaseAccessCategory": "SPEC_CLAIM",
+    "defendantUserDetails": {
+      "email": "jane.smith@gmail.com",
+      "id": "af43b7d6-4607-459e-be2b-2b1fe9740063"
+    },
+    "applicant1": {
+      "partyID": "9dc23fb0-dff0-4e",
+      "type": "ORGANISATION",
+      "organisationName": "Test Inc",
+      "primaryAddress": {
+        "AddressLine1": "1",
+        "PostTown": "London",
+        "PostCode": "E1 6AN"
+      },
+      "partyName": "Test Inc",
+      "partyTypeDisplayValue": "Organisation",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "partyPhone": "07711111111",
+      "flags": {
+        "partyName": "Test Inc",
+        "roleOnCase": "Claimant 1"
+      }
+    },
+    "serviceRequestReference": "2022-1655915218557",
+    "applicant1Represented": "No",
+    "issueDate": "2024-08-21",
+    "detailsOfClaim": "asd",
+    "claimFee": {
+      "calculatedAmountInPence": "3500",
+      "code": "FEE0202",
+      "version": "4"
+    },
+    "systemGeneratedCaseDocuments": [
+      {
+        "value": {
+          "documentLink": {
+            "document_url": "http://dm-store:8080/documents/36a5e4df-3728-44ed-b670-ded986eb1756",
+            "document_binary_url": "http://dm-store:8080/documents/36a5e4df-3728-44ed-b670-ded986eb1756/binary",
+            "document_filename": "000MC028-claim-form-claimant-copy.pdf"
+          },
+          "documentName": "000MC028-claim-form-claimant-copy.pdf",
+          "documentType": "CLAIMANT_CLAIM_FORM",
+          "documentSize": 33858,
+          "createdDatetime": "2024-08-21T18:21:46",
+          "createdBy": "Civil"
+        },
+        "id": "c128aac4-680a-4e77-9558-577d892aa415"
+      },
+      {
+        "value": {
+          "documentLink": {
+            "document_url": "http://dm-store:8080/documents/8088280e-baa1-46c5-a69b-ef460b08f42d",
+            "document_binary_url": "http://dm-store:8080/documents/8088280e-baa1-46c5-a69b-ef460b08f42d/binary",
+            "document_filename": "000MC028-sealed-claim-form.pdf"
+          },
+          "documentName": "000MC028-sealed-claim-form.pdf",
+          "documentType": "SEALED_CLAIM",
+          "documentSize": 42451,
+          "createdDatetime": "2024-08-21T18:21:49",
+          "createdBy": "Civil"
+        },
+        "id": "b95061d7-ee14-4042-adf2-3f98c9ca5601"
+      }
+    ],
+    "specClaimResponseTimelineList": "MANUAL",
+    "helpWithFees": {
+      "helpWithFee": "No"
+    },
+    "applicant1AdditionalLipPartyDetails": {
+      "contactPerson": "claimant contact person"
+    },
+    "claimInterest": "No",
+    "specAoSApplicantCorrespondenceAddressRequired": "Yes",
+    "claimantUserDetails": {
+      "email": "civilmoneyclaimsdemo@gmail.com",
+      "id": "371de4cf-e524-44d7-9902-4798bfa91321"
+    },
+    "legacyCaseReference": "000MC028",
+    "applicant1ResponseDeadline": "2024-09-19T16:00:00",
+    "caseNameHmctsInternal": "'Test Inc' v 'Sir John Doe'",
+    "respondent1GeneratedResponseDocument": {
+      "documentSize": 0
+    },
+    "businessProcess": {
+      "status": "READY",
+      "camundaEvent": "DEFENDANT_RESPONSE_CUI",
+      "readyOn": "2024-08-21T19:03:17.4488957"
+    },
+    "respondent1PinToPostLRspec": {
+      "accessCode": "S3LLTZ2MTJMK",
+      "respondentCaseRole": "[DEFENDANT]",
+      "expiryDate": "2025-02-17"
+    },
+    "respondent1": {
+      "partyID": "047391e8-ceef-4f",
+      "type": "ORGANISATION",
+      "organisationName": "Sir John Doe",
+      "primaryAddress": {
+        "AddressLine1": "1",
+        "PostTown": "London",
+        "PostCode": "E1 6AN"
+      },
+      "partyName": "Sir John Doe",
+      "partyTypeDisplayValue": "Organisation",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "partyPhone": "07777777777",
+      "flags": {
+        "partyName": "Sir John Doe",
+        "roleOnCase": "Defendant 1"
+      }
+    },
+    "speclistYourEvidenceList": [
+      {
+        "value": {
+          "evidenceType": "CONTRACTS_AND_AGREEMENTS",
+          "contractAndAgreementsEvidence": "asd"
+        },
+        "id": "0"
+      }
+    ],
+    "applicant1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+    },
+    "responseClaimTrack": "SMALL_CLAIM",
+    "responseClaimMediationSpecRequired": "No",
+    "claimAmountBreakup": [
+      {
+        "value": {
+          "claimAmount": "100000",
+          "claimReason": "sdf"
+        },
+        "id": "0"
+      }
+    ]
+  },
+  "security_classification": "PUBLIC",
+  "callback_response_status": "CALLBACK_COMPLETED"
+}
