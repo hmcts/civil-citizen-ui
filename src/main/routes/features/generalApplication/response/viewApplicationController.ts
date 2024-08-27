@@ -54,7 +54,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
       applicantDocuments,
       courtDocuments,
       respondentDocuments,
-      additionalDocUrl
+      additionalDocUrl,
     });
   } catch (error) {
     next(error);
