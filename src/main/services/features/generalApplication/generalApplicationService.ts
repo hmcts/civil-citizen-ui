@@ -446,7 +446,7 @@ export const getApplicationIndex = async(claimId: string, applicationId: string,
   return applications.findIndex(application => application.id == applicationId);
 };
 
-export const deleteGAFromClaimsByUserId = async(userId: string) : Promise<void> => {
+export const deleteGAFromClaimsByUserId = async (userId: string) : Promise<void> => {
   if (!userId) return;
   const claimsIds = await findClaimIdsbyUserId(userId);
   claimsIds?.forEach(async (claimId: string) => {

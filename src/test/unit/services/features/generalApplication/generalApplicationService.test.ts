@@ -36,11 +36,7 @@ import { RequestingReason } from 'models/generalApplication/requestingReason';
 import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {
-  DASHBOARD_CLAIMANT_URL,
-  DEFENDANT_SUMMARY_URL,
-  OLD_DASHBOARD_CLAIMANT_URL,
-} from 'routes/urls';
+import {CANCEL_URL} from 'routes/urls';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
@@ -254,7 +250,7 @@ describe('General Application service', () => {
       //When
       const cancelUrl = await getCancelUrl('123', claim);
       //Then
-      expect(cancelUrl).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id', '123'));
+      expect(cancelUrl).toEqual(CANCEL_URL.replace(':id', '123').replace(':propertyName', 'generalApplication'));
     });
 
     it('should return claimant old dashboard url when user is claimant and dashboard feature flag is disabled', async () => {
@@ -269,7 +265,7 @@ describe('General Application service', () => {
       //When
       const cancelUrl = await getCancelUrl('123', claim);
       //Then
-      expect(cancelUrl).toEqual(OLD_DASHBOARD_CLAIMANT_URL.replace(':id', '123'));
+      expect(cancelUrl).toEqual(CANCEL_URL.replace(':id', '123').replace(':propertyName', 'generalApplication'));
     });
 
     it('should return defendant dashboard url when user is defendent', async () => {
@@ -284,7 +280,7 @@ describe('General Application service', () => {
       //When
       const cancelUrl = await getCancelUrl('123', claim);
       //Then
-      expect(cancelUrl).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '123'));
+      expect(cancelUrl).toEqual(CANCEL_URL.replace(':id', '123').replace(':propertyName', 'generalApplication'));
     });
   });
 
