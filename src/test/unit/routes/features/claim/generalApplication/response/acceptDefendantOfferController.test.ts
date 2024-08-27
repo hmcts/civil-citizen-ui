@@ -80,6 +80,7 @@ describe('General Application - Accept defendant offer', () => {
         .send({ option: YesNo.YES })
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.header.location).toStrictEqual('/case/123/response/general-application/345/want-to-upload-document');
         });
     });
     it('should save the value when No and ACCEPT_INSTALMENTS and redirect', async () => {

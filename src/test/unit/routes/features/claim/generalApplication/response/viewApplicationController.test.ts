@@ -176,6 +176,20 @@ describe('General Application - View application', () => {
         });
     });
 
+    it('should include respond button', async () => {
+      const respondentDocs =  new DocumentsViewComponent('RespondentDocuments',[orderDocument]);
+      mockRespondentDocs.mockImplementation(() => respondentDocs);
+      mockCourtDocs.mockImplementation(() => new DocumentsViewComponent('court',[]));
+      mockApplicantDocs.mockImplementation(() => new DocumentsViewComponent('applicant',[]));
+
+      await request(app)
+        .get(constructResponseUrlWithIdAndAppIdParams('123','456',GA_RESPONSE_VIEW_APPLICATION_URL))
+        .expect(({status,text}) => {
+          expect(status).toBe(200);
+          expect(text).toContain('<a href="/case/123/response/general-application/456/accept-defendant-offer"');
+        });
+    });
+
     it('should return http 500 when has error in the get method', async () => {
       mockedSummaryRows.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
