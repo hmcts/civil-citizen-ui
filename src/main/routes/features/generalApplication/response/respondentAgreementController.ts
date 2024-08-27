@@ -23,7 +23,7 @@ const viewPath = 'features/generalApplication/respondent-agreement';
 
 const renderView = async (claimId: string, claim: Claim, form: GenericForm<RespondentAgreement>, lng: string, appId: string, gaResponse: GaResponse, res: Response): Promise<void> => {
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const backLinkUrl = !gaResponse.agreeToOrder ? constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_VIEW_APPLICATION_URL) : constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_AGREE_TO_ORDER_URL); // TODO: add url
+  const backLinkUrl = !gaResponse.agreeToOrder ? constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_VIEW_APPLICATION_URL) : constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_AGREE_TO_ORDER_URL);
   res.render(viewPath, {
     cancelUrl,
     caption: getRespondToApplicationCaption(gaResponse.generalApplicationType, lng),
@@ -61,7 +61,7 @@ respondentAgreementController.post(GA_RESPONDENT_AGREEMENT_URL, (async (req: App
       return await renderView(claimId, claim, form, lang, req.params.appId, gaResponse, res);
     }
     await saveRespondentAgreement(generateRedisKeyForGA(req), respondentAgreement);
-    res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL)); // TODO: add url
+    res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL));
   } catch (error) {
     next(error);
   }

@@ -22,7 +22,7 @@ respondentHearingPreferenceController.get(GA_RESPONDENT_HEARING_PREFERENCE_URL, 
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const applicationType: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
-    const continueLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_ARRANGEMENT_URL  );
+    const continueLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_ARRANGEMENT_URL);
     const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL);
 
     res.render(viewPath, {applicationType, backLinkUrl, continueLinkUrl});

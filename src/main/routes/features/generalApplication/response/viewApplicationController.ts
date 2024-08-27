@@ -45,7 +45,17 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     await saveApplicationTypesToGaResponse(applicationResponse.state, generateRedisKeyForGA(req), applicationResponse.case_data.generalAppType.types);
-    res.render(viewPath, {backLinkUrl, summaryRows, pageTitle, redirectUrl, applicationIndex, applicantDocuments, courtDocuments, respondentDocuments, additionalDocUrl });
+    res.render(viewPath, {
+      backLinkUrl,
+      summaryRows,
+      pageTitle,
+      redirectUrl,
+      applicationIndex,
+      applicantDocuments,
+      courtDocuments,
+      respondentDocuments,
+      additionalDocUrl
+    });
   } catch (error) {
     next(error);
   }
@@ -54,12 +64,12 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
 async function getRedirectUrl(applicationResponse: ApplicationResponse, applicationId: string, claimId: string) {
   const claimantRespondingToDefendantVaryAJudgment = applicationResponse.case_data.generalAppType.types.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT);
   const withConsent = applicationResponse.case_data.generalAppRespondentAgreement.hasAgreed === YesNoUpperCamelCase.YES;
-  if(claimantRespondingToDefendantVaryAJudgment){
+  if (claimantRespondingToDefendantVaryAJudgment) {
     return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_ACCEPT_DEFENDANT_OFFER_URL);
-  }else if(withConsent){
+  } else if (withConsent) {
     return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_AGREE_TO_ORDER_URL);
-  }else{
-    return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_AGREEMENT_URL);
   }
+  return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_AGREEMENT_URL);
 }
+
 export default viewApplicationToRespondentController;

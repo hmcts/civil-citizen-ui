@@ -56,7 +56,7 @@ respondentAgreeToOrderController.post(GA_AGREE_TO_ORDER_URL, (async (req: AppReq
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
 
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId,req.params.id,GA_RESPONSE_VIEW_APPLICATION_URL);
+    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.id, GA_RESPONSE_VIEW_APPLICATION_URL);
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.AGREE_TO_ORDER_NOT_SELECTED'));
 
     form.validateSync();
@@ -64,7 +64,7 @@ respondentAgreeToOrderController.post(GA_AGREE_TO_ORDER_URL, (async (req: AppReq
     if (form.hasErrors()) {
       const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
       const caption: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
-      res.render(viewPath, { form, caption,cancelUrl, backLinkUrl });
+      res.render(viewPath, {form, caption, cancelUrl, backLinkUrl});
     } else {
       await saveRespondentAgreeToOrder(redisKey, req.body.option);
       res.redirect(getRedirectUrl(claimId, applicationId, req.body.option));
@@ -75,7 +75,7 @@ respondentAgreeToOrderController.post(GA_AGREE_TO_ORDER_URL, (async (req: AppReq
 }) as RequestHandler);
 
 function getRedirectUrl(claimId: string, applicationId: string, option: YesNo.YES) {
-  return option == YesNo.YES ? constructResponseUrlWithIdAndAppIdParams(claimId, applicationId,  GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL) : constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_AGREEMENT_URL);
+  return option === YesNo.YES ? constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL) : constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_AGREEMENT_URL);
 }
 
 export default respondentAgreeToOrderController;

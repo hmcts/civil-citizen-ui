@@ -33,7 +33,6 @@ export const saveRespondentAgreeToOrder = async (redisKey: string, agreeToOrder:
 };
 
 export function getRespondToApplicationCaption(generalAppTypes: ApplicationTypeOption[], lng: string): string {
-  //const selectedApplication = claim.respondentGaAppDetails.find(application => application.gaApplicationId === gaApplicationId);
   if (generalAppTypes?.length > 1) {
     return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO_MULTIPLE', { lng: getLng(lng) });
   }
