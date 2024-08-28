@@ -59,13 +59,14 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
     claim = new Claim();
     claim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
     gaResponse = new GaResponse();
+    gaResponse.generalApplicationType = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT];
     gaResponse.wantToUploadDocuments = YesNo.YES;
     mockDataFromStore.mockResolvedValue(claim);
   });
 
   describe('General Application - Respondent upload evidence docs to support application', () => {
     it('should return upload document page', async () => {
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
         .expect((res) => {
@@ -80,7 +81,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
       document.fileUpload = file;
       gaResponse.uploadEvidenceDocuments.push(document);
       gaResponse.uploadEvidenceDocuments.push(document);
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL + '?id=1'))
         .expect((res) => {
@@ -101,7 +102,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
         },
       ];
       app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
-
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
         .expect((res) => {
@@ -123,7 +124,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
         },
       ];
       app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
-
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
         .expect((res) => {
@@ -144,7 +145,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
         },
       ];
       app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
-
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
         .expect((res) => {
@@ -176,6 +177,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
     });
 
     it('should throw the error if user click continue button without uploading a file', async () => {
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
         .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
         .expect((res) => {

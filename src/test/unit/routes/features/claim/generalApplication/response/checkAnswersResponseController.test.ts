@@ -44,9 +44,10 @@ describe('General application - response - check your answers', () => {
 
     it('displays claim summary', async () => {
       const mockClaim = new Claim();
-      mockClaim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
+      const gaResponse = new GaResponse();
+      gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
       mockGetCaseData.mockResolvedValueOnce(mockClaim);
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('1234567', '345', GA_RESPONSE_CHECK_ANSWERS_URL))
         .expect((res) => {
@@ -60,9 +61,9 @@ describe('General application - response - check your answers', () => {
     it('displays response data', async () => {
       const gaResponse = new GaResponse();
       gaResponse.respondentAgreement = new RespondentAgreement(YesNo.YES);
+      gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
       gaResponse.hearingSupport = new HearingSupport([SupportType.HEARING_LOOP]);
       const mockClaim = new Claim();
-      mockClaim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
       mockGetCaseData.mockResolvedValueOnce(mockClaim);
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
 
@@ -107,7 +108,9 @@ describe('General application - response - check your answers', () => {
     });
     it('should show validation errors when statement of truth not filled in', async () => {
       mockGetCaseData.mockResolvedValueOnce(new Claim());
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+      const gaResponse = new GaResponse();
+      gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
       await request(app)
         .post(GA_RESPONSE_CHECK_ANSWERS_URL)
         .send({signed: undefined, name: ''})
