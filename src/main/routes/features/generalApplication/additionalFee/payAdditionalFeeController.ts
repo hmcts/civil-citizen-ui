@@ -11,7 +11,7 @@ import {AppRequest} from 'models/AppRequest';
 import {getHelpAdditionalFeeSelectionPageContents, getButtonsContents}
   from 'services/features/generalApplication/additionalFee/helpWithAdditionalFeeContent';
 import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
-import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/additionalFee/help-with-additional-fee';
 const payAdditionalFeeController = Router();
@@ -19,15 +19,9 @@ const hwfPropertyName = 'applyAdditionalHelpWithFees';
 
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, redirectUrl: string, lng: string) {
   const appId = req.params.appId;
-  let paymentSyncError = false;
   if (!form) {
     const claim: Claim = await getClaimById(claimId, req, true);
     form = new GenericForm(new GenericYesNo(claim.generalApplication?.helpWithFees?.applyAdditionalHelpWithFees));
-    if (claim.paymentSyncError) {
-      paymentSyncError = true;
-      claim.paymentSyncError = undefined;
-      await saveDraftClaim(claim.id, claim);
-    }
   }
   const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_PAY_ADDITIONAL_FEE_URL);
   res.render(applyHelpWithApplicationFeeViewPath,
@@ -35,7 +29,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
       form,
       backLinkUrl,
       redirectUrl,
-      applyHelpWithFeeSelectionContents: getHelpAdditionalFeeSelectionPageContents(lng, paymentSyncError),
+      applyHelpWithFeeSelectionContents: getHelpAdditionalFeeSelectionPageContents(lng),
       applyHelpWithFeeSelectionButtonContents: getButtonsContents(claimId),
     });
 }

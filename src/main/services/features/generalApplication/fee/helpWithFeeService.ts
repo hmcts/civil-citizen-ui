@@ -1,7 +1,6 @@
 import {AppRequest} from 'models/AppRequest';
 import {YesNo} from 'form/models/yesNo';
 import {
-  GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL,
   GA_APPLY_HELP_WITH_FEE_SELECTION,
   GA_APPLY_HELP_WITH_FEES,
 } from 'routes/urls';
@@ -60,13 +59,8 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
     } else {
       generalApplicationId = req.params.appId;
     }
-    const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, generalApplicationId);
-    const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;
     claim.paymentSyncError = true;
     await saveDraftClaim(claim.id, claim, true);
-    if (isAdditionalFee) {
-      return constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL);
-    }
     return constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEE_SELECTION);
   }
 };
