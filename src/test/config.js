@@ -22,13 +22,13 @@ module.exports = {
     url: 'http://localhost:5555',
   },
   url: {
-    manageCase: 'https://xui-civil-citizen-ui-pr-4386.preview.platform.hmcts.net',
+    manageCase: 'https://xui-civil-citizen-ui-pr-4425.preview.platform.hmcts.net',
     authProviderApi:'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
-    ccdDataStore: 'https://ccd-data-store-api-civil-citizen-ui-pr-4386.preview.platform.hmcts.net',
+    ccdDataStore: 'https://ccd-data-store-api-civil-citizen-ui-pr-4425.preview.platform.hmcts.net',
     dmStore: 'http://dm-store-aat.service.core-compute-aat.internal',
     idamApi: 'https://idam-api.aat.platform.hmcts.net',
-    civilService: 'https://civil-citizen-ui-pr-4386-civil-service.preview.platform.hmcts.net',
-    caseAssignmentService: 'https://manage-case-assignment-civil-citizen-ui-pr-4386.preview.platform.hmcts.net',
+    civilService: 'https://civil-citizen-ui-pr-4425-civil-service.preview.platform.hmcts.net',
+    caseAssignmentService: 'https://manage-case-assignment-civil-citizen-ui-pr-4425.preview.platform.hmcts.net',
     idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
 
     // manageCase: process.env.URL || 'https://manage-case.demo.platform.hmcts.net/',
@@ -44,6 +44,12 @@ module.exports = {
     // wiremockServiceE2e: 'http://localhost:1111',
   },
   getDomain: (url) => new URL(url).host,
+  // for testing Demo
+  // s2s: {
+  //   microservice: 'civil_service',
+  //   secret: process.env.S2S_SECRET || '4W4QUXOYX623JW64',
+  // },
+ // For testing PR
   s2s: {
     microservice: 'civil_service',
     secret: process.env.S2S_SECRET || 'BTZQFPGY4TUMAFGL',

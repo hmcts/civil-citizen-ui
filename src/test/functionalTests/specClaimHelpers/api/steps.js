@@ -292,7 +292,7 @@ module.exports = {
     return caseId;
   },
 
-  createLiPClaim: async (user, claimType, carmEnabled = false, partyType = 'DefendantSoleTrader') => {
+  createLiPClaim: async (user, claimType, carmEnabled = false, partyType = 'Individual') => {
     console.log(' Creating LIP claim');
 
     const currentDate = new Date();
