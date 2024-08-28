@@ -20,6 +20,7 @@ import { ApplicationTypeOption } from 'models/generalApplication/applicationType
 import {t} from 'i18next';
 import { ApplicationResponse, CCDApplication } from 'common/models/generalApplication/applicationResponse';
 import { ApplicationState, ApplicationSummary } from 'common/models/generalApplication/applicationSummary';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');

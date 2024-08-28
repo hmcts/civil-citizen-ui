@@ -18,6 +18,7 @@ import {ApplicationSummary, StatusColor} from 'common/models/generalApplication/
 import {dateTimeFormat} from 'common/utils/dateUtils';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {GA_RESPONSE_VIEW_APPLICATION_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
