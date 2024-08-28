@@ -20,6 +20,7 @@ import {submitApplication} from 'services/features/generalApplication/submitAppl
 import {checkYourAnswersGAGuard} from 'routes/guards/checkYourAnswersGAGuard';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -55,27 +56,30 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const statementOfTruth = new StatementOfTruthForm(req.body.signed, req.body.name);
+    const applicationFee = convertToPoundsFilter(claim?.generalApplication?.applicationFee?.calculatedAmountInPence);
     const form = new GenericForm(new StatementOfTruthForm(req.body.signed, req.body.name));
     await form.validate();
     if (form.hasErrors()) {
       await renderView(claimId, claim, form, req, res);
     } else {
       await saveStatementOfTruth(redisKey, statementOfTruth);
-      await submitApplication(req);
+      const claimResponse = await submitApplication(req);
+      const genApps = claimResponse.generalApplications;
+      const genAppId = genApps ? genApps[genApps.length - 1].id : undefined;
       await deleteDraftClaimFromStore(redisKey);
-      res.redirect(getRedirectUrl(claimId, claim));
+      res.redirect(getRedirectUrl(claimId, claim, applicationFee,genAppId));
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-function getRedirectUrl(claimId: string, claim: Claim): string {
+function getRedirectUrl(claimId: string, claim: Claim, applicationFee: number, genAppId: string ): string {
   if (claim.generalApplication?.applicationTypes?.length === 1 && claim.generalApplication.applicationTypes[0].option === ApplicationTypeOption.ADJOURN_HEARING
     && hearingMoreThan14DaysInFuture(claim)) {
     return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUBMITTED_URL);
   } else {
-    return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL);
+    return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL) + '?appFee=' + applicationFee + '&id=' + genAppId;
   }
 }
 

@@ -1,5 +1,5 @@
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
-import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {ApplicationResponse, JudicialDecisionOptions} from 'models/generalApplication/applicationResponse';
 import {
   getApplicantDocuments,
   getApplicationSections,
@@ -106,7 +106,7 @@ describe('View Application service', () => {
       expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES');
       expect(result[3].value.html).toEqual('COMMON.VARIATION.YES');
       expect(result[4].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER');
-      expect(result[4].value.html).toEqual('The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid].');
+      expect(result[4].value.html).toContain('The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid].');
       expect(result[5].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING');
       expect(result[5].value.html).toEqual('reasons');
       expect(result[6].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS');
@@ -144,7 +144,7 @@ describe('View Application service', () => {
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES');
       expect(result[2].value.html).toEqual('COMMON.VARIATION.YES');
       expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER');
-      expect(result[3].value.html).toEqual('The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid].'+'PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS');
+      expect(result[3].value.html).toContain('The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid]. <br> ' + 'PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS');
       expect(result[4].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING');
       expect(result[4].value.html).toEqual('reasons');
       expect(result[5].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS');
@@ -201,7 +201,7 @@ describe('View Application service', () => {
       expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
       expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
+      expect(result[2].value.html).toContain('<a target="_blank" href="/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
       expect(result[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT');
     });
 
@@ -220,7 +220,7 @@ describe('View Application service', () => {
       expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
       expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/undefined">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
+      expect(result[2].value.html).toContain('<a target="_blank" href="/case/1718105701451856/view-documents/undefined">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
     });
 
     it('should return judge response summary with undefined link when requestForInformationDocument is not present', async () => {
@@ -234,9 +234,81 @@ describe('View Application service', () => {
       const result = getJudgeResponseSummary(applicationResponse, 'en');
       //then
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[2].value.html).toContain('<a href="undefined">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
+      expect(result[2].value.html).toContain('<a target="_blank" href="/case/1718105701451856/view-documents/undefined">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
     });
 
+    it('should return judge response summary with correct status when requestForInformation isWithNotice is present', async () => {
+      //given
+      applicationResponse.created_date = new Date('2024-01-01').toString();
+      const caseData = applicationResponse.case_data;
+      caseData.requestForInformationDocument = [{
+        'id': 'ad9fd4a0-8294-414d-bcce-b66e742d809f',
+        'value': {
+          'createdBy': 'Civil',
+          'documentLink': {
+            'category_id': 'applications',
+            'document_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098',
+            'document_filename': 'make-with-notice_2024-07-22 11:01:54.pdf',
+            'document_binary_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098/binary',
+          },
+          'documentName': 'make-with-notice_2024-07-22 11:01:54.pdf',
+          'documentType': DocumentType.SEND_APP_TO_OTHER_PARTY,
+        },
+      }];
+
+      caseData.generalAppPBADetails = {
+        fee: undefined,
+        paymentDetails: {
+          status: 'SUCCESS',
+          reference: undefined,
+        },
+        additionalPaymentDetails: {
+          status: 'SUCCESS',
+          reference: undefined,
+        },
+        serviceRequestReference: undefined,
+      };
+      applicationResponse.case_data= caseData;
+      applicationResponse.created_date = new Date('2024-01-01').toString();
+      //when
+      const result = getJudgeResponseSummary(applicationResponse, 'en');
+      //then
+      expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
+      expect(result[3].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID');
+    });
+
+    it('should return judge response summary when response is request for more information', async () => {
+      //given
+      const caseData = applicationResponse.case_data;
+      caseData.requestForInformationDocument = [{
+        'id': 'ad9fd4a0-8294-414d-bcce-b66e742d809f',
+        'value': {
+          'createdBy': 'Civil',
+          'documentLink': {
+            'category_id': 'applications',
+            'document_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098',
+            'document_filename': 'Request_for_information_for_application_2024-07-22 11:01:54.pdf',
+            'document_binary_url': 'http://test/76600af8-e6f3-4506-9540-e6039b9cc098/binary',
+          },
+          'documentName': 'Request_for_information_for_application_2024-07-22 11:01:54.pdf',
+          'documentType': DocumentType.REQUEST_MORE_INFORMATION,
+        },
+      }];
+
+      applicationResponse.created_date = new Date('2024-01-01').toString();
+      applicationResponse.case_data.judicialDecision.decision = <JudicialDecisionOptions>'REQUEST_MORE_INFO';
+
+      //when
+      const result = getJudgeResponseSummary(applicationResponse, 'en');
+
+      //then
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].value.html).toEqual('1 January 2024');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO');
+      expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[2].value.html).toContain('<a target="_blank" href="/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
+    });
   });
 
   describe('Get Applicants Documents', () => {

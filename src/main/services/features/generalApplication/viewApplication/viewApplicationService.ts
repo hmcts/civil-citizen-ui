@@ -13,7 +13,7 @@ import {
   addUnavailableDatesRows,
 } from './addViewApplicationRows';
 import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
-import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {ApplicationResponse, JudicialDecisionOptions} from 'models/generalApplication/applicationResponse';
 import {AppRequest} from 'models/AppRequest';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
@@ -84,11 +84,44 @@ export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse
 
   rows.push(
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
-    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
-    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng})}</a>`),
   );
+  if(applicationResponse.case_data.judicialDecision.decision === JudicialDecisionOptions.MAKE_AN_ORDER) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), formatDocumentLinkHtml(applicationResponse, DocumentType.SEND_APP_TO_OTHER_PARTY, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng}))),
+    );
+  } else if(applicationResponse.case_data.judicialDecision.decision === JudicialDecisionOptions.REQUEST_MORE_INFO) {
+    const documentName = getRequestForInfoDocument(applicationResponse, DocumentType.REQUEST_MORE_INFORMATION).value.documentName;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO', {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), formatDocumentLinkHtml(applicationResponse, DocumentType.REQUEST_MORE_INFORMATION, documentName)),
+    );
+  }
+  if (documentUrl && (applicationResponse.case_data.generalAppPBADetails.additionalPaymentDetails)) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID', {lng})),
+    );
+  }
   return rows;
 };
+
+const getRequestForInfoDocument = (applicationResponse: ApplicationResponse, documentType: DocumentType) => {
+  const requestForInformationDocument = applicationResponse?.case_data?.requestForInformationDocument;
+  if(requestForInformationDocument) {
+    return requestForInformationDocument.find(doc => doc?.value?.documentType === documentType);
+  }
+  return undefined;
+};
+
+const getRequestForInfoDocumentUrl = (applicationResponse: ApplicationResponse, documentType: DocumentType) : string => {
+  const applicationId = applicationResponse.id;
+  const document = getRequestForInfoDocument(applicationResponse, documentType);
+  const documentId = documentIdExtractor(document?.value?.documentLink?.document_binary_url);
+  return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
+};
+
+const formatDocumentLinkHtml = (applicationResponse: ApplicationResponse, documentType: DocumentType, documentName: string) : string =>
+  `<a target="_blank" href="${getRequestForInfoDocumentUrl(applicationResponse, documentType)}">${documentName}</a>`;
 
 export const getCourtDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const courtDocumentsArray: DocumentInformation[] = [];
