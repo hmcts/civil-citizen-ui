@@ -455,5 +455,5 @@ export const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim
 
 export const getViewApplicationUrl = (claimId: string, claim: Claim, application: ApplicationResponse, index: number ) : string => {
   const viewApplicationUrl = toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, application) ? GA_VIEW_APPLICATION_URL : GA_RESPONSE_VIEW_APPLICATION_URL;
-  return `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id, viewApplicationUrl)}?index=${index + 1}`
+  return `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id, viewApplicationUrl)}?index=${index + 1}`;
 };
