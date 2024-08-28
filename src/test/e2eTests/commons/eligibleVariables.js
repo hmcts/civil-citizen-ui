@@ -81,6 +81,12 @@ const documentLanguage = Object.freeze({
   WELSH_AND_ENGLISH: 'documentsLanguage-3',
 });
 
+const howOftenYouMakePayments = Object.freeze({
+  EACH_WEEK: 'repaymentFrequency',
+  EVERY_TWO_WEEKS : 'repaymentFrequency-2',
+  EVERY_MONTH: 'repaymentFrequency-3',
+});
+
 module.exports = {
   notEligibleReason,
   eligibleCheckBoxValue,
@@ -95,4 +101,5 @@ module.exports = {
   speakLanguage,
   documentLanguage,
   supportRequired,
+  howOftenYouMakePayments,
 };

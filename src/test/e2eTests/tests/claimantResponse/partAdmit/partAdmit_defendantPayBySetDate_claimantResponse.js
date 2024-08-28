@@ -1,6 +1,6 @@
-const config = require('../../../config');
-const ClaimantResponseSteps = require('../../claimantResponse/steps/claimantResponseSteps.js');
-const DefendantResponseSteps = require('../../defendantResponse/defendantResponseSteps');
+const config = require('../../../../config');
+const ClaimantResponseSteps = require('../../../claimantResponse/steps/claimantResponseSteps.js');
+const DefendantResponseSteps = require('../../../defendantResponse/defendantResponseSteps');
 Feature('Part admit defendant pay by set date - @claimantResponse').tag('@e2e');
 
 Scenario('Response with PartAdmit-Defendant pay by set date - Claimant rejects claimant rejects and proposes alternate repayment plan', async () => {
