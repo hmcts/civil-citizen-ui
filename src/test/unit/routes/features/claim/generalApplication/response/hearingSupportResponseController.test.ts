@@ -40,11 +40,11 @@ describe('General Application Response- Hearing support', () => {
     const claim = new Claim();
     claim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
     mockGetClaim.mockResolvedValueOnce(claim);
-    jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
   });
 
   describe('on GET', () => {
     it('should return page', async () => {
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONSE_HEARING_SUPPORT_URL))
         .expect((res) => {
@@ -54,6 +54,7 @@ describe('General Application Response- Hearing support', () => {
     });
 
     it('should return http 500 when has error in the get method', async () => {
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
       await request(app)
         .get(GA_RESPONSE_HEARING_SUPPORT_URL)
         .expect((res) => {
@@ -65,6 +66,7 @@ describe('General Application Response- Hearing support', () => {
 
   describe('on POST', () => {
     it('should send the value and redirect', async () => {
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
       await request(app)
         .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONSE_HEARING_SUPPORT_URL))
         .send({requiredSupport: [SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT],
@@ -75,6 +77,7 @@ describe('General Application Response- Hearing support', () => {
     });
 
     it('should return errors on box selected but no input', async () => {
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
       await request(app)
         .post(constructResponseUrlWithIdAndAppIdParams('123', '345',GA_RESPONSE_HEARING_SUPPORT_URL))
         .send({requiredSupport: SupportType.OTHER_SUPPORT, signLanguageContent: '', languageContent: '', otherContent: ''})
