@@ -4,6 +4,7 @@ import {
   BREATHING_SPACE_INFO_URL,
   DASHBOARD_CLAIMANT_URL,
   DATE_PAID_URL,
+  GA_APPLICATION_SUMMARY_URL,
   OLD_DASHBOARD_CLAIMANT_URL,
 } from '../../urls';
 import {
@@ -28,6 +29,7 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import { applicationNoticeUrl } from 'common/utils/externalURLs';
 import {updateFieldDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import { GaServiceClient } from 'client/gaServiceClient';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -35,6 +37,9 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const HearingUploadDocuments = 'Upload hearing documents';
 const ResponseClaimTrack = 'responseClaimTrack';
+
+const generalApplicationServiceApiBaseUrl = config.get<string>('services.generalApplication.url');
+const generalApplicationServiceClient: GaServiceClient = new GaServiceClient(generalApplicationServiceApiBaseUrl);
 
 claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -69,7 +74,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       const dashboard = await getDashboardForm(caseRole, claim, dashboardId, req, isCarmApplicable, isGAFlagEnable);
       await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
-        = getSupportLinks(claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable);
+        = await getSupportLinks(req, claim, claimId, lng, caseProgressionEnabled, isGAFlagEnable);
       const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
       hearing.forEach((task) => {
         if (task.taskNameEn.search(HearingUploadDocuments)>0){
@@ -101,7 +106,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
   }
 }) as RequestHandler);
 
-const getSupportLinks = (claim: Claim, claimId: string, lng: string, isCaseProgressionEnabled: boolean, isGAFlagEnable: boolean) => {
+const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isCaseProgressionEnabled: boolean, isGAFlagEnable: boolean) => {
   const showTellUsEndedLink = claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
     claim.ccdState === CaseState.IN_MEDIATION ||
@@ -140,6 +145,17 @@ const getSupportLinks = (claim: Claim, claimId: string, lng: string, isCaseProgr
       iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }), url: applicationNoticeUrl });
     }
   }
+
+  if(isGAFlagEnable) {
+    const applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req);
+    if(applications && applications.length > 0) {
+      iWantToLinks.push({
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
+        url: constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUMMARY_URL),
+      });
+    }
+  }
+
   if (showTellUsEndedLink) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_ENDED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
   }

@@ -21,7 +21,7 @@ applicationSummaryController.get(GA_APPLICATION_RESPONSE_SUMMARY_URL, async (req
     const applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req);
     const applicationsRows = applications
       .filter(isApplicationVisibleToRespondent)
-      .map(buildRespondentApplicationSummaryRow(claimId, lng));
+      .map(buildRespondentApplicationSummaryRow(claimId, claim, lng));
     
     res.render(viewPath, {
       applicationsRows,

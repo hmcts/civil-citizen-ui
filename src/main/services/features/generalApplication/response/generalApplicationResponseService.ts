@@ -8,14 +8,12 @@ import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
-import {getLast, getRespondentApplicationStatus} from 'services/features/generalApplication/generalApplicationService';
+import {getLast, getRespondentApplicationStatus, getViewApplicationUrl} from 'services/features/generalApplication/generalApplicationService';
 import {StatementOfTruthForm} from 'common/models/generalApplication/statementOfTruthForm';
 import { getDraftGARespondentResponse, saveDraftGARespondentResponse } from './generalApplicationResponseStoreService';
 import { ApplicationResponse } from 'common/models/generalApplication/applicationResponse';
 import { ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
 import { dateTimeFormat } from 'common/utils/dateUtils';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
-import { GA_RESPONSE_VIEW_APPLICATION_URL } from 'routes/urls';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -99,11 +97,16 @@ export const saveRespondentStatementOfTruth = async (redisKey: string, statement
   }
 };
 
-export const isApplicationVisibleToRespondent = (application: ApplicationResponse): boolean =>
-  application.case_data?.generalAppInformOtherParty?.isWithNotice == YesNoUpperCamelCase.YES
-|| application.case_data?.generalAppRespondentAgreement?.hasAgreed == YesNoUpperCamelCase.YES;
+export const isApplicationVisibleToRespondent = (application: ApplicationResponse): boolean => {
+  const parentClaimantIsApplicant = application.case_data?.parentClaimantIsApplicant;
+  const isWithNotice = application.case_data?.generalAppInformOtherParty?.isWithNotice;
+  return ((parentClaimantIsApplicant === YesNoUpperCamelCase.YES && isWithNotice === YesNoUpperCamelCase.YES)
+    || (parentClaimantIsApplicant === YesNoUpperCamelCase.NO && isWithNotice === YesNoUpperCamelCase.YES)
+    || (parentClaimantIsApplicant === YesNoUpperCamelCase.NO && isWithNotice === YesNoUpperCamelCase.NO)
+    || (application.case_data?.generalAppRespondentAgreement?.hasAgreed === YesNoUpperCamelCase.YES));
+};
 
-export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string) => (application: ApplicationResponse, index: number): ApplicationSummary => {
+export const buildRespondentApplicationSummaryRow = (claimId: string, claim : Claim, lng:string) => (application: ApplicationResponse, index: number): ApplicationSummary => {
   const status = getRespondentApplicationStatus(application.state);
   return {
     state: t(`PAGES.GENERAL_APPLICATION.SUMMARY.STATES.${application.state}`, {lng}),
@@ -112,6 +115,6 @@ export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string
     types: application.case_data?.applicationTypes,
     id: application.id,
     createdDate: dateTimeFormat(application.created_date, lng),
-    applicationUrl: `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id, GA_RESPONSE_VIEW_APPLICATION_URL)}?index=${index + 1}`,
+    applicationUrl: getViewApplicationUrl(claimId, claim, application, index),
   };
 };

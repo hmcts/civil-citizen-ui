@@ -5,7 +5,7 @@ import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL, GA_UPLOAD_ADDITIONAL_DOCUMENTS_
 import multer from 'multer';
 import { UploadAdditionalDocument } from 'common/models/generalApplication/UploadAdditionalDocument';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
-import { constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { getClaimDetailsById, getSummaryList, removeSelectedDocument, uploadSelectedFile } from 'services/features/generalApplication/additionalDocumentService';
 
@@ -38,7 +38,7 @@ uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (asy
       await removeSelectedDocument(redisKey, claim, Number(index) - 1);
     }
     const cancelUrl = await getCancelUrl(id, claim);
-    const backLinkUrl = `${constructResponseUrlWithIdParams(id, GA_VIEW_APPLICATION_URL)}?applicationId=${gaId}`;
+    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(id, gaId, GA_VIEW_APPLICATION_URL);
     const formattedSummary = getSummaryList(gaDetails.uploadAdditionalDocuments, id, gaId);
     res.render(viewPath, { cancelUrl, backLinkUrl, form, formattedSummary });
   } catch (err) {

@@ -21,6 +21,7 @@ import {t} from 'i18next';
 import { Claim } from 'common/models/claim';
 import { ApplicationResponse, CCDApplication } from 'common/models/generalApplication/applicationResponse';
 import { ApplicationState, ApplicationSummary } from 'common/models/generalApplication/applicationSummary';
+import { CaseRole } from 'common/form/models/caseRoles';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -209,8 +210,9 @@ describe('General Application Response service', () => {
 
     it('returns row awaiting respondent response state', () => {
       const appResponse = applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE);
-
-      expect(buildRespondentApplicationSummaryRow('12345', 'en')(appResponse, 0))
+      const claim = new Claim();
+      claim.caseRole = CaseRole.DEFENDANT;
+      expect(buildRespondentApplicationSummaryRow('12345', claim, 'en')(appResponse, 0))
         .toStrictEqual({
           state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.AWAITING_RESPONDENT_RESPONSE'),
           status: t('PAGES.GENERAL_APPLICATION.SUMMARY.TO_DO'),
@@ -224,8 +226,9 @@ describe('General Application Response service', () => {
 
     it('returns row in awaiting judicial decision state', () => {
       const appResponse = applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION);
-
-      expect(buildRespondentApplicationSummaryRow('12345', 'en')(appResponse, 0))
+      const claim = new Claim();
+      claim.caseRole = CaseRole.DEFENDANT;
+      expect(buildRespondentApplicationSummaryRow('12345',claim, 'en')(appResponse, 0))
         .toStrictEqual({
           state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION'),
           status: t('PAGES.GENERAL_APPLICATION.SUMMARY.IN_PROGRESS'),
@@ -234,6 +237,23 @@ describe('General Application Response service', () => {
           id: '6789',
           createdDate: '29 May 2024, 2:39:28 pm',
           applicationUrl: '/case/12345/response/general-application/6789/view-application?index=1',
+        } as ApplicationSummary);
+    });
+
+    it('returns row in awaiting judicial decision state with applicant view application', () => {
+      const appResponse = applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION);
+      appResponse.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
+      const claim = new Claim();
+      claim.caseRole = CaseRole.DEFENDANT;
+      expect(buildRespondentApplicationSummaryRow('12345',claim, 'en')(appResponse, 0))
+        .toStrictEqual({
+          state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION'),
+          status: t('PAGES.GENERAL_APPLICATION.SUMMARY.IN_PROGRESS'),
+          statusColor: 'govuk-tag--green',
+          types: 'Vary order',
+          id: '6789',
+          createdDate: '29 May 2024, 2:39:28 pm',
+          applicationUrl: '/case/12345/general-application/6789/view-application?index=1',
         } as ApplicationSummary);
     });
   });
