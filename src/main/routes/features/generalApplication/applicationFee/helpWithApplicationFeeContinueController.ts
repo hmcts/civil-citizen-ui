@@ -4,7 +4,7 @@ import {
   GA_APPLY_HELP_WITH_FEE_SELECTION,
   GA_APPLY_HELP_WITH_FEES,
   GA_APPLY_HELP_WITH_FEES_START,
-} from '../../../urls';
+} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {getClaimById} from 'modules/utilityService';
