@@ -49,11 +49,13 @@ describe('General Application Response- Unavailable hearing dates', () => {
     const mockClaim = new Claim();
     mockClaim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
     mockGetClaim.mockResolvedValueOnce(mockClaim);
-    jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+
   });
   describe('on GET', () => {
     it('should return page', async () => {
-
+      const mockGaResponse = new GaResponse();
+      mockGaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(mockGaResponse);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345',GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL))
         .expect((res) => {
@@ -63,6 +65,7 @@ describe('General Application Response- Unavailable hearing dates', () => {
     });
 
     it('should return http 500 when has error in the get method', async () => {
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
         .get(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
         .expect((res) => {
@@ -80,6 +83,9 @@ describe('General Application Response- Unavailable hearing dates', () => {
             {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
         );
       });
+      const mockGaResponse = new GaResponse();
+      mockGaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(mockGaResponse);
       await request(app)
         .post(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
         .send()
@@ -95,6 +101,9 @@ describe('General Application Response- Unavailable hearing dates', () => {
             {'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
         );
       });
+      const mockGaResponse = new GaResponse();
+      mockGaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(mockGaResponse);
       await request(app)
         .post(constructResponseUrlWithIdAndAppIdParams('123', '345',GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL))
         .send()
@@ -105,6 +114,7 @@ describe('General Application Response- Unavailable hearing dates', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockRejectedValue(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
         .post(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
         .send()
