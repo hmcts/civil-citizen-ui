@@ -18,7 +18,6 @@ import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupp
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
 import { ApplicationTypeOption } from 'models/generalApplication/applicationType';
 import {t} from 'i18next';
-import { Claim } from 'common/models/claim';
 import { ApplicationResponse, CCDApplication } from 'common/models/generalApplication/applicationResponse';
 import { ApplicationState, ApplicationSummary } from 'common/models/generalApplication/applicationSummary';
 
@@ -168,20 +167,20 @@ describe('General Application Response service', () => {
 
   describe('Display for respondent caption', () => {
     it('should display when single application selected', () => {
-      const claim = new Claim();
-      claim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
+      const gaResponse = new GaResponse();
+      gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
       //When
-      const result = getRespondToApplicationCaption(claim, '345', 'en');
+      const result = getRespondToApplicationCaption(gaResponse.generalApplicationType, 'en');
       //Then
       expect(result).toContain(t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO'));
     });
 
     it('should display when multiple application selected', () => {
       //Given
-      const claim = new Claim();
-      claim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING, ApplicationTypeOption.SUMMARY_JUDGMENT], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
+      const gaResponse = new GaResponse();
+      gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING, ApplicationTypeOption.SUMMARY_JUDGMENT];
       //When
-      const result = getRespondToApplicationCaption(claim, '345', 'en');
+      const result = getRespondToApplicationCaption(gaResponse.generalApplicationType, 'en');
       //Then
       expect(result).toContain(t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO'));
     });

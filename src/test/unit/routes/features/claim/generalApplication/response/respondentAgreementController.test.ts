@@ -12,6 +12,7 @@ import { TestMessages } from '../../../../../../utils/errorMessageTestConstants'
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import {GaResponse} from 'models/generalApplication/response/gaResponse';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -35,14 +36,15 @@ describe('General Application - inform other parties', () => {
 
   beforeEach(() => {
     claim = new Claim();
-    claim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.STAY_THE_CLAIM], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
-    const gaResponse = { respondentAgreement: new RespondentAgreement() };
-    jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
     mockDataFromStore.mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
     it('should return page', async () => {
+      const gaResponse = new GaResponse();
+      gaResponse.respondentAgreement = new RespondentAgreement();
+      gaResponse.generalApplicationType = [ApplicationTypeOption.STAY_THE_CLAIM];
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_AGREEMENT_URL))
         .expect((res) => {
@@ -66,6 +68,10 @@ describe('General Application - inform other parties', () => {
 
   describe('on POST', () => {
     it('should save the value and redirect', async () => {
+      const gaResponse = new GaResponse();
+      gaResponse.respondentAgreement = new RespondentAgreement();
+      gaResponse.generalApplicationType = [ApplicationTypeOption.STAY_THE_CLAIM];
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
       await request(app)
         .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_AGREEMENT_URL))
         .send({ option: 'yes' })
@@ -75,6 +81,10 @@ describe('General Application - inform other parties', () => {
     });
 
     it('should return errors on no input', async () => {
+      const gaResponse = new GaResponse();
+      gaResponse.respondentAgreement = new RespondentAgreement();
+      gaResponse.generalApplicationType = [ApplicationTypeOption.STAY_THE_CLAIM];
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
       await request(app)
         .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_AGREEMENT_URL))
         .send({ option: null })
@@ -84,6 +94,10 @@ describe('General Application - inform other parties', () => {
         });
     });
     it('should return errors when selected no and not provided the reason', async () => {
+      const gaResponse = new GaResponse();
+      gaResponse.respondentAgreement = new RespondentAgreement();
+      gaResponse.generalApplicationType = [ApplicationTypeOption.STAY_THE_CLAIM];
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
       await request(app)
         .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_AGREEMENT_URL))
         .send({ option: 'no' })
