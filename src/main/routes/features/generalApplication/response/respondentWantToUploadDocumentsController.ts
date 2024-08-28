@@ -1,34 +1,39 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  GA_RESPONDENT_UPLOAD_DOCUMENT_URL,
+  GA_AGREE_TO_ORDER_URL,
+  GA_RESPONDENT_AGREEMENT_URL,
   GA_RESPONDENT_HEARING_PREFERENCE_URL,
-  GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL,
+  GA_RESPONDENT_UPLOAD_DOCUMENT_URL,
+  GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL, GA_RESPONSE_VIEW_APPLICATION_URL,
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
-import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
+import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {
   getCancelUrl,
   saveRespondentWantToUploadDoc,
 } from 'services/features/generalApplication/generalApplicationService';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
 import {
   getRespondToApplicationCaption,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
-import { getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {
+  getDraftGARespondentResponse,
+} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {GaResponse} from 'models/generalApplication/response/gaResponse';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 
 const respondentWantToUploadDocumentsController = Router();
 const viewPath = 'features/generalApplication/response/respondent-want-to-upload-documents';
 
-async function renderView(req: AppRequest | Request, form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response): Promise<void> {
+async function renderView(req: AppRequest | Request, form: GenericForm<GenericYesNo>, claim: Claim, gaResponse: GaResponse, backLinkUrl: string, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const applicationType: string = getRespondToApplicationCaption(claim, req.params.appId, lang);
-  const cancelUrl = await getCancelUrl(claimId, claim);
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_HEARING_PREFERENCE_URL);
+  const applicationType: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
+  const cancelUrl = await getCancelUrl(req.params.id, claim);
   res.render(viewPath, {
     form,
     cancelUrl,
@@ -42,8 +47,9 @@ respondentWantToUploadDocumentsController.get(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUM
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
+    const backLinkUrl = getBackLinkUrl(claimId, req.params.appId, gaResponse);
     const form = new GenericForm(new GenericYesNo(gaResponse.wantToUploadDocuments));
-    await renderView(req, form, claim, claimId, res);
+    await renderView(req, form, claim, gaResponse, backLinkUrl, res);
   } catch (error) {
     next(error);
   }
@@ -53,17 +59,19 @@ respondentWantToUploadDocumentsController.post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCU
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
+    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
+    const backLinkUrl = getBackLinkUrl(claimId, req.params.appId, gaResponse);
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION'));
     await form.validate();
 
     if (form.hasErrors()) {
-      await  renderView(req, form, claim, claimId, res);
+      await renderView(req, form, claim, gaResponse, backLinkUrl, res);
     } else {
       let redirectUrl;
       if (req.body.option == YesNo.YES) {
         redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
       } else if (req.body.option == YesNo.NO) {
-        redirectUrl = 'test'; // TODO: add url
+        redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_HEARING_PREFERENCE_URL);
       }
       await saveRespondentWantToUploadDoc(generateRedisKeyForGA(<AppRequest>req), req.body.option);
       res.redirect(redirectUrl);
@@ -72,4 +80,11 @@ respondentWantToUploadDocumentsController.post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCU
     next(error);
   }
 }) as RequestHandler);
+
+function getBackLinkUrl(claimId: string, applicationId: string, gaResponse: GaResponse) {
+  if (gaResponse.generalApplicationType.length === 1 && gaResponse.generalApplicationType.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT)) {
+    return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONSE_VIEW_APPLICATION_URL);
+  }
+  return !gaResponse.respondentAgreement ? constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_AGREE_TO_ORDER_URL) : constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_AGREEMENT_URL);
+}
 export default respondentWantToUploadDocumentsController;
