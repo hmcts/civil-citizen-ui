@@ -58,4 +58,4 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit pay by instal
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
-}).tag('@regression-r2');
+}).tag('@nightly');
