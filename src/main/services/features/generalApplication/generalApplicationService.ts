@@ -444,3 +444,11 @@ export const getApplicationIndex = async(claimId: string, applicationId: string,
   const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
   return applications.findIndex(application => application.id == applicationId);
 };
+
+export const saveApplicationTypesToGaResponse = async (gaState: ApplicationState, gaRedisKey: string, applicationTypes: ApplicationTypeOption[]): Promise<void> => {
+  if (gaState === ApplicationState.AWAITING_RESPONDENT_RESPONSE) {
+    const gaResponse = await getDraftGARespondentResponse(gaRedisKey);
+    gaResponse.generalApplicationType = applicationTypes;
+    await saveDraftGARespondentResponse(gaRedisKey, gaResponse);
+  }
+};
