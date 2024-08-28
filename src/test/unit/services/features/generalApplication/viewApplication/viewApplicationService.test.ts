@@ -6,7 +6,7 @@ import {
   getCourtDocuments,
   getJudgeResponseSummary,
   getRespondentDocuments,
-  getJudgesDirectionsOrder,
+  getJudgesDirectionsOrder, getRequestWrittenRepresentations,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {GaServiceClient} from 'client/gaServiceClient';
 import * as requestModels from 'models/AppRequest';
@@ -106,7 +106,7 @@ describe('View Application service', () => {
       expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES');
       expect(result[3].value.html).toEqual('COMMON.VARIATION.YES');
       expect(result[4].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER');
-      expect(result[4].value.html).toEqual('The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid].');
+      expect(result[4].value.html).toContain('The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid].');
       expect(result[5].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING');
       expect(result[5].value.html).toEqual('reasons');
       expect(result[6].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS');
@@ -144,7 +144,7 @@ describe('View Application service', () => {
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES');
       expect(result[2].value.html).toEqual('COMMON.VARIATION.YES');
       expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER');
-      expect(result[3].value.html).toEqual('The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid].'+'PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS');
+      expect(result[3].value.html).toContain('The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid]. <br> ' + 'PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS');
       expect(result[4].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING');
       expect(result[4].value.html).toEqual('reasons');
       expect(result[5].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS');
@@ -201,7 +201,7 @@ describe('View Application service', () => {
       expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
       expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
+      expect(result[2].value.html).toContain('<a target="_blank" href="/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
       expect(result[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT');
     });
 
@@ -220,7 +220,7 @@ describe('View Application service', () => {
       expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
       expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE');
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/undefined">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
+      expect(result[2].value.html).toContain('<a target="_blank" href="/case/1718105701451856/view-documents/undefined">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
     });
 
     it('should return judge response summary with undefined link when requestForInformationDocument is not present', async () => {
@@ -234,7 +234,7 @@ describe('View Application service', () => {
       const result = getJudgeResponseSummary(applicationResponse, 'en');
       //then
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/undefined">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
+      expect(result[2].value.html).toContain('<a target="_blank" href="/case/1718105701451856/view-documents/undefined">PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT</a>');
     });
 
     it('should return judge response summary with correct status when requestForInformation isWithNotice is present', async () => {
@@ -307,7 +307,7 @@ describe('View Application service', () => {
       expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
       expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO');
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
-      expect(result[2].value.html).toContain('<a href="/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
+      expect(result[2].value.html).toContain('<a target="_blank" href="/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
     });
   });
 
@@ -429,6 +429,114 @@ describe('View Application service', () => {
       expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER');
       expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.JUDGE_HAS_MADE_ORDER_DOCUMENT');
+    });
+  });
+
+  describe('getRequestWrittenRepresentations', () => {
+    it('should return judge request written representations sequential', async () => {
+      //given
+      const applicationResponse = new ApplicationResponse();
+      const fileName = 'Name of file';
+      const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
+      const binary_url = `http://dm-store:8080/documents/${binary}/binary`;
+      applicationResponse.case_data = {
+        applicationFeeAmountInPence: '',
+        applicationTypes: '',
+        gaAddlDoc: [],
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: '',
+        generalAppEvidenceDocument: [],
+        generalAppHearingDetails: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppPBADetails: undefined,
+        generalAppReasonsOfOrder: '',
+        generalAppRespondentAgreement: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppType: undefined,
+        judicialDecision: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecisionMakeOrder: {
+          directionsResponseByDate: new Date('2024-01-01').toString(),
+        },
+        writtenRepSequentialDocument: [
+          {
+            id: '1',
+            value: {
+              documentLink: {
+                document_url: 'test',
+                document_binary_url: binary_url,
+                document_filename: fileName,
+                category_id: '1',
+              },
+              documentType: DocumentType.WRITTEN_REPRESENTATION_SEQUENTIAL,
+              createdDatetime: new Date('2024-01-01'),
+              createdBy: 'test',
+            },
+          },
+        ],
+      };
+      //when
+      const result = getRequestWrittenRepresentations(applicationResponse, 'en');
+      //then
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].value.html).toEqual('1 January 2024');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION');
+      expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION_DOCUMENT');
+    });
+
+    it('should return judge request written representations concurrent', async () => {
+      //given
+      const applicationResponse = new ApplicationResponse();
+      const fileName = 'Name of file';
+      const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
+      const binary_url = `http://dm-store:8080/documents/${binary}/binary`;
+      applicationResponse.case_data = {
+        applicationFeeAmountInPence: '',
+        applicationTypes: '',
+        gaAddlDoc: [],
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: '',
+        generalAppEvidenceDocument: [],
+        generalAppHearingDetails: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppPBADetails: undefined,
+        generalAppReasonsOfOrder: '',
+        generalAppRespondentAgreement: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppType: undefined,
+        judicialDecision: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecisionMakeOrder: {
+          directionsResponseByDate: new Date('2024-01-01').toString(),
+        },
+        writtenRepConcurrentDocument: [
+          {
+            id: '1',
+            value: {
+              documentLink: {
+                document_url: 'test',
+                document_binary_url: binary_url,
+                document_filename: fileName,
+                category_id: '1',
+              },
+              documentType: DocumentType.WRITTEN_REPRESENTATION_CONCURRENT,
+              createdDatetime: new Date('2024-01-01'),
+              createdBy: 'test',
+            },
+          },
+        ],
+      };
+      //when
+      const result = getRequestWrittenRepresentations(applicationResponse, 'en');
+      //then
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
+      expect(result[0].value.html).toEqual('1 January 2024');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE');
+      expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION');
+      expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
+      expect(result[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION_DOCUMENT');
     });
   });
 });
