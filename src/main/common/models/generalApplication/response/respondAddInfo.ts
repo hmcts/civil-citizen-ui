@@ -2,7 +2,7 @@ import { YesNo } from 'common/form/models/yesNo';
 import {IsNotEmpty, Validate, ValidateIf} from 'class-validator';
 import {
   RespondAddInfoValidator,
-} from 'form/validators/RespondAddInfoValidator';
+} from 'form/validators/respondAddInfoValidator';
 
 export class RespondAddInfo {
   @Validate(RespondAddInfoValidator, ['additionalText'])
