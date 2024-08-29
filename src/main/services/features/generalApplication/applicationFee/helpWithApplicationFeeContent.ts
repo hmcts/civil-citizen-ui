@@ -2,8 +2,6 @@ import {t} from 'i18next';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DASHBOARD_CLAIMANT_URL, GA_APPLY_HELP_WITH_FEE_REFERENCE, HELP_WITH_FEES_ELIGIBILITY} from 'routes/urls';
-import {convertToPoundsFilter} from 'common/utils/currencyFormat';
-import {CcdFee} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 
 export const getHelpApplicationFeeSelectionPageContents = (lng: string, paymentSyncError: boolean) => {
   const linkBefore = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.LINK_BEFORE';
@@ -30,8 +28,7 @@ export const getButtonsContents  = (claimId : string) => {
     .build();
 };
 
-export const getHelpApplicationFeeContinuePageContents = (gaFeeData: CcdFee, feeTypeFlag: boolean) => {
-  const feeAmount = convertToPoundsFilter(gaFeeData?.calculatedAmountInPence.toString());
+export const getHelpApplicationFeeContinuePageContents = (feeAmount: string, feeTypeFlag: boolean) => {
   const pageBuilder=new PageSectionBuilder();
   if (feeTypeFlag) {
     pageBuilder.addMicroText('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING');

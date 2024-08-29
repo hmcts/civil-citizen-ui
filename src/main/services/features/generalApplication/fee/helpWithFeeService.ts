@@ -7,21 +7,27 @@ import {
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
-import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import config from 'config';
+import {deleteDraftClaimFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {
   getGaFeePaymentRedirectInformation,
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
-import {getClaimById} from 'modules/utilityService';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import config from 'config';
+import {
+  getApplicationFromGAService,
+} from 'services/features/generalApplication/generalApplicationService';
+import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
+import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
+import {getClaimById} from 'modules/utilityService';
+import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeeHelpSelectionService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, req: AppRequest): Promise<string> => {
+
+export const getRedirectUrl = async (claimId: string, applyHelpWithFees: GenericYesNo, hwfPropertyName: keyof GaHelpWithFees, req: AppRequest): Promise<string> => {
   try {
     let redirectUrl;
     let generalApplicationId: string;
@@ -37,13 +43,21 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
 
     if (applyHelpWithFees.option === YesNo.NO) {
       const paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
+      claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
       claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       await saveDraftClaim(claim.id, claim, true);
+      deleteDraftClaimFromStore(generalApplicationId + req.session.user?.id);
       redirectUrl = paymentRedirectInformation?.nextUrl;
     } else {
+      const gaHwFDetails = await getDraftGAHWFDetails(generalApplicationId + req.session.user?.id);
+      if (req.query.appFee) {
+        gaHwFDetails.applicationFee = <string>req.query.appFee;
+      }
+      (<GenericYesNo>gaHwFDetails[hwfPropertyName]) = applyHelpWithFees;
+      await saveDraftGAHWFDetails(generalApplicationId + req.session.user?.id, gaHwFDetails);
       const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, generalApplicationId);
       const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
-      redirectUrl =constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag='+ isAdditionalFee);
+      redirectUrl =  constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag='+ isAdditionalFee);
     }
     return redirectUrl;
   }

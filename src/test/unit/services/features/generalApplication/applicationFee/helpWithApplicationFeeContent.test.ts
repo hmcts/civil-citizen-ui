@@ -6,7 +6,6 @@ import {
   getHelpApplicationFeeContinuePageContents,
 } from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {CcdFee} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 
 describe('Help with Application fee content', () => {
   it('should return getHelpApplicationFeeSelectionPageContents related content ', () => {
@@ -54,18 +53,15 @@ describe('Help with Application fee content', () => {
 
   it('should return all the content for getHelpApplicationFeeContinuePageContents', () => {
     //Given
-    const gaFeeData:CcdFee = {
-      calculatedAmountInPence: '23000',
-      code: 'code',
-      version: '1',
-    };
+    const calculatedAmountInPence = '230';
+
     //When
-    const actualContent = getHelpApplicationFeeContinuePageContents(gaFeeData, false);
+    const actualContent = getHelpApplicationFeeContinuePageContents(calculatedAmountInPence, false);
     //Then
     expect(actualContent[0].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING');
     expect(actualContent[1].data.text).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.TITLE');
     expect(actualContent[2].data.html).toEqual('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.GENERAL_APPLICATION_FEE_INSET');
-    expect(actualContent[2].data.variables).toEqual({'feeAmount': 230});
+    expect(actualContent[2].data.variables).toEqual({'feeAmount': '230'});
     expect(actualContent[3].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.ELIGIBILITY_LINK');
     expect(actualContent[4].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.RECEIVE_DECISION');
     expect(actualContent[5].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.ACCEPTED_FULLY_TITLE');
