@@ -27,6 +27,7 @@ import {SummaryRow} from 'common/models/summaryList/summaryList';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 import { DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 const viewApplicationController = Router();
 const viewPath = 'features/generalApplication/view-applications';
@@ -69,7 +70,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     }
 
     if(isApplicationFeeAmountNotPaid) {
-      applicationFeeOptionUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION);
+      applicationFeeOptionUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION + '?appFee=' + convertToPoundsFilter(applicationResponse?.case_data?.generalAppPBADetails?.fee.calculatedAmountInPence));
     }
 
     if(isJudgesDirectionsOrder) {
