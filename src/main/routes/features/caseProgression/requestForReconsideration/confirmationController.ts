@@ -34,7 +34,8 @@ requestForReconsiderationConfirmationController.get(REQUEST_FOR_RECONSIDERATION_
     res.render(requestForReconsiderationConfirmationViewPath, {
       confirmationContents:getRequestForReconsiderationConfirmationContent(claim, lang, dashboardUrl),
       requestForReconsiderationDoc: requestForReconsiderationDoc,
-      dashboardUrl});
+      noCrumbs: true,
+    });
   } catch (error) {
     next(error);
   }

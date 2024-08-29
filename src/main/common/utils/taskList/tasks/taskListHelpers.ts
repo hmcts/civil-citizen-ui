@@ -86,8 +86,8 @@ export const isFullDefenceAndNotCounterClaim = (caseData: Claim): boolean => {
 };
 
 export const hasAllCarmRequiredFields = (respondent1: Party): boolean => {
-  if (respondent1.type === PartyType.INDIVIDUAL) {
-    return (!!respondent1.partyPhone && !!respondent1.dateOfBirth);
+  if (respondent1.type === PartyType.INDIVIDUAL || respondent1.type === PartyType.SOLE_TRADER) {
+    return (!!respondent1.partyPhone && !!respondent1.emailAddress);
   }
   return (!!respondent1.partyPhone && !!respondent1.partyDetails.contactPerson);
 };

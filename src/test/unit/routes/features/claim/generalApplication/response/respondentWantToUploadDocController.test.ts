@@ -6,22 +6,26 @@ import {GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {YesNo} from 'form/models/yesNo';
-import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import { Claim } from 'models/claim';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import * as gaStoreResponseService
+  from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {isGaForLipsEnabled} from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  saveDraftGARespondentResponse: jest.fn(),
+  getDraftGARespondentResponse: jest.fn(),
+}));
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockSaveCaseData = saveDraftClaim as jest.Mock;
 const mockClaim = new Claim();
-mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+mockClaim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
 
 describe('General Application - Respondent want to upload document ', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -33,12 +37,17 @@ describe('General Application - Respondent want to upload document ', () => {
       .reply(200, {id_token: citizenRoleToken});
     (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
   });
+  beforeEach(() => {
+    const mockGaResponse = new GaResponse();
+    mockGaResponse.generalApplicationType = [];
+    jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(mockGaResponse);
+  });
 
   describe('on GET', () => {
     it('should return Do you want to upload documents to support your response page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .get(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL)
+        .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.RESPONDENT_WANT_TO_UPLOAD_DOC.TITLE'));
@@ -62,7 +71,7 @@ describe('General Application - Respondent want to upload document ', () => {
     it('should send the value and redirect', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL))
         .send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -72,7 +81,7 @@ describe('General Application - Respondent want to upload document ', () => {
     it('should show error message if radio button not selected', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345',GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL))
         .send({option: null})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -81,7 +90,7 @@ describe('General Application - Respondent want to upload document ', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      mockSaveCaseData.mockImplementation(async () => {
+      jest.spyOn(gaStoreResponseService, 'saveDraftGARespondentResponse').mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)

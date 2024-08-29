@@ -1,15 +1,11 @@
 import {Claim} from 'models/claim';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {CaseDocument} from 'models/document/caseDocument';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {summarySection} from 'models/summaryList/summarySections';
 import {
   buildSummarySection, getSummaryList,
-  removeSelectedDocument,
-  saveDocuments, translateCUItoCCD,
 } from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
-import {AppRequest} from 'models/AppRequest';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import * as draftService from 'modules/draft-store/draftStoreService';
 import * as draftServiceGA from 'modules/draft-store/draftGADocumentService';
@@ -62,47 +58,6 @@ describe('Upload Evidence Document service', () => {
     mockGADocDataFromStore.mockResolvedValue(uploadDocuments);
   });
 
-  describe('Save document', () => {
-    it('should save document successfully', async () => {
-      //Given
-      const req: AppRequest = {
-        params: { id: '1', appId: '89' },
-      } as unknown as AppRequest;
-
-      const spy = jest.spyOn(draftServiceGA, 'saveGADocumentsInDraftStore');
-      //When
-      await saveDocuments(req, uploadDocuments[0]);
-      //Then
-      expect(spy).toBeCalled();
-    });
-    it('should throw error when draft store throws error', async () => {
-      //Given
-      const req: AppRequest = {
-        params: { id: '1', appId: '89' },
-      } as unknown as AppRequest;
-      const mockSaveDocuments = draftServiceGA.saveGADocumentsInDraftStore as jest.Mock;
-      //When
-      mockSaveDocuments.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(saveDocuments(req, undefined)).rejects.toThrow(TestMessages.REDIS_FAILURE);
-    });
-  });
-  describe('Remove document', () => {
-    it('should remove document successfully', async () => {
-      //Given
-      const spy = jest.spyOn(draftServiceGA, 'saveGADocumentsInDraftStore');
-      const mockSaveDocument = draftServiceGA.saveGADocumentsInDraftStore as jest.Mock;
-      mockSaveDocument.mockResolvedValue(() => { return uploadDocuments; });
-
-      //When
-      await removeSelectedDocument('123', 0);
-      //Then
-      expect(spy).toBeCalled();
-      expect(uploadDocuments.length).toEqual(1);
-    });
-  });
   describe('Get SummaryList', () => {
     it('should get Summary List when has content', async () => {
       //Given
@@ -124,18 +79,6 @@ describe('Upload Evidence Document service', () => {
       expect(formattedSummary.summaryList.rows[1].actions.items[0].text).toEqual('Remove document');
     });
 
-    describe('Translate CUI to CCD', () => {
-      it('should correctly map translate CUI fields to CCD format', () => {
-        const result = translateCUItoCCD(uploadDocuments);
-
-        expect(result).toHaveLength(2);
-        result.forEach((item, index) => {
-          expect(item.value.document_url).toBe(uploadDocuments[index].caseDocument.documentLink.document_url);
-          expect(item.value.document_binary_url).toBe(uploadDocuments[index].caseDocument.documentLink.document_binary_url);
-          expect(item.value.document_filename).toBe(uploadDocuments[index].caseDocument.documentLink.document_filename);
-        });
-      });
-    });
     describe('Build summary Section ', () => {
       it('Should build the summary section: ', () => {
         const result = buildSummarySection(uploadDocuments, '1', '123', 'en');

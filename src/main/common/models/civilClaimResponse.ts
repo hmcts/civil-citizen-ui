@@ -308,6 +308,7 @@ export interface CCDClaim extends ClaimUpdate {
   requestForReconsiderationDeadline?: Date;
   requestForReconsiderationDocument?: CaseDocument;
   requestForReconsiderationDocumentRes?: CaseDocument;
+  respondentSolGaAppDetails?: RespondentSolGaAppDetail[];
 }
 
 export interface ClaimFeeData {
@@ -324,4 +325,15 @@ export interface IdamUserDetails {
 interface ClaimIssuedPaymentDetails {
   status?: string;
   reference?: string;
+}
+export interface RespondentSolGaAppDetail {
+  id: string;
+  value: {
+    generalApplicationType: string;
+    caseLink: {
+      CaseReference: string;
+    };
+    caseState: string;
+    generalAppSubmittedDateGAspec: string;
+  }
 }

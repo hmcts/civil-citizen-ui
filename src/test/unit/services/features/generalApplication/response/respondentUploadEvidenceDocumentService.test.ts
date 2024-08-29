@@ -1,5 +1,3 @@
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
 import {
   getSummaryList,
   removeDocumentFromRedis,
@@ -7,16 +5,16 @@ import {
 } from 'services/features/generalApplication/response/respondentUploadEvidenceDocumentsService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {CaseDocument} from 'models/document/caseDocument';
-import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {summarySection} from 'models/summaryList/summarySections';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 
-const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+import * as draftStoreService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-
+jest.mock('../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  saveDraftGARespondentResponse: jest.fn(),
+  getDraftGARespondentResponse: jest.fn(),
+}));
 const mockCaseDocument: CaseDocument = <CaseDocument>{
   createdBy: 'test',
   documentLink: { document_url: 'http://test', document_binary_url: 'http://test/binary', document_filename: 'test.png' },
@@ -34,17 +32,62 @@ const file = {
 };
 
 describe('Upload Respondent Evidence Document service', () => {
+
+  describe('Remove document', () => {
+    it('should remove document successfully', async () => {
+      const gaResponse = new GaResponse();
+      //Given
+      jest.spyOn(draftStoreService, 'getDraftGARespondentResponse').mockImplementation(async () => {
+        const uploadDocument = new UploadGAFiles();
+        uploadDocument.caseDocument = mockCaseDocument;
+        uploadDocument.fileUpload = file;
+        gaResponse.uploadEvidenceDocuments.push(uploadDocument);
+        gaResponse.uploadEvidenceDocuments.push(uploadDocument);
+        return gaResponse;
+      });
+      const spy = jest.spyOn(draftStoreService, 'saveDraftGARespondentResponse');
+
+      //When
+      await removeDocumentFromRedis('123',0);
+      //Then
+      expect(spy).toBeCalled();
+      expect(gaResponse.uploadEvidenceDocuments.length).toEqual(1);
+    });
+  });
+  describe('Get SummaryList', () => {
+    it('should get Summary List when has content', async () => {
+      //Given
+      jest.spyOn(draftStoreService, 'getDraftGARespondentResponse').mockImplementation(async () => {
+        const gaResponse = new GaResponse();
+        const uploadDocument = new UploadGAFiles();
+        uploadDocument.caseDocument = mockCaseDocument;
+        uploadDocument.fileUpload = file;
+        gaResponse.uploadEvidenceDocuments.push(uploadDocument);
+        gaResponse.uploadEvidenceDocuments.push(uploadDocument);
+        return gaResponse;
+      });
+      jest.spyOn(draftStoreService, 'saveDraftGARespondentResponse');
+      const formattedSummary = summarySection(
+        {
+          title: '',
+          summaryRows: [],
+        });
+      //When
+      await getSummaryList(formattedSummary, '123', '1', '345');
+      //Then
+      expect(formattedSummary.summaryList.rows[0].key.text).toEqual('test.text');
+      expect(formattedSummary.summaryList.rows[0].actions.items[0].href).toEqual('/case/1/response/general-application/345/upload-documents?id=1');
+      expect(formattedSummary.summaryList.rows[0].actions.items[0].text).toEqual('Remove document');
+      expect(formattedSummary.summaryList.rows[1].key.text).toEqual('test.text');
+      expect(formattedSummary.summaryList.rows[1].actions.items[0].href).toEqual('/case/1/response/general-application/345/upload-documents?id=2');
+      expect(formattedSummary.summaryList.rows[1].actions.items[0].text).toEqual('Remove document');
+    });
+  });
+
   describe('Save document', () => {
     it('should save document successfully', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.generalApplication = new GeneralApplication();
-        return claim;
-      });
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      jest.spyOn(draftStoreService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+      const spy = jest.spyOn(draftStoreService, 'saveDraftGARespondentResponse');
       const uploadDocument = new UploadGAFiles();
       uploadDocument.caseDocument = mockCaseDocument;
       uploadDocument.fileUpload = file;
@@ -55,73 +98,13 @@ describe('Upload Respondent Evidence Document service', () => {
     });
     it('should throw error when draft store throws error', async () => {
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      //When
-      mockSaveClaim.mockImplementation(async () => {
+      jest.spyOn(draftStoreService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+      jest.spyOn(draftStoreService, 'saveDraftGARespondentResponse').mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
+
       //Then
       await expect(saveDocumentsToUploaded('123', undefined)).rejects.toThrow(TestMessages.REDIS_FAILURE);
-    });
-  });
-  describe('Remove document', () => {
-    it('should remove document successfully', async () => {
-      const claim = new Claim();
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.response = new GaResponse();
-        const uploadDocument = new UploadGAFiles();
-        uploadDocument.caseDocument = mockCaseDocument;
-        uploadDocument.fileUpload = file;
-        claim.generalApplication.response.uploadEvidenceDocuments.push(uploadDocument);
-        claim.generalApplication.response.uploadEvidenceDocuments.push(uploadDocument);
-        return claim;
-      });
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
-
-      //When
-      await removeDocumentFromRedis('123',0);
-      //Then
-      expect(spy).toBeCalled();
-      expect(claim.generalApplication.response.uploadEvidenceDocuments.length).toEqual(1);
-    });
-  });
-  describe('Get SummaryList', () => {
-    it('should get Summary List when has content', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.response = new GaResponse();
-        const uploadDocument = new UploadGAFiles();
-        uploadDocument.caseDocument = mockCaseDocument;
-        uploadDocument.fileUpload = file;
-        claim.generalApplication.response.uploadEvidenceDocuments.push(uploadDocument);
-        claim.generalApplication.response.uploadEvidenceDocuments.push(uploadDocument);
-        return claim;
-      });
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
-      const formattedSummary = summarySection(
-        {
-          title: '',
-          summaryRows: [],
-        });
-      //When
-      await getSummaryList(formattedSummary, '123', '1');
-      //Then
-      expect(formattedSummary.summaryList.rows[0].key.text).toEqual('test.text');
-      expect(formattedSummary.summaryList.rows[0].actions.items[0].href).toEqual('/case/1/response/general-application/upload-documents?id=1');
-      expect(formattedSummary.summaryList.rows[0].actions.items[0].text).toEqual('Remove document');
-      expect(formattedSummary.summaryList.rows[1].key.text).toEqual('test.text');
-      expect(formattedSummary.summaryList.rows[1].actions.items[0].href).toEqual('/case/1/response/general-application/upload-documents?id=2');
-      expect(formattedSummary.summaryList.rows[1].actions.items[0].text).toEqual('Remove document');
     });
   });
 });

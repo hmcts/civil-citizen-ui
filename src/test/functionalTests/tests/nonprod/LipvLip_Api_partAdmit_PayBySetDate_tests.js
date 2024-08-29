@@ -30,7 +30,7 @@ Scenario('Response with PartAdmit-PayBySetDate Small claims @citizenUI @partAdmi
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitPayBySetDate(claimRef, '456', claimNumber);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+});
 
 Scenario('Response with PartAdmit-PayBySetDate Fast Track @citizenUI @partAdmit @nightly - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -49,7 +49,7 @@ Scenario('Response with PartAdmit-PayBySetDate Fast Track @citizenUI @partAdmit 
     await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitPayBySetDate(claimRef, '3456', claimNumber);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@regression-r2');
+});
 
 Scenario('Response with PartAdmit-PayBySetDate Small claims Reject repayment plan Request CCJ @citizenUI @partAdmit @nightly - @api', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -76,4 +76,4 @@ Scenario('Response with PartAdmit-PayBySetDate Small claims Reject repayment pla
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
-}).tag('@regression-r2');
+});

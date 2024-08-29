@@ -6,8 +6,7 @@ import {t} from 'i18next';
 import {GA_RESPONDENT_UPLOAD_DOCUMENT_URL} from 'routes/urls';
 import * as draftService from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {Claim} from 'models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {isGaForLipsEnabled} from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
@@ -16,10 +15,16 @@ import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {CaseDocument} from 'models/document/caseDocument';
 import {YesNo} from 'form/models/yesNo';
 import {Session} from 'express-session';
+import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  saveDraftGARespondentResponse: jest.fn(),
+  getDraftGARespondentResponse: jest.fn(),
+}));
 
 const mockCaseDocument: CaseDocument = <CaseDocument>{
   createdBy: 'test',
@@ -42,6 +47,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
   const idamUrl: string = config.get('idamUrl');
   const mockDataFromStore = jest.spyOn(draftService, 'getCaseDataFromStore');
   let claim: Claim;
+  let gaResponse: GaResponse;
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -51,17 +57,18 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
 
   beforeEach(() => {
     claim = new Claim();
-    claim.generalApplication = new GeneralApplication();
-    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT)];
-    claim.generalApplication.response = new GaResponse();
-    claim.generalApplication.response.wantToUploadDocuments = YesNo.YES;
+    claim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
+    gaResponse = new GaResponse();
+    gaResponse.generalApplicationType = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT];
+    gaResponse.wantToUploadDocuments = YesNo.YES;
     mockDataFromStore.mockResolvedValue(claim);
   });
 
   describe('General Application - Respondent upload evidence docs to support application', () => {
     it('should return upload document page', async () => {
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
-        .get(GA_RESPONDENT_UPLOAD_DOCUMENT_URL)
+        .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_DOCUMENTS.TITLE'));
@@ -72,16 +79,15 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
       const document = new UploadGAFiles();
       document.caseDocument = mockCaseDocument;
       document.fileUpload = file;
-      claim.generalApplication.response.uploadEvidenceDocuments.push(document) ;
-      claim.generalApplication.response.uploadEvidenceDocuments.push(document) ;
-      mockDataFromStore.mockResolvedValue(claim);
-
+      gaResponse.uploadEvidenceDocuments.push(document);
+      gaResponse.uploadEvidenceDocuments.push(document);
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
-        .get(GA_RESPONDENT_UPLOAD_DOCUMENT_URL+'?id=1')
+        .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL + '?id=1'))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_DOCUMENTS.TITLE'));
-          expect(claim.generalApplication.response.uploadEvidenceDocuments.length).toEqual(1);
+          expect(gaResponse.uploadEvidenceDocuments.length).toEqual(1);
         });
     });
     it('should return page with errors when file to be uploaded has unsupported file type', async () => {
@@ -96,9 +102,9 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
         },
       ];
       app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
-
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
-        .get(GA_RESPONDENT_UPLOAD_DOCUMENT_URL)
+        .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_MIME_TYPE_FILE'));
@@ -118,9 +124,9 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
         },
       ];
       app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
-
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
-        .get(GA_RESPONDENT_UPLOAD_DOCUMENT_URL)
+        .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_SIZE_FILE'));
@@ -139,9 +145,9 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
         },
       ];
       app.request.session = { fileUpload:JSON.stringify(errors) } as unknown as Session;
-
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
-        .get(GA_RESPONDENT_UPLOAD_DOCUMENT_URL)
+        .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.VALID_CHOOSE_THE_FILE'));
@@ -162,17 +168,18 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
   describe('on POST', () => {
     it('should throw the error if user click upload file button without uploading', async () => {
       await request(app)
-        .post(GA_RESPONDENT_UPLOAD_DOCUMENT_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
         .field('action', 'uploadButton')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
+          expect(res.text).toContain(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL));
         });
     });
 
     it('should throw the error if user click continue button without uploading a file', async () => {
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
-        .post(GA_RESPONDENT_UPLOAD_DOCUMENT_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('You need to choose a file before clicking'));
@@ -180,14 +187,14 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
     });
     it('should save the file and display', async () => {
       jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
-
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       await request(app)
-        .post(GA_RESPONDENT_UPLOAD_DOCUMENT_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
         .field('action', 'uploadButton')
         .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
+          expect(res.text).toContain(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL));
         });
     });
     it('should return http 500 when has error in the get method', async () => {

@@ -4,22 +4,26 @@ import nock from 'nock';
 import request from 'supertest';
 import {GA_RESPONSE_HEARING_CONTACT_DETAILS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {t} from 'i18next';
-import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import { ApplicationTypeOption } from 'models/generalApplication/applicationType';
 import {Claim} from 'common/models/claim';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
+import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/draft-store');
-
+jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  saveDraftGARespondentResponse: jest.fn(),
+  getDraftGARespondentResponse: jest.fn(),
+}));
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockSaveCaseData = saveDraftClaim as jest.Mock;
 
 const mockClaim = new Claim();
-mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+mockClaim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
 
 describe('General Application Response- Contact Details', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -31,12 +35,17 @@ describe('General Application Response- Contact Details', () => {
     jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
-
+  beforeEach(() => {
+    jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+  });
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
   describe('on GET', () => {
     it('should return Contact Details page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .get(GA_RESPONSE_HEARING_CONTACT_DETAILS_URL)
+        .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONSE_HEARING_CONTACT_DETAILS_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.HEARING_CONTACT_DETAILS.TITLE'));
@@ -60,8 +69,8 @@ describe('General Application Response- Contact Details', () => {
     it('should send the value and redirect', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(GA_RESPONSE_HEARING_CONTACT_DETAILS_URL)
-        .send({telephoneNumber: '04432188664', emailAddress: 'test@gmail.com'})
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONSE_HEARING_CONTACT_DETAILS_URL))
+        .send({ telephoneNumber: '04432188664', emailAddress: 'test@gmail.com'})
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -70,7 +79,7 @@ describe('General Application Response- Contact Details', () => {
     it('should show error message if no value entered', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
-        .post(GA_RESPONSE_HEARING_CONTACT_DETAILS_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONSE_HEARING_CONTACT_DETAILS_URL))
         .send({telephoneNumber: null, emailAddress: null})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -80,12 +89,12 @@ describe('General Application Response- Contact Details', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      mockSaveCaseData.mockImplementation(async () => {
+      jest.spyOn(gaStoreResponseService, 'saveDraftGARespondentResponse').mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
         .post(GA_RESPONSE_HEARING_CONTACT_DETAILS_URL)
-        .send({telephoneNumber: '04432188664', emailAddress: 'test@gmail.com' })
+        .send({ telephoneNumber: '04432188664', emailAddress: 'test@gmail.com' })
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
