@@ -27,7 +27,7 @@ import { ApplicationResponse } from 'common/models/generalApplication/applicatio
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { GaServiceClient } from 'client/gaServiceClient';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { APPLICATION_TYPE_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL, GA_APPLICATION_SUMMARY_URL } from 'routes/urls';
+import { APPLICATION_TYPE_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL } from 'routes/urls';
 import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
 
 const nock = require('nock');
