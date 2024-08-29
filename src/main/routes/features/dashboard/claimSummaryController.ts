@@ -33,6 +33,7 @@ import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { applicationNoticeUrl } from 'common/utils/externalURLs';
 import { GaServiceClient } from 'client/gaServiceClient';
+import { isApplicationVisibleToRespondent } from 'services/features/generalApplication/response/generalApplicationResponseService';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
@@ -122,7 +123,8 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claim
   }
 
   if(isGAFlagEnable) {
-    const applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req);
+    let applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req);
+    applications = applications.filter(isApplicationVisibleToRespondent);
     if(applications && applications.length > 0) {
       iWantToLinks.push({
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),

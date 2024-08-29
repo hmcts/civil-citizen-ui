@@ -499,6 +499,7 @@ describe('Claim Summary Controller Defendant', () => {
           expect(res.text).toContain('Contact the court to request a change to my case (make an application)');
         });
     });
+
     it('should show \'want to\' link with linking to general application when general application is enabled', async () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.DEFENDANT;
@@ -517,13 +518,14 @@ describe('Claim Summary Controller Defendant', () => {
 
       await testSession.get(`/dashboard/${claimId}/defendant`)
         .expect((res: Response) => {
+          console.log(res);
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
           expect(res.text).toContain(constructResponseUrlWithIdParams(':id', APPLICATION_TYPE_URL));
           expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS'));
           expect(res.text).toContain(constructResponseUrlWithIdParams(':id', GA_APPLICATION_SUMMARY_URL));
         });
-      });
+    });
 
     it('should not show view all application link when general application is enabled but there is no application', async () => {
       const claim = new Claim();
@@ -547,6 +549,6 @@ describe('Claim Summary Controller Defendant', () => {
           expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS'));
           expect(res.text).not.toContain(constructResponseUrlWithIdParams(':id', GA_APPLICATION_SUMMARY_URL));
         });
-      });
+    });
   });
 });
