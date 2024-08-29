@@ -1,4 +1,7 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {
+  getCaseDataFromStore,
+  saveDraftClaim,
+} from 'modules/draft-store/draftStoreService';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {
   ApplicationType,
@@ -44,6 +47,7 @@ import {
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
 import {getClaimById} from 'modules/utilityService';
+import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -335,18 +339,11 @@ export const additionalApplicationErrorMessages: Partial<{ [key in ApplicationTy
   [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT',
 };
 
-export const saveHelpWithFeesDetails = async (claimId: string, value: any, hwfPropertyName: string): Promise<void> => {
+export const saveHelpWithFeesDetails = async (gaRedisKey: string, value: any, hwfPropertyName: keyof GaHelpWithFees): Promise<void> => {
   try {
-    const claim: any = await getCaseDataFromStore(claimId, true);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    if(claim.generalApplication.helpWithFees) {
-      claim.generalApplication.helpWithFees[hwfPropertyName] = value;
-    } else {
-      const helpWithFees: any = new GaHelpWithFees();
-      helpWithFees[hwfPropertyName] = value;
-      claim.generalApplication.helpWithFees = helpWithFees;
-    }
-    await saveDraftClaim(claimId, claim);
+    const gaHwFDetails = await getDraftGAHWFDetails(gaRedisKey);
+    gaHwFDetails[hwfPropertyName] = value;
+    await saveDraftGAHWFDetails(gaRedisKey, gaHwFDetails);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -397,7 +394,7 @@ export const getApplicationStatus = (status: ApplicationState): ApplicationStatu
   }
 };
 
-export const getRespondentApplicationStatus = (status: ApplicationState): ApplicationStatus => 
+export const getRespondentApplicationStatus = (status: ApplicationState): ApplicationStatus =>
   (status === ApplicationState.AWAITING_RESPONDENT_RESPONSE)
     ? ApplicationStatus.TO_DO
     : ApplicationStatus.IN_PROGRESS;
@@ -446,4 +443,12 @@ export const shouldDisplaySyncWarning = (applicationResponse: ApplicationRespons
 export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest) : Promise<number> => {
   const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
   return applications.findIndex(application => application.id == applicationId);
+};
+
+export const saveApplicationTypesToGaResponse = async (gaState: ApplicationState, gaRedisKey: string, applicationTypes: ApplicationTypeOption[]): Promise<void> => {
+  if (gaState === ApplicationState.AWAITING_RESPONDENT_RESPONSE) {
+    const gaResponse = await getDraftGARespondentResponse(gaRedisKey);
+    gaResponse.generalApplicationType = applicationTypes;
+    await saveDraftGARespondentResponse(gaRedisKey, gaResponse);
+  }
 };
