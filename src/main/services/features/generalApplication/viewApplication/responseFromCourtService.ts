@@ -9,7 +9,7 @@ import {
   CASE_DOCUMENT_VIEW_URL,
   GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL,
   GA_PAY_ADDITIONAL_FEE_URL,
-  GA_PROVIDE_MORE_INFORMATION_URL,
+  GA_PROVIDE_MORE_INFORMATION_URL, GA_RESPOND_ADDITIONAL_INFO_URL,
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
 } from 'routes/urls';
@@ -27,7 +27,7 @@ export const buildResponseFromCourtSection = async (req : AppRequest, applicatio
   const claimId = req.params.id;
   const claim = await getClaimById(claimId, req, true);
   let judgeDirectionWithNotice : CourtResponseSummaryList = undefined;
-  
+
   if(toggleViewApplicationBuilderBasedOnUserAndApplicant(claim,application)) {
     judgeDirectionWithNotice = getJudgeDirectionWithNotice(req, application, lang);
   }
@@ -36,7 +36,7 @@ export const buildResponseFromCourtSection = async (req : AppRequest, applicatio
     judgeDirectionWithNotice,
     ...getHearingNoticeResponses(application, lang),
     ...getHearingOrderResponses(req, application, lang),
-    ...getRequestMoreInfoResponse(application, lang),
+    ...getRequestMoreInfoResponse(claimId, application, lang),
     ...getJudgesDirectionsOrder(req, application, lang),
     ...getJudgeApproveEdit(application, lang),
     ...getJudgeDismiss(application, lang),
@@ -68,7 +68,7 @@ export const getJudgeDirectionWithNotice = (req : AppRequest, applicationRespons
       );
     }
   }
-  
+
   let payAdditionalFeeButton : ResponseButton = null;
   if(applicationResponse.state === ApplicationState.APPLICATION_ADD_PAYMENT) {
     const payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PAY_ADDITIONAL_FEE_URL);
@@ -152,7 +152,7 @@ export const getHearingOrderResponses = (req: AppRequest, applicationResponse: A
         const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(hearingOrder?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER', {lng})}</a>`;
         const createdDatetime = hearingOrder?.value?.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER_DESC', {lng}), createdDatetime, lng);
-  
+
         return new CourtResponseSummaryList(rows,createdDatetime, uploadAddlDocsButton);
       });
   }
@@ -162,7 +162,7 @@ export const getHearingOrderResponses = (req: AppRequest, applicationResponse: A
 export const getHearingNoticeResponses = (applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
   const hearingNotices = applicationResponse?.case_data?.hearingNoticeDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
-  
+
   if(hearingNotices) {
     courtResponseSummaryList = hearingNotices
       .filter(directionOrderDocument => {
@@ -178,11 +178,11 @@ export const getHearingNoticeResponses = (applicationResponse: ApplicationRespon
   return courtResponseSummaryList;
 };
 
-export const getRequestMoreInfoResponse = (applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
- 
+export const getRequestMoreInfoResponse = (claimId: string, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
+
   const requestMoreInfos = applicationResponse?.case_data?.requestForInformationDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
-  
+
   if(requestMoreInfos) {
     courtResponseSummaryList = requestMoreInfos
       .filter(requestMoreInfo => {
@@ -193,7 +193,7 @@ export const getRequestMoreInfoResponse = (applicationResponse: ApplicationRespo
         const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(requestMoreInfo?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${documentName}</a>`;
         const createdDatetime = requestMoreInfo?.value?.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO', {lng}) ,createdDatetime, lng);
-        const respondToRequestHref = '';
+        const respondToRequestHref = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_RESPOND_ADDITIONAL_INFO_URL);
         const respondToRequestButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), respondToRequestHref);
         return new CourtResponseSummaryList(rows, createdDatetime, respondToRequestButton);
       });
@@ -205,7 +205,7 @@ export const getWrittenRepSequentialDocument = (req : AppRequest, applicationRes
   const claimId = req.params.id;
   const writtenRepSequentialDocs = applicationResponse?.case_data?.writtenRepSequentialDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
-  
+
   if(writtenRepSequentialDocs) {
     courtResponseSummaryList = writtenRepSequentialDocs
       .filter(writtenRepSequentialDocs => {
@@ -217,7 +217,7 @@ export const getWrittenRepSequentialDocument = (req : AppRequest, applicationRes
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng}) ,createdDatetime, lng);
         const requestWrittenRepresentationsUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PROVIDE_MORE_INFORMATION_URL);
         const requestWrittenRepButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), requestWrittenRepresentationsUrl);
- 
+
         return new CourtResponseSummaryList(rows, createdDatetime,requestWrittenRepButton);
       });
   }
@@ -228,7 +228,7 @@ export const getWrittenRepConcurrentDocument = (req : AppRequest, applicationRes
   const claimId = req.params.id;
   const writtenRepConcurrentDocs = applicationResponse?.case_data?.writtenRepConcurrentDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
-  
+
   if(writtenRepConcurrentDocs) {
     courtResponseSummaryList = writtenRepConcurrentDocs
       .filter(writtenRepConcurrentDoc => {

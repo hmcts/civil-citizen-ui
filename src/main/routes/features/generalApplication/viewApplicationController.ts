@@ -5,7 +5,6 @@ import {
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
   GA_APPLY_HELP_WITH_FEE_SELECTION,
   DASHBOARD_CLAIMANT_URL,
-  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL, GA_RESPOND_ADDITIONAL_INFO_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {
