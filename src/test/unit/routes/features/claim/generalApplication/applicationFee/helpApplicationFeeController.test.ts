@@ -12,6 +12,9 @@ import {t} from 'i18next';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {Claim} from 'models/claim';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {mockClaim} from '../../../../../../utils/mockClaim';
 import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
@@ -25,6 +28,7 @@ jest.mock('../../../../../../../main/modules/draft-store/gaHwFeesDraftStore', ()
 }));
 
 const mockGetCaseData = getDraftGAHWFDetails as jest.Mock;
+const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 jest.mock('services/features/generalApplication/generalApplicationService', () => ({
   getApplicationIndex: jest.fn(),
   saveHelpWithFeesDetails: jest.fn(),
@@ -60,11 +64,27 @@ describe('General Application - Do you want to apply for help with fees Page', (
     it('should return Do you want to apply for help with fees page', async () => {
       const mockGAHwF = new GaHelpWithFees();
       mockGetCaseData.mockImplementation(async () => mockGAHwF);
+      mockGetCaseDataFromStore.mockImplementation(async () => mockClaim);
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(ccdClaim);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_TITLE'));
+        });
+    });
+
+    it('should return Do you want to apply for help with fees page with not sync payment', async () => {
+      const claim = mockClaim;
+      claim.paymentSyncError = true;
+      mockGetCaseData.mockImplementation(async () => claim);
+      await request(app)
+        .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING'));
+          expect(res.text).toContain(t('PAGES.FEE_AMOUNT.SYNC_WARNING'));
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_TITLE'));
         });
     });
@@ -88,6 +108,8 @@ describe('General Application - Do you want to apply for help with fees Page', (
       const mockGAHwF = new GaHelpWithFees();
       mockGAHwF.applyHelpWithFees = {option: YesNo.YES};
       mockGetCaseData.mockImplementation(async () => mockGAHwF);
+      mockGetCaseDataFromStore.mockImplementation(async () => mockClaim);
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(ccdClaim);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
         .expect((res) => {
