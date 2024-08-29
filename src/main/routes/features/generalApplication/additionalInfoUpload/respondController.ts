@@ -31,7 +31,7 @@ respondAddInfoController.get(GA_RESPOND_ADDITIONAL_INFO_URL, (async (req: AppReq
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, 'test');
+    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_VIEW_APPLICATION_URL).concat('?index=1');
     const docUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_VIEW_APPLICATION_URL).concat('?index=1');
     const additionalText = gaResponse.additionalText;
     const wantToUploadAddlDocuments = gaResponse.wantToUploadAddlDocuments;
