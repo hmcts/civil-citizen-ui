@@ -13,9 +13,6 @@ import {
 import {getOidcResponse, getSessionIssueTime, getUserDetails, OidcResponse} from '../../../../main/app/auth/user/oidc';
 
 jest.mock('../../../../main/modules/draft-store');
-jest.mock('../../../../main/modules/draft-store/draftStoreService', () => ({
-  findClaimIdsbyUserId: jest.fn(),
-}));
 
 const mockGetUserDetails = getUserDetails as jest.Mock;
 const mockGetOidcResponse = getOidcResponse as jest.Mock;

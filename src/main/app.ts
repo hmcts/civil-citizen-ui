@@ -135,7 +135,6 @@ if(e2eTestMode){
     next();
   });
 }
-app.use(SIGN_OUT_URL, deleteGAGuard);
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
 app.use([BASE_GENERAL_APPLICATION_URL, BASE_GENERAL_APPLICATION_RESPONSE_URL], isGAForLiPEnabled);
