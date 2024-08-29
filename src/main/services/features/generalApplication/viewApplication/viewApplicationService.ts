@@ -13,7 +13,7 @@ import {
   addUnavailableDatesRows,
 } from './addViewApplicationRows';
 import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
-import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {ApplicationResponse, JudicialDecisionOptions} from 'models/generalApplication/applicationResponse';
 import {AppRequest} from 'models/AppRequest';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
@@ -34,6 +34,7 @@ import {DocumentType} from 'models/document/documentType';
 import {
   CcdGeneralApplicationDirectionsOrderDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
+import {CcdGARequestWrittenRepDocument} from 'models/ccdGeneralApplication/ccdGARequestWrittenRepDocument';
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -84,9 +85,19 @@ export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse
 
   rows.push(
     summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(new Date(applicationResponse.created_date), lng)),
-    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
-    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), `<a href="${documentUrl}">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng})}</a>`),
   );
+  if(applicationResponse.case_data.judicialDecision.decision === JudicialDecisionOptions.MAKE_AN_ORDER) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DIRECTION_WITH_NOTICE', {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), formatDocumentLinkHtml(applicationResponse, DocumentType.SEND_APP_TO_OTHER_PARTY, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURT_DOCUMENT', {lng}))),
+    );
+  } else if(applicationResponse.case_data.judicialDecision.decision === JudicialDecisionOptions.REQUEST_MORE_INFO) {
+    const documentName = getRequestForInfoDocument(applicationResponse, DocumentType.REQUEST_MORE_INFORMATION).value.documentName;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO', {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), formatDocumentLinkHtml(applicationResponse, DocumentType.REQUEST_MORE_INFORMATION, documentName)),
+    );
+  }
   if (documentUrl && (applicationResponse.case_data.generalAppPBADetails.additionalPaymentDetails)) {
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.ADDITIONAL_FEE_PAID', {lng})),
@@ -94,6 +105,24 @@ export const getJudgeResponseSummary = (applicationResponse: ApplicationResponse
   }
   return rows;
 };
+
+const getRequestForInfoDocument = (applicationResponse: ApplicationResponse, documentType: DocumentType) => {
+  const requestForInformationDocument = applicationResponse?.case_data?.requestForInformationDocument;
+  if(requestForInformationDocument) {
+    return requestForInformationDocument.find(doc => doc?.value?.documentType === documentType);
+  }
+  return undefined;
+};
+
+const getRequestForInfoDocumentUrl = (applicationResponse: ApplicationResponse, documentType: DocumentType) : string => {
+  const applicationId = applicationResponse.id;
+  const document = getRequestForInfoDocument(applicationResponse, documentType);
+  const documentId = documentIdExtractor(document?.value?.documentLink?.document_binary_url);
+  return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, documentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
+};
+
+const formatDocumentLinkHtml = (applicationResponse: ApplicationResponse, documentType: DocumentType, documentName: string) : string =>
+  `<a target="_blank" href="${getRequestForInfoDocumentUrl(applicationResponse, documentType)}">${documentName}</a>`;
 
 export const getCourtDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const courtDocumentsArray: DocumentInformation[] = [];
@@ -193,6 +222,31 @@ const getDirectionOrderDocument = (applicationResponse: ApplicationResponse) : C
   const requestForInformationDocument = applicationResponse?.case_data?.directionOrderDocument;
   if(requestForInformationDocument) {
     return requestForInformationDocument.find(doc => doc?.value?.documentType === DocumentType.DIRECTION_ORDER);
+  }
+  return undefined;
+};
+
+export const getRequestWrittenRepresentations = (applicationResponse: ApplicationResponse, lng: string): SummaryRow[] => {
+  const rows: SummaryRow[] = [];
+  let documentUrl = '';
+  const writtenRepresentationsDocument = getRequestWrittenRepresentationsDocument(applicationResponse);
+  documentUrl += `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(writtenRepresentationsDocument?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION_DOCUMENT', {lng})}</a>`;
+
+  rows.push(
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE', {lng}), formatDateToFullDate(writtenRepresentationsDocument.value.createdDatetime, lng)),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng})),
+    summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE', {lng}), documentUrl));
+  return rows;
+};
+
+const getRequestWrittenRepresentationsDocument = (applicationResponse: ApplicationResponse) : CcdGARequestWrittenRepDocument => {
+  const requestForWrittenRepsSequentialDocument = applicationResponse?.case_data?.writtenRepSequentialDocument;
+  if(requestForWrittenRepsSequentialDocument) {
+    return requestForWrittenRepsSequentialDocument.find(doc => doc?.value?.documentType === DocumentType.WRITTEN_REPRESENTATION_SEQUENTIAL);
+  }
+  const requestForWrittenRepsConcurrentDocument = applicationResponse?.case_data?.writtenRepConcurrentDocument;
+  if(requestForWrittenRepsConcurrentDocument) {
+    return requestForWrittenRepsConcurrentDocument.find(doc => doc?.value?.documentType === DocumentType.WRITTEN_REPRESENTATION_CONCURRENT);
   }
   return undefined;
 };

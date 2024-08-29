@@ -118,17 +118,24 @@
   {{ createDocumentsTableWithoutTableCaption(courtDocRows) }}
 {% endset %}
 
-{% set courtResponseHtml %}
+{% set responseFromCourtHtml %}
   <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
 
   {{ govukSummaryList({
     rows: responseFromCourt
   }) }}
 
-  {{ govukButton({
-    text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAY_ADDITIONAL_FEE'),
-    href: payAdditionalFeeUrl
-  }) }}
+  {% if showRequestMoreInfoButton %}
+    {{ govukButton({
+      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST'),
+      href: requestMoreInfoUrl
+    }) }}
+  {% else %}
+    {{ govukButton({
+      text: t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAY_ADDITIONAL_FEE'),
+      href: payAdditionalFeeUrl
+    }) }}
+  {% endif %}
 {% endset %}
 
 {% set judgesDirectionsOrderHtml %}
@@ -144,6 +151,18 @@
   }) }}
 {% endset %}
 
+{% set requestWrittenRepresentationsHtml %}
+  <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
+
+  {{ govukSummaryList({
+    rows: requestWrittenRepresentations
+  }) }}
+
+  {{ govukButton({
+    text: 'Respond to the request',
+    href: requestWrittenRepresentationsUrl
+  }) }}
+{% endset %}
 
 {% block nestedContent %}
   <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TITLE', { applicationIndex : applicationIndex }) }}</h1>
@@ -157,13 +176,19 @@
     {% if isResponseFromCourt %}
       {{ govukDetails({
         summaryHtml: courtResponseHeaderHtml,
-        html: courtResponseHtml
+        html: responseFromCourtHtml
       }) }}
     {% endif %}
     {% if isJudgesDirectionsOrder %}
       {{ govukDetails({
         summaryHtml: courtResponseHeaderHtml,
         html: judgesDirectionsOrderHtml
+      }) }}
+    {% endif %}
+    {% if isRequestWrittenRepresentations %}
+      {{ govukDetails({
+        summaryHtml: courtResponseHeaderHtml,
+        html: requestWrittenRepresentationsHtml
       }) }}
     {% endif %}
     {{ govukDetails({
@@ -181,6 +206,7 @@
       }) }}
     {% endif %}
   </div>
+
   {% if isApplicationFeeAmountNotPaid %}
     {{ govukButton({
       text: t('COMMON.BUTTONS.PAY_APPLICATION_FEE'),
