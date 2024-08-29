@@ -93,6 +93,18 @@
   {{ createDocumentsTableWithoutTableCaption(courtDocRows) }}
 {% endset %}
 
+{% set requestWrittenRepresentationsHtml %}
+  <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
+
+  {{ govukSummaryList({
+    rows: requestWrittenRepresentations
+  }) }}
+
+  {{ govukButton({
+    text: 'Respond to the request',
+    href: requestWrittenRepresentationsUrl
+  }) }}
+{% endset %}
 
 {% block nestedContent %}
   <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TITLE', { applicationIndex : applicationIndex }) }}</h1>
@@ -101,6 +113,12 @@
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.SUMMERY_MESSAGE3') }}</p>
 
 <div class="govuk-!-padding-top-5">
+  {% if isRequestWrittenRepresentations %}
+    {{ govukDetails({
+      summaryHtml: courtResponseHeaderHtml,
+      html: requestWrittenRepresentationsHtml
+    }) }}
+  {% endif %}
   <div class="govuk-section-break--s govuk-section-break--visible"></div>
   <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
     <div class="govuk-form-group">
