@@ -1,6 +1,6 @@
 import { NextFunction, RequestHandler, Response, Router } from 'express';
 import { AppRequest } from 'common/models/AppRequest';
-import {GA_RESPONSE_CHECK_ANSWERS_URL, GA_RESPONSE_HEARING_SUPPORT_URL} from 'routes/urls';
+import {GA_RESPONSE_CHECK_ANSWERS_URL, GA_RESPONSE_CONFIRMATION_URL, GA_RESPONSE_HEARING_SUPPORT_URL} from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
 import { StatementOfTruthForm } from 'common/models/generalApplication/statementOfTruthForm';
 import { GenericForm } from 'common/form/models/genericForm';
@@ -55,8 +55,9 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
     const statementOfTruth = new StatementOfTruthForm(req.body.signed, req.body.name);
     const form = new GenericForm(statementOfTruth);
     await form.validate();
+    const claimId = req.params.id;
+    const appId = req.params.appId;
     if (form.hasErrors()) {
-      const claimId = req.params.id;
       const claim = await getClaimById(claimId, req, true);
       const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
       await renderView(claimId, claim, form, gaResponse, req, res);
@@ -64,7 +65,7 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
       const redisKey = generateRedisKeyForGA(req);
       await saveRespondentStatementOfTruth(redisKey, statementOfTruth);
       await submitApplicationResponse(req);
-      res.redirect('test'); // TODO: correct URL      
+      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_CONFIRMATION_URL));
     }
   } catch (error) {
     next(error);
