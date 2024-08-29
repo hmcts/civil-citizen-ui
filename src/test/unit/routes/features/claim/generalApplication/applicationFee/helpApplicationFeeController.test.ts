@@ -14,7 +14,6 @@ import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {Claim} from 'models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {mockClaim} from '../../../../../../utils/mockClaim';
 import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
