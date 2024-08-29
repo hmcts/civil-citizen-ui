@@ -5,7 +5,7 @@ import {
   GA_VIEW_APPLICATION_URL,
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
   GA_APPLY_HELP_WITH_FEE_SELECTION,
-  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
+  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL, GA_RESPOND_ADDITIONAL_INFO_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {
@@ -49,6 +49,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const isApplicationFeeAmountNotPaid = isApplicationFeeNotPaid(applicationResponse);
     let applicationFeeOptionUrl : string = null;
     let judgesDirectionsOrderUrl: string = null;
+    let responseMoreInfoUrl: string = null;
 
     if(isResponseFromCourt) {
       const judgeResponseType = applicationResponse.case_data?.judicialDecision?.decision;
@@ -59,6 +60,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
         if (judgeResponseType === JudicialDecisionOptions.REQUEST_MORE_INFO) {
           showRequestMoreInfoButton = true;
           responseFromCourt = getJudgeResponseSummary(applicationResponse, lang);
+          responseMoreInfoUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPOND_ADDITIONAL_INFO_URL);
         }
       }
     }
@@ -91,6 +93,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       judgesDirectionsOrder,
       judgesDirectionsOrderUrl,
       showRequestMoreInfoButton,
+      responseMoreInfoUrl,
     });
   } catch (error) {
     next(error);
