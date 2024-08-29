@@ -1,5 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {DEFENDANT_SUMMARY_URL, GA_ACCEPT_DEFENDANT_OFFER_URL, GA_AGREE_TO_ORDER_URL, GA_RESPONDENT_AGREEMENT_URL, GA_RESPONSE_VIEW_APPLICATION_URL, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL} from 'routes/urls';
+import {DEFENDANT_SUMMARY_URL, GA_ACCEPT_DEFENDANT_OFFER_URL, GA_AGREE_TO_ORDER_URL, GA_RESPONDENT_AGREEMENT_URL, GA_RESPONDENT_INFORMATION_URL, GA_RESPONSE_VIEW_APPLICATION_URL, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {
   getApplicantDocuments,
@@ -50,7 +50,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
       respondentDocuments,
       additionalDocUrl,
       responseFromCourt,
-      dashboardUrl
+      dashboardUrl,
     });
   } catch (error) {
     next(error);

@@ -93,7 +93,7 @@
   {{ createDocumentsTableWithoutTableCaption(courtDocRows) }}
 {% endset %}
 
-{% set courtResponseHtml %}
+{% set responseFromCourtHtml %}
   <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
   {% for item in responseFromCourt %}
       {{ govukSummaryList({
@@ -114,13 +114,7 @@
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.SUMMERY_MESSAGE2') }}</p>
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.SUMMERY_MESSAGE3') }}</p>
 
-<div class="govuk-!-padding-top-5">
-  {% if isRequestWrittenRepresentations %}
-    {{ govukDetails({
-      summaryHtml: courtResponseHeaderHtml,
-      html: requestWrittenRepresentationsHtml
-    }) }}
-  {% endif %}
+<div class="govuk-!-padding-top-5">responseFromCourtHtml
   <div class="govuk-section-break--s govuk-section-break--visible"></div>
   <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
     <div class="govuk-form-group">
@@ -128,12 +122,11 @@
         rows: summaryRows
       }) }}
     </div>
-    
   </div>
       {% if responseFromCourt.length > 0 %}
         {{ govukDetails({
           summaryHtml: courtResponseHeaderHtml,
-          html: courtResponseHtml
+          html: responseFromCourtHtml
         }) }}
       {% endif %}
       

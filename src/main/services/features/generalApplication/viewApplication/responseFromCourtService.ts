@@ -9,6 +9,7 @@ import {
   CASE_DOCUMENT_VIEW_URL,
   GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL,
   GA_PAY_ADDITIONAL_FEE_URL,
+  GA_PROVIDE_MORE_INFORMATION_URL,
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
 } from 'routes/urls';
@@ -39,6 +40,8 @@ export const buildResponseFromCourtSection = async (req : AppRequest, applicatio
     ...getJudgesDirectionsOrder(req, application, lang),
     ...getJudgeApproveEdit(application, lang),
     ...getJudgeDismiss(application, lang),
+    ...getWrittenRepSequentialDocument(req, application, lang),
+    ...getWrittenRepConcurrentDocument(req, application, lang),
   ].filter(courtResponseSummary =>  courtResponseSummary && courtResponseSummary.rows.length > 0)
     .sort((summaryList1,summaryList2) => {
       return new Date(summaryList2?.responseDateTime).getTime() - new Date(summaryList1?.responseDateTime).getTime();
@@ -193,6 +196,51 @@ export const getRequestMoreInfoResponse = (applicationResponse: ApplicationRespo
         const respondToRequestHref = '';
         const respondToRequestButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), respondToRequestHref);
         return new CourtResponseSummaryList(rows, createdDatetime, respondToRequestButton);
+      });
+  }
+  return courtResponseSummaryList;
+};
+
+export const getWrittenRepSequentialDocument = (req : AppRequest, applicationResponse: ApplicationResponse, lng: string) : CourtResponseSummaryList[] => {
+  const claimId = req.params.id;
+  const writtenRepSequentialDocs = applicationResponse?.case_data?.writtenRepSequentialDocument;
+  let courtResponseSummaryList : CourtResponseSummaryList[] = [];
+  
+  if(writtenRepSequentialDocs) {
+    courtResponseSummaryList = writtenRepSequentialDocs
+      .filter(writtenRepSequentialDocs => {
+        return writtenRepSequentialDocs?.value?.documentType === DocumentType.WRITTEN_REPRESENTATION_SEQUENTIAL;
+      })
+      .map(writtenRepSequentialDocs => {
+        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(writtenRepSequentialDocs?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION_DOCUMENT', {lng})}</a>`;
+        const createdDatetime = writtenRepSequentialDocs?.value?.createdDatetime;
+        const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng}) ,createdDatetime, lng);
+        const requestWrittenRepresentationsUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PROVIDE_MORE_INFORMATION_URL);
+        const requestWrittenRepButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), requestWrittenRepresentationsUrl);
+ 
+        return new CourtResponseSummaryList(rows, createdDatetime,requestWrittenRepButton);
+      });
+  }
+  return courtResponseSummaryList;
+};
+
+export const getWrittenRepConcurrentDocument = (req : AppRequest, applicationResponse: ApplicationResponse, lng: string) : CourtResponseSummaryList[] => {
+  const claimId = req.params.id;
+  const writtenRepConcurrentDocs = applicationResponse?.case_data?.writtenRepConcurrentDocument;
+  let courtResponseSummaryList : CourtResponseSummaryList[] = [];
+  
+  if(writtenRepConcurrentDocs) {
+    courtResponseSummaryList = writtenRepConcurrentDocs
+      .filter(writtenRepConcurrentDoc => {
+        return writtenRepConcurrentDoc?.value?.documentType === DocumentType.WRITTEN_REPRESENTATION_CONCURRENT;
+      })
+      .map(writtenRepConcurrentDoc => {
+        const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(writtenRepConcurrentDoc?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION_DOCUMENT', {lng})}</a>`;
+        const createdDatetime = writtenRepConcurrentDoc?.value?.createdDatetime;
+        const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng}) ,createdDatetime, lng);
+        const requestWrittenRepresentationsUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PROVIDE_MORE_INFORMATION_URL);
+        const requestWrittenRepButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), requestWrittenRepresentationsUrl);
+        return new CourtResponseSummaryList(rows, createdDatetime, requestWrittenRepButton);
       });
   }
   return courtResponseSummaryList;
