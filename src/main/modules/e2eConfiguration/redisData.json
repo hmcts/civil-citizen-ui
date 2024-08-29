@@ -3,7 +3,8 @@
     "id": "someID",
     "case_data": {
       "draftClaimCreatedAt": "2022-03-01T13:29:24.971",
-      "pcqId": "test"
+      "pcqId": "test",
+      "id":"draft"
     }
   },
   {
