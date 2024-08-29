@@ -1,23 +1,33 @@
-import { NextFunction, RequestHandler, Response, Router } from 'express';
-import { AppRequest } from 'common/models/AppRequest';
-import { GenericForm } from 'common/form/models/genericForm';
-import { generateRedisKey, generateRedisKeyForGA, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
-import { GA_ACCEPT_DEFENDANT_OFFER_URL } from 'routes/urls';
-import { getCancelUrl, saveAcceptDefendantOffer } from 'services/features/generalApplication/generalApplicationService';
-import { Claim } from 'common/models/claim';
-import { AcceptDefendantOffer } from 'common/models/generalApplication/response/acceptDefendantOffer';
-import { getRespondToApplicationCaption } from 'services/features/generalApplication/response/generalApplicationResponseService';
-import { getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
+import {AppRequest} from 'common/models/AppRequest';
+import {GenericForm} from 'common/form/models/genericForm';
+import {generateRedisKey, generateRedisKeyForGA, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {
+  GA_ACCEPT_DEFENDANT_OFFER_URL,
+  GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL,
+  GA_RESPONSE_VIEW_APPLICATION_URL,
+} from 'routes/urls';
+import {getCancelUrl, saveAcceptDefendantOffer} from 'services/features/generalApplication/generalApplicationService';
+import {Claim} from 'common/models/claim';
+import {AcceptDefendantOffer} from 'common/models/generalApplication/response/acceptDefendantOffer';
+import {
+  getRespondToApplicationCaption,
+} from 'services/features/generalApplication/response/generalApplicationResponseService';
+import {
+  getDraftGARespondentResponse,
+} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {GaResponse} from 'models/generalApplication/response/gaResponse';
 
 const acceptDefendantOfferController = Router();
 const viewPath = 'features/generalApplication/response/accept-defendant-offer';
 
-const renderView = async (claimId: string, claim: Claim, form: GenericForm<AcceptDefendantOffer>, lng: string, appId: string, res: Response): Promise<void> => {
+const renderView = async (claimId: string, claim: Claim, form: GenericForm<AcceptDefendantOffer>, lng: string, appId: string, gaResponse: GaResponse, res: Response): Promise<void> => {
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const backLinkUrl = 'test'; // TODO: add url
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId,appId,GA_RESPONSE_VIEW_APPLICATION_URL);
   res.render(viewPath, {
     cancelUrl,
-    caption: getRespondToApplicationCaption(claim, appId, lng),
+    caption: getRespondToApplicationCaption(gaResponse.generalApplicationType, lng),
     backLinkUrl,
     form,
   });
@@ -32,7 +42,7 @@ acceptDefendantOfferController.get(GA_ACCEPT_DEFENDANT_OFFER_URL, async (req: Ap
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const acceptDefendantOffer = gaResponse?.acceptDefendantOffer || new AcceptDefendantOffer();
     const form = new GenericForm(acceptDefendantOffer);
-    renderView(claimId, claim, form, lang, req.params.appId, res);
+    renderView(claimId, claim, form, lang, req.params.appId, gaResponse, res);
   } catch (error) {
     next(error);
   }
@@ -51,16 +61,17 @@ acceptDefendantOfferController.post(GA_ACCEPT_DEFENDANT_OFFER_URL, (async (req: 
       req.body.reasonProposedSetDate,
     );
     const form = new GenericForm(acceptDefendantOffer);
+    const claimId = req.params.id;
     await form.validate();
     if (form.hasErrors()) {
-      const claimId = req.params.id;
       const redisKey = generateRedisKey(req);
       const claim = await getCaseDataFromStore(redisKey);
+      const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
       const lang = req.query.lang || req.cookies.lang;
-      return await renderView(claimId, claim, form, lang, req.params.appId, res);
+      return await renderView(claimId, claim, form, lang, req.params.appId, gaResponse, res);
     }
     await saveAcceptDefendantOffer(generateRedisKeyForGA(req), acceptDefendantOffer);
-    res.redirect('test'); // TODO: add url
+    res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL));
   } catch (error) {
     next(error);
   }
