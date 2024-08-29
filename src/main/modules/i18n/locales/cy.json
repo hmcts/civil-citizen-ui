@@ -3123,6 +3123,8 @@
         "PAGE_TITLE": "View application",
         "RESPONSE": "Response from the other parties",
         "READ_RESPONSE": "Read the response",
+        "REQUEST_WRITTEN_REPRESENTATION": "Request for written representation",
+        "REQUEST_WRITTEN_REPRESENTATION_DOCUMENT": "request_for_written_representation.pdf",
         "RESPONSE_COURT": "Response from the court",
         "RESPONDENTS_DOCUMENTS": "Respondent's documents",
         "RESPOND_TO_REQUEST": "Respond to the request",

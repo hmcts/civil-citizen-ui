@@ -120,8 +120,9 @@ export const addOrderJudgeRows = (application: ApplicationResponse, lang: string
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppDetailsOfOrder) {
     const orderForCost = application.case_data.generalAppAskForCosts === YesNoUpperCamelCase.YES ? 'PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS' : '';
+    const html = `<p class="govuk-body">${application.case_data.generalAppDetailsOfOrder} <br> ${t(orderForCost, {lng})}</p>`;
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), application.case_data.generalAppDetailsOfOrder + t(orderForCost, {lng})),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), html),
     );
   }
   return rows;

@@ -5,13 +5,21 @@ import {GA_RESPONSE_VIEW_APPLICATION_URL} from 'routes/urls';
 import {t} from 'i18next';
 import {GaServiceClient} from 'client/gaServiceClient';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {getApplicantDocuments, getApplicationSections, getCourtDocuments, getRespondentDocuments} from 'services/features/generalApplication/viewApplication/viewApplicationService';
+import {
+  getApplicantDocuments,
+  getApplicationSections,
+  getCourtDocuments,
+  getRequestWrittenRepresentations,
+  getRespondentDocuments,
+} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../../utils/mocks/applicationMock.json';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {app} from '../../../../../../../main/app';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
@@ -21,6 +29,7 @@ const mockedSummaryRows = getApplicationSections as jest.Mock;
 const mockRespondentDocs = getRespondentDocuments as jest.Mock;
 const mockApplicantDocs = getApplicantDocuments as jest.Mock;
 const mockCourtDocs = getCourtDocuments as jest.Mock;
+const mockWrittenReps = getRequestWrittenRepresentations as jest.Mock;
 
 describe('General Application - View application', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -87,7 +96,7 @@ describe('General Application - View application', () => {
     });
 
     it('should return View application page with applicant documents section', async () => {
-    
+
       const applicantDocs =  new DocumentsViewComponent('ApplicantDocuments',[orderDocument]);
       mockApplicantDocs.mockImplementation(() => applicantDocs);
       mockCourtDocs.mockImplementation(() => new DocumentsViewComponent('court',[]));
@@ -135,7 +144,7 @@ describe('General Application - View application', () => {
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-applicant-doc.pdf'),
       );
-      
+
       const respondentDocument = new DocumentInformation(
         'Respondent-Document',
         '4 August 2024',
@@ -147,7 +156,7 @@ describe('General Application - View application', () => {
         '5 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-court-doc.pdf'),
       );
-      
+
       const applicantDocs =  new DocumentsViewComponent('ApplicantDocuments',[applicantDocument]);
       const courtDocs =  new DocumentsViewComponent('courtDocuments',[courtDocument]);
       const respondentDocs =  new DocumentsViewComponent('RespondentDocuments',[respondentDocument]);
@@ -173,6 +182,27 @@ describe('General Application - View application', () => {
           expect(res.text).toContain('Court-Document');
           expect(res.text).toContain('5 August 2024');
           expect(res.text).toContain('000MC039-court-doc.pdf');
+        });
+    });
+
+    it('should return View application page with request written representation', async () => {
+
+      mockWrittenReps.mockImplementation(() => {
+        const rows: SummaryRow[] = [];
+        rows.push(summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), formatDateToFullDate(new Date())));
+        rows.push(summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION')));
+        rows.push(summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), 'test'));
+        return rows;
+      });
+
+      await request(app)
+        .get(GA_RESPONSE_VIEW_APPLICATION_URL)
+        .query({index: '1'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'));
         });
     });
 

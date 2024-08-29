@@ -517,13 +517,13 @@ describe('Claim Summary Controller Defendant', () => {
 
       await testSession.get(`/dashboard/${claimId}/defendant`)
         .expect((res: Response) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
-        expect(res.text).toContain(constructResponseUrlWithIdParams(':id', APPLICATION_TYPE_URL));
-        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS'));
-        expect(res.text).toContain(constructResponseUrlWithIdParams(':id', GA_APPLICATION_SUMMARY_URL));
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
+          expect(res.text).toContain(constructResponseUrlWithIdParams(':id', APPLICATION_TYPE_URL));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS'));
+          expect(res.text).toContain(constructResponseUrlWithIdParams(':id', GA_APPLICATION_SUMMARY_URL));
+        });
       });
-    });
 
     it('should not show view all application link when general application is enabled but there is no application', async () => {
       const claim = new Claim();
@@ -543,10 +543,10 @@ describe('Claim Summary Controller Defendant', () => {
 
       await testSession.get(`/dashboard/${claimId}/defendant`)
         .expect((res: Response) => {
-        expect(res.status).toBe(200);
-        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS'));
-        expect(res.text).not.toContain(constructResponseUrlWithIdParams(':id', GA_APPLICATION_SUMMARY_URL));
+          expect(res.status).toBe(200);
+          expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS'));
+          expect(res.text).not.toContain(constructResponseUrlWithIdParams(':id', GA_APPLICATION_SUMMARY_URL));
+        });
       });
-    });
   });
 });
