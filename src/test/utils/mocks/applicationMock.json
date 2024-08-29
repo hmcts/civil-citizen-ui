@@ -116,6 +116,12 @@
     "isMultiParty": "No",
     "isCcmccLocation": "Yes",
     "gaApplicantDisplayName": "Mr Claimant person - Claimant",
+    "judicialDecisionMakeAnOrderForWrittenRepresentations": {
+      "writtenConcurrentRepresentationsBy": "2024-08-30",
+      "writtenSequentailRepresentationsBy": "2024-08-30",
+      "makeAnOrderForWrittenRepresentations": "CONCURRENT_REPRESENTATIONS",
+      "sequentialApplicantMustRespondWithin": "2024-09-06"
+    },
     "judicialDecision": {
       "decision": "MAKE_AN_ORDER"
     }
