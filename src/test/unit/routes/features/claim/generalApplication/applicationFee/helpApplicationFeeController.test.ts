@@ -12,6 +12,9 @@ import {t} from 'i18next';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {Claim} from 'models/claim';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {mockClaim} from '../../../../../../utils/mockClaim';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -23,6 +26,7 @@ jest.mock('../../../../../../../main/modules/draft-store/gaHwFeesDraftStore', ()
 }));
 
 const mockGetCaseData = getDraftGAHWFDetails as jest.Mock;
+const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 const mockGetRedirectUrl = getRedirectUrl as jest.Mock;
 const ccdClaim = new Claim();
 ccdClaim.generalApplications = [
@@ -50,6 +54,8 @@ describe('General Application - Do you want to apply for help with fees Page', (
     it('should return Do you want to apply for help with fees page', async () => {
       const mockGAHwF = new GaHelpWithFees();
       mockGetCaseData.mockImplementation(async () => mockGAHwF);
+      mockGetCaseDataFromStore.mockImplementation(async () => mockClaim);
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(ccdClaim);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
         .expect((res) => {
@@ -77,6 +83,8 @@ describe('General Application - Do you want to apply for help with fees Page', (
       const mockGAHwF = new GaHelpWithFees();
       mockGAHwF.applyHelpWithFees = {option: YesNo.YES};
       mockGetCaseData.mockImplementation(async () => mockGAHwF);
+      mockGetCaseDataFromStore.mockImplementation(async () => mockClaim);
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(ccdClaim);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
         .expect((res) => {
