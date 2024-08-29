@@ -108,6 +108,9 @@ app.enable('trust proxy');
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
+
+app.use(SIGN_OUT_URL, deleteGAGuard);
+
 if(!e2eTestMode){
   new OidcMiddleware().enableFor(app);
 }
