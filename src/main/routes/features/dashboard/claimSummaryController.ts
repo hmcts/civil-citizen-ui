@@ -94,13 +94,13 @@ const getSupportLinks = (claim: Claim, lng: string, claimId: string) => {
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks = [];
   if (claim.ccdState && !claim.isCaseIssuedPending()) {
-    if(!claim.hasClaimTakenOffline()) {
+    if(!claim.hasClaimTakenOffline() && !claim.hasClaimBeenDismissed()) {
       iWantToLinks.push({
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
         url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
       });
     }
-    else {
+    else if (!claim.hasClaimBeenDismissed()) {
       iWantToLinks.push({text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng})});
     }
   }

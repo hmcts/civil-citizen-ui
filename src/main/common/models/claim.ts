@@ -870,6 +870,10 @@ export class Claim {
     return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !!this.takenOfflineDate;
   }
 
+  hasClaimBeenDismissed() {
+    return this.ccdState === CaseState.CASE_DISMISSED;
+  }
+
   hasMediationSuccessful() {
     return this.ccdState === CaseState.CASE_STAYED && !!this.mediationAgreement;
   }
