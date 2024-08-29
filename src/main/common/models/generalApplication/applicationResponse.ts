@@ -20,6 +20,7 @@ import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeW
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 import {CcdGeneralApplicationDirectionsOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
 import { DateTime } from 'luxon';
+import {CcdGARequestWrittenRepDocument} from 'models/ccdGeneralApplication/ccdGARequestWrittenRepDocument';
 
 export class ApplicationResponse {
   id: string;
@@ -71,12 +72,15 @@ export interface CCDApplication extends ApplicationUpdate {
 }
 
 export interface JudicialRequestMoreInfo {
-  requestMoreInfoOption : JudgeRequestMoreInfoOption;
   judgeRequestMoreInfoText : string;
   judgeRequestMoreInfoByDate : Date;
   deadlineForMoreInfoSubmission : DateTime;
   isWithNotice : YesNoUpperCamelCase;
   judgeRecitalText: string;
+  judicialDecisionRequestMoreInfo?: JudicialDecisionRequestMoreInfo;
+  judicialDecisionMakeAnOrderForWrittenRepresentations?: JudicialDecisionWrittenRepresentations;
+  writtenRepSequentialDocument?: CcdGARequestWrittenRepDocument[];
+  writtenRepConcurrentDocument?: CcdGARequestWrittenRepDocument[];
 }
 
 export interface JudicialDecision {
@@ -101,7 +105,20 @@ export enum JudicialDecisionMakeAnOrderOptions {
   GIVE_DIRECTIONS_WITHOUT_HEARING = 'GIVE_DIRECTIONS_WITHOUT_HEARING',
 }
 
-export enum JudgeRequestMoreInfoOption {
-  REQUEST_MORE_INFO = 'REQUEST_MORE_INFO',
+export interface JudicialDecisionRequestMoreInfo {
+  requestMoreInfoOption?: JudicialDecisionRequestMoreInfoOptions;
+}
+
+export enum JudicialDecisionRequestMoreInfoOptions {
+  REQUEST_MORE_INFORMATION = 'REQUEST_MORE_INFORMATION',
   SEND_APP_TO_OTHER_PARTY = 'SEND_APP_TO_OTHER_PARTY',
+}
+
+export interface JudicialDecisionWrittenRepresentations {
+  makeAnOrderForWrittenRepresentations?: JudicialDecisionWrittenRepresentationsOptions;
+}
+
+export enum JudicialDecisionWrittenRepresentationsOptions {
+  SEQUENTIAL_REPRESENTATIONS = 'SEQUENTIAL_REPRESENTATIONS',
+  CONCURRENT_REPRESENTATIONS = 'CONCURRENT_REPRESENTATIONS',
 }

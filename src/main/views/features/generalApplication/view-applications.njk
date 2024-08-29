@@ -118,7 +118,7 @@
   {{ createDocumentsTableWithoutTableCaption(courtDocRows) }}
 {% endset %}
 
-{% set courtResponseHtml %}
+{% set responseFromCourtHtml %}
   <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
   {% for item in responseFromCourt %}
       {{ govukSummaryList({

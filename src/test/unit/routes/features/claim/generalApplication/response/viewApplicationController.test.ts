@@ -90,7 +90,7 @@ describe('General Application - View application', () => {
     });
 
     it('should return View application page with applicant documents section', async () => {
-    
+
       const applicantDocs =  new DocumentsViewComponent('ApplicantDocuments',[orderDocument]);
       mockApplicantDocs.mockImplementation(() => applicantDocs);
       mockCourtDocs.mockImplementation(() => new DocumentsViewComponent('court',[]));
@@ -138,7 +138,7 @@ describe('General Application - View application', () => {
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-applicant-doc.pdf'),
       );
-      
+
       const respondentDocument = new DocumentInformation(
         'Respondent-Document',
         '4 August 2024',
@@ -150,7 +150,7 @@ describe('General Application - View application', () => {
         '5 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-court-doc.pdf'),
       );
-      
+
       const applicantDocs =  new DocumentsViewComponent('ApplicantDocuments',[applicantDocument]);
       const courtDocs =  new DocumentsViewComponent('courtDocuments',[courtDocument]);
       const respondentDocs =  new DocumentsViewComponent('RespondentDocuments',[respondentDocument]);

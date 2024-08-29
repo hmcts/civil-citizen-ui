@@ -397,7 +397,7 @@ export const getApplicationStatus = (status: ApplicationState): ApplicationStatu
   }
 };
 
-export const getRespondentApplicationStatus = (status: ApplicationState): ApplicationStatus => 
+export const getRespondentApplicationStatus = (status: ApplicationState): ApplicationStatus =>
   (status === ApplicationState.AWAITING_RESPONDENT_RESPONSE)
     ? ApplicationStatus.TO_DO
     : ApplicationStatus.IN_PROGRESS;
@@ -451,4 +451,11 @@ export const getApplicationIndex = async(claimId: string, applicationId: string,
 export const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {
   return ((claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
       || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
+};
+export const saveApplicationTypesToGaResponse = async (gaState: ApplicationState, gaRedisKey: string, applicationTypes: ApplicationTypeOption[]): Promise<void> => {
+  if (gaState === ApplicationState.AWAITING_RESPONDENT_RESPONSE) {
+    const gaResponse = await getDraftGARespondentResponse(gaRedisKey);
+    gaResponse.generalApplicationType = applicationTypes;
+    await saveDraftGARespondentResponse(gaRedisKey, gaResponse);
+  }
 };
