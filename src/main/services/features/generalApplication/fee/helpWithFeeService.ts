@@ -1,6 +1,9 @@
 import {AppRequest} from 'models/AppRequest';
 import {YesNo} from 'form/models/yesNo';
-import {GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
+import {
+  GA_APPLY_HELP_WITH_FEE_SELECTION,
+  GA_APPLY_HELP_WITH_FEES,
+} from 'routes/urls';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
@@ -60,6 +63,18 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
   }
   catch (error) {
     logger.error(error);
-    throw error;
+    const claim = await getClaimById(req.params.id, req, true);
+    let generalApplicationId: string;
+    if (req.query?.id) {
+      const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+      const ccdGeneralApplications = ccdClaim.generalApplications;
+      const ga = ccdGeneralApplications?.find((ga: { id: string }) => ga.id === (req.query.id as string));
+      generalApplicationId = ga.value.caseLink.CaseReference;
+    } else {
+      generalApplicationId = req.params.appId;
+    }
+    claim.paymentSyncError = true;
+    await saveDraftClaim(claim.id, claim, true);
+    return constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEE_SELECTION);
   }
 };
