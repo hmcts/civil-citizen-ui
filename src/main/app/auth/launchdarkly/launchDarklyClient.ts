@@ -85,7 +85,6 @@ export async function isPcqShutterOn(): Promise<boolean> {
 }
 
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
-  return await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
   return true;
 }
 
@@ -94,7 +93,7 @@ export async function isCARMEnabled(): Promise<boolean> {
 }
 
 export async function isGaForLipsEnabled(): Promise<boolean> {
-  return await getFlagValue(GA_FOR_LIPS) as boolean;
+  //return await getFlagValue(GA_FOR_LIPS) as boolean;
   return true;
 }
 
