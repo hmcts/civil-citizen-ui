@@ -1,5 +1,6 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
+  GA_RESPONDENT_HEARING_PREFERENCE_URL,
   GA_RESPONDENT_UPLOAD_DOCUMENT_URL,
   GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL,
 } from 'routes/urls';
@@ -8,9 +9,9 @@ import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
-import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
+import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {
   getSummaryList,
   removeDocumentFromRedis,
@@ -21,7 +22,9 @@ import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {
   getRespondToApplicationCaption,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
-import { getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {
+  getDraftGARespondentResponse,
+} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 
 const respondentUploadEvidenceDocumentsController = Router();
 const viewPath = 'features/generalApplication/response/respondent-upload-documents';
@@ -33,7 +36,8 @@ const upload = multer({
 
 async function renderView(req: AppRequest, form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, appId: string, formattedSummary: SummarySection): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const applicationType: string = getRespondToApplicationCaption(claim, appId, lang);
+  const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
+  const applicationType: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
   const cancelUrl = await getCancelUrl(claimId, claim);
   const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
   const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL);
@@ -110,7 +114,7 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
       req.session.fileUpload = JSON.stringify(errors);
       return res.redirect(`${currentUrl}`);
     } else {
-      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, '/test'));// TODO: add url
+      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_HEARING_PREFERENCE_URL));
     }
   } catch (error) {
     next(error);
