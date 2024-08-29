@@ -291,4 +291,4 @@ export const getCaseProgressionCancelUrl = async (claimId: string, claim: Claim)
     return constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL);
   }
   return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
-}
+};
