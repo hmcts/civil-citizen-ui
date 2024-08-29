@@ -38,7 +38,7 @@ uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (asy
       await removeSelectedDocument(redisKey, claim, Number(index) - 1);
     }
     const cancelUrl = await getCancelUrl(id, claim);
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(id, gaId, GA_VIEW_APPLICATION_URL);
+    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(id,gaId, GA_VIEW_APPLICATION_URL);
     const formattedSummary = getSummaryList(gaDetails.uploadAdditionalDocuments, id, gaId);
     res.render(viewPath, { cancelUrl, backLinkUrl, form, formattedSummary });
   } catch (err) {

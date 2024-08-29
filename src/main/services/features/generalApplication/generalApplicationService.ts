@@ -454,6 +454,7 @@ export const getViewApplicationUrl = (claimId: string, claim: Claim, application
   const viewApplicationUrl = toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, application) ? GA_VIEW_APPLICATION_URL : GA_RESPONSE_VIEW_APPLICATION_URL;
   return `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id, viewApplicationUrl)}?index=${index + 1}`;
 };
+
 export const saveApplicationTypesToGaResponse = async (gaState: ApplicationState, gaRedisKey: string, applicationTypes: ApplicationTypeOption[]): Promise<void> => {
   if (gaState === ApplicationState.AWAITING_RESPONDENT_RESPONSE) {
     const gaResponse = await getDraftGARespondentResponse(gaRedisKey);
