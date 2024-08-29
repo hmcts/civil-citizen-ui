@@ -27,7 +27,6 @@ export const getClaimById = async (claimId: string, req: Request, useRedisKey = 
       throw new Error('Case not found...');
     }
   }
-  claim.id = claimId;
   return claim;
 };
 
