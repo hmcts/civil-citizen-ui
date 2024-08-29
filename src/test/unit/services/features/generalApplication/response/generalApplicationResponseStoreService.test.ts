@@ -1,5 +1,3 @@
-// Import necessary modules
-
 import { app } from '../../../../../../main/app';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { saveDraftGARespondentResponse, getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';// import { saveDraftGARespondentResponse, getDraftGARespondentResponse } from './path/to/draftStoreService';
