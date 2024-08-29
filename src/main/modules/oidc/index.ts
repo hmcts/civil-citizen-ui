@@ -19,7 +19,8 @@ import {
   TERMS_AND_CONDITIONS_URL,
   PRIVACY_POLICY_URL,
 } from 'routes/urls';
-import { deleteGAFromClaimsByUserId } from 'services/features/generalApplication/generalApplicationService';
+import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
+// import { deleteGAFromClaimsByUserId } from 'services/features/generalApplication/generalApplicationService';
 
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
   return req.originalUrl.startsWith(ASSIGN_CLAIM_URL);
@@ -103,17 +104,17 @@ export class OidcMiddleware {
           return res.redirect(CLAIMANT_TASK_LIST_URL);
         }
         if (req.session.user?.roles?.includes(citizenRole)) {
-          await deleteGAFromClaimsByUserId(req.session?.user?.id);
+          // await deleteGAFromClaimsByUserId(req.session?.user?.id);
           return res.redirect(DASHBOARD_URL);
         }
         return res.redirect(UNAUTHORISED_URL);
       } else {
-        await deleteGAFromClaimsByUserId(req.session?.user?.id);
+        // await deleteGAFromClaimsByUserId(req.session?.user?.id);
         res.redirect(DASHBOARD_URL);
       }
     });
 
-    app.get(SIGN_OUT_URL, (req: AppRequest, res: Response) => {
+    app.get(SIGN_OUT_URL, deleteGAGuard, (req: AppRequest, res: Response) => {
       const params = new URLSearchParams({
         'id_token_hint': req.session.user?.accessToken,
         'post_logout_redirect_uri': applicationUrl,
