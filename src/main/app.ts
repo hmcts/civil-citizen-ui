@@ -52,7 +52,7 @@ import {trackHistory} from 'routes/guards/trackHistory';
 import {OidcMiddleware} from 'modules/oidc';
 import {AppSession} from 'models/AppRequest';
 import {DraftStoreCliente2e, getRedisStoreForSessione2e} from 'modules/e2eConfiguration';
-// import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
+import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -132,7 +132,7 @@ if(e2eTestMode){
     next();
   });
 }
-// app.use(SIGN_OUT_URL, deleteGAGuard);
+app.use(SIGN_OUT_URL, deleteGAGuard);
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);
 app.use(BASE_CLAIMANT_RESPONSE_URL, claimantIntentGuard);
 app.use([BASE_GENERAL_APPLICATION_URL, BASE_GENERAL_APPLICATION_RESPONSE_URL], isGAForLiPEnabled);

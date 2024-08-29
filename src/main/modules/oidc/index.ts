@@ -19,7 +19,7 @@ import {
   TERMS_AND_CONDITIONS_URL,
   PRIVACY_POLICY_URL,
 } from 'routes/urls';
-import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
+// import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
 // import { deleteGAFromClaimsByUserId } from 'services/features/generalApplication/generalApplicationService';
 
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
@@ -114,7 +114,7 @@ export class OidcMiddleware {
       }
     });
 
-    app.get(SIGN_OUT_URL, deleteGAGuard, (req: AppRequest, res: Response) => {
+    app.get(SIGN_OUT_URL, (req: AppRequest, res: Response) => {
       const params = new URLSearchParams({
         'id_token_hint': req.session.user?.accessToken,
         'post_logout_redirect_uri': applicationUrl,
