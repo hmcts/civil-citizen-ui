@@ -124,7 +124,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claim
 
   if(isGAFlagEnable) {
     let applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req);
-    applications = applications.filter(isApplicationVisibleToRespondent);
+    applications = applications?.filter(isApplicationVisibleToRespondent);
     if(applications && applications.length > 0) {
       iWantToLinks.push({
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),

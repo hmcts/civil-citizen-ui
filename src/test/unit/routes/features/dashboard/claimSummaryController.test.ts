@@ -27,7 +27,8 @@ import { ApplicationResponse } from 'common/models/generalApplication/applicatio
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { GaServiceClient } from 'client/gaServiceClient';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { APPLICATION_TYPE_URL, GA_APPLICATION_SUMMARY_URL } from 'routes/urls';
+import { APPLICATION_TYPE_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL, GA_APPLICATION_SUMMARY_URL } from 'routes/urls';
+import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -504,7 +505,34 @@ describe('Claim Summary Controller Defendant', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.DEFENDANT;
       claim.ccdState = CaseState.CASE_ISSUED;
-      const applicationResponses : ApplicationResponse[] = [new ApplicationResponse()];
+      const applicationResponse: ApplicationResponse = {
+        case_data: {
+          applicationTypes: undefined,
+          generalAppType: undefined,
+          generalAppRespondentAgreement: undefined,
+          generalAppInformOtherParty: {
+            isWithNotice: YesNoUpperCamelCase.NO,
+            reasonsForWithoutNotice: 'Reason without notice',
+          },
+          generalAppAskForCosts: undefined,
+          generalAppDetailsOfOrder: undefined,
+          generalAppReasonsOfOrder: undefined,
+          generalAppEvidenceDocument: undefined,
+          gaAddlDoc: undefined,
+          generalAppHearingDetails: undefined,
+          generalAppStatementOfTruth: undefined,
+          generalAppPBADetails: undefined,
+          applicationFeeAmountInPence: undefined,
+          parentClaimantIsApplicant: YesNoUpperCamelCase.NO,
+          judicialDecision: undefined,
+        },
+        created_date: '',
+        id: '123456',
+        last_modified: '',
+        state: undefined,
+      };
+
+      const applicationResponses : ApplicationResponse[] = [applicationResponse];
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
@@ -521,9 +549,9 @@ describe('Claim Summary Controller Defendant', () => {
           console.log(res);
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
-          expect(res.text).toContain(constructResponseUrlWithIdParams(':id', APPLICATION_TYPE_URL));
+          expect(res.text).toContain(constructResponseUrlWithIdParams(`${claimId}`, APPLICATION_TYPE_URL));
           expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS'));
-          expect(res.text).toContain(constructResponseUrlWithIdParams(':id', GA_APPLICATION_SUMMARY_URL));
+          expect(res.text).toContain(constructResponseUrlWithIdParams(`${claimId}`, GA_APPLICATION_RESPONSE_SUMMARY_URL));
         });
     });
 
@@ -547,7 +575,7 @@ describe('Claim Summary Controller Defendant', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS'));
-          expect(res.text).not.toContain(constructResponseUrlWithIdParams(':id', GA_APPLICATION_SUMMARY_URL));
+          expect(res.text).not.toContain(constructResponseUrlWithIdParams(`${claimId}`, GA_APPLICATION_RESPONSE_SUMMARY_URL));
         });
     });
   });
