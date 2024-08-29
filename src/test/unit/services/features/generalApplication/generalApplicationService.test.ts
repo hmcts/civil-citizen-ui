@@ -10,7 +10,7 @@ import {
   saveAcceptDefendantOffer, saveAdditionalText,
   saveAgreementFromOtherParty, saveAndTriggerNotifyGaHwfEvent,
   saveApplicationCosts,
-  saveApplicationType,
+  saveApplicationType, saveApplicationTypesToGaResponse,
   saveHearingArrangement,
   saveHearingContactDetails,
   saveHearingSupport,
@@ -59,6 +59,10 @@ import {CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {CCDHelpWithFees} from 'form/models/claimDetails';
 import {AppRequest} from 'models/AppRequest';
+import {
+  getDraftGARespondentResponse,
+  saveDraftGARespondentResponse,
+} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -758,6 +762,16 @@ describe('Save Accept defendant offer', () => {
     await saveAcceptDefendantOffer('123', acceptDefendantOffer);
     //Then
     expect(spy).toBeCalled();
+  });
+
+  describe('should save application type details on Ga Response', () => {
+    it('should call Save and Notify event', async () => {
+      const mockGetDraft = getDraftGARespondentResponse as jest.Mock;
+      const mockSaveDraft = saveDraftGARespondentResponse as jest.Mock;
+      mockGetDraft.mockResolvedValue(new GaResponse());
+      await saveApplicationTypesToGaResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, '12345', [ApplicationTypeOption.STAY_THE_CLAIM]);
+      expect(mockSaveDraft).toHaveBeenCalled();
+    });
   });
 
   describe('Save Respondent support to upload document', () => {
