@@ -74,7 +74,7 @@ describe('General Application - uploadDocumentsForWrittenRepController', () => {
       .send({option: null, writtenRepText: null})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('You need to tell us if you want to upload documents to support your response. Choose option: Yes or No.');
+        expect(res.text).toContain('You need to either enter the information requested in the box or select Yes to upload documents to support your response.');
       });
   });
 
@@ -86,6 +86,17 @@ describe('General Application - uploadDocumentsForWrittenRepController', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('You need to either enter the information requested in the box or select Yes to upload documents to support your response.');
+      });
+  });
+
+  it('should return errors on  input text present and no button selected', async () => {
+
+    await request(app)
+      .post(GA_PROVIDE_MORE_INFORMATION_URL)
+      .send({ writtenRepText: 'something'})
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('You need to tell us if you want to upload documents to support your response. Choose option: Yes or No.');
       });
   });
 
