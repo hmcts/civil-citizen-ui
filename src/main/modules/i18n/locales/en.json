@@ -922,6 +922,7 @@
     },
     "TELEPHONE_FOR_MEDIATION": {
       "PAGE_TITLE": "Telephone mediation",
+      "YOU_WISH_TO_PROCEED_WITH_THE_CLAIM": "You wish to proceed with the claim. The next step is mediation.",
       "IF_THE_CLAIMANT_DISAGREES": "If the claimant disagrees with your response, you must take part in mediation.",
       "A_TELEPHONE_MEDIATION_APPOINTMENT": "A telephone mediation appointment will be scheduled at no additional cost.",
       "AN_IMPARTIAL_MEDIATOR": "An impartial mediator will speak with both parties to see if an agreement can be reached before the case goes to court. You will be able to explain your reasons for rejecting the claim in more detail.",
