@@ -11,7 +11,7 @@ import {
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
-import {YesNo} from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
@@ -445,6 +445,10 @@ export const getApplicationIndex = async(claimId: string, applicationId: string,
   return applications.findIndex(application => application.id == applicationId);
 };
 
+export const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {
+  return ((claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
+      || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
+};
 export const saveApplicationTypesToGaResponse = async (gaState: ApplicationState, gaRedisKey: string, applicationTypes: ApplicationTypeOption[]): Promise<void> => {
   if (gaState === ApplicationState.AWAITING_RESPONDENT_RESPONSE) {
     const gaResponse = await getDraftGARespondentResponse(gaRedisKey);
