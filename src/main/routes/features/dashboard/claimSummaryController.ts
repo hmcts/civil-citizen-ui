@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import config from 'config';
 import {AppRequest} from 'models/AppRequest';
-import {APPLICATION_TYPE_URL, CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL } from '../../urls';
+import { CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL } from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
   isCaseProgressionV1Enable, isDashboardEnabledForCase, isCarmEnabledForCase, isGaForLipsEnabled,
@@ -23,15 +23,13 @@ import {
   generateRedisKey,
   updateFieldDraftClaimFromStore,
 } from 'modules/draft-store/draftStoreService';
-import {extractOrderDocumentIdFromNotification, getDashboardForm, getHelpSupportLinks, getHelpSupportTitle, getNotifications} from 'services/dashboard/dashboardService';
+import {extractOrderDocumentIdFromNotification, getContactCourtLink, getDashboardForm, getHelpSupportLinks, getHelpSupportTitle, getNotifications} from 'services/dashboard/dashboardService';
 import {getClaimWithExtendedPaymentDeadline} from 'services/features/response/submitConfirmation/submitConfirmationService';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 import {t} from 'i18next';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import { applicationNoticeUrl } from 'common/utils/externalURLs';
 import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 import { getViewAllApplicationLink } from 'services/features/generalApplication/generalApplicationService';
 
@@ -104,22 +102,9 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
 const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claimId: string, isGAFlagEnable: boolean) => {
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks : iWantToLinks[] = [];
-
-  if (claim.ccdState && !claim.isCaseIssuedPending()) {
-    if(!claim.hasClaimTakenOffline() && isGAFlagEnable) {
-      iWantToLinks.push({
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
-      });
-    } else if(claim.hasClaimTakenOffline()) {
-      iWantToLinks.push({
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-      });
-    } else {
-      iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }), url: applicationNoticeUrl });
-    }
-  }
-
+  
+  iWantToLinks.push(getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
+  
   const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
   if(viewAllApplicationLink) {
     iWantToLinks.push(viewAllApplicationLink);

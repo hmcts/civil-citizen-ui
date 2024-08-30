@@ -1,6 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  APPLICATION_TYPE_URL,
   BREATHING_SPACE_INFO_URL,
   DASHBOARD_CLAIMANT_URL,
   DATE_PAID_URL,
@@ -8,6 +7,7 @@ import {
 } from '../../urls';
 import {
   extractOrderDocumentIdFromNotification,
+  getContactCourtLink,
   getDashboardForm,
   getHelpSupportLinks,
   getHelpSupportTitle,
@@ -26,7 +26,6 @@ import {t} from 'i18next';
 import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
-import { applicationNoticeUrl } from 'common/utils/externalURLs';
 import {updateFieldDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import { getViewAllApplicationLink } from 'services/features/generalApplication/generalApplicationService';
 
@@ -127,20 +126,8 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
 
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks = [];
-  if (claim.ccdState && !claim.isCaseIssuedPending()) {
-    if(!claim.hasClaimTakenOffline() && isGAFlagEnable) {
-      iWantToLinks.push({
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
-      });
-    } else if(claim.hasClaimTakenOffline()) {
-      iWantToLinks.push({
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-      });
-    } else {
-      iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }), url: applicationNoticeUrl });
-    }
-  }
+
+  iWantToLinks.push(getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
 
   const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
   if(viewAllApplicationLink) {

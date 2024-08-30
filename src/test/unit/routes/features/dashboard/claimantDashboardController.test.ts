@@ -27,6 +27,7 @@ import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import { GaServiceClient } from 'client/gaServiceClient';
 import { ApplicationResponse } from 'common/models/generalApplication/applicationResponse';
+import { getContactCourtLink } from 'services/dashboard/dashboardService';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
@@ -117,6 +118,7 @@ jest.mock('services/dashboard/dashboardService', () => ({
   getHelpSupportTitle: jest.fn(()=>t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT')),
   getHelpSupportLinks: jest.fn(()=>HELP_SUPPORT_LINKS),
   extractOrderDocumentIdFromNotification: jest.fn(),
+  getContactCourtLink: jest.fn(()=> ({text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT')})),
 }));
 jest.mock('common/utils/carmToggleUtils');
 
@@ -331,7 +333,6 @@ describe('claimant Dashboard Controller', () => {
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
       jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
-
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
@@ -383,6 +384,13 @@ describe('claimant Dashboard Controller', () => {
         .mockResolvedValueOnce(claim);
       jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
       jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
+      const getContactCourtLinkMock = getContactCourtLink as jest.Mock;
+      getContactCourtLinkMock.mockImplementation(() => {
+        return {
+          text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'),
+          url: applicationNoticeUrl,
+        };
+      });
 
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
@@ -414,6 +422,13 @@ describe('claimant Dashboard Controller', () => {
       jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
       jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(true);
       jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+      const getContactCourtLinkMock = getContactCourtLink as jest.Mock;
+      getContactCourtLinkMock.mockImplementation(() => {
+        return {
+          text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'),
+          url: constructResponseUrlWithIdParams(':id', APPLICATION_TYPE_URL),
+        };
+      });
 
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);

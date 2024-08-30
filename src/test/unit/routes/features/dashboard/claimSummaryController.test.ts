@@ -29,6 +29,7 @@ import { GaServiceClient } from 'client/gaServiceClient';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { APPLICATION_TYPE_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL } from 'routes/urls';
 import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
+import { getContactCourtLink } from 'services/dashboard/dashboardService';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -134,6 +135,7 @@ jest.mock('services/dashboard/dashboardService', () => ({
   getHelpSupportTitle: jest.fn(),
   getHelpSupportLinks: jest.fn(),
   extractOrderDocumentIdFromNotification : jest.fn(),
+  getContactCourtLink: jest.fn(()=> ({text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT')})),
 }));
 
 export const USER_DETAILS = {
@@ -543,10 +545,16 @@ describe('Claim Summary Controller Defendant', () => {
       isGAForLiPEnabledMock.mockResolvedValue(true);
       isDashboardEnabledForCase.mockResolvedValue(true);
       jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
-
+      
+      const getContactCourtLinkMock = getContactCourtLink as jest.Mock;
+      getContactCourtLinkMock.mockImplementation(() => {
+        return {
+          text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'),
+          url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
+        };
+      });
       await testSession.get(`/dashboard/${claimId}/defendant`)
         .expect((res: Response) => {
-          console.log(res);
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
           expect(res.text).toContain(constructResponseUrlWithIdParams(`${claimId}`, APPLICATION_TYPE_URL));
