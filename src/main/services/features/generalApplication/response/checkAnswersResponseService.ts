@@ -9,6 +9,7 @@ import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormat
 import { t } from 'i18next';
 import {
   GA_ACCEPT_DEFENDANT_OFFER_URL,
+  GA_AGREE_TO_ORDER_URL,
   GA_RESPONDENT_AGREEMENT_URL,
   GA_RESPONSE_HEARING_ARRANGEMENT_URL,
   GA_RESPONSE_HEARING_CONTACT_DETAILS_URL,
@@ -53,10 +54,18 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
     ];
   };
 
+  const agreeToOrderSection = (): SummaryRow[] =>
+    [formattedRow('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.TITLE',
+      gaResponse?.agreeToOrder,
+      yesNoFormatter,
+      constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_AGREE_TO_ORDER_URL))];
+
   const respondentAgreementSection = (): SummaryRow[] =>
     [formattedRow('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE',
-      gaResponse?.respondentAgreement?.option,
-      yesNoFormatter,
+      gaResponse?.respondentAgreement,
+      ra => (ra?.option === YesNo.YES)
+        ? yesNoFormatter(ra?.option as YesNo)
+        : `${yesNoFormatter(ra?.option as YesNo)}<br/>${ra?.reasonForDisagreement}`,
       constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_AGREEMENT_URL))];
 
   const hearingArrangementSections = (): SummaryRow[] => {
@@ -125,11 +134,12 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
         .filter((key: keyof HearingSupport) => !!hearingSupport[key].selected)
         .map(key => listItemCaption(`PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.${getCaption(key as SupportType)}`))
         .join('');
-      return [row(
-        'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
-        `<ul class="no-list-style">${selectedHtml}</ul>`,
-        GA_RESPONSE_HEARING_SUPPORT_URL,
-      )];
+      return selectedHtml
+        ? [row(
+          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
+          `<ul class="no-list-style">${selectedHtml}</ul>`,
+          GA_RESPONSE_HEARING_SUPPORT_URL)]
+        : undefined;
     } else {
       return [];
     }
@@ -154,6 +164,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
   const yesNoFormatter = (yesNo: YesNo): string => t(`COMMON.VARIATION.${yesNo.toUpperCase()}`, {lng});
 
   return [
+    agreeToOrderSection,
     acceptOfferSection,
     respondentAgreementSection, 
     hearingArrangementSections,

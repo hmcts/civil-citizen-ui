@@ -146,10 +146,27 @@ describe('Check Answers response service', () => {
     it('returns respondent agreement rows', () => {
       const { response } = claimAndResponse();
       response.respondentAgreement = new RespondentAgreement(YesNo.YES);
-      
-      expect(getSummarySections('123','345', response, 'en')).toEqual([{ 
-        key: { text: 'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE'}, 
+
+      expect(getSummarySections('123','345', response, 'en')).toEqual([{
+        key: { text: 'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE'},
         value: { html: 'COMMON.VARIATION.YES' },
+        actions: {
+          items: [{
+            href: '/case/123/response/general-application/345/respondent-agreement',
+            text: 'COMMON.BUTTONS.CHANGE',
+            visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE',
+          }],
+        }},
+      ]);
+    });
+
+    it('returns respondent agreement rows - disagree', () => {
+      const { response } = claimAndResponse();
+      response.respondentAgreement = new RespondentAgreement(YesNo.NO, 'reason for disagreement');
+
+      expect(getSummarySections('123','345', response, 'en')).toEqual([{
+        key: { text: 'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE'},
+        value: { html: 'COMMON.VARIATION.NO<br/>reason for disagreement' },
         actions: {
           items: [{
             href: '/case/123/response/general-application/345/respondent-agreement',
@@ -197,6 +214,23 @@ describe('Check Answers response service', () => {
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PREFERRED_LOCATION',
             }],
           }},
+      ]);
+    });
+
+    it('returns agree to order rows', () => {
+      const { response } = claimAndResponse();
+      response.agreeToOrder = (YesNo.YES);
+
+      expect(getSummarySections('123','345', response, 'en')).toEqual([{
+        key: { text: 'PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.TITLE'},
+        value: { html: 'COMMON.VARIATION.YES' },
+        actions: {
+          items: [{
+            href: '/case/123/response/general-application/345/agree-to-order',
+            text: 'COMMON.BUTTONS.CHANGE',
+            visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.TITLE',
+          }],
+        }},
       ]);
     });
 
@@ -367,6 +401,13 @@ describe('Check Answers response service', () => {
             }],
           }},
       ]);
+    });
+
+    it('returns selected support options - none', () => {
+      const { response } = claimAndResponse();
+      response.hearingSupport = new HearingSupport([]);
+
+      expect(getSummarySections('123','345', response, 'en')).toEqual([]);
     });
 
   });
