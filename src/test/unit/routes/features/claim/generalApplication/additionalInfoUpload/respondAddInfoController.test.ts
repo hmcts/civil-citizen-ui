@@ -13,6 +13,8 @@ import * as generalApplicationResponseStoreService from 'services/features/gener
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -21,6 +23,11 @@ jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   getDraftGARespondentResponse: jest.fn(),
   saveDraftGARespondentResponse: jest.fn(),
+}));
+jest.mock('../../../../../../../main/services/features/generalApplication/generalApplicationService', () => ({
+  getApplicationFromGAService: jest.fn(),
+  getCancelUrl: jest.fn(),
+  saveAdditionalText: jest.fn(),
 }));
 
 describe('General Application - uploadDocumentsForRequestMoreInfoController', () => {
@@ -31,12 +38,16 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController', ()
   const mockGADocResponseStoreService = jest.spyOn(generalApplicationResponseStoreService, 'getDraftGARespondentResponse');
   let claim: Claim;
   let uploadDocuments: UploadGAFiles[];
+  let applicationResponse: ApplicationResponse;
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
     jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
+    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(applicationResponse);
+    jest.spyOn(generalApplicationService, 'getCancelUrl').mockResolvedValue('/cancel-url');
+    jest.spyOn(generalApplicationService, 'saveAdditionalText').mockResolvedValue();
   });
 
   beforeEach(() => {
@@ -48,6 +59,33 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController', ()
     const response = new GaResponse();
     response.additionalText = 'More info';
     mockGADocResponseStoreService.mockResolvedValue(response);
+    applicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: {
+          fee: undefined,
+          paymentDetails: undefined,
+          serviceRequestReference: undefined,
+        },
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '',
+      last_modified: '',
+      state: undefined,
+    };
   });
 
   afterEach(
@@ -74,7 +112,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController', ()
       .send({option: null, additionalText: null})
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('You need to tell us if you want to upload documents to support your response. Choose option: Yes or No.');
+        expect(res.text).toContain('You need to either enter the information requested in the box or select Yes to upload documents to support your response.');
       });
   });
 
