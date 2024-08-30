@@ -11,7 +11,7 @@ import {StatementOfTruthForm} from 'common/models/generalApplication/statementOf
 import { getDraftGARespondentResponse, saveDraftGARespondentResponse } from './generalApplicationResponseStoreService';
 import { ApplicationResponse } from 'common/models/generalApplication/applicationResponse';
 import { Claim } from 'common/models/claim';
-import { ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
+import { ApplicationState, ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
 import { dateTimeFormat } from 'common/utils/dateUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -102,9 +102,9 @@ export const isApplicationVisibleToRespondent = (application: ApplicationRespons
   const parentClaimantIsApplicant = application.case_data?.parentClaimantIsApplicant;
   const isWithNotice = application.case_data?.generalAppInformOtherParty?.isWithNotice;
   return ((parentClaimantIsApplicant === YesNoUpperCamelCase.YES && isWithNotice === YesNoUpperCamelCase.YES)
-    || (parentClaimantIsApplicant === YesNoUpperCamelCase.NO && isWithNotice === YesNoUpperCamelCase.YES)
-    || (parentClaimantIsApplicant === YesNoUpperCamelCase.NO && isWithNotice === YesNoUpperCamelCase.NO)
-    || (application.case_data?.generalAppRespondentAgreement?.hasAgreed === YesNoUpperCamelCase.YES));
+    || (parentClaimantIsApplicant === YesNoUpperCamelCase.NO)
+    || (application.case_data?.generalAppRespondentAgreement?.hasAgreed === YesNoUpperCamelCase.YES)
+    || (application.case_data?.applicationIsUncloakedOnce === YesNoUpperCamelCase.YES && application.state !== ApplicationState.APPLICATION_ADD_PAYMENT));
 };
 
 export const buildRespondentApplicationSummaryRow = (claimId: string, claim : Claim, lng:string) => (application: ApplicationResponse, index: number): ApplicationSummary => {
