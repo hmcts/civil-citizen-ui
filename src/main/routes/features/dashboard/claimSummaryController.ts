@@ -34,6 +34,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { applicationNoticeUrl } from 'common/utils/externalURLs';
 import { GaServiceClient } from 'client/gaServiceClient';
 import { isApplicationVisibleToRespondent } from 'services/features/generalApplication/response/generalApplicationResponseService';
+import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
@@ -106,7 +107,8 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
 
 const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claimId: string, isGAFlagEnable: boolean) => {
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
-  const iWantToLinks = [];
+  const iWantToLinks : iWantToLinks[] = [];
+
   if (claim.ccdState && !claim.isCaseIssuedPending()) {
     if(!claim.hasClaimTakenOffline() && isGAFlagEnable) {
       iWantToLinks.push({
@@ -122,16 +124,11 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claim
     }
   }
 
-  if(isGAFlagEnable) {
-    let applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req);
-    applications = applications?.filter(isApplicationVisibleToRespondent);
-    if(applications && applications.length > 0) {
-      iWantToLinks.push({
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
-        url: constructResponseUrlWithIdParams(claimId, GA_APPLICATION_RESPONSE_SUMMARY_URL),
-      });
-    }
+  const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
+  if(viewAllApplicationLink) {
+    iWantToLinks.push(viewAllApplicationLink);
   }
+
   const helpSupportTitle = getHelpSupportTitle(lng);
   const helpSupportLinks = getHelpSupportLinks(lng);
 
@@ -187,5 +184,18 @@ async function getTabs(claimId: string, claim: Claim, lang: string, respondentPa
 
   return tabItems;
 }
+
+const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
+  if(isGAFlagEnable) {
+    let applications = await generalApplicationServiceClient.getApplicationsByCaseId(req.params.id, req);
+    applications = applications?.filter(isApplicationVisibleToRespondent);
+    if(applications && applications.length > 0) {
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
+        url: constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_RESPONSE_SUMMARY_URL),
+      };
+    }
+  }
+};
 
 export default claimSummaryController;

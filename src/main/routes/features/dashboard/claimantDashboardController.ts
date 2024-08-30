@@ -30,6 +30,7 @@ import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import { applicationNoticeUrl } from 'common/utils/externalURLs';
 import {updateFieldDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import { GaServiceClient } from 'client/gaServiceClient';
+import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -146,14 +147,9 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
     }
   }
 
-  if(isGAFlagEnable) {
-    const applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req);
-    if(applications && applications.length > 0) {
-      iWantToLinks.push({
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
-        url: constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUMMARY_URL),
-      });
-    }
+  const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
+  if(viewAllApplicationLink) {
+    iWantToLinks.push(viewAllApplicationLink);
   }
 
   if (showTellUsEndedLink) {
@@ -168,6 +164,18 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
   const helpSupportLinks = getHelpSupportLinks(lng);
 
   return [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] as const;
+};
+
+const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
+  if(isGAFlagEnable) {
+    const applications = await generalApplicationServiceClient.getApplicationsByCaseId(req.params.id, req);
+    if(applications && applications.length > 0) {
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
+        url: constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_SUMMARY_URL),
+      };
+    }
+  }
 };
 
 export default claimantDashboardController;
