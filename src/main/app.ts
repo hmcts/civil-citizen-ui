@@ -50,9 +50,10 @@ import {isCaseProgressionV1Enabled} from 'routes/guards/caseProgressionGuard';
 import config = require('config');
 import {trackHistory} from 'routes/guards/trackHistory';
 import {OidcMiddleware} from 'modules/oidc';
-import {AppSession} from 'models/AppRequest';
+import {AppRequest, AppSession} from 'models/AppRequest';
 import {DraftStoreCliente2e, getRedisStoreForSessione2e} from 'modules/e2eConfiguration';
 import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
+import { deleteGAFromClaimsByUserId } from 'services/features/generalApplication/generalApplicationService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -97,11 +98,12 @@ app.use(session({
   secret: 'local',
   resave: false,
   saveUninitialized: false,
-  cookie : {
+  cookie: {
     secure: productionMode,
     maxAge: cookieMaxAge,
     sameSite: 'lax',
   },
+  rolling: true, // Enable rolling session
 }));
 
 app.enable('trust proxy');
@@ -184,6 +186,38 @@ app.use((_req, res, next) => {
     'GET,POST,OPTIONS,PUT,DELETE',
   );
 
+  next();
+});
+
+app.use(async (req, res, next) => {
+  const appReq: AppRequest = <AppRequest>req;
+
+  // const session = ((req.session) as AppSession);
+  console.log('APP USE', appReq.session?.user?.id);
+  if (appReq.session && appReq.session.cookie) {
+    console.log('COOKIE', appReq.session.cookie.expires);
+
+    const now = new Date().getTime();
+    const expires = appReq.session.cookie.expires ? new Date(appReq.session.cookie.expires).getTime() : 0;
+    console.log('EXPIRES', expires);
+    console.log('NOW', now);
+    console.log('NOW>EXPIRES', now > expires);
+    console.log('NOW-EXPIRES', (expires-now)/1000);
+
+    if (expires && now > expires) {
+      // appReq.Session has expired
+      console.log('USER ID: ', appReq.session.user?.id);
+      await deleteGAFromClaimsByUserId(appReq.session?.user?.id);
+
+      appReq.session.destroy((err) => {
+        if (err) {
+          logger.error('Error destroying session:', err);
+        }
+        res.redirect('test'); // Redirect to sign-in page or handle as needed
+      });
+      return;
+    }
+  }
   next();
 });
 
