@@ -19,6 +19,7 @@ import {CcdGeneralApplicationAddlDocument, CcdHearingDocument} from 'models/ccdG
 import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 import {CcdGeneralApplicationDirectionsOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
+import { DateTime } from 'luxon';
 import {CcdGARequestWrittenRepDocument} from 'models/ccdGeneralApplication/ccdGARequestWrittenRepDocument';
 
 export class ApplicationResponse {
@@ -65,6 +66,19 @@ export interface CCDApplication extends ApplicationUpdate {
   requestForInformationDocument?: CcdGAMakeWithNoticeDocument[];
   directionOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
   judicialDecisionMakeOrder?: JudicialDecisionMakeOrder;
+  generalOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
+  dismissalOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
+  judicialDecisionRequestMoreInfo?: JudicialRequestMoreInfo;
+  writtenRepSequentialDocument?: CcdGARequestWrittenRepDocument[];
+  writtenRepConcurrentDocument?: CcdGARequestWrittenRepDocument[];
+}
+
+export interface JudicialRequestMoreInfo {
+  judgeRequestMoreInfoText : string;
+  judgeRequestMoreInfoByDate : Date;
+  deadlineForMoreInfoSubmission : DateTime;
+  isWithNotice : YesNoUpperCamelCase;
+  judgeRecitalText: string;
   judicialDecisionRequestMoreInfo?: JudicialDecisionRequestMoreInfo;
   judicialDecisionMakeAnOrderForWrittenRepresentations?: JudicialDecisionWrittenRepresentations;
   writtenRepSequentialDocument?: CcdGARequestWrittenRepDocument[];
@@ -82,7 +96,6 @@ export enum JudicialDecisionOptions {
   LIST_FOR_A_HEARING = 'LIST_FOR_A_HEARING',
   MAKE_ORDER_FOR_WRITTEN_REPRESENTATIONS = 'MAKE_ORDER_FOR_WRITTEN_REPRESENTATIONS',
 }
-
 export interface JudicialDecisionMakeOrder {
   directionsResponseByDate?: string;
   makeAnOrder?: JudicialDecisionMakeAnOrderOptions;
