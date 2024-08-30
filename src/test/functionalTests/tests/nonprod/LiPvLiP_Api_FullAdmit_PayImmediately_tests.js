@@ -8,8 +8,8 @@ const { respondToClaim, defendantResponseFullAdmitPayImmediately } = require('..
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
-let caseData, claimNumber, claimRef, claimAmount = 1500, deadline= '6 March 2024';
-
+let caseData, claimNumber, claimRef, claimAmount = 1500, claimFee = 80, deadline= '6 March 2024';
+let claimTotalAmount = claimAmount + claimFee;
 Feature('Create Lip v Lip claim -  Full Admit and pay Immediately');
 
 Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immediately - @api', async ({I, api}) => {
@@ -30,8 +30,8 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
     }
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayImmediateWithIndividual);
     await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceEnabled) {
-      const notification = defendantResponseFullAdmitPayImmediately(claimAmount, deadline);
+    if (isDashboardServiceEnabled) {      
+      const notification = defendantResponseFullAdmitPayImmediately(claimTotalAmount, deadline);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
     }
