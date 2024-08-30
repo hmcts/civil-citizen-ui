@@ -1,6 +1,7 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {
+  deleteGAFromClaimsByUserId,
   getApplicationIndex,
   getApplicationStatus,
   getByIndex,
@@ -966,5 +967,19 @@ describe('Should get the application index', () => {
     const result = await getApplicationIndex('123', '1234', undefined);
     //Then
     expect(result).toEqual(-1);
+  });
+  describe('deleteGAFromClaimsByUserId', () => {
+    it('should delete GAs by user id', async () => {
+      //Given
+      const mockSaveClaim = draftStoreService.findClaimIdsbyUserId as jest.Mock;
+      mockSaveClaim.mockImplementation(async () => {
+        return ['123', '234'];
+      });
+      const spy = jest.spyOn(draftStoreService, 'deleteFieldDraftClaimFromStore').mockImplementation();
+      //When
+      await deleteGAFromClaimsByUserId('123');
+      //Then
+      expect(spy).toBeCalledTimes(2);
+    });
   });
 });
