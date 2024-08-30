@@ -30,7 +30,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
     }
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayImmediateWithIndividual);
     await api.waitForFinishedBusinessProcess();
-    if (isDashboardServiceEnabled) {      
+    if (isDashboardServiceEnabled) {
       const notification = defendantResponseFullAdmitPayImmediately(claimTotalAmount, deadline);
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
       await I.click(notification.nextSteps);
