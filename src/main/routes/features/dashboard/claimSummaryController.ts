@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import config from 'config';
 import {AppRequest} from 'models/AppRequest';
-import {APPLICATION_TYPE_URL, CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL} from '../../urls';
+import {APPLICATION_TYPE_URL, CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL } from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
   isCaseProgressionV1Enable, isDashboardEnabledForCase, isCarmEnabledForCase, isGaForLipsEnabled,
@@ -32,9 +32,8 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { applicationNoticeUrl } from 'common/utils/externalURLs';
-import { GaServiceClient } from 'client/gaServiceClient';
-import { isApplicationVisibleToRespondent } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
+import { getViewAllApplicationLink } from 'services/features/generalApplication/generalApplicationService';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
@@ -44,9 +43,6 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const HearingUploadDocuments = 'Upload hearing documents';
 const ResponseClaimTrack = 'responseClaimTrack';
-
-const generalApplicationServiceApiBaseUrl = config.get<string>('services.generalApplication.url');
-const generalApplicationServiceClient: GaServiceClient = new GaServiceClient(generalApplicationServiceApiBaseUrl);
 
 claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -184,18 +180,5 @@ async function getTabs(claimId: string, claim: Claim, lang: string, respondentPa
 
   return tabItems;
 }
-
-const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
-  if(isGAFlagEnable) {
-    let applications = await generalApplicationServiceClient.getApplicationsByCaseId(req.params.id, req);
-    applications = applications?.filter(isApplicationVisibleToRespondent);
-    if(applications && applications.length > 0) {
-      return {
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
-        url: constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_RESPONSE_SUMMARY_URL),
-      };
-    }
-  }
-};
 
 export default claimSummaryController;

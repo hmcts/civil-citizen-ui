@@ -4,7 +4,6 @@ import {
   BREATHING_SPACE_INFO_URL,
   DASHBOARD_CLAIMANT_URL,
   DATE_PAID_URL,
-  GA_APPLICATION_SUMMARY_URL,
   OLD_DASHBOARD_CLAIMANT_URL,
 } from '../../urls';
 import {
@@ -29,8 +28,7 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import { applicationNoticeUrl } from 'common/utils/externalURLs';
 import {updateFieldDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
-import { GaServiceClient } from 'client/gaServiceClient';
-import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
+import { getViewAllApplicationLink } from 'services/features/generalApplication/generalApplicationService';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -38,9 +36,6 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const HearingUploadDocuments = 'Upload hearing documents';
 const ResponseClaimTrack = 'responseClaimTrack';
-
-const generalApplicationServiceApiBaseUrl = config.get<string>('services.generalApplication.url');
-const generalApplicationServiceClient: GaServiceClient = new GaServiceClient(generalApplicationServiceApiBaseUrl);
 
 claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -164,18 +159,6 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
   const helpSupportLinks = getHelpSupportLinks(lng);
 
   return [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] as const;
-};
-
-const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
-  if(isGAFlagEnable) {
-    const applications = await generalApplicationServiceClient.getApplicationsByCaseId(req.params.id, req);
-    if(applications && applications.length > 0) {
-      return {
-        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
-        url: constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_SUMMARY_URL),
-      };
-    }
-  }
 };
 
 export default claimantDashboardController;

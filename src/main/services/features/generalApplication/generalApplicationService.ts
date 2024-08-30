@@ -10,7 +10,7 @@ import {
 } from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, GA_RESPONSE_VIEW_APPLICATION_URL, GA_VIEW_APPLICATION_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL, GA_APPLICATION_SUMMARY_URL, GA_RESPONSE_VIEW_APPLICATION_URL, GA_VIEW_APPLICATION_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {AppRequest} from 'common/models/AppRequest';
@@ -48,6 +48,9 @@ import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee
 import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
 import {getClaimById} from 'modules/utilityService';
 import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
+import { isApplicationVisibleToRespondent } from './response/generalApplicationResponseService';
+import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
+import { t } from 'i18next';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -460,5 +463,19 @@ export const saveApplicationTypesToGaResponse = async (gaState: ApplicationState
     const gaResponse = await getDraftGARespondentResponse(gaRedisKey);
     gaResponse.generalApplicationType = applicationTypes;
     await saveDraftGARespondentResponse(gaRedisKey, gaResponse);
+  }
+};
+
+export const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
+  if(isGAFlagEnable) {
+    let applications = await generalApplicationClient.getApplicationsByCaseId(req.params.id, req);
+    applications = claim.isClaimant() ? applications : applications?.filter(isApplicationVisibleToRespondent);
+    const allApplicationUrl = claim.isClaimant() ? GA_APPLICATION_SUMMARY_URL : GA_APPLICATION_RESPONSE_SUMMARY_URL;
+    if(applications && applications.length > 0) {
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
+        url: constructResponseUrlWithIdParams(req.params.id, allApplicationUrl),
+      };
+    }
   }
 };
