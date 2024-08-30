@@ -68,7 +68,7 @@ export const getJudgeDirectionWithNotice = (req : AppRequest, applicationRespons
       );
     }
   }
-
+  
   let payAdditionalFeeButton : ResponseButton = null;
   if(applicationResponse.state === ApplicationState.APPLICATION_ADD_PAYMENT) {
     const payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PAY_ADDITIONAL_FEE_URL);
@@ -130,7 +130,6 @@ export const getJudgeDismiss = (applicationResponse: ApplicationResponse, lng: s
         const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(judgeDismissDocument?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${judgeDismissDocument?.value?.documentLink.document_filename}</a>`;
         const createdDatetime = judgeDismissDocument?.value?.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DISMISSED', {lng}), createdDatetime, lng);
-
         return new CourtResponseSummaryList(rows, createdDatetime);
       });
   }
@@ -152,7 +151,6 @@ export const getHearingOrderResponses = (req: AppRequest, applicationResponse: A
         const documentUrl = `<a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', applicationResponse.id).replace(':documentId', documentIdExtractor(hearingOrder?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${hearingOrder?.value?.documentName}</a>`;
         const createdDatetime = hearingOrder?.value?.createdDatetime;
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER_DESC', {lng}), createdDatetime, lng);
-
         return new CourtResponseSummaryList(rows,createdDatetime, uploadAddlDocsButton);
       });
   }
@@ -179,10 +177,9 @@ export const getHearingNoticeResponses = (applicationResponse: ApplicationRespon
 };
 
 export const getRequestMoreInfoResponse = (applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
-
   const requestMoreInfos = applicationResponse?.case_data?.requestForInformationDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
-
+  
   if(requestMoreInfos) {
     courtResponseSummaryList = requestMoreInfos
       .filter(requestMoreInfo => {
@@ -217,7 +214,6 @@ export const getWrittenRepSequentialDocument = (req : AppRequest, applicationRes
         const rows = getResponseSummaryRows(documentUrl, t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION', {lng}) ,createdDatetime, lng);
         const requestWrittenRepresentationsUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_PROVIDE_MORE_INFORMATION_URL);
         const requestWrittenRepButton = new ResponseButton(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPOND_TO_REQUEST', {lng}), requestWrittenRepresentationsUrl);
-
         return new CourtResponseSummaryList(rows, createdDatetime,requestWrittenRepButton);
       });
   }
@@ -228,7 +224,7 @@ export const getWrittenRepConcurrentDocument = (req : AppRequest, applicationRes
   const claimId = req.params.id;
   const writtenRepConcurrentDocs = applicationResponse?.case_data?.writtenRepConcurrentDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
-
+  
   if(writtenRepConcurrentDocs) {
     courtResponseSummaryList = writtenRepConcurrentDocs
       .filter(writtenRepConcurrentDoc => {
