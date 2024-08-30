@@ -4,32 +4,30 @@ import nock from 'nock';
 import request from 'supertest';
 import {GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_FEES, GA_APPLY_HELP_WITH_FEES_START} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
-import { Claim } from 'common/models/claim';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 import {t} from 'i18next';
-import {InformOtherParties} from 'models/generalApplication/informOtherParties';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
-import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../../main/modules/draft-store/gaHwFeesDraftStore', () => ({
+  saveDraftGAHWFDetails: jest.fn(),
+  getDraftGAHWFDetails: jest.fn(),
+}));
 
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockSaveCaseData = saveDraftClaim as jest.Mock;
-
-const mockClaim = new Claim();
-mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
-mockClaim.generalApplication.agreementFromOtherParty = YesNo.YES;
-mockClaim.generalApplication.informOtherParties = new InformOtherParties();
-mockClaim.generalApplication.informOtherParties.option = YesNo.NO;
+const mockGetCaseData = getDraftGAHWFDetails as jest.Mock;
+const mockSaveCaseData = saveDraftGAHWFDetails as jest.Mock;
+const gaFeeDetails = {
+  calculatedAmountInPence: 1400,
+  code: 'Fe124',
+  version: 0,
+};
 const ccdClaim = new Claim();
 ccdClaim.generalApplications = [
   {
@@ -41,41 +39,6 @@ ccdClaim.generalApplications = [
     },
   },
 ];
-
-const applicationResponse: ApplicationResponse = {
-  case_data: {
-    applicationTypes: undefined,
-    generalAppType: undefined,
-    generalAppRespondentAgreement: undefined,
-    generalAppInformOtherParty: undefined,
-    generalAppAskForCosts: undefined,
-    generalAppDetailsOfOrder: undefined,
-    generalAppReasonsOfOrder: undefined,
-    generalAppEvidenceDocument: undefined,
-    gaAddlDoc: undefined,
-    generalAppHearingDetails: undefined,
-    generalAppStatementOfTruth: undefined,
-    generalAppPBADetails: {
-      fee: {
-        code: 'FEE0443',
-        version: '2',
-        calculatedAmountInPence: '10800',
-      },
-      paymentDetails: {
-        status: 'SUCCESS',
-        reference: undefined,
-      },
-      serviceRequestReference: undefined,
-    },
-    applicationFeeAmountInPence: undefined,
-    parentClaimantIsApplicant: undefined,
-    judicialDecision: undefined,
-  },
-  created_date: '',
-  id: '',
-  last_modified: '',
-  state: undefined,
-};
 
 describe('General Application - Do you want to continue to apply for Help with Fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -89,9 +52,9 @@ describe('General Application - Do you want to continue to apply for Help with F
 
   describe('on GET', () => {
     it('should return Do you want to continue to apply for Help with Fees page', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(ccdClaim);
-      jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
+      const mockGAHwF = new GaHelpWithFees();
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
+      jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEES)
         .expect((res) => {
@@ -102,11 +65,10 @@ describe('General Application - Do you want to continue to apply for Help with F
     });
 
     it('should return Do you want to apply for help with fees option selection', async () => {
-      mockClaim.generalApplication.helpWithFees = new GaHelpWithFees();
-      mockClaim.generalApplication.helpWithFees.helpWithFeesRequested = YesNo.YES;
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(ccdClaim);
-      jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
+      const mockGAHwF = new GaHelpWithFees();
+      mockGAHwF.helpWithFeesRequested = YesNo.YES;
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
+      jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEES)
         .expect((res) => {
@@ -131,7 +93,8 @@ describe('General Application - Do you want to continue to apply for Help with F
 
   describe('on POST', () => {
     it('should send the value and redirect', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
+      const mockGAHwF = new GaHelpWithFees();
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEES)
         .send({option: new GenericYesNo(YesNo.YES)})
@@ -141,7 +104,8 @@ describe('General Application - Do you want to continue to apply for Help with F
     });
 
     it('should redirect to Apply for help with fees if option is YES', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
+      const mockGAHwF = new GaHelpWithFees();
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEES)
         .query({additionalFeeTypeFlag: 'false'})
@@ -153,7 +117,8 @@ describe('General Application - Do you want to continue to apply for Help with F
     });
 
     it('should redirect to Additional payment Apply for help with fees if option is YES', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
+      const mockGAHwF = new GaHelpWithFees();
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEES)
         .query({additionalFeeTypeFlag: 'true'})
@@ -165,7 +130,8 @@ describe('General Application - Do you want to continue to apply for Help with F
     });
 
     it('should redirect to Apply for help with fees if option is NO', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
+      const mockGAHwF = new GaHelpWithFees();
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEES)
         .send({option: YesNo.NO})
@@ -175,10 +141,9 @@ describe('General Application - Do you want to continue to apply for Help with F
         });
     });
     it('should show error message if no value selected', async () => {
-
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(ccdClaim);
-      jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
+      const mockGAHwF = new GaHelpWithFees();
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
+      jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEES)
         .send({})
