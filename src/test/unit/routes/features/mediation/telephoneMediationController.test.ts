@@ -9,6 +9,7 @@ import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {CaseState} from 'form/models/claimDetails';
 import {PartyType} from 'models/partyType';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -38,7 +39,23 @@ describe('Telephone Mediation Controller', () => {
   });
 
   describe('on GET', () => {
-    it('should return telephone mediation page successfully when applicant is business', async () => {
+    it('should return telephone mediation page successfully when applicant is business and defendant', async () => {
+      await request(app).get(TELEPHONE_MEDIATION_URL).expect(res => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('telephone mediation');
+      });
+    });
+
+    it('should return telephone mediation page successfully when applicant is business and claimant', async () => {
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.applicant1 = new Party();
+        claim.applicant1.type = PartyType.ORGANISATION;
+        claim.caseRole = CaseRole.CLAIMANT;
+        claim.applicant1.partyPhone = {phone: '111111'};
+        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+        return claim;
+      });
       await request(app).get(TELEPHONE_MEDIATION_URL).expect(res => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('telephone mediation');

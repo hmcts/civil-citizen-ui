@@ -1,22 +1,28 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {t} from 'i18next';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {GA_RESPONDENT_INFORMATION_URL} from 'routes/urls';
+import {
+  DASHBOARD_URL,
+  GA_RESPONDENT_INFORMATION_URL,
+  GA_RESPONSE_VIEW_APPLICATION_URL,
+} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 
 const respondentRequestChangeInformationController = Router();
 const viewPath = 'features/generalApplication/respondent-request-change-information';
-const backLinkUrl = 'test'; // TODO: add url
+const backLinkUrl = DASHBOARD_URL;
 
 respondentRequestChangeInformationController.get(GA_RESPONDENT_INFORMATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = req.params.id;
+    const appId = req.params.appId;
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const contentList = getUploadFormContent(lng);
+    const contentList = getUploadFormContent(lng, claimId, appId);
     res.render(viewPath, {
       cancelUrl,
       backLinkUrl,
@@ -27,7 +33,8 @@ respondentRequestChangeInformationController.get(GA_RESPONDENT_INFORMATION_URL, 
   }
 }) as RequestHandler);
 
-const getUploadFormContent = (lng: string) => {
+const getUploadFormContent = (lng: string, claimId: string, appId: string) => {
+  const startUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_VIEW_APPLICATION_URL);
   return new PageSectionBuilder()
     .addParagraph('PAGES.GENERAL_APPLICATION.RESPONDENT_INFORMATION.OTHER_PARTY_REQUEST')
     .addParagraph('PAGES.GENERAL_APPLICATION.RESPONDENT_INFORMATION.REQUEST_BY_APPLICATION')
@@ -38,7 +45,7 @@ const getUploadFormContent = (lng: string) => {
             <li>${t('PAGES.GENERAL_APPLICATION.RESPONDENT_INFORMATION.CLICK_RESPOND', {lng})}</li>
           </ul>`)
     .addParagraph('PAGES.GENERAL_APPLICATION.RESPONDENT_INFORMATION.SENT_TO_JUDGE')
-    .addStartButton('COMMON.BUTTONS.START_NOW','test')
+    .addStartButton('COMMON.BUTTONS.START_NOW',startUrl)
     .build();
 };
 
