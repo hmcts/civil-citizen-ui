@@ -108,7 +108,7 @@ const getAddlnDocuments = (applicationResponse: ApplicationResponse, lang: strin
   return addlnDocInfoArray;
 };
 
-const getHearingOrder = (applicationResponse: ApplicationResponse, lang: string) => {
+export const getHearingOrder = (applicationResponse: ApplicationResponse, lang: string) => {
   const hearingOrderDocs = applicationResponse?.case_data?.hearingOrderDocument;
   let hearingOrderDocInfoArray : DocumentInformation[] = [];
   if(hearingOrderDocs) {

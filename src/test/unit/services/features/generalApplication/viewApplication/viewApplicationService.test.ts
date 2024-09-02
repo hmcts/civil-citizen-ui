@@ -3,7 +3,7 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import {
   getApplicantDocuments,
   getApplicationSections,
-  getCourtDocuments,
+  getCourtDocuments, getGeneralOrder, getHearingNotice,
   getRespondentDocuments,
   getResponseFromCourtSection,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
