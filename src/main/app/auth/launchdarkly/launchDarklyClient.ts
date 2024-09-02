@@ -73,7 +73,7 @@ export async function getFlagValue(
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {
-  return await getFlagValue(CUI_CASE_PROGRESSION) as boolean;
+  return true;
 }
 
 export async function isServiceShuttered(): Promise<boolean> {
@@ -85,7 +85,7 @@ export async function isPcqShutterOn(): Promise<boolean> {
 }
 
 export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
-  return await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
+  return true;
 }
 
 export async function isCARMEnabled(): Promise<boolean> {
@@ -105,10 +105,7 @@ export async function isJudgmentOnlineLive(): Promise<boolean> {
 }
 
 export async function  isDashboardEnabledForCase(date: Date): Promise<boolean> {
-  const { DateTime } = require('luxon');
-  const systemTimeZone = DateTime.local().zoneName;
-  const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
-  return await getFlagValue(IS_DASHBOARD_ENABLED_FOR_CASE, epoch) as boolean;
+  return true;
 }
 
 export async function isCarmEnabledForCase(date: Date): Promise<boolean> {
