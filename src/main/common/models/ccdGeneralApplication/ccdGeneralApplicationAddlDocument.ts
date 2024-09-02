@@ -13,6 +13,7 @@ export interface CcdHearingDocument {
 export interface CcdGeneralOrderDocument {
   id: string,
   value: CcdDocumentValue,
+  createdDatetime?: Date;
 }
 
 export interface CcdDocumentValue {
