@@ -3,6 +3,7 @@ module.exports = {
     return {
       event: 'DEFENDANT_RESPONSE_CUI',
       caseDataUpdate: {
+        id: '1645882162449408',
         respondent1ClaimResponseTypeForSpec: 'FULL_ADMISSION',
         defenceAdmitPartPaymentTimeRouteRequired: 'IMMEDIATELY',
         respondToClaimAdmitPartLRspec: {
@@ -66,6 +67,7 @@ module.exports = {
     return {
       event: 'DEFENDANT_RESPONSE_CUI',
       caseDataUpdate: {
+        id: '1645882162449418',
         respondent1ClaimResponseTypeForSpec: 'FULL_ADMISSION',
         defenceAdmitPartPaymentTimeRouteRequired: 'BY_SET_DATE',
         respondToClaimAdmitPartLRspec: {
@@ -240,6 +242,7 @@ module.exports = {
     return {
       event: 'DEFENDANT_RESPONSE_CUI',
       caseDataUpdate: {
+        id: '1645882162449428',
         respondent1ClaimResponseTypeForSpec: 'FULL_ADMISSION',
         defenceAdmitPartPaymentTimeRouteRequired: 'SUGGESTION_OF_REPAYMENT_PLAN',
         respondent1RepaymentPlan: {

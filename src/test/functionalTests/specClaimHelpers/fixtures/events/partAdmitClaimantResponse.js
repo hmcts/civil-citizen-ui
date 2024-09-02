@@ -4,7 +4,9 @@ module.exports = {
   partAdmitAmountPaidButClaimantWantsToProceed: () => {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',
+      id: '1645882162449438someID',
       caseData: {
+        id: '1645882162449438',
         respondent1: {
           type: 'INDIVIDUAL',
           individualTitle: 'Sir',
@@ -21,7 +23,6 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          
           flags: null,
         },
         applicant1: {
@@ -43,7 +44,6 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          
         },
         respondent2: null,
         partAdmitPaidValuePounds: '500.00',
@@ -96,7 +96,6 @@ module.exports = {
         applicant1DQWitnessesSmallClaim: {
           witnessesToAppear: 'No',
           details: [
-            
           ],
         },
         applicant1DQLanguage: {
@@ -107,7 +106,6 @@ module.exports = {
         applicant1DQSmallClaimHearing: {
           unavailableDatesRequired: 'No',
           smallClaimUnavailableDate: [
-            
           ],
         },
         applicant1DQHearingLRspec: null,
@@ -138,7 +136,6 @@ module.exports = {
           supportRequirements: 'Yes',
           supportRequirementsAdditional: 'Support with access needs',
           requirements: [
-            
           ],
         },
         uiStatementOfTruth: {
@@ -146,13 +143,14 @@ module.exports = {
           role: 'claimant lr role',
         },
       },
-    };  
+    };
   },
 
   partAdmitHaventPaidPartiallyWantsToPayImmediatelyButClaimantWantsToProceedWithMediation: () => {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',
       caseData: {
+        id: '1645882162449448',
         respondent1: {
           type: 'INDIVIDUAL',
           individualTitle: 'Sir',
@@ -169,7 +167,6 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          
           flags: null,
         },
         applicant1: {
@@ -191,7 +188,6 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          
         },
         respondent2: null,
         partAdmitPaidValuePounds: null,
@@ -264,7 +260,6 @@ module.exports = {
         applicant1DQSmallClaimHearing: {
           unavailableDatesRequired: 'No',
           smallClaimUnavailableDate: [
-            
           ],
         },
         applicant1DQHearingLRspec: null,
@@ -295,7 +290,6 @@ module.exports = {
           supportRequirements: 'No',
           supportRequirementsAdditional: 'safsa',
           requirements: [
-            
           ],
         },
         applicant1DQVulnerabilityQuestions: {
@@ -315,6 +309,7 @@ module.exports = {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',
       caseData: {
+        id: '1645882162449458',
         respondent1: {
           type: 'INDIVIDUAL',
           individualTitle: 'Sir',
@@ -331,7 +326,6 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          
           flags: null,
         },
         applicant1: {
@@ -353,7 +347,6 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          
         },
         respondent2: null,
         partAdmitPaidValuePounds: null,
@@ -414,6 +407,7 @@ module.exports = {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',
       caseData: {
+        id: '1645882162449468',
         respondent1: {
           type: 'INDIVIDUAL',
           individualTitle: 'Sir',
@@ -430,7 +424,6 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          
           flags: null,
         },
         applicant1: {
@@ -452,7 +445,6 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          
         },
         respondent2: null,
         partAdmitPaidValuePounds: null,

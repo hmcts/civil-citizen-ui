@@ -405,13 +405,12 @@ class Response {
 
   paymentDatePartialAdmit(){
     let futureDate = new Date();
-    futureDate.setMonth(futureDate.getMonth() + 1);
+    futureDate.setMonth(futureDate.getMonth() + 2);
 
     I.seeInCurrentUrl('/partial-admission/payment-date');
     I.seeInTitle('Your money claims account - Money Claims');
 
     I.see('What date will you pay on?', 'h1.govuk-fieldset__heading');
-
     checkDateFields(futureDate);
     clickButton(buttonType.SAVE_AND_CONTINUE);
   }

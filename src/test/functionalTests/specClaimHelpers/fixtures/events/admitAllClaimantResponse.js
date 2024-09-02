@@ -3,6 +3,7 @@ module.exports = {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',
       caseData: {
+        id: '1645882162449418',
         applicant1: {
           partyID: 'f9404a4a-9bc5-48',
           type: 'COMPANY',
@@ -22,7 +23,7 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          
+
         },
         respondent1: {
           type: 'INDIVIDUAL',
@@ -91,6 +92,7 @@ module.exports = {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',
       caseData: {
+        id: '1645882162449428',
         applicant1: {
           partyID: '4af547a1-7775-4c',
           type: 'COMPANY',
@@ -110,7 +112,7 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          
+
         },
         respondent1: {
           type: 'INDIVIDUAL',
@@ -128,7 +130,7 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          
+
           flags: null,
         },
         respondent2: null,
@@ -180,6 +182,7 @@ module.exports = {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',
       caseData: {
+        id: '1645882162449428',
         'applicant1DefenceResponseDocumentSpec': null,
         'whenToBePaidText': '4 July 2025',
       },
