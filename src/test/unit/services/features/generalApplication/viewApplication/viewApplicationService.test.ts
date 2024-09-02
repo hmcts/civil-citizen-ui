@@ -98,7 +98,7 @@ function setMockGeneralOrderDocuments(): CcdHearingDocument[] {
         'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831/binary',
       },
       'documentName': 'General_order_for_application_2024-08-01 11:59:58.pdf',
-      'documentType': DocumentType.HEARING_NOTICE,
+      'documentType': DocumentType.GENERAL_ORDER,
       'createdDatetime': new Date('2024-08-01'),
     },
   },
@@ -113,7 +113,7 @@ function setMockGeneralOrderDocuments(): CcdHearingDocument[] {
         'document_binary_url': 'http://dm-store:8080/documents/b4b50368-84dc-4c05-b9e7-7d01bd6a9119/binary',
       },
       'documentName': 'General_order_for_application_2024-08-02 11:59:58.pdf',
-      'documentType': DocumentType.HEARING_NOTICE,
+      'documentType': DocumentType.GENERAL_ORDER,
       'createdDatetime':  new Date('2024-08-02'),
     },
   }];
