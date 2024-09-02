@@ -11,9 +11,8 @@ const cancelTrialArrangementsController = Router();
 cancelTrialArrangementsController.get([CANCEL_TRIAL_ARRANGEMENTS], (async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
-    const redisKey = generateRedisKey(<AppRequest>req);
-    await deleteDraftClaimFromStore(redisKey);
+    const claim = await getClaimById(claimId, req,true);
+    await deleteDraftClaimFromStore(generateRedisKey(<AppRequest>req));
 
     if (claim.caseRole === CaseRole.CLAIMANT){
       res.redirect(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
