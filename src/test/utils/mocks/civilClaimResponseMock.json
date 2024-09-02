@@ -325,12 +325,16 @@
         {
           "id": "789",
           "value": {
+            "createdBy": "Civil",
             "documentLink": {
-              "document_url": "url",
-              "document_filename": "name",
-              "document_binary_url": "/456/binary"
+              "document_url": "http://dm-store:8080/documents/456",
+              "document_filename": "defendant_Richards_21_June_2022_Trial_Arrangements.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/456/binary"
             },
-            "documentType": "SEALED_CLAIM"
+            "documentName": "defendant_Richards_21_June_2022_Trial_Arrangements.pdf",
+            "documentSize": "56461",
+            "documentType": "HEARING_FORM",
+            "createdDatetime": "2022-06-21T14:15:19"
           }
         }
       ]
