@@ -115,18 +115,11 @@ export function generateRedisKeyForGA(req: AppRequest) {
   return req.params.appId + req.session.user?.id;
 }
 
-export const findClaimIdsbyUserId = async (userId: string): Promise<string[]> => {
-  const found = [];
-  let cursor = '0';
+export const findClaimIdsbyUserId = async (userId: string = 'f23137a0-0a36-47ac-9937-5252dec5e699'): Promise<any> => {
   try {
-    do {
-      const reply = await app.locals.draftStoreClient.scan(cursor, 'MATCH', '*' + userId);
-      cursor = reply[0];
-      found.push(...reply[1]);
-    } while (cursor !== '0');
+    return await app.locals.draftStoreClient.keys('*' + userId);
   } catch (error) {
     logger.error('Failed to find claim IDs by userId', error);
     throw error;
   }
-  return found;
 };
