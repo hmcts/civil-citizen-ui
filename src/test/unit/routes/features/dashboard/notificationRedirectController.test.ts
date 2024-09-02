@@ -195,7 +195,7 @@ describe('Notification Redirect Controller - Get', () => {
 
     const checkDocumentId = jest
       .spyOn(StringUtils, 'documentIdExtractor');
-    
+
     //when
     await request(app)
       .get(DASHBOARD_NOTIFICATION_REDIRECT
