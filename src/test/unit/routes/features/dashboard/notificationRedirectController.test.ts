@@ -11,6 +11,7 @@ import {DASHBOARD_NOTIFICATION_REDIRECT, DASHBOARD_NOTIFICATION_REDIRECT_DOCUMEN
 import {CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL} from 'client/civilServiceUrls';
 import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import * as StringUtils from 'common/utils/stringUtils';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -192,6 +193,9 @@ describe('Notification Redirect Controller - Get', () => {
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
       .mockResolvedValueOnce(data);
 
+    const checkDocumentId = jest
+      .spyOn(StringUtils, 'documentIdExtractor');
+    
     //when
     await request(app)
       .get(DASHBOARD_NOTIFICATION_REDIRECT
@@ -203,5 +207,6 @@ describe('Notification Redirect Controller - Get', () => {
         expect(res.status).toBe(302);
         expect(res.text).toBe('Found. Redirecting to /case/123/view-documents/456');
       });
+    expect(checkDocumentId).toHaveBeenCalledTimes(1);
   });
 });
