@@ -115,7 +115,7 @@ export function generateRedisKeyForGA(req: AppRequest) {
   return req.params.appId + req.session.user?.id;
 }
 
-export const findClaimIdsbyUserId = async (userId: string = 'f23137a0-0a36-47ac-9937-5252dec5e699'): Promise<any> => {
+export const findClaimIdsbyUserId = async (userId: string): Promise<any> => {
   try {
     return await app.locals.draftStoreClient.keys('*' + userId);
   } catch (error) {
