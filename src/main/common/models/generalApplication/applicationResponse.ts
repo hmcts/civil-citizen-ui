@@ -20,6 +20,8 @@ import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeW
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 import {CcdGeneralApplicationDirectionsOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
 import { CcdGeneralApplicationRespondentResponse } from '../ccdGeneralApplication/ccdGeneralApplicationRespondentResponse';
+import { DateTime } from 'luxon';
+import {CcdGARequestWrittenRepDocument} from 'models/ccdGeneralApplication/ccdGARequestWrittenRepDocument';
 
 export class ApplicationResponse {
   id: string;
@@ -66,6 +68,23 @@ export interface CCDApplication extends ApplicationUpdate {
   requestForInformationDocument?: CcdGAMakeWithNoticeDocument[];
   directionOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
   judicialDecisionMakeOrder?: JudicialDecisionMakeOrder;
+  generalOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
+  dismissalOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
+  judicialDecisionRequestMoreInfo?: JudicialRequestMoreInfo;
+  writtenRepSequentialDocument?: CcdGARequestWrittenRepDocument[];
+  writtenRepConcurrentDocument?: CcdGARequestWrittenRepDocument[];
+}
+
+export interface JudicialRequestMoreInfo {
+  judgeRequestMoreInfoText : string;
+  judgeRequestMoreInfoByDate : Date;
+  deadlineForMoreInfoSubmission : DateTime;
+  isWithNotice : YesNoUpperCamelCase;
+  judgeRecitalText: string;
+  judicialDecisionRequestMoreInfo?: JudicialDecisionRequestMoreInfo;
+  judicialDecisionMakeAnOrderForWrittenRepresentations?: JudicialDecisionWrittenRepresentations;
+  writtenRepSequentialDocument?: CcdGARequestWrittenRepDocument[];
+  writtenRepConcurrentDocument?: CcdGARequestWrittenRepDocument[];
 }
 
 export interface JudicialDecision {
@@ -79,7 +98,6 @@ export enum JudicialDecisionOptions {
   LIST_FOR_A_HEARING = 'LIST_FOR_A_HEARING',
   MAKE_ORDER_FOR_WRITTEN_REPRESENTATIONS = 'MAKE_ORDER_FOR_WRITTEN_REPRESENTATIONS',
 }
-
 export interface JudicialDecisionMakeOrder {
   directionsResponseByDate?: string;
   makeAnOrder?: JudicialDecisionMakeAnOrderOptions;
@@ -89,4 +107,22 @@ export enum JudicialDecisionMakeAnOrderOptions {
   APPROVE_OR_EDIT = 'APPROVE_OR_EDIT',
   DISMISS_THE_APPLICATION = 'DISMISS_THE_APPLICATION',
   GIVE_DIRECTIONS_WITHOUT_HEARING = 'GIVE_DIRECTIONS_WITHOUT_HEARING',
+}
+
+export interface JudicialDecisionRequestMoreInfo {
+  requestMoreInfoOption?: JudicialDecisionRequestMoreInfoOptions;
+}
+
+export enum JudicialDecisionRequestMoreInfoOptions {
+  REQUEST_MORE_INFORMATION = 'REQUEST_MORE_INFORMATION',
+  SEND_APP_TO_OTHER_PARTY = 'SEND_APP_TO_OTHER_PARTY',
+}
+
+export interface JudicialDecisionWrittenRepresentations {
+  makeAnOrderForWrittenRepresentations?: JudicialDecisionWrittenRepresentationsOptions;
+}
+
+export enum JudicialDecisionWrittenRepresentationsOptions {
+  SEQUENTIAL_REPRESENTATIONS = 'SEQUENTIAL_REPRESENTATIONS',
+  CONCURRENT_REPRESENTATIONS = 'CONCURRENT_REPRESENTATIONS',
 }
