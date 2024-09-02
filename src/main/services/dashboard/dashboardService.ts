@@ -1,13 +1,16 @@
-import {Dashboard} from 'models/dashboard/dashboard';
-import {ClaimantOrDefendant} from 'models/partyType';
-import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
-import {AppRequest} from 'models/AppRequest';
-import {Claim} from 'models/claim';
-import {objectToMap, replaceDashboardPlaceholders} from 'services/dashboard/dashboardInterpolationService';
+import { Dashboard } from 'models/dashboard/dashboard';
+import { ApplicantOrRespondent, ClaimantOrDefendant } from 'models/partyType';
+import { DashboardNotificationList } from 'models/dashboard/dashboardNotificationList';
+import { AppRequest } from 'models/AppRequest';
+import { Claim } from 'models/claim';
+import {
+  objectToMap,
+  replaceDashboardPlaceholders,
+} from 'services/dashboard/dashboardInterpolationService';
 import config from 'config';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
-import {t} from 'i18next';
+import { CivilServiceClient } from 'client/civilServiceClient';
+import { DashboardTaskList } from 'models/dashboard/taskList/dashboardTaskList';
+import { t } from 'i18next';
 import {
   feesHelpUrl,
   findCourtTribunalUrl,
@@ -16,6 +19,11 @@ import {
   representYourselfUrl,
   whatToExpectUrl,
 } from 'common/utils/externalURLs';
+import { getApplicationFromGAService } from 'services/features/generalApplication/generalApplicationService';
+import { YesNoUpperCamelCase } from 'form/models/yesNo';
+
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('dashboardService');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -54,12 +62,27 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
   // Add notifications for all GAs
   for (const generalApplication of claim.generalApplications) {
-    const gaNotifications = await civilServiceClient.retrieveNotification(generalApplication.value.caseLink.CaseReference, caseRole, req);
-    dashboardNotifications.items.push(...gaNotifications.items);
-    dashboardNotifications.items.forEach((notification) => {
-      notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, generalApplication.value.caseLink.CaseReference);
-      notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, generalApplication.value.caseLink.CaseReference);
-    });
+    if (generalApplication.value?.caseLink?.CaseReference) {
+      let gaRole: ApplicantOrRespondent;
+      try {
+        const applicationResponse = await getApplicationFromGAService(req, generalApplication.value?.caseLink?.CaseReference);
+        if (applicationResponse.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES) {
+          gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.APPLICANT : ApplicantOrRespondent.RESPONDENT;
+        } else {
+          gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.RESPONDENT : ApplicantOrRespondent.APPLICANT;
+        }
+      } catch (err) {
+        logger.error('Unable to retrieve application ' + generalApplication.value?.caseLink?.CaseReference);
+      }
+      if (gaRole) {
+        const gaNotifications = await civilServiceClient.retrieveNotification(generalApplication.value.caseLink.CaseReference, gaRole, req);
+        dashboardNotifications.items.push(...gaNotifications.items);
+        dashboardNotifications.items.forEach((notification) => {
+          notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, generalApplication.value.caseLink.CaseReference);
+          notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, generalApplication.value.caseLink.CaseReference);
+        });
+      }
+    }
   }
   if (dashboardNotifications) {
     dashboardNotifications.items.forEach((notification) => {
