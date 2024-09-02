@@ -1,4 +1,4 @@
-const {clickButton} = require("../commons/clickButton");
+const {clickButton} = require('../commons/clickButton');
 const {buttonType} = require("../commons/buttonVariables");
 const I = actor();
 

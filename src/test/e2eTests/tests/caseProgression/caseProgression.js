@@ -5,9 +5,10 @@ const {toggleFlag} = require('../../commons/toggleFlag');
 
 Feature('Case Progression journey').tag('@leo');
 
-Scenario('upload documents claimant', () => {
+Scenario.only('upload documents claimant', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cuiReleaseTwoEnabled', true);
+    toggleFlag('cui-case-progression', true);
     CaseProgressionSteps.start();
   }
 });
