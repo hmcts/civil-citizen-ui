@@ -19,6 +19,7 @@ import {
   TERMS_AND_CONDITIONS_URL,
   PRIVACY_POLICY_URL,
 } from 'routes/urls';
+import { deleteGAFromClaimsByUserId } from 'services/features/generalApplication/generalApplicationService';
 
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
   return req.originalUrl.startsWith(ASSIGN_CLAIM_URL);
@@ -126,7 +127,7 @@ export class OidcMiddleware {
       res.redirect(DASHBOARD_URL);
     });
 
-    app.use((req: Request, res: Response, next: NextFunction) => {
+    app.use(async (req: Request, res: Response, next: NextFunction) => {
       const appReq: AppRequest = <AppRequest>req;
       if (appReq.session?.user) {
         if (appReq.session.user.roles?.includes(citizenRole)) {
@@ -152,6 +153,7 @@ export class OidcMiddleware {
       if (requestIsForClaimIssueTaskList(req) ) {
         app.locals.claimIssueTasklist = appReq.session.claimIssueTasklist = true;
       }
+      await deleteGAFromClaimsByUserId(app.locals.user.id);
       return res.redirect(SIGN_IN_URL);
     });
   }
