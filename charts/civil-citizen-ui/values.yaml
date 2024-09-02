@@ -19,7 +19,16 @@ elastic:
 civil-wa:
   enabled: false
 
+servicebus:
+  enabled: false
+
 aac-manage-case-assignment:
+  enabled: false
+
+civil-general-applications:
+  enabled: false
+
+postgresql:
   enabled: false
 
 nodejs:
@@ -72,7 +81,12 @@ nodejs:
     OCMC_URL: https://moneyclaims.{{ .Values.global.environment }}.platform.hmcts.net
     PCQ_URL: https://pcq.{{ .Values.global.environment }}.platform.hmcts.net
     GOVPAY_URL: https://card.payments.service.gov.uk
-    CARM_DATE: '01 May 2024'
+    ENFORCEJUDGMENT_URL: https://www.gov.uk/make-court-claim-for-money/enforce-a-judgment
+    CIVILMONEYCLAIMS_TELEPHONE: '0300 123 7050'
+    CIVILMONEYCLAIMS_WELSHSPEAKER_TELEPHONE: '0300 303 5174'
+    CIVILMONEYCLAIMS_COURT_EMAIL_ID: 'ocmcnton@justice.gov.uk'
+    APPLY_FOR_CERTIFICATE: https://www.gov.uk/government/publications/form-n443-application-for-a-certificate-of-satisfaction-or-cancellation
+    LAUNCH_DARKLY_ENV: '{{ .Values.global.environment }}'
 
   autoscaling:
     enabled: true

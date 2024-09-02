@@ -220,7 +220,7 @@
              {
                id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Day]',
                name: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Day]',
-               label: "Day",
+               label: t('COMMON.DAY'),
                value: content.data.dayValue,
                classes: "govuk-input--width-2 govuk-input--error" if content.data.invalidDayError or content.data.invalidDateError else "govuk-input--width-2",
                attributes: {
@@ -231,7 +231,7 @@
              {
                id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Month]',
                name: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Month]',
-               label: "Month",
+               label: t('COMMON.MONTH'),
                value: content.data.monthValue,
                classes: "govuk-input--width-2 govuk-input--error" if content.data.invalidMonthError or content.data.invalidDateError else "govuk-input--width-2",
                attributes: {
@@ -242,7 +242,7 @@
              {
                id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Year]',
                name: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+'Year]',
-               label: "Year",
+               label: t('COMMON.YEAR'),
                value: content.data.yearValue,
                classes: "govuk-input--width-3 govuk-input--error" if content.data.invalidYearError or content.data.invalidDateError else "govuk-input--width-3",
                attributes: {
@@ -329,19 +329,18 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.WARNING %}
-    <div class="govuk-warning-text">
-      <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
-      <strong class="govuk-warning-text__text">
-        <span class="govuk-warning-text__assistive">Warning</span>
-        {% set object = '' %}
-        {% if content.data.variables %}
-          {% set object = content.data.variables %}
-          {{ t(content.data.text,object) }}
-        {% else %}
-          {{ t(content.data.text) }}
-        {% endif %}
-      </strong>
-    </div>
+    {% set object = '' %}
+    {% if content.data.variables %}
+    {% set object = content.data.variables %}
+    {% set warningText = t(content.data.text,object) %}
+    {% else %}
+      {% set warningText = t(content.data.text) %}
+    {% endif %}
+
+    {{ govukWarningText({
+      text: warningText,
+      iconFallbackText: "Warning"
+     }) }}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.SELECT %}

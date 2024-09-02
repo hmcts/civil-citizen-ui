@@ -15,7 +15,7 @@ const claimantInterestFromViewPath = 'features/claim/interest/claimant-interest-
 const propertyName = 'interestClaimFrom';
 
 function renderView(form: GenericForm<InterestClaimFromSelection>, res: Response): void {
-  res.render(claimantInterestFromViewPath, {form});
+  res.render(claimantInterestFromViewPath, {form, pageTitle: 'PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.TITLE'});
 }
 
 claimantInterestFromController.get(CLAIM_INTEREST_DATE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

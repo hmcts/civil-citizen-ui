@@ -1,4 +1,4 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DATE_PAID_CONFIRMATION_URL, DATE_PAID_URL} from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
@@ -11,7 +11,7 @@ import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
-import { generateRedisKey } from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 const claimantResponsePropertyName = 'datePaid';
 const datePaidViewPath = 'features/claimantResponse/paidInFull/date-paid';
@@ -20,19 +20,19 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 function renderView(form: GenericForm<CitizenDate>, res: Response): void {
-  res.render(datePaidViewPath, {form, today: new Date()});
+  res.render(datePaidViewPath, {form, today: new Date(), pageTitle: 'PAGES.CLAIMANT_SETTLE_DATE.PAGE_TITLE'});
 }
 
-datePaidViewController.get(DATE_PAID_URL, async (req: Request,res: Response,next: NextFunction) => {
+datePaidViewController.get(DATE_PAID_URL, (async (req: Request,res: Response,next: NextFunction) => {
   try {
     const form: ClaimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
     renderView(new GenericForm<CitizenDate>(form.datePaid),res);
   } catch (error) {
     next(error);
   }
-});
+})as RequestHandler);
 
-datePaidViewController.post(DATE_PAID_URL, async (req: Request,res: Response,next: NextFunction) => {
+datePaidViewController.post(DATE_PAID_URL, (async (req: Request,res: Response,next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const {year, month, day} = req.body;
@@ -42,13 +42,17 @@ datePaidViewController.post(DATE_PAID_URL, async (req: Request,res: Response,nex
     if (form.hasErrors()) {
       renderView(form,res);
     } else {
-      await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), form.model, claimantResponsePropertyName);
-      await civilServiceClient.submitClaimSettled(claimId, <AppRequest>req);
+      const redisKey = generateRedisKey(req as unknown as AppRequest);
+      await saveClaimantResponse(redisKey, form.model, claimantResponsePropertyName);
+      const claim = await getCaseDataFromStore(redisKey);
+      const ccdTranslatedClaimSettledDate = { 'applicant1ClaimSettledDate': claim?.claimantResponse?.datePaid?.date};
+      await civilServiceClient.submitClaimSettled(claimId, ccdTranslatedClaimSettledDate , <AppRequest>req);
+      await deleteDraftClaimFromStore(redisKey);
       res.redirect(constructResponseUrlWithIdParams(claimId, DATE_PAID_CONFIRMATION_URL));
     }
   } catch (error) {
     next(error);
   }
-});
+})as RequestHandler);
 
 export default datePaidViewController;

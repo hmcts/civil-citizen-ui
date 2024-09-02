@@ -1,0 +1,17 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "../dashboard/item-content.njk" import itemContent %}
+
+{% set pageTitle = t(pageTitle) %}
+
+{% block nestedContent %}
+
+  {{ govukPanel({
+    titleText: t(panel.titleText),
+    html: ""
+  }) }}
+  {% for item in content %}
+    {{ itemContent(item,t) }}
+  {% endfor %}
+
+{% endblock %}

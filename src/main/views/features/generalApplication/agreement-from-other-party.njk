@@ -1,0 +1,44 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
+{% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.TITLE') }}
+{% endblock %}
+
+{% block nestedContent %}
+          {{headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.TITLE' )}}
+
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.PAY_APPLICATION_FEE') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.APPLICATION_FEE_AMOUNT') }}</p>
+
+          <h5 class="govuk-heading-s">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.GETTING_AGREEMENT') }}</h5>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.GETTING_AGREEMENT_PARA_1') }}</p>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.GETTING_AGREEMENT_PARA_2') }}</p>
+
+          <h5 class="govuk-heading-s">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.OTHER_PARTY_ALREADY_AGREED') }}</h5>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.OTHER_PARTY_ALREADY_AGREED_PARA_1') }}</p>
+             <ul class="govuk-list govuk-list--bullet govuk-!-margin-left-2">
+                <li>{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.SET_ASIDE_JUDGMENT') }}</li>
+                <li>{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.VARY_JUDGMENT') }}</li>
+                <li>{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.RECONSIDER_ORDER') }}</li>
+             </ul>
+          <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.OTHER_PARTY_ALREADY_AGREED_PARA_2') }}</p>
+
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.OTHER_PARTY_ALREADY_AGREED_QUESTION') , form, t('PAGES.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY.OTHER_PARTY_ALREADY_AGREED_QUESTION_PARA_1'), '') }}
+            <div class="govuk-button-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.CONTINUE')
+              }) }}
+              <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+            </div>
+          </form>
+{% endblock %}

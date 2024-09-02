@@ -9,6 +9,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
 import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import { updateDayErrorMsg } from 'services/features/claimantResponse/claimantSuggestedInstalmentsService';
 
 const paymentDatePath = 'features/response/admission/payment-date';
 const claimantSuggestedPaymentDateController = Router();
@@ -18,7 +19,7 @@ const title = 'PAGES.CCJ_DEFENDANT_PAYMENT_DATE.TITLE';
 const insetText = 'PAGES.CCJ_DEFENDANT_PAYMENT_DATE.INSET';
 
 function renderView(form: GenericForm<PaymentDate | Date>, res: Response): void {
-  res.render(paymentDatePath, {form, title, insetText});
+  res.render(paymentDatePath, {form, title, insetText, pageTitle: 'PAGES.ADMISSION_PAYMENT_DATE.PAGE_TITLE'});
 }
 
 claimantSuggestedPaymentDateController.get(CLAIMANT_RESPONSE_PAYMENT_DATE_URL, (async (req: Request, res: Response, next: NextFunction) => {
@@ -37,6 +38,7 @@ claimantSuggestedPaymentDateController.post(CLAIMANT_RESPONSE_PAYMENT_DATE_URL, 
   const form: GenericForm<PaymentDate> = new GenericForm<PaymentDate>(claimantSuggestedPaymentDate);
   form.validateSync();
   if (form.hasErrors()) {
+    updateDayErrorMsg(form.errors);
     renderView(form, res);
   } else {
     try {

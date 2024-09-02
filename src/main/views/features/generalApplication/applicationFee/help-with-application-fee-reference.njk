@@ -1,0 +1,53 @@
+{% extends "../../../claim-details-tpl-dashboard.njk" %}
+{% from "../../dashboard/item-content.njk" import itemContent %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.REFERENCE_NUMBER.PAGE_TITLE') }}
+{% endblock %}
+
+{% block nestedContent %}
+      {% for content in applyHelpWithFeeReferenceContents %}
+        {{ itemContent(content,t) }}
+      {% endfor %}
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {% set yesHtml %}
+              <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_YES') }}</p>
+              {{ govukInput({
+                id: "referenceNumber",
+                name: "referenceNumber",
+                value: form.model.referenceNumber,
+                classes: "govuk-!-width-one-half",
+                hint: {
+                  text: t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.HINT_YES')
+                },
+                label: {
+                  html: t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.SUBTITLE_YES')
+                },
+                errorMessage: {
+                  html: t(form.errorFor('referenceNumber'))
+                } if form.errorFor('referenceNumber')
+              }) }}
+            {% endset %}
+            {% set noHtml %}
+              <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.TITLE_NO') }}</p>
+              <p class="govuk-body govuk-!-margin-bottom-1">{{ t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.PARAGRAPH_NO') }}</p>
+              <ol class="govuk-list govuk-list--number govuk-!-margin-bottom-1 govuk-!-margin-left-2">
+                <li class="govuk-body">{{t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.LIST_ITEMS.FIRST')}}
+                  <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="{{ genericHelpFeeUrl }}">{{t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.LIST_ITEMS.FIRST_LINK')}}</a>
+                </li>
+                <li class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.REFERENCE_NUMBER.LIST_ITEMS.APPLICATION_FEE_SECOND')}}</li>
+                <li class="govuk-body">{{t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.LIST_ITEMS.THIRD')}}</li>
+                <li class="govuk-body">{{t('PAGES.APPLY_HELP_WITH_FEES.REFERENCE_NUMBER.LIST_ITEMS.FOURTH')}}</li>
+                <li class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.REFERENCE_NUMBER.LIST_ITEMS.APPLICATION_FEE_FIFTH')}}</li>
+              </ol>
+            {% endset %}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, noHtml: noHtml}) }}
+            {% for content in applyHelpWithFeeReferenceButtonContents %}
+              {{ itemContent(content,t) }}
+            {% endfor %}
+          </form>
+{% endblock %}

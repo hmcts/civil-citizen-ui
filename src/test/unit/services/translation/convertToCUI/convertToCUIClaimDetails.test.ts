@@ -5,6 +5,7 @@ import {CCDClaim} from 'models/civilClaimResponse';
 import {HelpWithFees} from 'common/form/models/claim/details/helpWithFees';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {CCDHelpWithFees} from 'form/models/claimDetails';
+import { PaymentInformation } from 'common/models/feePayment/paymentInformation';
 
 describe('translate Claim Details to CUI model', () => {
   const ccdClaimMock : CCDClaim = {
@@ -28,6 +29,7 @@ describe('translate Claim Details to CUI model', () => {
     //Given
     const claimDetailsCUI = new ClaimDetails(new Reason('test detailsOfClaim to reason'));
     claimDetailsCUI.helpWithFees = new HelpWithFees(YesNo.YES, '12345');
+    claimDetailsCUI.claimFeePayment = new PaymentInformation('');
     //When
     const claimDetailsResponseCUI = toCUIClaimDetails(ccdClaimMock);
     //Then
@@ -38,11 +40,16 @@ describe('translate Claim Details to CUI model', () => {
     //Given
     const claimDetailsCUI = new ClaimDetails(new Reason());
     claimDetailsCUI.helpWithFees = new HelpWithFees();
+    claimDetailsCUI.claimFeePayment = new PaymentInformation('');
     const ccdClaimMock : CCDClaim = {
       detailsOfClaim: undefined,
       helpWithFees: <CCDHelpWithFees>{
         helpWithFee: undefined,
         helpWithFeesReferenceNumber: undefined,
+      },
+      claimIssuedPaymentDetails: {
+        status: undefined,
+        reference: undefined,
       },
     };
     //When

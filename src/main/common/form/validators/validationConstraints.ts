@@ -6,3 +6,4 @@ export const SIGNER_NAME_MAX_LENGTH = 70;
 export const SIGNER_ROLE_MAX_LENGTH = 70;
 export const MAX_CLAIM_AMOUNT_TOTAL = 25000;
 export const ADDRESS_LINE_MAX_LENGTH = 50;
+export const ADDRESS_LINE_MAX_LENGTH_JO = 35;

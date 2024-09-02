@@ -50,23 +50,23 @@ describe('Dashboard Items', ()=> {
       const claim = new Claim();
       claim.draftClaimCreatedAt= new Date();
       //When
-      const item = toDraftClaimDashboardItem(claim);
+      const item = toDraftClaimDashboardItem(claim, true);
       //Then
       expect(item).not.toBeUndefined();
     });
 
-    it('should return undefined when claim is empty', () => {
+    it('should return undefined when claim is empty', async () => {
       //Given
       const claim = new Claim();
       //When
-      const item = toDraftClaimDashboardItem(claim);
+      const item = await toDraftClaimDashboardItem(claim, true);
       //Then
       expect(item).toBeUndefined();
     });
 
-    it('should return undefined when claim is undefined', () => {
+    it('should return undefined when claim is undefined', async () => {
       //When
-      const item = toDraftClaimDashboardItem(undefined);
+      const item = await toDraftClaimDashboardItem(undefined, true);
       //Then
       expect(item).toBeUndefined();
     });
@@ -191,6 +191,16 @@ describe('Dashboard Items', ()=> {
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REJECTED_PAYMENT_PLAN');
     });
 
+    it('should return translated status for claim - Claimant rejected the repayment plan and requested judge decision', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status ='CLAIMANT_REJECTED_PAYMENT_PLAN_REQ_JUDGE_DECISION';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.REJECTED_PAYMENT_PLAN_REQUEST_JUDGE_DECISION');
+    });
+
     it('should return translated status for claim HWF_MORE_INFORMATION_NEEDED', () => {
       //Given
       const dashboardClaim = new DashboardClaimantItem();
@@ -264,6 +274,38 @@ describe('Dashboard Items', ()=> {
 
       // Then
       expect(result).toBe(expectedTranslation);
+    });
+
+    it('should return translated status for claim WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status ='WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD');
+    });
+
+    it('should return translated status for claim SDO_ORDER_LEGAL_ADVISER_CREATED', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'SDO_ORDER_LEGAL_ADVISER_CREATED';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.SDO_ORDER_LEGAL_ADVISER_STATUS');
+
+    });
+
+    it('should return translated status for claim SDO_ORDER_LEGAL_ADVISER_CREATED', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'DEFENDANT_APPLY_NOC';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.RESPONSE_BY_POST');
+
     });
   });
 });

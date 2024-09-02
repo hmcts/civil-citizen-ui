@@ -11,11 +11,11 @@
 {% set payingExtra = t('PAGES.DEFENDANT_DETAILS.PAYING_EXTRA') %}
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
 {% if defendantType === partyType.COMPANY %}
-  {% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.COMPANY') %}
+  {% set pageTitle = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.COMPANY') %}
   {% set inputTitle = t('PAGES.DEFENDANT_DETAILS.COMPANY_NAME') %}
   {% set addressTitle = t('PAGES.DEFENDANT_DETAILS.COMPANY_ADDRESS') %}
 {% elif defendantType === partyType.ORGANISATION %}
-  {% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.ORGANISATION') %}
+  {% set pageTitle = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.ORGANISATION') %}
   {% set payingExtra = t('PAGES.DEFENDANT_DETAILS.PAYING_EXTRA_ORGANISATION') %}
   {% set inputTitle = t('PAGES.DEFENDANT_DETAILS.ORGANISATION_NAME') %}
   {% set addressTitle = t('PAGES.DEFENDANT_DETAILS.ORGANISATION_ADDRESS') %}
@@ -23,7 +23,7 @@
 {% set formErrors = form.getAllErrors() %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, title) }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 {% block content %}
   <div class="govuk-width-container">
@@ -35,7 +35,7 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ title }}</h1>
+          <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
           <p class="govuk-body">{{ payingExtra }}</p>
 
           <form method="post" name="address" novalidate>
@@ -69,10 +69,6 @@
               {% if addressTitle %}
                 <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
               {% endif %}
-              <p class="govuk-body">
-                {{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }}
-                {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}
-              </p>
               {% if defendantType === partyType.COMPANY %}
                 <p class="govuk-body">
                   {{ t('PAGES.DEFENDANT_DETAILS.COMPANY_MAIN_OFFICE') + ' ' + t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}

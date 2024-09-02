@@ -11,7 +11,7 @@ const howMuchContinueClaimingController = Router();
 const howMuchContinueClaimingPath = 'features/claim/interest/how-much-continue-claiming';
 
 function renderView(form: GenericForm<HowMuchContinueClaiming>, res: Response): void {
-  res.render(howMuchContinueClaimingPath, {form});
+  res.render(howMuchContinueClaimingPath, {form, pageTitle: 'PAGES.CLAIM_JOURNEY.HOW_MUCH_CONTINUE.PAGE_TITLE'});
 }
 
 howMuchContinueClaimingController.get(CLAIM_INTEREST_HOW_MUCH_URL, (async (req:AppRequest, res:Response, next: NextFunction) => {

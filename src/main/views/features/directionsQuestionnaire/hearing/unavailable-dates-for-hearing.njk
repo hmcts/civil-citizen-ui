@@ -7,7 +7,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.UNAVAILABLE_DATES_FOR_HEARING.PAGE_TITLE') }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% set rowNumberToShowRemoveButton = 2 %}
@@ -33,20 +33,22 @@
             {{ csrfProtection(csrf) }}
 
             {% for unavailableDate in form.model.items %}
-              {{ unavailableDateRow(unavailableDate, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today) }}
+              {{ unavailableDateRow(unavailableDate, none, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today) }}
             {% else %}
-                {{ unavailableDateRow(unavailableDate, 0, form.errorFor, t, {hidden:true}, today) }}
+                {{ unavailableDateRow(unavailableDate, none, 0, form.errorFor, t, {hidden:true}, today) }}
             {% endfor %}
 
             <div class="govuk-!-margin-top-6">
               {{ govukButton({
                 text: t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.ADD_ANOTHER_DATE'),
-                classes: "govuk-button--secondary append-row"
+                classes: "govuk-button--secondary append-row",
+                type: "button"
               }) }}
             </div>
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+                type: "submit"
               }) }}
             </div>
           </form>

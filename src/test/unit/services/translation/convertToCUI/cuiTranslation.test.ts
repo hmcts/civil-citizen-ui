@@ -15,6 +15,10 @@ import {CCDPaymentOption} from 'common/models/ccdResponse/ccdPaymentOption';
 import {CourtProposedPlanOptions} from 'form/models/claimantResponse/courtProposedPlan';
 import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
 import {CCDRejectAllOfClaimType} from 'models/ccdResponse/ccdRejectAllOfClaimType';
+import { CCDRepaymentPlanFrequency } from 'common/models/ccdResponse/ccdRepaymentPlan';
+import { CCDEvidenceType } from 'common/models/ccdResponse/ccdEvidence';
+import { EvidenceItem } from 'common/form/models/evidence/evidenceItem';
+import { EvidenceType } from 'common/models/evidence/evidenceType';
 
 const phoneCCD = '123456789';
 const title = 'Mr';
@@ -390,5 +394,92 @@ describe('translateCCDCaseDataToCUIModel', () => {
 
     //Then
     expect(claim.claimantResponse.hasFullDefenceStatesPaidClaimSettled).toEqual(undefined);
+  });
+
+  it('should translate claimant suggestedPaymentIntention repaymentplan to CUI model for having value', () => {
+    //Given
+    const input: CCDClaim = {
+      applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: 1000,
+      applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: '2024-06-01',
+      applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: CCDRepaymentPlanFrequency.ONCE_ONE_MONTH,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    const repaymentPlan = {
+      paymentAmount : 1000,
+      repaymentFrequency : 'MONTH',
+      firstRepaymentDate : new Date('2024-06-01'),
+    };
+
+    expect(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan).toEqual(repaymentPlan);
+  });
+
+  it('should translate claimant suggested immediate repayment deadline date to CUI model for having value', () => {
+    //Given
+    const paymentDate = new Date('2024-04-30');
+    const input: CCDClaim = {
+      applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec : paymentDate,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantResponse.suggestedImmediatePaymentDeadLine).toEqual(paymentDate);
+  });
+
+  it('should translate claimant evidence to CUI model for having value', () => {
+    //Given
+    const input: CCDClaim = {
+      speclistYourEvidenceList: [
+        {
+          'id': '339536de-eeb8-4b74-968d-4b9d02c00ef7',
+          'value': {
+            evidenceType: CCDEvidenceType.OTHER,
+            otherEvidence: 'test other',
+          },
+        },
+      ],
+    };
+
+    const evidenceCUI: EvidenceItem[] = [
+      {
+        type: EvidenceType.OTHER,
+        description: 'test other',
+      },
+    ];
+
+    // When
+    const claim = translateCCDCaseDataToCUIModel(input);
+
+    //Then
+    expect(claim.claimantEvidence.evidenceItem).toEqual(evidenceCUI);
+  });
+
+  it('should translate the respondent general app details', () => {
+    //Given
+    const dateString = new Date().toISOString();
+    const input: CCDClaim = {
+      respondentSolGaAppDetails: [
+        {
+          id: '1234',
+          value: {
+            generalApplicationType: 'Strike out',
+            caseState: 'awaiting respondent response',
+            caseLink: {
+              CaseReference: '1234567',
+            },
+            generalAppSubmittedDateGAspec: dateString,
+          },
+        },
+      ],
+    };
+
+    // When
+    const claim = translateCCDCaseDataToCUIModel(input);
+  
+    //Then
+    expect(claim.respondentGaAppDetails).toEqual([{ generalAppTypes: ['STRIKE_OUT'], gaApplicationId: '1234567', caseState: 'awaiting respondent response', generalAppSubmittedDateGAspec: dateString }]);
   });
 });

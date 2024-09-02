@@ -12,10 +12,11 @@ import {NotEligibleReason} from '../../../../common/form/models/eligibility/NotE
 
 const totalAmountEligibilityController = Router();
 const totalAmountViewPath = 'features/public/eligibility/total-amount';
+const pageTitle = 'PAGES.ELIGIBILITY_TOTAL_AMOUNT.TITLE';
 
 totalAmountEligibilityController.get(ELIGIBILITY_CLAIM_VALUE_URL, (req: Request, res: Response) => {
   const totalAmount = req.cookies?.eligibility?.totalAmount;
-  res.render(totalAmountViewPath, { form: new GenericForm(new TotalAmount(totalAmount))});
+  res.render(totalAmountViewPath, { form: new GenericForm(new TotalAmount(totalAmount)), pageTitle});
 });
 
 totalAmountEligibilityController.post(ELIGIBILITY_CLAIM_VALUE_URL, async (req: Request, res: Response) => {
@@ -23,7 +24,7 @@ totalAmountEligibilityController.post(ELIGIBILITY_CLAIM_VALUE_URL, async (req: R
   const form = new GenericForm(totalAmount);
   await form.validate();
   if (form.hasErrors()) {
-    res.render(totalAmountViewPath, { form });
+    res.render(totalAmountViewPath, { form, pageTitle });
   } else {
     const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
     cookie.totalAmount = req.body.totalAmount;

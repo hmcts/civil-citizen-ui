@@ -1,0 +1,22 @@
+{% from "../features/dashboard/item-content.njk" import itemContent %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+
+{% macro createTextArea (field, value, form, t) %}
+  {{ govukTextarea({
+    name: field,
+    id: field,
+    value: value,
+    label: {
+      classes: "govuk-label--m",
+      text: t(form.model.title)
+    },
+    hint: {
+      text: t(form.model.hint)
+    },
+    errorMessage: {
+      html: t(form.errorFor(field))
+    } if form.hasFieldError(field)
+
+  }) }}
+
+{% endmacro %}

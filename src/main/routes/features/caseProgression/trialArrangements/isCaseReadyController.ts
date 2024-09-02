@@ -24,7 +24,7 @@ const dqPropertyName = 'isCaseReady';
 isCaseReadyController.get([IS_CASE_READY_URL], (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
+    const claim = await getClaimById(claimId, req, true);
     const form = new GenericForm(getIsCaseReadyForm(claim));
     await renderView(res, claimId, claim, form);
   } catch (error) {
@@ -38,13 +38,14 @@ isCaseReadyController.post([IS_CASE_READY_URL], (async (req, res, next) => {
     const form = new GenericForm(new IsCaseReadyForm(option));
     await form.validate();
     const claimId = req.params.id;
-    const claim: Claim = await getClaimById(claimId, req);
+    const claim: Claim = await getClaimById(claimId, req, true);
     if (form.hasErrors()) {
       await renderView(res, claimId, claim, form);
     } else {
       const parentPropertyName = getNameTrialArrangements(claim);
-      await saveCaseProgression(claimId, form.model.option, dqPropertyName, parentPropertyName);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, HAS_ANYTHING_CHANGED_URL));
+      await saveCaseProgression(req, form.model.option, dqPropertyName, parentPropertyName);
+
+      res.redirect(constructResponseUrlWithIdParams(claimId, HAS_ANYTHING_CHANGED_URL));
     }
   } catch (error) {
     next(error);
@@ -52,8 +53,8 @@ isCaseReadyController.post([IS_CASE_READY_URL], (async (req, res, next) => {
 })as RequestHandler);
 
 async function renderView(res: Response, claimId: string, claim: Claim, form: GenericForm<IsCaseReadyForm>) {
-  const latestUpdatesUrl = constructResponseUrlWithIdParams(claimId, CANCEL_TRIAL_ARRANGEMENTS);
-  const eventStartUrl = constructResponseUrlWithIdParams(claimId, CP_FINALISE_TRIAL_ARRANGEMENTS_URL);
-  res.render(isCaseReadyViewPath, {form, isCaseReadyContents:getIsCaseReady(claimId, claim), latestUpdatesUrl, eventStartUrl});
+  const cancelUrl = constructResponseUrlWithIdParams(claimId, CANCEL_TRIAL_ARRANGEMENTS);
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, CP_FINALISE_TRIAL_ARRANGEMENTS_URL);
+  res.render(isCaseReadyViewPath, {form, isCaseReadyContents:getIsCaseReady(claimId, claim), cancelUrl, backLinkUrl});
 }
 export default isCaseReadyController;

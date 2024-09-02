@@ -17,7 +17,7 @@ import {AppRequest} from 'common/models/AppRequest';
 const companyTelephoneNumberController = Router();
 
 function renderForm(form: GenericForm<CompanyTelephoneNumber>, res: Response, contactPerson?: string) {
-  res.render('features/mediation/company-telephone-number', {form, contactPerson});
+  res.render('features/mediation/company-telephone-number', {form, contactPerson, pageTitle: 'PAGES.MEDIATION_COMPANY_PHONE.PAGE_TITLE'});
 }
 
 companyTelephoneNumberController.get(CAN_WE_USE_COMPANY_URL, (async (req, res, next: NextFunction) => {

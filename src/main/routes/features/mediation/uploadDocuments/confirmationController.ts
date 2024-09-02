@@ -1,7 +1,7 @@
 import {RequestHandler, Response, Router} from 'express';
 import {
   MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION,
-  START_MEDIATION_UPLOAD_FILES,
+  START_MEDIATION_UPLOAD_FILES, VIEW_MEDIATION_DOCUMENTS,
 } from 'routes/urls';
 
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -16,11 +16,13 @@ const mediationConfirmationController = Router();
 const MEDIATION_CONFIRMATION_PAGE = 'PAGES.MEDIATION.CONFIRMATION_PAGE.';
 export const getContent = (claimId: string): ClaimSummarySection[] => {
   const startMediationUploadUrl = constructResponseUrlWithIdParams(claimId,START_MEDIATION_UPLOAD_FILES);
+  const viewMediationDocumentsUrl = constructResponseUrlWithIdParams(claimId,VIEW_MEDIATION_DOCUMENTS);
+
   return new PageSectionBuilder()
     .addLink(`${MEDIATION_CONFIRMATION_PAGE}LINK_TEXT`,
       startMediationUploadUrl,
       `${MEDIATION_CONFIRMATION_PAGE}TEXT_BEFORE`,`${MEDIATION_CONFIRMATION_PAGE}TEXT_AFTER`)
-    .addButton('COMMON.VIEW_DOCUMENTS', startMediationUploadUrl)
+    .addButton('COMMON.VIEW_DOCUMENTS', viewMediationDocumentsUrl)
     .build();
 };
 

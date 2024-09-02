@@ -2,7 +2,9 @@ import {app} from '../../../../../main/app';
 import config from 'config';
 import Module from 'module';
 import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {
+  isCaseProgressionV1Enable,
+} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CaseState} from 'form/models/claimDetails';
 
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
@@ -14,6 +16,12 @@ import {t} from 'i18next';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {CCDBundle} from 'models/caseProgression/bundles/ccdBundle';
 import {CaseRole} from 'form/models/caseRoles';
+import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
+import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
+import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
+import {Dashboard} from 'models/dashboard/dashboard';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -21,17 +29,104 @@ const citizenRoleToken: string = config.get('citizenRoleToken');
 const testSession = session(app);
 const isCaseProgressionV1EnableMock = isCaseProgressionV1Enable as jest.Mock;
 const getLatestUpdateContentMock = getLatestUpdateContent as jest.Mock;
-
+const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.Mock;
+const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest.Mock;
+const isCUIReleaseTwoEnabledMock = launchDarklyClient.isCUIReleaseTwoEnabled as jest.Mock;
+const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
+const mockExpectedDashboardInfo=
+  [{
+    'categoryEn': 'Hearing',
+    'categoryCy': 'Hearing Welsh',
+    tasks: [{
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+      'status': 'ACTION_NEEDED',
+      'taskNameEn': 'task_name_en',
+      'hintTextEn': 'hint_text_en',
+      'taskNameCy': 'task_name_cy',
+      'hintTextCy': 'hint_text_cy',
+    }, {
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+      'status': 'ACTION_NEEDED',
+      'taskNameEn': 'task_name_en',
+      'hintTextEn': 'hint_text_en',
+      'taskNameCy': 'task_name_cy',
+      'hintTextCy': 'hint_text_cy',
+    }],
+  },
+  {
+    'categoryEn': 'Hearing',
+    'categoryCy': 'Hearing Welsh',
+    tasks: [{
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+      'status': 'ACTION_NEEDED',
+      'taskNameEn': 'task_name_en',
+      'hintTextEn': 'hint_text_en',
+      'taskNameCy': 'task_name_cy',
+      'hintTextCy': 'hint_text_cy',
+    }, {
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+      'status': 'ACTION_NEEDED',
+      'taskNameEn': 'task_name_en',
+      'hintTextEn': 'hint_text_en',
+      'taskNameCy': 'task_name_cy',
+      'hintTextCy': 'hint_text_cy',
+    }],
+  },
+  {
+    'categoryEn': 'Claim',
+    'categoryCy': 'Claim Welsh',
+    tasks:[{
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
+      'statusEn': 'ACTION_NEEDED',
+      'statusCy': 'ACTION_NEEDED',
+      'statusColour': 'govuk-red',
+      'taskNameEn': 'task_name_en2',
+      'hintTextEn': 'hint_text_en2',
+      'taskNameCy': 'task_name_cy2',
+      'hintTextCy': 'hint_text_cy2',
+    },
+    {
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
+      'statusEn': 'ACTION_NEEDED',
+      'statusCy': 'ACTION_NEEDED',
+      'statusColour': 'govuk-red',
+      'taskNameEn': 'task_name_en2',
+      'hintTextEn': 'hint_text_en2',
+      'taskNameCy': 'task_name_cy2',
+      'hintTextCy': 'hint_text_cy2',
+    },
+    {
+      'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
+      'statusEn': 'ACTION_NEEDED',
+      'statusCy': 'ACTION_NEEDED',
+      'statusColour': 'govuk-red',
+      'taskNameEn': 'Hearings Upload hearing documents',
+      'hintTextEn': 'hint_text_en2',
+      'taskNameCy': 'task_name_cy2',
+      'hintTextCy': 'hint_text_cy2',
+    }] as DashboardTask[],
+  }] as DashboardTaskList[];
+const dashboard = new Dashboard(mockExpectedDashboardInfo);
 jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
   getUserDetails: jest.fn(() => USER_DETAILS),
 }));
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('services/features/dashboard/claimSummary/latestUpdateService');
 jest.mock('services/features/dashboard/claimSummaryService');
 jest.mock('services/caseDocuments/documentService');
 jest.mock('services/features/caseProgression/bundles/bundlesService');
+jest.mock('common/utils/carmToggleUtils.ts');
+
+jest.mock('services/dashboard/dashboardService', () => ({
+  getNotifications: jest.fn(),
+  getDashboardForm: jest.fn(()=>dashboard),
+  getHelpSupportTitle: jest.fn(),
+  getHelpSupportLinks: jest.fn(),
+  extractOrderDocumentIdFromNotification : jest.fn(),
+}));
 
 export const USER_DETAILS = {
   accessToken: citizenRoleToken,
@@ -40,7 +135,12 @@ export const USER_DETAILS = {
 
 describe('Claim Summary Controller Defendant', () => {
   const civilServiceUrl = config.get<string>('services.civilService.url');
+  const idamUrl: string = config.get('idamUrl');
+
   beforeAll((done) => {
+    nock(idamUrl)
+      .post('/o/token')
+      .reply(200, {id_token: citizenRoleToken});
     testSession
       .get('/oauth2/callback')
       .query('code=ABC')
@@ -295,6 +395,101 @@ describe('Claim Summary Controller Defendant', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('This claim has been struck out because the claimant has not paid the hearing fee as instructed in the hearing notice');
+        });
+    });
+
+    it('should new dashboard when carm is on and claim is small', async () => {
+      //given
+      const smallClaim = {
+        ...claim,
+        state: CaseState.AWAITING_APPLICANT_INTENTION,
+        case_data: {
+          ...claim.case_data,
+        },
+      };
+      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
+      isDashboardEnabledForCase.mockResolvedValue(true);
+      isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
+      isCarmEnabledForCaseMock.mockResolvedValue(true);
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+      //when
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, smallClaim);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+      //then
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Case number: ');
+        });
+    });
+    it('should new dashboard when we have hearing task list', async () => {
+      //given
+      const smallClaim = {
+        ...claim,
+        state: CaseState.AWAITING_APPLICANT_INTENTION,
+        case_data: {
+          ...claim.case_data,
+        },
+      };
+      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
+      isDashboardEnabledForCase.mockResolvedValue(true);
+      isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
+      isCarmEnabledForCaseMock.mockResolvedValue(true);
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+      //when
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, smallClaim);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
+        .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+      //then
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Case number: ');
+        });
+    });
+
+    it('should I want to link with case moved to caseman', async () => {
+      //given
+      const caseProgressionHearing = getCaseProgressionHearingMock();
+      const claimWithHeringDocs = {
+        ...claim,
+        state: CaseState.PROCEEDS_IN_HERITAGE_SYSTEM,
+        case_data: {
+          ...claimWithSdo.case_data,
+          hearingDate: caseProgressionHearing.hearingDate,
+          hearingLocation: caseProgressionHearing.hearingLocation,
+          hearingTimeHourMinute: caseProgressionHearing.hearingTimeHourMinute,
+          hearingDocuments: caseProgressionHearing.hearingDocuments,
+          takenOfflineDate: new Date(),
+        },
+      };
+
+      isDashboardEnabledForCase.mockResolvedValue(true);
+      isCaseProgressionV1EnableMock.mockResolvedValue(true);
+      getLatestUpdateContentMock.mockReturnValue([]);
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+      //when
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId)
+        .reply(200, claimWithHeringDocs);
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + claimId  + '/userCaseRoles')
+        .reply(200, [CaseRole.DEFENDANT]);
+      //then
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Contact the court to request a change to my case (make an application)');
         });
     });
   });

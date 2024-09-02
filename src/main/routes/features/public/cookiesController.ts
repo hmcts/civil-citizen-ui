@@ -8,6 +8,7 @@ import {
 
 const cookiesController = Router();
 const cookiesViewPath = 'features/public/cookies/cookies-view';
+const pageTitle = 'PAGES.COOKIES.TITLE';
 
 export const defaultCookiePreferences = {
   analytics: 'off',
@@ -16,7 +17,7 @@ export const defaultCookiePreferences = {
 
 cookiesController.get(COOKIES_URL, (req: AppRequest, res: Response) => {
   const cookiePreferences = req.cookies['money-claims-cookie-preferences'] ? JSON.parse(req.cookies['money-claims-cookie-preferences']) : defaultCookiePreferences;
-  res.render(cookiesViewPath, {redirectUrl: DASHBOARD_URL, cookiePreferences});
+  res.render(cookiesViewPath, {redirectUrl: DASHBOARD_URL, cookiePreferences, pageTitle});
 });
 
 cookiesController.post(COOKIES_URL, (async (req: AppRequest<CookiesModel>, res: Response) => {
@@ -27,6 +28,7 @@ cookiesController.post(COOKIES_URL, (async (req: AppRequest<CookiesModel>, res: 
   res.render(cookiesViewPath, {
     cookiePreferences: cookie,
     redirectUrl: DASHBOARD_URL,
+    pageTitle,
   });
 }) as RequestHandler);
 

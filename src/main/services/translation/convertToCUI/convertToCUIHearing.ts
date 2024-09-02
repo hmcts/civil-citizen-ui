@@ -7,9 +7,17 @@ import {UnavailableDatePeriod, UnavailableDateType} from 'models/directionsQuest
 import {CCDUnavailableDates, CCDUnavailableDateType} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {Support, SupportRequired} from 'models/directionsQuestionnaire/supportRequired';
 import {CCDSupportRequirement, CCDSupportRequirements} from 'models/ccdResponse/ccdHearingSupport';
-import {claimType} from 'common/form/models/claimType';
+import {analyseClaimType, claimType} from 'common/form/models/claimType';
 import {DeterminationWithoutHearing} from 'common/models/directionsQuestionnaire/hearing/determinationWithoutHearing';
 import {ConsiderClaimantDocuments} from 'common/models/directionsQuestionnaire/hearing/considerClaimantDocuments';
+import {YesNo} from 'form/models/yesNo';
+import {
+  HasAnAgreementBeenReachedOptions,
+} from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReachedOptions';
+import {
+  DisclosureOfDocuments,
+  TypeOfDisclosureDocument,
+} from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
 
 export const toCUIHearing = (ccdClaim: CCDClaim) : Hearing => {
   if (ccdClaim) {
@@ -29,6 +37,40 @@ export const toCUIHearing = (ccdClaim: CCDClaim) : Hearing => {
       };
       hearing.cantAttendHearingInNext12Months = toCUIGenericYesNo(ccdClaim.respondent1DQHearingFastClaim.unavailableDatesRequired);
     }
+
+    const documentsType = [];
+    if (ccdClaim.specRespondent1DQDisclosureOfElectronicDocuments) {
+      documentsType.push(TypeOfDisclosureDocument.ELECTRONIC);
+      const agreementReached = toCUIYesNo(ccdClaim.specRespondent1DQDisclosureOfElectronicDocuments?.reachedAgreement);
+      const agreementLikely = toCUIYesNo(ccdClaim.specRespondent1DQDisclosureOfElectronicDocuments?.agreementLikely);
+      if (agreementReached === YesNo.YES) {
+        hearing.hasAnAgreementBeenReached = HasAnAgreementBeenReachedOptions.YES;
+      } else {
+        if (agreementLikely === YesNo.YES) {
+          hearing.hasAnAgreementBeenReached = HasAnAgreementBeenReachedOptions.NO_BUT_AN_AGREEMENT_IS_LIKELY;
+        } else {
+          hearing.hasAnAgreementBeenReached = HasAnAgreementBeenReachedOptions.NO;
+        }
+      }
+      hearing.disclosureOfElectronicDocumentsIssues = ccdClaim.specRespondent1DQDisclosureOfElectronicDocuments?.reasonForNoAgreement;
+
+    }
+
+    if (ccdClaim.specRespondent1DQDisclosureOfNonElectronicDocuments) {
+      documentsType.push(TypeOfDisclosureDocument.NON_ELECTRONIC);
+      hearing.disclosureNonElectronicDocument = ccdClaim.specRespondent1DQDisclosureOfNonElectronicDocuments?.bespokeDirections;
+    }
+
+    if (documentsType.length > 0) {
+      hearing.disclosureOfDocuments = new DisclosureOfDocuments();
+      hearing.disclosureOfDocuments.documentsTypeChosen = documentsType;
+    }
+
+    if (ccdClaim.respondent1DQClaimantDocumentsToBeConsidered?.hasDocumentsToBeConsidered) {
+      hearing.hasDocumentsToBeConsidered = toCUIGenericYesNo(ccdClaim.respondent1DQClaimantDocumentsToBeConsidered?.hasDocumentsToBeConsidered);
+      hearing.documentsConsideredDetails = ccdClaim.respondent1DQClaimantDocumentsToBeConsidered?.details;
+    }
+
     if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.whyUnavailableForHearing) {
       hearing.whyUnavailableForHearing = {
         reason: (ccdClaim.respondent1LiPResponse.respondent1DQExtraDetails.whyUnavailableForHearing),
@@ -46,7 +88,7 @@ export const toCUIHearing = (ccdClaim: CCDClaim) : Hearing => {
         items: toCUISupportItems(ccdClaim.respondent1LiPResponse.respondent1DQHearingSupportLip.requirementsLip),
       };
     }
-    if (ccdClaim.claimType === claimType.SMALL_CLAIM) {
+    if (ccdClaim.responseClaimTrack === claimType.SMALL_CLAIM || analyseClaimType(ccdClaim.totalClaimAmount) === claimType.SMALL_CLAIM) {
       if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails) {
         hearing.determinationWithoutHearing = {
           option: toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.determinationWithoutHearingRequired),

@@ -1,6 +1,11 @@
 // Task list pattern
 // sass-lint:disable mixins-before-declarations, class-name-format, no-important, force-pseudo-nesting
 
+.ga-summary-tag {
+  font-size: 1rem;
+  text-transform: none !important;
+}
+
 .app-task-list {
   list-style-type: none;
   margin-bottom: 0;

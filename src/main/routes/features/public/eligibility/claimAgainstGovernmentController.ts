@@ -14,7 +14,7 @@ const claimAgainstGovernmentController = Router();
 const defendantEligibilityViewPath = 'features/public/eligibility/claim-against-government';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(defendantEligibilityViewPath, {form});
+  res.render(defendantEligibilityViewPath, {form, pageTitle: 'PAGES.ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT.PAGE_TITLE'});
 }
 
 claimAgainstGovernmentController.get(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL, (req, res) => {
@@ -25,7 +25,7 @@ claimAgainstGovernmentController.get(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL, (req
 });
 
 claimAgainstGovernmentController.post(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL, (async (req, res) => {
-  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
+  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_OPTION_VARIATION_2'));
   await genericYesNoForm.validate();
 
   if (genericYesNoForm.hasErrors()) {

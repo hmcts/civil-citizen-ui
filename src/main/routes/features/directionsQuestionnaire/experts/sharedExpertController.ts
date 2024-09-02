@@ -16,7 +16,7 @@ const dqPropertyName = 'sharedExpert';
 const dqParentName = 'experts';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render('features/directionsQuestionnaire/experts/shared-expert', {form});
+  res.render('features/directionsQuestionnaire/experts/shared-expert', {form, pageTitle: 'PAGES.SHARED_EXPERT.TITLE'});
 }
 
 sharedExpertController.get(DQ_SHARE_AN_EXPERT_URL, (async (req, res, next) => {

@@ -3,16 +3,16 @@ import {
   ELIGIBILITY_DEFENDANT_ADDRESS_URL,
   ELIGIBILITY_SINGLE_DEFENDANT_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
-} from '../../../../routes/urls';
-import {GenericForm} from '../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
-import {YesNo} from '../../../../common/form/models/yesNo';
+} from 'routes/urls';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
 
 const singleDefendantController = Router();
 const singleDefendantViewPath = 'features/public/eligibility/single-defendant';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(singleDefendantViewPath, {form});
+  res.render(singleDefendantViewPath, {form, pageTitle: 'PAGES.ELIGIBILITY_SINGLE_DEFENDANT.PAGE_TITLE'});
 }
 
 singleDefendantController.get(ELIGIBILITY_SINGLE_DEFENDANT_URL, (req, res) => {
@@ -23,7 +23,7 @@ singleDefendantController.get(ELIGIBILITY_SINGLE_DEFENDANT_URL, (req, res) => {
 });
 
 singleDefendantController.post(ELIGIBILITY_SINGLE_DEFENDANT_URL, (req, res) => {
-  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option));
+  const genericYesNoForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_OPTION_VARIATION_4'));
   genericYesNoForm.validateSync();
 
   if (genericYesNoForm.hasErrors()) {

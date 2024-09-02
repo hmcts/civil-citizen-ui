@@ -38,7 +38,7 @@ export class UnavailableDatePeriodMediation {
   @MaxDate(addMonths(new Date(), MAX_MONTHS), { message: generateErrorMessageForMaxDate })
   @IsDate({ message: generateErrorMessageForIsDate })
   @Validate(OptionalDateNotInPastValidator, {message: generateErrorMessageForDateNotInPastValidator})
-  @Validate(DateNotAfterReferenceDate, ['until'], {message: 'ERRORS.ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE'})
+  @Validate(DateNotAfterReferenceDate, ['until'], {message: 'ERRORS.CARM_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE'})
     from?: Date;
 
   @ValidateIf(o => o.type && (o.startDay || o.startMonth || o.startYear))
@@ -58,24 +58,24 @@ export class UnavailableDatePeriodMediation {
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && ((!!o.endDay && o.endDay < 32 && !!o.endMonth && o.endMonth < 13 && o.endYear > 999) ||
     (!o.endDay && !o.endMonth && !o.endYear)))
-  @MaxDate(addMonths(new Date(), MAX_MONTHS), {message: 'ERRORS.ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO'})
+  @MaxDate(addMonths(new Date(), MAX_MONTHS), {message: 'ERRORS.CARM_ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO'})
   @IsDate({ message: generateErrorMessage })
-  @Validate(OptionalDateNotInPastValidator, {message: 'ERRORS.ENTER_UNAVAILABILITY_DATE_IN_FUTURE_TO'})
+  @Validate(OptionalDateNotInPastValidator, {message: 'ERRORS.CARM_ENTER_UNAVAILABILITY_DATE_IN_FUTURE_TO'})
     until?: Date;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
-  @Min(1, {message: 'ERRORS.ENTER_DAY_FOR_UNAVAILABILITY_TO'})
-  @Max(31, {message: 'ERRORS.ENTER_DAY_FOR_UNAVAILABILITY_TO'})
+  @Min(1, {message: 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_TO'})
+  @Max(31, {message: 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_TO'})
     endDay?: number;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
-  @Min(1, {message: 'ERRORS.ENTER_MONTH_FOR_UNAVAILABILITY_TO'})
-  @Max(12, {message: 'ERRORS.ENTER_MONTH_FOR_UNAVAILABILITY_TO'})
+  @Min(1, {message: 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_TO'})
+  @Max(12, {message: 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_TO'})
     endMonth?: number;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
-  @Min(1872, {message: 'ERRORS.ENTER_YEAR_FOR_UNAVAILABILITY_TO'})
+  @Min(1872, {message: 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_TO'})
     endYear?: number;
 
   [key: string]: UnavailableDateType | Date | number;
@@ -96,51 +96,51 @@ function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediatio
   switch (args.property) {
     case 'startDay':
       if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-        return 'ERRORS.ENTER_DAY_FOR_UNAVAILABILITY';
+        return 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY';
       }
-      return 'ERRORS.ENTER_DAY_FOR_UNAVAILABILITY_FROM';
+      return 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_FROM';
     case 'startMonth':
       if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-        return 'ERRORS.ENTER_MONTH_FOR_UNAVAILABILITY';
+        return 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY';
       }
-      return 'ERRORS.ENTER_MONTH_FOR_UNAVAILABILITY_FROM';
+      return 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_FROM';
     case 'startYear':
       if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-        return 'ERRORS.ENTER_YEAR_FOR_UNAVAILABILITY';
+        return 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY';
       }
-      return 'ERRORS.ENTER_YEAR_FOR_UNAVAILABILITY_FROM';
+      return 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM';
     case 'until':
       if ((args.object.startDay || args.object.startMonth || args.object.startYear) && !args.object.until) {
-        return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY_TO';
+        return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_TO';
       }
       if (!args.object.from && !args.object.until) {
-        return 'ERRORS.ENTER_DATES_FOR_UNAVAILABILITY';
+        return 'ERRORS.CARM_ENTER_DATES_FOR_UNAVAILABILITY';
       }
       break;
     default:
-      return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY';
+      return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY';
   }
 }
 
 function generateErrorMessageForMaxDate(args: ValidationArgs<UnavailableDatePeriodMediation>): string {
   if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-    return 'ERRORS.ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS';
+    return 'ERRORS.CARM_ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS';
   }
-  return 'ERRORS.ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_FROM';
+  return 'ERRORS.CARM_ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_FROM';
 }
 
 function generateErrorMessageForIsDate(args: ValidationArgs<UnavailableDatePeriodMediation>): string {
   if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-    return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY';
+    return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY';
   }
   if (args.object.type === UnavailableDateType.LONGER_PERIOD && (args.object.until || args.object.endDay || args.object.endMonth || args.object.endYear)) {
-    return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY_FROM';
+    return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_FROM';
   }
 }
 
 function generateErrorMessageForDateNotInPastValidator(args: ValidationArgs<UnavailableDatePeriodMediation>): string {
   if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-    return 'ERRORS.ENTER_UNAVAILABILITY_DATE_IN_FUTURE';
+    return 'ERRORS.CARM_ENTER_UNAVAILABILITY_DATE_IN_FUTURE';
   }
-  return 'ERRORS.ENTER_UNAVAILABILITY_DATE_IN_FUTURE_FROM';
+  return 'ERRORS.CARM_ENTER_UNAVAILABILITY_DATE_IN_FUTURE_FROM';
 }

@@ -1,5 +1,4 @@
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
-import {t} from 'i18next';
 import {UploadYourDocumentsSectionBuilder} from 'models/caseProgression/uploadYourDocumentsSectionBuilder';
 export class FinaliseYourTrialSectionBuilder extends UploadYourDocumentsSectionBuilder {
   _claimSummarySections: ClaimSummarySection[] = [];
@@ -26,18 +25,6 @@ export class FinaliseYourTrialSectionBuilder extends UploadYourDocumentsSectionB
       },
     });
     this._claimSummarySections.push(warningSection);
-    return this;
-  }
-
-  addCustomInsetText(text: string, text1: string, text2: string, variables?: any) {
-    const insetSection = ({
-      type: ClaimSummaryType.INSET_TEXT,
-      data: {
-        html: '<STRONG>'+ t(text) +'</STRONG>' + t(text1) +'<P>' + t(text2) +'</P>',
-        variables: variables,
-      },
-    });
-    this._claimSummarySections.push(insetSection);
     return this;
   }
 

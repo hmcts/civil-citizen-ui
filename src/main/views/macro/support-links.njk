@@ -1,0 +1,13 @@
+{% from "./external-link.njk" import externalLink %}
+{% import "external-urls.njk" as externalURLs %}
+
+{% macro supportLinks(t, title, links) %}
+
+  <h1 class="govuk-heading-m govuk-!-margin-bottom-2">{{ title }}</h1>
+  {% for link in links %}
+    <p class="govuk-body govuk-!-margin-bottom-1">
+      {{ externalLink(t, link.text, link.url, false, link.translated, link.newWindowHidden) }}
+    </p>
+  {% endfor %}
+
+{% endmacro %}

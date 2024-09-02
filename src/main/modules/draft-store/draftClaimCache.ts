@@ -120,7 +120,12 @@ const case_data = {
   pcqId: '4c10fec5-1278-45f3-89f0-d3d016d47f95',
 };
 
-const saveDraftClaimToCache = async (userId: string, apiData = case_data) => {
+const saveDraftClaimToCache = async (userId: string, apiData = case_data, isCarmEnabled = false) => {
+  if (isCarmEnabled) {
+    apiData.applicant1.partyPhone = {
+      phone: '07800000000',
+    };
+  }
   const claimToSave = draftClaim;
   claimToSave.case_data = apiData;
   claimToSave.id = userId;

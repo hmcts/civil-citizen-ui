@@ -55,7 +55,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
                   {
                     'href': '/case/12345/mediation/free-telephone-mediation',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
+                    'visuallyHiddenText': 'PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
                   },
                 ],
               },
@@ -79,7 +79,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
                   {
                     'href': '/case/12345/directions-questionnaire/determination-without-hearing',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
+                    'visuallyHiddenText': 'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
                   },
                 ],
               },
@@ -96,7 +96,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
                   {
                     'href': '/case/12345/directions-questionnaire/expert-report-details',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
+                    'visuallyHiddenText': 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
                   },
                 ],
               },
@@ -113,7 +113,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
                   {
                     'href': '/case/12345/directions-questionnaire/permission-for-expert',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
+                    'visuallyHiddenText': 'PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
                   },
                 ],
               },
@@ -123,14 +123,14 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
                 'text': 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
               },
               'value': {
-                'html': 'COMMON.VARIATION.NO',
+                'html': 'COMMON.VARIATION_4.NO',
               },
               'actions': {
                 'items': [
                   {
                     'href': '/case/12345/directions-questionnaire/expert-can-still-examine',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
+                    'visuallyHiddenText': 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
                   },
                 ],
               },
@@ -147,7 +147,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
                   {
                     'href': '/case/12345/directions-questionnaire/other-witnesses',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
+                    'visuallyHiddenText': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
                   },
                 ],
               },
@@ -164,7 +164,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
                   {
                     'href': '/case/12345/directions-questionnaire/cant-attend-hearing-in-next-12-months',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
+                    'visuallyHiddenText': 'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
                   },
                 ],
               },
@@ -181,7 +181,7 @@ function generateExpectedResultForFullDefenceIntentionToProceedAccept() {
                   {
                     'href': '/case/12345/directions-questionnaire/court-location',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.SPECIFIC_COURT.TITLE',
+                    'visuallyHiddenText': 'PAGES.SPECIFIC_COURT.TITLE',
                   },
                 ],
               },
@@ -232,7 +232,7 @@ function generateExpectedResultForPartAdmitAndPaidAccept() {
                   {
                     'href': '/case/12345/claimant-response/part-payment-received',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_AGREE_PAID',
+                    'visuallyHiddenText': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_AGREE_PAID',
                   },
                 ],
               },
@@ -269,7 +269,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
                   {
                     'href': '/case/12345/claimant-response/part-payment-received',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_AGREE_PAID',
+                    'visuallyHiddenText': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_AGREE_PAID',
                   },
                 ],
               },
@@ -297,7 +297,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
                   {
                     'href': '/case/12345/mediation/free-telephone-mediation',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
+                    'visuallyHiddenText': 'PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
                   },
                 ],
               },
@@ -321,7 +321,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
                   {
                     'href': '/case/12345/directions-questionnaire/determination-without-hearing',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
+                    'visuallyHiddenText': 'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
                   },
                 ],
               },
@@ -338,7 +338,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
                   {
                     'href': '/case/12345/directions-questionnaire/expert-report-details',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
+                    'visuallyHiddenText': 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
                   },
                 ],
               },
@@ -355,7 +355,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
                   {
                     'href': '/case/12345/directions-questionnaire/permission-for-expert',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
+                    'visuallyHiddenText': 'PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
                   },
                 ],
               },
@@ -365,14 +365,14 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
                 'text': 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
               },
               'value': {
-                'html': 'COMMON.VARIATION.NO',
+                'html': 'COMMON.VARIATION_4.NO',
               },
               'actions': {
                 'items': [
                   {
                     'href': '/case/12345/directions-questionnaire/expert-can-still-examine',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
+                    'visuallyHiddenText': 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
                   },
                 ],
               },
@@ -389,7 +389,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
                   {
                     'href': '/case/12345/directions-questionnaire/other-witnesses',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
+                    'visuallyHiddenText': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
                   },
                 ],
               },
@@ -406,7 +406,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
                   {
                     'href': '/case/12345/directions-questionnaire/cant-attend-hearing-in-next-12-months',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
+                    'visuallyHiddenText': 'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
                   },
                 ],
               },
@@ -423,7 +423,7 @@ function generateExpectedResultForPartAdmitAndPaidReject() {
                   {
                     'href': '/case/12345/directions-questionnaire/court-location',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.SPECIFIC_COURT.TITLE',
+                    'visuallyHiddenText': 'PAGES.SPECIFIC_COURT.TITLE',
                   },
                 ],
               },
@@ -454,7 +454,7 @@ function generateExpectedResultForPartAdmitAndPaymentAccept() {
                   {
                     'href': '/case/12345/claimant-response/settle-claim',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_TO_SETTLE_PAID',
+                    'visuallyHiddenText': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_TO_SETTLE_PAID',
                   },
                 ],
               },
@@ -491,7 +491,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
                   {
                     'href': '/case/12345/claimant-response/settle-claim',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_TO_SETTLE_PAID',
+                    'visuallyHiddenText': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_TO_SETTLE_PAID',
                   },
                 ],
               },
@@ -519,7 +519,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
                   {
                     'href': '/case/12345/mediation/free-telephone-mediation',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
+                    'visuallyHiddenText': 'PAGES.CHECK_YOUR_ANSWER.FREE_TELEPHONE_MEDIATION',
                   },
                 ],
               },
@@ -543,7 +543,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
                   {
                     'href': '/case/12345/directions-questionnaire/determination-without-hearing',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
+                    'visuallyHiddenText': 'PAGES.DETERMINATION_WITHOUT_HEARING.CLAIM_DETERMINATION_WITHOUT_HEARINGPAGES.DETERMINATION_WITHOUT_HEARING.IE',
                   },
                 ],
               },
@@ -560,7 +560,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
                   {
                     'href': '/case/12345/directions-questionnaire/expert-report-details',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
+                    'visuallyHiddenText': 'PAGES.EXPERT_REPORT_DETAILS.PAGE_TITLE',
                   },
                 ],
               },
@@ -577,7 +577,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
                   {
                     'href': '/case/12345/directions-questionnaire/permission-for-expert',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
+                    'visuallyHiddenText': 'PAGES.PERMISSION_FOR_EXPERT.PAGE_TITLE',
                   },
                 ],
               },
@@ -587,14 +587,14 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
                 'text': 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
               },
               'value': {
-                'html': 'COMMON.VARIATION.NO',
+                'html': 'COMMON.VARIATION_4.NO',
               },
               'actions': {
                 'items': [
                   {
                     'href': '/case/12345/directions-questionnaire/expert-can-still-examine',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
+                    'visuallyHiddenText': 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.TITLE',
                   },
                 ],
               },
@@ -611,7 +611,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
                   {
                     'href': '/case/12345/directions-questionnaire/other-witnesses',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
+                    'visuallyHiddenText': 'PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES',
                   },
                 ],
               },
@@ -628,7 +628,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
                   {
                     'href': '/case/12345/directions-questionnaire/cant-attend-hearing-in-next-12-months',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
+                    'visuallyHiddenText': 'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE',
                   },
                 ],
               },
@@ -645,7 +645,7 @@ function generateExpectedResultForPartAdmitAndPaymentReject() {
                   {
                     'href': '/case/12345/directions-questionnaire/court-location',
                     'text': 'COMMON.BUTTONS.CHANGE',
-                    'visuallyHiddenText': ' PAGES.SPECIFIC_COURT.TITLE',
+                    'visuallyHiddenText': 'PAGES.SPECIFIC_COURT.TITLE',
                   },
                 ],
               },
@@ -722,7 +722,7 @@ describe('Check Answers service', () => {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
             'text': 'COMMON.BUTTONS.CHANGE',
-            'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA',
+            'visuallyHiddenText': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA',
           }],
         },
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},
@@ -747,7 +747,7 @@ describe('Check Answers service', () => {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
             'text': 'COMMON.BUTTONS.CHANGE',
-            'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA',
+            'visuallyHiddenText': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA',
           }],
         },
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},
@@ -776,7 +776,7 @@ describe('Check Answers service', () => {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
             'text': 'COMMON.BUTTONS.CHANGE',
-            'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA',
+            'visuallyHiddenText': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA',
           }],
         },
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},
@@ -802,7 +802,7 @@ describe('Check Answers service', () => {
           'items': [{
             'href': '/case/12345/claimant-response/choose-how-to-proceed',
             'text': 'COMMON.BUTTONS.CHANGE',
-            'visuallyHiddenText': ' PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA',
+            'visuallyHiddenText': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA',
           }],
         },
         'key': {'text': 'PAGES.CHECK_YOUR_ANSWER.THE_AGREEMENT_CYA'},

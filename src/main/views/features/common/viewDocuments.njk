@@ -1,0 +1,51 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/create-table-documents.njk" import addFileInformation, addFileLink, createDocumentsTable %}
+{% from "../../macro/divider.njk" import divider %}
+{% from "../../macro/page-information.njk" import pageInformation %}
+
+
+
+{% block nestedContent %}
+
+{{ pageInformation(t,pageCaption, pageTitle, claimId, claimAmount)}}
+{{ divider() }}
+
+{% if documentsSection.length > 0 %}
+
+    {% for document in documentsSection %}
+        {% set rows = [] %}
+            {% for item in document.documents %}
+                {% set rows = (rows.push([
+                    {
+                        html: addFileInformation(item.fileName, item.uploadDate)
+                    },
+                    {
+                        html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+                    }]), rows) %}
+            {% endfor %}
+        {{ createDocumentsTable(t(document.title), rows) }}
+    {% endfor %}
+
+{% else %}
+    {% set rows = [] %}
+        {% for item in documentsSection.documents %}
+            {% set rows = (rows.push([
+                {
+                    html: addFileInformation(item.fileName, item.uploadDate)
+                },
+                {
+                    html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+                }]), rows) %}
+        {% endfor %}
+    {{ createDocumentsTable(t(documentsSection.title), rows) }}
+
+{% endif %}
+
+{{ govukButton({
+    text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW'),
+    href: dashboardUrl
+}) }}
+{% endblock %}
+
+

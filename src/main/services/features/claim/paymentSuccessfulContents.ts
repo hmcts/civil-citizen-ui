@@ -1,20 +1,22 @@
 import {Claim} from 'models/claim';
 import {PaymentSuccessfulSectionBuilder} from 'services/features/claim/paymentSuccessfulSectionBuilder';
 import {convertToPoundsFilter, currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {t} from 'i18next';
+import {getLng} from 'common/utils/languageToggleUtils';
 
-export const getPaymentSuccessfulPanelContent = (claim : Claim) => {
+export const getPaymentSuccessfulPanelContent = (claim : Claim,lng?: string) => {
   return new PaymentSuccessfulSectionBuilder()
-    .addPanel(claim.caseProgression.hearing.paymentInformation.paymentReference)
+    .addPanel(claim.caseProgression.hearing.paymentInformation.paymentReference,lng)
     .build();
 };
 
-export const getPaymentSuccessfulBodyContent = (claim : Claim) => {
+export const getPaymentSuccessfulBodyContent = (claim : Claim, calculatedAmountInPence : string, lng?: string) => {
   return new PaymentSuccessfulSectionBuilder()
-    .addParagraph('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.CONFIRMATION')
-    .addTitle('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.PAYMENT_SUMMARY')
+    .addParagraph(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.CONFIRMATION', { lng: getLng(lng) }))
+    .addTitle(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.PAYMENT_SUMMARY', { lng: getLng(lng) }))
     .addSummary(currencyFormatWithNoTrailingZeros(convertToPoundsFilter(
-      claim.caseProgressionHearing.hearingFeeInformation.hearingFee.calculatedAmountInPence)),
-    'COMMON.MICRO_TEXT.HEARING_FEE')
+      calculatedAmountInPence)),
+    t('COMMON.MICRO_TEXT.HEARING_FEE', { lng: getLng(lng) }),lng)
     .build();
 };
 

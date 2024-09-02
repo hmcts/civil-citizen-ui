@@ -11,7 +11,6 @@ import {SignatureType} from 'models/signatureType';
 import {
   createClaimWithBasicRespondentDetails, createClaimWithFreeTelephoneMediationSection,
   createClaimWithMediationSectionWithOption,
-  getClaimWithFewDetails,
 } from '../../../../../utils/mockClaimForCheckAnswers';
 import {Party} from 'models/party';
 import {
@@ -20,7 +19,6 @@ import {
 import {PartyType} from 'models/partyType';
 import {Claim} from 'models/claim';
 import {CLAIM_ID} from '../../../../../utils/checkAnswersConstants';
-import {getSummarySections as breathingSpace} from 'services/features/breathingSpace/checkYourAnswer/checkAnswersService';
 import {YesNo} from 'form/models/yesNo';
 import {buildMediationSection} from 'services/features/response/checkAnswers/responseSection/buildMediationSection';
 import {
@@ -133,20 +131,6 @@ describe('Check Answers service', () => {
       claim.respondent1 = new Party();
       claim.respondent1.type = PartyType.ORGANISATION;
       expect(getSignatureType(claim)).toEqual(SignatureType.QUALIFIED);
-    });
-  });
-
-  describe('Obtain data summary from Draft', () => {
-    it('should provide the data summary', async () => {
-      //Given
-      const claim = await getClaimWithFewDetails();
-      const summarySections = breathingSpace(CLAIM_ID, claim.claimDetails.breathingSpace, 'en');
-      //Then
-      expect(summarySections.sections[0].summaryList.rows.length).toBe(4);
-      expect(summarySections.sections[0].summaryList.rows[0].value.html).toBe('R225B1230');
-      expect(summarySections.sections[0].summaryList.rows[1].value.html).toBe('10 January 2022');
-      expect(summarySections.sections[0].summaryList.rows[2].value.html).toBe('PAGES.BREATHING_SPACE_DEBT_RESPITE_TYPE.STANDARD');
-      expect(summarySections.sections[0].summaryList.rows[3].value.html).toBe('10 December 2022');
     });
   });
 

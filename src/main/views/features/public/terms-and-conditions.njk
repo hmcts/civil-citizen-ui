@@ -1,0 +1,114 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "../../macro/external-link.njk" import externalLink %}
+
+{% import "external-urls.njk" as externalURLs %}
+
+{% set pageTitle = t('PAGES.TERMS_AND_CONDITIONS.TITLE') %}
+
+{% block nestedContent %}
+
+  <h1 class="govuk-heading-l">{{ t('PAGES.TERMS_AND_CONDITIONS.TITLE') }}</h1>
+  <p class="govuk-body">
+    {{ t('PAGES.TERMS_AND_CONDITIONS.P_2') }}
+    <a href="{{ urls.PRIVACY_POLICY_URL }}">{{ t('PAGES.TERMS_AND_CONDITIONS.PRIVACY_POLICY') }}</a>.
+  </p>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_4') }}</p>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.TERMS_AND_CONDITIONS.P_5') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_6') }}</p>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_7') }}</p>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.TERMS_AND_CONDITIONS.P_8') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_9') }}</p>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_10') }}</p>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.TERMS_AND_CONDITIONS.P_11') }}</h1>
+  <p class="govuk-body">
+    {{ t('PAGES.TERMS_AND_CONDITIONS.P_12') }}
+    <a href="{{ urls.PRIVACY_POLICY_URL }}">{{ t('PAGES.TERMS_AND_CONDITIONS.PRIVACY_POLICY') }}</a>
+    {{ t('PAGES.TERMS_AND_CONDITIONS.P_13') }}
+  </p>
+  <p class="govuk-body">
+    {{ t('PAGES.TERMS_AND_CONDITIONS.P_14') }}
+    <a href="{{ urls.COOKIES_URL }}">{{ t('PAGES.TERMS_AND_CONDITIONS.COOKIE_POLICY') }}</a>
+    {{ t('PAGES.TERMS_AND_CONDITIONS.P_15') }}
+  </p>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.TERMS_AND_CONDITIONS.P_16') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_17') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_18') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_19') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_20') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_21') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_22') }}</li>
+  </ul>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.TERMS_AND_CONDITIONS.P_23') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_24') }}</p>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_25') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_26') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_27') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_28') }}</li>
+  </ul>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_29') }}</p>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.TERMS_AND_CONDITIONS.P_30') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_31') }}</p>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_32') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_33') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_34') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_35') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_36') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_37') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_38') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_39') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_40') }}</li>
+  </ul>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_41') }}</p>
+  <p class="govuk-body">
+    {{ t('PAGES.TERMS_AND_CONDITIONS.P_42') }}
+    <a href="{{ urls.PRIVACY_POLICY_URL }}">{{ t('PAGES.TERMS_AND_CONDITIONS.PRIVACY_POLICY') }}</a>.
+  </p>
+
+  <h1 class="govuk-heading-m">{{ t('PAGES.TERMS_AND_CONDITIONS.P_43') }}</h1>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_44') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_45') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_46') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_47') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_48') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_49') }}</li>
+  </ul>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_50') }}</p>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_51') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_52') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_53') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_54') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_55') }}</li>
+  </ul>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_56') }}</p>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_57') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_58') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_59') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_60') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_61') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_62') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_63') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_64') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_65') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_66') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_67') }}</li>
+  </ul>
+  <p class="govuk-body">{{ t('PAGES.TERMS_AND_CONDITIONS.P_68') }}</p>
+  <ul class="govuk-list govuk-list--bullet">
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_69') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_70') }}</li>
+    <li>{{ t('PAGES.TERMS_AND_CONDITIONS.P_71') }}</li>
+  </ul>
+
+{% endblock %}

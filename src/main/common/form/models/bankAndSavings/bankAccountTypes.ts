@@ -2,7 +2,7 @@ import {BankAccountType} from './bankAccountType';
 import {BankAccountTypeValues} from '../../../form/models/bankAndSavings/bankAccountTypeValues';
 
 export class BankAccountTypes{
-  readonly CHOOSE = new BankAccountType(undefined, 'COMMON.CHOOSE');
+  readonly CHOOSE = new BankAccountType(BankAccountTypeValues.CHOOSE, 'COMMON.CHOOSE');
   CURRENT_ACCOUNT : BankAccountType;
   SAVING_ACCOUNT :  BankAccountType;
   ISA : BankAccountType;

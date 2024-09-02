@@ -17,12 +17,17 @@ import {
 import {AppRequest} from 'common/models/AppRequest';
 import {claimLanguagePreferenceGuard} from 'routes/guards/claimLanguagePreferenceGuard';
 import {Claim} from 'models/claim';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const bilingualLangPreferenceViewPath = 'features/claim/claim-bilingual-language-preference';
 const claimBilingualLangPreferenceController = Router();
 
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(bilingualLangPreferenceViewPath, {form});
+  res.render(bilingualLangPreferenceViewPath, {form, pageTitle: 'PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.PAGE_TITLE'});
 }
 
 claimBilingualLangPreferenceController.get(
@@ -35,6 +40,7 @@ claimBilingualLangPreferenceController.get(
         const caseData: Claim = await getCaseDataFromStore(userId, true);
         if (!caseData?.isDraftClaim()) {
           await createDraftClaimInStoreWithExpiryTime(userId);
+          await civilServiceClient.createDashboard(<AppRequest> req);
         }
         const form: GenericYesNo = new GenericYesNo();
         renderView(new GenericForm<GenericYesNo>(form), res);

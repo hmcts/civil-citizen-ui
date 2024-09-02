@@ -1,3 +1,6 @@
+
+const { getClaimFee } = require('./claimAmountAndFee');
+
 const createLipClaim = (user, userId, totalClaimAmount) => {
   const eventDto = {
     event: 'CREATE_LIP_CLAIM',
@@ -57,7 +60,7 @@ const createLipClaim = (user, userId, totalClaimAmount) => {
         {
           id: '0',
           value: {
-            claimAmount: totalClaimAmount,
+            claimAmount: JSON.stringify(totalClaimAmount*100), //its in pence
             claimReason: 'Injury',
           },
         },
@@ -145,11 +148,7 @@ const createLipClaim = (user, userId, totalClaimAmount) => {
           },
         },
       ],
-      claimFee: {
-        calculatedAmountInPence: '45500',
-        version: '3',
-        code: 'FEE0208',
-      },
+      claimFee: getClaimFee(totalClaimAmount),
       claimantBilingualLanguagePreference: undefined,
     },
   };

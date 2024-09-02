@@ -3,11 +3,13 @@ import {app} from '../../../../../main/app';
 import {Claim} from 'common/models/claim';
 import {DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {getClaimById} from 'modules/utilityService';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {FullAdmission} from 'models/fullAdmission';
-import {YesNo} from 'form/models/yesNo';
+import {YesNoUpperCamelCase} from 'form/models/yesNo';
+import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {getClaimById} from 'modules/utilityService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -17,7 +19,10 @@ jest.mock('routes/guards/respondSettlementAgreementConfirmationGuard', () => ({
     next();
   }),
 }));
-const mockGetCaseData = getClaimById as jest.Mock;
+jest.mock('modules/utilityService', () => ({
+  getRedisStoreForSession: jest.fn(),
+  getClaimById: jest.fn(),
+}));
 
 describe('Claimant response confirmation controller', () => {
 
@@ -26,15 +31,55 @@ describe('Claimant response confirmation controller', () => {
     mockClaim.fullAdmission = new FullAdmission();
     mockClaim.fullAdmission.paymentIntention = new PaymentIntention();
     mockClaim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+    mockClaim.respondentSignSettlementAgreement = YesNoUpperCamelCase.YES;
     return mockClaim;
   }
-
   describe('on GET', () => {
     it('should return accept settlement agreement confirmation', async () => {
       // Given
       const mockClaim = getMockClaim();
-      mockClaim.defendantSignedSettlementAgreement = YesNo.YES;
-      mockGetCaseData.mockImplementation(() => mockClaim);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
+      // When
+      const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
+      // Then
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("You've both signed a settlement agreement");
+    });
+
+    it('In favour claimant-should return accept settlement agreement confirmation', async () => {
+      // Given
+      const mockClaim = new Claim();
+      mockClaim.claimantResponse= new ClaimantResponse();
+      mockClaim.claimantResponse.courtDecision =
+          RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+      mockClaim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+      mockClaim.claimantResponse.suggestedPaymentIntention.paymentOption =
+          PaymentOptionType.IMMEDIATELY;
+      mockClaim.claimantResponse.suggestedImmediatePaymentDeadLine = new Date();
+      mockClaim.respondentSignSettlementAgreement = YesNoUpperCamelCase.YES;
+
+      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
+      // When
+      const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
+      // Then
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("You've both signed a settlement agreement");
+    });
+
+    it('In favour claimant-should return accept settlement agreement confirmation', async () => {
+      // Given
+      const mockClaim = new Claim();
+      mockClaim.claimantResponse= new ClaimantResponse();
+      mockClaim.claimantResponse.courtDecision =
+          RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+      mockClaim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+      mockClaim.claimantResponse.suggestedPaymentIntention.paymentOption =
+          PaymentOptionType.BY_SET_DATE;
+      mockClaim.claimantResponse.suggestedPaymentIntention.paymentDate = new Date();
+      mockClaim.respondentSignSettlementAgreement = YesNoUpperCamelCase.YES;
+
+      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
+
       // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
       // Then
@@ -45,8 +90,8 @@ describe('Claimant response confirmation controller', () => {
     it('should return reject settlement agreement confirmation', async () => {
       // Given
       const mockClaim = getMockClaim();
-      mockClaim.defendantSignedSettlementAgreement = YesNo.NO;
-      mockGetCaseData.mockImplementation(() => mockClaim);
+      mockClaim.respondentSignSettlementAgreement = YesNoUpperCamelCase.NO;
+      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
       // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
       // Then
@@ -56,7 +101,8 @@ describe('Claimant response confirmation controller', () => {
 
     it('should return http 500 when has error in the get method', async () => {
       // Given
-      mockGetCaseData.mockImplementation(() => {throw new Error('Test error');});
+      const error = new Error('Test error');
+      (getClaimById as jest.Mock).mockRejectedValue(error);
       // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
       // Then

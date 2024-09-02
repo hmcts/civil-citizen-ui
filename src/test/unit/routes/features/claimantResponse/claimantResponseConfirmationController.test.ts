@@ -11,6 +11,12 @@ import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {CaseState} from 'common/form/models/claimDetails';
 import {getClaimById} from 'modules/utilityService';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
+import {ChooseHowProceed} from 'models/chooseHowProceed';
+import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -53,6 +59,22 @@ describe('Claimant response confirmation controller', () => {
       const res = await request(app).get(CLAIMANT_RESPONSE_CONFIRMATION_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain("You didn't proceed with the claim");
+    });
+
+    it('should return claimant response confirmation claim for settlement agreement', async () => {
+      mockClaim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed();
+      mockClaim.claimantResponse.chooseHowToProceed.option = ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT;
+      mockClaim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+      mockClaim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+      mockClaim.claimantResponse.suggestedPaymentIntention.paymentOption =
+          PaymentOptionType.IMMEDIATELY;
+      (getClaimById as jest.Mock).mockImplementation(() => mockClaim);
+      jest.spyOn(CivilServiceClient.prototype, 'calculateExtendedResponseDeadline')
+        .mockReturnValue(new Promise((resolve) => resolve(new Date())),
+        );
+      const res = await request(app).get(CLAIMANT_RESPONSE_CONFIRMATION_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("You've signed a settlement agreement");
     });
 
     it('should return http 500 when has error in the get method', async () => {

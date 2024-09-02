@@ -15,7 +15,12 @@
   class="govuk-link" target="_blank" rel="noopener noreferrer">FORM_NAME</a>'
     | replace('FORM_NAME', t('PAGES.RESPONSE_DEADLINE_OPTIONS.FORM'))%}
   <p class="govuk-body">
-    {{  t('PAGES.RESPONSE_DEADLINE_OPTIONS.REQUEST_REFUSED', {claimantName : claimantName}) }} {{ formLink | safe}}.
+     {% if isReleaseTwoEnabled %}
+        {{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.REQUEST_REFUSED_R2') }}
+      {% else %}
+          {{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.REQUEST_REFUSED', {claimantName : claimantName}) }} 
+     {% endif %}
+     {{ formLink | safe}}.
   </p>
   <p class="govuk-body govuk-!-margin-top-6">{{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.EMAIL_FORM') }}</p>
   <p class="govuk-body govuk-!-margin-bottom-2">{{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.POST') }}</p>
@@ -25,6 +30,14 @@
   <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.POSTCODE') }}</p>
   <p class="govuk-body govuk-!-margin-bottom-2">{{ t('COMMON.POSTAL_ADDRESS.TELEPHONE') }}</p>
 {% endset -%}
+
+{% set OPTION_AGREED %}
+    {% if isReleaseTwoEnabled %}
+        {{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.OPTION_AGREED_R2') }}
+    {% else %}
+        {{ t('PAGES.RESPONSE_DEADLINE_OPTIONS.OPTION_AGREED', { claimantName: claimantName  }) | safe }}
+    {% endif %}
+{% endset %}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -62,7 +75,7 @@
                 },
                 {
                   value: 'already-agreed',
-                  text: t('PAGES.RESPONSE_DEADLINE_OPTIONS.OPTION_AGREED', {claimantName : claimantName})
+                  text: OPTION_AGREED
                 },
                 {
                   value: 'request-refused',

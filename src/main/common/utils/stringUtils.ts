@@ -3,9 +3,27 @@ export function caseNumberPrettify(caseNumber: string) {
 }
 
 export function documentIdExtractor(documentBinaryUrl: string){
-  const regex = /\/([\w-]+)\/binary$/;
-  const match = regex.exec(documentBinaryUrl);
-  return match[1];
+  if (documentBinaryUrl){
+    const regex = /\/([\w-]+)\/binary$/;
+    const match = regex.exec(documentBinaryUrl);
+    return match[1];
+  }
+  return documentBinaryUrl;
+}
+
+export function generalApplicationDocumentIdExtractor(documentBinaryUrl: string){
+  try {
+    const parsedUrl = new URL(documentBinaryUrl);
+
+    const pathname = parsedUrl.pathname;
+
+    const segments = pathname.split('/');
+    const document_id = segments.pop();
+
+    return document_id || null;
+  } catch (e) {
+    return null;
+  }
 }
 
 export function removeWhiteSpacesIfNoText(text:string): string {

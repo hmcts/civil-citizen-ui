@@ -10,15 +10,15 @@
 {% from "../../../macro/postcode-address-form.njk" import postcodeLookupAndAddressForm %}
 {% set payingExtra = t('PAGES.DEFENDANT_DETAILS.PAYING_EXTRA') %}
 {% set correspondenceAddressClass = 'govuk-visually-hidden' %}
-{% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.SOLE_TRADER') %}
+{% set pageTitle = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.SOLE_TRADER') %}
 {% if defendantType === partyType.INDIVIDUAL %}
-  {% set title = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.INDIVIDUAL') %}
+  {% set pageTitle = t('PAGES.DEFENDANT_DETAILS.PAGE_TITLES.INDIVIDUAL') %}
 {% endif %}
 
 {% set formErrors = form.getAllErrors() %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, title) }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 {% block content %}
   <div class="govuk-width-container">
@@ -30,7 +30,7 @@
       </div>
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ title }}</h1>
+          <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
           <p class="govuk-body">{{ payingExtra }}</p>
           <form method="post" name="address" novalidate>
             {{ csrfProtection(csrf) }}
@@ -78,10 +78,6 @@
             {% endif %}
 
             <h2 class="govuk-heading-m">{{ t('PAGES.DEFENDANT_DETAILS.THEIR_ADDRESS') }}</h2>
-            <p class="govuk-body">
-              {{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }}
-              {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}
-            </p>
             {% if defendantType === partyType.INDIVIDUAL %}
               <p class="govuk-body">
                 {{ t('PAGES.DEFENDANT_DETAILS.ENGLAND_OR_WALES_ADDRESS') }}

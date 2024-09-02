@@ -1,6 +1,6 @@
 import {Task} from './task';
 
-export interface TaskList {
-  title: string,
-  tasks: Task[]
+export class TaskList {
+  title: string;
+  tasks: Task[];
 }

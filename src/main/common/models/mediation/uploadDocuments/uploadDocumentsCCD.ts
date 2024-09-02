@@ -1,4 +1,3 @@
-
 import {Document} from 'models/document/document';
 
 export class MediationUploadDocumentsCCD {

@@ -14,6 +14,7 @@ import {
   toCUIExpertDetails,
   toCUIExpertReportDetails,
 } from 'services/translation/convertToCUI/convertToCUIExperts';
+import {CaseRole} from 'form/models/caseRoles';
 
 describe('translate CCD data to CUI DQ Experts model', () => {
   describe('toCUISentExpertReports', () => {
@@ -122,8 +123,9 @@ describe('translate CCD data to CUI DQ Experts model', () => {
       // Given
       const ccdLipExpert: CCDLiPExpert = undefined;
       // When
-      const result = toCUIExpertReportDetails(ccdLipExpert);
+      const result = toCUIExpertReportDetails({caseRole: CaseRole.CLAIMANT}, ccdLipExpert);
       // Then
+      expect(result.isClaimant).toBe(true);
       expect(result.option).toBeUndefined();
       expect(result.reportDetails).toBeUndefined();
     });
@@ -135,8 +137,9 @@ describe('translate CCD data to CUI DQ Experts model', () => {
         details: undefined,
       };
       // When
-      const result = toCUIExpertReportDetails(ccdLipExpert);
+      const result = toCUIExpertReportDetails({caseRole: CaseRole.DEFENDANT}, ccdLipExpert);
       // Then
+      expect(result.isClaimant).toBe(false);
       expect(result.option).toBe(YesNo.NO);
       expect(result.reportDetails).toBeUndefined();
     });
@@ -155,7 +158,7 @@ describe('translate CCD data to CUI DQ Experts model', () => {
         ],
       } as CCDLiPExpert;
       // When
-      const result = toCUIExpertReportDetails(ccdLipExpert);
+      const result = toCUIExpertReportDetails({caseRole: CaseRole.CREATOR}, ccdLipExpert);
       // Then
       expect(result.option).toBe(YesNo.YES);
       expect(result.reportDetails[0].expertName).toBe('Mike Brown');

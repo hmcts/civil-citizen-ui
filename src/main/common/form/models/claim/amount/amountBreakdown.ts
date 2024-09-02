@@ -23,7 +23,10 @@ export class AmountBreakdown {
     return populatedRows;
   }
 
-  public isValidTotal() {
+  public isValidTotal(mintiEnabled= false) {
+    if (mintiEnabled) {
+      return true;
+    }
     return this.totalAmount <= MAX_CLAIM_AMOUNT_TOTAL;
   }
 

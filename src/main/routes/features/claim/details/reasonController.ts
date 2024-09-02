@@ -12,7 +12,7 @@ const reasonViewPath = 'features/claim/details/reason';
 const claimDetailsPropertyName = 'reason';
 
 function renderView(form: GenericForm<Reason>, res: Response): void {
-  res.render(reasonViewPath, {form});
+  res.render(reasonViewPath, {form, pageTitle: 'PAGES.REASON.PAGE_TITLE'});
 }
 
 reasonController.get(CLAIM_REASON_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

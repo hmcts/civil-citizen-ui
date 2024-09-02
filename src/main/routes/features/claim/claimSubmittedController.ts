@@ -1,14 +1,10 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {
-  CLAIM_CONFIRMATION_URL,
-  CLAIM_FEE_BREAKUP,
-  CLAIM_FEE_CHANGE_URL,
-} from '../../urls';
+import {CLAIM_CONFIRMATION_URL, CLAIM_FEE_BREAKUP} from '../../urls';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {AppRequest} from 'models/AppRequest';
-import {checkIfClaimFeeHasChanged} from 'services/features/claim/amount/checkClaimFee';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
+
 const claimSubmittedView = 'features/claim/claim-submitted';
 const claimSubmittedController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -25,10 +21,7 @@ claimSubmittedController.get(CLAIM_CONFIRMATION_URL, (async (req: AppRequest, re
       const defendantFullName = claim.getDefendantFullName();
       const defendantResponseLimit = formatDateToFullDate(claim.respondent1ResponseDeadline, lang);
       const helpWithFee = claim.hasHelpWithFees();
-      const isClaimFeeChanged = await checkIfClaimFeeHasChanged(claimId, claim, req);
-      const claimFeeBreakUpUrl = CLAIM_FEE_BREAKUP.replace(':id', claimId);
-      const feeChangeUrl = CLAIM_FEE_CHANGE_URL.replace(':id', claimId);
-      const redirectUrl = isClaimFeeChanged ? feeChangeUrl : claimFeeBreakUpUrl;
+      const redirectUrl = CLAIM_FEE_BREAKUP.replace(':id', claimId);
 
       res.render(claimSubmittedView, {
         claimNumber,
@@ -37,6 +30,7 @@ claimSubmittedController.get(CLAIM_CONFIRMATION_URL, (async (req: AppRequest, re
         helpWithFee,
         claimId,
         redirectUrl,
+        pageTitle: 'PAGES.CLAIM_SUBMITTED.PAGE_TITLE',
       });
     }
   } catch (error) {

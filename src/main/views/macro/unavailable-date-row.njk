@@ -2,9 +2,10 @@
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% macro unavailableDateRow(unavailableDate, index, errorFor, t, removeButton, today) %}
+{% macro unavailableDateRow(unavailableDate, legend, index, errorFor, t, removeButton, today, isCarm) %}
 
   {% set exampleDate = today.getDate() + ' ' + (today.getMonth() + 1)+ ' ' + (today.getFullYear() + 1) %}
+  {% set indexPlusOne = (index + 1) %}
 
   {% set singleDateHTML %}
     {% set singleDateError = '<p class="govuk-error-message">' + t(errorFor('items[' +index+ '][from]')) + '</p>' +
@@ -28,7 +29,10 @@
         name: 'items[' +index+ '][single][start][day]',
         label: t('COMMON.DAY'),
         value: unavailableDate.startDay if unavailableDate.type === UnavailableDateType.SINGLE_DATE,
-        max: 31
+        max: 31,
+        attributes: {
+          'aria-label' : t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.SINGLE_DATE') +' '+ t('COMMON.DAY') +' '+ '['+(indexPlusOne)+']'
+        }
       },
       {
         classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items[' +index+ '][startMonth]') or errorFor('items[' +index+ '][from]')) else "govuk-input--width-4",
@@ -36,7 +40,10 @@
         name: 'items[' +index+ '][single][start][month]',
         label: t('COMMON.MONTH'),
         value: unavailableDate.startMonth if unavailableDate.type === UnavailableDateType.SINGLE_DATE,
-        max: 12
+        max: 12,
+        attributes: {
+          'aria-label' : t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.SINGLE_DATE') +' '+ t('COMMON.MONTH') +' '+ '['+(indexPlusOne)+']'
+        }
       },
       {
         classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items[' +index+ '][startYear]') or errorFor('items[' +index+ '][from]')) else "govuk-input--width-4",
@@ -44,7 +51,10 @@
         name: 'items[' +index+ '][single][start][year]',
         label: t('COMMON.YEAR'),
         value: unavailableDate.startYear if unavailableDate.type === UnavailableDateType.SINGLE_DATE,
-        max: 9999
+        max: 9999,
+        attributes: {
+          'aria-label' : t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.SINGLE_DATE') +' '+  t('COMMON.YEAR') +' '+  '['+(indexPlusOne)+']'
+        }
       }
     ]
   }) }}
@@ -81,7 +91,10 @@
         name: 'items[' + index + '][period][start][day]',
         label: t('COMMON.DAY'),
         value: unavailableDate.startDay if unavailableDate.type === UnavailableDateType.LONGER_PERIOD,
-        max: 31
+        max: 31,
+        attributes: {
+          'aria-label' : t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD') +' '+ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.FROM') +' '+ t('COMMON.DAY') +' '+ '['+(indexPlusOne)+']'
+        }
       },
       {
         classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startMonth]') or errorFor('items['+index+'][from]') or (not unavailableDate.from and errorFor('items['+index+'][until]'))) else "govuk-input--width-4",
@@ -89,7 +102,10 @@
         name: 'items[' + index + '][period][start][month]',
         label: t('COMMON.MONTH'),
         value: unavailableDate.startMonth if unavailableDate.type === UnavailableDateType.LONGER_PERIOD,
-        max: 12
+        max: 12,
+        attributes: {
+          'aria-label' : t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD') +' '+ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.FROM') +' '+ t('COMMON.MONTH') +' '+ '['+(indexPlusOne)+']'
+        }
       },
       {
         classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][startYear]') or errorFor('items['+index+'][from]') or (not unavailableDate.from and errorFor('items['+index+'][until]'))) else "govuk-input--width-4",
@@ -97,7 +113,10 @@
         name: 'items[' + index + '][period][start][year]',
         label: t('COMMON.YEAR'),
         value: unavailableDate.startYear if unavailableDate.type === UnavailableDateType.LONGER_PERIOD,
-        max: 9999
+        max: 9999,
+        attributes: {
+          'aria-label' : t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD') +' '+ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.FROM') +' '+ t('COMMON.YEAR') +' '+ '['+(indexPlusOne)+']'
+        }
       }
     ]
   }) }}
@@ -121,7 +140,10 @@
         name: 'items[' + index + '][period][end][day]',
         label: t('COMMON.DAY'),
         value: unavailableDate.endDay,
-        max: 31
+        max: 31,
+        attributes: {
+          'aria-label' : t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD') +' '+ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TO') +' '+ t('COMMON.DAY') +' '+ '['+(indexPlusOne)+']'
+        }
       },
       {
         classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][endMonth]') or errorFor('items['+index+'][until]')) else "govuk-input--width-4",
@@ -129,7 +151,10 @@
         name: 'items[' + index + '][period][end][month]',
         label: t('COMMON.MONTH'),
         value: unavailableDate.endMonth,
-        max: 12
+        max: 12,
+        attributes: {
+          'aria-label' : t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD') +' '+ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TO') +' '+ t('COMMON.MONTH') +' '+ '['+(indexPlusOne)+']'
+        }
       },
       {
         classes: "govuk-input--width-4 govuk-input--error" if (errorFor('items['+index+'][endYear]') or errorFor('items['+index+'][until]')) else "govuk-input--width-4",
@@ -137,7 +162,10 @@
         name: 'items[' + index + '][period][end][year]',
         label: t('COMMON.YEAR'),
         value: unavailableDate.endYear,
-        max: 9999
+        max: 9999,
+        attributes: {
+          'aria-label' : t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD') +' '+ t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.TO') +' '+ t('COMMON.YEAR') +' '+ '['+(indexPlusOne)+']'
+        }
       }
     ]
   }) }}
@@ -150,24 +178,40 @@
         {{ govukRadios({
           id: 'items-' +index+ '-type',
           name: 'items[' +index+ '][type]',
+          fieldset: {
+            legend: {
+              text: t(legend),
+              classes: "govuk-fieldset__legend--s"
+            }
+          } if legend is defined,
           items: [
                   {
                     id: 'items-' +index+ '-single-date',
                     value: UnavailableDateType.SINGLE_DATE,
-                    html: t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.SINGLE_DATE'),
+                    html: t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.SINGLE_DATE') + '<span class="govuk-visually-hidden"> radio button '+
+                            (index + 1) +
+                        '</span>',
                     checked: unavailableDate.type === UnavailableDateType.SINGLE_DATE,
                     conditional: {
                       html: singleDateHTML
+                    },
+                    attributes: {
+                      'aria-label' : 'Single date selected radio button' +  ' ['+(index + 1)+']'
                     }
                   },
                   {
                     id: 'items-' +index+ '-longer-period',
                     value: UnavailableDateType.LONGER_PERIOD,
-                    html:  t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD'),
+                    html:  t('PAGES.UNAVAILABLE_DATES_FOR_HEARING.LONGER_PERIOD') + '<span class="govuk-visually-hidden"> radio button '+
+                      (index + 1) +
+                    '</span>',
                     checked: unavailableDate.type === UnavailableDateType.LONGER_PERIOD,
                     conditional: {
                       html: longerPeriodHTML
-                    }
+                    },
+                  attributes: {
+                    'aria-label' : 'Longer period of time selected radio button' +  ' ['+(index + 1)+']'
+                  }
                   }
                 ],
           errorMessage: {
@@ -179,13 +223,17 @@
       {% if removeButton %}
         {% if removeButton.hidden %}
           {{ govukButton({
-            text: t('COMMON.REMOVE'),
-            classes: "govuk-button--secondary remove-row govuk-visually-hidden"
+            text: t('COMMON.REMOVE_CARM') if isCarm else t('COMMON.REMOVE') ,
+            classes: "govuk-button--secondary remove-row govuk-visually-hidden",
+            type: "button" if not removeButton.noJs
           }) }}
         {% else %}
           {{ govukButton({
-            text: t('COMMON.REMOVE'),
-            classes: "govuk-button--secondary remove-row"
+            text: t('COMMON.REMOVE_CARM') if isCarm else t('COMMON.REMOVE') ,
+            classes: "govuk-button--secondary remove-row",
+            name: 'action',
+            value: 'remove-unavailableDates' + index,
+            type: "button" if not removeButton.noJs
           }) }}
         {% endif %}
       {% endif %}

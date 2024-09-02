@@ -16,7 +16,7 @@ import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTrut
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {Interest} from 'form/models/interest/interest';
-import {Document, ServedDocumentFiles} from 'models/document/document';
+import {Document, ResponseDocument, ServedDocumentFiles} from 'models/document/document';
 import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
 import {ResponseDeadline} from 'models/responseDeadline';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
@@ -70,7 +70,6 @@ import {
   CCDTrialArrangementsOtherComments,
 } from 'models/ccdResponse/ccdTrialArrangementsHearingRequirements';
 import {CCDAdditionalPartyDetails} from 'models/ccdResponse/ccdAdditionalPartyDetails';
-import {CCDBreathingSpaceStartInfo} from 'models/ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {CCDTimeLineOfEvent} from 'models/ccdResponse/ccdTimeLine';
 import {HearingFee} from 'models/caseProgression/hearingFee/hearingFee';
@@ -81,7 +80,13 @@ import { CCDClaimantMediationLip } from './claimantResponse/ccdClaimantResponse'
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import { FeeType } from 'common/form/models/helpWithFees/feeType';
+import {PaymentDetails} from 'models/PaymentDetails';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
+import {CCDFlightDelayDetails} from './airlines/flights';
+import {CCDFixedRecoverableCostsIntermediate} from 'models/ccdResponse/ccdFixedRecoverableCostsIntermediate';
+import {CCDDisclosureOfElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfElectronicDocuments';
+import {CCDDisclosureOfNonElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfNonElectronicDocuments';
+import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeConsidered';
 
 export class CivilClaimResponse {
   id: string;
@@ -111,6 +116,7 @@ export interface CCDClaim extends ClaimUpdate {
   totalClaimAmount?: number;
   respondent1ResponseDeadline?: Date;
   claimDetails?: ClaimDetails;
+  claimIssuedPaymentDetails?: ClaimIssuedPaymentDetails;
   respondent1?: CCDParty;
   hwfFeeType?: FeeType;
   statementOfMeans?: StatementOfMeans;
@@ -154,7 +160,7 @@ export interface CCDClaim extends ClaimUpdate {
   defenceAdmitPartPaymentTimeRouteRequired?: CCDPaymentOption;
   respondent1RepaymentPlan?: CCDRepaymentPlan;
   respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
-  responseClaimMediationSpecRequired?: string;
+  responseClaimMediationSpecRequired?: YesNoUpperCamelCase;
   specAoSApplicantCorrespondenceAddressRequired?: YesNoUpperCamelCase;
   claimantUserDetails?: IdamUserDetails;
   //Defendant Response part
@@ -189,12 +195,17 @@ export interface CCDClaim extends ClaimUpdate {
   respondent1DQWitnesses?: CCDWitnesses;
   respondent1DQHearingSmallClaim?: CCDSmallClaimHearing;
   respondent1DQHearingFastClaim?: CCDFastClaimHearing;
+  respondent1DQFixedRecoverableCostsIntermediate?: CCDFixedRecoverableCostsIntermediate;
+  specRespondent1DQDisclosureOfElectronicDocuments?: CCDDisclosureOfElectronicDocuments;
+  specRespondent1DQDisclosureOfNonElectronicDocuments?: CCDDisclosureOfNonElectronicDocuments;
+  respondent1DQClaimantDocumentsToBeConsidered?: CCDDocumentsToBeConsidered;
   sdoOrderDocument?: CaseDocument;
   respondToClaim?: CCDRespondToClaim;
   defenceRouteRequired?: string;
   respondent1DQExperts?: CCDExpert;
   responseClaimExpertSpecRequired?: YesNoUpperCamelCase;
   claimType?: string;
+  responseClaimTrack?: string;
   specDefenceAdmittedRequired?: YesNoUpperCamelCase;
   respondToAdmittedClaim?: CCDRespondToClaim;
   detailsOfWhyDoesYouDisputeTheClaim?: string;
@@ -268,18 +279,18 @@ export interface CCDClaim extends ClaimUpdate {
   trialReadyRespondent1?: YesNoUpperCamelCase;
   respondent1RevisedHearingRequirements?: CCDTrialArrangementsHearingRequirements;
   respondent1HearingOtherComments?: CCDTrialArrangementsOtherComments;
-  enterBreathing?: CCDBreathingSpaceStartInfo;
   claimFee?:CCDClaimFee;
   timelineOfEvents?:CCDTimeLineOfEvent[];
   helpWithFees ?: CCDHelpWithFees;
   pcqId?: string;
   applicant1ResponseDate?: Date;
-  liftBreathing?: CCDBreathingSpaceStartInfo;
   hearingFee?: HearingFee;
   hearingDueDate?: Date;
+  hearingFeeHelpWithFees?:CCDHelpWithFees;
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
   claimantBilingualLanguagePreference?:CCDLanguage;
   hearingHelpFeesReferenceNumber?: string;
+  hearingFeePaymentDetails?: PaymentDetails;
   mediationUploadDocuments?: UploadDocuments;
   applicant1LiPResponse?: CCDClaimantLiPResponse;
   applicant1LiPResponseCarm?: CcdMediationCarm;
@@ -289,6 +300,15 @@ export interface CCDClaim extends ClaimUpdate {
   res1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   res1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   claimIssuedHwfDetails?: CCDHelpWithFeesDetails;
+  mediationSettlementAgreedAt?: Date;
+  defendantResponseDocuments?: SystemGeneratedCaseDocuments[];
+  applicant1DefenceResponseDocumentSpec?: ResponseDocument;
+  isFlightDelayClaim?: string;
+  flightDelayDetails?: CCDFlightDelayDetails;
+  requestForReconsiderationDeadline?: Date;
+  requestForReconsiderationDocument?: CaseDocument;
+  requestForReconsiderationDocumentRes?: CaseDocument;
+  respondentSolGaAppDetails?: RespondentSolGaAppDetail[];
 }
 
 export interface ClaimFeeData {
@@ -300,4 +320,20 @@ export interface ClaimFeeData {
 export interface IdamUserDetails {
   email: string;
   id: string;
+}
+
+interface ClaimIssuedPaymentDetails {
+  status?: string;
+  reference?: string;
+}
+export interface RespondentSolGaAppDetail {
+  id: string;
+  value: {
+    generalApplicationType: string;
+    caseLink: {
+      CaseReference: string;
+    };
+    caseState: string;
+    generalAppSubmittedDateGAspec: string;
+  }
 }

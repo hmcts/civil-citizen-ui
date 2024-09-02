@@ -31,7 +31,6 @@ import {DirectionQuestionnaire} from 'common/models/directionsQuestionnaire/dire
 import {Hearing} from 'common/models/directionsQuestionnaire/hearing/hearing';
 import {Address} from 'common/form/models/address';
 import {FullAdmission} from 'common/models/fullAdmission';
-import {claimType} from 'form/models/claimType';
 import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {ExpertDetails} from 'models/directionsQuestionnaire/experts/expertDetails';
 import {ExpertDetailsList} from 'common/models/directionsQuestionnaire/experts/expertDetailsList';
@@ -43,6 +42,12 @@ import {ClaimantResponse} from 'models/claimantResponse';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {Mediation} from 'models/mediation/mediation';
 import {CompanyTelephoneNumber} from 'form/models/mediation/companyTelephoneNumber';
+import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
+import {PartyDetails} from 'common/form/models/partyDetails';
+import {FlightDetails} from 'common/models/flightDetails';
+import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
+import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
+import * as launchDarkly from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -986,6 +991,35 @@ describe('Documents', () => {
       //Then
       expect(result).toBe(mockClaim.systemGeneratedCaseDocuments[0].value);
     });
+
+    it('should return document details for directions questionnaire ', () => {
+      //Given
+      const claim = mockClaim;
+      //When
+      const result = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
+      //Then
+      expect(result).toBe(mockClaim.systemGeneratedCaseDocuments[3].value);
+    });
+  });
+
+  describe('getDocumentDetailsList', () => {
+    it('should return undefined with empty claim', () => {
+      //Given
+      const claim = new Claim();
+      //When
+      const result = claim.getDocumentDetailsList(DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
+      //Then
+      expect(result).toBeUndefined;
+    });
+
+    it('should return document details list', () => {
+      //Given
+      const claim = mockClaim;
+      //When
+      const result = claim.getDocumentDetailsList(DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT);
+      //Then
+      expect(result).toStrictEqual([mockClaim.systemGeneratedCaseDocuments[4], mockClaim.systemGeneratedCaseDocuments[5]]);
+    });
   });
 
   describe('isDefendantNotResponded', () => {
@@ -1281,6 +1315,131 @@ describe('Documents', () => {
     });
   });
 
+  describe('isCompany', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isCompany();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with company type', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.COMPANY;
+      //When
+      const result = claim.isCompany();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+  describe('isOrganisation', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isOrganisation();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with company type', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.ORGANISATION;
+      //When
+      const result = claim.isOrganisation();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+  describe('isDefendantDetailsCompleted', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isDefendantDetailsCompleted();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.COMPANY;
+      claim.respondent1.partyDetails = new PartyDetails({
+        partyName: 'Test Company',
+        primaryAddress: 'test',
+      });
+      claim.delayedFlight = new GenericYesNo(YesNo.NO);
+      //When
+      const result = claim.isDefendantDetailsCompleted();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.COMPANY;
+      claim.respondent1.partyDetails = new PartyDetails({
+        partyName: 'Test Company',
+        primaryAddress: 'test',
+      });
+      claim.delayedFlight = new GenericYesNo(YesNo.YES);
+      claim.flightDetails = new FlightDetails('test', '123', '1', '1', '2023');
+      //When
+      const result = claim.isDefendantDetailsCompleted();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return true', () => {
+      //Given
+      claim.respondent1 = new Party();
+      claim.respondent1.type = PartyType.ORGANISATION;
+      claim.respondent1.partyDetails = new PartyDetails({
+        partyName: 'Test Company',
+        primaryAddress: 'test',
+      });
+      claim.delayedFlight = new GenericYesNo(YesNo.YES);
+      claim.flightDetails = new FlightDetails('test', '123', '1', '1', '2023');
+      //When
+      const result = claim.isDefendantDetailsCompleted();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isAirlineComplete', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isAirlineComplete();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true when NO', () => {
+      //Given
+      claim.delayedFlight = new GenericYesNo(YesNo.NO);
+      //When
+      const result = claim.isAirlineComplete();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return false when YES and no details', () => {
+      //Given
+      claim.delayedFlight = new GenericYesNo(YesNo.YES);
+      //When
+      const result = claim.isAirlineComplete();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true when YES and has details', () => {
+      //Given
+      claim.delayedFlight = new GenericYesNo(YesNo.YES);
+      claim.flightDetails = new FlightDetails('test','123', '1', '2023', '1');
+      //When
+      const result = claim.isAirlineComplete();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
   describe('Claim formattedTotalClaimAmount', () => {
     const claim = new Claim();
     it('should return empty string', () => {
@@ -1388,14 +1547,12 @@ describe('Documents', () => {
       //Given
       claim.totalClaimAmount = 10000;
       //when Then
-      expect(claim.claimType).toEqual(claimType.SMALL_CLAIM);
       expect(claim.isFastTrackClaim).toBe(false);
     });
     it('Its a fast track claim', () => {
       //Given
       claim.totalClaimAmount = 11000;
       //when Then
-      expect(claim.claimType).toEqual(claimType.FAST_TRACK_CLAIM);
       expect(claim.isFastTrackClaim).toBe(true);
     });
   });
@@ -1486,6 +1643,20 @@ describe('Documents', () => {
       claim.caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, new Date(2023, 6, 9), null);
       //When
       const actualDate = claim.finalisingTrialArrangementsDeadline;
+      //Then
+      expect(expectedDate).toEqual(actualDate);
+    });
+  });
+
+  describe('test of method fourWeeksBeforeHearingDate', () => {
+    const claim = new Claim();
+
+    it('should return formatted date 4 weeks prior to 29 July 2023', () => {
+      //Given
+      const expectedDate = '1 July 2023';
+      claim.caseProgressionHearing = new CaseProgressionHearing([getCaseProgressionDocuments()], null, new Date(2023, 6, 29), null);
+      //When
+      const actualDate = claim.fourWeeksBeforeHearingDateString();
       //Then
       expect(expectedDate).toEqual(actualDate);
     });
@@ -2197,5 +2368,62 @@ describe('Documents', () => {
       //Then
       expect(result).toBe(false);
     });
+  });
+});
+describe('isCcjComplete', () => {
+  const claim = new Claim();
+  it('should return no when ccj not completed and state is correct', () => {
+    //Given
+    claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
+    //When
+    const result = claim.isCCJComplete();
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return yes when ccj completed and state is correct', () => {
+    //Given
+    claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.ccjRequest = new CCJRequest();
+    claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 1000, 9000);
+    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
+    //When
+    const result = claim.isCCJComplete();
+    //Then
+    expect(result).toBe(true);
+  });
+});
+describe('isCcjCompleteForJo', () => {
+  const claim = new Claim();
+  claim.claimantResponse = new ClaimantResponse();
+  claim.claimantResponse.ccjRequest = new CCJRequest();
+  claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 1000, 9000);
+  it('should return true when ccj completed, state is correct and flag is on', async() => {
+    //Given
+    claim.ccdState = CaseState.All_FINAL_ORDERS_ISSUED;
+    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+    //When
+    const result = claim.isCCJCompleteForJo(true);
+    //Then
+    expect(result).toBe(true);
+  });
+  it('should return false when ccj completed, state is correct and flag is off', async() => {
+    //Given
+    claim.ccdState = CaseState.All_FINAL_ORDERS_ISSUED;
+    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
+    //When
+    const result = claim.isCCJCompleteForJo(false);
+    //Then
+    expect(result).toBe(false);
+  });
+  it('should return false when ccj completed, state is incorrect and flag is on', async() => {
+    //Given
+    claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+    //When
+    const result = claim.isCCJCompleteForJo(true);
+    //Then
+    expect(result).toBe(false);
   });
 });

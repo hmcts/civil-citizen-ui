@@ -1,0 +1,50 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "../../../macro/evidence-summary.njk" import evidenceSummary %}
+{% from "../../../macro/timeline-summary.njk" import timelineSummary %}
+{% from "../../../macro/page-information.njk" import pageInformation %}
+{% from "../../../macro/amount-breakdown.njk" import amountBreakdownTable %}
+{% set claimHasBeenMadeHtml %}
+    <p class="govuk-body">{{ t('PAGES.CLAIM_DETAILS.CLAIM_HAS_BEEN_MADE_TEXT') }} <a id="order-and-notice-link" href="{{ ordersAndNoticesUrl }}" rel="noreferrer noopener" class="govuk-link">{{ t('COMMON.ORDER_AND_NOTICES') }}</a></p>
+{% endset -%}
+{% set evidenceRows = claim.claimantEvidence.evidenceItem %}
+
+{% block nestedContent %}
+
+    {{ pageInformation(t,pageCaption, pageTitle, claimId, totalAmount)}}
+
+    <br>
+    {{ govukDetails({
+            summaryText: t('PAGES.CLAIM_DETAILS.VIEW_AMOUNT_BREAKDOWN'),
+            html: amountBreakdownTable(claim, interestData, totalAmount, t)
+     }) }}
+     <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_DETAILS.REASON_FOR_CLAIM')+' :' }}</h2>
+     <p class="govuk-body">{{ claim.claimDetails.reason.text }}</p>
+     {% if timelineRows and timelineRows.length > 0 %}
+            {{ timelineSummary(t, timelineRows) }}
+          {% elseif timelinePdfUrl %}
+            <div class="govuk-body">
+              <h2 class="govuk-heading-s">{{ t('PAGES.CLAIM_DETAILS.TIMELINE') }}</h2>
+              <a id="timeline-link" href={{ timelinePdfUrl }} target="_blank" rel="noreferrer noopener" class="govuk-link">{{ t('PAGES.CLAIM_DETAILS.DOWNLOAD_AND_VIEW_TIMELINE') }}</a>
+            </div>
+     {% endif %}
+     {% if evidenceRows and evidenceRows.length %}
+            {{ evidenceSummary(evidenceRows, t) }}
+     {% endif %}
+     <p class="govuk-body">
+       <span class="govuk-!-font-weight-bold">
+           {{ t('PAGES.CLAIM_DETAILS.PAGE_TITLE_NEW') }}
+       </span>
+     </p>
+     <p class="govuk-body"><a id="sealed-claim-link" href={{ sealedClaimPdfUrl }} target="_blank" rel="noreferrer noopener" class="govuk-link">{{ t('PAGES.CLAIM_DETAILS.VIEW_THE_CLAIM_PDF') }}</a></p>
+     <br>
+     {{ govukButton({
+        text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW'),
+        href: dashboardUrl
+     }) }}
+     {{ govukDetails({
+            summaryText: t('COMMON.CANNOT_FIND_DOCUMENT_TEXT'),
+            html: claimHasBeenMadeHtml
+      }) }}
+{% endblock %}

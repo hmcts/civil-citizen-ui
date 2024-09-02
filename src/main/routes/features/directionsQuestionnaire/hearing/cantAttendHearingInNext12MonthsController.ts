@@ -21,7 +21,7 @@ const dqPropertyName = 'cantAttendHearingInNext12Months';
 const dqParentName = 'hearing';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render('features/directionsQuestionnaire/hearing/cant-attend-hearing-in-next-12-months', {form});
+  res.render('features/directionsQuestionnaire/hearing/cant-attend-hearing-in-next-12-months', {form, pageTitle: 'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE'});
 }
 
 cantAttendHearingInNext12MonthsController.get(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL, (async (req, res, next) => {

@@ -9,12 +9,15 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.CHECK_YOUR_ANSWER.TITLE') }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
+      {% if form.hasErrors() %}
+        {{ errorSummary(form.getErrors(), t) }}
+      {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.CHECK_YOUR_ANSWER.TITLE') }}</h1>
@@ -37,8 +40,8 @@
             {{ statementOfTruth(
             t,
             form,
-            statementOfTruthType = SignatureType.BASIC,
-            labelHtml = t('PAGES.CHECK_YOUR_ANSWER.DECLARATION'),
+            t('PAGES.CHECK_YOUR_ANSWER.DECLARATION'),
+            false,
             isQualified = (signatureType === SignatureType.QUALIFIED),
             isFullAmountRejected = isFullAmountRejected,
             title = t('PAGES.CHECK_YOUR_ANSWER.DECLARATION_TITLE')

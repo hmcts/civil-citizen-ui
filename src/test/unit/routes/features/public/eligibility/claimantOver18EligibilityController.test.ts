@@ -1,7 +1,9 @@
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {
-  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, ELIGIBILITY_APPLY_HELP_WITH_FEES_URL, ELIGIBILITY_CLAIMANT_AGE_URL,
+  NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
+  ELIGIBILITY_CLAIMANT_AGE_URL,
+  ELIGIBILITY_HELP_WITH_FEES_URL,
 } from '../../../../../../main/routes/urls';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {constructUrlWithNotEligibleReason} from '../../../../../../main/common/utils/urlFormatter';
@@ -54,7 +56,7 @@ describe('Claimant Over 18 Eligibility Controller', () => {
       app.request.cookies = {eligibility: {foo: 'blah'}};
       await request(app).post(ELIGIBILITY_CLAIMANT_AGE_URL).send({option: YesNo.YES}).expect((res) => {
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(ELIGIBILITY_APPLY_HELP_WITH_FEES_URL);
+        expect(res.header.location).toBe(ELIGIBILITY_HELP_WITH_FEES_URL);
         expect(app.request.cookies.eligibility.claimantOver18).toBe(YesNo.YES);
         expect(app.request.cookies.eligibility.foo).toBe('blah');
       });

@@ -7,6 +7,8 @@ import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
 import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils';
 import {AppRequest} from 'common/models/AppRequest';
+import {getClaimById} from 'modules/utilityService';
+import {Request} from 'express';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -74,8 +76,23 @@ const createNewCivilClaimResponse = (claimId: string) => {
   return storedClaimResponse;
 };
 
-export const deleteDraftClaimFromStore = async (claimId: string): Promise<void> => {
-  await app.locals.draftStoreClient.del(claimId);
+export const deleteDraftClaimFromStore = async (claimId: string, field?: string): Promise<void> => {
+  await app.locals.draftStoreClient.del(claimId, field);
+};
+
+export const deleteFieldDraftClaimFromStore = async (claimId: string, claim: Claim, propertyName: string): Promise<void> => {
+  if (Object.prototype.hasOwnProperty.call(claim, propertyName)) {
+    delete claim[propertyName];
+    await saveDraftClaim(claimId, claim);
+  }
+};
+
+export const updateFieldDraftClaimFromStore = async (claimId: string, req: Request, propertyName: string, newValue: string): Promise<void> => {
+  const claim = await getClaimById(claimId, req, true);
+  const redisKey = generateRedisKey(<AppRequest>req);
+  claim[propertyName] = newValue;
+  await saveDraftClaim(redisKey, claim);
+
 };
 
 export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
@@ -92,4 +109,8 @@ export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
 
 export function generateRedisKey(req: AppRequest) {
   return req.params.id + req.session.user?.id;
+}
+
+export function generateRedisKeyForGA(req: AppRequest) {
+  return req.params.appId + req.session.user?.id;
 }

@@ -3,6 +3,8 @@ security:
   referrerPolicy: 'origin'
 port: 3001
 timeout: 30000
+dynatrace:
+  url: https://js-cdn.dynatrace.com/jstag/17177a07246/bf24054dsx/59eec5518455ca7b_complete.js
 services:
   civilService:
     url: 'http://localhost:4000'
@@ -11,6 +13,7 @@ services:
     ordnanceSurveyApiKey:
   launchDarkly:
     sdk:
+    env: 'default'
   idam:
     url: 'http://localhost:5000'
     authorizationURL: 'http://localhost:9002/login'
@@ -54,7 +57,17 @@ services:
     tokenKey: 'test'
   govPay:
     url: 'https://card.payments.service.gov.uk'
-  carmDate: '01 May 2024'
+  enforceJudgment:
+    url: 'https://www.gov.uk/make-court-claim-for-money/enforce-a-judgment'
+  civilMoneyClaims:
+    telephone: '0300 123 7050'
+    courtEmailId: 'ocmcnton@justice.gov.uk'
+    welshspeaker:
+      telephone: '0300 303 5174'
+  applyForCertificate:
+    url: 'https://www.gov.uk/government/publications/form-n443-application-for-a-certificate-of-satisfaction-or-cancellation'
+  generalApplication:
+    url: 'http://localhost:4550'
 health:
   timeout: 5000
   deadline: 15000

@@ -27,7 +27,7 @@ import civilClaimResponseFastTrackMock from './mocks/civilClaimResponseFastTrack
 import mockDefendantResponseSmallClaimRejectClaimMock from './mocks/mockDefendantResponseSmallClaimRejectClaimMock.json';
 import civilClaimResponseHearingFeeMock from './mocks/civilClaimResponseHearingFeeMock.json';
 import civilClaimResponseWithFeeType from './mocks/civilClaimResponseWithFeeTypeMock.json';
-import civilClaimResponseDefendantMock from './mocks/civilClaimResponseClaimantIntentionMockNotSettle.json';
+import civilClaimResponseDefendantMock from './mocks/civilClaimResponseDefendantMock.json';
 import civilClaimResponseClaimantIntentionMockNotSettle from './mocks/civilClaimResponseClaimantIntentionMockNotSettle.json';
 
 import {LoggerInstance} from 'winston';

@@ -9,7 +9,7 @@
 {% from "../../macro/support-required.njk" import supportRequired %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.SUPPORT_REQUIRED.PAGE_TITLE') }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% set rowNumberToShowRemoveButton = 2 %}
@@ -27,7 +27,8 @@
   <div>
     {{ govukButton({
       text: t('PAGES.SUPPORT_REQUIRED.ADD_ANOTHER'),
-      classes: "govuk-button--secondary append-row"
+      classes: "govuk-button--secondary append-row",
+      type: "button"
     }) }}
   </div>
 {% endset %}
@@ -47,7 +48,8 @@
             {{ yesNoRadioButton(t, 'model[option]', 'option', '', form, '', {yesHtml: supportDetailsHtml, yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO'}) }}
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+                type: "submit"
               }) }}
               {{ contactUsForHelp(t) }}
             </div>

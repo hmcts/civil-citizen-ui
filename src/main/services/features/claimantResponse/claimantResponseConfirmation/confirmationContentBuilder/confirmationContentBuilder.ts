@@ -2,16 +2,22 @@ import {ClaimSummarySection} from 'common/form/models/claimSummarySection';
 import {Claim} from 'common/models/claim';
 import {ClaimResponseStatus} from 'common/models/claimResponseStatus';
 import {getClaimantResponseStatus, getRCDisputeNotContinueNextSteps} from './disputeConfirmationContentBuilder';
-import {getPAPayImmediatelyAcceptedNextSteps, getRejectedResponseNoMediationNextSteps, getRejectedResponseYesMediationNextSteps} from './partAdmitConfirmationContentBuilder';
+import {
+  getPAPayImmediatelyAcceptedNextSteps,
+  getRejectedResponseNoMediationNextSteps,
+  getRejectedResponseYesMediationNextSteps,
+} from './partAdmitConfirmationContentBuilder';
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {
-  getCCJNextSteps, getCCJNextStepsForRejectedRepaymentPlan, getCCJNextStepsForJudgeDecideRepaymentPlan,
+  getCCJNextSteps,
+  getCCJNextStepsForJudgeDecideRepaymentPlan,
+  getCCJNextStepsForRejectedRepaymentPlan,
 } from 'services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/ccjConfirmationBuilder';
 import {getSignSettlementAgreementNextSteps} from './signSettlementAgreementContentBuilder';
 import {getSendFinancialDetails} from './financialDetailsBuilder';
 import {CaseState} from 'common/form/models/claimDetails';
 import {YesNo} from 'form/models/yesNo';
-import { getClaimSettleNextSteps } from './claimSettleConfirmationBuilder';
+import {getClaimSettleNextSteps} from './claimSettleConfirmationBuilder';
 import {
   getMediationCarmNextSteps,
 } from 'services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/mediationConfirmationContentBuilder';
@@ -20,7 +26,7 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   let claimantResponseStatusTitle: string;
   if (isClaimantRejectPaymentPlan(claim) && !claimantResponse.isCCJRepaymentPlanConfirmationPageAllowed() &&
-    claimantResponse.isClaimantRejectedCourtDecision) {
+    (claimantResponse.isClaimantRejectedCourtDecision || claim.isBusiness())) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.REJECTED_PAYMENT_PLAN.MESSAGE';
   } else if (claimantResponse.isSignASettlementAgreement) {
     claimantResponseStatusTitle = 'PAGES.CLAIMANT_RESPONSE_CONFIRMATION.SIGN_SETTLEMENT_AGREEMENT.TITLE';
@@ -38,12 +44,12 @@ export function buildClaimantResponseSection(claim: Claim, lang: string): ClaimS
   return getClaimantResponseStatus(claim, claimantResponseStatusTitle, lang);
 }
 
-export function buildNextStepsSection(claim: Claim, lang: string, carmApplicable: boolean): ClaimSummarySection[] {
+export function buildNextStepsSection(claim: Claim, lang: string, carmApplicable: boolean, respondToSettlementAgreementDeadLine?: Date): ClaimSummarySection[] {
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   const RCDisputeNotContinueNextSteps = getRCDisputeNotContinueNextSteps(claim, lang);
   const PAPayImmediatelyAcceptedNextSteps = getPAPayImmediatelyAcceptedNextSteps(claim, lang);
   const ccjNextSteps = getCCJNextSteps(claim, lang);
-  const SignSettlementAgreementNextSteps = getSignSettlementAgreementNextSteps(claim, lang);
+  const SignSettlementAgreementNextSteps = getSignSettlementAgreementNextSteps(claim, lang, respondToSettlementAgreementDeadLine);
   const RejectedResponseNoMediationNextSteps = getRejectedResponseNoMediationNextSteps(lang);
   const RejectedResponseYesMediationNextSteps = getRejectedResponseYesMediationNextSteps(lang);
   const RejectedResponseCarmMediationNextSteps = getMediationCarmNextSteps(lang);
@@ -65,7 +71,8 @@ export function buildNextStepsSection(claim: Claim, lang: string, carmApplicable
     return sendFinancialDetails;
   }
 
-  if ((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && claimantResponse.isSignASettlementAgreement) {
+  if (((claimantResponse.isSignSettlementAgreement || isClaimantRejectPaymentPlan(claim)) && claimantResponse.isSignASettlementAgreement)
+    || (claim.claimantResponse.isClaimantAcceptedPaymentPlan && claimantResponse.isSignASettlementAgreement)) {
     return SignSettlementAgreementNextSteps;
   }
   if (claim.responseStatus === ClaimResponseStatus.RC_DISPUTE && claimantResponse.isClaimantNotIntendedToProceed) {

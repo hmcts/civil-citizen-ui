@@ -28,7 +28,6 @@ import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPaid';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
-import {CaseDocument} from 'common/models/document/caseDocument';
 import {Document} from 'common/models/document/document';
 import {
   SystemGeneratedCaseDocumentsWithSEALEDCLAIMAndSDOMock,
@@ -37,6 +36,7 @@ import {
 import {ClaimantResponse} from 'models/claimantResponse';
 import {Mediation} from 'models/mediation/mediation';
 import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
 
 jest.mock('../../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -655,6 +655,8 @@ describe('Latest Update Content Builder', () => {
     it('should have build claim ended section', () => {
       // Given
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
+      claim.claimantResponse = new ClaimantResponse();
+      claim.claimantResponse.intentionToProceed = {option: YesNo.NO};
       claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
@@ -662,6 +664,23 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection.length).toBe(2);
       expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIM_ENDED_TITLE');
       expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIM_ENDED_MESSAGE');
+      expect(responseToClaimSection[2]).toBeUndefined();
+    });
+  });
+
+  describe('test Claim Taken offline buildResponseToClaimSection', () => {
+    it('should have build claim taken offline section', () => {
+      // Given
+      const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.FULL_DEFENCE, undefined);
+      claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+      claim.takenOfflineDate = new Date();
+
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);
+      // Then
+      expect(responseToClaimSection.length).toBe(2);
+      expect(responseToClaimSection[0].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIM_TAKEN_OFFLINE_TITLE');
+      expect(responseToClaimSection[1].data.text).toBe('PAGES.LATEST_UPDATE_CONTENT.CLAIM_TAKEN_OFFLINE_MESSAGE');
       expect(responseToClaimSection[2]).toBeUndefined();
     });
   });
@@ -716,7 +735,7 @@ describe('Latest Update Content Builder', () => {
     it('should have build default judgement submitted section', () => {
       // Given
       const claim = getClaim(PartyType.INDIVIDUAL, ResponseType.PART_ADMISSION, PaymentOptionType.INSTALMENTS);
-      claim.defaultJudgmentDocuments = [<CaseDocument>{}];
+      claim.defaultJudgmentDocuments = [<SystemGeneratedCaseDocuments>{}];
       claim.claimantResponse.fullAdmitSetDateAcceptPayment = new GenericYesNo(YesNo.YES);
       // When
       const responseToClaimSection = buildResponseToClaimSection(claim, claim.id, lng);

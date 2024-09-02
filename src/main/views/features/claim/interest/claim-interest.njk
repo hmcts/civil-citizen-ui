@@ -7,7 +7,7 @@
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.CLAIM_JOURNEY.CLAIM_INTEREST.PAGE_TITLE') }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% block content %}
@@ -25,7 +25,7 @@
 
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline'}) }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '',{yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
             {% include "features/claim/help-with-interest-rates.njk"%}
             <div class="govuk-form-group">
               {{ govukButton({

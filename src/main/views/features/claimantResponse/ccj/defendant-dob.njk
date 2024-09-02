@@ -8,7 +8,7 @@
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.CCJ_DEFENDANT_DOB.PAGE_TITLE') }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% set errors = form.getAllErrors() %}
@@ -81,7 +81,7 @@
             </div>
             {% endset %}
 
-            {{ yesNoRadioButton(t,id,name, title, form, description, {yesHtml: yesHtml}) }}
+            {{ yesNoRadioButton(t,id,name, title, form, description, {yesHtml: yesHtml, yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
 
             <div class="govuk-form-group">
               {{ govukButton({

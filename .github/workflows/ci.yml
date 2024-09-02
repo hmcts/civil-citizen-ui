@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - master
+  push:
+    branches:
+      - master
+      - refs/tags/*
+    tags:
+      - '*'
+
+env:
+  CI: true
+  NODE_OPTIONS: --max-old-space-size=4096
+  CIVIL_SERVICE_URL: http://localhost:1111
+  TEST_URL: http://localhost:3001
+  IDAM_API_URL: http://localhost:1111
+  ENVIRONMENT: preview
+  LAUNCH_DARKLY_SDK: test
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 21.6.1
+      - name: Install
+        run: yarn install && yarn playwright install
+      - name: Build
+        run: yarn build
+      - name: Starting WireMock
+        run: yarn wiremock:start &
+      - name: Starting CUI
+        run: yarn start:e2e &
+      - name: Waiting CUI to get ready
+        run: sleep 10
+      - name: Executing e2e tests
+        run: yarn test:e2e
+      - name: Upload e2e test artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-tests-results
+          path: test-results/functional

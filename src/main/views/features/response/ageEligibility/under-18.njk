@@ -1,6 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
+{% import "external-urls.njk" as externalURLs %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.UNDER_18.PAGE_TITLE') }}
@@ -26,7 +27,7 @@
           <h3 class='govuk-heading-m'>{{ t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') }}</h3>
           <p class="govuk-body">{{ t('COMMON.POSTAL_ADDRESS.TELEPHONE') }}<br/>
             {{ t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS') }}<br/>
-            <a href='https://www.gov.uk/call-charges'
+            <a href= {{externalURLs.callChargesUrl}}
                target='_blank'>{{ t('COMMON.CONTACT_US_FOR_HELP.CALL_CHARGES') }}</a>
           </p>
           <p class="govuk-body">

@@ -1,0 +1,38 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+
+{% block pageTitle %}
+{{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.RESPONSE_CONFIRMATION.TITLE') }}
+{% endblock %}
+
+{% block content %}
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+  {{ govukPanel({
+  titleText: t('PAGES.GENERAL_APPLICATION.RESPONSE_CONFIRMATION.TITLE')
+}) }}
+  <h2  class="govuk-heading-m">{{ t('PAGES.GENERAL_APPLICATION.RESPONSE_CONFIRMATION.NEXT_STEPS') }}</h2>
+  <p class="govuk-body">
+    {{ t('PAGES.GENERAL_APPLICATION.RESPONSE_CONFIRMATION.JUDGE_WILL_CONSIDER') }}
+  </p>
+  <p class="govuk-body">
+    {{ t('PAGES.GENERAL_APPLICATION.RESPONSE_CONFIRMATION.APPLICATION_HEARING') }}
+  </p>
+  <p class="govuk-body">
+    {{ t('PAGES.GENERAL_APPLICATION.RESPONSE_CONFIRMATION.NOTIFICATION') }}
+  </p>
+  <p class="govuk-body">
+    {{ t('PAGES.GENERAL_APPLICATION.RESPONSE_CONFIRMATION.REVIEW') }}
+  </p>
+  <div class="form-group">
+    {{ govukButton({
+    text: t('PAGES.GENERAL_APPLICATION.RESPONSE_CONFIRMATION.CLOSE_AND_RETURN'),
+    href: '/dashboard'
+  }) }}
+  </div>
+</div>
+</div>
+{% endblock %}>

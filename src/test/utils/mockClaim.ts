@@ -226,6 +226,51 @@ function buildMockClaim(): Claim {
         createdDatetime: new Date('2022-06-21T14:15:19'),
       },
     },
+    {
+      id: '1234567',
+      value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de',
+          document_filename: 'claimant_directions_questionnaire_000MC001.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary',
+        },
+        documentName: 'claimant_directions_questionnaire_000MC001.pdf',
+        documentSize: 345683,
+        documentType: DocumentType.DIRECTIONS_QUESTIONNAIRE,
+        createdDatetime: new Date('2022-06-21T14:15:19'),
+      },
+    },
+    {
+      id: '1234556',
+      value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de',
+          document_filename: 'sealed_claim_form_000MC001.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary',
+        },
+        documentName: 'translated_order_000MC001.pdf',
+        documentSize: 45794,
+        documentType: DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT,
+        createdDatetime: new Date('2022-06-21T14:15:19'),
+      },
+    },
+    {
+      id: '1234556',
+      value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de',
+          document_filename: 'sealed_claim_form_000MC001.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/71582e35-300e-4294-a604-35d8cabc33de/binary',
+        },
+        documentName: 'translated_order_000MC001.pdf',
+        documentSize: 45794,
+        documentType: DocumentType.ORDER_NOTICE_TRANSLATED_DOCUMENT,
+        createdDatetime: new Date('2022-06-21T14:15:19'),
+      },
+    },
   ];
   _mockClaim.respondent1ResponseDeadline = new Date('2022-08-20T00:00:00');
   _mockClaim.responseDeadline = {

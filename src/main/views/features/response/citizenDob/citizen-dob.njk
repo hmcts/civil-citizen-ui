@@ -24,8 +24,11 @@
         {% set title = t('PAGES.CITIZEN_DOB.TITLE') %}
       {% endif %}
       {% set errors = form.getErrors() %}
+      {% if maxDateForAge18 %}
+        {% set maxDate = maxDateForAge18.toJSON() | addDaysTranslated(1, t) %}
+      {% endif %}
       {% if form.hasErrors() %}
-        {{ errorSummary(errors, t) }}
+        {{ errorSummary(errors,t,[{keyError:'ERRORS.VALID_ENTER_A_DATE_BEFORE',keyToReplace:'{{ maxDate }}',valueToReplace:maxDate}]) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -41,7 +44,7 @@
             <div class="govuk-form-group {% if form.hasErrors() %} govuk-form-group--error{% endif %}">
               {% if form.hasErrors() %}
                 {% for error in errors %}
-                  <span class="govuk-error-message">{{ t(error.text) }}</span>
+                  <span class="govuk-error-message">{{ t(error.text, {maxDate: maxDate}) }}</span>
                 {% endfor %}
               {% endif %}
               {{ govukDateInput({

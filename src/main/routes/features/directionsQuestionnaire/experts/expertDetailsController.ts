@@ -17,11 +17,12 @@ const expertDetailsController = Router();
 const expertDetailsViewPath = 'features/directionsQuestionnaire/experts/expert-details';
 const dqPropertyName = 'expertDetailsList';
 const dqParentName = 'experts';
+const pageTitle= 'PAGES.EXPERT_DETAILS.PAGE_TITLE';
 
 expertDetailsController.get(DQ_EXPERT_DETAILS_URL, (async (req, res, next: NextFunction) => {
   try {
     const form = new GenericForm(await getExpertDetails(generateRedisKey(<AppRequest>req)));
-    res.render(expertDetailsViewPath, {form});
+    res.render(expertDetailsViewPath, {form, pageTitle});
   } catch (error) {
     next(error);
   }
@@ -35,7 +36,7 @@ expertDetailsController.post(DQ_EXPERT_DETAILS_URL, (async (req, res, next: Next
     form.validateSync();
 
     if (form.hasNestedErrors()) {
-      res.render(expertDetailsViewPath, {form});
+      res.render(expertDetailsViewPath, {form, pageTitle});
     } else {
       await saveDirectionQuestionnaire(redisKey, expertDetailsList, dqPropertyName, dqParentName);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, DQ_GIVE_EVIDENCE_YOURSELF_URL));

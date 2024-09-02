@@ -175,7 +175,7 @@ describe('Unemployemt Details', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.html).toBe('Retired');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.html).toBe('PAGES.UNEMPLOYMENT.RETIRED');
   });
 
   it('should return unemployment details with unemployment category equal to "Other" when it exists', async () => {

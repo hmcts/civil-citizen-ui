@@ -23,7 +23,7 @@ const dqPropertyName = 'determinationWithoutHearing';
 const dqParentName = 'hearing';
 
 function renderView(form: GenericForm<DeterminationWithoutHearing>, res: Response): void {
-  res.render(determinationWithoutHearingViewPath, {form});
+  res.render(determinationWithoutHearingViewPath, {form, pageTitle: 'PAGES.DETERMINATION_WITHOUT_HEARING.TITLE'});
 }
 
 determinationWithoutHearingController

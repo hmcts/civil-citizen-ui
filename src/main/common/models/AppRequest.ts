@@ -28,6 +28,10 @@ export interface AppSession extends Session {
   assignClaimURL: string;
   claimIssueTasklist: boolean;
   firstContact: FirstContact;
+  fileUpload: string;
+  issuedAt: number;
+  dashboard: Dashboard;
+  history?: string[];
 }
 
 export interface UserDetails {
@@ -39,3 +43,6 @@ export interface UserDetails {
   roles: string[];
 }
 
+export interface Dashboard {
+  taskIdHearingUploadDocuments: string;
+}

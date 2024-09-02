@@ -1,9 +1,5 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/label/macro.njk" import govukLabel %}
-{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
-{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "../dashboard/item-content.njk" import itemContent %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
@@ -32,7 +28,7 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
 
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO', classes: 'govuk-radios--inline'}) }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO', classes: 'govuk-radios--inline'}) }}
 
             <div class="govuk-form-group">
               {{ govukButton({

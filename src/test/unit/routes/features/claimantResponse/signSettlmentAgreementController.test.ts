@@ -11,6 +11,8 @@ import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ResponseType} from 'common/form/models/responseType';
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import { PartyType } from 'common/models/partyType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -62,6 +64,56 @@ describe('Sign Settlement Agreement', () => {
       await request(app).get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.TITLE'));
+      });
+    });
+
+    it('should return sign settlement agreement page - court decision in favour of claimant', async () => {
+      const civilClaimResponseMock = {
+        'case_data': {
+          'respondent1': {
+            'partyDetails': { 'firstName': 'John', 'lastName': 'White' },
+            'responseType': ResponseType.PART_ADMISSION,
+            'type': PartyType.INDIVIDUAL,
+          },
+          'applicant1': {
+            'partyDetails': { 'firstName': 'James', 'lastName': 'White' },
+            'type': PartyType.INDIVIDUAL,
+          },
+          'claimantResponse': {
+            'courtProposedPlan': {
+              'decision': 'ACCEPT_REPAYMENT_PLAN',
+            },
+            'courtDecision': 'IN_FAVOUR_OF_CLAIMANT',
+            'suggestedPaymentIntention':{
+              'paymentOption': 'IMMEDIATELY',
+            },
+            'suggestedImmediatePaymentDeadLine': new Date(Date.now()),
+          },
+          'partialAdmission': {
+            'alreadyPaid': { 'option': 'yes' },
+            'howMuchDoYouOwe': { 'amount': 200, 'totalAmount': 1000 },
+            'paymentIntention': {
+              'repaymentPlan': {
+                'paymentAmount': 50,
+                'repaymentFrequency': TransactionSchedule.WEEK,
+                'firstRepaymentDate': new Date(Date.now()),
+              },
+            },
+          },
+        },
+      };
+      app.locals.draftStoreClient = {
+        set: jest.fn(() => Promise.resolve({})),
+        get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
+        del: jest.fn(() => Promise.resolve({})),
+      };
+
+      await request(app).get(CLAIMANT_SIGN_SETTLEMENT_AGREEMENT).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.TITLE'));
+        expect(res.text).toContain(t('PAGES.CLAIMANT_TERMS_OF_AGREEMENT.DETAILS.THE_AGREEMENT.IMMEDIATE_PLAN',
+          {fullName: 'John White', amount: '£200', claimant: 'James White', paymentDate: formatDateToFullDate(new Date())},
+        ));
       });
     });
 

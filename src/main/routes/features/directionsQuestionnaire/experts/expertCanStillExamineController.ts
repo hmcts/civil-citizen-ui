@@ -21,7 +21,7 @@ const dqPropertyName = 'expertCanStillExamine';
 const dqParentName = 'experts';
 
 function renderView(form: GenericForm<ExpertCanStillExamine>, res: Response): void {
-  res.render(expertCanStillExamineViewPath, {form});
+  res.render(expertCanStillExamineViewPath, {form, pageTitle: 'PAGES.DEFENDANT_EXPERT_CAN_STILL_EXAMINE.PAGE_TITLE'});
 }
 
 expertCanStillExamineController.get(DQ_EXPERT_CAN_STILL_EXAMINE_URL, (async (req, res, next: NextFunction) => {

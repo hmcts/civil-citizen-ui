@@ -6,7 +6,7 @@ module.exports = {
         'respondent1ClaimResponseTypeForSpec': 'PART_ADMISSION',
         'defenceAdmitPartPaymentTimeRouteRequired': 'IMMEDIATELY',
         'respondToClaimAdmitPartLRspec': {
-          
+
         },
         'responseClaimMediationSpecRequired': 'No',
         'specAoSApplicantCorrespondenceAddressRequired': 'Yes',
@@ -16,7 +16,7 @@ module.exports = {
           'individualFirstName': 'John',
           'individualLastName': 'Doe',
           'individualTitle': 'Sir',
-          'partyEmail': 'claimantcitizen-s696s79@gmail.com',
+          'partyEmail': 'civilmoneyclaimsdemo@gmail.com',
           'partyPhone': '07800000000',
           'primaryAddress': {
             'AddressLine1': 'TestAddressLine1',
@@ -50,7 +50,7 @@ module.exports = {
           'respondent1ResponseLanguage': 'ENGLISH',
         },
         'respondent1LiPFinancialDetails': {
-          
+
         },
         'respondToAdmittedClaim': {
           'howMuchWasPaid': 34500,
@@ -79,18 +79,18 @@ module.exports = {
           },
         ],
         'respondent1DQHomeDetails': {
-          
+
         },
         'respondent1PartnerAndDependent': {
           'howManyChildrenByAgeGroup': {
-            
+
           },
         },
         'specDefendant1SelfEmploymentDetails': {
-          
+
         },
         'respondToClaimAdmitPartUnemployedLRspec': {
-          
+
         },
         'respondent1DQLanguage': {
           'court': 'WELSH',
@@ -104,10 +104,10 @@ module.exports = {
           'otherPartyPreferredSite': '',
           'responseCourtCode': '',
           'responseCourtLocations': [
-            
+
           ],
           'caseLocation': {
-            
+
           },
         },
         'respondent1DQWitnesses': {
@@ -179,7 +179,7 @@ module.exports = {
           'individualFirstName': 'John',
           'individualLastName': 'Doe',
           'individualTitle': 'Sir',
-          'partyEmail': 'claimantcitizen-s696s79@gmail.com',
+          'partyEmail': 'civilmoneyclaimsdemo@gmail.com',
           'partyPhone': '07800000000',
           'primaryAddress': {
             'AddressLine1': 'TestAddressLine1',
@@ -213,7 +213,7 @@ module.exports = {
           'respondent1ResponseLanguage': 'ENGLISH',
         },
         'respondent1LiPFinancialDetails': {
-          
+
         },
         'specDefenceAdmittedRequired': 'No',
         'respondToAdmittedClaimOwingAmountPounds': '569',
@@ -221,7 +221,7 @@ module.exports = {
         'detailsOfWhyDoesYouDisputeTheClaim': 'disagree with the claim amount',
         'specClaimResponseTimelineList': 'MANUAL',
         'specResponseTimelineOfEvents': [
-          
+
         ],
         'specResponselistYourEvidenceList': [
           {
@@ -233,18 +233,18 @@ module.exports = {
           },
         ],
         'respondent1DQHomeDetails': {
-          
+
         },
         'respondent1PartnerAndDependent': {
           'howManyChildrenByAgeGroup': {
-            
+
           },
         },
         'specDefendant1SelfEmploymentDetails': {
-          
+
         },
         'respondToClaimAdmitPartUnemployedLRspec': {
-          
+
         },
         'respondent1DQLanguage': {
           'court': 'ENGLISH',
@@ -258,10 +258,10 @@ module.exports = {
           'otherPartyPreferredSite': '',
           'responseCourtCode': '',
           'responseCourtLocations': [
-            
+
           ],
           'caseLocation': {
-            
+
           },
         },
         'respondent1DQWitnesses': {
@@ -308,7 +308,7 @@ module.exports = {
           'individualFirstName': 'John',
           'individualLastName': 'Doe',
           'individualTitle': 'Sir',
-          'partyEmail': 'claimantcitizen-s696s79@gmail.com',
+          'partyEmail': 'civilmoneyclaimsdemo@gmail.com',
           'partyPhone': '07800000000',
           'primaryAddress': {
             'AddressLine1': 'TestAddressLine1',
@@ -350,13 +350,13 @@ module.exports = {
         'specDefenceAdmittedRequired': 'No',
         'respondToAdmittedClaimOwingAmountPounds': '3456',
         'respondToAdmittedClaimOwingAmount': '345600',
-        'detailsOfWhyDoesYouDisputeTheClaim': 'disagree with the claim amount?\r\n',
+        'detailsOfWhyDoesYouDisputeTheClaim': 'Test reason - disagree with the claim amount?\r\n',
         'specClaimResponseTimelineList': 'MANUAL',
         'specResponseTimelineOfEvents': [
-          
+
         ],
         'specResponselistYourEvidenceList': [
-          
+
         ],
         'respondent1BankAccountList': [
           {
@@ -398,11 +398,11 @@ module.exports = {
           'reason': 'tax pay',
         },
         'respondToClaimAdmitPartUnemployedLRspec': {
-          
+
         },
         'respondent1CourtOrderPaymentOption': 'No',
         'respondent1CourtOrderDetails': [
-          
+
         ],
         'respondent1LoanCreditOption': 'Yes',
         'respondent1LoanCreditDetails': [
@@ -606,10 +606,10 @@ module.exports = {
           'otherPartyPreferredSite': '',
           'responseCourtCode': '',
           'responseCourtLocations': [
-            
+
           ],
           'caseLocation': {
-            
+
           },
         },
         'respondent1DQWitnesses': {
@@ -651,7 +651,7 @@ module.exports = {
           'firstRepaymentDate': '2045-08-08T00:00:00.000Z',
         },
         'respondToClaimAdmitPartLRspec': {
-          
+
         },
         'responseClaimMediationSpecRequired': 'No',
         'specAoSApplicantCorrespondenceAddressRequired': 'Yes',
@@ -661,7 +661,7 @@ module.exports = {
           'individualFirstName': 'John',
           'individualLastName': 'Doe',
           'individualTitle': 'Sir',
-          'partyEmail': 'claimantcitizen-s696s79@gmail.com',
+          'partyEmail': 'civilmoneyclaimsdemo@gmail.com',
           'partyPhone': '07800000000',
           'primaryAddress': {
             'AddressLine1': 'TestAddressLine1',
@@ -693,7 +693,7 @@ module.exports = {
           'respondent1ResponseLanguage': 'ENGLISH',
         },
         'respondent1LiPFinancialDetails': {
-          
+
         },
         'specDefenceAdmittedRequired': 'No',
         'respondToAdmittedClaimOwingAmountPounds': '1236',
@@ -701,14 +701,14 @@ module.exports = {
         'detailsOfWhyDoesYouDisputeTheClaim': 'disagree with the claim amount',
         'specClaimResponseTimelineList': 'MANUAL',
         'specResponseTimelineOfEvents': [
-          
+
         ],
         'respondent1BankAccountList': [
           {
             'value': {
               'accountType': 'CURRENT',
               'jointAccount': 'Yes',
-              'balance': 56000,
+              'balance': 56,
             },
           },
         ],
@@ -722,13 +722,13 @@ module.exports = {
           'liveWithPartnerRequired': 'No',
           'haveAnyChildrenRequired': 'No',
           'howManyChildrenByAgeGroup': {
-            
+
           },
           'supportedAnyoneFinancialRequired': 'No',
         },
         'defenceAdmitPartEmploymentTypeRequired': 'No',
         'specDefendant1SelfEmploymentDetails': {
-          
+
         },
         'respondToClaimAdmitPartUnemployedLRspec': {
           'unemployedComplexTypeRequired': 'RETIRED',
@@ -740,7 +740,7 @@ module.exports = {
         },
         'respondent1CourtOrderPaymentOption': 'No',
         'respondent1CourtOrderDetails': [
-          
+
         ],
         'respondent1LoanCreditOption': 'No',
         'responseToClaimAdmitPartWhyNotPayLRspec': 'dasf',
@@ -749,7 +749,7 @@ module.exports = {
           {
             'value': {
               'type': 'PENSION',
-              'amount': 56700,
+              'amount': 5670,
               'frequency': 'ONCE_ONE_WEEK',
             },
           },
@@ -776,10 +776,10 @@ module.exports = {
           'otherPartyPreferredSite': '',
           'responseCourtCode': '',
           'responseCourtLocations': [
-            
+
           ],
           'caseLocation': {
-            
+
           },
         },
         'respondent1DQWitnesses': {

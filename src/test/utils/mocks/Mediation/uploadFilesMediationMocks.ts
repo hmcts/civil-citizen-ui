@@ -12,6 +12,10 @@ import {
 } from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {v4 as uuidv4} from 'uuid';
 import {mapperMediationDocumentToCCDDocuments} from 'models/mediation/uploadDocuments/mapperCaseDocumentToCCDDocuments';
+import {CivilClaimResponse} from 'models/civilClaimResponse';
+
+export const CLAIMANT_ONE_MEDIATION_DOCS = 'ClaimantOneMediationDocs';
+export const DEFENDANT_ONE_MEDIATION_DOCS = 'DefendantOneMediationDocs';
 
 const MOCK_CASE_DOCUMENT: CaseDocument = <CaseDocument>{  createdBy: 'test',
   documentLink: {document_url: 'http://dm-store:8080/documents/757f50dc-6978-4cf8-8fa0-38e05bde2d51', document_binary_url:'http://dm-store:8080/documents/757f50dc-6978-4cf8-8fa0-38e05bde2d51/binary', document_filename:'fileName'},
@@ -89,4 +93,17 @@ export const getTypeOfDocumentsWithReferredDocuments = () => {
     Array.of(TYPE_OF_DOCUMENT),
   ),
   );
+};
+
+export const MEDIATION_DOCUMENTS_MOCK = (claimId: string): CivilClaimResponse => {
+  const civilClaimResponse = new CivilClaimResponse();
+  civilClaimResponse.id = claimId;
+  civilClaimResponse.case_data =
+      {
+        'app1MediationDocumentsReferred' : getReferredDocumentCCD(CLAIMANT_ONE_MEDIATION_DOCS),
+        'app1MediationNonAttendanceDocs' : getNonAttendanceDocumentsCCD(CLAIMANT_ONE_MEDIATION_DOCS),
+        'res1MediationDocumentsReferred' : getReferredDocumentCCD(DEFENDANT_ONE_MEDIATION_DOCS),
+        'res1MediationNonAttendanceDocs' : getNonAttendanceDocumentsCCD(DEFENDANT_ONE_MEDIATION_DOCS),
+      };
+  return civilClaimResponse;
 };

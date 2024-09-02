@@ -32,7 +32,7 @@ const createDraftClaimUrl =  (isReleaseTwoEnabled : boolean):string => {
 const getDraftClaim = async (userToken: string, userId: string, isReleaseTwoEnabled : boolean): Promise<DashboardClaimantItem> => {
   if(isReleaseTwoEnabled) {
     const claim = await getCaseDataFromStore(userId, true);
-    return toDraftClaimDashboardItem(claim);
+    return toDraftClaimDashboardItem(claim, isReleaseTwoEnabled);
   }
   return await getOcmcDraftClaims(userToken);
 };

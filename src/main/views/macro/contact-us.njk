@@ -1,7 +1,8 @@
+{% import "external-urls.njk" as externalURLs %}
+
 {% set contactocmc = 'contactocmc@justice.gov.uk' %}
 {% set phone = t('0300 123 7050') %}
 {% set contactEmail = t('contactocmc@justice.gov.uk') %}
-{% set callChargesUrl = t('https://www.gov.uk/call-charges') %}
 
 {% macro contactUs(t) %}
   <h3 class="govuk-heading-m govuk-!-margin-bottom-0">{{ t('COMMON.EMAIL') }}</h3>
@@ -10,5 +11,5 @@
   <h3 class="govuk-heading-m govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') }}</h3>
   <p class="govuk-body govuk-!-margin-bottom-0">{{ phone }}</p>
   <p class="govuk-body govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS') }}
-  <a target="_blank" class="govuk-link" href={{callChargesUrl}}>{{ t('COMMON.CONTACT_US_FOR_HELP.CALL_CHARGES') }}</a></p>
+  <a target="_blank" class="govuk-link" href={{externalURLs.callChargesUrl}}>{{ t('COMMON.CONTACT_US_FOR_HELP.CALL_CHARGES') }}</a></p>
 {% endmacro %}

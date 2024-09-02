@@ -21,7 +21,7 @@ import {buildMediationSection} from 'services/features/response/checkAnswers/res
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
-const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmApplicable = false): SummarySections => {
+const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmApplicable = false, mintiApplicable = false): SummarySections => {
   const paymentOption: string = claim.fullAdmission?.paymentIntention?.paymentOption;
   const alreadyPaidPartAdmit: string = claim.partialAdmission?.alreadyPaid?.option;
   const paidResponse: string = claim.partialAdmission?.paymentIntention?.paymentOption;
@@ -76,7 +76,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmA
 
   const getHearingRequirementsSection = () => {
     return (claim.isPartialAdmission() || isFullDefenceAndNotCounterClaim(claim))
-      ? buildHearingRequirementsSection(claim, claimId, lang)
+      ? buildHearingRequirementsSection(claim, claimId, lang, mintiApplicable)
       : null;
   };
 
@@ -95,8 +95,8 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmA
   };
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, lang?: string , carmApplicable = false): SummarySections => {
-  return buildSummarySections(claim, claimId, lang, carmApplicable);
+export const getSummarySections = (claimId: string, claim: Claim, lang?: string , carmApplicable = false, mintiApplicable = false): SummarySections => {
+  return buildSummarySections(claim, claimId, lang, carmApplicable, mintiApplicable);
 };
 
 export const resetCheckboxFields = (statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth): StatementOfTruthForm | QualifiedStatementOfTruth => {

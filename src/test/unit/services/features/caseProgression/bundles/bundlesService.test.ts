@@ -14,6 +14,8 @@ import {
 import {UploadedEvidenceFormatter} from 'services/features/caseProgression/uploadedEvidenceFormatter';
 import {ClaimSummaryContent} from 'form/models/claimSummarySection';
 import {getMockDocument, getMockDocumentBinary} from '../../../../../utils/mockDocument';
+import {CaseRole} from 'form/models/caseRoles';
+import {formatDateSlash} from 'common/utils/dateUtils';
 
 jest.mock('i18next');
 jest.mock('services/features/caseProgression/uploadedEvidenceFormatter');
@@ -35,7 +37,7 @@ mockDocumentType.mockImplementation( (documentType:  EvidenceUploadDisclosure | 
   return documentType;
 });
 
-const title = 'Trial Bundle';
+const title = 'PAGES.CLAIM_SUMMARY.BUNDLES.DOCUMENT_TITLE';
 const bundleCreationDate = new Date('01-02-2023');
 const uploadedBeforeBundleCreationDate = new Date('01-01-2023');
 const uploadedAfterBundleCreationDate = new Date('01-03-2023');
@@ -92,16 +94,15 @@ describe('getBundlesContent', () =>{
       caseData.caseProgression.caseBundles = bundles;
 
       //when
-      const bundleTabActual = getBundlesContent(caseData, lang);
+      const bundleTabActual = getBundlesContent(caseData.id, caseData, lang);
 
       //then
       checkForNonTableBundleData(bundleTabActual);
       checkForBundleTableHeaders(bundleTabActual);
       checkForBundleTableFirstRow(bundleTabActual);
       expect(bundleTabActual[0].contentSections[3].data.tableRows[1][0].html).toMatch(title);
-      expect(bundleTabActual[0].contentSections[3].data.tableRows[1][1].html).toMatch(bundle.getFormattedCreatedOn);
-      expect(bundleTabActual[0].contentSections[3].data.tableRows[1][2].html).toMatch(bundle.getFormattedHearingDate);
-      expect(bundleTabActual[0].contentSections[3].data.tableRows[1][3].html).toMatch(documentUrlElement);
+      expect(bundleTabActual[0].contentSections[3].data.tableRows[1][1].html).toMatch(formatDateSlash(bundle.createdOn));
+      expect(bundleTabActual[0].contentSections[3].data.tableRows[1][2].html).toMatch(documentUrlElement);
       expect(bundleTabActual[1]).toBeUndefined();
     });
 
@@ -113,7 +114,7 @@ describe('getBundlesContent', () =>{
       caseData.caseProgression.caseBundles = bundles;
 
       //when
-      const bundleTabActual = getBundlesContent(caseData, lang);
+      const bundleTabActual = getBundlesContent(caseData.id, caseData, lang);
 
       //then
       checkForNonTableBundleData(bundleTabActual);
@@ -131,7 +132,7 @@ describe('getBundlesContent', () =>{
       caseData.caseProgression.caseBundles = bundles;
 
       //when
-      const bundleTabActual = getBundlesContent(caseData, lang);
+      const bundleTabActual = getBundlesContent(caseData.id, caseData, lang);
 
       //then
       checkForNonTableBundleData(bundleTabActual);
@@ -147,7 +148,7 @@ describe('getBundlesContent', () =>{
       caseData.caseProgression = new CaseProgression();
 
       //when
-      const bundleTabActual = getBundlesContent(caseData, lang);
+      const bundleTabActual = getBundlesContent(caseData.id, caseData, lang);
 
       //then
       checkForNonTableBundleData(bundleTabActual);
@@ -172,17 +173,17 @@ describe('getBundlesContent', () =>{
       caseData.caseProgression.claimantLastUploadDate = uploadedAfterBundleCreationDate;
 
       //when
-      const bundleTabActual = getBundlesContent(caseData, lang);
+      const bundleTabActual = getBundlesContent(caseData.id, caseData, lang);
 
       //then
       checkForNonTableBundleData(bundleTabActual);
       expect(bundleTabActual[1].contentSections[0].data.text).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS_CLAIMANT');
       expect(bundleTabActual[1].contentSections[1].data.text).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_DOCUMENTS_BELOW');
       expect(bundleTabActual[1].contentSections[2].data.tableRows[0][0].html).toMatch(EvidenceUploadDisclosure.DISCLOSURE_LIST);
-      expect(bundleTabActual[1].contentSections[2].data.tableRows[0][1].html).toMatch(uploadedDisclosureEvidence.createdDateTimeFormatted);
+      expect(bundleTabActual[1].contentSections[2].data.tableRows[0][1].html).toMatch(formatDateSlash(uploadedDisclosureEvidence?.caseDocument?.createdDatetime));
       expect(bundleTabActual[1].contentSections[2].data.tableRows[0][2].html).toMatch(documentURL);
       expect(bundleTabActual[1].contentSections[2].data.tableRows[1][0].html).toMatch(EvidenceUploadWitness.WITNESS_STATEMENT);
-      expect(bundleTabActual[1].contentSections[2].data.tableRows[1][1].html).toMatch(uploadedWitnessEvidence.createdDateTimeFormatted);
+      expect(bundleTabActual[1].contentSections[2].data.tableRows[1][1].html).toMatch(formatDateSlash(uploadedWitnessEvidence?.caseDocument?.createdDatetime));
       expect(bundleTabActual[1].contentSections[2].data.tableRows[1][2].html).toMatch(documentURL);
       expect(bundleTabActual[1].contentSections[2].data.tableRows[2]).toBeUndefined();
       expect(bundleTabActual[2]).toBeUndefined();
@@ -206,7 +207,7 @@ describe('getBundlesContent', () =>{
       caseData.caseProgression.defendantLastUploadDate = uploadedAfterBundleCreationDate;
 
       //when
-      const bundleTabActual = getBundlesContent(caseData, lang);
+      const bundleTabActual = getBundlesContent(caseData.id, caseData, lang);
 
       //then
       checkForNonTableBundleData(bundleTabActual);
@@ -214,10 +215,10 @@ describe('getBundlesContent', () =>{
       expect(bundleTabActual[2].contentSections[0].data.text).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_UPLOADED_DOCUMENTS_DEFENDANT');
       expect(bundleTabActual[2].contentSections[1].data.text).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.UPLOADED_AFTER_DOCUMENTS_BELOW');
       expect(bundleTabActual[2].contentSections[2].data.tableRows[0][0].html).toMatch(EvidenceUploadExpert.STATEMENT);
-      expect(bundleTabActual[2].contentSections[2].data.tableRows[0][1].html).toMatch(uploadedExpertEvidence.createdDateTimeFormatted);
+      expect(bundleTabActual[2].contentSections[2].data.tableRows[0][1].html).toMatch(formatDateSlash(uploadedExpertEvidence?.caseDocument?.createdDatetime));
       expect(bundleTabActual[2].contentSections[2].data.tableRows[0][2].html).toMatch(documentURL);
       expect(bundleTabActual[2].contentSections[2].data.tableRows[1][0].html).toMatch(EvidenceUploadTrial.SKELETON_ARGUMENT);
-      expect(bundleTabActual[2].contentSections[2].data.tableRows[1][1].html).toMatch(uploadedTrialEvidence.createdDateTimeFormatted);
+      expect(bundleTabActual[2].contentSections[2].data.tableRows[1][1].html).toMatch(formatDateSlash(uploadedTrialEvidence?.caseDocument?.createdDatetime));
       expect(bundleTabActual[2].contentSections[2].data.tableRows[1][2].html).toMatch(documentURL);
       expect(bundleTabActual[2].contentSections[2].data.tableRows[2]).toBeUndefined();
     });
@@ -235,12 +236,47 @@ describe('getBundlesContent', () =>{
       caseData.caseProgression.claimantLastUploadDate = uploadedBeforeBundleCreationDate;
 
       //when
-      const bundleTabActual = getBundlesContent(caseData, lang);
+      const bundleTabActual = getBundlesContent(caseData.id, caseData, lang);
 
       //then
       checkForNonTableBundleData(bundleTabActual);
       expect(bundleTabActual[1]).toBeUndefined();
       expect(bundleTabActual[2]).toBeUndefined();
+    });
+  });
+  describe('getButton', () => {
+    it('getBundle button should use claimant redirect url', () => {
+      //given
+      const bundles = [] as Bundle[];
+
+      bundles.push(bundle);
+      bundles.push(bundle);
+      caseData.caseProgression.caseBundles = bundles;
+      caseData.caseRole = CaseRole.CLAIMANT;
+
+      //when
+      const bundleTabActual = getBundlesContent(caseData.id, caseData, lang);
+
+      //then
+      expect(bundleTabActual[3].contentSections[0].data.text).toMatch('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW');
+      expect(bundleTabActual[3].contentSections[0].data.href).toMatch('/dashboard/1234/claimantNewDesign');
+    });
+
+    it('getBundle button should use defendant redirect url', () => {
+      //given
+      const bundles = [] as Bundle[];
+
+      bundles.push(bundle);
+      bundles.push(bundle);
+      caseData.caseProgression.caseBundles = bundles;
+      caseData.caseRole = CaseRole.DEFENDANT;
+
+      //when
+      const bundleTabActual = getBundlesContent(caseData.id, caseData, lang);
+
+      //then
+      expect(bundleTabActual[3].contentSections[0].data.text).toMatch('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW');
+      expect(bundleTabActual[3].contentSections[0].data.href).toMatch('/dashboard/1234/defendant');
     });
   });
 });
@@ -254,15 +290,13 @@ function checkForNonTableBundleData(bundleTabActual: ClaimSummaryContent[]){
 }
 
 function checkForBundleTableHeaders(bundleTabActual: ClaimSummaryContent[]){
-  expect(bundleTabActual[0].contentSections[3].data.head[0].html).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.BUNDLE_HEADER');
-  expect(bundleTabActual[0].contentSections[3].data.head[1].html).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.CREATED_DATE_HEADER');
-  expect(bundleTabActual[0].contentSections[3].data.head[2].html).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.HEARING_DATE_HEADER');
-  expect(bundleTabActual[0].contentSections[3].data.head[3].html).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.URL_HEADER');
+  expect(bundleTabActual[0].contentSections[3].data.head[0].html).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.DOCUMENT_NAME');
+  expect(bundleTabActual[0].contentSections[3].data.head[1].html).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.DATE_UPLOADED');
+  expect(bundleTabActual[0].contentSections[3].data.head[2].html).toMatch('PAGES.CLAIM_SUMMARY.BUNDLES.DOCUMENT');
 }
 
 function checkForBundleTableFirstRow(bundleTabActual: ClaimSummaryContent[]){
-  expect(bundleTabActual[0].contentSections[3].data.tableRows[0][0].html).toMatch(title);
-  expect(bundleTabActual[0].contentSections[3].data.tableRows[0][1].html).toMatch(bundle.getFormattedCreatedOn);
-  expect(bundleTabActual[0].contentSections[3].data.tableRows[0][2].html).toMatch(bundle.getFormattedHearingDate);
-  expect(bundleTabActual[0].contentSections[3].data.tableRows[0][3].html).toMatch(documentUrlElement);
+  expect(bundleTabActual[0].contentSections[3].data.tableRows[0][0].html).toMatch(title +' 2');
+  expect(bundleTabActual[0].contentSections[3].data.tableRows[0][1].html).toMatch(formatDateSlash(bundle.createdOn));
+  expect(bundleTabActual[0].contentSections[3].data.tableRows[0][2].html).toMatch(documentUrlElement);
 }

@@ -1,6 +1,6 @@
 import {
   addDaysBefore4pm,
-  addMonths, checkEvidenceUploadTime, formatStringDateDMY, formatStringTimeHMS,
+  addMonths, checkEvidenceUploadTime, dateTimeFormat, formatStringDateDMY, formatStringTimeHMS,
   getDOBforAgeFromCurrentTime, isDateOnOrAfterSpecificDate,
 } from '../../../../main/common/utils/dateUtils';
 
@@ -165,5 +165,18 @@ describe('isDateOnOrAfterSpecificDate', () => {
     const specifiedDate = new Date('2023-01-01T17:59');
     const result = isDateOnOrAfterSpecificDate(date, specifiedDate);
     expect(result).toBe(true);
+  });
+});
+
+describe('dateTimeFormat', () => {
+  it('should return date formatted in en', () => {
+    const date = '2024-05-29T14:39:28.483971';
+    const result = dateTimeFormat(date, 'en');
+    expect(result).toBe('29 May 2024, 2:39:28 pm');
+  });
+  it('should return date formatted in cy', () => {
+    const date = '2024-05-29T14:39:28.483971';
+    const result = dateTimeFormat(date, 'cy');
+    expect(result).toBe('29 Mai 2024, 2:39:28 yh');
   });
 });

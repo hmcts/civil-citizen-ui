@@ -1,0 +1,49 @@
+{% from "govuk/components/hint/macro.njk" import govukHint %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% macro addFileLink(url, text) %}
+    <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="{{ url }}">{{ text }}</a>
+{% endmacro %}
+
+{% macro addFileInformation(fileName, uploadDate) %}
+    <p class="govuk-body govuk-!-margin-bottom-0">{{ fileName }}</p>
+    {{
+        govukHint({
+            text: t('COMMON.UPLOAD_DATE', {uploadDate: uploadDate})
+        })
+    }}
+{% endmacro %}
+
+{% macro addCreateFileInformation(t, fileName, createdDate) %}
+    <p class="govuk-body govuk-!-margin-bottom-0">{{ fileName }}</p>
+    {{
+        govukHint({
+            text: t('COMMON.CREATED_DATE', {createdDate: createdDate})
+        })
+    }}
+{% endmacro %}
+
+{% macro addDateUploadedFileInformation(fileName, uploadedDate) %}
+    <p class="govuk-body govuk-!-margin-bottom-0">{{ fileName }}</p>
+    {{
+        govukHint({
+            text: t('COMMON.DATE_UPLOADED', {uploadedDate: uploadedDate})
+        })
+    }}
+{% endmacro %}
+
+{% macro createDocumentsTable(title, rows) %}
+{{ govukTable({
+    caption: title,
+    captionClasses: "govuk-table__caption--m",
+    classes: 'tableWrap',
+    rows: rows
+}) }}
+{% endmacro %}
+
+{% macro createDocumentsTableWithoutTableCaption(rows) %}
+{{ govukTable({
+    classes: 'tableWrap',
+    rows: rows
+}) }}
+{% endmacro %}

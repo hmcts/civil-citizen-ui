@@ -4,4 +4,5 @@ export interface MediationAgreement {
   name: string;
   documentType: DocumentType;
   document: Document;
+  documentUploadedDatetime: Date;
 }

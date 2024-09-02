@@ -1,0 +1,264 @@
+import {getLng} from 'common/utils/languageToggleUtils';
+import {t} from 'i18next';
+import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
+import {YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {selectedApplicationType, selectedApplicationTypeDescription} from 'models/generalApplication/applicationType';
+import {HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
+import {CcdHearingType} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {CcdSupportRequirement} from 'models/ccdGeneralApplication/ccdSupportRequirement';
+import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
+import {generalApplicationDocumentIdExtractor} from 'common/utils/stringUtils';
+
+export const addApplicationStatus = (
+  application: ApplicationResponse,
+  lang: string,
+): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+
+  if (application.state) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE', {lng}), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE', {lng})),
+    );
+  }
+  return rows;
+};
+
+export const addApplicationTypesRows = (
+  application: ApplicationResponse,
+  lang: string,
+): SummaryRow[] => {
+  const lng = getLng(lang);
+
+  const rows: SummaryRow[] = [];
+  if (application.case_data.generalAppType.types) {
+    application.case_data.generalAppType?.types?.forEach(
+      (applicationType, index, arr) => {
+        const applicationTypeDisplay =
+          selectedApplicationType[applicationType];
+
+        rows.push(
+          summaryRow(
+            t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {
+              lng,
+            }),
+            t(applicationTypeDisplay, { lng }),
+            null,
+            null,
+            undefined,
+            index,
+            arr.length,
+          ),
+        );
+      },
+    );
+  }
+  return rows;
+};
+
+export const addApplicationTypesAndDescriptionRows = (
+  application: ApplicationResponse,
+  lang: string,
+): SummaryRow[] => {
+  const lng = getLng(lang);
+
+  const rows: SummaryRow[] = [];
+  if (application.case_data.generalAppType.types) {
+    application.case_data.generalAppType?.types?.forEach(
+      (applicationType, index, arr) => {
+        const applicationTypeDisplay =
+          selectedApplicationType[applicationType];
+        const applicationTypeDescription = selectedApplicationTypeDescription[applicationType];
+
+        rows.push(
+          summaryRow(
+            t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC', {
+              lng,
+            }),
+            t(applicationTypeDisplay, { lng }) + '.</br>' + t(applicationTypeDescription, {lng}),
+            null,
+            null,
+            undefined,
+            index,
+            arr.length,
+          ),
+        );
+      },
+    );
+  }
+  return rows;
+};
+
+export const addOtherPartiesAgreedRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  if (application.case_data.generalAppRespondentAgreement) {
+    const partiesAgreed = (application.case_data.generalAppRespondentAgreement.hasAgreed === YesNoUpperCamelCase.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED', {lng}), t(`COMMON.VARIATION.${partiesAgreed}`, {lng})),
+    );
+  }
+  return rows;
+};
+
+export const addInformOtherPartiesRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  if (application.case_data.generalAppInformOtherParty) {
+    const informOtherParties = (application.case_data.generalAppInformOtherParty.isWithNotice === YesNoUpperCamelCase.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES', {lng}), t(`COMMON.VARIATION.${informOtherParties}`, {lng})),
+    );
+  }
+  return rows;
+};
+
+export const addOrderJudgeRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  if (application.case_data.generalAppDetailsOfOrder) {
+    const orderForCost = application.case_data.generalAppAskForCosts === YesNoUpperCamelCase.YES ? 'PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS' : '';
+    const html = `<p class="govuk-body">${application.case_data.generalAppDetailsOfOrder} <br> ${t(orderForCost, {lng})}</p>`;
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), html),
+    );
+  }
+  return rows;
+};
+
+export const addRequestingReasonRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  if (application.case_data.generalAppReasonsOfOrder) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), application.case_data.generalAppReasonsOfOrder),
+    );
+  }
+  return rows;
+};
+
+export const addDocumentUploadRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  let rowValue: string;
+  if (application.case_data.gaAddlDoc) {
+    rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION.YES', {lng})}</p>`;
+    rowValue += '<ul class="no-list-style">';
+    application.case_data.gaAddlDoc.forEach(uploadGAFile => {
+      rowValue += `<li><a href=${CASE_DOCUMENT_VIEW_URL.replace(':id', application.id).replace(':documentId', generalApplicationDocumentIdExtractor(uploadGAFile?.value?.documentLink.document_binary_url))} target="_blank" rel="noopener noreferrer" class="govuk-link">${uploadGAFile.value.documentLink.document_filename}</a></li>`;
+
+    });
+    rowValue += '</ul>';
+
+  } else {
+    rowValue = t('COMMON.VARIATION.NO', {lng});
+  }
+  rows.push(
+    summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS', {lng}), rowValue),
+  );
+  return rows;
+};
+
+export const addHearingArrangementsRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  if (application.case_data.generalAppHearingDetails) {
+    const hearingPreferredType = toCUIHearingPreferencesPreferredType(application.case_data.generalAppHearingDetails.HearingPreferencesPreferredType);
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE', {lng}),
+        t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.${hearingPreferredType}`, {lng})),
+    );
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
+        application.case_data.generalAppHearingDetails.ReasonForPreferredHearingType),
+    );
+    const courtLocationText = application.case_data.generalAppHearingDetails.HearingPreferredLocation
+      ? application.case_data.generalAppHearingDetails.HearingPreferredLocation.value.label.slice(0, application.case_data.generalAppHearingDetails.HearingPreferredLocation.value.label.indexOf(' - '))
+      : t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NONE', {lng});
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_COURT_LOCATION', {lng}),courtLocationText),
+    );
+  }
+  return rows;
+};
+
+export const addHearingContactDetailsRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  if (application.case_data.generalAppHearingDetails.HearingDetailsTelephoneNumber) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE', {lng}),
+        application.case_data.generalAppHearingDetails.HearingDetailsTelephoneNumber),
+    );
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL', {lng}),
+        application.case_data.generalAppHearingDetails.HearingDetailsEmailID),
+    );
+  }
+  return rows;
+};
+
+export const addUnavailableDatesRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  if (application.case_data.generalAppHearingDetails.generalAppUnavailableDates) {
+    let unavailableDatesHtml = '<ul class="no-list-style">';
+    application.case_data.generalAppHearingDetails.generalAppUnavailableDates.forEach((value) => {
+      if (value.value.unavailableTrialDateTo === undefined) {
+        unavailableDatesHtml += `<li>${formatDateToFullDate(new Date(value.value.unavailableTrialDateFrom), lang)}</li>`;
+      } else{
+        unavailableDatesHtml += `<li>${formatDateToFullDate(new Date(value.value.unavailableTrialDateFrom), lang)} - ${formatDateToFullDate(new Date(value.value.unavailableTrialDateTo), lang)}</li>`;
+      }
+    });
+    unavailableDatesHtml += '</ul>';
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND', {lng}),
+        unavailableDatesHtml.length > 0 ? unavailableDatesHtml : t('COMMON.NO', {lng})),
+    );
+  }
+  return rows;
+};
+
+export const addHearingSupportRows = (application: ApplicationResponse, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const rows: SummaryRow[] = [];
+  if (application.case_data.generalAppHearingDetails.SupportRequirement) {
+    let supportHtml = '<ul class="no-list-style">';
+    if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.DISABLED_ACCESS)) {
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS', {lng})}</li>`;
+    }
+    if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.HEARING_LOOPS)) {
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP', {lng})}</li>`;
+    }
+    if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.SIGN_INTERPRETER)) {
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})}</li>`;
+    }
+    if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.LANGUAGE_INTERPRETER)) {
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})}</li>`;
+    }
+    if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.OTHER_SUPPORT)) {
+      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})}</li>`;
+    }
+    supportHtml += '</ul>';
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
+        supportHtml.includes('<li>') ? supportHtml : t('COMMON.NO', {lng})),
+    );
+  }
+  return rows;
+};
+
+const toCUIHearingPreferencesPreferredType = (hearingTypeOption: CcdHearingType): HearingTypeOptions => {
+  switch (hearingTypeOption) {
+    case CcdHearingType.IN_PERSON:
+      return HearingTypeOptions.PERSON_AT_COURT;
+    case CcdHearingType.TELEPHONE:
+      return HearingTypeOptions.TELEPHONE;
+    case CcdHearingType.VIDEO:
+      return HearingTypeOptions.VIDEO_CONFERENCE;
+    default:
+      return undefined;
+  }
+};

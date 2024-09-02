@@ -3,7 +3,7 @@ import {summarySection, SummarySection} from 'models/summaryList/summarySections
 import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {
-  buildFastTrackHearingRequirements,
+  buildHearingRequirementsForTrack,
 } from 'services/features/common/buildFastTrackHearingRequirements';
 import {
   buildSmallClaimHearingRequirements,
@@ -11,11 +11,11 @@ import {
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {buildCommonHearingRequirements} from 'services/features/common/buildCommonHearingRequirements';
 
-export const buildHearingRequirementsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
-  return buildHearingRequirementsSectionCommon(claim, claimId, lang, claim.directionQuestionnaire);
+export const buildHearingRequirementsSection = (claim: Claim, claimId: string, lang: string, mintiApplicable: boolean ): SummarySection => {
+  return buildHearingRequirementsSectionCommon(claim, claimId, lang, claim.directionQuestionnaire, mintiApplicable);
 };
 
-export const buildHearingRequirementsSectionCommon = (claim: Claim, claimId: string, lang: string , directionQuestionnaire: DirectionQuestionnaire): SummarySection => {
+export const buildHearingRequirementsSectionCommon = (claim: Claim, claimId: string, lang: string , directionQuestionnaire: DirectionQuestionnaire, mintiApplicable: boolean): SummarySection => {
   const lng = getLng(lang);
   let hearingRequirementsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE', {lng}),
@@ -28,10 +28,10 @@ export const buildHearingRequirementsSectionCommon = (claim: Claim, claimId: str
     });
   }
 
-  if (claim.isFastTrackClaim) {
-    buildFastTrackHearingRequirements(claim, hearingRequirementsSection, claimId, lng,directionQuestionnaire);
-  } else {
+  if (claim.isSmallClaimsTrackDQ) {
     buildSmallClaimHearingRequirements(claim, hearingRequirementsSection, claimId, lng,directionQuestionnaire);
+  } else {
+    buildHearingRequirementsForTrack(claim, hearingRequirementsSection, claimId, lng,directionQuestionnaire, mintiApplicable);
   }
 
   buildCommonHearingRequirements(claim, hearingRequirementsSection, claimId, lng,directionQuestionnaire);

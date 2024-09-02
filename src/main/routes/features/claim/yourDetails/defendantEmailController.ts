@@ -9,7 +9,7 @@ const defendantEmailViewPath = 'features/claim/yourDetails/defendant-email';
 const defendantEmailController = Router();
 
 function renderView(form: GenericForm<DefendantEmail>, res: Response): void {
-  res.render(defendantEmailViewPath, {form});
+  res.render(defendantEmailViewPath, {form, pageTitle: 'PAGES.CLAIM_JOURNEY.DEFENDANT_EMAIL.TITLE'});
 }
 
 defendantEmailController.get(CLAIM_DEFENDANT_EMAIL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {

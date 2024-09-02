@@ -12,7 +12,7 @@ const helpWithFeesViewPath = 'features/claim/details/help-with-fees';
 const helpWithFeesPropertyName = 'helpWithFees';
 
 function renderView(form: GenericForm<HelpWithFees>, res: Response): void {
-  res.render(helpWithFeesViewPath, {form});
+  res.render(helpWithFeesViewPath, {form, pageTitle: 'PAGES.HELP_WITH_FEES.PAGE_TITLE'});
 }
 
 helpWithFeesController.get(CLAIM_HELP_WITH_FEES_URL, async (req: AppRequest, res: Response, next: NextFunction) => {

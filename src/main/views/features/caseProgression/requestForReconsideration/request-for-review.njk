@@ -1,0 +1,32 @@
+{% extends "../../../claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../dashboard/item-content.njk" import itemContent %}
+
+{% block nestedContent %}
+
+  {% for content in requestForReviewContents %}
+    {{ itemContent(content,t) }}
+  {% endfor %}
+
+  <form method="post" novalidate>
+    {{ csrfProtection(csrf) }}
+    {{ govukTextarea({
+      name: "textArea",
+      id: "textArea",
+      label: {
+        text: " "
+      },
+      value: form.model.textArea,
+      rows:"5",
+      errorMessage: {
+        html: t(form.errorFor("textArea"))
+      } if form.hasFieldError("textArea")
+    }) }}
+
+    {% for content in buttonContents %}
+      {{ itemContent(content,t) }}
+    {% endfor %}
+  </form>
+
+{% endblock %}

@@ -4,16 +4,16 @@ import {
   FinaliseYourTrialSectionBuilder,
 } from 'common/models/caseProgression/trialArrangements/finaliseYourTrialSectionBuilder';
 import {HearingDurationFormatter} from 'services/features/caseProgression/hearingDurationFormatter';
+import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
-export const getHearingDurationAndOtherInformation = (claim: Claim, lng: string, caseIdPrettified?: string) => {
+export const getHearingDurationAndOtherInformation = (claimId:string, claim: Claim, lng: string) => {
 
   return new FinaliseYourTrialSectionBuilder()
-    .addMainTitle(t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TITLE'))
-    .addLeadParagraph(t('COMMON.CLAIM_NUMBER')+': {{claimId}}', {claimId: caseIdPrettified}, 'govuk-!-margin-bottom-0')
-    .addLeadParagraph('COMMON.PARTIES', {
-      claimantName: claim.getClaimantFullName(),
-      defendantName: claim.getDefendantFullName(),
-    })
+    .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
+    .addMainTitle('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TITLE')
+    .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
+    .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
     .addTitle('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TRIAL_DURATION_TITLE')
     .addParagraphWithHTML(t('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.TRIAL_DURATION_PARAGRAPH', {lng, hearingDuration: HearingDurationFormatter.formatHearingDuration(claim.caseProgressionHearing.hearingDuration, lng)}))
     .addParagraph('PAGES.TRIAL_DURATION_TRIAL_ARRANGEMENTS.REQUIRE_LESS_TIME')

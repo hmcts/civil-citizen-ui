@@ -4,7 +4,8 @@ import {Claim} from 'common/models/claim';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {ClaimantResponse} from 'common/models/claimantResponse';
-import {getClaimantSuggestedInstalmentsForm, getClaimantSuggestedInstalmentsPlan} from 'services/features/claimantResponse/claimantSuggestedInstalmentsService';
+import { getClaimantSuggestedInstalmentsForm, getClaimantSuggestedInstalmentsPlan, updateDayErrorMsg } from 'services/features/claimantResponse/claimantSuggestedInstalmentsService';
+import { ValidationError } from 'class-validator';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 
@@ -145,6 +146,60 @@ describe('Claiman Suggested Instalments Plan Service', () => {
       const req = request;
       //When-Then
       await expect(getClaimantSuggestedInstalmentsForm(req)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+
+    it('should update the error message for date', () => {
+      const errors:ValidationError[] = [
+        {
+          target: {
+            year: undefined,
+            month: undefined,
+            day: undefined,
+            date: undefined,
+          },
+          value: undefined,
+          property: 'day',
+          children: [
+          ],
+          constraints: {
+            max: 'ERRORS.VALID_DAY',
+            min: 'ERRORS.VALID_DAY',
+          },
+        },
+        {
+          target: {
+            year: undefined,
+            month: undefined,
+            day: undefined,
+            date: undefined,
+          },
+          value: undefined,
+          property: 'month',
+          children: [
+          ],
+          constraints: {
+            max: 'ERRORS.VALID_MONTH',
+            min: 'ERRORS.VALID_MONTH',
+          },
+        },
+        {
+          target: {
+            year: undefined,
+            month: undefined,
+            day: undefined,
+            date: undefined,
+          },
+          value: undefined,
+          property: 'year',
+          children: [
+          ],
+          constraints: {
+            max: 'ERRORS.VALID_YEAR',
+          },
+        },
+      ];
+      updateDayErrorMsg(errors);
+      expect(errors[0].constraints.max).toEqual('ERRORS.VALID_DAY_VARIATION1');
     });
   });
 });

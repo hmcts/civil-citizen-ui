@@ -19,7 +19,7 @@ const claimInterestController = express.Router();
 const claimInterestPath = 'features/claim/interest/claim-interest';
 
 function renderView(form: GenericForm<GenericYesNo>, res: express.Response): void {
-  res.render(claimInterestPath, {form});
+  res.render(claimInterestPath, {form, pageTitle: 'PAGES.CLAIM_JOURNEY.CLAIM_INTEREST.PAGE_TITLE'});
 }
 
 claimInterestController.get(CLAIM_INTEREST_URL, (async (req:AppRequest, res:express.Response, next: express.NextFunction) => {

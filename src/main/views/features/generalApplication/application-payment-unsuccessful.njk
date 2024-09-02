@@ -1,0 +1,36 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/cancelLink.njk" import cancelLink %}
+
+
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.PAYMENT_UNSUCCESSFUL.TITLE') }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      {{ govukPanel({
+        titleText: t('PAGES.GENERAL_APPLICATION.PAYMENT_UNSUCCESSFUL.YOUR_PAYMENT_HAS_FAILED'),
+        classes: 'panel-error'
+      }) }}
+
+      <div class="govuk-body">
+        <p
+          class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.PAYMENT_UNSUCCESSFUL.CONTACT_YOUR_BANK') }}</p>
+      </div>
+
+      <hr class="govuk-section-break govuk-section-break--l">
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+          text: t('COMMON.BUTTONS.GO_BACK_AND_TRY_PAYMENT_AGAIN'),
+          href: makePaymentAgainUrl
+        }) }}
+          {{ cancelLink(cancelUrl, t) }}
+        </div>
+  </div>
+{% endblock %}

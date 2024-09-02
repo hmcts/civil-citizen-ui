@@ -54,9 +54,6 @@ import {
 } from '../../main/common/form/models/claimDetails';
 import {Address} from '../../main/common/form/models/address';
 import {FullAdmission} from '../../main/common/models/fullAdmission';
-import {DebtRespiteStartDate} from '../../main/common/models/breathingSpace/debtRespiteStartDate';
-import {DebtRespiteEndDate} from '../../main/common/models/breathingSpace/debtRespiteEndDate';
-import {DebtRespiteOptionType} from '../../main/common/models/breathingSpace/debtRespiteOptionType';
 import {ClaimDetails} from '../../main/common/form/models/claim/details/claimDetails';
 import {ClaimantTimeline} from '../../main/common/form/models/timeLineOfEvents/claimantTimeline';
 import {ClaimantResponse} from 'models/claimantResponse';
@@ -71,6 +68,8 @@ import {TrialArrangements} from 'models/caseProgression/trialArrangements/trialA
 import {HasAnythingChangedForm} from 'models/caseProgression/trialArrangements/hasAnythingChangedForm';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {MediationCarm} from 'models/mediation/mediationCarm';
+import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
+import {RequestForReviewForm} from 'models/caseProgression/requestForReconsideration/requestForReviewForm';
 
 const CONTACT_PERSON = 'The Post Man';
 const PARTY_NAME = 'Nice organisation';
@@ -1326,40 +1325,6 @@ export const claimWithClaimAmountOneBreakDown = (): Claim => {
   return claim;
 };
 
-export const getClaimWithFewDetails = (): Claim => {
-  const claim = new Claim();
-  claim.claimDetails = new ClaimDetails();
-  claim.claimDetails.breathingSpace = {
-    debtRespiteReferenceNumber: {
-      referenceNumber: 'R225B1230',
-    },
-    debtRespiteOption: {
-      type: DebtRespiteOptionType.STANDARD || DebtRespiteOptionType.MENTAL_HEALTH,
-    },
-    debtRespiteStartDate: new DebtRespiteStartDate('10', 'January', '2022'),
-    debtRespiteEndDate: new DebtRespiteEndDate('10', 'December', '2022'),
-
-  };
-  return claim;
-};
-
-export const getClaimWithNoDetails = (): Claim => {
-  const claim = new Claim();
-  claim.claimDetails = new ClaimDetails();
-  claim.claimDetails.breathingSpace = {
-    debtRespiteReferenceNumber: {
-      referenceNumber: '',
-    },
-    debtRespiteOption: {
-      type: DebtRespiteOptionType.STANDARD || DebtRespiteOptionType.MENTAL_HEALTH,
-    },
-    debtRespiteStartDate: new DebtRespiteStartDate(),
-    debtRespiteEndDate: new DebtRespiteEndDate(),
-
-  };
-  return claim;
-};
-
 export const claimWithClaimTimeLineAndEvents = (): Claim => {
   const claim = new Claim();
   claim.claimDetails = new ClaimDetails();
@@ -1395,6 +1360,29 @@ export const getClaimWithClaimantTrialArrangements = (): Claim => {
   hasAnythingChanged.option = YesNo.YES;
   claimantTrialArrangements.hasAnythingChanged = hasAnythingChanged;
   caseProgression.claimantTrialArrangements = claimantTrialArrangements;
+  claim.caseProgression = caseProgression;
+  return claim;
+};
+
+export const claimWithHwFDetails = (): Claim => {
+  const claim = new Claim();
+  claim.claimDetails = new ClaimDetails();
+  const helpWithFee = new HelpWithFees();
+  helpWithFee.referenceNumber = 'HWF-2AB-DC3';
+  helpWithFee.option = YesNo.YES;
+  claim.claimDetails.helpWithFees = helpWithFee;
+  return claim;
+};
+
+export const getClaimRequestForReconsideration = (): Claim => {
+  const claim = new Claim();
+  const caseProgression = new CaseProgression();
+  const requestForReviewClaimant = new RequestForReviewForm();
+  const requestForReviewDefendant = new RequestForReviewForm();
+  requestForReviewClaimant.textArea = 'Want review';
+  requestForReviewDefendant.textArea = 'Also want review';
+  caseProgression.requestForReviewClaimant = requestForReviewClaimant;
+  caseProgression.requestForReviewDefendant = requestForReviewDefendant;
   claim.caseProgression = caseProgression;
   return claim;
 };

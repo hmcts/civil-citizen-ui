@@ -13,7 +13,7 @@ const interestRateViewPath = 'features/claim/interest/claimant-interest-rate';
 const propertyName = 'sameRateInterestSelection';
 
 function renderView(form: GenericForm<ClaimantInterestRate>, res: Response): void {
-  res.render(interestRateViewPath, {form});
+  res.render(interestRateViewPath, {form, pageTitle: 'PAGES.CLAIMANT_INTEREST_RATE.PAGE_TITLE'});
 }
 
 interestRateController.get(CLAIM_INTEREST_RATE_URL, (async (req:AppRequest, res: Response, next: NextFunction) => {

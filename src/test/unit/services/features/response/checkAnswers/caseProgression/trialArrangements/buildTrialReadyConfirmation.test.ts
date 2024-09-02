@@ -23,7 +23,7 @@ describe('Trial ready summary details section', () => {
     const summarySections = await buildIsCaseReadyForTrialOrHearing(claim, claimId, 'en');
     //Then
     expect(summarySections.summaryList.rows.length).toBe(3);
-    expect(summarySections.summaryList.rows[0].value.html).toBe('COMMON.YES');
+    expect(summarySections.summaryList.rows[0].value.html).toBe('COMMON.VARIATION_4.YES');
     expect(summarySections.summaryList.rows[0].actions?.items.length).toBe(1);
     expect(summarySections.summaryList.rows[0].actions?.items[0].href).toBe(IS_CASE_READY_URL.replace(':id', claimId));
     expect(summarySections.summaryList.rows[1].value.html).toBe(HAS_ANYTHING_CHANGED_HTML);

@@ -1,0 +1,47 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/create-table-documents.njk" import addCreateFileInformation, addFileLink, createDocumentsTable %}
+{% from "../../macro/page-information.njk" import pageInformation %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% set claimHasBeenMadeHtml %}
+    <p class="govuk-body">{{ t('PAGES.VIEW_RESPONSE_TO_THE_CLAIM.OTHER_DOCUMENT_TEXT') }} <a id="order-and-notice-link" href="{{ ordersAndNoticesUrl }}" rel="noreferrer noopener">{{ t('COMMON.ORDER_AND_NOTICES') }}</a></p>
+{% endset -%}
+
+{% set rows = [] %}
+{% set rows = (rows.push([
+    {
+        text: t('PAGES.VIEW_RESPONSE_TO_THE_CLAIM.RESPONSE_TYPE_LABEL'),
+        classes: "govuk-body govuk-!-font-weight-bold"
+    },
+    {
+        text: t(responseType)
+    }
+    ]), rows) %}
+{% for item in documentsSection.documents %}
+{% set rows = (rows.push([
+    {
+        html: addCreateFileInformation(t, t(item.fileName), t(item.uploadDate))
+    },
+    {
+        html: addFileLink(item.linkInformation.url, item.linkInformation.text)
+    }]), rows) %}
+{% endfor %}
+
+{% block nestedContent %}
+
+{{ pageInformation(t,pageCaption, pageTitle, claimId, claimAmount)}}
+
+{{ createDocumentsTable(t(documentsSection.title), rows) }}
+
+{{ govukButton({
+    text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW'),
+    href: dashboardUrl
+}) }}
+
+{{ govukDetails({
+    summaryText: t('COMMON.CANNOT_FIND_DOCUMENT_TEXT'),
+    html: claimHasBeenMadeHtml
+}) }}
+
+{% endblock %}

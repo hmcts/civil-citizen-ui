@@ -28,9 +28,9 @@ function renderView(form: GenericForm<PaymentOption>, res: Response): void {
 
 claimantSuggestedPaymentOptionController.get(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = generateRedisKey(req as unknown as AppRequest);
-    const claim = await getCaseDataFromStore(claimId, true);
-    const updatedClaim = await clearClaimantSuggestion(claimId, claim);
+    const redisKey = generateRedisKey(req as unknown as AppRequest);
+    const claim = await getCaseDataFromStore(redisKey, true);
+    const updatedClaim = await clearClaimantSuggestion(redisKey, claim);
     renderView(new GenericForm(new PaymentOption(updatedClaim.getSuggestedPaymentIntentionOptionFromClaimant())), res);
   } catch (error) {
     next(error);
@@ -44,6 +44,10 @@ claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_U
     const form = new GenericForm(claimantResponsePaymentOption);
     form.validateSync();
     if (form.hasErrors()) {
+      const errorMsgToUpdate = form.errors.find(e => e.constraints && e.constraints.isIn);
+      if (errorMsgToUpdate) {
+        errorMsgToUpdate.constraints.isIn = 'ERRORS.VALID_PAYMENT_OPTION_VARIATION1';
+      }
       renderView(form, res);
     } else {
       await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), form.model.paymentType, crPropertyName, crParentName);

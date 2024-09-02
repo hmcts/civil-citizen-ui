@@ -8,12 +8,12 @@
 {% from "../../macro/csrf.njk" import csrfProtection %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.REVIEW_DEFENDANTS_RESPONSE.PAGE_TITLE') }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 {% block content %}
   {% if claim.responseStatus === ClaimResponseStatus.PA_NOT_PAID_PAY_BY_DATE %}
     {% set howDoTheyWantToPay = t('PAGES.ACCEPT_REPAYMENT_PLAN.TITLE') %}
-    {% set defendantResponse = t('PAGES.REVIEW_DEFENDANTS_RESPONSE.HOW_THEY_WANT_TO_PAY_RESPONSE',{amount: claim.partialAdmission.howMuchDoYouOwe.amount,paymentDate: paymentDate}) %}
+    {% set defendantResponse = t('PAGES.REVIEW_DEFENDANTS_RESPONSE.HOW_THEY_WANT_TO_PAY_RESPONSE',{amount: admittedAmount, paymentDate: paymentDate}) %}
     {% set unableToPayFullAmunt = t('PAGES.REVIEW_DEFENDANTS_RESPONSE.UNABLE_TO_PAY_FULL_AMOUNT') %}
     {% set reasonsWhyYouCantPayImmediately = t(claim.statementOfMeans.explanation.text) %}
   {% endif %}

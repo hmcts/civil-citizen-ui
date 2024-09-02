@@ -8,11 +8,14 @@ import {CCDSmallClaimHearing} from 'models/ccdResponse/ccdSmallClaimHearing';
 import {CCDDQSupportRequirements, CCDExpert} from 'models/ccdResponse/ccdExpert';
 import {CCDClaimantLiPResponse} from 'services/translation/claimantResponse/convertToCCDClaimantLiPResponse';
 import {CCDMediation} from '../ccdResponse/ccdMediation';
-import {CCDRepaymentPlanFrequency} from 'models/ccdResponse/ccdRepaymentPlan';
 import {CCDClaimantPayBySetDate} from 'models/ccdResponse/ccdPayBySetDate';
 import {CCDClaimantPaymentOption} from 'models/ccdResponse/ccdClaimantPaymentOption';
 import {ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD} from 'services/translation/claimantResponse/ccdRequestJudgementTranslation';
 import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
+import {CCDFixedRecoverableCostsIntermediate} from 'models/ccdResponse/ccdFixedRecoverableCostsIntermediate';
+import {CCDDisclosureOfElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfElectronicDocuments';
+import {CCDDisclosureOfNonElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfNonElectronicDocuments';
+import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeConsidered';
 
 export interface CCDClaimantMediationLip extends CCDMediation {
   hasAgreedFreeMediation?: YesNoUpperCamelCase;
@@ -39,8 +42,10 @@ export interface CCDClaimantResponse extends ClaimUpdate, ClaimantResponseReques
   applicant1FullDefenceConfirmAmountPaidSpec?: YesNoUpperCamelCase;
   applicant1ProceedWithClaim?: YesNoUpperCamelCase;
   applicant1SettleClaim?: YesNoUpperCamelCase;
-  applicant1SuggestInstalmentsPaymentAmountForDefendantSpec?: number;
-  applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec?: CCDRepaymentPlanFrequency;
-  applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec?: string;
   applicant1RequestedPaymentDateForDefendantSpec?: CCDClaimantPayBySetDate;
+  applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec?: Date;
+  applicant1DQFixedRecoverableCostsIntermediate?: CCDFixedRecoverableCostsIntermediate;
+  specApplicant1DQDisclosureOfElectronicDocuments?: CCDDisclosureOfElectronicDocuments;
+  specApplicant1DQDisclosureOfNonElectronicDocuments?: CCDDisclosureOfNonElectronicDocuments;
+  applicant1DQDefendantDocumentsToBeConsidered?: CCDDocumentsToBeConsidered;
 }

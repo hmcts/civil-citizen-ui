@@ -3,7 +3,8 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
-import {BASE_ELIGIBILITY_URL} from 'routes/urls';
+import {BASE_ELIGIBILITY_URL, DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {noGroupingCurrencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
@@ -36,7 +37,7 @@ export abstract class DashboardItem {
   ocmc?: boolean;
   draft?: boolean;
   url: string;
-
+  defaultJudgementIssuedDate?: string;
   getHref() {
     return this.ocmc ? `${ocmcBaseUrl}${this.url.replace(':claimId', this.claimId)}` : this.url.replace(':claimId', this.claimId);
   }
@@ -71,18 +72,22 @@ export class DashboardClaimantItem extends DashboardItem {
         translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ',
         parameter: [paramDefendantName],
       },
-      ADMIT_PAY_BY_SET_DATE: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
-      ADMIT_PAY_INSTALLMENTS : { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
+      ADMIT_PAY_BY_SET_DATE: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.OFFERED_SET_DATE'},
+      ADMIT_PAY_INSTALLMENTS : { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.OFFERED_INSTALMENTS'},
       ADMIT_PAY_IMMEDIATELY: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.ADMIT_PAY_IMMEDIATELY_CLAIMANT'},
       CLAIM_ENDED: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIM_ENDED' },
       CLAIMANT_ACCEPTED_PARTIAL_ADMISSION:{translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.ACCEPTED_PARTIAL_ADMISSION'},
       CLAIMANT_REJECTED_PAYMENT_PLAN:{translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REJECTED_PAYMENT_PLAN'},
+      CLAIMANT_REJECTED_PAYMENT_PLAN_REQ_JUDGE_DECISION: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.REJECTED_PAYMENT_PLAN_REQUEST_JUDGE_DECISION'},
       DEFENDANT_PART_ADMIT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
       DEFENDANT_PART_ADMIT_PAID: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
       RESPONSE_BY_POST: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.RESPONSE_BY_POST'},
       WAITING_FOR_CLAIMANT_TO_RESPOND: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
       WAITING_COURT_REVIEW: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_COURT_REVIEW'},
-      DEFAULT_JUDGEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ'},
+      DEFAULT_JUDGEMENT: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ',
+        parameter: [paramDefendantName],
+      },
       CLAIMANT_AND_DEFENDANT_SIGNED_SETTLEMENT_AGREEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.BOTH_SIGNED_SETTLEMENT_AGREEMENT'},
       CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT'},
       CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED'},
@@ -102,6 +107,18 @@ export class DashboardClaimantItem extends DashboardItem {
       CLAIMANT_HWF_UPDATED_REF_NUMBER: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.HWF_UPDATED_REF_NUMBER'},
       CLAIMANT_HWF_INVALID_REF_NUMBER: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.HWF_INVALID_REF_NUMBER'},
       CLAIMANT_HWF_FEE_PAYMENT_OUTCOME: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.HWF_FEE_PAYMENT_OUTCOME'},
+      SETTLED: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIM_SETTLED'},
+      SDO_ORDER_CREATED: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.SDO_ORDER_STATUS' },
+      SDO_ORDER_LEGAL_ADVISER_CREATED: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.SDO_ORDER_LEGAL_ADVISER_STATUS' },
+      SDO_ORDER_IN_REVIEW: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.SDO_ORDER_IN_REVIEW' },
+      SDO_ORDER_IN_REVIEW_OTHER_PARTY: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.SDO_ORDER_IN_REVIEW_OTHER_PARTY_DEFENDANT' },
+      CLAIMANT_DOCUMENTS_BEING_TRANSLATED: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.DOCUMENTS_BEING_TRANSLATED' },
+      WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD'},
+      CLAIM_SUBMITTED_NOT_PAID_OR_FAILED: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIM_FEE_NOT_PAID'},
+      CLAIM_SUBMITTED_WAITING_TRANSLATED_DOCUMENTS: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD'},
+      DEFENDANT_APPLY_NOC: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.RESPONSE_BY_POST'},
+      DECISION_FOR_RECONSIDERATION_MADE: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.DECISION_ON_RECONSIDERATION' },
+      HEARING_FEE_UNPAID: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.HEARING_FEE_UNPAID'},
     };
   }
 
@@ -124,7 +141,9 @@ export class DashboardDefendantItem extends DashboardItem {
     const paramClaimantName = {key: 'claimantName', value: this.claimantName};
     const paramCCJRequestedDate = {key: 'ccjRequestedDate', value: formatDateToFullDate(this.ccjRequestedDate, lang)};
     const paramResponseDeadline = {key: 'responseDeadline', value: formatDateToFullDate(this.responseDeadline, lang)};
-    const paramAdmittedAmount = {key: 'amount', value: this.respondToAdmittedClaimOwingAmountPounds?.toString() ?? this.admittedAmount?.toString()};
+    const paramDefaultJudgementIssuedDate = { key: 'defaultJudgementIssuedDate', value: formatDateToFullDate(this.defaultJudgementIssuedDate as unknown as Date, lang) };
+    const displayedAmount = noGroupingCurrencyFormatWithNoTrailingZeros(this.respondToAdmittedClaimOwingAmountPounds ?? this.admittedAmount);
+    const paramAdmittedAmount = {key: 'amount', value: displayedAmount};
 
     return {
       NO_STATUS: {translationKey: ''},
@@ -175,6 +194,10 @@ export class DashboardDefendantItem extends DashboardItem {
         parameter: [paramClaimantName],
       },
       PASSED_TO_COUNTRY_COURT_BUSINESS_CENTRE: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CASE_PASSED_TO_COURT_ORDER_BUSINESS_CENTRE'},
+      CLAIMANT_ACCEPTED_PARTIAL_ADMISSION: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT',
+        parameter: [paramClaimantName, paramAdmittedAmount],
+      },
       CLAIMANT_ACCEPTED_ADMISSION_OF_AMOUNT: {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_ACCEPTED_PART_ADMIT_PAYMENT',
         parameter: [paramClaimantName, paramAdmittedAmount],
@@ -200,10 +223,22 @@ export class DashboardDefendantItem extends DashboardItem {
         parameter: [paramClaimantName, paramAdmittedAmount],
       },
       SDO_ORDER_CREATED: { translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.SDO_ORDER_STATUS' },
+      SDO_ORDER_LEGAL_ADVISER_CREATED: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.SDO_ORDER_LEGAL_ADVISER_STATUS' },
+      SDO_ORDER_IN_REVIEW: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.SDO_ORDER_IN_REVIEW' },
+      SDO_ORDER_IN_REVIEW_OTHER_PARTY: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.SDO_ORDER_IN_REVIEW_OTHER_PARTY_CLAIMANT' },
       CLAIMANT_AND_DEFENDANT_SIGNED_SETTLEMENT_AGREEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.BOTH_SIGNED_SETTLEMENT_AGREEMENT' },
       CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT', parameter: [paramClaimantName] },
       CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT', parameter: [paramClaimantName] },
       DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT' },
+      CLAIMANT_DOCUMENTS_BEING_TRANSLATED: { translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.DOCUMENTS_BEING_TRANSLATED' },
+      DEFENDANT_APPLY_NOC: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.RESPONSE_BY_POST'},
+      DECISION_FOR_RECONSIDERATION_MADE: { translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.DECISION_ON_RECONSIDERATION' },
+      HEARING_FEE_UNPAID: { translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.HEARING_FEE_UNPAID'},
+      DEFAULT_JUDGEMENT_ISSUED: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.DEFAULT_JUDGEMENT_ISSUED_STATUS',
+        parameter: [paramDefaultJudgementIssuedDate],
+      },
+      WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD'},
     };
   }
 }
@@ -220,7 +255,7 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
   return t(translationKey, {lng:getLng(lang)} );
 };
 
-export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem | undefined => {
+export const toDraftClaimDashboardItem = (claim: Claim, isReleaseTwoEnabled: boolean): DashboardClaimantItem | undefined => {
   if (claim?.isDraftClaim()) {
     const draftClaim = new DashboardClaimantItem();
     draftClaim.claimId = 'draft';
@@ -230,7 +265,12 @@ export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem |
     draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
     draftClaim.claimantName = claim.getClaimantFullName();
     draftClaim.defendantName = claim.getDefendantFullName();
-    draftClaim.url = BASE_ELIGIBILITY_URL;
+
+    if(isReleaseTwoEnabled){
+      draftClaim.url = DASHBOARD_CLAIMANT_URL.replace(':id', 'draft');
+    } else {
+      draftClaim.url = BASE_ELIGIBILITY_URL;
+    }
     return draftClaim;
   } else {
     return undefined;

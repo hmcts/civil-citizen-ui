@@ -11,9 +11,11 @@ import {YesNo} from 'form/models/yesNo';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {isCaseProgressionV1Enable} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 const spyDel = jest.spyOn(draftStoreService, 'deleteDraftClaimFromStore');
 
 describe('Apply for help with fees', () => {
@@ -25,7 +27,9 @@ describe('Apply for help with fees', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
   });
-
+  beforeEach(()=> {
+    (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+  });
   describe('on GET', () => {
     it('should return resolving apply help fees page', async () => {
       app.locals.draftStoreClient = mockCivilClaimHearingFee;
@@ -33,7 +37,7 @@ describe('Apply for help with fees', () => {
         .get(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Hearing fee');
+          expect(res.text).toContain('Hearing');
         });
     });
 
@@ -46,7 +50,7 @@ describe('Apply for help with fees', () => {
         .get(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Hearing fee');
+          expect(res.text).toContain('Hearing');
         });
     });
 
@@ -56,7 +60,7 @@ describe('Apply for help with fees', () => {
         .get(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Hearing fee');
+          expect(res.text).toContain('Hearing');
         });
     });
 

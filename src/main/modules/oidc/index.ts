@@ -1,7 +1,7 @@
 import {Application, NextFunction, Request, Response} from 'express';
 import config from 'config';
 import {AppRequest} from 'models/AppRequest';
-import {getUserDetails} from '../../app/auth/user/oidc';
+import {getOidcResponse, getSessionIssueTime, getUserDetails} from '../../app/auth/user/oidc';
 import {
   ASSIGN_CLAIM_URL,
   BASE_ELIGIBILITY_URL,
@@ -14,6 +14,10 @@ import {
   SIGN_IN_URL,
   SIGN_OUT_URL,
   UNAUTHORISED_URL,
+  ACCESSIBILITY_STATEMENT_URL,
+  CONTACT_US_URL,
+  TERMS_AND_CONDITIONS_URL,
+  PRIVACY_POLICY_URL,
 } from 'routes/urls';
 
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
@@ -34,6 +38,22 @@ const requestIsForDownloadPdf = (req: Request): boolean => {
 
 const isEligibilityPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(BASE_ELIGIBILITY_URL);
+};
+
+const isAccessibilityStatementPage = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(ACCESSIBILITY_STATEMENT_URL);
+};
+
+const isContactUsPage = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(CONTACT_US_URL);
+};
+
+const isTermAndConditionsPage = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(TERMS_AND_CONDITIONS_URL);
+};
+
+const isPrivacyPolicyPage = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(PRIVACY_POLICY_URL);
 };
 
 const isMakeClaimPage = (requestUrl: string): boolean => {
@@ -67,7 +87,11 @@ export class OidcMiddleware {
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       if (typeof req.query.code === 'string') {
-        req.session.user = app.locals.user = await getUserDetails(redirectUri, req.query.code);
+        
+        const responseData = await getOidcResponse(redirectUri, req.query.code);
+        req.session.user = app.locals.user = getUserDetails(responseData);
+        req.session.issuedAt = getSessionIssueTime(responseData);
+        
         if (app.locals.assignClaimURL || req.session.assignClaimURL) {
           const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
           return res.redirect(assignClaimUrlWithClaimId);
@@ -109,7 +133,17 @@ export class OidcMiddleware {
           return next();
         }
       }
-      if (requestIsForPinAndPost(req) || requestIsForDownloadPdf(req) || isEligibilityPage(req.originalUrl) || isMakeClaimPage(req.originalUrl) || isTestingSupportDraftUrl(req.originalUrl)) {
+      if (
+        requestIsForPinAndPost(req) || 
+        requestIsForDownloadPdf(req) || 
+        isEligibilityPage(req.originalUrl) || 
+        isMakeClaimPage(req.originalUrl) || 
+        isTestingSupportDraftUrl(req.originalUrl) || 
+        isAccessibilityStatementPage(req.originalUrl) ||
+        isContactUsPage(req.originalUrl) ||
+        isTermAndConditionsPage(req.originalUrl) ||
+        isPrivacyPolicyPage(req.originalUrl)
+      ) {
         return next();
       }
       if (requestIsForAssigningClaimForDefendant(req) ) {

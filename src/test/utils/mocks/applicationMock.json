@@ -1,0 +1,130 @@
+{
+  "id": 1718105701451856,
+  "jurisdiction": "CIVIL",
+  "state": "AWAITING_APPLICATION_PAYMENT",
+  "case_type_id": "GENERALAPPLICATION",
+  "created_date": "2024-06-11T11:35:01.473123",
+  "last_modified": "2024-06-11T11:35:07.736905",
+  "case_data": {
+    "generalAppNotificationDeadlineDate": "2024-06-16T16:00:00",
+    "caseManagementLocation": {
+      "region": "4",
+      "address": "88 Alfred Street, RandonCity",
+      "postcode": "AA5 4RR",
+      "siteName": "County Court Money Claims Centre",
+      "baseLocation": "992288"
+    },
+    "generalAppApplnSolicitor": {
+      "id": "f7f7c9bf-3d84-4f2e-9441-4c5e0da85df6",
+      "email": "civilmoneyclaimsdemo@gmail.com",
+      "surname": "Citizen",
+      "forename": "civilmoneyclaimsdemo@gmail.com"
+    },
+    "parentClaimantIsApplicant": "Yes",
+    "isGaApplicantLip": "Yes",
+    "caseManagementCategory": {
+      "value": {
+        "code": "Civil",
+        "label": "Civil"
+      },
+      "list_items": [
+        {
+          "id": "28e54502-598a-4b1c-b278-002bd7b8b03e",
+          "value": {
+            "code": "Civil",
+            "label": "Civil"
+          }
+        }
+      ]
+    },
+    "CaseAccessCategory": "SPEC_CLAIM",
+    "parentCaseReference": "1718105503170514",
+    "generalAppRespondentSolicitors": [
+      {
+        "id": "ac763bed-88fb-4db0-918b-43168dbe18cb",
+        "value": {
+          "id": "570939fe-136f-46f1-a1fc-6907df75d734",
+          "email": "citizen.user2@gmail.com",
+          "surname": "person",
+          "forename": "defendant"
+        }
+      }
+    ],
+    "isDocumentVisible": "Yes",
+    "generalAppParentCaseLink": {
+      "CaseReference": "1718105503170514"
+    },
+    "generalAppRespondentAgreement": {
+      "hasAgreed": "Yes"
+    },
+    "applicantPartyName": "Mr Claimant person",
+    "generalAppConsentOrder": "No",
+    "generalAppSuperClaimType": "SPEC_CLAIM",
+    "generalAppPBADetails": {
+      "fee": {
+        "code": "FEE0443",
+        "version": "2",
+        "calculatedAmountInPence": "10800"
+      },
+      "serviceRequestReference": "2022-1655915218557"
+    },
+    "generalAppDetailsOfOrder": "The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid].",
+    "isGaRespondentTwoLip": "No",
+    "locationName": "County Court Money Claims Centre",
+    "claimant1PartyName": "Mr Claimant person",
+    "generalAppHearingDetails": {
+      "SupportRequirement": [
+        "HEARING_LOOPS"
+      ],
+      "HearingDetailsEmailID": "civilmoneyclaimsdemo@gmail.com",
+      "HearingPreferredLocation": {
+        "value": {
+          "code": "0a5b15fd-3708-4c2c-adf4-776455e4268a",
+          "label": "Barnet Civil and Family Centre - St Mary's Court, Regents Park Road - N3 1BQ"
+        },
+        "list_items": [
+          {
+            "code": "0a5b15fd-3708-4c2c-adf4-776455e4268a",
+            "label": "Barnet Civil and Family Centre - St Mary's Court, Regents Park Road - N3 1BQ"
+          }
+        ]
+      },
+      "HearingDetailsTelephoneNumber": "01632960001",
+      "ReasonForPreferredHearingType": "sdf",
+      "HearingPreferencesPreferredType": "IN_PERSON",
+      "unavailableTrialRequiredYesOrNo": "No"
+    },
+    "isGaRespondentOneLip": "Yes",
+    "businessProcess": {
+      "status": "FINISHED",
+      "camundaEvent": "INITIATE_GENERAL_APPLICATION"
+    },
+    "defendant1PartyName": "mr defendant person",
+    "generalAppInformOtherParty": {
+      "isWithNotice": "Yes"
+    },
+    "generalAppType": {
+      "types": [
+        "ADJOURN_HEARING"
+      ]
+    },
+    "generalAppReasonsOfOrder": "reasons",
+    "applicationTypes": "Adjourn a hearing",
+    "applicant1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+    },
+    "isMultiParty": "No",
+    "isCcmccLocation": "Yes",
+    "gaApplicantDisplayName": "Mr Claimant person - Claimant",
+    "judicialDecisionMakeAnOrderForWrittenRepresentations": {
+      "writtenConcurrentRepresentationsBy": "2024-08-30",
+      "writtenSequentailRepresentationsBy": "2024-08-30",
+      "makeAnOrderForWrittenRepresentations": "CONCURRENT_REPRESENTATIONS",
+      "sequentialApplicantMustRespondWithin": "2024-09-06"
+    },
+    "judicialDecision": {
+      "decision": "MAKE_AN_ORDER"
+    }
+  },
+  "security_classification": "PUBLIC"
+}

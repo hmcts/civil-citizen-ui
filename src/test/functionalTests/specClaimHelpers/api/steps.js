@@ -6,10 +6,13 @@ const mediation = require('../fixtures/events/mediation.js');
 const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantResponse.js');
 const partAdmitClaimantResponse = require('../fixtures/events/partAdmitClaimantResponse.js');
 const rejectAllClaimantResponse = require('../fixtures/events/rejectAllClaimantResponse.js');
+const rejectAllClaimantResponseCarm = require('../fixtures/events/rejectAllClaimantResponseCarm.js');
 const createSDOReqPayload = require('../fixtures/events/createSDO.js');
 const createAnAssistedOrder = require('../fixtures/events/createAnAssistedOrder');
 const createATrialArrangement = require('../fixtures/events/createATrialArrangement');
 const evidenceUpload = require('../fixtures/events/evidenceUpload');
+const testingSupport = require('./testingSupport');
+const lodash = require('lodash');
 
 chai.use(deepEqualInAnyOrder);
 chai.config.truncateThreshold = 0;
@@ -29,10 +32,17 @@ const defendantResponse = require('../fixtures/events/createDefendantResponse.js
 const claimantResponse = require('../fixtures/events/createClaimantResponseToDefence.js');
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
 const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
-const {submitEvent} = require('./apiRequest');
+const hwfPayloads = require('../fixtures/events/hwfPayloads.js');
+const {fetchCaseDetails} = require('./apiRequest');
 const idamHelper = require('./idamHelper');
+const mediationDocumentsCui = require('../fixtures/events/mediation/uploadMediationDocuments');
+const mediationDocumentsLr = require('../fixtures/events/mediation/uploadMediationDocumentsLR');
 const createLipClaim = require('../fixtures/events/createLiPClaim.js');
 const createLiPClaimForCompany = require('../fixtures/events/createLiPClaimForCompany.js');
+const createLipClaimDefendantCompany = require('../fixtures/events/createLiPClaimDefendantCompany');
+const createLipClaimDefendantSoleTrader = require('../fixtures/events/createLiPClaimDefendantSoleTrader.js');
+const createLipClaimSoleTraderVCompany = require('../fixtures/events/createLiPClaimSoleTraderVCompany.js');
+const createLipClaimIndVOrg = require('../fixtures/events/createLiPClaimIndVOrg.js');
 
 const data = {
   CREATE_SPEC_CLAIM: (mpScenario) => claimSpecData.createClaim(mpScenario),
@@ -42,6 +52,10 @@ const data = {
   CREATE_SPEC_CLAIM_FASTTRACKLRvLR: (mpScenario) => claimSpecDataFastTrackLRvLR.createClaim(mpScenario),
   CREATE_LIP_CLAIM: (user, userId, totalClaimAmount) => createLipClaim(user, userId, totalClaimAmount),
   CREATE_LIP_CLAIM_FOR_COMPANY: (user, userId, totalClaimAmount) => createLiPClaimForCompany(user, userId, totalClaimAmount),
+  CREATE_LIP_CLAIM_DEFENDANT_COMPANY: (user, userId, totalClaimAmount) => createLipClaimDefendantCompany(user, userId, totalClaimAmount),
+  CREATE_LIP_CLAIM_DEFENDANT_SOLE_TRADER: (user, userId, totalClaimAmount) => createLipClaimDefendantSoleTrader(user, userId, totalClaimAmount),
+  CREATE_LIP_CLAIM_SOLE_TRADER_V_COMPANY: (user, userId, totalClaimAmount) => createLipClaimSoleTraderVCompany(user, userId, totalClaimAmount),
+  CREATE_LIP_CLAIM_IND_V_ORGANISATION: (user, userId, totalClaimAmount) => createLipClaimIndVOrg(user, userId, totalClaimAmount),
 
 };
 
@@ -134,10 +148,35 @@ module.exports = {
     console.log('End of performCaseProgressedToSDO()');
   },
 
-  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims', responseType) => {
+  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims', responseType, partyType) => {
     console.log('This is inside performCitizenResponse : ' + caseId);
     let totalClaimAmount, eventName = 'DEFENDANT_RESPONSE_CUI';
     let payload = {};
+    if (claimType === 'FastTrack') {
+      console.log('FastTrack claim...');
+      totalClaimAmount = '15000';
+    } else if (claimType === 'Intermediate') {
+      totalClaimAmount = '26000';
+    } else if (claimType === 'Multi') {
+      totalClaimAmount = '150000';
+    } else {
+      console.log('SmallClaim...');
+      totalClaimAmount = '1500';
+    }
+    payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType, partyType);
+    //console.log('The payload : ' + payload);
+    await apiRequest.setupTokens(user);
+    await apiRequest.startEventForCitizen(eventName, caseId, payload);
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of performCitizenResponse()');
+  },
+
+  performLrResponse: async (user, caseId, claimType = 'SmallClaims', responseType, partyType) => {
+    console.log('This is inside performLrResponse : ' + caseId);
+    await apiRequest.setupTokens(user);
+    eventName = 'DEFENDANT_RESPONSE_SPEC';
+    let totalClaimAmount;
+
     if (claimType === 'FastTrack') {
       console.log('FastTrack claim...');
       totalClaimAmount = '15000';
@@ -145,12 +184,53 @@ module.exports = {
       console.log('SmallClaim...');
       totalClaimAmount = '1500';
     }
-    payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType);
-    //console.log('The payload : ' + payload);
-    await apiRequest.setupTokens(user);
-    await apiRequest.startEventForCitizen(eventName, caseId, payload);
+
+    let returnedCaseData = await apiRequest.startEvent(eventName, caseId);
+
+    let defendantResponseData = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType, partyType);
+
+    caseData = returnedCaseData;
+
+    console.log(`${claimType} ${partyType}`);
+
+    for (let pageId of Object.keys(defendantResponseData.userInput)) {
+      await assertValidDataSpec(defendantResponseData, pageId);
+    }
+
+    await assertSubmittedSpecEvent();
     await waitForFinishedBusinessProcess(caseId);
-    console.log('End of performCitizenResponse()');
+
+    deleteCaseFields('respondent1Copy');
+    console.log('End of performLrResponse()');
+  },
+
+  amendRespondent1ResponseDeadline: async (user) => {
+    await apiRequest.setupTokens(user);
+    let respondent1deadline ={};
+    respondent1deadline = {'respondent1ResponseDeadline':'2024-01-10T15:59:50'};
+    await testingSupport.updateCaseData(caseId, respondent1deadline);
+    console.log('ResponseDeadline updated');
+  },
+
+  submitHwfEventForUser: async (event, user = config.ctscAdmin) => {
+    console.log('This is inside submitHwfEventForUser() : ' + caseId);
+    let payload = {};
+    if (event === config.hwfEvents.updateHWFNumber) {
+      payload = hwfPayloads.updateHWFNumber();
+    } else if (event === config.hwfEvents.partRemission) {
+      payload = hwfPayloads.partRemission();
+    } else if (event === config.hwfEvents.fullRemission) {
+      payload = hwfPayloads.fullRemission();
+    } else if (event === config.hwfEvents.moreInfoHWF) {
+      payload = hwfPayloads.moreInfoHWF();
+    } else if (event === config.hwfEvents.invalidHWFRef) {
+      payload = hwfPayloads.invalidHWFRef();
+    }
+    await apiRequest.setupTokens(user);
+    eventName = payload['event'];
+    caseData = payload['caseData'];
+    await assertSubmittedSpecEvent();
+    console.log('End of submitHwfEventForUser()');
   },
 
   createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = false, partyType) => {
@@ -197,11 +277,17 @@ module.exports = {
 
     if (carmEnabled) {
       console.log('carm enabled, updating submitted date');
-      await addData(caseId, config.systemUpdate, (caseData) => {
-        const submittedDate = new Date(2024, 4, 3);
-        return {...caseData, submittedDate: submittedDate};
-      });
+      console.log('carm enabled, updating submitted date');
+      await apiRequest.setupTokens(config.systemUpdate);
+      const submittedDate = {'submittedDate':'2024-11-25T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
       console.log('submitted date update to after carm date');
+    } else {
+      console.log('carm not enabled, updating submitted date');
+      await apiRequest.setupTokens(config.systemUpdate);
+      /*const submittedDate = {'submittedDate':'2023-08-10T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
+      console.log('submitted date update to before carm date');*/
     }
     return caseId;
   },
@@ -216,6 +302,12 @@ module.exports = {
     if (claimType === 'FastTrack') {
       console.log('FastTrack claim...');
       totalClaimAmount = '15000';
+    } else if (claimType === 'Intermediate') {
+      console.log('Intermediate track claim...');
+      totalClaimAmount = '26000';
+    } else if (claimType === 'Multi') {
+      console.log('Multi track claim...');
+      totalClaimAmount = '150000';
     } else {
       console.log('SmallClaim...');
       totalClaimAmount = '1500';
@@ -228,11 +320,42 @@ module.exports = {
 
     if (partyType === 'Company') {
       payload = data.CREATE_LIP_CLAIM_FOR_COMPANY(user, userId, totalClaimAmount);
+    } else if (partyType === 'DefendantCompany') {
+      payload = data.CREATE_LIP_CLAIM_DEFENDANT_COMPANY(user, userId, totalClaimAmount);
+    } else if (partyType === 'DefendantSoleTrader') {
+      payload = data.CREATE_LIP_CLAIM_DEFENDANT_SOLE_TRADER(user, userId, totalClaimAmount);
+    } else if (partyType === 'SoleTraderVCompany') {
+      payload = data.CREATE_LIP_CLAIM_SOLE_TRADER_V_COMPANY(user, userId, totalClaimAmount);
+    } else if (partyType === 'IndividualVOrganisation') {
+      payload = data.CREATE_LIP_CLAIM_IND_V_ORGANISATION(user, userId, totalClaimAmount);
     } else {
       payload = data.CREATE_LIP_CLAIM(user, userId, totalClaimAmount);
     }
     caseId = await apiRequest.startEventForLiPCitizen(payload);
     await waitForFinishedBusinessProcess(caseId, user);
+
+    if (carmEnabled) {
+      console.log('carm enabled, updating submitted date');
+      await apiRequest.setupTokens(config.systemUpdate);
+      const submittedDate = {'submittedDate':'2024-11-25T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
+      console.log('submitted date update to after carm date');
+    } else {
+      console.log('carm not enabled, updating submitted date');
+      await apiRequest.setupTokens(config.systemUpdate);
+      /*const submittedDate = {'submittedDate':'2023-08-10T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
+      console.log('submitted date update to before carm date');*/
+    }
+    if (claimType === 'Intermediate' || claimType === 'Multi') {
+      console.log('updating submitted date for minti case');
+      await apiRequest.setupTokens(config.systemUpdate);
+      const submittedDate = {'submittedDate':'2025-02-20T15:59:50'};
+      await testingSupport.updateCaseData(caseId, submittedDate);
+      console.log('submitted date update to after minti date');
+    }
+
+    await apiRequest.setupTokens(user);
     let newPayload = {
       event: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
       caseDataUpdate: {
@@ -243,15 +366,6 @@ module.exports = {
     await apiRequest.startEventForCitizen('', caseId, newPayload);
     await waitForFinishedBusinessProcess(caseId, user);
     await assignSpecCase(caseId, null);
-
-    if (carmEnabled) {
-      console.log('carm enabled, updating submitted date');
-      await addData(caseId, config.systemUpdate, (caseData) => {
-        const submittedDate = new Date(2024, 4, 3);
-        return {...caseData, submittedDate: submittedDate};
-      });
-      console.log('submitted date update to after carm date');
-    }
     return caseId;
   },
 
@@ -303,16 +417,17 @@ module.exports = {
 
   createSDO: async (user, sdoSelectionType = config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes) => {
     let createSDOPayload;
+    const document = await uploadDocument();
     if (sdoSelectionType === config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsYes) {
-      createSDOPayload = createSDOReqPayload.judgementSumSelectedYesAssignToSmallClaimsYes();
+      createSDOPayload = createSDOReqPayload.judgementSumSelectedYesAssignToSmallClaimsYes(document);
     } else if (sdoSelectionType === config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing) {
-      createSDOPayload = createSDOReqPayload.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing();
+      createSDOPayload = createSDOReqPayload.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing(document);
     } else if (sdoSelectionType === config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoTrialHearing) {
-      createSDOPayload = createSDOReqPayload.judgementSumSelectedYesAssignToSmallClaimsNoTrialHearing();
+      createSDOPayload = createSDOReqPayload.judgementSumSelectedYesAssignToSmallClaimsNoTrialHearing(document);
     } else if (sdoSelectionType === config.sdoSelectionType.judgementSumSelectedNoAssignToSmallClaimsYes) {
-      createSDOPayload = createSDOReqPayload.judgementSumSelectedNoAssignToSmallClaimsYes();
+      createSDOPayload = createSDOReqPayload.judgementSumSelectedNoAssignToSmallClaimsYes(document);
     } else if (sdoSelectionType === config.sdoSelectionType.judgementSumSelectedNoAssignToFastTrackYes) {
-      createSDOPayload = createSDOReqPayload.judgementSumSelectedNoAssignToFastTrackYes();
+      createSDOPayload = createSDOReqPayload.judgementSumSelectedNoAssignToFastTrackYes(document);
     }
 
     eventName = createSDOPayload['event'];
@@ -353,13 +468,54 @@ module.exports = {
     console.log('End of viewAndRespondToDefence()');
   },
 
-  claimantLipRespondToDefence: async (user, caseId) => {
+  claimantLipRespondToDefence: async (user, caseId, carmEnabled = false, expectedEndState, mintiTrack = '') => {
+    console.log('This is inside claimantLipRespondToDefence : ' + caseId);
     eventName = 'CLAIMANT_RESPONSE_CUI';
-    let payload = claimantResponse.createClaimantLipIntendsToProceedResponse();
+    let payload;
+
     await apiRequest.setupTokens(user);
+
+    if (mintiTrack === 'Intermediate') {
+      payload = claimantResponse.createClaimantLipIntendsToProceedResponseIntermediate();
+    } else if (mintiTrack === 'Multi') {
+      payload = claimantResponse.createClaimantLipIntendsToProceedResponseMulti();
+    } else if (carmEnabled) {
+      payload = claimantResponse.createClaimantLipIntendsToProceedResponseCarm();
+    } else {
+      payload = claimantResponse.createClaimantLipIntendsToProceedResponse();
+    }
+
     await apiRequest.startEventForCitizen(eventName, caseId, payload);
     await waitForFinishedBusinessProcess(caseId, user);
+    if (expectedEndState) {
+      const response = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
+      assert.equal(response.state, expectedEndState);
+    }
     console.log('End of claimantLipRespondToDefence()');
+  },
+
+  claimantLrRespondToDefence: async (user, caseId, expectedEndState) => {
+    console.log('This is inside performLrRespondToDefence : ' + caseId);
+
+    await apiRequest.setupTokens(user);
+    eventName = 'CLAIMANT_RESPONSE_SPEC';
+
+    let returnedCaseData = await apiRequest.startEvent(eventName, caseId);
+
+    let claimantResponseData = rejectAllClaimantResponseCarm.rejectAllDisputeAllButClaimantWantsToProceed_Carm();
+
+    caseData = returnedCaseData;
+
+    for (let pageId of Object.keys(claimantResponseData.userInput)) {
+      await assertValidDataSpec(claimantResponseData, pageId);
+    }
+
+    await assertSubmittedSpecEvent();
+    await waitForFinishedBusinessProcess(caseId, user);
+    if (expectedEndState) {
+      const response = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
+      assert.equal(response.state, expectedEndState);
+    }    console.log('End of claimantLrRespondToDefence()');
   },
 
   enterBreathingSpace: async (user) => {
@@ -372,21 +528,92 @@ module.exports = {
   },
 
   mediationSuccessful: async (user) => {
+    console.log('This is inside mediationSuccessful : ' + caseId);
+    eventName = 'MEDIATION_SUCCESSFUL';
+
     const mediationSuccessfulPayload = mediation.mediationSuccessfulPayload();
+
     eventName = mediationSuccessfulPayload['event'];
     caseData = mediationSuccessfulPayload['caseData'];
+
     await apiRequest.setupTokens(user);
+
+    const document = await testingSupport.uploadDocument();
+    caseData = await updateCaseDataWithPlaceholders(caseData, document);
+
     await assertSubmittedSpecEvent(config.claimState.CASE_STAYED);
     console.log('End of mediationSuccessful()');
   },
 
-  mediationUnsuccessful: async (user) => {
-    const mediationUnsuccessfulPayload = mediation.mediationUnSuccessfulPayload();
+  mediationUnsuccessful: async (user, carmEnabled = false, mediationReason) => {
+    console.log('This is inside mediationUnsuccessful : ' + caseId);
+    eventName = 'MEDIATION_UNSUCCESSFUL';
+
+    const mediationUnsuccessfulPayload = mediation.mediationUnSuccessfulPayload(carmEnabled, mediationReason);
     eventName = mediationUnsuccessfulPayload['event'];
     caseData = mediationUnsuccessfulPayload['caseData'];
+
     await apiRequest.setupTokens(user);
+    const document = await testingSupport.uploadDocument();
+    caseData = await updateCaseDataWithPlaceholders(caseData, document);
+
     await assertSubmittedSpecEvent(config.claimState.JUDICIAL_REFERRAL);
     console.log('End of mediationUnsuccessful()');
+  },
+
+  uploadMediationDocumentsCui: async (user, caseId) => {
+    console.log('This is inside uploadMediationDocumentsCui : ' + caseId);
+    eventName = 'CUI_UPLOAD_MEDIATION_DOCUMENTS';
+
+    const document = await testingSupport.uploadDocumentUser(user);
+    let payload;
+    if (user === config.claimantCitizenUser) {
+      payload = mediationDocumentsCui.uploadMediationDocumentsClaimantOne_Citizen(document);
+    } else if (user === config.defendantCitizenUser) {
+      payload = mediationDocumentsCui.uploadMediationDocumentsRespondentOne_Citizen(document);
+    }
+    await apiRequest.setupTokens(user);
+
+    caseData = await updateCaseDataWithPlaceholders(payload, document);
+    caseData = await apiRequest.startEventForCitizen(eventName, caseId, caseData);
+
+    await waitForFinishedBusinessProcess(caseId, user);
+
+    console.log('End of uploadMediationDocumentsCui()');
+  },
+
+  uploadMediationDocumentsExui: async (user) => {
+    console.log('This is inside uploadMediationDocumentsExui : ' + caseId);
+    eventName = 'UPLOAD_MEDIATION_DOCUMENTS';
+    await apiRequest.setupTokens(user);
+
+    const document = await testingSupport.uploadDocumentUser(user);
+    caseData = await apiRequest.startEvent(eventName, caseId);
+
+    let payload;
+    if (user === config.applicantSolicitorUser) {
+      payload = mediationDocumentsLr.uploadMediationDocuments('claimant');
+    } else if (user === config.defendantSolicitorUser) {
+      payload = mediationDocumentsLr.uploadMediationDocuments('defendant');
+    }
+
+    payload = await updateCaseDataWithPlaceholders(payload, document);
+
+    for (let pageId of Object.keys(payload.userInput)) {
+      await assertValidDataSpec(payload, pageId);
+    }
+
+    await assertSubmittedSpecEvent();
+
+    await waitForFinishedBusinessProcess(caseId, user);
+
+    console.log('End of uploadMediationDocumentsExUi()');
+  },
+
+  checkUserCaseAccess: async (user, shouldHaveAccess) => {
+    console.log(`Checking ${user.email} ${shouldHaveAccess ? 'has' : 'does not have'} access to the case.`);
+    const expectedStatus = shouldHaveAccess ? 200 : 403;
+    return await fetchCaseDetails(user, caseId, expectedStatus);
   },
 
   liftBreathingSpace: async (user) => {
@@ -439,6 +666,18 @@ const assertValidDataSpec = async (data, pageId) => {
 
   caseData = update(caseData, responseBody.data);
 };
+
+async function updateCaseDataWithPlaceholders(data, document) {
+  const placeholders = {
+    TEST_DOCUMENT_URL: document.document_url,
+    TEST_DOCUMENT_BINARY_URL: document.document_binary_url,
+    TEST_DOCUMENT_FILENAME: document.document_filename,
+  };
+
+  data = lodash.template(JSON.stringify(data))(placeholders);
+
+  return JSON.parse(data);
+}
 
 function update(currentObject, modifications) {
   const modified = {...currentObject};
@@ -516,14 +755,6 @@ function checkGenerated(responseBodyData, generated, prefix = '') {
     }
   }
 }
-
-const addData = async (caseId, user, cb) => {
-  const event = 'UPDATE_CASE_DATA';
-  await apiRequest.setupTokens(user);
-  const startEventData = await apiRequest.startEvent(event, caseId);
-  const caseData = cb(startEventData);
-  return await submitEvent(event, caseData, caseId);
-};
 
 const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true) => {
   await apiRequest.startEvent(eventName, caseId);

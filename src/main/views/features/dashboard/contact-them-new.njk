@@ -1,0 +1,55 @@
+{% extends "../../claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/page-information.njk" import pageInformation %}
+
+{% block nestedContent %}
+
+{{ pageInformation(t,pageCaption, pageTitle, claimId, claimAmount)}}
+
+{% set phone = party.partyPhone %}
+{% set email = party.emailAddress %}
+<div class="govuk-grid-row govuk-!-margin-top-0">
+  <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
+    <h2 class="govuk-heading-m govuk-!-margin-bottom-6">{{ t(otherPartyName) }}</h2>
+    <div>
+      {% if address %}
+        <p class="govuk-body govuk-!-margin-bottom-6">
+        {% if solicitorName %}
+          {{ solicitorName }}<br>
+        {% endif %}
+        {% if address.addressLine1 %}
+          {{ address.addressLine1 }}<br>
+        {% endif %}
+        {% if address.addressLine2 %}
+          {{ address.addressLine2 }}<br>
+        {% endif %}
+        {% if address.addressLine3 %}
+          {{ address.addressLine3 }}<br>
+        {% endif %}
+        {% if address.city %}
+          {{ address.city }}<br>
+        {% endif %}
+        {% if address.postCode %}
+          {{ address.postCode }}<br>
+        {% endif %}
+        </p>
+      {% endif %}
+    </div>
+    <div>
+      {% if phone %}
+        <div class="govuk-body govuk-!-margin-bottom-5">{{ t('PAGES.CONTACT_THEM.PHONE') +': ' }}{{ phone.phone }}</div>
+      {% endif %}
+      {% if email.emailAddress %}
+        <div class="govuk-body govuk-!-margin-bottom-6">{{ t('COMMON.EMAIL') +': ' }}<a href='mailto:{{ email.emailAddress }}'>{{ email.emailAddress }}</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<br>
+
+{{ govukButton({
+    text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW'),
+    href: dashboardUrl
+}) }}
+{% endblock %}

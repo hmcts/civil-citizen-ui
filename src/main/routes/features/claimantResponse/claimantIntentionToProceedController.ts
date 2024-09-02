@@ -19,7 +19,7 @@ const crPropertyName = 'option';
 const crParentName = 'intentionToProceed';
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
-  res.render(claimantIntentionToProceedViewPath, {form});
+  res.render(claimantIntentionToProceedViewPath, {form, pageTitle: 'PAGES.CLAIMANT_RESPONSE_PROCEED.PAGE_TITLE'});
 }
 
 claimantIntentionToProceedController.get(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL, async (req, res, next) => {

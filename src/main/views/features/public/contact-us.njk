@@ -1,0 +1,32 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "../../macro/external-link.njk" import externalLink %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, pageTitle) }}
+{% endblock %}
+{% block content %}
+{% if getLanguage() =='cy' %}
+    {% set emailAddress = 'ymholiadaucymraeg@justice.gov.uk' %}
+    {% set emailAction = 'mailto:ymholiadaucymraeg@justice.gov.uk' %}
+    {% set telephone = '0300 303 5174' %}
+  {% else %}
+    {% set emailAddress = 'contactocmc@justice.gov.uk' %}
+    {% set emailAction = 'mailto:contactocmc@justice.gov.uk' %}
+    {% set telephone = '0300 123 7050' %}
+  {% endif %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{t('PAGES.CONTACT_US.TITLE')}}</h1>
+          <h1 class="govuk-heading-m govuk-!-margin-bottom-0">{{ t('COMMON.EMAIL') }}</h1>
+          <a class="govuk-link" href={{emailAction}}>{{emailAddress}}</a>
+          <h1 class="govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-6">{{ t('PAGES.CONTACT_US.TELEPHONE') }}</h1>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ telephone }}</p>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.CONTACT_US.OPENING_HOURS') }}</p>
+          {{ externalLink(t, 'COMMON.CONTACT_US_FOR_HELP.CALL_CHARGES', 'https://www.gov.uk/call-charges', false) }}</p>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

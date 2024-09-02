@@ -7,7 +7,8 @@ import {Claim} from 'models/claim';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../app/auth/launchdarkly/launchDarklyClient';
+
 export class AllResponseTasksCompletedGuard {
   static apply(redirectUrl: string) {
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -16,8 +17,9 @@ export class AllResponseTasksCompletedGuard {
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
         const caseData: Claim = await getClaimById(appReq.session.claimId, req, true);
         const carmApplicable = await isCarmEnabledForCase(caseData.submittedDate);
+        const mintiApplicable = await isMintiEnabledForCase(caseData.submittedDate);
         await setResponseDeadline(caseData, appReq);
-        const taskLists = getTaskLists(caseData,  appReq.session.claimId, lang, carmApplicable);
+        const taskLists = getTaskLists(caseData,  appReq.session.claimId, lang, carmApplicable, mintiApplicable);
         assert(taskLists && taskLists.length > 0, 'Task list cannot be empty');
         const outstandingTasks: Task[] = outstandingTasksFromTaskLists(taskLists);
         const allTasksCompleted = outstandingTasks?.length === 0;

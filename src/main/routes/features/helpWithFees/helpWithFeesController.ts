@@ -26,12 +26,12 @@ applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, (async (req: Request, res:
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getClaimById(claimId, <AppRequest>req, true);
     const form = new GenericForm(new GenericYesNo(claim?.helpWithFeesRequested, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', {lng})));
-    let backUrl;
+    let backLinkUrl;
     if(claim.feeTypeHelpRequested === FeeType.HEARING){
-      backUrl = constructResponseUrlWithIdParams(req.params.id, hearingFeeBackUrl);
+      backLinkUrl = constructResponseUrlWithIdParams(req.params.id, hearingFeeBackUrl);
     }
     const cancelUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-    res.render(applyHelpWithFeesViewPath, {form, applyHelpWithFeesContent:getApplyHelpWithFeesContent(claim), cancelUrl: cancelUrl, backUrl: backUrl});
+    res.render(applyHelpWithFeesViewPath, {form, applyHelpWithFeesContent:getApplyHelpWithFeesContent(claimId, claim), cancelUrl, backLinkUrl});
   } catch (error) {
     next(error);
   }
@@ -46,7 +46,7 @@ applyHelpWithFeesController.post(APPLY_HELP_WITH_FEES, (async (req: AppRequest |
     const form = new GenericForm(new GenericYesNo(option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
     await form.validate();
     if (form.hasErrors()) {
-      res.render(applyHelpWithFeesViewPath, {form, applyHelpWithFeesContent:getApplyHelpWithFeesContent(claim)});
+      res.render(applyHelpWithFeesViewPath, {form, applyHelpWithFeesContent:getApplyHelpWithFeesContent(claimId,claim)});
     } else {
       let redirectUrl;
       if (req.body.option == YesNo.YES) {

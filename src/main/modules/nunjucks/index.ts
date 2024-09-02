@@ -14,22 +14,22 @@ import {UnemploymentCategory} from 'common/form/models/statementOfMeans/unemploy
 import {TransactionSchedule} from 'common/form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {EvidenceType} from 'common/models/evidence/evidenceType';
 import {addDaysFilter, addDaysFilterTranslated, dateFilter, formatDate} from './filters/dateFilter';
-import {SignatureType} from '../../common/models/signatureType';
-import {ClaimSummaryType} from '../../common/form/models/claimSummarySection';
-import {FormValidationError} from '../../common/form/validationErrors/formValidationError';
-import {NotEligibleReason} from '../../common/form/models/eligibility/NotEligibleReason';
-import {TotalAmountOptions} from '../../common/models/eligibility/totalAmountOptions';
-import {ClaimTypeOptions} from '../../common/models/eligibility/claimTypeOptions';
-import {AgeEligibilityOptions} from '../../common/form/models/eligibility/defendant/AgeEligibilityOptions';
-import {LanguageOptions} from '../../common/models/directionsQuestionnaire/languageOptions';
+import {SignatureType} from 'common/models/signatureType';
+import {ClaimSummaryType} from 'common/form/models/claimSummarySection';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
+import {NotEligibleReason} from 'common/form/models/eligibility/NotEligibleReason';
+import {TotalAmountOptions} from 'common/models/eligibility/totalAmountOptions';
+import {ClaimTypeOptions} from 'common/models/eligibility/claimTypeOptions';
+import {AgeEligibilityOptions} from 'common/form/models/eligibility/defendant/AgeEligibilityOptions';
+import {LanguageOptions} from 'common/models/directionsQuestionnaire/languageOptions';
 import {
   CaseState,
   InterestClaimFromType,
   InterestEndDateType,
   SameRateInterestType,
-} from '../../common/form/models/claimDetails';
+} from 'common/form/models/claimDetails';
 import * as urls from '../../routes/urls';
-import {InterestClaimOptionsType} from '../../common/form/models/claim/interest/interestClaimOptionsType';
+import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {CourtProposedDateOptions} from 'common/form/models/claimantResponse/courtProposedDate';
 import {CourtProposedPlanOptions} from 'common/form/models/claimantResponse/courtProposedPlan';
@@ -38,11 +38,16 @@ import {UnavailableDateType} from 'common/models/directionsQuestionnaire/hearing
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import config from 'config';
 import crypto from 'crypto';
+import {TaskStatus} from 'models/taskList/TaskStatus';
 import {AppRequest} from 'models/AppRequest';
+import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {HearingTypeOptions} from 'common/models/generalApplication/hearingArrangement';
+import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
+import {getLanguage} from 'modules/i18n/languageService';
 
 const packageDotJson = require('../../../../package.json');
 
-const moneyClaimBaseUrl = config.get<string>('services.cmc.url');
+const dynatraceUrl = config.get<string>('dynatrace.url');
 
 const appAssetPaths = {
   js: '/js',
@@ -69,7 +74,7 @@ export class Nunjucks {
       '..',
       '..',
       'node_modules',
-      'govuk-frontend',
+      'govuk-frontend/dist',
     );
     const mojFrontendPath = join(
       __dirname,
@@ -101,7 +106,7 @@ export class Nunjucks {
         }
         if(key?.text)
           return ({...key, text: t(key?.text)});
-      });
+      }).filter(item => item);
     };
 
     const nextMonth = new Date();
@@ -117,7 +122,9 @@ export class Nunjucks {
     nunjucksEnv.addFilter('addDaysTranslated', addDaysFilterTranslated);
     nunjucksEnv.addFilter('date', dateFilter);
     nunjucksEnv.addFilter('formatDate', formatDate);
+    nunjucksEnv.addFilter('replaceSpaces', replaceSpace);
     nunjucksEnv.addGlobal('t', t);
+    nunjucksEnv.addGlobal('getLanguage', getLanguage);
     nunjucksEnv.addGlobal('translateErrors', translateErrors);
     nunjucksEnv.addGlobal('ResponseType', ResponseType);
     nunjucksEnv.addGlobal('YesNo', YesNo);
@@ -150,15 +157,16 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('today', new Date());
     nunjucksEnv.addGlobal('nextMonth', nextMonth);
     nunjucksEnv.addGlobal('PaymentOptionType', PaymentOptionType);
-    nunjucksEnv.addGlobal('ContactUsUrl', `${moneyClaimBaseUrl}/contact-us`);
-    nunjucksEnv.addGlobal('AccessibilityStatementUrl', `${moneyClaimBaseUrl}/accessibility-statement`);
-    nunjucksEnv.addGlobal('TermsAndConditionsUrl', `${moneyClaimBaseUrl}/terms-and-conditions`);
-    nunjucksEnv.addGlobal('PrivacyPolicyUrl', `${moneyClaimBaseUrl}/privacy-policy`);
     nunjucksEnv.addGlobal('TestingSupportUrl', '/testing-support/create-draft-claim');
     nunjucksEnv.addGlobal('developmentMode', this.developmentMode);
     nunjucksEnv.addGlobal('nonceValue', nonceValue);
+    nunjucksEnv.addGlobal('TaskStatus', TaskStatus);
+    nunjucksEnv.addGlobal('ApplicationTypeOption', ApplicationTypeOption);
+    nunjucksEnv.addGlobal('HearingTypeOptions', HearingTypeOptions);
+    nunjucksEnv.addGlobal('ProposedPaymentPlanOption', ProposedPaymentPlanOption);
     // TODO : 'GTM-PBT2TQ2D' is test GTM id for integration to the Google Tag Manager for Google Analytics, it should be replaced with production GTM id when it's provided by HMCTS User experience team
     nunjucksEnv.addGlobal('gtmScriptId', 'GTM-PBT2TQ2D');
+    nunjucksEnv.addGlobal('dynatraceUrl', dynatraceUrl);
 
     app.use((req:AppRequest, res, next) => {
       res.locals.pagePath = req.path;
@@ -168,3 +176,7 @@ export class Nunjucks {
     });
   }
 }
+
+const replaceSpace = (title: string): string => {
+  return title.replace(/ /g, '_').replace('\'','');
+};

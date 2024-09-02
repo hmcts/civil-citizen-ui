@@ -7,6 +7,23 @@
   {{ setPageTitle(t, 'PAGES.UNDERSTANDING_YOUR_OPTIONS.PAGE_TITLE') }}
 {% endblock %}
 
+{% set REQUEST_EXTENSION_DEFAULT %}
+    {% if isReleaseTwoEnabled %}
+        {{  t('PAGES.UNDERSTANDING_YOUR_OPTIONS.REQUEST_EXTENSION_DEFAULT_R2') | safe }}
+    {% else %}
+        {{ t('PAGES.UNDERSTANDING_YOUR_OPTIONS.REQUEST_EXTENSION_DEFAULT') | safe }}
+    {% endif %}
+{% endset %}
+
+
+{% set REQUEST_EXTENSION_MORE %}
+    {% if isReleaseTwoEnabled %}
+        {{ t('PAGES.UNDERSTANDING_YOUR_OPTIONS.REQUEST_EXTENSION_MORE_R2') | safe  }}
+    {% else %}
+        {{ t('PAGES.UNDERSTANDING_YOUR_OPTIONS.REQUEST_EXTENSION_MORE') | safe  }}
+    {% endif %}
+{% endset %}
+
 {% block content %}
 <div class="govuk-width-container">
   <main class="govuk-main-wrapper" role="main">
@@ -16,8 +33,8 @@
         <h2 class="govuk-heading-m">{{ t('PAGES.UNDERSTANDING_YOUR_OPTIONS.CURRENT_DEADLINE', {responseDeadline: responseDate}) }}</h2>
         <p class="govuk-body"> {{ t('PAGES.UNDERSTANDING_YOUR_OPTIONS.UNABLE_TO_RESPOND_BEFORE_DEADLINE') }}</p>
         <h3 class="govuk-heading-m"> {{ t('PAGES.UNDERSTANDING_YOUR_OPTIONS.HOW_MUCH_EXTRA') }}</h3>
-        <p class="govuk-body">{{ t('PAGES.UNDERSTANDING_YOUR_OPTIONS.REQUEST_EXTENSION_DEFAULT') }}</p>
-        <p class="govuk-body">{{ t('PAGES.UNDERSTANDING_YOUR_OPTIONS.REQUEST_EXTENSION_MORE') }}</p>
+        <p class="govuk-body">{{ REQUEST_EXTENSION_DEFAULT }}</p>
+        <p class="govuk-body">{{ REQUEST_EXTENSION_MORE  }}</p>
         {{ govukButton({
           text: t('COMMON.BUTTONS.CONTINUE'),
           href: './response-deadline-options'

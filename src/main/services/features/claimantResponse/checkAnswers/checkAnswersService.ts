@@ -18,14 +18,15 @@ import {buildMediationSection} from 'services/features/response/checkAnswers/res
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
-const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmApplicable: boolean, claimFee?: number): SummarySections => {
+const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmApplicable: boolean, mintiApplicable: boolean, claimFee?: number): SummarySections => {
   const getYourResponseSection = () => {
     return claim.isFullDefence() || claim.isPartialAdmission() || claim.isFullAdmission()
       ? buildYourResponseSection(claim, claimId, lang)
       : null;
   };
   const getJudgmentRequestSection = () => {
-    return claim.claimantResponse?.isCCJRequested
+    const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+    return claimantResponse.isCCJRequested
       ? buildJudgmentRequestSection(claim, claimId, lang, claimFee)
       : null;
   };
@@ -54,7 +55,7 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmA
   const getHearingRequirementsSection = () => {
     return (directionQuestionnaireFromClaimant(claim)
     )
-      ? buildHearingRequirementsSectionCommon(claim, claimId, lang, claim.claimantResponse.directionQuestionnaire)
+      ? buildHearingRequirementsSectionCommon(claim, claimId, lang, claim.claimantResponse.directionQuestionnaire, mintiApplicable)
       : null;
   };
   return {
@@ -71,9 +72,10 @@ const buildSummarySections = (claim: Claim, claimId: string, lang: string, carmA
   };
 };
 
-export const getSummarySections = (claimId: string, claim: Claim, lang?: string, claimFee?: number, carmApplicable = false): SummarySections => {
+export const getSummarySections = (claimId: string, claim: Claim, lang?: string, claimFee?: number, carmApplicable = false, mintiApplicable = false): SummarySections => {
   const lng = getLng(lang);
-  return buildSummarySections(claim, claimId, lng, carmApplicable, claimFee);
+  claim.claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
+  return buildSummarySections(claim, claimId, lng, carmApplicable, mintiApplicable, claimFee);
 };
 
 export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {

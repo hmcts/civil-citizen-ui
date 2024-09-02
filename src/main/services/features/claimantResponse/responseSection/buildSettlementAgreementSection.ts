@@ -19,15 +19,15 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CCJ_EXTENDED_PAID_AMOUNT_URL, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL} from 'routes/urls';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
 import {getJudgmentAmountSummary} from '../ccj/judgmentAmountSummaryService';
-import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {noGroupingCurrencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 export const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lng: string,isClaimantPlanAccepted: boolean): SummarySection => {
   const date = claim.claimantResponse?.suggestedPaymentIntention?.paymentDate as unknown as PaymentDate;
   const paymentDate = t(formatDateToFullDate(isClaimantPlanAccepted? date.date:getPaymentDate(claim), lng));
   const fullName = claim.getDefendantFullName();
-  const amount = getAmount(claim);
+  const amount = noGroupingCurrencyFormatWithNoTrailingZeros(getAmount(claim));
   return summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.SETTLEMENT_AGREEMENT', { lng }),
     summaryRows: [
@@ -39,7 +39,7 @@ export const buildSummaryForPayBySetDate = (claim: Claim, claimId: string, lng: 
 
 export const buildSummaryForPayByInstalments = (claim: Claim, claimId: string, lng: string,isClaimantPlanAccepted: boolean): SummarySection => {
   const fullName = claim.getDefendantFullName();
-  const amount = getAmount(claim);
+  const amount = noGroupingCurrencyFormatWithNoTrailingZeros(getAmount(claim));
   const instalmentAmount = isClaimantPlanAccepted ? getPaymentAmountClaimantPlan(claim) : getPaymentAmount(claim);
   const paymentFrequency= isClaimantPlanAccepted ? getRepaymentFrequencyForClaimantPlan(claim) : getRepaymentFrequency(claim);
   const frequency = t(`COMMON.PAYMENT_FREQUENCY.${paymentFrequency}`, { lng })?.toLowerCase();
@@ -58,7 +58,7 @@ export const buildSettlementAgreementSection = (claim: Claim, claimId: string, l
   const isSignSettlement = claim.claimantResponse?.isSignASettlementAgreement;
   const isSignSettlementForPayBySetDate = isSignSettlement && (claim.isPAPaymentOptionByDate() || claim.isFAPaymentOptionBySetDate());
   const isSignSettlementForPayByInstallments = isSignSettlement && (claim.isPAPaymentOptionInstallments() || claim.isFAPaymentOptionInstallments());
-  if (claim.hasCourtAcceptedClaimantsPlan()) {
+  if (claim.hasCourtAcceptedClaimantsPlan() && isSignSettlement) {
     if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.BY_SET_DATE) {
       return buildSummaryForPayBySetDate(claim, claimId, lng,true);
     } else if (claim.getSuggestedPaymentIntentionOptionFromClaimant() === PaymentOptionType.INSTALMENTS) {
@@ -79,11 +79,13 @@ export const buildJudgmentRequestSection = (claim: Claim, claimId: string, lng: 
   const ccjPaidAmountHref = constructResponseUrlWithIdParams(claimId, CCJ_EXTENDED_PAID_AMOUNT_URL);
   const paymentOption = claim.getHasDefendantPaid();
 
+  const paymentOptionTranslationKey = paymentOption ? `COMMON.VARIATION_5.${paymentOption.toUpperCase()}` : '';
+  const paymentOptionText = paymentOptionTranslationKey ? t(paymentOptionTranslationKey, {lng}) : '';
   const judgmentRequestSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.JUDGMENT_REQUEST', {lng}),
     summaryRows: [
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CCJ_HAS_DEFENDANT_PAID_SOME', {lng}),
-        paymentOption === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO, ccjPaidAmountHref, changeLabel(lng)),
+        paymentOptionText?.charAt(0).toUpperCase() + paymentOptionText?.substring(1), ccjPaidAmountHref, changeLabel(lng)),
     ],
   });
   if (claim.getDefendantPaidAmount()) {

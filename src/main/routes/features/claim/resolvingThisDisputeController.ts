@@ -7,7 +7,7 @@ const resolvingThisDisputeController = Router();
 const resolvingThisDisputePath = 'features/claim/resolving-this-dispute';
 
 resolvingThisDisputeController.get(CLAIM_RESOLVING_DISPUTE_URL, (async (req: Request, res: Response) => {
-  res.render(resolvingThisDisputePath);
+  res.render(resolvingThisDisputePath, {pageTitle: 'PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.PAGE_TITLE'});
 }) as RequestHandler);
 
 resolvingThisDisputeController.post(CLAIM_RESOLVING_DISPUTE_URL, (req: AppRequest, res: Response, next: NextFunction): void => {

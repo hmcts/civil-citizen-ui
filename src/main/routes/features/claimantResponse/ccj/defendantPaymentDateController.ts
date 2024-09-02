@@ -15,7 +15,7 @@ const defendantPaymentDateController = Router();
 const title = 'PAGES.CCJ_DEFENDANT_PAYMENT_DATE.TITLE';
 
 function renderView(form: GenericForm<PaymentDate>, res: Response): void {
-  res.render(paymentDatePath, {form, title});
+  res.render(paymentDatePath, {form, title, pageTitle: 'PAGES.ADMISSION_PAYMENT_DATE.PAGE_TITLE'});
 }
 
 defendantPaymentDateController

@@ -6,7 +6,7 @@
 {% from "./macro/header.njk" import headerComponent %}
 {% from "./macro/cookie-banner.njk" import cookieBanner %}
 
-{% set bannerText = "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/IDAMSurvey/?pageurl=https://hmcts-access.service.gov.uk/login?client_id%3Dcmc_citizen' target='_blank'>feedback</a> will help us to improve it." %}
+{% set bannerText = t('COMMON.HEADER.NEW_SERVICE') %}
 {% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=en'>English</a>"%}
 {% extends "govuk/template.njk" %}
 {% block head %}
@@ -27,14 +27,15 @@
       containerClasses: 'govuk-width-container',
       serviceName:  t('PAGES.SERVICE_UNAVAILABLE.SERVICE_NAME'),
       navigationClasses: 'govuk-!-display-inline float-right',
-      navigation: navigationList
+      navigation: navigationList,
+      useTudorCrown: true
     }) }}
 {% endblock %}
 
 {% block beforeContent %}
 {{ govukPhaseBanner({
   tag: {
-    text: "beta"
+    text: t('COMMON.HEADER.BETA')
   },
   html: bannerText + languageToggle
 }) }}
@@ -46,6 +47,9 @@
 
 {% block footer %}
 {{ govukFooter({
+    contentLicence: {
+      html: t('FOOTER.ALL_CONTENT', { link: 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/' })
+    },
     meta: {
       items: [
         {
@@ -53,7 +57,7 @@
           text: t("FOOTER.COOKIES_URL")
         },
         {
-          href: PrivacyPolicyUrl,
+          href: urls.PRIVACY_POLICY_URL,
           text: t("FOOTER.PRIVACY_POLICY_URL")
         },
         {
@@ -61,15 +65,15 @@
           text: t("FOOTER.HELP_USING_GOV_URL")
         },
         {
-          href: ContactUsUrl,
+          href: urls.CONTACT_US_URL,
           text: t("FOOTER.CONTACT_US_URL")
         },
         {
-          href: AccessibilityStatementUrl,
+          href: urls.ACCESSIBILITY_STATEMENT_URL,
           text: t("FOOTER.ACCESSIBILITY_STATEMENT_URL")
         },
         {
-          href: TermsAndConditionsUrl,
+          href: urls.TERMS_AND_CONDITIONS_URL,
           text: t("FOOTER.TERMS_AND_CONDITIONS_URL")
         }
       ]

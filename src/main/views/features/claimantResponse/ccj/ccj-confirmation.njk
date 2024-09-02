@@ -8,8 +8,16 @@
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% import "external-urls.njk" as externalURLs %}
 
+{% if isJudgmentOnline %}
+  {% set processYourRequest = 'PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST_JO' %}
+  {% set processYourRequest1 = 'PAGES.CCJ_CONFIRMATION.NO_LONGER_RESPONSE' %}
+{% else %}
+  {% set processYourRequest = 'PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST' %}
+  {% set processYourRequest1 = 'PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST_1' %}
+{% endif %}
+
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.CCJ_CONFIRMATION.PAGE_TITLE') }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% block content %}
@@ -19,9 +27,11 @@
         titleText:t('PAGES.CCJ_CONFIRMATION.TITLE')
       }) }}
       <br>
-      <p class="govuk-body">{{ t('PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST', { defendantName: defendantName }) }}</p>
-      <p class="govuk-body">{{ t('PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST_1') }}</p>
-      <p class="govuk-body">{{ t('PAGES.CCJ_CONFIRMATION.UPDATES') }}</p>
+      <p class="govuk-body">{{ t(processYourRequest, { defendantName: defendantName }) }}</p>
+      <p class="govuk-body">{{ t(processYourRequest1, { defendantName: defendantName }) }}</p>
+      {% if not isJudgmentOnline %}
+        <p class="govuk-body">{{ t('PAGES.CCJ_CONFIRMATION.UPDATES') }}</p>
+      {% endif %}
       {{ govukInsetText({
         text:  t('PAGES.CCJ_CONFIRMATION.POSTAL_RESPONSE')
       }) }}

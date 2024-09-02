@@ -12,7 +12,7 @@ import { Task } from 'common/models/taskList/task';
 import { TaskStatus } from 'common/models/taskList/TaskStatus';
 import {ClaimResponseStatus} from 'models/claimResponseStatus';
 
-export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng: string, carmApplicable: boolean) {
+export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng: string, carmApplicable: boolean, mintiApplicable: boolean) {
   const lang = getLng(lng);
   const taskGroups : TaskList[] = [];
   taskGroups.push(buildHowDefendantRespondSection(claim, claimId, lang));
@@ -23,17 +23,17 @@ export function getClaimantResponseTaskLists (claim: Claim, claimId: string, lng
     taskGroups.push(buildYourResponseSection(claim, claimId, lang, carmApplicable));
   }
 
-  if (carmApplicable && claim.hasClaimantNotSettled()) {
+  if (carmApplicable && claim.hasClaimantNotSettled() && claim.isSmallClaimsTrackDQ) {
     taskGroups.push(buildClaimantResponseMediationSection(claim, claimId, lang, carmApplicable));
   }
 
-  taskGroups.push(buildClaimantHearingRequirementsSection(claim, claimId, lang));
+  taskGroups.push(buildClaimantHearingRequirementsSection(claim, claimId, lang, mintiApplicable));
   taskGroups.push(buildClaimantResponseSubmitSection(claimId, lang));
   return taskGroups.filter(item => item.tasks.length !== 0);
 }
 
-export const outstandingClaimantResponseTasks = (caseData: Claim, claimId: string, lang: string, carmApplicable: boolean): Task[] => {
-  return outstandingTasksFromTaskLists(getClaimantResponseTaskLists(caseData, claimId, lang, carmApplicable));
+export const outstandingClaimantResponseTasks = (caseData: Claim, claimId: string, lang: string, carmApplicable: boolean, mintiApplicable: boolean): Task[] => {
+  return outstandingTasksFromTaskLists(getClaimantResponseTaskLists(caseData, claimId, lang, carmApplicable, mintiApplicable));
 };
 
 const isOutstanding = (task: Task): boolean => {

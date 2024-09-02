@@ -1,7 +1,8 @@
 import {NextFunction, RequestHandler, Router} from 'express';
-import {UPLOAD_YOUR_DOCUMENTS_URL} from '../../urls';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, UPLOAD_YOUR_DOCUMENTS_URL} from '../../urls';
 import {getUploadYourDocumentsContents} from 'services/features/caseProgression/uploadYourDocumentsContents';
 import {getClaimById} from 'modules/utilityService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const uploadYourDocumentsViewPath = 'features/caseProgression/upload-your-documents';
 const uploadYourDocumentsController = Router();
@@ -9,8 +10,17 @@ const uploadYourDocumentsController = Router();
 uploadYourDocumentsController.get(UPLOAD_YOUR_DOCUMENTS_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req);
-    res.render(uploadYourDocumentsViewPath, {uploadYourDocumentsContents:getUploadYourDocumentsContents(claimId, claim)});
+    const claim = await getClaimById(claimId, req,true);
+    let dashboardUrl;
+    if (claim.isClaimant()) {
+      dashboardUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
+    } else {
+      dashboardUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+    }
+    res.render(uploadYourDocumentsViewPath, {
+      uploadYourDocumentsContents:getUploadYourDocumentsContents(claimId, claim),
+      dashboardUrl,
+    });
   } catch (error) {
     next(error);
   }

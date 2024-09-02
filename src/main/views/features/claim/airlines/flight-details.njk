@@ -1,0 +1,99 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, pageTitle) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      {% if form.hasErrors() %}
+        {% set errors = form.getErrors() %}
+        <div class="govuk-grid-row">
+          {{ errorSummary(errors, t) }}
+        </div>
+      {% endif %}
+
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <form method="post" novalidate autocomplete="off">
+            {{ csrfProtection(csrf) }}
+
+            <h1 class="govuk-heading-l">{{ t('PAGES.FLIGHT_DETAILS.FLIGHT_DETAILS') }}</h1>
+            {{ datalist | safe}}
+
+            {{ govukInput({
+              id: "flightNumber",
+              name: "flightNumber",
+              value: form.model.flightNumber,
+              classes: "govuk-!-width-one-half",
+              label: {
+                text: t('PAGES.FLIGHT_DETAILS.FLIGHT_NUMBER')
+              },
+              errorMessage: {
+                html: t(form.errorFor('flightNumber'))
+              } if form.errorFor('flightNumber')
+            }) }}
+
+            <h1 class="govuk-heading-s">{{ t('PAGES.FLIGHT_DETAILS.SCHEDULED_DATE') }}</h1>
+            {{ govukDateInput({
+              id: "flightDate",
+              name: "flightDate",
+              hint: {
+                text: t('COMMON.DATE_EXAMPLE', {
+                  date: today.getDate() + ' ' + today.getMonth() + ' ' + today.getFullYear()
+                })
+              },
+              errorMessage: {
+                html: '<p class="govuk-error-message">' + t(form.errorFor('flightDate')) + '</p>' +
+                '<p class="govuk-error-message">' + t(form.errorFor('day')) + '</p>' +
+                '<p class="govuk-error-message">' + t(form.errorFor('month')) + '</p>' +
+                '<p class="govuk-error-message">' + t(form.errorFor('year')) + '</p>'
+              } if (form.hasFieldError('flightDate') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year')),
+              items: [
+                {
+                  classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
+                  id: "day",
+                  label: t('COMMON.DAY'),
+                  name: "day",
+                  value: form.model.day,
+                  max: 31
+                },
+                {
+                  classes:"govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
+                  id: "month",
+                  label: t('COMMON.MONTH'),
+                  name: "month",
+                  value: form.model.month,
+                  max: 12
+                },
+                {
+                  classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
+                  id: "year",
+                  label: t('COMMON.YEAR'),
+                  name: "year",
+                  value: form.model.year,
+                  max: 9999
+                }
+              ]
+            }) }}
+
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+              }) }}
+              {{ contactUsForHelp(t) }}
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}

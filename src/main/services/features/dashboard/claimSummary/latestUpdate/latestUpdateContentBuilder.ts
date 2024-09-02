@@ -336,6 +336,13 @@ function generateClaimEndedLatestUpdate(claim: Claim, lng: string) {
     .build();
 }
 
+function generateCaseWillBeProcessedOffline(claim: Claim, lng: string) {
+  return new LatestUpdateSectionBuilder()
+    .addTitle(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIM_TAKEN_OFFLINE_TITLE`, {lng}))
+    .addParagraph(t(`${PAGES_LATEST_UPDATE_CONTENT}.CLAIM_TAKEN_OFFLINE_MESSAGE`, {lng}))
+    .build();
+}
+
 function generateMediationSuccessfulLatestUpdate(claim: Claim, lng: string) {
   const claimantFullName = claim.getClaimantFullName();
   const claimId = claim.id;
@@ -473,8 +480,10 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
     sectionContent.push(respondToClaimLink);
   } else if (claim.hasSdoOrderDocument()) {
     sectionContent.push(getLastUpdateSdoDocument(claimId, claim));
-  } else if (claim.hasClaimTakenOffline()) {
+  } else if (claim.hasFullDefenceAccepted()) {
     sectionContent.push(generateClaimEndedLatestUpdate(claim, lng));
+  } else if(claim.hasClaimTakenOffline()) {
+    sectionContent.push(generateCaseWillBeProcessedOffline(claim, lng));
   } else if (claim.hasMediationSuccessful()) {
     sectionContent.push(generateMediationSuccessfulLatestUpdate(claim, lng));
   } else if (claim.hasMediationUnSuccessful() && !claim.hasSdoOrderDocument()) {

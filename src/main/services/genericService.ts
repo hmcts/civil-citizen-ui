@@ -67,9 +67,14 @@ const translateRepaymentSchedule = (schedule: string, lng: string): string => {
   }
 };
 
+const exhaustiveMatchingGuard = (p: never): never => {
+  throw new Error(`Non-exhaustive switch ${p}`);
+};
+
 export {
   translateAccountType,
   translatePriorityDebt,
   translateRepaymentSchedule,
   translateResidenceType,
+  exhaustiveMatchingGuard,
 };

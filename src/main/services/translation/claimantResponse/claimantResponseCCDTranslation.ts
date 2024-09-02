@@ -11,11 +11,24 @@ import {CCDClaimantResponse} from 'common/models/claimantResponse/ccdClaimantRes
 import {toCCDClaimantMediation} from './convertToCCDClaimantMediation';
 import {toCCDRepaymentPlanFrequency} from 'services/translation/response/convertToCCDRepaymentPlan';
 import {toCCDClaimantPayBySetDate} from '../response/convertToCCDPayBySetDate';
-import {toCCDClaimantSuggestedFirstRepaymentDate, toCCDClaimantSuggestedPayByDate, toCCDClaimantPaymentOption}
+import {
+  toCCDClaimantSuggestedFirstRepaymentDate,
+  toCCDClaimantSuggestedPayByDate,
+  toCCDClaimantPaymentOption,
+  toCCDClaimantSuggestedImmediatePaymentDateInFavourClaimant,
+}
   from 'services/translation/claimantResponse/convertToCCDClaimantPaymentOption';
 import {toCCDDQHearingSupport} from '../response/convertToCCDHearingSupport';
 import { YesNo } from 'common/form/models/yesNo';
 import {toCCDMediationCarm} from 'services/translation/response/convertToCCDMediationCarm';
+import {
+  toCCDFixedRecoverableCostsIntermediate,
+} from 'services/translation/response/convertToCCDFixedRecoverableCostsIntermediate';
+import {
+  toCCDDisclosureOfElectronicDocuments,
+  toCCDDisclosureOfNonElectronicDocuments,
+} from 'services/translation/response/convertToCCDDisclosureOfDocuments';
+import {convertToCCDDocumentsToBeConsidered} from 'services/translation/response/convertToCCDDocumentsToBeConsidered';
 
 function isClaimantWantToSettleTheClaim(claim: Claim) {
   if (claim.isPartialAdmission() || (claim.isFullDefence() && !claim.hasPaidInFull())) {
@@ -53,5 +66,10 @@ export const translateClaimantResponseToCCD = (claim: Claim): CCDClaimantRespons
     applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: toCCDRepaymentPlanFrequency(claim.claimantResponse?.suggestedPaymentIntention?.repaymentPlan?.repaymentFrequency),
     applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: toCCDClaimantSuggestedFirstRepaymentDate(claim.claimantResponse),
     applicant1RequestedPaymentDateForDefendantSpec: toCCDClaimantSuggestedPayByDate(claim.claimantResponse) ? toCCDClaimantPayBySetDate(claim.claimantResponse?.suggestedPaymentIntention?.paymentDate) : undefined,
+    applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec: toCCDClaimantSuggestedImmediatePaymentDateInFavourClaimant(claim.claimantResponse) ? claim.claimantResponse?.suggestedImmediatePaymentDeadLine : undefined,
+    applicant1DQFixedRecoverableCostsIntermediate: toCCDFixedRecoverableCostsIntermediate(claim.claimantResponse?.directionQuestionnaire?.fixedRecoverableCosts),
+    specApplicant1DQDisclosureOfElectronicDocuments: toCCDDisclosureOfElectronicDocuments(claim.claimantResponse?.directionQuestionnaire?.hearing),
+    specApplicant1DQDisclosureOfNonElectronicDocuments: toCCDDisclosureOfNonElectronicDocuments(claim.claimantResponse?.directionQuestionnaire?.hearing),
+    applicant1DQDefendantDocumentsToBeConsidered: convertToCCDDocumentsToBeConsidered(claim.claimantResponse?.directionQuestionnaire?.hearing),
   };
 };

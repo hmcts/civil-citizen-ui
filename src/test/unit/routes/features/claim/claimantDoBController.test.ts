@@ -5,6 +5,12 @@ import {app} from '../../../../../main/app';
 import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from 'routes/urls';
 import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {t} from 'i18next';
+import {
+  addDaysToDate, 
+  formatDateToFullDate, 
+  getDOBforAgeFromCurrentTime,
+} from 'common/utils/dateUtils';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -18,6 +24,10 @@ describe('Claimant Date of Birth Controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+  });
+
+  afterAll(() => {
+    jest.clearAllMocks();
   });
 
   describe('on GET', () => {
@@ -52,6 +62,18 @@ describe('Claimant Date of Birth Controller', () => {
       const res = await request(app).post(CLAIMANT_DOB_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('What is your date of birth?');
+    });
+
+    it('should show validation error for claimant under 18', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      const today = new Date();
+      const maxDate = formatDateToFullDate(addDaysToDate(getDOBforAgeFromCurrentTime(18), 1), 'en');
+      await request(app).post(CLAIMANT_DOB_URL)
+        .send({ day:today.getDate(), month:today.getMonth(), year: today.getFullYear() - 16 })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.VALID_ENTER_A_DATE_BEFORE', { maxDate }));
+        });
     });
 
     it('should redirect to the claimant phone number page', async () => {

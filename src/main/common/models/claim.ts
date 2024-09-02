@@ -6,7 +6,7 @@ import {StatementOfMeans} from './statementOfMeans';
 import {PartyType} from './partyType';
 import {FullAdmission} from './fullAdmission';
 import {PartialAdmission} from './partialAdmission';
-import {DefendantEvidence} from './evidence/evidence';
+import {ClaimantEvidence, DefendantEvidence} from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
@@ -65,7 +65,6 @@ import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {BundlesFormatter} from 'services/features/caseProgression/bundles/bundlesFormatter';
 import {CaseRole} from 'form/models/caseRoles';
 import {ChooseHowProceed} from './chooseHowProceed';
-import {CCDBreathingSpaceStartInfo} from './ccd/ccdBreathingSpace/ccdBreathingSpaceStartInfo';
 import {PinToPost} from './pinToPost';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {FeeType} from 'form/models/helpWithFees/feeType';
@@ -76,10 +75,15 @@ import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 import {RepaymentPlanInstalments} from 'models/claimantResponse/ccj/repaymentPlanInstalments';
 import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
 import {toCCDYesNo, toCCDYesNoReverse} from 'services/translation/response/convertToCCDYesNo';
-import { AdditionalLipPartyDetails } from './additionalLipPartyDetails';
+import {AdditionalLipPartyDetails} from './additionalLipPartyDetails';
 import {BusinessProcess} from 'models/businessProcess';
-import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
+import { MediationUploadDocumentsCCD } from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
+import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
+import {GeneralApplication} from './generalApplication/GeneralApplication';
+import {FlightDetails} from './flightDetails';
+import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
+import { RespondentGaAppDetail } from './generalApplication/response/respondentGaAppDetail';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -110,6 +114,7 @@ export class Claim {
   issueDate?: Date;
   claimFee?: ClaimFee;
   specClaimTemplateDocumentFiles?: Document;
+  specParticularsOfClaimDocumentFiles?: Document;
   systemGeneratedCaseDocuments?: SystemGeneratedCaseDocuments[];
   ccdState: CaseState;
   responseDeadline: ResponseDeadline;
@@ -129,7 +134,7 @@ export class Claim {
   takenOfflineDate?: Date;
   mediationAgreement?: MediationAgreement;
   unsuccessfulMediationReason?: string;
-  defaultJudgmentDocuments?: CaseDocument[];
+  defaultJudgmentDocuments?: SystemGeneratedCaseDocuments[];
   ccjJudgmentStatement?: string;
   lastModifiedDate?: Date;
   applicant1AcceptAdmitAmountPaidSpec?: string;
@@ -144,14 +149,15 @@ export class Claim {
   caseRole?: CaseRole;
   draftClaimCreatedAt?: Date;
   helpWithFees ?: CCDHelpWithFees;
-  enterBreathing?: CCDBreathingSpaceStartInfo;
   respondent1PinToPostLRspec: PinToPost;
   defendantSignedSettlementAgreement?: YesNo;
   courtDecision: RepaymentDecisionType;
   feeTypeHelpRequested: FeeType;
   helpWithFeesRequested: string;
+  applicant1Represented?: YesNoUpperCamelCase;
+  specRespondent1Represented?: YesNoUpperCamelCase;
   respondentPaymentDeadline: Date;
-  respondentSignSettlementAgreement?: GenericYesNo;
+  respondentSignSettlementAgreement?: YesNoUpperCamelCase;
   mediationUploadDocuments?: UploadDocuments;
   applicant1AdditionalLipPartyDetails?: AdditionalLipPartyDetails;
   businessProcess?: BusinessProcess;
@@ -160,6 +166,22 @@ export class Claim {
   claimIssuedHwfDetails?: CCDHelpWithFeesDetails;
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
+  mediationSettlementAgreedAt?: Date;
+  respondentGaAppDetails?: RespondentGaAppDetail[];
+  generalApplication?: GeneralApplication;
+  orderDocumentId?: string;
+  claimantEvidence: ClaimantEvidence;
+  defendantResponseDocuments: SystemGeneratedCaseDocuments[];
+  responseClaimMediationSpecRequired?: YesNo;
+  delayedFlight?: GenericYesNo;
+  flightDetails?: FlightDetails;
+  judgmentOnline?: JudgmentOnline;
+  claimType?: string;
+  paymentSyncError?: boolean;
+  responseClaimTrack?: string;
+
+  // Index signature to allow dynamic property access
+  [key: string]: any;
 
   public static fromCCDCaseData(ccdClaim: CCDClaim): Claim {
     const claim: Claim = Object.assign(new Claim(), ccdClaim);
@@ -448,7 +470,7 @@ export class Claim {
     return this.systemGeneratedCaseDocuments?.length > 0;
   }
 
-  getDocumentDetails(documentType: DocumentType): CaseDocument {
+  getDocumentDetails(documentType: DocumentType, claimantOrDefendant?: DirectionQuestionnaireType): CaseDocument {
     if (documentType === DocumentType.HEARING_FORM && this.hasCaseProgressionHearingDocuments()) {
       const hearingNotice = this.caseProgressionHearing.hearingDocuments.find(document => {
         return document.value.documentType === documentType;
@@ -460,6 +482,11 @@ export class Claim {
 
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
+        if (documentType == DocumentType.DIRECTIONS_QUESTIONNAIRE) {
+          return document.value.documentType === documentType && document.value.documentName.startsWith(claimantOrDefendant);
+        } else if (documentType == DocumentType.SEALED_CLAIM && claimantOrDefendant == DirectionQuestionnaireType.DEFENDANT) {
+          return document.value.documentType === documentType && document.value.documentName.includes('_response_');
+        }
         return document?.value.documentType === documentType;
       });
       return filteredDocumentDetailsByType?.value;
@@ -467,8 +494,21 @@ export class Claim {
     return undefined;
   }
 
+  getDocumentDetailsList(documentType: DocumentType): SystemGeneratedCaseDocuments[] {
+    if (this.isSystemGeneratedCaseDocumentsAvailable()) {
+      return this.systemGeneratedCaseDocuments?.filter(document => {
+        return document?.value.documentType === documentType;
+      });
+    }
+    return undefined;
+  }
+
   isDefendantNotResponded(): boolean {
     return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+  }
+
+  isCaseIssuedPending(): boolean {
+    return this.ccdState === CaseState.PENDING_CASE_ISSUED;
   }
 
   isClaimantIntentionPending(): boolean {
@@ -481,6 +521,14 @@ export class Claim {
 
   isBusiness(): boolean {
     return this.respondent1?.type === PartyType.COMPANY || this.respondent1?.type === PartyType.ORGANISATION;
+  }
+
+  isCompany(): boolean {
+    return this.respondent1?.type === PartyType.COMPANY;
+  }
+
+  isOrganisation(): boolean {
+    return this.respondent1?.type === PartyType.ORGANISATION;
   }
 
   isClaimantBusiness(): boolean {
@@ -550,14 +598,22 @@ export class Claim {
   }
 
   isDefendantDetailsCompleted(): boolean {
-    return (
-      !!this.respondent1?.type &&
+    return !!this.respondent1?.type &&
       !!this.respondent1?.partyDetails?.primaryAddress &&
-      ((this.isBusiness() && !!this.respondent1?.partyDetails?.partyName) ||
-        (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName))
-    );
+      (
+        (!this.isBusiness() && !!this.respondent1?.partyDetails?.firstName) ||
+        (this.isOrganisation() && !!this.respondent1?.partyDetails?.partyName) ||
+        (this.isCompany() && this.isAirlineComplete() && !!this.respondent1?.partyDetails?.partyName)
+      );
   }
 
+  isAirlineComplete(): boolean {
+    return this.delayedFlight?.option === YesNo.NO ||
+      (this.delayedFlight?.option === YesNo.YES &&
+        !!this.flightDetails?.airline &&
+        !!this.flightDetails?.flightNumber &&
+        !!this.flightDetails?.flightDate);
+  }
   isClaimantDetailsCompleted(): boolean {
     return (
       !!this.applicant1?.type &&
@@ -690,7 +746,11 @@ export class Claim {
   }
 
   isCCJComplete() {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option;
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined;
+  }
+
+  isCCJCompleteForJo(isJudgmentOnlineLiveOn: boolean) {
+    return this.ccdState === CaseState.All_FINAL_ORDERS_ISSUED && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined && isJudgmentOnlineLiveOn;
   }
 
   getHowTheInterestCalculatedReason(): string {
@@ -725,16 +785,20 @@ export class Claim {
     return party?.partyDetails?.partyName;
   }
 
-  get claimType(): string {
-    return analyseClaimType(this.totalClaimAmount);
-  }
-
   get isFastTrackClaim(): boolean {
-    return this.claimType === claimType.FAST_TRACK_CLAIM;
+    if (this.responseClaimTrack){
+      return this.responseClaimTrack === claimType.FAST_CLAIM;
+    }
+    const claimTypeResult = analyseClaimType(this.totalClaimAmount);
+    return claimTypeResult === claimType.FAST_TRACK_CLAIM;
   }
 
   get isSmallClaimsTrackDQ(): boolean {
-    return this.claimType === claimType.SMALL_CLAIM;
+    if (this.responseClaimTrack){
+      return this.responseClaimTrack === claimType.SMALL_CLAIM;
+    }
+    const claimTypeResult = analyseClaimType(this.totalClaimAmount);
+    return claimTypeResult === claimType.SMALL_CLAIM;
   }
 
   hasSdoOrderDocument(): boolean {
@@ -806,8 +870,14 @@ export class Claim {
     return undefined;
   }
 
+  hasFullDefenceAccepted() {
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM
+      && this.getIntentionToProceed() === YesNo.NO
+      && this.respondent1?.responseType === ResponseType.FULL_DEFENCE;
+  }
+
   hasClaimTakenOffline() {
-    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !this.hasDefaultJudgmentSubmitted() && !this.ccjJudgmentStatement && !this.isClaimantRejectedPaymentPlan();
+    return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !!this.takenOfflineDate;
   }
 
   hasMediationSuccessful() {
@@ -836,6 +906,11 @@ export class Claim {
       && (Object.entries(this.mediation.canWeUse).length > 0 || Object.entries(this.mediation.companyTelephoneNumber).length > 0);
   }
 
+  isDefendantLrAgreedForMediation() {
+    return this.isLRDefendant()
+      && this.responseClaimMediationSpecRequired === YesNo.YES;
+  }
+
   isClaimantRejectedPaymentPlan() {
     return this.claimantResponse?.fullAdmitSetDateAcceptPayment?.option === YesNo.NO;
   }
@@ -852,11 +927,24 @@ export class Claim {
     return threeWeeksBefore.toLocaleDateString('en-GB', options);
   }
 
-  private threeWeeksBeforeHearingDate() {
+  threeWeeksBeforeHearingDate() {
     const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
     const threeWeeksMilli = 21 * 24 * 60 * 60 * 1000;
     const dateAtStartOfDay = new Date(hearingDateTime - threeWeeksMilli).setHours(0, 0, 0, 0);
     return new Date(dateAtStartOfDay);
+  }
+
+  fourWeeksBeforeHearingDate() {
+    const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
+    const threeWeeksMilli = 28 * 24 * 60 * 60 * 1000;
+    const dateAtStartOfDay = new Date(hearingDateTime - threeWeeksMilli).setHours(0, 0, 0, 0);
+    return new Date(dateAtStartOfDay);
+  }
+
+  fourWeeksBeforeHearingDateString() {
+    const fourWeeksBefore = this.fourWeeksBeforeHearingDate();
+    const options: DateTimeFormatOptions = {day: 'numeric', month: 'long', year: 'numeric'};
+    return fourWeeksBefore.toLocaleDateString('en-GB', options);
   }
 
   private sixWeeksBeforeHearingDate(): Date {
@@ -881,7 +969,7 @@ export class Claim {
   }
 
   isClaimant() {
-    return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT;
+    return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT || this.caseRole === CaseRole.CREATOR;
   }
 
   isDraftClaim(): boolean {
@@ -926,7 +1014,15 @@ export class Claim {
   }
 
   hasClaimantAcceptedToSettleClaim(): boolean {
-    return this.isFullDefence() && this.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
+    return (this.isFullDefence() || this.isPartialAdmission()) && this.applicant1PartAdmitIntentionToSettleClaimSpec === YesNoUpperCamelCase.YES;
+  }
+
+  isLRClaimant() {
+    return this.applicant1Represented === YesNoUpperCamelCase.YES;
+  }
+
+  isLRDefendant() {
+    return this.specRespondent1Represented === YesNoUpperCamelCase.YES;
   }
 
   hasClaimantNotSettled(): boolean {

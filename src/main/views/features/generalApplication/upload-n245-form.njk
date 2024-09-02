@@ -1,0 +1,65 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "../../macro/button.njk" import addButton %}
+{% from "../dashboard/item-content.njk" import itemContent %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
+{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block nestedContent %}
+  {% set errors = "" %}
+  {% set  idValue = "selectedFile" %}
+  {% if form.hasErrors() %}
+    {% set errors = translateErrors(form.getAllErrors(),t)[0] %}
+    {% set idValue = errors.fieldName %}
+  {% endif %}
+  {% set uploadFileLabel %}
+  <strong>{{ t('COMMON.UPLOAD_FILE_LABEL') }}</strong>
+  {% endset %}
+  {{ headingWithCaption(t,'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.VARY_JUDGMENT','PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.TITLE' ) }}
+  {% for content in contentList %}
+    {{ itemContent(content,t) }}
+  {% endfor %}
+  <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
+    {{ csrfProtection(csrf) }}
+    <div class="govuk-inset-text">
+      {{ govukFileUpload({
+                  id: idValue,
+                  name: "selectedFile",
+                  label: {
+                   html: uploadFileLabel
+                  },
+                  errorMessage: {
+                     text: t(errors.text)
+                  } if errors
+              }) }}
+      {{ govukButton({
+                          id: 'uploadFileButton',
+                          name: 'action',
+                          value: 'uploadButton',
+                          text:  t('COMMON.UPLOAD_FILE'),
+                           classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+                }) }}
+    </div>
+    {% if documentName %}
+      <h2 class="govuk-heading-m">Uploaded files</h2>
+      <div class="govuk-section-break--s govuk-section-break--visible"></div>
+      <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+          <dt class="govuk-summary-list__key">
+            {{ documentName }}
+          </dt>
+          <dd class="govuk-summary-list__actions">
+            <a class="govuk-link" href="{{ currentUrl }}?action=REMOVE_DOC">
+              Remove document<span class="govuk-visually-hidden">
+                {{ documentName }}</span>
+            </a>
+          </dd>
+        </div>
+      </dl>
+    {% endif %}
+    <div class="govuk-button-group">
+      {{ addButton(t, 'CONTINUE', cancelUrl) }}
+    </div>
+  </form>
+{% endblock %}

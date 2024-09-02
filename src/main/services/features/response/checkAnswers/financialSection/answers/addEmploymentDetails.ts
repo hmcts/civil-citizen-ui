@@ -80,7 +80,7 @@ const showUnemploymentDetails = (financialSection: SummarySection, unemployment:
       unemploymentLengthOrOther = unemployment?.otherDetails?.details;
       break;
     case UnemploymentCategory.RETIRED:
-      unemploymentLengthOrOther = unemployment?.option;
+      unemploymentLengthOrOther =  t('PAGES.UNEMPLOYMENT.RETIRED', { lng: getLng(lang) });
       break;
     default:
   }

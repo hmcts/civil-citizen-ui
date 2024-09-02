@@ -12,7 +12,7 @@ freeTelephoneMediationController.get(CITIZEN_FREE_TELEPHONE_MEDIATION_URL, (asyn
   try {
     const civilClaim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
     res.render(citizenFreeTelephoneMediationViewPath,
-      {isBusiness: isBusinessUser(civilClaim)},
+      {isBusiness: isBusinessUser(civilClaim), pageTitle: 'PAGES.FREE_TELEPHONE_MEDIATION.PAGE_TITLE'},
     );
   } catch (error) {
     next(error);

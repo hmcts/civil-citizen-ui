@@ -16,14 +16,14 @@ import {submitResponse} from 'services/features/response/submission/submitRespon
 import {AppRequest} from 'models/AppRequest';
 import {SignatureType} from 'models/signatureType';
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuard';
-import {isCarmEnabledForCase} from 'common/utils/carmToggleUtils';
+import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const checkAnswersController = Router();
 
-function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, carmApplicable = false) {
+function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, carmApplicable = false, mintiApplicable = false) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const summarySections = getSummarySections(req.params.id, claim, lang, carmApplicable);
+  const summarySections = getSummarySections(req.params.id, claim, lang, carmApplicable, mintiApplicable);
   res.render(checkAnswersViewPath, {
     form,
     summarySections,
@@ -37,8 +37,9 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
     try {
       const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
       const carmApplicable = await isCarmEnabledForCase(claim.submittedDate);
+      const mintiApplicable = await isMintiEnabledForCase(claim.submittedDate);
       const form = new GenericForm(getStatementOfTruth(claim));
-      renderView(req, res, form, claim, carmApplicable);
+      renderView(req, res, form, claim, carmApplicable, mintiApplicable);
     } catch (error) {
       next(error);
     }

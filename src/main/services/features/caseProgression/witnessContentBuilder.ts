@@ -3,7 +3,7 @@ import {UploadDocumentsSectionBuilder} from 'models/caseProgression/uploadDocume
 import {
   ReferredToInTheStatementSection,
   UploadDocumentsUserForm,
-  WitnessSection,
+  WitnessSection, WitnessSummarySection,
 } from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
 
@@ -31,7 +31,7 @@ export const buildWitnessStatement = (section: WitnessSection = null, index = 0,
     .build();
 };
 
-export const buildWitnessSummary = (section: WitnessSection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
+export const buildWitnessSummary = (section: WitnessSummarySection = null, index = 0, form: GenericForm<UploadDocumentsUserForm> = null): ClaimSummarySection[] => {
   const errorFieldNamePrefix = `${witnessSummary}[${witnessSummary}][${index}]`;
   const invalidDateErrors = {
     invalidDayError : form?.errorFor(`${errorFieldNamePrefix}[dateInputFields][dateDay]`, witnessSummary),

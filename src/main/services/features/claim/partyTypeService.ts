@@ -1,7 +1,6 @@
 import {Response} from 'express';
 import {ClaimantOrDefendant, PartyType} from '../../../common/models/partyType';
 import {
-  CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
   CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
   CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL,
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
@@ -9,6 +8,7 @@ import {
   CLAIMANT_INDIVIDUAL_DETAILS_URL,
   CLAIMANT_ORGANISATION_DETAILS_URL,
   CLAIMANT_SOLE_TRADER_DETAILS_URL,
+  DELAYED_FLIGHT_URL,
 } from '../../../routes/urls';
 
 const redirectToPage = (partyType: PartyType, res: Response, claimantOrDefendant: ClaimantOrDefendant) => {
@@ -26,7 +26,7 @@ const redirectToPage = (partyType: PartyType, res: Response, claimantOrDefendant
     case PartyType.COMPANY:
       (claimantOrDefendant === ClaimantOrDefendant.CLAIMANT) ?
         res.redirect(CLAIMANT_COMPANY_DETAILS_URL) :
-        res.redirect(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
+        res.redirect(DELAYED_FLIGHT_URL);
       break;
     case PartyType.ORGANISATION:
       (claimantOrDefendant === ClaimantOrDefendant.CLAIMANT) ?

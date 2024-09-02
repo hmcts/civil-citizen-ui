@@ -1,4 +1,4 @@
-@import 'node_modules/govuk-frontend/govuk/all';
+@import 'node_modules/govuk-frontend/dist/govuk/all';
 @import './task-list';
 @import './citizen-ui-colours';
 
@@ -152,18 +152,36 @@
   float: right;
 }
 
-@mixin top-bordered($color, $width, $margin, $padding) {
-  border-top: $width solid govuk-colour($color);
-  margin: $margin;
-  padding: $padding;
+@mixin bottom-bordered($govuk-color, $width, $margin, $padding) {
+  border-bottom: $width solid $govuk-color;
+  @if margin != null {
+    margin: $margin;
+  }
+  @if $padding != null {
+    padding: $padding;
+  }
+}
+
+@mixin top-bordered($govuk-color, $width, $margin, $padding) {
+  border-top: $width solid $govuk-color;
+  @if margin != null {
+    margin: $margin;
+  }
+  @if $padding != null {
+    padding: $padding;
+  }
 }
 
 .black-border-top {
-  @include top-bordered('black', 2px, 0, 10px 0 10px 0);
+  @include top-bordered(govuk-colour('black'), 2px, 0, 10px 0 10px 0);
 }
 
 .border-top {
-  @include top-bordered('blue', 10px, 0, 5px 0 0 0);
+  @include top-bordered(govuk-colour('blue'), 10px, 0, 5px 0 0 0);
+}
+
+.border-small-top {
+  @include top-bordered(govuk-colour('blue'), 5px, 0 0 25px 0, 0);
 }
 
 .warning-text-container {
@@ -240,4 +258,39 @@
   word-break: break-word;
   table-layout: fixed;
   width: 100%;
+}
+
+.no-border-bottom {
+  border-bottom: 0;
+}
+
+.govuk-border-colour-border-top-1 {
+  @include top-bordered($govuk-border-colour, 1px, null, null);
+}
+
+.govuk-border-colour-border-bottom-1 {
+  @include bottom-bordered($govuk-border-colour, 1px, null, null);
+}
+
+.no-list-style {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.table-link {
+  &:focus {
+    @include govuk-focused-text;
+  }
+}
+
+// sass-lint:disable nesting-depth
+.dashboard-notification {
+  .govuk-notification-banner {
+    .govuk-notification-banner__content {
+      .govuk-body {
+        margin-bottom: 0;
+      }
+    }
+  }
 }

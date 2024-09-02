@@ -34,12 +34,13 @@ describe('hasAnythingChanged', () => {
     const actualIsCaseReadyContent = getHasAnythingChanged(claim.id.toString(), claim);
 
     //Then
-    expect(actualIsCaseReadyContent[0].data.text).toEqual('PAGES.HAS_ANYTHING_CHANGED.FINALISE');
-    expect(actualIsCaseReadyContent[1].data.text).toEqual('PAGES.HAS_ANYTHING_CHANGED.CLAIM_NUMBER');
-    expect(actualIsCaseReadyContent[2].data.text).toEqual('COMMON.PARTIES');
-    expect(actualIsCaseReadyContent[3].data.text).toEqual('PAGES.HAS_ANYTHING_CHANGED.HAS_ANYTHING');
-    expect(actualIsCaseReadyContent[4].data.text).toEqual('PAGES.HAS_ANYTHING_CHANGED.DIRECTIONS');
-    expect(actualIsCaseReadyContent[4].data.textBefore).toEqual('PAGES.HAS_ANYTHING_CHANGED.YOU_CAN');
+    expect(actualIsCaseReadyContent[0].data.text).toEqual('PAGES.DASHBOARD.HEARINGS.HEARING');
+    expect(actualIsCaseReadyContent[1].data.text).toEqual('PAGES.HAS_ANYTHING_CHANGED.FINALISE');
+    expect(actualIsCaseReadyContent[2].data.text).toEqual('COMMON.CASE_NUMBER_PARAM');
+    expect(actualIsCaseReadyContent[3].data.text).toEqual('COMMON.CLAIM_AMOUNT_WITH_VALUE');
+    expect(actualIsCaseReadyContent[4].data.text).toEqual('PAGES.HAS_ANYTHING_CHANGED.HAS_ANYTHING');
+    expect(actualIsCaseReadyContent[5].data.text).toEqual('PAGES.HAS_ANYTHING_CHANGED.DIRECTIONS');
+    expect(actualIsCaseReadyContent[5].data.textBefore).toEqual('PAGES.HAS_ANYTHING_CHANGED.YOU_CAN');
   });
 
   it('should create the correct link to "directions questionnaire" if defendant document exists', () => {
@@ -66,7 +67,7 @@ describe('hasAnythingChanged', () => {
     const actualIsCaseReadyContent = getHasAnythingChanged(claim.id.toString(), claim);
 
     //Then
-    expect(actualIsCaseReadyContent[4].data.href).toEqual('/case/1645882162449409/documents/6b55692f-107a-480e-86b7-917bc0dae8ac');
+    expect(actualIsCaseReadyContent[5].data.href).toEqual('/case/1645882162449409/documents/6b55692f-107a-480e-86b7-917bc0dae8ac');
   });
 
   it('should create the correct link to "directions questionnaire" if claimant document exists', () => {
@@ -94,7 +95,7 @@ describe('hasAnythingChanged', () => {
     const actualIsCaseReadyContent = getHasAnythingChanged(claim.id.toString(), claim);
 
     //Then
-    expect(actualIsCaseReadyContent[4].data.href).toEqual('/case/1645882162449409/documents/6b55692f-107a-480e-86b7-917bc0dae8ac');
+    expect(actualIsCaseReadyContent[5].data.href).toEqual('/case/1645882162449409/documents/6b55692f-107a-480e-86b7-917bc0dae8ac');
   });
 
   it('should create the correct link to "directions questionnaire" if document does not exist', () => {
@@ -105,6 +106,6 @@ describe('hasAnythingChanged', () => {
     const actualIsCaseReadyContent = getHasAnythingChanged(claim.id.toString(), claim);
 
     //Then
-    expect(actualIsCaseReadyContent[4].data.href).toEqual('/case/1645882162449409/documents/undefined');
+    expect(actualIsCaseReadyContent[5].data.href).toEqual('/case/1645882162449409/documents/undefined');
   });
 });

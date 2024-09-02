@@ -4,11 +4,16 @@
 {% macro statementOfTruth(
   t,
   form,
-  labelHtml
+  labelHtml,
+  isClaimIssue
   ) %}
   <legend><h2 class="govuk-heading-m">{{ t('COMMON.STATEMENT_OF_TRUTH.TITLE') }}</h2></legend>
   {% if form.model.type === SignatureType.RESPONSE or form.model.type === SignatureType.BASIC or form.model.type === SignatureType.QUALIFIED %}
-    <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.INFORMATION_ON_PAGE') }}</p>
+      {% if isClaimIssue %}
+        <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.INFORMATION_ON_PAGE_CLAIM') }}</p>
+      {% else %}
+        <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.INFORMATION_ON_PAGE') }}</p>
+      {% endif %}
     <p class="govuk-body">{{ t('COMMON.STATEMENT_OF_TRUTH.WHEN_SATISFIED') }}</p>
   {% endif %}
   {% if form.model.type === SignatureType.QUALIFIED %}
@@ -65,8 +70,8 @@
         }
       ],
       errorMessage: {
-        text:t(form.errorFor(directionsQuestionnaireSigned))
-      } if form.errorFor(directionsQuestionnaireSigned)
+        text:t(form.errorFor('directionsQuestionnaireSigned'))
+      } if form.errorFor('directionsQuestionnaireSigned')
     }) }}
   {% endif %}
 {% endmacro %}

@@ -1,22 +1,15 @@
-{% extends "claim-details-tpl.njk" %}
+{% extends "claim-details-tpl-dashboard.njk" %}
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
-{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
-{% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../dashboard/claim-summary-content.njk" import claimSummaryContent %}
+{% from "../dashboard/item-content.njk" import itemContent %}
 {%- from "govuk/components/fieldset/macro.njk" import govukFieldset -%}
+{% from "../../macro/button.njk" import addButton %}
 
-{% block pageTitle %}
-{{ setPageTitle(t, 'PAGES.EVIDENCE.PAGE_TITLE') }}
-{% endblock %}
-{% block content %}
-<div class="govuk-width-container caseProgression">
-  <main class="govuk-main-wrapper" role="main">
-    {% if form != null and form.hasErrors() %}
-    {{ errorSummary(form.getAllErrors(), t) }}
-    {% endif %}
+{% set pageTitle = t('PAGES.EVIDENCE.PAGE_TITLE') %}
 
+{% block nestedContent %}
     {% set rowNumberToShowRemoveButton = 2 %}
     {% set witnessContentLength = witnessContent.length %}
     {% set isRemoveButtonHidden = witnessContentLength < rowNumberToShowRemoveButton %}
@@ -29,13 +22,13 @@
     {% set expert = t('PAGES.UPLOAD_DOCUMENTS.EXPERT.TITLE') %}
     {% set hearing = t('PAGES.UPLOAD_DOCUMENTS.HEARING.TITLE') %}
 
-    <div class="govuk-grid-row">
       <form method="post" novalidate>
         {{ csrfProtection(csrf) }}
         <div id="content"></div>
 
-        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
-          <h1 class="govuk-heading-l">{{ titleH1 }}</h1>
+          {% for content in uploadDocumentsContents %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
           <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
           <p class="govuk-body-m">{{ paragraph }}</p>
           <hr class="govuk-section-break--s govuk-section-break--visible">
@@ -181,19 +174,7 @@
           {% endif %}
 
           <br>
-          <div class="govuk-button-group">
-            {{ govukButton({
-              text: t('COMMON.BUTTONS.CONTINUE')
-            }) }}
-            <a href={{ cancelUrl }} class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
-          </div>
+        {{ addButton(t, 'CONTINUE',cancelUrl) }}
 
-        </div>
       </form>
-      <div class="govuk-grid-column-one-third">
-        {{ contactUsForHelp(t) }}
-      </div>
-    </div>
-  </main>
-</div>
 {% endblock %}

@@ -52,6 +52,12 @@ export const formatDateToFullDate = (date: Date, lang?: string): string => {
   return dateTime.toLocaleString(DateTime.DATE_FULL, {locale: localeValue});
 };
 
+export function dateTimeFormat(value: string, lang?: string): string {
+  const language = lang === 'cy' ? 'cy' : 'en-gb';
+  const date = DateTime.fromJSDate(new Date(value));
+  return date.setLocale(language).toFormat('d LLLL yyyy, h:mm:ss a');
+}
+
 export const getNumberOfDaysBetweenTwoDays = (startDay: Date | string, endDay: Date | string) => {
   return convertDateToLuxonDate(endDay).startOf('day').diff(convertDateToLuxonDate(startDay).startOf('day'), 'days').days;
 };
@@ -88,6 +94,15 @@ export const formatStringDateSlash = (text: string) => {
   const date = new Date(Date.parse(text));
   const day = date.getDate().toString();
   const month = (date.getUTCMonth() + 1).toString();
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+};
+
+export const formatDateSlash = (dateToFormat: Date) => {
+  const date = new Date(dateToFormat);
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
   const year = date.getFullYear();
 
   return `${day}/${month}/${year}`;

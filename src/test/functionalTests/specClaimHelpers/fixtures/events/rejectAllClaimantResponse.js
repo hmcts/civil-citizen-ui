@@ -21,7 +21,7 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          unavailableDates: null,
+          
           flags: null,
         },
         applicant1: {
@@ -43,7 +43,7 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          unavailableDates: null,
+          
         },
         respondent2: null,
         partAdmitPaidValuePounds: null,
@@ -95,7 +95,7 @@ module.exports = {
         applicant1DQWitnessesSmallClaim: {
           witnessesToAppear: 'No',
           details: [
-            
+
           ],
         },
         applicant1DQLanguage: {
@@ -106,7 +106,7 @@ module.exports = {
         applicant1DQSmallClaimHearing: {
           unavailableDatesRequired: 'No',
           smallClaimUnavailableDate: [
-            
+
           ],
         },
         applicant1DQHearingLRspec: null,
@@ -137,7 +137,7 @@ module.exports = {
           supportRequirements: 'No',
           supportRequirementsAdditional: null,
           requirements: [
-            
+
           ],
         },
         applicant1DQVulnerabilityQuestions: {
@@ -149,7 +149,7 @@ module.exports = {
           role: 'claimant role',
         },
       },
-    };  
+    };
   },
 
   rejectAllDisputeAllButClaimantWantsToProceedWithMediation: () => {
@@ -172,7 +172,7 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          unavailableDates: null,
+          
           flags: null,
         },
         applicant1: {
@@ -194,7 +194,7 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          unavailableDates: null,
+          
         },
         respondent2: null,
         partAdmitPaidValuePounds: null,
@@ -255,7 +255,7 @@ module.exports = {
         applicant1DQWitnessesSmallClaim: {
           witnessesToAppear: 'No',
           details: [
-            
+
           ],
         },
         applicant1DQLanguage: {
@@ -266,7 +266,7 @@ module.exports = {
         applicant1DQSmallClaimHearing: {
           unavailableDatesRequired: 'No',
           smallClaimUnavailableDate: [
-            
+
           ],
         },
         applicant1DQHearingLRspec: null,
@@ -297,7 +297,7 @@ module.exports = {
           supportRequirements: 'Yes',
           supportRequirementsAdditional: 'Support with access needs',
           requirements: [
-            
+
           ],
         },
         applicant1DQVulnerabilityQuestions: {

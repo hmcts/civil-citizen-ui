@@ -20,7 +20,7 @@ describe('check your answers trial ready', () => {
 
     //Then
     expect(summarySections.sections[0].summaryList.rows.length).toBe(3);
-    expect(summarySections.sections[0].summaryList.rows[0].value.html).toBe('COMMON.YES');
+    expect(summarySections.sections[0].summaryList.rows[0].value.html).toBe('COMMON.VARIATION_4.YES');
     expect(summarySections.sections[0].summaryList.rows[0].actions?.items.length).toBe(1);
     expect(summarySections.sections[0].summaryList.rows[0].actions?.items[0].href).toBe(IS_CASE_READY_URL.replace(':id', claim.id));
     expect(summarySections.sections[0].summaryList.rows[1].value.html).toBe(HAS_ANYTHING_CHANGED_HTML);

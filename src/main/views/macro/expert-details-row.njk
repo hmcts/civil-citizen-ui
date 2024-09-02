@@ -108,15 +108,17 @@
         {% if removeButton.hidden %}
           {{ govukButton({
             text: t('PAGES.EXPERT_DETAILS.REMOVE_EXPERT'),
-            classes: "govuk-button--secondary remove-row govuk-visually-hidden"
+            classes: "govuk-button--secondary remove-row govuk-visually-hidden",
+            type: "button"
           }) }}
         {% else %}
           {{ govukButton({
             text: t('PAGES.EXPERT_DETAILS.REMOVE_EXPERT'),
-            classes: "govuk-button--secondary remove-row"
+            classes: "govuk-button--secondary remove-row",
+            type: "button"
           }) }}
         {% endif %}
-      {% endif %} 
+      {% endif %}
 
     </div>
   </div>

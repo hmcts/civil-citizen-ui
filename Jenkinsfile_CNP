@@ -11,6 +11,7 @@ def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
 def ccdBranch = "master"
+def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
@@ -25,7 +26,8 @@ def secrets = [
   's2s-${env}': [
     secret('microservicekey-ccd-gw', 'CCD_API_GATEWAY_S2S_SECRET'),
     secret('microservicekey-ccd-data', 'CCD_DATA_STORE_S2S_SECRET'),
-    secret('microservicekey-ccd-definition', 'CCD_DEFINITION_STORE_S2S_SECRET')
+    secret('microservicekey-ccd-definition', 'CCD_DEFINITION_STORE_S2S_SECRET'),
+    secret('microservicekey-xui-webapp', 'XUI_S2S_SECRET')
   ],
   'ccd-${env}': [
     secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET'),
@@ -49,30 +51,42 @@ def secrets = [
   'civil-cui-${env}': [
     secret('playwright-service-url', 'PLAYWRIGHT_SERVICE_URL'),
     secret('playwright-token', 'PLAYWRIGHT_SERVICE_ACCESS_TOKEN'),
+  ],
+  'aac-${env}': [
+    secret('idam-mca-client-secret', 'IDAM_MCA_CLIENT_SECRET'),
+    secret('idam-mca-system-user-username', 'IDAM_CAA_USERNAME'),
+    secret('idam-mca-system-user-password', 'IDAM_CAA_PASSWORD'),
+    secret('idam-noc-approver-username', 'IDAM_NOC_APPROVER_USERNAME'),
+    secret('idam-noc-approver-password', 'IDAM_NOC_APPROVER_PASSWORD'),
+    secret('aac-manage-case-s2s-secret', 'MANAGE_CASE_S2S_KEY'),
+    secret('notify-mca-api-key-secret', 'NOTIFY_MCA_API_KEY')
   ]
 ]
 
 def setUrls(suffix){
   env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
+  env.IDAM_WEB_URL = "https://idam-web-public.aat.platform.hmcts.net"
   env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
   if("${suffix}" == 'aat') {
     env.CCD_DATA_STORE_URL = "https://civil-cui-data-store-staging.aat.platform.hmcts.net"
     env.URL="https://civil-cui-xui-staging.aat.platform.hmcts.net"
     env.TEST_URL="https://civil-citizen-ui-staging.aat.platform.hmcts.net"
     env.CIVIL_SERVICE_URL="https://civil-cui-civil-service-staging.aat.platform.hmcts.net"
-
+    env.CIVIL_GENERAL_APPLICATIONS_URL="https://civil-cui-general-applications.aat.platform.hmcts.net"
+    env.AAC_API_URL="https://civil-cui-manage-case-assignment-staging.aat.platform.hmcts.net"
   } else {
     env.CCD_DATA_STORE_URL = "https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
     env.URL="https://xui-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
     env.TEST_URL="https://civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
     env.CIVIL_SERVICE_URL="https://civil-citizen-ui-pr-${CHANGE_ID}-civil-service.preview.platform.hmcts.net"
-
+    env.CIVIL_GENERAL_APPLICATIONS_URL="https://civil-citizen-ui-pr-${CHANGE_ID}-general-applications.preview.platform.hmcts.net"
+    env.AAC_API_URL="https://manage-case-assignment-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
   }
   env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"
 }
 
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
-def branchesToSync = ['demo', 'perftest']
+def branchesToSync = ['demo', 'perftest', 'ithc']
 
 def checkForFullDeployLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "fullDeploy").contains("fullDeploy")
@@ -118,8 +132,8 @@ withPipeline(type, product, component) {
           ./bin/pull-latest-camunda-files.sh ${camundaBranch}
           ./bin/pull-latest-dmn-files.sh ${dmnBranch}
           ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
-          ./bin/pull-latest-ccd-files.sh ${ccdBranch}
           ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${ccdBranch}
+          ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalappCCDBranch}
         """
     setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
   }
@@ -163,8 +177,8 @@ withPipeline(type, product, component) {
       ./bin/pull-latest-camunda-files.sh ${camundaBranch}
       ./bin/pull-latest-dmn-files.sh ${dmnBranch}
       ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
-      ./bin/pull-latest-ccd-files.sh ${ccdBranch}
       ./bin/import-ccd-definition.sh "-e *-nonprod.json,*COS-nonprod.json,AuthorisationCaseType-shuttered.json" ${ccdBranch}
+      ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalappCCDBranch}
     """
     setUrls("aat");
   }

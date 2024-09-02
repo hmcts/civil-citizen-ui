@@ -1,4 +1,5 @@
 export enum BankAccountTypeValues {
+  CHOOSE = 'CHOOSE',
   CURRENT_ACCOUNT = 'CURRENT_ACCOUNT',
   SAVINGS_ACCOUNT = 'SAVINGS_ACCOUNT',
   ISA = 'ISA',

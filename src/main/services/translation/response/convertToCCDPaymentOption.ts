@@ -7,6 +7,9 @@ export const toCCDPaymentOption = (paymentOptionType: PaymentOptionType) : CCDPa
       return CCDPaymentOption.REPAYMENT_PLAN;
     case PaymentOptionType.BY_SET_DATE:
       return CCDPaymentOption.BY_SET_DATE;
-    default: return CCDPaymentOption.IMMEDIATELY;
+    case PaymentOptionType.IMMEDIATELY:
+      return CCDPaymentOption.IMMEDIATELY;
+    default:
+      return undefined;
   }
 };

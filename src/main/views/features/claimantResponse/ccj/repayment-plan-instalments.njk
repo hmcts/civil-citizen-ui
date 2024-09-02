@@ -9,7 +9,7 @@
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.PAGE_TITLE') }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% block content %}
@@ -21,7 +21,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.TITLE') }}</h1>
+          <h1 class="govuk-heading-l">{{ t(pageTitle) }}</h1>
           <p class="govuk-body">{{ t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.TOTAL_CLAIM_AMOUNT', {totalClaimAmount: totalClaimAmount}) }}</p>
         </div>
       </div>

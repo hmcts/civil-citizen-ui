@@ -21,13 +21,15 @@ import {checkYourAnswersClaimGuard} from 'routes/guards/checkYourAnswersGuard';
 import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
+import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const checkAnswersViewPath = 'features/claim/check-answers';
 //const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
 const claimCheckAnswersController = Router();
 
-function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, userId: string, lang: string) {
-  const summarySections = getSummarySections(userId, claim, lang);
+function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, userId: string, lang: string, isCarmEnabled = true) {
+
+  const summarySections = getSummarySections(userId, claim, lang, isCarmEnabled);
   const signatureType = form.model?.type;
   let payment;
   if (claim.claimDetails?.helpWithFees?.option === YesNo.NO) {
@@ -36,6 +38,7 @@ function renderView(res: Response, form: GenericForm<StatementOfTruthForm> | Gen
   res.render(checkAnswersViewPath, {
     form, summarySections, signatureType,
     payment,
+    pageTitle: 'PAGES.CHECK_YOUR_ANSWER.TITLE',
   });
 }
 
@@ -46,9 +49,9 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
       const userId = req.session?.user?.id;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getCaseDataFromStore(userId);
-      console.log('claim info',claim);
       const form = new GenericForm(getStatementOfTruth(claim));
-      renderView(res, form, claim, userId, lang);
+      const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
+      renderView(res, form, claim, userId, lang, isCarmEnabled);
     } catch (error) {
       next(error);
     }
@@ -56,11 +59,12 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
 
 claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | AppRequest, res: Response, next: NextFunction) => {
   try {
+
     const userId = (<AppRequest>req).session?.user?.id;
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getCaseDataFromStore(userId);
-
+    const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
     const acceptNotChangesAllowedValue =  (claim.claimDetails.helpWithFees.option === YesNo.YES) ? false : req.body.acceptNoChangesAllowed;
 
     const form = new GenericForm((req.body.type === 'qualified')
@@ -69,7 +73,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
 
     await form.validate();
     if (form.hasErrors()) {
-      renderView(res, form, claim, userId, lang);
+      renderView(res, form, claim, userId, lang, isCarmEnabled);
     } else {
       await saveStatementOfTruth(userId, form.model);
       const submittedClaim = await submitClaim(<AppRequest>req);

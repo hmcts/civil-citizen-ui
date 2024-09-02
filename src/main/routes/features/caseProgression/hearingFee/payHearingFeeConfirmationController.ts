@@ -30,6 +30,7 @@ payHearingFeeConfirmationController.get(HEARING_FEE_CONFIRMATION_URL, (async (re
       confirmationTitle : t(`PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.CONFIRMATION_TITLE.${FeeType.HEARING}`, {lng}),
       referenceNumber: claim.caseProgression.helpFeeReferenceNumberForm.referenceNumber,
       confirmationContent: getHearingFeeConfirmationContent(claimId, lng),
+      noCrumbs: true,
     });
   }catch (error) {
     next(error);

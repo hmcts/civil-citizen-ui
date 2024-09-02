@@ -24,7 +24,7 @@ async function renderView(form: GenericForm<SupportRequiredList>, claimId: strin
   const selectedNames = form.model?.items?.map(item => item.fullName);
   const peopleLists = await generatePeopleListWithSelectedValues(claimId, selectedNames, lang);
   const claim = await getCaseDataFromStore(claimId);
-  res.render(supportRequiredViewPath, { form, peopleLists, isDefendant: claim.isDefendantNotResponded() });
+  res.render(supportRequiredViewPath, { form, peopleLists, isDefendant: claim.isDefendantNotResponded(), pageTitle: 'PAGES.SUPPORT_REQUIRED.PAGE_TITLE'});
 }
 
 supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next) => {

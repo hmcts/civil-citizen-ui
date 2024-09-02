@@ -11,7 +11,7 @@
 {% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.EXPERT_DETAILS.PAGE_TITLE') }}
+  {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% set rowNumberToShowRemoveButton = 2 %}
@@ -49,12 +49,14 @@
             <div class="govuk-!-margin-top-6">
               {{ govukButton({
                 text: t('PAGES.EXPERT_DETAILS.ADD_ANOTHER_EXPERT'),
-                classes: "govuk-button--secondary append-row"
+                classes: "govuk-button--secondary append-row",
+                type: "button"
               }) }}
             </div>
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+                type: "submit"
               }) }}
             </div>
           </form>

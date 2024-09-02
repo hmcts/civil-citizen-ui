@@ -40,9 +40,9 @@
                     {{ csrfProtection(csrf) }}
 
                     {% for unavailableDate in form.model.items %}
-                    {{ unavailableDateRow(unavailableDate, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today, pageHintText) }}
+                      {{ unavailableDateRow(unavailableDate, none, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}, today, true) }}
                     {% else %}
-                    {{ unavailableDateRow(unavailableDate, 0, form.errorFor, t, {hidden:true}, today, pageHintText) }}
+                      {{ unavailableDateRow(unavailableDate, none, 0, form.errorFor, t, {hidden:true}, today, true) }}
                     {% endfor %}
 
                     <div class="govuk-!-margin-top-6">
@@ -53,7 +53,7 @@
                     </div>
                     <div class="govuk-form-group">
                         {{ govukButton({
-                                           text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
+                                           text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE_CARM')
                         }) }}
                     </div>
                 </form>

@@ -1,8 +1,7 @@
 {% from "govuk/components/details/macro.njk" import govukDetails %}
+{% import "external-urls.njk" as externalURLs %}
 
 {# Set some default values #}
-
-
 
 {% macro _widget(spanContent, name, href, hrefContact, hrefContent, phoneNumber, linkTarget) %}
   {% if linkTarget %}
@@ -25,7 +24,7 @@
   {% endif %}
 {% endmacro %}
 
-{% macro contactUsForHelp(t,widget, open) %}
+{% macro contactUsForHelp(t, widget, open) %}
   {% set ContactUs = t('COMMON.CONTACT_US_FOR_HELP.TITLE') %}
   {% set Email = t('COMMON.EMAIL') %}
   {% set Telephone = t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') %}
@@ -36,12 +35,12 @@
   {% set webChatUnavailable = t('COMMON.CONTACT_US_FOR_HELP.WEB_CHAT_UNAVAILABLE') %}
   {% set callCharges = t('COMMON.CONTACT_US_FOR_HELP.CALL_CHARGES') %}
   {% set openingHours = t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS') %}
-
   {% set content = '' %}
   {% set emailWidget = _widget('',Email,'mailto:contactocmc@justice.gov.uk','contactocmc@justice.gov.uk','','') %}
-  {% set callChargesWidget = _widget(openingHours,Telephone,'https://www.gov.uk/call-charges','',callCharges,'0300 123 7050', '_blank') %}
+  {% set callChargesWidget = _widget(openingHours,Telephone,externalURLs.callChargesUrl,'',callCharges,'0300 123 7050', '_blank') %}
   {% set webChatUnavailableWidget = _widget(webChatUnavailable,webChat,'','','','') %}
   {% set webChatClosedWidget =  _widget(webChatClosed,webChat,'','','','') %}
+  {% set contactUsForHelpComponentId = 'contact-us-for-help' %}
 
   {% if widget ==='Web_chat' %}
     {% set content = webChatUnavailableWidget + webChatClosedWidget %}
@@ -55,7 +54,8 @@
   {% else %}
     {{ govukDetails({
       summaryText: ContactUs,
-      html: content
+      html: content,
+      id: contactUsForHelpComponentId
     }) }}
   {% endif %}
 {% endmacro %}

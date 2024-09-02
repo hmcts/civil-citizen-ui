@@ -19,6 +19,13 @@ describe('case number formatter', () => {
     //Then
     expect(result).toEqual('testId');
   });
+
+  it('should return undefined', () => {
+    //When
+    const result = documentIdExtractor(undefined);
+    //Then
+    expect(result).toEqual(undefined);
+  });
 });
 describe('removeWhiteSpacesIfNoText', () => {
   it('should return text if present', () => {

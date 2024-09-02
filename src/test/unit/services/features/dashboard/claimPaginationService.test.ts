@@ -40,8 +40,8 @@ describe('buildPaginationData Service', () => {
     const result = buildPagination(totalPages, currentPageAsString, lang, 'claimantPage');
     // Then
     expect(result.items.length).toEqual(2);
-    expect(result.items[0]).toStrictEqual({ 'current': false, 'href': '/dashboard?lang=en&claimantPage=1', 'number': 1 });
-    expect(result.items[1]).toStrictEqual({ 'current': true, 'href': '/dashboard?lang=en&claimantPage=2', 'number': 2 });
+    expect(result.items[0]).toStrictEqual({ 'current': false, 'href': '/dashboard?lang=en&claimantPage=1', 'number': 1, 'visuallyHiddenText': 'PAGES.DASHBOARD.CLAIMS_YOU_HAVE_MADE_HIDDEN_TEXT' });
+    expect(result.items[1]).toStrictEqual({ 'current': true, 'href': '/dashboard?lang=en&claimantPage=2', 'number': 2, 'visuallyHiddenText': 'PAGES.DASHBOARD.CLAIMS_YOU_HAVE_MADE_HIDDEN_TEXT' });
     expect(result.next).toBeUndefined();
     expect(result.previous).toStrictEqual({ 'href': '/dashboard?lang=en&claimantPage=1', 'text': 'PAGES.DASHBOARD.PREVIOUS' });
   });
@@ -55,8 +55,8 @@ describe('buildPaginationData Service', () => {
     const result = buildPagination(totalPages, currentPageAsString, lang, 'defendantPage', 'claimantPage=1');
     // Then
     expect(result.items.length).toEqual(2);
-    expect(result.items[0]).toStrictEqual({ 'current': false, 'href': '/dashboard?lang=en&defendantPage=1&claimantPage=1', 'number': 1 });
-    expect(result.items[1]).toStrictEqual({ 'current': true, 'href': '/dashboard?lang=en&defendantPage=2&claimantPage=1', 'number': 2 });
+    expect(result.items[0]).toStrictEqual({ 'current': false, 'href': '/dashboard?lang=en&defendantPage=1&claimantPage=1', 'number': 1, 'visuallyHiddenText': 'PAGES.DASHBOARD.CLAIM_MADE_AGAINST_HIDDEN_TEXT' });
+    expect(result.items[1]).toStrictEqual({ 'current': true, 'href': '/dashboard?lang=en&defendantPage=2&claimantPage=1', 'number': 2, 'visuallyHiddenText': 'PAGES.DASHBOARD.CLAIM_MADE_AGAINST_HIDDEN_TEXT' });
     expect(result.next).toBeUndefined();
     expect(result.previous).toStrictEqual({ 'href': '/dashboard?lang=en&defendantPage=1&claimantPage=1', 'text': 'PAGES.DASHBOARD.PREVIOUS' });
   });

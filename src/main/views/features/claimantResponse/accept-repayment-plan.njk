@@ -9,7 +9,7 @@
 {% from "../../macro/repayment-plan-summary.njk" import repaymentPlanSummary %}
 
 {% block pageTitle %}
-    {{ setPageTitle(t, 'PAGES.ACCEPT_REPAYMENT_PLAN.PAGE_TITLE') }}
+    {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% block content %}
@@ -44,7 +44,7 @@
                 {
                   value: YesNo.YES,
                   checked: form.model.option === YesNo.YES,
-                  text: t('COMMON.YES')
+                  text: t('COMMON.VARIATION_2.YES')
                 },
                 {
                   value: YesNo.NO,

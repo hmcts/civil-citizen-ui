@@ -13,6 +13,7 @@ import {
 } from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {addClaimAmounts} from './addClaimAmounts';
+import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
 
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
@@ -25,8 +26,9 @@ export const buildClaimAmountSection = (claim: Claim, lang: string ): SummarySec
     ],
   });
   addClaimAmounts(claim, claimAmountSection, lang);
-  if (claim?.claimInterest) {
-    claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CLAIM_INTEREST', {lng}), claim.claimInterest, CLAIM_INTEREST_URL, changeLabel(lang)));
+  if (claim.claimInterest) {
+    const claimInterest = (claim.claimInterest === YesNo.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+    claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CLAIM_INTEREST', {lng}), t(`COMMON.VARIATION.${claimInterest}`, {lng}),  CLAIM_INTEREST_URL, changeLabel(lang)));
   }
   if (claim?.interest?.interestClaimOptions) {
     const interestClaimOptions = 'PAGES.INTEREST_CLAIM_OPTIONS.' + claim.interest?.interestClaimOptions;
@@ -51,7 +53,8 @@ export const buildClaimAmountSection = (claim: Claim, lang: string ): SummarySec
     }
   }
   if (claim.claimDetails?.helpWithFees) {
-    claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.HELP_WITH_FEES.REFERENCE_NUMBER', {lng}), claim.claimDetails.helpWithFees.referenceNumber, CLAIM_HELP_WITH_FEES_URL, changeLabel(lang)));
+    const hwfReferenceNumber = (claim.claimDetails?.helpWithFees.option === YesNo.YES) ? claim.claimDetails.helpWithFees.referenceNumber : t('PAGES.HELP_WITH_FEES.REFERENCE_NUMBER_NONE', {lng});
+    claimAmountSection.summaryList.rows.push(summaryRow(t('PAGES.HELP_WITH_FEES.REFERENCE_NUMBER', {lng}), hwfReferenceNumber, CLAIM_HELP_WITH_FEES_URL, changeLabel(lang)));
   }
   return claimAmountSection;
 };
