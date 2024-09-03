@@ -10,9 +10,11 @@ import {
 import * as draftService from 'modules/draft-store/draftStoreService';
 import * as draftServiceGA from 'modules/draft-store/draftGADocumentService';
 import * as generalApplicationResponseStoreService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -23,6 +25,12 @@ jest.mock('../../../../../../../main/services/features/generalApplication/respon
   saveDraftGARespondentResponse: jest.fn(),
 }));
 
+jest.mock('../../../../../../../main/services/features/generalApplication/generalApplicationService', () => ({
+  getApplicationFromGAService: jest.fn(),
+  getCancelUrl: jest.fn(),
+  saveWrittenRepText: jest.fn(),
+}));
+
 describe('General Application - uploadDocumentsForWrittenRepController', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -31,12 +39,16 @@ describe('General Application - uploadDocumentsForWrittenRepController', () => {
   const mockGADocResponseStoreService = jest.spyOn(generalApplicationResponseStoreService, 'getDraftGARespondentResponse');
   let claim: Claim;
   let uploadDocuments: UploadGAFiles[];
+  let applicationResponse: ApplicationResponse;
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
     jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
+    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(applicationResponse);
+    jest.spyOn(generalApplicationService, 'getCancelUrl').mockResolvedValue('/cancel-url');
+    jest.spyOn(generalApplicationService, 'saveWrittenRepText').mockResolvedValue();
   });
 
   beforeEach(() => {

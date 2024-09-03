@@ -1,17 +1,22 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
+  GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL,
   GA_PROVIDE_MORE_INFORMATION_URL,
   GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL,
   GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL,
   GA_VIEW_APPLICATION_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
-import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {caseNumberPrettify, documentIdExtractor} from 'common/utils/stringUtils';
 import {getClaimById} from 'modules/utilityService';
 import {
+  getApplicationFromGAService,
   getCancelUrl, saveWrittenRepText,
 } from 'services/features/generalApplication/generalApplicationService';
-import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {
+  constructDocumentUrlWithIdParamsAndDocumentId,
+  constructResponseUrlWithIdAndAppIdParams,
+} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {RespondAddInfo} from 'models/generalApplication/response/respondAddInfo';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
@@ -19,6 +24,8 @@ import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {YesNo} from 'form/models/yesNo';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {DocumentType} from 'models/document/documentType';
 
 const respondWrittenRepController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/respondToWrittenRepInfo';
@@ -33,7 +40,8 @@ respondWrittenRepController.get(GA_PROVIDE_MORE_INFORMATION_URL, (async (req: Ap
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, 'test');
-    const docUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_VIEW_APPLICATION_URL).concat('?index=1');
+    const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, appId);
+    const docUrl = getRedirectUrl(appId, applicationResponse);
     const writtenRepText = gaResponse.writtenRepText;
     const wantToUploadAddlDocuments = gaResponse.wantToUploadAddlDocuments;
     const respondWrittenRep = new RespondAddInfo(wantToUploadAddlDocuments, writtenRepText);
@@ -76,5 +84,21 @@ respondWrittenRepController.post(GA_PROVIDE_MORE_INFORMATION_URL, (async (req: A
     next(error);
   }
 }) as RequestHandler);
+
+function getRedirectUrl(applicationId: string, applicationResponse: ApplicationResponse): string {
+  const writtenRepSequentialDocument = applicationResponse?.case_data?.writtenRepSequentialDocument;
+  const writtenRepConcurrentDocument = applicationResponse?.case_data?.writtenRepConcurrentDocument;
+  if (writtenRepSequentialDocument) {
+    const seqDocId = writtenRepSequentialDocument.find(doc => doc?.value?.documentType === DocumentType.WRITTEN_REPRESENTATION_SEQUENTIAL);
+    const seqDocumentId = documentIdExtractor(seqDocId?.value?.documentLink?.document_binary_url);
+    return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, seqDocumentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
+  }
+  else if (writtenRepConcurrentDocument) {
+    const concurrentDoc = writtenRepConcurrentDocument.find(doc => doc?.value?.documentType === DocumentType.WRITTEN_REPRESENTATION_CONCURRENT);
+    const conDocumentId = documentIdExtractor(concurrentDoc?.value?.documentLink?.document_binary_url);
+    return constructDocumentUrlWithIdParamsAndDocumentId(applicationId, conDocumentId, GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL);
+  }
+  return undefined;
+}
 
 export default respondWrittenRepController;
