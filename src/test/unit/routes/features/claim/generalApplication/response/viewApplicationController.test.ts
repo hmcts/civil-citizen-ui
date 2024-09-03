@@ -190,6 +190,7 @@ describe('General Application - View application', () => {
         .expect(({status,text}) => {
           expect(status).toBe(200);
           expect(text).toContain('<a href="/case/123/response/general-application/456/accept-defendant-offer"');
+        }
     });
       
     it('should return response from court section', async () => {
