@@ -14,6 +14,10 @@ jest.mock('../../../../main/services/features/generalApplication/response/genera
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
 }));
+jest.mock('../../../../main/modules/draft-store/gaHwFeesDraftStore', () => ({
+  saveDraftGAHWFDetails: jest.fn(),
+  getDraftGAHWFDetails: jest.fn(),
+}));
 describe('GAFlagGuard', () => {
   let req: Partial<Request>;
   let res: Partial<Response> & { redirect: jest.Mock };
