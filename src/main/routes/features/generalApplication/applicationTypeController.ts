@@ -18,7 +18,6 @@ import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
@@ -32,7 +31,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const backLinkUrl = await getBackLinkUrl(claimId, claim, cancelUrl);
+    const backLinkUrl = await getBackLinkUrl(claimId, <string>req.query.linkFrom, cancelUrl);
     res.render(viewPath, {
       form,
       cancelUrl,
@@ -62,7 +61,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
       validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
     }
     const cancelUrl = await getCancelUrl( req.params.id, claim);
-    const backLinkUrl = await getBackLinkUrl(req.params.id, claim, cancelUrl);
+    const backLinkUrl = await getBackLinkUrl(req.params.id, <string>req.query.linkFrom, cancelUrl);
 
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() });
@@ -75,9 +74,8 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
   }
 }) as RequestHandler);
 
-async function getBackLinkUrl(claimId: string, claim: Claim, cancelUrl: string) {
-  return (!claim?.generalApplication?.applicationTypes) ? cancelUrl
-    : constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL);
+async function getBackLinkUrl(claimId: string, linkFrom: string, cancelUrl: string) {
+  return linkFrom === 'addAnotherApp' ? constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL) : cancelUrl;
 }
 
 export default applicationTypeController;
