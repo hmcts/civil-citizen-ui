@@ -115,7 +115,7 @@ Running Preview pipeline :
 
 Raise a PR and add below labels to run the pipeline without any issues
 ```bash
-fullDeploy, pr-values:elasticsearch
+fullDeploy
 ```
 Add "enable_keep_helm" label to retain helm release on preview
 Add "pr-values:enableNotifyEmails" label to be able to send live notifications on the PR
@@ -226,7 +226,7 @@ You can optionally specify a branch for CCD definitions and Camunda definitions 
 npx @hmcts/dev-env && ./bin/setup-devuser-preview-env.sh ccdBranchName camundaBranchName generalAppCCDBranch dmnBranch waStandaloneBranch
 ```
 
-Once the pods are up and running you can connect to them using a plugin called Mirrord on Intellij.
+Once the pods are up and running you can connect to them using a plugin called Mirrord on Intellij or VSCode.
 https://mirrord.dev
 
 If you want to clean up the environment just run:

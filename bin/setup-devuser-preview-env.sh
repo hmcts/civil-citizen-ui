@@ -1,8 +1,8 @@
 ccdBranch=${1:-master}
 camundaBranch=${2:-master}
-generalAppCCDBranch=${3:-master}
-dmnBranch=${4:-master}
-waStandaloneBranch=${5:-master}
+dmnBranch=${3:-master}
+waStandaloneBranch=${4:-master}
+generalAppCCDBranch=${5:-master}
 
 echo "Loading Environment Variables"
 source ./bin/variables/load-dev-user-preview-environment-variables.sh
@@ -17,7 +17,7 @@ echo "Importing Camunda definitions"
 
 echo "Importing CCD definitions"
 ./bin/import-ccd-definition.sh "-e *-prod.json,*-shuttered.json" ${ccdBranch}
-#./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalAppCCDBranch}
+./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalAppCCDBranch}
 
 echo "ENV variables set for devuser-preview environment."
 echo "CDAM_REDIRECT_URL: $CCD_IDAM_REDIRECT_URL"
