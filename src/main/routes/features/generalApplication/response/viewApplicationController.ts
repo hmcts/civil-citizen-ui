@@ -34,7 +34,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const courtDocuments: DocumentsViewComponent = getCourtDocuments(applicationResponse, lang);
     const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
-    const redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_ACCEPT_DEFENDANT_OFFER_URL);
+    const redirectUrl = getRedirectUrl(applicationResponse, applicationId, claimId);
     const responseFromCourt = await getResponseFromCourtSection(req, req.params.appId, lang);
     const dashboardUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 
