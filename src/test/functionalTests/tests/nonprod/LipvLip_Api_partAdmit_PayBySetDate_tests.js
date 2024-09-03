@@ -21,7 +21,7 @@ Scenario('Response with PartAdmit-PayBySetDate Small claims @citizenUI @partAdmi
     await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.partAdmitWithPartPaymentOnSpecificDateWithIndividual);
     await api.waitForFinishedBusinessProcess();
 
-    //Claimant response below here
+    //Claimant response below here/
     let caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
