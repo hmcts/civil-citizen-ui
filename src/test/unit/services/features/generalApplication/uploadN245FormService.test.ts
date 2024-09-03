@@ -12,6 +12,10 @@ jest.mock('../../../../../main/services/features/generalApplication/response/gen
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
 }));
+jest.mock('../../../../../main/modules/draft-store/gaHwFeesDraftStore', () => ({
+  saveDraftGAHWFDetails: jest.fn(),
+  getDraftGAHWFDetails: jest.fn(),
+}));
 jest.mock('i18next', () => ({
   use: jest.fn(),
   t: (i: string | unknown) => i,
