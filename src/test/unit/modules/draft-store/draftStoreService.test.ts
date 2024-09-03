@@ -191,42 +191,53 @@ describe('Draft store service to save and retrieve claim', () => {
     //Then
     expect(spySet).toBeCalledWith(CLAIM_ID, JSON.stringify(expectedClaim));
   });
-  describe('findClaimIdsbyUserId', () => {
-    const mockScan = jest.fn();
 
-    beforeAll(() => {
-      app.locals.draftStoreClient = { scan: mockScan };
-    });
+  describe('findClaimIdsbyUserId', () => {
+    let mockKeys: jest.Mock;
+    let mockDraftStoreClient: { keys: jest.Mock };
+    const {Logger} = require('@hmcts/nodejs-logging');
+    const logger = Logger.getLogger('draftStoreService');
+
+    beforeEach(() => {
+      // Mock the Redis client's keys method
+      mockKeys = jest.fn();
+      mockDraftStoreClient = { keys: mockKeys };
   
-    afterEach(() => {
+      // Set the mock client on the app.locals
+      app.locals = {
+        draftStoreClient: mockDraftStoreClient,
+      };
+  
+      // Clear any previous mock calls
       jest.clearAllMocks();
     });
-    
-    it('should return a list of claim ids', async () => {
-      //Given
-      const userId = 'testUser';
-      const mockReply1 = ['1', ['claim1', 'claim2']];
-      const mockReply2 = ['0', ['claim3']];
-      mockScan
-        .mockResolvedValueOnce(mockReply1)
-        .mockResolvedValueOnce(mockReply2);
-      //When
-      const claimIds = await findClaimIdsbyUserId(userId);
-      //Then
-      expect(claimIds).toEqual(['claim1', 'claim2', 'claim3']);
-      expect(mockScan).toHaveBeenCalledTimes(2);
-      expect(mockScan).toHaveBeenCalledWith('0', 'MATCH', '*testUser');
-      expect(mockScan).toHaveBeenCalledWith('1', 'MATCH', '*testUser');
+  
+    it('should return claim IDs for a given userId', async () => {
+      // Arrange
+      const userId = '123';
+      const mockResult = ['claim1', 'claim2'];
+      mockKeys.mockResolvedValue(mockResult);
+  
+      // Act
+      const result = await findClaimIdsbyUserId(userId);
+  
+      // Assert
+      expect(result).toEqual(mockResult);
+      expect(mockKeys).toHaveBeenCalledWith('*' + userId);
     });
-    it('should throw an error if scan fails', async () => {
-      //Given
-      const userId = 'testUser';
-      const mockError = new Error('Scan failed');
-      mockScan.mockRejectedValue(mockError);
-      //When
-      await expect(findClaimIdsbyUserId(userId)).rejects.toThrow('Scan failed');
-      //Then
-      expect(mockScan).toHaveBeenCalledTimes(1);
+  
+    it('should log an error and throw if the Redis client fails', async () => {
+      // Arrange
+      const userId = '123';
+      const mockError = new Error('Redis error');
+      mockKeys.mockRejectedValue(mockError);
+  
+      // Spy on the logger's error method
+      const loggerSpy = jest.spyOn(logger, 'error').mockImplementation(() => {});
+  
+      // Act & Assert
+      await expect(findClaimIdsbyUserId(userId)).rejects.toThrow(mockError);
+      expect(loggerSpy).toHaveBeenCalledWith('Failed to find claim IDs by userId', mockError);
     });
   });
 });
