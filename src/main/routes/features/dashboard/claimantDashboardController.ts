@@ -27,7 +27,8 @@ import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import { applicationNoticeUrl } from 'common/utils/externalURLs';
-import {updateFieldDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, updateFieldDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import {removeDraftGeneralApplication} from 'services/features/generalApplication/generalApplicationService';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -55,6 +56,8 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         dashboardId = userId;
       } else {
         claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
+        const redisKey = generateRedisKey(<AppRequest>req);
+        await removeDraftGeneralApplication(redisKey, claim);
         caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
         dashboardId = claimId;
         claimIdPrettified = caseNumberPrettify(claimId);
