@@ -7,7 +7,6 @@ import {
   getByIndexOrLast,
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
-  removeDraftGeneralApplication,
   saveAcceptDefendantOffer,
   saveAgreementFromOtherParty,
   saveAndTriggerNotifyGaHwfEvent,
@@ -711,35 +710,6 @@ describe('General Application service', () => {
       expect(status).toBe(ApplicationStatus.COMPLETE);
     });
   });
-
-  describe('Remove draft application', () => {
-    it('should remove draft application', async () => {
-      //Given
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-
-      //When
-      await removeDraftGeneralApplication('123', claim);
-      //Then
-      expect(spy).toBeCalled();
-      expect(claim.generalApplication).toEqual(null);
-    });
-
-    it('should throw error when draft store throws error', async () => {
-      //Given
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      //When
-      mockSaveClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-      //Then
-      await expect(removeDraftGeneralApplication('123', claim)).rejects.toThrow(TestMessages.REDIS_FAILURE);
-    });
-  });
 });
 
 describe('Save Accept defendant offer', () => {
@@ -1002,4 +972,3 @@ describe('Should get the application index', () => {
     expect(result).toEqual(-1);
   });
 });
-

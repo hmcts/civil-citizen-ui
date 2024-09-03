@@ -456,13 +456,3 @@ export const saveApplicationTypesToGaResponse = async (gaState: ApplicationState
     await saveDraftGARespondentResponse(gaRedisKey, gaResponse);
   }
 };
-
-export const removeDraftGeneralApplication = async (claimId: string, claim: Claim): Promise<void> => {
-  try {
-    claim.generalApplication = null;
-    await saveDraftClaim(claimId, claim);
-  } catch (error) {
-    logger.error(error);
-    throw error;
-  }
-};

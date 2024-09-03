@@ -31,7 +31,6 @@ import {t} from 'i18next';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {removeDraftGeneralApplication} from 'services/features/generalApplication/generalApplicationService';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
@@ -47,8 +46,6 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
     const claimId = req.params.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    const redisKey = generateRedisKey(<AppRequest>req);
-    await removeDraftGeneralApplication(redisKey, claim);
     const isDashboardEnabled = await isDashboardEnabledForCase(claim.submittedDate);
     const isGAFlagEnable = await isGaForLipsEnabled();
 
