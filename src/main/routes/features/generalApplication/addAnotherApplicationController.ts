@@ -53,7 +53,7 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, addAnotherA
 });
 
 function getRedirectUrl(claimId: string, option: YesNo): string {
-  return (option === YesNo.YES) ? constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + `?linkFrom=addAnotherApp` :
+  return (option === YesNo.YES) ? constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=addAnotherApp' :
     constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
 }
 export default addAnotherApplicationController;
