@@ -74,12 +74,12 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
   }
 }) as RequestHandler);
 
-function getRedirectUrl(claimId: string, claim: Claim, applicationFee: number, genAppId: string ): string {
+function getRedirectUrl(claimId: string, claim: Claim, applicationFee: number,genAppId: string ): string {
   if (claim.generalApplication?.applicationTypes?.length === 1 && claim.generalApplication.applicationTypes[0].option === ApplicationTypeOption.ADJOURN_HEARING
     && hearingMoreThan14DaysInFuture(claim)) {
     return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUBMITTED_URL);
   } else {
-    return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL) + '?appFee=' + applicationFee + '&id=' + genAppId;
+    return constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL)+ '?appFee='+ applicationFee + `&id=${genAppId}`;
   }
 }
 

@@ -3,8 +3,6 @@
 @import './citizen-ui-colours';
 
 .moj-add-another {
-
-  // sass-lint:disable class-name-format
   &__remove-button {
     display: none;
   }
@@ -17,7 +15,6 @@
     position: relative;
   }
 
-  // sass-lint:disable property-sort-order
   .moj-add-another__remove-button {
     display: block;
     position: absolute;
@@ -38,7 +35,8 @@
 .govuk-section-break--visible--l {
   width: 100%;
 }
-@media (min-width: 40.0625em) {
+
+@media (min-width: 40.0625em) { /* stylelint-disable-line media-feature-range-notation */
   .govuk-section-break--visible--l {
     width: 120%;
   }
@@ -91,8 +89,7 @@
 
 .language {
   float: right;
-  // sass-lint:disable zero-unit
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .show-more-block {
@@ -154,9 +151,11 @@
 
 @mixin bottom-bordered($govuk-color, $width, $margin, $padding) {
   border-bottom: $width solid $govuk-color;
+
   @if margin != null {
     margin: $margin;
   }
+
   @if $padding != null {
     padding: $padding;
   }
@@ -164,9 +163,11 @@
 
 @mixin top-bordered($govuk-color, $width, $margin, $padding) {
   border-top: $width solid $govuk-color;
+
   @if margin != null {
     margin: $margin;
   }
+
   @if $padding != null {
     padding: $padding;
   }
@@ -235,7 +236,7 @@
   }
 }
 
-@keyframes dotAnimation {
+@keyframes dotAnimation { /* stylelint-disable-line keyframes-name-pattern */
   0% { content: '.'; }
   20% { content: '..'; }
   40% { content: '...'; }
@@ -284,7 +285,6 @@
   }
 }
 
-// sass-lint:disable nesting-depth
 .dashboard-notification {
   .govuk-notification-banner {
     .govuk-notification-banner__content {

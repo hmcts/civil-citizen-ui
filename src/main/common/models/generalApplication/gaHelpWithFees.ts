@@ -1,14 +1,14 @@
-import {YesNo} from 'common/form/models/yesNo';
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
 
 export class GaHelpWithFees {
-  applyHelpWithFees?: YesNo;
+  applyHelpWithFees?: GenericYesNo;
   helpWithFeesRequested: string;
   helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm;
-  applyAdditionalHelpWithFees?: YesNo;
+  applyAdditionalHelpWithFees?: GenericYesNo;
+  applicationFee?: string;
 
-  constructor(applyHelpWithFees?: YesNo, helpWithFeesRequested?: string, helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm,
-    applyAdditionalHelpWithFees?: YesNo) {
+  constructor(applyHelpWithFees?: GenericYesNo, helpWithFeesRequested?: string, helpFeeReferenceNumberForm?: ApplyHelpFeesReferenceForm, applyAdditionalHelpWithFees?: GenericYesNo) {
     this.applyHelpWithFees = applyHelpWithFees;
     this.helpWithFeesRequested = helpWithFeesRequested;
     this.helpFeeReferenceNumberForm = helpFeeReferenceNumberForm;

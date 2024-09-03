@@ -15,10 +15,10 @@ const PAGES = 'PAGES.TELEPHONE_FOR_MEDIATION.';
 
 const HAS_TELEPHONE_MEDITATION_ACCESSED_PROPERTY_NAME = 'hasTelephoneMeditationAccessed';
 
-const telephoneMediationContent = (lang:string) => {
+const telephoneMediationContent = (lang:string, isClaimant: boolean) => {
   return new PageSectionBuilder()
     .addMainTitle(`${PAGES}PAGE_TITLE`)
-    .addParagraph(`${PAGES}IF_THE_CLAIMANT_DISAGREES`)
+    .addParagraph(isClaimant?`${PAGES}YOU_WISH_TO_PROCEED_WITH_THE_CLAIM` : `${PAGES}IF_THE_CLAIMANT_DISAGREES`)
     .addParagraph(`${PAGES}A_TELEPHONE_MEDIATION_APPOINTMENT`)
     .addParagraph(`${PAGES}AN_IMPARTIAL_MEDIATOR`)
     .addParagraph(`${PAGES}MEDIATION_WILL_LAST`)
@@ -43,7 +43,9 @@ const telephoneMediationContent = (lang:string) => {
 telephoneMediationController.get(TELEPHONE_MEDIATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    res.render(availabilityForMediationViewPath, {telephoneMediationContent:telephoneMediationContent(lang)});
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim = await getCaseDataFromStore(redisKey);
+    res.render(availabilityForMediationViewPath, {telephoneMediationContent:telephoneMediationContent(lang, claim.isClaimant())});
   } catch (error) {
     next(error);
   }
