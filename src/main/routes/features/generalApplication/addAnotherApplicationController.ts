@@ -8,7 +8,7 @@ import {
 } from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
 import { getCancelUrl, getLast } from 'services/features/generalApplication/generalApplicationService';
-import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {LinKFromValues, selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import { GenericForm } from 'common/form/models/genericForm';
 import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
@@ -53,7 +53,7 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, addAnotherA
 });
 
 function getRedirectUrl(claimId: string, option: YesNo): string {
-  return (option === YesNo.YES) ? constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=addAnotherApp' :
+  return (option === YesNo.YES) ? constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=' + LinKFromValues.addAnotherApp :
     constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
 }
 export default addAnotherApplicationController;
