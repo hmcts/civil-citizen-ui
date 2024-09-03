@@ -19,7 +19,6 @@ import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 
 const viewApplicationToRespondentController = Router();
 const viewPath = 'features/generalApplication/response/view-application';
-const backLinkUrl = 'test'; // TODO: add url
 
 viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
