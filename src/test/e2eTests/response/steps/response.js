@@ -405,6 +405,7 @@ class Response {
 
   paymentDatePartialAdmit(){
     let futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 5);
     futureDate.setMonth(futureDate.getMonth() + 1);
 
     I.seeInCurrentUrl('/partial-admission/payment-date');
