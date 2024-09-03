@@ -39,13 +39,13 @@ respondWrittenRepController.get(GA_PROVIDE_MORE_INFORMATION_URL, (async (req: Ap
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, 'test');
-    const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, appId);
-    const docUrl = getRedirectUrl(appId, applicationResponse);
+    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_VIEW_APPLICATION_URL).concat('?index=1');
     const writtenRepText = gaResponse.writtenRepText;
     const wantToUploadAddlDocuments = gaResponse.wantToUploadAddlDocuments;
     const respondWrittenRep = new RespondAddInfo(wantToUploadAddlDocuments, writtenRepText);
     const form = new GenericForm(respondWrittenRep);
+    const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, appId);
+    const docUrl = getRedirectUrl(appId, applicationResponse);
     res.render(viewPath, { currentUrl, backLinkUrl, cancelUrl, claimIdPrettified, claim, form, docUrl, headerCaption});
   } catch (error) {
     next(error);
@@ -58,18 +58,19 @@ respondWrittenRepController.post(GA_PROVIDE_MORE_INFORMATION_URL, (async (req: A
     const text = req.body.writtenRepText;
     const { appId, id:claimId } = req.params;
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_PROVIDE_MORE_INFORMATION_URL);
-    const respondAddInfo = new RespondAddInfo(
+    const respondWrittenRepInfo = new RespondAddInfo(
       option,
       text,
     );
-    const form = new GenericForm(respondAddInfo);
+    const form = new GenericForm(respondWrittenRepInfo);
     await form.validate();
     if (form.hasErrors()) {
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claim = await getClaimById(claimId, req, true);
       const cancelUrl = await getCancelUrl(claimId, claim);
       const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_PROVIDE_MORE_INFORMATION_URL);
-      const docUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_VIEW_APPLICATION_URL).concat('?index=1');
+      const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, appId);
+      const docUrl = getRedirectUrl(appId, applicationResponse);
       return res.render(viewPath, { currentUrl, backLinkUrl, cancelUrl, claimIdPrettified, claim, form, docUrl, headerCaption});
     }
     await saveWrittenRepText(generateRedisKeyForGA(req), text, option);
