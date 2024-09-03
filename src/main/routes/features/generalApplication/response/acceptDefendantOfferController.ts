@@ -64,7 +64,6 @@ acceptDefendantOfferController.post(GA_ACCEPT_DEFENDANT_OFFER_URL, (async (req: 
     const form = new GenericForm(acceptDefendantOffer);
     const claimId = req.params.id;
     await form.validate();
-    const claimId = req.params.id;
     const appId = req.params.appId;
     if (form.hasErrors()) {
       const redisKey = generateRedisKey(req);
