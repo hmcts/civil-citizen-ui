@@ -246,6 +246,5 @@ describe('General Application - View application', () => {
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
-  });
 });
 
