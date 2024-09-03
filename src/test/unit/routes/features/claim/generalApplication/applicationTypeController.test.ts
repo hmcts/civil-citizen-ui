@@ -49,7 +49,7 @@ describe('General Application - Application type', () => {
       claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
       (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
       await request(app)
-        .get(APPLICATION_TYPE_URL).query({linFrom: LinKFromValues.agreementFromOtherParty})
+        .get(APPLICATION_TYPE_URL).query({linkFrom: LinKFromValues.agreementFromOtherParty})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE'));
