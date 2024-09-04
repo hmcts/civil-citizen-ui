@@ -287,9 +287,21 @@ describe('General Application Response service', () => {
     it('returns row in awaiting judicial decision state with applicant view application', () => {
       const appResponse = applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION);
       appResponse.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
-      const claim = new Claim();
-      claim.caseRole = CaseRole.DEFENDANT;
-      expect(buildRespondentApplicationSummaryRow('12345', 'en', claim)(appResponse, 0))
+      const ccdClaim = new Claim();
+      ccdClaim.caseRole = CaseRole.DEFENDANT;
+      ccdClaim.generalApplications = [
+        {
+          'id': 'test',
+          'value': {
+            'caseLink': {
+              'CaseReference': '6789',
+            },
+            'generalAppSubmittedDateGAspec': '2024-05-29T14:39:28.483971',
+          },
+        },
+      ];
+      
+      expect(buildRespondentApplicationSummaryRow('12345', 'en', ccdClaim)(appResponse, 0))
         .toStrictEqual({
           state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION'),
           status: t('PAGES.GENERAL_APPLICATION.SUMMARY.IN_PROGRESS'),
