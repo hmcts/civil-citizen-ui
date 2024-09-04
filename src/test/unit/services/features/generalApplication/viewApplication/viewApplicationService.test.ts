@@ -107,81 +107,106 @@ function setMockRequestForInformationDocument(): CcdGAMakeWithNoticeDocument[] {
 }
 
 describe('View Application service', () => {
+  const mockGetApplication = jest.spyOn(GaServiceClient.prototype, 'getApplication');
+  const mockGetClaimById = jest.spyOn(utilityService, 'getClaimById');
   describe('Build view application content for general application', () => {
 
     it('view application content test for applicant', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
-      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      mockGetApplication.mockResolvedValueOnce(application);
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
-      jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
+      mockGetClaimById.mockResolvedValueOnce(claim);
+      const result = await getApplicationSections(mockedAppRequest, '1718105701451856', 'en');
+
+      expect(result).toHaveLength(12);
+      expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
+        ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
+          'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE',
+          'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED',
+          'COMMON.VARIATION.YES'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER',
+          '<p class="govuk-body">The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid]. <br> </p>'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING',
+          'reasons'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS',
+          'COMMON.VARIATION.NO'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
+          'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.PERSON_AT_COURT'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
+          'sdf'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_COURT_LOCATION',
+          'Barnet Civil and Family Centre'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE',
+          '01632960001'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
+          'civilmoneyclaimsdemo@gmail.com'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
+          '<ul class="no-list-style"><li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li></ul>'],
+      ]);
+    });
+
+    it('should include withNotice field when the claim has not been agreed', async () => {
+      const application = Object.assign(new ApplicationResponse(), {
+        ...mockApplication,
+        case_data: {
+          ...mockApplication.case_data,
+          generalAppRespondentAgreement: { hasAgreed: YesNoUpperCamelCase.NO },
+        }});
+      mockGetApplication.mockResolvedValueOnce(application);
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      mockGetClaimById.mockResolvedValueOnce(claim);
       const result = await getApplicationSections(mockedAppRequest, '1718105701451856', 'en');
 
       expect(result).toHaveLength(13);
-      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE');
-      expect(result[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_RESPONSE');
-      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
-      expect(result[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING');
-      expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED');
-      expect(result[2].value.html).toEqual('COMMON.VARIATION.YES');
-      expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES');
-      expect(result[3].value.html).toEqual('COMMON.VARIATION.YES');
-      expect(result[4].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER');
-      expect(result[4].value.html).toContain('The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid].');
-      expect(result[5].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING');
-      expect(result[5].value.html).toEqual('reasons');
-      expect(result[6].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS');
-      expect(result[6].value.html).toEqual('COMMON.VARIATION.NO');
-      expect(result[7].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE');
-      expect(result[7].value.html).toEqual('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.PERSON_AT_COURT');
-      expect(result[8].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER');
-      expect(result[8].value.html).toEqual('sdf');
-      expect(result[9].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_COURT_LOCATION');
-      expect(result[9].value.html).toEqual('Barnet Civil and Family Centre');
-      expect(result[10].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE');
-      expect(result[10].value.html).toEqual('01632960001');
-      expect(result[11].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL');
-      expect(result[11].value.html).toEqual('civilmoneyclaimsdemo@gmail.com');
-      expect(result[12].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS');
-      expect(result[12].value.html).toEqual('<ul class="no-list-style"><li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li></ul>');
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED'},
+        value: { html: 'COMMON.VARIATION.NO'},
+      });
+      expect(result).toContainEqual({
+        key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES'},
+        value: { html: 'COMMON.VARIATION.YES'},
+      });
     });
 
     it('view application content test for respondent', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
       application.case_data.generalAppAskForCosts = YesNoUpperCamelCase.YES;
-      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      mockGetApplication.mockResolvedValueOnce(application);
 
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
-      jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
+      mockGetClaimById.mockResolvedValueOnce(claim);
       const result = await getApplicationSections(mockedAppRequest, '1718105701451856', 'en');
-
-      expect(result).toHaveLength(12);
-      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC');
-      expect(result[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING'+'.'+'</br>'+'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION');
-      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED');
-      expect(result[1].value.html).toEqual('COMMON.VARIATION.YES');
-      expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES');
-      expect(result[2].value.html).toEqual('COMMON.VARIATION.YES');
-      expect(result[3].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER');
-      expect(result[3].value.html).toContain('The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid]. <br> ' + 'PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS');
-      expect(result[4].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING');
-      expect(result[4].value.html).toEqual('reasons');
-      expect(result[5].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS');
-      expect(result[5].value.html).toEqual('COMMON.VARIATION.NO');
-      expect(result[6].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE');
-      expect(result[6].value.html).toEqual('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.PERSON_AT_COURT');
-      expect(result[7].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER');
-      expect(result[7].value.html).toEqual('sdf');
-      expect(result[8].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_COURT_LOCATION');
-      expect(result[8].value.html).toEqual('Barnet Civil and Family Centre');
-      expect(result[9].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE');
-      expect(result[9].value.html).toEqual('01632960001');
-      expect(result[10].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL');
-      expect(result[10].value.html).toEqual('civilmoneyclaimsdemo@gmail.com');
-      expect(result[11].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS');
-      expect(result[11].value.html).toEqual('<ul class="no-list-style"><li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li></ul>');
+      expect(result).toHaveLength(11);
+      expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
+        ['PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC',
+          'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING.</br>PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED',
+          'COMMON.VARIATION.YES'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER',
+          '<p class="govuk-body">The hearing arranged for [enter date] be moved to the first available date after [enter date], avoiding [enter dates to avoid]. <br> PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS</p>'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING',
+          'reasons'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS',
+          'COMMON.VARIATION.NO'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
+          'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.PERSON_AT_COURT'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
+          'sdf'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_COURT_LOCATION',
+          'Barnet Civil and Family Centre'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE',
+          '01632960001'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
+          'civilmoneyclaimsdemo@gmail.com'],
+        ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
+          '<ul class="no-list-style"><li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li></ul>'],
+      ]);
     });
   });
 
@@ -189,7 +214,7 @@ describe('View Application service', () => {
     it('should get empty array if there is no data', async () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);
-      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      mockGetApplication.mockResolvedValueOnce(application);
       //When
       const result = getApplicantDocuments(application, 'en');
       //Then
@@ -202,7 +227,7 @@ describe('View Application service', () => {
       const caseData = application.case_data;
       caseData.gaAddlDoc= setMockAdditionalDocuments();
 
-      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      mockGetApplication.mockResolvedValueOnce(application);
       //When
       const result = getApplicantDocuments(application, 'en');
       //Then
@@ -220,7 +245,7 @@ describe('View Application service', () => {
       const caseData = application.case_data;
       caseData.gaAddlDoc= setMockAdditionalDocuments();
 
-      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      mockGetApplication.mockResolvedValueOnce(application);
       //When
       const result = getRespondentDocuments(application, 'en');
       //Then
@@ -238,7 +263,7 @@ describe('View Application service', () => {
       const caseData = application.case_data;
       caseData.hearingNoticeDocument = setMockHearingNoticeDocuments();
 
-      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      mockGetApplication.mockResolvedValueOnce(application);
       //When
       const result = getCourtDocuments(application, 'en');
       //Then
