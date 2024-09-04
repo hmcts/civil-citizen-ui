@@ -582,7 +582,7 @@ describe('Check Answers response service', () => {
               text: 'COMMON.BUTTONS.CHANGE',
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
             }],
-          }
+          },
         },
       ]);
     });
