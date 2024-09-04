@@ -6,11 +6,12 @@ import {APPLICATION_TYPE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {ApplicationType, ApplicationTypeOption, LinKFromValues} from 'common/models/generalApplication/applicationType';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { getClaimById } from 'modules/utilityService';
+import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -42,7 +43,16 @@ describe('General Application - Application type', () => {
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE'));
         });
     });
-
+    it('should delete GA when url contains start', async () => {
+      const spyDelete = jest.spyOn(generalApplicationService, 'deleteGAFromClaimsByUserId');
+      (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+      await request(app)
+        .get(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(spyDelete).toBeCalled();
+        });
+    });
     it('should return http 500 when has error in the get method', async () => {
       (getClaimById as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
