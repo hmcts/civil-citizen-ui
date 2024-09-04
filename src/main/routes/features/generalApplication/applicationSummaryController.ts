@@ -44,7 +44,7 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
         types: application.case_data?.applicationTypes,
         id: application.id,
         createdDate: dateTimeFormat(getApplicationCreatedDate(ccdClaim, application.id), lng),
-        applicationUrl: `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id,  GA_VIEW_APPLICATION_URL)}?index=${index + 1}`,
+        applicationUrl: getViewApplicationUrl(claimId, claim, application,index),
       });
     }
 

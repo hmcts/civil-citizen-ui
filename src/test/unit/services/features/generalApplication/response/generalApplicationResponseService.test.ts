@@ -289,7 +289,7 @@ describe('General Application Response service', () => {
       appResponse.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
       const claim = new Claim();
       claim.caseRole = CaseRole.DEFENDANT;
-      expect(buildRespondentApplicationSummaryRow('12345',claim, 'en')(appResponse, 0))
+      expect(buildRespondentApplicationSummaryRow('12345', 'en', claim)(appResponse, 0))
         .toStrictEqual({
           state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION'),
           status: t('PAGES.GENERAL_APPLICATION.SUMMARY.IN_PROGRESS'),

@@ -10,7 +10,7 @@ import {
   getApplicationCreatedDate,
   getLast,
   getRespondentApplicationStatus,
-  getViewApplicationUrl
+  getViewApplicationUrl,
 } from 'services/features/generalApplication/generalApplicationService';
 import {StatementOfTruthForm} from 'common/models/generalApplication/statementOfTruthForm';
 import {getDraftGARespondentResponse, saveDraftGARespondentResponse} from './generalApplicationResponseStoreService';
@@ -18,11 +18,9 @@ import {ApplicationResponse} from 'common/models/generalApplication/applicationR
 import {
   ApplicationSummary, 
   StatusColor,
-  ApplicationState
+  ApplicationState,
 } from 'common/models/generalApplication/applicationSummary';
 import {dateTimeFormat} from 'common/utils/dateUtils';
-import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
-import {GA_RESPONSE_VIEW_APPLICATION_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -128,6 +126,6 @@ export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string
     types: application.case_data?.applicationTypes,
     id: application.id,
     createdDate: dateTimeFormat(createDate, lng),
-    applicationUrl: `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id, GA_RESPONSE_VIEW_APPLICATION_URL)}?index=${index + 1}`,
+    applicationUrl: getViewApplicationUrl(claimId, ccdClaim, application, index),
   };
 };
