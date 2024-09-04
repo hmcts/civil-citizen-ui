@@ -1,5 +1,6 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
+  GA_RESPOND_ADDITIONAL_INFO_URL,
   GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL,
   GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL,
 } from 'routes/urls';
@@ -8,7 +9,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
-import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
@@ -32,7 +33,7 @@ const upload = multer({
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, gaId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, 'Test');
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_RESPOND_ADDITIONAL_INFO_URL);
   res.render(viewPath, {
     form,
     formattedSummary,
@@ -52,7 +53,7 @@ uploadDocumentsForRequestMoreInfoController.get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONA
     const uploadDocuments = new UploadGAFiles();
     let form = new GenericForm(uploadDocuments);
     const formattedSummary = summarySection({title: '', summaryRows: []});
-    
+
     if (req?.session?.fileUpload) {
       const parsedData = JSON.parse(req?.session?.fileUpload);
       form = new GenericForm(uploadDocuments, parsedData);
