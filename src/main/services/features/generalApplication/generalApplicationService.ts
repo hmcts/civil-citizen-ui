@@ -409,6 +409,18 @@ export const saveRespondentWantToUploadDoc = async (redisKey: string, wantToUplo
   }
 };
 
+export const saveAdditionalText = async (redisKey: string, additionalText: string, wantToUploadAddlDocuments: YesNo): Promise<void> => {
+  try {
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.wantToUploadAddlDocuments = wantToUploadAddlDocuments;
+    gaResponse.additionalText = additionalText;
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
   try {
     const claim = await getClaimById(req.params.id, req, true);
