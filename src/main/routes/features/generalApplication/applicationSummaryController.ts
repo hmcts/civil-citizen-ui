@@ -6,8 +6,7 @@ import { GA_APPLICATION_SUMMARY_URL, GA_VIEW_APPLICATION_URL } from 'routes/urls
 import {
   getApplicationCreatedDate,
   getApplicationStatus,
-  getCancelUrl,
-  getViewApplicationUrl
+  getCancelUrl
 } from 'services/features/generalApplication/generalApplicationService';
 import { GaServiceClient } from 'client/gaServiceClient';
 import { ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
