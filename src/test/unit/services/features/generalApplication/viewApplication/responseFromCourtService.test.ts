@@ -636,11 +636,12 @@ describe('View Application service', () => {
   describe('getRequestMoreInfoResponse', () => {
     it('should return request more info response', async () => {
       //given
+      const claim = new Claim();
       const applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
       applicationResponse.case_data.requestForInformationDocument = setMockRequestForInformationDocument();
 
       //when
-      const result = getRequestMoreInfoResponse(applicationResponse, 'en');
+      const result = getRequestMoreInfoResponse(claim.id, applicationResponse, 'en');
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[0].rows[0].value.html).toEqual('2 May 2024');
@@ -761,8 +762,9 @@ describe('View Application service', () => {
     it('should return empty if no data in applicationResponse', async () => {
       //given
       const applicationResponse = new ApplicationResponse();
+      const claim = new Claim();
       //when
-      const result = getRequestMoreInfoResponse(applicationResponse, 'en');
+      const result = getRequestMoreInfoResponse(claim.id, applicationResponse, 'en');
       //then
       expect(result.length).toEqual(0);
     });
