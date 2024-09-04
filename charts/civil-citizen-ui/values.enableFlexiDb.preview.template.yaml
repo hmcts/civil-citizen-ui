@@ -434,7 +434,6 @@ ccd:
             }
         }
 
-
   postgresql:
     persistence:
       enabled: false
