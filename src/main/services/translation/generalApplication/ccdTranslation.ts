@@ -224,7 +224,7 @@ export const toCcdGeneralApplicationWithResponse = (response: GaResponse): CCDRe
     },
     gaRespondentConsent: toCCDYesNo(response.agreeToOrder),
     generalAppRespondent1Representative: {hasAgreed: toCCDYesNo(response.respondentAgreement?.option)},
-    generalAppRespondReason: response.respondentAgreement?.reasonForDisagreement
+    generalAppRespondReason: response.respondentAgreement?.reasonForDisagreement,
   };
 
 };
