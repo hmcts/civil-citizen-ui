@@ -6,13 +6,24 @@ import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
-import {getLast, getRespondentApplicationStatus, getViewApplicationUrl} from 'services/features/generalApplication/generalApplicationService';
+import {
+  getApplicationCreatedDate,
+  getLast,
+  getRespondentApplicationStatus,
+  getViewApplicationUrl
+} from 'services/features/generalApplication/generalApplicationService';
 import {StatementOfTruthForm} from 'common/models/generalApplication/statementOfTruthForm';
-import { getDraftGARespondentResponse, saveDraftGARespondentResponse } from './generalApplicationResponseStoreService';
-import { ApplicationResponse } from 'common/models/generalApplication/applicationResponse';
-import { Claim } from 'common/models/claim';
-import { ApplicationState, ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
-import { dateTimeFormat } from 'common/utils/dateUtils';
+import {getDraftGARespondentResponse, saveDraftGARespondentResponse} from './generalApplicationResponseStoreService';
+import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
+import {
+  ApplicationSummary, 
+  StatusColor,
+  ApplicationState
+} from 'common/models/generalApplication/applicationSummary';
+import {dateTimeFormat} from 'common/utils/dateUtils';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {GA_RESPONSE_VIEW_APPLICATION_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -107,15 +118,16 @@ export const isApplicationVisibleToRespondent = (application: ApplicationRespons
     || (application.case_data?.applicationIsUncloakedOnce === YesNoUpperCamelCase.YES && application.state !== ApplicationState.APPLICATION_ADD_PAYMENT));
 };
 
-export const buildRespondentApplicationSummaryRow = (claimId: string, claim : Claim, lng:string) => (application: ApplicationResponse, index: number): ApplicationSummary => {
+export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string, ccdClaim: Claim) => (application: ApplicationResponse, index: number): ApplicationSummary => {
   const status = getRespondentApplicationStatus(application.state);
+  const createDate = getApplicationCreatedDate(ccdClaim, application.id);
   return {
     state: t(`PAGES.GENERAL_APPLICATION.SUMMARY.STATES.${application.state}`, {lng}),
     status: t(`PAGES.GENERAL_APPLICATION.SUMMARY.${status}`, {lng}),
     statusColor: StatusColor[status],
     types: application.case_data?.applicationTypes,
     id: application.id,
-    createdDate: dateTimeFormat(application.created_date, lng),
-    applicationUrl: getViewApplicationUrl(claimId, claim, application, index),
+    createdDate: dateTimeFormat(createDate, lng),
+    applicationUrl: `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id, GA_RESPONSE_VIEW_APPLICATION_URL)}?index=${index + 1}`,
   };
 };

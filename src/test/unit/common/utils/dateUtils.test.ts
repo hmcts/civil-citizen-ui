@@ -1,7 +1,12 @@
 import {
   addDaysBefore4pm,
-  addMonths, checkEvidenceUploadTime, dateTimeFormat, formatStringDateDMY, formatStringTimeHMS,
-  getDOBforAgeFromCurrentTime, isDateOnOrAfterSpecificDate,
+  addMonths,
+  checkEvidenceUploadTime,
+  dateTimeFormat,
+  formatStringDateDMY,
+  formatStringTimeHMS,
+  getDOBforAgeFromCurrentTime,
+  isDateOnOrAfterSpecificDate,
 } from '../../../../main/common/utils/dateUtils';
 
 describe('addDaysBefore4pm', () => {
