@@ -11,5 +11,9 @@ Scenario.only('upload documents claimant', () => {
     toggleFlag('cui-case-progression', true);
     CaseProgressionSteps.start(1645882162449408);
     CaseProgressionSteps.typeOfDocument();
+    CaseProgressionSteps.uploadDocuments();
+    CaseProgressionSteps.checkAndSend();
+    toggleFlag('cui-case-progression', false);
+
   }
 });

@@ -3,8 +3,8 @@ const {buttonType} = require('../commons/buttonVariables');
 const {seeInTitle} = require('../commons/seeInTitle');
 const {seeBackLink} = require('../commons/seeBackLink');
 const {seeBreadcrumbs} = require('../commons/seeBreadcrumbs');
-const {yesAndNoCheckBoxOptionValue} = require("../commons/eligibleVariables");
-const {checkDateFields} = require("../commons/checkDateFields");
+const {yesAndNoCheckBoxOptionValue} = require('../commons/eligibleVariables');
+const {checkDateFields} = require('../commons/checkDateFields');
 const I = actor();
 
 class CaseProgressionSteps {
@@ -101,16 +101,55 @@ class CaseProgressionSteps {
     I.see('Witness evidence', 'h2.govuk-heading-l');
     I.see('Witness statement', 'h3.govuk-heading-m');
     I.see('Witness\'s name', 'strong');
-    I.fillField('#witnessStatement[0][witnessName]', 'test');
+    I.fillField('witnessStatement[0][witnessName]', 'test');
 
     I.see('Date statement was written', 'legend.govuk-fieldset__legend');
     I.see('For example, 27 9 2022', 'div.govuk-hint');
-    checkDateFields(yesterday);
+    I.fillField('witnessStatement[0][dateInputFields][dateDay]', '01');
+    I.fillField('witnessStatement[0][dateInputFields][dateMonth]', '02');
+    I.fillField('witnessStatement[0][dateInputFields][dateYear]', '2023');
+    I.attachFile('witnessStatement[0][fileUpload]', 'citizenFeatures/caseProgression/data/TestDOC.doc');
 
     I.see('Cancel', 'a.govuk-link');
     clickButton(buttonType.CONTINUE);
 
   }
+
+  checkAndSend() {
+    I.seeInCurrentUrl('/case-progression/check-and-send');
+
+    seeInTitle('Check your answers');
+    seeBackLink();
+    I.see('Hearing', 'span.govuk-caption-l');
+    I.see('Check your answers', 'h1.govuk-heading-l');
+
+    I.see('Case number: 1645 8821 6244 9408', 'p.govuk-body-l');
+    I.see('Claim amount: £1,000', 'p.govuk-body-l');
+
+    I.seeElement('div.govuk-inset-text');
+
+    I.see('Witness evidence', 'h1.govuk-heading-l');
+    I.see('Witness statement', 'dt.govuk-summary-list__key');
+    I.see('Witness\'s name', 'dd.govuk-summary-list__value');
+    I.see('test', 'dd.govuk-summary-list__value');
+
+    I.see('Date statement was written', 'dd.govuk-summary-list__value');
+
+    I.see('1/2/2023', 'dd.govuk-summary-list__value');
+    I.see('Document uploaded', 'dd.govuk-summary-list__value');
+    I.see('name', 'dd.govuk-summary-list__value a.govuk-link');
+
+    I.see('Confirmation', 'h1.govuk-heading-l');
+    I.seeElement('div.govuk-warning-text');
+
+    I.see('I confirm the documents are correct and understand that I cannot withdraw documents once I have submitted them.', 'label.govuk-label');
+    I.checkOption('#signed');
+
+    I.see('Cancel', 'a.govuk-link');
+    clickButton(buttonType.SUBMIT);
+    I.seeInCurrentUrl('/response/confirmation');
+  }
+
 }
 
 module.exports = new CaseProgressionSteps();
