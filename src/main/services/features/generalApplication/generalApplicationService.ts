@@ -413,6 +413,18 @@ export const saveRespondentWantToUploadDoc = async (redisKey: string, wantToUplo
   }
 };
 
+export const saveAdditionalText = async (redisKey: string, additionalText: string, wantToUploadAddlDocuments: YesNo): Promise<void> => {
+  try {
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.wantToUploadAddlDocuments = wantToUploadAddlDocuments;
+    gaResponse.additionalText = additionalText;
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
   try {
     const claim = await getClaimById(req.params.id, req, true);
@@ -454,4 +466,14 @@ export const saveApplicationTypesToGaResponse = async (gaState: ApplicationState
     gaResponse.generalApplicationType = applicationTypes;
     await saveDraftGARespondentResponse(gaRedisKey, gaResponse);
   }
+};
+
+export const getApplicationCreatedDate = (ccdClaim: Claim, applicationId: string): string => {
+  const ccdGeneralApplications = ccdClaim.generalApplications;
+  for (const ccdGeneralApplication of ccdGeneralApplications) {
+    if (ccdGeneralApplication.value.caseLink.CaseReference.toString() === applicationId.toString()){
+      return ccdGeneralApplication.value.generalAppSubmittedDateGAspec;
+    }
+  }
+  return undefined;
 };
