@@ -20,7 +20,6 @@ import {
   ApplicationResponse,
 } from 'common/models/generalApplication/applicationResponse';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
-import {SummaryRow} from 'common/models/summaryList/summaryList';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 import { DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
