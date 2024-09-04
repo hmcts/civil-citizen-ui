@@ -3,8 +3,6 @@ const {buttonType} = require('../commons/buttonVariables');
 const {seeInTitle} = require('../commons/seeInTitle');
 const {seeBackLink} = require('../commons/seeBackLink');
 const {seeBreadcrumbs} = require('../commons/seeBreadcrumbs');
-const {yesAndNoCheckBoxOptionValue} = require('../commons/eligibleVariables');
-const {checkDateFields} = require('../commons/checkDateFields');
 const I = actor();
 
 class CaseProgressionSteps {
@@ -15,7 +13,7 @@ class CaseProgressionSteps {
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('Upload your documents', 'h1.govuk-heading-l');
 
-    I.see('Case number: 1645 8821 6244 9408', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0001', 'p.govuk-body-l');
     I.see('Claim amount: £1,000', 'p.govuk-body-l');
     I.see('Check the order the court sent you for what documents you need to upload for your case.', 'p.govuk-body');
     I.see('You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example \'version2\'.', 'p.govuk-body');
@@ -45,7 +43,7 @@ class CaseProgressionSteps {
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('What types of documents do you want to upload?', 'h1.govuk-heading-l');
 
-    I.see('Case number: 1645 8821 6244 9408', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0001', 'p.govuk-body-l');
     I.see('Claim amount: £1,000', 'p.govuk-body-l');
 
     I.see('Select the types of documents that apply to your case. You may not need to upload documents for every category.', 'p.govuk-body');
@@ -92,7 +90,7 @@ class CaseProgressionSteps {
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('Upload documents', 'h1.govuk-heading-l');
 
-    I.see('Case number: 1645 8821 6244 9408', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0001', 'p.govuk-body-l');
     I.see('Claim amount: £1,000', 'p.govuk-body-l');
 
     I.see('Acceptable documents formats', 'h2.govuk-heading-s');
@@ -123,7 +121,7 @@ class CaseProgressionSteps {
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('Check your answers', 'h1.govuk-heading-l');
 
-    I.see('Case number: 1645 8821 6244 9408', 'p.govuk-body-l');
+    I.see('Case number: 0000 0000 0000 0001', 'p.govuk-body-l');
     I.see('Claim amount: £1,000', 'p.govuk-body-l');
 
     I.seeElement('div.govuk-inset-text');

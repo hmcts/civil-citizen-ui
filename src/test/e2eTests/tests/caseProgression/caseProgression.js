@@ -7,13 +7,11 @@ Feature('Case Progression journey').tag('@leo');
 
 Scenario.only('upload documents claimant', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    //toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('cui-case-progression', true);
-    CaseProgressionSteps.start(1645882162449408);
+    CaseProgressionSteps.start('0000000000000001');
     CaseProgressionSteps.typeOfDocument();
     CaseProgressionSteps.uploadDocuments();
     CaseProgressionSteps.checkAndSend();
     toggleFlag('cui-case-progression', false);
-
   }
 });

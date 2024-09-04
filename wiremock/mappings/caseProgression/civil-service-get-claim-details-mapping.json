@@ -1,0 +1,33 @@
+{
+  "mappings": [
+    {
+      "priority": 1,
+      "scenarioName": "caseProgression",
+      "requiredScenarioState": "Started",
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/0000000000000001",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "12345",
+          "case_data": {
+            "legacyCaseReference": "legacyCaseReference",
+            "respondent1ResponseDate": "2023-06-03T07:30:38"
+          },
+          "state": "ACTIVE",
+          "last_modified": "2023-07-10T10:00:00Z"
+        }
+      }
+    }
+  ]
+}
