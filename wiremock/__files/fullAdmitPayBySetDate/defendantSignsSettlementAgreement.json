@@ -1,0 +1,339 @@
+{
+  "id": 1777777777777723,
+  "jurisdiction": "CIVIL",
+  "state": "AWAITING_APPLICANT_INTENTION",
+  "case_type_id": "CIVIL",
+  "created_date": "2024-08-14T21:20:42",
+  "last_modified": "2024-08-14T21:24:06",
+  "case_data": {
+    "respondent1ClaimResponseTypeForSpec": "FULL_ADMISSION",
+    "respondent1ClaimResponseDocumentSpec": {
+      "documentLink": {
+        "document_url": "http://dm-store:8080/documents/d7aefe07-364d-489f-9986-c1dd3e9bfe22",
+        "document_binary_url": "http://dm-store:8080/documents/d7aefe07-364d-489f-9986-c1dd3e9bfe22/binary",
+        "document_filename": "response_sealed_form_000MC007.pdf",
+        "category_id": "defendant1DefenseDirectionsQuestionnaire"
+      },
+      "documentName": "response_sealed_form_000MC007.pdf",
+      "documentType": "DEFENDANT_DEFENCE",
+      "documentSize": 83550,
+      "createdDatetime": "2024-08-14T22:21:18",
+      "createdBy": "Civil"
+    },
+    "respondent1LiPResponse": {
+      "respondent1ResponseLanguage": "ENGLISH"
+    },
+    "submittedDate": "2024-08-14T22:20:42",
+    "specRespondent1Represented": "No",
+    "respondent1ResponseDeadline": "2024-09-12T16:00:00",
+    "respondent1RespondToSettlementAgreementDeadline": "2024-08-23T16:00:00",
+    "responseClaimAdmitPartEmployer": {
+      "employerDetails": [
+        {
+          "value": {
+            "employerName": "ABC Ltd",
+            "jobTitle": "Builder"
+          },
+          "id": "c73e86e7-44ba-4baf-b062-02b24dbc77e7"
+        }
+      ]
+    },
+    "timelineOfEvents": [
+      {
+        "value": {
+          "timelineDate": "2000-01-01",
+          "timelineDescription": "test"
+        },
+        "id": "0"
+      }
+    ],
+    "detailsOfClaim": "Injury",
+    "claimFee": {
+      "calculatedAmountInPence": "8000",
+      "code": "FEE0206",
+      "version": "6"
+    },
+    "respondent1DQCarerAllowanceCreditFullAdmission": "Yes",
+    "specClaimResponseTimelineList": "MANUAL",
+    "applicant1AdditionalLipPartyDetails": {
+      "correspondenceAddress": {
+        "AddressLine1": "123",
+        "AddressLine2": "Test Street",
+        "PostTown": "Liverpool",
+        "PostCode": "L7 2pz"
+      },
+      "contactPerson": "Test Company"
+    },
+    "specAoSApplicantCorrespondenceAddressRequired": "Yes",
+    "respondent1CourtOrderPaymentOption": "No",
+    "respondToClaimAdmitPartEmploymentTypeLRspec": [
+      "EMPLOYED"
+    ],
+    "respondent1LiPFinancialDetails": {
+      "partnerPensionLiP": "No",
+      "childrenEducationLiP": "1"
+    },
+    "responseClaimTrack": "SMALL_CLAIM",
+    "pcqId": "4c10fec5-1278-45f3-89f0-d3d016d47f95",
+    "defenceAdmitPartPaymentTimeRouteRequired": "BY_SET_DATE",
+    "totalClaimAmount": 1500,
+    "respondentSignSettlementAgreement": "Yes",
+    "applicant1LiPResponse": {
+      "applicant1SignedSettlementAgreement": "Yes",
+      "applicant1ChoosesHowToProceed": "SIGN_A_SETTLEMENT_AGREEMENT"
+    },
+    "respondent1DQHomeDetails": {
+      "type": "PRIVATE_RENTAL"
+    },
+    "respondent1ResponseDate": "2024-08-14T22:21:14",
+    "respondToClaimAdmitPartLRspec": {
+      "whenWillThisAmountBePaid": "2025-10-01"
+    },
+    "CaseAccessCategory": "SPEC_CLAIM",
+    "respondent1LoanCreditDetails": [
+      {
+        "value": {
+          "loanCardDebtDetail": "HSBC Credit card",
+          "totalOwed": "300000",
+          "monthlyPayment": "30000"
+        },
+        "id": "b14de93a-5a2d-4db6-99ae-326871a1f2f4"
+      }
+    ],
+    "defendantUserDetails": {
+      "email": "jane.smith@gmail.com",
+      "id": "af43b7d6-4607-459e-be2b-2b1fe9740063"
+    },
+    "responseToClaimAdmitPartWhyNotPayLRspec": "test",
+    "applicant1": {
+      "partyID": "189548e3-6a8b-4a",
+      "type": "INDIVIDUAL",
+      "individualTitle": "Miss",
+      "individualFirstName": "Jane",
+      "individualLastName": "Doe",
+      "individualDateOfBirth": "1995-08-28",
+      "primaryAddress": {
+        "AddressLine1": "123",
+        "AddressLine2": "Fake Street",
+        "PostTown": "sheffield",
+        "PostCode": "S12eu"
+      },
+      "partyName": "Miss Jane Doe",
+      "partyTypeDisplayValue": "Individual",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "partyPhone": "07446777177",
+      "flags": {
+        "partyName": "Miss Jane Doe",
+        "roleOnCase": "Claimant 1"
+      }
+    },
+    "serviceRequestReference": "2022-1655915218557",
+    "applicant1Represented": "No",
+    "applicant1AcceptFullAdmitPaymentPlanSpec": "Yes",
+    "issueDate": "2024-08-14",
+    "disabilityPremiumPayments": "No",
+    "systemGeneratedCaseDocuments": [
+      {
+        "value": {
+          "documentLink": {
+            "document_url": "http://dm-store:8080/documents/7244fb69-30b5-49ba-8abc-038344ed575e",
+            "document_binary_url": "http://dm-store:8080/documents/7244fb69-30b5-49ba-8abc-038344ed575e/binary",
+            "document_filename": "000MC007-claim-form-claimant-copy.pdf"
+          },
+          "documentName": "000MC007-claim-form-claimant-copy.pdf",
+          "documentType": "CLAIMANT_CLAIM_FORM",
+          "documentSize": 34692,
+          "createdDatetime": "2024-08-14T22:20:58",
+          "createdBy": "Civil"
+        },
+        "id": "ba40eff7-4cce-444c-b612-b87a1c51e9b2"
+      },
+      {
+        "value": {
+          "documentLink": {
+            "document_url": "http://dm-store:8080/documents/92cd96f6-75df-4d1d-be4a-7dca0f86480c",
+            "document_binary_url": "http://dm-store:8080/documents/92cd96f6-75df-4d1d-be4a-7dca0f86480c/binary",
+            "document_filename": "000MC007-sealed-claim-form.pdf"
+          },
+          "documentName": "000MC007-sealed-claim-form.pdf",
+          "documentType": "SEALED_CLAIM",
+          "documentSize": 43272,
+          "createdDatetime": "2024-08-14T22:20:59",
+          "createdBy": "Civil"
+        },
+        "id": "b7a6ae55-096c-4edc-947b-424a2ec236a3"
+      },
+      {
+        "value": {
+          "documentLink": {
+            "document_url": "http://dm-store:8080/documents/d7aefe07-364d-489f-9986-c1dd3e9bfe22",
+            "document_binary_url": "http://dm-store:8080/documents/d7aefe07-364d-489f-9986-c1dd3e9bfe22/binary",
+            "document_filename": "response_sealed_form_000MC007.pdf",
+            "category_id": "defendant1DefenseDirectionsQuestionnaire"
+          },
+          "documentName": "response_sealed_form_000MC007.pdf",
+          "documentType": "DEFENDANT_DEFENCE",
+          "documentSize": 83550,
+          "createdDatetime": "2024-08-14T22:21:18",
+          "createdBy": "Civil"
+        },
+        "id": "d01ca2d3-4d8b-4804-8666-eb1bb33b3b28"
+      }
+    ],
+    "specDefendant1Debts": {
+      "debtDetails": [
+        {
+          "value": {
+            "debtType": "MORTGAGE",
+            "paymentAmount": "20000",
+            "paymentFrequency": "ONCE_ONE_MONTH"
+          },
+          "id": "6b63fa49-2ab0-4969-8c17-8533f6f743a5"
+        }
+      ]
+    },
+    "helpWithFees": {
+      "helpWithFee": "No"
+    },
+    "claimInterest": "No",
+    "applicant1ResponseDate": "2024-08-14T22:22:16",
+    "claimantUserDetails": {
+      "email": "civilmoneyclaimsdemo@gmail.com",
+      "id": "371de4cf-e524-44d7-9902-4798bfa91321"
+    },
+    "legacyCaseReference": "000MC007",
+    "applicant1ResponseDeadline": "2024-09-12T16:00:00",
+    "respondent1PartnerAndDependent": {
+      "liveWithPartnerRequired": "Yes",
+      "partnerAgedOver": "Yes",
+      "haveAnyChildrenRequired": "Yes",
+      "receiveDisabilityPayments": "No",
+      "howManyChildrenByAgeGroup": {
+        "numberOfUnderEleven": "1",
+        "numberOfElevenToFifteen": "1",
+        "numberOfSixteenToNineteen": "1"
+      },
+      "supportedAnyoneFinancialRequired": "Yes",
+      "supportPeopleNumber": "2",
+      "supportPeopleDetails": "Parents"
+    },
+    "respondent1GeneratedResponseDocument": {
+      "documentSize": 0
+    },
+    "businessProcess": {
+      "status": "READY",
+      "camundaEvent": "DEFENDANT_SIGN_SETTLEMENT_AGREEMENT",
+      "readyOn": "2024-08-14T22:24:06.4502699"
+    },
+    "respondent1LoanCreditOption": "Yes",
+    "respondent1BankAccountList": [
+      {
+        "value": {
+          "balance": "4000",
+          "jointAccount": "Yes",
+          "accountType": "SAVINGS"
+        },
+        "id": "65ebbc38-8b16-470b-881f-b8c1d75f724e"
+      }
+    ],
+    "respondent1PinToPostLRspec": {
+      "accessCode": "M8A28MTKCEDN",
+      "respondentCaseRole": "[DEFENDANT]",
+      "expiryDate": "2025-02-10"
+    },
+    "respondent1": {
+      "partyID": "1005bf51-8560-4d",
+      "type": "INDIVIDUAL",
+      "individualTitle": "Sir",
+      "individualFirstName": "John",
+      "individualLastName": "Doe",
+      "individualDateOfBirth": "1990-01-01",
+      "primaryAddress": {
+        "AddressLine1": "TestAddressLine1",
+        "AddressLine2": "TestAddressLine2",
+        "AddressLine3": "TestAddressLine3",
+        "PostTown": "TestCity",
+        "PostCode": "IG61JD"
+      },
+      "partyName": "Sir John Doe",
+      "partyTypeDisplayValue": "Individual",
+      "partyEmail": "civilmoneyclaimsdemo@gmail.com",
+      "partyPhone": "07800000000",
+      "flags": {
+        "partyName": "Sir John Doe",
+        "roleOnCase": "Defendant 1"
+      }
+    },
+    "applicant1OrganisationPolicy": {
+      "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITORONE]"
+    },
+    "defenceAdmitPartEmploymentTypeRequired": "Yes",
+    "respondent1DQRecurringIncomeFA": [
+      {
+        "value": {
+          "type": "JOB",
+          "amount": "300000",
+          "frequency": "ONCE_ONE_MONTH"
+        },
+        "id": "688375c2-64fb-4586-850d-181770e32168"
+      },
+      {
+        "value": {
+          "type": "INCOME_SUPPORT",
+          "amount": "100000",
+          "frequency": "ONCE_ONE_MONTH"
+        },
+        "id": "305757bc-62b0-4588-a5e4-8ff9c653081e"
+      }
+    ],
+    "respondent1AdditionalLipPartyDetails": {
+      "contactPerson": "Test Company"
+    },
+    "responseClaimMediationSpecRequired": "No",
+    "claimAmountBreakup": [
+      {
+        "value": {
+          "claimAmount": "150000",
+          "claimReason": "Injury"
+        },
+        "id": "0"
+      }
+    ],
+    "respondent1DQRecurringExpensesFA": [
+      {
+        "value": {
+          "type": "RENT",
+          "amount": "200000",
+          "frequency": "ONCE_ONE_MONTH"
+        },
+        "id": "ea0f57ce-c018-4850-96a4-517b63cae470"
+      },
+      {
+        "value": {
+          "type": "COUNCIL_TAX",
+          "amount": "20000",
+          "frequency": "ONCE_ONE_MONTH"
+        },
+        "id": "6c249446-72b1-40e6-b9c1-f44459cac34c"
+      },
+      {
+        "value": {
+          "type": "WATER",
+          "amount": "2000",
+          "frequency": "ONCE_TWO_WEEKS"
+        },
+        "id": "6c2f03e2-83a8-40bd-8f34-7b05d2651b10"
+      },
+      {
+        "value": {
+          "type": "TV",
+          "amount": "4000",
+          "frequency": "ONCE_ONE_MONTH"
+        },
+        "id": "9a84eccc-8442-4763-ae3c-19ae516825eb"
+      }
+    ]
+  },
+  "security_classification": "PUBLIC",
+  "callback_response_status": "CALLBACK_COMPLETED"
+}
