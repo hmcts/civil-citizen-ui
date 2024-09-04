@@ -8,9 +8,11 @@ import {
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
   saveAcceptDefendantOffer,
-  saveAgreementFromOtherParty, saveAndTriggerNotifyGaHwfEvent,
+  saveAdditionalText,
+  saveAgreementFromOtherParty,
+  saveAndTriggerNotifyGaHwfEvent,
   saveApplicationCosts,
-  saveApplicationType,
+  saveApplicationType, saveApplicationTypesToGaResponse,
   saveHearingArrangement,
   saveHearingContactDetails,
   saveHearingSupport,
@@ -55,10 +57,15 @@ import {
   triggerNotifyHwfEvent,
 } from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
 import {GaServiceClient} from 'client/gaServiceClient';
-import {CivilServiceClient} from 'client/civilServiceClient';
 import {CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {CCDHelpWithFees} from 'form/models/claimDetails';
+import {AppRequest} from 'models/AppRequest';
+import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
+import {
+  getDraftGARespondentResponse,
+  saveDraftGARespondentResponse,
+} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -67,10 +74,14 @@ jest.mock('../../../../../main/services/features/generalApplication/response/gen
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
 }));
+jest.mock('../../../../../main/modules/draft-store/gaHwFeesDraftStore', () => ({
+  saveDraftGAHWFDetails: jest.fn(),
+  getDraftGAHWFDetails: jest.fn(),
+}));
 jest.mock('../../../../../main/app/client/civilServiceClient');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-
+const mockGetGaHwFDetails = getDraftGAHWFDetails as jest.Mock;
 describe('General Application service', () => {
   describe('Save application type', () => {
     it('should save application type successfully', async () => {
@@ -514,26 +525,24 @@ describe('General Application service', () => {
 
   describe('Save help with application fee details', () => {
     it('should save help with application fee selection', async () => {
-      const  claim = new Claim();
+      const gaHwfFees = new GaHelpWithFees();
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.helpWithFees = new GaHelpWithFees();
-        claim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
-        return claim;
+      mockGetGaHwFDetails.mockImplementation(async () => {
+
+        gaHwfFees.applyHelpWithFees = {option: YesNo.YES};
+        return gaHwfFees;
       });
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+
+      const mockSaveGAHwFDetails = saveDraftGAHWFDetails as jest.Mock;
       //When
       await saveHelpWithFeesDetails('123', YesNo.YES, 'applyHelpWithFees');
       //Then
-      await expect(spy).toBeCalledWith('123', claim);
+      expect(mockSaveGAHwFDetails).toBeCalledWith('123', gaHwfFees);
     });
 
     it('should save help with hwf application fee selection', async () => {
-      const  claim = new Claim();
-      const  ccdClaim = new Claim();
+      const gaHwfFees = new GaHelpWithFees();
+      const ccdClaim = new Claim();
       ccdClaim.generalApplications = [
         {
           'id': 'test',
@@ -545,55 +554,46 @@ describe('General Application service', () => {
         },
       ];
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.helpWithFees = new GaHelpWithFees();
-        claim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
-        return claim;
+      mockGetGaHwFDetails.mockImplementation(async () => {
+
+        gaHwfFees.applyHelpWithFees = {option: YesNo.YES};
+        return gaHwfFees;
       });
-      const spy = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(ccdClaim);
       const spyOnGA = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
       //When
-      await saveAndTriggerNotifyGaHwfEvent('123', undefined, new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-A1B-36C'));
+      await saveAndTriggerNotifyGaHwfEvent({params: {appId: '12334'}} as unknown as AppRequest, new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-A1B-36C'));
       expect(spyOnGA).toHaveBeenCalled();
-      await expect(spy).toBeCalledWith('123', undefined);
     });
 
     it('should save help with application fee continue selection', async () => {
-      const  claim = new Claim();
+      const gaHwfFees = new GaHelpWithFees();
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.helpWithFees = new GaHelpWithFees();
-        claim.generalApplication.helpWithFees.helpWithFeesRequested = YesNo.YES;
-        return claim;
+      mockGetGaHwFDetails.mockImplementation(async () => {
+
+        gaHwfFees.helpWithFeesRequested = YesNo.YES;
+        return gaHwfFees;
       });
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      const mockSaveGAHwFDetails = saveDraftGAHWFDetails as jest.Mock;
       //When
       await saveHelpWithFeesDetails('123', YesNo.YES, 'helpWithFeesRequested');
       //Then
-      await expect(spy).toBeCalledWith('123', claim);
+      expect(mockSaveGAHwFDetails).toBeCalledWith('123', gaHwfFees);
     });
 
     it('should save help with application fee reference number', async () => {
-      const  claim = new Claim();
+      const gaHwfFees = new GaHelpWithFees();
       const hwfReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-123-86D');
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.helpWithFees = new GaHelpWithFees();
-        claim.generalApplication.helpWithFees.helpFeeReferenceNumberForm = hwfReferenceNumberForm;
-        return claim;
+      mockGetGaHwFDetails.mockImplementation(async () => {
+
+        gaHwfFees.helpFeeReferenceNumberForm = hwfReferenceNumberForm;
+        return gaHwfFees;
       });
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      const mockSaveGAHwFDetails = saveDraftGAHWFDetails as jest.Mock;
       //When
-      await saveHelpWithFeesDetails('123', hwfReferenceNumberForm, 'helpFeeReferenceNumber');
+      await saveHelpWithFeesDetails('123', hwfReferenceNumberForm, 'helpFeeReferenceNumberForm');
       //Then
-      await expect(spy).toBeCalledWith('123', claim);
+      expect(mockSaveGAHwFDetails).toBeCalledWith('123', gaHwfFees);
     });
   });
 
@@ -713,6 +713,23 @@ describe('General Application service', () => {
   });
 });
 
+describe('Save Additional Text and Option', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  it('should save GARespondentResponse successfully', async () => {
+    //Given
+    jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+    const spy = jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse');
+    const uploadFile = YesNo.YES;
+    const input = 'More info';
+    //When
+    await saveAdditionalText('123', input, uploadFile);
+    //Then
+    expect(spy).toBeCalled();
+  });
+});
+
 describe('Save Accept defendant offer', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -726,6 +743,16 @@ describe('Save Accept defendant offer', () => {
     await saveAcceptDefendantOffer('123', acceptDefendantOffer);
     //Then
     expect(spy).toBeCalled();
+  });
+
+  describe('should save application type details on Ga Response', () => {
+    it('should call Save and Notify event', async () => {
+      const mockGetDraft = getDraftGARespondentResponse as jest.Mock;
+      const mockSaveDraft = saveDraftGARespondentResponse as jest.Mock;
+      mockGetDraft.mockResolvedValue(new GaResponse());
+      await saveApplicationTypesToGaResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, '12345', [ApplicationTypeOption.STAY_THE_CLAIM]);
+      expect(mockSaveDraft).toHaveBeenCalled();
+    });
   });
 
   describe('Save Respondent support to upload document', () => {

@@ -7,20 +7,11 @@ class CitizenDashboardPage {
   }
 
   async verifyClaimNumberOnDashboard(claimNumber){
-    if (await I.waitForContent('Claim number', config.WaitForText)) {
-      await I.see('Claimant name');
-      await I.see('Claim amount');
-      await I.see('Status');
-      await I.see(claimNumber);
-    }
-    else {
-      await I.refreshPage();
-      await I.waitForContent('Claim number', config.WaitForText);
-      await I.see('Claimant name');
-      await I.see('Claim amount');
-      await I.see('Status');
-      await I.see(claimNumber);
-    }
+    await I.waitForContent('Claim number', config.WaitForText);
+    await I.see('Claimant name');
+    await I.see('Claim amount');
+    await I.see('Status');
+    await I.see(claimNumber);
   }
 
   async verifyDashboardPageContent () {
