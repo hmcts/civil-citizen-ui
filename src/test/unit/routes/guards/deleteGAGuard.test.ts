@@ -14,7 +14,7 @@ describe('deleteGAGuard', () => {
     params: { id: '123' },
     session: {
       user: { id: userId },
-    }
+    },
   } as unknown as AppRequest;
   const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
   const MOCK_NEXT = jest.fn() as NextFunction;
