@@ -189,6 +189,7 @@ describe('General Application Response service', () => {
   });
 
   describe('isApplicationVisibleToRespondent', () => {
+
     it('should return true when Claimant application is with notice', () => {
       expect(isApplicationVisibleToRespondent(applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, true, false, true)))
         .toBeTruthy();
