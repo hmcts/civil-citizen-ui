@@ -1,26 +1,32 @@
-import {Claim} from 'models/claim';
-import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
-import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
-import {FIXED_DATE} from '../../../../utils/dateUtils';
+import { Claim } from 'models/claim';
+import { CaseProgressionHearing } from 'models/caseProgression/caseProgressionHearing';
+import { HearingFeeInformation } from 'models/caseProgression/hearingFee/hearingFee';
+import { FIXED_DATE } from '../../../../utils/dateUtils';
 import {
   extractOrderDocumentIdFromNotification,
   getDashboardForm,
   getNotifications,
 } from 'services/dashboard/dashboardService';
-import {CaseRole} from 'form/models/caseRoles';
-import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
-import {AppRequest} from 'common/models/AppRequest';
-import axios, {AxiosInstance} from 'axios';
-import {req} from '../../../../utils/UserDetails';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import {DashboardNotification} from 'models/dashboard/dashboardNotification';
-import {plainToInstance} from 'class-transformer';
-import {Dashboard} from 'models/dashboard/dashboard';
-import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
-import {ClaimantOrDefendant} from 'models/partyType';
-import {CivilServiceDashboardTask} from 'models/dashboard/taskList/civilServiceDashboardTask';
-import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
-import {DashboardTaskStatus} from 'models/dashboard/taskList/dashboardTaskStatus';
+import { CaseRole } from 'form/models/caseRoles';
+import { DashboardNotificationList } from 'models/dashboard/dashboardNotificationList';
+import { AppRequest } from 'common/models/AppRequest';
+import axios, { AxiosInstance } from 'axios';
+import { req } from '../../../../utils/UserDetails';
+import { CivilServiceClient } from 'client/civilServiceClient';
+import { DashboardNotification } from 'models/dashboard/dashboardNotification';
+import { plainToInstance } from 'class-transformer';
+import { Dashboard } from 'models/dashboard/dashboard';
+import { DashboardTaskList } from 'models/dashboard/taskList/dashboardTaskList';
+import { ClaimantOrDefendant } from 'models/partyType';
+import { CivilServiceDashboardTask } from 'models/dashboard/taskList/civilServiceDashboardTask';
+import { DashboardTask } from 'models/dashboard/taskList/dashboardTask';
+import { DashboardTaskStatus } from 'models/dashboard/taskList/dashboardTaskStatus';
+import {
+  ClaimGeneralApplication,
+  ClaimGeneralApplicationValue,
+} from 'models/generalApplication/claimGeneralApplication';
+import { YesNo } from 'form/models/yesNo';
+import {CaseLink} from 'models/generalApplication/CaseLink';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -62,6 +68,50 @@ describe('dashboardService', () => {
           'titleCy': 'title_cy_2',
           'descriptionEn': 'description_en_2',
           'descriptionCy': 'description_cy_2',
+        },
+      ] as DashboardNotification[];
+      const allNotificationInfo = [
+        {
+            'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+            'titleEn': 'title_en',
+            'titleCy': 'title_cy',
+            'descriptionEn': 'description_en',
+            'descriptionCy': 'description_cy',
+        },
+        {
+            'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+            'titleEn': 'title_en_2',
+            'titleCy': 'title_cy_2',
+            'descriptionEn': 'description_en_2',
+            'descriptionCy': 'description_cy_2',
+        },
+        {
+            'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+            'titleEn': 'title_en',
+            'titleCy': 'title_cy',
+            'descriptionEn': 'description_en',
+            'descriptionCy': 'description_cy',
+        },
+        {
+            'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+            'titleEn': 'title_en_2',
+            'titleCy': 'title_cy_2',
+            'descriptionEn': 'description_en_2',
+            'descriptionCy': 'description_cy_2',
+        },
+        {
+            'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+            'titleEn': 'title_en',
+            'titleCy': 'title_cy',
+            'descriptionEn': 'description_en',
+            'descriptionCy': 'description_cy',
+        },
+        {
+            'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+            'titleEn': 'title_en_2',
+            'titleCy': 'title_cy_2',
+            'descriptionEn': 'description_en_2',
+            'descriptionCy': 'description_cy_2',
         },
       ] as DashboardNotification[];
       const mockExpectedDashboardInfo=
@@ -156,12 +206,18 @@ describe('dashboardService', () => {
 
       it('Notifications', async () => {
         //Given
-        const mockGet = jest.fn().mockResolvedValue({data: mockNotificationInfo});
-        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        const mockGet1 = jest.fn().mockResolvedValue({data: mockNotificationInfo});
+        mockedAxios.create.mockReturnValueOnce({get: mockGet1} as unknown as AxiosInstance);
         const notificationList: DashboardNotification[] = mockNotificationInfo;
         const dashboardNotificationItems= plainToInstance(DashboardNotification, notificationList);
+        const applicantNotificationItems = plainToInstance(DashboardNotification, notificationList);
+        const respondentNotificationItems = plainToInstance(DashboardNotification, notificationList);
         const dashboardNotificationList= new  DashboardNotificationList();
+        const applicantNotificationList= new  DashboardNotificationList();
+        const respondentNotificationList= new  DashboardNotificationList();
         dashboardNotificationList.items = dashboardNotificationItems;
+        applicantNotificationList.items = applicantNotificationItems;
+        respondentNotificationList.items = respondentNotificationItems;
         jest.spyOn(CivilServiceClient.prototype, 'retrieveNotification').mockResolvedValueOnce(dashboardNotificationList);
 
         const claim = new Claim();
@@ -169,11 +225,28 @@ describe('dashboardService', () => {
         claim.caseProgressionHearing = new CaseProgressionHearing(null, null, null, null, null, new HearingFeeInformation({calculatedAmountInPence: '1000', code: 'test', version: '1'}, FIXED_DATE));
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 12345;
+        const genApps = [new ClaimGeneralApplication(), new ClaimGeneralApplication()];
+        genApps[0].value = new ClaimGeneralApplicationValue();
+        genApps[0].value.parentClaimantIsApplicant = YesNo.NO;
+        genApps[0].value.caseLink = new CaseLink();
+        genApps[0].value.caseLink.CaseReference = '1';
+        genApps[1].value = new ClaimGeneralApplicationValue();
+        genApps[1].value.parentClaimantIsApplicant = YesNo.YES;
+        genApps[1].value.caseLink = new CaseLink();
+        genApps[1].value.caseLink.CaseReference = '2';
+        claim.generalApplications = genApps;
+        const applicantNotifications = new Map<string, DashboardNotificationList>;
+        applicantNotifications.set('1', applicantNotificationList);
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveGaNotification').mockResolvedValueOnce(applicantNotifications);
+        const respondentNotifications = new Map<string, DashboardNotificationList>;
+        respondentNotifications.set('2', respondentNotificationList);
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveGaNotification').mockResolvedValueOnce(respondentNotifications);
+
         //When
         const claimantNotifications: DashboardNotificationList = await getNotifications('1234567890', claim, ClaimantOrDefendant.DEFENDANT, appReq, 'en');
 
         //Then
-        expect(claimantNotifications.items).toEqual(mockNotificationInfo);
+        expect(claimantNotifications.items).toEqual(allNotificationInfo);
 
       });
 
@@ -245,7 +318,7 @@ describe('dashboardService', () => {
         //Then
         expect(claimantDashboard).toEqual(dashboardExpected);
       });
-      
+
       it.each([
         false,
         true,
