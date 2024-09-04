@@ -1,4 +1,0 @@
-options:
-  max-warnings: 0
-files:
-  include: 'src/**/*.scss'
