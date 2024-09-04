@@ -25,6 +25,7 @@ export const CIVIL_SERVICE_FEES_PAYMENT_URL= `${CIVIL_SERVICE_FEES_URL}/:feeType
 export const CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL= `${CIVIL_SERVICE_FEES_URL}/:feeType/case/:claimId/payment/:paymentReference/status`;
 export const CIVIL_SERVICE_DASHBOARD_TASKLIST_URL= `${CIVIL_SERVICE_DASHBOARD_URL}/taskList/:ccd-case-identifier/role/:role-type`;
 export const CIVIL_SERVICE_NOTIFICATION_LIST_URL= `${CIVIL_SERVICE_DASHBOARD_URL}/notifications/:ccd-case-identifier/role/:role-type`;
+export const CIVIL_SERVICE_GA_NOTIFICATION_LIST_URL = `${CIVIL_SERVICE_DASHBOARD_URL}/notifications/ga/:ccd-case-identifiers/role/:role-type`;
 export const CIVIL_SERVICE_BASE_DASHBOARD_URL = '/dashboard';
 export const CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL = `${CIVIL_SERVICE_BASE_DASHBOARD_URL}/scenarios/:scenarioRef/:redisKey`;
 export const CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL = `${CIVIL_SERVICE_BASE_DASHBOARD_URL}/notifications/:notificationId`;

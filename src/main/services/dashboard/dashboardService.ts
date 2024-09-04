@@ -19,11 +19,7 @@ import {
   representYourselfUrl,
   whatToExpectUrl,
 } from 'common/utils/externalURLs';
-import { getApplicationFromGAService } from 'services/features/generalApplication/generalApplicationService';
-import { YesNoUpperCamelCase } from 'form/models/yesNo';
-
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('dashboardService');
+import {YesNo} from 'form/models/yesNo';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -61,33 +57,43 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
 export const getNotifications = async (claimId: string, claim: Claim, caseRole: ClaimantOrDefendant, req: AppRequest, lng: string): Promise<DashboardNotificationList> => {
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
   // Add notifications for all GAs
+  const genAppsByRole = new Map<ApplicantOrRespondent, string[]>([[ApplicantOrRespondent.APPLICANT, []], [ApplicantOrRespondent.RESPONDENT, []]]);
   for (const generalApplication of claim.generalApplications) {
-    if (generalApplication.value?.caseLink?.CaseReference) {
+    const gaReference = generalApplication.value?.caseLink?.CaseReference;
+    const claimantIsApplicant = generalApplication.value?.parentClaimantIsApplicant;
+    if (gaReference && claimantIsApplicant) {
       let gaRole: ApplicantOrRespondent;
-      try {
-        const applicationResponse = await getApplicationFromGAService(req, generalApplication.value?.caseLink?.CaseReference);
-        if (applicationResponse.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES) {
-          gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.APPLICANT : ApplicantOrRespondent.RESPONDENT;
-        } else {
-          gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.RESPONDENT : ApplicantOrRespondent.APPLICANT;
-        }
-      } catch (err) {
-        logger.error('Unable to retrieve application ' + generalApplication.value?.caseLink?.CaseReference);
+      if (claimantIsApplicant === YesNo.YES) {
+        gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.APPLICANT : ApplicantOrRespondent.RESPONDENT;
+      } else {
+        gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.RESPONDENT : ApplicantOrRespondent.APPLICANT;
       }
-      if (gaRole) {
-        const gaNotifications = await civilServiceClient.retrieveNotification(generalApplication.value.caseLink.CaseReference, gaRole, req);
-        dashboardNotifications.items.push(...gaNotifications.items);
-        dashboardNotifications.items.forEach((notification) => {
-          notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, generalApplication.value.caseLink.CaseReference);
-          notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, generalApplication.value.caseLink.CaseReference);
-        });
-      }
+      genAppsByRole.get(gaRole).push(gaReference);
     }
   }
+  const applicantNotifications = genAppsByRole.get(ApplicantOrRespondent.APPLICANT).length > 0
+    ? await civilServiceClient.retrieveGaNotification(genAppsByRole.get(ApplicantOrRespondent.APPLICANT), ApplicantOrRespondent.APPLICANT, req)
+    : null;
+  const respondentNotifications = genAppsByRole.get(ApplicantOrRespondent.RESPONDENT).length > 0
+    ? await civilServiceClient.retrieveGaNotification(genAppsByRole.get(ApplicantOrRespondent.RESPONDENT), ApplicantOrRespondent.RESPONDENT, req)
+    : null;
+
   if (dashboardNotifications) {
     dashboardNotifications.items.forEach((notification) => {
       notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng);
       notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng);
+    });
+    applicantNotifications?.forEach((value, gaRef, map) => {
+      value.items.forEach((notification) => {
+        notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
+      });
+      dashboardNotifications.items.push(...(value?.items ?? []));
+    });
+    respondentNotifications?.forEach((value, gaRef, map) => {
+      value.items.forEach((notification) => {
+        notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
+      });
+      dashboardNotifications.items.push(...(value?.items ?? []));
     });
     return dashboardNotifications;
   } else {

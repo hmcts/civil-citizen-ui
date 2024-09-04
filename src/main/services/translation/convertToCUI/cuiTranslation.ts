@@ -180,6 +180,7 @@ function toCUIClaimGeneralApplications(ccdClaimGeneralApplications: CCDGeneralAp
     claimGa.id = ccdGa.id;
     claimGa.value = new ClaimGeneralApplicationValue();
     claimGa.value.caseLink = ccdGa.value?.caseLink;
+    claimGa.value.parentClaimantIsApplicant = toCUIYesNo(ccdGa.value?.parentClaimantIsApplicant);
     claimGeneralApplications.push(claimGa);
   });
   return claimGeneralApplications;

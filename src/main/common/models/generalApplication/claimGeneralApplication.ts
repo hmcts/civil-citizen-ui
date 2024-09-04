@@ -1,4 +1,5 @@
 import {CaseLink} from 'models/generalApplication/CaseLink';
+import {YesNo} from 'form/models/yesNo';
 
 export class ClaimGeneralApplication {
   id?: string;
@@ -7,4 +8,5 @@ export class ClaimGeneralApplication {
 
 export class ClaimGeneralApplicationValue {
   caseLink: CaseLink;
+  parentClaimantIsApplicant: YesNo;
 }

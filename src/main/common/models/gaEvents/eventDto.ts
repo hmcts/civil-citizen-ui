@@ -65,4 +65,5 @@ export interface CCDGaHelpWithFees {
 
 export interface CCDGaValue {
   caseLink?: CaseLink;
+  parentClaimantIsApplicant?: YesNoUpperCamelCase;
 }
