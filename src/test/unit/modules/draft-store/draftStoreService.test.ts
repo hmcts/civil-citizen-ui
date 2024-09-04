@@ -199,43 +199,28 @@ describe('Draft store service to save and retrieve claim', () => {
     const logger = Logger.getLogger('draftStoreService');
 
     beforeEach(() => {
-      // Mock the Redis client's keys method
       mockKeys = jest.fn();
       mockDraftStoreClient = { keys: mockKeys };
-  
-      // Set the mock client on the app.locals
       app.locals = {
         draftStoreClient: mockDraftStoreClient,
       };
-  
-      // Clear any previous mock calls
       jest.clearAllMocks();
     });
   
     it('should return claim IDs for a given userId', async () => {
-      // Arrange
       const userId = '123';
       const mockResult = ['claim1', 'claim2'];
       mockKeys.mockResolvedValue(mockResult);
-  
-      // Act
       const result = await findClaimIdsbyUserId(userId);
-  
-      // Assert
       expect(result).toEqual(mockResult);
       expect(mockKeys).toHaveBeenCalledWith('*' + userId);
     });
   
     it('should log an error and throw if the Redis client fails', async () => {
-      // Arrange
       const userId = '123';
       const mockError = new Error('Redis error');
       mockKeys.mockRejectedValue(mockError);
-  
-      // Spy on the logger's error method
-      const loggerSpy = jest.spyOn(logger, 'error').mockImplementation(() => {});
-  
-      // Act & Assert
+      const loggerSpy = jest.spyOn(logger, 'error').mockImplementation();
       await expect(findClaimIdsbyUserId(userId)).rejects.toThrow(mockError);
       expect(loggerSpy).toHaveBeenCalledWith('Failed to find claim IDs by userId', mockError);
     });
