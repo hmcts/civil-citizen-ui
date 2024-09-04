@@ -26,7 +26,6 @@ export class GaResponse {
   wantToUploadAddlDocuments?: YesNo;
   writtenRepText?: string;
   generalApplicationType?: ApplicationTypeOption[];
-  wantToUploadAddlDocuments?: YesNo;
   
   constructor(hearingArrangement?: HearingArrangement, hearingContactDetails?: HearingContactDetails, agreeToOrder?: YesNo,
     hearingSupport?: HearingSupport, unavailableDatesHearing?: UnavailableDatesGaHearing, respondentAgreement?: RespondentAgreement,
