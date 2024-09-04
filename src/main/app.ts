@@ -102,7 +102,6 @@ app.use(session({
     maxAge: cookieMaxAge,
     sameSite: 'lax',
   },
-  rolling: true, // Enable rolling session
 }));
 
 app.enable('trust proxy');
