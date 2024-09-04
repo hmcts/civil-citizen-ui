@@ -31,19 +31,51 @@ describe('Check Answers response service', () => {
   describe('getSummarySections', () => {
 
     it('returns no sections when no general application', () => {
-      expect(getSummarySections('123','345' ,new GaResponse(), 'en')).toEqual([]);
+      expect(getSummarySections('123', '345', new GaResponse(), 'en')).toEqual([{
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+        },
+        'value': {
+          'html': ' '
+        },
+        'actions': {
+          'items': [
+            {
+              'href': '/case/123/response/general-application/345/unavailable-dates',
+              'text': 'COMMON.BUTTONS.CHANGE',
+              'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+            }
+          ]
+        }
+      }]);
     });
 
     it('returns no sections when general application is empty', () => {
-      expect(getSummarySections('123','345', new GaResponse(), 'en')).toEqual([]);
+      expect(getSummarySections('123', '345', new GaResponse(), 'en')).toEqual([{
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+        },
+        'value': {
+          'html': ' '
+        },
+        'actions': {
+          'items': [
+            {
+              'href': '/case/123/response/general-application/345/unavailable-dates',
+              'text': 'COMMON.BUTTONS.CHANGE',
+              'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+            }
+          ]
+        }
+      }]);
     });
 
     it('returns accept offer rows - yes', () => {
       const { response } = claimAndResponse();
       response.acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES);
 
-      expect(getSummarySections('123','345', response, 'en')).toEqual([{ 
-        key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'}, 
+      expect(getSummarySections('123', '345', response, 'en')).toEqual([{
+        key: {text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'},
         value: { html: 'COMMON.VARIATION.YES' },
         actions: {
           items: [{
@@ -52,6 +84,23 @@ describe('Check Answers response service', () => {
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE',
           }],
         }},
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+          },
+          'value': {
+            'html': ' '
+          },
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+              }
+            ]
+          }
+        },
       ]);
     });
 
@@ -59,8 +108,8 @@ describe('Check Answers response service', () => {
       const { response } = claimAndResponse();
       response.acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES, ProposedPaymentPlanOption.ACCEPT_INSTALMENTS, '500', 'reason');
 
-      expect(getSummarySections('123','345', response, 'en')).toEqual([{ 
-        key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'}, 
+      expect(getSummarySections('123', '345', response, 'en')).toEqual([{
+        key: {text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'},
         value: { html: 'COMMON.VARIATION.YES' },
         actions: {
           items: [{
@@ -69,6 +118,23 @@ describe('Check Answers response service', () => {
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE',
           }],
         }},
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+          },
+          'value': {
+            'html': ' '
+          },
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+              }
+            ]
+          }
+        },
       ]);
     });
 
@@ -82,8 +148,8 @@ describe('Check Answers response service', () => {
       + '<li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT</li>'
       + '<li>Reason Proposed Instalments</li>'
       + '</ul>';
-      expect(getSummarySections('123', '345',response, 'en')).toEqual([{ 
-        key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'}, 
+      expect(getSummarySections('123', '345', response, 'en')).toEqual([{
+        key: {text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'},
         value: { html: 'COMMON.VARIATION.NO' },
         actions: {
           items: [{
@@ -92,8 +158,8 @@ describe('Check Answers response service', () => {
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE',
           }],
         }},
-      { 
-        key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN'}, 
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN'},
         value: { html: expectedPaymentHtml },
         actions: {
           items: [{
@@ -102,6 +168,23 @@ describe('Check Answers response service', () => {
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
           }],
         }},
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+          },
+          'value': {
+            'html': ' '
+          },
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+              }
+            ]
+          }
+        },
       ]);
     });
 
@@ -120,8 +203,9 @@ describe('Check Answers response service', () => {
       + '<li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT</li>'
       + '<li>reason for set day proposal</li>'
       + '</ul>';
-      expect(getSummarySections('123', '345',response, 'en')).toEqual([{ 
-        key: { text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'}, 
+      const responseData = getSummarySections('123', '345', response, 'en');
+      expect(responseData).toEqual([{
+        key: {text: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE'},
         value: { html: 'COMMON.VARIATION.NO' },
         actions: {
           items: [{
@@ -130,8 +214,8 @@ describe('Check Answers response service', () => {
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.TITLE',
           }],
         }},
-      { 
-        key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN'}, 
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN'},
         value: { html: expectedPaymentHtml },
         actions: {
           items: [{
@@ -140,6 +224,23 @@ describe('Check Answers response service', () => {
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
           }],
         }},
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+          },
+          'value': {
+            'html': ' '
+          },
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+              }
+            ]
+          }
+        },
       ]);
     });
 
@@ -157,6 +258,23 @@ describe('Check Answers response service', () => {
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE',
           }],
         }},
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+          },
+          'value': {
+            'html': ' '
+          },
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+              }
+            ]
+          }
+        },
       ]);
     });
 
@@ -174,18 +292,35 @@ describe('Check Answers response service', () => {
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE',
           }],
         }},
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+          },
+          'value': {
+            'html': ' '
+          },
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+              }
+            ]
+          }
+        }
       ]);
     });
 
     it('returns hearing arrangement sections', () => {
       const { response } = claimAndResponse();
-      response.hearingArrangement = new HearingArrangement(HearingTypeOptions.TELEPHONE, 'I prefer phone', 
+      response.hearingArrangement = new HearingArrangement(HearingTypeOptions.TELEPHONE, 'I prefer phone',
         "Barnet Civil and Family Centre - St Mary's Court, Regents Park Road - N3 1BQ");
 
       const href = '/case/123/response/general-application/345/hearing-arrangement';
       expect(getSummarySections('123','345', response, 'en')).toEqual([
-        { 
-          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE'}, 
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE'},
           value: { html: 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.TELEPHONE' },
           actions: {
             items: [{
@@ -194,8 +329,8 @@ describe('Check Answers response service', () => {
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
             }],
           }},
-        { 
-          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER'}, 
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER'},
           value: { html: 'I prefer phone' },
           actions: {
             items: [{
@@ -204,8 +339,8 @@ describe('Check Answers response service', () => {
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
             }],
           }},
-        { 
-          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PREFERRED_LOCATION'}, 
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PREFERRED_LOCATION'},
           value: { html: 'Barnet Civil and Family Centre' },
           actions: {
             items: [{
@@ -214,6 +349,23 @@ describe('Check Answers response service', () => {
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PREFERRED_LOCATION',
             }],
           }},
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+          },
+          'value': {
+            'html': ' '
+          },
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+              }
+            ]
+          }
+        },
       ]);
     });
 
@@ -231,6 +383,23 @@ describe('Check Answers response service', () => {
             visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.TITLE',
           }],
         }},
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+          },
+          'value': {
+            'html': ' '
+          },
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+              }
+            ]
+          }
+        },
       ]);
     });
 
@@ -240,8 +409,8 @@ describe('Check Answers response service', () => {
 
       const href = '/case/123/response/general-application/345/hearing-arrangement';
       expect(getSummarySections('123','345', response, 'en')).toEqual([
-        { 
-          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE'}, 
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE'},
           value: { html: 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.TELEPHONE' },
           actions: {
             items: [{
@@ -250,8 +419,8 @@ describe('Check Answers response service', () => {
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
             }],
           }},
-        { 
-          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER'}, 
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER'},
           value: { html: 'I prefer phone' },
           actions: {
             items: [{
@@ -260,6 +429,23 @@ describe('Check Answers response service', () => {
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
             }],
           }},
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+          },
+          'value': {
+            'html': ' '
+          },
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+              }
+            ]
+          }
+        },
       ]);
     });
 
@@ -269,8 +455,8 @@ describe('Check Answers response service', () => {
 
       const href = '/case/123/response/general-application/345/hearing-contact-details';
       expect(getSummarySections('123','345' ,response, 'en')).toEqual([
-        { 
-          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE'}, 
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE'},
           value: { html: '077070707' },
           actions: {
             items: [{
@@ -279,8 +465,8 @@ describe('Check Answers response service', () => {
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE',
             }],
           }},
-        { 
-          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL'}, 
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL'},
           value: { html: 'email@addre.ss' },
           actions: {
             items: [{
@@ -289,6 +475,23 @@ describe('Check Answers response service', () => {
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
             }],
           }},
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+          },
+          'value': {
+            'html': ' '
+          },
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+              }
+            ]
+          }
+        },
       ]);
     });
 
@@ -299,8 +502,8 @@ describe('Check Answers response service', () => {
 
       const href = '/case/123/response/general-application/345/unavailable-dates';
       expect(getSummarySections('123','345', response, 'en')).toEqual([
-        { 
-          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'}, 
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'},
           value: { html: '<ul class="no-list-style"><li>1 January 2024</li></ul>' },
           actions: {
             items: [{
@@ -319,8 +522,8 @@ describe('Check Answers response service', () => {
 
       const href = '/case/123/response/general-application/345/unavailable-dates';
       expect(getSummarySections('123','345', response, 'en')).toEqual([
-        { 
-          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'}, 
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'},
           value: { html: '<ul class="no-list-style"><li>1 January 2024 - 29 February 2024</li></ul>' },
           actions: {
             items: [{
@@ -342,8 +545,8 @@ describe('Check Answers response service', () => {
 
       const href = '/case/123/response/general-application/345/unavailable-dates';
       expect(getSummarySections('123', '345',response, 'en')).toEqual([
-        { 
-          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'}, 
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'},
           value: { html: '<ul class="no-list-style"><li>1 January 2024 - 29 February 2024</li><li>1 March 2024</li><li>1 May 2024 - 1 June 2024</li></ul>' },
           actions: {
             items: [{
@@ -359,7 +562,23 @@ describe('Check Answers response service', () => {
       const { response } = claimAndResponse();
       response.unavailableDatesHearing = new UnavailableDatesGaHearing([]);
 
-      expect(getSummarySections('123','345', response, 'en')).toEqual([]);
+      expect(getSummarySections('123', '345', response, 'en')).toEqual([{
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+        },
+        'value': {
+          'html': ' '
+        },
+        'actions': {
+          'items': [
+            {
+              'href': '/case/123/response/general-application/345/unavailable-dates',
+              'text': 'COMMON.BUTTONS.CHANGE',
+              'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+            }
+          ]
+        }
+      }]);
     });
 
     it('returns selected support options - one', () => {
@@ -367,8 +586,24 @@ describe('Check Answers response service', () => {
       response.hearingSupport = new HearingSupport([SupportType.STEP_FREE_ACCESS]);
 
       expect(getSummarySections('123','345', response, 'en')).toEqual([
-        { 
-          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS'}, 
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+          },
+          'value': {
+            'html': ' '
+          },
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+              }
+            ]
+          }
+        }, {
+          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS'},
           value: { html: '<ul class="no-list-style"><li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS</li></ul>' },
           actions: {
             items: [{
@@ -377,6 +612,7 @@ describe('Check Answers response service', () => {
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
             }],
           }},
+
       ]);
     });
 
@@ -384,9 +620,26 @@ describe('Check Answers response service', () => {
       const { response } = claimAndResponse();
       response.hearingSupport = new HearingSupport([SupportType.HEARING_LOOP, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT, SupportType.SIGN_LANGUAGE_INTERPRETER]);
 
-      expect(getSummarySections('123','345', response, 'en')).toEqual([
-        { 
-          key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS'}, 
+      expect(getSummarySections('123', '345', response, 'en')).toEqual([
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+          },
+          'value': {
+            'html': ' '
+          },
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+              }
+            ]
+          }
+        },
+        {
+          key: {text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS'},
           value: { html: '<ul class="no-list-style">'
             + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP</li>'
             + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER</li>'
@@ -406,8 +659,39 @@ describe('Check Answers response service', () => {
     it('returns selected support options - none', () => {
       const { response } = claimAndResponse();
       response.hearingSupport = new HearingSupport([]);
-
-      expect(getSummarySections('123','345', response, 'en')).toEqual([]);
+      expect(getSummarySections('123', '345', response, 'en')).toEqual([{
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+        },
+        'value': {
+          'html': ' '
+        },
+        'actions': {
+          'items': [
+            {
+              'href': '/case/123/response/general-application/345/unavailable-dates',
+              'text': 'COMMON.BUTTONS.CHANGE',
+              'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+            }
+          ]
+        }
+      }, {
+        'key': {
+          'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS'
+        },
+        'value': {
+          'html': 'No'
+        },
+        'actions': {
+          'items': [
+            {
+              'href': '/case/123/response/general-application/345/hearing-support',
+              'text': 'COMMON.BUTTONS.CHANGE',
+              'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS'
+            }
+          ]
+        }
+      }]);
     });
 
   });

@@ -210,18 +210,21 @@ export const toCcdGeneralApplicationWithResponse = (response: GaResponse): CCDRe
   const acceptDefendantOffer = response?.acceptDefendantOffer;
   return {
     hearingDetailsResp: toCCDGeneralAppHearingDetails(
-      response?.hearingArrangement, 
-      response?.hearingContactDetails, 
-      response?.unavailableDatesHearing, 
+      response?.hearingArrangement,
+      response?.hearingContactDetails,
+      response?.unavailableDatesHearing,
       response?.hearingSupport,
     ),
     gaRespondentDebtorOffer: {
       respondentDebtorOffer: toCcdDebtorOfferOptions(acceptDefendantOffer?.option),
-      debtorObjections: response?.respondentAgreement?.reasonForDisagreement,
+      debtorObjections: acceptDefendantOffer?.reasonProposedInstalment,
       paymentPlan: toCcdPaymentPlan(acceptDefendantOffer?.type),
       monthlyInstalment: convertToPenceFromStringToString(acceptDefendantOffer?.amountPerMonth),
       paymentSetDate: acceptDefendantOffer?.proposedSetDate,
     },
+    gaRespondentConsent: toCCDYesNo(response.agreeToOrder),
+    generalAppRespondent1Representative: {hasAgreed: toCCDYesNo(response.respondentAgreement?.option)},
+    generalAppRespondReason: response.respondentAgreement?.reasonForDisagreement
   };
- 
+
 };

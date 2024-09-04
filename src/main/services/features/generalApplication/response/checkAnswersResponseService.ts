@@ -1,4 +1,4 @@
-import { YesNo } from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import { HearingSupport, SupportType } from 'common/models/generalApplication/hearingSupport';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
@@ -111,7 +111,10 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
         GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
       )];
     } else {
-      return [];
+      return [row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+        ' ',
+        GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL,
+      )];
     }
   };
 
@@ -139,23 +142,26 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
           'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
           `<ul class="no-list-style">${selectedHtml}</ul>`,
           GA_RESPONSE_HEARING_SUPPORT_URL)]
-        : undefined;
+        : [row(
+          'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
+          YesNoUpperCamelCase.NO,
+          GA_RESPONSE_HEARING_SUPPORT_URL)];
     } else {
       return [];
     }
   };
 
   const row = (title: string, value: string, url: string): SummaryRow | undefined => formattedRow(title, value, f => f, url);
-  
-  const formattedRow = <T>(title: string, value: T, formatter: ((v: T) => string), url: string): SummaryRow | undefined => 
-    value 
+
+  const formattedRow = <T>(title: string, value: T, formatter: ((v: T) => string), url: string): SummaryRow | undefined =>
+    value
       ? summaryRow(
         t(title, {lng}),
         formatter(value),
         constructResponseUrlWithIdAndAppIdParams(claimId, appId, url),
         t('COMMON.BUTTONS.CHANGE', {lng}))
       : undefined;
-  
+
   const listItem = (value: string) => `<li>${value}</li>`;
 
   const listItemCaption = (caption: string, cssClass?: string) =>
@@ -166,7 +172,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
   return [
     agreeToOrderSection,
     acceptOfferSection,
-    respondentAgreementSection, 
+    respondentAgreementSection,
     hearingArrangementSections,
     contactDetailsSections,
     unavailableDatesSection,

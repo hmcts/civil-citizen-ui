@@ -64,4 +64,8 @@ export interface CCDGaHelpWithFees {
 export type CCDRespondToApplication = {
   hearingDetailsResp: CcdGeneralApplicationHearingDetails,
   gaRespondentDebtorOffer: CcdGARespondentDebtorOfferGAspec,
+  gaRespondentConsent?: YesNoUpperCamelCase,
+  generalAppRespondConsentReason?: string,
+  generalAppRespondReason?: string,
+  generalAppRespondent1Representative?: { hasAgreed?: YesNoUpperCamelCase },
 }

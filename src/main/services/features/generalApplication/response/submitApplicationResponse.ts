@@ -18,7 +18,7 @@ export const submitApplicationResponse = async (req: AppRequest): Promise<Applic
     const gaRedisKey = generateRedisKeyForGA(req);
     const gaRespondentResponse = await getDraftGARespondentResponse(gaRedisKey);
     const generalApplication = toCcdGeneralApplicationWithResponse(gaRespondentResponse);
-    const application = await gaServiceClient.submitRespondToApplicationEvent(applicationId, generalApplication, req);
+    const application =   await gaServiceClient.submitRespondToApplicationEvent(applicationId, generalApplication, req);
     await deleteDraftGARespondentResponseFromStore(gaRedisKey);
     return application;
   } catch (err) {
