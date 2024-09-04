@@ -507,27 +507,27 @@ export class CivilServiceClient {
 
   async retrieveGaNotification(appIds: string[], role: string,  req: AppRequest): Promise<Map<string, DashboardNotificationList>>  {
     const config = this.getConfig(req);
-    const appIdsParam = appIds.join(",");
+    const appIdsParam = appIds.join(',');
     const response = await this.client.get(CIVIL_SERVICE_GA_NOTIFICATION_LIST_URL.replace(':ccd-case-identifiers', appIdsParam).replace(':role-type', role), config);
-    let dashboardNotificationItems = plainToInstance(Map<string, DashboardNotification[]>, response.data as Map<string, DashboardNotification[]>);
+    const dashboardNotificationItems = plainToInstance(Map<string, DashboardNotification[]>, response.data as Map<string, DashboardNotification[]>);
     const gaNotifications = new Map<string, DashboardNotificationList>;
     dashboardNotificationItems.forEach((value, key, map) => {
       const dashboardNotificationItems = value.filter((notification) => {
-         const session = req?.session;
-         const actionUser = notification?.notificationAction?.createdBy;
-         const sessionUser = session.user?.givenName + ' ' + session.user?.familyName;
-         const sessionStart = new Date(session.issuedAt * 1000);
-         const actionPerformed = notification?.notificationAction?.actionPerformed;
-         const actionPerformedTime = new Date(notification?.notificationAction?.createdAt);
-         const timeToLive = notification.timeToLive;
+        const session = req?.session;
+        const actionUser = notification?.notificationAction?.createdBy;
+        const sessionUser = session.user?.givenName + ' ' + session.user?.familyName;
+        const sessionStart = new Date(session.issuedAt * 1000);
+        const actionPerformed = notification?.notificationAction?.actionPerformed;
+        const actionPerformedTime = new Date(notification?.notificationAction?.createdAt);
+        const timeToLive = notification.timeToLive;
 
-         return !(actionUser === sessionUser && actionPerformed === 'Click'
+        return !(actionUser === sessionUser && actionPerformed === 'Click'
            && (timeToLive === 'Click'
              || (timeToLive === 'Session'
                && sessionStart > actionPerformedTime
              )
            )
-         );
+        );
       });
       gaNotifications.set(key, new DashboardNotificationList(dashboardNotificationItems));
     });
