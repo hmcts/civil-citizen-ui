@@ -27,7 +27,6 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const applicationIndex = queryParamNumber(req, 'index') ? queryParamNumber(req, 'index') : '1';
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const summaryRows = await getApplicationSections(req, applicationId, lang);
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationId, GA_RESPONDENT_INFORMATION_URL);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
     const redirectUrl = await getRedirectUrl(applicationResponse, applicationId, claimId);
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
