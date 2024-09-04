@@ -31,6 +31,7 @@ import {t} from 'i18next';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import { LinKFromValues } from 'common/models/generalApplication/applicationType';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
@@ -105,7 +106,7 @@ const getSupportLinks = (claim: Claim, lng: string, claimId: string) => {
     if(!claim.hasClaimTakenOffline()) {
       iWantToLinks.push({
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
+        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
       });
     }
     else {

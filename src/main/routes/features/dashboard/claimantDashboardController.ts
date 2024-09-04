@@ -28,6 +28,7 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import { applicationNoticeUrl } from 'common/utils/externalURLs';
 import {updateFieldDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import { LinKFromValues } from 'common/models/generalApplication/applicationType';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -130,7 +131,7 @@ const getSupportLinks = (claim: Claim, claimId: string, lng: string, isCaseProgr
     if(!claim.hasClaimTakenOffline() && isGAFlagEnable) {
       iWantToLinks.push({
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
+        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
       });
     } else if(claim.hasClaimTakenOffline()) {
       iWantToLinks.push({

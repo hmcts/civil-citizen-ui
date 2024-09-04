@@ -19,7 +19,6 @@ import {
   TERMS_AND_CONDITIONS_URL,
   PRIVACY_POLICY_URL,
 } from 'routes/urls';
-import { deleteGAFromClaimsByUserId } from 'services/features/generalApplication/generalApplicationService';
 
 const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
   return req.originalUrl.startsWith(ASSIGN_CLAIM_URL);
@@ -153,7 +152,6 @@ export class OidcMiddleware {
       if (requestIsForClaimIssueTaskList(req) ) {
         app.locals.claimIssueTasklist = appReq.session.claimIssueTasklist = true;
       }
-      await deleteGAFromClaimsByUserId(app.locals.user.id);
       return res.redirect(SIGN_IN_URL);
     });
   }

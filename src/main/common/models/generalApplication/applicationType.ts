@@ -85,3 +85,9 @@ export const GeneralApplicationTypesDisplayFromCCD: { [key in ApplicationTypeOpt
   [ApplicationTypeOption.VARY_ORDER]: 'Vary order',
   [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'Vary payment terms of judgment',
 };
+
+export const LinKFromValues = {
+  start: 'start',
+  addAnotherApp: 'addAnotherApp',
+  agreementFromOtherParty: 'agreementFromOtherParty',
+};

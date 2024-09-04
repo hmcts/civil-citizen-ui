@@ -8,8 +8,10 @@ import { AppRequest } from 'common/models/AppRequest';
 import {
   ApplicationType,
   ApplicationTypeOption,
+  LinKFromValues,
 } from 'common/models/generalApplication/applicationType';
 import {
+  deleteGAFromClaimsByUserId,
   getByIndex,
   getCancelUrl,
   saveApplicationType, validateAdditionalApplicationtType,
@@ -25,6 +27,10 @@ const viewPath = 'features/generalApplication/application-type';
 
 applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
+    const linkFrom = req.query.linkFrom;
+    if (linkFrom === LinKFromValues.start) {
+      await deleteGAFromClaimsByUserId(req.session?.user?.id);
+    }
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const applicationIndex = queryParamNumber(req, 'index');
