@@ -145,7 +145,7 @@ class CaseProgressionSteps {
 
     I.see('Cancel', 'a.govuk-link');
     clickButton(buttonType.SUBMIT);
-    I.seeInCurrentUrl('/response/confirmation');
+    I.seeInCurrentUrl('/case-progression/documents-uploaded');
   }
 
 }
