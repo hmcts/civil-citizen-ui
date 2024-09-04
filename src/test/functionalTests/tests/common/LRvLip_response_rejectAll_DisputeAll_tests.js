@@ -11,7 +11,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with RejectAll and DisputeAll @kiyron');
+Feature('Response with RejectAll and DisputeAll');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
