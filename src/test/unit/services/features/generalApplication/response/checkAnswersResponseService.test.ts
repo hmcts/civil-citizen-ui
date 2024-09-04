@@ -325,7 +325,7 @@ describe('Check Answers response service', () => {
             ],
           },
         },
-        ]
+        ],
       );
     });
 
@@ -407,10 +407,10 @@ describe('Check Answers response service', () => {
         },
         {
           'key': {
-            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            'html': ' '
+            'html': ' ',
           },
           'actions': {
             'items': [
@@ -440,7 +440,7 @@ describe('Check Answers response service', () => {
               text: 'COMMON.BUTTONS.CHANGE',
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE',
             }],
-          }
+          },
         },
         {
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER' },
@@ -451,7 +451,7 @@ describe('Check Answers response service', () => {
               text: 'COMMON.BUTTONS.CHANGE',
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
             }],
-          }
+          },
         },
         {
           'key': {
@@ -488,7 +488,7 @@ describe('Check Answers response service', () => {
               text: 'COMMON.BUTTONS.CHANGE',
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE',
             }],
-          }
+          },
         },
         {
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL' },
@@ -499,7 +499,7 @@ describe('Check Answers response service', () => {
               text: 'COMMON.BUTTONS.CHANGE',
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
             }],
-          }
+          },
         },
         {
           'key': {
@@ -537,7 +537,7 @@ describe('Check Answers response service', () => {
               text: 'COMMON.BUTTONS.CHANGE',
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
             }],
-          }
+          },
         },
       ]);
     });
@@ -558,7 +558,7 @@ describe('Check Answers response service', () => {
               text: 'COMMON.BUTTONS.CHANGE',
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
             }],
-          }
+          },
         },
       ]);
     });
@@ -567,8 +567,8 @@ describe('Check Answers response service', () => {
       const { response } = claimAndResponse();
       response.unavailableDatesHearing = new UnavailableDatesGaHearing(
         [unavailableHearingDate(UnavailableDateType.LONGER_PERIOD, '2024-01-01', '2024-02-29'),
-        unavailableHearingDate(UnavailableDateType.SINGLE_DATE, '2024-03-01'),
-        unavailableHearingDate(UnavailableDateType.LONGER_PERIOD, '2024-05-01', '2024-06-01'),
+          unavailableHearingDate(UnavailableDateType.SINGLE_DATE, '2024-03-01'),
+          unavailableHearingDate(UnavailableDateType.LONGER_PERIOD, '2024-05-01', '2024-06-01'),
         ]);
 
       const href = '/case/123/response/general-application/345/unavailable-dates';
@@ -607,7 +607,7 @@ describe('Check Answers response service', () => {
             },
           ],
         },
-      },]);
+      }]);
     });
 
     it('returns selected support options - one', () => {
@@ -640,9 +640,8 @@ describe('Check Answers response service', () => {
               text: 'COMMON.BUTTONS.CHANGE',
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
             }],
-          }
+          },
         },
-
       ]);
     });
 
@@ -676,7 +675,7 @@ describe('Check Answers response service', () => {
               + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER</li>'
               + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER</li>'
               + '<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER</li>'
-              + '</ul>'
+              + '</ul>',
           },
           actions: {
             items: [{
@@ -684,7 +683,7 @@ describe('Check Answers response service', () => {
               text: 'COMMON.BUTTONS.CHANGE',
               visuallyHiddenText: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
             }],
-          }
+          },
         },
       ]);
     });
@@ -724,7 +723,7 @@ describe('Check Answers response service', () => {
             },
           ],
         },
-      },]);
+      }]);
     });
 
   });
