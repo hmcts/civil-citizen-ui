@@ -58,7 +58,7 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
   // Add notifications for all GAs
   const genAppsByRole = new Map<ApplicantOrRespondent, string[]>([[ApplicantOrRespondent.APPLICANT, []], [ApplicantOrRespondent.RESPONDENT, []]]);
-  for (const generalApplication of claim.generalApplications) {
+  for (const generalApplication of (claim.generalApplications ?? [])) {
     const gaReference = generalApplication.value?.caseLink?.CaseReference;
     const claimantIsApplicant = generalApplication.value?.parentClaimantIsApplicant;
     if (gaReference && claimantIsApplicant) {
