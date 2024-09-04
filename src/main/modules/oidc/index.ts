@@ -126,7 +126,7 @@ export class OidcMiddleware {
       res.redirect(DASHBOARD_URL);
     });
 
-    app.use(async (req: Request, res: Response, next: NextFunction) => {
+    app.use((req: Request, res: Response, next: NextFunction) => {
       const appReq: AppRequest = <AppRequest>req;
       if (appReq.session?.user) {
         if (appReq.session.user.roles?.includes(citizenRole)) {
