@@ -9,8 +9,7 @@ import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDa
 import {
   getApplicationCreatedDate,
   getLast,
-  getRespondentApplicationStatus,
-  getViewApplicationUrl
+  getRespondentApplicationStatus
 } from 'services/features/generalApplication/generalApplicationService';
 import {StatementOfTruthForm} from 'common/models/generalApplication/statementOfTruthForm';
 import {getDraftGARespondentResponse, saveDraftGARespondentResponse} from './generalApplicationResponseStoreService';
