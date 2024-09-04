@@ -468,3 +468,13 @@ export const saveApplicationTypesToGaResponse = async (gaState: ApplicationState
     await saveDraftGARespondentResponse(gaRedisKey, gaResponse);
   }
 };
+
+export const getApplicationCreatedDate = (ccdClaim: Claim, applicationId: string): string => {
+  const ccdGeneralApplications = ccdClaim.generalApplications;
+  for (const ccdGeneralApplication of ccdGeneralApplications) {
+    if (ccdGeneralApplication.value.caseLink.CaseReference.toString() === applicationId.toString()){
+      return ccdGeneralApplication.value.generalAppSubmittedDateGAspec;
+    }
+  }
+  return undefined;
+};

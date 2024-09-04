@@ -20,6 +20,7 @@ import { ApplicationTypeOption } from 'models/generalApplication/applicationType
 import {t} from 'i18next';
 import { ApplicationResponse, CCDApplication } from 'common/models/generalApplication/applicationResponse';
 import { ApplicationState, ApplicationSummary } from 'common/models/generalApplication/applicationSummary';
+import {Claim} from 'models/claim';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -229,7 +230,20 @@ describe('General Application Response service', () => {
     it('returns row awaiting respondent response state', () => {
       const appResponse = applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE);
 
-      expect(buildRespondentApplicationSummaryRow('12345', 'en')(appResponse, 0))
+      const ccdClaim = new Claim();
+      ccdClaim.generalApplications = [
+        {
+          'id': 'test',
+          'value': {
+            'caseLink': {
+              'CaseReference': '6789',
+            },
+            'generalAppSubmittedDateGAspec': '2024-05-29T14:39:28.483971',
+          },
+        },
+      ];
+
+      expect(buildRespondentApplicationSummaryRow('12345', 'en', ccdClaim)(appResponse, 0))
         .toStrictEqual({
           state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.AWAITING_RESPONDENT_RESPONSE'),
           status: t('PAGES.GENERAL_APPLICATION.SUMMARY.TO_DO'),
@@ -244,7 +258,20 @@ describe('General Application Response service', () => {
     it('returns row in awaiting judicial decision state', () => {
       const appResponse = applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION);
 
-      expect(buildRespondentApplicationSummaryRow('12345', 'en')(appResponse, 0))
+      const ccdClaim = new Claim();
+      ccdClaim.generalApplications = [
+        {
+          'id': 'test',
+          'value': {
+            'caseLink': {
+              'CaseReference': '6789',
+            },
+            'generalAppSubmittedDateGAspec': '2024-05-29T14:39:28.483971',
+          },
+        },
+      ];
+
+      expect(buildRespondentApplicationSummaryRow('12345', 'en', ccdClaim)(appResponse, 0))
         .toStrictEqual({
           state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION'),
           status: t('PAGES.GENERAL_APPLICATION.SUMMARY.IN_PROGRESS'),
