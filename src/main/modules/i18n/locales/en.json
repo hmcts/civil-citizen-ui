@@ -2068,7 +2068,7 @@
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
         "HEARING_FEE_UNPAID": "This claim has been struck out.",
-        "CASE_STAYED": "The case has been stayed"
+        "CASE_STAYED": "The case has been stayed."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
