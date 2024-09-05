@@ -24,6 +24,7 @@ import {YesNo} from 'form/models/yesNo';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 import { APPLICATION_TYPE_URL } from 'routes/urls';
+import {isGaForLipsEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -62,17 +63,20 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
   // Add notifications for all GAs
   const genAppsByRole = new Map<ApplicantOrRespondent, string[]>([[ApplicantOrRespondent.APPLICANT, []], [ApplicantOrRespondent.RESPONDENT, []]]);
-  for (const generalApplication of (claim.generalApplications ?? [])) {
-    const gaReference = generalApplication.value?.caseLink?.CaseReference;
-    const claimantIsApplicant = generalApplication.value?.parentClaimantIsApplicant;
-    if (gaReference && claimantIsApplicant) {
-      let gaRole: ApplicantOrRespondent;
-      if (claimantIsApplicant === YesNo.YES) {
-        gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.APPLICANT : ApplicantOrRespondent.RESPONDENT;
-      } else {
-        gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.RESPONDENT : ApplicantOrRespondent.APPLICANT;
+  const isGaEnabled = await isGaForLipsEnabled();
+  if (isGaEnabled) {
+    for (const generalApplication of (claim.generalApplications ?? [])) {
+      const gaReference = generalApplication.value?.caseLink?.CaseReference;
+      const claimantIsApplicant = generalApplication.value?.parentClaimantIsApplicant;
+      if (gaReference && claimantIsApplicant) {
+        let gaRole: ApplicantOrRespondent;
+        if (claimantIsApplicant === YesNo.YES) {
+          gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.APPLICANT : ApplicantOrRespondent.RESPONDENT;
+        } else {
+          gaRole = caseRole === ClaimantOrDefendant.CLAIMANT ? ApplicantOrRespondent.RESPONDENT : ApplicantOrRespondent.APPLICANT;
+        }
+        genAppsByRole.get(gaRole).push(gaReference);
       }
-      genAppsByRole.get(gaRole).push(gaReference);
     }
   }
   const applicantNotifications = genAppsByRole.get(ApplicantOrRespondent.APPLICANT).length > 0

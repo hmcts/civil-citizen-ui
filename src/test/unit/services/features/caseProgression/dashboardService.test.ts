@@ -27,7 +27,9 @@ import {CaseLink} from 'models/generalApplication/CaseLink';
 import { CaseState } from 'common/form/models/claimDetails';
 import { applicationNoticeUrl } from 'common/utils/externalURLs';
 import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
+import {isGaForLipsEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const appReq = <AppRequest>req;
@@ -212,6 +214,7 @@ describe('dashboardService', () => {
 
       it('Notifications', async () => {
         //Given
+        (isGaForLipsEnabled as jest.Mock).mockReturnValueOnce(true);
         const notificationList: DashboardNotification[] = mockNotificationInfo;
         const dashboardNotificationItems= plainToInstance(DashboardNotification, notificationList);
         const applicantNotificationItems = plainToInstance(DashboardNotification, notificationList);
