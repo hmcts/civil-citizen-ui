@@ -3057,7 +3057,9 @@
         "CONTENT_2_1": "If you're not sure what to write, refer to the ",
         "CONTENT_2_2": "court document",
         "CONTENT_2_3": " that sets out the information that the court has requested from you.",
-        "OPTION": "Do you want to upload documents to support your response? (Optional)"
+        "OPTION": "Do you want to upload documents to support your response? (Optional)",
+        "WRITTEN_REP_CONTENT_1": "Written representations are written statements that explain your case or your request to the court.",
+        "WRITTEN_REP_CONTENT_1_2": "You can either write the requested information in the box below or upload documents that contain it."
       },
       "RESPONDENT_WANT_TO_UPLOAD_DOC": {
         "PAGE_TITLE": "Do you want to upload documents to support your response?",

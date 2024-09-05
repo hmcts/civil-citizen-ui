@@ -54,9 +54,8 @@ const logger = Logger.getLogger('claimantResponseService');
 const baseUrl: string = config.get<string>('services.generalApplication.url');
 const generalApplicationClient = new GaServiceClient(baseUrl);
 
-export const saveApplicationType = async (claimId: string, applicationType: ApplicationType, index?: number): Promise<void> => {
+export const saveApplicationType = async (claimId: string, claim: Claim, applicationType: ApplicationType, index?: number): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     updateByIndexOrAppend(claim.generalApplication?.applicationTypes, applicationType, index);
     await saveDraftClaim(claimId, claim);
@@ -419,6 +418,18 @@ export const saveAdditionalText = async (redisKey: string, additionalText: strin
     const gaResponse = await getDraftGARespondentResponse(redisKey);
     gaResponse.wantToUploadAddlDocuments = wantToUploadAddlDocuments;
     gaResponse.additionalText = additionalText;
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveWrittenRepText = async (redisKey: string, writtenRepText: string, wantToUploadAddlDocuments: YesNo): Promise<void> => {
+  try {
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.wantToUploadAddlDocuments = wantToUploadAddlDocuments;
+    gaResponse.writtenRepText = writtenRepText;
     await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
     logger.error(error);
