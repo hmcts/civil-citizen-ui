@@ -136,7 +136,7 @@ const getSupportLinks = (claim: Claim, claimId: string, lng: string, isCaseProgr
       iWantToLinks.push({
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
       });
-    } else if (!claim.hasClaimBeenDismissed()) {
+    } else {
       iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }), url: applicationNoticeUrl });
     }
   }

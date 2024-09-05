@@ -108,7 +108,7 @@ const getSupportLinks = (claim: Claim, lng: string, claimId: string) => {
         url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
       });
     }
-    else if (!claim.hasClaimBeenDismissed()) {
+    else {
       iWantToLinks.push({text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng})});
     }
   }
