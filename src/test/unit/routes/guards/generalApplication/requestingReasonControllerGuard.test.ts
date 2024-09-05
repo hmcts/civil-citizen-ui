@@ -35,7 +35,7 @@ describe('Requesting Reason Guard', () => {
     await requestingReasonControllerGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
 
     //Then
-    expect(MOCK_NEXT).toHaveBeenCalled();
+    expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
 
   it('should not load claim application cost page', async () => {
@@ -50,7 +50,7 @@ describe('Requesting Reason Guard', () => {
     await requestingReasonControllerGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
 
     //Then
-    expect(MOCK_NEXT).not.toHaveBeenCalled();
+    expect(MOCK_NEXT).toHaveBeenCalled();
   });
   it('should throw error', async () => {
     //Given

@@ -2127,6 +2127,7 @@
         "I_WANT_TO": "Rwyf eisiau...",
         "REPRESENT_MYSELF": "Cynrychioli fy hun mewn gwrandawiad",
         "TELL_US_ENDED": "Dywedwch wrthym eich bod wedi dod â’r hawliad i ben",
+        "VIEW_ALL_APPLICATIONS": "View all existing applications",
         "WHAT_EXPECT_HEARING": "Beth i'w ddisgwyl mewn gwrandawiad"
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
@@ -3047,6 +3048,19 @@
         "SUMMERY_MESSAGE1" : "This is the application that the other parties have made.",
         "SUMMERY_MESSAGE2" : "Their answers to 'What order do you want the judge to make?' and 'Why are you requesting this order' will explain the change that they've requested and why. There will be a link to review any documents that they've uploaded.",
         "SUMMERY_MESSAGE3" : "Once you've reviewed their application, click 'respond to application' below. You'll be asked whether or not you agree with their request."
+      },
+      "RESPONDENT_UPLOAD_OPTION": {
+        "PAGE_TITLE": "Provide more information to the court",
+        "TITLE": "Provide more information to the court",
+        "TEXT_INPUT": "Enter the information requested by the court",
+        "TEXT_INPUT_HINT": "Write in short sentences and paragraphs. Any text you enter will not be translated into Welsh.",
+        "CONTENT_1": "You have the option of entering the information requested by the court or uploading documents containing the information requested.",
+        "CONTENT_2_1": "If you're not sure what to write, refer to the ",
+        "CONTENT_2_2": "court document",
+        "CONTENT_2_3": " that sets out the information that the court has requested from you.",
+        "OPTION": "Do you want to upload documents to support your response? (Optional)",
+        "WRITTEN_REP_CONTENT_1": "Written representations are written statements that explain your case or your request to the court.",
+        "WRITTEN_REP_CONTENT_1_2": "You can either write the requested information in the box below or upload documents that contain it."
       },
       "RESPONDENT_WANT_TO_UPLOAD_DOC": {
         "PAGE_TITLE": "Do you want to upload documents to support your response?",
@@ -5068,7 +5082,12 @@
       "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
       "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
-      "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your response. Choose Yes or No."
+      "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your response. Choose Yes or No.",
+      "RESPONDENT_UPLOAD_OPTION": {
+        "EMPTY_OPTION": "You need to either enter the information requested in the box or select Yes to upload documents to support your response.",
+        "EMPTY_OPTION_TEXT": "You need to tell us if you want to upload documents to support your response. Choose option: Yes or No.",
+        "ERROR_INPUT": "You need to either enter the information requested in the box or select Yes to upload documents to support your response."
+      }
     }
   }
 }
