@@ -8,6 +8,7 @@ import {
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
   saveAcceptDefendantOffer,
+  saveAdditionalText,
   saveAgreementFromOtherParty,
   saveAndTriggerNotifyGaHwfEvent,
   saveApplicationCosts,
@@ -19,7 +20,7 @@ import {
   saveRequestingReason,
   saveRespondentAgreement,
   saveRespondentWantToUploadDoc,
-  saveUnavailableDates,
+  saveUnavailableDates, saveWrittenRepText,
   shouldDisplaySyncWarning,
   updateByIndexOrAppend,
   validateAdditionalApplicationtType,
@@ -91,7 +92,7 @@ describe('General Application service', () => {
       });
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveApplicationType('123', new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+      await saveApplicationType('123', new Claim(), new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
       //Then
       expect(spy).toBeCalled();
     });
@@ -106,7 +107,7 @@ describe('General Application service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveApplicationType('123', new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveApplicationType('123', new Claim(), new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
@@ -709,6 +710,40 @@ describe('General Application service', () => {
       //Then
       expect(status).toBe(ApplicationStatus.COMPLETE);
     });
+  });
+});
+
+describe('Save Additional Text and Option', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  it('should save GARespondentResponse successfully', async () => {
+    //Given
+    jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+    const spy = jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse');
+    const uploadFile = YesNo.YES;
+    const input = 'More info';
+    //When
+    await saveAdditionalText('123', input, uploadFile);
+    //Then
+    expect(spy).toBeCalled();
+  });
+});
+
+describe('Save WrittenRep Text and Option', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  it('should save GARespondentResponse successfully', async () => {
+    //Given
+    jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+    const spy = jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse');
+    const uploadFile = YesNo.YES;
+    const input = 'WrittenRep Text';
+    //When
+    await saveWrittenRepText('123', input, uploadFile);
+    //Then
+    expect(spy).toBeCalled();
   });
 });
 

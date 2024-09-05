@@ -24,7 +24,7 @@ orderJudgeController.get(ORDER_JUDGE_URL, orderJudgeGuard, (async (req: AppReque
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const { applicationTypes, orderJudges } = claim.generalApplication || new GeneralApplication();
-    const applicationTypeIndex = queryParamNumber(req, 'index');
+    const applicationTypeIndex = queryParamNumber(req, 'index') || 0;
     const applicationTypeOption = getByIndexOrLast(applicationTypes, applicationTypeIndex)?.option;
     const orderJudge = getByIndex(orderJudges, applicationTypeIndex) || new OrderJudge();
     const { contentList, hintText } = buildPageContent(applicationTypeOption, lng);
