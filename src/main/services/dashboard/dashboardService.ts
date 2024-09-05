@@ -9,6 +9,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {t} from 'i18next';
 import {
+  applicationNoticeUrl,
   feesHelpUrl,
   findCourtTribunalUrl,
   findLegalAdviceUrl,
@@ -16,6 +17,9 @@ import {
   representYourselfUrl,
   whatToExpectUrl,
 } from 'common/utils/externalURLs';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
+import { APPLICATION_TYPE_URL } from 'routes/urls';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -90,3 +94,23 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
   }
   return undefined;
 }
+
+export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnable : boolean,lng: string) : iWantToLinks => {
+  if (claim.ccdState && !claim.isCaseIssuedPending()) {
+    if(!claim.hasClaimTakenOffline() && isGAFlagEnable) {
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
+      };
+    } else if(claim.hasClaimTakenOffline()) {
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
+      };
+    } 
+    
+    return { 
+      text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }), 
+      url: applicationNoticeUrl,
+    };
+  }
+};
