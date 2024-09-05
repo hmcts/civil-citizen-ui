@@ -206,8 +206,6 @@ describe('dashboardService', () => {
 
       it('Notifications', async () => {
         //Given
-        const mockGet1 = jest.fn().mockResolvedValue({data: mockNotificationInfo});
-        mockedAxios.create.mockReturnValueOnce({get: mockGet1} as unknown as AxiosInstance);
         const notificationList: DashboardNotification[] = mockNotificationInfo;
         const dashboardNotificationItems= plainToInstance(DashboardNotification, notificationList);
         const applicantNotificationItems = plainToInstance(DashboardNotification, notificationList);
