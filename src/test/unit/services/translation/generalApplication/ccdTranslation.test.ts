@@ -186,7 +186,7 @@ describe('translate draft application to ccd', () => {
       expect(toCcdGeneralApplicationWithResponse(gaResponse))
         .toStrictEqual({
           gaRespondentDebtorOffer: {
-            debtorObjections: 'reason for disagreement',
+            debtorObjections: undefined,
             monthlyInstalment: undefined,
             paymentPlan: undefined,
             paymentSetDate: undefined,
@@ -218,6 +218,11 @@ describe('translate draft application to ccd', () => {
               },
             }],
             unavailableTrialRequiredYesOrNo: YesNoUpperCamelCase.YES,
+          },
+          gaRespondentConsent: YesNoUpperCamelCase.NO,
+          generalAppRespondReason: "reason for disagreement",
+          generalAppRespondent1Representative: {
+            hasAgreed: YesNoUpperCamelCase.NO,
           },
         } satisfies CCDRespondToApplication);
     });
