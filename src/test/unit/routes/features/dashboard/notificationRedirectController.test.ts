@@ -2,7 +2,6 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import config from 'config';
-import * as UtilityService from 'modules/utilityService';
 import * as DraftStoreService from 'modules/draft-store/draftStoreService';
 import * as ApplyHelpFeeSelectionService from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
 import {Claim} from 'models/claim';
@@ -10,6 +9,10 @@ import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseD
 import {DocumentType} from 'models/document/documentType';
 import {DASHBOARD_NOTIFICATION_REDIRECT, DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT} from 'routes/urls';
 import {CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL} from 'client/civilServiceUrls';
+import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import * as StringUtils from 'common/utils/stringUtils';
+import {getCaseProgressionHearingMock} from '../../../../utils/caseProgression/mockCaseProgressionHearing';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -47,7 +50,10 @@ describe('Notification Redirect Controller - Get', () => {
       .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
       .reply(200, {});
 
-    jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(claim));
+    const data = Object.assign(claim, civilClaimResponseMock.case_data);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(data);
 
     //when
     await request(app)
@@ -73,8 +79,10 @@ describe('Notification Redirect Controller - Get', () => {
       .reply(200, {});
 
     jest.spyOn(DraftStoreService, 'saveDraftClaim').mockReturnValueOnce(Promise.resolve());
-    jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(claim));
-    jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(claim));
+    const data = Object.assign(claim, civilClaimResponseMock.case_data);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(data);
     jest.spyOn(ApplyHelpFeeSelectionService, 'getRedirectUrl').mockReturnValueOnce(Promise.resolve('https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960'));
 
     //when
@@ -112,7 +120,10 @@ describe('Notification Redirect Controller - Get', () => {
       .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
       .reply(200, {});
 
-    jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(claim));
+    const data = Object.assign(claim, civilClaimResponseMock.case_data);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(data);
 
     //when
     await request(app)
@@ -150,7 +161,10 @@ describe('Notification Redirect Controller - Get', () => {
       .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
       .reply(200, {});
 
-    jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(claim));
+    const data = Object.assign(claim, civilClaimResponseMock.case_data);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(data);
 
     //when
     await request(app)
@@ -163,6 +177,182 @@ describe('Notification Redirect Controller - Get', () => {
       .expect((res: Response) => {
         expect(res.status).toBe(302);
         expect(res.text).toBe('Found. Redirecting to /case/123/view-documents/1234');
+      });
+  });
+
+  it('Redirect to view hearing notice with document Id', async () => {
+    //given
+    const claim: Claim = new Claim();
+    claim.id = '123';
+
+    nock(civilServiceUrl)
+      .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
+      .reply(200, {});
+
+    const data = Object.assign(claim, civilClaimResponseMock.case_data);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(data);
+
+    const checkDocumentId = jest
+      .spyOn(StringUtils, 'documentIdExtractor');
+
+    //when
+    await request(app)
+      .get(DASHBOARD_NOTIFICATION_REDIRECT
+        .replace(':id', '123')
+        .replace(':locationName', 'VIEW_HEARING_NOTICE')
+        .replace(':notificationId', '321'))
+      //then
+      .expect((res: Response) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toBe('Found. Redirecting to /case/123/view-documents/456');
+      });
+    expect(checkDocumentId).toHaveBeenCalledTimes(1);
+  });
+
+  it('Redirect to view hearing notice without document Id - when no case progression hearing', async () => {
+    //given
+    const claim: Claim = new Claim();
+    claim.id = '123';
+
+    nock(civilServiceUrl)
+      .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
+      .reply(200, {});
+
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(claim);
+
+    const checkDocumentId = jest
+      .spyOn(StringUtils, 'documentIdExtractor');
+
+    //when
+    await request(app)
+      .get(DASHBOARD_NOTIFICATION_REDIRECT
+        .replace(':id', '123')
+        .replace(':locationName', 'VIEW_HEARING_NOTICE')
+        .replace(':notificationId', '321'))
+      //then
+      .expect((res: Response) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toBe('Found. Redirecting to /case/123/view-documents/undefined');
+      });
+    expect(checkDocumentId).toHaveBeenCalledTimes(2);
+  });
+
+  it('Throw error - when no hearing documents', async () => {
+    //given
+    const claim: Claim = new Claim();
+    claim.id = '123';
+
+    nock(civilServiceUrl)
+      .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
+      .reply(200, {});
+
+    claim.caseProgressionHearing = getCaseProgressionHearingMock();
+    claim.caseProgressionHearing.hearingDocuments = null;
+
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(claim);
+
+    //when
+    await request(app)
+      .get(DASHBOARD_NOTIFICATION_REDIRECT
+        .replace(':id', '123')
+        .replace(':locationName', 'VIEW_HEARING_NOTICE')
+        .replace(':notificationId', '321'))
+      //then
+      .expect((res: Response) => {
+        expect(res.status).toBe(500);
+      });
+  });
+
+  it('Redirect to view hearing notice without document Id - when no value', async () => {
+    //given
+    const claim: Claim = new Claim();
+    claim.id = '123';
+
+    nock(civilServiceUrl)
+      .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
+      .reply(200, {});
+
+    claim.caseProgressionHearing = getCaseProgressionHearingMock();
+    claim.caseProgressionHearing.hearingDocuments[0].value = null;
+
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(claim);
+
+    //when
+    await request(app)
+      .get(DASHBOARD_NOTIFICATION_REDIRECT
+        .replace(':id', '123')
+        .replace(':locationName', 'VIEW_HEARING_NOTICE')
+        .replace(':notificationId', '321'))
+      //then
+      .expect((res: Response) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toBe('Found. Redirecting to /case/123/view-documents/undefined');
+      });
+  });
+
+  it('Redirect to view hearing notice without document Id - when no document link', async () => {
+    //given
+    const claim: Claim = new Claim();
+    claim.id = '123';
+
+    nock(civilServiceUrl)
+      .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
+      .reply(200, {});
+
+    claim.caseProgressionHearing = getCaseProgressionHearingMock();
+    claim.caseProgressionHearing.hearingDocuments[0].value.documentLink = null;
+
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(claim);
+
+    //when
+    await request(app)
+      .get(DASHBOARD_NOTIFICATION_REDIRECT
+        .replace(':id', '123')
+        .replace(':locationName', 'VIEW_HEARING_NOTICE')
+        .replace(':notificationId', '321'))
+      //then
+      .expect((res: Response) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toBe('Found. Redirecting to /case/123/view-documents/undefined');
+      });
+  });
+
+  it('Redirect to view hearing notice without document Id - when no binary url', async () => {
+    //given
+    const claim: Claim = new Claim();
+    claim.id = '123';
+
+    nock(civilServiceUrl)
+      .put(CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', '321'))
+      .reply(200, {});
+
+    claim.caseProgressionHearing = getCaseProgressionHearingMock();
+    claim.caseProgressionHearing.hearingDocuments[0].value.documentLink.document_binary_url = undefined;
+
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(claim);
+
+    //when
+    await request(app)
+      .get(DASHBOARD_NOTIFICATION_REDIRECT
+        .replace(':id', '123')
+        .replace(':locationName', 'VIEW_HEARING_NOTICE')
+        .replace(':notificationId', '321'))
+      //then
+      .expect((res: Response) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toBe('Found. Redirecting to /case/123/view-documents/undefined');
       });
   });
 });
