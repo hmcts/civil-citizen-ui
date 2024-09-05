@@ -41,18 +41,18 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const courtDocuments: DocumentsViewComponent = getCourtDocuments(applicationResponse, lang);
     const respondentDocuments: DocumentsViewComponent = getRespondentDocuments(applicationResponse, lang);
     let applicationFeeOptionUrl : string = null;
-    
+
     const isApplicationFeeAmountNotPaid = isApplicationFeeNotPaid(applicationResponse);
-   
+
     const payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
 
     if(isApplicationFeeAmountNotPaid) {
       applicationFeeOptionUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION + '?appFee=' + convertToPoundsFilter(applicationResponse?.case_data?.generalAppPBADetails?.fee.calculatedAmountInPence));
     }
-    
+
     const responseFromCourt =  await getResponseFromCourtSection(req, req.params.appId, lang);
     const dashboardUrl = constructResponseUrlWithIdParams(claimId,DASHBOARD_CLAIMANT_URL);
-    
+
     res.render(viewPath, {
       backLinkUrl: constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUMMARY_URL),
       summaryRows,
@@ -66,7 +66,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
       applicationFeeOptionUrl,
       applicantDocuments,
       courtDocuments,
-      respondentDocuments,    
+      respondentDocuments,
     });
   } catch (error) {
     next(error);
