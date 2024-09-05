@@ -565,7 +565,7 @@ describe('View Application service', () => {
       expect(result.length).toEqual(0);
     });
   });
-  
+
   describe('getResponseFromCourtSection', () => {
     it('should return court from response section for applicant', async () => {
       //given
@@ -609,7 +609,7 @@ describe('View Application service', () => {
       application.case_data.hearingNoticeDocument = setMockHearingNoticeDocuments();
       application.case_data.hearingOrderDocument = undefined;
       application.case_data.requestForInformationDocument = setMockRequestForInformationDocument();
-    
+
       const claim = new Claim();
       claim.caseRole = CaseRole.DEFENDANT;
       (getClaimById as jest.Mock).mockResolvedValue(claim);
@@ -628,18 +628,19 @@ describe('View Application service', () => {
       expect(result[1].rows[1].value.html).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_MORE_INFO');
       expect(result[1].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
       expect(result[1].rows[2].value.html).toContain('<a href=/case/1718105701451856/view-documents/76600af8-e6f3-4506-9540-e6039b9cc098 target="_blank" rel="noopener noreferrer" class="govuk-link">Request_for_information_for_application_2024-07-22 11:01:54.pdf</a>');
-   
+
     });
   });
 
   describe('getRequestMoreInfoResponse', () => {
     it('should return request more info response', async () => {
       //given
+      const claim = new Claim();
       const applicationResponse = Object.assign(new ApplicationResponse(), mockApplication);
       applicationResponse.case_data.requestForInformationDocument = setMockRequestForInformationDocument();
-      
+
       //when
-      const result = getRequestMoreInfoResponse(applicationResponse, 'en');
+      const result = getRequestMoreInfoResponse(claim.id, applicationResponse, 'en');
       //then
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE');
       expect(result[0].rows[0].value.html).toEqual('2 May 2024');
@@ -702,7 +703,7 @@ describe('View Application service', () => {
         expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE');
         expect(result[0].rows[2].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION_DOCUMENT');
       });
-  
+
       it('should return judge request written representations concurrent', async () => {
         //given
         const applicationResponse = new ApplicationResponse();
@@ -760,11 +761,12 @@ describe('View Application service', () => {
     it('should return empty if no data in applicationResponse', async () => {
       //given
       const applicationResponse = new ApplicationResponse();
+      const claim = new Claim();
       //when
-      const result = getRequestMoreInfoResponse(applicationResponse, 'en');
+      const result = getRequestMoreInfoResponse(claim.id, applicationResponse, 'en');
       //then
       expect(result.length).toEqual(0);
     });
-    
+
   });
 });
