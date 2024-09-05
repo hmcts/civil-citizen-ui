@@ -418,6 +418,8 @@ import uploadDocumentsForRequestWrittenRepresentation from './features/generalAp
 import gaWrittenRepresentationCheckAnswersController from './features/generalApplication/writtenRepresentationDocs/checkAnswerController';
 import respondAddInfoController
   from 'routes/features/generalApplication/additionalInfoUpload/respondController';
+import respondWrittenRepController
+  from 'routes/features/generalApplication/writtenRepresentationDocs/respondToWrittenRepController';
 
 export default [
   homeController,
@@ -756,4 +758,5 @@ export default [
   directionOrderSubmittedConfirmationController,
   uploadDocumentsForRequestWrittenRepresentation,
   gaWrittenRepresentationCheckAnswersController,
+  respondWrittenRepController,
 ];
