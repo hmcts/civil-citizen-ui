@@ -86,6 +86,7 @@ export interface JudicialRequestMoreInfo {
   judicialDecisionMakeAnOrderForWrittenRepresentations?: JudicialDecisionWrittenRepresentations;
   writtenRepSequentialDocument?: CcdGARequestWrittenRepDocument[];
   writtenRepConcurrentDocument?: CcdGARequestWrittenRepDocument[];
+  requestMoreInfoOption?: JudicialDecisionRequestMoreInfoOptions;
 }
 
 export interface JudicialDecision {
