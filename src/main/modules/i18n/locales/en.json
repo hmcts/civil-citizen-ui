@@ -2114,7 +2114,7 @@
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement.",
         "HEARING_FEE_UNPAID": "This claim has been struck out.",
-        "CASE_STAYED": "The case has been stayed"
+        "CASE_STAYED": "The case has been stayed."
       },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Applying to the court as a creditor of a debt in breathing space",

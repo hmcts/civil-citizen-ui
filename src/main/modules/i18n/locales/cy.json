@@ -2114,7 +2114,7 @@
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement.",
         "HEARING_FEE_UNPAID": "Mae'r hawliad wedi cael ei ddileu.",
-        "CASE_STAYED": "Mae’r achos wedi cael ei atal"
+        "CASE_STAYED": "Mae’r achos wedi cael ei atal."
       },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Gwneud cais i’r llys fel credydwr dyled mewn lle i anadlu",
