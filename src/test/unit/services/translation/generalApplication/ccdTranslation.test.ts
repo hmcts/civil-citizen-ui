@@ -220,7 +220,7 @@ describe('translate draft application to ccd', () => {
             unavailableTrialRequiredYesOrNo: YesNoUpperCamelCase.YES,
           },
           gaRespondentConsent: YesNoUpperCamelCase.NO,
-          generalAppRespondReason: "reason for disagreement",
+          generalAppRespondReason: 'reason for disagreement',
           generalAppRespondent1Representative: {
             hasAgreed: YesNoUpperCamelCase.NO,
           },
