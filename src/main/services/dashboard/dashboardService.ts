@@ -94,12 +94,14 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
     applicantNotifications?.forEach((value, gaRef, map) => {
       value.items.forEach((notification) => {
         notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
+        notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
       });
       dashboardNotifications.items.push(...(value?.items ?? []));
     });
     respondentNotifications?.forEach((value, gaRef, map) => {
       value.items.forEach((notification) => {
         notification.descriptionEn = replaceDashboardPlaceholders(notification.descriptionEn, claim, claimId, notification, lng, gaRef);
+        notification.descriptionCy = replaceDashboardPlaceholders(notification.descriptionCy, claim, claimId, notification, lng, gaRef);
       });
       dashboardNotifications.items.push(...(value?.items ?? []));
     });
