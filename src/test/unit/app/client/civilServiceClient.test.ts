@@ -1111,7 +1111,7 @@ describe('Civil Service Client', () => {
             'createdAt': new Date(100000),
           },
         },
-      ]
+      ],
     };
     const mockGa1NotificationInfoExpected = [
       {
