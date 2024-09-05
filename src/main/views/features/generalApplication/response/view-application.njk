@@ -129,7 +129,7 @@
           html: responseFromCourtHtml
         }) }}
       {% endif %}
-      
+
       {% if (applicantDocuments.documents.length + courtDocuments.documents.length + respondentDocuments.documents.length) > 0 %}
         {{ govukDetails({
           summaryHtml: applicationDocuments,
@@ -141,7 +141,7 @@
     text: t('COMMON.BUTTONS.RESPOND_TO_APPLICATION'),
     href: redirectUrl
   }) }}
-  
+
   {{ govukButton({
       text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD'),
       href: dashboardUrl
