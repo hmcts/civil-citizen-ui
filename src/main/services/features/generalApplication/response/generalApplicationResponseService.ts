@@ -10,14 +10,17 @@ import {
   getApplicationCreatedDate,
   getLast,
   getRespondentApplicationStatus,
+  getViewApplicationUrl,
 } from 'services/features/generalApplication/generalApplicationService';
 import {StatementOfTruthForm} from 'common/models/generalApplication/statementOfTruthForm';
 import {getDraftGARespondentResponse, saveDraftGARespondentResponse} from './generalApplicationResponseStoreService';
 import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
-import {ApplicationSummary, StatusColor} from 'common/models/generalApplication/applicationSummary';
+import {
+  ApplicationSummary, 
+  StatusColor,
+  ApplicationState,
+} from 'common/models/generalApplication/applicationSummary';
 import {dateTimeFormat} from 'common/utils/dateUtils';
-import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
-import {GA_RESPONSE_VIEW_APPLICATION_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -108,9 +111,9 @@ export const isApplicationVisibleToRespondent = (application: ApplicationRespons
   const parentClaimantIsApplicant = application.case_data?.parentClaimantIsApplicant;
   const isWithNotice = application.case_data?.generalAppInformOtherParty?.isWithNotice;
   return ((parentClaimantIsApplicant === YesNoUpperCamelCase.YES && isWithNotice === YesNoUpperCamelCase.YES)
-    || (parentClaimantIsApplicant === YesNoUpperCamelCase.NO && isWithNotice === YesNoUpperCamelCase.YES)
-    || (parentClaimantIsApplicant === YesNoUpperCamelCase.NO && isWithNotice === YesNoUpperCamelCase.NO)
-    || (application.case_data?.generalAppRespondentAgreement?.hasAgreed === YesNoUpperCamelCase.YES));
+    || (parentClaimantIsApplicant === YesNoUpperCamelCase.NO)
+    || (application.case_data?.generalAppRespondentAgreement?.hasAgreed === YesNoUpperCamelCase.YES)
+    || (application.case_data?.applicationIsUncloakedOnce === YesNoUpperCamelCase.YES && application.state !== ApplicationState.APPLICATION_ADD_PAYMENT));
 };
 
 export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string, ccdClaim: Claim) => (application: ApplicationResponse, index: number): ApplicationSummary => {
@@ -123,6 +126,6 @@ export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string
     types: application.case_data?.applicationTypes,
     id: application.id,
     createdDate: dateTimeFormat(createDate, lng),
-    applicationUrl: `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id, GA_RESPONSE_VIEW_APPLICATION_URL)}?index=${index + 1}`,
+    applicationUrl: getViewApplicationUrl(claimId, ccdClaim, application, index),
   };
 };

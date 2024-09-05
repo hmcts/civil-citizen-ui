@@ -4,6 +4,7 @@ import { HearingFeeInformation } from 'models/caseProgression/hearingFee/hearing
 import { FIXED_DATE } from '../../../../utils/dateUtils';
 import {
   extractOrderDocumentIdFromNotification,
+  getContactCourtLink,
   getDashboardForm,
   getNotifications,
 } from 'services/dashboard/dashboardService';
@@ -21,17 +22,22 @@ import { ClaimantOrDefendant } from 'models/partyType';
 import { CivilServiceDashboardTask } from 'models/dashboard/taskList/civilServiceDashboardTask';
 import { DashboardTask } from 'models/dashboard/taskList/dashboardTask';
 import { DashboardTaskStatus } from 'models/dashboard/taskList/dashboardTaskStatus';
-import {
-  ClaimGeneralApplication,
-  ClaimGeneralApplicationValue,
-} from 'models/generalApplication/claimGeneralApplication';
 import { YesNo } from 'form/models/yesNo';
 import {CaseLink} from 'models/generalApplication/CaseLink';
+import { CaseState } from 'common/form/models/claimDetails';
+import { applicationNoticeUrl } from 'common/utils/externalURLs';
+import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
 
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const appReq = <AppRequest>req;
 appReq.params = {id: '123'};
+
+jest.mock('i18next', () => ({
+  t: (i: string | unknown) => i,
+  use: jest.fn(),
+}));
+
 describe('dashboardService', () => {
 
   describe('generateNewDashboard', () => {
@@ -386,6 +392,53 @@ describe('dashboardService', () => {
         expect(documentId).toEqual(undefined);
 
       });
+
+      it('getContactCourtLink when Gaflag is enable', async () => {
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+        //When
+        const result = getContactCourtLink(claim.id, claim, true, 'en');
+
+        //Then
+        expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+        expect(result.url).toContain('/case/1234567890/general-application/application-type');
+      });
+
+      it('getContactCourtLink when Gaflag is not enable', async () => {
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+        //When
+        const result = getContactCourtLink(claim.id, claim, false, 'en');
+
+        //Then
+        expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+        expect(result.url).toContain(applicationNoticeUrl);
+      });
+
+      it('getContactCourtLink when claim is taken offline', async () => {
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
+        claim.takenOfflineDate = new Date();
+        //When
+        const result = getContactCourtLink(claim.id, claim, false, 'en');
+
+        //Then
+        expect(result.text).toContain('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT');
+        expect(result.url).toBeUndefined();
+      });
+
     });
   });
 });

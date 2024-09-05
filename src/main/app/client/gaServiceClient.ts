@@ -125,7 +125,7 @@ export class GaServiceClient {
     const config = this.getConfig(req);
     try {
       const response = await this.client.get(constructResponseUrlWithIdParams(caseId, GA_BY_CASE_URL), config);
-      return response.data.cases.sort((a: any, b: any) => {
+      return response.data?.cases?.sort((a: any, b: any) => {
         return new Date(a.created_date).getTime() - new Date(b.created_date).getTime();
       });
     } catch (err) {

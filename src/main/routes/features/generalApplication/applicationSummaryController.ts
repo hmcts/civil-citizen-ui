@@ -2,15 +2,15 @@ import config from 'config';
 import { t } from 'i18next';
 import { NextFunction, Response, Router } from 'express';
 import { AppRequest } from 'common/models/AppRequest';
-import { GA_APPLICATION_SUMMARY_URL, GA_VIEW_APPLICATION_URL } from 'routes/urls';
+import { GA_APPLICATION_SUMMARY_URL } from 'routes/urls';
 import {
   getApplicationCreatedDate,
   getApplicationStatus,
   getCancelUrl,
+  getViewApplicationUrl,
 } from 'services/features/generalApplication/generalApplicationService';
 import { GaServiceClient } from 'client/gaServiceClient';
 import { ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import { getClaimById } from 'modules/utilityService';
 import {dateTimeFormat} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
@@ -43,7 +43,7 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
         types: application.case_data?.applicationTypes,
         id: application.id,
         createdDate: dateTimeFormat(getApplicationCreatedDate(ccdClaim, application.id), lng),
-        applicationUrl: `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id,  GA_VIEW_APPLICATION_URL)}?index=${index + 1}`,
+        applicationUrl: getViewApplicationUrl(claimId, claim, application,index),
       });
     }
 
