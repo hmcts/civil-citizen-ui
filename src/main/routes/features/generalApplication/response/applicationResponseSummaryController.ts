@@ -28,7 +28,6 @@ applicationSummaryController.get(GA_APPLICATION_RESPONSE_SUMMARY_URL, async (req
     const applicationsRows = applications
       .filter(isApplicationVisibleToRespondent)
       .map(buildRespondentApplicationSummaryRow(claimId, lng, ccdClaim));
-
     res.render(viewPath, {
       applicationsRows,
       dashboardUrl: await getCancelUrl(claimId, claim),
