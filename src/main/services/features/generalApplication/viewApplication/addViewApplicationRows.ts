@@ -95,7 +95,7 @@ export const addOtherPartiesAgreedRow = (application: ApplicationResponse, lang:
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppRespondentAgreement) {
-    const partiesAgreed = (application.case_data.generalAppRespondentAgreement.hasAgreed === YesNoUpperCamelCase.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
+    const partiesAgreed = otherPartiesAgreed(application) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED', {lng}), t(`COMMON.VARIATION.${partiesAgreed}`, {lng})),
     );
@@ -106,7 +106,7 @@ export const addOtherPartiesAgreedRow = (application: ApplicationResponse, lang:
 export const addInformOtherPartiesRow = (application: ApplicationResponse, lang: string): SummaryRow[] => {
   const lng = getLng(lang);
   const rows: SummaryRow[] = [];
-  if (application.case_data.generalAppInformOtherParty) {
+  if (application.case_data.generalAppInformOtherParty && !otherPartiesAgreed(application)) {
     const informOtherParties = (application.case_data.generalAppInformOtherParty.isWithNotice === YesNoUpperCamelCase.YES) ? YesNoUpperCase.YES : YesNoUpperCase.NO;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.INFORM_OTHER_PARTIES', {lng}), t(`COMMON.VARIATION.${informOtherParties}`, {lng})),
@@ -262,3 +262,6 @@ const toCUIHearingPreferencesPreferredType = (hearingTypeOption: CcdHearingType)
       return undefined;
   }
 };
+
+const otherPartiesAgreed = (application: ApplicationResponse): boolean =>
+  application.case_data.generalAppRespondentAgreement?.hasAgreed === YesNoUpperCamelCase.YES;
