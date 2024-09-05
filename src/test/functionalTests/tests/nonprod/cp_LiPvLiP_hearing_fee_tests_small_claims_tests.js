@@ -61,7 +61,7 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly');
 
 Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -80,4 +80,4 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
-}).tag('@regression-cp');
+}).tag('@nightly');
