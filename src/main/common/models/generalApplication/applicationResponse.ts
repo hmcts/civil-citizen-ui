@@ -73,6 +73,7 @@ export interface CCDApplication extends ApplicationUpdate {
   judicialDecisionRequestMoreInfo?: JudicialRequestMoreInfo;
   writtenRepSequentialDocument?: CcdGARequestWrittenRepDocument[];
   writtenRepConcurrentDocument?: CcdGARequestWrittenRepDocument[];
+  applicationIsUncloakedOnce?: YesNoUpperCamelCase;
 }
 
 export interface JudicialRequestMoreInfo {
