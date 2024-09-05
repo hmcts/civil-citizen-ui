@@ -4,7 +4,7 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {
   CcdGeneralApplicationInformOtherParty,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationInformOtherParty';
-import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
+import {CcdGARespondentDebtorOfferGAspec, CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {
   CcdGeneralApplicationEvidenceDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
@@ -20,7 +20,7 @@ import {CaseLink} from 'models/generalApplication/CaseLink';
 
 export interface EventDto {
   event: ApplicationEvent,
-  caseDataUpdate?: CCDGeneralApplication | CCDGaHelpWithFees;
+  caseDataUpdate?: CCDGeneralApplication | CCDRespondToApplication | CCDGaHelpWithFees;
 }
 
 export interface CCDGeneralApplication extends ClaimUpdate {
@@ -66,4 +66,13 @@ export interface CCDGaHelpWithFees {
 export interface CCDGaValue {
   caseLink?: CaseLink;
   parentClaimantIsApplicant?: YesNoUpperCamelCase;
+}
+
+export type CCDRespondToApplication = {
+  hearingDetailsResp: CcdGeneralApplicationHearingDetails,
+  gaRespondentDebtorOffer: CcdGARespondentDebtorOfferGAspec,
+  gaRespondentConsent?: YesNoUpperCamelCase,
+  generalAppRespondConsentReason?: string,
+  generalAppRespondReason?: string,
+  generalAppRespondent1Representative?: { hasAgreed?: YesNoUpperCamelCase },
 }
