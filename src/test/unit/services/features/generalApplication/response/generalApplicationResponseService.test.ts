@@ -21,7 +21,7 @@ import {t} from 'i18next';
 import {
   ApplicationResponse,
   CCDApplication,
-  JudicialDecisionRequestMoreInfoOptions
+  JudicialDecisionRequestMoreInfoOptions,
 } from 'common/models/generalApplication/applicationResponse';
 import { ApplicationState, ApplicationSummary } from 'common/models/generalApplication/applicationSummary';
 import { Claim } from 'common/models/claim';
@@ -271,7 +271,7 @@ describe('General Application Response service', () => {
         ccdApplication,
         ApplicationState.AWAITING_RESPONDENT_RESPONSE,
         '2024-05-29T14:39:28.483971',
-        '2024-05-29T14:39:28.483971'
+        '2024-05-29T14:39:28.483971',
       );
 
       expect(isApplicationVisibleToRespondent(applicationResponse)).toBeTruthy();
