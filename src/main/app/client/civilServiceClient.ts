@@ -477,12 +477,8 @@ export class CivilServiceClient {
     }
   }
 
-  async retrieveNotification(claimId: string,role: string,  req: AppRequest): Promise<DashboardNotificationList>  {
-    const config = this.getConfig(req);
-    const response = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
-    let dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
-
-    dashboardNotificationItems = dashboardNotificationItems.filter((notification) => {
+  filterDashboardNotificationItems(dashboardNotifications: DashboardNotification[], req: AppRequest): DashboardNotification[] {
+    return dashboardNotifications.filter((notification) => {
 
       const session = req?.session;
       const actionUser = notification?.notificationAction?.createdBy;
@@ -493,15 +489,22 @@ export class CivilServiceClient {
       const timeToLive = notification.timeToLive;
 
       return !(actionUser === sessionUser && actionPerformed === 'Click'
-            && (timeToLive === 'Click'
-                || (timeToLive === 'Session'
+          && (timeToLive === 'Click'
+              || (timeToLive === 'Session'
                   && sessionStart > actionPerformedTime
-                )
-            )
+              )
+          )
       );
 
     });
+  }
 
+  async retrieveNotification(claimId: string,role: string,  req: AppRequest): Promise<DashboardNotificationList>  {
+    const config = this.getConfig(req);
+    const response = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
+    let dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
+
+    dashboardNotificationItems = this.filterDashboardNotificationItems(dashboardNotificationItems, req);
     return new DashboardNotificationList(dashboardNotificationItems);
   }
 
@@ -512,23 +515,7 @@ export class CivilServiceClient {
     const dashboardNotificationItems = plainToInstance(Map<string, DashboardNotification[]>, response.data as Map<string, DashboardNotification[]>);
     const gaNotifications = new Map<string, DashboardNotificationList>;
     dashboardNotificationItems.forEach((value, key, map) => {
-      const dashboardNotificationItems = value.filter((notification) => {
-        const session = req?.session;
-        const actionUser = notification?.notificationAction?.createdBy;
-        const sessionUser = session.user?.givenName + ' ' + session.user?.familyName;
-        const sessionStart = new Date(session.issuedAt * 1000);
-        const actionPerformed = notification?.notificationAction?.actionPerformed;
-        const actionPerformedTime = new Date(notification?.notificationAction?.createdAt);
-        const timeToLive = notification.timeToLive;
-
-        return !(actionUser === sessionUser && actionPerformed === 'Click'
-           && (timeToLive === 'Click'
-             || (timeToLive === 'Session'
-               && sessionStart > actionPerformedTime
-             )
-           )
-        );
-      });
+      const dashboardNotificationItems = this.filterDashboardNotificationItems(value, req);
       gaNotifications.set(key, new DashboardNotificationList(dashboardNotificationItems));
     });
 
