@@ -42,12 +42,12 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     if (!isCarmApplicable){
       dashboard.items = dashboard.items.filter(item => !CARM_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
-    
+
     //exclude Applications sections
     if (!isGAFlagEnable){
       dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
-    
+
     return dashboard;
   } else {
     throw new Error('Dashboard not found...');
@@ -97,19 +97,19 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
 
 export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnable : boolean,lng: string) : iWantToLinks => {
   if (claim.ccdState && !claim.isCaseIssuedPending()) {
-    if(!claim.hasClaimTakenOffline() && isGAFlagEnable) {
+    if(!claim.hasClaimTakenOffline() && isGAFlagEnable && !claim.hasClaimBeenDismissed()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
         url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
       };
-    } else if(claim.hasClaimTakenOffline()) {
+    } else if(claim.hasClaimTakenOffline() || claim.hasClaimBeenDismissed()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
       };
-    } 
-    
-    return { 
-      text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }), 
+    }
+
+    return {
+      text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', { lng }),
       url: applicationNoticeUrl,
     };
   }
