@@ -20,6 +20,8 @@ import { ApplicationTypeOption } from 'models/generalApplication/applicationType
 import {t} from 'i18next';
 import { ApplicationResponse, CCDApplication } from 'common/models/generalApplication/applicationResponse';
 import { ApplicationState, ApplicationSummary } from 'common/models/generalApplication/applicationSummary';
+import { Claim } from 'common/models/claim';
+import { CaseRole } from 'common/form/models/caseRoles';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -227,9 +229,22 @@ describe('General Application Response service', () => {
   describe('buildRespondentApplicationSummaryRow', () => {
 
     it('returns row awaiting respondent response state', () => {
-      const appResponse = applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE);
+      const appResponse = applicationResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE,false, false, true);
+      const ccdClaim = new Claim();
+      ccdClaim.caseRole = CaseRole.DEFENDANT;
+      ccdClaim.generalApplications = [
+        {
+          'id': 'test',
+          'value': {
+            'caseLink': {
+              'CaseReference': '6789',
+            },
+            'generalAppSubmittedDateGAspec': '2024-05-29T14:39:28.483971',
+          },
+        },
+      ];
 
-      expect(buildRespondentApplicationSummaryRow('12345', 'en')(appResponse, 0))
+      expect(buildRespondentApplicationSummaryRow('12345', 'en', ccdClaim)(appResponse, 0))
         .toStrictEqual({
           state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.AWAITING_RESPONDENT_RESPONSE'),
           status: t('PAGES.GENERAL_APPLICATION.SUMMARY.TO_DO'),
@@ -242,9 +257,22 @@ describe('General Application Response service', () => {
     });
 
     it('returns row in awaiting judicial decision state', () => {
-      const appResponse = applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION);
+      const appResponse = applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION,false, false, true);
+      const ccdClaim = new Claim();
+      ccdClaim.caseRole = CaseRole.DEFENDANT;
+      ccdClaim.generalApplications = [
+        {
+          'id': 'test',
+          'value': {
+            'caseLink': {
+              'CaseReference': '6789',
+            },
+            'generalAppSubmittedDateGAspec': '2024-05-29T14:39:28.483971',
+          },
+        },
+      ];
 
-      expect(buildRespondentApplicationSummaryRow('12345', 'en')(appResponse, 0))
+      expect(buildRespondentApplicationSummaryRow('12345', 'en', ccdClaim)(appResponse, 0))
         .toStrictEqual({
           state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION'),
           status: t('PAGES.GENERAL_APPLICATION.SUMMARY.IN_PROGRESS'),
@@ -253,6 +281,35 @@ describe('General Application Response service', () => {
           id: '6789',
           createdDate: '29 May 2024, 2:39:28 pm',
           applicationUrl: '/case/12345/response/general-application/6789/view-application?index=1',
+        } as ApplicationSummary);
+    });
+
+    it('returns row in awaiting judicial decision state with applicant view application', () => {
+      const appResponse = applicationResponse(ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION);
+      appResponse.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
+      const ccdClaim = new Claim();
+      ccdClaim.caseRole = CaseRole.DEFENDANT;
+      ccdClaim.generalApplications = [
+        {
+          'id': 'test',
+          'value': {
+            'caseLink': {
+              'CaseReference': '6789',
+            },
+            'generalAppSubmittedDateGAspec': '2024-05-29T14:39:28.483971',
+          },
+        },
+      ];
+      
+      expect(buildRespondentApplicationSummaryRow('12345', 'en', ccdClaim)(appResponse, 0))
+        .toStrictEqual({
+          state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION'),
+          status: t('PAGES.GENERAL_APPLICATION.SUMMARY.IN_PROGRESS'),
+          statusColor: 'govuk-tag--green',
+          types: 'Vary order',
+          id: '6789',
+          createdDate: '29 May 2024, 2:39:28 pm',
+          applicationUrl: '/case/12345/general-application/6789/view-application?index=1',
         } as ApplicationSummary);
     });
   });

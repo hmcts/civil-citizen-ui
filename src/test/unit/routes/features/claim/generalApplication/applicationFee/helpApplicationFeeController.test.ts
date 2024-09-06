@@ -14,12 +14,13 @@ import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {Claim} from 'models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {mockClaim} from '../../../../../../utils/mockClaim';
+import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
+import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/services/features/generalApplication/fee/helpWithFeeService');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/draft-store/gaHwFeesDraftStore', () => ({
   saveDraftGAHWFDetails: jest.fn(),
   getDraftGAHWFDetails: jest.fn(),
@@ -27,7 +28,15 @@ jest.mock('../../../../../../../main/modules/draft-store/gaHwFeesDraftStore', ()
 
 const mockGetCaseData = getDraftGAHWFDetails as jest.Mock;
 const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
+jest.mock('services/features/generalApplication/generalApplicationService', () => ({
+  getApplicationIndex: jest.fn(),
+  saveHelpWithFeesDetails: jest.fn(),
+}));
 const mockGetRedirectUrl = getRedirectUrl as jest.Mock;
+const mockSaveHelpWithFeesDetails = saveHelpWithFeesDetails as jest.Mock;
+
+const mockClaim = new Claim();
+mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
 const ccdClaim = new Claim();
 ccdClaim.generalApplications = [
   {
@@ -75,6 +84,21 @@ describe('General Application - Do you want to apply for help with fees Page', (
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING'));
           expect(res.text).toContain(t('PAGES.FEE_AMOUNT.SYNC_WARNING'));
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_TITLE'));
+        });
+    });
+
+    it('should return Do you want to apply for help with fees page with request id', async () => {
+      const mockGAHwF = new GaHelpWithFees();
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
+      app.request.query = {
+        id : '12345',
+      };
+      await request(app)
+        .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING'));
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_TITLE'));
         });
     });
@@ -146,6 +170,19 @@ describe('General Application - Do you want to apply for help with fees Page', (
 
     it('should return http 500 when has error in the post method', async () => {
       mockGetRedirectUrl.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
+      await request(app)
+        .post(GA_APPLY_HELP_WITH_FEE_SELECTION)
+        .send({option: new GenericYesNo(YesNo.YES)})
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+
+    it('should return http 500 when has error in the post method for save help with fee', async () => {
+      mockSaveHelpWithFeesDetails.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       await request(app)
