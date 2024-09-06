@@ -121,9 +121,4 @@ exports.config = {
       },
     },
   },
-  'multiple':{
-    'parallel': {
-      'chunks': 13,
-    },
-  },
 };
