@@ -26,3 +26,13 @@ Scenario('help with fees', () => {
     toggleFlag('cui-case-progression', false);
   }
 });
+
+Scenario('trial Arrangement', () => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    toggleFlag('cui-case-progression', true);
+    HelpWithFees.applyHelpWithFees('0000000000000002');
+    HelpWithFees.start();
+    HelpWithFees.referenceNumber();
+    toggleFlag('cui-case-progression', false);
+  }
+});

@@ -57,7 +57,44 @@
               "version": "4",
               "calculatedAmountInPence": "7000"
             },
-            "hearingDueDate": "01/01/2024"
+            "hearingDueDate": "2024-01-01"
+          },
+          "state": "ACTIVE",
+          "last_modified": "2023-07-10T10:00:00Z"
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "scenarioName": "helpWithFees",
+      "requiredScenarioState": "Started",
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/0000000000000003",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "0000000000000003",
+          "case_data": {
+            "totalClaimAmount": "15000",
+            "legacyCaseReference": "legacyCaseReference",
+            "respondent1ResponseDate": "2023-06-03T07:30:38",
+            "hearingFee": {
+              "code": "FEE0204",
+              "version": "4",
+              "calculatedAmountInPence": "7000"
+            },
+            "hearingDueDate": "2024-01-01",
+            "hearingDate": "2023-06-27"
           },
           "state": "ACTIVE",
           "last_modified": "2023-07-10T10:00:00Z"
