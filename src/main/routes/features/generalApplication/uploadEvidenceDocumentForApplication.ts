@@ -90,8 +90,19 @@ uploadEvidenceDocumentsForApplicationController.post(GA_UPLOAD_DOCUMENTS_URL, up
     const form = new GenericForm(uploadDoc);
     form.validateSync();
     if (form.hasFieldError('fileUpload') && claim.generalApplication.uploadEvidenceForApplication.length === 0) {
-      await getSummaryList(formattedSummary, redisKey, claimId);
-      return await renderView(form, claim, claimId, res, formattedSummary);
+      const errors = [{
+        target: {
+          fileUpload: '',
+          typeOfDocument: '',
+        },
+        value: '',
+        property: '',
+        constraints: {
+          isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE',
+        },
+      }];
+      req.session.fileUpload = JSON.stringify(errors);
+      return res.redirect(`${currentUrl}`);
     } else {
       res.redirect(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL));
     }
