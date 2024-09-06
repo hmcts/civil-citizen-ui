@@ -2,7 +2,6 @@ const {clickButton} = require('../commons/clickButton');
 const {buttonType} = require('../commons/buttonVariables');
 const {seeInTitle} = require('../commons/seeInTitle');
 const {seeBackLink} = require('../commons/seeBackLink');
-const {seeBreadcrumbs} = require('../commons/seeBreadcrumbs');
 const {yesAndNoCheckBoxOptionValue} = require('../commons/eligibleVariables');
 const I = actor();
 
