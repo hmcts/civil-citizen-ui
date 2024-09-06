@@ -66,7 +66,7 @@
     },
     {
       "priority": 1,
-      "scenarioName": "helpWithFees",
+      "scenarioName": "trialArrangement",
       "requiredScenarioState": "Started",
       "request": {
         "method": "GET",
@@ -94,11 +94,33 @@
               "calculatedAmountInPence": "7000"
             },
             "hearingDueDate": "2024-01-01",
-            "hearingDate": "2023-06-27"
+            "hearingDate": "2023-06-27",
+            "hearingDuration": "MINUTES_60",
+            "trialReadyRespondent1": "Yes"
           },
           "state": "ACTIVE",
           "last_modified": "2023-07-10T10:00:00Z"
         }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/0000000000000003/userCaseRoles",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": [
+          "[DEFENDANT]"
+        ]
       }
     }
   ]

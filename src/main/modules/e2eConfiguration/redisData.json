@@ -603,15 +603,25 @@
     "security_classification": "PUBLIC",
     "case_data": {
       "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
-      "hearingDate": "2023-06-27",
+      "caseRole" : "[DEFENDANT]",
+      "caseProgression" : {
+        "claimantTrialArrangements" : {
+          "isCaseReady": "yes"
+        },
+        "defendantTrialArrangements" : {
+          "isCaseReady": "yes"
+        }
+      },
       "caseProgressionHearing": {
+        "hearingDate": "2023-06-27",
+        "hearingDuration": "MINUTES_60",
         "hearingFeeInformation": {
           "hearingFee": {
             "code": "FEE0204",
             "version": "4",
             "calculatedAmountInPence": "7000"
           },
-          "hearingDueDate": "2024-01-01",
+          "hearingDueDate": "2024-01-01"
         }
       },
       "feeTypeHelpRequested": "HEARING",
