@@ -9,3 +9,8 @@ export enum ClaimantOrDefendant {
   CLAIMANT = 'CLAIMANT',
   DEFENDANT = 'DEFENDANT',
 }
+
+export enum ApplicantOrRespondent {
+  APPLICANT = 'APPLICANT',
+  RESPONDENT = 'RESPONDENT',
+}
