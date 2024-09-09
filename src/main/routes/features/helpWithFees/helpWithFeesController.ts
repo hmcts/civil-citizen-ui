@@ -31,7 +31,7 @@ applyHelpWithFeesController.get(APPLY_HELP_WITH_FEES, (async (req: Request, res:
       backLinkUrl = constructResponseUrlWithIdParams(req.params.id, hearingFeeBackUrl);
     }
     const cancelUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-    res.render(applyHelpWithFeesViewPath, {form, applyHelpWithFeesContent:getApplyHelpWithFeesContent(claimId, claim), cancelUrl, backLinkUrl});
+    res.render(applyHelpWithFeesViewPath, {form, applyHelpWithFeesContent:getApplyHelpWithFeesContent(claimId, claim, lng), cancelUrl, backLinkUrl});
   } catch (error) {
     next(error);
   }

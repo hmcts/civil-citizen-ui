@@ -5,18 +5,26 @@ import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFe
 import {HELP_WITH_FEES_ELIGIBILITY} from 'routes/urls';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {t} from 'i18next';
+
+const HELP_FEE_SELECTION = 'PAGES.APPLY_HELP_WITH_FEES.START';
 
 function getHearingFee(claim: Claim) {
   const hearingFeeInformation = new HearingFeeInformation(claim.caseProgressionHearing.hearingFeeInformation.hearingFee);
   return hearingFeeInformation.getHearingFeeFormatted();
 }
 
-export const getApplyHelpWithFeesContent = (claimId: string, claim: Claim) => {
+export const getApplyHelpWithFeesContent = (claimId: string, claim: Claim, lng: string) => {
   const feeType = claim?.feeTypeHelpRequested;
   let feeAmount;
   if (claim?.feeTypeHelpRequested === FeeType.HEARING) {
     feeAmount = getHearingFee(claim);
   }
+  const linkBefore = `${HELP_FEE_SELECTION}.ELIGIBILITY_LINK`;
+  const link = HELP_WITH_FEES_ELIGIBILITY;
+  const linkText = `${HELP_FEE_SELECTION}.ELIGIBILITY`;
+
+  const linkParagraph = `<p class="govuk-body govuk-!-margin-bottom-1">${t(linkBefore, {lng})} <a target="_blank" class="govuk-link" rel="noopener noreferrer" href=${link}>${t(`${linkText}`, {lng})}</a>.</p>`;
 
   return new PageSectionBuilder()
     .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
@@ -25,7 +33,7 @@ export const getApplyHelpWithFeesContent = (claimId: string, claim: Claim) => {
     .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
     .addInsetText('PAGES.APPLY_HELP_WITH_FEES.START.'+feeType+'_FEE_INSET',
       {feeAmount: feeAmount})
-    .addLink('PAGES.APPLY_HELP_WITH_FEES.START.ELIGIBILITY_LINK', HELP_WITH_FEES_ELIGIBILITY, 'PAGES.APPLY_HELP_WITH_FEES.START.ELIGIBILITY', '.', null, true)
+    .addRawHtml(linkParagraph)
     .addParagraph('PAGES.APPLY_HELP_WITH_FEES.START.RECEIVE_DECISION')
     .addSpan('PAGES.APPLY_HELP_WITH_FEES.START.ACCEPTED_FULLY_TITLE', '', 'govuk-!-font-weight-bold')
     .addParagraph('PAGES.APPLY_HELP_WITH_FEES.START.ACCEPTED_FULLY')
