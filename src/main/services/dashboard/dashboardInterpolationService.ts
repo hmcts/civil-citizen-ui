@@ -37,7 +37,10 @@ import {
   GA_APPLICATION_SUMMARY_URL,
   REQUEST_FOR_RECONSIDERATION_COMMENTS_URL,
   GA_APPLICATION_RESPONSE_SUMMARY_URL,
-  GA_APPLY_HELP_WITH_FEE_SELECTION, GA_RESPONSE_VIEW_APPLICATION_URL, GA_VIEW_APPLICATION_URL,
+  GA_APPLY_HELP_WITH_FEE_SELECTION,
+  GA_RESPONSE_VIEW_APPLICATION_URL,
+  GA_VIEW_APPLICATION_URL,
+  GA_RESPONDENT_INFORMATION_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -130,6 +133,7 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{GENERAL_APPLICATION_FEE_URL}', GA_APPLY_HELP_WITH_FEE_SELECTION.replace(':id', claimId).replace(':appId', appId));
   valuesMap.set('{GA_VIEW_APPLICATION_URL}', GA_VIEW_APPLICATION_URL.replace(':id', claimId).replace(':appId', appId));
   valuesMap.set('{GA_RESPONSE_VIEW_APPLICATION_URL}', GA_RESPONSE_VIEW_APPLICATION_URL.replace(':id', claimId).replace(':appId', appId));
+  valuesMap.set('{GA_RESPONDENT_INFORMATION_URL}', GA_RESPONDENT_INFORMATION_URL.replace(':id', claimId).replace(':appId', appId));
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));
