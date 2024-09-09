@@ -21,10 +21,8 @@ export const getApplyHelpWithFeesContent = (claimId: string, claim: Claim, lng: 
     feeAmount = getHearingFee(claim);
   }
   const linkBefore = `${HELP_FEE_SELECTION}.ELIGIBILITY_LINK`;
-  const link = HELP_WITH_FEES_ELIGIBILITY;
-  const linkText = `${HELP_FEE_SELECTION}.ELIGIBILITY`;
 
-  const linkParagraph = `<p class="govuk-body govuk-!-margin-bottom-1">${t(linkBefore, {lng})} <a target="_blank" class="govuk-link" rel="noopener noreferrer" href=${link}>${t(`${linkText}`, {lng})}</a>.</p>`;
+  const linkParagraph = `<p class="govuk-body govuk-!-margin-bottom-1">${t(linkBefore, {lng})} <a target="_blank" class="govuk-link" rel="noopener noreferrer" href=${HELP_WITH_FEES_ELIGIBILITY}>${t(`${HELP_FEE_SELECTION}.ELIGIBILITY`, {lng})}</a>.</p>`;
 
   return new PageSectionBuilder()
     .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
