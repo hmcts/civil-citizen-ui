@@ -32,7 +32,7 @@ describe('hasAnythingChanged', () => {
     expect(actualHelpWithFeesContent[3].data.text).toEqual('COMMON.CLAIM_AMOUNT_WITH_VALUE');
     expect(actualHelpWithFeesContent[4].data.html).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.HEARING_FEE_INSET');
     expect(actualHelpWithFeesContent[4].data.variables).toEqual({'feeAmount': 70});
-    expect(actualHelpWithFeesContent[5].data.html).toEqual('<p class="govuk-body govuk-!-margin-bottom-1">PAGES.APPLY_HELP_WITH_FEES.START.ELIGIBILITY_LINK <a target="_blank" class="govuk-link" rel="noopener noreferrer" href=https://www.gov.uk/get-help-with-court-fees#eligibility>PAGES.APPLY_HELP_WITH_FEES.START.ELIGIBILITY</a>.</p>');
+    expect(actualHelpWithFeesContent[5].data.html).toEqual('<p class="govuk-body govuk-!-margin-bottom-1">PAGES.APPLY_HELP_WITH_FEES.START.ELIGIBILITY <a target="_blank" class="govuk-link" rel="noopener noreferrer" href=https://www.gov.uk/get-help-with-court-fees#eligibility>PAGES.APPLY_HELP_WITH_FEES.START.ELIGIBILITY_LINK</a>.</p>');
     expect(actualHelpWithFeesContent[6].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.RECEIVE_DECISION');
     expect(actualHelpWithFeesContent[7].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.ACCEPTED_FULLY_TITLE');
     expect(actualHelpWithFeesContent[8].data.text).toEqual('PAGES.APPLY_HELP_WITH_FEES.START.ACCEPTED_FULLY');

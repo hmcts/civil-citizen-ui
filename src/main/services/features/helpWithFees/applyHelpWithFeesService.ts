@@ -20,9 +20,9 @@ export const getApplyHelpWithFeesContent = (claimId: string, claim: Claim, lng: 
   if (claim?.feeTypeHelpRequested === FeeType.HEARING) {
     feeAmount = getHearingFee(claim);
   }
-  const linkBefore = `${HELP_FEE_SELECTION}.ELIGIBILITY_LINK`;
+  const linkBefore = `${HELP_FEE_SELECTION}.ELIGIBILITY`;
 
-  const linkParagraph = `<p class="govuk-body govuk-!-margin-bottom-1">${t(linkBefore, {lng})} <a target="_blank" class="govuk-link" rel="noopener noreferrer" href=${HELP_WITH_FEES_ELIGIBILITY}>${t(`${HELP_FEE_SELECTION}.ELIGIBILITY`, {lng})}</a>.</p>`;
+  const linkParagraph = `<p class="govuk-body govuk-!-margin-bottom-1">${t(linkBefore, {lng})} <a target="_blank" class="govuk-link" rel="noopener noreferrer" href=${HELP_WITH_FEES_ELIGIBILITY}>${t(`${HELP_FEE_SELECTION}.ELIGIBILITY_LINK`, {lng})}</a>.</p>`;
 
   return new PageSectionBuilder()
     .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
