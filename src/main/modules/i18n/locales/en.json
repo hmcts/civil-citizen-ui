@@ -2068,6 +2068,7 @@
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
         "HEARING_FEE_UNPAID": "This claim has been struck out.",
+        "CASE_DISMISSED": "The case has been closed.",
         "CASE_STAYED": "The case has been stayed."
       },
       "STATUS_DEFENDANT": {
@@ -2114,6 +2115,7 @@
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement.",
         "HEARING_FEE_UNPAID": "This claim has been struck out.",
+        "CASE_DISMISSED": "The case has been closed.",
         "CASE_STAYED": "The case has been stayed."
       },
       "SUPPORT_LINKS": {
