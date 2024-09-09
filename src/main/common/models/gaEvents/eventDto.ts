@@ -24,6 +24,8 @@ export interface EventDto {
 }
 
 export interface CCDGeneralApplication extends ClaimUpdate {
+  id?: string;
+  value?: CCDGaValue;
   generalAppType?: CcdGeneralApplicationTypes;
   generalAppRespondentAgreement?: CcdGeneralApplicationRespondentAgreement;
   generalAppInformOtherParty?: CcdGeneralApplicationInformOtherParty;
@@ -59,6 +61,11 @@ export interface CCDGaHelpWithFees {
 
   generalAppHelpWithFees?: CCDHelpWithFees;
 
+}
+
+export interface CCDGaValue {
+  caseLink?: CaseLink;
+  parentClaimantIsApplicant?: YesNoUpperCamelCase;
 }
 
 export type CCDRespondToApplication = {
