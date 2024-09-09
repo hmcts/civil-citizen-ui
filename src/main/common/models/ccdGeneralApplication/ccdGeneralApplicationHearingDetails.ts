@@ -31,3 +31,21 @@ export enum CcdHearingType {
   VIDEO = 'VIDEO',
   TELEPHONE = 'TELEPHONE',
 }
+
+export interface CcdGARespondentDebtorOfferGAspec {
+  respondentDebtorOffer: CcdGARespondentDebtorOfferOptionsGAspec,
+  paymentPlan?: CcdGADebtorPaymentPlanGAspec, 
+  debtorObjections?: string,
+  monthlyInstalment?: string,
+  paymentSetDate?: Date,
+}
+
+export enum CcdGARespondentDebtorOfferOptionsGAspec {
+  ACCEPT = 'ACCEPT',
+  DECLINE = 'DECLINE'
+}
+
+export enum CcdGADebtorPaymentPlanGAspec {
+  INSTALMENT = 'INSTALMENT',
+  PAYFULL = 'PAYFULL',
+}
