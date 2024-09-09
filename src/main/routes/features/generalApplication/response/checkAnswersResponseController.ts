@@ -74,7 +74,7 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
 
 const getTitle = (generalAppTypes: ApplicationTypeOption[], lng: string) => {
 
-  return (generalAppTypes.length == 1)
+  return (generalAppTypes && generalAppTypes.length == 1)
     ? getRespondToApplicationCaption(generalAppTypes, lng)
     : t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.RESPOND_TO_AN_APPLICATION', {lng});
 };
