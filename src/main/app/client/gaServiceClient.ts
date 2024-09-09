@@ -1,6 +1,6 @@
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AppRequest} from 'common/models/AppRequest';
-import {EventDto, CCDGeneralApplication,CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
+import {CCDGaHelpWithFees, CCDGeneralApplication, CCDRespondToApplication, EventDto} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {GeneralApplicationResponse} from 'models/generalApplicationResponse';
 import {Application} from 'models/application';
@@ -51,7 +51,12 @@ export class GaServiceClient {
     };
   }
 
-  async submitEvent(event: ApplicationEvent, claimId: string, updatedApplication?: CCDGeneralApplication| CCDGaHelpWithFees, req?: AppRequest): Promise<Application> {
+  async submitRespondToApplicationEvent(applicationId: string, generalApplication: CCDRespondToApplication, req?: AppRequest): Promise<Application> {
+    return this.submitEvent(ApplicationEvent.RESPOND_TO_APPLICATION, applicationId, generalApplication, req);
+  }
+
+  async submitEvent(event: ApplicationEvent, claimId: string, updatedApplication?: CCDGeneralApplication | CCDRespondToApplication | CCDGaHelpWithFees, req?: AppRequest): Promise<Application> {
+
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
     const data: EventDto = {
@@ -125,7 +130,7 @@ export class GaServiceClient {
     const config = this.getConfig(req);
     try {
       const response = await this.client.get(constructResponseUrlWithIdParams(caseId, GA_BY_CASE_URL), config);
-      return response.data.cases.sort((a: any, b: any) => {
+      return response.data?.cases?.sort((a: any, b: any) => {
         return new Date(a.created_date).getTime() - new Date(b.created_date).getTime();
       });
     } catch (err) {
