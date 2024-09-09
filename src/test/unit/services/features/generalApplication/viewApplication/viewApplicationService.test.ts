@@ -117,7 +117,7 @@ describe('View Application service', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = await getApplicationSections(mockedAppRequest, '1718105701451856', 'en');
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
 
       expect(result).toHaveLength(12);
       expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
@@ -159,7 +159,7 @@ describe('View Application service', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = await getApplicationSections(mockedAppRequest, '1718105701451856', 'en');
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
 
       expect(result).toHaveLength(13);
       expect(result).toContainEqual({
@@ -181,7 +181,7 @@ describe('View Application service', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = await getApplicationSections(mockedAppRequest, '1718105701451856', 'en');
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
       expect(result).toHaveLength(11);
       expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
         ['PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC',
