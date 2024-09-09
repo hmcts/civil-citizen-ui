@@ -82,7 +82,7 @@ respondentWantToUploadDocumentsController.post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCU
 }) as RequestHandler);
 
 function getBackLinkUrl(claimId: string, applicationId: string, gaResponse: GaResponse) {
-  if (gaResponse.generalApplicationType && gaResponse.generalApplicationType.length === 1 && gaResponse.generalApplicationType.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT)) {
+  if (gaResponse.generalApplicationType.length === 1 && gaResponse.generalApplicationType.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT)) {
     return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONSE_VIEW_APPLICATION_URL);
   }
   return !gaResponse.respondentAgreement ? constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_AGREE_TO_ORDER_URL) : constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_AGREEMENT_URL);
