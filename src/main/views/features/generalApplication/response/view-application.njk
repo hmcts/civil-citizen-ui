@@ -93,6 +93,20 @@
   {{ createDocumentsTableWithoutTableCaption(courtDocRows) }}
 {% endset %}
 
+{% set responseFromCourtHtml %}
+  <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
+  {% for item in responseFromCourt %}
+      {{ govukSummaryList({
+        rows: item.rows
+      }) }}
+      {% if item.responseButton %}
+        {{ govukButton({
+         text: item.responseButton.title,
+         href: item.responseButton.href
+        }) }}
+      {% endif %}
+  {% endfor %}
+{% endset %}
 
 {% block nestedContent %}
   <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TITLE', { applicationIndex : applicationIndex }) }}</h1>
@@ -109,6 +123,13 @@
       }) }}
     </div>
   </div>
+      {% if responseFromCourt.length > 0 %}
+        {{ govukDetails({
+          summaryHtml: courtResponseHeaderHtml,
+          html: responseFromCourtHtml
+        }) }}
+      {% endif %}
+
       {% if (applicantDocuments.documents.length + courtDocuments.documents.length + respondentDocuments.documents.length) > 0 %}
         {{ govukDetails({
           summaryHtml: applicationDocuments,
@@ -116,10 +137,13 @@
         }) }}
       {% endif %}
 </div>
-
   {{ govukButton({
     text: t('COMMON.BUTTONS.RESPOND_TO_APPLICATION'),
     href: redirectUrl
   }) }}
 
+  {{ govukButton({
+      text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD'),
+      href: dashboardUrl
+    }) }}
 {% endblock %}

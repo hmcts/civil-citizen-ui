@@ -1,4 +1,7 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {
+  getCaseDataFromStore,
+  saveDraftClaim,
+} from 'modules/draft-store/draftStoreService';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {
   ApplicationType,
@@ -7,15 +10,15 @@ import {
 } from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
-import {YesNo} from 'common/form/models/yesNo';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL, GA_APPLICATION_SUMMARY_URL, GA_RESPONSE_VIEW_APPLICATION_URL, GA_VIEW_APPLICATION_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {AppRequest} from 'common/models/AppRequest';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ValidationError} from 'class-validator';
 import {InformOtherParties} from 'common/models/generalApplication/informOtherParties';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {OrderJudge} from 'common/models/generalApplication/orderJudge';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
@@ -44,15 +47,18 @@ import {
 import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
 import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
 import {getClaimById} from 'modules/utilityService';
+import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
+import { isApplicationVisibleToRespondent } from './response/generalApplicationResponseService';
+import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
+import { t } from 'i18next';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 const baseUrl: string = config.get<string>('services.generalApplication.url');
 const generalApplicationClient = new GaServiceClient(baseUrl);
 
-export const saveApplicationType = async (claimId: string, applicationType: ApplicationType, index?: number): Promise<void> => {
+export const saveApplicationType = async (claimId: string, claim: Claim, applicationType: ApplicationType, index?: number): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     updateByIndexOrAppend(claim.generalApplication?.applicationTypes, applicationType, index);
     await saveDraftClaim(claimId, claim);
@@ -335,18 +341,11 @@ export const additionalApplicationErrorMessages: Partial<{ [key in ApplicationTy
   [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT',
 };
 
-export const saveHelpWithFeesDetails = async (claimId: string, value: any, hwfPropertyName: string): Promise<void> => {
+export const saveHelpWithFeesDetails = async (gaRedisKey: string, value: any, hwfPropertyName: keyof GaHelpWithFees): Promise<void> => {
   try {
-    const claim: any = await getCaseDataFromStore(claimId, true);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
-    if(claim.generalApplication.helpWithFees) {
-      claim.generalApplication.helpWithFees[hwfPropertyName] = value;
-    } else {
-      const helpWithFees: any = new GaHelpWithFees();
-      helpWithFees[hwfPropertyName] = value;
-      claim.generalApplication.helpWithFees = helpWithFees;
-    }
-    await saveDraftClaim(claimId, claim);
+    const gaHwFDetails = await getDraftGAHWFDetails(gaRedisKey);
+    gaHwFDetails[hwfPropertyName] = value;
+    await saveDraftGAHWFDetails(gaRedisKey, gaHwFDetails);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -397,7 +396,7 @@ export const getApplicationStatus = (status: ApplicationState): ApplicationStatu
   }
 };
 
-export const getRespondentApplicationStatus = (status: ApplicationState): ApplicationStatus => 
+export const getRespondentApplicationStatus = (status: ApplicationState): ApplicationStatus =>
   (status === ApplicationState.AWAITING_RESPONDENT_RESPONSE)
     ? ApplicationStatus.TO_DO
     : ApplicationStatus.IN_PROGRESS;
@@ -410,6 +409,30 @@ export const saveRespondentWantToUploadDoc = async (redisKey: string, wantToUplo
   try {
     const gaResponse = await getDraftGARespondentResponse(redisKey);
     gaResponse.wantToUploadDocuments = wantToUploadDocuments;
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveAdditionalText = async (redisKey: string, additionalText: string, wantToUploadAddlDocuments: YesNo): Promise<void> => {
+  try {
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.wantToUploadAddlDocuments = wantToUploadAddlDocuments;
+    gaResponse.additionalText = additionalText;
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveWrittenRepText = async (redisKey: string, writtenRepText: string, wantToUploadAddlDocuments: YesNo): Promise<void> => {
+  try {
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.wantToUploadAddlDocuments = wantToUploadAddlDocuments;
+    gaResponse.writtenRepText = writtenRepText;
     await saveDraftGARespondentResponse(redisKey, gaResponse);
   } catch (error) {
     logger.error(error);
@@ -446,4 +469,46 @@ export const shouldDisplaySyncWarning = (applicationResponse: ApplicationRespons
 export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest) : Promise<number> => {
   const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
   return applications.findIndex(application => application.id == applicationId);
+};
+
+export const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim, application: ApplicationResponse) : boolean => {
+  return ((claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
+      || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
+};
+
+export const getViewApplicationUrl = (claimId: string, claim: Claim, application: ApplicationResponse, index: number ) : string => {
+  const viewApplicationUrl = toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, application) ? GA_VIEW_APPLICATION_URL : GA_RESPONSE_VIEW_APPLICATION_URL;
+  return `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id, viewApplicationUrl)}?index=${index + 1}`;
+};
+
+export const saveApplicationTypesToGaResponse = async (gaState: ApplicationState, gaRedisKey: string, applicationTypes: ApplicationTypeOption[]): Promise<void> => {
+  if (gaState === ApplicationState.AWAITING_RESPONDENT_RESPONSE) {
+    const gaResponse = await getDraftGARespondentResponse(gaRedisKey);
+    gaResponse.generalApplicationType = applicationTypes;
+    await saveDraftGARespondentResponse(gaRedisKey, gaResponse);
+  }
+};
+
+export const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
+  if(isGAFlagEnable) {
+    let applications = await generalApplicationClient.getApplicationsByCaseId(req.params.id, req);
+    applications = claim.isClaimant() ? applications : applications?.filter(isApplicationVisibleToRespondent);
+    const allApplicationUrl = claim.isClaimant() ? GA_APPLICATION_SUMMARY_URL : GA_APPLICATION_RESPONSE_SUMMARY_URL;
+    if(applications && applications.length > 0) {
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
+        url: constructResponseUrlWithIdParams(req.params.id, allApplicationUrl),
+      };
+    }
+  }
+};
+
+export const getApplicationCreatedDate = (ccdClaim: Claim, applicationId: string): string => {
+  const ccdGeneralApplications = ccdClaim.generalApplications;
+  for (const ccdGeneralApplication of ccdGeneralApplications) {
+    if (ccdGeneralApplication.value.caseLink.CaseReference.toString() === applicationId.toString()){
+      return ccdGeneralApplication.value.generalAppSubmittedDateGAspec;
+    }
+  }
+  return undefined;
 };

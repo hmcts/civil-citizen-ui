@@ -10,7 +10,7 @@ import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { getCancelUrl, getLast, saveAgreementFromOtherParty, validateNoConsentOption} from 'services/features/generalApplication/generalApplicationService';
-import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {LinKFromValues, selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {agreementFromOtherPartyGuard} from 'routes/guards/generalApplication/agreementFromOtherPartyGuard';
 
@@ -64,7 +64,7 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreem
 }) as RequestHandler);
 
 function getBackLinkUrl(req: AppRequest) : string {
-  return constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL);
+  return constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL) + '?linkFrom=' + LinKFromValues.agreementFromOtherParty;
 }
 
 export default agreementFromOtherPartyController;

@@ -7,6 +7,7 @@ import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDa
 import {AcceptDefendantOffer} from './acceptDefendantOffer';
 import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 
 // CUI GA respondent response
 export class GaResponse {
@@ -21,6 +22,11 @@ export class GaResponse {
   wantToUploadDocuments?: YesNo;
   uploadEvidenceDocuments?: UploadGAFiles[];
   draftResponseCreatedAt?: Date;
+  additionalText?: string;
+  wantToUploadAddlDocuments?: YesNo;
+  writtenRepText?: string;
+  generalApplicationType?: ApplicationTypeOption[];
+  
   constructor(hearingArrangement?: HearingArrangement, hearingContactDetails?: HearingContactDetails, agreeToOrder?: YesNo,
     hearingSupport?: HearingSupport, unavailableDatesHearing?: UnavailableDatesGaHearing, respondentAgreement?: RespondentAgreement,
     acceptDefendantOffer?: AcceptDefendantOffer, statementOfTruth?: StatementOfTruthForm, wantToUploadDocuments?: YesNo, uploadEvidenceDocuments?: UploadGAFiles) {

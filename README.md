@@ -60,7 +60,7 @@ In order to test if the application is up, you can visit https://localhost:3001 
 ### Code style
 
 We use [ESLint](https://github.com/typescript-eslint/typescript-eslint)
-alongside [sass-lint](https://github.com/sasstools/sass-lint)
+alongside [stylelint](https://github.com/stylelint/stylelint)
 
 Running the linting with auto fix:
 ```bash

@@ -1053,6 +1053,93 @@ describe('Civil Service Client', () => {
         },
       },
     ];
+    const mockGaNotificationInfo = {
+      '123': [
+        {
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+          'titleEn': 'title_en',
+          'titleCy': 'title_cy',
+          'descriptionEn': 'description_en',
+          'descriptionCy': 'description_cy',
+          'notificationAction': undefined,
+          'timeToLive': undefined,
+        },
+        {
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+          'titleEn': 'title_en_2',
+          'titleCy': 'title_cy_2',
+          'descriptionEn': 'description_en_2',
+          'descriptionCy': 'description_cy_2',
+          'timeToLive': 'undefined',
+          'notificationAction': {
+            'id': 1,
+            'reference': '123456',
+            'actionPerformed': 'Click',
+            'createdBy': 'Test User',
+            'createdAt': new Date(100000),
+          },
+        },
+      ],
+      '456': [
+        {
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+          'titleEn': 'title_en_2',
+          'titleCy': 'title_cy_2',
+          'descriptionEn': 'description_en_2',
+          'descriptionCy': 'description_cy_2',
+          'timeToLive': 'Click',
+          'notificationAction': {
+            'id': 2,
+            'reference': '123456',
+            'actionPerformed': 'Click',
+            'createdBy': 'Test User',
+            'createdAt': new Date(100000),
+          },
+        },
+        {
+          'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+          'titleEn': 'title_en_2',
+          'titleCy': 'title_cy_2',
+          'descriptionEn': 'description_en_2',
+          'descriptionCy': 'description_cy_2',
+          'timeToLive': 'Session',
+          'notificationAction': {
+            'id': 3,
+            'reference': '123456',
+            'actionPerformed': 'Click',
+            'createdBy': 'Test User',
+            'createdAt': new Date(100000),
+          },
+        },
+      ],
+    };
+    const mockGa1NotificationInfoExpected = [
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
+        'titleEn': 'title_en',
+        'titleCy': 'title_cy',
+        'descriptionEn': 'description_en',
+        'descriptionCy': 'description_cy',
+        'notificationAction': undefined,
+        'timeToLive': undefined,
+      },
+      {
+        'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
+        'titleEn': 'title_en_2',
+        'titleCy': 'title_cy_2',
+        'descriptionEn': 'description_en_2',
+        'descriptionCy': 'description_cy_2',
+        'timeToLive': 'undefined',
+        'notificationAction': {
+          'id': 1,
+          'reference': '123456',
+          'actionPerformed': 'Click',
+          'createdBy': 'Test User',
+          'createdAt': new Date(100000),
+        },
+      },
+    ];
+
     const mockExpectedDashboardInfo=
       [{
         'categoryEn': 'Hearing',
@@ -1175,6 +1262,20 @@ describe('Civil Service Client', () => {
       expect(notificationResponse.items).toEqual(mockNotificationInfoExpected);
     });
 
+    it('should get ga notification Map', async () => {
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({data: mockGaNotificationInfo});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      //When
+      const notificationResponse = await civilServiceClient.retrieveGaNotification(['123', '456'],'claimant', appReq);
+
+      //Then
+      expect(notificationResponse.get('123').items).toEqual(mockGa1NotificationInfoExpected);
+      expect(notificationResponse.get('456').items).toEqual([]);
+    });
+
     it('should get dashboard Task List', async () => {
       //Given
       const mockGet = jest.fn().mockResolvedValue({data: mockDashboardInfo});
@@ -1260,14 +1361,14 @@ describe('Civil Service Client', () => {
   });
 
   describe('Throw errors', ()=> {
-    it('should throw error isDefendantLinked ', async () => {
+    it('should throw error isOcmcDefendantLinked ', async () => {
       const mockGet = jest.fn().mockImplementation(() => {
         throw new Error('error');
       });
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
-      await expect(civilServiceClient.isDefendantLinked('123')).rejects.toThrow('error');
+      await expect(civilServiceClient.isOcmcDefendantLinked('123')).rejects.toThrow('error');
     });
     it('should throw error getFeeRanges ', async () => {
       const mockGet = jest.fn().mockImplementation(() => {

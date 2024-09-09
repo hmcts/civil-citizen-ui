@@ -174,7 +174,17 @@
       "SIGN_OUT": "Allgofnodi"
     },
     "HEARING_DURATION": {
+      "MINUTES_05": "5 munud",
+      "MINUTES_10": "10 munud",
+      "MINUTES_15": "15 munud",
+      "MINUTES_20": "20 munud",
+      "MINUTES_25": "25 munud",
       "MINUTES_30": "30 munud",
+      "MINUTES_35": "35 munud",
+      "MINUTES_40": "40 munud",
+      "MINUTES_45": "45 munud",
+      "MINUTES_50": "50 munud",
+      "MINUTES_55": "55 munud",
       "MINUTES_60": "1 awr",
       "MINUTES_90": "1 awr a hanner",
       "MINUTES_120": "2 awr",
@@ -912,6 +922,7 @@
     },
     "TELEPHONE_FOR_MEDIATION": {
       "PAGE_TITLE": "Cyfryngu dros y ffôn",
+      "YOU_WISH_TO_PROCEED_WITH_THE_CLAIM": "Rydych yn dymuno bwrw ymlaen â'r hawliad. Y cam nesaf yw cyfryngu.",
       "IF_THE_CLAIMANT_DISAGREES": "Os yw’r hawlydd yn anghytuno â’ch ymateb, rhaid i chi gymryd rhan mewn cyfryngu.",
       "A_TELEPHONE_MEDIATION_APPOINTMENT": "Bydd apwyntiad cyfryngu dros y ffôn yn cael ei drefnu yn rhad ac am ddim.",
       "AN_IMPARTIAL_MEDIATOR": "Bydd cyfryngwr diduedd yn siarad â’r ddau barti i weld a oes modd dod i gytundeb cyn i’r achos fynd gerbron y llys. Byddwch yn cael cyfle i esbonio’n fanylach eich rhesymau dros wrthod yr hawliad.",
@@ -2056,7 +2067,8 @@
         "SDO_ORDER_IN_REVIEW_OTHER_PARTY_DEFENDANT": "Darllenwch geisiadau'r diffynnydd i farnwr adolygu'r gorchymyn.",
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "Mae'r dogfennau'n cael eu cyfieithu.",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos.",
-        "HEARING_FEE_UNPAID": "Mae'r hawliad wedi cael ei ddileu."
+        "HEARING_FEE_UNPAID": "Mae'r hawliad wedi cael ei ddileu.",
+        "CASE_DISMISSED": "Mae’r achos wedi’i gau."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
@@ -2101,7 +2113,8 @@
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "Mae'r ddau ohonoch wedi llofnodi cytundeb setlo.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement.",
-        "HEARING_FEE_UNPAID": "Mae'r hawliad wedi cael ei ddileu."
+        "HEARING_FEE_UNPAID": "Mae'r hawliad wedi cael ei ddileu.",
+        "CASE_DISMISSED": "Mae’r achos wedi’i gau."
       },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Gwneud cais i’r llys fel credydwr dyled mewn lle i anadlu",
@@ -2116,6 +2129,7 @@
         "I_WANT_TO": "Rwyf eisiau...",
         "REPRESENT_MYSELF": "Cynrychioli fy hun mewn gwrandawiad",
         "TELL_US_ENDED": "Dywedwch wrthym eich bod wedi dod â’r hawliad i ben",
+        "VIEW_ALL_APPLICATIONS": "View all existing applications",
         "WHAT_EXPECT_HEARING": "Beth i'w ddisgwyl mewn gwrandawiad"
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
@@ -3037,6 +3051,19 @@
         "SUMMERY_MESSAGE2" : "Their answers to 'What order do you want the judge to make?' and 'Why are you requesting this order' will explain the change that they've requested and why. There will be a link to review any documents that they've uploaded.",
         "SUMMERY_MESSAGE3" : "Once you've reviewed their application, click 'respond to application' below. You'll be asked whether or not you agree with their request."
       },
+      "RESPONDENT_UPLOAD_OPTION": {
+        "PAGE_TITLE": "Provide more information to the court",
+        "TITLE": "Provide more information to the court",
+        "TEXT_INPUT": "Enter the information requested by the court",
+        "TEXT_INPUT_HINT": "Write in short sentences and paragraphs. Any text you enter will not be translated into Welsh.",
+        "CONTENT_1": "You have the option of entering the information requested by the court or uploading documents containing the information requested.",
+        "CONTENT_2_1": "If you're not sure what to write, refer to the ",
+        "CONTENT_2_2": "court document",
+        "CONTENT_2_3": " that sets out the information that the court has requested from you.",
+        "OPTION": "Do you want to upload documents to support your response? (Optional)",
+        "WRITTEN_REP_CONTENT_1": "Written representations are written statements that explain your case or your request to the court.",
+        "WRITTEN_REP_CONTENT_1_2": "You can either write the requested information in the box below or upload documents that contain it."
+      },
       "RESPONDENT_WANT_TO_UPLOAD_DOC": {
         "PAGE_TITLE": "Do you want to upload documents to support your response?",
         "TITLE": "Do you want to upload documents to support your response? (Optional)"
@@ -3095,18 +3122,24 @@
       },
       "VIEW_APPLICATION": {
         "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
-        "APPLICATION": "Application",
         "APPLICANTS_DOCUMENTS": "Applicant's documents",
+        "APPLICATION": "Application",
+        "APPLICATION_APPROVE_EDIT": "Application approved or edited",
         "APPLICATION_DETAILS": "Application details submitted by the applicant.",
+        "APPLICATION_DISMISSED": "Application dismissed",
         "APPLICATION_DOCUMENTS": "Application Documents",
+        "APPROVE_EDIT_DOCUMENT": "Approval or edit order",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Court's response to the application",
         "DATE_RESPONSE": "Date of response",
         "DIRECTION_WITH_NOTICE": "Direction to make the application with notice",
+        "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Documents from the court",
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "HEARING_NOTICE" : "Hearing Notice",
+        "HEARING_NOTICE_DESC" : "There is a hearing notice",
         "HEARING_ORDER" : "Hearing Order",
+        "HEARING_ORDER_DESC" : "The judge has ordered a hearing",
         "JUDGE_HAS_MADE_ORDER": "Mae'r Barnwr wedi gwneud gorchymyn ar eich hawliad.",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
@@ -3117,9 +3150,11 @@
           "TITLE": "Response from the other parties",
           "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing"
         },
+        "RESPOND_TO_REQUEST": "Respond to the request",
+        "REQUEST_WRITTEN_REPRESENTATION": "Request for written representation",
+        "REQUEST_WRITTEN_REPRESENTATION_DOCUMENT": "request_for_written_representation.pdf",
         "RESPONSE_COURT": "Response from the court",
         "RESPONDENTS_DOCUMENTS": "Respondent's documents",
-        "RESPOND_TO_REQUEST": "Respond to the request",
         "REQUEST_MORE_INFO": "Request for more information",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
@@ -4385,6 +4420,7 @@
       "DEFENDANT_TIMELINE": "Amserlen o ddigwyddiadau'r Diffynnydd",
       "DETERMINATION_REQUEST": "Gofyn i benderfyniad gael ei wneud",
       "DRAFT_CLAIM": "Ffurflen hawlio drafft",
+      "FINAL_ORDER": "Gorchymyn terfynol y barnwr",
       "PAGE_CAPTION": "Gorchmynion a rhybuddion gan y llys",
       "PAGE_TITLE": "Gweld gorchmynion a rhybuddion",
       "PARTICULARS_CLAIM": "Manylion yr hawliad",
@@ -4393,6 +4429,7 @@
       "SETTLEMENT_AGREEMENT": "Cytundeb setlo",
       "STANDARD_DIRECTIONS_ORDER": "Gorchymyn Cyfarwyddo Safonol",
       "TRANSLATED_ORDER": "Translated order",
+      "TRIAL_ARRANGEMENTS": "Barod ar gyfer Treial",
       "UNSEALED_CLAIM": "Ffurflen Hawlio heb ei selio"
     },
     "VIEW_RESPONSE_TO_THE_CLAIM": {
@@ -5052,7 +5089,12 @@
       "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
       "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
-      "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your response. Choose Yes or No."
+      "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your response. Choose Yes or No.",
+      "RESPONDENT_UPLOAD_OPTION": {
+        "EMPTY_OPTION": "You need to either enter the information requested in the box or select Yes to upload documents to support your response.",
+        "EMPTY_OPTION_TEXT": "You need to tell us if you want to upload documents to support your response. Choose option: Yes or No.",
+        "ERROR_INPUT": "You need to either enter the information requested in the box or select Yes to upload documents to support your response."
+      }
     }
   }
 }

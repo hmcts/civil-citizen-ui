@@ -8,7 +8,7 @@ import {
   CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
   CIVIL_SERVICE_CALCULATE_DEADLINE,
   CIVIL_SERVICE_CASES_URL,
-  CIVIL_SERVICE_CHECK_DEFENDENT_LINKED_URL,
+  CIVIL_SERVICE_CHECK_OCMC_DEFENDENT_LINKED_URL,
   CIVIL_SERVICE_CLAIM_AMOUNT_URL,
   CIVIL_SERVICE_AIRLINES_URL,
   CIVIL_SERVICE_COURT_DECISION,
@@ -25,8 +25,11 @@ import {
   CIVIL_SERVICE_VALIDATE_PIN_URL,
   CIVIL_SERVICE_DASHBOARD_TASKLIST_URL,
   CIVIL_SERVICE_NOTIFICATION_LIST_URL,
-  CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL, CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL,
-  CIVIL_SERVICE_UPDATE_TASK_STATUS_URL, CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL,
+  CIVIL_SERVICE_CREATE_SCENARIO_DASHBOARD_URL,
+  CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL,
+  CIVIL_SERVICE_UPDATE_TASK_STATUS_URL,
+  CIVIL_SERVICE_GENERAL_APPLICATION_FEE_URL,
+  CIVIL_SERVICE_GA_NOTIFICATION_LIST_URL,
 } from './civilServiceUrls';
 import {FeeRange, FeeRanges} from 'common/models/feeRange';
 import {plainToInstance} from 'class-transformer';
@@ -58,7 +61,6 @@ import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {TaskStatusColor} from 'models/dashboard/taskList/dashboardTaskStatus';
 import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetailsService';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
-import {DefendantLinkStatus} from 'models/DefendantLinkStatus';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -249,14 +251,14 @@ export class CivilServiceClient {
     }
   }
 
-  async isDefendantLinked(caseReference: string): Promise<DefendantLinkStatus> {
+  async isOcmcDefendantLinked(caseReference: string): Promise<boolean> {
     try {
-      const response = await this.client.get(CIVIL_SERVICE_CHECK_DEFENDENT_LINKED_URL //nosonar
+      const response = await this.client.get(CIVIL_SERVICE_CHECK_OCMC_DEFENDENT_LINKED_URL //nosonar
         .replace(':caseReference', caseReference), {headers: {'Content-Type': 'application/json'}});// no-sonar
       if (!response.data) {
-        return new DefendantLinkStatus(false, false);
+        return false;
       }
-      return response.data as DefendantLinkStatus;
+      return response.data as boolean;
     } catch (err: unknown) {
       logger.error(`Error when checking a claim ${caseReference} is linked to a defendant`);
       throw err;
@@ -475,12 +477,8 @@ export class CivilServiceClient {
     }
   }
 
-  async retrieveNotification(claimId: string,role: string,  req: AppRequest): Promise<DashboardNotificationList>  {
-    const config = this.getConfig(req);
-    const response = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
-    let dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
-
-    dashboardNotificationItems = dashboardNotificationItems.filter((notification) => {
+  filterDashboardNotificationItems(dashboardNotifications: DashboardNotification[], req: AppRequest): DashboardNotification[] {
+    return dashboardNotifications.filter((notification) => {
 
       const session = req?.session;
       const actionUser = notification?.notificationAction?.createdBy;
@@ -491,16 +489,37 @@ export class CivilServiceClient {
       const timeToLive = notification.timeToLive;
 
       return !(actionUser === sessionUser && actionPerformed === 'Click'
-            && (timeToLive === 'Click'
-                || (timeToLive === 'Session'
+          && (timeToLive === 'Click'
+              || (timeToLive === 'Session'
                   && sessionStart > actionPerformedTime
-                )
-            )
+              )
+          )
       );
 
     });
+  }
 
+  async retrieveNotification(claimId: string,role: string,  req: AppRequest): Promise<DashboardNotificationList>  {
+    const config = this.getConfig(req);
+    const response = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
+    let dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
+
+    dashboardNotificationItems = this.filterDashboardNotificationItems(dashboardNotificationItems, req);
     return new DashboardNotificationList(dashboardNotificationItems);
+  }
+
+  async retrieveGaNotification(appIds: string[], role: string,  req: AppRequest): Promise<Map<string, DashboardNotificationList>>  {
+    const config = this.getConfig(req);
+    const appIdsParam = appIds.join(',');
+    const response = await this.client.get(CIVIL_SERVICE_GA_NOTIFICATION_LIST_URL.replace(':ccd-case-identifiers', appIdsParam).replace(':role-type', role), config);
+    const dashboardNotificationItems = plainToInstance(Map<string, DashboardNotification[]>, response.data as Map<string, DashboardNotification[]>);
+    const gaNotifications = new Map<string, DashboardNotificationList>;
+    dashboardNotificationItems.forEach((value, key, map) => {
+      const dashboardNotificationItems = this.filterDashboardNotificationItems(value, req);
+      gaNotifications.set(key, new DashboardNotificationList(dashboardNotificationItems));
+    });
+
+    return gaNotifications;
   }
 
   async retrieveDashboard(claimId: string,role: string,  req: AppRequest): Promise<Dashboard>  {

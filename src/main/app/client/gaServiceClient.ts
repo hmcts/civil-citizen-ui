@@ -1,6 +1,6 @@
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AppRequest} from 'common/models/AppRequest';
-import {EventDto, CCDGeneralApplication,CCDGaHelpWithFees, CCDRespondToApplication} from 'models/gaEvents/eventDto';
+import {CCDGaHelpWithFees, CCDGeneralApplication, CCDRespondToApplication, EventDto} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
 import {GeneralApplicationResponse} from 'models/generalApplicationResponse';
 import {Application} from 'models/application';
@@ -130,7 +130,7 @@ export class GaServiceClient {
     const config = this.getConfig(req);
     try {
       const response = await this.client.get(constructResponseUrlWithIdParams(caseId, GA_BY_CASE_URL), config);
-      return response.data.cases.sort((a: any, b: any) => {
+      return response.data?.cases?.sort((a: any, b: any) => {
         return new Date(a.created_date).getTime() - new Date(b.created_date).getTime();
       });
     } catch (err) {
