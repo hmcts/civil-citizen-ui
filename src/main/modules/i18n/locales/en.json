@@ -958,7 +958,7 @@
         "ACCEPTED_PARTIALLY": "Some of the fee will be paid, but you'll need to pay the remaining balance. You can pay by phone.",
         "CONTINUE_APPLICATION": "Do you want to continue to apply for help with fees?",
         "ELIGIBILITY": "Applying for help with fees does not guarantee your fee will be covered. You will need to meet the ",
-        "ELIGIBILITY_LINK": "eligibility criteria (opens in new tab).",
+        "ELIGIBILITY_LINK": "eligibility criteria (opens in new tab)",
         "HEARING_FEE": "Hearing fee",
         "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The hearing fee is: £{{ feeAmount }}</span>",
         "RECEIVE_DECISION": "Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.",
@@ -3251,7 +3251,7 @@
         "HEARING_FEE": {
           "APPLY_HELP_FEE_SELECTION": {
             "LINK_BEFORE": "If you're on a low income, have limited savings or are claiming benefits, you may be able to get ",
-            "LINK_TEXT": "help with fees (opens in a new tab).",
+            "LINK_TEXT": "help with fees (opens in a new tab)",
             "PARAGRAPH": "If you meet the criteria, you may get support to pay some or all of the fee.",
             "QUESTION_TITLE": "Do you want to apply for help with fees?",
             "TITLE": "Pay hearing fee"
@@ -4366,7 +4366,7 @@
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "HAS_ANYTHING": "Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?",
       "YOU_CAN": "You can check your previous answers in the ",
-      "DIRECTIONS": "directions questionnaire.",
+      "DIRECTIONS": "directions questionnaire",
       "WHAT_SUPPORT": "What support do you, experts or witnesses need?",
       "FOR_EXAMPLE": "For example, a witness requires a courtroom with step-free access."
     },
