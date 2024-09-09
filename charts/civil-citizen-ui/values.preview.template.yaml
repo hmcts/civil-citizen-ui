@@ -111,6 +111,8 @@ ccd:
       enabled: false
     userProfile:
       enabled: false
+    elastic:
+      enabled: true
 
   global:
     ccdApiGatewayIngress: http://${SERVICE_NAME}-ccd-api-gw
