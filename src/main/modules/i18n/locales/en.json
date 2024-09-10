@@ -2067,7 +2067,9 @@
         "SDO_ORDER_IN_REVIEW_OTHER_PARTY_DEFENDANT": "Read the defendant’s requests for a judge to review the order.",
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
-        "HEARING_FEE_UNPAID": "This claim has been struck out."
+        "HEARING_FEE_UNPAID": "This claim has been struck out.",
+        "CASE_DISMISSED": "The case has been closed.",
+        "CASE_STAYED": "The case has been stayed."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
@@ -2112,7 +2114,9 @@
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement.",
-        "HEARING_FEE_UNPAID": "This claim has been struck out."
+        "HEARING_FEE_UNPAID": "This claim has been struck out.",
+        "CASE_DISMISSED": "The case has been closed.",
+        "CASE_STAYED": "The case has been stayed."
       },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Applying to the court as a creditor of a debt in breathing space",
