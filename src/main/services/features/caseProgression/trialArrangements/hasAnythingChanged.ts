@@ -24,7 +24,7 @@ export const getHasAnythingChanged = (claimId: string, claim: Claim) => {
     .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
     .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
     .addTitle('PAGES.HAS_ANYTHING_CHANGED.HAS_ANYTHING')
-    .addLink('PAGES.HAS_ANYTHING_CHANGED.DIRECTIONS',CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentId), 'PAGES.HAS_ANYTHING_CHANGED.YOU_CAN', '.')
+    .addFullStopLink('PAGES.HAS_ANYTHING_CHANGED.DIRECTIONS',CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentId), 'PAGES.HAS_ANYTHING_CHANGED.YOU_CAN')
     .build();
 
   function getDocumentId(claim:Claim, documentType: DocumentType, defendantOrClaimant?: string):string {
