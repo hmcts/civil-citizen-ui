@@ -2067,7 +2067,8 @@
         "SDO_ORDER_IN_REVIEW_OTHER_PARTY_DEFENDANT": "Read the defendant’s requests for a judge to review the order.",
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "The documents are being translated.",
         "WAITING_COURT_REVIEW": "Wait for the court to review the case.",
-        "HEARING_FEE_UNPAID": "This claim has been struck out."
+        "HEARING_FEE_UNPAID": "This claim has been struck out.",
+        "CASE_DISMISSED": "The case has been closed."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "You’ve admitted all of the claim and offered to pay the full amount by {{ paymentDate }}.",
@@ -2112,7 +2113,8 @@
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "You’ve both signed a settlement agreement.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement.",
-        "HEARING_FEE_UNPAID": "This claim has been struck out."
+        "HEARING_FEE_UNPAID": "This claim has been struck out.",
+        "CASE_DISMISSED": "The case has been closed."
       },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Applying to the court as a creditor of a debt in breathing space",
@@ -2127,6 +2129,7 @@
         "I_WANT_TO": "I want to...",
         "REPRESENT_MYSELF": "Represent myself at a hearing",
         "TELL_US_ENDED": "Tell us you've ended the claim",
+        "VIEW_ALL_APPLICATIONS": "View all existing applications",
         "WHAT_EXPECT_HEARING": "What to expect at a hearing"
       },
       "TITLE": "Your money claims account",
@@ -3057,7 +3060,9 @@
         "CONTENT_2_1": "If you're not sure what to write, refer to the ",
         "CONTENT_2_2": "court document",
         "CONTENT_2_3": " that sets out the information that the court has requested from you.",
-        "OPTION": "Do you want to upload documents to support your response? (Optional)"
+        "OPTION": "Do you want to upload documents to support your response? (Optional)",
+        "WRITTEN_REP_CONTENT_1": "Written representations are written statements that explain your case or your request to the court.",
+        "WRITTEN_REP_CONTENT_1_2": "You can either write the requested information in the box below or upload documents that contain it."
       },
       "RESPONDENT_WANT_TO_UPLOAD_DOC": {
         "PAGE_TITLE": "Do you want to upload documents to support your response?",

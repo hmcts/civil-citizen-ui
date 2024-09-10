@@ -7,7 +7,7 @@ import {
 import {GenericForm} from 'common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
-import {generateRedisKey, generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
+import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {t} from 'i18next';
 import {Claim} from 'models/claim';
@@ -55,8 +55,8 @@ unavailableHearingDatesResponseController.post(GA_RESPONSE_UNAVAILABLE_HEARING_D
     const action = req.body.action;
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
-    const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
-    const redisKey = generateRedisKey(<AppRequest>req);
+    const gaRedisKey = generateRedisKeyForGA(<AppRequest>req);
+    const gaResponse = await getDraftGARespondentResponse(gaRedisKey);
     const unavailableDatesForHearing = getUnavailableDatesForHearingForm(req.body);
     const form = new GenericForm(unavailableDatesForHearing);
     if (action === 'add_another-unavailableDates') {
@@ -71,7 +71,7 @@ unavailableHearingDatesResponseController.post(GA_RESPONSE_UNAVAILABLE_HEARING_D
       if (form.hasErrors()) {
         await renderView(claim, form, gaResponse, req, res);
       } else {
-        await saveRespondentUnavailableDates(redisKey, unavailableDatesForHearing);
+        await saveRespondentUnavailableDates(gaRedisKey, unavailableDatesForHearing);
         res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_SUPPORT_URL));
       }
     }

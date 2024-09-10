@@ -8,6 +8,7 @@ import {
   getByIndexOrLast,
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
+  getViewApplicationUrl,
   saveAcceptDefendantOffer,
   saveAdditionalText,
   saveAgreementFromOtherParty,
@@ -21,7 +22,7 @@ import {
   saveRequestingReason,
   saveRespondentAgreement,
   saveRespondentWantToUploadDoc,
-  saveUnavailableDates,
+  saveUnavailableDates, saveWrittenRepText,
   shouldDisplaySyncWarning,
   updateByIndexOrAppend,
   validateAdditionalApplicationtType,
@@ -89,7 +90,7 @@ describe('General Application service', () => {
       });
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveApplicationType('123', new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+      await saveApplicationType('123', new Claim(), new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
       //Then
       expect(spy).toBeCalled();
     });
@@ -104,7 +105,7 @@ describe('General Application service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveApplicationType('123', new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveApplicationType('123', new Claim(), new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
@@ -727,6 +728,23 @@ describe('Save Additional Text and Option', () => {
   });
 });
 
+describe('Save WrittenRep Text and Option', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  it('should save GARespondentResponse successfully', async () => {
+    //Given
+    jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+    const spy = jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse');
+    const uploadFile = YesNo.YES;
+    const input = 'WrittenRep Text';
+    //When
+    await saveWrittenRepText('123', input, uploadFile);
+    //Then
+    expect(spy).toBeCalled();
+  });
+});
+
 describe('Save Accept defendant offer', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -986,6 +1004,7 @@ describe('Should get the application index', () => {
     //Then
     expect(result).toEqual(-1);
   });
+
   describe('deleteGAFromClaimsByUserId', () => {
     it('should delete GAs by user id', async () => {
       //Given
@@ -1000,4 +1019,137 @@ describe('Should get the application index', () => {
       expect(spy).toBeCalledTimes(2);
     });
   });
+
+  it('should return applicant view Application url when claimant is applicant and cliamant is viewing', async () => {
+    const applicationResponse: ApplicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: undefined,
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: YesNoUpperCamelCase.YES,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '123456',
+      last_modified: '',
+      state: undefined,
+    };
+    const claim = new Claim();
+    claim.caseRole = CaseRole.CLAIMANT;
+
+    //When
+    const result = await getViewApplicationUrl('123', claim, applicationResponse, 1);
+    //Then
+    expect(result).toEqual('/case/123/general-application/123456/view-application?index=2');
+  });
+
+  it('should return respondent view Application url when claimant is applicant and respondent is viewing', async () => {
+    const applicationResponse: ApplicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: undefined,
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: YesNoUpperCamelCase.YES,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '123456',
+      last_modified: '',
+      state: undefined,
+    };
+    const claim = new Claim();
+    claim.caseRole = CaseRole.DEFENDANT;
+
+    //When
+    const result = await getViewApplicationUrl('123', claim, applicationResponse, 1);
+    //Then
+    expect(result).toEqual('/case/123/response/general-application/123456/view-application?index=2');
+  });
+
+  it('should return respondent view Application url when respondent is applicant and claimant is viewing', async () => {
+    const applicationResponse: ApplicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: undefined,
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: YesNoUpperCamelCase.NO,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '123456',
+      last_modified: '',
+      state: undefined,
+    };
+    const claim = new Claim();
+    claim.caseRole = CaseRole.CLAIMANT;
+
+    //When
+    const result = await getViewApplicationUrl('123', claim, applicationResponse, 1);
+    //Then
+    expect(result).toEqual('/case/123/response/general-application/123456/view-application?index=2');
+  });
+
+  it('should return respondent view Application url when respondent is applicant and respondent is viewing', async () => {
+    const applicationResponse: ApplicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: undefined,
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: YesNoUpperCamelCase.NO,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '123456',
+      last_modified: '',
+      state: undefined,
+    };
+    const claim = new Claim();
+    claim.caseRole = CaseRole.DEFENDANT;
+
+    //When
+    const result = await getViewApplicationUrl('123', claim, applicationResponse, 1);
+    //Then
+    expect(result).toEqual('/case/123/general-application/123456/view-application?index=2');
+  });
+
 });

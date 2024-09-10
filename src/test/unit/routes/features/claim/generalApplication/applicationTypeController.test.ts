@@ -53,6 +53,20 @@ describe('General Application - Application type', () => {
           expect(spyDelete).toBeCalled();
         });
     });
+
+    it('should select application type if agreement from other party page', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+      await request(app)
+        .get(APPLICATION_TYPE_URL).query({linkFrom: LinKFromValues.agreementFromOtherParty})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE'));
+        });
+    });
+
     it('should return http 500 when has error in the get method', async () => {
       (getClaimById as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
