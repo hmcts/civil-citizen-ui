@@ -80,4 +80,4 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
   }
-}).tag('@nightly');
+}).tag('@regression-cp');
