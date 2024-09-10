@@ -115,6 +115,12 @@
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.SUMMERY_MESSAGE3') }}</p>
 
 <div class="govuk-!-padding-top-5">
+      {% if responseFromCourt.length > 0 %}
+        {{ govukDetails({
+          summaryHtml: courtResponseHeaderHtml,
+          html: responseFromCourtHtml
+        }) }}
+      {% endif %}
   <div class="govuk-section-break--s govuk-section-break--visible"></div>
   <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
     <div class="govuk-form-group">
@@ -123,12 +129,6 @@
       }) }}
     </div>
   </div>
-      {% if responseFromCourt.length > 0 %}
-        {{ govukDetails({
-          summaryHtml: courtResponseHeaderHtml,
-          html: responseFromCourtHtml
-        }) }}
-      {% endif %}
 
       {% if (applicantDocuments.documents.length + courtDocuments.documents.length + respondentDocuments.documents.length) > 0 %}
         {{ govukDetails({
