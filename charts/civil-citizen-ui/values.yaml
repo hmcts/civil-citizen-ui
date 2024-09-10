@@ -11,7 +11,7 @@ camunda-bpm:
   enabled: false
 
 civil-service:
-  enabled: false
+  enabled: true
 
 elastic:
   enabled: false
