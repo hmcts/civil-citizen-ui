@@ -34,10 +34,6 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const claim = await getClaimById(claimId, req, true);
     const applicationIndex = queryParamNumber(req, 'index');
     let applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
-    if (req.query.linkFrom === LinKFromValues.agreementFromOtherParty) {
-      const applicationTypes = claim.generalApplication?.applicationTypes;
-      applicationTypeOption = applicationTypes[applicationTypes.length - 1].option;
-    }
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
     const cancelUrl = await getCancelUrl(claimId, claim);
@@ -63,9 +59,6 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
       applicationType = new ApplicationType(req.body.optionOther);
     } else {
       applicationType = new ApplicationType(req.body.option);
-    }
-    if (req.query.linkFrom === LinKFromValues.agreementFromOtherParty) {
-      claim.generalApplication.applicationTypes = [];
     }
     const form = new GenericForm(applicationType);
     form.validateSync();
