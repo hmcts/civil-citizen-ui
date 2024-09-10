@@ -169,7 +169,7 @@
       "BETA": "BETA",
       "MONEY_CLAIMS": "Money Claims",
       "MY_ACCOUNT": "My account",
-      "NEW_SERVICE": "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/CMC_Feedback?pageurl={{ pageTitle }}' target='_blank'>feedback <span class='govuk-visually-hidden'>(opens in a new tab)</span></a> will help us to improve it.",
+      "NEW_SERVICE": "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/CMC_Feedback/?pageurl={{ pageTitle }}' target='_blank'>feedback (opens in a new tab)</a> will help us to improve it.",
       "SIGN_IN": "Sign in",
       "SIGN_OUT": "Sign out"
     },
