@@ -161,6 +161,7 @@
     "wiremock-standalone": "^3.2.1"
   },
   "resolutions": {
+    "path-to-regexp": "^0.1.10",
     "minimatch": "^3.0.5",
     "node-fetch": "^2.6.7",
     "shelljs": "^0.8.5",
