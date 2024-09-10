@@ -10,6 +10,11 @@ export interface CcdHearingDocument {
   value: CcdDocumentValue,
 }
 
+export interface CcdGeneralOrderDocument {
+  id: string,
+  value: CcdDocumentValue,
+}
+
 export interface CcdDocumentValue {
   createdBy: string,
   documentLink: CcdDocument,
