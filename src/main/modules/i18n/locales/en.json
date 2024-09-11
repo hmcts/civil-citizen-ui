@@ -4834,6 +4834,7 @@
     "PAGE_NOT_FOUND": "Page Not Found",
     "PAYMENT_FREQUENCY_REQUIRED": "Choose a payment frequency",
     "PHONE_NUMBER_REQUIRED": "Please enter a phone number",
+    "PHONE_NUMBER_REQUIRED_CARM": "Please enter a phone number",
     "RATE_CHOOSE_ONE": "Choose rate of interest",
     "RATE_CORRECT_THE_ONE_ENTERED": "Correct rate you’ve entered",
     "RATE_EXPLAIN_CLAIMING_IT": "You haven’t explained why you’re claiming this rate",
