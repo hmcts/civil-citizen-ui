@@ -768,7 +768,11 @@ describe('Save Accept defendant offer', () => {
       const mockGetDraft = getDraftGARespondentResponse as jest.Mock;
       const mockSaveDraft = saveDraftGARespondentResponse as jest.Mock;
       mockGetDraft.mockResolvedValue(new GaResponse());
-      await saveApplicationTypesToGaResponse(ApplicationState.AWAITING_RESPONDENT_RESPONSE, '12345', [ApplicationTypeOption.STAY_THE_CLAIM]);
+      await saveApplicationTypesToGaResponse(true, '12345', [ApplicationTypeOption.STAY_THE_CLAIM], {
+        generalAppUrgency: YesNoUpperCamelCase.YES,
+        reasonsForUrgency: '',
+        urgentAppConsiderationDate: '2025-10-10'
+      });
       expect(mockSaveDraft).toHaveBeenCalled();
     });
   });
