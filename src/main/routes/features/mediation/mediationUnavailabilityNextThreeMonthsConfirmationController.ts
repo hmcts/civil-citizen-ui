@@ -26,7 +26,11 @@ const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request
   const pageTitle = `${MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE}PAGE_TITLE`;
   const pageText = t(`${MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE}PAGE_TEXT`, {lng: lang});
   const pageHintText = t(`${MEDIATION_UNAVAILABILITY_NEXT_THREE_MONTHS_PAGE}PAGE_HINT_TEXT`, {lng: lang});
-  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, pageHintText});
+  const variation = {
+    yes : 'COMMON.VARIATION_7.YES',
+    no: 'COMMON.VARIATION_7.NO',
+  };
+  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, pageHintText, variation});
 };
 
 mediationUnavailabilityNextThreeMonthsConfirmationController.get(MEDIATION_NEXT_3_MONTHS_URL, (async (req, res, next: NextFunction) => {
@@ -43,7 +47,7 @@ mediationUnavailabilityNextThreeMonthsConfirmationController.get(MEDIATION_NEXT_
 mediationUnavailabilityNextThreeMonthsConfirmationController.post(MEDIATION_NEXT_3_MONTHS_URL, (async (req, res, next: NextFunction) => {
   try {
     const optionSelected = req.body.option;
-    const form = new GenericForm(new GenericYesNoCarmIeNeuNa(optionSelected));
+    const form = new GenericForm(new GenericYesNo(optionSelected, 'ERRORS.VALID_YES_NO_OPTION_CARM_OES_NAC_OES'));
     await form.validate();
     if (form.hasErrors()) {
       renderView(form, res, req);
