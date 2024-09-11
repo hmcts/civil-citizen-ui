@@ -15,6 +15,7 @@ const IS_JUDGMENT_ONLINE_LIVE = 'isJudgmentOnlineLive';
 const IS_DASHBOARD_ENABLED_FOR_CASE = 'is-dashboard-enabled-for-case';
 const CARM_ENABLED_FOR_CASE = 'cam-enabled-for-case';
 const MULTI_OR_INTERMEDIATE_TRACK = 'multi-or-intermediate-track';
+const WARNING_BANNER_ENABLED = 'warning-banner-enabled';
 
 async function getClient(): Promise<void> {
   const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
@@ -70,6 +71,10 @@ export async function getFlagValue(
   if (!ldClient) await getClient();
   if (ldClient)
     return await ldClient.variation(key, await getUser(epoch), false);
+}
+
+export async function isWarningBannerEnabled(): Promise<boolean> {
+  return await getFlagValue(WARNING_BANNER_ENABLED) as boolean;
 }
 
 export async function isCaseProgressionV1Enable(): Promise<boolean> {

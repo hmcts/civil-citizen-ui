@@ -42,6 +42,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {{ headerComponent(t, user) }}
 {% endblock %}
 
+
+{% block warning_message %}
+  {% if warningBanner %}
+    {% include "./macro/banner.njk" %}
+  {% endif %}
+{% endblock %}
+
 {% set bannerText =  t('COMMON.HEADER.NEW_SERVICE', {pageTitle: t(pageTitle) | replaceSpaces})  %}
 {% block beforeContent %}
 
