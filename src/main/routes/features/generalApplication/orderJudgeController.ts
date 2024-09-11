@@ -4,7 +4,7 @@ import {
   APPLICATION_TYPE_URL,
   GA_CLAIM_APPLICATION_COST_URL,
   GA_REQUESTING_REASON_URL,
-  ORDER_JUDGE_URL
+  ORDER_JUDGE_URL,
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
@@ -58,7 +58,7 @@ orderJudgeController.post(ORDER_JUDGE_URL, orderJudgeGuard, (async (req: AppRequ
     const cancelUrl = await getCancelUrl(claimId, claim);
     const redisKey = generateRedisKey(<AppRequest>req);
     const orderJudge = Object.assign(new OrderJudge(), req.body);
-    let index = queryParamNumber(req, 'index');
+    const index = queryParamNumber(req, 'index');
     const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_CLAIM_APPLICATION_COST_URL);
 
     const form = new GenericForm(orderJudge);
