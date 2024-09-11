@@ -24,7 +24,11 @@ const renderView = (form: GenericForm<GenericYesNoCarmEmailConfirmation>, res: R
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const pageTitle = `${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TITLE`;
   const pageText = t(`${MEDIATION_EMAIL_CONFIRMATION_PAGE}PAGE_TEXT`, { lng: lang, partyEmail: partyEmail });
-  res.render(emailMediationConfirmationViewPath, { form, pageTitle, pageText });
+  const variation = {
+    yes : 'COMMON.VARIATION_6.YES',
+    no: 'COMMON.VARIATION_6.NO',
+  };
+  res.render(emailMediationConfirmationViewPath, { form, pageTitle, pageText, variation });
 };
 
 const getPartyEmail = async (redisKey: string, isClaimantResponse: boolean): Promise<string> => {
