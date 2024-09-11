@@ -918,7 +918,7 @@
     "UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION": {
       "PAGE_TITLE": "Unavailability for mediation",
       "PAGE_TEXT": "A oes unrhyw ddyddiadau yn y 3 mis nesaf lle na allwch fynychu apwyntiad cyfryngu?",
-      "PAGE_HINT_TEXT": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol neu wrandawiad llys arall neu wyliau rydych eisoes wedi trefnu. Os na fyddwch yn mynychu eich apwyntiad, gallwch wynebu cosb."
+      "PAGE_HINT_TEXT": "Dylai’r rhain ond fod yn ddyddiadau digwyddiadau pwysig fel apwyntiadau meddygol neu wrandawiad llys arall neu wyliau rydych eisoes wedi eu trefnu. Os na fyddwch yn mynychu eich apwyntiad, gallwch wynebu cosb."
     },
     "MEDIATION_ALTERNATIVE_EMAIL": {
       "PAGE_TITLE": "Alternative email address",
