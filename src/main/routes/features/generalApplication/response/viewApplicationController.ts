@@ -6,7 +6,8 @@ import {
   GA_RESPONDENT_AGREEMENT_URL,
   GA_RESPONDENT_INFORMATION_URL,
   GA_RESPONSE_VIEW_APPLICATION_URL,
-  GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL
+  GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
+  GA_APPLICATION_RESPONSE_SUMMARY_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {
@@ -39,7 +40,6 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const applicationIndex = queryParamNumber(req, 'index') ? queryParamNumber(req, 'index') : '1';
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const summaryRows = await getApplicationSections(req, applicationId, lang);
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationId, GA_RESPONDENT_INFORMATION_URL);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
     const redirectUrl = await getRedirectUrl(applicationResponse, applicationId, claimId);
     const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
@@ -50,6 +50,8 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const responseFromCourt = await getResponseFromCourtSection(req, req.params.appId, lang);
     const dashboardUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
     const isAllowedToRespond = isRespondentAllowedToRespond(applicationResponse);
+    const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_APPLICATION_RESPONSE_SUMMARY_URL);
+    
     await saveApplicationTypesToGaResponse(isAllowedToRespond, generateRedisKeyForGA(req), applicationResponse.case_data.generalAppType.types, applicationResponse.case_data.generalAppUrgencyRequirement);
     res.render(viewPath, {
       backLinkUrl,
