@@ -33,7 +33,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const applicationIndex = queryParamNumber(req, 'index');
-    let applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
+    const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
     const cancelUrl = await getCancelUrl(claimId, claim);
