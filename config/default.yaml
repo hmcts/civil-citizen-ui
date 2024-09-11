@@ -4,7 +4,7 @@ security:
 port: 3001
 timeout: 30000
 dynatrace:
-  url: https://js-cdn.dynatrace.com/jstag/17177a07246/bf24054dsx/59eec5518455ca7b_complete.js
+  url: https://js-cdn.dynatrace.com/jstag/17177a07246/bf00910jpo/608d999956617ad0_complete.js
 services:
   civilService:
     url: 'http://localhost:4000'
