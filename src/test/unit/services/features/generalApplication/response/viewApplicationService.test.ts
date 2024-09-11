@@ -14,13 +14,13 @@ describe('view application service test', () => {
 
     generalAppUrgencyRequirement: {
       generalAppUrgency: YesNoUpperCamelCase.NO,
-      urgentAppConsiderationDate: '2025-10-10'
-    }
-  }
+      urgentAppConsiderationDate: '2025-10-10',
+    },
+  };
   it('should return true when state is AWAITING_RESPONDENT_RESPONSE', () => {
     const applicationResponse = {
       ...defaultApplicationResponse,
-      state: ApplicationState.AWAITING_RESPONDENT_RESPONSE
+      state: ApplicationState.AWAITING_RESPONDENT_RESPONSE,
     };
     expect(isRespondentAllowedToRespond(applicationResponse)).toBe(true);
   });
@@ -47,9 +47,9 @@ describe('view application service test', () => {
             gaHearingDetails: {} as CcdGeneralApplicationHearingDetails,
             gaRespondentDetails: 'abc',
             gaRespondentResponseReason: 'test',
-          }
-        }]
-      }
+          },
+        }],
+      },
     };
     expect(isRespondentAllowedToRespond(applicationResponse)).toBe(false);
 
@@ -75,4 +75,4 @@ describe('view application service test', () => {
     };
     expect(isRespondentAllowedToRespond(applicationResponse)).toBe(true);
   });
-})
+});

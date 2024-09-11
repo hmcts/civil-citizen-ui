@@ -9,4 +9,4 @@ export const isRespondentAllowedToRespond = (applicationResponse: ApplicationRes
   const isUrgencyResponse = applicationResponseData.generalAppUrgencyRequirement.generalAppUrgency === YesNoUpperCamelCase.YES && (applicationResponseData.generalAppRespondentAgreement.hasAgreed === YesNoUpperCamelCase.YES || applicationResponse.case_data.generalAppInformOtherParty.isWithNotice === YesNoUpperCamelCase.YES);
   const isAllowedToRespondForUrgent = isUrgencyResponse && !isPastDeadline(applicationResponseData.generalAppNotificationDeadlineDate) && !applicationResponseData.respondentsResponses && !applicationResponseData.judicialDecision && applicationResponse.state === ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION;
   return isStateAwaitingResponse || isAllowedToRespondForUrgent;
-}
+};

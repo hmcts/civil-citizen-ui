@@ -5,7 +5,7 @@ import {GaServiceClient} from 'client/gaServiceClient';
 import {toCcdGeneralApplicationWithResponse} from 'services/translation/generalApplication/ccdTranslation';
 import {
   deleteDraftGARespondentResponseFromStore,
-  getDraftGARespondentResponse
+  getDraftGARespondentResponse,
 } from './generalApplicationResponseStoreService';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';

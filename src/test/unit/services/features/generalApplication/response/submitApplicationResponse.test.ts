@@ -9,7 +9,7 @@ import {GaServiceClient} from 'client/gaServiceClient';
 import {CCDGeneralApplication, CCDRespondToApplication} from 'common/models/gaEvents/eventDto';
 import {
   CcdGARespondentDebtorOfferGAspec,
-  CcdGeneralApplicationHearingDetails
+  CcdGeneralApplicationHearingDetails,
 } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import * as CcdTraslation from 'services/translation/generalApplication/ccdTranslation';
 import {configureSpy} from '../../../../../utils/spyConfiguration';
@@ -67,7 +67,7 @@ describe('Submit application to ccd', () => {
     gaResponse.generalAppUrgencyRequirement = {
       generalAppUrgency: YesNoUpperCamelCase.YES,
       urgentAppConsiderationDate: '2025-10-10',
-    }
+    };
     mockGetDraftGARespondentResponse.mockResolvedValue(gaResponse);
     const submitRespondToApplicationEventForUrgentEventMock = configureSpy(GaServiceClient.prototype, 'submitRespondToApplicationEventForUrgent')
       .mockResolvedValue({id: '17012012'});

@@ -4,7 +4,6 @@ import {
   GA_ACCEPT_DEFENDANT_OFFER_URL,
   GA_AGREE_TO_ORDER_URL,
   GA_RESPONDENT_AGREEMENT_URL,
-  GA_RESPONDENT_INFORMATION_URL,
   GA_RESPONSE_VIEW_APPLICATION_URL,
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
   GA_APPLICATION_RESPONSE_SUMMARY_URL,
@@ -51,7 +50,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const dashboardUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
     const isAllowedToRespond = isRespondentAllowedToRespond(applicationResponse);
     const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_APPLICATION_RESPONSE_SUMMARY_URL);
-    
+
     await saveApplicationTypesToGaResponse(isAllowedToRespond, generateRedisKeyForGA(req), applicationResponse.case_data.generalAppType.types, applicationResponse.case_data.generalAppUrgencyRequirement);
     res.render(viewPath, {
       backLinkUrl,

@@ -771,7 +771,7 @@ describe('Save Accept defendant offer', () => {
       await saveApplicationTypesToGaResponse(true, '12345', [ApplicationTypeOption.STAY_THE_CLAIM], {
         generalAppUrgency: YesNoUpperCamelCase.YES,
         reasonsForUrgency: '',
-        urgentAppConsiderationDate: '2025-10-10'
+        urgentAppConsiderationDate: '2025-10-10',
       });
       expect(mockSaveDraft).toHaveBeenCalled();
     });
