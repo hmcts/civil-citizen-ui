@@ -54,13 +54,13 @@ describe('General Application - Application type', () => {
         });
     });
 
-    it('should select application type if agreement from other party page', async () => {
+    it('should select application type if using back link', async () => {
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
       claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
       (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
       await request(app)
-        .get(APPLICATION_TYPE_URL).query({linkFrom: LinKFromValues.agreementFromOtherParty})
+        .get(APPLICATION_TYPE_URL).query({index: 0})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE'));
