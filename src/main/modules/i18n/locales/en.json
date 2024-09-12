@@ -3147,7 +3147,12 @@
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
         "READ_RESPONSE": "Read the response",
-        "RESPONSE": "Response from the other parties",
+        "RESPONSE": {
+          "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Do you agree that the court should make the order that the applicant has requested?",
+          "OTHER_PARTIES_RESPONSE": "The other parties's response to the application.",
+          "TITLE": "Response from the other parties",
+          "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing"
+        },
         "RESPOND_TO_REQUEST": "Respond to the request",
         "REQUEST_WRITTEN_REPRESENTATION": "Request for written representation",
         "REQUEST_WRITTEN_REPRESENTATION_DOCUMENT": "request_for_written_representation.pdf",
