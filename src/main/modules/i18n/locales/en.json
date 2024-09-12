@@ -958,7 +958,7 @@
         "ACCEPTED_PARTIALLY": "Some of the fee will be paid, but you'll need to pay the remaining balance. You can pay by phone.",
         "CONTINUE_APPLICATION": "Do you want to continue to apply for help with fees?",
         "ELIGIBILITY": "Applying for help with fees does not guarantee your fee will be covered. You will need to meet the ",
-        "ELIGIBILITY_LINK": "eligibility criteria (opens in new tab).",
+        "ELIGIBILITY_LINK": "eligibility criteria (opens in new tab)",
         "HEARING_FEE": "Hearing fee",
         "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">The hearing fee is: £{{ feeAmount }}</span>",
         "RECEIVE_DECISION": "Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.",
@@ -976,7 +976,7 @@
         "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
         "LIST_ITEMS": {
           "FIRST": "Go to ",
-          "FIRST_LINK": "apply for help with fees (opens in a new tab).",
+          "FIRST_LINK": "apply for help with fees (opens in a new tab)",
           "SECOND": "When you are asked to enter a court or tribunal number, enter 'hearing fee' followed by short explanation, for example 'hearing fee for small claims' or 'hearing fee for fast track'.",
           "THIRD": "Complete the help with fees application.",
           "FOURTH": "Return here to your online money claims account.",
@@ -3147,7 +3147,12 @@
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
         "READ_RESPONSE": "Read the response",
-        "RESPONSE": "Response from the other parties",
+        "RESPONSE": {
+          "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Do you agree that the court should make the order that the applicant has requested?",
+          "OTHER_PARTIES_RESPONSE": "The other parties's response to the application.",
+          "TITLE": "Response from the other parties",
+          "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing"
+        },
         "RESPOND_TO_REQUEST": "Respond to the request",
         "REQUEST_WRITTEN_REPRESENTATION": "Request for written representation",
         "REQUEST_WRITTEN_REPRESENTATION_DOCUMENT": "request_for_written_representation.pdf",
@@ -3254,7 +3259,7 @@
         "HEARING_FEE": {
           "APPLY_HELP_FEE_SELECTION": {
             "LINK_BEFORE": "If you're on a low income, have limited savings or are claiming benefits, you may be able to get ",
-            "LINK_TEXT": "help with fees (opens in a new tab).",
+            "LINK_TEXT": "help with fees (opens in a new tab)",
             "PARAGRAPH": "If you meet the criteria, you may get support to pay some or all of the fee.",
             "QUESTION_TITLE": "Do you want to apply for help with fees?",
             "TITLE": "Pay hearing fee"
@@ -4369,7 +4374,7 @@
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "HAS_ANYTHING": "Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?",
       "YOU_CAN": "You can check your previous answers in the ",
-      "DIRECTIONS": "directions questionnaire.",
+      "DIRECTIONS": "directions questionnaire",
       "WHAT_SUPPORT": "What support do you, experts or witnesses need?",
       "FOR_EXAMPLE": "For example, a witness requires a courtroom with step-free access."
     },
@@ -4529,7 +4534,7 @@
       "IF_YOU_NEED_TO_MAKE_APPLICATION": "<p class=\"govuk-body\"><strong>If you need to make an application, you must complete and submit your trial arrangements first.</strong> You should only make an application once this has been completed. There will be a link to make an application once you have finalised your trial arrangements.</p><p class=\"govuk-body\">If you make an application, please note the trial will go ahead as planned until the application is reviewed by a judge and an order made changing the date of the trial.</p>",
       "HEARING_ADJUSTMENTS_AND_DURATION": "Trial adjustments and duration",
       "YOU_WILL_BE_ASKED": "You will be asked to specify if there are any changes to the support or adjustments you previously specified in your ",
-      "DIRECTIONS_QUESTIONNAIRE": "directions questionnaire.",
+      "DIRECTIONS_QUESTIONNAIRE": "directions questionnaire",
       "YOU_SHOULD_REVIEW": "You should review this to identify if your circumstances have changed.",
       "WE_WILL_REMIND_YOU": "We will remind you of the time allocated for the trial. If you feel less time is needed, you can specify why in the 'other information' box.",
       "IF_YOU_FEEL_THAT": "If you feel that more time will be required, you will need to liaise with the other party and make an application to the court.",
