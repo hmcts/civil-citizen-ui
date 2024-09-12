@@ -4,6 +4,7 @@ import {
   GA_VIEW_APPLICATION_URL,
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
   GA_APPLY_HELP_WITH_FEE_SELECTION,
+  GA_APPLICATION_SUMMARY_URL,
   DASHBOARD_CLAIMANT_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
@@ -26,7 +27,6 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
 const viewApplicationController = Router();
 const viewPath = 'features/generalApplication/view-applications';
-const backLinkUrl = 'test'; // TODO: add url
 
 viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -54,7 +54,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const dashboardUrl = constructResponseUrlWithIdParams(claimId,DASHBOARD_CLAIMANT_URL);
 
     res.render(viewPath, {
-      backLinkUrl,
+      backLinkUrl: constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUMMARY_URL),
       summaryRows,
       responseSummaries,
       pageTitle,
