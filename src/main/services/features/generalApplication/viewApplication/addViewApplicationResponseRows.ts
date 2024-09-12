@@ -12,9 +12,9 @@ import { fromCcdHearingType } from 'services/translation/generalApplication/ccdT
 export const buildResponseSummaries = (generalApplication: CCDApplication, lng: string): SummaryRow[] => {
   const responses = generalApplication.respondentsResponses;
   const response = (responses?.length > 0) ? responses[0].value : undefined;
-  
+
   const gaRespondentDebtorOfferSection = (): SummaryRow[] =>
-    [row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APLICANT_REQUEST',
+    [row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST',
       yesNoFormatter(generalApplication.gaRespondentDebtorOffer?.debtorObjections ? YesNo.NO : YesNo.YES))];
 
   const hearingDetailsSections = (hearingDetails: CcdGeneralApplicationHearingDetails | undefined): SummaryRow[] =>
@@ -58,7 +58,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
       }
     };
 
-    const html = (): string => 
+    const html = (): string =>
       supportRequirementItems
         .map(item => listItemCaption(`PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.${supportCaption(item)}`))
         .join('');
@@ -69,9 +69,9 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
   };
 
   const row = (title: string, value: string): SummaryRow | undefined => formattedRow(title, value, f => f);
-  
-  const formattedRow = <T>(title: string, value: T, formatter: ((v: T) => string)): SummaryRow | undefined => 
-    value 
+
+  const formattedRow = <T>(title: string, value: T, formatter: ((v: T) => string)): SummaryRow | undefined =>
+    value
       ? summaryRow(t(title, {lng}), formatter(value))
       : undefined;
 
@@ -80,9 +80,9 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
   const listItemCaption = (caption: string) => `<li>${t(caption, {lng})}</li>`;
 
   const yesNoFormatter = (yesNo: YesNo): string => t(`COMMON.VARIATION.${yesNo.toUpperCase()}`, {lng});
-    
+
   return response
-    ? [gaRespondentDebtorOfferSection(), 
+    ? [gaRespondentDebtorOfferSection(),
       hearingDetailsSections(response?.gaHearingDetails)]
       .flat(1).filter(row => !!row)
     : undefined;
