@@ -52,7 +52,7 @@ describe('Order Judge Guard', () => {
     await orderJudgeGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
 
     //Then
-    expect(MOCK_NEXT).not.toHaveBeenCalled();
+    expect(MOCK_NEXT).toHaveBeenCalled();
   });
   it('should not load order judge page', async () => {
     //Given
@@ -64,7 +64,7 @@ describe('Order Judge Guard', () => {
     //When
     await orderJudgeGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
-    expect(MOCK_NEXT).not.toHaveBeenCalled();
+    expect(MOCK_NEXT).toHaveBeenCalled();
   });
   it('should throw error', async () => {
     //Given

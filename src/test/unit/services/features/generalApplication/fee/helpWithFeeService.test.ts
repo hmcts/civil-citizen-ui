@@ -1,7 +1,10 @@
 import * as requestModels from 'models/AppRequest';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
-import {GA_APPLY_HELP_WITH_FEES} from 'routes/urls';
+import {
+  GA_APPLY_HELP_WITH_FEE_SELECTION,
+  GA_APPLY_HELP_WITH_FEES,
+} from 'routes/urls';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
 import {getClaimById} from 'modules/utilityService';
@@ -34,6 +37,7 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
 
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
+mockedAppRequest.params = {id:'1'};
 const claimId = '1';
 const nextUrl= 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960';
 let claim: Claim;
@@ -129,5 +133,21 @@ describe('apply help with application fee selection', () => {
     const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.YES), 'applyHelpWithFees', mockedAppRequest);
     //Then
     expect(actualRedirectUrl).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, '12345667', GA_APPLY_HELP_WITH_FEES + '?additionalFeeTypeFlag=true'));
+  });
+
+  it('should enable the warning text if payment request is failed', async () => {
+    claim.paymentSyncError = false;
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      .mockResolvedValueOnce(ccdClaim);
+    mockedAppRequest.params = {appId: '123456678'};
+    applicationResponse = new ApplicationResponse();
+    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockRejectedValueOnce(new Error('something went wrong'));
+    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(applicationResponse);
+    //when
+    const actualRedirectUrl = await getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), 'applyHelpWithFees', mockedAppRequest);
+    //Then
+    expect(actualRedirectUrl).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, '123456678', GA_APPLY_HELP_WITH_FEE_SELECTION));
   });
 });

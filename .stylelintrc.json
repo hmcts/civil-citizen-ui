@@ -1,0 +1,9 @@
+{
+  "extends": "stylelint-config-standard-scss",
+  "ignoreFiles": ["**/node_modules/**", ".yarn/**"],
+  "maxWarnings": 0,
+  "rules": {
+    "selector-class-pattern": null,
+    "scss/at-if-no-null": null
+  }
+}

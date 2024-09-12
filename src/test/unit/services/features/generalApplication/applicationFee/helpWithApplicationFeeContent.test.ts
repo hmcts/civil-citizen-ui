@@ -24,7 +24,29 @@ describe('Help with Application fee content', () => {
       .addTitle(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.QUESTION_TITLE', {lng}))
       .build();
     //When
-    const actualContent = getHelpApplicationFeeSelectionPageContents('en');
+    const actualContent = getHelpApplicationFeeSelectionPageContents('en', false);
+    //Then
+    expect(expectedContent.flat()).toEqual(actualContent);
+  });
+
+  it('should return getHelpApplicationFeeSelectionPageContents related content with payment is not sync', () => {
+    //Given
+    const lng = 'en';
+    const linkBefore = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.LINK_BEFORE';
+    const linkParagraph = `<p class="govuk-body govuk-!-margin-bottom-1">${t(linkBefore, {lng})}
+        <a target="_blank" class="govuk-link" rel="noopener noreferrer" href="https://www.gov.uk/get-help-with-court-fees">
+        ${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.LINK_TEXT', {lng})}</a></p>`;
+    const expectedContent = new PageSectionBuilder()
+      .addMicroText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING')
+      .addMainTitle('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_TITLE')
+      .addWarning('PAGES.FEE_AMOUNT.SYNC_WARNING')
+      .addRawHtml(linkParagraph)
+      .addParagraph('')
+      .addParagraph(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.PARAGRAPH', {lng}))
+      .addTitle(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.QUESTION_TITLE', {lng}))
+      .build();
+    //When
+    const actualContent = getHelpApplicationFeeSelectionPageContents('en', true);
     //Then
     expect(expectedContent.flat()).toEqual(actualContent);
   });

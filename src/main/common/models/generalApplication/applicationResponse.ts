@@ -11,14 +11,16 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {
   CcdGeneralApplicationEvidenceDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
-import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
+import {CcdGARespondentDebtorOfferGAspec, CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {
   CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
-import {CcdGeneralApplicationAddlDocument, CcdHearingDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
+import {CcdGeneralApplicationAddlDocument, CcdHearingDocument, CcdGeneralOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 import {CcdGeneralApplicationDirectionsOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
+import { CcdGeneralApplicationRespondentResponse } from '../ccdGeneralApplication/ccdGeneralApplicationRespondentResponse';
+import { DateTime } from 'luxon';
 import {CcdGARequestWrittenRepDocument} from 'models/ccdGeneralApplication/ccdGARequestWrittenRepDocument';
 
 export class ApplicationResponse {
@@ -54,9 +56,11 @@ export interface CCDApplication extends ApplicationUpdate {
   generalAppReasonsOfOrder: string;
   generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
   gaAddlDoc: CcdGeneralApplicationAddlDocument[];
+  gaRespondentDebtorOffer?: CcdGARespondentDebtorOfferGAspec;
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
   generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
   generalAppPBADetails: CcdGeneralApplicationPBADetails;
+  respondentsResponses?: CcdGeneralApplicationRespondentResponse[];
   applicationFeeAmountInPence: string;
   parentClaimantIsApplicant: YesNoUpperCamelCase;
   judicialDecision: JudicialDecision;
@@ -64,7 +68,21 @@ export interface CCDApplication extends ApplicationUpdate {
   hearingNoticeDocument? : CcdHearingDocument[];
   requestForInformationDocument?: CcdGAMakeWithNoticeDocument[];
   directionOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
+  generalOrderDocument? : CcdGeneralOrderDocument[];
   judicialDecisionMakeOrder?: JudicialDecisionMakeOrder;
+  dismissalOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
+  judicialDecisionRequestMoreInfo?: JudicialRequestMoreInfo;
+  writtenRepSequentialDocument?: CcdGARequestWrittenRepDocument[];
+  writtenRepConcurrentDocument?: CcdGARequestWrittenRepDocument[];
+  applicationIsUncloakedOnce?: YesNoUpperCamelCase;
+}
+
+export interface JudicialRequestMoreInfo {
+  judgeRequestMoreInfoText : string;
+  judgeRequestMoreInfoByDate : Date;
+  deadlineForMoreInfoSubmission : DateTime;
+  isWithNotice : YesNoUpperCamelCase;
+  judgeRecitalText: string;
   judicialDecisionRequestMoreInfo?: JudicialDecisionRequestMoreInfo;
   judicialDecisionMakeAnOrderForWrittenRepresentations?: JudicialDecisionWrittenRepresentations;
   writtenRepSequentialDocument?: CcdGARequestWrittenRepDocument[];
@@ -82,7 +100,6 @@ export enum JudicialDecisionOptions {
   LIST_FOR_A_HEARING = 'LIST_FOR_A_HEARING',
   MAKE_ORDER_FOR_WRITTEN_REPRESENTATIONS = 'MAKE_ORDER_FOR_WRITTEN_REPRESENTATIONS',
 }
-
 export interface JudicialDecisionMakeOrder {
   directionsResponseByDate?: string;
   makeAnOrder?: JudicialDecisionMakeAnOrderOptions;

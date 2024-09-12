@@ -9,21 +9,28 @@ import {
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import * as draftService from 'modules/draft-store/draftStoreService';
 import * as draftServiceGA from 'modules/draft-store/draftGADocumentService';
+import * as generalApplicationResponseStoreService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {GaResponse} from 'models/generalApplication/response/gaResponse';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/modules/draft-store/draftGADocumentService');
+jest.mock('../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService');
 
 describe('Upload Evidence Document service', () => {
   const mockDataFromStore = jest.spyOn(draftService, 'getCaseDataFromStore');
   const mockGADocDataFromStore = jest.spyOn(draftServiceGA, 'getGADocumentsFromDraftStore');
+  const mockGADocResponseStoreService = jest.spyOn(generalApplicationResponseStoreService, 'getDraftGARespondentResponse');
   let uploadDocuments: UploadGAFiles[];
   beforeEach(() => {
     const claim = new Claim();
     claim.id ='id';
     claim.generalApplication = new GeneralApplication();
     mockDataFromStore.mockResolvedValue(claim);
+    const response = new GaResponse();
+    response.additionalText = 'More info';
+    mockGADocResponseStoreService.mockResolvedValue(response);
 
     uploadDocuments = [
       {
@@ -81,10 +88,11 @@ describe('Upload Evidence Document service', () => {
 
     describe('Build summary Section ', () => {
       it('Should build the summary section: ', () => {
-        const result = buildSummarySection(uploadDocuments, '1', '123', 'en');
-        expect(result).toHaveLength(1);
-        expect(result[0].value.html).toContain('<ul class="no-list-style"><li>Additional information1</li><li>Additional information2</li></ul>');
-        expect(result[0].actions.items[0].href).toContain('/case/1/general-application/123/upload-documents-for-addln-info');
+        const result = buildSummarySection('More info', uploadDocuments, '1', '123', 'en');
+        expect(result).toHaveLength(2);
+        expect(result[0].value.html).toContain('More info');
+        expect(result[1].value.html).toContain('<ul class="no-list-style"><li>Additional information1</li><li>Additional information2</li></ul>');
+        expect(result[1].actions.items[0].href).toContain('/case/1/general-application/123/upload-documents-for-addln-info');
       });
     });
   });

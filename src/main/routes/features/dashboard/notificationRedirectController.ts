@@ -9,14 +9,13 @@ import {
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {DocumentType} from 'models/document/documentType';
-import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
 import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 
-import {getClaimById} from 'modules/utilityService';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {documentIdExtractor} from 'common/utils/stringUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -48,7 +47,7 @@ notificationRedirectController.get(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, (as
 async function getDashboardNotificationRedirectUrl(locationName: string, claimId: string, req: AppRequest) : Promise<string> {
 
   let redirectUrl;
-  const claim = await getClaimById(claimId, req,true);
+  const claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
 
   switch(locationName) {
     case 'VIEW_BUNDLE':
@@ -59,8 +58,7 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       break;
     case 'VIEW_HEARING_NOTICE':
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
-        ':documentId', getHearingDocumentsCaseDocumentIdByType(
-          claim?.caseProgressionHearing?.hearingDocuments, DocumentType.HEARING_FORM));
+        ':documentId', documentIdExtractor(claim?.caseProgressionHearing?.hearingDocuments[0]?.value?.documentLink?.document_binary_url));
       break;
     case 'PAY_HEARING_FEE_URL':
       await saveDraftClaim(generateRedisKey(req), claim, true);
