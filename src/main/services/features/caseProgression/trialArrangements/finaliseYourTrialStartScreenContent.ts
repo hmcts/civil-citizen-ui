@@ -40,7 +40,7 @@ export const getFinaliseTrialArrangementContents = (claimId: string, claim: Clai
     .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.IF_YOUR_CASE_NOT_READY')
     .addInsetText('PAGES.FINALISE_TRIAL_ARRANGEMENTS.IF_YOU_NEED_TO_MAKE_APPLICATION')
     .addTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.HEARING_ADJUSTMENTS_AND_DURATION')
-    .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.DIRECTIONS_QUESTIONNAIRE', CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, defendantOrClaimant)),
+    .addFullStopLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.DIRECTIONS_QUESTIONNAIRE', CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, defendantOrClaimant)),
       'PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_WILL_BE_ASKED',
       'PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_SHOULD_REVIEW','', true)
     .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.WE_WILL_REMIND_YOU')
