@@ -1,7 +1,13 @@
 import { GeneralApplication } from 'models/generalApplication/GeneralApplication';
-import { CCDGeneralApplication, CCDRespondToApplication } from 'models/gaEvents/eventDto';
+import {
+  CCDGeneralApplication,
+  CCDRespondToApplication,
+} from 'models/gaEvents/eventDto';
 import { OrderJudge } from 'models/generalApplication/orderJudge';
-import { ApplicationType } from 'models/generalApplication/applicationType';
+import {
+  ApplicationType,
+  ApplicationTypeOption,
+} from 'models/generalApplication/applicationType';
 import { CcdGeneralApplicationTypes } from 'models/ccdGeneralApplication/ccdGeneralApplicationTypes';
 import { toCCDYesNo } from 'services/translation/response/convertToCCDYesNo';
 import { InformOtherParties } from 'models/generalApplication/informOtherParties';
@@ -26,13 +32,9 @@ import { HearingSupport } from 'models/generalApplication/hearingSupport';
 import { CcdSupportRequirement } from 'models/ccdGeneralApplication/ccdSupportRequirement';
 import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
 import { CcdGeneralApplicationEvidenceDocument } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
-import {
-  CcdGeneralApplicationRespondentAgreement,
-} from 'models/ccdGeneralApplication/ccdGeneralApplicationRespondentAgreement';
-import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
-import {
-  CcdGeneralApplicationStatementOfTruth,
-} from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
+import { CcdGeneralApplicationRespondentAgreement } from 'models/ccdGeneralApplication/ccdGeneralApplicationRespondentAgreement';
+import { StatementOfTruthForm } from 'models/generalApplication/statementOfTruthForm';
+import { CcdGeneralApplicationStatementOfTruth } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { convertToPenceFromStringToString } from '../claim/moneyConversation';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
@@ -42,8 +44,12 @@ export const translateDraftApplicationToCCD = (
 ): CCDGeneralApplication => {
   return {
     generalAppType: toCCDGeneralApplicationTypes(application.applicationTypes),
-    generalAppRespondentAgreement: toCCDRespondentAgreement(application.agreementFromOtherParty),
+    generalAppRespondentAgreement: toCCDRespondentAgreement(
+      application.agreementFromOtherParty,
+    ),
     generalAppInformOtherParty: toCCDInformOtherParty(
+      application.applicationTypes,
+      application.agreementFromOtherParty,
       application.informOtherParties,
     ),
     generalAppAskForCosts: toCCDYesNo(application.applicationCosts),
@@ -61,7 +67,9 @@ export const translateDraftApplicationToCCD = (
       application.unavailableDatesHearing,
       application.hearingSupport,
     ),
-    generalAppStatementOfTruth: toCCDStatementOfTruth(application.statementOfTruth),
+    generalAppStatementOfTruth: toCCDStatementOfTruth(
+      application.statementOfTruth,
+    ),
   };
 };
 
@@ -79,7 +87,12 @@ const toCCDRespondentAgreement = (agreementFromOtherParty: YesNo): CcdGeneralApp
     : undefined;
 };
 
-const toCCDInformOtherParty = (informOtherParty: InformOtherParties): CcdGeneralApplicationInformOtherParty => {
+const toCCDInformOtherParty = (applicationTypes: ApplicationType[], agreementFromOtherParty: YesNo, informOtherParty: InformOtherParties): CcdGeneralApplicationInformOtherParty => {
+  if (applicationTypes.length === 1 && applicationTypes[0].option === ApplicationTypeOption.SET_ASIDE_JUDGEMENT && agreementFromOtherParty === YesNo.NO) {
+    return {
+      isWithNotice: toCCDYesNo(YesNo.YES),
+    };
+  }
   return informOtherParty
     ? {
       isWithNotice: toCCDYesNo(informOtherParty.option as YesNo),
