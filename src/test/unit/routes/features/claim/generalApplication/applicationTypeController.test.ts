@@ -84,7 +84,7 @@ describe('General Application - Application type', () => {
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
       await request(app)
         .post(APPLICATION_TYPE_URL)
-        .send({option: ApplicationTypeOption.OTHER, optionOther: ApplicationTypeOption.PROCEEDS_IN_HERITAGE})
+        .send({option: ApplicationTypeOption.OTHER_OPTION, optionOther: ApplicationTypeOption.OTHER})
         .expect((res) => {
           expect(res.status).toBe(302);
         });
