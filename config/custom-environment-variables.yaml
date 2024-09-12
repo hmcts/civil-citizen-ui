@@ -44,5 +44,6 @@ services:
   generalApplication:
     url: CIVIL_GENERAL_APPLICATIONS_URL
 port: PORT
+warningBannerEnabled: WARNING_BANNER_ENABLED
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY
