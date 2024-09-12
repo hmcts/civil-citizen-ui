@@ -38,6 +38,7 @@ import { CcdGeneralApplicationStatementOfTruth } from 'models/ccdGeneralApplicat
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { convertToPenceFromStringToString } from '../claim/moneyConversation';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
+import { exhaustiveMatchingGuard } from 'services/genericService';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
@@ -160,6 +161,15 @@ const toCCDHearingPreferencesPreferredType = (hearingTypeOption: HearingTypeOpti
   }
 };
 
+export const fromCcdHearingType = (ccdHearingType: CcdHearingType): HearingTypeOptions => {
+  switch (ccdHearingType) {
+    case CcdHearingType.IN_PERSON : return HearingTypeOptions.PERSON_AT_COURT;
+    case CcdHearingType.TELEPHONE : return HearingTypeOptions.TELEPHONE;
+    case CcdHearingType.VIDEO : return HearingTypeOptions.VIDEO_CONFERENCE;
+    default: exhaustiveMatchingGuard(ccdHearingType);
+  }
+};
+
 const toUnavailableHearingDatesYesNo = (unavailableHearingDates: UnavailableDatesGaHearing): YesNoUpperCamelCase => {
   return unavailableHearingDates?.items?.length > 0
     ? YesNoUpperCamelCase.YES
@@ -208,6 +218,7 @@ const toCcdPaymentPlan = (paymentPlan: ProposedPaymentPlanOption | undefined): C
     switch (paymentPlan) {
       case ProposedPaymentPlanOption.ACCEPT_INSTALMENTS: return CcdGADebtorPaymentPlanGAspec.INSTALMENT;
       case ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE: return CcdGADebtorPaymentPlanGAspec.PAYFULL;
+      default: exhaustiveMatchingGuard(paymentPlan);
     }
   }
 };
