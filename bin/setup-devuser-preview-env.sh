@@ -21,7 +21,7 @@ echo "Importing CCD definitions"
 
 rm -rf $(pwd)/ccd-definitions
 rm -rf $(pwd)/build/ccd-development-config
-rm -rf $(pwd)/camunda
+rm -rf $(pwd)/civil-bpmn
 
 echo "ENV variables set for devuser-preview environment."
 echo "XUI_URL: $XUI_WEBAPP_URL"
