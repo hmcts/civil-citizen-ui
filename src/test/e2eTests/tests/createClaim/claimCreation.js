@@ -1,6 +1,7 @@
 const config = require('../../../config');
 const ClaimCreation = require('../../createClaim/steps/claimCreation');
 const {yesAndNoCheckBoxOptionValue} = require('../../commons/eligibleVariables');
+const LoginSteps = require('../../createClaim/steps/createLipvLipClaimSteps');
 
 Feature('Claim creation journey').tag('@e2e');
 
@@ -33,5 +34,11 @@ Scenario('Claim creation journey without interest and without fees reference', (
 Scenario('Claim creation journey - Submission ', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     ClaimCreation.checkAndSubmitYourClaim();
+  }
+});
+
+Scenario('Create Claim - Via Testing Support E2e', async () => {
+  if (['preview', 'demo'].includes(config.runningEnv)) {
+    LoginSteps.createClaimDraftViaTestingSupportE2e();
   }
 });
