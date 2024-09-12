@@ -156,6 +156,28 @@ describe('PageSectionBuilder tests', ()=> {
     expect(contactLinkBuilt).toEqual([contactLinkExpected]);
   });
 
+  it('should add link with full stop', ()=> {
+    //Given
+    const linkExpected = ({
+      type: ClaimSummaryType.FULL_STOP_LINK,
+      data: {
+        text: 'text',
+        href: 'href',
+        textBefore: 'textBefore',
+        textAfter: 'textAfter',
+        externalLink: true,
+      },
+    });
+
+    //When
+    const linkBuilt = new PageSectionBuilder()
+      .addFullStopLink(linkExpected.data.text, linkExpected.data.href, linkExpected.data.textBefore, linkExpected.data.textAfter, undefined, linkExpected.data.externalLink)
+      .build();
+
+    //Then
+    expect(linkBuilt).toEqual([linkExpected]);
+  });
+
   it('should add Green Button', ()=> {
     //Given
     const buttonExpected = ({
