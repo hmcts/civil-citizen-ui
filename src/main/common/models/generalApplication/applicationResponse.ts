@@ -15,10 +15,11 @@ import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/
 import {
   CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
-import {CcdGeneralApplicationAddlDocument, CcdHearingDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
+import {CcdGeneralApplicationAddlDocument, CcdHearingDocument, CcdGeneralOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 import {CcdGeneralApplicationDirectionsOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
+import { CcdGeneralApplicationRespondentResponse } from '../ccdGeneralApplication/ccdGeneralApplicationRespondentResponse';
 import { DateTime } from 'luxon';
 import {CcdGARequestWrittenRepDocument} from 'models/ccdGeneralApplication/ccdGARequestWrittenRepDocument';
 
@@ -58,6 +59,7 @@ export interface CCDApplication extends ApplicationUpdate {
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
   generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
   generalAppPBADetails: CcdGeneralApplicationPBADetails;
+  respondentsResponses?: CcdGeneralApplicationRespondentResponse[];
   applicationFeeAmountInPence: string;
   parentClaimantIsApplicant: YesNoUpperCamelCase;
   judicialDecision: JudicialDecision;
@@ -65,12 +67,13 @@ export interface CCDApplication extends ApplicationUpdate {
   hearingNoticeDocument? : CcdHearingDocument[];
   requestForInformationDocument?: CcdGAMakeWithNoticeDocument[];
   directionOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
+  generalOrderDocument? : CcdGeneralOrderDocument[];
   judicialDecisionMakeOrder?: JudicialDecisionMakeOrder;
-  generalOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
   dismissalOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
   judicialDecisionRequestMoreInfo?: JudicialRequestMoreInfo;
   writtenRepSequentialDocument?: CcdGARequestWrittenRepDocument[];
   writtenRepConcurrentDocument?: CcdGARequestWrittenRepDocument[];
+  applicationIsUncloakedOnce?: YesNoUpperCamelCase;
 }
 
 export interface JudicialRequestMoreInfo {
