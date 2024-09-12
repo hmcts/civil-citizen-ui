@@ -44,7 +44,6 @@ import {ApplicationTypeOption} from 'common/models/generalApplication/applicatio
 import {HearingTypeOptions} from 'common/models/generalApplication/hearingArrangement';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import {getLanguage} from 'modules/i18n/languageService';
-import {isWarningBannerEnabled} from "../../app/auth/launchdarkly/launchDarklyClient";
 
 const packageDotJson = require('../../../../package.json');
 
@@ -115,8 +114,6 @@ export class Nunjucks {
 
     const nonceValue = crypto.randomBytes(16).toString('base64');
 
-    const warningBanner = isWarningBannerEnabled();
-
     nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
     nunjucksEnv.addGlobal('development', this.developmentMode);
     nunjucksEnv.addGlobal('govuk_template_version', packageDotJson.dependencies.govuk_template_jinja);
@@ -170,7 +167,7 @@ export class Nunjucks {
     // TODO : 'GTM-PBT2TQ2D' is test GTM id for integration to the Google Tag Manager for Google Analytics, it should be replaced with production GTM id when it's provided by HMCTS User experience team
     nunjucksEnv.addGlobal('gtmScriptId', 'GTM-PBT2TQ2D');
     nunjucksEnv.addGlobal('dynatraceUrl', dynatraceUrl);
-    nunjucksEnv.addGlobal('warningBanner', warningBanner);
+    nunjucksEnv.addGlobal('warningBanner', config.get<boolean>('warningBannerEnabled'));
 
     app.use((req:AppRequest, res, next) => {
       res.locals.pagePath = req.path;
