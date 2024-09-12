@@ -11,7 +11,7 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {
   CcdGeneralApplicationEvidenceDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
-import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
+import {CcdGARespondentDebtorOfferGAspec, CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {
   CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
@@ -57,6 +57,7 @@ export interface CCDApplication extends ApplicationUpdate {
   generalAppReasonsOfOrder: string;
   generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
   gaAddlDoc: CcdGeneralApplicationAddlDocument[];
+  gaRespondentDebtorOffer?: CcdGARespondentDebtorOfferGAspec;
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
   generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
   generalAppPBADetails: CcdGeneralApplicationPBADetails;
