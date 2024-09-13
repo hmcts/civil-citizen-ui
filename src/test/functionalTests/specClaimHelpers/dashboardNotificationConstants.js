@@ -46,7 +46,7 @@ module.exports = {
   respondToClaim: () => {
     return {
       title: 'You haven\'t responded to the claim',
-      content: 'days remaining. Respond to the claim.',
+      content: 'days remaining.',
       nextSteps: 'Respond to the claim',
     };
   },
@@ -190,6 +190,15 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.DefResponse.FullDefenceOrPartAdmin.AlreadyPaid.Defendant
+  claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid: (amount, date) => {
+    return {
+      title: 'Response to the claim',
+      content: `The defendant has said they already paid £${amount} on ${date}. You can confirm payment and settle, or proceed with the claim.`,
+      nextSteps: 'View and respond',
+    };
+  },
+
   //Notice.AAA6.CP.StrikeOut.HearingFeeUnpaid.TrialReady.Claimant
   claimStruckOut: () => {
     return {
@@ -203,18 +212,17 @@ module.exports = {
   orderMade: () => {
     return {
       title: 'An order has been made',
-      content: 'The judge has made an order on your claim. View the order.',
+      content: 'The judge has made an order on your claim.',
       nextSteps: 'View the order',
     };
   },
 
-  //Notice.AAA6.CP.HearingDocuments.Upload
-  uploadDocuments: () => {
+  //Notice.AAA6.CP.Hearing.Scheduled.Claimant
+  hearingScheduled: (hearingDate) => {
     return {
-      title: 'Upload documents',
-      content: 'You can upload and submit documents to support your claim. Follow the instructions set out in the directions order. Any documents submitted after the deadlines in the directions order may not be considered by the judge.',
-      nextSteps: 'upload and submit documents',
-      nextSteps2: 'directions order',
+      title: 'A hearing has been scheduled',
+      content: `Your hearing has been scheduled for ${hearingDate} at Central London County Court. Please keep your contact details and anyone you wish to rely on in court up to date. You can update contact details by telephoning the court at 0300 123 7050.`,
+      nextSteps: 'View the hearing notice',
     };
   },
 
@@ -317,7 +325,7 @@ module.exports = {
   defendantAcceptsSettlementDefendant: () => {
     return {
       title: 'Settlement agreement',
-      content: ['You have accepted the settlement agreement.',
+      content: ['You have accepted the settlement agreement (opens in a new tab).',
         'The claimant cannot request a County Court Judgment (CCJ), unless you break the terms of the agreement.'],
     };
   },
@@ -366,8 +374,7 @@ module.exports = {
   mediationUnsuccessfulClaimant1NonAttendance: () => {
     return {
       title: 'You did not attend mediation',
-      content: ['You did not attend your mediation appointment, and the judge may issue a penalty against you.',
-        'Your case will not be reviewed by the court.'],
+      content: 'You did not attend your mediation appointment, and the judge may issue a penalty against you. Your case will now be reviewed by the court. Explain why you did not attend your appointment',
       nextSteps: 'Explain why you did not attend your appointment',
     };
   },

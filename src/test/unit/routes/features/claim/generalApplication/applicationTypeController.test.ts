@@ -6,7 +6,7 @@ import {APPLICATION_TYPE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {ApplicationType, ApplicationTypeOption, LinKFromValues} from 'common/models/generalApplication/applicationType';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
@@ -43,6 +43,19 @@ describe('General Application - Application type', () => {
         });
     });
 
+    it('should select application type if agreement from other party page', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+      await request(app)
+        .get(APPLICATION_TYPE_URL).query({linkFrom: LinKFromValues.agreementFromOtherParty})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE'));
+        });
+    });
+
     it('should return http 500 when has error in the get method', async () => {
       (getClaimById as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
@@ -71,7 +84,7 @@ describe('General Application - Application type', () => {
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
       await request(app)
         .post(APPLICATION_TYPE_URL)
-        .send({option: ApplicationTypeOption.OTHER, optionOther: ApplicationTypeOption.PROCEEDS_IN_HERITAGE})
+        .send({option: ApplicationTypeOption.OTHER_OPTION, optionOther: ApplicationTypeOption.OTHER})
         .expect((res) => {
           expect(res.status).toBe(302);
         });

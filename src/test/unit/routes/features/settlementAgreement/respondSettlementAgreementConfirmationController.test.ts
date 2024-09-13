@@ -9,7 +9,7 @@ import {FullAdmission} from 'models/fullAdmission';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import {ClaimantResponse} from 'models/claimantResponse';
-import {CivilServiceClient} from 'client/civilServiceClient';
+import {getClaimById} from 'modules/utilityService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -21,6 +21,7 @@ jest.mock('routes/guards/respondSettlementAgreementConfirmationGuard', () => ({
 }));
 jest.mock('modules/utilityService', () => ({
   getRedisStoreForSession: jest.fn(),
+  getClaimById: jest.fn(),
 }));
 
 describe('Claimant response confirmation controller', () => {
@@ -30,18 +31,14 @@ describe('Claimant response confirmation controller', () => {
     mockClaim.fullAdmission = new FullAdmission();
     mockClaim.fullAdmission.paymentIntention = new PaymentIntention();
     mockClaim.fullAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+    mockClaim.respondentSignSettlementAgreement = YesNoUpperCamelCase.YES;
     return mockClaim;
   }
   describe('on GET', () => {
     it('should return accept settlement agreement confirmation', async () => {
       // Given
       const mockClaim = getMockClaim();
-      mockClaim.respondentSignSettlementAgreement = YesNoUpperCamelCase.YES;
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockReturnValue(
-          new Promise((resolve) => resolve(mockClaim)),
-        );
+      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
       // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
       // Then
@@ -61,11 +58,7 @@ describe('Claimant response confirmation controller', () => {
       mockClaim.claimantResponse.suggestedImmediatePaymentDeadLine = new Date();
       mockClaim.respondentSignSettlementAgreement = YesNoUpperCamelCase.YES;
 
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockReturnValue(
-          new Promise((resolve) => resolve(mockClaim)),
-        );
+      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
       // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
       // Then
@@ -85,12 +78,7 @@ describe('Claimant response confirmation controller', () => {
       mockClaim.claimantResponse.suggestedPaymentIntention.paymentDate = new Date();
       mockClaim.respondentSignSettlementAgreement = YesNoUpperCamelCase.YES;
 
-      const claim = Object.assign(new Claim(), mockClaim);
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockReturnValue(
-          new Promise((resolve) => resolve(claim)),
-        );
+      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
 
       // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
@@ -103,11 +91,7 @@ describe('Claimant response confirmation controller', () => {
       // Given
       const mockClaim = getMockClaim();
       mockClaim.respondentSignSettlementAgreement = YesNoUpperCamelCase.NO;
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockReturnValue(
-          new Promise((resolve) => resolve(mockClaim)),
-        );
+      (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim);
       // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
       // Then
@@ -118,9 +102,7 @@ describe('Claimant response confirmation controller', () => {
     it('should return http 500 when has error in the get method', async () => {
       // Given
       const error = new Error('Test error');
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockRejectedValueOnce(error);
+      (getClaimById as jest.Mock).mockRejectedValue(error);
       // When
       const res = await request(app).get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION);
       // Then

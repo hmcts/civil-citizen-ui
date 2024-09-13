@@ -4,10 +4,6 @@ import nock from 'nock';
 import request from 'supertest';
 import {GA_APPLY_HELP_WITH_FEE_REFERENCE, GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLICATION_FEE_CONFIRMATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import { Claim } from 'common/models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
@@ -17,30 +13,34 @@ import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {
   saveHelpWithFeesDetails,
 } from 'services/features/generalApplication/generalApplicationService';
+import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 
 jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('../../../../../../../main/modules/draft-store/gaHwFeesDraftStore', () => ({
+  saveDraftGAHWFDetails: jest.fn(),
+  getDraftGAHWFDetails: jest.fn(),
+}));
 jest.mock('../../../../../../../main/services/features/generalApplication/generalApplicationService', ()=> ({saveAndTriggerNotifyGaHwfEvent:jest.fn(), saveHelpWithFeesDetails:jest.fn() }));
 
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+const mockGetCaseData = getDraftGAHWFDetails as jest.Mock;
 const mockSaveHelpWithFeesDetails = saveHelpWithFeesDetails as jest.Mock;
-const mockClaim = new Claim();
-mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+
 describe('General Application - Do you have a help with fees reference number', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-
+  let mockGAHwF: GaHelpWithFees;
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
-
+  beforeEach(() => {
+    mockGAHwF = new GaHelpWithFees();
+  });
   describe('on GET', () => {
     it('should return - Do you have a help with fees reference number page', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEE_REFERENCE)
         .expect((res) => {
@@ -50,9 +50,8 @@ describe('General Application - Do you have a help with fees reference number', 
     });
 
     it('should return do you have a help with fees reference number with option marked', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockClaim.generalApplication.helpWithFees = new GaHelpWithFees();
-      mockClaim.generalApplication.helpWithFees.helpFeeReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-123-86D');
+      mockGAHwF.helpFeeReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-123-86D');
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEE_REFERENCE)
         .expect((res) => {
@@ -77,7 +76,7 @@ describe('General Application - Do you have a help with fees reference number', 
   describe('on POST', () => {
 
     it('should return do you have a help with fees reference number with option marked', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEE_REFERENCE)
         .send({option: YesNo.YES,referenceNumber: 'HWF-123-86D'})
@@ -87,19 +86,19 @@ describe('General Application - Do you have a help with fees reference number', 
     });
 
     it('should redirect to Do you want to continue to apply for Help with Fees if option is NO', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEE_REFERENCE)
         .query({additionalFeeTypeFlag: 'false'})
         .send({option: YesNo.NO})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(GA_APPLY_HELP_WITH_FEE_SELECTION);
+          expect(res.header.location).toEqual(GA_APPLY_HELP_WITH_FEE_SELECTION+'?additionalFeeTypeFlag=false');
         });
     });
 
     it('should redirect to application fee confirmation page if option is YES', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEE_REFERENCE)
         .query({additionalFeeTypeFlag: 'false'})
@@ -111,7 +110,7 @@ describe('General Application - Do you have a help with fees reference number', 
     });
 
     it('should redirect to additional application fee confirmation page if option is YES', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEE_REFERENCE)
         .query({additionalFeeTypeFlag: 'true'})
@@ -123,8 +122,7 @@ describe('General Application - Do you have a help with fees reference number', 
     });
 
     it('should show error message if no value selected', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      //jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValueOnce(gaFeeDetails);
+      mockGetCaseData.mockImplementation(async () => mockGAHwF);
 
       await request(app)
         .post(GA_APPLY_HELP_WITH_FEE_REFERENCE)

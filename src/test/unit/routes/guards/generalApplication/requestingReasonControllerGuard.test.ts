@@ -19,26 +19,11 @@ const MOCK_REQUEST = { params: { id: '123' }, query: {} } as unknown as AppReque
 const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
 
-describe('Order Judge Guard', () => {
+describe('Requesting Reason Guard', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
   it('should load claim application cost page', async () => {
-    //Given
-    const claim = new Claim();
-    const applicationType = new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING);
-    claim.generalApplication = new GeneralApplication(applicationType);
-    jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
-    jest.spyOn(generalApplicationService, 'getByIndexOrLast').mockReturnValue(applicationType);
-
-    //When
-    await requestingReasonControllerGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
-
-    //Then
-    expect(MOCK_NEXT).toHaveBeenCalled();
-  });
-
-  it('should not load claim application cost page', async () => {
     //Given
     const claim = new Claim();
     const applicationType = new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT);
@@ -51,6 +36,21 @@ describe('Order Judge Guard', () => {
 
     //Then
     expect(MOCK_NEXT).not.toHaveBeenCalled();
+  });
+
+  it('should not load claim application cost page', async () => {
+    //Given
+    const claim = new Claim();
+    const applicationType = new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING);
+    claim.generalApplication = new GeneralApplication(applicationType);
+    jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
+    jest.spyOn(generalApplicationService, 'getByIndexOrLast').mockReturnValue(applicationType);
+
+    //When
+    await requestingReasonControllerGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+
+    //Then
+    expect(MOCK_NEXT).toHaveBeenCalled();
   });
   it('should throw error', async () => {
     //Given
