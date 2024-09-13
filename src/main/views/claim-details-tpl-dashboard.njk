@@ -45,10 +45,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 {% set bannerText =  t('COMMON.HEADER.NEW_SERVICE', {pageTitle: t(pageTitle) | replaceSpaces})  %}
 {% block beforeContent %}
 
-{% block warning_message %}
-    {% include "./macro/banner.njk" %}
-{% endblock %}
-
 {{ govukPhaseBanner({
         tag: {
           text: t('COMMON.HEADER.BETA')
