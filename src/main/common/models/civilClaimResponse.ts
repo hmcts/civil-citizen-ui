@@ -88,6 +88,7 @@ import {CCDDisclosureOfElectronicDocuments} from 'models/ccdResponse/ccdDisclosu
 import {CCDDisclosureOfNonElectronicDocuments} from 'models/ccdResponse/ccdDisclosureOfNonElectronicDocuments';
 import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeConsidered';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
+import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDetails';
 
 export class CivilClaimResponse {
   id: string;
@@ -200,6 +201,7 @@ export interface CCDClaim extends ClaimUpdate {
   specRespondent1DQDisclosureOfElectronicDocuments?: CCDDisclosureOfElectronicDocuments;
   specRespondent1DQDisclosureOfNonElectronicDocuments?: CCDDisclosureOfNonElectronicDocuments;
   respondent1DQClaimantDocumentsToBeConsidered?: CCDDocumentsToBeConsidered;
+  respondent1DQEvidenceConfirmDetails?: CCDEvidenceConfirmDetails;
   sdoOrderDocument?: CaseDocument;
   respondToClaim?: CCDRespondToClaim;
   defenceRouteRequired?: string;
