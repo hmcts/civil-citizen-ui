@@ -1,9 +1,20 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {DEFENDANT_SUMMARY_URL, GA_ACCEPT_DEFENDANT_OFFER_URL, GA_AGREE_TO_ORDER_URL, GA_RESPONDENT_AGREEMENT_URL, GA_RESPONSE_VIEW_APPLICATION_URL, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL} from 'routes/urls';
+import {
+  DEFENDANT_SUMMARY_URL,
+  GA_ACCEPT_DEFENDANT_OFFER_URL,
+  GA_AGREE_TO_ORDER_URL,
+  GA_RESPONDENT_AGREEMENT_URL,
+  GA_RESPONSE_VIEW_APPLICATION_URL,
+  GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
+  GA_APPLICATION_RESPONSE_SUMMARY_URL,
+} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {
   getApplicantDocuments,
-  getApplicationSections, getCourtDocuments, getRespondentDocuments, getResponseFromCourtSection,
+  getApplicationSections,
+  getCourtDocuments,
+  getRespondentDocuments,
+  getResponseFromCourtSection,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
@@ -16,6 +27,7 @@ import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdPara
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
+import {isRespondentAllowedToRespond} from 'services/features/generalApplication/response/viewApplicationService';
 
 const viewApplicationToRespondentController = Router();
 const viewPath = 'features/generalApplication/response/view-application';
@@ -36,9 +48,10 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const responseFromCourt = await getResponseFromCourtSection(req, req.params.appId, lang);
     const dashboardUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+    const isAllowedToRespond = isRespondentAllowedToRespond(applicationResponse);
     const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_APPLICATION_RESPONSE_SUMMARY_URL);
 
-    await saveApplicationTypesToGaResponse(applicationResponse.state, generateRedisKeyForGA(req), applicationResponse.case_data.generalAppType.types);
+    await saveApplicationTypesToGaResponse(isAllowedToRespond, generateRedisKeyForGA(req), applicationResponse.case_data.generalAppType.types, applicationResponse.case_data.generalAppUrgencyRequirement);
     res.render(viewPath, {
       backLinkUrl,
       summaryRows,
@@ -51,6 +64,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
       additionalDocUrl,
       responseFromCourt,
       dashboardUrl,
+      isAllowedToRespond,
     });
   } catch (error) {
     next(error);
