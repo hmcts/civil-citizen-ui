@@ -286,6 +286,7 @@ export interface CCDClaim extends ClaimUpdate {
   pcqId?: string;
   applicant1ResponseDate?: Date;
   hearingFee?: HearingFee;
+  hearingFeePBADetails?: HearingFee;
   hearingDueDate?: Date;
   hearingFeeHelpWithFees?:CCDHelpWithFees;
   applicant1RepaymentOptionForDefendantSpec?: CCDClaimantPaymentOption;
