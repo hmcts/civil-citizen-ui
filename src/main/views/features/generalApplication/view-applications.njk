@@ -22,12 +22,18 @@
 {% endset %}
 
 {% set responseHeaderHtml %}
-  <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE')}}</h1>
+  <h1 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.TITLE')}}</h1>
 {% endset %}
 
 {% set responseHtml %}
-  {# TODO: add response show/hidde content here #}
-  <p class="govuk-body">Response from the other parties</p>
+  <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
+    <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.OTHER_PARTIES_RESPONSE')}}</p>
+    <div class="govuk-form-group">
+        {{ govukSummaryList({
+            rows: responseSummaries
+        }) }}
+    </div>
+  </div>
 {% endset %}
 
 {% set courtResponseHeaderHtml %}
@@ -131,7 +137,7 @@
         }) }}
       {% endif %}
   {% endfor %}
-      
+
 {% endset %}
 
 {% block nestedContent %}
@@ -155,17 +161,20 @@
       html: applicationHtml
     }) }}
 
-    {{ govukDetails({
-      summaryHtml: responseHeaderHtml,
-      html: responseHtml
-    }) }}
-    
+    {% if responseSummaries %}
+      {{ govukDetails({
+        summaryHtml: responseHeaderHtml,
+        html: responseHtml
+      }) }}
+    {% endif %}
+
     {% if (applicantDocuments.documents.length + courtDocuments.documents.length + respondentDocuments.documents.length) > 0 %}
      {{ govukDetails({
         summaryHtml: applicationDocuments,
         html: applicationDocumentsHtml
-      }) }}
+    }) }}
     {% endif %}
+
   </div>
   {% if isApplicationFeeAmountNotPaid %}
     {{ govukButton({
