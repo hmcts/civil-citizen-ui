@@ -51,6 +51,7 @@ import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/g
 import { isApplicationVisibleToRespondent } from './response/generalApplicationResponseService';
 import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 import { t } from 'i18next';
+import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -481,9 +482,10 @@ export const getViewApplicationUrl = (claimId: string, claim: Claim, application
   return `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id, viewApplicationUrl)}?index=${index + 1}`;
 };
 
-export const saveApplicationTypesToGaResponse = async (gaState: ApplicationState, gaRedisKey: string, applicationTypes: ApplicationTypeOption[]): Promise<void> => {
-  if (gaState === ApplicationState.AWAITING_RESPONDENT_RESPONSE) {
+export const saveApplicationTypesToGaResponse = async (isAllowedToRespond: boolean, gaRedisKey: string, applicationTypes: ApplicationTypeOption[], generalAppUrgencyRequirement: GeneralAppUrgencyRequirement): Promise<void> => {
+  if (isAllowedToRespond) {
     const gaResponse = await getDraftGARespondentResponse(gaRedisKey);
+    gaResponse.generalAppUrgencyRequirement = generalAppUrgencyRequirement;
     gaResponse.generalApplicationType = applicationTypes;
     await saveDraftGARespondentResponse(gaRedisKey, gaResponse);
   }
