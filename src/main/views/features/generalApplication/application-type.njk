@@ -145,6 +145,16 @@
                       text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_RELIEF_PENALTY_DESCRIPTION')
                     }
                   },
+                  {% if isCoSCEnabled %}
+                  {
+                    value: ApplicationTypeOption.CONFIRM_YOU_PAID_CCJ_DEBT,
+                    html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CONFIRM_YOU_PAID') + '</strong>',
+                    checked: form.model.option === ApplicationTypeOption.CONFIRM_YOU_PAID_CCJ_DEBT,
+                    hint: {
+                    text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CONFIRM_YOU_PAID_DESCRIPTION')
+                  }
+                  },
+                  {% endif %}
                   {
                     value: ApplicationTypeOption.OTHER_OPTION,
                     html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.OTHER') + '</strong>',

@@ -41,6 +41,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
       cancelUrl,
       backLinkUrl,
       isOtherSelected: applicationType.isOtherSelected(),
+      isCoSCEnabled: true, //TODO replace for isCoSCEnabled featureToggle value
     });
   } catch (error) {
     next(error);
