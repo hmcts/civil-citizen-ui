@@ -11,7 +11,7 @@ export const toCUICaseProgressionHearing = (ccdClaim: CCDClaim): CaseProgression
     caseProgressionHearing.hearingLocation = new HearingLocation(ccdClaim.hearingLocation?.value);
     caseProgressionHearing.hearingTimeHourMinute = ccdClaim.hearingTimeHourMinute;
     caseProgressionHearing.hearingDuration = ccdClaim.hearingDuration;
-    const hearingFee = ccdClaim.hearingFee ? ccdClaim?.hearingFee : ccdClaim.hearingFeePBADetails;
+    const hearingFee = ccdClaim.hearingFee ? ccdClaim?.hearingFee : ccdClaim?.hearingFeePBADetails;
     caseProgressionHearing.hearingFeeInformation = new HearingFeeInformation(hearingFee, ccdClaim.hearingDueDate);
     caseProgressionHearing.hearingFeePaymentDetails = ccdClaim.hearingFeePaymentDetails;
     return caseProgressionHearing;
