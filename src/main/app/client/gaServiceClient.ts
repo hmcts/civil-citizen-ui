@@ -55,6 +55,10 @@ export class GaServiceClient {
     return this.submitEvent(ApplicationEvent.RESPOND_TO_APPLICATION, applicationId, generalApplication, req);
   }
 
+  async submitRespondToApplicationEventForUrgent(applicationId: string, generalApplication: CCDRespondToApplication, req?: AppRequest): Promise<Application> {
+    return this.submitEvent(ApplicationEvent.RESPOND_TO_APPLICATION_URGENT_LIP, applicationId, generalApplication, req);
+  }
+
   async submitEvent(event: ApplicationEvent, claimId: string, updatedApplication?: CCDGeneralApplication | CCDRespondToApplication | CCDGaHelpWithFees, req?: AppRequest): Promise<Application> {
 
     const config = this.getConfig(req);
