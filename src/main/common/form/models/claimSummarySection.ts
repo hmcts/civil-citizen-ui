@@ -41,6 +41,7 @@ export enum ClaimSummaryType {
   MAINTITLE = 'mainTitle',
   TITLE = 'title',
   SUBTITLE = 'subtitle',
+  FULL_STOP_LINK = 'fullStopLink',
   LINK = 'link',
   HTML = 'html',
   INSET_TEXT = 'insetText',
