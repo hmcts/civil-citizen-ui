@@ -49,7 +49,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     }
 
     //exclude Applications sections
-    if (!isGAFlagEnable){
+    if (!isGAFlagEnable || claim?.defendantUserDetails === undefined){
       dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
 
@@ -140,7 +140,7 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
 }
 
 export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnable : boolean,lng: string) : iWantToLinks => {
-  if (claim.ccdState && !claim.isCaseIssuedPending()) {
+  if (claim.ccdState && !claim.isCaseIssuedPending() && claim?.defendantUserDetails !== undefined) {
     if(!claim.hasClaimTakenOffline() && isGAFlagEnable) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
