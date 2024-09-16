@@ -247,7 +247,7 @@ ccd:
           key: PASSWORD
           disabled: false
       keyVaults: []
-      ingressHost: ccd-definition-store-${SERVICE_NAME}.preview.platform.hmcts.net
+      ingressHost: ccd-definition-store-${SERVICE_FQDN}
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     imageTag: "7.17.1"
