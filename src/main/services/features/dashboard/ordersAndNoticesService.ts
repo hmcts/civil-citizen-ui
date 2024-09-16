@@ -11,7 +11,10 @@ import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directi
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {Document} from 'models/document/document';
 import {documentIdExtractor} from 'common/utils/stringUtils';
-import {isCaseProgressionV1Enable} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {
+  isCaseProgressionV1Enable,
+  isGaForLipsEnabled,
+} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 export const getClaimantDocuments = async (claim: Claim, claimId: string, lang: string) => {
   const isCaseProgressionEnabled = await isCaseProgressionV1Enable();
@@ -66,7 +69,28 @@ export const getCourtDocuments = async (claim: Claim, claimId: string, lang: str
     courtDocumentsArray.push(...getFinalOrders(claim, claimId, lang));
   }
 
+  if (await isGaForLipsEnabled()) {
+    courtDocumentsArray.push(...getGeneralApplicationOrders(claim, claimId, lang));
+  }
+
   return new DocumentsViewComponent('CourtDocument', courtDocumentsArray);
+};
+
+const getGeneralApplicationOrders = (claim: Claim, claimId: string, lang: string) => {
+  let documents;
+  if (claim.isClaimant()) {
+    documents = claim.generalOrderDocClaimant;
+  } else {
+    documents = claim.generalOrderDocRespondentSol;
+  }
+  const caseDocuments: DocumentInformation[] = [];
+  if (documents && documents.length > 0) {
+    documents.forEach((documentElement) => {
+      const document = documentElement.value;
+      caseDocuments.push(setUpDocumentLinkObject(document.documentLink, document.createdDatetime, claimId, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER'));
+    });
+  }
+  return caseDocuments;
 };
 
 const getClaimantDirectionQuestionnaire = (claim: Claim, claimId: string, lang: string) => {

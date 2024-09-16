@@ -11,17 +11,18 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {
   CcdGeneralApplicationEvidenceDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
-import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
+import {CcdGARespondentDebtorOfferGAspec, CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {
   CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
-import {CcdGeneralApplicationAddlDocument, CcdHearingDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
+import {CcdGeneralApplicationAddlDocument, CcdHearingDocument, CcdGeneralOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 import {CcdGeneralApplicationDirectionsOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
 import { CcdGeneralApplicationRespondentResponse } from '../ccdGeneralApplication/ccdGeneralApplicationRespondentResponse';
 import { DateTime } from 'luxon';
 import {CcdGARequestWrittenRepDocument} from 'models/ccdGeneralApplication/ccdGARequestWrittenRepDocument';
+import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
 
 export class ApplicationResponse {
   id: string;
@@ -56,6 +57,7 @@ export interface CCDApplication extends ApplicationUpdate {
   generalAppReasonsOfOrder: string;
   generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
   gaAddlDoc: CcdGeneralApplicationAddlDocument[];
+  gaRespondentDebtorOffer?: CcdGARespondentDebtorOfferGAspec;
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
   generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
   generalAppPBADetails: CcdGeneralApplicationPBADetails;
@@ -67,13 +69,15 @@ export interface CCDApplication extends ApplicationUpdate {
   hearingNoticeDocument? : CcdHearingDocument[];
   requestForInformationDocument?: CcdGAMakeWithNoticeDocument[];
   directionOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
+  generalOrderDocument? : CcdGeneralOrderDocument[];
   judicialDecisionMakeOrder?: JudicialDecisionMakeOrder;
-  generalOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
   dismissalOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
   judicialDecisionRequestMoreInfo?: JudicialRequestMoreInfo;
   writtenRepSequentialDocument?: CcdGARequestWrittenRepDocument[];
   writtenRepConcurrentDocument?: CcdGARequestWrittenRepDocument[];
   applicationIsUncloakedOnce?: YesNoUpperCamelCase;
+  generalAppUrgencyRequirement?: GeneralAppUrgencyRequirement;
+  generalAppNotificationDeadlineDate?: string;
 }
 
 export interface JudicialRequestMoreInfo {

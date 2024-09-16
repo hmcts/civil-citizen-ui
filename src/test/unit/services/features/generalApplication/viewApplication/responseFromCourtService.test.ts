@@ -365,6 +365,7 @@ describe('View Application service', () => {
           {
             id: '1',
             value: {
+              createdBy: 'Civil',
               documentLink: {
                 document_url: 'test',
                 document_binary_url: binary_url,
