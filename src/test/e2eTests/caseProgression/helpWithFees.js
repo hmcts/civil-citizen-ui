@@ -18,7 +18,7 @@ class HelpWithFees {
     I.seeElement('div.govuk-inset-text');
     I.seeElement('//span[contains(., "The hearing fee is: £70")]');
     I.see('Applying for help with fees does not guarantee your fee will be covered. You will need to meet the', 'p.govuk-body');
-    I.see('eligibility criteria (opens in new tab).', 'a.govuk-link');
+    I.see('eligibility criteria (opens in new tab)', 'a.govuk-link');
     I.see('Once you apply for help with fees, you should receive a decision from HM Courts and Tribunals Service (HMCTS) within 5 to 10 working days.', 'p.govuk-body');
 
     I.see('If your application for help with fees is accepted', 'span.govuk-body');

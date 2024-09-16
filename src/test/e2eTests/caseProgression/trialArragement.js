@@ -34,7 +34,7 @@ class TrialArragement {
 
     I.see('Trial adjustments and duration', 'h3.govuk-heading-m');
     I.see('You will be asked to specify if there are any changes to the support or adjustments you previously specified in your', 'p.govuk-body');
-    I.see(' directions questionnaire.', 'a.govuk-link');
+    I.see(' directions questionnaire', 'a.govuk-link');
     I.see('You should review this to identify if your circumstances have changed.', 'p.govuk-body');
 
     I.see('We will remind you of the time allocated for the trial. If you feel less time is needed, you can specify why in the \'other information\' box.', 'p.govuk-body');
@@ -83,7 +83,7 @@ class TrialArragement {
 
     I.see('Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?', 'h3.govuk-heading-m');
     I.see('You can check your previous answers in the', 'p.govuk-body');
-    I.see('directions questionnaire.', 'a.govuk-link');
+    I.see('directions questionnaire', 'a.govuk-link');
 
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.YES}`);
 
