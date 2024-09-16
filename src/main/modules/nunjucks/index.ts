@@ -47,7 +47,7 @@ import {getLanguage} from 'modules/i18n/languageService';
 
 const packageDotJson = require('../../../../package.json');
 
-const dynatraceUrl = config.get<string>('dynatrace.url');
+const dynatraceUrl = config.get<string>('services.dynatrace.url');
 
 const appAssetPaths = {
   js: '/js',

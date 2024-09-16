@@ -177,6 +177,8 @@ export class Claim {
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
   judgmentOnline?: JudgmentOnline;
+  generalOrderDocClaimant?: SystemGeneratedCaseDocuments[];
+  generalOrderDocRespondentSol?: SystemGeneratedCaseDocuments[];
   claimType?: string;
   paymentSyncError?: boolean;
   responseClaimTrack?: string;

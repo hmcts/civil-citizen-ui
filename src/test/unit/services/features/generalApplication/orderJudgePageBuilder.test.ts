@@ -118,8 +118,8 @@ describe('General Application - Application type', () => {
     expect(result.contentList[3].data.text).toContain('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.THE_INFORMATION');
     expect(result.hintText).toContain('');
   });
-  it('should build content for PROCEEDS_IN_HERITAGE', async () => {
-    const result = buildPageContent(ApplicationTypeOption.PROCEEDS_IN_HERITAGE, lng);
+  it('should build content for Other', async () => {
+    const result = buildPageContent(ApplicationTypeOption.OTHER, lng);
     expect(result.contentList[0].data.text).toContain('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.JUDGE_WILL_CONSIDER');
     expect(result.contentList[1].data.text).toContain('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.SHOULD_EXPLAIN_PROCEEDS_IN_HERITAGE');
     expect(result.contentList[2].data.text).toContain('PAGES.GENERAL_APPLICATION.ORDER_JUDGE.THE_INFORMATION');
