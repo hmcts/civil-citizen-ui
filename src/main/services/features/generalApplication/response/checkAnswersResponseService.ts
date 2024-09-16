@@ -5,12 +5,12 @@ import { GaResponse } from 'common/models/generalApplication/response/gaResponse
 import { UnavailableDateType } from 'common/models/generalApplication/unavailableDatesGaHearing';
 import { CSS_CLASS_SUMMARY_LIST_KEY, SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
 import { formatDateSlash, formatDateToFullDate } from 'common/utils/dateUtils';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import { t } from 'i18next';
 import {
   GA_ACCEPT_DEFENDANT_OFFER_URL,
   GA_AGREE_TO_ORDER_URL,
-  GA_RESPONDENT_AGREEMENT_URL,
+  GA_RESPONDENT_AGREEMENT_URL, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL,
   GA_RESPONSE_HEARING_ARRANGEMENT_URL,
   GA_RESPONSE_HEARING_CONTACT_DETAILS_URL,
   GA_RESPONSE_HEARING_SUPPORT_URL,
@@ -84,6 +84,30 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
         location => location.split(' - ')[0],
         hearingArrangementUrl),
     ];
+  };
+  const addDocumentUploadRow = (): SummaryRow[] => {
+    // const lng = getLng(lang);
+    const wantToUploadDocuments = gaResponse?.wantToUploadDocuments
+    const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
+    const rows: SummaryRow[] = [];
+    if (wantToUploadDocuments) {
+      const href = `${constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL)}`;
+      let rowValue: string;
+      if (wantToUploadDocuments === YesNo.YES) {
+        rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION.YES', {lng})}</p>`;
+        rowValue += '<ul class="no-list-style">';
+        gaResponse.uploadEvidenceDocuments.forEach(uploadGAFile => {
+          rowValue += `<li>${uploadGAFile.caseDocument.documentName}</li>`;
+        });
+        rowValue += '</ul>';
+      } else {
+        rowValue = t('COMMON.VARIATION.NO', {lng});
+      }
+      rows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS', {lng}), rowValue, href, changeLabel()),
+      );
+    }
+    return rows;
   };
 
   const contactDetailsSections = (): SummaryRow[] => {
@@ -173,6 +197,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
     agreeToOrderSection,
     acceptOfferSection,
     respondentAgreementSection,
+    addDocumentUploadRow,
     hearingArrangementSections,
     contactDetailsSections,
     unavailableDatesSection,

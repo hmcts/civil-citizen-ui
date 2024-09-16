@@ -14,6 +14,8 @@ import {
   UnavailableDatesGaHearing,
 } from 'common/models/generalApplication/unavailableDatesGaHearing';
 import { getSummarySections } from 'services/features/generalApplication/response/checkAnswersResponseService';
+import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import {CaseDocument} from 'models/document/caseDocument';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
@@ -470,6 +472,57 @@ describe('Check Answers response service', () => {
             ],
           },
         },
+      ]);
+    });
+
+    it('return upload document details', () => {
+      const {response} = claimAndResponse();
+      response.wantToUploadDocuments = YesNo.YES;
+      const uploadedFiles = new UploadGAFiles();
+      uploadedFiles.caseDocument = {
+        documentLink: {
+          document_url: 'abc.com',
+          document_filename: 'abc',
+          document_binary_url: '1234',
+        },
+        documentName: 'abc',
+      } as CaseDocument
+      response.uploadEvidenceDocuments = [uploadedFiles];
+      expect(getSummarySections('123', '345', response, 'en')).toEqual([
+        {
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/want-to-upload-document',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS'
+              }
+            ]
+          },
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS'
+          },
+          'value': {
+            'html': '<p class=\"govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0\">COMMON.VARIATION.YES</p><ul class=\"no-list-style\"><li>abc</li></ul>'
+          }
+        },
+        {
+          'actions': {
+            'items': [
+              {
+                'href': '/case/123/response/general-application/345/unavailable-dates',
+                'text': 'COMMON.BUTTONS.CHANGE',
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+              }
+            ]
+          },
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+          },
+          'value': {
+            "html": ' '
+          }
+        }
       ]);
     });
 
