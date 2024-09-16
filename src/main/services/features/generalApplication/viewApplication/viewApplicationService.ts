@@ -24,12 +24,16 @@ import {
   DocumentsViewComponent,
 } from 'form/models/documents/DocumentsViewComponent';
 import {CcdDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
-import {
-  CASE_DOCUMENT_VIEW_URL,
-} from 'routes/urls';
+import {buildResponseSummaries} from './addViewApplicationResponseRows';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import { buildResponseFromCourtSection } from './responseFromCourtService';
 import { CourtResponseSummaryList } from 'common/models/generalApplication/CourtResponseSummary';
+import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
+
+export type ViewApplicationSummaries = {
+  summaryRows: SummaryRow[],
+  responseSummaries?: SummaryRow[],
+}
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -62,11 +66,13 @@ const buildViewApplicationToRespondentSections = (application: ApplicationRespon
   ];
 };
 
-export const getApplicationSections = async (req: AppRequest, applicationId: string, lang?: string): Promise<SummaryRow[]> => {
+export const getApplicationSections = async (req: AppRequest, applicationId: string, lang?: string): Promise<ViewApplicationSummaries> => {
   const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
   const claim = await getClaimById(req.params.id, req, true);
-  return toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, applicationResponse) ? buildApplicationSections(applicationResponse, lang)
-    : buildViewApplicationToRespondentSections(applicationResponse, lang);
+  return toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, applicationResponse)
+    ? { summaryRows: buildApplicationSections(applicationResponse, lang),
+      responseSummaries: buildResponseSummaries(applicationResponse.case_data, lang) }
+    : { summaryRows: buildViewApplicationToRespondentSections(applicationResponse, lang) };
 };
 
 export const getCourtDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
