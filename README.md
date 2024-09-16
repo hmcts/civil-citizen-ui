@@ -115,7 +115,7 @@ Running Preview pipeline :
 
 Raise a PR and add below labels to run the pipeline without any issues
 ```bash
-fullDeploy
+fullDeploy, pr-values:elasticsearch
 ```
 Add "enable_keep_helm" label to retain helm release on preview
 Add "pr-values:enableNotifyEmails" label to be able to send live notifications on the PR
