@@ -82,7 +82,8 @@ module.exports = {
   claimantCitizenUser: {
     password: defaultPassword,
     //email:'civilmoneyclaimsdemo@gmail.com',
-    email: 'youonlytestonce1@gmail.com',
+    email: `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
+    // email: 'youonlytestonce1@gmail.com',
     type: 'claimant',
   },
   defendantCitizenUser: {
