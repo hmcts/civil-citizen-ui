@@ -53,7 +53,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const claim = await getClaimById(redisKey, req, true);
     let applicationType = null;
     const applicationIndex = queryParamNumber(req, 'index');
-    if (req.body.option === ApplicationTypeOption.OTHER) {
+    if (req.body.option === ApplicationTypeOption.OTHER_OPTION) {
       applicationType = new ApplicationType(req.body.optionOther);
     } else {
       applicationType = new ApplicationType(req.body.option);

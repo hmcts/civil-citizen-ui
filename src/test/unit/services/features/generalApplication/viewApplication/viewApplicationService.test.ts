@@ -3,7 +3,7 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import {
   getApplicantDocuments,
   getApplicationSections,
-  getCourtDocuments,
+  getCourtDocuments, getGeneralOrder, getHearingNotice,
   getRespondentDocuments,
   getResponseFromCourtSection,
 } from 'services/features/generalApplication/viewApplication/viewApplicationService';
@@ -86,6 +86,39 @@ function setMockHearingNoticeDocuments(): CcdHearingDocument[] {
   }];
 }
 
+function setMockGeneralOrderDocuments(): CcdHearingDocument[] {
+  return [{
+    'id': '4810a582-2e16-48e9-8b64-9f96b4d12cc4',
+    'value': {
+      'createdBy': 'Civil',
+      'documentLink': {
+        'category_id': 'applications',
+        'document_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831',
+        'document_filename': 'General_order_for_application_2024-08-01 11:59:58.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831/binary',
+      },
+      'documentName': 'General_order_for_application_2024-08-01 11:59:58.pdf',
+      'documentType': DocumentType.GENERAL_ORDER,
+      'createdDatetime': new Date('2024-08-01'),
+    },
+  },
+  {
+    'id': 'b4b50368-84dc-4c05-b9e7-7d01bd6a9119',
+    'value': {
+      'createdBy': 'Civil',
+      'documentLink': {
+        'category_id': 'applications',
+        'document_url': 'http://dm-store:8080/documents/b4b50368-84dc-4c05-b9e7-7d01bd6a9119',
+        'document_filename': 'General_order_for_application_2024-08-02 11:59:58.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/b4b50368-84dc-4c05-b9e7-7d01bd6a9119/binary',
+      },
+      'documentName': 'General_order_for_application_2024-08-02 11:59:58.pdf',
+      'documentType': DocumentType.GENERAL_ORDER,
+      'createdDatetime':  new Date('2024-08-02'),
+    },
+  }];
+}
+
 function setMockRequestForInformationDocument(): CcdGAMakeWithNoticeDocument[] {
   const fileName = 'Name of file';
   const binary = '77121e9b-e83a-440a-9429-e7f0fe89e518';
@@ -117,7 +150,7 @@ describe('View Application service', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = await getApplicationSections(mockedAppRequest, '1718105701451856', 'en');
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
 
       expect(result).toHaveLength(12);
       expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
@@ -159,7 +192,7 @@ describe('View Application service', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = await getApplicationSections(mockedAppRequest, '1718105701451856', 'en');
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
 
       expect(result).toHaveLength(13);
       expect(result).toContainEqual({
@@ -181,7 +214,7 @@ describe('View Application service', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       mockGetClaimById.mockResolvedValueOnce(claim);
-      const result = await getApplicationSections(mockedAppRequest, '1718105701451856', 'en');
+      const result = (await getApplicationSections(mockedAppRequest, '1718105701451856', 'en')).summaryRows;
       expect(result).toHaveLength(11);
       expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
         ['PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC',
@@ -274,6 +307,57 @@ describe('View Application service', () => {
       );
       const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
       expect(result).toEqual(expectedResult);
+    });
+    it('should get data array if there is general order documents', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.generalOrderDocument= setMockGeneralOrderDocuments();
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      //When
+      const result = getCourtDocuments(application, 'en');
+      //Then
+      const expectedDocument1 = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf831', 'General_order_for_application_2024-08-01 11:59:58.pdf'),
+      );
+      expect(result.documents[2]).toEqual(expectedDocument1);
+      const expectedDocument2 = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER',
+        '2 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/b4b50368-84dc-4c05-b9e7-7d01bd6a9119', 'General_order_for_application_2024-08-02 11:59:58.pdf'),
+      );
+      expect(result.documents[1]).toEqual(expectedDocument2);
+    });
+    it('should get empty data array if there is no general order documents', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.generalOrderDocument= null;
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      //When
+      const result = getGeneralOrder(application, 'en');
+      //Then
+
+      expect(result.length).toEqual(0);
+    });
+    it('should get empty data array if there is no casedata', async () => {
+      //given
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      application.case_data = null;
+
+      jest.spyOn(GaServiceClient.prototype, 'getApplication').mockResolvedValueOnce(application);
+      //When
+      const resultGeneralOrder = getGeneralOrder(application, 'en');
+      const resultHearingNotice = getHearingNotice(application, 'en');
+      //Then
+
+      expect(resultGeneralOrder.length).toEqual(0);
+      expect(resultHearingNotice.length).toEqual(0);
     });
   });
 
