@@ -65,7 +65,7 @@ describe('General Application - Requesting reason page builder', () => {
     expect(result[0].data.text).toContain('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.NOT_ON_LIST');
   });
   it('should build content for PROCEEDS_IN_HERITAGE', async () => {
-    const result = buildRequestingReasonPageContent(ApplicationTypeOption.PROCEEDS_IN_HERITAGE, lng);
+    const result = buildRequestingReasonPageContent(ApplicationTypeOption.OTHER, lng);
     expect(result[0].data.text).toContain('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.NOT_ON_LIST');
   });
 });

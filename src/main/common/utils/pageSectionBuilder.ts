@@ -134,6 +134,22 @@ export class PageSectionBuilder {
     return this;
   }
 
+  addFullStopLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
+    const linkSection = ({
+      type: ClaimSummaryType.FULL_STOP_LINK,
+      data: {
+        text: text,
+        href: href,
+        textBefore: textBefore,
+        textAfter: textAfter,
+        variables: variables,
+        externalLink,
+      },
+    });
+    this._claimSummarySections.push(linkSection);
+    return this;
+  }
+
   addButton(title: string, href: string) {
     const titleSection = ({
       type: ClaimSummaryType.BUTTON,
