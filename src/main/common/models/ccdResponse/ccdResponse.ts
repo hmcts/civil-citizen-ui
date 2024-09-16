@@ -36,6 +36,7 @@ import {CCDDocumentsToBeConsidered} from 'models/ccdResponse/ccdDocumentsToBeCon
 
 export interface CCDResponse extends ClaimUpdate {
   respondent1ClaimResponseTypeForSpec?: string;
+  respondent1ClaimResponseTypeForLipSpec?: string;
   defenceAdmitPartPaymentTimeRouteRequired?: CCDPaymentOption;
   respondent1RepaymentPlan?: CCDRepaymentPlan;
   respondToClaimAdmitPartLRspec?: CCDPayBySetDate;
