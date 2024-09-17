@@ -39,6 +39,7 @@ module.exports = {
             PostTown: 'TestCity',
             PostCode: 'IG61JD',
           },
+          partyID: 'a6c257c6-d05a-45',
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
@@ -136,12 +137,12 @@ module.exports = {
           responseCourtLocations: {
             value: {
               code: '350aa935-4d80-4762-9a4e-2a8f3eaad9fc',
-              label: 'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL',
+              label: 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
             },
             list_items: [
               {
                 code: '350aa935-4d80-4762-9a4e-2a8f3eaad9fc',
-                label: 'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL',
+                label: 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
               },
             ],
           },
@@ -216,8 +217,8 @@ module.exports = {
           reasonForHearingAtSpecificCourt: 'test',
           responseCourtLocations: [],
           caseLocation: {
-            region: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
-            baseLocation: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
+            region: 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
+            baseLocation: 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
           },
         },
         applicant1DQWitnesses: {

@@ -97,8 +97,8 @@ module.exports = {
 
         },
         'respondent1DQLanguage': {
-          'court': 'WELSH',
-          'documents': 'WELSH',
+          'court': 'ENGLISH',
+          'documents': 'ENGLISH',
         },
         'respondent1DQVulnerabilityQuestions': {
           'vulnerabilityAdjustmentsRequired': 'No',

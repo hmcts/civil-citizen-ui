@@ -79,16 +79,16 @@ module.exports = {
             respondentSolicitor1Reference: 'Respondent reference',
           },
         },
-        // Court: {
-        //   courtLocation: {
-        //     applicantPreferredCourtLocationList: {
-        //       list_items: [
-        //         listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ'),
-        //       ],
-        //       value: listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ'),
-        //     },
-        //   },
-        // },
+        Court: {
+          courtLocation: {
+            applicantPreferredCourtLocationList: {
+              list_items: [
+                listElement('Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ'),
+              ],
+              value: listElement('Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ'),
+            },
+          },
+        },
         Claimant: {
           applicant1: applicant1WithPartyName,
         },
