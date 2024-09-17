@@ -433,7 +433,7 @@ describe('dashboardService', () => {
           , '1234567890'
           , appReq
           , false
-          , true);
+          , (claimAssigned));
 
         //Then
         expect(claimantDashboard).toEqual(dashboardExpected);
@@ -528,6 +528,20 @@ describe('dashboardService', () => {
         claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
         claim.takenOfflineDate = new Date();
         claim.defendantUserDetails = undefined;
+        //When
+        const result = getContactCourtLink(claim.id, claim, false, 'en');
+
+        //Then
+        expect(result).toBeUndefined();
+      });
+
+      it('getContactCourtLink when no ccdState()', async () => {
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.takenOfflineDate = new Date();
         //When
         const result = getContactCourtLink(claim.id, claim, false, 'en');
 
