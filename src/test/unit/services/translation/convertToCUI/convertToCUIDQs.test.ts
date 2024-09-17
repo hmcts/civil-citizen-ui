@@ -46,16 +46,16 @@ describe('translate CCDDQ to CUI DQ model', () => {
           email: 'abc@def.ghi',
           phone: '7788994455',
           jobTitle: 'Chef',
-        }
+        },
       },
     };
 
     const confirmDetails: ConfirmYourDetailsEvidence = new ConfirmYourDetailsEvidence();
-      confirmDetails.firstName = 'Gordon';
-      confirmDetails.lastName = 'Ramsay';
-      confirmDetails.emailAddress = 'abc@def.ghi';
-      confirmDetails.phoneNumber = 7788994455;
-      confirmDetails.jobTitle = 'Chef';
+    confirmDetails.firstName = 'Gordon';
+    confirmDetails.lastName = 'Ramsay';
+    confirmDetails.emailAddress = 'abc@def.ghi';
+    confirmDetails.phoneNumber = 7788994455;
+    confirmDetails.jobTitle = 'Chef';
 
     //When
     const output = toCUIDQs(input);
