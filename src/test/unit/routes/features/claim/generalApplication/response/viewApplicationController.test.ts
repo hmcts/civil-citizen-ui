@@ -18,7 +18,7 @@ import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalA
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
 jest.mock('../../../../../../../main/app/client/gaServiceClient');
-
+jest.mock('../../../../../../../main/services/features/generalApplication/response/viewApplicationService', () => ({isRespondentAllowedToRespond: jest.fn().mockReturnValue(false)}));
 const mockedSummaryRows = getApplicationSections as jest.Mock;
 const mockRespondentDocs = getRespondentDocuments as jest.Mock;
 const mockApplicantDocs = getApplicantDocuments as jest.Mock;
@@ -185,24 +185,24 @@ describe('General Application - View application', () => {
         const responseFromCourt : CourtResponseSummaryList[] = [];
         const hearingNoticeRows : SummaryRow[] = [];
         const judgeDirections = new CourtResponseSummaryList(judgeDirectionRows, new Date(),new ResponseButton('Judge Direction', ''));
-        
+
         judgeDirectionRows.push(
           summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '1 Aug 2024'),
           summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Judge has made order'),
           summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Judge Order</a>'));
-        
+
         const hearingNotices = new CourtResponseSummaryList(hearingNoticeRows);
         hearingNoticeRows.push(
           summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '2 Aug 2024'),
           summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Hearing Notice has been generated'),
           summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Hearing Notice</a>'));
-        
-        responseFromCourt.push(judgeDirections); 
-        responseFromCourt.push(hearingNotices); 
-    
+
+        responseFromCourt.push(judgeDirections);
+        responseFromCourt.push(hearingNotices);
+
         return Promise.resolve(responseFromCourt);
       });
-  
+
       await request(app)
         .get(GA_RESPONSE_VIEW_APPLICATION_URL)
         .query({index: '1'})
