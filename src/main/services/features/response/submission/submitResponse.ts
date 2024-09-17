@@ -8,6 +8,7 @@ import {addressHasChange} from './compareAddress';
 import {
   getClaimWithExtendedPaymentDeadline,
 } from 'services/features/response/submitConfirmation/submitConfirmationService';
+import {isCUIReleaseTwoEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('submitResponse');
@@ -23,6 +24,9 @@ export const submitResponse = async (req: AppRequest): Promise<Claim> => {
     claim.respondentPaymentDeadline = await getClaimWithExtendedPaymentDeadline(claim, req);
     const isAddressUpdated = addressHasChange(claim.respondent1?.partyDetails?.primaryAddress, claimFromCivilService?.respondent1?.partyDetails?.primaryAddress);
     const ccdResponse = translateDraftResponseToCCD(claim, isAddressUpdated);
+    if (await isCUIReleaseTwoEnabled()) {
+      ccdResponse.respondent1ClaimResponseTypeForLipSpec = claim.respondent1?.responseType;
+    }
     logger.info('Successfully translated the defendant response to ccd');
     return await civilServiceClient.submitDefendantResponseEvent(req.params.id, ccdResponse, req);
   } catch (err) {
