@@ -96,6 +96,13 @@ module.exports = {
     roleCategory: 'JUDICIAL',
     regionId: '1',
   },
+  judgeUserWithRegionId2: {
+    password: judgeDefaultPassword,
+    email: 'DJ.Angel.Morgan@ejudiciary.net',
+    type: 'judge',
+    roleCategory: 'JUDICIAL',
+    regionId: '1',
+  },
   judgeUserWithRegionId3: {
     password: judgeDefaultPassword,
     email: 'DJ.Dennis.Perry@ejudiciary.net',
@@ -105,6 +112,13 @@ module.exports = {
   },
   hearingCenterAdminWithRegionId1: {
     email: 'hearing_center_admin_reg1@justice.gov.uk',
+    password: defaultPassword,
+    type: 'hearing-center-admin',
+    roleCategory: 'ADMIN',
+    regionId: '1',
+  },
+  hearingCenterAdminWithRegionId2: {
+    email: 'hearing_center_admin_reg2@justice.gov.uk',
     password: defaultPassword,
     type: 'hearing-center-admin',
     roleCategory: 'ADMIN',
