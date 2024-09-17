@@ -358,17 +358,17 @@ describe('dashboardService', () => {
             , new DashboardTaskList('test', 'test', []),
           ));
 
-        if(isGeneralApplicationEnabled) {
-          dashboardExpected.items.push(new DashboardTaskList('Applications', 'Applications', []));
-        }
-
         jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
 
         const claim = new Claim();
         claim.id = '1234567890';
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 900;
-        claim.defendantUserDetails = {};
+        claim.defendantUserDetails = (isGeneralApplicationEnabled) ? undefined : {};
+
+        if(isGeneralApplicationEnabled && claim.defendantUserDetails !== undefined) {
+          dashboardExpected.items.push(new DashboardTaskList('Applications', 'Applications', []));
+        }
         //When
         const claimantDashboard = await getDashboardForm(
           ClaimantOrDefendant.DEFENDANT
@@ -512,6 +512,22 @@ describe('dashboardService', () => {
         claim.ccdState = CaseState.PENDING_CASE_ISSUED;
         claim.takenOfflineDate = new Date();
         claim.defendantUserDetails = {};
+        //When
+        const result = getContactCourtLink(claim.id, claim, false, 'en');
+
+        //Then
+        expect(result).toBeUndefined();
+      });
+
+      it('getContactCourtLink when claim is not Assigned to defendant', async () => {
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+        claim.takenOfflineDate = new Date();
+        claim.defendantUserDetails = undefined;
         //When
         const result = getContactCourtLink(claim.id, claim, false, 'en');
 
