@@ -922,6 +922,7 @@
     },
     "TELEPHONE_FOR_MEDIATION": {
       "PAGE_TITLE": "Cyfryngu dros y ffôn",
+      "YOU_WISH_TO_PROCEED_WITH_THE_CLAIM": "Rydych yn dymuno bwrw ymlaen â'r hawliad. Y cam nesaf yw cyfryngu.",
       "IF_THE_CLAIMANT_DISAGREES": "Os yw’r hawlydd yn anghytuno â’ch ymateb, rhaid i chi gymryd rhan mewn cyfryngu.",
       "A_TELEPHONE_MEDIATION_APPOINTMENT": "Bydd apwyntiad cyfryngu dros y ffôn yn cael ei drefnu yn rhad ac am ddim.",
       "AN_IMPARTIAL_MEDIATOR": "Bydd cyfryngwr diduedd yn siarad â’r ddau barti i weld a oes modd dod i gytundeb cyn i’r achos fynd gerbron y llys. Byddwch yn cael cyfle i esbonio’n fanylach eich rhesymau dros wrthod yr hawliad.",
@@ -957,7 +958,7 @@
         "ACCEPTED_PARTIALLY": "Bydd rhywfaint o'r ffi yn cael ei thalu, ond bydd angen i chi dalu'r balans sy'n weddill. Gallwch dalu dros y ffôn.",
         "CONTINUE_APPLICATION": "Ydych chi eisiau parhau i wneud cais am Help i Dalu Ffioedd?",
         "ELIGIBILITY": "Nid yw gwneud cais am help i dalu ffioedd yn gwarantu na fydd rhaid i chi dalu’r ffi. Bydd angen i chi fodloni’r ",
-        "ELIGIBILITY_LINK": "meini prawf cymhwysedd (yn agor mewn tab newydd).",
+        "ELIGIBILITY_LINK": "meini prawf cymhwysedd (yn agor mewn tab newydd)",
         "HEARING_FEE": "Ffi’r Gwrandawiad",
         "HEARING_FEE_INSET": "<span class=\"govuk-body govuk-!-font-weight-bold\">Ffi’r Gwrandawiad yw: £{{ feeAmount }}</span>",
         "RECEIVE_DECISION": "Ar ôl i chi wneud cais am help i dalu ffioedd, dylech gael penderfyniad gan Wasanaeth Llysoedd a Thribiwnlysoedd EF (GLlTEF) o fewn 5 i 10 diwrnod gwaith.",
@@ -975,7 +976,7 @@
         "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
         "LIST_ITEMS": {
           "FIRST": "Ewch ",
-          "FIRST_LINK": "i ‘gwneud cais am help i dalu ffioedd’ (yn agor mewn tab newydd).",
+          "FIRST_LINK": "i ‘gwneud cais am help i dalu ffioedd’ (yn agor mewn tab newydd)",
           "SECOND": "Pan ofynnir i chi nodi rhif llys neu dribiwnlys, rhowch 'ffi’r gwrandawiad' ac yna esboniad byr, er enghraifft 'ffi gwrandawiad hawliadau bychain' neu 'ffi gwrandawiad trac cyflym'.",
           "THIRD": "Cwblhewch y cais am help i dalu ffioedd.",
           "FOURTH": "Dychwelwch yma i'ch cyfrif hawliadau am arian ar-lein.",
@@ -2066,7 +2067,9 @@
         "SDO_ORDER_IN_REVIEW_OTHER_PARTY_DEFENDANT": "Darllenwch geisiadau'r diffynnydd i farnwr adolygu'r gorchymyn.",
         "WAITING_CLAIMANT_INTENT_DOC_UPLOAD": "Mae'r dogfennau'n cael eu cyfieithu.",
         "WAITING_COURT_REVIEW": "Aros i'r llys adolygu'r achos.",
-        "HEARING_FEE_UNPAID": "Mae'r hawliad wedi cael ei ddileu."
+        "HEARING_FEE_UNPAID": "Mae'r hawliad wedi cael ei ddileu.",
+        "CASE_DISMISSED": "Mae’r achos wedi’i gau.",
+        "CASE_STAYED": "Mae’r achos wedi cael ei atal."
       },
       "STATUS_DEFENDANT": {
         "ADMIT_PAY_BY_SET_DATE": "Rydych chi wedi derbyn yr hawliad yn ei gyfanrwydd ac wedi cynnig talu'r swm llawn erbyn {{paymentDate}}.",
@@ -2111,7 +2114,9 @@
         "BOTH_SIGNED_SETTLEMENT_AGREEMENT": "Mae'r ddau ohonoch wedi llofnodi cytundeb setlo.",
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement.",
-        "HEARING_FEE_UNPAID": "Mae'r hawliad wedi cael ei ddileu."
+        "HEARING_FEE_UNPAID": "Mae'r hawliad wedi cael ei ddileu.",
+        "CASE_DISMISSED": "Mae’r achos wedi’i gau.",
+        "CASE_STAYED": "Mae’r achos wedi cael ei atal."
       },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Gwneud cais i’r llys fel credydwr dyled mewn lle i anadlu",
@@ -2126,6 +2131,7 @@
         "I_WANT_TO": "Rwyf eisiau...",
         "REPRESENT_MYSELF": "Cynrychioli fy hun mewn gwrandawiad",
         "TELL_US_ENDED": "Dywedwch wrthym eich bod wedi dod â’r hawliad i ben",
+        "VIEW_ALL_APPLICATIONS": "View all existing applications",
         "WHAT_EXPECT_HEARING": "Beth i'w ddisgwyl mewn gwrandawiad"
       },
       "TITLE": "Eich cyfrif hawliadau am arian",
@@ -2635,7 +2641,7 @@
         "FEE_NEED_TO_BE_PAID": "This fee will need to be paid once you've created the application. If you're eligible, you may be able to apply for help with fees.",
         "MAKE_AN_APPLICATION": "Make an application",
         "MAY_NOT_AGREE": "The court may not agree to change the hearing, even if both parties have agreed.",
-        "PROCEEDS_IN_HERITAGE": "the court to do something else",
+        "OTHER": "the court to do something else",
         "RELIEF_FROM_SANCTIONS": "ask for relief from a penalty",
         "SET_ASIDE_JUDGEMENT": "set aside (remove) a judgment",
         "SETTLE_BY_CONSENT": "the court to make an order settling the claim by consent",
@@ -3047,6 +3053,19 @@
         "SUMMERY_MESSAGE2" : "Their answers to 'What order do you want the judge to make?' and 'Why are you requesting this order' will explain the change that they've requested and why. There will be a link to review any documents that they've uploaded.",
         "SUMMERY_MESSAGE3" : "Once you've reviewed their application, click 'respond to application' below. You'll be asked whether or not you agree with their request."
       },
+      "RESPONDENT_UPLOAD_OPTION": {
+        "PAGE_TITLE": "Provide more information to the court",
+        "TITLE": "Provide more information to the court",
+        "TEXT_INPUT": "Enter the information requested by the court",
+        "TEXT_INPUT_HINT": "Write in short sentences and paragraphs. Any text you enter will not be translated into Welsh.",
+        "CONTENT_1": "You have the option of entering the information requested by the court or uploading documents containing the information requested.",
+        "CONTENT_2_1": "If you're not sure what to write, refer to the ",
+        "CONTENT_2_2": "court document",
+        "CONTENT_2_3": " that sets out the information that the court has requested from you.",
+        "OPTION": "Do you want to upload documents to support your response? (Optional)",
+        "WRITTEN_REP_CONTENT_1": "Written representations are written statements that explain your case or your request to the court.",
+        "WRITTEN_REP_CONTENT_1_2": "You can either write the requested information in the box below or upload documents that contain it."
+      },
       "RESPONDENT_WANT_TO_UPLOAD_DOC": {
         "PAGE_TITLE": "Do you want to upload documents to support your response?",
         "TITLE": "Do you want to upload documents to support your response? (Optional)"
@@ -3105,28 +3124,40 @@
       },
       "VIEW_APPLICATION": {
         "ADDITIONAL_SECTIONS": "There may be additional sections that set out more information, such as the response from the court.",
-        "APPLICATION": "Application",
         "APPLICANTS_DOCUMENTS": "Applicant's documents",
+        "APPLICATION": "Application",
+        "APPLICATION_APPROVE_EDIT": "Application approved or edited",
         "APPLICATION_DETAILS": "Application details submitted by the applicant.",
+        "APPLICATION_DISMISSED": "Application dismissed",
         "APPLICATION_DOCUMENTS": "Application Documents",
+        "APPROVE_EDIT_DOCUMENT": "Approval or edit order",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Court's response to the application",
         "DATE_RESPONSE": "Date of response",
         "DIRECTION_WITH_NOTICE": "Direction to make the application with notice",
+        "DISMISSED_DOCUMENT": "Dismissal order",
         "DOCUMENTS_FROM_COURT": "Documents from the court",
         "EITHER_PARTIES": "Applications and responses can be made by either parties in a case",
         "HEARING_NOTICE" : "Hearing Notice",
+        "HEARING_NOTICE_DESC" : "There is a hearing notice",
         "HEARING_ORDER" : "Hearing Order",
+        "HEARING_ORDER_DESC" : "The judge has ordered a hearing",
+        "GENERAL_ORDER" : "General Order",
         "JUDGE_HAS_MADE_ORDER": "Mae'r Barnwr wedi gwneud gorchymyn ar eich hawliad.",
         "JUDGE_HAS_MADE_ORDER_DOCUMENT": "Judges Directions Order.doc",
         "PAGE_TITLE": "View application",
-        "RESPONSE": "Response from the other parties",
         "READ_RESPONSE": "Read the response",
+        "RESPONSE": {
+          "DO_YOU_AGREE_WITH_APPLICANT_REQUEST": "Do you agree that the court should make the order that the applicant has requested?",
+          "OTHER_PARTIES_RESPONSE": "The other parties's response to the application.",
+          "TITLE": "Response from the other parties",
+          "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing"
+        },
+        "RESPOND_TO_REQUEST": "Respond to the request",
         "REQUEST_WRITTEN_REPRESENTATION": "Request for written representation",
         "REQUEST_WRITTEN_REPRESENTATION_DOCUMENT": "request_for_written_representation.pdf",
         "RESPONSE_COURT": "Response from the court",
         "RESPONDENTS_DOCUMENTS": "Respondent's documents",
-        "RESPOND_TO_REQUEST": "Respond to the request",
         "REQUEST_MORE_INFO": "Request for more information",
         "REVIEW": "Review the application together with any response that has been received.",
         "STATUS": {
@@ -3228,7 +3259,7 @@
         "HEARING_FEE": {
           "APPLY_HELP_FEE_SELECTION": {
             "LINK_BEFORE": "Os ydych ar incwm isel, os nad oes gennych lawer o gynilion neu os ydych yn hawlio budd-daliadau, efallai y gallwch gael ",
-            "LINK_TEXT": "help i dalu ffioedd (agor mewn tab newydd).",
+            "LINK_TEXT": "help i dalu ffioedd (agor mewn tab newydd)",
             "PARAGRAPH": "Os ydych yn bodloni'r meini prawf, efallai y cewch gymorth i dalu rhywfaint neu'r cyfan o'r ffi.",
             "QUESTION_TITLE": "Ydych chi eisiau gwneud cais am help i dalu ffioedd?",
             "TITLE": "Talu ffi’r gwrandawiad"
@@ -4343,7 +4374,7 @@
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "HAS_ANYTHING": "A oes unrhyw beth wedi newid i’r cymorth neu’r addasiadau rydych yn dymuno i’r llys a’r barnwr eu hystyried ar eich rhan neu i dyst a fydd yn rhoi tystiolaeth ar eich rhan?",
       "YOU_CAN": "Gallwch wirio eich atebion blaenorol yn yr ",
-      "DIRECTIONS": "holiadur cyfarwyddiadau.",
+      "DIRECTIONS": "holiadur cyfarwyddiadau",
       "WHAT_SUPPORT": "Pa gymorth sydd ei angen arnoch chi, eich arbenigwyr neu dystion?",
       "FOR_EXAMPLE": "Er enghraifft, mae tyst angen ystafell llys heb risiau."
     },
@@ -4503,7 +4534,7 @@
       "IF_YOU_NEED_TO_MAKE_APPLICATION": "<p class=\"govuk-body\"><strong>Os oes angen i chi wneud cais, rhaid i chi gwblhau a chyflwyno trefniadau eich treial yn gyntaf. </strong>Dim ond unwaith y bydd hyn wedi’i wneud y dylech wneud cais. Bydd dolen i wneud cais yn ymddangos unwaith y byddwch wedi cwblhau trefniadau eich treial.</p><p class=\"govuk-body\">Os byddwch yn gwneud cais, nodwch y bydd y treial yn mynd yn ei flaen fel y cynlluniwyd nes bydd y cais yn cael ei adolygu gan farnwr a bod gorchymyn wedi ei wneud yn newid dyddiad y treial.</p>",
       "HEARING_ADJUSTMENTS_AND_DURATION": "Addasiadau a hyd y treial",
       "YOU_WILL_BE_ASKED": "Gofynnir i chi nodi a oes unrhyw newidiadau i’r cymorth neu’r addasiadau a nodwyd gennych yn flaenorol yn eich ",
-      "DIRECTIONS_QUESTIONNAIRE": "holiadur cyfarwyddiadau.",
+      "DIRECTIONS_QUESTIONNAIRE": "holiadur cyfarwyddiadau",
       "YOU_SHOULD_REVIEW": "Dylech adolygu hyn i weld a yw eich amgylchiadau wedi newid.",
       "WE_WILL_REMIND_YOU": "Byddwn yn eich atgoffa o’r amser a neilltuwyd ar gyfer y treial. Os ydych yn teimlo nad oes angen cymaint â hynny o amser, gallwch nodi pam yn y blwch 'gwybodaeth arall'.",
       "IF_YOU_FEEL_THAT": "Os ydych yn teimlo bod arnoch angen mwy o amser, bydd angen i chi gysylltu â’r parti arall a gwneud cais i’r llys.",
@@ -5061,7 +5092,12 @@
       "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
       "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
-      "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your response. Choose Yes or No."
+      "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your response. Choose Yes or No.",
+      "RESPONDENT_UPLOAD_OPTION": {
+        "EMPTY_OPTION": "You need to either enter the information requested in the box or select Yes to upload documents to support your response.",
+        "EMPTY_OPTION_TEXT": "You need to tell us if you want to upload documents to support your response. Choose option: Yes or No.",
+        "ERROR_INPUT": "You need to either enter the information requested in the box or select Yes to upload documents to support your response."
+      }
     }
   }
 }

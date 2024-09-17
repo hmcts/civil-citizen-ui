@@ -14,24 +14,41 @@ import {t} from 'i18next';
 import {AppRequest} from 'models/AppRequest';
 import {getHelpApplicationFeeSelectionPageContents, getButtonsContents}
   from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
-import {saveHelpWithFeesDetails} from 'services/features/generalApplication/generalApplicationService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {
+  getApplicationIndex,
+} from 'services/features/generalApplication/generalApplicationService';
+import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
+import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 
 const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee';
 const helpWithApplicationFeeController = Router();
 const hwfPropertyName = 'applyHelpWithFees';
 
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, lng: string) {
+  let paymentSyncError = false;
   if (!form) {
+    const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
     const claim: Claim = await getClaimById(claimId, req, true);
-    form = new GenericForm(new GenericYesNo(claim.generalApplication?.helpWithFees?.applyHelpWithFees));
+    form = new GenericForm(new GenericYesNo(gaHwFDetails?.applyHelpWithFees?.option));
+    if (claim.paymentSyncError) {
+      paymentSyncError = true;
+      claim.paymentSyncError = undefined;
+      await saveDraftClaim(claim.id, claim);
+    }
   }
-  const backLinkUrl = req.query.id ? constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL) + '?id=' + req.query.id : constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_VIEW_APPLICATION_URL);
+  let backLinkUrl;
+  if (req.query.id) {
+    backLinkUrl = constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL) + '?id=' + req.query.id;
+  } else {
+    const index = await getApplicationIndex(claimId, req.params.appId, <AppRequest>req);
+    backLinkUrl =`${constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_VIEW_APPLICATION_URL)}?index=${index + 1}`;
+  }
   res.render(applyHelpWithApplicationFeeViewPath,
     {
       form,
       backLinkUrl,
-      applyHelpWithFeeSelectionContents: getHelpApplicationFeeSelectionPageContents(lng),
+      applyHelpWithFeeSelectionContents: getHelpApplicationFeeSelectionPageContents(lng, paymentSyncError),
       applyHelpWithFeeSelectionButtonContents: getButtonsContents(claimId),
     });
 }
@@ -55,9 +72,7 @@ helpWithApplicationFeeController.post([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPL
     if (form.hasErrors()) {
       await renderView(res, req, form, claimId, lng);
     } else {
-      const redisKey = generateRedisKey(<AppRequest>req);
-      await saveHelpWithFeesDetails(redisKey, req.body.option, hwfPropertyName);
-      const redirectUrl = await getRedirectUrl(claimId, form.model, <AppRequest>req);
+      const redirectUrl = await getRedirectUrl(claimId, form.model, hwfPropertyName, <AppRequest>req);
       res.redirect(redirectUrl);
     }
   }catch (error) {
