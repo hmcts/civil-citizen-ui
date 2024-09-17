@@ -9,6 +9,8 @@ import {ChooseHowProceed} from 'common/models/chooseHowProceed';
 import {CourtProposedDateOptions} from 'common/form/models/claimantResponse/courtProposedDate';
 import { CourtProposedPlanOptions } from 'common/form/models/claimantResponse/courtProposedPlan';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
+import {convertToCCDEvidenceConfirmDetails} from 'services/translation/response/convertToCCDEvidenceConfirmDetails';
+import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDetails';
 
 export enum CCDChoosesHowToProceed {
   SIGN_A_SETTLEMENT_AGREEMENT = 'SIGN_A_SETTLEMENT_AGREEMENT',
@@ -24,6 +26,7 @@ export interface CCDClaimantLiPResponse {
   claimantCourtDecision?: RepaymentDecisionType,
   applicant1RejectedRepaymentReason?: string,
   applicant1SuggestedImmediatePaymentDeadLine?: Date,
+  applicant1DQEvidenceConfirmDetails: CCDEvidenceConfirmDetails,
 }
 
 const toChoosesHowToProceed = {
@@ -41,5 +44,6 @@ export const toCCDClaimantLiPResponse = (claimantResponse: ClaimantResponse): CC
     claimantCourtDecision: claimantResponse?.courtDecision ? claimantResponse?.courtDecision : undefined,
     applicant1RejectedRepaymentReason: claimantResponse?.rejectionReason?.text,
     applicant1SuggestedImmediatePaymentDeadLine: claimantResponse?.suggestedImmediatePaymentDeadLine,
+    applicant1DQEvidenceConfirmDetails: convertToCCDEvidenceConfirmDetails(claimantResponse.directionQuestionnaire?.confirmYourDetailsEvidence),
   };
 };
