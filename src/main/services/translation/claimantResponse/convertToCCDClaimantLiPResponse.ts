@@ -26,7 +26,7 @@ export interface CCDClaimantLiPResponse {
   claimantCourtDecision?: RepaymentDecisionType,
   applicant1RejectedRepaymentReason?: string,
   applicant1SuggestedImmediatePaymentDeadLine?: Date,
-  applicant1DQEvidenceConfirmDetails: CCDEvidenceConfirmDetails,
+  applicant1DQEvidenceConfirmDetails?: CCDEvidenceConfirmDetails,
 }
 
 const toChoosesHowToProceed = {
