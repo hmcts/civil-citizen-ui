@@ -11,7 +11,7 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {
   CcdGeneralApplicationEvidenceDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
-import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
+import {CcdGARespondentDebtorOfferGAspec, CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {
   CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
@@ -22,6 +22,7 @@ import {CcdGeneralApplicationDirectionsOrderDocument} from 'models/ccdGeneralApp
 import { CcdGeneralApplicationRespondentResponse } from '../ccdGeneralApplication/ccdGeneralApplicationRespondentResponse';
 import { DateTime } from 'luxon';
 import {CcdGARequestWrittenRepDocument} from 'models/ccdGeneralApplication/ccdGARequestWrittenRepDocument';
+import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
 
 export class ApplicationResponse {
   id: string;
@@ -56,6 +57,7 @@ export interface CCDApplication extends ApplicationUpdate {
   generalAppReasonsOfOrder: string;
   generalAppEvidenceDocument: CcdGeneralApplicationEvidenceDocument[];
   gaAddlDoc: CcdGeneralApplicationAddlDocument[];
+  gaRespondentDebtorOffer?: CcdGARespondentDebtorOfferGAspec;
   generalAppHearingDetails: CcdGeneralApplicationHearingDetails;
   generalAppStatementOfTruth: CcdGeneralApplicationStatementOfTruth;
   generalAppPBADetails: CcdGeneralApplicationPBADetails;
@@ -74,6 +76,8 @@ export interface CCDApplication extends ApplicationUpdate {
   writtenRepSequentialDocument?: CcdGARequestWrittenRepDocument[];
   writtenRepConcurrentDocument?: CcdGARequestWrittenRepDocument[];
   applicationIsUncloakedOnce?: YesNoUpperCamelCase;
+  generalAppUrgencyRequirement?: GeneralAppUrgencyRequirement;
+  generalAppNotificationDeadlineDate?: string;
 }
 
 export interface JudicialRequestMoreInfo {
