@@ -385,7 +385,7 @@ describe('dashboardService', () => {
       it.each([
         false,
         true,
-      ])('should include/exclude the Application section if claim assigned to the defendant %s', async (claimAssigned) => {
+      ])('should include/exclude the Application section if the claim is assigned to the defendant %s', async (claimAssigned) => {
         //Given
         const mockGet = jest.fn().mockResolvedValue({
           data: Array.of(
