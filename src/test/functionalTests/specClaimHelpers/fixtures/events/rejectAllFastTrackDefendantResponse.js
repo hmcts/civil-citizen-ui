@@ -247,8 +247,8 @@ module.exports = {
 
           ],
           'caseLocation': {
-            'region': 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
-            'baseLocation': 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
+            'region': 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+            'baseLocation': 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
           },
         },
         'respondent1DQWitnesses': {
@@ -406,8 +406,8 @@ module.exports = {
 
           ],
           'caseLocation': {
-            'region': 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
-            'baseLocation': 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
+            'region': 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+            'baseLocation': 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
           },
         },
         'respondent1DQWitnesses': {

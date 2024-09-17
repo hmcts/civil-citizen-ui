@@ -83,9 +83,9 @@ module.exports = {
           courtLocation: {
             applicantPreferredCourtLocationList: {
               list_items: [
-                listElement('Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ'),
+                listElement('Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE'),
               ],
-              value: listElement('Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ'),
+              value: listElement('Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE'),
             },
           },
         },

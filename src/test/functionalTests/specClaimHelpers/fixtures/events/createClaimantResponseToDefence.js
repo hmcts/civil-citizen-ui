@@ -137,12 +137,12 @@ module.exports = {
           responseCourtLocations: {
             value: {
               code: '350aa935-4d80-4762-9a4e-2a8f3eaad9fc',
-              label: 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
+              label: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
             },
             list_items: [
               {
                 code: '350aa935-4d80-4762-9a4e-2a8f3eaad9fc',
-                label: 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
+                label: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
               },
             ],
           },
@@ -217,8 +217,8 @@ module.exports = {
           reasonForHearingAtSpecificCourt: 'test',
           responseCourtLocations: [],
           caseLocation: {
-            region: 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
-            baseLocation: 'Nottingham County Court and Family Court (and Crown) - Canal Street - NG1 7EJ',
+            region: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+            baseLocation: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
           },
         },
         applicant1DQWitnesses: {
@@ -338,8 +338,8 @@ module.exports = {
           reasonForHearingAtSpecificCourt: 'reasons',
           responseCourtLocations: [],
           caseLocation: {
-            region: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
-            baseLocation: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
+            region: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+            baseLocation: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
           },
         },
         applicant1DQWitnesses: {
