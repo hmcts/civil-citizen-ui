@@ -503,6 +503,22 @@ describe('dashboardService', () => {
         expect(result.url).toBeUndefined();
       });
 
+      it('getContactCourtLink when claim is in Pending Case Issued state', async () => {
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+        claim.takenOfflineDate = new Date();
+        claim.defendantUserDetails = {};
+        //When
+        const result = getContactCourtLink(claim.id, claim, false, 'en');
+
+        //Then
+        expect(result).toBeUndefined();
+      });
+
     });
   });
 });
