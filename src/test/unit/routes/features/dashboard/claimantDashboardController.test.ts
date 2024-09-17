@@ -336,7 +336,7 @@ describe('claimant Dashboard Controller', () => {
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
-        expect(res.text).toContain('Tell us you&#39;ve ended the claim');
+        expect(res.text).toContain('Tell us you&#39;ve settled the claim');
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT'));
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'));
@@ -394,7 +394,7 @@ describe('claimant Dashboard Controller', () => {
 
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).not.toContain('Tell us you&#39;ve ended the claim');
+        expect(res.text).not.toContain('Tell us you&#39;ve settled the claim');
         expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
         expect(res.text).toContain(applicationNoticeUrl);
