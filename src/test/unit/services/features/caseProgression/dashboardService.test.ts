@@ -368,6 +368,7 @@ describe('dashboardService', () => {
         claim.id = '1234567890';
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 900;
+        claim.defendantUserDetails = {};
         //When
         const claimantDashboard = await getDashboardForm(
           ClaimantOrDefendant.DEFENDANT
@@ -376,6 +377,63 @@ describe('dashboardService', () => {
           , appReq
           , false
           , isGeneralApplicationEnabled);
+
+        //Then
+        expect(claimantDashboard).toEqual(dashboardExpected);
+      });
+
+      it.each([
+        false,
+        true,
+      ])('should include/exclude the Application section if claim assigned to the defendant %s', async (claimAssigned) => {
+        //Given
+        const mockGet = jest.fn().mockResolvedValue({
+          data: Array.of(
+            new CivilServiceDashboardTask(
+              'test',
+              'test',
+              'test',
+              'test',
+              'test',
+              DashboardTaskStatus.COMPLETE,
+              'test',
+              'test',
+              'test'),
+          ),
+        });
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+
+        const dashboard = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('Applications', 'Applications', []),
+          ));
+
+        const dashboardExpected = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('test', 'test', []),
+          ));
+
+        if(claimAssigned) {
+          dashboardExpected.items.push(new DashboardTaskList('Applications', 'Applications', []));
+        }
+
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
+
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.defendantUserDetails = claimAssigned ? {} : undefined;
+
+        //When
+        const claimantDashboard = await getDashboardForm(
+          ClaimantOrDefendant.CLAIMANT
+          , claim
+          , '1234567890'
+          , appReq
+          , false
+          , true);
 
         //Then
         expect(claimantDashboard).toEqual(dashboardExpected);
@@ -403,6 +461,7 @@ describe('dashboardService', () => {
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 900;
         claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+        claim.defendantUserDetails = {};
         //When
         const result = getContactCourtLink(claim.id, claim, true, 'en');
 
@@ -418,6 +477,7 @@ describe('dashboardService', () => {
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 900;
         claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+        claim.defendantUserDetails = {};
         //When
         const result = getContactCourtLink(claim.id, claim, false, 'en');
 
@@ -434,6 +494,7 @@ describe('dashboardService', () => {
         claim.totalClaimAmount = 900;
         claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
         claim.takenOfflineDate = new Date();
+        claim.defendantUserDetails = {};
         //When
         const result = getContactCourtLink(claim.id, claim, false, 'en');
 
