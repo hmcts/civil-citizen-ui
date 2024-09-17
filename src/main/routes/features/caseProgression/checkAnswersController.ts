@@ -25,7 +25,7 @@ const documentUploadCheckAnswerController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, isClaimant: boolean, lang: string) {
-  const topPageContents = getTopElements(claim);
+  const topPageContents = getTopElements(claim, claimId);
   let summarySections: DocumentUploadSections;
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
@@ -36,7 +36,7 @@ function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionFor
     summarySections = getSummarySections(claim.caseProgression.defendantDocuments, claimId, isSmallClaims, lang);
   }
   const bottomPageContents = getBottomElements();
-  const cancelUrl = constructResponseUrlWithIdParams(claim.id, CP_EVIDENCE_UPLOAD_CANCEL);
+  const cancelUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
 
   res.render(checkAnswersViewPath, {
     form, topPageContents, summarySections, bottomPageContents, isSmallClaims, cancelUrl, backLinkUrl,

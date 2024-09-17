@@ -48,12 +48,12 @@ export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, c
   };
 };
 
-export const getTopElements = (claim:Claim): ClaimSummarySection[] => {
+export const getTopElements = (claim:Claim, claimId: string): ClaimSummarySection[] => {
 
   return new PageSectionBuilder()
     .addMicroText('PAGES.DASHBOARD.HEARINGS.HEARING')
     .addMainTitle('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_TITLE')
-    .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify( claim.id)}, 'govuk-!-margin-bottom-1')
+    .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
     .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
     .addInsetText('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_WARNING_FULL')
     .build();

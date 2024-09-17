@@ -92,7 +92,7 @@ describe('checkAnswersServiceTest', () => {
       claim.respondent1.partyDetails = {partyName: 'John Smith', firstName: 'John', lastName: 'Smith', title: 'Dr'} as PartyDetails;
 
       //when
-      const topElementsActual = getTopElements(claim);
+      const topElementsActual = getTopElements(claim, claim.id);
       //then
       const topElementsExpected = [
         {type: ClaimSummaryType.MICRO_TEXT, data: {text: 'PAGES.DASHBOARD.HEARINGS.HEARING'}},
