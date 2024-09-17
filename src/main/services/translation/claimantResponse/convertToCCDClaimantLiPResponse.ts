@@ -44,6 +44,6 @@ export const toCCDClaimantLiPResponse = (claimantResponse: ClaimantResponse): CC
     claimantCourtDecision: claimantResponse?.courtDecision ? claimantResponse?.courtDecision : undefined,
     applicant1RejectedRepaymentReason: claimantResponse?.rejectionReason?.text,
     applicant1SuggestedImmediatePaymentDeadLine: claimantResponse?.suggestedImmediatePaymentDeadLine,
-    applicant1DQEvidenceConfirmDetails: convertToCCDEvidenceConfirmDetails(claimantResponse.directionQuestionnaire?.confirmYourDetailsEvidence),
+    applicant1DQEvidenceConfirmDetails: convertToCCDEvidenceConfirmDetails(claimantResponse?.directionQuestionnaire?.confirmYourDetailsEvidence),
   };
 };
