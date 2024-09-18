@@ -1,5 +1,6 @@
 const LatestUpdate = require('../pages/latestUpdate');
 const Documents = require('../pages/documents');
+const ViewDocuments = require('../pages/viewDocuments');
 const Bundles = require('../pages/bundles');
 const UploadYourDocumentsIntroduction = require('../pages/uploadEvidence/uploadYourDocumentsIntroduction');
 const WhatTypeOfDocumentsDoYouWantToUpload = require('../pages/uploadEvidence/whatTypeOfDocumentsDoYouWantToUpload');
@@ -13,6 +14,7 @@ const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e
 const I = actor(); // eslint-disable-line no-unused-vars
 const latestUpdateTab = new LatestUpdate();
 const documentsTab = new Documents();
+const viewDocumentsPage = new ViewDocuments();
 const bundlesTab = new Bundles();
 const uploadYourDocumentsIntroduction = new UploadYourDocumentsIntroduction();
 const whatTypeOfDocumentsDoYouWantToUpload = new WhatTypeOfDocumentsDoYouWantToUpload();
@@ -41,43 +43,37 @@ const buttons = {
 
 class CaseProgressionSteps {
 
-  async initiateUploadEvidenceJourney(claimRef, claimType, partyType, claimNumber, language = 'en') {
-    console.log('The value of the Claim Reference : '+claimRef);
-    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled(claimRef);
-    let partiesOnTheCase;
-    if (isDashboardServiceEnabled) {
-      let notification = orderMade();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-      notification = uploadDocuments();
-      await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-      await I.click(notification.nextSteps);
-    } else {
+  async initiateUploadEvidenceJourney(claimRef, claimType, partyType, claimAmount, dateUploaded, language = 'en') {
+    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
+    if (!isDashboardServiceEnabled) {
+      console.log('The value of the Claim Reference : '+claimRef);
       if (partyType === 'LiPvLiP') {
-        partiesOnTheCase = 'Miss Jane Doe v Sir John Doe';
         I.amOnPage('/case/' + claimRef + '/case-progression/upload-your-documents');
       } else {
-        partiesOnTheCase = 'Test Inc v Sir John Doe';
         latestUpdateTab.nextAction('Upload documents');
       }
     }
-    uploadYourDocumentsIntroduction.verifyPageContent(language);
+    uploadYourDocumentsIntroduction.verifyPageContent(claimRef, claimAmount, language);
     uploadYourDocumentsIntroduction.nextAction(buttons.startNow[language]);
-    whatTypeOfDocumentsDoYouWantToUpload.verifyPageContent(claimType, partiesOnTheCase);
+    whatTypeOfDocumentsDoYouWantToUpload.verifyPageContent(claimRef, claimAmount, claimType);
     whatTypeOfDocumentsDoYouWantToUpload.checkAllDocumentUploadOptions(claimType);
     whatTypeOfDocumentsDoYouWantToUpload.nextAction(buttons.continue[language]);
-    uploadYourDocument.verifyPageContent(claimType);
+    uploadYourDocument.verifyPageContent(claimRef, claimAmount, claimType);
     if (claimType === 'FastTrack') {
       uploadYourDocument.inputDataForFastTrackSections(claimType);
     } else {
       uploadYourDocument.inputDataForSmallClaimsSections(claimType);
     }
     uploadYourDocument.nextAction(buttons.continue[language]);
-    checkYourAnswers.verifyPageContent(claimType, partyType);
+    checkYourAnswers.verifyPageContent(claimRef, claimAmount, claimType, partyType);
     checkYourAnswers.clickConfirm();
     checkYourAnswers.nextAction(buttons.submit[language]);
     uploadYourDocumentsConfirmation.verifyPageContent();
     uploadYourDocumentsConfirmation.nextAction(buttons.viewDocuments[language]);
-    if (partyType !== 'LiPvLiP') {
+    if (isDashboardServiceEnabled) {
+      viewDocumentsPage.verifyPageContent(claimRef, '£1,500.00', dateUploaded);
+      viewDocumentsPage.nextAction('Close and return to case overview');
+    } else if (partyType !== 'LiPvLiP') {
       documentsTab.verifyLatestUpdatePageContent(claimType);
     }
   }

@@ -5,10 +5,6 @@ class DateUtilsComponent {
     return currentTime;
   }
 
-  static formatClaimReferenceToAUIDisplayFormat(claimReference) {
-    return claimReference.toString().replace(/\d{4}(?=.)/g, '$& ');
-  }
-
   static rollDateToCertainWeeks(numWeeks) {
     let currentDate = new Date();
     return new Date(currentDate.setDate(currentDate.getDate() + numWeeks * 7));

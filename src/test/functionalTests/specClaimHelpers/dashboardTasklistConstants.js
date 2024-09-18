@@ -6,6 +6,13 @@ module.exports = {
     };
   },
 
+  viewDocuments: () => {
+    return {
+      locator: '//li[contains(@class, \'app-task-list__item\') and .//a[contains(text(), \'View documents\')]]',
+      title: 'View documents',
+    };
+  },
+
   viewHearings: () => {
     return {
       locator: '//li[contains(@class, \'app-task-list__item\') and .//a[contains(text(), \'View the hearing\')]]',

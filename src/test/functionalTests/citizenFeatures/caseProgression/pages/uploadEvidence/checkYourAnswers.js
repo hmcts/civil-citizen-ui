@@ -170,7 +170,7 @@ const content = {
       cy: 'Dogfennau’r gwrandawiad',
     },
     documentaryEvidence: {
-      en: 'Documentary evidence  for the hearing',
+      en: 'Documentary evidence for the hearing',
       cy: 'Tystiolaeth ddogfennol ar gyfer y gwrandawiad',
     },
     authorities: {
@@ -194,7 +194,7 @@ const content = {
       cy: 'Ni allwch dynnu dogfen yn ôl ar ôl i chi ei chyflwyno',
     },
     confirmDocuments: {
-      en: 'I confirm the documents are correct, and understand that I cannot withdraw documents once I have submitted them',
+      en: 'I confirm the documents are correct and understand that I cannot withdraw documents once I have submitted them.',
       cy: 'Rwy’n cadarnhau bod y dogfennau’n gywir, ac rwy’n deall na allaf dynnu dogfennau yn ôl ar ôl i mi eu cyflwyno',
     },
   },
@@ -211,9 +211,11 @@ class CheckYourAnswers {
     I.click(nextAction);
   }
 
-  verifyPageContent(claimType, partyType, languageChosen = 'en') {
+  verifyPageContent(caseNumber, claimAmount, claimType, partyType, languageChosen = 'en') {
     this.checkPageFullyLoaded(languageChosen);
+    this.verifyBreadcrumbs();
     this.verifyHeadingDetails();
+    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     if(claimType === 'FastTrack') {
       this.verifyDisclosureSectionContent();
       this.verifyWitnessSectionContent(claimType);
@@ -229,12 +231,19 @@ class CheckYourAnswers {
     contactUs.verifyContactUs(language);
   }
 
+  verifyBreadcrumbs() {
+    I.see('Back', '//a[@class="govuk-back-link"]');
+  }
+
   verifyHeadingDetails() {
     I.see(content.heading.title[language], 'h1');
-    I.see(content.heading.caseNumber[language]);
-    I.see(content.heading.claimAmount[language]);
     I.see(content.warning.title[language]);
     I.see(content.warning.text[language]);
+  }
+
+  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    // I.see(content.heading.caseNumber[language]+ ': ' + caseNumber);
+    I.see(content.heading.claimAmount[language]+ ': ' + claimAmount);
   }
 
   verifyDisclosureSectionContent() {
@@ -256,7 +265,7 @@ class CheckYourAnswers {
     I.see(content.witness.title[language], 'h1');
     I.see(`${content.witness.statement[language]} 1`);
     I.see(content.witness.name[language]);
-    I.see('Witness Statement - Witness Nae 1');
+    I.see('Witness Statement - Witness Name 1');
     I.see(content.witness.dateStatement[language]);
     if (claimType === 'FastTrack') {
       I.see('3/2/2023');
@@ -266,7 +275,7 @@ class CheckYourAnswers {
       I.see('TestBMP.bmp');
     }
     I.see(`${content.witness.statement[language]} 2`);
-    I.see('Witness Statement - Witness Nae 2');
+    I.see('Witness Statement - Witness Name 2');
     if (claimType === 'FastTrack') {
       I.see('4/2/2023');
       I.see('TestXLSX.xlsx');
@@ -276,7 +285,7 @@ class CheckYourAnswers {
     }
     I.see(`${content.witness.summary[language]} 1`);
     I.see(content.witness.dateSummary[language]);
-    I.see('Witness Summary - Witness Nae 1');
+    I.see('Witness Summary - Witness Name 1');
     if (claimType === 'FastTrack') {
       I.see('5/2/2023');
       I.see('TestPPT.ppt');
@@ -285,7 +294,7 @@ class CheckYourAnswers {
       I.see('TestDOC.doc');
     }
     I.see(`${content.witness.summary[language]} 2`);
-    I.see('Witness Summary - Witness Nae 2');
+    I.see('Witness Summary - Witness Name 2');
     if (claimType === 'FastTrack') {
       I.see('6/2/2023');
       I.see('TestPNG.png');
@@ -297,17 +306,17 @@ class CheckYourAnswers {
     if (claimType === 'FastTrack') {
 
       I.see(`${content.witness.noticeIntention[language]} 1`);
-      I.see('Notice of intention witness nae 1');
+      I.see('Notice of intention witness name 1');
       I.see('7/2/2023');
       I.see('TestRTF.rtf');
       I.see(`${content.witness.noticeIntention[language]} 2`);
-      I.see('Notice of intention witness nae 2');
+      I.see('Notice of intention witness name 2');
       I.see('8/2/2023');
       I.see('TestTIF.tif');
     }
 
     I.see(`${content.witness.documentsReferred[language]} 1`);
-    I.see('Docuents referred Type of Docuent 1');
+    I.see('Documents referred Type of Document 1');
     if (claimType === 'FastTrack') {
       I.see('9/2/2023');
       I.see('TestTIFF.tiff');
@@ -316,7 +325,7 @@ class CheckYourAnswers {
       I.see('TestJPEG.jpeg');
     }
     I.see(`${content.witness.documentsReferred[language]} 2`);
-    I.see('Docuents referred Type of Docuent 2');
+    I.see('Documents referred Type of Document 2');
     if (claimType === 'FastTrack') {
       I.see('10/2/2023');
       I.see('TestDOCX.docx');
@@ -352,8 +361,8 @@ class CheckYourAnswers {
 
     I.see(`${content.expert.jointStatement[language]} 1`);
     I.see(content.expert.name[language]);
-    I.see('Expert Stateent - Expert Nae 1');
-    I.see('Expert Stateent - Field Of Expertise 1');
+    I.see('Expert Statement - Expert Name 1');
+    I.see('Expert Statement - Field Of Expertise 1');
     if (claimType === 'FastTrack') {
       I.see('13/2/2023');
       I.see('TestPNG.png');
@@ -362,8 +371,8 @@ class CheckYourAnswers {
       I.see('TestPPT.ppt');
     }
     I.see(`${content.expert.jointStatement[language]} 2`);
-    I.see('Expert Stateent - Expert Nae 2');
-    I.see('Expert Stateent - Field Of Expertise 2');
+    I.see('Expert Statement - Expert Name 2');
+    I.see('Expert Statement - Field Of Expertise 2');
     if (claimType === 'FastTrack') {
       I.see('14/2/2023');
       I.see('TestJPG.jpg');
@@ -382,19 +391,19 @@ class CheckYourAnswers {
         I.see('Test Inc');
       }
       I.see(content.expert.questions.documentName[language]);
-      I.see('Questions for Expert Docuent Nae 1');
+      I.see('Questions for Expert Document Name 1');
       I.see('TestJPEG.jpeg');
 
       I.see(`${content.expert.questions.title[language]} 2`);
       I.see('Questions for Expert 2');
-      I.see('Questions for Expert Docuent Nae 2');
+      I.see('Questions for Expert Document Name 2');
 
       I.see(`${content.expert.answers.title[language]} 1`);
       I.see('Answers for Expert 1');
       I.see(content.expert.answers.documentName[language]);
       I.see('Answers to questions asked by other party 2');
       I.see('Answers for Expert 2');
-      I.see('Answers for Expert Docuent Nae 2');
+      I.see('Answers for Expert Document Name 2');
     }
   }
 

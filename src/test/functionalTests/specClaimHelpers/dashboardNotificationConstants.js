@@ -226,6 +226,16 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.CP.HearingDocuments.Upload
+  uploadDocuments: () => {
+    return {
+      title: 'Upload documents',
+      content: 'You can upload and submit documents to support your claim. Follow the instructions set out in the directions order. Any documents submitted after the deadlines in the directions order may not be considered by the judge.',
+      nextSteps: 'upload and submit documents',
+      nextSteps2: 'directions order',
+    };
+  },
+
   //Notice.AAA6.CP.HearingFee.Required.Claimant
   payTheHearingFeeClaimant: (amount, deadline) => {
     return {

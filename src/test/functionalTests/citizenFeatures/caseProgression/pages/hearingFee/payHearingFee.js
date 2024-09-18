@@ -37,7 +37,7 @@ class PayHearingFee {
   }
 
   verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    // I.see('Case number: ' + caseNumber, 'p');
+    I.see('Case number: ' + caseNumber, 'p');
     I.see('Claim amount: ' + claimAmount, 'p');
   }
 
