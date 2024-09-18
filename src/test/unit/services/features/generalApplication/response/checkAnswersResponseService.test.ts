@@ -486,7 +486,7 @@ describe('Check Answers response service', () => {
           document_binary_url: '1234',
         },
         documentName: 'abc',
-      } as CaseDocument
+      } as CaseDocument;
       response.uploadEvidenceDocuments = [uploadedFiles];
       expect(getSummarySections('123', '345', response, 'en')).toEqual([
         {
@@ -495,16 +495,16 @@ describe('Check Answers response service', () => {
               {
                 'href': '/case/123/response/general-application/345/want-to-upload-document',
                 'text': 'COMMON.BUTTONS.CHANGE',
-                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS'
-              }
-            ]
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS',
+              },
+            ],
           },
           'key': {
-            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS'
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS',
           },
           'value': {
-            'html': '<p class=\"govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0\">COMMON.VARIATION.YES</p><ul class=\"no-list-style\"><li>abc</li></ul>'
-          }
+            'html': '<p class=\"govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0\">COMMON.VARIATION.YES</p><ul class=\"no-list-style\"><li>abc</li></ul>',
+          },
         },
         {
           'actions': {
@@ -512,17 +512,17 @@ describe('Check Answers response service', () => {
               {
                 'href': '/case/123/response/general-application/345/unavailable-dates',
                 'text': 'COMMON.BUTTONS.CHANGE',
-                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
-              }
-            ]
+                'visuallyHiddenText': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
+              },
+            ],
           },
           'key': {
-            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES'
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.UNAVAILABLE_DATES',
           },
           'value': {
-            "html": ' '
-          }
-        }
+            'html': ' ',
+          },
+        },
       ]);
     });
 
