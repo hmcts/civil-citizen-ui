@@ -477,7 +477,7 @@ describe('Check Answers response service', () => {
 
     it('return upload document details', () => {
       const {response} = claimAndResponse();
-      const html = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">COMMON.VARIATION.YES</p><ul class="no-list-style"><li>abc</li></ul>`;
+      const html = '<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">COMMON.VARIATION.YES</p><ul class="no-list-style"><li>abc</li></ul>';
       response.wantToUploadDocuments = YesNo.YES;
       const uploadedFiles = new UploadGAFiles();
       uploadedFiles.caseDocument = {
