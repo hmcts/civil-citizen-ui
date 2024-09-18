@@ -79,16 +79,16 @@ module.exports = {
             respondentSolicitor1Reference: 'Respondent reference',
           },
         },
-        // Court: {
-        //   courtLocation: {
-        //     applicantPreferredCourtLocationList: {
-        //       list_items: [
-        //         listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ'),
-        //       ],
-        //       value: listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ'),
-        //     },
-        //   },
-        // },
+        Court: {
+          courtLocation: {
+            applicantPreferredCourtLocationList: {
+              list_items: [
+                listElement('Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE'),
+              ],
+              value: listElement('Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE'),
+            },
+          },
+        },
         Claimant: {
           applicant1: applicant1WithPartyName,
         },
