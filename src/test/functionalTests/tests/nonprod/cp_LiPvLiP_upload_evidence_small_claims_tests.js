@@ -29,5 +29,5 @@ Scenario('Citizen Claimant perform evidence upload',  async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     //CaseProgressionSteps.initiateUploadEvidenceJourney(claimRef, claimType, partyType);
   }
-}).tag('@regression-cp');
+}).tag('@nightly');
 
