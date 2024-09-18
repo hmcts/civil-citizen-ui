@@ -1,8 +1,0 @@
-[31m[1mInternal Error[22m[39m: serve-static@npm:^1.16.2: This package doesn't seem to be present in your lockfile; run "yarn install" to update the lockfile
-    at V0.getCandidates (/home/leo/.yarn/releases/yarn-3.6.1.cjs:435:5145)
-    at kf.getCandidates (/home/leo/.yarn/releases/yarn-3.6.1.cjs:391:1264)
-    at /home/leo/.yarn/releases/yarn-3.6.1.cjs:439:8033
-    at df (/home/leo/.yarn/releases/yarn-3.6.1.cjs:390:11070)
-    at ge (/home/leo/.yarn/releases/yarn-3.6.1.cjs:439:8013)
-    at async Promise.allSettled (index 25)
-    at async io (/home/leo/.yarn/releases/yarn-3.6.1.cjs:390:10398)
