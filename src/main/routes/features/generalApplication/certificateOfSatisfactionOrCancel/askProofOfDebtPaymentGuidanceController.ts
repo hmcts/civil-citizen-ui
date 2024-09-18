@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   APPLICATION_TYPE_URL,
-  GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL
+  GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
