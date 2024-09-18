@@ -1,7 +1,7 @@
 {
   "COMMON": {
-    "HOME": "Hafan",
-    "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
+    "HOME": "Tudalen gartref",
+    "UPLOAD_DATE": "Uwchlwythwyd [{{ uploadDate }}]",
     "UPLOAD_FILE": "Llwytho ffeil i fyny",
     "UPLOAD_FILE_LABEL":"Upload a file",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
@@ -14,7 +14,7 @@
     "CREATED_DATE": "Crëwyd ar [{{ createdDate }}]",
     "UNAVAILABLE_DATES": "Dyddiadau pan na fyddwch ar gael",
     "CASE_REFERENCE": "Cyfeirnod yr achos: {{ claimId }}",
-    "CASE_NUMBER_PARAM": "Rhif yr achos: {{ claimId }}",
+    "CASE_NUMBER_PARAM": "Cyfeirnod yr achos: {{ claimId }}",
     "ACCOUNT_TYPE": "Math o gyfrif",
     "ADDRESS": "Cyfeiriad",
     "ANNUAL_TURNOVER": "Trosiant blynyddol",
