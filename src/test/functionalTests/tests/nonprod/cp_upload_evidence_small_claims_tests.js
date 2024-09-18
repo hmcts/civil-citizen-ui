@@ -33,4 +33,4 @@ Scenario('Small Claims Response with RejectAll and DisputeAll For the Case Progr
     //Lip verifies solicitor docs
     CaseProgressionSteps.verifyDocumentsUploadedBySolicitor(claimRef, claimType);*/
   }
-}).tag('@regression-cp');
+}).tag('@nightly');
