@@ -86,8 +86,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
     ];
   };
   const addDocumentUploadRow = (): SummaryRow[] => {
-    // const lng = getLng(lang);
-    const wantToUploadDocuments = gaResponse?.wantToUploadDocuments
+    const wantToUploadDocuments = gaResponse?.wantToUploadDocuments;
     const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
     const rows: SummaryRow[] = [];
     if (wantToUploadDocuments) {
