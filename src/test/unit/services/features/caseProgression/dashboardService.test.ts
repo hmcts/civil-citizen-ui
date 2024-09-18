@@ -489,7 +489,6 @@ describe('dashboardService', () => {
         claim.id = '1234567890';
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 900;
-        claim.defendantUserDetails =  undefined;
 
         //When
         const claimantDashboard = await getDashboardForm(
@@ -537,7 +536,6 @@ describe('dashboardService', () => {
         claim.id = '1234567890';
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 900;
-        claim.defendantUserDetails =  undefined;
 
         //When
         const claimantDashboard = await getDashboardForm(
