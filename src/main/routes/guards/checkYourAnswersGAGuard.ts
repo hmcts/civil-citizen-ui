@@ -13,16 +13,13 @@ export const checkYourAnswersGAGuard = async (req: Request, res: Response, next:
 
     const applicationTypes = claim.generalApplication?.applicationTypes || [];
     const hasRequiredFields = isGARequiredFieldsPresent(claim);
-    const singleApplicationType = [ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.SETTLE_BY_CONSENT, ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT];
 
     if (!applicationTypes.length) return res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL));
 
     if (applicationTypes.length === 1) {
       const applicationType = applicationTypes[0].option;
 
-      if ((([ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.SETTLE_BY_CONSENT].includes(applicationType)) ||
-        (applicationType.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) && claim.generalApplication.uploadN245Form) ||
-        !singleApplicationType.includes(applicationType)) &&
+      if ((!claim.isClaimant() && applicationType.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) && claim.generalApplication.uploadN245Form) ||
         hasRequiredFields) {
         return next();
       } else {
