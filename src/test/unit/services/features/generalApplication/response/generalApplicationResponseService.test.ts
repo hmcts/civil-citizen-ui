@@ -239,7 +239,7 @@ describe('General Application Response service', () => {
             'caseLink': {
               'CaseReference': '6789',
             },
-            'generalAppSubmittedDateGAspec': '2024-05-29T14:39:28.483971',
+            'generalAppSubmittedDateGAspec': new Date('2024-05-29T14:39:28.483971'),
           },
         },
       ];
@@ -267,7 +267,7 @@ describe('General Application Response service', () => {
             'caseLink': {
               'CaseReference': '6789',
             },
-            'generalAppSubmittedDateGAspec': '2024-05-29T14:39:28.483971',
+            'generalAppSubmittedDateGAspec': new Date('2024-05-29T14:39:28.483971'),
           },
         },
       ];
@@ -296,11 +296,11 @@ describe('General Application Response service', () => {
             'caseLink': {
               'CaseReference': '6789',
             },
-            'generalAppSubmittedDateGAspec': '2024-05-29T14:39:28.483971',
+            'generalAppSubmittedDateGAspec': new Date('2024-05-29T14:39:28.483971'),
           },
         },
       ];
-      
+
       expect(buildRespondentApplicationSummaryRow('12345', 'en', ccdClaim)(appResponse, 0))
         .toStrictEqual({
           state: t('PAGES.GENERAL_APPLICATION.SUMMARY.STATES.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION'),
