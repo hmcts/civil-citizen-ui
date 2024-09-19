@@ -48,13 +48,22 @@ describe('General Application - View application', () => {
   });
 
   describe('on GET', () => {
+    mockedSummaryRows.mockResolvedValue({summaryRows: [
+      {
+        key: {text: 'Application type and description'},
+        value: {
+          html: 'More time to do what is required by a court order.',
+        },
+      },
+    ]},
+    );
     it('should return Application view page', async () => {
-      mockedSummaryRows.mockImplementation(() => []);
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123','1718105701451856',GA_RESPONSE_VIEW_APPLICATION_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
+          expect(res.text).toContain('Application type and description');
         });
     });
 
