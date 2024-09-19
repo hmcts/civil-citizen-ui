@@ -40,7 +40,6 @@
     "test:e2e": "MOCHAWESOME_REPORTFILENAME=e2e yarn test:functional:codeceptjs run-workers --suites 4 --grep @e2e --reporter mocha-multi --verbose"
   },
   "dependencies": {
-    "@codeceptjs/configure": "^0.10.0",
     "@hmcts/cookie-manager": "^1.0.0",
     "@hmcts/info-provider": "^1.2.1",
     "@hmcts/nodejs-healthcheck": "^1.8.0",
@@ -70,7 +69,6 @@
     "boolean": "^3.2.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
-    "codeceptjs": "^3.3.7",
     "config": "^3.3.8",
     "connect-redis": "^7.1.0",
     "cookie-parser": "^1.4.6",
@@ -125,6 +123,7 @@
     "@typescript-eslint/eslint-plugin-tslint": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
     "babel-loader": "^9.1.0",
+    "codeceptjs": "^3.3.7",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.2",
     "debug": "^4.3.4",
