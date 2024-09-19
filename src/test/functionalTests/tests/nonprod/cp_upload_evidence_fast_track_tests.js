@@ -36,5 +36,5 @@ Scenario('Fast Track Response with RejectAll and DisputeAll For the Case Progres
     TrialArrangementSteps.verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType);*/
 
   }
-}).tag('@regression-cp');
+}).tag('@nightly');
 
