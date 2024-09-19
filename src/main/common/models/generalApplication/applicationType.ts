@@ -35,6 +35,7 @@ export enum ApplicationTypeOption {
   OTHER_OPTION = 'OTHER_OPTION',
   OTHER = 'OTHER',
   VARY_PAYMENT_TERMS_OF_JUDGMENT = 'VARY_PAYMENT_TERMS_OF_JUDGMENT',
+  CONFIRM_CCJ_DEBT_PAID = 'CONFIRM_CCJ_DEBT_PAID',
 }
 
 export const selectedApplicationType: Partial<{ [key in ApplicationTypeOption]: string; }> = {
@@ -51,6 +52,7 @@ export const selectedApplicationType: Partial<{ [key in ApplicationTypeOption]: 
   [ApplicationTypeOption.UNLESS_ORDER]: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.IMPOSE_SANCTION',
   [ApplicationTypeOption.VARY_ORDER]: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.RECONSIDER',
   [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.VARY_JUDGMENT',
+  [ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID]:'PAGES.GENERAL_APPLICATION.SELECT_TYPE.CONFIRM_YOU_PAID'
 };
 
 export const selectedApplicationTypeDescription: Partial<{ [key in ApplicationTypeOption]: string; }> = {
@@ -67,6 +69,7 @@ export const selectedApplicationTypeDescription: Partial<{ [key in ApplicationTy
   [ApplicationTypeOption.UNLESS_ORDER]: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_IMPOSE_SANCTION_DESCRIPTION',
   [ApplicationTypeOption.VARY_ORDER]: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_RECONSIDER_DESCRIPTION',
   [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_VARY_JUDGMENT_DESCRIPTION',
+  [ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID]:'PAGES.GENERAL_APPLICATION.SELECT_TYPE.CONFIRM_YOU_PAID_DESCRIPTION'
 };
 
 export const GeneralApplicationTypesDisplayFromCCD: { [key in ApplicationTypeOption]: string } = {
@@ -84,6 +87,7 @@ export const GeneralApplicationTypesDisplayFromCCD: { [key in ApplicationTypeOpt
   [ApplicationTypeOption.UNLESS_ORDER]: 'Unless order',
   [ApplicationTypeOption.VARY_ORDER]: 'Vary order',
   [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: 'Vary payment terms of judgment',
+  [ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID]: 'Confirm CCJ debt paid',
 };
 
 export const LinKFromValues = {

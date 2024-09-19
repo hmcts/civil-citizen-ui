@@ -71,7 +71,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const backLinkUrl = await getBackLinkUrl(req.params.id, <string>req.query.linkFrom, cancelUrl);
 
     if (form.hasErrors()) {
-      res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() });
+      res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  isCoSCEnabled: true});
     } else {
       await saveApplicationType(redisKey, claim, applicationType, applicationIndex);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_AGREEMENT_FROM_OTHER_PARTY_URL));
