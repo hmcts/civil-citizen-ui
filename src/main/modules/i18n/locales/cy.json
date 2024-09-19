@@ -2048,6 +2048,7 @@
         "DECISION_ON_RECONSIDERATION": "An order has been made.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "{{ defendantName }} has rejected your settlement agreement. You can request a County Court Judgment against them.",
         "DOCUMENTS_BEING_TRANSLATED": "Mae’r dogfennau yn cael eu cyfieithu.",
+        "HEARING_SUBMIT_HWF": "Rydym yn gwirio eich cais am Help i Dalu Ffioedd.",
         "HWF_FEE_PAYMENT_OUTCOME": "Mae ffi’r gwrandawiad wedi’i dalu.",
         "HWF_INVALID_REF_NUMBER": "Fe wnaethoch roi rhif Help i Dalu Ffioedd annilys inni.",
         "HWF_MORE_INFORMATION_NEEDED": "Mae arnom angen rhagor o wybodaeth",
