@@ -18,7 +18,7 @@
             {% for item in document.documents %}
                 {% set rows = (rows.push([
                     {
-                        html: addFileInformation(t,item.fileName, item.uploadDate)
+                        html: addFileInformation(t, item.fileName, item.uploadDate)
                     },
                     {
                         html: addFileLink(item.linkInformation.url, item.linkInformation.text)
@@ -32,7 +32,7 @@
         {% for item in documentsSection.documents %}
             {% set rows = (rows.push([
                 {
-                    html: addFileInformation(item.fileName, item.uploadDate)
+                    html: addFileInformation(t,item.fileName, item.uploadDate)
                 },
                 {
                     html: addFileLink(item.linkInformation.url, item.linkInformation.text)
