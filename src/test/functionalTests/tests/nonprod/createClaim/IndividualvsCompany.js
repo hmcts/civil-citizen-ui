@@ -11,7 +11,7 @@ const createGAAppSteps = require('../../../citizenFeatures/response/steps/create
 
 Feature('Create Lip v Company claim - Individual vs Company @claimCreationc').tag('@regression-r2');
 
-Scenario('Create Claim -  Individual vs Company - small claims - no interest - no hwf - flightdelay claim', async ({api, I}) => {
+Scenario('Create Claim -  Individual vs Company - small claims - no interest - no hwf - flightdelay claim - GA (Ask for more time)', async ({api, I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     selectedHWF = false;
     const defaultClaimFee = 455;

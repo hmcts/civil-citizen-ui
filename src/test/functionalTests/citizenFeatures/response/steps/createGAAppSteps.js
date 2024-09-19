@@ -13,7 +13,7 @@ class createGAAppSteps {
     await I.click('Ask for more time to do what is required by a court order'); //#option-5
     await I.click('Continue');
 
-    if (informOtherParty) {     
+    if (informOtherParty) {
       await I.waitForContent('Have the other parties agreed to this application?', 60);
       await I.click('Yes'); //#option
       await I.click('Continue');
@@ -21,7 +21,7 @@ class createGAAppSteps {
       await I.waitForContent('Have the other parties agreed to this application', 60);
       await I.click('No'); //#option
       await I.click('Continue');
-  
+
       await I.waitForContent('Should the court inform the other parties about this application', 60);
       await I.click('No'); //#option
       await I.fillField('#reasonForCourtNotInformingOtherParties', 'Do not need to inform');
@@ -65,12 +65,10 @@ class createGAAppSteps {
     await I.click('#signed');
     await I.fillField('#name', 'tester name');
     await I.click('Submit');
-    await I.wait(2);
-    await I.amOnPage(`case/${caseRef}/general-application/apply-help-fee-selection`);
+    await I.click('Pay application fee');
     await I.waitForContent('Do you want to apply for help with fees', 60);
     await I.click('No'); //#option
     await I.click('Continue');
-
     await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
     govPay.confirmPayment();
   }

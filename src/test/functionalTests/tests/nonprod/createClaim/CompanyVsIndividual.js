@@ -13,7 +13,7 @@ const createGAAppSteps = require('../../../citizenFeatures/response/steps/create
 
 Feature('Create Lip v Lip claim - Company vs Individual @claimCreation ').tag('@nightly-regression-r2');
 
-Scenario('Create Claim -  Company vs Individual - small claims - no interest - no hwf', async ({I, api}) => {
+Scenario('Create Claim -  Company vs Individual - small claims - no interest - no hwf - GA (Ask for more time)', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     selectedHWF = false;
     claimInterestFlag = false;
