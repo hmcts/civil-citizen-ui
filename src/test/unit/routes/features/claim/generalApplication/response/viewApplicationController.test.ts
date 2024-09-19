@@ -50,13 +50,13 @@ describe('General Application - View application', () => {
   describe('on GET', () => {
     it('should return Application view page', async () => {
       mockedSummaryRows.mockResolvedValue({summaryRows: [
-          {
-            key: {text: 'Application type and description'},
-            value: {
-              html: 'More time to do what is required by a court order.',
-            },
+        {
+          key: {text: 'Application type and description'},
+          value: {
+            html: 'More time to do what is required by a court order.',
           },
-        ]},
+        },
+      ]},
       );
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123','1718105701451856',GA_RESPONSE_VIEW_APPLICATION_URL))
