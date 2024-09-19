@@ -1739,6 +1739,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@codeceptjs/configure@npm:^0.10.0":
+  version: 0.10.0
+  resolution: "@codeceptjs/configure@npm:0.10.0"
+  dependencies:
+    lodash.merge: ^4.6.2
+    lodash.mergewith: ^4.6.2
+  peerDependencies:
+    codeceptjs: ">= 2.3.3"
+  checksum: e4556a9c1fdea92ede4a9bae296403d677bf89d5070cf53e7637d62062e00bf40c09fa34345d2fbca468c31d33bc0b3fdc3626e67f8d74a6d589f1e060e52f81
+  languageName: node
+  linkType: hard
+
+"@codeceptjs/configure@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "@codeceptjs/configure@npm:0.8.0"
+  dependencies:
+    lodash.merge: ^4.6.2
+    lodash.mergewith: ^4.6.2
+  checksum: ec530dcf16a04c9484ee65be88887ad46f4a4b700da7679abe9aa57581f2c43ce156361926f82c0d8c5b63e724e650ea9ea7e71c4af76af55e260a2ab0c8509d
+  languageName: node
+  linkType: hard
+
 "@codeceptjs/helper@npm:^1.0.2":
   version: 1.0.2
   resolution: "@codeceptjs/helper@npm:1.0.2"
@@ -4871,6 +4893,7 @@ __metadata:
     "@babel/core": ^7.19.6
     "@babel/eslint-parser": ^7.19.1
     "@babel/preset-env": ^7.20.2
+    "@codeceptjs/configure": ^0.10.0
     "@hmcts/cookie-manager": ^1.0.0
     "@hmcts/info-provider": ^1.2.1
     "@hmcts/nodejs-healthcheck": ^1.8.0
