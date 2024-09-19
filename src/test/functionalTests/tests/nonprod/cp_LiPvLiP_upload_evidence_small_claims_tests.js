@@ -17,8 +17,8 @@ Feature('Case progression journey - Claimant Lip Upload Evidence - Small Claims'
 
 Before(async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    // await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-    // await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;

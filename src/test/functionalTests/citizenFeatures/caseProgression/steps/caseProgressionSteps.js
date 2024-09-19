@@ -8,8 +8,6 @@ const UploadYourDocument = require('../pages/uploadEvidence/uploadYourDocument')
 const CheckYourAnswers = require('../pages/uploadEvidence/checkYourAnswers');
 const UploadYourDocumentsConfirmation = require('../pages/uploadEvidence/uploadYourDocumentsConfirmation');
 const {isDashboardServiceToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
-const { orderMade, uploadDocuments } = require('../../../specClaimHelpers/dashboardNotificationConstants');
-const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e2e/dashboardHelper');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const latestUpdateTab = new LatestUpdate();
