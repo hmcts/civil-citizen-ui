@@ -1,0 +1,180 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../dashboard/claim-summary-content.njk" import claimSummaryContent %}
+{% from "../dashboard/item-content.njk" import itemContent %}
+{%- from "govuk/components/fieldset/macro.njk" import govukFieldset -%}
+{% from "../../macro/button.njk" import addButton %}
+
+{% set pageTitle = t('PAGES.EVIDENCE.PAGE_TITLE') %}
+
+{% block nestedContent %}
+    {% set rowNumberToShowRemoveButton = 2 %}
+    {% set witnessContentLength = witnessContent.length %}
+    {% set isRemoveButtonHidden = witnessContentLength < rowNumberToShowRemoveButton %}
+    {% set titleH1 = t('PAGES.UPLOAD_DOCUMENTS.TITLE') %}
+    {% set titleH2 = t('PAGES.UPLOAD_DOCUMENTS.SUBTITLE') %}
+    {% set paragraph = t('PAGES.UPLOAD_DOCUMENTS.FORMAT') %}
+    {% set witness = t('PAGES.UPLOAD_DOCUMENTS.WITNESS.TITLE') %}
+    {% set disclosure = t('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.TITLE') %}
+    {% set trial = t('PAGES.UPLOAD_DOCUMENTS.TRIAL.TITLE') %}
+    {% set expert = t('PAGES.UPLOAD_DOCUMENTS.EXPERT.TITLE') %}
+    {% set hearing = t('PAGES.UPLOAD_DOCUMENTS.HEARING.TITLE') %}
+
+      <form method="post" novalidate>
+        {{ csrfProtection(csrf) }}
+        <div id="content"></div>
+
+          {% for content in uploadDocumentsContents %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
+          <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
+          <p class="govuk-body-m">{{ paragraph }}</p>
+          <hr class="govuk-section-break--s govuk-section-break--visible">
+
+          {% if disclosureContent.length > 0 %}
+            <h2 class="govuk-heading-l">{{ disclosure }}</h2>
+            {% for disclosureSections in disclosureContent %}
+            <div class="row-container">
+              <div data-module="moj-add-another">
+                {% for section in disclosureSections %}
+                  {% call govukFieldset({
+                    classes: 'moj-add-another__item',
+                    legend: {
+                      classes: 'moj-add-another__title',
+                      isPageHeading: false
+                    }
+                  }) %}
+                  {{ claimSummaryContent({
+                  contentSections: section.contentSections
+                  }, t) }}
+                  {% endcall %}
+                {% endfor %}
+                <div class="moj-button-action">
+                      {{ govukButton({
+                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                        type: 'button',
+                        attributes: {
+                          'id': 'add-another-disclosure-list'
+                        }
+                      }) }}
+                </div>
+                <hr class="govuk-section-break--s govuk-section-break--visible">
+              </div>
+            </div>
+            {% endfor %}
+          {% endif %}
+
+          {% if witnessContent.length > 0 %}
+            <h2 class="govuk-heading-l">{{ witness }}</h2>
+            {% for witnessSections in witnessContent %}
+            <div class="row-container">
+              <div data-module="moj-add-another">
+                {% for section in witnessSections %}
+                  {% call govukFieldset({
+                    classes: 'moj-add-another__item',
+                    legend: {
+                      classes: 'moj-add-another__title',
+                      isPageHeading: false
+                    }
+                  }) %}
+                  {{ claimSummaryContent({
+                  contentSections: section.contentSections
+                  }, t) }}
+                  {% endcall %}
+                {% endfor %}
+                <div class="moj-button-action">
+                      {{ govukButton({
+                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                        type: 'button',
+                        attributes: {
+                          'id': 'add-another-witness-list'
+                        }
+                      }) }}
+                </div>
+                <hr class="govuk-section-break--s govuk-section-break--visible">
+              </div>
+            </div>
+            {% endfor %}
+          {% endif %}
+
+          {% if expertContent.length > 0 %}
+            <h2 class="govuk-heading-l">{{ expert }}</h2>
+            {% for expertSections in expertContent %}
+            <div class="row-container">
+              <div data-module="moj-add-another">
+                {% for section in expertSections %}
+                  {% call govukFieldset({
+                    classes: 'moj-add-another__item',
+                    legend: {
+                      classes: 'moj-add-another__title',
+                      isPageHeading: false
+                    }
+                  }) %}
+                  {{ claimSummaryContent({
+                  contentSections: section.contentSections
+                  }, t) }}
+                  {% endcall %}
+                {% endfor %}
+                <div class="moj-button-action">
+                      {{ govukButton({
+                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                        type: 'button',
+                        attributes: {
+                          'id': 'add-another-expert-list'
+                        }
+                      }) }}
+                </div>
+                <hr class="govuk-section-break--s govuk-section-break--visible">
+              </div>
+            </div>
+            {% endfor %}
+          {% endif %}
+
+          {% if trialContent.length > 0 %}
+            {% if isSmallClaims %}
+              <h2 class="govuk-heading-l">{{ hearing }}</h2>
+            {% else %}
+              <h2 class="govuk-heading-l">{{ trial }}</h2>
+            {% endif %}
+            {% for trialSections in trialContent %}
+            <div class="row-container">
+              <div data-module="moj-add-another">
+                {% for section in trialSections %}
+                  {% call govukFieldset({
+                    classes: 'moj-add-another__item',
+                    legend: {
+                      classes: 'moj-add-another__title',
+                      isPageHeading: false
+                    }
+                  }) %}
+                  {{ claimSummaryContent({
+                  contentSections: section.contentSections
+                  }, t) }}
+                  {% endcall %}
+                {% endfor %}
+                <div class="moj-button-action">
+                      {{ govukButton({
+                        text: t('PAGES.UPLOAD_DOCUMENTS.ADD'),
+                        classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                        type: 'button',
+                        attributes: {
+                          'id': 'add-another-trial-list'
+                        }
+                      }) }}
+                </div>
+                <hr class="govuk-section-break--s govuk-section-break--visible">
+              </div>
+            </div>
+            {% endfor %}
+          {% endif %}
+
+          <br>
+        {{ addButton(t, 'CONTINUE',cancelUrl) }}
+
+      </form>
+{% endblock %}

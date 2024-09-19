@@ -393,3 +393,5 @@ export const GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL = `${BASE_GENERAL_APPLICA
 export const GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL = `${BASE_GENERAL_APPLICATION_URL}/:appId/upload-written-representation-docs/check-and-send`;
 export const GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_SUBMITTED_URL = `${BASE_GENERAL_APPLICATION_URL}/:appId/upload-written-representation-docs/submitted`;
 export const TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT = '/testing-support/toggleFlag/:key/:value';
+const BASE_COSC_URL = `${BASE_CASE_URL}/cosc`;
+export const COSC_UPLOAD_DOCUMENTS_URL = `${BASE_COSC_URL}/upload-documents`;
