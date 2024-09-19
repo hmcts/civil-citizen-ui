@@ -1,9 +1,14 @@
 
 import { NextFunction, RequestHandler, Response, Router } from 'express';
-import {GA_CLAIM_APPLICATION_COST_URL, GA_REQUESTING_REASON_URL, ORDER_JUDGE_URL} from 'routes/urls';
+import {
+  APPLICATION_TYPE_URL,
+  GA_CLAIM_APPLICATION_COST_URL,
+  GA_REQUESTING_REASON_URL,
+  ORDER_JUDGE_URL,
+} from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
-import { selectedApplicationType } from 'common/models/generalApplication/applicationType';
+import {LinKFromValues, selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import { getByIndex, getByIndexOrLast, getCancelUrl, saveOrderJudge } from 'services/features/generalApplication/generalApplicationService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
@@ -13,6 +18,7 @@ import { orderJudgeGuard } from 'routes/guards/generalApplication/orderJudgeGuar
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'models/claim';
 
 const orderJudgeController = Router();
 const viewPath = 'features/generalApplication/order-judge';
@@ -28,7 +34,7 @@ orderJudgeController.get(ORDER_JUDGE_URL, orderJudgeGuard, (async (req: AppReque
     const applicationTypeOption = getByIndexOrLast(applicationTypes, applicationTypeIndex)?.option;
     const orderJudge = getByIndex(orderJudges, applicationTypeIndex) || new OrderJudge();
     const { contentList, hintText } = buildPageContent(applicationTypeOption, lng);
-    const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_CLAIM_APPLICATION_COST_URL);
+    const backLinkUrl = getBackLinkUrl(claimId, claim);
 
     const form = new GenericForm(orderJudge);
     res.render(viewPath, {
@@ -71,11 +77,22 @@ orderJudgeController.post(ORDER_JUDGE_URL, orderJudgeGuard, (async (req: AppRequ
       });
     } else {
       await saveOrderJudge(redisKey, orderJudge, index);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_REQUESTING_REASON_URL));
+      res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_REQUESTING_REASON_URL)
+        + (index >= 0 ? `?index=${index}` : ''));
     }
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
+
+function getBackLinkUrl(claimId: string, claim: Claim) : string {
+  const appTypesLength = claim.generalApplication?.applicationTypes?.length;
+  if (!appTypesLength || appTypesLength === 1) {
+    return constructResponseUrlWithIdParams(claimId, GA_CLAIM_APPLICATION_COST_URL);
+  } else {
+    return constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + `?linkFrom=${LinKFromValues.addAnotherApp}&index=${appTypesLength - 1}`;
+  }
+
+}
 
 export default orderJudgeController;
