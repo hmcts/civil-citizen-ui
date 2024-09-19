@@ -25,6 +25,7 @@ import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 import { APPLICATION_TYPE_URL } from 'routes/urls';
 import {isGaForLipsEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
+import {LinKFromValues} from 'models/generalApplication/applicationType';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -144,7 +145,7 @@ export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnabl
     if(!claim.hasClaimTakenOffline() && isGAFlagEnable) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
+        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
       };
     } else if(claim.hasClaimTakenOffline()) {
       return {
