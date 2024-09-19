@@ -2,7 +2,7 @@ const config = require('../../../../config');
 const ClaimantResponseSteps = require('../../../claimantResponse/steps/claimantResponseSteps.js');
 const DefendantResponseSteps = require('../../../defendantResponse/defendantResponseSteps');
 Feature('Full admit defendant pay by installments - @claimantResponse').tag('@e2e');
-
+//Testing e2e
 Scenario('claimant accepts full admit and payment plan and formalises with CCJ', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const caseId = 1777777777777731;
