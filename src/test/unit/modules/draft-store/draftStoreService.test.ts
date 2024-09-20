@@ -1,6 +1,7 @@
 import {
   createDraftClaimInStoreWithExpiryTime,
   deleteDraftClaimFromStore, deleteFieldDraftClaimFromStore,
+  findClaimIdsbyUserId,
   generateRedisKey,
   getCaseDataFromStore,
   getDraftClaimFromStore,
@@ -189,5 +190,39 @@ describe('Draft store service to save and retrieve claim', () => {
     await deleteFieldDraftClaimFromStore(CLAIM_ID,  mockClaim, 'totalClaimAmount');
     //Then
     expect(spySet).toBeCalledWith(CLAIM_ID, JSON.stringify(expectedClaim));
+  });
+
+  describe('findClaimIdsbyUserId', () => {
+    let mockKeys: jest.Mock;
+    let mockDraftStoreClient: { keys: jest.Mock };
+    const {Logger} = require('@hmcts/nodejs-logging');
+    const logger = Logger.getLogger('draftStoreService');
+
+    beforeEach(() => {
+      mockKeys = jest.fn();
+      mockDraftStoreClient = { keys: mockKeys };
+      app.locals = {
+        draftStoreClient: mockDraftStoreClient,
+      };
+      jest.clearAllMocks();
+    });
+  
+    it('should return claim IDs for a given userId', async () => {
+      const userId = '123';
+      const mockResult = ['claim1', 'claim2'];
+      mockKeys.mockResolvedValue(mockResult);
+      const result = await findClaimIdsbyUserId(userId);
+      expect(result).toEqual(mockResult);
+      expect(mockKeys).toHaveBeenCalledWith('*' + userId);
+    });
+  
+    it('should log an error and throw if the Redis client fails', async () => {
+      const userId = '123';
+      const mockError = new Error('Redis error');
+      mockKeys.mockRejectedValue(mockError);
+      const loggerSpy = jest.spyOn(logger, 'error').mockImplementation();
+      await expect(findClaimIdsbyUserId(userId)).rejects.toThrow(mockError);
+      expect(loggerSpy).toHaveBeenCalledWith('Failed to find claim IDs by userId', mockError);
+    });
   });
 });
