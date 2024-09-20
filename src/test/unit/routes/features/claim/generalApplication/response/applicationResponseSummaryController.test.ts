@@ -67,7 +67,7 @@ describe('General Application - Application response summary', () => {
             'caseLink': {
               'CaseReference': '1234567890',
             },
-            'generalAppSubmittedDateGAspec': '2024-05-29T14:39:28.483971',
+            'generalAppSubmittedDateGAspec': new Date('2024-05-29T14:39:28.483971'),
           },
         },
       ];
