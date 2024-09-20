@@ -40,6 +40,7 @@ export interface CCDGeneralApplication extends ClaimUpdate {
   generalAppDirOrderUpload?: CcdGeneralApplicationEvidenceDocument[];
   uploadDocument?: AdditionalDocuments[];
   generalAppWrittenRepUpload?: CcdGeneralApplicationEvidenceDocument[];
+  generalAppSubmittedDateGAspec?: Date
 }
 interface DocumentDetails {
   document_url: string;
@@ -66,6 +67,7 @@ export interface CCDGaHelpWithFees {
 export interface CCDGaValue {
   caseLink?: CaseLink;
   parentClaimantIsApplicant?: YesNoUpperCamelCase;
+  generalAppSubmittedDateGAspec?: Date;
 }
 
 export type CCDRespondToApplication = {
