@@ -77,4 +77,5 @@ export type CCDRespondToApplication = {
   generalAppRespondConsentReason?: string,
   generalAppRespondReason?: string,
   generalAppRespondent1Representative?: { hasAgreed?: YesNoUpperCamelCase },
+  generalAppRespondDocument?: CcdGeneralApplicationEvidenceDocument[];
 }
