@@ -11,8 +11,7 @@
 {% endblock %}
 
 {% block nestedContent %}
-     {{headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.TITLE' )}}
-
+      <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.TITLE') }}</h1>
       <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_1') }}</p>
       <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_2', {applicationFee:applicationFee}) }}
         {{ externalLink(t, 'PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.HELP_WITH_FEE', externalURLs.feesHelpUrl, false) }}</p>
@@ -38,14 +37,11 @@
       <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_8') }}
         {{ externalLink(t, 'PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.COMPLETE_FORM_N443', externalURLs.certificateN443Url, false) }}</p>
 
-      <form method="post" novalidate>
-        {{ csrfProtection(csrf) }}
-        <div class="govuk-button-group">
-          {{ govukButton({
-            text: t('COMMON.BUTTONS.CONTINUE'),
-             href: nextPageUrl
-          }) }}
-          <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
-        </div>
-      </form>
+      <div class="govuk-button-group">
+        {{ govukButton({
+          text: t('COMMON.BUTTONS.CONTINUE'),
+           href: nextPageUrl
+        }) }}
+        <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener" >{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+      </div>
 {% endblock %}
