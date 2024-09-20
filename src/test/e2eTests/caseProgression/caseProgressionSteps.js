@@ -38,7 +38,7 @@ class CaseProgressionSteps {
   typeOfDocument() {
     I.seeInCurrentUrl('/case-progression/type-of-documents');
 
-    seeInTitle('TITLE');
+    seeInTitle('What types of documents do you want to upload?');
     seeBackLink();
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('What types of documents do you want to upload?', 'h1.govuk-heading-l');
