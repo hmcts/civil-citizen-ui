@@ -181,6 +181,7 @@ function toCUIClaimGeneralApplications(ccdClaimGeneralApplications: CCDGeneralAp
     claimGa.value = new ClaimGeneralApplicationValue();
     claimGa.value.caseLink = ccdGa.value?.caseLink;
     claimGa.value.parentClaimantIsApplicant = toCUIYesNo(ccdGa.value?.parentClaimantIsApplicant);
+    claimGa.value.generalAppSubmittedDateGAspec = ccdGa.value?.generalAppSubmittedDateGAspec;
     claimGeneralApplications.push(claimGa);
   });
   return claimGeneralApplications;
