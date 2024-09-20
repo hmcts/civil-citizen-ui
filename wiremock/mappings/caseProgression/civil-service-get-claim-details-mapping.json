@@ -1,0 +1,127 @@
+{
+  "mappings": [
+    {
+      "priority": 1,
+      "scenarioName": "caseProgression",
+      "requiredScenarioState": "Started",
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/0000000000000001",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "12345",
+          "case_data": {
+            "legacyCaseReference": "legacyCaseReference",
+            "respondent1ResponseDate": "2023-06-03T07:30:38"
+          },
+          "state": "ACTIVE",
+          "last_modified": "2023-07-10T10:00:00Z"
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "scenarioName": "helpWithFees",
+      "requiredScenarioState": "Started",
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/0000000000000002",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "0000000000000002",
+          "case_data": {
+            "legacyCaseReference": "legacyCaseReference",
+            "respondent1ResponseDate": "2023-06-03T07:30:38",
+            "hearingFee": {
+              "code": "FEE0204",
+              "version": "4",
+              "calculatedAmountInPence": "7000"
+            },
+            "hearingDueDate": "2024-01-01"
+          },
+          "state": "ACTIVE",
+          "last_modified": "2023-07-10T10:00:00Z"
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "scenarioName": "trialArrangement",
+      "requiredScenarioState": "Started",
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/0000000000000003",
+        "headers": {
+          "Content-Type": {
+            "equalTo": "application/json"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "0000000000000003",
+          "case_data": {
+            "totalClaimAmount": "15000",
+            "legacyCaseReference": "legacyCaseReference",
+            "respondent1ResponseDate": "2023-06-03T07:30:38",
+            "hearingFee": {
+              "code": "FEE0204",
+              "version": "4",
+              "calculatedAmountInPence": "7000"
+            },
+            "hearingDueDate": "2024-01-01",
+            "hearingDate": "2023-06-27",
+            "hearingDuration": "MINUTES_60",
+            "trialReadyRespondent1": "Yes"
+          },
+          "state": "ACTIVE",
+          "last_modified": "2023-07-10T10:00:00Z"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPattern": "/cases/0000000000000003/userCaseRoles",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": [
+          "[DEFENDANT]"
+        ]
+      }
+    }
+  ]
+}
