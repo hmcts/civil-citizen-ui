@@ -106,6 +106,7 @@
     "tsconfig-paths": "^4.1.1",
     "typescript": "^4.9.5",
     "uuid": "^9.0.0",
+    "@types/uuid": "^10.0.0",
     "validator": "^13.7.0"
   },
   "devDependencies": {
@@ -116,7 +117,6 @@
     "@types/copy-webpack-plugin": "^10.1.0",
     "@types/jest": "^29.4.0",
     "@types/supertest": "^2.0.12",
-    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/eslint-plugin-tslint": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
