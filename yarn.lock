@@ -3255,6 +3255,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/uuid@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "@types/uuid@npm:10.0.0"
+  languageName: node
+  linkType: hard
+
 "@types/validator@npm:^13.7.10":
   version: 13.7.15
   resolution: "@types/validator@npm:13.7.15"
@@ -4889,6 +4895,7 @@ __metadata:
     "@types/require-directory": ^2.1.1
     "@types/serve-favicon": ^2.5.1
     "@types/supertest": ^2.0.12
+    "@types/uuid": ^10.0.0
     "@typescript-eslint/eslint-plugin": ^5.50.0
     "@typescript-eslint/eslint-plugin-tslint": ^5.50.0
     "@typescript-eslint/parser": ^5.50.0
