@@ -8,7 +8,7 @@ const I = actor();
 
 class ClaimCreation {
   start(optionValue) {
-    I.setCookie('eligibilityComplete', 'true');
+    I.setCookie({name: 'eligibilityComplete', value: 'true'});
     I.amOnPage('/claim/bilingual-language-preference');
     I.checkOption(`#${optionValue}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
