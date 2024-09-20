@@ -14,9 +14,11 @@ import {
 } from 'services/features/generalApplication/generalApplicationService';
 import {StatementOfTruthForm} from 'common/models/generalApplication/statementOfTruthForm';
 import {getDraftGARespondentResponse, saveDraftGARespondentResponse} from './generalApplicationResponseStoreService';
-import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
 import {
-  ApplicationSummary, 
+  ApplicationResponse, JudicialDecisionRequestMoreInfoOptions,
+} from 'common/models/generalApplication/applicationResponse';
+import {
+  ApplicationSummary,
   StatusColor,
   ApplicationState,
 } from 'common/models/generalApplication/applicationSummary';
@@ -113,7 +115,10 @@ export const isApplicationVisibleToRespondent = (application: ApplicationRespons
   return ((parentClaimantIsApplicant === YesNoUpperCamelCase.YES && isWithNotice === YesNoUpperCamelCase.YES)
     || (parentClaimantIsApplicant === YesNoUpperCamelCase.NO)
     || (application.case_data?.generalAppRespondentAgreement?.hasAgreed === YesNoUpperCamelCase.YES)
-    || (application.case_data?.applicationIsUncloakedOnce === YesNoUpperCamelCase.YES && application.state !== ApplicationState.APPLICATION_ADD_PAYMENT));
+    || (application.case_data?.applicationIsUncloakedOnce === YesNoUpperCamelCase.YES && application.state !== ApplicationState.APPLICATION_ADD_PAYMENT)
+    || (application.case_data?.judicialDecisionRequestMoreInfo?.requestMoreInfoOption === JudicialDecisionRequestMoreInfoOptions.SEND_APP_TO_OTHER_PARTY
+      && application.case_data?.generalAppPBADetails?.additionalPaymentDetails?.status === 'SUCCESS')
+  );
 };
 
 export const buildRespondentApplicationSummaryRow = (claimId: string, lng:string, ccdClaim: Claim) => (application: ApplicationResponse, index: number): ApplicationSummary => {
