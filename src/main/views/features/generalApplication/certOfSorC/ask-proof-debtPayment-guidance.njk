@@ -11,10 +11,10 @@
 {% endblock %}
 
 {% block nestedContent %}
-     {{headingWithCaption(t,'','PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.TITLE' )}}
+     {{headingWithCaption(t,applicationType,'PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.TITLE' )}}
 
       <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_1') }}</p>
-      <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_2') }}
+      <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_2', {applicationFee:applicationFee}) }}
         {{ externalLink(t, 'PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.HELP_WITH_FEE', externalURLs.feesHelpUrl, false) }}</p>
 
       <h5 class="govuk-heading-s">{{ t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_TITLE_1') }}</h5>

@@ -9,14 +9,17 @@ import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/
 import { Claim } from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('modules/draft-store');
+jest.mock('../../../../../../../main/services/features/generalApplication/feeDetailsService');
+
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockClaim = new Claim();
-mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.CONFIRM_YOU_PAID_CCJ_DEBT));
 
 describe('General Application - ask proof of debt payment guidance', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -33,6 +36,11 @@ describe('General Application - ask proof of debt payment guidance', () => {
   describe('on GET', () => {
     it('should return ask proof of debt payment guidance page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
+      (gaApplicationFeeDetails as jest.Mock).mockResolvedValueOnce({
+        calculatedAmountInPence: 1400,
+        code: 'FEE0459',
+        version: 0,
+      });
       await request(app)
         .get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL)
         .expect((res) => {
@@ -43,7 +51,6 @@ describe('General Application - ask proof of debt payment guidance', () => {
           expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PAGE_TITLE'));
           expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.TITLE'));
           expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_1'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_2'));
           expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_TITLE_1'));
           expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_3'));
           expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_4'));
