@@ -168,6 +168,7 @@ class ClaimCreation {
   }
 
   checkAndSubmitYourClaim() {
+    I.setCookie(eligibilityCookie);
     I.amOnPage('/claim/task-list');
     I.click(taskListItems.CHECK_AND_SUBMIT_YOUR_CLAIM, checkTaskList(taskListItems.CHECK_AND_SUBMIT_YOUR_CLAIM, taskListStatus.INCOMPLETE));
     //check-and-send
