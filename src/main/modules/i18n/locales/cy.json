@@ -4594,6 +4594,17 @@
       "WHAT_NEXT": "Beth fydd yn digwydd nesaf",
       "NO_FURTHER": "Nid oes rhaid i chi gymryd unrhyw gamau pellach.",
       "CLOSE_AND_RETURN": "Cau a dychwelyd i fanylion yr achos"
+    },
+    "UPLOAD_DOCUMENTS_COSC": {
+      "PAGE_TITLE": "cy Evidence upload",
+      "CONFIRM": "cy Confirm you've paid a judgment debt",
+      "TITLE": "cy Upload evidence",
+      "SUB_TITLE": "cy Before you upload your documents",
+      "GIVE_YOUR": "cy Give your document a name that explains what it is. For example, 'Receipt of payment from Jane Smith'",
+      "UPLOAD_A_FILE": "cy Upload a file",
+      "EACH_DOCUMENT": "cy Each document must be less than 100MB. You can upload the following file types: DOC/DOCX, XLS/XLSM, PPT/PPTX, PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+      "UPLOADED_FILES": "cy Uploaded files",
+      "NO_UPLOAD": "cy No files uploaded"
     }
   },
   "FOOTER": {

@@ -1,0 +1,64 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../dashboard/claim-summary-content.njk" import claimSummaryContent %}
+{% from "../dashboard/item-content.njk" import itemContent %}
+{%- from "govuk/components/fieldset/macro.njk" import govukFieldset -%}
+{% from "../../macro/button.njk" import addButton %}
+{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
+
+{% set pageTitle = t('PAGES.UPLOAD_DOCUMENTS_COSC.PAGE_TITLE') %}
+
+{% block nestedContent %}
+    {% set rowNumberToShowRemoveButton = 2 %}
+    {% set witnessContentLength = witnessContent.length %}
+    {% set isRemoveButtonHidden = witnessContentLength < rowNumberToShowRemoveButton %}
+    {% set uploadAfile = t('PAGES.UPLOAD_DOCUMENTS_COSC.UPLOAD_A_FILE') %}
+    {% set fileTypes = t('PAGES.UPLOAD_DOCUMENTS_COSC.EACH_DOCUMENT') %}
+    {% set uploadedFiles = t('PAGES.UPLOAD_DOCUMENTS_COSC.UPLOADED_FILES') %}
+    {% set noFilesUploaded = t('PAGES.UPLOAD_DOCUMENTS_COSC.NO_UPLOAD') %}
+
+      <form method="post" novalidate>
+        {{ csrfProtection(csrf) }}
+        <div id="content"></div>
+
+          {% for content in uploadDocumentsContents %}
+            {{ itemContent(content,t) }}
+          {% endfor %}
+        <div class="govuk-inset-text">
+          <h2 class="govuk-heading-s">{{ uploadAfile }}</h2>
+          <p class="govuk-body-m">{{ fileTypes }}</p>
+
+          {{ govukFileUpload({
+          id: "file-upload-1",
+          name: "fileUpload1",
+          label: {
+            text: ""
+          },
+          errorMessage: {
+            text: "The CSV must be smaller than 100MB"
+          }
+          }) }}
+
+          {{ govukButton({
+            id: 'uploadFileButton',
+            name: 'action',
+            value: 'uploadButton',
+            text: t('COMMON.UPLOAD_FILE'),
+            classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+          }) }}
+        </div>
+
+        <div>
+          <h2 class="govuk-heading-s">{{ uploadedFiles }}</h2>
+          <hr class="govuk-section-break--visible--l">
+          <p class="govuk-body-m">{{ noFilesUploaded }}</p>
+          <hr class="govuk-section-break--visible--l">
+        </div>
+
+          <br>
+        {{ addButton(t, 'CONTINUE',cancelUrl) }}
+
+      </form>
+{% endblock %}

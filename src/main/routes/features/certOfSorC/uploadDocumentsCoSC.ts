@@ -17,13 +17,22 @@ import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUse
 import {getTrialContent} from 'services/features/caseProgression/trialService';
 import {getExpertContent} from 'services/features/caseProgression/expertService';
 import {AppRequest} from 'common/models/AppRequest';
-import {getUploadDocumentsContents} from 'services/features/caseProgression/evidenceUploadDocumentsContent';
 import {getClaimById} from 'modules/utilityService';
+import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 
-const uploadDocumentsViewPath = 'features/caseProgression/upload-documents-cosc';
+const uploadDocumentsViewPath = 'features/certOfSorC/upload-documents-cosc';
 const uploadDocumentsCoSCController = Router();
 const dqPropertyName = 'defendantDocuments';
 const dqPropertyNameClaimant = 'claimantDocuments';
+
+const getBasicDocumentsContents = () => {
+  return new PageSectionBuilder()
+    .addMicroText('PAGES.UPLOAD_DOCUMENTS_COSC.CONFIRM')
+    .addMainTitle('PAGES.UPLOAD_DOCUMENTS_COSC.TITLE')
+    .addTitle('PAGES.UPLOAD_DOCUMENTS_COSC.SUB_TITLE')
+    .addParagraph('PAGES.UPLOAD_DOCUMENTS_COSC.GIVE_YOUR')
+    .build();
+};
 
 async function renderView(res: Response, claim: Claim, claimId: string, form: GenericForm<UploadDocumentsUserForm> = null) {
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
@@ -41,7 +50,7 @@ async function renderView(res: Response, claim: Claim, claimId: string, form: Ge
     const witnessContent = getWitnessContent(claim, form);
     const expertContent = getExpertContent(claim, form);
     const trialContent = getTrialContent(claim, form, isSmallClaims);
-    const uploadDocumentsContents= getUploadDocumentsContents(claimId, claim);
+    const uploadDocumentsContents= getBasicDocumentsContents();
     const backLinkUrl = constructResponseUrlWithIdParams(claimId, TYPES_OF_DOCUMENTS_URL);
     res.render(uploadDocumentsViewPath, {
       form,

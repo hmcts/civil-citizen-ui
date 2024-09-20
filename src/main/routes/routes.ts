@@ -420,7 +420,7 @@ import respondAddInfoController
   from 'routes/features/generalApplication/additionalInfoUpload/respondController';
 import respondWrittenRepController
   from 'routes/features/generalApplication/writtenRepresentationDocs/respondToWrittenRepController';
-import uploadDocumentsCoSCController from 'routes/features/certificateOfSorC/uploadDocumentsCoSC';
+import uploadDocumentsCoSCController from 'routes/features/certOfSorC/uploadDocumentsCoSC';
 
 export default [
   homeController,

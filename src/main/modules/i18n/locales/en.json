@@ -4594,6 +4594,17 @@
       "WHAT_NEXT": "What happens next",
       "NO_FURTHER": "There's no further action you need to take.",
       "CLOSE_AND_RETURN": "Close and return to case details"
+    },
+    "UPLOAD_DOCUMENTS_COSC": {
+      "PAGE_TITLE": "Evidence upload",
+      "CONFIRM": "Confirm you've paid a judgment debt",
+      "TITLE": "Upload evidence",
+      "SUB_TITLE": "Before you upload your documents",
+      "GIVE_YOUR": "Give your document a name that explains what it is. For example, 'Receipt of payment from Jane Smith'",
+      "UPLOAD_A_FILE": "Upload a file",
+      "EACH_DOCUMENT": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX, XLS/XLSM, PPT/PPTX, PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+      "UPLOADED_FILES": "Uploaded files",
+      "NO_UPLOAD": "No files uploaded"
     }
   },
   "FOOTER":{
