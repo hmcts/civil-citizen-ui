@@ -87,6 +87,6 @@ export const GeneralApplicationTypesDisplayFromCCD: { [key in ApplicationTypeOpt
 };
 
 export const LinKFromValues = {
+  start: 'start',
   addAnotherApp: 'addAnotherApp',
-  agreementFromOtherParty: 'agreementFromOtherParty',
 };
