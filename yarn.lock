@@ -4933,7 +4933,6 @@ __metadata:
     eslint-plugin-codeceptjs: ^1.3.0
     express: ^4.19.2
     express-async-errors: ^3.1.1
-    express-nunjucks: ^3.1.0
     express-session: ^1.17.3
     follow-redirects: 1.15.6
     glob: ^10.0.0
@@ -6600,18 +6599,6 @@ __metadata:
   peerDependencies:
     express: ^4.16.2
   checksum: 3a2a6df8ea957185df401a239189d617715c38fba13fac8ced7750b25fa95b0ae656e5d1385d12d0e4dcd7997e90d070b218e86abcf8e68bb6048830b53ba668
-  languageName: node
-  linkType: hard
-
-"express-nunjucks@npm:^3.1.0":
-  version: 3.1.2
-  resolution: "express-nunjucks@npm:3.1.2"
-  dependencies:
-    nunjucks-async-loader: ^2.1.3
-  peerDependencies:
-    express: ^4.19.2
-    nunjucks: ^3.2.4
-  checksum: cccec33d2644032cf806907ea0764a67e829773e5baf69d70d754fd776782952f7935d63419433fe402365ae79e2fba6a5547264463f6e1b054b9732e7f6a63e
   languageName: node
   linkType: hard
 

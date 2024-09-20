@@ -77,7 +77,6 @@
     "dayjs": "^1.11.7",
     "express": "^4.19.2",
     "express-async-errors": "^3.1.1",
-    "express-nunjucks": "^3.1.0",
     "express-session": "^1.17.3",
     "follow-redirects": "1.15.6",
     "glob": "^10.0.0",
