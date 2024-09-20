@@ -51,6 +51,16 @@ export class Address {
   }
 }
 
+export class AddressInfoResponse {
+  addresses: Address[];
+  valid : boolean;
+
+  constructor(addresses: Address[], valid: boolean) {
+    this.addresses = addresses;
+    this.valid = valid;
+  }
+}
+
 export async function lookupByPostcodeAndDataSet(postCode: string): Promise<any> {
   console.log(config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey'));
   const apiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
@@ -67,5 +77,5 @@ export async function lookupByPostcodeAndDataSet(postCode: string): Promise<any>
     index === self.findIndex((t:any) =>
       (t.formattedAddress === addresses.formattedAddress),
     ));
-  return addreses;
+  return new AddressInfoResponse(addreses, true);
 }

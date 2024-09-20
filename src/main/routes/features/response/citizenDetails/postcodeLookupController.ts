@@ -1,6 +1,6 @@
 import {NextFunction, Router} from 'express';
 import {POSTCODE_LOOKUP_URL} from 'routes/urls';
-import {lookupByPostcodeAndDataSet} from 'modules/ordance-survey-key/ordanceSurveyKey';
+import {AddressInfoResponse, lookupByPostcodeAndDataSet} from 'modules/ordance-survey-key/ordanceSurveyKey';
 
 export default Router()
   .get(POSTCODE_LOOKUP_URL, async (req, res, next: NextFunction) => {
@@ -17,7 +17,7 @@ export default Router()
       }
       //const osPlacesClient = getOSPlacesClientInstance();
       //osPlacesClient.lookupByPostcodeAndDataSet(req.query.postcode as string, 'DPA,LPI')
-      const response = await lookupByPostcodeAndDataSet(req.query.postcode as string);  // Call the service
+      const response: AddressInfoResponse = await lookupByPostcodeAndDataSet(req.query.postcode as string);  // Call the service
 
       res.status(200).json(response);
     }  catch (error) {
