@@ -16,7 +16,6 @@ jest.mock('modules/draft-store/draftStoreService');
 jest.mock('modules/draft-store');
 jest.mock('../../../../../../../main/services/features/generalApplication/feeDetailsService');
 
-
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockClaim = new Claim();
 mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.CONFIRM_YOU_PAID_CCJ_DEBT));
