@@ -2,7 +2,6 @@ import { app } from '../../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
 import { POSTCODE_LOOKUP_URL } from '../../../../../../main/routes/urls';
-import { getOSPlacesClientInstance } from 'modules/ordance-survey-key/ordanceSurveyKey';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -105,9 +104,6 @@ describe('Postcode Lookup Controller - HTTP 500', () => {
     const mockError = new Error('Mocked rejection');
     const mockLookupByPostcodeAndDataSet = jest.fn().mockRejectedValue(mockError);
 
-    (getOSPlacesClientInstance as jest.Mock).mockReturnValue({
-      lookupByPostcodeAndDataSet: mockLookupByPostcodeAndDataSet,
-    });
 
     await request(app)
       .get(POSTCODE_LOOKUP_URL + '?postcode=BT')

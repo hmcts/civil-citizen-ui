@@ -17,7 +17,7 @@ describe('OS Places Service', () => {
     jest.clearAllMocks();
   });
 
-  it('should create call with valid API key', async () => {
+  it('should call with valid API key', async () => {
 
     (config.get as jest.Mock).mockReturnValue(mockApiKey);
     (config.get as jest.Mock).mockReturnValue(mockApiUrl);
