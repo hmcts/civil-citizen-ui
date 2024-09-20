@@ -35,6 +35,7 @@ import {
   DQ_REQUEST_EXTRA_4WEEKS_URL, FRC_BAND_AGREED_URL,
   HAS_ANYTHING_CHANGED_URL,
   IS_CASE_READY_URL, REASON_FOR_FRC_BAND_URL, RESPONSE_CHECK_ANSWERS_URL,
+  SIGN_OUT_URL,
   STATEMENT_OF_MEANS_URL, SUBJECT_TO_FRC_URL, TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT,
   TRIAL_ARRANGEMENTS_HEARING_DURATION,
 } from 'routes/urls';
@@ -51,6 +52,7 @@ import {trackHistory} from 'routes/guards/trackHistory';
 import {OidcMiddleware} from 'modules/oidc';
 import {AppSession} from 'models/AppRequest';
 import {DraftStoreCliente2e, getRedisStoreForSessione2e} from 'modules/e2eConfiguration';
+import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -95,7 +97,7 @@ app.use(session({
   secret: 'local',
   resave: false,
   saveUninitialized: false,
-  cookie : {
+  cookie: {
     secure: productionMode,
     maxAge: cookieMaxAge,
     sameSite: 'lax',
@@ -106,6 +108,9 @@ app.enable('trust proxy');
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
+
+app.use(SIGN_OUT_URL, deleteGAGuard);
+
 if(!e2eTestMode){
   new OidcMiddleware().enableFor(app);
 }
