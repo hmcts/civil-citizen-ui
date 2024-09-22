@@ -4594,6 +4594,14 @@
       "WHAT_NEXT": "What happens next",
       "NO_FURTHER": "There's no further action you need to take.",
       "CLOSE_AND_RETURN": "Close and return to case details"
+    },
+    "FINAL_DEFENDANT_PAYMENT_DATE": {
+      "CAPTION_HEADER_1": "Confirm you've paid a judgment debt",
+      "PAGE_TITLE": "Confirm you've paid judgment debt",
+      "TITLE": "When was the final payment?",
+      "PARAGRAPH_TEXT_1" : "We need to know this  to cancel the debt if you paid within one month or show",
+      "PARAGRAPH_TEXT_2" : "it as satisfied if you paid after one month.",
+      "FORM_HEADER_1" : "Enter the date of the final payment"
     }
   },
   "FOOTER":{
@@ -5100,6 +5108,7 @@
         "EMPTY_OPTION_TEXT": "You need to tell us if you want to upload documents to support your response. Choose option: Yes or No.",
         "ERROR_INPUT": "You need to either enter the information requested in the box or select Yes to upload documents to support your response."
       }
-    }
+    },
+    "VALID_FINAL_DATE": "Enter a date when the final payment was made."
   }
 }
