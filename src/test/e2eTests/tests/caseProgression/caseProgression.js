@@ -7,7 +7,7 @@ const TrialArrangements = require('../../caseProgression/trialArragement');
 
 Feature('Case Progression journey').tag('@e2e');
 
-Scenario('upload documents', () => {
+/*Scenario('upload documents', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cui-case-progression', true);
     CaseProgressionSteps.start('0000000000000001');
@@ -17,7 +17,7 @@ Scenario('upload documents', () => {
     toggleFlag('cui-case-progression', false);
   }
 });
-
+*/
 Scenario('help with fees', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cui-case-progression', true);

@@ -34,7 +34,7 @@ Scenario('claimant accepts full admit and payment plan and formalises with SSA',
 
 Scenario('Defendant signs SSA', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    const caseId = 1777777777777732;
+    const caseId = 1777777777777733;
     DefendantResponseSteps.signSettlementAgreement(caseId);
     DefendantResponseSteps.partAdmitPayByInstallmentsDefendantSignsSettlementAgreementConfirmation();
     await DefendantResponseSteps.resetWiremockScenario();
