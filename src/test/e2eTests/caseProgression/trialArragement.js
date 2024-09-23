@@ -32,7 +32,7 @@ class TrialArragement {
     I.see('You should only make an application once this has been completed. There will be a link to make an application once you have finalised your trial arrangements.', 'p.govuk-body');
     I.see('If you make an application, please note the trial will go ahead as planned until the application is reviewed by a judge and an order made changing the date of the trial.', 'p.govuk-body');
 
-    I.see('Trial adjustments and duration', 'h3.govuk-heading-m');
+    I.see('Trial adjustments and duration', 'h2.govuk-heading-m');
     I.see('You will be asked to specify if there are any changes to the support or adjustments you previously specified in your', 'p.govuk-body');
     I.see(' directions questionnaire', 'a.govuk-link');
     I.see('You should review this to identify if your circumstances have changed.', 'p.govuk-body');
@@ -41,7 +41,7 @@ class TrialArragement {
     I.see('If you feel that more time will be required, you will need to liaise with the other party and make an application to the court.', 'p.govuk-body');
     I.see('If you need to make an application, you must complete and submit your trial arrangements first. You should only make an application once this has been completed.', 'p.govuk-body');
 
-    I.see('Other information', 'h3.govuk-heading-m');
+    I.see('Other information', 'h2.govuk-heading-m');
     I.see('You will be given the opportunity to provide any other information relevant to the trial, for example if any party is only available at a specific time.', 'p.govuk-body');
 
     I.see('Cancel', 'a.govuk-link');
@@ -106,7 +106,7 @@ class TrialArragement {
     I.see('Case number: 0000 0000 0000 0003', 'p.govuk-body-l');
     I.see('Claim amount: £15,000', 'p.govuk-body-l');
 
-    I.see('Trial duration', 'h3.govuk-heading-m');
+    I.see('Trial duration', 'h2.govuk-heading-m');
     I.see('The trial duration originally allocated is ', 'p.govuk-body');
     I.see('1 hour', 'span.govuk-body');
     I.see('If you require less time please set out your reasons in the \'Other information\' box below.', 'p.govuk-body');
