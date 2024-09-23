@@ -41,7 +41,7 @@ Scenario('Defendant signs SSA', async () => {
   }
 });
 
-/*Scenario('Claimant rejects full admit - proposes alternate repayment plan', async () => {
+Scenario('Claimant rejects full admit - proposes alternate repayment plan', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     const caseId = 1777777777777734;
     ClaimantResponseSteps.viewDefendantResponseFullAdmit(caseId);
@@ -51,7 +51,7 @@ Scenario('Defendant signs SSA', async () => {
     ClaimantResponseSteps.fullAdmitClaimantRejectsInstallmentsRepaymentPlan();
     await ClaimantResponseSteps.resetWiremockScenario();
   }
-});*/
+});
 
 AfterSuite(async () => {
   await ClaimantResponseSteps.resetWiremockScenario();

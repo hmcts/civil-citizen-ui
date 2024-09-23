@@ -97,7 +97,7 @@ class CaseProgressionSteps {
     I.see('Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.', 'p.govuk-body-m');
 
     I.see('Witness evidence', 'h2.govuk-heading-l');
-    I.see('Witness statement', 'h3.govuk-heading-m');
+    I.see('Witness statement', 'h3.govuk-heading-s');
     I.see('Witness\'s name', 'strong');
     I.fillField('witnessStatement[0][witnessName]', 'test');
 
