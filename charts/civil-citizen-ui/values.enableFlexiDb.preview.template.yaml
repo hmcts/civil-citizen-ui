@@ -107,7 +107,6 @@ civil-service:
       CMC_DB_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       CMC_DB_USERNAME: hmcts
       CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
-      DUMMY_PROPERTY: true
     postgresql:
       enabled: false
 
