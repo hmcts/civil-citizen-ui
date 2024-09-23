@@ -28,13 +28,16 @@ const mockOutstandingTasksFromTaskLists =
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const CLAIM_ID = '123';
 
-const MOCK_REQUEST = () => {
+const MOCK_REQUEST = (eligibilityCompleted: boolean) => {
   return {
     session: {
       claimId: CLAIM_ID,
       user: {
         id: '123',
       },
+    },
+    cookies: {
+      eligibilityCompleted: eligibilityCompleted ? '123' : null,
     },
   } as unknown as AppRequest;
 };
@@ -85,7 +88,7 @@ describe('checkYourAnswersClaimGuard', () => {
 
   it('should call next if all task are complete', async () => {
     //Given
-    const mockRequest = MOCK_REQUEST();
+    const mockRequest = MOCK_REQUEST(true);
 
     mockGetCaseData.mockImplementation(async () => {
       const claim = new Claim();
@@ -110,7 +113,7 @@ describe('checkYourAnswersClaimGuard', () => {
 
   it('should throw error', async () => {
     //Given
-    const mockRequest = MOCK_REQUEST();
+    const mockRequest = MOCK_REQUEST(true);
     mockGetTaskList.mockImplementation(async () => {
       const taskList: TaskList[] = [];
       return taskList;
@@ -128,7 +131,7 @@ describe('checkYourAnswersClaimGuard', () => {
 
   it('should redirect to incomplete submission', async () => {
     //Given
-    const mockRequest = MOCK_REQUEST();
+    const mockRequest = MOCK_REQUEST(true);
     mockGetTaskList.mockImplementation(() => {
       return mockTaskList;
     });
@@ -147,7 +150,7 @@ describe('checkYourAnswersClaimGuard', () => {
 
   it('should redirect to dashboard', async () => {
     //Given
-    const mockRequest = MOCK_REQUEST();
+    const mockRequest = MOCK_REQUEST(false);
     mockGetCaseData.mockImplementation(async () => {
       return new Claim();
     });
