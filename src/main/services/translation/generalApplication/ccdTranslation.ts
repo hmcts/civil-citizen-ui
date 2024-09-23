@@ -39,6 +39,7 @@ import { ProposedPaymentPlanOption } from 'common/models/generalApplication/resp
 import { convertToPenceFromStringToString } from '../claim/moneyConversation';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { exhaustiveMatchingGuard } from 'services/genericService';
+import {translateCUItoCCD} from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
@@ -249,6 +250,8 @@ export const toCcdGeneralApplicationWithResponse = (response: GaResponse): CCDRe
     gaRespondentConsent: toCCDYesNo(response.agreeToOrder),
     generalAppRespondent1Representative: {hasAgreed: toCCDYesNo(response.respondentAgreement?.option)},
     generalAppRespondReason: response.respondentAgreement?.reasonForDisagreement,
+    generalAppRespondDocument: response.wantToUploadDocuments === YesNo.YES ? translateCUItoCCD(response.uploadEvidenceDocuments) : undefined,
   };
 
 };
+
