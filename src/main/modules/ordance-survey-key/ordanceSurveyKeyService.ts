@@ -6,7 +6,6 @@ export async function lookupByPostcodeAndDataSet(postCode: string): Promise<Addr
   const apiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
   const url = config.get<string>('services.postcodeLookup.ordnanceSurveyApiUrl');
   const response = await axios.get(`${url}/search/places/v1/postcode?dataset=DPA,LPI&postcode=${postCode}"&key=` + apiKey);
-  console.log(response.data.results);
   let addresses = response.data.results.map((jsonAddress: any) => {
     if (!jsonAddress.DPA) {
       return new Address(jsonAddress.LPI.UPRN, jsonAddress.LPI.ORGANISATION, jsonAddress.LPI.DEPARTMENT_NAME, jsonAddress.LPI.PO_BOX_NUMBER, jsonAddress.LPI.PAO_TEXT, jsonAddress.LPI.SAO_TEXT, jsonAddress.LPI.BUILDING_NUMBER, jsonAddress.LPI.STREET_DESCRIPTION, jsonAddress.LPI.DEPENDENT_THOROUGHFARE_NAME, jsonAddress.LPI.DEPENDENT_LOCALITY, jsonAddress.LPI.DOUBLE_DEPENDENT_LOCALITY, jsonAddress.LPI.TOWN_NAME, jsonAddress.LPI.POSTCODE_LOCATOR, jsonAddress.LPI.POSTAL_ADDRESS_CODE, jsonAddress.LPI.ADDRESS, new Point('Point', [jsonAddress.LPI.X_COORDINATE, jsonAddress.LPI.Y_COORDINATE]), jsonAddress.LPI.USRN);
