@@ -22,6 +22,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - no interest - n
     const defaultClaimAmount = 9000;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
     await steps.addCompanyClaimant();
