@@ -19,6 +19,7 @@ Scenario('Create Claim -  Individual vs Company - small claims - no interest - n
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     console.log('isDashboardServiceEnabled..', isDashboardServiceEnabled);
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
     //Change defendant to company, and add flightdelay claim
