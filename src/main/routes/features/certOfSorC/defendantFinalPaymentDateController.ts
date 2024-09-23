@@ -4,7 +4,7 @@ import {
   CCJ_CHECK_AND_SEND_URL,
   COSC_FINAL_PAYMENT_DATE_URL,
 } from 'routes/urls';
-import { saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
+import { saveFinalPaymentDateResponse} from 'services/features/certOfSorC/defendantFinalPaymentDateService';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
@@ -22,7 +22,6 @@ defendantPaymentDateController
   .get(
     COSC_FINAL_PAYMENT_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
       try {
-        //const claimantResponse = await getClaimantResponse(generateRedisKey(req as unknown as AppRequest));
         const defendantPaymentDate = new DefendantFinalPaymentDate();
         renderView(new GenericForm(defendantPaymentDate), res);
       } catch (error) {
@@ -40,7 +39,7 @@ defendantPaymentDateController
         renderView(form, res);
       } else {
         try {
-          await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), form.model, 'defendantFinalPaymentDate', 'ccjRequest');
+          await saveFinalPaymentDateResponse(generateRedisKey(req as unknown as AppRequest), form.model, 'defendantFinalPaymentDate', 'ccjRequest');
           res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CHECK_AND_SEND_URL));
         } catch (error) {
           next(error);
