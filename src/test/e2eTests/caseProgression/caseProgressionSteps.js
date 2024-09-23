@@ -126,7 +126,7 @@ class CaseProgressionSteps {
 
     I.seeElement('div.govuk-inset-text');
 
-    I.see('Witness evidence', 'h1.govuk-heading-l');
+    I.see('Witness evidence', 'h2.govuk-heading-l');
     I.see('Witness statement', 'dt.govuk-summary-list__key');
     I.see('Witness\'s name', 'dd.govuk-summary-list__value');
     I.see('test', 'dd.govuk-summary-list__value');

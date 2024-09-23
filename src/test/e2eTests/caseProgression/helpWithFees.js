@@ -75,7 +75,7 @@ class HelpWithFees {
     I.see('Case number: 0000 0000 0000 0002', 'p.govuk-body-l');
     I.see('Claim amount: £1,000', 'p.govuk-body-l');
 
-    I.see('Do you have a help with fees reference number?', 'h3.govuk-heading-m');
+    I.see('Do you have a help with fees reference number?', 'h2.govuk-heading-m');
 
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.YES}`);
 
