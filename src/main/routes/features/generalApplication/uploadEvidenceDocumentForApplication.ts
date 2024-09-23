@@ -6,7 +6,11 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
-import {getCancelUrl, getDynamicHeaderForMultipleApplications} from 'services/features/generalApplication/generalApplicationService';
+import {
+  getCancelUrl,
+  getDynamicHeaderForMultipleApplications,
+  isConfirmYouPaidCCJAppType,
+} from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import multer from 'multer';
@@ -17,6 +21,7 @@ import {
   removeSelectedDocument, uploadSelectedFile,
 } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
+import {isCoSCEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const uploadEvidenceDocumentsForApplicationController = Router();
 const viewPath = 'features/generalApplication/upload_documents';
@@ -104,7 +109,11 @@ uploadEvidenceDocumentsForApplicationController.post(GA_UPLOAD_DOCUMENTS_URL, up
       req.session.fileUpload = JSON.stringify(errors);
       return res.redirect(`${currentUrl}`);
     } else {
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL));
+      if (await isCoSCEnabled() && isConfirmYouPaidCCJAppType(claim)) {
+        res.redirect(constructResponseUrlWithIdParams(claimId, 'google.com'));  //TODO add CoSC journey URL
+      } else {
+        res.redirect(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL));
+      }
     }
   } catch (error) {
     next(error);
