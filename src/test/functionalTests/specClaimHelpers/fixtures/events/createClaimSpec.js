@@ -67,9 +67,9 @@ module.exports = {
         //   courtLocation: {
         //     applicantPreferredCourtLocationList: {
         //       list_items: [
-        //         listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ'),
+        //         listElement('Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE'),
         //       ],
-        //       value: listElement('Barnet Civil and Family Centre - ST MARY\'S COURT, REGENTS PARK ROAD - N3 1BQ'),
+        //       value: listElement('Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE'),
         //     },
         //   },
         // },

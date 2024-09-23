@@ -6,8 +6,6 @@ import {GA_APPLY_HELP_WITH_FEES_START} from 'routes/urls';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/draft-store');
 
 describe('General Application - Apply for help with fees', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -23,9 +21,21 @@ describe('General Application - Apply for help with fees', () => {
     it('should return Apply for help with fees page', async () => {
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEES_START)
+        .query({additionalFeeTypeFlag: 'false'})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Application fee');
+          expect(res.text).toContain('Apply for help with fees');
+        });
+    });
+
+    it('should return Apply for help with fees page', async () => {
+      await request(app)
+        .get(GA_APPLY_HELP_WITH_FEES_START)
+        .query({additionalFeeTypeFlag: 'true'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Additional application fee');
           expect(res.text).toContain('Apply for help with fees');
         });
     });

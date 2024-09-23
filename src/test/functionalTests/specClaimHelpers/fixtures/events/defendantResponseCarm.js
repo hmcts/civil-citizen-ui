@@ -146,8 +146,8 @@ module.exports = {
           reasonForHearingAtSpecificCourt: 'court',
           responseCourtLocations: [],
           caseLocation: {
-            region: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
-            baseLocation: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
+            region: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+            baseLocation: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
           },
         },
         respondent1DQWitnesses: {
@@ -223,7 +223,7 @@ module.exports = {
           soleTraderLastName: 'defendant',
           soleTraderTitle: 'mr',
           soleTraderTradingAs: 'Sole Trader Business',
-          type: 'INDIVIDUAL',
+          type: 'SOLE_TRADER',
         },
         respondent1LiPResponse: {
           timelineComment: 'Add any comments about their timeline (optional)',
@@ -336,8 +336,8 @@ module.exports = {
           reasonForHearingAtSpecificCourt: 'court',
           responseCourtLocations: [],
           caseLocation: {
-            region: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
-            baseLocation: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
+            region: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+            baseLocation: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
           },
         },
         respondent1DQWitnesses: {
@@ -518,8 +518,8 @@ module.exports = {
           reasonForHearingAtSpecificCourt: 'court',
           responseCourtLocations: [],
           caseLocation: {
-            region: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
-            baseLocation: 'Barnet Civil and Family Centre - St Mary\'s Court, Regents Park Road - N3 1BQ',
+            region: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
+            baseLocation: 'Clerkenwell and Shoreditch County Court and Family Court - 29-41 Gee Street - EC1V 3RE',
           },
         },
         respondent1DQWitnesses: {

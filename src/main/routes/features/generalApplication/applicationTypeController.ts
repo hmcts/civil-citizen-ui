@@ -8,8 +8,10 @@ import { AppRequest } from 'common/models/AppRequest';
 import {
   ApplicationType,
   ApplicationTypeOption,
+  LinKFromValues,
 } from 'common/models/generalApplication/applicationType';
 import {
+  deleteGAFromClaimsByUserId,
   getByIndex,
   getCancelUrl,
   saveApplicationType, validateAdditionalApplicationtType,
@@ -18,13 +20,16 @@ import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
 
 applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
+    const linkFrom = req.query.linkFrom;
+    if (linkFrom === LinKFromValues.start) {
+      await deleteGAFromClaimsByUserId(req.session?.user?.id);
+    }
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const applicationIndex = queryParamNumber(req, 'index');
@@ -32,7 +37,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const backLinkUrl = await getBackLinkUrl(claimId, claim, cancelUrl);
+    const backLinkUrl = await getBackLinkUrl(claimId, <string>req.query.linkFrom, cancelUrl);
     res.render(viewPath, {
       form,
       cancelUrl,
@@ -50,24 +55,23 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const claim = await getClaimById(redisKey, req, true);
     let applicationType = null;
     const applicationIndex = queryParamNumber(req, 'index');
-    if (req.body.option === ApplicationTypeOption.OTHER) {
+    if (req.body.option === ApplicationTypeOption.OTHER_OPTION) {
       applicationType = new ApplicationType(req.body.optionOther);
     } else {
       applicationType = new ApplicationType(req.body.option);
     }
-
     const form = new GenericForm(applicationType);
     form.validateSync();
     if(!applicationIndex && applicationIndex != 0) {
       validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
     }
     const cancelUrl = await getCancelUrl( req.params.id, claim);
-    const backLinkUrl = await getBackLinkUrl(req.params.id, claim, cancelUrl);
+    const backLinkUrl = await getBackLinkUrl(req.params.id, <string>req.query.linkFrom, cancelUrl);
 
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() });
     } else {
-      await saveApplicationType(redisKey, applicationType, applicationIndex);
+      await saveApplicationType(redisKey, claim, applicationType, applicationIndex);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_AGREEMENT_FROM_OTHER_PARTY_URL));
     }
   } catch (error) {
@@ -75,9 +79,8 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
   }
 }) as RequestHandler);
 
-async function getBackLinkUrl(claimId: string, claim: Claim, cancelUrl: string) {
-  return (!claim?.generalApplication?.applicationTypes) ? cancelUrl
-    : constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL);
+async function getBackLinkUrl(claimId: string, linkFrom: string, cancelUrl: string) {
+  return linkFrom === LinKFromValues.addAnotherApp ? constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL) : cancelUrl;
 }
 
 export default applicationTypeController;

@@ -29,7 +29,9 @@ const options = [ApplicationTypeOption.SETTLE_BY_CONSENT, ApplicationTypeOption.
 
 function getBackLinkUrl(claim: Claim, claimId: string, applicationType: ApplicationTypeOption) {
   if (options.indexOf(applicationType) !== -1 && claim.isClaimant()) {
-    return constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL);
+    const requestingReasonLength = claim.generalApplication?.requestingReasons?.length;
+    const indexParam = requestingReasonLength ? `?index=${requestingReasonLength - 1}` : '';
+    return constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL) + indexParam;
   } else if(applicationType === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT && !claim.isClaimant()) {
     return constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL);
   }

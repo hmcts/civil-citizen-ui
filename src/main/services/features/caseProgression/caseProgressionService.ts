@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
 import {CaseProgression} from 'common/models/caseProgression/caseProgression';
 import {Request} from 'express';
@@ -20,13 +20,18 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {Claim} from 'models/claim';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {FeeType} from 'form/models/helpWithFees/feeType';
+import {AppRequest} from 'models/AppRequest';
+import {getClaimById} from 'modules/utilityService';
+import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('supportRequiredService');
 
-export const getDocuments = async (claimId: string): Promise<UploadDocuments> => {
+export const getDocuments = async (redisKey: string): Promise<UploadDocuments> => {
   try {
-    const caseData = await getCaseDataFromStore(claimId);
+    const caseData = await getCaseDataFromStore(redisKey);
     if (caseData?.caseProgression?.defendantUploadDocuments && !caseData.isClaimant()) {
       return caseData?.caseProgression?.defendantUploadDocuments ? caseData?.caseProgression.defendantUploadDocuments : new UploadDocuments();
     }
@@ -38,9 +43,10 @@ export const getDocuments = async (claimId: string): Promise<UploadDocuments> =>
     throw error;
   }
 };
-export const saveCaseProgression = async (claimId: string, value: any, caseProgressionPropertyName: string, parentPropertyName?: string): Promise<void> => {
+export const saveCaseProgression = async (req: Request,value: any, caseProgressionPropertyName: string, parentPropertyName?: string): Promise<void> => {
   try {
-    const claim: any = await getCaseDataFromStore(claimId);
+    const redisKey = generateRedisKey(<AppRequest>req);
+    const claim: any = await getCaseDataFromStore(redisKey);
 
     if (!claim.caseProgression) {
       claim.caseProgression = new CaseProgression();
@@ -78,15 +84,15 @@ export const saveCaseProgression = async (claimId: string, value: any, caseProgr
       }
       claim.caseProgression = caseProgression;
     }
-    await saveDraftClaim(claimId, claim);
+    await saveDraftClaim(redisKey, claim);
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-export const deleteUntickedDocumentsFromStore = async (claimId: string, isClaimant: boolean) => {
-  const claim: Claim = await getCaseDataFromStore(claimId);
+export const deleteUntickedDocumentsFromStore = async (req: Request, isClaimant: boolean) => {
+  const claim: Claim = await getClaimById(req.params.id, req, true);
   let documentsTicked: UploadDocuments;
   let documentsSaved: UploadDocumentsUserForm;
   let propertyName: string;
@@ -123,7 +129,7 @@ export const deleteUntickedDocumentsFromStore = async (claimId: string, isClaima
     documentsToSave.trialCosts = documentsTicked.trial[3].selected ? documentsSaved.trialCosts : [];
     documentsToSave.trialDocumentary = documentsTicked.trial[4].selected ? documentsSaved.trialDocumentary : [];
 
-    await saveCaseProgression(claim.id, documentsToSave, propertyName);
+    await saveCaseProgression(req, documentsToSave, propertyName);
   }
 };
 
@@ -274,4 +280,15 @@ const bindRequestToFileOnlySectionObj = (request: any): FileOnlySection => {
     formObj.caseDocument = JSON.parse(request['caseDocument']) as CaseDocument;
   }
   return formObj;
+};
+
+export const getCaseProgressionCancelUrl = async (claimId: string, claim: Claim) => {
+  if (claim.isClaimant()) {
+    const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
+    if (isCUIR2Enabled) {
+      return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
+    }
+    return constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL);
+  }
+  return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 };

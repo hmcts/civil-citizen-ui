@@ -1,5 +1,5 @@
 import {Claim} from 'models/claim';
-import {CCDClaim} from 'models/civilClaimResponse';
+import {CCDClaim, RespondentSolGaAppDetail} from 'models/civilClaimResponse';
 import {toCUIClaimDetails} from 'services/translation/convertToCUI/convertToCUIClaimDetails';
 import {toCUIEvidence} from 'services/translation/convertToCUI/convertToCUIEvidence';
 import {toCUIParty, toCUIPartyRespondent} from 'services/translation/convertToCUI/convertToCUIParty';
@@ -32,6 +32,9 @@ import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantR
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
 import {toCUIClaimantMediation} from 'services/translation/convertToCUI/convertToCUIClaimantMediation';
 import { RepaymentPlan } from 'common/models/repaymentPlan';
+import { ApplicationTypeOption, GeneralApplicationTypesDisplayFromCCD } from 'common/models/generalApplication/applicationType';
+import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
+import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaimObj);
@@ -53,6 +56,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.rejectAllOfClaim = toCUIRejectAllOfClaim(ccdClaim);
   claim.directionQuestionnaire = toCUIDQs(ccdClaim);
   claim.claimType = ccdClaim.responseClaimTrack;
+  claim.responseClaimTrack = ccdClaim.responseClaimTrack;
   claim.sdoOrderDocument = ccdClaim.systemGeneratedCaseDocuments?.find((documents) => documents.value.documentType === DocumentType.SDO_ORDER);
   claim.caseProgressionHearing = toCUICaseProgressionHearing(ccdClaim);
   claim.caseProgression = toCUICaseProgression(ccdClaim);
@@ -100,6 +104,8 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.claimantResponse.suggestedImmediatePaymentDeadLine = ccdClaim.applicant1SuggestPayImmediatelyPaymentDateForDefendantSpec;
   claim.claimantResponse.applicant1DefenceResponseDocumentSpec = ccdClaim.applicant1DefenceResponseDocumentSpec;
   claim.claimType = ccdClaim.claimType;
+  claim.respondentGaAppDetails = toCUIRespondentGADetails(ccdClaim.respondentSolGaAppDetails);
+  claim.generalApplications = toCUIClaimGeneralApplications(ccdClaim.generalApplications);
   return claim;
 };
 
@@ -155,3 +161,32 @@ function toCUIApplicant1RepaymentPlan(ccdClaim: CCDClaim): RepaymentPlan  {
     firstRepaymentDate : new Date(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec),
   };
 }
+
+function toCUIRespondentGADetails(respondentSolGaAppDetails: RespondentSolGaAppDetail[]) {
+  return respondentSolGaAppDetails?.map(gaAppInfo => {
+    return {
+      generalAppTypes: gaAppInfo.value.generalApplicationType.split(',').map((applicationType: string) => displayToEnumKey(applicationType)),
+      gaApplicationId: gaAppInfo.value.caseLink.CaseReference,
+      caseState: gaAppInfo.value.caseState,
+      generalAppSubmittedDateGAspec: gaAppInfo.value.generalAppSubmittedDateGAspec,
+    };
+  });
+}
+
+function toCUIClaimGeneralApplications(ccdClaimGeneralApplications: CCDGeneralApplication[]): ClaimGeneralApplication[] {
+  const claimGeneralApplications: ClaimGeneralApplication[] = [];
+  ccdClaimGeneralApplications?.forEach(ccdGa => {
+    const claimGa = new ClaimGeneralApplication();
+    claimGa.id = ccdGa.id;
+    claimGa.value = new ClaimGeneralApplicationValue();
+    claimGa.value.caseLink = ccdGa.value?.caseLink;
+    claimGa.value.parentClaimantIsApplicant = toCUIYesNo(ccdGa.value?.parentClaimantIsApplicant);
+    claimGa.value.generalAppSubmittedDateGAspec = ccdGa.value?.generalAppSubmittedDateGAspec;
+    claimGeneralApplications.push(claimGa);
+  });
+  return claimGeneralApplications;
+}
+
+const displayToEnumKey = (displayValue: string): ApplicationTypeOption => {
+  return (Object.keys(GeneralApplicationTypesDisplayFromCCD) as Array<keyof typeof GeneralApplicationTypesDisplayFromCCD>).find(key => GeneralApplicationTypesDisplayFromCCD[key] === displayValue) as ApplicationTypeOption | undefined;
+};

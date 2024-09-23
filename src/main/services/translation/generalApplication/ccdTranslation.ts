@@ -1,7 +1,13 @@
 import { GeneralApplication } from 'models/generalApplication/GeneralApplication';
-import { CCDGeneralApplication } from 'models/gaEvents/eventDto';
+import {
+  CCDGeneralApplication,
+  CCDRespondToApplication,
+} from 'models/gaEvents/eventDto';
 import { OrderJudge } from 'models/generalApplication/orderJudge';
-import { ApplicationType } from 'models/generalApplication/applicationType';
+import {
+  ApplicationType,
+  ApplicationTypeOption,
+} from 'models/generalApplication/applicationType';
 import { CcdGeneralApplicationTypes } from 'models/ccdGeneralApplication/ccdGeneralApplicationTypes';
 import { toCCDYesNo } from 'services/translation/response/convertToCCDYesNo';
 import { InformOtherParties } from 'models/generalApplication/informOtherParties';
@@ -14,6 +20,8 @@ import {
 } from 'models/generalApplication/hearingArrangement';
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
 import {
+  CcdGADebtorPaymentPlanGAspec,
+  CcdGARespondentDebtorOfferOptionsGAspec,
   CcdGeneralApplicationHearingDetails,
   CcdHearingType,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
@@ -24,23 +32,26 @@ import { HearingSupport } from 'models/generalApplication/hearingSupport';
 import { CcdSupportRequirement } from 'models/ccdGeneralApplication/ccdSupportRequirement';
 import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
 import { CcdGeneralApplicationEvidenceDocument } from 'models/ccdGeneralApplication/ccdGeneralApplicationEvidenceDocument';
-import {
-  CcdGeneralApplicationRespondentAgreement,
-} from 'models/ccdGeneralApplication/ccdGeneralApplicationRespondentAgreement';
-import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthForm';
-import {
-  CcdGeneralApplicationStatementOfTruth,
-} from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
-import {CCDHelpWithFees} from 'form/models/claimDetails';
-import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import { CcdGeneralApplicationRespondentAgreement } from 'models/ccdGeneralApplication/ccdGeneralApplicationRespondentAgreement';
+import { StatementOfTruthForm } from 'models/generalApplication/statementOfTruthForm';
+import { CcdGeneralApplicationStatementOfTruth } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
+import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
+import { convertToPenceFromStringToString } from '../claim/moneyConversation';
+import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
+import { exhaustiveMatchingGuard } from 'services/genericService';
+import {translateCUItoCCD} from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 
 export const translateDraftApplicationToCCD = (
   application: GeneralApplication,
 ): CCDGeneralApplication => {
   return {
     generalAppType: toCCDGeneralApplicationTypes(application.applicationTypes),
-    generalAppRespondentAgreement: toCCDRespondentAgreement(application.agreementFromOtherParty),
+    generalAppRespondentAgreement: toCCDRespondentAgreement(
+      application.agreementFromOtherParty,
+    ),
     generalAppInformOtherParty: toCCDInformOtherParty(
+      application.applicationTypes,
+      application.agreementFromOtherParty,
       application.informOtherParties,
     ),
     generalAppAskForCosts: toCCDYesNo(application.applicationCosts),
@@ -58,8 +69,9 @@ export const translateDraftApplicationToCCD = (
       application.unavailableDatesHearing,
       application.hearingSupport,
     ),
-    generalAppStatementOfTruth: toCCDStatementOfTruth(application.statementOfTruth),
-    generalAppHelpWithFees: toCCDGeneralAppHelpWithFees(application.helpWithFees?.helpFeeReferenceNumberForm),
+    generalAppStatementOfTruth: toCCDStatementOfTruth(
+      application.statementOfTruth,
+    ),
   };
 };
 
@@ -77,7 +89,12 @@ const toCCDRespondentAgreement = (agreementFromOtherParty: YesNo): CcdGeneralApp
     : undefined;
 };
 
-const toCCDInformOtherParty = (informOtherParty: InformOtherParties): CcdGeneralApplicationInformOtherParty => {
+const toCCDInformOtherParty = (applicationTypes: ApplicationType[], agreementFromOtherParty: YesNo, informOtherParty: InformOtherParties): CcdGeneralApplicationInformOtherParty => {
+  if (applicationTypes.length === 1 && applicationTypes[0].option === ApplicationTypeOption.SET_ASIDE_JUDGEMENT && agreementFromOtherParty === YesNo.NO) {
+    return {
+      isWithNotice: toCCDYesNo(YesNo.YES),
+    };
+  }
   return informOtherParty
     ? {
       isWithNotice: toCCDYesNo(informOtherParty.option as YesNo),
@@ -100,7 +117,7 @@ const toCCDEvidenceDocuments = (wantToUpload: YesNo, uploadDocuments: UploadGAFi
       return {
         value: {
           document_url: uploadDocument?.caseDocument?.documentLink?.document_url,
-          document_binary_url: uploadDocument?.caseDocument?.documentLink?.document_url,
+          document_binary_url: uploadDocument?.caseDocument?.documentLink?.document_binary_url,
           document_filename: uploadDocument?.caseDocument?.documentLink?.document_filename,
           category_id: uploadDocument?.caseDocument?.documentLink?.category_id,
         },
@@ -142,6 +159,15 @@ const toCCDHearingPreferencesPreferredType = (hearingTypeOption: HearingTypeOpti
       return CcdHearingType.VIDEO;
     default:
       return undefined;
+  }
+};
+
+export const fromCcdHearingType = (ccdHearingType: CcdHearingType): HearingTypeOptions => {
+  switch (ccdHearingType) {
+    case CcdHearingType.IN_PERSON : return HearingTypeOptions.PERSON_AT_COURT;
+    case CcdHearingType.TELEPHONE : return HearingTypeOptions.TELEPHONE;
+    case CcdHearingType.VIDEO : return HearingTypeOptions.VIDEO_CONFERENCE;
+    default: exhaustiveMatchingGuard(ccdHearingType);
   }
 };
 
@@ -188,10 +214,44 @@ const toCCDStatementOfTruth = (statementOfTruth: StatementOfTruthForm): CcdGener
   };
 };
 
-const toCCDGeneralAppHelpWithFees = (helpWithFees: ApplyHelpFeesReferenceForm | undefined): CCDHelpWithFees => {
-  if (!helpWithFees) return undefined;
-  return {
-    helpWithFee: toCCDYesNo(helpWithFees.option),
-    helpWithFeesReferenceNumber: helpWithFees.referenceNumber,
-  };
+const toCcdPaymentPlan = (paymentPlan: ProposedPaymentPlanOption | undefined): CcdGADebtorPaymentPlanGAspec | undefined => {
+  if (paymentPlan) {
+    switch (paymentPlan) {
+      case ProposedPaymentPlanOption.ACCEPT_INSTALMENTS: return CcdGADebtorPaymentPlanGAspec.INSTALMENT;
+      case ProposedPaymentPlanOption.PROPOSE_BY_SET_DATE: return CcdGADebtorPaymentPlanGAspec.PAYFULL;
+      default: exhaustiveMatchingGuard(paymentPlan);
+    }
+  }
 };
+
+const toCcdDebtorOfferOptions = (acceptDefendantOfferOption: YesNo): CcdGARespondentDebtorOfferOptionsGAspec => {
+  switch (acceptDefendantOfferOption) {
+    case YesNo.YES: return CcdGARespondentDebtorOfferOptionsGAspec.ACCEPT;
+    case YesNo.NO: return CcdGARespondentDebtorOfferOptionsGAspec.DECLINE;
+  }
+};
+
+export const toCcdGeneralApplicationWithResponse = (response: GaResponse): CCDRespondToApplication => {
+  const acceptDefendantOffer = response?.acceptDefendantOffer;
+  return {
+    hearingDetailsResp: toCCDGeneralAppHearingDetails(
+      response?.hearingArrangement,
+      response?.hearingContactDetails,
+      response?.unavailableDatesHearing,
+      response?.hearingSupport,
+    ),
+    gaRespondentDebtorOffer: {
+      respondentDebtorOffer: toCcdDebtorOfferOptions(acceptDefendantOffer?.option),
+      debtorObjections: acceptDefendantOffer?.reasonProposedInstalment,
+      paymentPlan: toCcdPaymentPlan(acceptDefendantOffer?.type),
+      monthlyInstalment: convertToPenceFromStringToString(acceptDefendantOffer?.amountPerMonth),
+      paymentSetDate: acceptDefendantOffer?.proposedSetDate,
+    },
+    gaRespondentConsent: toCCDYesNo(response.agreeToOrder),
+    generalAppRespondent1Representative: {hasAgreed: toCCDYesNo(response.respondentAgreement?.option)},
+    generalAppRespondReason: response.respondentAgreement?.reasonForDisagreement,
+    generalAppRespondDocument: response.wantToUploadDocuments === YesNo.YES ? translateCUItoCCD(response.uploadEvidenceDocuments) : undefined,
+  };
+
+};
+

@@ -473,3 +473,6 @@ civil-general-applications:
       CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       DASHBOARD_API_URL: http://${SERVICE_NAME}-java
       CUI_URL: https://civil-citizen-ui-staging.aat.platform.hmcts.net
+
+postgresql:
+  enabled: false

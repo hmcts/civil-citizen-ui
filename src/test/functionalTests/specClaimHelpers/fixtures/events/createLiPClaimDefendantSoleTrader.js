@@ -1,3 +1,5 @@
+const { getClaimFee } = require('./claimAmountAndFee');
+
 const createLipClaimDefendantSoleTrader = (user, userId, totalClaimAmount) => {
   const eventDto = {
     event: 'CREATE_LIP_CLAIM',
@@ -46,7 +48,7 @@ const createLipClaimDefendantSoleTrader = (user, userId, totalClaimAmount) => {
         soleTraderLastName: 'defendant',
         soleTraderTitle: 'mr',
         soleTraderTradingAs: 'Sole Trader Business',
-        type: 'INDIVIDUAL',
+        type: 'SOLE_TRADER',
       },
       defenceRouteRequired: undefined,
       respondToClaim: undefined,
@@ -145,15 +147,11 @@ const createLipClaimDefendantSoleTrader = (user, userId, totalClaimAmount) => {
           },
         },
       ],
-      claimFee: {
-        calculatedAmountInPence: '45500',
-        version: '3',
-        code: 'FEE0208',
-      },
+      claimFee: getClaimFee(totalClaimAmount),
       claimantBilingualLanguagePreference: undefined,
     },
   };
   return eventDto;
 };
-    
+
 module.exports = createLipClaimDefendantSoleTrader;

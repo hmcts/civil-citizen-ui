@@ -27,7 +27,7 @@ describe('Order Judge Guard', () => {
     //Given
     const claim = new Claim();
     claim.caseRole = CaseRole.CLAIMANT;
-    const applicationType = new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING);
+    const applicationType = new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT);
     claim.generalApplication = new GeneralApplication(applicationType);
     jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
     jest.spyOn(generalApplicationService, 'getByIndexOrLast').mockReturnValue(applicationType);
@@ -43,7 +43,7 @@ describe('Order Judge Guard', () => {
     //Given
     const claim = new Claim();
     claim.caseRole = CaseRole.CLAIMANT;
-    const applicationType = new ApplicationType(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT);
+    const applicationType = new ApplicationType(ApplicationTypeOption.RELIEF_FROM_SANCTIONS);
     claim.generalApplication = new GeneralApplication(applicationType);
     jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
     jest.spyOn(generalApplicationService, 'getByIndexOrLast').mockReturnValue(applicationType);
@@ -52,19 +52,19 @@ describe('Order Judge Guard', () => {
     await orderJudgeGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
 
     //Then
-    expect(MOCK_NEXT).not.toHaveBeenCalled();
+    expect(MOCK_NEXT).toHaveBeenCalled();
   });
   it('should not load order judge page', async () => {
     //Given
     const claim = new Claim();
-    const applicationType = new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT);
+    const applicationType = new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING);
     claim.generalApplication = new GeneralApplication(applicationType);
     jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
     jest.spyOn(generalApplicationService, 'getByIndexOrLast').mockReturnValue(applicationType);
     //When
     await orderJudgeGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
-    expect(MOCK_NEXT).not.toHaveBeenCalled();
+    expect(MOCK_NEXT).toHaveBeenCalled();
   });
   it('should throw error', async () => {
     //Given

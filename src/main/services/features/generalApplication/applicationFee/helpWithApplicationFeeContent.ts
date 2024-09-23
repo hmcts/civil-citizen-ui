@@ -1,23 +1,25 @@
 import {t} from 'i18next';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {DASHBOARD_CLAIMANT_URL, GA_APPLY_HELP_WITH_FEE_REFERENCE, HELP_WITH_FEES_ELIGIBILITY} from 'routes/urls';
-import {ClaimFeeData} from 'models/civilClaimResponse';
-import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
-export const getHelpApplicationFeeSelectionPageContents = (lng: string) => {
+export const getHelpApplicationFeeSelectionPageContents = (lng: string, paymentSyncError: boolean) => {
   const linkBefore = 'PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.LINK_BEFORE';
   const linkParagraph = `<p class="govuk-body govuk-!-margin-bottom-1">${t(linkBefore, {lng})}
         <a target="_blank" class="govuk-link" rel="noopener noreferrer" href="https://www.gov.uk/get-help-with-court-fees">
-        ${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.LINK_TEXT', {lng})}</a></p>`;
-  return new PageSectionBuilder()
+        ${t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.LINK_TEXT', {lng})}</a>.</p>`;
+  const contentBuilder = new PageSectionBuilder()
     .addMicroText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING')
-    .addMainTitle('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_TITLE')
+    .addMainTitle('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_TITLE');
+  if (paymentSyncError) {
+    contentBuilder.addWarning('PAGES.FEE_AMOUNT.SYNC_WARNING');
+  }
+  contentBuilder
     .addRawHtml(linkParagraph)
     .addParagraph('')
     .addParagraph(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.PARAGRAPH', {lng}))
-    .addTitle(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.QUESTION_TITLE', {lng}))
-    .build();
+    .addTitle(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.APPLY_HELP_FEE_SELECTION.QUESTION_TITLE', {lng}));
+  return contentBuilder.build();
 };
 
 export const getButtonsContents  = (claimId : string) => {
@@ -26,11 +28,14 @@ export const getButtonsContents  = (claimId : string) => {
     .build();
 };
 
-export const getHelpApplicationFeeContinuePageContents = (gaFeeData: ClaimFeeData) => {
-  const feeAmount = convertToPoundsFilter(gaFeeData?.calculatedAmountInPence.toString());
-  return new PageSectionBuilder()
-    .addMicroText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING')
-    .addMainTitle('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.TITLE')
+export const getHelpApplicationFeeContinuePageContents = (feeAmount: string, feeTypeFlag: boolean) => {
+  const pageBuilder=new PageSectionBuilder();
+  if (feeTypeFlag) {
+    pageBuilder.addMicroText('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING');
+  } else{
+    pageBuilder .addMicroText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING');
+  }
+  pageBuilder.addMainTitle('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.TITLE')
     .addInsetText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.GENERAL_APPLICATION_FEE_INSET',
       {feeAmount: feeAmount})
     .addLink('PAGES.APPLY_HELP_WITH_FEES.START.ELIGIBILITY_LINK', HELP_WITH_FEES_ELIGIBILITY, 'PAGES.APPLY_HELP_WITH_FEES.START.ELIGIBILITY', null, null, true)
@@ -43,18 +48,24 @@ export const getHelpApplicationFeeContinuePageContents = (gaFeeData: ClaimFeeDat
     .addParagraph('PAGES.APPLY_HELP_WITH_FEES.START.REJECTED')
     .addTitle('PAGES.APPLY_HELP_WITH_FEES.START.CONTINUE_APPLICATION')
     .build();
+  return pageBuilder.build();
 };
 
-export const getApplicationFeeContentPageDetails = (claimId: string) => {
-  const nextPageUrl = GA_APPLY_HELP_WITH_FEE_REFERENCE.replace(':id', claimId);
+export const getApplicationFeeContentPageDetails = (claimId: string, feeType: boolean, genAppId: string) => {
+  const nextPageUrl = constructResponseUrlWithIdAndAppIdParams(claimId, genAppId, GA_APPLY_HELP_WITH_FEE_REFERENCE) + '?additionalFeeTypeFlag=' + feeType;
   const dashBoardClaimantUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
-  return new PageSectionBuilder()
-    .addMicroText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING')
-    .addMainTitle('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.TITLE')
+  const pageBuilder = new PageSectionBuilder();
+  if (feeType) {
+    pageBuilder.addMicroText('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING');
+  } else {
+    pageBuilder.addMicroText('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING');
+  }
+  pageBuilder.addMainTitle('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.TITLE')
     .addParagraph('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_IF')
     .addParagraph('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_INSTEAD')
     .addParagraph('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.APPLICATION_FEE_PARAGRAPH_DURING')
     .addParagraph('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.PARAGRAPH_ONCE')
     .addLink('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.PAY_HEARING_FEE.APPLY_HELP_WITH_FEES.LINK','https://www.gov.uk/get-help-with-court-fees','','','',true)
-    .addButtonWithCancelLink('COMMON.BUTTONS.CONTINUE', nextPageUrl,false, dashBoardClaimantUrl).build();
+    .addButtonWithCancelLink('COMMON.BUTTONS.CONTINUE', nextPageUrl,false, dashBoardClaimantUrl);
+  return pageBuilder.build();
 };

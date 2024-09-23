@@ -77,12 +77,14 @@ import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncom
 import {toCCDYesNo, toCCDYesNoReverse} from 'services/translation/response/convertToCCDYesNo';
 import {AdditionalLipPartyDetails} from './additionalLipPartyDetails';
 import {BusinessProcess} from 'models/businessProcess';
-import {MediationUploadDocumentsCCD} from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
+import { MediationUploadDocumentsCCD } from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
 import {CCDHelpWithFeesDetails} from 'models/ccdResponse/ccdHelpWithFeesDetails';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import {GeneralApplication} from './generalApplication/GeneralApplication';
 import {FlightDetails} from './flightDetails';
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
+import { RespondentGaAppDetail } from './generalApplication/response/respondentGaAppDetail';
+import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -166,6 +168,7 @@ export class Claim {
   app1MediationDocumentsReferred?: MediationUploadDocumentsCCD[];
   app1MediationNonAttendanceDocs?: MediationUploadDocumentsCCD[];
   mediationSettlementAgreedAt?: Date;
+  respondentGaAppDetails?: RespondentGaAppDetail[];
   generalApplication?: GeneralApplication;
   orderDocumentId?: string;
   claimantEvidence: ClaimantEvidence;
@@ -174,7 +177,12 @@ export class Claim {
   delayedFlight?: GenericYesNo;
   flightDetails?: FlightDetails;
   judgmentOnline?: JudgmentOnline;
+  generalOrderDocClaimant?: SystemGeneratedCaseDocuments[];
+  generalOrderDocRespondentSol?: SystemGeneratedCaseDocuments[];
   claimType?: string;
+  paymentSyncError?: boolean;
+  responseClaimTrack?: string;
+  generalApplications?: ClaimGeneralApplication[];
 
   // Index signature to allow dynamic property access
   [key: string]: any;
@@ -782,11 +790,17 @@ export class Claim {
   }
 
   get isFastTrackClaim(): boolean {
+    if (this.responseClaimTrack){
+      return this.responseClaimTrack === claimType.FAST_CLAIM;
+    }
     const claimTypeResult = analyseClaimType(this.totalClaimAmount);
     return claimTypeResult === claimType.FAST_TRACK_CLAIM;
   }
 
   get isSmallClaimsTrackDQ(): boolean {
+    if (this.responseClaimTrack){
+      return this.responseClaimTrack === claimType.SMALL_CLAIM;
+    }
     const claimTypeResult = analyseClaimType(this.totalClaimAmount);
     return claimTypeResult === claimType.SMALL_CLAIM;
   }
@@ -868,6 +882,10 @@ export class Claim {
 
   hasClaimTakenOffline() {
     return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && !!this.takenOfflineDate;
+  }
+
+  hasClaimBeenDismissed() {
+    return this.ccdState === CaseState.CASE_DISMISSED;
   }
 
   hasMediationSuccessful() {

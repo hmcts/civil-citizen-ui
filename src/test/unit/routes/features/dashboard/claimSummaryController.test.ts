@@ -21,6 +21,15 @@ import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/l
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {Dashboard} from 'models/dashboard/dashboard';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import { Claim } from 'common/models/claim';
+import { ApplicationResponse } from 'common/models/generalApplication/applicationResponse';
+import { CivilServiceClient } from 'client/civilServiceClient';
+import { GaServiceClient } from 'client/gaServiceClient';
+import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
+import { APPLICATION_TYPE_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL } from 'routes/urls';
+import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
+import { getContactCourtLink } from 'services/dashboard/dashboardService';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -32,6 +41,7 @@ const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.
 const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest.Mock;
 const isCUIReleaseTwoEnabledMock = launchDarklyClient.isCUIReleaseTwoEnabled as jest.Mock;
 const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
+const isGAForLiPEnabledMock = launchDarklyClient.isGaForLipsEnabled as jest.Mock;
 const mockExpectedDashboardInfo=
   [{
     'categoryEn': 'Hearing',
@@ -111,6 +121,7 @@ jest.mock('../../../../../main/app/auth/user/oidc', () => ({
   getUserDetails: jest.fn(() => USER_DETAILS),
 }));
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('services/features/dashboard/claimSummary/latestUpdateService');
 jest.mock('services/features/dashboard/claimSummaryService');
@@ -124,6 +135,7 @@ jest.mock('services/dashboard/dashboardService', () => ({
   getHelpSupportTitle: jest.fn(),
   getHelpSupportLinks: jest.fn(),
   extractOrderDocumentIdFromNotification : jest.fn(),
+  getContactCourtLink: jest.fn(()=> ({text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT')})),
 }));
 
 export const USER_DETAILS = {
@@ -409,6 +421,7 @@ describe('Claim Summary Controller Defendant', () => {
       isDashboardEnabledForCase.mockResolvedValue(true);
       isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
       isCarmEnabledForCaseMock.mockResolvedValue(true);
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
       //when
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
@@ -437,6 +450,7 @@ describe('Claim Summary Controller Defendant', () => {
       isDashboardEnabledForCase.mockResolvedValue(true);
       isCarmApplicableAndSmallClaimMock.mockReturnValue(true);
       isCarmEnabledForCaseMock.mockResolvedValue(true);
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
       //when
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
@@ -472,6 +486,7 @@ describe('Claim Summary Controller Defendant', () => {
       isDashboardEnabledForCase.mockResolvedValue(true);
       isCaseProgressionV1EnableMock.mockResolvedValue(true);
       getLatestUpdateContentMock.mockReturnValue([]);
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
       //when
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + claimId)
@@ -485,6 +500,90 @@ describe('Claim Summary Controller Defendant', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Contact the court to request a change to my case (make an application)');
+        });
+    });
+
+    it('should show \'want to\' link with linking to general application when general application is enabled', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.ccdState = CaseState.CASE_ISSUED;
+      const applicationResponse: ApplicationResponse = {
+        case_data: {
+          applicationTypes: undefined,
+          generalAppType: undefined,
+          generalAppRespondentAgreement: undefined,
+          generalAppInformOtherParty: {
+            isWithNotice: YesNoUpperCamelCase.NO,
+            reasonsForWithoutNotice: 'Reason without notice',
+          },
+          generalAppAskForCosts: undefined,
+          generalAppDetailsOfOrder: undefined,
+          generalAppReasonsOfOrder: undefined,
+          generalAppEvidenceDocument: undefined,
+          gaAddlDoc: undefined,
+          generalAppHearingDetails: undefined,
+          generalAppStatementOfTruth: undefined,
+          generalAppPBADetails: undefined,
+          applicationFeeAmountInPence: undefined,
+          parentClaimantIsApplicant: YesNoUpperCamelCase.NO,
+          judicialDecision: undefined,
+        },
+        created_date: '',
+        id: '123456',
+        last_modified: '',
+        state: undefined,
+      };
+
+      const applicationResponses : ApplicationResponse[] = [applicationResponse];
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+      jest
+        .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
+        .mockResolvedValueOnce(applicationResponses);
+      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
+      isGAForLiPEnabledMock.mockResolvedValue(true);
+      isDashboardEnabledForCase.mockResolvedValue(true);
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+      
+      const getContactCourtLinkMock = getContactCourtLink as jest.Mock;
+      getContactCourtLinkMock.mockImplementation(() => {
+        return {
+          text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'),
+          url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
+        };
+      });
+      await testSession.get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
+          expect(res.text).toContain(constructResponseUrlWithIdParams(`${claimId}`, APPLICATION_TYPE_URL));
+          expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS'));
+          expect(res.text).toContain(constructResponseUrlWithIdParams(`${claimId}`, GA_APPLICATION_RESPONSE_SUMMARY_URL));
+        });
+    });
+
+    it('should not show view all application link when general application is enabled but there is no application', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.ccdState = CaseState.CASE_ISSUED;
+      const applicationResponses : ApplicationResponse[] = [];
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+      jest
+        .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
+        .mockResolvedValueOnce(applicationResponses);
+      isCUIReleaseTwoEnabledMock.mockResolvedValue(true);
+      isGAForLiPEnabledMock.mockResolvedValue(true);
+      isDashboardEnabledForCase.mockResolvedValue(true);
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+
+      await testSession.get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS'));
+          expect(res.text).not.toContain(constructResponseUrlWithIdParams(`${claimId}`, GA_APPLICATION_RESPONSE_SUMMARY_URL));
         });
     });
   });

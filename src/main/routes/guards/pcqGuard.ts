@@ -11,7 +11,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {NextFunction, Request, Response} from 'express';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
-import {savePcqIdClaim} from 'client/pcq/savePcqIdClaim';
+import {savePcqId} from 'client/pcq/savePcqIdClaim';
 import {AppRequest} from 'common/models/AppRequest';
 
 const ACTOR = 'respondent';
@@ -36,7 +36,7 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
 
     if (isHealthy && isElegible) {
       const pcqId = generatePcqId();
-      await savePcqIdClaim(pcqId, redisKey);
+      await savePcqId(pcqId,req, claimId);
 
       const pcqUrl = generatePcqUrl(
         pcqId,

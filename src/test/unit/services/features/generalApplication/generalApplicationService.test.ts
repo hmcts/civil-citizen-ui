@@ -1,15 +1,20 @@
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import { Claim } from 'models/claim';
+import {Claim} from 'models/claim';
 import {
+  deleteGAFromClaimsByUserId,
+  getApplicationIndex,
   getApplicationStatus,
   getByIndex,
   getByIndexOrLast,
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
+  getViewApplicationUrl,
   saveAcceptDefendantOffer,
+  saveAdditionalText,
   saveAgreementFromOtherParty,
+  saveAndTriggerNotifyGaHwfEvent,
   saveApplicationCosts,
-  saveApplicationType,
+  saveApplicationType, saveApplicationTypesToGaResponse,
   saveHearingArrangement,
   saveHearingContactDetails,
   saveHearingSupport,
@@ -17,53 +22,64 @@ import {
   saveRequestingReason,
   saveRespondentAgreement,
   saveRespondentWantToUploadDoc,
-  saveUnavailableDates,
+  saveUnavailableDates, saveWrittenRepText,
   shouldDisplaySyncWarning,
   updateByIndexOrAppend,
   validateAdditionalApplicationtType,
 } from 'services/features/generalApplication/generalApplicationService';
+import * as gaResponseDraftService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {
   ApplicationType,
   ApplicationTypeOption,
 } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../utils/errorMessageTestConstants';
-import { YesNo } from 'common/form/models/yesNo';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { CaseRole } from 'common/form/models/caseRoles';
-import {
-  DASHBOARD_CLAIMANT_URL,
-  DEFENDANT_SUMMARY_URL,
-  OLD_DASHBOARD_CLAIMANT_URL,
-} from 'routes/urls';
-import {
-  HearingSupport,
-  SupportType,
-} from 'models/generalApplication/hearingSupport';
 import { RequestingReason } from 'models/generalApplication/requestingReason';
-import {
-  HearingArrangement,
-  HearingTypeOptions,
-} from 'models/generalApplication/hearingArrangement';
-import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
-import { UnavailableDatesGaHearing } from 'models/generalApplication/unavailableDatesGaHearing';
-import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { ValidationError } from 'class-validator';
-import { ApplyHelpFeesReferenceForm } from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
-import { GaHelpWithFees } from 'models/generalApplication/gaHelpWithFees';
-import { AcceptDefendantOffer } from 'common/models/generalApplication/response/acceptDefendantOffer';
-import { isCUIReleaseTwoEnabled } from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {
-  ApplicationState,
-  ApplicationStatus,
-} from 'common/models/generalApplication/applicationSummary';
 import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
+import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
+import {CANCEL_URL} from 'routes/urls';
+import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
+import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
+import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
+import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
+import {RespondentAgreement} from 'common/models/generalApplication/response/respondentAgreement';
+import {ValidationError} from 'class-validator';
+import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee/applyHelpFeesReferenceForm';
+import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
+import {AcceptDefendantOffer} from 'common/models/generalApplication/response/acceptDefendantOffer';
+import {isCUIReleaseTwoEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {ApplicationState, ApplicationStatus} from 'common/models/generalApplication/applicationSummary';
+import {
+  triggerNotifyHwfEvent,
+} from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
+import {GaServiceClient} from 'client/gaServiceClient';
+import {CCDGaHelpWithFees} from 'models/gaEvents/eventDto';
+import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
+import {CCDHelpWithFees} from 'form/models/claimDetails';
+import {AppRequest} from 'models/AppRequest';
+import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
+import {
+  getDraftGARespondentResponse,
+  saveDraftGARespondentResponse,
+} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  saveDraftGARespondentResponse: jest.fn(),
+  getDraftGARespondentResponse: jest.fn(),
+}));
+jest.mock('../../../../../main/modules/draft-store/gaHwFeesDraftStore', () => ({
+  saveDraftGAHWFDetails: jest.fn(),
+  getDraftGAHWFDetails: jest.fn(),
+}));
+jest.mock('../../../../../main/app/client/civilServiceClient');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-
+const mockGetGaHwFDetails = getDraftGAHWFDetails as jest.Mock;
 describe('General Application service', () => {
   describe('Save application type', () => {
     it('should save application type successfully', async () => {
@@ -74,7 +90,7 @@ describe('General Application service', () => {
       });
       const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await saveApplicationType('123', new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+      await saveApplicationType('123', new Claim(), new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
       //Then
       expect(spy).toBeCalled();
     });
@@ -89,7 +105,7 @@ describe('General Application service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveApplicationType('123', new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveApplicationType('123', new Claim(), new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING))).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
@@ -246,7 +262,7 @@ describe('General Application service', () => {
       //When
       const cancelUrl = await getCancelUrl('123', claim);
       //Then
-      expect(cancelUrl).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id', '123'));
+      expect(cancelUrl).toEqual(CANCEL_URL.replace(':id', '123').replace(':propertyName', 'generalApplication'));
     });
 
     it('should return claimant old dashboard url when user is claimant and dashboard feature flag is disabled', async () => {
@@ -261,7 +277,7 @@ describe('General Application service', () => {
       //When
       const cancelUrl = await getCancelUrl('123', claim);
       //Then
-      expect(cancelUrl).toEqual(OLD_DASHBOARD_CLAIMANT_URL.replace(':id', '123'));
+      expect(cancelUrl).toEqual(CANCEL_URL.replace(':id', '123').replace(':propertyName', 'generalApplication'));
     });
 
     it('should return defendant dashboard url when user is defendent', async () => {
@@ -276,7 +292,7 @@ describe('General Application service', () => {
       //When
       const cancelUrl = await getCancelUrl('123', claim);
       //Then
-      expect(cancelUrl).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '123'));
+      expect(cancelUrl).toEqual(CANCEL_URL.replace(':id', '123').replace(':propertyName', 'generalApplication'));
     });
   });
 
@@ -445,54 +461,40 @@ describe('General Application service', () => {
 
   describe('Save respondent agreement', () => {
     it('saves respondent agreement when no general agreement stored', async () => {
-      mockGetCaseData.mockResolvedValue(new Claim());
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
-
+      jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+      const spy = jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse');
       const respondentAgreement = new RespondentAgreement(YesNo.YES);
 
       await saveRespondentAgreement('123', respondentAgreement);
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-      claim.generalApplication.response = { respondentAgreement };
-      await expect(spy).toBeCalledWith('123', claim);
+      const gaResponse = new GaResponse();
+      gaResponse.respondentAgreement = respondentAgreement;
+      await expect(spy).toBeCalledWith('123', gaResponse);
     });
 
     it('saves respondent agreement when no response stored', async () => {
       // Given
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
-      mockGetCaseData.mockResolvedValue(claim);
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+      const spy = jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse');
       const respondentAgreement = new RespondentAgreement(YesNo.YES);
       // When
       await saveRespondentAgreement('123', respondentAgreement);
-
       // Then
-      claim.generalApplication.response = { respondentAgreement };
-      await expect(spy).toBeCalledWith('123', claim);
+      const gaResponse = new GaResponse();
+      gaResponse.respondentAgreement = respondentAgreement;
+      await expect(spy).toBeCalledWith('123', gaResponse);
     });
 
     it('overwrites respondent agreement', async () => {
       // Given
-      const claim = new Claim();
-      const generalApplication = new GeneralApplication();
-      generalApplication.response = { respondentAgreement: new RespondentAgreement(YesNo.YES) };
-      claim.generalApplication = generalApplication;
-      mockGetCaseData.mockResolvedValue(claim);
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      const gaResponse = { respondentAgreement: new RespondentAgreement(YesNo.YES) };
+      jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
+      const spy = jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse');
       // When
       const respondentAgreement = new RespondentAgreement(YesNo.NO, 'reason for disagreement');
       await saveRespondentAgreement('123', respondentAgreement);
-
       // Then
-      claim.generalApplication.response = { respondentAgreement };
-      await expect(spy).toBeCalledWith('123', claim);
+      const expectGAResponse = { respondentAgreement };
+      await expect(spy).toBeCalledWith('123', expectGAResponse);
     });
   });
 
@@ -521,58 +523,75 @@ describe('General Application service', () => {
 
   describe('Save help with application fee details', () => {
     it('should save help with application fee selection', async () => {
-      const  claim = new Claim();
+      const gaHwfFees = new GaHelpWithFees();
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.helpWithFees = new GaHelpWithFees();
-        claim.generalApplication.helpWithFees.applyHelpWithFees = YesNo.YES;
-        return claim;
+      mockGetGaHwFDetails.mockImplementation(async () => {
+
+        gaHwfFees.applyHelpWithFees = {option: YesNo.YES};
+        return gaHwfFees;
       });
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+
+      const mockSaveGAHwFDetails = saveDraftGAHWFDetails as jest.Mock;
       //When
       await saveHelpWithFeesDetails('123', YesNo.YES, 'applyHelpWithFees');
       //Then
-      await expect(spy).toBeCalledWith('123', claim);
+      expect(mockSaveGAHwFDetails).toBeCalledWith('123', gaHwfFees);
+    });
+
+    it('should save help with hwf application fee selection', async () => {
+      const gaHwfFees = new GaHelpWithFees();
+      const ccdClaim = new Claim();
+      ccdClaim.generalApplications = [
+        {
+          'id': 'test',
+          'value': {
+            'caseLink': {
+              'CaseReference': 'testApp1',
+            },
+          },
+        },
+      ];
+      //Given
+      mockGetGaHwFDetails.mockImplementation(async () => {
+
+        gaHwfFees.applyHelpWithFees = {option: YesNo.YES};
+        return gaHwfFees;
+      });
+      const spyOnGA = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
+      //When
+      await saveAndTriggerNotifyGaHwfEvent({params: {appId: '12334'}} as unknown as AppRequest, new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-A1B-36C'));
+      expect(spyOnGA).toHaveBeenCalled();
     });
 
     it('should save help with application fee continue selection', async () => {
-      const  claim = new Claim();
+      const gaHwfFees = new GaHelpWithFees();
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.helpWithFees = new GaHelpWithFees();
-        claim.generalApplication.helpWithFees.helpWithFeesRequested = YesNo.YES;
-        return claim;
+      mockGetGaHwFDetails.mockImplementation(async () => {
+
+        gaHwfFees.helpWithFeesRequested = YesNo.YES;
+        return gaHwfFees;
       });
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      const mockSaveGAHwFDetails = saveDraftGAHWFDetails as jest.Mock;
       //When
       await saveHelpWithFeesDetails('123', YesNo.YES, 'helpWithFeesRequested');
       //Then
-      await expect(spy).toBeCalledWith('123', claim);
+      expect(mockSaveGAHwFDetails).toBeCalledWith('123', gaHwfFees);
     });
 
     it('should save help with application fee reference number', async () => {
-      const  claim = new Claim();
+      const gaHwfFees = new GaHelpWithFees();
       const hwfReferenceNumberForm = new ApplyHelpFeesReferenceForm(YesNo.YES, 'HWF-123-86D');
       //Given
-      mockGetCaseData.mockImplementation(async () => {
-        claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.helpWithFees = new GaHelpWithFees();
-        claim.generalApplication.helpWithFees.helpFeeReferenceNumberForm = hwfReferenceNumberForm;
-        return claim;
+      mockGetGaHwFDetails.mockImplementation(async () => {
+
+        gaHwfFees.helpFeeReferenceNumberForm = hwfReferenceNumberForm;
+        return gaHwfFees;
       });
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      const mockSaveGAHwFDetails = saveDraftGAHWFDetails as jest.Mock;
       //When
-      await saveHelpWithFeesDetails('123', hwfReferenceNumberForm, 'helpFeeReferenceNumber');
+      await saveHelpWithFeesDetails('123', hwfReferenceNumberForm, 'helpFeeReferenceNumberForm');
       //Then
-      await expect(spy).toBeCalledWith('123', claim);
+      expect(mockSaveGAHwFDetails).toBeCalledWith('123', gaHwfFees);
     });
   });
 
@@ -593,6 +612,14 @@ describe('General Application service', () => {
       //Then
       expect(status).toBe(ApplicationStatus.IN_PROGRESS);
     });
+    it('should return IN_PROGRESS when LISTING_FOR_A_HEARING', () => {
+      //Given
+      const applicationState = ApplicationState.LISTING_FOR_A_HEARING;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.IN_PROGRESS);
+    });
     it('should return TO_DO when AWAITING_APPLICATION_PAYMENT', () => {
       //Given
       const applicationState = ApplicationState.AWAITING_APPLICATION_PAYMENT;
@@ -601,61 +628,174 @@ describe('General Application service', () => {
       //Then
       expect(status).toBe(ApplicationStatus.TO_DO);
     });
+    it('should return TO_DO when AWAITING_APPLICATION_PAYMENT', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_APPLICATION_PAYMENT;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return TO_DO when HEARING_SCHEDULED', () => {
+      //Given
+      const applicationState = ApplicationState.HEARING_SCHEDULED;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return TO_DO when AWAITING_WRITTEN_REPRESENTATIONS', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_WRITTEN_REPRESENTATIONS;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return TO_DO when AWAITING_ADDITIONAL_INFORMATION', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_ADDITIONAL_INFORMATION;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return TO_DO when AWAITING_DIRECTIONS_ORDER_DOCS', () => {
+      //Given
+      const applicationState = ApplicationState.AWAITING_DIRECTIONS_ORDER_DOCS;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return TO_DO when APPLICATION_ADD_PAYMENT', () => {
+      //Given
+      const applicationState = ApplicationState.APPLICATION_ADD_PAYMENT;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.TO_DO);
+    });
+    it('should return COMPLETE when ORDER_MADE', () => {
+      //Given
+      const applicationState = ApplicationState.ORDER_MADE;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.COMPLETE);
+    });
+    it('should return COMPLETE when APPLICATION_DISMISSED', () => {
+      //Given
+      const applicationState = ApplicationState.APPLICATION_DISMISSED;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.COMPLETE);
+    });
+    it('should return COMPLETE when APPLICATION_CLOSED', () => {
+      //Given
+      const applicationState = ApplicationState.APPLICATION_CLOSED;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.COMPLETE);
+    });
+    it('should return COMPLETE when PROCEEDS_IN_HERITAGE', () => {
+      //Given
+      const applicationState = ApplicationState.PROCEEDS_IN_HERITAGE;
+      //When
+      const status = getApplicationStatus(applicationState);
+      //Then
+      expect(status).toBe(ApplicationStatus.COMPLETE);
+    });
+  });
+});
+
+describe('Save Additional Text and Option', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  it('should save GARespondentResponse successfully', async () => {
+    //Given
+    jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+    const spy = jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse');
+    const uploadFile = YesNo.YES;
+    const input = 'More info';
+    //When
+    await saveAdditionalText('123', input, uploadFile);
+    //Then
+    expect(spy).toBeCalled();
+  });
+});
+
+describe('Save WrittenRep Text and Option', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+  it('should save GARespondentResponse successfully', async () => {
+    //Given
+    jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+    const spy = jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse');
+    const uploadFile = YesNo.YES;
+    const input = 'WrittenRep Text';
+    //When
+    await saveWrittenRepText('123', input, uploadFile);
+    //Then
+    expect(spy).toBeCalled();
   });
 });
 
 describe('Save Accept defendant offer', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
   it('should save acceptDefendantOffer successfully', async () => {
     //Given
-    // mockGetCaseData.mockResolvedValue(new Claim());
-    mockGetCaseData.mockImplementation(async () => {
-      return new Claim();
-    });
+    jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+    const spy = jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse');
     const acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES);
-
-    const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
     //When
     await saveAcceptDefendantOffer('123', acceptDefendantOffer);
     //Then
     expect(spy).toBeCalled();
   });
-  it('should throw error when draft store throws error', async () => {
-    //Given
-    mockGetCaseData.mockImplementation(async () => {
-      return new Claim();
+
+  describe('should save application type details on Ga Response', () => {
+    it('should call Save and Notify event', async () => {
+      const mockGetDraft = getDraftGARespondentResponse as jest.Mock;
+      const mockSaveDraft = saveDraftGARespondentResponse as jest.Mock;
+      mockGetDraft.mockResolvedValue(new GaResponse());
+      await saveApplicationTypesToGaResponse(true, '12345', [ApplicationTypeOption.STAY_THE_CLAIM], {
+        generalAppUrgency: YesNoUpperCamelCase.YES,
+        reasonsForUrgency: '',
+        urgentAppConsiderationDate: '2025-10-10',
+      });
+      expect(mockSaveDraft).toHaveBeenCalled();
     });
-    const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-    const acceptDefendantOffer = new AcceptDefendantOffer(YesNo.YES);
-    //When
-    mockSaveClaim.mockImplementation(async () => {
-      throw new Error(TestMessages.REDIS_FAILURE);
-    });
-    //Then
-    await expect(saveAcceptDefendantOffer('123', acceptDefendantOffer)).rejects.toThrow(TestMessages.REDIS_FAILURE);
   });
 
   describe('Save Respondent support to upload document', () => {
-    const claim = new Claim();
-    claim.generalApplication = new GeneralApplication();
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
     it('should save respondent support to upload document', async () => {
       //Given
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
+      jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
+      const spy = jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse');
       //When
-      await saveRespondentWantToUploadDoc('123',claim, YesNo.NO);
+      await saveRespondentWantToUploadDoc('123', YesNo.NO);
       //Then
       expect(spy).toBeCalled();
     });
     it('should throw error when draft store throws error', async () => {
       //Given
-      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      jest.spyOn(gaResponseDraftService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
       //When
-      mockSaveClaim.mockImplementation(async () => {
+      jest.spyOn(gaResponseDraftService, 'saveDraftGARespondentResponse').mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveRespondentWantToUploadDoc('123',claim, YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveRespondentWantToUploadDoc('123', YesNo.NO)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
@@ -690,6 +830,7 @@ describe('Should display sync warning', () => {
         },
         applicationFeeAmountInPence: undefined,
         parentClaimantIsApplicant: undefined,
+        judicialDecision: undefined,
       },
       created_date: '',
       id: '',
@@ -756,5 +897,263 @@ describe('Should display sync warning', () => {
     //Then
     expect(result).toEqual(true);
   });
+
+  it('should not display if no GA response', async () => {
+    //Given
+    applicationResponse = undefined;
+    //When
+    const result = shouldDisplaySyncWarning(applicationResponse);
+    //Then
+    expect(result).toEqual(false);
+  });
+
+  it('should trigger Event NotifyHelpWithFee', async () => {
+    const mockClaimId = '123456';
+    const spyTriggerEvent = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
+    const helpWithFeeInfo:CCDHelpWithFees = {helpWithFee: YesNoUpperCamelCase.YES, helpWithFeesReferenceNumber: 'HWF-123-86D'};
+    const gaHwf:CCDGaHelpWithFees =  {generalAppHelpWithFees: helpWithFeeInfo};
+    //When
+    await triggerNotifyHwfEvent(mockClaimId, gaHwf, undefined);
+    //Then
+    expect(spyTriggerEvent).toHaveBeenCalled();
+    expect(spyTriggerEvent).toHaveBeenCalledWith(ApplicationEvent.NOTIFY_HELP_WITH_FEE, mockClaimId, gaHwf, undefined);
+  });
+
+  it('should call Save and Notify event', async () => {
+    const mockClaimId = '123456';
+    const spyTriggerEvent = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
+    const helpWithFeeInfo:CCDHelpWithFees = {helpWithFee: YesNoUpperCamelCase.YES, helpWithFeesReferenceNumber: 'HWF-123-86D'};
+    const gaHwf:CCDGaHelpWithFees =  {generalAppHelpWithFees: helpWithFeeInfo};
+    //When
+    await triggerNotifyHwfEvent(mockClaimId, gaHwf, undefined);
+    //Then
+    expect(spyTriggerEvent).toHaveBeenCalled();
+    expect(spyTriggerEvent).toHaveBeenCalledWith(ApplicationEvent.NOTIFY_HELP_WITH_FEE, mockClaimId, gaHwf, undefined);
+
+    //Given
+    applicationResponse.case_data.generalAppPBADetails.additionalPaymentServiceRef = 'ref';
+    applicationResponse.state = ApplicationState.APPLICATION_ADD_PAYMENT;
+    //When
+    const result = shouldDisplaySyncWarning(applicationResponse);
+    //Then
+    expect(result).toEqual(true);
+  });
 });
 
+describe('Should get the application index', () => {
+  it('should return index', async () => {
+    const applicationResponse: ApplicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: undefined,
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '1234',
+      last_modified: '',
+      state: undefined,
+    };
+
+    jest
+      .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
+      .mockResolvedValue([applicationResponse]);
+    //When
+    const result = await getApplicationIndex('123', '1234', undefined);
+    //Then
+    expect(result).toEqual(0);
+  });
+
+  it('should return undefine', async () => {
+    const applicationResponse: ApplicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: undefined,
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: undefined,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '',
+      last_modified: '',
+      state: undefined,
+    };
+
+    jest
+      .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
+      .mockResolvedValue([applicationResponse]);
+    //When
+    const result = await getApplicationIndex('123', '1234', undefined);
+    //Then
+    expect(result).toEqual(-1);
+  });
+
+  describe('deleteGAFromClaimsByUserId', () => {
+    it('should delete GAs by user id', async () => {
+      //Given
+      const mockSaveClaim = draftStoreService.findClaimIdsbyUserId as jest.Mock;
+      mockSaveClaim.mockImplementation(async () => {
+        return ['123', '234'];
+      });
+      const spy = jest.spyOn(draftStoreService, 'deleteFieldDraftClaimFromStore').mockImplementation();
+      //When
+      await deleteGAFromClaimsByUserId('123');
+      //Then
+      expect(spy).toBeCalledTimes(2);
+    });
+  });
+
+  it('should return applicant view Application url when claimant is applicant and cliamant is viewing', async () => {
+    const applicationResponse: ApplicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: undefined,
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: YesNoUpperCamelCase.YES,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '123456',
+      last_modified: '',
+      state: undefined,
+    };
+    const claim = new Claim();
+    claim.caseRole = CaseRole.CLAIMANT;
+
+    //When
+    const result = await getViewApplicationUrl('123', claim, applicationResponse, 1);
+    //Then
+    expect(result).toEqual('/case/123/general-application/123456/view-application?index=2');
+  });
+
+  it('should return respondent view Application url when claimant is applicant and respondent is viewing', async () => {
+    const applicationResponse: ApplicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: undefined,
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: YesNoUpperCamelCase.YES,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '123456',
+      last_modified: '',
+      state: undefined,
+    };
+    const claim = new Claim();
+    claim.caseRole = CaseRole.DEFENDANT;
+
+    //When
+    const result = await getViewApplicationUrl('123', claim, applicationResponse, 1);
+    //Then
+    expect(result).toEqual('/case/123/response/general-application/123456/view-application?index=2');
+  });
+
+  it('should return respondent view Application url when respondent is applicant and claimant is viewing', async () => {
+    const applicationResponse: ApplicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: undefined,
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: YesNoUpperCamelCase.NO,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '123456',
+      last_modified: '',
+      state: undefined,
+    };
+    const claim = new Claim();
+    claim.caseRole = CaseRole.CLAIMANT;
+
+    //When
+    const result = await getViewApplicationUrl('123', claim, applicationResponse, 1);
+    //Then
+    expect(result).toEqual('/case/123/response/general-application/123456/view-application?index=2');
+  });
+
+  it('should return respondent view Application url when respondent is applicant and respondent is viewing', async () => {
+    const applicationResponse: ApplicationResponse = {
+      case_data: {
+        applicationTypes: undefined,
+        generalAppType: undefined,
+        generalAppRespondentAgreement: undefined,
+        generalAppInformOtherParty: undefined,
+        generalAppAskForCosts: undefined,
+        generalAppDetailsOfOrder: undefined,
+        generalAppReasonsOfOrder: undefined,
+        generalAppEvidenceDocument: undefined,
+        gaAddlDoc: undefined,
+        generalAppHearingDetails: undefined,
+        generalAppStatementOfTruth: undefined,
+        generalAppPBADetails: undefined,
+        applicationFeeAmountInPence: undefined,
+        parentClaimantIsApplicant: YesNoUpperCamelCase.NO,
+        judicialDecision: undefined,
+      },
+      created_date: '',
+      id: '123456',
+      last_modified: '',
+      state: undefined,
+    };
+    const claim = new Claim();
+    claim.caseRole = CaseRole.DEFENDANT;
+
+    //When
+    const result = await getViewApplicationUrl('123', claim, applicationResponse, 1);
+    //Then
+    expect(result).toEqual('/case/123/general-application/123456/view-application?index=2');
+  });
+
+});

@@ -38,6 +38,7 @@ module.exports = {
     waTaskMgmtApi: process.env.WA_TASK_MGMT_URL || 'http://wa-task-management-api-demo.service.core-compute-demo.internal',
     generalApplication: process.env.CIVIL_GENERAL_APPLICATIONS_URL || 'http://civil-general-applications-demo.service.core-compute-demo.internal',
     caseAssignmentService: process.env.AAC_API_URL || 'http://aac-manage-case-assignment-demo.service.core-compute-demo.internal',
+    wiremockServiceE2e: 'http://localhost:1111',
   },
   getDomain: (url) => new URL(url).host,
   s2s: {
@@ -88,7 +89,14 @@ module.exports = {
   },
   judgeUserWithRegionId1: {
     password: judgeDefaultPassword,
-    email: '4917924EMP-@ejudiciary.net',
+    email: 'DJ.Amy.Powell@ejudiciary.net',
+    type: 'judge',
+    roleCategory: 'JUDICIAL',
+    regionId: '1',
+  },
+  judgeUserWithRegionId2: {
+    password: judgeDefaultPassword,
+    email: 'DJ.Angel.Morgan@ejudiciary.net',
     type: 'judge',
     roleCategory: 'JUDICIAL',
     regionId: '1',
@@ -102,6 +110,13 @@ module.exports = {
   },
   hearingCenterAdminWithRegionId1: {
     email: 'hearing_center_admin_reg1@justice.gov.uk',
+    password: defaultPassword,
+    type: 'hearing-center-admin',
+    roleCategory: 'ADMIN',
+    regionId: '1',
+  },
+  hearingCenterAdminWithRegionId2: {
+    email: 'hearing_center_admin_reg2@justice.gov.uk',
     password: defaultPassword,
     type: 'hearing-center-admin',
     roleCategory: 'ADMIN',
