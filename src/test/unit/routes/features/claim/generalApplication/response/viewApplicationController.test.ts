@@ -5,31 +5,25 @@ import {GA_RESPONSE_VIEW_APPLICATION_URL} from 'routes/urls';
 import {t} from 'i18next';
 import {GaServiceClient} from 'client/gaServiceClient';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {
-  getApplicantDocuments,
-  getApplicationSections,
-  getCourtDocuments,
-  getRequestWrittenRepresentations,
-  getRespondentDocuments,
-} from 'services/features/generalApplication/viewApplication/viewApplicationService';
+import {getApplicantDocuments, getResponseFromCourtSection, getApplicationSections, getCourtDocuments, getRespondentDocuments} from 'services/features/generalApplication/viewApplication/viewApplicationService';
 import mockApplication from '../../../../../../utils/mocks/applicationMock.json';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {app} from '../../../../../../../main/app';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
-import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
+import { SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
+import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalApplication/CourtResponseSummary';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
 jest.mock('../../../../../../../main/app/client/gaServiceClient');
-
+jest.mock('../../../../../../../main/services/features/generalApplication/response/viewApplicationService', () => ({isRespondentAllowedToRespond: jest.fn().mockReturnValue(false)}));
 const mockedSummaryRows = getApplicationSections as jest.Mock;
 const mockRespondentDocs = getRespondentDocuments as jest.Mock;
 const mockApplicantDocs = getApplicantDocuments as jest.Mock;
 const mockCourtDocs = getCourtDocuments as jest.Mock;
-const mockWrittenReps = getRequestWrittenRepresentations as jest.Mock;
+const mockResponseFromCourt = getResponseFromCourtSection as jest.Mock;
 
 describe('General Application - View application', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -55,12 +49,21 @@ describe('General Application - View application', () => {
 
   describe('on GET', () => {
     it('should return Application view page', async () => {
-      mockedSummaryRows.mockImplementation(() => []);
+      mockedSummaryRows.mockResolvedValue({summaryRows: [
+        {
+          key: {text: 'Application type and description'},
+          value: {
+            html: 'More time to do what is required by a court order.',
+          },
+        },
+      ]},
+      );
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams('123','1718105701451856',GA_RESPONSE_VIEW_APPLICATION_URL))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
+          expect(res.text).toContain('Application type and description');
         });
     });
 
@@ -185,14 +188,28 @@ describe('General Application - View application', () => {
         });
     });
 
-    it('should return View application page with request written representation', async () => {
+    it('should return response from court section', async () => {
+      mockResponseFromCourt.mockImplementation(() => {
+        const judgeDirectionRows : SummaryRow[] = [];
+        const responseFromCourt : CourtResponseSummaryList[] = [];
+        const hearingNoticeRows : SummaryRow[] = [];
+        const judgeDirections = new CourtResponseSummaryList(judgeDirectionRows, new Date(),new ResponseButton('Judge Direction', ''));
 
-      mockWrittenReps.mockImplementation(() => {
-        const rows: SummaryRow[] = [];
-        rows.push(summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), formatDateToFullDate(new Date())));
-        rows.push(summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.REQUEST_WRITTEN_REPRESENTATION')));
-        rows.push(summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), 'test'));
-        return rows;
+        judgeDirectionRows.push(
+          summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '1 Aug 2024'),
+          summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Judge has made order'),
+          summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Judge Order</a>'));
+
+        const hearingNotices = new CourtResponseSummaryList(hearingNoticeRows);
+        hearingNoticeRows.push(
+          summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '2 Aug 2024'),
+          summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Hearing Notice has been generated'),
+          summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Hearing Notice</a>'));
+
+        responseFromCourt.push(judgeDirections);
+        responseFromCourt.push(hearingNotices);
+
+        return Promise.resolve(responseFromCourt);
       });
 
       await request(app)
@@ -200,9 +217,16 @@ describe('General Application - View application', () => {
         .query({index: '1'})
         .expect((res) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT'));
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'));
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'));
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'));
+          expect(res.text).toContain('Judge has made order');
+          expect(res.text).toContain('1 Aug 2024');
+          expect(res.text).toContain('<a href="#">Judge Order</a>');
+          expect(res.text).toContain('Hearing Notice has been generated');
+          expect(res.text).toContain('2 Aug 2024');
+          expect(res.text).toContain('<a href="#">Hearing Notice</a>');
         });
     });
 

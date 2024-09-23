@@ -93,17 +93,19 @@
   {{ createDocumentsTableWithoutTableCaption(courtDocRows) }}
 {% endset %}
 
-{% set requestWrittenRepresentationsHtml %}
+{% set responseFromCourtHtml %}
   <p class="govuk-body">{{t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.COURTS_RESPONSE')}}</p>
-
-  {{ govukSummaryList({
-    rows: requestWrittenRepresentations
-  }) }}
-
-  {{ govukButton({
-    text: 'Respond to the request',
-    href: requestWrittenRepresentationsUrl
-  }) }}
+  {% for item in responseFromCourt %}
+      {{ govukSummaryList({
+        rows: item.rows
+      }) }}
+      {% if item.responseButton %}
+        {{ govukButton({
+         text: item.responseButton.title,
+         href: item.responseButton.href
+        }) }}
+      {% endif %}
+  {% endfor %}
 {% endset %}
 
 {% block nestedContent %}
@@ -113,12 +115,6 @@
   <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.SUMMERY_MESSAGE3') }}</p>
 
 <div class="govuk-!-padding-top-5">
-  {% if isRequestWrittenRepresentations %}
-    {{ govukDetails({
-      summaryHtml: courtResponseHeaderHtml,
-      html: requestWrittenRepresentationsHtml
-    }) }}
-  {% endif %}
   <div class="govuk-section-break--s govuk-section-break--visible"></div>
   <div class="govuk-!-margin-bottom-9 summaryListBorderTop">
     <div class="govuk-form-group">
@@ -127,6 +123,13 @@
       }) }}
     </div>
   </div>
+      {% if responseFromCourt.length > 0 %}
+        {{ govukDetails({
+          summaryHtml: courtResponseHeaderHtml,
+          html: responseFromCourtHtml
+        }) }}
+      {% endif %}
+
       {% if (applicantDocuments.documents.length + courtDocuments.documents.length + respondentDocuments.documents.length) > 0 %}
         {{ govukDetails({
           summaryHtml: applicationDocuments,
@@ -134,10 +137,14 @@
         }) }}
       {% endif %}
 </div>
-
+{% if(isAllowedToRespond) %}
   {{ govukButton({
     text: t('COMMON.BUTTONS.RESPOND_TO_APPLICATION'),
     href: redirectUrl
   }) }}
-
+{% endif %}
+  {{ govukButton({
+      text: t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_DASHBOARD'),
+      href: dashboardUrl
+    }) }}
 {% endblock %}
