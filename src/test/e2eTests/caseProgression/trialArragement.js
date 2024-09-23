@@ -21,7 +21,7 @@ class TrialArragement {
 
     I.see('You should finalise your trial arrangements to ensure the court has the necessary information for the trial to proceed in a suitable way.', 'p.govuk-body');
 
-    I.see('Is the case ready for trial?', 'h3.govuk-heading-m');
+    I.see('Is the case ready for trial?', 'h2.govuk-heading-m');
     I.see('We are asking you to confirm the case is ready for the trial. This means you have taken all the action required of you in the', 'p.govuk-body');
     I.see('directions order', 'a.govuk-link');
     I.see('that you have received.', 'p.govuk-body');
