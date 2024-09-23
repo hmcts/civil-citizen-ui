@@ -30,7 +30,7 @@ class HelpWithFees {
     I.see('If your application for help with fees is rejected', 'span.govuk-body');
     I.see('You\'ll need to pay the full balance. You can make the card payment online, or by phone.', 'p.govuk-body');
 
-    I.see('Do you want to continue to apply for help with fees?', 'h3.govuk-heading-m');
+    I.see('Do you want to continue to apply for help with fees?', 'h2.govuk-heading-m');
 
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.YES}`);
 
