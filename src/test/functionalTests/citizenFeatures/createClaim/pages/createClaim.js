@@ -1,3 +1,4 @@
+const eligibilityCookie = require("../../../specClaimHelpers/fixtures/cookies/eligibilityCookies");
 const I = actor();
 
 const paths = {
@@ -748,6 +749,7 @@ class CreateClaim {
   }
 
   async checkAndSubmit(selectedHWF = false, claimantPartyType = 'Individual') {
+    I.setCookie(eligibilityCookie);
     await I.click('Check and submit your claim');
     I.waitForContent('a false statement in a document verified by a statement of truth without an honest belief in its truth', 60);
     if (!selectedHWF) {
