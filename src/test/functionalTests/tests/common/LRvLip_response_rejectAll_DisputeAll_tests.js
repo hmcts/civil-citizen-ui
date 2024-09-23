@@ -13,7 +13,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with RejectAll and DisputeAll @testing');
+Feature('Response with RejectAll and DisputeAll');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -29,7 +29,7 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario('Response with RejectAll and DisputeAll @citizenUI @rejectAll @nightly', async ({api, I}) => {
+Scenario('Response with RejectAll and DisputeAll - GA (Ask for more time) @citizenUI @rejectAll @nightly', async ({api, I}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     console.log('Creating GA app as claimant');
     await I.amOnPage('/dashboard');
