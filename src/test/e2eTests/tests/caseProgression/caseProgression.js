@@ -1,5 +1,5 @@
 const config = require('../../../config');
-//const CaseProgressionSteps = require('../../caseProgression/caseProgressionSteps');
+const CaseProgressionSteps = require('../../caseProgression/caseProgressionSteps');
 
 const {toggleFlag} = require('../../commons/toggleFlag');
 const HelpWithFees = require('../../caseProgression/helpWithFees');
@@ -7,7 +7,7 @@ const TrialArrangements = require('../../caseProgression/trialArragement');
 
 Feature('Case Progression journey').tag('@e2e');
 
-/*Scenario('upload documents', () => {
+Scenario('upload documents', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cui-case-progression', true);
     CaseProgressionSteps.start('0000000000000001');
@@ -17,7 +17,7 @@ Feature('Case Progression journey').tag('@e2e');
     toggleFlag('cui-case-progression', false);
   }
 });
-*/
+
 Scenario('help with fees', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     toggleFlag('cui-case-progression', true);
