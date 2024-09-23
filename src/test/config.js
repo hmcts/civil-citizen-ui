@@ -105,7 +105,7 @@ module.exports = {
   },
   judgeUserWithRegionId3: {
     password: judgeDefaultPassword,
-    email: 'DJ.Dennis.Perry@ejudiciary.net',
+    email: '4924221EMP-@ejudiciary.net',
     type: 'judge',
     roleCategory: 'JUDICIAL',
     regionId: '1',
