@@ -1,4 +1,4 @@
-const eligibilityCookie = require("../../../specClaimHelpers/fixtures/cookies/eligibilityCookies");
+const eligibilityCookie = require('../../../specClaimHelpers/fixtures/cookies/eligibilityCookies');
 const I = actor();
 
 const paths = {
