@@ -60,7 +60,7 @@ class TrialArragement {
     I.see('Case number: 0000 0000 0000 0003', 'p.govuk-body-l');
     I.see('Claim amount: £15,000', 'p.govuk-body-l');
 
-    I.see('Is the case ready for trial?', 'h3.govuk-heading-m');
+    I.see('Is the case ready for trial?', 'h2.govuk-heading-m');
     I.see('You are reminded that this information will be shared with all other parties', 'p.govuk-body');
 
     I.checkOption(`#${yesAndNoCheckBoxOptionValue.YES}`);
@@ -81,7 +81,7 @@ class TrialArragement {
     I.see('Case number: 0000 0000 0000 0003', 'p.govuk-body-l');
     I.see('Claim amount: £15,000', 'p.govuk-body-l');
 
-    I.see('Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?', 'h3.govuk-heading-m');
+    I.see('Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?', 'h2.govuk-heading-m');
     I.see('You can check your previous answers in the', 'p.govuk-body');
     I.see('directions questionnaire', 'a.govuk-link');
 
