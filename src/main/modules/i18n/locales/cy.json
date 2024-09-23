@@ -4594,6 +4594,14 @@
       "WHAT_NEXT": "Beth fydd yn digwydd nesaf",
       "NO_FURTHER": "Nid oes rhaid i chi gymryd unrhyw gamau pellach.",
       "CLOSE_AND_RETURN": "Cau a dychwelyd i fanylion yr achos"
+    },
+    "FINAL_DEFENDANT_PAYMENT_DATE": {
+      "CAPTION_HEADER_1": "Confirm you've paid a judgment debt",
+      "PAGE_TITLE": "Confirm you've paid judgment debt",
+      "TITLE": "When was the final payment?",
+      "PARAGRAPH_TEXT_1" : "We need to know this  to cancel the debt if you paid within one month or show",
+      "PARAGRAPH_TEXT_2" : "it as satisfied if you paid after one month.",
+      "FORM_HEADER_1" : "Enter the date of the final payment"
     }
   },
   "FOOTER": {
@@ -5055,6 +5063,7 @@
     "VALID_REAL_MONTH": "Rhaid i fis y dyddiad fod yn fis dilys",
     "VALID_REAL_YEAR": "Rhaid i flwyddyn y dyddiad fod yn flwyddyn ddilys",
     "VALID_DATE_NOT_FUTURE": "Rhaid i’r dyddiad y ddogfen fod heddiw neu yn y gorffennol",
+    "VALID_DATE_NOT_IN_THE_FUTURE": "Date of the final payment must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cyhoeddwyd y ddogfen neu’r dyddiad yr anfonwyd y neges",
     "VALID_DATE_WITNESS_SUMMARY": "Date summary was written is required",
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
@@ -5100,6 +5109,7 @@
         "EMPTY_OPTION_TEXT": "You need to tell us if you want to upload documents to support your response. Choose option: Yes or No.",
         "ERROR_INPUT": "You need to either enter the information requested in the box or select Yes to upload documents to support your response."
       }
-    }
+    },
+    "VALID_FINAL_DATE": "Enter a date when the final payment was made."
   }
 }
