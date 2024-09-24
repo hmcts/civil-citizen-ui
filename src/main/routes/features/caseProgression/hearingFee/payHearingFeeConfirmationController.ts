@@ -17,7 +17,6 @@ const getHearingFeeConfirmationContent = (claimId: string, lng: string) => {
   return new PageSectionBuilder()
     .addTitle('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.WHAT_HAPPENS_NEXT')
     .addParagraph('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.YOU_WILL_RECEIVE')
-    .addParagraph('COMMON.IF_NECESSARY_DOCUMENTS')
     .addButton(t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW', {lng}), constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)).build();
 };
 
