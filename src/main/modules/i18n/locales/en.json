@@ -3174,6 +3174,14 @@
         "UPLOAD_DOCUMENTS_1": "You can also ",
         "UPLOAD_DOCUMENTS_2": "upload additional documents",
         "UPLOAD_DOCUMENTS_3": " if you need to."
+      },
+      "FINAL_DEFENDANT_PAYMENT_DATE": {
+        "CAPTION_HEADER_1": "Confirm you've paid a judgment debt",
+        "PAGE_TITLE": "Confirm you've paid judgment debt",
+        "TITLE": "When was the final payment?",
+        "PARAGRAPH_TEXT_1" : "We need to know this  to cancel the debt if you paid within one month or show",
+        "PARAGRAPH_TEXT_2" : "it as satisfied if you paid after one month.",
+        "FORM_HEADER_1" : "Enter the date of the final payment"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -4595,14 +4603,6 @@
       "WHAT_NEXT": "What happens next",
       "NO_FURTHER": "There's no further action you need to take.",
       "CLOSE_AND_RETURN": "Close and return to case details"
-    },
-    "FINAL_DEFENDANT_PAYMENT_DATE": {
-      "CAPTION_HEADER_1": "Confirm you've paid a judgment debt",
-      "PAGE_TITLE": "Confirm you've paid judgment debt",
-      "TITLE": "When was the final payment?",
-      "PARAGRAPH_TEXT_1" : "We need to know this  to cancel the debt if you paid within one month or show",
-      "PARAGRAPH_TEXT_2" : "it as satisfied if you paid after one month.",
-      "FORM_HEADER_1" : "Enter the date of the final payment"
     }
   },
   "FOOTER":{

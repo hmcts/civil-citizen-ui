@@ -3,26 +3,28 @@ import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPa
 import {
   COSC_FINAL_PAYMENT_DATE_URL,
 } from 'routes/urls';
-import { saveFinalPaymentDateResponse} from 'services/features/certOfSorC/defendantFinalPaymentDateService';
+import {
+  defendantFinalPaymentDateService,
+} from 'services/features/certOfSorC/defendantFinalPaymentDateService';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
 
-const paymentDatePath = 'features/certOfSorC/final-payment-date';
-const defendantPaymentDateController = Router();
-const title = 'PAGES.FINAL_DEFENDANT_PAYMENT_DATE.TITLE';
+const paymentDateViewPath = 'features/certOfSorC/final-payment-date';
 
-function renderView(form: GenericForm<DefendantFinalPaymentDate>, res: Response): void {
-  res.render(paymentDatePath, {form, title, pageTitle: 'PAGES.FINAL_DEFENDANT_PAYMENT_DATE.PAGE_TITLE'});
-}
+const defendantPaymentDateController = Router();
+const title = 'PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.TITLE';
 
 defendantPaymentDateController
   .get(
     COSC_FINAL_PAYMENT_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const defendantPaymentDate = new DefendantFinalPaymentDate();
-        renderView(new GenericForm(defendantPaymentDate), res);
+        const redisKey = generateRedisKey(<AppRequest>req);
+        const defendantFinalPaymentDate = await defendantFinalPaymentDateService.getDefendantResponse(redisKey);
+        res.render( paymentDateViewPath, {
+          form: new GenericForm(defendantFinalPaymentDate), title,
+        });
       } catch (error) {
         next(error);
       }
@@ -30,16 +32,16 @@ defendantPaymentDateController
   .post(
     COSC_FINAL_PAYMENT_DATE_URL, async (req, res, next: NextFunction) => {
       const claimId = req.params.id;
+      const redisKey = generateRedisKey(<AppRequest>req);
       const defendantPaymentDate = new DefendantFinalPaymentDate(req.body.year, req.body.month, req.body.day);
       const form: GenericForm<DefendantFinalPaymentDate> = new GenericForm<DefendantFinalPaymentDate>(defendantPaymentDate);
-      form.validateSync();
+      await form.validate();
 
       if (form.hasErrors()) {
-        renderView(form, res);
+        res.render(paymentDateViewPath, {form, title});
       } else {
         try {
-          console.log('Defendant final payment date:' + defendantPaymentDate.date.toDateString());
-          await saveFinalPaymentDateResponse(generateRedisKey(req as unknown as AppRequest), form.model, 'defendantFinalPaymentDate', 'ccjRequest');
+          await defendantFinalPaymentDateService.savePaymentDate(redisKey, defendantPaymentDate);
           //ToDo: Replace for the next screen
           res.redirect(constructResponseUrlWithIdParams(claimId, COSC_FINAL_PAYMENT_DATE_URL));
         } catch (error) {

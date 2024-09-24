@@ -11,7 +11,7 @@
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
-{% set hint = t('PAGES.FINAL_DEFENDANT_PAYMENT_DATE.FOR_EXAMPLE', {nextDate: nextMonth.getDate(), nextMonth: nextMonth.getMonth() + 1,nextYear: nextMonth.getFullYear()}) %}
+{% set hint = t('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FOR_EXAMPLE', {nextDate: nextMonth.getDate(), nextMonth: nextMonth.getMonth() + 1,nextYear: nextMonth.getFullYear()}) %}
 
 {% block content %}
   <div class="govuk-width-container">
@@ -35,7 +35,7 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <span class="govuk-caption-l">
-            {{  t('PAGES.FINAL_DEFENDANT_PAYMENT_DATE.CAPTION_HEADER_1') }}
+            {{  t('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.CAPTION_HEADER_1') }}
           </span>
           {% call govukFieldset({
              legend: {
@@ -54,11 +54,11 @@
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <p class="govuk-body-m">
-            {{  t('PAGES.FINAL_DEFENDANT_PAYMENT_DATE.PARAGRAPH_TEXT_1') }}
+            {{  t('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.PARAGRAPH_TEXT_1') }}
             </br>
-            {{  t('PAGES.FINAL_DEFENDANT_PAYMENT_DATE.PARAGRAPH_TEXT_2') }}
+            {{  t('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.PARAGRAPH_TEXT_2') }}
           </p>
-          <h3 class="govuk-heading-s"> {{  t('PAGES.FINAL_DEFENDANT_PAYMENT_DATE.FORM_HEADER_1') }}</h3>
+          <h3 class="govuk-heading-s"> {{  t('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FORM_HEADER_1') }}</h3>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-form-group">
