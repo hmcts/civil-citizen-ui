@@ -1739,18 +1739,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@codeceptjs/configure@npm:^0.10.0":
-  version: 0.10.0
-  resolution: "@codeceptjs/configure@npm:0.10.0"
-  dependencies:
-    lodash.merge: ^4.6.2
-    lodash.mergewith: ^4.6.2
-  peerDependencies:
-    codeceptjs: ">= 2.3.3"
-  checksum: e4556a9c1fdea92ede4a9bae296403d677bf89d5070cf53e7637d62062e00bf40c09fa34345d2fbca468c31d33bc0b3fdc3626e67f8d74a6d589f1e060e52f81
-  languageName: node
-  linkType: hard
-
 "@codeceptjs/configure@npm:^0.8.0":
   version: 0.8.0
   resolution: "@codeceptjs/configure@npm:0.8.0"
@@ -3264,6 +3252,12 @@ __metadata:
   version: 9.0.1
   resolution: "@types/uuid@npm:9.0.1"
   checksum: c472b8a77cbeded4bc529220b8611afa39bd64677f507838f8083d8aac8033b1f88cb9ddaa2f8589e0dcd2317291d0f6e1379f82d5ceebd6f74f3b4825288e00
+  languageName: node
+  linkType: hard
+
+"@types/uuid@npm:^10.0.0":
+  version: 10.0.0
+  resolution: "@types/uuid@npm:10.0.0"
   languageName: node
   linkType: hard
 
@@ -4814,25 +4808,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chokidar@npm:^3.6.0":
-  version: 3.6.0
-  resolution: "chokidar@npm:3.6.0"
-  dependencies:
-    anymatch: ~3.1.2
-    braces: ~3.0.2
-    fsevents: ~2.3.2
-    glob-parent: ~5.1.2
-    is-binary-path: ~2.1.0
-    is-glob: ~4.0.1
-    normalize-path: ~3.0.0
-    readdirp: ~3.6.0
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  checksum: d2f29f499705dcd4f6f3bbed79a9ce2388cf530460122eed3b9c48efeab7a4e28739c6551fd15bec9245c6b9eeca7a32baa64694d64d9b6faeb74ddb8c4a413d
-  languageName: node
-  linkType: hard
-
 "chownr@npm:^1.1.1":
   version: 1.1.4
   resolution: "chownr@npm:1.1.4"
@@ -4893,7 +4868,6 @@ __metadata:
     "@babel/core": ^7.19.6
     "@babel/eslint-parser": ^7.19.1
     "@babel/preset-env": ^7.20.2
-    "@codeceptjs/configure": ^0.10.0
     "@hmcts/cookie-manager": ^1.0.0
     "@hmcts/info-provider": ^1.2.1
     "@hmcts/nodejs-healthcheck": ^1.8.0
@@ -4921,6 +4895,7 @@ __metadata:
     "@types/require-directory": ^2.1.1
     "@types/serve-favicon": ^2.5.1
     "@types/supertest": ^2.0.12
+    "@types/uuid": ^10.0.0
     "@typescript-eslint/eslint-plugin": ^5.50.0
     "@typescript-eslint/eslint-plugin-tslint": ^5.50.0
     "@typescript-eslint/parser": ^5.50.0
@@ -4946,7 +4921,6 @@ __metadata:
     eslint-plugin-codeceptjs: ^1.3.0
     express: ^4.19.2
     express-async-errors: ^3.1.1
-    express-nunjucks: ^3.1.0
     express-session: ^1.17.3
     follow-redirects: 1.15.6
     glob: ^10.0.0
@@ -6613,18 +6587,6 @@ __metadata:
   peerDependencies:
     express: ^4.16.2
   checksum: 3a2a6df8ea957185df401a239189d617715c38fba13fac8ced7750b25fa95b0ae656e5d1385d12d0e4dcd7997e90d070b218e86abcf8e68bb6048830b53ba668
-  languageName: node
-  linkType: hard
-
-"express-nunjucks@npm:^3.1.0":
-  version: 3.1.2
-  resolution: "express-nunjucks@npm:3.1.2"
-  dependencies:
-    nunjucks-async-loader: ^2.1.3
-  peerDependencies:
-    express: ^4.19.2
-    nunjucks: ^3.2.4
-  checksum: cccec33d2644032cf806907ea0764a67e829773e5baf69d70d754fd776782952f7935d63419433fe402365ae79e2fba6a5547264463f6e1b054b9732e7f6a63e
   languageName: node
   linkType: hard
 
@@ -10504,17 +10466,6 @@ __metadata:
   dependencies:
     boolbase: ^1.0.0
   checksum: 5afc3dafcd1573b08877ca8e6148c52abd565f1d06b1eb08caf982e3fa289a82f2cae697ffb55b5021e146d60443f1590a5d6b944844e944714a5b549675bcd3
-  languageName: node
-  linkType: hard
-
-"nunjucks-async-loader@npm:^2.1.3":
-  version: 2.1.3
-  resolution: "nunjucks-async-loader@npm:2.1.3"
-  dependencies:
-    chokidar: ^3.6.0
-  peerDependencies:
-    nunjucks: ^3.2.4
-  checksum: 87520b30000037ca6ae643517aa81342c427e8958c2bb8bb9af080b1d9ed764c75b90d2ace2bb8c50837d20a6f018131fc6754cc17f9f31d025d37175b8d6a68
   languageName: node
   linkType: hard
 
