@@ -36,15 +36,16 @@ const upload = multer({
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL);
-  const backLinkPage = isConfirmYouPaidCCJAppType(claim) ? GA_DEBT_PAYMENT_EVIDENCE_COSC_URL
-    : GA_WANT_TO_UPLOAD_DOCUMENTS_URL;
+  const isConfirmPaidCCJAppType = isConfirmYouPaidCCJAppType(claim);
+  const backLinkPage = isConfirmPaidCCJAppType ? GA_DEBT_PAYMENT_EVIDENCE_COSC_URL : GA_WANT_TO_UPLOAD_DOCUMENTS_URL;
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, backLinkPage);
+  const headerTitle = isConfirmPaidCCJAppType ? 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CONFIRM_YOU_PAID_CCJ' : getDynamicHeaderForMultipleApplications(claim);
   res.render(viewPath, {
     form,
     formattedSummary,
     cancelUrl,
     backLinkUrl,
-    headerTitle: getDynamicHeaderForMultipleApplications(claim),
+    headerTitle,
     currentUrl,
   });
 }
@@ -82,9 +83,10 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
     const claimId = req.params.id;
     const redisKey = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
-    const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL);
-    const nextPageUrl = isConfirmYouPaidCCJAppType(claim) ? GA_CHECK_YOUR_ANSWERS_COSC_URL
-      : GA_HEARING_ARRANGEMENTS_GUIDANCE_URL;
+    const isConfirmPaidCCJAppType = isConfirmYouPaidCCJAppType(claim);
+    const currentPage = isConfirmPaidCCJAppType ? GA_UPLOAD_DOCUMENTS_COSC_URL : GA_UPLOAD_DOCUMENTS_URL;
+    const currentUrl = constructResponseUrlWithIdParams(claimId, currentPage);
+    const nextPageUrl = isConfirmPaidCCJAppType ? GA_CHECK_YOUR_ANSWERS_COSC_URL : GA_HEARING_ARRANGEMENTS_GUIDANCE_URL;
 
     const formattedSummary = summarySection(
       {

@@ -39,13 +39,13 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const form = new GenericForm(applicationType);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = await getBackLinkUrl(claimId, <string>req.query.linkFrom, cancelUrl);
-    let showCCJ  = await isCoSCEnabled() && claim.isDefendant();
+    const showCCJ  = await isCoSCEnabled() && claim.isDefendant();
     res.render(viewPath, {
       form,
       cancelUrl,
       backLinkUrl,
       isOtherSelected: applicationType.isOtherSelected(),
-      showCCJ: showCCJ
+      showCCJ: showCCJ,
     });
   } catch (error) {
     next(error);
@@ -74,7 +74,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const backLinkUrl = await getBackLinkUrl(req.params.id, <string>req.query.linkFrom, cancelUrl);
 
     if (form.hasErrors()) {
-      let isCoSCFlagEnabled = await isCoSCEnabled();
+      const isCoSCFlagEnabled = await isCoSCEnabled();
       res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  isCoSCEnabled: isCoSCFlagEnabled});
     } else {
       await saveApplicationType(redisKey, claim, applicationType, applicationIndex);

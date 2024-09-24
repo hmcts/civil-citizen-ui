@@ -325,12 +325,11 @@ export const validateAdditionalApplicationtType = (claim : Claim, errors : Valid
 
     errors.push(validationError);
   } else if (applicationType.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID && (claim.activeJudgment === undefined || claim.activeJudgment?.option === YesNo.NO)) {
-
     const validationError = new FormValidationError({
       target: new GenericYesNo(body.optionOther, ''),
       value: body.option,
       constraints: {
-        ccjApplicationError : "ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_CCJ_DEBT",
+        ccjApplicationError : 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_CCJ_DEBT',
       },
       property: 'option',
     });
@@ -533,6 +532,6 @@ export const getApplicationCreatedDate = (ccdClaim: Claim, applicationId: string
 };
 
 export const isConfirmYouPaidCCJAppType = (claim: Claim): boolean => {
-  const applicationTypes = claim.generalApplication?.applicationTypes;
-  return applicationTypes.length === 1 && applicationTypes[0].option === ApplicationTypeOption.CONFIRM_YOU_PAID_CCJ;
+  const applicationType = getLast(claim.generalApplication?.applicationTypes)?.option;
+  return applicationType === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID;
 };
