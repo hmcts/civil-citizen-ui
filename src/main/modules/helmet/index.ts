@@ -35,7 +35,8 @@ const imgSrc = [
   'vcc-eu4b.8x8.com',
   'ssl.gstatic.com',
   '*.gstatic.com',
-  'stats.g.doubleclick.net',
+  '*.g.doubleclick.net',
+  '*.googletagmanager.com',
   'data:',
   "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
   (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
@@ -47,8 +48,9 @@ const mediaSrc = [
   'vcc-eu4b.8x8.com',
   'ssl.gstatic.com',
   'www.gstatic.com',
-  'stats.g.doubleclick.net',
+  '*.g.doubleclick.net',
   googleAnalyticsDomain,
+  '*.googletagmanager.com',
   '*.analytics.google.com',
 ];
 
