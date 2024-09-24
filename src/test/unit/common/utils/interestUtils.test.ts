@@ -5,13 +5,13 @@ import {
   calculateInterest,
   getInterestStartDate,
   calculateInterestToDate,
-} from '../../../../main/common/utils/interestUtils';
-import { Claim } from '../../../../main/common/models/claim';
+} from 'common/utils/interestUtils';
+import { Claim } from 'models/claim';
 import { deepCopy } from '../../../utils/deepCopy';
 import { mockClaim as mockResponse } from '../../../utils/mockClaim';
-import { YesNo } from '../../../../main/common/form/models/yesNo';
-import { InterestClaimFromType, SameRateInterestType } from '../../../../main/common/form/models/claimDetails';
-import { InterestClaimOptionsType } from '../../../../main/common/form/models/claim/interest/interestClaimOptionsType';
+import { YesNo } from 'form/models/yesNo';
+import { InterestClaimFromType, SameRateInterestType } from 'form/models/claimDetails';
+import { InterestClaimOptionsType } from 'form/models/claim/interest/interestClaimOptionsType';
 import { Interest } from 'common/form/models/interest/interest';
 import { InterestStartDate } from 'common/form/models/interest/interestStartDate';
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
@@ -66,16 +66,16 @@ describe('Interest Utils', () => {
 
   it('calculateInterest should return correct interest', () => {
     //Given
-    const amount = 6000;
+    const amount = 9000;
     const interest = 8;
-    const startDate = new Date('2022-10-10');
-    const endDate = new Date('2022-10-20');
+    const startDate = new Date('2024-01-01');
+    const endDate = new Date('2024-09-24');
 
     //When
     const result = calculateInterest(amount, interest, startDate, endDate);
 
     //Then
-    expect(result).toEqual(13.150684931506849);
+    expect(result).toEqual(525.99);
   });
 
   it('getInterestStartDate should return new Date if InterestClaimFromType is FROM_CLAIM_SUBMIT_DATE', () => {
@@ -147,6 +147,6 @@ describe('Interest Utils', () => {
     const result = calculateInterestToDate(claim);
 
     //Then
-    expect(result).toEqual(13.15);
+    expect(result).toEqual(13.2);
   });
 });

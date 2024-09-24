@@ -35,7 +35,7 @@ export function getInterestDateOrIssueDate(claim: Claim) : Date | string {
   } else if (claim.isInterestFromASpecificDate()) {
     interestFromDate = claim.interest?.interestStartDate.date;
   }
-  
+
   return interestFromDate ? new Date(interestFromDate).toISOString() : undefined;
 }
 
@@ -71,7 +71,9 @@ export const getInterestStartDate = (claim: Claim): Date => {
 
 export const calculateInterest = (amount: number, interest: number, startDate: Date, endDate: Date): number => {
   const days = getNumberOfDaysBetweenTwoDays(startDate, endDate);
-  return ((amount * (interest / 100)) / 365) * days;
+  const interestForPerYear = amount * (interest / 100);
+  const interestForPerDay = (interestForPerYear / 365).toFixed(2);
+  return Number(interestForPerDay) * days;
 };
 
 export const getInterestData = (claim: Claim, lang: string) => {
