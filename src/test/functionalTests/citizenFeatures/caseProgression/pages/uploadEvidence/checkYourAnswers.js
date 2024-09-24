@@ -50,7 +50,7 @@ const content = {
       cy: 'Dyddiad cyhoeddi’r ddogfen neu ddyddiad anfon y neges',
     },
     documentUploaded: {
-      en: 'Documented uploaded',
+      en: 'Document uploaded',
       cy: 'Dogfen wedi’i huwchlwytho',
     },
   },
@@ -286,22 +286,12 @@ class CheckYourAnswers {
     I.see(`${content.witness.summary[language]} 1`);
     I.see(content.witness.dateSummary[language]);
     I.see('Witness Summary - Witness Name 1');
-    if (claimType === 'FastTrack') {
-      I.see('5/2/2023');
-      I.see('TestPPT.ppt');
-    } else {
-      I.see('3/2/2023');
-      I.see('TestDOC.doc');
-    }
+    I.see('3/2/2023');
+    I.see('TestDOC.doc');
     I.see(`${content.witness.summary[language]} 2`);
     I.see('Witness Summary - Witness Name 2');
-    if (claimType === 'FastTrack') {
-      I.see('6/2/2023');
-      I.see('TestPNG.png');
-    } else {
-      I.see('4/2/2023');
-      I.see('TestDOCX.docx');
-    }
+    I.see('4/2/2023');
+    I.see('TestDOCX.docx');
 
     if (claimType === 'FastTrack') {
 
@@ -317,22 +307,12 @@ class CheckYourAnswers {
 
     I.see(`${content.witness.documentsReferred[language]} 1`);
     I.see('Documents referred Type of Document 1');
-    if (claimType === 'FastTrack') {
-      I.see('9/2/2023');
-      I.see('TestTIFF.tiff');
-    } else {
-      I.see('5/2/2023');
-      I.see('TestJPEG.jpeg');
-    }
+    I.see('5/2/2023');
+    I.see('TestJPEG.jpeg');
     I.see(`${content.witness.documentsReferred[language]} 2`);
     I.see('Documents referred Type of Document 2');
-    if (claimType === 'FastTrack') {
-      I.see('10/2/2023');
-      I.see('TestDOCX.docx');
-    } else {
-      I.see('6/2/2023');
-      I.see('TestJPG.jpg');
-    }
+    I.see('6/2/2023');
+    I.see('TestJPG.jpg');
   }
 
   verifyEvidenceSectionContent(claimType, partyType) {

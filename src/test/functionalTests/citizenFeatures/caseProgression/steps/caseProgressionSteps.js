@@ -69,7 +69,12 @@ class CaseProgressionSteps {
     uploadYourDocumentsConfirmation.verifyPageContent();
     uploadYourDocumentsConfirmation.nextAction(buttons.viewDocuments[language]);
     if (isDashboardServiceEnabled) {
-      viewDocumentsPage.verifyPageContent(claimRef, '£1,500.00', dateUploaded);
+      if (claimType === 'FastTrack') {
+        claimAmount = '£15,000.00';
+      } else {
+        claimAmount = '£1,500.00';
+      }
+      viewDocumentsPage.verifyPageContent(claimRef, claimAmount, dateUploaded, claimType);
       viewDocumentsPage.nextAction('Close and return to case overview');
     } else if (partyType !== 'LiPvLiP') {
       documentsTab.verifyLatestUpdatePageContent(claimType);
