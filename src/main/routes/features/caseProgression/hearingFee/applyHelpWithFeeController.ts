@@ -29,9 +29,11 @@ applyHelpWithFeeController.get(APPLY_HELP_WITH_FEES_START, (async (req, res) => 
   const claimId = req.params.id;
   const lng = req.query.lang ? req.query.lang : req.cookies.lang;
   const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-  const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, APPLY_HELP_WITH_FEES);
   const claim: Claim = await getClaimById(claimId, req, true);
-
+  let backLinkUrl = constructResponseUrlWithIdParams(req.params.id, APPLY_HELP_WITH_FEES);
+  if (claim?.feeTypeHelpRequested === undefined) {
+    backLinkUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
+  }
   await renderView(res, redirectUrl,backLinkUrl,claimId,claim.totalClaimAmount,lng);
 }) as RequestHandler);
 
