@@ -67,7 +67,7 @@ class createGAAppSteps {
     await I.click('Submit');
     await I.click('Pay application fee');
     await I.waitForContent('Do you want to apply for help with fees', 60);
-    I.wait(3);
+    I.wait(5);
     await I.click('No'); //#option
     await I.click('Continue');
     await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
