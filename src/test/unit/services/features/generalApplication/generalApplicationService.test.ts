@@ -8,7 +8,7 @@ import {
   getByIndexOrLast,
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
-  getViewApplicationUrl,
+  getViewApplicationUrl, isConfirmYouPaidCCJAppType,
   saveAcceptDefendantOffer,
   saveAdditionalText,
   saveAgreementFromOtherParty,
@@ -1156,4 +1156,24 @@ describe('Should get the application index', () => {
     expect(result).toEqual('/case/123/general-application/123456/view-application?index=2');
   });
 
+});
+
+describe('should check if the application type on the case is "Confirm CCJ debt paid"', () => {
+  it.each`
+      selectedApplicationTypes                                                      | expectedOutput
+      ${[]}                                                                         | ${false}
+      ${undefined}                                                                  | ${false}
+      ${[ApplicationTypeOption.ADJOURN_HEARING]}                                    | ${false}
+      ${[ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID]}                              | ${true}
+    `('should return $expected when selected types are $selectedApplicationTypes',
+    ({ selectedApplicationTypes, expectedOutput}) => {
+      //When
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      if (selectedApplicationTypes) {
+        claim.generalApplication.applicationTypes = selectedApplicationTypes.map((at: ApplicationTypeOption) => new ApplicationType(at));
+      }
+      //Then
+      expect(isConfirmYouPaidCCJAppType(claim)).toEqual(expectedOutput);
+    });
 });
