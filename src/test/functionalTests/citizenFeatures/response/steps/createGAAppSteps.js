@@ -1,75 +1,127 @@
 const I = actor();
+const StringUtilsComponent = require('../../caseProgression/util/StringUtilsComponent');
 const GovPay = require ('../../common/govPay');
+const ApplicationType = require('../../GA/pages/applicationType');
+const AgreementFromOtherParty= require('../../GA/pages/agreementFromOtherParty');
+const InformOtherParties = require('../../GA/pages/informOtherParties');
+const ApplicationCosts = require('../../GA/pages/applicationCosts');
+const ClaimApplicationCost = require('../../GA/pages/claimApplicationCost');
+const OrderJudge = require('../../GA/pages/orderJudge');
+const RequestingReason = require('../../GA/pages/requestingReason');
+const AddAnotherApplication= require('../../GA/pages/addAnotherApplication');
+const WantToUploadDocuments = require('../../GA/pages/wantToUploadDocuments');
+const HearingArrangementsGuidance = require('../../GA/pages/hearingArrangementsGuidance');
+const HearingArrangement = require('../../GA/pages/hearingArrangement');
+const HearingContactDetails = require('../../GA/pages/hearingContactDetails');
+const UnavailableDates = require('../../GA/pages/unavailableDates');
+const HearingSupport = require('../../GA/pages/hearingSupport');
+const PayingForApplication = require('../../GA/pages/payingForApplication');
+const CheckAndSend= require('../../GA/pages/checkAndSend');
+const SubmitGAConfirmation = require('../../GA/pages/submitGAConfirmation');
+const ApplyHelpFeeSelection = require('../../GA/pages/applyHelpFeeSelection');
 const govPay = new GovPay();
 
 const feeAmountForAskingMoreTime = 119;
+const applicationTypePage = new ApplicationType();
+const agreementFromOtherPartyPage = new AgreementFromOtherParty();
+const informOtherPartiesPage = new InformOtherParties();
+const applicationCostsPage = new ApplicationCosts();
+const claimApplicationCostPage = new ClaimApplicationCost();
+const orderJudgePage = new OrderJudge();
+const requestingReasonPage = new RequestingReason();
+const addAnotherApplicationPage =  new AddAnotherApplication();
+const wantToUploadDocumentsPage = new WantToUploadDocuments();
+const hearingArrangementsGuidancePage = new HearingArrangementsGuidance();
+const hearingArrangementPage = new HearingArrangement();
+const hearingContactDetailsPage = new HearingContactDetails();
+const unavailableDatesPage = new UnavailableDates();
+const hearingSupportPage = new HearingSupport();
+const payingForApplicationPage = new PayingForApplication();
+const checkAndSendPage = new CheckAndSend();
+const submitGAConfirmationPage = new SubmitGAConfirmation();
+const applyHelpFeeSelectionPage = new ApplyHelpFeeSelection();
+
 class createGAAppSteps {
 
-  async askForMoreTimeCourtOrderGA(caseRef, informOtherParty = false) {
+  async askForMoreTimeCourtOrderGA(caseRef, parties, informOtherParty = false) {
+    const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     await I.waitForContent('Contact the court to request a change to my case', 60);
     await I.click('Contact the court to request a change to my case');
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
-    await I.waitForContent('Select application', 60);
-    await I.click('Ask for more time to do what is required by a court order'); //#option-5
-    await I.click('Continue');
+    await applicationTypePage.verifyPageContent();
+    await applicationTypePage.nextAction('Ask for more time to do what is required by a court order');
+    await applicationTypePage.nextAction('Continue');
 
     if (informOtherParty) {
-      await I.waitForContent('Have the other parties agreed to this application?', 60);
-      await I.click('Yes'); //#option
-      await I.click('Continue');
+      await agreementFromOtherPartyPage.verifyPageContent();
+      await agreementFromOtherPartyPage.nextAction('Yes');
+      await agreementFromOtherPartyPage.nextAction('Continue');
     } else {
-      await I.waitForContent('Have the other parties agreed to this application', 60);
-      await I.click('No'); //#option
-      await I.click('Continue');
+      await agreementFromOtherPartyPage.verifyPageContent();
+      await agreementFromOtherPartyPage.nextAction('No');
+      await agreementFromOtherPartyPage.nextAction('Continue');
 
-      await I.waitForContent('Should the court inform the other parties about this application', 60);
-      await I.click('No'); //#option
-      await I.fillField('#reasonForCourtNotInformingOtherParties', 'Do not need to inform');
-      await I.click('Continue');
+      await informOtherPartiesPage.verifyPageContent();
+      await informOtherPartiesPage.selectAndVerifyDontInformOption();
     }
-    await I.waitForContent('the application fee is', 60);
-    await I.click('Start now');
-    await I.waitForContent('Do you want to ask for your costs back?', 60);
-    await I.click('Yes'); //#option
-    await I.click('Continue');
-    await I.waitForContent('What order do you want the judge to make?', 60);
-    await I.fillField('#text', 'Test order');
-    await I.click('Continue');
-    await I.waitForContent('Why are you requesting this order?', 60);
-    await I.fillField('#text', 'Test order');
-    await I.click('Continue');
-    await I.waitForContent('Do you want to add another application?', 60);
-    await I.click('No'); //#option-2
-    await I.click('Continue');
-    await I.waitForContent('Do you want to upload', 60);
-    await I.click('No'); //#option-2
-    await I.click('Continue');
-    await I.waitForContent('hearing arrangements', 60);
-    await I.click('Continue');
-    await I.waitForContent('What type of hearing', 60);
-    await I.click('In person at the court'); //#option
-    await I.fillField('#reasonForPreferredHearingType', 'Inperson');
-    await I.selectOption('#courtLocation', 'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS');
-    await I.click('Continue');
-    await I.waitForElement('#telephoneNumber');
-    await I.fillField('#telephoneNumber', '07555655326');
-    await I.fillField('#emailAddress', 'test@gmail.com');
-    await I.click('Continue');
-    await I.waitForContent('any dates when you cannot attend a hearing', 60);
-    await I.click('Continue');
-    await I.waitForContent('adustments', 60);
-    await I.click('Continue');
-    await I.waitForContent('Paying', 60);
-    await I.click('Continue');
-    await I.waitForContent('Check your answers', 60);
-    await I.click('#signed');
-    await I.fillField('#name', 'tester name');
-    await I.click('Submit');
-    await I.click('Pay application fee');
-    await I.waitForContent('Do you want to apply for help with fees', 60);
-    I.wait(5);
-    await I.click('No'); //#option
-    await I.click('Continue');
+
+    await applicationCostsPage.verifyPageContent();
+    await applicationCostsPage.nextAction('Start now');
+
+    await claimApplicationCostPage.verifyPageContent();
+    await claimApplicationCostPage.selectAndVerifyYesOption();
+    await claimApplicationCostPage.nextAction('Continue');
+
+    await orderJudgePage.verifyPageContent();
+    await orderJudgePage.fillTextBox('Test order');
+    await orderJudgePage.nextAction('Continue');
+
+    await requestingReasonPage.verifyPageContent();
+    await requestingReasonPage.fillTextBox('Test order');
+    await requestingReasonPage.nextAction('Continue');
+
+    await addAnotherApplicationPage.verifyPageContent();
+    await addAnotherApplicationPage.nextAction('No');
+    await addAnotherApplicationPage.nextAction('Continue');
+
+    await wantToUploadDocumentsPage.verifyPageContent();
+    await wantToUploadDocumentsPage.nextAction('No');
+    await wantToUploadDocumentsPage.nextAction('Continue');
+
+    await hearingArrangementsGuidancePage.verifyPageContent();
+    await hearingArrangementsGuidancePage.nextAction('Continue');
+
+    await hearingArrangementPage.verifyPageContent();
+    await hearingArrangementPage.nextAction('In person at the court');
+    await hearingArrangementPage.fillTextAndSelectLocation('In person', 'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS');
+    await hearingArrangementPage.nextAction('Continue');
+
+    await hearingContactDetailsPage.verifyPageContent();
+    await hearingContactDetailsPage.fillContactDetails('07555655326', 'test@gmail.com');
+    await hearingContactDetailsPage.nextAction('Continue');
+
+    await unavailableDatesPage.verifyPageContent();
+    await unavailableDatesPage.nextAction('Continue');
+
+    await hearingSupportPage.verifyPageContent();
+    await hearingSupportPage.nextAction('Continue');
+
+    await payingForApplicationPage.checkPageFullyLoaded();
+    await payingForApplicationPage.nextAction('Continue');
+
+    await checkAndSendPage.verifyPageContent(caseNumber, parties, 'More time to do what is required by a court order');
+    await checkAndSendPage.checkAndSign();
+    await checkAndSendPage.nextAction('Submit');
+
+    await submitGAConfirmationPage.verifyPageContent();
+    await submitGAConfirmationPage.nextAction('Pay application fee');
+
+    I.wait(3);
+
+    await applyHelpFeeSelectionPage.verifyPageContent();
+    await applyHelpFeeSelectionPage.nextAction('No');
+    await applyHelpFeeSelectionPage.nextAction('Continue');
+
     await govPay.addValidCardDetails(feeAmountForAskingMoreTime);
     govPay.confirmPayment();
   }

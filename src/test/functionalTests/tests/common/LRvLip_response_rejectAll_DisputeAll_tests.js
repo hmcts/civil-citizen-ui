@@ -34,12 +34,12 @@ Scenario('Response with RejectAll and DisputeAll - GA (Ask for more time) @citiz
     console.log('Creating GA app as claimant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askForMoreTimeCourtOrderGA(claimRef);
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(claimRef, 'Test Inc v Sir John Doe');
     console.log('Creating GA app as defendant');
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askForMoreTimeCourtOrderGA(claimRef);
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(claimRef, 'Test Inc v Sir John Doe');
   }
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);

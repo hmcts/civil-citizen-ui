@@ -36,11 +36,11 @@ Scenario('Create Claim -  Individual vs Company - small claims - no interest - n
     console.log('Creating GA app as claimant');
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef);
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v Defendant Company name');
     console.log('Creating GA app as defendant');
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await I.amOnPage('/dashboard');
     await I.click(claimNumber);
-    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef);
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v Defendant Company name');
   }
 });

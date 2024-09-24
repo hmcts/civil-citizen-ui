@@ -46,12 +46,12 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf
     console.log('Creating GA app as claimant');
     await I.amOnPage('/dashboard');
     await I.click(legacyCaseReference);
-    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef);
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v mr defendant person');
     console.log('Creating GA app as defendant');
     await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await I.amOnPage('/dashboard');
     await I.click(legacyCaseReference);
-    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef);
+    await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v mr defendant person');
   }
 });
 
