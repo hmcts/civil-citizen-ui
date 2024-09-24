@@ -22,6 +22,6 @@ export const translateClaimantResponseDJToCCD = (claim: Claim): CCDClaim => {
     paymentSetDate: claim.getCCJPaymentOption() === PaymentOptionType.BY_SET_DATE ? claim.getCCJPaymentDate() : undefined,
     repaymentFrequency: claim.getCCJPaymentOption() === PaymentOptionType.INSTALMENTS ? toCCDDJPaymentFrequency(claim.getCCJRepaymentPlanFrequency()) : undefined,
     repaymentDue:claim.hasDefendantPaid() ? (claim.getCCJTotalAmount() - claim.getDefendantPaidAmount()).toString() : undefined,
-    repaymentSuggestion: claim.getCCJPaymentOption() === PaymentOptionType.INSTALMENTS ? claim.getCCJRepaymentPlanAmount().toString() : undefined,
+    repaymentSuggestion: claim.getCCJPaymentOption() === PaymentOptionType.INSTALMENTS ? convertToPence(claim.getCCJRepaymentPlanAmount()).toString() : undefined,
   };
 };
