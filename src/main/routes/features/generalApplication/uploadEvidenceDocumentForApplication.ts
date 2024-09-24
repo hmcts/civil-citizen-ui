@@ -1,8 +1,9 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
-  GA_CHECK_ANSWERS_URL,
   GA_HEARING_ARRANGEMENTS_GUIDANCE_URL,
   GA_UPLOAD_DOCUMENTS_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
+  GA_UPLOAD_DOCUMENTS_COSC_URL, GA_CHECK_YOUR_ANSWERS_COSC_URL,
+  GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
@@ -35,7 +36,7 @@ const upload = multer({
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL);
-  const backLinkPage = isConfirmYouPaidCCJAppType(claim) ? GA_WANT_TO_UPLOAD_DOCUMENTS_URL //TODO replace with CoSC URL from previous screen
+  const backLinkPage = isConfirmYouPaidCCJAppType(claim) ? GA_DEBT_PAYMENT_EVIDENCE_COSC_URL
     : GA_WANT_TO_UPLOAD_DOCUMENTS_URL;
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, backLinkPage);
   res.render(viewPath, {
@@ -48,7 +49,7 @@ async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimI
   });
 }
 
-uploadEvidenceDocumentsForApplicationController.get(GA_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA_UPLOAD_DOCUMENTS_COSC_URL], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
@@ -76,13 +77,13 @@ uploadEvidenceDocumentsForApplicationController.get(GA_UPLOAD_DOCUMENTS_URL, (as
   }
 }) as RequestHandler);
 
-uploadEvidenceDocumentsForApplicationController.post(GA_UPLOAD_DOCUMENTS_URL, upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
+uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, GA_UPLOAD_DOCUMENTS_COSC_URL], upload.single('selectedFile'), (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
     const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL);
-    const nextPageUrl = isConfirmYouPaidCCJAppType(claim) ? GA_CHECK_ANSWERS_URL //TODO add CoSC journey CYA URL
+    const nextPageUrl = isConfirmYouPaidCCJAppType(claim) ? GA_CHECK_YOUR_ANSWERS_COSC_URL
       : GA_HEARING_ARRANGEMENTS_GUIDANCE_URL;
 
     const formattedSummary = summarySection(
