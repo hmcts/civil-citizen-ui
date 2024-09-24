@@ -6,7 +6,7 @@ import {toCCDDJPaymentOption} from 'services/translation/claimantResponse/conver
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {toCCDDJPaymentFrequency} from 'services/translation/response/convertToCCDDJPaymentFrequency';
 import {convertToPence} from 'services/translation/claim/moneyConversation';
-import {calculateInterestToDate} from "common/utils/interestUtils";
+import {calculateInterestToDate} from 'common/utils/interestUtils';
 
 export const translateClaimantResponseDJToCCD = (claim: Claim): CCDClaim => {
   return {
