@@ -3132,6 +3132,7 @@
         "APPLICATION_DETAILS": "Application details submitted by the applicant.",
         "APPLICATION_DISMISSED": "Application dismissed",
         "APPLICATION_DOCUMENTS": "Application Documents",
+        "APPLICATION_DRAFT_DOCUMENT": "Draft Application",
         "APPROVE_EDIT_DOCUMENT": "Approval or edit order",
         "COURT_DOCUMENT": "Court document",
         "COURTS_RESPONSE": "Court's response to the application",

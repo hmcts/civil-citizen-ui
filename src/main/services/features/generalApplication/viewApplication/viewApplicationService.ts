@@ -29,6 +29,7 @@ import {documentIdExtractor} from 'common/utils/stringUtils';
 import { buildResponseFromCourtSection } from './responseFromCourtService';
 import { CourtResponseSummaryList } from 'common/models/generalApplication/CourtResponseSummary';
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
+import {isRespondentAllowedToRespond} from 'services/features/generalApplication/response/viewApplicationService';
 
 export type ViewApplicationSummaries = {
   summaryRows: SummaryRow[],
@@ -85,12 +86,16 @@ export const getCourtDocuments = (applicationResponse : ApplicationResponse, lan
 
 export const getApplicantDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const applicantDocumentsArray: DocumentInformation[] = [];
+  applicantDocumentsArray.push(...getDraftDocument(applicationResponse, lang));
   applicantDocumentsArray.push(...getAddlnDocuments(applicationResponse, lang, 'Applicant'));
   return new DocumentsViewComponent('ApplicantDocuments', applicantDocumentsArray);
 };
 
 export const getRespondentDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const respondentDocumentsArray: DocumentInformation[] = [];
+  if (isRespondentAllowedToRespond(applicationResponse)) {
+    respondentDocumentsArray.push(...getDraftDocument(applicationResponse, lang));
+  }
   respondentDocumentsArray.push(...getAddlnDocuments(applicationResponse, lang, 'Respondent One'));
   return new DocumentsViewComponent('RespondentDocuments', respondentDocumentsArray);
 };
@@ -112,6 +117,19 @@ const getAddlnDocuments = (applicationResponse: ApplicationResponse, lang: strin
       });
   }
   return addlnDocInfoArray;
+};
+
+export const getDraftDocument = (applicationResponse: ApplicationResponse, lang: string) => {
+  const generalAppDraftDocs = applicationResponse?.case_data?.gaDraftDocument;
+  let gaDraftDocInfoArray : DocumentInformation[] = [];
+  if(generalAppDraftDocs) {
+    gaDraftDocInfoArray = generalAppDraftDocs.sort((item1,item2) => {
+      return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
+    }).map(gaDraftDocument => {
+      return setUpDocumentLinkObject(gaDraftDocument?.value?.documentLink, gaDraftDocument?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT');
+    });
+  }
+  return gaDraftDocInfoArray;
 };
 
 export const getHearingOrder = (applicationResponse: ApplicationResponse, lang: string) => {

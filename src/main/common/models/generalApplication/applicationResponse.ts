@@ -15,7 +15,12 @@ import {CcdGARespondentDebtorOfferGAspec, CcdGeneralApplicationHearingDetails} f
 import {
   CcdGeneralApplicationStatementOfTruth,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationStatementOfTruth';
-import {CcdGeneralApplicationAddlDocument, CcdHearingDocument, CcdGeneralOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
+import {
+  CcdGeneralApplicationAddlDocument,
+  CcdHearingDocument,
+  CcdGeneralOrderDocument,
+  CcdGaDraftDocument
+} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
 import {CcdGeneralApplicationDirectionsOrderDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationDirectionsOrderDocument';
@@ -70,6 +75,7 @@ export interface CCDApplication extends ApplicationUpdate {
   requestForInformationDocument?: CcdGAMakeWithNoticeDocument[];
   directionOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
   generalOrderDocument? : CcdGeneralOrderDocument[];
+  gaDraftDocument? : CcdGaDraftDocument[];
   judicialDecisionMakeOrder?: JudicialDecisionMakeOrder;
   dismissalOrderDocument?: CcdGeneralApplicationDirectionsOrderDocument[];
   judicialDecisionRequestMoreInfo?: JudicialRequestMoreInfo;
