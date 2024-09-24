@@ -1,5 +1,6 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
+  GA_CHECK_ANSWERS_URL,
   GA_HEARING_ARRANGEMENTS_GUIDANCE_URL,
   GA_UPLOAD_DOCUMENTS_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
@@ -21,7 +22,6 @@ import {
   removeSelectedDocument, uploadSelectedFile,
 } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
-import {isCoSCEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const uploadEvidenceDocumentsForApplicationController = Router();
 const viewPath = 'features/generalApplication/upload_documents';
@@ -35,7 +35,9 @@ const upload = multer({
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL);
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
+  const backLinkPage = isConfirmYouPaidCCJAppType(claim) ? GA_WANT_TO_UPLOAD_DOCUMENTS_URL //TODO replace with CoSC URL from previous screen
+    : GA_WANT_TO_UPLOAD_DOCUMENTS_URL;
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, backLinkPage);
   res.render(viewPath, {
     form,
     formattedSummary,
@@ -80,6 +82,8 @@ uploadEvidenceDocumentsForApplicationController.post(GA_UPLOAD_DOCUMENTS_URL, up
     const redisKey = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
     const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL);
+    const nextPageUrl = isConfirmYouPaidCCJAppType(claim) ? GA_CHECK_ANSWERS_URL //TODO add CoSC journey CYA URL
+      : GA_HEARING_ARRANGEMENTS_GUIDANCE_URL;
 
     const formattedSummary = summarySection(
       {
@@ -109,11 +113,7 @@ uploadEvidenceDocumentsForApplicationController.post(GA_UPLOAD_DOCUMENTS_URL, up
       req.session.fileUpload = JSON.stringify(errors);
       return res.redirect(`${currentUrl}`);
     } else {
-      if (await isCoSCEnabled() && isConfirmYouPaidCCJAppType(claim)) {
-        res.redirect(constructResponseUrlWithIdParams(claimId, 'google.com'));  //TODO add CoSC journey URL
-      } else {
-        res.redirect(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL));
-      }
+      res.redirect(constructResponseUrlWithIdParams(claimId, nextPageUrl));
     }
   } catch (error) {
     next(error);
