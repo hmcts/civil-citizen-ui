@@ -330,7 +330,7 @@ export const validateAdditionalApplicationtType = (claim : Claim, errors : Valid
       target: new GenericYesNo(body.optionOther, ''),
       value: body.option,
       constraints: {
-        ccjApplicationError : "ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_CCJ_DEBT",
+        ccjApplicationError : 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_CCJ_DEBT',
       },
       property: 'option',
     });
