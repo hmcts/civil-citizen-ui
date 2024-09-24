@@ -24,7 +24,7 @@ class PaymentSuccessful {
 
   verifyPageText(feeAmount) {
     I.see('You\'ll receive a confirmation email in the next hour.');
-    I.see('Payment summary', 'h3');
+    I.see('Payment summary', 'h2');
     I.see ('Payment for');
     I.see ('Hearing fee');
     I.see ('Total amount');
