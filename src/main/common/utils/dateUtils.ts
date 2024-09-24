@@ -68,6 +68,12 @@ export const addDaysToDate = (date: Date, value: number) => {
   return updatedDate;
 };
 
+export const minusDaysFromDate = (date: Date, value: number) => {
+  const updatedDate = new Date(date);
+  updatedDate.setDate(updatedDate.getDate() - value);
+  return updatedDate;
+};
+
 export const getDOBforAgeFromCurrentTime = (age: number): Date => {
   const referenceDate = new Date();
   referenceDate.setFullYear(referenceDate.getFullYear() - age);
@@ -154,3 +160,7 @@ export function isDateOnOrAfterSpecificDate(date: Date, specificDate: Date) {
 export function convertDateToStringFormat(date: Date | string, format = 'yyyy-MM-dd') : string {
   return date ? DateTime.fromJSDate(new Date(date)).toFormat(format) : undefined;
 }
+
+export const isAfterFourPM = (startDate: Date) => {
+  return isPastDeadline(startDate);
+};

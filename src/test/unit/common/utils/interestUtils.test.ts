@@ -10,7 +10,7 @@ import { Claim } from 'models/claim';
 import { deepCopy } from '../../../utils/deepCopy';
 import { mockClaim as mockResponse } from '../../../utils/mockClaim';
 import { YesNo } from 'form/models/yesNo';
-import { InterestClaimFromType, SameRateInterestType } from 'form/models/claimDetails';
+import {InterestClaimFromType, InterestEndDateType, SameRateInterestType} from 'form/models/claimDetails';
 import { InterestClaimOptionsType } from 'form/models/claim/interest/interestClaimOptionsType';
 import { Interest } from 'common/form/models/interest/interest';
 import { InterestStartDate } from 'common/form/models/interest/interestStartDate';
@@ -142,11 +142,12 @@ describe('Interest Utils', () => {
       sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_8_PC,
     };
     claim.interest.interestClaimOptions = InterestClaimOptionsType.SAME_RATE_INTEREST;
+    claim.interest.interestEndDate = InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
 
     //When
     const result = calculateInterestToDate(claim);
 
     //Then
-    expect(result).toEqual(13.2);
+    expect(result).toEqual(14.52);
   });
 });

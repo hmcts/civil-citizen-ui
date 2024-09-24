@@ -78,7 +78,7 @@ export const translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD = 
   const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
   const claimantAcceptedPaidAmount = claimantResponse.ccjRequest?.paidAmount;
   const ccjPaymentPaidSomeAmount = claimantAcceptedPaidAmount?.option === YesNo.YES ? (claimantAcceptedPaidAmount?.amount * 100).toString() : null;
-  const ccjJudgmentLipInterest = calculateInterestToDate(claim) || 0;
+  const ccjJudgmentLipInterest = claim.claimInterest === YesNo.YES ? calculateInterestToDate(claim) :  0;
   const paymentOption = claimantResponse.ccjRequest?.ccjPaymentOption?.type;
   return {
     ccjPaymentPaidSomeOption: toCCDYesNo(claimantAcceptedPaidAmount?.option),

@@ -7,6 +7,7 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {toCCDDJPaymentFrequency} from 'services/translation/response/convertToCCDDJPaymentFrequency';
 import {convertToPence} from 'services/translation/claim/moneyConversation';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
+import {YesNo} from 'form/models/yesNo';
 
 export const translateClaimantResponseDJToCCD = (claim: Claim): CCDClaim => {
   return {
@@ -15,7 +16,7 @@ export const translateClaimantResponseDJToCCD = (claim: Claim): CCDClaim => {
     //TO DO: Test the commented code creating the claim from CUI.
     //applicant1Represented: YesNoUpperCamelCase.NO,
     totalClaimAmount: claim.totalClaimAmount,
-    totalInterest: calculateInterestToDate(claim) || 0,
+    totalInterest: claim?.claimInterest === YesNo.YES ? calculateInterestToDate(claim) : 0,
     partialPayment: toCCDYesNo(claim.getHasDefendantPaid()),
     partialPaymentAmount: claim.hasDefendantPaid() ? convertToPence(claim.getDefendantPaidAmount()).toString() : undefined,
     paymentTypeSelection: toCCDDJPaymentOption( claim.getCCJPaymentOption()),
