@@ -5071,6 +5071,7 @@
       "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
+      "ADDITIONAL_APPLICATION_CCJ_DEBT":  "You cannot apply to confirm you've paid a county court (CCJ) debt as there is no active judgment",
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
