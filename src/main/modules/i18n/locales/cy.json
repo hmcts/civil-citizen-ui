@@ -3176,9 +3176,9 @@
         "UPLOAD_DOCUMENTS_3": " if you need to."
       },
       "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
-        "PAGE_TITLE": "Confirm you've paid a judgement debt",
+        "PAGE_TITLE": "Confirm you've paid a judgment debt",
         "TITLE": "Confirm you've paid a judgment debt",
-        "PARA_1": "If you've paid the debt from a county court judgment(CCJ), you can ask the court for proof of payment to share with banks and credit reference agencies. This is also known as requesting a certificate of cancellation or satisfaction.",
+        "PARA_1": "If you've paid the debt from a county court judgment (CCJ), you can ask the court for proof of payment to share with banks and credit reference agencies. This is also known as requesting a certificate of cancellation or satisfaction.",
         "PARA_2": "The court fee for this is £{{ applicationFee }}. This fee will need to be paid once you've submitted your request. Find out if you can get ",
         "HELP_WITH_FEE": "help with fees.",
         "PARA_TITLE_1": "If you paid within a month of the judgment",
