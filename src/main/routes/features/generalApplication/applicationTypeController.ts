@@ -20,6 +20,7 @@ import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {isCoSCEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
@@ -38,12 +39,13 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const form = new GenericForm(applicationType);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = await getBackLinkUrl(claimId, <string>req.query.linkFrom, cancelUrl);
+    let showCCJ  = await isCoSCEnabled() && claim.isDefendant();
     res.render(viewPath, {
       form,
       cancelUrl,
       backLinkUrl,
       isOtherSelected: applicationType.isOtherSelected(),
-      isCoSCEnabled: true, //TODO replace for isCoSCEnabled featureToggle value
+      showCCJ: showCCJ
     });
   } catch (error) {
     next(error);
@@ -51,10 +53,12 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
 }) as RequestHandler);
 
 applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
     let applicationType = null;
+
     const applicationIndex = queryParamNumber(req, 'index');
     if (req.body.option === ApplicationTypeOption.OTHER_OPTION) {
       applicationType = new ApplicationType(req.body.optionOther);
@@ -70,7 +74,8 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const backLinkUrl = await getBackLinkUrl(req.params.id, <string>req.query.linkFrom, cancelUrl);
 
     if (form.hasErrors()) {
-      res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  isCoSCEnabled: true});
+      let isCoSCFlagEnabled = await isCoSCEnabled();
+      res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  isCoSCEnabled: isCoSCFlagEnabled});
     } else {
       await saveApplicationType(redisKey, claim, applicationType, applicationIndex);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_AGREEMENT_FROM_OTHER_PARTY_URL));

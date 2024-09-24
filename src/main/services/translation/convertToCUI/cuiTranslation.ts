@@ -106,6 +106,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.claimType = ccdClaim.claimType;
   claim.respondentGaAppDetails = toCUIRespondentGADetails(ccdClaim.respondentSolGaAppDetails);
   claim.generalApplications = toCUIClaimGeneralApplications(ccdClaim.generalApplications);
+  claim.activeJudgment = toCUIGenericYesNo(ccdClaim.joIsLiveJudgmentExists);
   return claim;
 };
 

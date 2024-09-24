@@ -93,7 +93,7 @@
             {{ csrfProtection(csrf) }}
             {% set typeError = form.errorFor('option') %}
             <div class="govuk-form-group">
-            {% if isCoSCEnabled %}
+            {% if showCCJ === true %}
               {{ govukRadios({
                 idPrefix: "option",
                 name: "option",
@@ -147,9 +147,9 @@
                     }
                   },
                   {
-                    value: ApplicationTypeOption.CONFIRM_YOU_PAID_CCJ_DEBT,
+                    value: ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID,
                     html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CONFIRM_YOU_PAID') + '</strong>',
-                    checked: form.model.option === ApplicationTypeOption.CONFIRM_YOU_PAID_CCJ_DEBT,
+                    checked: form.model.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID,
                     hint: {
                     text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CONFIRM_YOU_PAID_DESCRIPTION')
                     }
