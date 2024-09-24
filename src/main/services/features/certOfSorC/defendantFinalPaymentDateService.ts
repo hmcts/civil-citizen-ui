@@ -4,7 +4,8 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('defendantFinalPaymentDateService');
 
-const getClaimantResponse = async (claimId: string): Promise<ClaimantResponse> => {
+
+const getDefendantResponse = async (claimId: string): Promise<ClaimantResponse> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
     const claimantResponse = new ClaimantResponse();
@@ -26,6 +27,6 @@ const saveFinalPaymentDateResponse = async (claimId: string, value: any, claiman
 };
 
 export {
-  getClaimantResponse,
+  getDefendantResponse,
   saveFinalPaymentDateResponse,
 };

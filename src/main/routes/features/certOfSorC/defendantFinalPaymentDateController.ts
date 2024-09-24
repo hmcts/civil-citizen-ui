@@ -1,7 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPaymentDate';
 import {
-  CCJ_CHECK_AND_SEND_URL,
   COSC_FINAL_PAYMENT_DATE_URL,
 } from 'routes/urls';
 import { saveFinalPaymentDateResponse} from 'services/features/certOfSorC/defendantFinalPaymentDateService';
@@ -39,8 +38,10 @@ defendantPaymentDateController
         renderView(form, res);
       } else {
         try {
+          console.log('Defendant final payment date:' + defendantPaymentDate.date.toDateString());
           await saveFinalPaymentDateResponse(generateRedisKey(req as unknown as AppRequest), form.model, 'defendantFinalPaymentDate', 'ccjRequest');
-          res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CHECK_AND_SEND_URL));
+          //ToDo: Replace for the next screen
+          res.redirect(constructResponseUrlWithIdParams(claimId, COSC_FINAL_PAYMENT_DATE_URL));
         } catch (error) {
           next(error);
         }
