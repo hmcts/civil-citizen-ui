@@ -21,7 +21,7 @@ import { getClaimById } from 'modules/utilityService';
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isCoSCEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
-import {YesNo} from "form/models/yesNo";
+import {YesNo} from 'form/models/yesNo';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
@@ -40,13 +40,13 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const form = new GenericForm(applicationType);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = await getBackLinkUrl(claimId, <string>req.query.linkFrom, cancelUrl);
-    let showCCJ  = await isCoSCEnabled() && claim.isDefendant();
+    const showCCJ  = await isCoSCEnabled() && claim.isDefendant();
     res.render(viewPath, {
       form,
       cancelUrl,
       backLinkUrl,
       isOtherSelected: applicationType.isOtherSelected(),
-      showCCJ: showCCJ
+      showCCJ: showCCJ,
     });
   } catch (error) {
     next(error);
@@ -74,7 +74,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const cancelUrl = await getCancelUrl( req.params.id, claim);
     const backLinkUrl = await getBackLinkUrl(req.params.id, <string>req.query.linkFrom, cancelUrl);
 
-    let isCoSCFlagEnabled = await isCoSCEnabled();
+    const isCoSCFlagEnabled = await isCoSCEnabled();
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  isCoSCEnabled: isCoSCFlagEnabled});
     } else {
