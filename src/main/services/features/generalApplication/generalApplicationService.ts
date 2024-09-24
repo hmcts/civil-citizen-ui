@@ -1,4 +1,6 @@
 import {
+  deleteFieldDraftClaimFromStore,
+  findClaimIdsbyUserId,
   getCaseDataFromStore,
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
@@ -10,9 +12,9 @@ import {
 } from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL, GA_APPLICATION_SUMMARY_URL, GA_RESPONSE_VIEW_APPLICATION_URL, GA_VIEW_APPLICATION_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {GA_APPLICATION_RESPONSE_SUMMARY_URL, GA_APPLICATION_SUMMARY_URL, GA_RESPONSE_VIEW_APPLICATION_URL, GA_VIEW_APPLICATION_URL} from 'routes/urls';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {CANCEL_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
@@ -51,6 +53,7 @@ import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/g
 import { isApplicationVisibleToRespondent } from './response/generalApplicationResponseService';
 import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 import { t } from 'i18next';
+import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -182,14 +185,9 @@ export const saveIfPartyWantsToUploadDoc = async (redisKey: string, wantToSaveDo
 };
 
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
-  if (claim.isClaimant()) {
-    const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
-    if (isCUIR2Enabled) {
-      return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-    }
-    return constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL);
-  }
-  return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+  return CANCEL_URL
+    .replace(':id', claimId)
+    .replace(':propertyName', 'generalApplication');
 };
 
 export function validateNoConsentOption(req: AppRequest, errors: ValidationError[], applicationTypeOption: string) {
@@ -487,14 +485,24 @@ export const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim
       || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
 };
 
+export const deleteGAFromClaimsByUserId = async (userId: string) : Promise<void> => {
+  if (!userId) return;
+  const claimsIds = await findClaimIdsbyUserId(userId);
+  claimsIds?.forEach(async (claimId: string) => {
+    const claim = await getCaseDataFromStore(claimId);
+    await deleteFieldDraftClaimFromStore(claimId, claim, 'generalApplication');
+  });
+};
+
 export const getViewApplicationUrl = (claimId: string, claim: Claim, application: ApplicationResponse, index: number ) : string => {
   const viewApplicationUrl = toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, application) ? GA_VIEW_APPLICATION_URL : GA_RESPONSE_VIEW_APPLICATION_URL;
   return `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id, viewApplicationUrl)}?index=${index + 1}`;
 };
 
-export const saveApplicationTypesToGaResponse = async (gaState: ApplicationState, gaRedisKey: string, applicationTypes: ApplicationTypeOption[]): Promise<void> => {
-  if (gaState === ApplicationState.AWAITING_RESPONDENT_RESPONSE) {
+export const saveApplicationTypesToGaResponse = async (isAllowedToRespond: boolean, gaRedisKey: string, applicationTypes: ApplicationTypeOption[], generalAppUrgencyRequirement: GeneralAppUrgencyRequirement): Promise<void> => {
+  if (isAllowedToRespond) {
     const gaResponse = await getDraftGARespondentResponse(gaRedisKey);
+    gaResponse.generalAppUrgencyRequirement = generalAppUrgencyRequirement;
     gaResponse.generalApplicationType = applicationTypes;
     await saveDraftGARespondentResponse(gaRedisKey, gaResponse);
   }
@@ -518,7 +526,7 @@ export const getApplicationCreatedDate = (ccdClaim: Claim, applicationId: string
   const ccdGeneralApplications = ccdClaim.generalApplications;
   for (const ccdGeneralApplication of ccdGeneralApplications) {
     if (ccdGeneralApplication.value.caseLink.CaseReference.toString() === applicationId.toString()){
-      return ccdGeneralApplication.value.generalAppSubmittedDateGAspec;
+      return ccdGeneralApplication.value.generalAppSubmittedDateGAspec.toString();
     }
   }
   return undefined;

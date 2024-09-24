@@ -7,9 +7,11 @@ import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
 import {
   ApplicationType,
-  ApplicationTypeOption, LinKFromValues,
+  ApplicationTypeOption,
+  LinKFromValues,
 } from 'common/models/generalApplication/applicationType';
 import {
+  deleteGAFromClaimsByUserId,
   getByIndex,
   getCancelUrl,
   saveApplicationType, validateAdditionalApplicationtType,
@@ -25,14 +27,14 @@ const viewPath = 'features/generalApplication/application-type';
 
 applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
+    const linkFrom = req.query.linkFrom;
+    if (linkFrom === LinKFromValues.start) {
+      await deleteGAFromClaimsByUserId(req.session?.user?.id);
+    }
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const applicationIndex = queryParamNumber(req, 'index');
-    let applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
-    if (req.query.linkFrom === LinKFromValues.agreementFromOtherParty) {
-      const applicationTypes = claim.generalApplication?.applicationTypes;
-      applicationTypeOption = applicationTypes[applicationTypes.length - 1].option;
-    }
+    const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
     const cancelUrl = await getCancelUrl(claimId, claim);
@@ -62,9 +64,6 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
       applicationType = new ApplicationType(req.body.optionOther);
     } else {
       applicationType = new ApplicationType(req.body.option);
-    }
-    if (req.query.linkFrom === LinKFromValues.agreementFromOtherParty) {
-      claim.generalApplication.applicationTypes = [];
     }
     const form = new GenericForm(applicationType);
     form.validateSync();

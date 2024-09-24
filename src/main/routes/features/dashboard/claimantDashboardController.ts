@@ -135,7 +135,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
   }
 
   if (showTellUsEndedLink) {
-    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_ENDED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
+    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_SETTLED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
   }
   if ((showGetDebtRespiteLink && claim.isClaimant())
     || (isCaseProgressionEnabled && showGetDebtRespiteLinkCaseProgression && claim.isClaimant())) {
