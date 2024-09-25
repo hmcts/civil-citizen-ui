@@ -11,7 +11,7 @@ import { AppRequest } from 'common/models/AppRequest';
 import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
-  LinKFromValues
+  LinKFromValues,
 } from 'common/models/generalApplication/applicationType';
 import { getByIndex, getByIndexOrLast, getCancelUrl, saveOrderJudge } from 'services/features/generalApplication/generalApplicationService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';

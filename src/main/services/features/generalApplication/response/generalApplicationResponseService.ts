@@ -1,7 +1,7 @@
 import {
   ApplicationTypeOption,
   ApplicationTypeOptionSelection,
-  getApplicationTypeOptionByTypeAndDescription
+  getApplicationTypeOptionByTypeAndDescription,
 } from 'common/models/generalApplication/applicationType';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {t} from 'i18next';

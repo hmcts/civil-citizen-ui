@@ -8,7 +8,7 @@ import {
 import {AppRequest} from 'common/models/AppRequest';
 import {
   ApplicationTypeOption, ApplicationTypeOptionSelection,
-  getApplicationTypeOptionByTypeAndDescription
+  getApplicationTypeOptionByTypeAndDescription,
 } from 'common/models/generalApplication/applicationType';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';

@@ -1,17 +1,17 @@
 import {NextFunction, Response, Router} from 'express';
 import {AppRequest} from 'common/models/AppRequest';
 import {
-    APPLICATION_TYPE_URL,
-    GA_ADD_ANOTHER_APPLICATION_URL,
-    GA_REQUESTING_REASON_URL,
-    GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
+  APPLICATION_TYPE_URL,
+  GA_ADD_ANOTHER_APPLICATION_URL,
+  GA_REQUESTING_REASON_URL,
+  GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {getCancelUrl, getLast} from 'services/features/generalApplication/generalApplicationService';
 import {
-    ApplicationTypeOptionSelection,
-    getApplicationTypeOptionByTypeAndDescription,
-    LinKFromValues
+  ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
+  LinKFromValues,
 } from 'common/models/generalApplication/applicationType';
 import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
