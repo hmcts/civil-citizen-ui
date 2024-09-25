@@ -1,4 +1,7 @@
 import {IsDefined} from 'class-validator';
+import {
+  selectedApplicationTypeByOptions,
+} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
 
 export class ApplicationType {
   @IsDefined({ message: 'ERRORS.APPLICATION_TYPE_REQUIRED' })
@@ -38,7 +41,7 @@ export enum ApplicationTypeOption {
   CONFIRM_CCJ_DEBT_PAID = 'CONFIRM_CCJ_DEBT_PAID',
 }
 
-export const GeneralApplicationTypesDisplayFromCCD: { [key in ApplicationTypeOption]: string } = {
+export const GeneralApplicationTypesDisplayFromCCDs: { [key in ApplicationTypeOption]: string } = {
   [ApplicationTypeOption.ADJOURN_HEARING]: 'Adjourn a hearing',
   [ApplicationTypeOption.AMEND_A_STMT_OF_CASE]: 'Amend a statement of case',
   [ApplicationTypeOption.EXTEND_TIME]: 'Extend time',
@@ -59,4 +62,21 @@ export const GeneralApplicationTypesDisplayFromCCD: { [key in ApplicationTypeOpt
 export const LinKFromValues = {
   start: 'start',
   addAnotherApp: 'addAnotherApp',
+};
+
+export enum ApplicationTypeOptionSelection {
+  BY_APPLICATION_TYPE,
+  BY_APPLICATION_TYPE_DESCRIPTION,
+  BY_APPLICATION_DISPLAY_FROM_CCD
+}
+export const getApplicationTypeOptionByTypeAndDescription = (applicationOption: ApplicationTypeOption, applicationTypeOptionSelection: ApplicationTypeOptionSelection) => {
+  const selectedApplicationTypeByOptionElement:[string, string, string] = selectedApplicationTypeByOptions[applicationOption];
+  switch (applicationTypeOptionSelection) {
+    case ApplicationTypeOptionSelection.BY_APPLICATION_TYPE:
+      return selectedApplicationTypeByOptionElement[0];
+    case  ApplicationTypeOptionSelection.BY_APPLICATION_TYPE_DESCRIPTION:
+      return selectedApplicationTypeByOptionElement[1];
+    default:
+      return selectedApplicationTypeByOptionElement[2];
+  }
 };

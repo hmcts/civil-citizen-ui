@@ -36,7 +36,7 @@ import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantR
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
 import {toCUIClaimantMediation} from 'services/translation/convertToCUI/convertToCUIClaimantMediation';
 import { RepaymentPlan } from 'common/models/repaymentPlan';
-import { ApplicationTypeOption, GeneralApplicationTypesDisplayFromCCD } from 'common/models/generalApplication/applicationType';
+import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
 import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 

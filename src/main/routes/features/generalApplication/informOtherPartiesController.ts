@@ -7,7 +7,10 @@ import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draf
 import {GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_APPLICATION_COSTS_URL, INFORM_OTHER_PARTIES_URL} from 'routes/urls';
 import { getCancelUrl, getLast, saveInformOtherParties } from 'services/features/generalApplication/generalApplicationService';
 import {informOtherPartiesGuard} from 'routes/guards/generalApplication/informOtherPartiesGuard';
-import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
+import {
+  ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
+} from 'models/generalApplication/applicationType';
 
 const viewPath = 'features/generalApplication/inform-other-parties';
 const informOtherPartiesController = Router();
@@ -24,7 +27,7 @@ const renderView = async (req: AppRequest, res: Response, form?: GenericForm<Inf
   res.render(viewPath, {
     cancelUrl,
     backLinkUrl,
-    applicationType: selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option],
+    applicationType: getApplicationTypeOptionByTypeAndDescription(getLast(claim.generalApplication?.applicationTypes)?.option,ApplicationTypeOptionSelection.BY_APPLICATION_TYPE ),
     form,
   });
 };

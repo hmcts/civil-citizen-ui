@@ -9,10 +9,11 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {CcdSupportRequirement} from 'models/ccdGeneralApplication/ccdSupportRequirement';
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
 import {documentIdExtractor} from 'common/utils/stringUtils';
-import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
+
 import {
-  selectedApplicationTypeDescription,
-} from 'models/generalApplication/applicationTypeConstants/selectedApplicationTypeDescription';
+  ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
+} from 'models/generalApplication/applicationType';
 
 export const addApplicationStatus = (
   application: ApplicationResponse,
@@ -40,7 +41,7 @@ export const addApplicationTypesRows = (
     application.case_data.generalAppType?.types?.forEach(
       (applicationType, index, arr) => {
         const applicationTypeDisplay =
-          selectedApplicationType[applicationType];
+            getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
 
         rows.push(
           summaryRow(
@@ -72,8 +73,8 @@ export const addApplicationTypesAndDescriptionRows = (
     application.case_data.generalAppType?.types?.forEach(
       (applicationType, index, arr) => {
         const applicationTypeDisplay =
-          selectedApplicationType[applicationType];
-        const applicationTypeDescription = selectedApplicationTypeDescription[applicationType];
+            getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
+        const applicationTypeDescription = getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE_DESCRIPTION);
 
         rows.push(
           summaryRow(
