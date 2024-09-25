@@ -22,6 +22,7 @@ import {
 import {CcdHearingDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import {getClaimById} from 'modules/utilityService';
 import { CcdGAMakeWithNoticeDocument } from 'common/models/ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
+import {CcdGeneralApplicationHearingDetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('../../../../../../main/app/client/gaServiceClient');
@@ -63,6 +64,24 @@ function setMockAdditionalDocuments() {
         'document_binary_url': 'http://dm-store:8080/documents/f0508c67-d3cf-4774-b3f3-0903f77d2664/binary',
       },
       'documentName': 'Test resp1',
+      'createdDatetime':  new Date('2024-08-01'),
+    },
+  }];
+}
+
+function setMockGaDraftDocuments(): CcdHearingDocument[] {
+  return [{
+    'id': '8e052cdd-0c56-452d-83ef-c5f60c5c6bd7',
+    'value': {
+      'createdBy': 'Civil',
+      'documentLink': {
+        'category_id': 'applications',
+        'document_url': 'http://dm-store:8080/documents/4c09a875-e128-4717-94a4-96baea954a1d',
+        'document_filename': 'Draft_application_2024-08-15 14:47:03.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/4c09a875-e128-4717-94a4-96baea954a1d/binary',
+      },
+      'documentName': 'Draft_application_2024-08-15 14:47:03.pdf',
+      'documentType': DocumentType.GENERAL_APPLICATION_DRAFT,
       'createdDatetime':  new Date('2024-08-01'),
     },
   }];
@@ -259,6 +278,7 @@ describe('View Application service', () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       const caseData = application.case_data;
       caseData.gaAddlDoc= setMockAdditionalDocuments();
+      caseData.gaDraftDocument = setMockGaDraftDocuments();
 
       mockGetApplication.mockResolvedValueOnce(application);
       //When
@@ -269,14 +289,55 @@ describe('View Application service', () => {
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-settlement-agreement.pdf'),
       );
-      const expectedResult = new DocumentsViewComponent('ApplicantDocuments', [expectedDocument]);
+      const expectedDraftDocument = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/4c09a875-e128-4717-94a4-96baea954a1d', 'Draft_application_2024-08-15 14:47:03.pdf'),
+      );
+      const expectedResult = new DocumentsViewComponent('ApplicantDocuments', [expectedDraftDocument,expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
-    it('should get data array if there is Respondent documents', async () => {
+    it('should get data array if there is draft and addl Respondent documents', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const respondentResponse = [{
+        value: {
+          generalAppRespondent1Representative: YesNoUpperCamelCase.NO,
+          gaHearingDetails: {} as CcdGeneralApplicationHearingDetails,
+          gaRespondentDetails: 'abc',
+          gaRespondentResponseReason: 'test',
+        },
+      }];
+      const caseData = application.case_data;
+      caseData.gaAddlDoc= setMockAdditionalDocuments();
+      caseData.gaDraftDocument = setMockGaDraftDocuments();
+      caseData.respondentsResponses = respondentResponse;
+
+      mockGetApplication.mockResolvedValueOnce(application);
+      //When
+      const result = getRespondentDocuments(application, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'Test resp1',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/f0508c67-d3cf-4774-b3f3-0903f77d2664', 'CIV_13420_test_results.docx'),
+      );
+      const expectedDraftDocument = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DRAFT_DOCUMENT',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/4c09a875-e128-4717-94a4-96baea954a1d', 'Draft_application_2024-08-15 14:47:03.pdf'),
+      );
+
+      const expectedResult = new DocumentsViewComponent('RespondentDocuments', [expectedDraftDocument, expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
+    it('should get data array if there is only addl Respondent documents', async () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       const caseData = application.case_data;
       caseData.gaAddlDoc= setMockAdditionalDocuments();
+      caseData.gaDraftDocument = setMockGaDraftDocuments();
 
       mockGetApplication.mockResolvedValueOnce(application);
       //When
@@ -290,6 +351,7 @@ describe('View Application service', () => {
       const expectedResult = new DocumentsViewComponent('RespondentDocuments', [expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
+
     it('should get data array if there is court order documents', async () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);

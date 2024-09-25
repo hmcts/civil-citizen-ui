@@ -29,7 +29,6 @@ import {documentIdExtractor} from 'common/utils/stringUtils';
 import { buildResponseFromCourtSection } from './responseFromCourtService';
 import { CourtResponseSummaryList } from 'common/models/generalApplication/CourtResponseSummary';
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
-import {isRespondentAllowedToRespond} from 'services/features/generalApplication/response/viewApplicationService';
 
 export type ViewApplicationSummaries = {
   summaryRows: SummaryRow[],
@@ -93,7 +92,7 @@ export const getApplicantDocuments = (applicationResponse : ApplicationResponse,
 
 export const getRespondentDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const respondentDocumentsArray: DocumentInformation[] = [];
-  if (isRespondentAllowedToRespond(applicationResponse)) {
+  if (applicationResponse.case_data.respondentsResponses != null && applicationResponse.case_data.respondentsResponses.length > 0) {
     respondentDocumentsArray.push(...getDraftDocument(applicationResponse, lang));
   }
   respondentDocumentsArray.push(...getAddlnDocuments(applicationResponse, lang, 'Respondent One'));
