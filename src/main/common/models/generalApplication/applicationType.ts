@@ -76,7 +76,9 @@ export const getApplicationTypeOptionByTypeAndDescription = (applicationOption: 
       return selectedApplicationTypeByOptionElement[0];
     case  ApplicationTypeOptionSelection.BY_APPLICATION_TYPE_DESCRIPTION:
       return selectedApplicationTypeByOptionElement[1];
-    default:
+    case ApplicationTypeOptionSelection.BY_APPLICATION_DISPLAY_FROM_CCD:
       return selectedApplicationTypeByOptionElement[2];
+    default:
+      return undefined;
   }
 };
