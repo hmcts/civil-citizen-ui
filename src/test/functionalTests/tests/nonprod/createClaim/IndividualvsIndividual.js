@@ -5,7 +5,7 @@ const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const { isDashboardServiceToggleEnabled } = require('../../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
-const { payClaimFee, hwfSubmission, updateHWFNum, hwfPartRemission, hwfMoreInfoRequired, hwfFullRemission } = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const { payClaimFee, hwfSubmission, updateHWFNum, hwfMoreInfoRequired, hwfFullRemission, waitForDefendantToRespond } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115;
 
@@ -100,7 +100,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
     claimInterestFlag = true;
     StandardInterest = false;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-    //await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
     await steps.updateClaimAmount(claimAmount, claimInterestFlag, StandardInterest, selectedHWF);
@@ -118,11 +118,6 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
       const notification = updateHWFNum();
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
     }
-    await api.submitHwfEventForUser(config.hwfEvents.partRemission);
-    if (isDashboardServiceEnabled) {
-      const notification = hwfPartRemission();
-      await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
-    }
     await api.submitHwfEventForUser(config.hwfEvents.moreInfoHWF);
     if (isDashboardServiceEnabled) {
       const notification = hwfMoreInfoRequired();
@@ -131,6 +126,11 @@ Scenario('Create Claim -  Individual vs Individual - small claims - with variabl
     await api.submitHwfEventForUser(config.hwfEvents.fullRemission);
     if (isDashboardServiceEnabled) {
       const notification = hwfFullRemission(claimFee);
+      await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
+    }
+    await api.submitHwfEventForUser(config.hwfEvents.feePayOutcome);
+    if (isDashboardServiceEnabled) {
+      const notification = await waitForDefendantToRespond();
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
     }
   }
