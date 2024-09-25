@@ -395,3 +395,4 @@ export const GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_SUBMITTED_URL = `${BASE_GENER
 export const TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT = '/testing-support/toggleFlag/:key/:value';
 const BASE_COSC_URL = `${BASE_GENERAL_APPLICATION_URL}/cosc`;
 export const COSC_FINAL_PAYMENT_DATE_URL = `${BASE_COSC_URL}/final-payment-date`;
+export const GA_DEBT_PAYMENT_EVIDENCE_COSC_URL =`${BASE_COSC_URL}/debt-payment-evidence`;

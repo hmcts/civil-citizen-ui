@@ -1,7 +1,9 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPaymentDate';
 import {
+  APPLICATION_TYPE_URL,
   COSC_FINAL_PAYMENT_DATE_URL,
+  GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
 } from 'routes/urls';
 import {
   defendantFinalPaymentDateService,
@@ -10,6 +12,8 @@ import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { AppRequest } from 'common/models/AppRequest';
+import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
+
 
 const paymentDateViewPath = 'features/certOfSorC/final-payment-date';
 
@@ -20,9 +24,12 @@ defendantPaymentDateController
   .get(
     COSC_FINAL_PAYMENT_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
       try {
+        const claimId = req.params.id;
+        const cancelUrl = await getCancelUrl(claimId, null);
+        const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL);
         const redisKey = generateRedisKey(<AppRequest>req);
         const defendantFinalPaymentDate = await defendantFinalPaymentDateService.getDefendantResponse(redisKey);
-        res.render( paymentDateViewPath, {
+        res.render( paymentDateViewPath, {  cancelUrl, backLinkUrl,
           form: new GenericForm(defendantFinalPaymentDate), title,
         });
       } catch (error) {
@@ -42,8 +49,7 @@ defendantPaymentDateController
       } else {
         try {
           await defendantFinalPaymentDateService.savePaymentDate(redisKey, defendantPaymentDate);
-          //ToDo: Replace for the next screen
-          res.redirect(constructResponseUrlWithIdParams(claimId, COSC_FINAL_PAYMENT_DATE_URL));
+          res.redirect(constructResponseUrlWithIdParams(claimId, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL));
         } catch (error) {
           next(error);
         }

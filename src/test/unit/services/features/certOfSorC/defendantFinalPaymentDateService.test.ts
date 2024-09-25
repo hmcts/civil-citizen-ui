@@ -149,7 +149,6 @@ describe('Payment Date service', () => {
       await form.validate();
       //Then
       expect(form.getErrors().length).toBe(0);
-      expect(form.getErrors()[0].property).toBe('date');
     });
 
     it('should raise an error if month greater than 12', async () => {
