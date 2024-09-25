@@ -1,12 +1,12 @@
-import {defendantFinalPaymentDateService} from 'services/features/certOfSorC/defendantFinalPaymentDateService';
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+import {defendantFinalPaymentDateService} from 'services/features/generalApplication/certOfSorC/defendantFinalPaymentDateService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
 import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPaymentDate';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 
 let paymentDate = new PaymentDate(undefined, undefined, undefined);

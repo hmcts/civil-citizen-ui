@@ -7,15 +7,14 @@ import {
 } from 'routes/urls';
 import {
   defendantFinalPaymentDateService,
-} from 'services/features/certOfSorC/defendantFinalPaymentDateService';
+} from 'services/features/generalApplication/certOfSorC/defendantFinalPaymentDateService';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
-import { AppRequest } from 'common/models/AppRequest';
+import { AppRequest } from 'models/AppRequest';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 
-
-const paymentDateViewPath = 'features/certOfSorC/final-payment-date';
+const paymentDateViewPath = 'features/generalApplication/certOfSorC/final-payment-date';
 
 const defendantPaymentDateController = Router();
 const title = 'PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.TITLE';
