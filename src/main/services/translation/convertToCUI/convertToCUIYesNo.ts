@@ -24,5 +24,3 @@ export const toCUIBooleanString = (value: YesNoUpperCamelCase) => {
     return value === YesNoUpperCamelCase.YES ? 'true' : 'false';
   }
 };
-
-

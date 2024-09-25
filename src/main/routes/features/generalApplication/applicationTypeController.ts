@@ -76,7 +76,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
 
     const showCCJ  = await isCoSCEnabled() && claim.isDefendant();
     if (form.hasErrors()) {
-      res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  showCCJ: showCCJ,});
+      res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  showCCJ: showCCJ});
     } else {
       await saveApplicationType(redisKey, claim, applicationType, applicationIndex);
       if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES) {
