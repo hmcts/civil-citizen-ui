@@ -9,6 +9,7 @@ import {debtPaymentOptions} from 'routes/features/generalApplication/certOfSorc/
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {DebtPaymentEvidence} from 'routes/features/generalApplication/certOfSorc/debtPaymentEvidence';
+import {saveDraftClaim} from "modules/draft-store/draftStoreService";
 
 const debtPaymentEvidenceController = Router();
 const debtPaymentEvidenceViewPath = 'features/certOfSorc/debt-payment-evidence';
@@ -46,21 +47,24 @@ debtPaymentEvidenceController.post(GA_DEBT_PAYMENT_EVIDENCE_URL,
       const claimId = req.params.id;
       const claim = await getClaimById(claimId, req, true);
       const cancelUrl = await getCancelUrl(claimId, claim);
-      const form = new GenericForm(new DebtPaymentEvidence(req.body.debtPaymentEvidenceOptions, req.body.provideDetails));
+      const form = new GenericForm(new DebtPaymentEvidence('', req.body.provideDetails));
       form.validateSync();
       if (form.hasErrors()) {
         renderView(form,  res, claimId, cancelUrl);
+      } else {
+        await saveDraftClaim(claimId, claim);
+        switch (form.model.evidence) {
+          case debtPaymentOptions.NO_EVIDENCE:
+            nextPageUrl = constructResponseUrlWithIdParams(claimId, CHECK_YOUR_ANSWERS_COSC_URL);
+            break;
+          default:
+            // This link is to be updated when merging all stories together for COSC
+            nextPageUrl = constructResponseUrlWithIdParams(claimId, UPLOAD_DOCUMENT_COSC_URL);
+            break;
+        }
+        res.redirect(nextPageUrl);
       }
-      switch (form.model.evidence) {
-        case debtPaymentOptions.NO_EVIDENCE:
-          nextPageUrl = constructResponseUrlWithIdParams(claimId, CHECK_YOUR_ANSWERS_COSC_URL);
-          break;
-        default:
-          // This link is to be updated when merging all stories together for COSC
-          nextPageUrl = constructResponseUrlWithIdParams(claimId, UPLOAD_DOCUMENT_COSC_URL);
-          break;
-      }
-      res.redirect(nextPageUrl);
+    //Todo Save in redis.
     } catch (error) {
       next(error);
     }
