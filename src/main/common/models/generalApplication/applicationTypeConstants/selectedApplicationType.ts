@@ -1,4 +1,4 @@
-import {ApplicationTypeOption} from "models/generalApplication/applicationType";
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 
 export const selectedApplicationType: Partial<{ [key in ApplicationTypeOption]: string; }> = {
   [ApplicationTypeOption.ADJOURN_HEARING]: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING',

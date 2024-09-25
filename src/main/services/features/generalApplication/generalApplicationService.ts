@@ -54,7 +54,7 @@ import { isApplicationVisibleToRespondent } from './response/generalApplicationR
 import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 import { t } from 'i18next';
 import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
-import {selectedApplicationType} from "models/generalApplication/applicationTypeConstants/selectedApplicationType";
+import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
