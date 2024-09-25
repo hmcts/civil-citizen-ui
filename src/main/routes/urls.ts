@@ -392,4 +392,5 @@ export const GA_MAKE_WITH_NOTICE_DOCUMENT_VIEW_URL = `${BASE_CASE_URL}/view-docu
 export const GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL = `${BASE_GENERAL_APPLICATION_URL}/:appId/upload-written-representation-docs`;
 export const GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL = `${BASE_GENERAL_APPLICATION_URL}/:appId/upload-written-representation-docs/check-and-send`;
 export const GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_SUBMITTED_URL = `${BASE_GENERAL_APPLICATION_URL}/:appId/upload-written-representation-docs/submitted`;
+export const GA_DEBT_PAYMENT_EVIDENCE_URL = `${BASE_CASE_URL}/debt-payment-evidence`;
 export const TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT = '/testing-support/toggleFlag/:key/:value';
