@@ -16,7 +16,7 @@ import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToC
 import {
   toCUIGenericYesNo,
   toCUIGenericYesNoFromUpperCase,
-  toCUIYesNo
+  toCUIYesNo,
 } from 'services/translation/convertToCUI/convertToCUIYesNo';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {
