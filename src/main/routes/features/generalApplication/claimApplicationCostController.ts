@@ -13,7 +13,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {claimApplicationCostGuard} from 'routes/guards/generalApplication/claimApplicationCostGuard';
-import {selectedApplicationType} from "models/generalApplication/applicationTypeConstants/selectedApplicationType";
+import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
 
 const claimApplicationCostController = Router();
 const viewPath = 'features/generalApplication/claim-application-cost';

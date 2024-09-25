@@ -19,7 +19,7 @@ import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
 import { UnavailableDateType } from 'models/generalApplication/unavailableDatesGaHearing';
 import { formatDateToFullDate } from 'common/utils/dateUtils';
-import {selectedApplicationType} from "models/generalApplication/applicationTypeConstants/selectedApplicationType";
+import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
 
 export const addApplicationTypesRows = (
   claimId: string,

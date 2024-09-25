@@ -19,7 +19,7 @@ import { GeneralApplication } from 'common/models/generalApplication/GeneralAppl
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
-import {selectedApplicationType} from "models/generalApplication/applicationTypeConstants/selectedApplicationType";
+import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
 
 const orderJudgeController = Router();
 const viewPath = 'features/generalApplication/order-judge';

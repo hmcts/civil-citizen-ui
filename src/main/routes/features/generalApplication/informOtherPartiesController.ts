@@ -7,7 +7,7 @@ import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draf
 import {GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_APPLICATION_COSTS_URL, INFORM_OTHER_PARTIES_URL} from 'routes/urls';
 import { getCancelUrl, getLast, saveInformOtherParties } from 'services/features/generalApplication/generalApplicationService';
 import {informOtherPartiesGuard} from 'routes/guards/generalApplication/informOtherPartiesGuard';
-import {selectedApplicationType} from "models/generalApplication/applicationTypeConstants/selectedApplicationType";
+import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
 
 const viewPath = 'features/generalApplication/inform-other-parties';
 const informOtherPartiesController = Router();

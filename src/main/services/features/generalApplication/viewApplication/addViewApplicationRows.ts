@@ -9,10 +9,10 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {CcdSupportRequirement} from 'models/ccdGeneralApplication/ccdSupportRequirement';
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
 import {documentIdExtractor} from 'common/utils/stringUtils';
-import {selectedApplicationType} from "models/generalApplication/applicationTypeConstants/selectedApplicationType";
+import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
 import {
-  selectedApplicationTypeDescription
-} from "models/generalApplication/applicationTypeConstants/selectedApplicationTypeDescription";
+  selectedApplicationTypeDescription,
+} from 'models/generalApplication/applicationTypeConstants/selectedApplicationTypeDescription';
 
 export const addApplicationStatus = (
   application: ApplicationResponse,

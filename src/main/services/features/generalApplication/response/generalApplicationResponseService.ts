@@ -24,7 +24,7 @@ import {
 } from 'common/models/generalApplication/applicationSummary';
 import {dateTimeFormat} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
-import {selectedApplicationType} from "models/generalApplication/applicationTypeConstants/selectedApplicationType";
+import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');

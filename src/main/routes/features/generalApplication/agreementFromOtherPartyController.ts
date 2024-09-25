@@ -12,7 +12,7 @@ import { getClaimById } from 'modules/utilityService';
 import { getCancelUrl, getLast, saveAgreementFromOtherParty, validateNoConsentOption} from 'services/features/generalApplication/generalApplicationService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {agreementFromOtherPartyGuard} from 'routes/guards/generalApplication/agreementFromOtherPartyGuard';
-import {selectedApplicationType} from "models/generalApplication/applicationTypeConstants/selectedApplicationType";
+import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
 
 const agreementFromOtherPartyController = Router();
 const viewPath = 'features/generalApplication/agreement-from-other-party';

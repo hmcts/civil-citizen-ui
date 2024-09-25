@@ -20,7 +20,7 @@ import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {requestingReasonControllerGuard} from 'routes/guards/generalApplication/requestReasonControllerGuard';
 import {Claim} from 'models/claim';
-import {selectedApplicationType} from "models/generalApplication/applicationTypeConstants/selectedApplicationType";
+import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
 
 const requestingReasonController = Router();
 const viewPath = 'features/generalApplication/requesting-reason';
