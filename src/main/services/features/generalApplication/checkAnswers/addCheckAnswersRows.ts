@@ -15,11 +15,11 @@ import {
   INFORM_OTHER_PARTIES_URL,
   ORDER_JUDGE_URL,
 } from 'routes/urls';
-import { selectedApplicationType } from 'models/generalApplication/applicationType';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
 import { UnavailableDateType } from 'models/generalApplication/unavailableDatesGaHearing';
 import { formatDateToFullDate } from 'common/utils/dateUtils';
+import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
 
 export const addApplicationTypesRows = (
   claimId: string,

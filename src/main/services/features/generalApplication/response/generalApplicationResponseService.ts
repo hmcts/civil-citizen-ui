@@ -1,4 +1,4 @@
-import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
@@ -24,6 +24,7 @@ import {
 } from 'common/models/generalApplication/applicationSummary';
 import {dateTimeFormat} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
+import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
