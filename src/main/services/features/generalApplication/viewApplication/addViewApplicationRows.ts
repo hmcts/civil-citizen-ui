@@ -3,13 +3,16 @@ import {t} from 'i18next';
 import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {selectedApplicationType, selectedApplicationTypeDescription} from 'models/generalApplication/applicationType';
 import {HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {CcdHearingType} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {CcdSupportRequirement} from 'models/ccdGeneralApplication/ccdSupportRequirement';
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {selectedApplicationType} from "models/generalApplication/applicationTypeConstants/selectedApplicationType";
+import {
+  selectedApplicationTypeDescription
+} from "models/generalApplication/applicationTypeConstants/selectedApplicationTypeDescription";
 
 export const addApplicationStatus = (
   application: ApplicationResponse,

@@ -1,6 +1,5 @@
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
-import { selectedApplicationType } from 'common/models/generalApplication/applicationType';
 import { InformOtherParties } from 'common/models/generalApplication/informOtherParties';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { NextFunction, RequestHandler, Response, Router } from 'express';
@@ -8,6 +7,7 @@ import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draf
 import {GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_APPLICATION_COSTS_URL, INFORM_OTHER_PARTIES_URL} from 'routes/urls';
 import { getCancelUrl, getLast, saveInformOtherParties } from 'services/features/generalApplication/generalApplicationService';
 import {informOtherPartiesGuard} from 'routes/guards/generalApplication/informOtherPartiesGuard';
+import {selectedApplicationType} from "models/generalApplication/applicationTypeConstants/selectedApplicationType";
 
 const viewPath = 'features/generalApplication/inform-other-parties';
 const informOtherPartiesController = Router();

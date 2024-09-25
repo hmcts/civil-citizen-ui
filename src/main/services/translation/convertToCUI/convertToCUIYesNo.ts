@@ -1,4 +1,4 @@
-import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
 import {GenericYesNo} from 'form/models/genericYesNo';
 
 export const toCUIGenericYesNo = (value: YesNoUpperCamelCase) : GenericYesNo=> {
@@ -22,6 +22,12 @@ export const toCUIBoolean = (value: YesNoUpperCamelCase) => {
 export const toCUIBooleanString = (value: YesNoUpperCamelCase) => {
   if (value) {
     return value === YesNoUpperCamelCase.YES ? 'true' : 'false';
+  }
+};
+
+export const toCUIGenericYesNoFromUpperCase = (value: YesNoUpperCase) : GenericYesNo=> {
+  if (value) {
+    return value === YesNoUpperCase.YES ? new GenericYesNo(YesNo.YES) : new GenericYesNo(YesNo.NO);
   }
 };
 

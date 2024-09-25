@@ -8,7 +8,7 @@ import {
 } from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
 import { getCancelUrl, getLast } from 'services/features/generalApplication/generalApplicationService';
-import {LinKFromValues, selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {LinKFromValues} from 'common/models/generalApplication/applicationType';
 import { GenericForm } from 'common/form/models/genericForm';
 import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
@@ -16,6 +16,7 @@ import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {addAnotherApplicationGuard} from 'routes/guards/generalApplication/addAnotherApplicationGuard';
 import {Claim} from 'models/claim';
+import {selectedApplicationType} from "models/generalApplication/applicationTypeConstants/selectedApplicationType";
 
 const addAnotherApplicationController = Router();
 const viewPath = 'features/generalApplication/add-another-application';

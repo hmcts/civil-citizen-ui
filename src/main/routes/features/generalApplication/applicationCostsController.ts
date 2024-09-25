@@ -6,13 +6,14 @@ import {
   GA_UPLOAD_N245_FORM_URL, INFORM_OTHER_PARTIES_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
-import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import { getApplicationCostsContent } from 'services/features/generalApplication/applicationCostsService';
 import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
+import {selectedApplicationType} from "models/generalApplication/applicationTypeConstants/selectedApplicationType";
 
 const applicationCostsController = Router();
 const viewPath = 'features/generalApplication/application-costs';

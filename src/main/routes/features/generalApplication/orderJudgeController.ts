@@ -8,7 +8,7 @@ import {
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
-import {LinKFromValues, selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {LinKFromValues} from 'common/models/generalApplication/applicationType';
 import { getByIndex, getByIndexOrLast, getCancelUrl, saveOrderJudge } from 'services/features/generalApplication/generalApplicationService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
@@ -19,6 +19,7 @@ import { GeneralApplication } from 'common/models/generalApplication/GeneralAppl
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
+import {selectedApplicationType} from "models/generalApplication/applicationTypeConstants/selectedApplicationType";
 
 const orderJudgeController = Router();
 const viewPath = 'features/generalApplication/order-judge';

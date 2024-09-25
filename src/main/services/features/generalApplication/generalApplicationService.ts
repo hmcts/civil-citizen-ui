@@ -8,7 +8,7 @@ import {GeneralApplication} from 'common/models/generalApplication/GeneralApplic
 import {
   ApplicationType,
   ApplicationTypeOption,
-  selectedApplicationType,
+
 } from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
@@ -54,6 +54,7 @@ import { isApplicationVisibleToRespondent } from './response/generalApplicationR
 import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 import { t } from 'i18next';
 import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
+import {selectedApplicationType} from "models/generalApplication/applicationTypeConstants/selectedApplicationType";
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
