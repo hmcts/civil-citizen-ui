@@ -1165,7 +1165,7 @@ describe('should check if the application type on the case is "Confirm CCJ debt 
       ${undefined}                                                                  | ${false}
       ${[ApplicationTypeOption.ADJOURN_HEARING]}                                    | ${false}
       ${[ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID]}                              | ${true}
-    `('should return $expected when selected types are $selectedApplicationTypes',
+    `('should return $expectedOutput when selected type is $selectedApplicationTypes',
     ({ selectedApplicationTypes, expectedOutput}) => {
       //When
       const claim = new Claim();
