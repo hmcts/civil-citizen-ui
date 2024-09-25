@@ -85,6 +85,7 @@ import {FlightDetails} from './flightDetails';
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 import { RespondentGaAppDetail } from './generalApplication/response/respondentGaAppDetail';
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
+import {CertificateOfSatisfactionOrCanceled} from 'models/generalApplication/CertificateOfSatisfactionOrCanceled';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -183,6 +184,7 @@ export class Claim {
   paymentSyncError?: boolean;
   responseClaimTrack?: string;
   generalApplications?: ClaimGeneralApplication[];
+  certificateOfSatisfactionOrCanceled?: CertificateOfSatisfactionOrCanceled;
 
   // Index signature to allow dynamic property access
   [key: string]: any;
