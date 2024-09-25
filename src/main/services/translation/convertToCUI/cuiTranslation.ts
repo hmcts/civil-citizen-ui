@@ -35,12 +35,12 @@ import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantR
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
 import {toCUIClaimantMediation} from 'services/translation/convertToCUI/convertToCUIClaimantMediation';
 import { RepaymentPlan } from 'common/models/repaymentPlan';
-import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
+import {
+  ApplicationTypeOption,
+  selectedApplicationTypeByOptions,
+} from 'common/models/generalApplication/applicationType';
 import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
-import {
-  selectedApplicationTypeByOptions,
-} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaimObj);
