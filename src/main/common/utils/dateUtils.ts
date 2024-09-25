@@ -68,7 +68,7 @@ export const addDaysToDate = (date: Date, value: number) => {
   return updatedDate;
 };
 
-export const minusDaysFromDate = (date: Date, value: number) => {
+export const subtractDaysFromDate = (date: Date, value: number) => {
   const updatedDate = new Date(date);
   updatedDate.setDate(updatedDate.getDate() - value);
   return updatedDate;
