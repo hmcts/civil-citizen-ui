@@ -2,7 +2,6 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPaymentDate';
 import {CertificateOfSatisfactionOrCanceled} from 'models/generalApplication/CertificateOfSatisfactionOrCanceled';
 
-
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('defendantFinalPaymentDateService');
 
