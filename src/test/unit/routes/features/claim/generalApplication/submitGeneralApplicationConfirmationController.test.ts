@@ -32,7 +32,7 @@ describe('GA submission confirmation controller', () => {
 
   describe('on GET', () => {
     beforeEach(() => {
-      jest.spyOn(launchDarkly, 'isCoScEnabled').mockResolvedValue(false);
+      jest.spyOn(launchDarkly, 'isCoSCEnabled').mockResolvedValue(false);
     });
     it('should return ga submit confirmation page', async () => {
       const claim = new Claim();
@@ -59,13 +59,13 @@ describe('GA submission confirmation controller', () => {
 
   describe('on GET CoSc', () => {
     beforeEach(() => {
-      jest.spyOn(launchDarkly, 'isCoScEnabled').mockResolvedValue(true);
+      jest.spyOn(launchDarkly, 'isCoSCEnabled').mockResolvedValue(true);
     });
 
     it('should return ga submit confirmation page for certificateOfSorC', async () => {
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
-      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.CONFIRM_YOU_PAID_CCJ_DEBT)];
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID)];
       claim.generalApplication.applicationFee = {
         calculatedAmountInPence: 100,
         code: 'test',

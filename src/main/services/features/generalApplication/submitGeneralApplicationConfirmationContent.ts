@@ -1,18 +1,17 @@
 import {Claim} from 'models/claim';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {t} from 'i18next';
-import {getCancelUrl, getLast} from 'services/features/generalApplication/generalApplicationService';
+import {getCancelUrl,isConfirmYouPaidCCJAppType} from 'services/features/generalApplication/generalApplicationService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION} from 'routes/urls';
-import {isCoScEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
-import {selectedApplicationType, selectedApplicationTypeDescription} from 'models/generalApplication/applicationType';
+import {isCoSCEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 export const getGeneralApplicationConfirmationContent = (async (claimId: string, genAppId: string, claim: Claim, lng: string, applicationFee: number) => {
   const dashboardUrl = await getCancelUrl(claimId, claim);
   let payApplicationFeeUrl = constructResponseUrlWithIdParams(claimId, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION);
   payApplicationFeeUrl = genAppId ? payApplicationFeeUrl + `?id=${genAppId}` : payApplicationFeeUrl;
   payApplicationFeeUrl = payApplicationFeeUrl + '&appFee=' + applicationFee;
-  const isCertOfScEnabled = await isCoScEnabled();
+  const isCertOfScEnabled = await isCoSCEnabled();
   const isCoScGeneralApplication = isConfirmYouPaidCcjDebtGA(isCertOfScEnabled, claim);
   if (isCoScGeneralApplication) {
     return new PageSectionBuilder()
@@ -38,8 +37,5 @@ export const getGeneralApplicationConfirmationContent = (async (claimId: string,
 });
 
 function isConfirmYouPaidCcjDebtGA(isCertOfSOrCEnabled: boolean, claim: Claim): boolean {
-  return isCertOfSOrCEnabled &&
-    selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option]
-              === selectedApplicationTypeDescription.CONFIRM_YOU_PAID_CCJ_DEBT;
+  return isCertOfSOrCEnabled && isConfirmYouPaidCCJAppType(claim);
 }
-
