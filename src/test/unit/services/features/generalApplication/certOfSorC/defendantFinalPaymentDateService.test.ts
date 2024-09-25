@@ -141,7 +141,7 @@ describe('Payment Date service', () => {
         OptionalDateFourDigitValidator: 'ERRORS.VALID_FOUR_DIGIT_YEAR',
       });
     });
-    it('should raise an no error if date in the past', async () => {
+    it('should not raise an error if date in the past', async () => {
       //Given
       paymentDate = new DefendantFinalPaymentDate('1990', '12', '1');
       //When
@@ -199,7 +199,7 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[0].constraints).toEqual({min: 'ERRORS.VALID_DAY'});
     });
 
-    it('should raise an no error if yesterday specified for date', async () => {
+    it('should not raise an error if yesterday specified for date', async () => {
       //Given
       const yesterday: Date = new Date(Date.now() - 1000 * 60 * 60 * 24);
       paymentDate = new DefendantFinalPaymentDate(yesterday.getFullYear().toString(), (yesterday.getMonth() + 1).toString(), yesterday.getDate().toString());
