@@ -5,15 +5,20 @@ import request from 'supertest';
 import {COSC_FINAL_PAYMENT_DATE_URL} from 'routes/urls';
 import {mockCivilClaim, mockNoStatementOfMeans} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {defendantFinalPaymentDateService} from '../../../../../main/services/features/generalApplication/certOfSorC/defendantFinalPaymentDateService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 
-describe('CCJ - defendant Payment date', () => {
+describe('CoSorS - defendant Payment date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
 
   beforeAll(() => {
+    jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
+    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
@@ -22,6 +27,8 @@ describe('CCJ - defendant Payment date', () => {
   describe('on GET', () => {
     it('should return payment date page', async () => {
       app.locals.draftStoreClient = mockNoStatementOfMeans;
+      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+      jest.spyOn(defendantFinalPaymentDateService,'getDefendantResponse').mockReturnValue(Promise.resolve(null));
       await request(app)
         .get(COSC_FINAL_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -40,6 +47,8 @@ describe('CCJ - defendant Payment date', () => {
 
     it('should return errors on no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
+      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+      jest.spyOn(defendantFinalPaymentDateService,'savePaymentDate');
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
         .send('year=')
@@ -55,6 +64,8 @@ describe('CCJ - defendant Payment date', () => {
     });
     it('should return errors on no input : invalid month', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
+      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+      jest.spyOn(defendantFinalPaymentDateService,'savePaymentDate');
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
         .send('year= 2023')
@@ -68,6 +79,8 @@ describe('CCJ - defendant Payment date', () => {
     });
 
     it('should not return error on date in the past', async () => {
+      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+      jest.spyOn(defendantFinalPaymentDateService,'savePaymentDate');
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
         .send('year=1999')
@@ -79,6 +92,8 @@ describe('CCJ - defendant Payment date', () => {
     });
 
     it('should show a message to add a valid payment date', async () => {
+      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+      jest.spyOn(defendantFinalPaymentDateService,'savePaymentDate');
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
         .send('year=9999')
