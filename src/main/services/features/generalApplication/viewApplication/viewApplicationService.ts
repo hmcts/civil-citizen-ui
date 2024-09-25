@@ -92,7 +92,7 @@ export const getApplicantDocuments = (applicationResponse : ApplicationResponse,
 
 export const getRespondentDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const respondentDocumentsArray: DocumentInformation[] = [];
-  if (applicationResponse.case_data.respondentsResponses != null && applicationResponse.case_data.respondentsResponses.length > 0) {
+  if (applicationResponse.case_data.respondentsResponses != null && applicationResponse.case_data.respondentsResponses?.length > 0) {
     respondentDocumentsArray.push(...getDraftDocument(applicationResponse, lang));
   }
   respondentDocumentsArray.push(...getAddlnDocuments(applicationResponse, lang, 'Respondent One'));

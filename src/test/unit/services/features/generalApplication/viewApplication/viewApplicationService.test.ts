@@ -105,6 +105,24 @@ function setMockHearingNoticeDocuments(): CcdHearingDocument[] {
   }];
 }
 
+function setMockHearingOrderDocuments(): CcdHearingDocument[] {
+  return [{
+    'id': '4810a582-2e16-48e9-8b64-9f96b4d12cc4',
+    'value': {
+      'createdBy': 'Civil',
+      'documentLink': {
+        'category_id': 'applications',
+        'document_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831',
+        'document_filename': 'Application_Hearing_order_2024-08-02 12:15:34.pdf',
+        'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831/binary',
+      },
+      'documentName': 'Application_Hearing_Notice_2024-08-02 12:15:34.pdf',
+      'documentType': DocumentType.HEARING_ORDER,
+      'createdDatetime':  new Date('2024-08-01'),
+    },
+  }];
+}
+
 function setMockGeneralOrderDocuments(): CcdHearingDocument[] {
   return [{
     'id': '4810a582-2e16-48e9-8b64-9f96b4d12cc4',
@@ -371,6 +389,26 @@ describe('View Application service', () => {
       const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
+
+    it('should get data array if there is court has hearing order documents', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.hearingNoticeDocument = setMockHearingOrderDocuments();
+
+      mockGetApplication.mockResolvedValueOnce(application);
+      //When
+      const result = getCourtDocuments(application, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf831', 'Application_Hearing_order_2024-08-02 12:15:34.pdf'),
+      );
+      const expectedResult = new DocumentsViewComponent('CourtDocument', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should get data array if there is general order documents', async () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);
