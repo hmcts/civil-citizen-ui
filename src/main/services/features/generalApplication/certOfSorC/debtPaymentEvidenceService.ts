@@ -1,7 +1,7 @@
-import {DebtPaymentEvidence} from 'routes/features/generalApplication/certOfSorc/debtPaymentEvidence';
+import {DebtPaymentEvidence} from 'models/generalApplication/debtPaymentEvidence';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {CertificateOfSatisfactionOrCanceled} from 'models/generalApplication/CertificateOfSatisfactionOrCanceled';
-import {debtPaymentOptions} from "routes/features/generalApplication/certOfSorc/debtPaymentOptions";
+import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 
 export const saveDebtPaymentEvidence = async (claimId: string, debtPaymentEvidence: DebtPaymentEvidence) => {
   const caseData = await getCaseDataFromStore(claimId);

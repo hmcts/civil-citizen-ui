@@ -1,5 +1,5 @@
 import {IsDefined, IsIn, IsNotEmpty, ValidateIf} from 'class-validator';
-import {debtPaymentOptions} from 'routes/features/generalApplication/certOfSorc/debtPaymentOptions';
+import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 
 export class DebtPaymentEvidence {
   @IsDefined({message: 'ERRORS.SELECT_EVIDENCE_DEBT_PAYMENT'})
@@ -14,5 +14,4 @@ export class DebtPaymentEvidence {
     this.evidence = evidence;
     this.provideDetails = provideDetails;
   }
-
 }

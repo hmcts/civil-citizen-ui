@@ -5,10 +5,10 @@ import {
 } from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
-import {debtPaymentOptions} from 'routes/features/generalApplication/certOfSorc/debtPaymentOptions';
+import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
-import {DebtPaymentEvidence} from 'routes/features/generalApplication/certOfSorc/debtPaymentEvidence';
+import {DebtPaymentEvidence} from 'models/generalApplication/debtPaymentEvidence';
 import {saveDebtPaymentEvidence} from 'services/features/generalApplication/certOfSorC/debtPaymentEvidenceService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';

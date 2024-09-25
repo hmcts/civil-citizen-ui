@@ -4,22 +4,16 @@
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
-{% from "../../macro/error-summary.njk" import errorSummary %}
 {% from "../../macro/button.njk" import addButton %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
-
-{% block content %}
+{% block nestedContent %}
   <div class="govuk-width-container">
-    {% if form.hasErrors() %}
-      {{ errorSummary(form.getErrors(), t) }}
-    {% endif %}
     <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
           <span class="govuk-caption-l">{{ t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.CONFIRM_PAID') }}</span>
           <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_HAVE_EVIDENCE') }}</h1>
           <p class="govuk-body">
@@ -43,6 +37,7 @@
               {{ govukTextarea({
                 name: "provideDetails",
                 id: "provideDetails",
+                value: form.model.provideDetails,
                 classes:"govuk-!-width-three-quarters",
                 label: {
                   text: t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.PROVIDE_DETAILS'),
@@ -96,9 +91,8 @@
             <div class="form-group">
               {{ addButton(t, 'CONTINUE',cancelUrl) }}
             </div>
-
-          </div>
-        </div>
+          </form>
+      </div>
     </main>
   </div>
 {% endblock %}

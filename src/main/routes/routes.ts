@@ -421,7 +421,7 @@ import respondAddInfoController
 import respondWrittenRepController
   from 'routes/features/generalApplication/writtenRepresentationDocs/respondToWrittenRepController';
 import debtPaymentEvidenceController
-  from "routes/features/generalApplication/certOfSorc/debtPaymentEvidenceController";
+  from 'routes/features/generalApplication/certOfSorc/debtPaymentEvidenceController';
 
 export default [
   homeController,
