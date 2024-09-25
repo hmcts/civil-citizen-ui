@@ -178,9 +178,4 @@ ${[undefined]}      | ${1}
       expect(form.getErrors().length).toBe(0);
     });
   });
-  describe('Exception Handling', () => {
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-  });
 });
