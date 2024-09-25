@@ -116,7 +116,7 @@ class createGAAppSteps {
     await submitGAConfirmationPage.verifyPageContent();
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(3);
+    I.wait(5);
 
     await applyHelpFeeSelectionPage.verifyPageContent();
     await applyHelpFeeSelectionPage.nextAction('No');
