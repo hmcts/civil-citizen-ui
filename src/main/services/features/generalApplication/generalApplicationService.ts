@@ -7,7 +7,7 @@ import {
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {
   ApplicationType,
-  ApplicationTypeOption,
+  ApplicationTypeOption, ApplicationTypeOptionSelection, getApplicationTypeOptionByTypeAndDescription,
 
 } from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
@@ -54,7 +54,6 @@ import { isApplicationVisibleToRespondent } from './response/generalApplicationR
 import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 import { t } from 'i18next';
 import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
-import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -284,7 +283,7 @@ export const saveStatementOfTruth = async (claimId: string, statementOfTruth: St
 export const getDynamicHeaderForMultipleApplications = (claim: Claim): string => {
   const applicationTypes = claim.generalApplication?.applicationTypes;
   return (applicationTypes?.length === 1)
-    ? selectedApplicationType[applicationTypes[0].option]
+    ? getApplicationTypeOptionByTypeAndDescription(applicationTypes[0].option, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE)
     : 'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION';
 };
 

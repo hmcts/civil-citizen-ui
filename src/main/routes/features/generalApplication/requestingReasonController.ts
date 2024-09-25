@@ -20,7 +20,10 @@ import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {requestingReasonControllerGuard} from 'routes/guards/generalApplication/requestReasonControllerGuard';
 import {Claim} from 'models/claim';
-import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
+import {
+  ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
+} from 'models/generalApplication/applicationType';
 
 const requestingReasonController = Router();
 const viewPath = 'features/generalApplication/requesting-reason';
@@ -35,7 +38,7 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, requestingReasonControl
     const applicationTypeOption = getByIndexOrLast(generalApplication?.applicationTypes, applicationIndex)?.option;
     const requestingReasonText = getByIndex(generalApplication?.requestingReasons, applicationIndex)?.text;
     const requestingReason = new RequestingReason(requestingReasonText);
-    const applicationType = selectedApplicationType[applicationTypeOption];
+    const applicationType = getApplicationTypeOptionByTypeAndDescription(applicationTypeOption, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
     const contentList = buildRequestingReasonPageContent(applicationTypeOption, lng);
     const backLinkUrl = getBackLinkUrl(claimId, claim);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
@@ -71,7 +74,7 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, requestingReasonContro
         form,
         cancelUrl,
         backLinkUrl,
-        applicationType: selectedApplicationType[applicationTypeOption],
+        applicationType: getApplicationTypeOptionByTypeAndDescription(applicationTypeOption,ApplicationTypeOptionSelection.BY_APPLICATION_TYPE ),
         contentList,
       });
     } else {

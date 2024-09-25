@@ -19,7 +19,10 @@ import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
 import { UnavailableDateType } from 'models/generalApplication/unavailableDatesGaHearing';
 import { formatDateToFullDate } from 'common/utils/dateUtils';
-import {selectedApplicationType} from 'models/generalApplication/applicationTypeConstants/selectedApplicationType';
+import {
+  ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
+} from 'models/generalApplication/applicationType';
 
 export const addApplicationTypesRows = (
   claimId: string,
@@ -34,7 +37,7 @@ export const addApplicationTypesRows = (
     claim.generalApplication?.applicationTypes?.forEach(
       (applicationType, index, arr) => {
         const applicationTypeDisplay =
-          selectedApplicationType[applicationType.option];
+            getApplicationTypeOptionByTypeAndDescription(applicationType.option, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
         const href = `${constructResponseUrlWithIdParams(
           claimId,
           APPLICATION_TYPE_URL,
