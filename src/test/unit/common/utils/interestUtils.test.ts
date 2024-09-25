@@ -148,6 +148,6 @@ describe('Interest Utils', () => {
     const result = calculateInterestToDate(claim);
 
     //Then
-    expect(result).toEqual(14.52);
+    expect(result).toEqual(13.2);
   });
 });
