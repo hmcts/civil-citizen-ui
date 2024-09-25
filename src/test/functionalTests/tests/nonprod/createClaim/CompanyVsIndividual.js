@@ -9,9 +9,11 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115, claimantPartyType = 'Company';
 
-Feature('Create Lip v Lip claim - Company vs Individual @claimCreation').tag('@nightly-regression-r2');
+const createGAAppSteps = require('../../../citizenFeatures/response/steps/createGAAppSteps');
 
-Scenario('Create Claim -  Company vs Individual - small claims - no interest - no hwf', async ({I, api}) => {
+Feature('Create Lip v Lip claim - Company vs Individual @claimCreation ').tag('@nightly-regression-r2');
+
+Scenario('Create Claim -  Company vs Individual - small claims - no interest - no hwf - GA (Ask for more time)', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     selectedHWF = false;
     claimInterestFlag = false;
@@ -20,6 +22,7 @@ Scenario('Create Claim -  Company vs Individual - small claims - no interest - n
     const defaultClaimAmount = 9000;
     const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+    await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
     await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await steps.createClaimDraftViaTestingSupport();
     await steps.addCompanyClaimant();
@@ -42,6 +45,16 @@ Scenario('Create Claim -  Company vs Individual - small claims - no interest - n
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
     }
   }
+  await api.assignToLipDefendant(caseRef);
+  console.log('Creating GA app as claimant');
+  await I.amOnPage('/dashboard');
+  await I.click(legacyCaseReference);
+  await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v mr defendant person');
+  console.log('Creating GA app as defendant');
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(legacyCaseReference);
+  await createGAAppSteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v mr defendant person');
 });
 
 Scenario('Create Claim -  Company vs Individual - small claims - with standard interest - no hwf', async ({I, api}) => {
