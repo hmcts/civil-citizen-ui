@@ -3,8 +3,6 @@
 @import './citizen-ui-colours';
 
 .moj-add-another {
-
-  // sass-lint:disable class-name-format
   &__remove-button {
     display: none;
   }
@@ -17,7 +15,6 @@
     position: relative;
   }
 
-  // sass-lint:disable property-sort-order
   .moj-add-another__remove-button {
     display: block;
     position: absolute;
@@ -38,7 +35,8 @@
 .govuk-section-break--visible--l {
   width: 100%;
 }
-@media (min-width: 40.0625em) {
+
+@media (min-width: 40.0625em) { /* stylelint-disable-line media-feature-range-notation */
   .govuk-section-break--visible--l {
     width: 120%;
   }
@@ -91,8 +89,7 @@
 
 .language {
   float: right;
-  // sass-lint:disable zero-unit
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 .show-more-block {
@@ -154,9 +151,11 @@
 
 @mixin bottom-bordered($govuk-color, $width, $margin, $padding) {
   border-bottom: $width solid $govuk-color;
+
   @if margin != null {
     margin: $margin;
   }
+
   @if $padding != null {
     padding: $padding;
   }
@@ -164,9 +163,11 @@
 
 @mixin top-bordered($govuk-color, $width, $margin, $padding) {
   border-top: $width solid $govuk-color;
+
   @if margin != null {
     margin: $margin;
   }
+
   @if $padding != null {
     padding: $padding;
   }
@@ -235,7 +236,7 @@
   }
 }
 
-@keyframes dotAnimation {
+@keyframes dotAnimation { /* stylelint-disable-line keyframes-name-pattern */
   0% { content: '.'; }
   20% { content: '..'; }
   40% { content: '...'; }
@@ -284,7 +285,6 @@
   }
 }
 
-// sass-lint:disable nesting-depth
 .dashboard-notification {
   .govuk-notification-banner {
     .govuk-notification-banner__content {
@@ -293,4 +293,70 @@
       }
     }
   }
+}
+
+.hmcts-banner {
+  border: 5px solid #1d70b8;
+  color: #1d70b8;
+  font-size: 0;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.hmcts-banner-icon {
+  fill: currentColor;
+  float: left;
+  margin-right: 10px;
+}
+
+.hmcts-banner-message {
+  color: #0b0c0c;
+  display: block;
+  font-family: 'GDS Transport', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.25;
+  overflow: hidden;
+
+  h2 {
+    margin-bottom: 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  p {
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+@media print {
+  .hmcts-banner-message {
+    font-size: 14pt;
+    line-height: 1.15;
+  }
+}
+
+@media (min-width: 40.0625em) {
+  .hmcts-banner-message {
+    font-size: 19px;
+    line-height: 1.31579;
+  }
+}
+
+.hmcts-banner-assistive {
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }

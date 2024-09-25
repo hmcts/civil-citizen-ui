@@ -12,6 +12,7 @@ import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import { decode } from 'punycode';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
 import { ApplicationResponse, JudicialDecisionOptions } from 'common/models/generalApplication/applicationResponse';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -58,12 +59,28 @@ describe('General Application - Application costs', () => {
     };
 
     it('should return page', async () => {
+      const ccdClaim = new Claim();
+      ccdClaim.generalApplications = [
+        {
+          'id': 'test',
+          'value': {
+            'caseLink': {
+              'CaseReference': '1234567890',
+            },
+            'generalAppSubmittedDateGAspec': new Date('2024-05-29T14:39:28.483971'),
+          },
+        },
+      ];
+
       mockGetCaseData.mockImplementation(async () => {
         return new Claim();
       });
       jest
         .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
         .mockResolvedValueOnce([applicationMock]);
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValue(ccdClaim);
 
       await request(app)
         .get(GA_APPLICATION_SUMMARY_URL)

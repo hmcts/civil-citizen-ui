@@ -1,4 +1,6 @@
 import {
+  deleteFieldDraftClaimFromStore,
+  findClaimIdsbyUserId,
   getCaseDataFromStore,
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
@@ -10,15 +12,15 @@ import {
 } from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
-import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {GA_APPLICATION_RESPONSE_SUMMARY_URL, GA_APPLICATION_SUMMARY_URL, GA_RESPONSE_VIEW_APPLICATION_URL, GA_VIEW_APPLICATION_URL} from 'routes/urls';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {CANCEL_URL} from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ValidationError} from 'class-validator';
 import {InformOtherParties} from 'common/models/generalApplication/informOtherParties';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {OrderJudge} from 'common/models/generalApplication/orderJudge';
 import {UnavailableDatesGaHearing} from 'models/generalApplication/unavailableDatesGaHearing';
@@ -48,15 +50,18 @@ import {ApplyHelpFeesReferenceForm} from 'form/models/caseProgression/hearingFee
 import {toCCDYesNo} from 'services/translation/response/convertToCCDYesNo';
 import {getClaimById} from 'modules/utilityService';
 import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
+import { isApplicationVisibleToRespondent } from './response/generalApplicationResponseService';
+import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
+import { t } from 'i18next';
+import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/urgencyRequirement';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 const baseUrl: string = config.get<string>('services.generalApplication.url');
 const generalApplicationClient = new GaServiceClient(baseUrl);
 
-export const saveApplicationType = async (claimId: string, applicationType: ApplicationType, index?: number): Promise<void> => {
+export const saveApplicationType = async (claimId: string, claim: Claim, applicationType: ApplicationType, index?: number): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(claimId, true);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     updateByIndexOrAppend(claim.generalApplication?.applicationTypes, applicationType, index);
     await saveDraftClaim(claimId, claim);
@@ -180,14 +185,9 @@ export const saveIfPartyWantsToUploadDoc = async (redisKey: string, wantToSaveDo
 };
 
 export const getCancelUrl = async (claimId: string, claim: Claim): Promise<string> => {
-  if (claim.isClaimant()) {
-    const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
-    if (isCUIR2Enabled) {
-      return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-    }
-    return constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL);
-  }
-  return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
+  return CANCEL_URL
+    .replace(':id', claimId)
+    .replace(':propertyName', 'generalApplication');
 };
 
 export function validateNoConsentOption(req: AppRequest, errors: ValidationError[], applicationTypeOption: string) {
@@ -414,6 +414,30 @@ export const saveRespondentWantToUploadDoc = async (redisKey: string, wantToUplo
   }
 };
 
+export const saveAdditionalText = async (redisKey: string, additionalText: string, wantToUploadAddlDocuments: YesNo): Promise<void> => {
+  try {
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.wantToUploadAddlDocuments = wantToUploadAddlDocuments;
+    gaResponse.additionalText = additionalText;
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveWrittenRepText = async (redisKey: string, writtenRepText: string, wantToUploadAddlDocuments: YesNo): Promise<void> => {
+  try {
+    const gaResponse = await getDraftGARespondentResponse(redisKey);
+    gaResponse.wantToUploadAddlDocuments = wantToUploadAddlDocuments;
+    gaResponse.writtenRepText = writtenRepText;
+    await saveDraftGARespondentResponse(redisKey, gaResponse);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
   try {
     const claim = await getClaimById(req.params.id, req, true);
@@ -449,10 +473,50 @@ export const toggleViewApplicationBuilderBasedOnUserAndApplicant = (claim: Claim
   return ((claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES)
       || (!claim.isClaimant() && application.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO));
 };
-export const saveApplicationTypesToGaResponse = async (gaState: ApplicationState, gaRedisKey: string, applicationTypes: ApplicationTypeOption[]): Promise<void> => {
-  if (gaState === ApplicationState.AWAITING_RESPONDENT_RESPONSE) {
+
+export const deleteGAFromClaimsByUserId = async (userId: string) : Promise<void> => {
+  if (!userId) return;
+  const claimsIds = await findClaimIdsbyUserId(userId);
+  claimsIds?.forEach(async (claimId: string) => {
+    const claim = await getCaseDataFromStore(claimId);
+    await deleteFieldDraftClaimFromStore(claimId, claim, 'generalApplication');
+  });
+};
+
+export const getViewApplicationUrl = (claimId: string, claim: Claim, application: ApplicationResponse, index: number ) : string => {
+  const viewApplicationUrl = toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, application) ? GA_VIEW_APPLICATION_URL : GA_RESPONSE_VIEW_APPLICATION_URL;
+  return `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id, viewApplicationUrl)}?index=${index + 1}`;
+};
+
+export const saveApplicationTypesToGaResponse = async (isAllowedToRespond: boolean, gaRedisKey: string, applicationTypes: ApplicationTypeOption[], generalAppUrgencyRequirement: GeneralAppUrgencyRequirement): Promise<void> => {
+  if (isAllowedToRespond) {
     const gaResponse = await getDraftGARespondentResponse(gaRedisKey);
+    gaResponse.generalAppUrgencyRequirement = generalAppUrgencyRequirement;
     gaResponse.generalApplicationType = applicationTypes;
     await saveDraftGARespondentResponse(gaRedisKey, gaResponse);
   }
+};
+
+export const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
+  if(isGAFlagEnable) {
+    let applications = await generalApplicationClient.getApplicationsByCaseId(req.params.id, req);
+    applications = claim.isClaimant() ? applications : applications?.filter(isApplicationVisibleToRespondent);
+    const allApplicationUrl = claim.isClaimant() ? GA_APPLICATION_SUMMARY_URL : GA_APPLICATION_RESPONSE_SUMMARY_URL;
+    if(applications && applications.length > 0) {
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
+        url: constructResponseUrlWithIdParams(req.params.id, allApplicationUrl),
+      };
+    }
+  }
+};
+
+export const getApplicationCreatedDate = (ccdClaim: Claim, applicationId: string): string => {
+  const ccdGeneralApplications = ccdClaim.generalApplications;
+  for (const ccdGeneralApplication of ccdGeneralApplications) {
+    if (ccdGeneralApplication.value.caseLink.CaseReference.toString() === applicationId.toString()){
+      return ccdGeneralApplication.value.generalAppSubmittedDateGAspec.toString();
+    }
+  }
+  return undefined;
 };

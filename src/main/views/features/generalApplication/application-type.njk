@@ -64,9 +64,9 @@
         }
       },
       {
-        value: ApplicationTypeOption.PROCEEDS_IN_HERITAGE,
+        value: ApplicationTypeOption.OTHER,
         html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_DO_SOMETHING') + '</strong>',
-        checked: form.model.option === ApplicationTypeOption.PROCEEDS_IN_HERITAGE,
+        checked: form.model.option === ApplicationTypeOption.OTHER,
         hint: {
           text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_DO_SOMETHING_DESCRIPTION')
         }
@@ -146,7 +146,7 @@
                     }
                   },
                   {
-                    value: ApplicationTypeOption.OTHER,
+                    value: ApplicationTypeOption.OTHER_OPTION,
                     html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.OTHER') + '</strong>',
                     checked: isOtherSelected,
                     conditional: {

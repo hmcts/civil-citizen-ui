@@ -24,12 +24,16 @@ import {
   DocumentsViewComponent,
 } from 'form/models/documents/DocumentsViewComponent';
 import {CcdDocument} from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
-import {
-  CASE_DOCUMENT_VIEW_URL,
-} from 'routes/urls';
+import {buildResponseSummaries} from './addViewApplicationResponseRows';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import { buildResponseFromCourtSection } from './responseFromCourtService';
 import { CourtResponseSummaryList } from 'common/models/generalApplication/CourtResponseSummary';
+import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
+
+export type ViewApplicationSummaries = {
+  summaryRows: SummaryRow[],
+  responseSummaries?: SummaryRow[],
+}
 
 const buildApplicationSections = (application: ApplicationResponse, lang: string ): SummaryRow[] => {
   return [
@@ -62,17 +66,20 @@ const buildViewApplicationToRespondentSections = (application: ApplicationRespon
   ];
 };
 
-export const getApplicationSections = async (req: AppRequest, applicationId: string, lang?: string): Promise<SummaryRow[]> => {
+export const getApplicationSections = async (req: AppRequest, applicationId: string, lang?: string): Promise<ViewApplicationSummaries> => {
   const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
   const claim = await getClaimById(req.params.id, req, true);
-  return toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, applicationResponse) ? buildApplicationSections(applicationResponse, lang)
-    : buildViewApplicationToRespondentSections(applicationResponse, lang);
+  return toggleViewApplicationBuilderBasedOnUserAndApplicant(claim, applicationResponse)
+    ? { summaryRows: buildApplicationSections(applicationResponse, lang),
+      responseSummaries: buildResponseSummaries(applicationResponse.case_data, lang) }
+    : { summaryRows: buildViewApplicationToRespondentSections(applicationResponse, lang) };
 };
 
 export const getCourtDocuments = (applicationResponse : ApplicationResponse, lang: string) => {
   const courtDocumentsArray: DocumentInformation[] = [];
   courtDocumentsArray.push(...getHearingNotice(applicationResponse, lang));
   courtDocumentsArray.push(...getHearingOrder(applicationResponse, lang));
+  courtDocumentsArray.push(...getGeneralOrder(applicationResponse, lang));
   return new DocumentsViewComponent('CourtDocument', courtDocumentsArray);
 };
 
@@ -107,7 +114,7 @@ const getAddlnDocuments = (applicationResponse: ApplicationResponse, lang: strin
   return addlnDocInfoArray;
 };
 
-const getHearingOrder = (applicationResponse: ApplicationResponse, lang: string) => {
+export const getHearingOrder = (applicationResponse: ApplicationResponse, lang: string) => {
   const hearingOrderDocs = applicationResponse?.case_data?.hearingOrderDocument;
   let hearingOrderDocInfoArray : DocumentInformation[] = [];
   if(hearingOrderDocs) {
@@ -120,7 +127,7 @@ const getHearingOrder = (applicationResponse: ApplicationResponse, lang: string)
   return hearingOrderDocInfoArray;
 };
 
-const getHearingNotice = (applicationResponse: ApplicationResponse, lang: string) => {
+export const getHearingNotice = (applicationResponse: ApplicationResponse, lang: string) => {
   const hearingNoticeDocs = applicationResponse?.case_data?.hearingNoticeDocument;
   let hearingOrderDocInfoArray : DocumentInformation[] = [];
   if(hearingNoticeDocs) {
@@ -131,6 +138,19 @@ const getHearingNotice = (applicationResponse: ApplicationResponse, lang: string
     });
   }
   return hearingOrderDocInfoArray;
+};
+
+export const getGeneralOrder = (applicationResponse: ApplicationResponse, lang: string) => {
+  const generalOrderDocs = applicationResponse?.case_data?.generalOrderDocument;
+  let generalOrderDocInfoArray : DocumentInformation[] = [];
+  if(generalOrderDocs) {
+    generalOrderDocInfoArray = generalOrderDocs.sort((item1,item2) => {
+      return new Date(item2?.value?.createdDatetime).getTime() - new Date(item1?.value?.createdDatetime).getTime();
+    }).map(hearingOrder => {
+      return setUpDocumentLinkObject(hearingOrder?.value?.documentLink, hearingOrder?.value?.createdDatetime, applicationResponse?.id, lang, 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER');
+    });
+  }
+  return generalOrderDocInfoArray;
 };
 
 const setUpDocumentLinkObject = (document: CcdDocument, documentDate: Date, applicationId: string, lang: string, fileName: string) => {

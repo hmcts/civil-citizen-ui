@@ -8,11 +8,13 @@ import {
   CCJ_PAID_AMOUNT_URL,
   CCJ_REPAYMENT_PLAN_CLAIMANT_URL,
   CCJ_REPAYMENT_PLAN_DEFENDANT_URL,
-  CITIZEN_CONTACT_THEM_URL, BUNDLES_URL,
+  CITIZEN_CONTACT_THEM_URL,
+  BUNDLES_URL,
   CLAIM_FEE_BREAKUP,
   CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
-  DASHBOARD_NOTIFICATION_REDIRECT, DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT,
+  DASHBOARD_NOTIFICATION_REDIRECT,
+  DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT,
   DATE_PAID_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   DEFENDANT_SIGN_SETTLEMENT_AGREEMENT,
@@ -22,7 +24,8 @@ import {
   VIEW_CLAIMANT_INFO,
   VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT,
   START_MEDIATION_UPLOAD_FILES,
-  VIEW_THE_HEARING_URL, CLAIM_DETAILS_URL,
+  VIEW_THE_HEARING_URL,
+  CLAIM_DETAILS_URL,
   VIEW_RESPONSE_TO_CLAIM,
   UPLOAD_YOUR_DOCUMENTS_URL,
   VIEW_ORDERS_AND_NOTICES_URL,
@@ -31,7 +34,13 @@ import {
   VIEW_MEDIATION_DOCUMENTS,
   CONFIRM_YOU_HAVE_BEEN_PAID_URL,
   APPLICATION_TYPE_URL,
-  GA_APPLICATION_SUMMARY_URL, REQUEST_FOR_RECONSIDERATION_COMMENTS_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL,
+  GA_APPLICATION_SUMMARY_URL,
+  REQUEST_FOR_RECONSIDERATION_COMMENTS_URL,
+  GA_APPLICATION_RESPONSE_SUMMARY_URL,
+  GA_APPLY_HELP_WITH_FEE_SELECTION,
+  GA_RESPONSE_VIEW_APPLICATION_URL,
+  GA_VIEW_APPLICATION_URL,
+  GA_RESPONDENT_INFORMATION_URL,
 } from 'routes/urls';
 import config from 'config';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
@@ -44,10 +53,11 @@ import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/ca
 import { t } from 'i18next';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {getLng} from 'common/utils/languageToggleUtils';
+import {LinKFromValues} from 'models/generalApplication/applicationType';
 
-export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim, claimId: string, notification?: DashboardNotification, lng?: string): string => {
+export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim, claimId: string, notification?: DashboardNotification, lng?: string, appId?: string): string => {
 
-  const valuesMap = setDashboardValues(claim, claimId, notification, lng);
+  const valuesMap = setDashboardValues(claim, claimId, notification, lng, appId);
   valuesMap.forEach((value: string, key: string) => {
     textToReplace = textToReplace?.replace(key, value);
   });
@@ -55,7 +65,7 @@ export const replaceDashboardPlaceholders = (textToReplace: string, claim: Claim
   return textToReplace;
 };
 
-const setDashboardValues = (claim: Claim, claimId: string, notification?: DashboardNotification, lng?: string): Map<string, string> => {
+const setDashboardValues = (claim: Claim, claimId: string, notification?: DashboardNotification, lng?: string, appId?: string): Map<string, string> => {
 
   const valuesMap: Map<string, string> = new Map<string, string>();
   const daysLeftToRespond = claim?.respondent1ResponseDeadline ? getNumberOfDaysBetweenTwoDays(new Date(), claim.respondent1ResponseDeadline).toString() : '';
@@ -115,12 +125,16 @@ const setDashboardValues = (claim: Claim, claimId: string, notification?: Dashbo
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION}', REQUEST_FOR_RECONSIDERATION_URL.replace(':id', claimId));
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION_COMMENTS}', REQUEST_FOR_RECONSIDERATION_COMMENTS_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_SDO_DOCUMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER)));
-  valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', APPLICATION_TYPE_URL.replace(':id', claimId));
+  valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', APPLICATION_TYPE_URL.replace(':id', claimId) + `?linkFrom=${LinKFromValues.start}`);
   valuesMap.set('{VIEW_MEDIATION_DOCUMENTS}', VIEW_MEDIATION_DOCUMENTS.replace(':id', claimId));
   valuesMap.set('{CONFIRM_YOU_HAVE_BEEN_PAID_URL}', CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', claimId));
   valuesMap.set('{VIEW_REQUEST_FOR_RECONSIDERATION_DOCUMENT}', CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(getRequestForReconsiderationDocument(claim))));
   valuesMap.set('{GENERAL_APPLICATIONS_APPLICATION_SUMMARY_URL}', GA_APPLICATION_SUMMARY_URL.replace(':id', claimId));
   valuesMap.set('{GENERAL_APPLICATIONS_RESPONSE_APPLICATION_SUMMARY_URL}', GA_APPLICATION_RESPONSE_SUMMARY_URL.replace(':id', claimId));
+  valuesMap.set('{GENERAL_APPLICATION_FEE_URL}', GA_APPLY_HELP_WITH_FEE_SELECTION.replace(':id', claimId).replace(':appId', appId));
+  valuesMap.set('{GA_VIEW_APPLICATION_URL}', GA_VIEW_APPLICATION_URL.replace(':id', claimId).replace(':appId', appId));
+  valuesMap.set('{GA_RESPONSE_VIEW_APPLICATION_URL}', GA_RESPONSE_VIEW_APPLICATION_URL.replace(':id', claimId).replace(':appId', appId));
+  valuesMap.set('{GA_RESPONDENT_INFORMATION_URL}', GA_RESPONDENT_INFORMATION_URL.replace(':id', claimId).replace(':appId', appId));
 
   if (claimantRequirements) {
     valuesMap.set('{VIEW_CLAIMANT_HEARING_REQS_SIZE}', displayDocumentSizeInKB(claimantRequirements.documentSize));

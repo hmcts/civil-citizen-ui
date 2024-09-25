@@ -2,29 +2,39 @@ import config from 'config';
 import { t } from 'i18next';
 import { NextFunction, Response, Router } from 'express';
 import { AppRequest } from 'common/models/AppRequest';
-import { GA_APPLICATION_SUMMARY_URL, GA_VIEW_APPLICATION_URL } from 'routes/urls';
-import { getApplicationStatus, getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
+import { GA_APPLICATION_SUMMARY_URL } from 'routes/urls';
+import {
+  getApplicationCreatedDate,
+  getApplicationStatus,
+  getCancelUrl,
+  getViewApplicationUrl,
+} from 'services/features/generalApplication/generalApplicationService';
 import { GaServiceClient } from 'client/gaServiceClient';
 import { ApplicationSummary, StatusColor } from 'common/models/generalApplication/applicationSummary';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
-import { dateTimeFormat } from 'common/utils/dateUtils';
 import { getClaimById } from 'modules/utilityService';
+import {dateTimeFormat} from 'common/utils/dateUtils';
+import {Claim} from 'models/claim';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const applicationSummaryController = Router();
 const viewPath = 'features/generalApplication/applications-summary';
 
 const generalApplicationServiceApiBaseUrl = config.get<string>('services.generalApplication.url');
 const generalApplicationServiceClient: GaServiceClient = new GaServiceClient(generalApplicationServiceApiBaseUrl);
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang || req.cookies.lang;
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
+    const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
     const applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req);
-    
+
     const applicationsRows: ApplicationSummary[] = [];
-    applications.forEach((application, index) => {
+    for (const application of applications) {
+      const index = applications.indexOf(application);
       const status = getApplicationStatus(application.state);
       applicationsRows.push({
         state: t(`PAGES.GENERAL_APPLICATION.SUMMARY.STATES.${application.state}`, {lng}),
@@ -32,10 +42,10 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
         statusColor: StatusColor[status],
         types: application.case_data?.applicationTypes,
         id: application.id,
-        createdDate: dateTimeFormat(application.created_date, lng),
-        applicationUrl: `${constructResponseUrlWithIdAndAppIdParams(claimId, application.id,  GA_VIEW_APPLICATION_URL)}?index=${index + 1}`,
+        createdDate: dateTimeFormat(getApplicationCreatedDate(ccdClaim, application.id), lng),
+        applicationUrl: getViewApplicationUrl(claimId, claim, application,index),
       });
-    });
+    }
 
     res.render(viewPath, {
       applicationsRows,
