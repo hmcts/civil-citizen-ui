@@ -1,14 +1,13 @@
-import {IsDefined, IsIn, IsNotEmpty, MaxLength, ValidateIf} from 'class-validator';
+import {IsDefined, IsIn, IsNotEmpty, ValidateIf} from 'class-validator';
 import {debtPaymentOptions} from "routes/features/generalApplication/certOfSorc/debtPaymentOptions";
 
 export class DebtPaymentEvidence {
-  @IsDefined({message: 'ERRORS.OPTION_REQUIRED'})
-  @IsIn(Object.values(debtPaymentOptions), {message: 'ERRORS.OPTION_REQUIRED'})
+  @IsDefined({message: 'ERRORS.SELECT_EVIDENCE_DEBT_PAYMENT'})
+  @IsIn(Object.values(debtPaymentOptions), {message: 'ERRORS.SELECT_EVIDENCE_DEBT_PAYMENT'})
   evidence?: string;
 
   @ValidateIf(o => o.evidence === debtPaymentOptions.NO_EVIDENCE)
-  @IsNotEmpty({message: 'ERRORS.SPECIFY_A_REASON'})
-  @MaxLength(500, {message: 'ERRORS.TEXT_TOO_LONG'})
+  @IsNotEmpty({message: 'ERRORS.UNABLE_TO_PROVIDE_EVIDENCE'})
   provideDetails?: string;
 
   constructor(evidence?: string, provideDetails?: string) {

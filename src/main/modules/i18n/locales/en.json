@@ -2737,7 +2737,7 @@
         "GIVE_DETAILS": "Give details below of what you have done to obtain evidence and why you’re not able to provide it",
         "PROVIDE_DETAILS": "Provide details",
         "OR": "or",
-        "LOL": "Do you want to provide evidence of the debt payment?"
+        "CONFIRM_PAID": "Confirm you've paid a judgement debt?"
       },
       "PAY_ADDITIONAL_FEE": {
         "HEADING": "Additional application fee",
@@ -4624,6 +4624,8 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "UNABLE_TO_PROVIDE_EVIDENCE": "Add details of why you're not able to provide evidence",
+    "SELECT_EVIDENCE_DEBT_PAYMENT": "Select how you want to provide evidence of the debt payment",
     "SUBJECT_TO_FRC": "Indicate if the claim is subject to the Fixed Recoverable Costs Regime",
     "FRC_BAND_AGREED": "Indicate if the complexity band has been agreed with the other parties",
     "CHOOSE_COMPLEXITY_BAND": "Indicate which complexity band you believe this claim falls into",
