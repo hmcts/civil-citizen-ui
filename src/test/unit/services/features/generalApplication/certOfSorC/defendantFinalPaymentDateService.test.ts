@@ -53,6 +53,90 @@ describe('Payment Date service', () => {
   });
 
   describe('Validation', () => {
+
+    it.each`
+  year              | expected
+  ${[23]}             | ${1}
+  ${[202]}            | ${1}
+  ${[1990]}           | ${0}
+  ${[undefined]}      | ${1}
+  `('Should return $expected error for $year',
+      async ({year, expected}) => {
+        //Given
+        paymentDate = new DefendantFinalPaymentDate(year, '12', '1');
+        //When
+        form = new GenericForm<DefendantFinalPaymentDate>(paymentDate);
+        await form.validate();
+        //Then
+        expect(form.getErrors().length).toBe(expected);
+        if (form.getErrors().length > 0) {
+          expect(form.getErrors()[0].property).toBe('year');
+          if (year[0] == undefined) {
+            expect(form.getErrors()[0].constraints).toEqual({max: 'ERRORS.VALID_YEAR'});
+          } else {
+            expect(form.getErrors()[0].constraints).toEqual({
+              OptionalDateFourDigitValidator: 'ERRORS.VALID_FOUR_DIGIT_YEAR',
+            });
+          }
+        }
+      });
+
+    it.each`
+month               | expected
+${[13]}             | ${1}
+${[0]}              | ${1}
+${[8]}              | ${0}
+${[undefined]}      | ${1}
+`('Should return $expected error for $month',
+      async ({month, expected}) => {
+      //Given
+        paymentDate = new DefendantFinalPaymentDate('2024', month, '1');
+        //When
+        form = new GenericForm<DefendantFinalPaymentDate>(paymentDate);
+        await form.validate();
+        //Then
+        expect(form.getErrors().length).toBe(expected);
+        if (form.getErrors().length > 0) {
+          expect(form.getErrors()[0].property).toBe('month');
+          if (month[0] == undefined) {
+            expect(form.getErrors()[0].constraints).toEqual({min: 'ERRORS.VALID_MONTH', max: 'ERRORS.VALID_MONTH'});
+          } else {
+            if (month > 12)
+              expect(form.getErrors()[0].constraints).toEqual({max: 'ERRORS.VALID_MONTH'});
+            else
+              expect(form.getErrors()[0].constraints).toEqual({min: 'ERRORS.VALID_MONTH'});
+          }
+        }
+      });
+
+    it.each`
+day               | expected
+${[32]}             | ${1}
+${[-1]}              | ${1}
+${[8]}              | ${0}
+${[undefined]}      | ${1}
+`('Should return $expected error for $month',
+      async ({day, expected}) => {
+        //Given
+        paymentDate = new DefendantFinalPaymentDate('2024', '8' , day);
+        //When
+        form = new GenericForm<DefendantFinalPaymentDate>(paymentDate);
+        await form.validate();
+        //Then
+        expect(form.getErrors().length).toBe(expected);
+        if (form.getErrors().length > 0) {
+          expect(form.getErrors()[0].property).toBe('day');
+          if (day[0] == undefined) {
+            expect(form.getErrors()[0].constraints).toEqual({min: 'ERRORS.VALID_DAY', max: 'ERRORS.VALID_DAY'});
+          } else {
+            if (day < 0)
+              expect(form.getErrors()[0].constraints).toEqual({min: 'ERRORS.VALID_DAY'});
+            else
+              expect(form.getErrors()[0].constraints).toEqual({max: 'ERRORS.VALID_DAY'});
+          }
+        }
+      });
+
     it('should raise an error if nothing specified for date', async () => {
       //Given
       paymentDate = new DefendantFinalPaymentDate(undefined, undefined, undefined);
@@ -70,133 +154,6 @@ describe('Payment Date service', () => {
       expect(form.getErrors()[3].property).toBe('year');
       expect(form.getErrors()[3].constraints).toEqual({ max: 'ERRORS.VALID_YEAR'});
 
-    });
-    it('should raise an error if no year', async () => {
-      //Given
-      paymentDate = new PaymentDate(undefined, '12', '1');
-      //When
-      form = new GenericForm<PaymentDate>(paymentDate);
-      await form.validate();
-      //Then
-      expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('year');
-      expect(form.getErrors()[0].constraints).toEqual({max: 'ERRORS.VALID_YEAR'});
-    });
-    it('should raise an error if no month', async () => {
-      //Given
-      paymentDate = new DefendantFinalPaymentDate('9999', undefined, '1');
-      //When
-      form = new GenericForm<DefendantFinalPaymentDate>(paymentDate);
-      await form.validate();
-      //Then
-      expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('month');
-      expect(form.getErrors()[0].constraints).toEqual({min: 'ERRORS.VALID_MONTH', max: 'ERRORS.VALID_MONTH'});
-    });
-    it('should raise an error if no day', async () => {
-      //Given
-      paymentDate = new DefendantFinalPaymentDate('9999', '12', undefined);
-      //When
-      form = new GenericForm<DefendantFinalPaymentDate>(paymentDate);
-      await form.validate();
-      //Then
-      expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('day');
-      expect(form.getErrors()[0].constraints).toEqual({min: 'ERRORS.VALID_DAY', max: 'ERRORS.VALID_DAY'});
-    });
-    it('should raise an error asking for 4 digits, if year is only 1 digit', async () => {
-      //Given
-      paymentDate = new DefendantFinalPaymentDate('2', '12', '1');
-      //When
-      form = new GenericForm<DefendantFinalPaymentDate>(paymentDate);
-      await form.validate();
-      //Then
-      expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('year');
-      expect(form.getErrors()[0].constraints).toEqual({OptionalDateFourDigitValidator: 'ERRORS.VALID_FOUR_DIGIT_YEAR'});
-    });
-    it('should raise an error asking for 4 digits, if year is only 2 digits', async () => {
-      //Given
-      paymentDate = new DefendantFinalPaymentDate('23', '12', '1');
-      //When
-      form = new GenericForm<DefendantFinalPaymentDate>(paymentDate);
-      await form.validate();
-      //Then
-      expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('year');
-      expect(form.getErrors()[0].constraints).toEqual({
-        OptionalDateFourDigitValidator: 'ERRORS.VALID_FOUR_DIGIT_YEAR',
-      });
-    });
-    it('should raise an error asking for 4 digits, if year is only 3 digits', async () => {
-      //Given
-      paymentDate = new DefendantFinalPaymentDate('202', '12', '1');
-      //When
-      form = new GenericForm<DefendantFinalPaymentDate>(paymentDate);
-      await form.validate();
-      //Then
-      expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('year');
-      expect(form.getErrors()[0].constraints).toEqual({
-        OptionalDateFourDigitValidator: 'ERRORS.VALID_FOUR_DIGIT_YEAR',
-      });
-    });
-    it('should not raise an error if date in the past', async () => {
-      //Given
-      paymentDate = new DefendantFinalPaymentDate('1990', '12', '1');
-      //When
-      form = new GenericForm<DefendantFinalPaymentDate>(paymentDate);
-      await form.validate();
-      //Then
-      expect(form.getErrors().length).toBe(0);
-    });
-
-    it('should raise an error if month greater than 12', async () => {
-      //Given
-      paymentDate = new DefendantFinalPaymentDate('2040', '13', '1');
-      //When
-      form = new GenericForm<DefendantFinalPaymentDate>(paymentDate);
-      await form.validate();
-      //Then
-      expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('month');
-      expect(form.getErrors()[0].constraints).toEqual({max: 'ERRORS.VALID_MONTH'});
-    });
-
-    it('should raise an error if month less than 1', async () => {
-      //Given
-      paymentDate = new DefendantFinalPaymentDate('2040', '0', '1');
-      //When
-      form = new GenericForm<DefendantFinalPaymentDate>(paymentDate);
-      await form.validate();
-      //Then
-      expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('month');
-      expect(form.getErrors()[0].constraints).toEqual({min: 'ERRORS.VALID_MONTH'});
-    });
-
-    it('should raise an error if day greater than 31', async () => {
-      //Given
-      paymentDate = new DefendantFinalPaymentDate('2040', '12', '32');
-      //When
-      form = new GenericForm<DefendantFinalPaymentDate>(paymentDate);
-      await form.validate();
-      //Then
-      expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('day');
-      expect(form.getErrors()[0].constraints).toEqual({max: 'ERRORS.VALID_DAY'});
-    });
-
-    it('should raise an error if day less than 1', async () => {
-      //Given
-      paymentDate = new DefendantFinalPaymentDate('2040', '12', '-1');
-      //When
-      form = new GenericForm<DefendantFinalPaymentDate>(paymentDate);
-      await form.validate();
-      //Then
-      expect(form.getErrors().length).toBe(1);
-      expect(form.getErrors()[0].property).toBe('day');
-      expect(form.getErrors()[0].constraints).toEqual({min: 'ERRORS.VALID_DAY'});
     });
 
     it('should not raise an error if yesterday specified for date', async () => {
