@@ -142,12 +142,12 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
 
 export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnable : boolean,lng: string) : iWantToLinks => {
   if (claim.ccdState && !claim.isCaseIssuedPending() && claim.defendantUserDetails !== undefined) {
-    if(!claim.hasClaimTakenOffline() && isGAFlagEnable) {
+    if(!claim.hasClaimTakenOffline() && isGAFlagEnable && !claim.hasClaimBeenDismissed()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
         url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
       };
-    } else if(claim.hasClaimTakenOffline()) {
+    } else if(claim.hasClaimTakenOffline() || claim.hasClaimBeenDismissed()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
       };
