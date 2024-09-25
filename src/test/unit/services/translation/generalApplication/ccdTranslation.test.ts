@@ -230,6 +230,7 @@ describe('translate draft application to ccd', () => {
           paymentSetDate: undefined,
           respondentDebtorOffer: undefined,
         },
+        generalAppRespondDocument: undefined,
         hearingDetailsResp: {
           HearingDetailsEmailID: 'email',
           HearingDetailsTelephoneNumber: '123',

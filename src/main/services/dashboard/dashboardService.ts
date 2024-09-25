@@ -25,6 +25,7 @@ import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { iWantToLinks } from 'common/models/dashboard/iWantToLinks';
 import { APPLICATION_TYPE_URL } from 'routes/urls';
 import {isGaForLipsEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
+import {LinKFromValues} from 'models/generalApplication/applicationType';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -49,7 +50,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
     }
 
     //exclude Applications sections
-    if (!isGAFlagEnable){
+    if (!isGAFlagEnable || claim.defendantUserDetails === undefined){
       dashboard.items = dashboard.items.filter(item => !GA_DASHBOARD_EXCLUSIONS.some(exclude => exclude['categoryEn'] === item['categoryEn']));
     }
 
@@ -140,13 +141,13 @@ export function extractOrderDocumentIdFromNotification (notificationsList: Dashb
 }
 
 export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnable : boolean,lng: string) : iWantToLinks => {
-  if (claim.ccdState && !claim.isCaseIssuedPending()) {
-    if(!claim.hasClaimTakenOffline() && isGAFlagEnable) {
+  if (claim.ccdState && !claim.isCaseIssuedPending() && claim.defendantUserDetails !== undefined) {
+    if(!claim.hasClaimTakenOffline() && isGAFlagEnable && !claim.hasClaimBeenDismissed()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
+        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
       };
-    } else if(claim.hasClaimTakenOffline()) {
+    } else if(claim.hasClaimTakenOffline() || claim.hasClaimBeenDismissed()) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
       };
