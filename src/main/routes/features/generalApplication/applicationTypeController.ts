@@ -79,7 +79,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
       res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  isCoSCEnabled: isCoSCFlagEnabled});
     } else {
       await saveApplicationType(redisKey, claim, applicationType, applicationIndex);
-      if (isCoSCFlagEnabled && claim.activeJudgment?.option === YesNo.YES) {
+      if (isCoSCFlagEnabled && claim.joIsLiveJudgmentExists?.option === YesNo.YES) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_AGREEMENT_FROM_OTHER_PARTY_URL));
       } else {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));

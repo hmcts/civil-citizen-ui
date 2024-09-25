@@ -14,7 +14,7 @@ import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {Mediation} from 'models/mediation/mediation';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
-import {YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
+import {YesNoUpperCamelCase,} from 'form/models/yesNo';
 import {Interest} from 'form/models/interest/interest';
 import {Document, ResponseDocument, ServedDocumentFiles} from 'models/document/document';
 import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
@@ -311,7 +311,7 @@ export interface CCDClaim extends ClaimUpdate {
   requestForReconsiderationDocumentRes?: CaseDocument;
   respondentSolGaAppDetails?: RespondentSolGaAppDetail[];
   generalApplications?: CCDGeneralApplication[];
-  joIsLiveJudgmentExists?: YesNoUpperCase;
+  joIsLiveJudgmentExists?: YesNoUpperCamelCase;
 }
 
 export interface ClaimFeeData {

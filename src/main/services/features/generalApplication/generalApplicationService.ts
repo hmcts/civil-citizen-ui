@@ -325,7 +325,7 @@ export const validateAdditionalApplicationtType = (claim : Claim, errors : Valid
     });
 
     errors.push(validationError);
-  } else if (applicationType.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID && (claim.activeJudgment === undefined || claim.activeJudgment?.option === YesNo.NO)) {
+  } else if (applicationType.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID && (claim.joIsLiveJudgmentExists === undefined || claim.joIsLiveJudgmentExists?.option === YesNo.NO)) {
 
     const validationError = new FormValidationError({
       target: new GenericYesNo(body.optionOther, ''),

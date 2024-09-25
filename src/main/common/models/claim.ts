@@ -183,7 +183,7 @@ export class Claim {
   paymentSyncError?: boolean;
   responseClaimTrack?: string;
   generalApplications?: ClaimGeneralApplication[];
-  activeJudgment?: GenericYesNo;
+  joIsLiveJudgmentExists?: GenericYesNo;
 
   // Index signature to allow dynamic property access
   [key: string]: any;

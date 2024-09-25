@@ -15,7 +15,6 @@ import {DocumentType} from 'models/document/documentType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {
   toCUIGenericYesNo,
-  toCUIGenericYesNoFromUpperCase,
   toCUIYesNo,
 } from 'services/translation/convertToCUI/convertToCUIYesNo';
 import {ClaimantResponse} from 'models/claimantResponse';
@@ -110,7 +109,7 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.claimType = ccdClaim.claimType;
   claim.respondentGaAppDetails = toCUIRespondentGADetails(ccdClaim.respondentSolGaAppDetails);
   claim.generalApplications = toCUIClaimGeneralApplications(ccdClaim.generalApplications);
-  claim.activeJudgment = toCUIGenericYesNoFromUpperCase(ccdClaim.joIsLiveJudgmentExists);
+  claim.joIsLiveJudgmentExists = toCUIGenericYesNo(ccdClaim.joIsLiveJudgmentExists);
   return claim;
 };
 
