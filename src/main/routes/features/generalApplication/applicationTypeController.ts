@@ -74,15 +74,15 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const cancelUrl = await getCancelUrl( req.params.id, claim);
     const backLinkUrl = await getBackLinkUrl(req.params.id, <string>req.query.linkFrom, cancelUrl);
 
-    const isCoSCFlagEnabled = await isCoSCEnabled();
+    const showCCJ  = await isCoSCEnabled() && claim.isDefendant();
     if (form.hasErrors()) {
-      res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  isCoSCEnabled: isCoSCFlagEnabled});
+      res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  showCCJ: showCCJ,});
     } else {
       await saveApplicationType(redisKey, claim, applicationType, applicationIndex);
-      if (isCoSCFlagEnabled && claim.joIsLiveJudgmentExists?.option === YesNo.YES) {
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_AGREEMENT_FROM_OTHER_PARTY_URL));
-      } else {
+      if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES) {
         res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
+      } else {
+        res.redirect(constructResponseUrlWithIdParams(req.params.id,GA_AGREEMENT_FROM_OTHER_PARTY_URL ));
       }
     }
   } catch (error) {
