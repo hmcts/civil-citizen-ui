@@ -394,14 +394,14 @@ describe('View Application service', () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       const caseData = application.case_data;
-      caseData.hearingNoticeDocument = setMockHearingOrderDocuments();
+      caseData.hearingOrderDocument = setMockHearingOrderDocuments();
 
       mockGetApplication.mockResolvedValueOnce(application);
       //When
       const result = getCourtDocuments(application, 'en');
       //Then
       const expectedDocument = new DocumentInformation(
-        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_NOTICE',
+        'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.HEARING_ORDER',
         '1 August 2024',
         new DocumentLinkInformation('/case/1718105701451856/view-documents/136767cf-033a-4fb1-9222-48bc7decf831', 'Application_Hearing_order_2024-08-02 12:15:34.pdf'),
       );
