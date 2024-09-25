@@ -50,17 +50,21 @@ export enum ApplicationTypeOptionSelection {
 }
 
 export const getApplicationTypeOptionByTypeAndDescription = (applicationOption: ApplicationTypeOption, applicationTypeOptionSelection: ApplicationTypeOptionSelection) => {
-  const selectedApplicationTypeByOptionElement:[string, string, string] = selectedApplicationTypeByOptions[applicationOption];
-  switch (applicationTypeOptionSelection) {
-    case ApplicationTypeOptionSelection.BY_APPLICATION_TYPE:
-      return selectedApplicationTypeByOptionElement[0];
-    case  ApplicationTypeOptionSelection.BY_APPLICATION_TYPE_DESCRIPTION:
-      return selectedApplicationTypeByOptionElement[1];
-    case ApplicationTypeOptionSelection.BY_APPLICATION_DISPLAY_FROM_CCD:
-      return selectedApplicationTypeByOptionElement[2];
-    default:
-      return undefined;
+
+  const selectedApplicationTypeByOptionElement: [string, string, string] = selectedApplicationTypeByOptions[applicationOption];
+  if (selectedApplicationTypeByOptionElement) {
+    switch (applicationTypeOptionSelection) {
+      case ApplicationTypeOptionSelection.BY_APPLICATION_TYPE:
+        return selectedApplicationTypeByOptionElement[0];
+      case  ApplicationTypeOptionSelection.BY_APPLICATION_TYPE_DESCRIPTION:
+        return selectedApplicationTypeByOptionElement[1];
+      case ApplicationTypeOptionSelection.BY_APPLICATION_DISPLAY_FROM_CCD:
+        return selectedApplicationTypeByOptionElement[2];
+      default:
+        return undefined;
+    }
   }
+  return undefined;
 };
 
 export const selectedApplicationTypeByOptions: Partial<{ [key in ApplicationTypeOption]: [string, string, string]; }> = {
