@@ -9,7 +9,9 @@ import {debtPaymentOptions} from 'routes/features/generalApplication/certOfSorc/
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {DebtPaymentEvidence} from 'routes/features/generalApplication/certOfSorc/debtPaymentEvidence';
-import {saveDraftClaim} from "modules/draft-store/draftStoreService";
+import {saveDebtPaymentEvidence} from 'services/features/generalApplication/certOfSorC/debtPaymentEvidenceService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'models/AppRequest';
 
 const debtPaymentEvidenceController = Router();
 const debtPaymentEvidenceViewPath = 'features/certOfSorc/debt-payment-evidence';
@@ -33,7 +35,8 @@ debtPaymentEvidenceController.get(GA_DEBT_PAYMENT_EVIDENCE_URL, (async (req, res
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
-    const form:DebtPaymentEvidence = claim.debtPaymentEvidence?.option? new DebtPaymentEvidence(claim.debtPaymentEvidence?.option): new DebtPaymentEvidence;
+    const form: DebtPaymentEvidence = claim.certificateOfSatisfactionOrCanceled?.debtPaymentEvidence
+      ? claim.certificateOfSatisfactionOrCanceled.debtPaymentEvidence: new DebtPaymentEvidence;
     renderView(new GenericForm(form), res, claimId, cancelUrl);
   } catch (error) {
     next(error);
@@ -45,14 +48,15 @@ debtPaymentEvidenceController.post(GA_DEBT_PAYMENT_EVIDENCE_URL,
     try {
       let nextPageUrl = '';
       const claimId = req.params.id;
+      const redisKey = generateRedisKey(<AppRequest>req);
       const claim = await getClaimById(claimId, req, true);
       const cancelUrl = await getCancelUrl(claimId, claim);
-      const form = new GenericForm(new DebtPaymentEvidence('', req.body.provideDetails));
+      const form = new GenericForm(new DebtPaymentEvidence(req.body.evidence, req.body.provideDetails));
       form.validateSync();
       if (form.hasErrors()) {
         renderView(form,  res, claimId, cancelUrl);
       } else {
-        await saveDraftClaim(claimId, claim);
+        await saveDebtPaymentEvidence(redisKey, form.model);
         switch (form.model.evidence) {
           case debtPaymentOptions.NO_EVIDENCE:
             nextPageUrl = constructResponseUrlWithIdParams(claimId, CHECK_YOUR_ANSWERS_COSC_URL);
@@ -64,7 +68,6 @@ debtPaymentEvidenceController.post(GA_DEBT_PAYMENT_EVIDENCE_URL,
         }
         res.redirect(nextPageUrl);
       }
-    //Todo Save in redis.
     } catch (error) {
       next(error);
     }
