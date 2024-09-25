@@ -19,7 +19,7 @@ import {
   CcdGeneralApplicationAddlDocument,
   CcdHearingDocument,
   CcdGeneralOrderDocument,
-  CcdGaDraftDocument
+  CcdGaDraftDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import { CcdGAMakeWithNoticeDocument } from '../ccdGeneralApplication/ccdGAMakeWithNoticeDocument';
 import {CcdGeneralApplicationPBADetails} from 'models/ccdGeneralApplication/ccdGeneralApplicationPBADetails';
