@@ -297,6 +297,27 @@ describe('View Application service', () => {
       const expectedResult = new DocumentsViewComponent('ApplicantDocuments', [expectedDraftDocument,expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
+
+    it('should get data array if there is only addl Respondent documents', async () => {
+      //given
+      const application = Object.assign(new ApplicationResponse(), mockApplication);
+      const caseData = application.case_data;
+      caseData.gaAddlDoc= setMockAdditionalDocuments();
+      caseData.gaDraftDocument = setMockGaDraftDocuments();
+
+      mockGetApplication.mockResolvedValueOnce(application);
+      //When
+      const result = getRespondentDocuments(application, 'en');
+      //Then
+      const expectedDocument = new DocumentInformation(
+        'Test resp1',
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/f0508c67-d3cf-4774-b3f3-0903f77d2664', 'CIV_13420_test_results.docx'),
+      );
+      const expectedResult = new DocumentsViewComponent('RespondentDocuments', [expectedDocument]);
+      expect(result).toEqual(expectedResult);
+    });
+
     it('should get data array if there is draft and addl Respondent documents', async () => {
       //given
       const application = Object.assign(new ApplicationResponse(), mockApplication);
@@ -329,26 +350,6 @@ describe('View Application service', () => {
       );
 
       const expectedResult = new DocumentsViewComponent('RespondentDocuments', [expectedDraftDocument, expectedDocument]);
-      expect(result).toEqual(expectedResult);
-    });
-
-    it('should get data array if there is only addl Respondent documents', async () => {
-      //given
-      const application = Object.assign(new ApplicationResponse(), mockApplication);
-      const caseData = application.case_data;
-      caseData.gaAddlDoc= setMockAdditionalDocuments();
-      caseData.gaDraftDocument = setMockGaDraftDocuments();
-
-      mockGetApplication.mockResolvedValueOnce(application);
-      //When
-      const result = getRespondentDocuments(application, 'en');
-      //Then
-      const expectedDocument = new DocumentInformation(
-        'Test resp1',
-        '1 August 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/f0508c67-d3cf-4774-b3f3-0903f77d2664', 'CIV_13420_test_results.docx'),
-      );
-      const expectedResult = new DocumentsViewComponent('RespondentDocuments', [expectedDocument]);
       expect(result).toEqual(expectedResult);
     });
 
