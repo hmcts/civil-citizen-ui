@@ -1,14 +1,17 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPaymentDate';
 import {CertificateOfSatisfactionOrCanceled} from 'models/generalApplication/CertificateOfSatisfactionOrCanceled';
+import {Request} from 'express';
+import {getClaimById} from 'modules/utilityService';
+import {AppRequest} from 'models/AppRequest';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('defendantFinalPaymentDateService');
 
 export class DefendantFinalPaymentDateService {
-  public async getDefendantResponse(claimId: string): Promise<DefendantFinalPaymentDate> {
+  public async getDefendantResponse(claimId: string, req: Request): Promise<DefendantFinalPaymentDate> {
     try {
-      const claim = await getCaseDataFromStore(claimId, true);
+      const claim = await getClaimById(claimId, req,true);
       if (claim?.certificateOfSatisfactionOrCanceled?.defendantFinalPaymentDate) {
         return this.setDate(claim.certificateOfSatisfactionOrCanceled.defendantFinalPaymentDate);
       }
@@ -19,9 +22,10 @@ export class DefendantFinalPaymentDateService {
     }
   }
 
-  public async savePaymentDate(claimId: string, paymentDate: DefendantFinalPaymentDate) {
+  public async savePaymentDate(claimId: string, req: Request, paymentDate: DefendantFinalPaymentDate) {
     try {
-      const case_data = await getCaseDataFromStore(claimId);
+      const case_data = await getClaimById(claimId , req,true);
+      const redisKey = generateRedisKey(<AppRequest>req);
       if (!case_data.certificateOfSatisfactionOrCanceled) {
         case_data.certificateOfSatisfactionOrCanceled = new CertificateOfSatisfactionOrCanceled();
       }
@@ -30,7 +34,7 @@ export class DefendantFinalPaymentDateService {
       }
       case_data.certificateOfSatisfactionOrCanceled.defendantFinalPaymentDate = paymentDate;
 
-      await saveDraftClaim(claimId, case_data);
+      await saveDraftClaim(redisKey, case_data);
     } catch (error) {
       logger.error(error);
       throw error;

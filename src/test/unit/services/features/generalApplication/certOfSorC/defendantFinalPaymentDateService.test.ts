@@ -45,7 +45,7 @@ describe('Payment Date service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await defendantFinalPaymentDateService.savePaymentDate('claimId', new DefendantFinalPaymentDate());
+      await defendantFinalPaymentDateService.savePaymentDate('claimId',null, new DefendantFinalPaymentDate());
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();
@@ -55,12 +55,12 @@ describe('Payment Date service', () => {
   describe('Validation', () => {
 
     it.each`
-  year              | expected
-  ${[23]}             | ${1}
-  ${[202]}            | ${1}
-  ${[1990]}           | ${0}
-  ${[undefined]}      | ${1}
-  `('Should return $expected error for $year',
+    year              | expected
+    ${[23]}             | ${1}
+    ${[202]}            | ${1}
+    ${[1990]}           | ${0}
+    ${[undefined]}      | ${1}
+    `('Should return $expected error for $year',
       async ({year, expected}) => {
         //Given
         paymentDate = new DefendantFinalPaymentDate(year, '12', '1');
@@ -82,12 +82,12 @@ describe('Payment Date service', () => {
       });
 
     it.each`
-month               | expected
-${[13]}             | ${1}
-${[0]}              | ${1}
-${[8]}              | ${0}
-${[undefined]}      | ${1}
-`('Should return $expected error for $month',
+      month               | expected
+      ${[13]}             | ${1}
+      ${[0]}              | ${1}
+      ${[8]}              | ${0}
+      ${[undefined]}      | ${1}
+      `('Should return $expected error for $month',
       async ({month, expected}) => {
       //Given
         paymentDate = new DefendantFinalPaymentDate('2024', month, '1');
@@ -110,12 +110,12 @@ ${[undefined]}      | ${1}
       });
 
     it.each`
-day               | expected
-${[32]}             | ${1}
-${[-1]}              | ${1}
-${[8]}              | ${0}
-${[undefined]}      | ${1}
-`('Should return $expected error for $month',
+      day               | expected
+      ${[32]}             | ${1}
+      ${[-1]}              | ${1}
+      ${[8]}              | ${0}
+      ${[undefined]}      | ${1}
+      `('Should return $expected error for $month',
       async ({day, expected}) => {
         //Given
         paymentDate = new DefendantFinalPaymentDate('2024', '8' , day);

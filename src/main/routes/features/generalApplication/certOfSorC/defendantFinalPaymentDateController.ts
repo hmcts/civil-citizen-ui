@@ -1,17 +1,15 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPaymentDate';
 import {
-  APPLICATION_TYPE_URL,
   COSC_FINAL_PAYMENT_DATE_URL,
   GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
+  GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL,
 } from 'routes/urls';
 import {
   defendantFinalPaymentDateService,
 } from 'services/features/generalApplication/certOfSorC/defendantFinalPaymentDateService';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import { generateRedisKey } from 'modules/draft-store/draftStoreService';
-import { AppRequest } from 'models/AppRequest';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 
 const paymentDateViewPath = 'features/generalApplication/certOfSorC/final-payment-date';
@@ -25,9 +23,8 @@ defendantPaymentDateController
       try {
         const claimId = req.params.id;
         const cancelUrl = await getCancelUrl(claimId, null);
-        const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL);
-        const redisKey = generateRedisKey(<AppRequest>req);
-        const defendantFinalPaymentDate = await defendantFinalPaymentDateService.getDefendantResponse(redisKey);
+        const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL);
+        const defendantFinalPaymentDate = await defendantFinalPaymentDateService.getDefendantResponse(claimId, req);
         res.render( paymentDateViewPath, {  cancelUrl, backLinkUrl,
           form: new GenericForm(defendantFinalPaymentDate), title,
         });
@@ -38,7 +35,6 @@ defendantPaymentDateController
   .post(
     COSC_FINAL_PAYMENT_DATE_URL, async (req, res, next: NextFunction) => {
       const claimId = req.params.id;
-      const redisKey = generateRedisKey(<AppRequest>req);
       const defendantPaymentDate = new DefendantFinalPaymentDate(req.body.year, req.body.month, req.body.day);
       const form: GenericForm<DefendantFinalPaymentDate> = new GenericForm<DefendantFinalPaymentDate>(defendantPaymentDate);
       await form.validate();
@@ -47,7 +43,7 @@ defendantPaymentDateController
         res.render(paymentDateViewPath, {form, title});
       } else {
         try {
-          await defendantFinalPaymentDateService.savePaymentDate(redisKey, defendantPaymentDate);
+          await defendantFinalPaymentDateService.savePaymentDate(claimId, req, defendantPaymentDate);
           res.redirect(constructResponseUrlWithIdParams(claimId, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL));
         } catch (error) {
           next(error);
