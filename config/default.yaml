@@ -11,6 +11,7 @@ services:
     microservice: 'civil_service'
   postcodeLookup:
     ordnanceSurveyApiKey:
+    ordnanceSurveyApiUrl: https://api.os.uk
   launchDarkly:
     sdk:
     env: 'default'
