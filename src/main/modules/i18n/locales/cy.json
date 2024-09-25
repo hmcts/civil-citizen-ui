@@ -2722,6 +2722,23 @@
         },
         "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
       },
+      "DEBT_PAYMENT": {
+        "DO_YOU_HAVE_EVIDENCE": "Do you have evidence of the debt payment?",
+        "YOU_WILL_NEED_EVIDENCE": "You’ll need to provide evidence that you’ve paid the debt.",
+        "CONFIRMATION_OF_MONEY": "This should be confirmation from the person or business you owed money, which shows the:",
+        "DATE_OF_PAYMENT": "date of payment",
+        "AMOUNT_PAID": "amount paid",
+        "CASE_NUMBER": "case number",
+        "IF_CANNOT_PROVIDE_EVIDENCE": "If you cannot provide evidence, you can explain that below. The court will ask the person or business you owed money if they’ve been paid. If they do not respond within a month, the public register will be updated and a certificate issued.",
+        "DO_YOU_WANT_PROVIDE_EVIDENCE": "Do you want to provide evidence of the debt payment?",
+        "UPLOAD_EVIDENCE": "I want to upload evidence that this debt has been paid in full",
+        "MADE_FULL_PAYMENT": "I made full payment to the court",
+        "NO_EVIDENCE": "I am unable to provide evidence of full payment",
+        "GIVE_DETAILS": "Give details below of what you have done to obtain evidence and why you’re not able to provide it",
+        "PROVIDE_DETAILS": "Provide details",
+        "OR": "or",
+        "CONFIRM_PAID": "Confirm you've paid a judgement debt"
+      },
       "PAY_ADDITIONAL_FEE": {
         "HEADING": "Additional application fee",
         "WANT_TO_APPLY_HWF_TITLE": "Pay additional application fee"
@@ -4607,6 +4624,8 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "UNABLE_TO_PROVIDE_EVIDENCE": "Add details of why you're not able to provide evidence",
+    "SELECT_EVIDENCE_DEBT_PAYMENT": "Select how you want to provide evidence of the debt payment",
     "SUBJECT_TO_FRC": "Nodwch a yw’r Gyfundrefn Costau Adferadwy a Bennwyd yn berthnasol i’r hawliad hwn",
     "FRC_BAND_AGREED": "Nodwch a yw’r band cymhlethdod wedi cael ei gytuno â’r partïon eraill",
     "CHOOSE_COMPLEXITY_BAND": "Nodwch pa fand cymhlethdod rydych chi'n credu y mae'r hawliad hwn yn berthnasol iddo",

@@ -14,4 +14,4 @@ export const saveDebtPaymentEvidence = async (claimId: string, debtPaymentEviden
   caseData.certificateOfSatisfactionOrCanceled.debtPaymentEvidence = debtPaymentEvidence;
 
   await saveDraftClaim(claimId, caseData);
-}
+};
