@@ -41,7 +41,6 @@ import {
 } from 'routes/urls';
 import {statementOfMeansGuard} from 'routes/guards/statementOfMeansGuard';
 import {claimantIntentGuard} from 'routes/guards/claimantIntentGuard';
-import {createOSPlacesClientInstance} from 'modules/ordance-survey-key/ordanceSurveyKey';
 import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragement/trialArrangementsGuard';
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 import {ErrorHandler} from 'modules/error';
@@ -84,9 +83,6 @@ if(e2eTestMode){
   logger.info('Creating new draftStoreClient');
   new DraftStoreClient(Logger.getLogger('draftStoreClient')).enableFor(app);
 }
-
-logger.info('Creating OSplaces Client Instance');
-createOSPlacesClientInstance();
 
 logger.info('Adding configuration for session store');
 const sessionStore = e2eTestMode? getRedisStoreForSessione2e() : getRedisStoreForSession();
