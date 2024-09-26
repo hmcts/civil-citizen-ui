@@ -325,6 +325,10 @@ export class Claim {
     return this.interest?.interestEndDate === InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
   }
 
+  isInterestEndDateUntilJudgmentDate(): boolean {
+    return this.interest?.interestEndDate === InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE;
+  }
+
   isInterestClaimOptionExists(): boolean {
     return this.interest?.interestClaimOptions?.length > 0;
   }
