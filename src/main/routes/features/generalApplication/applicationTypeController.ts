@@ -1,7 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
 import {
   APPLICATION_TYPE_URL, GA_ADD_ANOTHER_APPLICATION_URL,
-  GA_AGREEMENT_FROM_OTHER_PARTY_URL,
+  GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL,
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
@@ -21,6 +21,7 @@ import { getClaimById } from 'modules/utilityService';
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isCoSCEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {YesNo} from 'form/models/yesNo';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
@@ -73,12 +74,16 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const cancelUrl = await getCancelUrl( req.params.id, claim);
     const backLinkUrl = await getBackLinkUrl(req.params.id, <string>req.query.linkFrom, cancelUrl);
 
+    const showCCJ  = await isCoSCEnabled() && claim.isDefendant();
     if (form.hasErrors()) {
-      const isCoSCFlagEnabled = await isCoSCEnabled();
-      res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  isCoSCEnabled: isCoSCFlagEnabled});
+      res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  showCCJ: showCCJ});
     } else {
       await saveApplicationType(redisKey, claim, applicationType, applicationIndex);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_AGREEMENT_FROM_OTHER_PARTY_URL));
+      if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES) {
+        res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
+      } else {
+        res.redirect(constructResponseUrlWithIdParams(req.params.id,GA_AGREEMENT_FROM_OTHER_PARTY_URL ));
+      }
     }
   } catch (error) {
     next(error);

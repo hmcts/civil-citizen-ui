@@ -6,7 +6,10 @@ import {
   GA_UPLOAD_N245_FORM_URL, INFORM_OTHER_PARTIES_URL,
 } from 'routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
-import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {
+  ApplicationTypeOption, ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
+} from 'common/models/generalApplication/applicationType';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import { getApplicationCostsContent } from 'services/features/generalApplication/applicationCostsService';
@@ -22,7 +25,7 @@ async function renderView(claim: Claim, req: AppRequest, res: Response): Promise
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const applicationTypes = claim.generalApplication?.applicationTypes;
   const selectedAppType = applicationTypes[applicationTypes.length - 1]?.option;
-  const applicationType = selectedApplicationType[selectedAppType];
+  const applicationType = getApplicationTypeOptionByTypeAndDescription(selectedAppType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
   const gaFeeData = await gaApplicationFeeDetails(claim, req);
   const nextPageUrl = getRedirectUrl(req.params.id, claim, selectedAppType);
   const applicationCostsContent = getApplicationCostsContent(applicationTypes, gaFeeData, lang);

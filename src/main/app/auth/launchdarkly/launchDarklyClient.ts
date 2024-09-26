@@ -101,6 +101,10 @@ export async function isMintiEnabled(): Promise<boolean> {
   return await getFlagValue(MINTI) as boolean;
 }
 
+export async function isCoSCEnabled(): Promise<boolean> {
+  return await getFlagValue(IS_COSC_ENABLED) as boolean;
+}
+
 export async function isJudgmentOnlineLive(): Promise<boolean> {
   return await getFlagValue(IS_JUDGMENT_ONLINE_LIVE) as boolean;
 }

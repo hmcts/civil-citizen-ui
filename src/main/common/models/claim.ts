@@ -183,7 +183,7 @@ export class Claim {
   paymentSyncError?: boolean;
   responseClaimTrack?: string;
   generalApplications?: ClaimGeneralApplication[];
-  activeJudgment?: GenericYesNo;
+  joIsLiveJudgmentExists?: GenericYesNo;
 
   // Index signature to allow dynamic property access
   [key: string]: any;
@@ -324,6 +324,10 @@ export class Claim {
 
   isInterestEndDateUntilSubmitDate(): boolean {
     return this.interest?.interestEndDate === InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
+  }
+
+  isInterestEndDateUntilJudgmentDate(): boolean {
+    return this.interest?.interestEndDate === InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE;
   }
 
   isInterestClaimOptionExists(): boolean {

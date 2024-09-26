@@ -394,6 +394,7 @@ export const GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL = `${BASE_GENERAL_APPLICA
 export const GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL = `${BASE_GENERAL_APPLICATION_URL}/:appId/upload-written-representation-docs/check-and-send`;
 export const GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_SUBMITTED_URL = `${BASE_GENERAL_APPLICATION_URL}/:appId/upload-written-representation-docs/submitted`;
 export const TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT = '/testing-support/toggleFlag/:key/:value';
+export const GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL =`${BASE_COSC_URL}/ask-proof-of-debt-payment-guidance`;
 export const GA_UPLOAD_DOCUMENTS_COSC_URL =`${BASE_COSC_URL}/upload-documents`;
 export const GA_DEBT_PAYMENT_EVIDENCE_COSC_URL =`${BASE_COSC_URL}/debt-payment-evidence`;
 export const GA_CHECK_YOUR_ANSWERS_COSC_URL =`${BASE_COSC_URL}/check-your-answers`;
