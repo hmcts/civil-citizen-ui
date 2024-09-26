@@ -108,7 +108,9 @@ export async function  isDashboardEnabledForCase(date: Date): Promise<boolean> {
   const { DateTime } = require('luxon');
   const systemTimeZone = DateTime.local().zoneName;
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
-  return await getFlagValue(IS_DASHBOARD_ENABLED_FOR_CASE, epoch) as boolean;
+  const cuiR2Flag = await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
+  const dashboardEnabledForR2Cases =  await getFlagValue(IS_DASHBOARD_ENABLED_FOR_CASE, epoch) as boolean;
+  return cuiR2Flag && dashboardEnabledForR2Cases;
 }
 
 export async function isCarmEnabledForCase(date: Date): Promise<boolean> {

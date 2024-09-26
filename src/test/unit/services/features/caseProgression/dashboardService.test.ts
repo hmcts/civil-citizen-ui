@@ -326,61 +326,6 @@ describe('dashboardService', () => {
         expect(claimantDashboard).toEqual(dashboardExpected);
       });
 
-      it.each([
-        false,
-        true,
-      ])('should include/exclude Applications section when general Application is %s', async (isGeneralApplicationEnabled) => {
-        //Given
-        const mockGet = jest.fn().mockResolvedValue({
-          data: Array.of(
-            new CivilServiceDashboardTask(
-              'test',
-              'test',
-              'test',
-              'test',
-              'test',
-              DashboardTaskStatus.COMPLETE,
-              'test',
-              'test',
-              'test'),
-          ),
-        });
-        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
-
-        const dashboard = new Dashboard(
-          Array.of(new DashboardTaskList('test', 'test', [])
-            , new DashboardTaskList('test', 'test', [])
-            , new DashboardTaskList('Applications', 'Applications', []),
-          ));
-
-        const dashboardExpected = new Dashboard(
-          Array.of(new DashboardTaskList('test', 'test', [])
-            , new DashboardTaskList('test', 'test', []),
-          ));
-
-        if(isGeneralApplicationEnabled) {
-          dashboardExpected.items.push(new DashboardTaskList('Applications', 'Applications', []));
-        }
-
-        jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
-
-        const claim = new Claim();
-        claim.id = '1234567890';
-        claim.caseRole = CaseRole.DEFENDANT;
-        claim.totalClaimAmount = 900;
-        //When
-        const claimantDashboard = await getDashboardForm(
-          ClaimantOrDefendant.DEFENDANT
-          , claim
-          , '1234567890'
-          , appReq
-          , false
-          , isGeneralApplicationEnabled);
-
-        //Then
-        expect(claimantDashboard).toEqual(dashboardExpected);
-      });
-
       it('ExtractDocumentFromNotificationList', async () => {
         //Given
         const notificationList: DashboardNotificationList = new DashboardNotificationList();
@@ -403,6 +348,7 @@ describe('dashboardService', () => {
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 900;
         claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+        claim.defendantUserDetails = {};
         //When
         const result = getContactCourtLink(claim.id, claim, true, 'en');
 
@@ -418,6 +364,7 @@ describe('dashboardService', () => {
         claim.caseRole = CaseRole.DEFENDANT;
         claim.totalClaimAmount = 900;
         claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+        claim.defendantUserDetails = {};
         //When
         const result = getContactCourtLink(claim.id, claim, false, 'en');
 
@@ -434,6 +381,7 @@ describe('dashboardService', () => {
         claim.totalClaimAmount = 900;
         claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
         claim.takenOfflineDate = new Date();
+        claim.defendantUserDetails = {};
         //When
         const result = getContactCourtLink(claim.id, claim, false, 'en');
 
@@ -442,6 +390,196 @@ describe('dashboardService', () => {
         expect(result.url).toBeUndefined();
       });
 
+      it('getContactCourtLink when claim is in Pending Case Issued state', async () => {
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+        claim.takenOfflineDate = new Date();
+        claim.defendantUserDetails = {};
+        //When
+        const result = getContactCourtLink(claim.id, claim, false, 'en');
+
+        //Then
+        expect(result).toBeUndefined();
+      });
+
+      it('getContactCourtLink when claim is not Assigned to defendant', async () => {
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+        claim.takenOfflineDate = new Date();
+        claim.defendantUserDetails = undefined;
+        //When
+        const result = getContactCourtLink(claim.id, claim, false, 'en');
+
+        //Then
+        expect(result).toBeUndefined();
+      });
+
+      it('getContactCourtLink when no ccdState()', async () => {
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.takenOfflineDate = new Date();
+        //When
+        const result = getContactCourtLink(claim.id, claim, false, 'en');
+
+        //Then
+        expect(result).toBeUndefined();
+      });
+
+      it('getContactCourtLink when claim is in Pending Case Issued state and claim is unassigned', async () => {
+        //Given
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+        claim.takenOfflineDate = new Date();
+        claim.defendantUserDetails = undefined;
+        //When
+        const result = getContactCourtLink(claim.id, claim, false, 'en');
+
+        //Then
+        expect(result).toBeUndefined();
+      });
+
+    });
+    describe('Hide/Show Application Section', () => {
+
+      //Given
+      const mockGet = jest.fn().mockResolvedValue({
+        data: Array.of(
+          new CivilServiceDashboardTask(
+            'test',
+            'test',
+            'test',
+            'test',
+            'test',
+            DashboardTaskStatus.COMPLETE,
+            'test',
+            'test',
+            'test'),
+        ),
+      });
+      const dashboard = new Dashboard(
+        Array.of(new DashboardTaskList('test', 'test', [])
+          , new DashboardTaskList('test', 'test', [])
+          , new DashboardTaskList('Applications', 'Applications', []),
+        ));
+
+      const dashboardExpected = new Dashboard(
+        Array.of(new DashboardTaskList('test', 'test', [])
+          , new DashboardTaskList('test', 'test', []),
+        ));
+
+      it('Application section when GaFlag enabled and the case is not assigned to defendant', async () => {
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
+
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+
+        //When
+        const claimantDashboard = await getDashboardForm(
+          ClaimantOrDefendant.DEFENDANT
+          , claim
+          , '1234567890'
+          , appReq
+          , false
+          , true);
+
+        //Then
+        expect(claimantDashboard).toEqual(dashboardExpected);
+      });
+
+      it('Application section when GaFlag disabled and the case is assigned to defendant', async () => {
+
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
+
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.defendantUserDetails = {};
+
+        //When
+        const claimantDashboard = await getDashboardForm(
+          ClaimantOrDefendant.DEFENDANT
+          , claim
+          , '1234567890'
+          , appReq
+          , false
+          , false);
+
+        //Then
+        expect(claimantDashboard).toEqual(dashboardExpected);
+      });
+
+      it('Application section when GaFlag disabled and the case is not assigned to defendant', async () => {
+
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
+
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+
+        //When
+        const claimantDashboard = await getDashboardForm(
+          ClaimantOrDefendant.DEFENDANT
+          , claim
+          , '1234567890'
+          , appReq
+          , false
+          , false);
+
+        //Then
+        expect(claimantDashboard).toEqual(dashboardExpected);
+      });
+
+      it('Application section when GaFlag enabled and the case is assigned to defendant', async () => {
+
+        const dashboard = new Dashboard(
+          Array.of(new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('test', 'test', [])
+            , new DashboardTaskList('Applications', 'Applications', []),
+          ));
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveDashboard').mockResolvedValueOnce(dashboard);
+
+        const claim = new Claim();
+        claim.id = '1234567890';
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.totalClaimAmount = 900;
+        claim.defendantUserDetails = {};
+
+        dashboardExpected.items.push(new DashboardTaskList('Applications', 'Applications', []));
+
+        //When
+        const claimantDashboard = await getDashboardForm(
+          ClaimantOrDefendant.DEFENDANT
+          , claim
+          , '1234567890'
+          , appReq
+          , false
+          , true);
+
+        //Then
+        expect(claimantDashboard).toEqual(dashboardExpected);
+      });
     });
   });
 });
