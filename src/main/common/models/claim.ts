@@ -983,9 +983,6 @@ export class Claim {
     return claimId_new;
   }
 
-  isDefendant() {
-    return this.caseRole === CaseRole.RESPONDENTSOLICITORONE || this.caseRole === CaseRole.RESPONDENTSOLICITORTWO || this.caseRole === CaseRole.DEFENDANT;
-  }
   isClaimant() {
     return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT || this.caseRole === CaseRole.CREATOR;
   }
