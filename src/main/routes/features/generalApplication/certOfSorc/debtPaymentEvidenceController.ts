@@ -9,7 +9,7 @@ import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {DebtPaymentEvidence} from 'models/generalApplication/debtPaymentEvidence';
-import {saveDebtPaymentEvidence} from 'services/features/generalApplication/certOfSorC/debtPaymentEvidenceService';
+import {debtPaymentEvidenceService} from 'services/features/generalApplication/certOfSorC/debtPaymentEvidenceService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 
@@ -56,7 +56,7 @@ debtPaymentEvidenceController.post(GA_DEBT_PAYMENT_EVIDENCE_URL,
       if (form.hasErrors()) {
         renderView(form,  res, claimId, cancelUrl);
       } else {
-        await saveDebtPaymentEvidence(redisKey, form.model);
+        await debtPaymentEvidenceService.saveDebtPaymentEvidence(redisKey, form.model);
         switch (form.model.evidence) {
           case debtPaymentOptions.NO_EVIDENCE:
             nextPageUrl = constructResponseUrlWithIdParams(claimId, CHECK_YOUR_ANSWERS_COSC_URL);

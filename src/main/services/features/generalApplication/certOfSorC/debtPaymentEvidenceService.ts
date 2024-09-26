@@ -3,15 +3,19 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {CertificateOfSatisfactionOrCanceled} from 'models/generalApplication/CertificateOfSatisfactionOrCanceled';
 import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 
-export const saveDebtPaymentEvidence = async (claimId: string, debtPaymentEvidence: DebtPaymentEvidence) => {
-  const caseData = await getCaseDataFromStore(claimId);
-  caseData.certificateOfSatisfactionOrCanceled = new CertificateOfSatisfactionOrCanceled();
+export class DebtPaymentEvidenceService {
+  public async saveDebtPaymentEvidence (claimId: string, debtPaymentEvidence: DebtPaymentEvidence) {
+    const caseData = await getCaseDataFromStore(claimId);
+    caseData.certificateOfSatisfactionOrCanceled = new CertificateOfSatisfactionOrCanceled();
 
-  // to clear provide details field when other choices are selected
-  if (debtPaymentEvidence.evidence !== debtPaymentOptions.NO_EVIDENCE) {
-    debtPaymentEvidence.provideDetails = null;
-  }
-  caseData.certificateOfSatisfactionOrCanceled.debtPaymentEvidence = debtPaymentEvidence;
+    // to clear provide details field when other choices are selected
+    if (debtPaymentEvidence.evidence !== debtPaymentOptions.NO_EVIDENCE) {
+      debtPaymentEvidence.provideDetails = null;
+    }
+    caseData.certificateOfSatisfactionOrCanceled.debtPaymentEvidence = debtPaymentEvidence;
 
-  await saveDraftClaim(claimId, caseData);
-};
+    await saveDraftClaim(claimId, caseData);
+  };
+}
+
+export const debtPaymentEvidenceService = new DebtPaymentEvidenceService();
