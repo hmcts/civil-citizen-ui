@@ -35,12 +35,14 @@ defendantPaymentDateController
   .post(
     COSC_FINAL_PAYMENT_DATE_URL, async (req, res, next: NextFunction) => {
       const claimId = req.params.id;
+      const cancelUrl = await getCancelUrl(claimId, null);
+      const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL);
       const defendantPaymentDate = new DefendantFinalPaymentDate(req.body.year, req.body.month, req.body.day);
       const form: GenericForm<DefendantFinalPaymentDate> = new GenericForm<DefendantFinalPaymentDate>(defendantPaymentDate);
-      await form.validate();
 
+      await form.validate();
       if (form.hasErrors()) {
-        res.render(paymentDateViewPath, {form, title});
+        res.render(paymentDateViewPath, {form, title, cancelUrl,backLinkUrl });
       } else {
         try {
           await defendantFinalPaymentDateService.savePaymentDate(claimId, req, defendantPaymentDate);
