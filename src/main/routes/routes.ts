@@ -766,5 +766,5 @@ export default [
   respondWrittenRepController,
   askProofOfDebtPaymentGuidanceController,
   defendantFinalPaymentDateController,
-  debtPaymentEvidenceController
+  debtPaymentEvidenceController,
 ];
