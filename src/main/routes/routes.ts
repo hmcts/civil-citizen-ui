@@ -764,5 +764,5 @@ export default [
   gaWrittenRepresentationCheckAnswersController,
   respondWrittenRepController,
   askProofOfDebtPaymentGuidanceController,
-  debtPaymentEvidenceController
+  debtPaymentEvidenceController,
 ];

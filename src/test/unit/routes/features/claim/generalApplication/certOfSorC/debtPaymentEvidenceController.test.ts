@@ -1,15 +1,15 @@
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
 import {GA_CHECK_YOUR_ANSWERS_COSC_URL, GA_DEBT_PAYMENT_EVIDENCE_URL, GA_UPLOAD_DOCUMENT_COSC_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
-import {isGaForLipsEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {isGaForLipsEnabled} from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import * as utilityService from 'modules/utilityService';
 import {t} from 'i18next';
 import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 import {debtPaymentEvidenceService} from 'services/features/generalApplication/certOfSorC/debtPaymentEvidenceService';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
