@@ -15,6 +15,7 @@ const IS_JUDGMENT_ONLINE_LIVE = 'isJudgmentOnlineLive';
 const IS_DASHBOARD_ENABLED_FOR_CASE = 'is-dashboard-enabled-for-case';
 const CARM_ENABLED_FOR_CASE = 'cam-enabled-for-case';
 const MULTI_OR_INTERMEDIATE_TRACK = 'multi-or-intermediate-track';
+const IS_COSC_ENABLED = 'isCoSCEnabled';
 
 async function getClient(): Promise<void> {
   const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
@@ -98,6 +99,10 @@ export async function isGaForLipsEnabled(): Promise<boolean> {
 
 export async function isMintiEnabled(): Promise<boolean> {
   return await getFlagValue(MINTI) as boolean;
+}
+
+export async function isCoSCEnabled(): Promise<boolean> {
+  return await getFlagValue(IS_COSC_ENABLED) as boolean;
 }
 
 export async function isJudgmentOnlineLive(): Promise<boolean> {
