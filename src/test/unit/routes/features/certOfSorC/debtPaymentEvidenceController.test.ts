@@ -2,7 +2,7 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
-import {CHECK_YOUR_ANSWERS_COSC_URL, GA_DEBT_PAYMENT_EVIDENCE_URL, UPLOAD_DOCUMENT_COSC_URL} from 'routes/urls';
+import {GA_CHECK_YOUR_ANSWERS_COSC_URL, GA_DEBT_PAYMENT_EVIDENCE_URL, GA_UPLOAD_DOCUMENT_COSC_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
 import {isGaForLipsEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import * as utilityService from 'modules/utilityService';
@@ -75,7 +75,7 @@ describe('CoSorC - debt payment evidence controller', () => {
         .send({evidence: debtPaymentOptions.UPLOAD_EVIDENCE})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(UPLOAD_DOCUMENT_COSC_URL.replace(':id', claim.id));
+          expect(res.header.location).toEqual(GA_UPLOAD_DOCUMENT_COSC_URL.replace(':id', claim.id));
         });
     });
 
@@ -87,7 +87,7 @@ describe('CoSorC - debt payment evidence controller', () => {
         .send({evidence: debtPaymentOptions.NO_EVIDENCE, provideDetails: 'some evidence'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CHECK_YOUR_ANSWERS_COSC_URL.replace(':id', claim.id));
+          expect(res.header.location).toEqual(GA_CHECK_YOUR_ANSWERS_COSC_URL.replace(':id', claim.id));
         });
     });
   });

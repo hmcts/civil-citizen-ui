@@ -1,11 +1,13 @@
 import {DebtPaymentEvidence} from 'models/generalApplication/debtPaymentEvidence';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {CertificateOfSatisfactionOrCanceled} from 'models/generalApplication/CertificateOfSatisfactionOrCanceled';
 import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
+import {getClaimById} from 'modules/utilityService';
+import {AppRequest} from 'models/AppRequest';
 
 export class DebtPaymentEvidenceService {
-  public async saveDebtPaymentEvidence (claimId: string, debtPaymentEvidence: DebtPaymentEvidence) {
-    const caseData = await getCaseDataFromStore(claimId);
+  public async saveDebtPaymentEvidence (req: AppRequest, claimId: string, redisKey: string, debtPaymentEvidence: DebtPaymentEvidence) {
+    const caseData = await getClaimById(claimId, req, true);
     caseData.certificateOfSatisfactionOrCanceled = new CertificateOfSatisfactionOrCanceled();
 
     // to clear provide details field when other choices are selected
@@ -14,7 +16,7 @@ export class DebtPaymentEvidenceService {
     }
     caseData.certificateOfSatisfactionOrCanceled.debtPaymentEvidence = debtPaymentEvidence;
 
-    await saveDraftClaim(claimId, caseData);
+    await saveDraftClaim(redisKey, caseData);
   }
 }
 

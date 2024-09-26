@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  APPLICATION_TYPE_URL, CHECK_YOUR_ANSWERS_COSC_URL,
-  GA_DEBT_PAYMENT_EVIDENCE_URL, UPLOAD_DOCUMENT_COSC_URL,
+  APPLICATION_TYPE_URL, GA_CHECK_YOUR_ANSWERS_COSC_URL,
+  GA_DEBT_PAYMENT_EVIDENCE_URL, GA_UPLOAD_DOCUMENT_COSC_URL,
 } from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
@@ -56,14 +56,14 @@ debtPaymentEvidenceController.post(GA_DEBT_PAYMENT_EVIDENCE_URL,
       if (form.hasErrors()) {
         renderView(form,  res, claimId, cancelUrl);
       } else {
-        await debtPaymentEvidenceService.saveDebtPaymentEvidence(redisKey, form.model);
+        await debtPaymentEvidenceService.saveDebtPaymentEvidence(<AppRequest>req, claimId, redisKey, form.model);
         switch (form.model.evidence) {
           case debtPaymentOptions.NO_EVIDENCE:
-            nextPageUrl = constructResponseUrlWithIdParams(claimId, CHECK_YOUR_ANSWERS_COSC_URL);
+            nextPageUrl = constructResponseUrlWithIdParams(claimId, GA_CHECK_YOUR_ANSWERS_COSC_URL);
             break;
           default:
             // This link is to be updated when merging all stories together for COSC
-            nextPageUrl = constructResponseUrlWithIdParams(claimId, UPLOAD_DOCUMENT_COSC_URL);
+            nextPageUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENT_COSC_URL);
             break;
         }
         res.redirect(nextPageUrl);
