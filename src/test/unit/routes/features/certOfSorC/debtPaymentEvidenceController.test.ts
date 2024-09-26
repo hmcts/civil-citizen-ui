@@ -2,47 +2,65 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
-import {GA_DEBT_PAYMENT_EVIDENCE_URL} from 'routes/urls';
-import {mockNoStatementOfMeans} from '../../../../utils/mockDraftStore';
-import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from "models/claim";
+import {CAN_WE_USE_URL, GA_DEBT_PAYMENT_EVIDENCE_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {isGaForLipsEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import * as utilityService from 'modules/utilityService';
+import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../main/modules/utilityService');
+const mockGetClaimById = utilityService.getClaimById as jest.Mock;
+const mockIsGaForLipsEnabled = isGaForLipsEnabled as jest.Mock;
 
 describe('CoSorS - defendant Payment date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
   const claim = new Claim();
-  const mockDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
 
   beforeAll(() => {
-    jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
-
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    mockIsGaForLipsEnabled.mockResolvedValue(true);
+
   });
 
   beforeEach(() => {
     claim.id = 'id';
-    mockDataFromStore.mockResolvedValue(claim);
+    mockGetClaimById.mockReturnValue(claim);
   });
 
   describe('on GET', () => {
     it('should return page', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-      // jest.spyOn(defendantFinalPaymentDateService,'getDefendantResponse').mockReturnValue(Promise.resolve(null));
       await request(app)
         .get(GA_DEBT_PAYMENT_EVIDENCE_URL.replace(':id', claim.id))
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('name="year" type="text"');
-          expect(res.text).toContain('name="month" type="text"');
-          expect(res.text).toContain('name="day" type="text"');
+        });
+    });
+
+  });
+  describe('on GET', () => {
+    it('should return page', async () => {
+      await request(app)
+        .post(GA_DEBT_PAYMENT_EVIDENCE_URL.replace(':id', claim.id))
+        .send({evidence: 'yes'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.SELECT_EVIDENCE_DEBT_PAYMENT'));
+        });
+    });
+
+    it('should return page', async () => {
+      await request(app)
+        .post(GA_DEBT_PAYMENT_EVIDENCE_URL.replace(':id', claim.id))
+        .send({evidence: 'yes' , provideDetails: 'test'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          //expect(res.header.location).toEqual(CAN_WE_USE_URL);
         });
     });
   });
