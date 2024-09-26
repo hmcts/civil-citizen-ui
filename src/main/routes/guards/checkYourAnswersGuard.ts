@@ -14,7 +14,7 @@ export const checkYourAnswersClaimGuard = async (req: AppRequest, res: Response,
     const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
     const caseData: Claim = await getCaseDataFromStore(userId);
 
-    if (!caseData.id) {
+    if (!req.cookies['eligibilityCompleted']) {
       return res.redirect(DASHBOARD_URL);
     }
 

@@ -521,7 +521,7 @@ describe('General Application service', () => {
     });
   });
 
-  describe('Validate CCJ is selected only if Active Judgment is there', () => {
+  describe('Validate CCEJ is selected only if Active Judgment is there', () => {
     it('should return error message if active Judgment absent', () => {
 
       //Given

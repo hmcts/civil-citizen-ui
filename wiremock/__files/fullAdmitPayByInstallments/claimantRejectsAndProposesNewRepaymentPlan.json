@@ -1,11 +1,13 @@
 {
-  "id": 1777777777777732,
+  "id": "1777777777777732someID",
   "jurisdiction": "CIVIL",
   "state": "AWAITING_APPLICANT_INTENTION",
   "case_type_id": "CIVIL",
   "created_date": "2024-08-14T21:37:50",
   "last_modified": "2024-08-14T21:39:43",
   "case_data": {
+    "id": 1777777777777732,
+    "respondentSignSettlementAgreement": "Yes",
     "respondent1ClaimResponseTypeForSpec": "FULL_ADMISSION",
     "ccjJudgmentTotalStillOwed": "1580",
     "applicant1SettleClaim": "Yes",
@@ -47,6 +49,11 @@
       "code": "FEE0206",
       "version": "6"
     },
+    "fullAdmission": {
+      "paymentIntention": {
+        "paymentDate": "2025-06-01T00:00:00.000Z"
+      }
+    },
     "respondent1DQCarerAllowanceCreditFullAdmission": "No",
     "ccjPaymentPaidSomeOption": "No",
     "specClaimResponseTimelineList": "MANUAL",
@@ -67,6 +74,10 @@
       "paymentAmount": "10000",
       "repaymentFrequency": "ONCE_ONE_MONTH",
       "firstRepaymentDate": "2025-10-01"
+    },
+    "applicant1LiPResponse": {
+      "applicant1SignedSettlementAgreement": "Yes",
+      "applicant1ChoosesHowToProceed": "SIGN_A_SETTLEMENT_AGREEMENT"
     },
     "respondent1DetailsForClaimDetailsTab": {
       "type": "INDIVIDUAL",
