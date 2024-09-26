@@ -372,6 +372,7 @@ export class CivilServiceClient {
       caseDataUpdate: updatedClaim,
     };
     try {
+      console.log('printing the config ...', JSON.stringify(config));
       console.log('submitting the event ...', JSON.stringify(data));
       const response = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
