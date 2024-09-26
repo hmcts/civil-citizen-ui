@@ -20,8 +20,8 @@ const getApplicationFeeConfirmationContent = (claimId: string, lng: string, isAd
   if (!isAdditionalFeeType) {
     pageSectionBuilder.addParagraph('COMMON.IF_NECESSARY_DOCUMENTS');
   }
-  pageSectionBuilder.addButton(t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW', {lng}), constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)).build();
-  return pageSectionBuilder;
+  pageSectionBuilder.addButton(t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW', {lng}), constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
+  return pageSectionBuilder.build();
 };
 
 payApplicationFeeConfirmationController.get(GA_APPLICATION_FEE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
