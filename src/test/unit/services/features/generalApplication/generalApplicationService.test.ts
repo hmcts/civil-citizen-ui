@@ -521,6 +521,29 @@ describe('General Application service', () => {
     });
   });
 
+  describe('Validate CCEJ is selected only if Active Judgment is there', () => {
+    it('should return error message if active Judgment absent', () => {
+
+      //Given
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID)];
+      const errors : ValidationError[] = [];
+      const applicationType = new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID);
+      const body = {
+        optionOther: 'test',
+        option: 'testOption',
+      };
+      //When
+      validateAdditionalApplicationtType(claim, errors, applicationType,body);
+
+      //Then
+      const error : ValidationError = errors[0];
+      expect(errors.length).toBe(1);
+      expect(error.constraints['ccjApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_CCJ_DEBT');
+    });
+  });
+
   describe('Save help with application fee details', () => {
     it('should save help with application fee selection', async () => {
       const gaHwfFees = new GaHelpWithFees();
