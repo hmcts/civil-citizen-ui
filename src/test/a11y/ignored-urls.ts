@@ -81,5 +81,5 @@ export const IGNORED_URLS = [
   urls.TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT,
   urls.BASE_COSC_URL,
   urls.GA_DEBT_PAYMENT_EVIDENCE_COSC_URL, //TODO: remove this once finished the page
-  urls.GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, //TODO: remove this once finished the page
 ];
+
