@@ -29,4 +29,4 @@ Scenario('Fast Track Trial Arrangements - ready for Trial Journey.', async () =>
     await api.waitForFinishedBusinessProcess();
     TrialArrangementSteps.verifyTrialArrangementsMade();*/
   }
-}).tag('@regression-cp');
+}).tag('@nightly');

@@ -67,6 +67,18 @@ export class PageSectionBuilder {
     this._claimSummarySections.push(titleSection);
     return this;
   }
+  addSubTitle(title: string, variables?: any, classes?: string) {
+    const titleSection = ({
+      type: ClaimSummaryType.SUBTITLE,
+      data: {
+        text: title,
+        variables: variables,
+        classes: classes,
+      },
+    });
+    this._claimSummarySections.push(titleSection);
+    return this;
+  }
 
   addParagraph(text: string, variables?: any, classes?: string) {
     const paragraphSection = ({
@@ -121,6 +133,22 @@ export class PageSectionBuilder {
   addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
     const linkSection = ({
       type: ClaimSummaryType.LINK,
+      data: {
+        text: text,
+        href: href,
+        textBefore: textBefore,
+        textAfter: textAfter,
+        variables: variables,
+        externalLink,
+      },
+    });
+    this._claimSummarySections.push(linkSection);
+    return this;
+  }
+
+  addFullStopLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
+    const linkSection = ({
+      type: ClaimSummaryType.FULL_STOP_LINK,
       data: {
         text: text,
         href: href,

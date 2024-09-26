@@ -64,7 +64,7 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreem
 }) as RequestHandler);
 
 function getBackLinkUrl(req: AppRequest) : string {
-  return constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL);
+  return constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL) + '?index=0';
 }
 
 export default agreementFromOtherPartyController;

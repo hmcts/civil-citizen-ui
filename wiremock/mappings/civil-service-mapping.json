@@ -197,6 +197,24 @@
         },
         "bodyFileName": "ssaResponseDeadline.json"
       }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/case/document/generateAnyDoc",
+        "headers": {
+          "Authorization": {
+            "matches": "Bearer .*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "bodyFileName": "document.json"
+      }
     }
   ]
 }

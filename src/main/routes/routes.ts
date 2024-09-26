@@ -416,6 +416,10 @@ import gaDirectionOrderCheckAnswersController from './features/generalApplicatio
 import directionOrderSubmittedConfirmationController from './features/generalApplication/directionsOrderUpload/directionOrderSubmittedConfirmationController';
 import uploadDocumentsForRequestWrittenRepresentation from './features/generalApplication/writtenRepresentationDocs/uplodWrittenRepresentationDocsController';
 import gaWrittenRepresentationCheckAnswersController from './features/generalApplication/writtenRepresentationDocs/checkAnswerController';
+import respondAddInfoController
+  from 'routes/features/generalApplication/additionalInfoUpload/respondController';
+import respondWrittenRepController
+  from 'routes/features/generalApplication/writtenRepresentationDocs/respondToWrittenRepController';
 
 export default [
   homeController,
@@ -742,6 +746,7 @@ export default [
   respondentHearingPreferenceController,
   respondentWantToUploadDocumentsController,
   respondentUploadEvidenceDocumentsController,
+  respondAddInfoController,
   uploadAdditionalDocumentsController,
   gaAdditionalDocCheckAnswerController,
   additionalDocSubmittedController,
@@ -753,4 +758,5 @@ export default [
   directionOrderSubmittedConfirmationController,
   uploadDocumentsForRequestWrittenRepresentation,
   gaWrittenRepresentationCheckAnswersController,
+  respondWrittenRepController,
 ];
