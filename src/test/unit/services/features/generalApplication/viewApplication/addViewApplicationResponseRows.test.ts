@@ -2,7 +2,7 @@ import {
   CcdGADebtorPaymentPlanGAspec,
   CcdGARespondentDebtorOfferOptionsGAspec,
   CcdGeneralApplicationHearingDetails,
-  CcdHearingType
+  CcdHearingType,
 } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import { CcdGeneralApplicationRespondentResponse } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationRespondentResponse';
 import { CcdSupportRequirement } from 'common/models/ccdGeneralApplication/ccdSupportRequirement';
@@ -28,11 +28,11 @@ describe('addViewApplicationResponseRows', () => {
         },
         respondentsResponses: [{ value : {}} as CcdGeneralApplicationRespondentResponse],
       } satisfies Partial<CCDApplication>;
-      const htmldata = '<ul class=\"no-list-style\"><li class=\"govuk-summary-list__key\">PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_SET_DATE</li><li>25/03/2028</li><li class=\"govuk-summary-list__key\">PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT</li><li>I disagree</li></ul>'
+      const htmlData = '<ul class="no-list-style"><li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_SET_DATE</li><li>25/03/2028</li><li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT</li><li>I disagree</li></ul>';
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([
         {
           'key': {
-            'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DEFENDANT_OFFER'
+            'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DEFENDANT_OFFER',
           },
           'value': {
             'html': 'COMMON.VARIATION.NO',
@@ -43,7 +43,7 @@ describe('addViewApplicationResponseRows', () => {
             'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
           },
           'value': {
-            'html': htmldata,
+            'html': htmlData,
           },
         },
       ]);

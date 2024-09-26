@@ -1,7 +1,7 @@
-import { YesNo } from 'common/form/models/yesNo';
+import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {
   CcdGADebtorPaymentPlanGAspec, CcdGARespondentDebtorOfferOptionsGAspec,
-  CcdGeneralApplicationHearingDetails
+  CcdGeneralApplicationHearingDetails,
 } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import { CcdGeneralApplicationUnavailableHearingDatesElement } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationUnavailableHearingDates';
 import { CcdSupportRequirement } from 'common/models/ccdGeneralApplication/ccdSupportRequirement';
@@ -15,7 +15,6 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
   const responses = generalApplication.respondentsResponses;
   const response = (responses?.length > 0) ? responses[0].value : undefined;
 
-
   const gaRespondentDebtorOfferSection = (): SummaryRow[] => {
 
     if (generalApplication.gaRespondentDebtorOffer?.respondentDebtorOffer) {
@@ -23,7 +22,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
         yesNoFormatter(generalApplication.gaRespondentDebtorOffer?.respondentDebtorOffer === CcdGARespondentDebtorOfferOptionsGAspec.ACCEPT ? YesNo.YES : YesNo.NO))];
     }
     return [row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST',
-      yesNoFormatter(generalApplication.gaRespondentDebtorOffer?.debtorObjections ? YesNo.NO : YesNo.YES))]
+      yesNoFormatter(generalApplication?.generalAppRespondent1Representative === YesNoUpperCamelCase.NO ? YesNo.NO : YesNo.YES))];
 
   };
 
@@ -51,8 +50,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
 
       return [
         row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
-          `<ul class="no-list-style">${proposedPaymentPlanHtml()}</ul>`)
-
+          `<ul class="no-list-style">${proposedPaymentPlanHtml()}</ul>`),
       ];
     }
     return undefined;
