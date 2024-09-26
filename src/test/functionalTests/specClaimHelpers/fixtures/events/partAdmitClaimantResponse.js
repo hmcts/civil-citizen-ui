@@ -4,9 +4,7 @@ module.exports = {
   partAdmitAmountPaidButClaimantWantsToProceed: () => {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',
-      id: '1645882162449438someID',
       caseData: {
-        id: '1645882162449438',
         respondent1: {
           type: 'INDIVIDUAL',
           individualTitle: 'Sir',
@@ -150,7 +148,6 @@ module.exports = {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',
       caseData: {
-        id: '1645882162449448',
         respondent1: {
           type: 'INDIVIDUAL',
           individualTitle: 'Sir',
@@ -309,7 +306,6 @@ module.exports = {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',
       caseData: {
-        id: '1645882162449458',
         respondent1: {
           type: 'INDIVIDUAL',
           individualTitle: 'Sir',
@@ -407,7 +403,6 @@ module.exports = {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',
       caseData: {
-        id: '1645882162449468',
         respondent1: {
           type: 'INDIVIDUAL',
           individualTitle: 'Sir',

@@ -5,7 +5,6 @@ module.exports = {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',
       caseData: {
-        id: '1645882162449478',
         respondent1: {
           type: 'INDIVIDUAL',
           individualTitle: 'Sir',
@@ -155,7 +154,6 @@ module.exports = {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',
       caseData: {
-        id: '1645882162449488',
         respondent1: {
           type: 'INDIVIDUAL',
           individualTitle: 'Sir',
