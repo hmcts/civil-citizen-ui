@@ -109,7 +109,7 @@ export async function isJudgmentOnlineLive(): Promise<boolean> {
   return await getFlagValue(IS_JUDGMENT_ONLINE_LIVE) as boolean;
 }
 
-export async function  isDashboardEnabledForCase(date: Date): Promise<boolean> {
+export async function isDashboardEnabledForCase(date: Date): Promise<boolean> {
   const { DateTime } = require('luxon');
   const systemTimeZone = DateTime.local().zoneName;
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
@@ -127,7 +127,7 @@ export async function isCarmEnabledForCase(date: Date): Promise<boolean> {
   return carmFlag && carmApplicable;
 }
 
-export async function  isMintiEnabledForCase(date: Date): Promise<boolean> {
+export async function isMintiEnabledForCase(date: Date): Promise<boolean> {
   const { DateTime } = require('luxon');
   const systemTimeZone = DateTime.local().zoneName;
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
