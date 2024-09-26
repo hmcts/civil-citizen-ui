@@ -72,29 +72,17 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
 }) as RequestHandler);
 
 async function getRedirectUrl(applicationResponse: ApplicationResponse, applicationId: string, claimId: string) {
-  console.log('GET REDIRECT URL');
   const claimantRespondingToDefendantVaryAJudgment = applicationResponse.case_data.generalAppType.types.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT);
   const withConsent = applicationResponse.case_data.generalAppRespondentAgreement.hasAgreed === YesNoUpperCamelCase.YES;
-  
-  const isClaimantApplicant = applicationResponse.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.YES;
-  console.log('parentClaimantIsApplicant', applicationResponse.case_data.parentClaimantIsApplicant);
-  
-  if (isClaimantApplicant) {
-    console.log('INSIDE A');
-    // IF CLAIMANT RESPONSE: GA_ACCEPT_DEFENDANT_OFFER_URL
-    if (claimantRespondingToDefendantVaryAJudgment) {
-      console.log('INSIDE B');
-      return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_ACCEPT_DEFENDANT_OFFER_URL);
-    } else if (withConsent) {
-      console.log('INSIDE C');
-      return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_AGREE_TO_ORDER_URL);
-    }
-  } else {
-    console.log('INSIDE D');
-    // IF DEFENDANT RESPONSE: GA_AGREE_TO_ORDER_URL
+
+  const isClaimantApplicant = (applicationResponse.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO);
+
+  if (isClaimantApplicant && claimantRespondingToDefendantVaryAJudgment) {
+    return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_ACCEPT_DEFENDANT_OFFER_URL);
+  }
+  if (withConsent) {
     return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_AGREE_TO_ORDER_URL);
   }
-  console.log('INSIDE E');
   return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_AGREEMENT_URL);
 }
 
