@@ -1,8 +1,5 @@
 import request from 'supertest';
 import {
-  mockCivilClaim, mockCivilClaimDefendantCaseProgression,
-  mockCivilClaimDocumentClaimantUploaded,
-  mockCivilClaimDocumentUploaded,
   mockRedisFailure,
 } from '../../../../utils/mockDraftStore';
 import {CP_CHECK_ANSWERS_URL, CP_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
@@ -22,10 +19,18 @@ import {getNextYearValue} from '../../../../utils/dateUtils';
 import express from 'express';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
-import {DateInputFields, UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {
+  DateInputFields, ExpertSection, FileOnlySection, ReferredToInTheStatementSection,
+  TypeOfDocumentSection,
+  UploadDocumentsUserForm, WitnessSection, WitnessSummarySection,
+} from 'models/caseProgression/uploadDocumentsUserForm';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import {isCaseProgressionV1Enable} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {getClaimById} from 'modules/utilityService';
+import {getUploadDocumentsForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
+import {CaseDocument} from 'models/document/caseDocument';
+import {EvidenceUploadDisclosure} from 'models/document/documentType';
 
 const getTrialContentMock = getTrialContent as jest.Mock;
 
@@ -36,13 +41,40 @@ jest.mock('services/features/caseProgression/disclosureService');
 jest.mock('services/features/caseProgression/witnessService');
 jest.mock('services/features/caseProgression/expertService');
 jest.mock('services/features/caseProgression/trialService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
+}));
+jest.mock('services/features/caseProgression/caseProgressionService', () => ({
+  saveCaseProgression: jest.fn(),
+  getUploadDocumentsForm: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
+}));
 
-const caseDoc = '{"documentLink":{"document_url":"http://test","document_binary_url":"http://test/binary","document_filename":"test.png","document_hash":"test"},"documentName":"test.png","documentSize":86349,"createdDatetime":"2023-06-27T11:32:29","createdBy":"test"}';
-
+const caseDoc:CaseDocument = {documentLink:{document_url:'http://test',document_binary_url:'http://test/binary',document_filename:'test.png'},documentName:'test.png',documentType:EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE,documentSize:86349,createdDatetime:new Date(2023, 11, 11),createdBy:'test'};
+const disclosureUpload = {documentsForDisclosure:
+      [
+        {
+          dateInputFields:
+              {
+                dateDay: '01',
+                dateMonth: '01',
+                dateYear: '2023',
+              } as DateInputFields,
+          fileUpload:
+              {
+                fieldname: 'field name',
+                mimetype: 'application/pdf',
+                originalname: 'original name',
+                size: 1234,
+              } as FileUpload,
+          typeOfDocument: 'type',
+        },
+      ],
+} as UploadDocumentsUserForm;
 describe('Upload document- upload document controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
-
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -68,14 +100,15 @@ describe('Upload document- upload document controller', () => {
   });
   beforeEach(()=> {
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
+
   });
   it('should render page successfully if cookie has correct values', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
+
     const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
     civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
     const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
-
     const spyDisclosure = jest.spyOn(DisclosureService, 'getDisclosureContent');
+    (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), claim));
 
     await request(app).get(CP_UPLOAD_DOCUMENTS_URL).query({lang: 'en'}).expect((res) => {
       expect(res.status).toBe(200);
@@ -88,11 +121,11 @@ describe('Upload document- upload document controller', () => {
   });
 
   it('should render page successfully in Welsh if cookie has correct values and query cy', async () => {
-    app.locals.draftStoreClient = mockCivilClaim;
 
     const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
     civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
     const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
+    (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), claim));
 
     const spyDisclosure = jest.spyOn(DisclosureService, 'getDisclosureContent');
 
@@ -107,35 +140,13 @@ describe('Upload document- upload document controller', () => {
   });
 
   it('should render page successfully with uploaded document section if document available in redis', async () => {
-    app.locals.draftStoreClient = mockCivilClaimDocumentUploaded;
     const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedMock.json');
     civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
     const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
-
-    const disclosureUpload = {documentsForDisclosure:
-            [
-              {
-                dateInputFields:
-                    {
-                      dateDay: '01',
-                      dateMonth: '01',
-                      dateYear: '2023',
-                    } as DateInputFields,
-                fileUpload:
-                  {
-                    fieldname: 'field name',
-                    mimetype: 'application/pdf',
-                    originalname: 'original name',
-                    size: 1234,
-                  } as FileUpload,
-                typeOfDocument: 'type',
-              },
-            ],
-    } as UploadDocumentsUserForm;
-
     const formWithDisclosure = new GenericForm(disclosureUpload);
 
     const spyDisclosure = jest.spyOn(DisclosureService, 'getDisclosureContent');
+    (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), claim));
 
     await request(app).get(CP_UPLOAD_DOCUMENTS_URL).query({lang:'en'}).expect((res) => {
       expect(res.status).toBe(200);
@@ -148,9 +159,11 @@ describe('Upload document- upload document controller', () => {
   });
 
   it('should render page successfully with uploaded document section if document available in redis on claimant request', async () => {
-    app.locals.draftStoreClient = mockCivilClaimDocumentClaimantUploaded;
+
     const civilClaimDocumentClaimantUploaded = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedClaimantMock.json');
     civilClaimDocumentClaimantUploaded.case_data.id = civilClaimDocumentClaimantUploaded.id;
+    const claim: Claim = civilClaimDocumentClaimantUploaded.case_data as Claim;
+    (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(),claim ));
 
     await request(app).get(CP_UPLOAD_DOCUMENTS_URL).expect((res) => {
       expect(res.status).toBe(200);
@@ -162,10 +175,11 @@ describe('Upload document- upload document controller', () => {
   });
 
   it('should render page successfully in Welsh with uploaded document section if document available in redis on claimant request', async () => {
-    app.locals.draftStoreClient = mockCivilClaimDocumentClaimantUploaded;
 
     const civilClaimDocumentClaimantUploaded = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedClaimantMock.json');
     civilClaimDocumentClaimantUploaded.case_data.id = civilClaimDocumentClaimantUploaded.id;
+    const claim: Claim = civilClaimDocumentClaimantUploaded.case_data as Claim;
+    (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), claim));
 
     await request(app).get(CP_UPLOAD_DOCUMENTS_URL).query({lang: 'cy'}).expect((res) => {
       expect(res.status).toBe(200);
@@ -189,26 +203,30 @@ describe('Upload document- upload document controller', () => {
 
 describe('on POST', () => {
   const mockFutureYear = getNextYearValue().toString();
+  const uploadDocumentsUserForm = new UploadDocumentsUserForm();
+  uploadDocumentsUserForm.documentsForDisclosure = [new TypeOfDocumentSection()];
+  uploadDocumentsUserForm.expertReport = [new ExpertSection()];
+  uploadDocumentsUserForm.witnessStatement = [new WitnessSection()];
+  uploadDocumentsUserForm.witnessSummary = [new WitnessSummarySection()];
+  uploadDocumentsUserForm.documentsForDisclosure[0].typeOfDocument = '';
+  uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateDay = '';
+  uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateMonth = '';
+  uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateMonth = '';
+  uploadDocumentsUserForm.documentsForDisclosure[0].caseDocument = undefined;
+  uploadDocumentsUserForm.documentsForDisclosure[0].fileUpload = undefined;
+
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
+    (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), claim));
     (isCaseProgressionV1Enable as jest.Mock).mockReturnValueOnce(true);
   });
   it('should display documentForDisclosure validation error when invalid', async () => {
-    const documentForDisclosureModel = {
-      'documentsForDisclosure': [{
-        'typeOfDocument': '',
-        'dateInputFields': {
-          'dateDay': '',
-          'dateMonth': '',
-          'dateYear': '',
-        },
-        'fileUpload': '',
-      }],
-    };
 
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
@@ -216,32 +234,24 @@ describe('on POST', () => {
   });
 
   it('File only section', async () => {
-    const disclosureList = {'disclosureList': [{'file_upload': '', 'caseDocument': `${caseDoc}`}]};
-
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockResolvedValue(disclosureUpload);
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(disclosureList)
       .expect((res) => {
         expect(res.status).toBe(302);
       });
   });
 
   it('should display documentForDisclosure validation error when Day month and year is invalid', async () => {
-    const documentForDisclosureModel = {
-      'documentsForDisclosure': [{
-        'typeOfDocument': '',
-        'dateInputFields': {
-          'dateDay': '45',
-          'dateMonth': '17',
-          'dateYear': '202',
-        },
-        'fileUpload': '',
-      }],
-    };
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateDay = '33';
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateMonth = '33';
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateYear = '222';
 
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
@@ -252,21 +262,15 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when day is blank', async () => {
-    const documentForDisclosureModel = {
-      'documentsForDisclosure': [{
-        'typeOfDocument': '',
-        'dateInputFields': {
-          'dateDay': '',
-          'dateMonth': '11',
-          'dateYear': '2022',
-        },
-        'fileUpload': '',
-      }],
-    };
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateDay = '';
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateMonth = '11';
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateYear = '2022';
+
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
@@ -275,21 +279,13 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when month is blank', async () => {
-    const documentForDisclosureModel = {
-      'documentsForDisclosure': [{
-        'typeOfDocument': '',
-        'dateInputFields': {
-          'dateDay': '12',
-          'dateMonth': '',
-          'dateYear': '2022',
-        },
-        'fileUpload': '',
-      }],
-    };
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateMonth = '';
+
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
@@ -298,21 +294,17 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when year is blank', async () => {
-    const documentForDisclosureModel = {
-      'documentsForDisclosure': [{
-        'typeOfDocument': '',
-        'dateInputFields': {
-          'dateDay': '12',
-          'dateMonth': '11',
-          'dateYear': '',
-        },
-        'fileUpload': '',
-      }],
-    };
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields = new DateInputFields();
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.date = new Date(299,10,11);
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateDay = '';
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateMonth = '11';
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateYear = '';
+
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
@@ -321,21 +313,16 @@ describe('on POST', () => {
   });
 
   it('should display documentForDisclosure validation error when date is in future', async () => {
-    const documentForDisclosureModel = {
-      'documentsForDisclosure': [{
-        'typeOfDocument': '',
-        'dateInputFields': {
-          'dateDay': '12',
-          'dateMonth': '11',
-          'dateYear': mockFutureYear,
-        },
-        'fileUpload': '',
-      }],
-    };
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.date = new Date(2099,10,11);
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateDay = '11';
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateMonth = '10';
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateYear = mockFutureYear;
+
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
@@ -344,21 +331,18 @@ describe('on POST', () => {
   });
 
   it('should not display documentForDisclosure validation error when date is valid', async () => {
-    const documentForDisclosureModel = {
-      'documentsForDisclosure': [{
-        'typeOfDocument': '',
-        'dateInputFields': {
-          'dateDay': '12',
-          'dateMonth': '11',
-          'dateYear': '2022',
-        },
-        'fileUpload': '',
-      }],
-    };
+
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.date = new Date(2020,10,12);
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateDay = '12';
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateMonth = '10';
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateYear = '2022';
+    uploadDocumentsUserForm.documentsForDisclosure[0].typeOfDocument = undefined;
+
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(documentForDisclosureModel)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_TYPE_OF_DOCUMENT);
@@ -367,21 +351,17 @@ describe('on POST', () => {
   });
 
   it('should display witness validation error when invalid', async () => {
-    const model = {
-      'witnessStatement': [{
-        'witnessName': '',
-        'dateInputFields': {
-          'dateDay': '',
-          'dateMonth': '',
-          'dateYear': '',
-        },
-        'fileUpload': '',
-      }],
-    };
+    uploadDocumentsUserForm.witnessStatement[0].witnessName = '';
+    uploadDocumentsUserForm.witnessStatement[0].dateInputFields.dateDay = '';
+    uploadDocumentsUserForm.witnessStatement[0].dateInputFields.dateMonth = '';
+    uploadDocumentsUserForm.witnessStatement[0].dateInputFields.dateYear = '';
+    uploadDocumentsUserForm.witnessStatement[0].fileUpload = undefined;
+
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(model)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_WITNESS_NAME);
@@ -390,21 +370,17 @@ describe('on POST', () => {
   });
 
   it('should display witness summary validation error when invalid', async () => {
-    const model = {
-      'witnessSummary': [{
-        'witnessName': '',
-        'dateInputFields': {
-          'dateDay': '',
-          'dateMonth': '',
-          'dateYear': '',
-        },
-        'fileUpload': '',
-      }],
-    };
+    uploadDocumentsUserForm.witnessSummary[0].witnessName = '';
+    uploadDocumentsUserForm.witnessSummary[0].dateInputFields.dateDay = '';
+    uploadDocumentsUserForm.witnessSummary[0].dateInputFields.dateMonth = '';
+    uploadDocumentsUserForm.witnessSummary[0].dateInputFields.dateYear = '';
+    uploadDocumentsUserForm.witnessSummary[0].fileUpload = undefined;
+
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(model)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_WITNESS_NAME);
@@ -413,23 +389,20 @@ describe('on POST', () => {
   });
 
   it('should display all expert validation errors', async () => {
-    const model = {
-      'expertReport': [{
-        'expertName': '',
-        'fieldOfExpertise': '',
-        'questionDocumentName': '',
-        'otherPartyQuestionsDocumentName': '',
-        'dateInputFields': {
-          'dateDay': '',
-          'dateMonth': '',
-          'dateYear': '',
-        },
-      }],
-    };
+    uploadDocumentsUserForm.expertReport[0].expertName = '';
+    uploadDocumentsUserForm.expertReport[0].fieldOfExpertise = '';
+    uploadDocumentsUserForm.expertReport[0].questionDocumentName = '';
+    uploadDocumentsUserForm.expertReport[0].otherPartyQuestionsDocumentName = '';
+    uploadDocumentsUserForm.expertReport[0].dateInputFields.dateDay = '';
+    uploadDocumentsUserForm.expertReport[0].dateInputFields.dateMonth = '';
+    uploadDocumentsUserForm.expertReport[0].dateInputFields.dateYear = '';
+    uploadDocumentsUserForm.expertReport[0].fileUpload = undefined;
+
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(model)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_EXPERT_NAME);
@@ -441,11 +414,19 @@ describe('on POST', () => {
   });
 
   it('should display all questions for other party\'s expert validation errors', async () => {
-    const model = {'questionsForExperts':[{'expertName':'', 'otherPartyName':'', 'questionDocumentName':'', 'fileUpload':''}]};
+    uploadDocumentsUserForm.questionsForExperts = [new ExpertSection()];
+    uploadDocumentsUserForm.questionsForExperts[0].otherPartyName = '';
+    uploadDocumentsUserForm.questionsForExperts[0].expertName = '';
+    uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.dateDay = '';
+    uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.dateMonth = '';
+    uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.dateYear = '';
+    uploadDocumentsUserForm.questionsForExperts[0].questionDocumentName = '';
+    uploadDocumentsUserForm.questionsForExperts[0].fileUpload = undefined;
 
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(model)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_EXPERT_NAME);
@@ -456,22 +437,38 @@ describe('on POST', () => {
   });
 
   it('should display all questions for other party\'s expert validation errors on defendant request', async () => {
-    const model = {'questionsForExperts':[{'expertName':'', 'otherPartyName':'', 'questionDocumentName':'', 'fileUpload':''}]};
-    app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
+    uploadDocumentsUserForm.questionsForExperts[0].otherPartyName = '';
+    uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.dateDay = '';
+    uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.dateMonth = '';
+    uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.dateYear = '';
+    uploadDocumentsUserForm.questionsForExperts[0].questionDocumentName = undefined;
+    uploadDocumentsUserForm.questionsForExperts[0].fileUpload = undefined;
+
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(model)
       .expect((res) => {
         expect(res.status).toBe(200);
       });
   });
 
   it('should display all answers to questions asked by other party validation errors', async () => {
-    const model = {'answersForExperts':[{'expertName':'', 'otherPartyName':'', 'otherPartyQuestionsDocumentName':'', 'fileUpload':''}]};
+    uploadDocumentsUserForm.answersForExperts = [new ExpertSection()];
+    uploadDocumentsUserForm.answersForExperts[0].otherPartyName = '';
+    uploadDocumentsUserForm.answersForExperts[0].expertName = '';
+    uploadDocumentsUserForm.answersForExperts[0].dateInputFields.date = new Date(2020,10,14);
+    uploadDocumentsUserForm.answersForExperts[0].dateInputFields.dateDay = '';
+    uploadDocumentsUserForm.answersForExperts[0].dateInputFields.dateMonth = '';
+    uploadDocumentsUserForm.answersForExperts[0].dateInputFields.dateYear = '';
+    uploadDocumentsUserForm.answersForExperts[0].otherPartyQuestionsDocumentName = '';
+    uploadDocumentsUserForm.answersForExperts[0].fileUpload = undefined;
+
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(model)
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_ENTER_EXPERT_NAME);
@@ -482,133 +479,128 @@ describe('on POST', () => {
   });
 
   it('should redirect to the next page when inputs are validated', async () => {
+    const fileUpload = new FileUpload();
+    fileUpload.fieldname = 'test';
+    fileUpload.originalname = 'originalTest';
+    fileUpload.mimetype = 'pdf';
+    fileUpload.buffer = undefined;
+    fileUpload.size = 12345;
 
-    const documentForDisclosureModel = {
-      'documentsForDisclosure': [{
-        'typeOfDocument': 'Word',
-        'dateInputFields': {
-          'dateDay': '14',
-          'dateMonth': '10',
-          'dateYear': '2020',
-        },
-        caseDocument: caseDoc,
-      }],
-    };
-    const disclosureList = {'disclosureList':[{caseDocument: caseDoc}]};
+    uploadDocumentsUserForm.documentsForDisclosure = [new TypeOfDocumentSection()];
+    uploadDocumentsUserForm.documentsForDisclosure[0].typeOfDocument = 'Word';
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.date = new Date(2020,10,14);
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateDay = '14';
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateMonth = '10';
+    uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateYear = '2020';
+    uploadDocumentsUserForm.documentsForDisclosure[0].caseDocument = caseDoc;
 
-    const witnessStatement = {
-      'witnessStatement': [{
-        'witnessName': 'witness Name',
-        'dateInputFields': {
-          'dateDay': '10',
-          'dateMonth': '11',
-          'dateYear': '2020',
-        },
-        caseDocument: caseDoc,
-      }],
-    };
-    const witnessSummary = {
-      'witnessSummary': [{
-        'witnessName': 'witness Name 1',
-        'dateInputFields': {
-          'dateDay': '11',
-          'dateMonth': '11',
-          'dateYear': '2020',
-        },
-        caseDocument: caseDoc,
-      }],
-    };
-    const noticeOfIntention = {
-      'noticeOfIntention': [{
-        'witnessName': 'witness Name 2',
-        'dateInputFields': {
-          'dateDay': '12',
-          'dateMonth': '11',
-          'dateYear': '2020',
-        },
-        caseDocument: caseDoc,
-      }],
-    };
-    const documentsReferred = {
-      'documentsReferred': [{
-        'witnessName': 'witness Name 3',
-        'typeOfDocument': 'Word',
-        'dateInputFields': {
-          'dateDay': '13',
-          'dateMonth': '11',
-          'dateYear': '2020',
-        },
-        caseDocument: caseDoc,
-      }],
-    };
+    uploadDocumentsUserForm.answersForExperts = [new ExpertSection()];
+    uploadDocumentsUserForm.answersForExperts[0].fileUpload = undefined;
 
-    const expertReport = {
-      'expertReport': [{
-        'expertName': 'expert Name',
-        'fieldOfExpertise': 'field Of Expertise',
-        'questionDocumentName': 'question Document Name',
-        'otherPartyQuestionsDocumentName': 'O. p. Document Name',
-        'dateInputFields': {
-          'dateDay': '11',
-          'dateMonth': '12',
-          'dateYear': '2020',
-        },
-        caseDocument: caseDoc,
-      }],
-    };
-    const expertStatement = {'expertStatement':[{'expertName':'John Dhoe','fieldOfExpertise':'Architect','otherPartyName':'Mark Smith', 'questionDocumentName':'question Document Name', 'otherPartyQuestionsDocumentName':'O. p. Document Name', caseDocument: caseDoc}]};
-    const questionsForExperts = {
-      'questionsForExperts': [{
-        'expertName': 'expert Name 1',
-        'fieldOfExpertise': 'field Of Expertise',
-        'questionDocumentName': 'question Document Name',
-        'otherPartyQuestionsDocumentName': 'O. p. Document Name',
-        'dateInputFields': {
-          'dateDay': '10',
-          'dateMonth': '10',
-          'dateYear': '2020',
-        },
-        caseDocument: caseDoc,
-      }],
-    };
-    const answersForExperts = {
-      'answersForExperts': [{
-        'expertName': 'expert Name 2',
-        'fieldOfExpertise': 'field Of Expertise',
-        'questionDocumentName': 'question Document Name',
-        'otherPartyQuestionsDocumentName': 'O. p. Document Name',
-        'dateInputFields': {
-          'dateDay': '11',
-          'dateMonth': '10',
-          'dateYear': '2020',
-        },
-        caseDocument: caseDoc,
-      }],
-    };
+    uploadDocumentsUserForm.disclosureList = [new FileOnlySection()];
+    uploadDocumentsUserForm.disclosureList[0].caseDocument = caseDoc;
 
-    const trialCaseSummary = {'trialCaseSummary':[{caseDocument: caseDoc}]};
-    const trialSkeletonArgument = {'trialSkeletonArgument':[{caseDocument: caseDoc}]};
-    const trialAuthorities = {'trialAuthorities':[{caseDocument: caseDoc}]};
-    const trialCosts = {'trialCosts':[{caseDocument: caseDoc}]};
-    const trialDocumentary = {
-      'trialDocumentary': [{
-        'typeOfDocument': 'Word',
-        'dateInputFields': {
-          'dateDay': '14',
-          'dateMonth': '11',
-          'dateYear': '2020',
-        },
-        caseDocument: caseDoc,
-      }],
-    };
+    uploadDocumentsUserForm.witnessStatement[0].witnessName = 'witness Name';
+    uploadDocumentsUserForm.witnessStatement[0].fileUpload = fileUpload;
+    uploadDocumentsUserForm.witnessStatement[0].dateInputFields.date = new Date(2020,11,10);
+    uploadDocumentsUserForm.witnessStatement[0].dateInputFields.dateDay = '10';
+    uploadDocumentsUserForm.witnessStatement[0].dateInputFields.dateMonth = '11';
+    uploadDocumentsUserForm.witnessStatement[0].dateInputFields.dateYear = '2020';
 
-    const sections = Object.assign(documentForDisclosureModel, disclosureList, witnessStatement, witnessSummary, noticeOfIntention,
-      documentsReferred, expertReport, expertStatement, questionsForExperts, answersForExperts, trialCaseSummary, trialSkeletonArgument,
-      trialAuthorities, trialCosts, trialDocumentary);
+    uploadDocumentsUserForm.witnessSummary[0].witnessName = 'witness Name 1';
+    uploadDocumentsUserForm.witnessSummary[0].fileUpload = fileUpload;
+    uploadDocumentsUserForm.witnessSummary[0].dateInputFields.date = new Date(2020,11,101);
+    uploadDocumentsUserForm.witnessSummary[0].dateInputFields.dateDay = '10';
+    uploadDocumentsUserForm.witnessSummary[0].dateInputFields.dateMonth = '11';
+    uploadDocumentsUserForm.witnessSummary[0].dateInputFields.dateYear = '2020';
+
+    uploadDocumentsUserForm.noticeOfIntention = [new WitnessSection()];
+    uploadDocumentsUserForm.noticeOfIntention[0].witnessName = 'witness Name 2';
+    uploadDocumentsUserForm.noticeOfIntention[0].dateInputFields.date = new Date(2020,11,12);
+    uploadDocumentsUserForm.noticeOfIntention[0].dateInputFields.dateDay = '12';
+    uploadDocumentsUserForm.noticeOfIntention[0].dateInputFields.dateMonth = '11';
+    uploadDocumentsUserForm.noticeOfIntention[0].dateInputFields.dateYear = '2020';
+    uploadDocumentsUserForm.noticeOfIntention[0].caseDocument = caseDoc;
+
+    uploadDocumentsUserForm.documentsReferred = [new ReferredToInTheStatementSection()];
+    uploadDocumentsUserForm.documentsReferred[0].witnessName = 'witness Name 3';
+    uploadDocumentsUserForm.documentsReferred[0].fileUpload = fileUpload;
+    uploadDocumentsUserForm.documentsReferred[0].typeOfDocument = 'pdf';
+    uploadDocumentsUserForm.documentsReferred[0].dateInputFields.date = new Date(2020,11,13);
+    uploadDocumentsUserForm.documentsReferred[0].dateInputFields.dateDay = '13';
+    uploadDocumentsUserForm.documentsReferred[0].dateInputFields.dateMonth = '11';
+    uploadDocumentsUserForm.documentsReferred[0].dateInputFields.dateYear = '2020';
+    uploadDocumentsUserForm.documentsReferred[0].caseDocument = caseDoc;
+
+    uploadDocumentsUserForm.expertReport[0].expertName = 'expert Name';
+    uploadDocumentsUserForm.expertReport[0].fieldOfExpertise = 'field Of Expertise';
+    uploadDocumentsUserForm.expertReport[0].questionDocumentName = 'question Document Name';
+    uploadDocumentsUserForm.expertReport[0].otherPartyQuestionsDocumentName = 'O. p. Document Name';
+    uploadDocumentsUserForm.expertReport[0].dateInputFields.date = new Date(2020,12,11);
+    uploadDocumentsUserForm.expertReport[0].dateInputFields.dateDay = '11';
+    uploadDocumentsUserForm.expertReport[0].dateInputFields.dateMonth = '12';
+    uploadDocumentsUserForm.expertReport[0].dateInputFields.dateYear = '2020';
+    uploadDocumentsUserForm.expertReport[0].caseDocument = caseDoc;
+
+    uploadDocumentsUserForm.questionsForExperts = [new ExpertSection()];
+    uploadDocumentsUserForm.questionsForExperts[0].expertName = 'expert Name 1';
+    uploadDocumentsUserForm.questionsForExperts[0].fieldOfExpertise = 'field Of Expertise';
+    uploadDocumentsUserForm.questionsForExperts[0].questionDocumentName = 'question Document Name';
+    uploadDocumentsUserForm.questionsForExperts[0].otherPartyQuestionsDocumentName = 'O. p. Document Name';
+    uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.date = new Date(2020,10,10);
+    uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.dateDay = '10';
+    uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.dateMonth = '10';
+    uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.dateYear = '2020';
+    uploadDocumentsUserForm.questionsForExperts[0].caseDocument = caseDoc;
+
+    uploadDocumentsUserForm.expertStatement = [new ExpertSection()];
+    uploadDocumentsUserForm.expertStatement[0].expertName = 'John Dhoe';
+    uploadDocumentsUserForm.expertStatement[0].fieldOfExpertise = 'Architect';
+    uploadDocumentsUserForm.expertStatement[0].otherPartyName = 'Mark Smith';
+    uploadDocumentsUserForm.expertStatement[0].questionDocumentName = 'question Document Name';
+    uploadDocumentsUserForm.expertStatement[0].otherPartyQuestionsDocumentName = 'O. p. Document Name';
+    uploadDocumentsUserForm.expertStatement[0].dateInputFields.date = new Date(2020,10,14);
+    uploadDocumentsUserForm.expertStatement[0].dateInputFields.dateDay = '14';
+    uploadDocumentsUserForm.expertStatement[0].dateInputFields.dateMonth = '10';
+    uploadDocumentsUserForm.expertStatement[0].dateInputFields.dateYear = '2020';
+    uploadDocumentsUserForm.expertStatement[0].caseDocument = caseDoc;
+
+    uploadDocumentsUserForm.answersForExperts = [new ExpertSection()];
+    uploadDocumentsUserForm.answersForExperts[0].expertName = 'expert Name 2';
+    uploadDocumentsUserForm.answersForExperts[0].fieldOfExpertise = 'field Of Expertise';
+    uploadDocumentsUserForm.answersForExperts[0].questionDocumentName = 'question Document Name';
+    uploadDocumentsUserForm.answersForExperts[0].otherPartyQuestionsDocumentName = 'O. p. Document Name';
+    uploadDocumentsUserForm.answersForExperts[0].dateInputFields.date = new Date(2020,10,14);
+    uploadDocumentsUserForm.answersForExperts[0].dateInputFields.dateDay = '14';
+    uploadDocumentsUserForm.answersForExperts[0].dateInputFields.dateMonth = '10';
+    uploadDocumentsUserForm.answersForExperts[0].dateInputFields.dateYear = '2020';
+    uploadDocumentsUserForm.answersForExperts[0].caseDocument = caseDoc;
+
+    uploadDocumentsUserForm.trialCaseSummary = [new FileOnlySection()];
+    uploadDocumentsUserForm.trialCaseSummary[0].caseDocument = caseDoc;
+
+    uploadDocumentsUserForm.trialSkeletonArgument = [new FileOnlySection()];
+    uploadDocumentsUserForm.trialSkeletonArgument[0].caseDocument = caseDoc;
+
+    uploadDocumentsUserForm.trialAuthorities = [new FileOnlySection()];
+    uploadDocumentsUserForm.trialAuthorities[0].caseDocument = caseDoc;
+
+    uploadDocumentsUserForm.trialCosts = [new FileOnlySection()];
+    uploadDocumentsUserForm.trialCosts[0].caseDocument = caseDoc;
+
+    uploadDocumentsUserForm.trialDocumentary = [new TypeOfDocumentSection()];
+    uploadDocumentsUserForm.trialDocumentary[0].typeOfDocument = 'Word';
+    uploadDocumentsUserForm.trialDocumentary[0].dateInputFields.date = new Date(2020,11,14);
+    uploadDocumentsUserForm.trialDocumentary[0].dateInputFields.dateDay = '14';
+    uploadDocumentsUserForm.trialDocumentary[0].dateInputFields.dateMonth = '11';
+    uploadDocumentsUserForm.trialDocumentary[0].dateInputFields.dateYear = '2020';
+    uploadDocumentsUserForm.trialDocumentary[0].caseDocument = caseDoc;
+
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
 
     await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send(sections)
       .expect((res: express.Response) => {
         expect(res.status).toBe(302);
         expect(res.get('location')).toBe(CP_CHECK_ANSWERS_URL);
@@ -616,9 +608,10 @@ describe('on POST', () => {
   });
 
   it('should return 500 error page for failure', async () => {
-    app.locals.draftStoreClient = mockRedisFailure;
+    (getClaimById as jest.Mock).mockReturnValue(new Error());
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(undefined);
     await request(app)
-      .get(CP_UPLOAD_DOCUMENTS_URL)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
       .expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
