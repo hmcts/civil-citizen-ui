@@ -12,12 +12,16 @@ import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 const payFeeConfirmationScreenViewPath = 'features/generalApplication/applicationFee/pay-application-fee-confirmation';
 const payApplicationFeeConfirmationController = Router();
 
-const getApplicationFeeConfirmationContent = (claimId: string, lng: string) => {
-  return new PageSectionBuilder()
+const getApplicationFeeConfirmationContent = (claimId: string, lng: string, isAdditionalFeeType: boolean) => {
+  const pagesection = new PageSectionBuilder()
     .addTitle('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.WHAT_HAPPENS_NEXT')
-    .addParagraph('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.YOU_WILL_RECEIVE')
-    .addParagraph('COMMON.IF_NECESSARY_DOCUMENTS')
-    .addButton(t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW', {lng}), constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)).build();
+    .addParagraph('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.YOU_WILL_RECEIVE');
+
+  if (!isAdditionalFeeType) {
+    pagesection.addParagraph('COMMON.IF_NECESSARY_DOCUMENTS');
+  }
+  pagesection.addButton(t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW', {lng}), constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)).build();
+  return pagesection;
 };
 
 payApplicationFeeConfirmationController.get(GA_APPLICATION_FEE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
@@ -30,7 +34,7 @@ payApplicationFeeConfirmationController.get(GA_APPLICATION_FEE_CONFIRMATION_URL,
     res.render(payFeeConfirmationScreenViewPath, {
       confirmationTitle : isAdditionalFeeType ? t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONFIRMATION_ADDITIONAL_TITLE', {lng}):t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONFIRMATION_TITLE', {lng}),
       referenceNumber: gaHwFDetails.helpFeeReferenceNumberForm?.referenceNumber,
-      confirmationContent: getApplicationFeeConfirmationContent(claimId, lng),
+      confirmationContent: getApplicationFeeConfirmationContent(claimId, lng, isAdditionalFeeType),
     });
   }catch (error) {
     next(error);
