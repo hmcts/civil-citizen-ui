@@ -74,7 +74,6 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
 async function getRedirectUrl(applicationResponse: ApplicationResponse, applicationId: string, claimId: string) {
   const claimantRespondingToDefendantVaryAJudgment = applicationResponse.case_data.generalAppType.types.includes(ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT);
   const withConsent = applicationResponse.case_data.generalAppRespondentAgreement.hasAgreed === YesNoUpperCamelCase.YES;
-
   const isClaimantRespondent = (applicationResponse.case_data.parentClaimantIsApplicant === YesNoUpperCamelCase.NO);
 
   if (isClaimantRespondent && claimantRespondingToDefendantVaryAJudgment) {
