@@ -3279,7 +3279,7 @@
               "PAYMENT_BY_PHONE_PARAGRAPH_1": "Make a payment by phone by calling us on 0300 123 7050. Quote your case reference number which is {{ claimId }}.",
               "PAYMENT_BY_PHONE_PARAGRAPH_2": "Lines are open from Monday to Friday, 8:30am to 5pm.",
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Before getting in touch ",
-              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "find out about call charges (opens in a new tab).",
+              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "find out about call charges (opens in a new tab)",
               "RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
             },
             "SUCCESSFUL": {
@@ -3478,7 +3478,7 @@
       "WITNESS_STATEMENT_HINT": "A written statement of what your witness wants to tell the court",
       "WITNESS_SUMMARY": "Witness summary",
       "WITNESS_SUMMARY_HINT": "If you cannot get a written statement from your witness, you can write a summary of the evidence you would want to include in the witness statement. You must apply to the court to use a witness summary at the hearing. You must do this before the deadline. Use ",
-      "WITNESS_SUMMARY_HINT_URL": "form N244 'application notice'",
+      "WITNESS_SUMMARY_HINT_URL": "form N244 'application notice' (opens in a new tab)",
       "YOUR_STATEMENT": "Your statement",
       "YOUR_STATEMENT_HINT": "A written statement of what you want to tell the court"
     },
