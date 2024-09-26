@@ -15,7 +15,7 @@ export class DebtPaymentEvidenceService {
     caseData.certificateOfSatisfactionOrCanceled.debtPaymentEvidence = debtPaymentEvidence;
 
     await saveDraftClaim(claimId, caseData);
-  };
+  }
 }
 
 export const debtPaymentEvidenceService = new DebtPaymentEvidenceService();
