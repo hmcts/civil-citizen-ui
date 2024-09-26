@@ -3200,6 +3200,14 @@
         "PARA_TITLE_5": "Do you need to update your details?",
         "PARA_8": "If you need to update your details from the judgment, you will need to ",
         "COMPLETE_FORM_N443": "complete a form N443."
+      },
+      "FINAL_DEFENDANT_PAYMENT_DATE": {
+        "CAPTION_HEADER_1": "Confirm you've paid a judgment debt",
+        "PAGE_TITLE": "Confirm you've paid a judgment debt",
+        "TITLE": "When was the final payment?",
+        "PARAGRAPH_TEXT_1" : "We need to know this to cancel the debt if you paid within one month or show",
+        "PARAGRAPH_TEXT_2" : "it as satisfied if you paid after one month.",
+        "FORM_HEADER_1" : "Enter the date of the final payment"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -5082,6 +5090,7 @@
     "VALID_REAL_MONTH": "Month of Date must be a valid month",
     "VALID_REAL_YEAR": "Year of Date must be a valid year",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
+    "VALID_DATE_NOT_IN_THE_FUTURE": "Date of the final payment must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
     "VALID_DATE_WITNESS_SUMMARY": "Date summary was written is required",
     "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
@@ -5128,6 +5137,7 @@
         "EMPTY_OPTION_TEXT": "You need to tell us if you want to upload documents to support your response. Choose option: Yes or No.",
         "ERROR_INPUT": "You need to either enter the information requested in the box or select Yes to upload documents to support your response."
       }
-    }
+    },
+    "VALID_FINAL_DATE": "Enter a date when the final payment was made."
   }
 }

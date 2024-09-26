@@ -422,6 +422,7 @@ import respondWrittenRepController
   from 'routes/features/generalApplication/writtenRepresentationDocs/respondToWrittenRepController';
 import askProofOfDebtPaymentGuidanceController
   from 'routes/features/generalApplication/certOfSorC/askProofOfDebtPaymentGuidanceController';
+import defendantFinalPaymentDateController from 'routes/features/generalApplication/certOfSorC/defendantFinalPaymentDateController';
 
 export default [
   homeController,
@@ -762,4 +763,5 @@ export default [
   gaWrittenRepresentationCheckAnswersController,
   respondWrittenRepController,
   askProofOfDebtPaymentGuidanceController,
+  defendantFinalPaymentDateController,
 ];

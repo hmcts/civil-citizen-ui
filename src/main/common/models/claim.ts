@@ -85,6 +85,7 @@ import {FlightDetails} from './flightDetails';
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 import { RespondentGaAppDetail } from './generalApplication/response/respondentGaAppDetail';
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
+import {CertificateOfSatisfactionOrCanceled} from 'models/generalApplication/CertificateOfSatisfactionOrCanceled';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -184,6 +185,7 @@ export class Claim {
   responseClaimTrack?: string;
   generalApplications?: ClaimGeneralApplication[];
   joIsLiveJudgmentExists?: GenericYesNo;
+  certificateOfSatisfactionOrCanceled?: CertificateOfSatisfactionOrCanceled;
 
   // Index signature to allow dynamic property access
   [key: string]: any;
@@ -981,9 +983,6 @@ export class Claim {
     return claimId_new;
   }
 
-  isDefendant() {
-    return this.caseRole === CaseRole.RESPONDENTSOLICITORONE || this.caseRole === CaseRole.RESPONDENTSOLICITORTWO || this.caseRole === CaseRole.DEFENDANT;
-  }
   isClaimant() {
     return this.caseRole === CaseRole.APPLICANTSOLICITORONE || this.caseRole === CaseRole.CLAIMANT || this.caseRole === CaseRole.CREATOR;
   }

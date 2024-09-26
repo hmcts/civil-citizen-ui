@@ -398,3 +398,4 @@ export const GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL =`${BASE_COSC_URL}/ask-pr
 export const GA_UPLOAD_DOCUMENTS_COSC_URL =`${BASE_COSC_URL}/upload-documents`;
 export const GA_DEBT_PAYMENT_EVIDENCE_COSC_URL =`${BASE_COSC_URL}/debt-payment-evidence`;
 export const GA_CHECK_YOUR_ANSWERS_COSC_URL =`${BASE_COSC_URL}/check-your-answers`;
+export const COSC_FINAL_PAYMENT_DATE_URL = `${BASE_COSC_URL}/final-payment-date`;
