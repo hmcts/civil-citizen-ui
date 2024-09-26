@@ -9,8 +9,9 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('defendantFinalPaymentDateService');
 
 export class DefendantFinalPaymentDateService {
-  public async getDefendantResponse(claimId: string, req: Request): Promise<DefendantFinalPaymentDate> {
+  public async getDefendantResponse( req: Request): Promise<DefendantFinalPaymentDate> {
     try {
+      const claimId = req.params.id;
       const claim = await getClaimById(claimId, req, true);
       if (claim?.certificateOfSatisfactionOrCanceled?.defendantFinalPaymentDate) {
         return this.setDate(claim.certificateOfSatisfactionOrCanceled.defendantFinalPaymentDate);
@@ -22,9 +23,10 @@ export class DefendantFinalPaymentDateService {
     }
   }
 
-  public async savePaymentDate(claimId: string, req: Request, paymentDate: DefendantFinalPaymentDate) {
+  public async savePaymentDate(req: Request, paymentDate: DefendantFinalPaymentDate) {
     try {
-      const case_data = await getClaimById(claimId , req, true);
+      const claimId = req.params.id;
+      const case_data = await getClaimById(claimId, req, true);
       const redisKey = generateRedisKey(<AppRequest>req);
       if (!case_data.certificateOfSatisfactionOrCanceled) {
         case_data.certificateOfSatisfactionOrCanceled = new CertificateOfSatisfactionOrCanceled();
