@@ -13,15 +13,15 @@ const payFeeConfirmationScreenViewPath = 'features/generalApplication/applicatio
 const payApplicationFeeConfirmationController = Router();
 
 const getApplicationFeeConfirmationContent = (claimId: string, lng: string, isAdditionalFeeType: boolean) => {
-  const pagesection = new PageSectionBuilder()
+  const pageSectionBuilder = new PageSectionBuilder()
     .addTitle('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.WHAT_HAPPENS_NEXT')
     .addParagraph('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.YOU_WILL_RECEIVE');
 
   if (!isAdditionalFeeType) {
-    pagesection.addParagraph('COMMON.IF_NECESSARY_DOCUMENTS');
+    pageSectionBuilder.addParagraph('COMMON.IF_NECESSARY_DOCUMENTS');
   }
-  pagesection.addButton(t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW', {lng}), constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)).build();
-  return pagesection;
+  pageSectionBuilder.addButton(t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW', {lng}), constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)).build();
+  return pageSectionBuilder;
 };
 
 payApplicationFeeConfirmationController.get(GA_APPLICATION_FEE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
