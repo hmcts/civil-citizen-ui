@@ -21,7 +21,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
     if (claim.paymentSyncError) {
       paymentSyncError = true;
       claim.paymentSyncError = undefined;
-      await saveDraftClaim(claim.id, claim);
+      await saveDraftClaim(generateRedisKey(<AppRequest>req), claim);
     }
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     const hasInterest = claim.claimInterest === YesNo.YES;
@@ -44,13 +44,14 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
 claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    const redisKey = generateRedisKey(<AppRequest>req);
     const paymentRedirectInformation = await getRedirectInformation(req);
     if (!paymentRedirectInformation) {
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
     } else {
-      const claim = await getCaseDataFromStore(generateRedisKey(req));
+      const claim = await getCaseDataFromStore(redisKey);
       claim.claimDetails.claimFeePayment = paymentRedirectInformation;
-      await saveDraftClaim(claim.id, claim, true);
+      await saveDraftClaim(redisKey, claim, true);
       res.redirect(paymentRedirectInformation?.nextUrl);
     }
   } catch (error) {
@@ -68,7 +69,7 @@ async function getRedirectInformation(req: AppRequest) {
   } catch (error) {
     const claim = await getClaimById(req.params.id, req, true);
     claim.paymentSyncError = true;
-    await saveDraftClaim(claim.id, claim, true);
+    await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
     return null;
   }
 }
