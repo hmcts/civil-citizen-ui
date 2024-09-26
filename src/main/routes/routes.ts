@@ -422,6 +422,8 @@ import respondWrittenRepController
   from 'routes/features/generalApplication/writtenRepresentationDocs/respondToWrittenRepController';
 import debtPaymentEvidenceController
   from 'routes/features/generalApplication/certOfSorC/debtPaymentEvidenceController';
+import askProofOfDebtPaymentGuidanceController
+  from 'routes/features/generalApplication/certOfSorC/askProofOfDebtPaymentGuidanceController';
 
 export default [
   homeController,
@@ -761,5 +763,6 @@ export default [
   uploadDocumentsForRequestWrittenRepresentation,
   gaWrittenRepresentationCheckAnswersController,
   respondWrittenRepController,
-  debtPaymentEvidenceController,
+  askProofOfDebtPaymentGuidanceController,
+  debtPaymentEvidenceController
 ];

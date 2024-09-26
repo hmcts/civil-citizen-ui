@@ -2645,6 +2645,7 @@
         "MAY_NOT_AGREE": "The court may not agree to change the hearing, even if both parties have agreed.",
         "OTHER": "the court to do something else",
         "RELIEF_FROM_SANCTIONS": "ask for relief from a penalty",
+        "CONFIRM_YOU_PAID_CCJ_DEBT": "confirm you've paid a judgment (CCJ) debt",
         "SET_ASIDE_JUDGEMENT": "set aside (remove) a judgment",
         "SETTLE_BY_CONSENT": "the court to make an order settling the claim by consent",
         "STRIKE_OUT": "the court to strike out all or part of the other parties’ case",
@@ -2854,7 +2855,9 @@
         "SELECT_APPLICATION": "Select the application you want and click continue.",
         "TITLE": "Select application",
         "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order.",
-        "ASK_MORE_TIME_DESCRIPTION": "For example, asking for the deadline for uploading documents before a trial or hearing to be extended. You'll need to provide a valid reason for not meeting the original deadline. This application can only be made before the original deadline has passed. This is also known as an application to extend time.  Instead of making an application, you can get written agreement from the other parties for more time to do what's required by the court. To do this, the time extension you request must be less than 28 days and should not affect a hearing date."
+        "ASK_MORE_TIME_DESCRIPTION": "For example, asking for the deadline for uploading documents before a trial or hearing to be extended. You'll need to provide a valid reason for not meeting the original deadline. This application can only be made before the original deadline has passed. This is also known as an application to extend time.  Instead of making an application, you can get written agreement from the other parties for more time to do what's required by the court. To do this, the time extension you request must be less than 28 days and should not affect a hearing date.",
+        "CONFIRM_YOU_PAID": "Confirm you've paid a judgment (CCJ) debt",
+        "CONFIRM_YOU_PAID_DESCRIPTION": "If you've paid the debt from a county court judgment (CCJ) in full, you can ask the court for proof of payment to share with banks, lenders and credit reference agencies. This is called requesting a certificate of cancellation or satisfaction."
       },
       "SUMMARY": {
         "APP_REQUESTED": "An application is a request for a change to the case.",
@@ -3191,6 +3194,28 @@
         "UPLOAD_DOCUMENTS_1": "You can also ",
         "UPLOAD_DOCUMENTS_2": "upload additional documents",
         "UPLOAD_DOCUMENTS_3": " if you need to."
+      },
+      "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
+        "PAGE_TITLE": "Confirm you've paid a judgment debt",
+        "TITLE": "Confirm you've paid a judgment debt",
+        "PARA_1": "If you've paid the debt from a county court judgment (CCJ), you can ask the court for proof of payment to share with banks and credit reference agencies. This is also known as requesting a certificate of cancellation or satisfaction.",
+        "PARA_2": "The court fee for this is £{{ applicationFee }}. This fee will need to be paid once you've submitted your request. Find out if you can get ",
+        "HELP_WITH_FEE": "help with fees.",
+        "PARA_TITLE_1": "If you paid within a month of the judgment",
+        "PARA_3": "A certificate of cancellation can be requested if you have evidence that you paid the debt within one month of the date of judgment. This means the debt will be removed from the public register.",
+        "PARA_TITLE_2": "If you paid after one month from the judgment",
+        "PARA_4": "A certificate of satisfaction can be requested if the debt is paid after one month. The entry will remain on the public register for 6 years but will be marked 'satisfied'.",
+        "PARA_TITLE_3": "What evidence is needed?",
+        "PARA_5": "You must provide evidence that the debt has been paid in full. This should be confirmation from the person or business you owned money, which shows the:",
+        "DATE_OF_PAYMENT": "date of payment",
+        "AMOUNT_PAID": "amount paid",
+        "CASE_NUMBER": "case number",
+        "PARA_TITLE_4": "Agreement from the person or business owed money",
+        "PARA_6": "Once you've made an application, the court will ask the person or business you owed money if they've been paid. If they don't respond within a month then the public register will be updated and a certificate issued.",
+        "PARA_7": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge.",
+        "PARA_TITLE_5": "Do you need to update your details?",
+        "PARA_8": "If you need to update your details from the judgment, you will need to ",
+        "COMPLETE_FORM_N443": "complete a form N443."
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -3495,7 +3520,7 @@
       "WITNESS_STATEMENT_HINT": "Datganiad ysgrifenedig o'r hyn y mae eich tyst am ei ddweud wrth y llys",
       "WITNESS_SUMMARY": "Crynodeb tyst",
       "WITNESS_SUMMARY_HINT": "Os na allwch gael datganiad ysgrifenedig gan eich tyst, gallwch ysgrifennu crynodeb o'r dystiolaeth y byddech am ei chynnwys yn y datganiad tyst. Mae'n rhaid i chi wneud cais i'r llys i ddefnyddio crynodeb tyst yn y gwrandawiad. Rhaid gwneud hyn cyn y dyddiad cau. Defnyddiwch ",
-      "WITNESS_SUMMARY_HINT_URL": "ffurflen N244 ‘rhybudd cyflwyno cais'",
+      "WITNESS_SUMMARY_HINT_URL": "ffurflen N244 ‘rhybudd cyflwyno cais' (yn agor mewn tab newydd)",
       "YOUR_STATEMENT": "Eich datganiad chi",
       "YOUR_STATEMENT_HINT": "Datganiad ysgrifenedig o'r hyn yr ydych am ei ddweud wrth y llys"
     },
@@ -5090,6 +5115,7 @@
       "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
+      "ADDITIONAL_APPLICATION_CCJ_DEBT":  "You cannot apply to confirm you've paid a county court (CCJ) debt as there is no active judgment",
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
