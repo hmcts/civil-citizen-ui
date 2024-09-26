@@ -1,6 +1,6 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
-  APPLICATION_TYPE_URL, GA_CHECK_YOUR_ANSWERS_COSC_URL,
+  COSC_FINAL_PAYMENT_DATE_URL, GA_CHECK_YOUR_ANSWERS_COSC_URL,
   GA_DEBT_PAYMENT_EVIDENCE_URL, GA_UPLOAD_DOCUMENT_COSC_URL,
 } from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
@@ -14,11 +14,11 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 
 const debtPaymentEvidenceController = Router();
-const debtPaymentEvidenceViewPath = 'features/certOfSorc/debt-payment-evidence';
+const debtPaymentEvidenceViewPath = 'features/generalApplication/certOfSorC/debt-payment-evidence';
 
 function renderView(form: GenericForm<DebtPaymentEvidence>, res: Response, claimId: string, cancelUrl: string) {
 
-  const backLinkUrl = constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL);
+  const backLinkUrl = constructResponseUrlWithIdParams(claimId, COSC_FINAL_PAYMENT_DATE_URL);
   res.render(debtPaymentEvidenceViewPath,
     {
       form,
@@ -62,7 +62,6 @@ debtPaymentEvidenceController.post(GA_DEBT_PAYMENT_EVIDENCE_URL,
             nextPageUrl = constructResponseUrlWithIdParams(claimId, GA_CHECK_YOUR_ANSWERS_COSC_URL);
             break;
           default:
-            // This link is to be updated when merging all stories together for COSC
             nextPageUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENT_COSC_URL);
             break;
         }

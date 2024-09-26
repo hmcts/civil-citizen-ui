@@ -11,14 +11,15 @@ import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 import {debtPaymentEvidenceService} from 'services/features/generalApplication/certOfSorC/debtPaymentEvidenceService';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../main/modules/utilityService');
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/utilityService');
+
 const mockGetClaimById = utilityService.getClaimById as jest.Mock;
 const mockIsGaForLipsEnabled = isGaForLipsEnabled as jest.Mock;
 
-describe('CoSorC - debt payment evidence controller', () => {
+describe('General Application - CoSorC - debt payment evidence controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
   const claim = new Claim();
