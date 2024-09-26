@@ -19,14 +19,14 @@ class CaseProgressionSteps {
     I.see('You cannot withdraw a document once you have submitted it. If you want to add more information to something you have already submitted, you can upload the document again. You should add a version number to the name, for example \'version2\'.', 'p.govuk-body');
     I.see('The other parties will be able to see the documents you have uploaded, and you will be able to see their documents.', 'p.govuk-body');
 
-    I.see('Deadlines for uploading documents', 'h3.govuk-heading-m ');
+    I.see('Deadlines for uploading documents', 'h2.govuk-heading-m ');
     I.see('Check the order the court sent you for the deadlines for uploading your documents.', 'p.govuk-body');
     I.see('After the deadline, you will have to', 'p.govuk-body');
     I.see('apply to the court', 'a.govuk-link');
     I.see('if you want any new document to be used at the trial or hearing.', 'p.govuk-body');
     I.see('You do not have to upload all your documents at once. You can return to upload them later.', 'p.govuk-body');
 
-    I.see('Before you upload your documents', 'h3.govuk-heading-m ');
+    I.see('Before you upload your documents', 'h2.govuk-heading-m ');
     I.see('Before you upload the document, give it a name that tells the court what it is, for example \'Witness statement by Jane Smith\'.', 'p.govuk-body');
     I.see('Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.', 'p.govuk-body');
 
@@ -38,7 +38,7 @@ class CaseProgressionSteps {
   typeOfDocument() {
     I.seeInCurrentUrl('/case-progression/type-of-documents');
 
-    seeInTitle('TITLE');
+    seeInTitle('What types of documents do you want to upload?');
     seeBackLink();
     I.see('Hearing', 'span.govuk-caption-l');
     I.see('What types of documents do you want to upload?', 'h1.govuk-heading-l');
@@ -97,7 +97,7 @@ class CaseProgressionSteps {
     I.see('Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.', 'p.govuk-body-m');
 
     I.see('Witness evidence', 'h2.govuk-heading-l');
-    I.see('Witness statement', 'h3.govuk-heading-m');
+    I.see('Witness statement', 'h3.govuk-heading-s');
     I.see('Witness\'s name', 'strong');
     I.fillField('witnessStatement[0][witnessName]', 'test');
 
@@ -126,7 +126,7 @@ class CaseProgressionSteps {
 
     I.seeElement('div.govuk-inset-text');
 
-    I.see('Witness evidence', 'h1.govuk-heading-l');
+    I.see('Witness evidence', 'h2.govuk-heading-l');
     I.see('Witness statement', 'dt.govuk-summary-list__key');
     I.see('Witness\'s name', 'dd.govuk-summary-list__value');
     I.see('test', 'dd.govuk-summary-list__value');

@@ -26,7 +26,7 @@ class SubmitGAConfirmation {
   }
 
   async verifyPageText() {
-    I.see('What happens next', 'h3');
+    I.see('What happens next', 'h2');
     I.see('Your application has been saved, but you need to pay the application fee of £119.');
     I.see('Until you pay the application fee, the application will not be sent to the other parties or considered by a judge.');
     I.see('You\'ll have the option to apply for help with fees once you\'ve clicked \'Pay application fee\'.');
