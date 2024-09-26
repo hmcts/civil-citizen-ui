@@ -5,7 +5,6 @@ export const BASE_FIRST_CONTACT_URL = '/first-contact';
 export const BASE_GENERAL_APPLICATION_URL = `${BASE_CASE_URL}/general-application`;
 export const BASE_COSC_URL = `${BASE_GENERAL_APPLICATION_URL}/cosc`;
 export const APPLICATION_TYPE_URL = `${BASE_GENERAL_APPLICATION_URL}/application-type`;
-export const BASE_COSC_URL = `${BASE_GENERAL_APPLICATION_URL}/cosc`;
 export const GA_CLAIM_APPLICATION_COST_URL = `${BASE_GENERAL_APPLICATION_URL}/claim-application-cost`;
 export const PAYING_FOR_APPLICATION_URL = `${BASE_GENERAL_APPLICATION_URL}/paying-for-application`;
 export const ORDER_JUDGE_URL = `${BASE_GENERAL_APPLICATION_URL}/order-judge`;
