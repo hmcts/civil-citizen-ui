@@ -101,6 +101,6 @@ export const translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD = 
     paymentSetDate: claimantResponse.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.BY_SET_DATE ? claimantResponse.ccjRequest?.defendantPaymentDate?.date : undefined,
     repaymentFrequency: claimantResponse.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.INSTALMENTS ? toCCDDJPaymentFrequency(claimantResponse.ccjRequest?.repaymentPlanInstalments?.paymentFrequency) : undefined,
     repaymentDue:claimantResponse.ccjRequest?.paidAmount?.option === YesNo.YES ? (claimantResponse.ccjRequest?.paidAmount?.totalAmount - claimantResponse.ccjRequest?.paidAmount?.amount).toString() : undefined,
-    repaymentSuggestion: claimantResponse.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.INSTALMENTS ? claimantResponse.ccjRequest?.repaymentPlanInstalments?.amount.toString() : undefined,
+    repaymentSuggestion: claimantResponse.ccjRequest?.ccjPaymentOption?.type === PaymentOptionType.INSTALMENTS ? convertToPence(claimantResponse.ccjRequest?.repaymentPlanInstalments?.amount).toString() : undefined,
   };
 };
