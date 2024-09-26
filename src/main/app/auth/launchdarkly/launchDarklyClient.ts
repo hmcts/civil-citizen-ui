@@ -135,7 +135,3 @@ export async function isMintiEnabledForCase(date: Date): Promise<boolean> {
   const mintiApplicable = await getFlagValue(MULTI_OR_INTERMEDIATE_TRACK, epoch) as boolean;
   return mintiFlag && mintiApplicable;
 }
-
-export async function isCoSCEnabled(): Promise<boolean> {
-  return await getFlagValue(IS_COSC_ENABLED) as boolean;
-}
