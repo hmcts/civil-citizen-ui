@@ -35,7 +35,10 @@ import {CourtProposedDate, CourtProposedDateOptions} from 'form/models/claimantR
 import { TotalInterest } from 'common/form/models/interest/totalInterest';
 import {toCUIClaimantMediation} from 'services/translation/convertToCUI/convertToCUIClaimantMediation';
 import { RepaymentPlan } from 'common/models/repaymentPlan';
-import { ApplicationTypeOption, GeneralApplicationTypesDisplayFromCCD } from 'common/models/generalApplication/applicationType';
+import {
+  ApplicationTypeOption,
+  selectedApplicationTypeByOptions,
+} from 'common/models/generalApplication/applicationType';
 import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 
@@ -192,5 +195,5 @@ function toCUIClaimGeneralApplications(ccdClaimGeneralApplications: CCDGeneralAp
 }
 
 const displayToEnumKey = (displayValue: string): ApplicationTypeOption => {
-  return (Object.keys(GeneralApplicationTypesDisplayFromCCD) as Array<keyof typeof GeneralApplicationTypesDisplayFromCCD>).find(key => GeneralApplicationTypesDisplayFromCCD[key] === displayValue) as ApplicationTypeOption | undefined;
-};
+  return (Object.keys(selectedApplicationTypeByOptions) as Array<keyof typeof selectedApplicationTypeByOptions>)
+    .find(key => selectedApplicationTypeByOptions[key]?.[2] === displayValue) as ApplicationTypeOption | undefined;};
