@@ -11,9 +11,7 @@
 {% endblock %}
 
 {% block nestedContent %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
-      <div class="govuk-grid-row">
+
           <span class="govuk-caption-l">{{ t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.CONFIRM_PAID') }}</span>
           <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_HAVE_EVIDENCE') }}</h1>
           <p class="govuk-body">
@@ -92,7 +90,4 @@
               {{ addButton(t, 'CONTINUE',cancelUrl) }}
             </div>
           </form>
-      </div>
-    </main>
-  </div>
 {% endblock %}
