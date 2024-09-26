@@ -4,10 +4,14 @@ import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/pay
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
 import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPaymentDate';
+import * as requestModels from 'models/AppRequest';
 
 jest.mock('modules/draft-store');
 jest.mock('modules/draft-store/draftStoreService');
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+declare const appRequest: requestModels.AppRequest;
+const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
+mockedAppRequest.params = {id:'1'};
 
 let paymentDate = new PaymentDate(undefined, undefined, undefined);
 let form = new GenericForm<PaymentDate>(new PaymentDate());
@@ -45,7 +49,7 @@ describe('Payment Date service', () => {
       const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
       const spySaveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim');
       //When
-      await defendantFinalPaymentDateService.savePaymentDate('claimId',null, new DefendantFinalPaymentDate());
+      await defendantFinalPaymentDateService.savePaymentDate(mockedAppRequest, new DefendantFinalPaymentDate());
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
       expect(spySaveDraftClaim).toBeCalled();

@@ -21,8 +21,7 @@ defendantPaymentDateController
   .get(
     COSC_FINAL_PAYMENT_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const claimId = req.params.id;
-        const cancelUrl = await getCancelUrl(claimId, null);
+        const cancelUrl = await getCancelUrl(req.params.id, null);
         const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL);
         const defendantFinalPaymentDate = await defendantFinalPaymentDateService.getDefendantResponse(req);
         res.render( paymentDateViewPath, { cancelUrl, backLinkUrl,
@@ -34,8 +33,7 @@ defendantPaymentDateController
     })
   .post(
     COSC_FINAL_PAYMENT_DATE_URL, async (req, res, next: NextFunction) => {
-      const claimId = req.params.id;
-      const cancelUrl = await getCancelUrl(claimId, null);
+      const cancelUrl = await getCancelUrl(req.params.id, null);
       const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL);
       const defendantPaymentDate = new DefendantFinalPaymentDate(req.body.year, req.body.month, req.body.day);
       const form: GenericForm<DefendantFinalPaymentDate> = new GenericForm<DefendantFinalPaymentDate>(defendantPaymentDate);
@@ -46,7 +44,7 @@ defendantPaymentDateController
       } else {
         try {
           await defendantFinalPaymentDateService.savePaymentDate(req, defendantPaymentDate);
-          res.redirect(constructResponseUrlWithIdParams(claimId, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL));
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL));
         } catch (error) {
           next(error);
         }
