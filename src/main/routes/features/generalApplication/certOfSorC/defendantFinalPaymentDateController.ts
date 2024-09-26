@@ -25,7 +25,7 @@ defendantPaymentDateController
         const cancelUrl = await getCancelUrl(claimId, null);
         const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL);
         const defendantFinalPaymentDate = await defendantFinalPaymentDateService.getDefendantResponse(claimId, req);
-        res.render( paymentDateViewPath, {  cancelUrl, backLinkUrl,
+        res.render( paymentDateViewPath, { cancelUrl, backLinkUrl,
           form: new GenericForm(defendantFinalPaymentDate), title,
         });
       } catch (error) {
@@ -42,7 +42,7 @@ defendantPaymentDateController
 
       await form.validate();
       if (form.hasErrors()) {
-        res.render(paymentDateViewPath, {form, title, cancelUrl,backLinkUrl });
+        res.render(paymentDateViewPath, {form, title, cancelUrl, backLinkUrl });
       } else {
         try {
           await defendantFinalPaymentDateService.savePaymentDate(claimId, req, defendantPaymentDate);
