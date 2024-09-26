@@ -180,7 +180,6 @@ module.exports = {
     return {
       event: 'CLAIMANT_RESPONSE_SPEC',
       caseData: {
-        id: '1645882162449428',
         'applicant1DefenceResponseDocumentSpec': null,
         'whenToBePaidText': '4 July 2025',
       },
