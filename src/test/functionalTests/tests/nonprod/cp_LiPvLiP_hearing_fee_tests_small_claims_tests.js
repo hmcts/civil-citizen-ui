@@ -58,7 +58,7 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline, claimNumber);
     }
   }
 }).tag('@nightly');
@@ -75,7 +75,7 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false, claimNumber);
       notification = hearingFeePaidFull();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
