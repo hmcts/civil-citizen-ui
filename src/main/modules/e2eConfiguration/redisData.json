@@ -3,7 +3,8 @@
     "id": "someID",
     "case_data": {
       "draftClaimCreatedAt": "2022-03-01T13:29:24.971",
-      "pcqId": "test"
+      "pcqId": "test",
+      "id":"draft"
     }
   },
   {
@@ -14,6 +15,7 @@
     "last_modified": "2022-03-01T13:29:24.971",
     "security_classification": "PUBLIC",
     "case_data": {
+      "id": "0000000000000001",
       "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
         "code": "FEE0204",
@@ -305,6 +307,7 @@
     "last_modified": "2022-03-01T13:29:24.971",
     "security_classification": "PUBLIC",
     "case_data": {
+      "id": "0000000000000002",
       "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "caseProgressionHearing": {
         "hearingFeeInformation": {
@@ -602,6 +605,7 @@
     "last_modified": "2022-03-01T13:29:24.971",
     "security_classification": "PUBLIC",
     "case_data": {
+      "id": "0000000000000003",
       "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "caseRole" : "[DEFENDANT]",
       "caseProgression" : {
@@ -910,6 +914,7 @@
     "last_modified": "2022-03-01T13:29:24.971",
     "security_classification": "PUBLIC",
     "case_data": {
+      "id": "1645882162449409",
       "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
         "code": "FEE0204",
@@ -1201,6 +1206,7 @@
     "last_modified": "2022-03-01T13:29:24.971",
     "security_classification": "PUBLIC",
     "case_data": {
+      "id": "1645882162449408",
       "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
         "code": "FEE0204",
@@ -1432,6 +1438,7 @@
     "last_modified": "2022-03-01T13:29:24.971",
     "security_classification": "PUBLIC",
     "case_data": {
+      "id": "1645882162449418",
       "respondent1ResponseDate": "2023-06-03T07:30:38",
       "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
@@ -1664,6 +1671,7 @@
     "last_modified": "2022-03-01T13:29:24.971",
     "security_classification": "PUBLIC",
     "case_data": {
+      "id": "1645882162449428",
       "respondent1ResponseDate": "2023-06-03T07:30:38",
       "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
@@ -1896,6 +1904,7 @@
     "last_modified": "2022-03-01T13:29:24.971",
     "security_classification": "PUBLIC",
     "case_data": {
+      "id": "1645882162449438",
       "respondent1ResponseDate": "2023-06-03T07:30:38",
       "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
@@ -2128,6 +2137,7 @@
     "last_modified": "2022-03-01T13:29:24.971",
     "security_classification": "PUBLIC",
     "case_data": {
+      "id": "1645882162449448",
       "respondent1ResponseDate": "2023-06-03T07:30:38",
       "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
@@ -2360,6 +2370,7 @@
     "last_modified": "2022-03-01T13:29:24.971",
     "security_classification": "PUBLIC",
     "case_data": {
+      "id": "1645882162449458",
       "respondent1ResponseDate": "2023-06-03T07:30:38",
       "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
@@ -2592,6 +2603,7 @@
     "last_modified": "2022-03-01T13:29:24.971",
     "security_classification": "PUBLIC",
     "case_data": {
+      "id": "1645882162449468",
       "respondent1ResponseDate": "2023-06-03T07:30:38",
       "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
@@ -2824,6 +2836,7 @@
     "last_modified": "2022-03-01T13:29:24.971",
     "security_classification": "PUBLIC",
     "case_data": {
+      "id": "1645882162449478",
       "respondent1ResponseDate": "2023-06-03T07:30:38",
       "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
@@ -3056,6 +3069,7 @@
     "last_modified": "2022-03-01T13:29:24.971",
     "security_classification": "PUBLIC",
     "case_data": {
+      "id": "1645882162449488",
       "respondent1ResponseDate": "2023-06-03T07:30:38",
       "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
       "claimFee": {
@@ -3281,7 +3295,7 @@
     }
   },
   {
-    "id": 1645882162449407,
+    "id": "1645882162449407someID",
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -3458,7 +3472,7 @@
     }
   },
   {
-    "id": 1645882162449406,
+    "id": "1645882162449406someID",
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -3644,7 +3658,7 @@
     }
   },
   {
-    "id": 1645882162449405,
+    "id": "1645882162449405someID",
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -3837,7 +3851,7 @@
     }
   },
   {
-    "id": 1645882162449404,
+    "id": "1645882162449404someID",
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -4059,7 +4073,7 @@
     }
   },
   {
-    "id": 1655813706596063,
+    "id": "1655813706596063someID",
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -4260,7 +4274,7 @@
     }
   },
   {
-    "id": 1645882162449403,
+    "id": "1645882162449403someID",
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -4455,7 +4469,7 @@
     }
   },
   {
-    "id": 1645882162449402,
+    "id": "1645882162449402someID",
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
@@ -4631,7 +4645,7 @@
     }
   },
   {
-    "id": 1645882162449401,
+    "id": "1645882162449401someID",
     "jurisdiction": "CIVIL",
     "case_type_id": "CIVIL",
     "created_date": "2022-03-01T13:29:22.447",
