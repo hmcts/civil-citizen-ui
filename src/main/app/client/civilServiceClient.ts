@@ -259,6 +259,8 @@ export class CivilServiceClient {
       if (!response.data) {
         return new DefendantLinkStatus(false, false);
       }
+      console.log(`caseReference: ${caseReference}`);
+      console.log(`response data: ${response.data}`);
       return response.data as DefendantLinkStatus;
     } catch (err: unknown) {
       logger.error(`Error when checking a claim ${caseReference} is linked to a defendant`);
