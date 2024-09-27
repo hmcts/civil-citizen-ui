@@ -49,6 +49,38 @@ describe('addViewApplicationResponseRows', () => {
       ]);
     });
 
+    it('should return No agreement row when instalments response', () => {
+      const application: Partial<CCDApplication> = {
+        gaRespondentDebtorOffer: {
+          respondentDebtorOffer: CcdGARespondentDebtorOfferOptionsGAspec.DECLINE,
+          debtorObjections: 'I disagree',
+          paymentPlan: CcdGADebtorPaymentPlanGAspec.INSTALMENT,
+          monthlyInstalment: ('12300'),
+
+        },
+        respondentsResponses: [{ value : {}} as CcdGeneralApplicationRespondentResponse],
+      } satisfies Partial<CCDApplication>;
+      const htmlData = '<ul class="no-list-style"><li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_INSTALMENTS</li><li>£123</li><li class="govuk-summary-list__key">PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT</li><li>I disagree</li></ul>';
+      expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DEFENDANT_OFFER',
+          },
+          'value': {
+            'html': 'COMMON.VARIATION.NO',
+          },
+        },
+        {
+          'key': {
+            'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
+          },
+          'value': {
+            'html': htmlData,
+          },
+        },
+      ]);
+    });
+
     it('should return Yes agreement row', () => {
       const application: Partial<CCDApplication> = {
         gaRespondentDebtorOffer: {

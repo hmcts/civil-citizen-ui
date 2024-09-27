@@ -11,6 +11,7 @@ import {formatDateSlash, formatDateToFullDate} from 'common/utils/dateUtils';
 import { t } from 'i18next';
 import { exhaustiveMatchingGuard } from 'services/genericService';
 import { fromCcdHearingType } from 'services/translation/generalApplication/ccdTranslation';
+import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 export const buildResponseSummaries = (generalApplication: CCDApplication, lng: string): SummaryRow[] => {
   const responses = generalApplication.respondentsResponses;
   const response = (responses?.length > 0) ? responses[0].value : undefined;
@@ -33,7 +34,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
       const debtOffer = generalApplication.gaRespondentDebtorOffer;
       const proposedInstallmentsHtml = (): string =>
         [listItemCaption('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_INSTALMENTS', CSS_CLASS_SUMMARY_LIST_KEY),
-          listItem(`£${debtOffer?.monthlyInstalment}`),
+          listItem(`£${convertToPoundsFilter(debtOffer?.monthlyInstalment)}`),
           listItemCaption('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.WHY_NOT_ACCEPT', CSS_CLASS_SUMMARY_LIST_KEY),
           listItem(debtOffer?.debtorObjections),
         ].join('');
