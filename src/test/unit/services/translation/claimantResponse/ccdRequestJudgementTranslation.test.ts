@@ -212,14 +212,14 @@ describe('Translate claimant default ccj request to ccd', () => {
       applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: 'ONCE_ONE_WEEK',
       applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: 50,
       applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: convertDateToStringFormat(new Date(2024, 0, 1)),
-      applicant1RequestedPaymentDateForDefendantSpec: {},
+      applicant1RequestedPaymentDateForDefendantSpec: { paymentSetDate: undefined},
       'partialPayment': 'No',
       'partialPaymentAmount': undefined,
       'paymentSetDate': undefined,
       'paymentTypeSelection': 'REPAYMENT_PLAN',
       'repaymentDue': undefined,
       'repaymentFrequency': 'ONCE_ONE_WEEK',
-      'repaymentSuggestion': '50',
+      'repaymentSuggestion': '5000',
     });
   });
 
@@ -449,7 +449,7 @@ describe('Translate claimant default ccj request to ccd', () => {
     const ccdClaim = translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, 300);
 
     // then
-    expect(ccdClaim.repaymentSuggestion).toEqual('100');
+    expect(ccdClaim.repaymentSuggestion).toEqual('10000');
   });
 
   it('should not translate the repayment suggestion when payment option type is not INSTALMENTS', () => {
