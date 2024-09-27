@@ -14,7 +14,7 @@ import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {CaseLink} from 'models/generalApplication/CaseLink';
 import { UploadAdditionalDocument } from './UploadAdditionalDocument';
-import {CertificateOfSatisfactionOrCanceled} from "models/generalApplication/CertificateOfSatisfactionOrCanceled";
+import {CertificateOfSatisfactionOrCanceled} from 'models/generalApplication/CertificateOfSatisfactionOrCanceled';
 
 export class GeneralApplication {
 
