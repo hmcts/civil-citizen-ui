@@ -2,7 +2,7 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPaymentDate';
 import {
   COSC_FINAL_PAYMENT_DATE_URL,
-  GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
+  GA_DEBT_PAYMENT_EVIDENCE_URL,
   GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL,
 } from 'routes/urls';
 import {
@@ -44,7 +44,7 @@ defendantPaymentDateController
       } else {
         try {
           await defendantFinalPaymentDateService.savePaymentDate(req, defendantPaymentDate);
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL));
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_DEBT_PAYMENT_EVIDENCE_URL));
         } catch (error) {
           next(error);
         }
