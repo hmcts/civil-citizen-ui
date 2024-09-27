@@ -45,7 +45,6 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
   const civilClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   const claim: Claim = new Claim();
   Object.assign(claim, civilClaimResponse?.case_data);
-  claim.id = civilClaimResponse?.id;
   return claim;
 };
 
