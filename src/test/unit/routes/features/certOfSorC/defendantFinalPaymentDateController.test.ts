@@ -6,7 +6,7 @@ import {COSC_FINAL_PAYMENT_DATE_URL} from 'routes/urls';
 import {mockCivilClaim, mockNoStatementOfMeans} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {defendantFinalPaymentDateService} from '../../../../../main/services/features/generalApplication/certOfSorC/defendantFinalPaymentDateService';
+import {defendantFinalPaymentDateService} from 'services/features/generalApplication/certOfSorC/certificationOfSatisctionOrCanceledService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');

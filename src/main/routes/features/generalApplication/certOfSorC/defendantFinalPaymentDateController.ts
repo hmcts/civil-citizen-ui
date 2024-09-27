@@ -5,12 +5,13 @@ import {
   GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
   GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL,
 } from 'routes/urls';
-import {
-  defendantFinalPaymentDateService,
-} from 'services/features/generalApplication/certOfSorC/defendantFinalPaymentDateService';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
+import {CertificateOfSatisfactionOrCanceled} from 'models/generalApplication/CertificateOfSatisfactionOrCanceled';
+import {
+  getCertificateOfSatisfactionOrCanceled, saveCertificateOfSatisfactionOrCanceled,
+} from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService';
 
 const paymentDateViewPath = 'features/generalApplication/certOfSorC/final-payment-date';
 
@@ -23,7 +24,8 @@ defendantPaymentDateController
       try {
         const cancelUrl = await getCancelUrl(req.params.id, null);
         const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL);
-        const defendantFinalPaymentDate = await defendantFinalPaymentDateService.getDefendantResponse(req);
+        const certificateOfSatisfactionOrCanceled: CertificateOfSatisfactionOrCanceled = await getCertificateOfSatisfactionOrCanceled(req);
+        const defendantFinalPaymentDate = certificateOfSatisfactionOrCanceled? certificateOfSatisfactionOrCanceled.defendantFinalPaymentDate : new DefendantFinalPaymentDate();
         res.render( paymentDateViewPath, { cancelUrl, backLinkUrl,
           form: new GenericForm(defendantFinalPaymentDate), title,
         });
@@ -43,7 +45,8 @@ defendantPaymentDateController
         res.render(paymentDateViewPath, {form, title, cancelUrl, backLinkUrl });
       } else {
         try {
-          await defendantFinalPaymentDateService.savePaymentDate(req, defendantPaymentDate);
+
+          await saveCertificateOfSatisfactionOrCanceled(req, form.model, 'defendantFinalPaymentDate');
           res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL));
         } catch (error) {
           next(error);

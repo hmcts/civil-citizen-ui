@@ -1,4 +1,4 @@
-import {defendantFinalPaymentDateService} from 'services/features/generalApplication/certOfSorC/defendantFinalPaymentDateService';
+import {defendantFinalPaymentDateService} from 'services/features/generalApplication/certOfSorC/certificationOfSatisctionOrCanceledService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 import {GenericForm} from 'form/models/genericForm';

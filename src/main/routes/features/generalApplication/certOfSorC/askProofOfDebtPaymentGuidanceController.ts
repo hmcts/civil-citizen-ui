@@ -21,7 +21,7 @@ askProofOfDebtPaymentGuidanceController.get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANC
     const gaFeeData = await gaApplicationFeeDetails(claim, req);
     const applicationFee = convertToPoundsFilter(gaFeeData?.calculatedAmountInPence.toString());
     const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL);
-    const nextPageUrl = 'test';
+    const nextPageUrl = constructResponseUrlWithIdParams(req.params.id, APPLICATION_TYPE_URL);;
 
     res.render(viewPath, { cancelUrl, backLinkUrl, nextPageUrl, applicationFee});
   } catch (error) {
