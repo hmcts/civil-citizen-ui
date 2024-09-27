@@ -20,4 +20,4 @@ Scenario('Create LipvLip claim and defendant not responded by deadline and Claim
     await ClaimantResponseSteps.verifyDefaultJudgment(claimRef);
     await api.waitForFinishedBusinessProcess();
   }
-}).tag('@skip-regression-r2');
+}).tag('@regression-r2');

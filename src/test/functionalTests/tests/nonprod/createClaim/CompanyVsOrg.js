@@ -10,7 +10,7 @@ const { payClaimFee, hwfSubmission } = require('../../../specClaimHelpers/dashbo
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115, claimantPartyType = 'Company';
 const createGAAppSteps = require('../../../citizenFeatures/response/steps/createGAAppSteps');
 
-Feature('Create Lip v Lip claim - Company vs Org - @claimCreation ').tag('@egression-r2');
+Feature('Create Lip v Lip claim - Company vs Org - @claimCreation ').tag('@regression-r2');
 
 Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf - GA (Ask for more time)', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

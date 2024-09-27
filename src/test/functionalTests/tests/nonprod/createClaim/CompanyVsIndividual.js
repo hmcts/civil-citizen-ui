@@ -11,7 +11,7 @@ let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest,
 
 const createGAAppSteps = require('../../../citizenFeatures/response/steps/createGAAppSteps');
 
-Feature('Create Lip v Lip claim - Company vs Individual @claimCreation ').tag('@nightly-regression-r2');
+Feature('Create Lip v Lip claim - Company vs Individual @claimCreation ').tag('@regression-r2');
 
 Scenario('Create Claim -  Company vs Individual - small claims - no interest - no hwf - GA (Ask for more time)', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

@@ -12,7 +12,7 @@ let claimNumber;
 
 Feature('Response with PartAdmit-AlreadyPaid - Small Claims & Fast Track');
 
-Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle the claim @citizenUI @partAdmit @nightly - @api', async ({I, api}) => {
+Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle the claim @citizenUI @partAdmit @regression-r2 - @api', async ({I, api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -42,7 +42,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle t
   }
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid Fast Track and Claimant Not to settle the claim @citizenUI @partAdmit @nightly - @api', async ({api}) => {
+Scenario('Response with PartAdmit-AlreadyPaid Fast Track and Claimant Not to settle the claim @citizenUI @partAdmit @regression-r2 - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -58,7 +58,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Fast Track and Claimant Not to set
   }
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant decides to go for Mediation @citizenUI @partAdmit @nightly - @api', async ({api}) => {
+Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant decides to go for Mediation @citizenUI @partAdmit @regression-r2 - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

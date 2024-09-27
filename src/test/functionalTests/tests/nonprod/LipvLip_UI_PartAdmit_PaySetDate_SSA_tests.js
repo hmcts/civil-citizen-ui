@@ -10,7 +10,7 @@ const bySetDate = 'bySetDate';
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 let claimNumber, claimRef;
 
-Feature('Create Lip v Lip claim -  Part Admit By Defendant and Accepted Repayment Plan By Claimant').tag('@r2-regression').tag('@nightly');
+Feature('Create Lip v Lip claim -  Part Admit By Defendant and Accepted Repayment Plan By Claimant').tag('@regression-r2').tag('@nightly');
 
 Scenario('Verify the Eligibility Check journey @citizenUIR2', async () => {
   //await CreateLipvLipClaimSteps.EligibilityCheckSteps();

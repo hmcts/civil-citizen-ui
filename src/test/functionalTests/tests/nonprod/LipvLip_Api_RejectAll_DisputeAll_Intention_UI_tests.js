@@ -11,7 +11,7 @@ let claimNumber;
 
 Feature('Response with RejectAll-DisputeAll - Small Claims & Fast Track');
 
-Scenario('Response with RejectAll-DisputeAll Small claims @citizenUI @rejectAll @nightly - @api', async ({api}) => {
+Scenario('Response with RejectAll-DisputeAll Small claims @citizenUI @rejectAll @nightly - @regression-r2', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -27,7 +27,7 @@ Scenario('Response with RejectAll-DisputeAll Small claims @citizenUI @rejectAll 
   }
 });
 
-Scenario('Response with RejectAll-DisputeAll Fast Track @citizenUI @rejectAll @nightly - @api', async ({api}) => {
+Scenario('Response with RejectAll-DisputeAll Fast Track @citizenUI @rejectAll @nightly - @regression-r2', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

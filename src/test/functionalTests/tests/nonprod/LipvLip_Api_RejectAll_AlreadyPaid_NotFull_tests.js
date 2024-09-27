@@ -11,7 +11,7 @@ let claimNumber;
 
 Feature('Response with RejectAll-AlreadyPaid-NotFull - Small Claims & Fast Track');
 
-Scenario('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant Proceeds @citizenUI @rejectAll @nightly - @api', async ({api}) => {
+Scenario('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant Proceeds @citizenUI @rejectAll @regression-r2 - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -28,7 +28,7 @@ Scenario('Response with RejectAll-AlreadyPaid-NotFull Small claims And Claimant 
   }
 });
 
-Scenario('Response with RejectAll-AlreadyPaid-NotFull Fast Track And Claimant Settle @citizenUI @rejectAll @nightly - @api', async ({api}) => {
+Scenario('Response with RejectAll-AlreadyPaid-NotFull Fast Track And Claimant Settle @citizenUI @rejectAll @regression-r2 - @api', async ({api}) => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
     await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
