@@ -5,7 +5,7 @@ const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const { isDashboardServiceToggleEnabled } = require('../../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
-const { payClaimFee, hwfSubmission } = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const { payClaimFee, updateHWFNum, hwfSubmission, hwfPartRemission, waitForDefendantToRespond} = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115;
 
@@ -115,6 +115,21 @@ Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - with variable 
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
       const notification = hwfSubmission();
+      await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
+    }
+    await api.submitHwfEventForUser(config.hwfEvents.updateHWFNumber);
+    if (isDashboardServiceEnabled) {
+      const notification = updateHWFNum();
+      await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
+    }
+    await api.submitHwfEventForUser(config.hwfEvents.partRemission);
+    if (isDashboardServiceEnabled) {
+      const notification = hwfPartRemission();
+      await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
+    }
+    await api.submitHwfEventForUser(config.hwfEvents.feePayOutcome);
+    if (isDashboardServiceEnabled) {
+      const notification = await waitForDefendantToRespond();
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
     }
   }
