@@ -3,7 +3,7 @@
     "HOME": "Hafan",
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Uwchlwytho ffeil",
-    "UPLOAD_FILE_LABEL":"Upload a file",
+    "UPLOAD_FILE_LABEL":"Uwchlwytho ffeil",
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
     "DATE_UPLOADED": "Date Uploaded [{{ uploadedDate }}]",
     "DOCUMENTS_UPLOADED": "Dogfennau wedi’u llwytho",
@@ -346,6 +346,10 @@
     "VARIATION_5": {
       "YES": "Do",
       "NO": "Naddo"
+    },
+    "VARIATION_6": {
+      "YES": "Dylai",
+      "NO": "Na ddylai"
     }
   },
   "CLAIMANT_RESPONSE_TASK_LIST": {
@@ -2878,15 +2882,15 @@
         "VIEW_APPLICATION": "View application"
       },
       "INFORM_OTHER_PARTIES": {
-        "COURT_SEND_OTHER_PARTIES": "The court will usually send the other parties a copy of your application to give them the opportunity to respond to it.",
-        "DO_NOT_WANT_COURT": "If you do not want the court to inform the other parties about this application",
-        "INFORM_OTHER_PARTIES_HEADER": "Informing the other parties",
-        "JUDGE_ORDERS_OTHER_PARTIES": "If the judge orders that the other parties should be informed, you’ll be notified and you'll need to pay an additional fee. Your application may also be delayed.",
-        "PROVIDE_A_REASON": "You must provide a reason which will be considered by a judge.",
-        "SELECTING_MULTIPLE_APPLICATIONS": "If you’ll be selecting multiple applications, this answer will apply to all of them.",
-        "SHOULD_COURT_INFORM_PARTIES": "Should the court inform the other parties about this application?",
-        "SOME_CIRCUMSTANCES": "In some circumstances a judge may make an order without sending your application to the other parties first.",
-        "WHY_DO_NOT_WANT_COURT": "Why do you not want the court to inform the other parties?"
+        "COURT_SEND_OTHER_PARTIES": "Fel arfer bydd y llys yn anfon copi o’ch cais at y partïon eraill i roi cyfle iddynt ymateb iddo.",
+        "DO_NOT_WANT_COURT": "Os nad ydych eisiau i’r llys hysbysu’r partïon eraill am y cais hwn",
+        "INFORM_OTHER_PARTIES_HEADER": "Hysbysu’r partïon eraill",
+        "JUDGE_ORDERS_OTHER_PARTIES": "Os bydd y barnwr yn gorchymyn y dylid hysbysu’r partïon eraill, byddwch yn cael gwybod am hyn a bydd arnoch angen talu ffi ychwanegol. Efallai y bydd oedi gyda’ch cais hefyd.",
+        "PROVIDE_A_REASON": "Rhaid i chi ddarparu rheswm a fydd yn cael ei ystyried gan farnwr.",
+        "SELECTING_MULTIPLE_APPLICATIONS": "Os byddwch yn dewis sawl cais, bydd yr ateb hwn yn berthnasol i bob un ohonynt.",
+        "SHOULD_COURT_INFORM_PARTIES": "A ddylai’r llys hysbysu’r partïon eraill am y cais hwn?",
+        "SOME_CIRCUMSTANCES": "Mewn rhai amgylchiadau, gall barnwr wneud gorchymyn heb anfon eich cais at y partïon eraill yn gyntaf.",
+        "WHY_DO_NOT_WANT_COURT": "Pam nad ydych chi eisiau i’r llys hysbysu’r partïon eraill?"
       },
       "APPLICATION_FROM_OTHER_PARTY": {
         "APPLICATION_FEE_AMOUNT": "Bydd swm y ffi yn dibynnu ar p’un a yw’r partïon eraill wedi cytuno i chi wneud y cais hwn. Y partïon eraill yw’r ochr arall neu’r ochrau eraill sy’n rhan o’ch achos.",
@@ -2967,10 +2971,10 @@
       },
       "UPLOAD_DOCUMENTS": {
         "DOCUMENT_TYPE_SIZE": "Each document must be less than 100MB. You can upload the following file types: DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
-        "LIST_TITLE": "Uploaded files",
+        "LIST_TITLE": "Ffeiliau sydd wedi cael eu huwchlwytho",
         "MSG1": "You should only upload documents that are relevant to your application.",
         "NAME_DOCUMENT": "Before you upload the document, give it a name that tells the court what it is, for example 'Hospital appointment letter'.",
-        "REMOVE_DOC": "Remove document",
+        "REMOVE_DOC": "Dileu dogfen",
         "TITLE": "Upload documents to support your application"
       },
       "ADD_ANOTHER_APPLICATION": {
@@ -2988,19 +2992,21 @@
         "PAGE_TITLE": "Upload additional documents"
       },
       "UPLOAD_N245_FORM": {
-        "COMPLETE_N245_FORM":"complete the N245 Form",
+        "COMPLETE_N245_FORM":"llenwi ffurflen N245",
         "FILE_FORMAT": "the file is in a DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
-        "FILE_SIZE": "the file size is no more than 100MB",
-        "FILL_ONLINE": "fill out the interactive form online, save it to your device and then upload it here",
-        "INCOME_AND_EXPENSE": "We'll ask for information about your income and expenses to divide whether these instalments are affordable for you. So it may be useful to have documents like you bank statements to hand.",
-        "NAME_THE_FORM": "you give it a name that tells the court what it is, for example 'N245 form by Jane Smith'",
-        "OFFER_OF_PAYMENT": "You should set out the new monthly instalments that you're proposing in the 'Offer of payment' section.",
-        "PAGE_TITLE": "Upload N245",
-        "PRINT_THE_FORM": "print the form, complete it by hand, scan or take a photo of it and then upload it here.",
-        "SAVE_THE_FORM": "When you save and upload your completed form, make sure:",
-        "TITLE": "Upload N245 form",
-        "UPLOAD_HERE": "You need to LINK_FOR_N245_FORM and upload it here.",
-        "WAYS_TO_COMPLETE": "There are two ways to complete the form. You can either:"
+        "FILE_SIZE": "bod maint y ffeil ddim mwy na 100MB",
+        "FILL_ONLINE": "lenwi’r ffurflen ryngweithiol ar-lein, ei chadw ar eich dyfais ac yna ei huwchlwytho yma",
+        "INCOME_AND_EXPENSE": "Byddwn yn gofyn am wybodaeth am eich incwm a’ch costau i benderfynu p’un a fyddai’r rhandaliadau hyn yn fforddiadwy i chi. Felly gall fod yn ddefnyddiol i gael dogfennau fel eich cyfriflenni banc wrth law.",
+        "NAME_THE_FORM": "eich bod yn rhoi enw i’r ffeil sy’n dweud wrth y llys beth ydyw, er enghraifft, 'ffurflen N245 gan Jane Smith'",
+        "OFFER_OF_PAYMENT": "Dylech nodi’r rhandaliadau misol rydych yn eu cynnig yn yr adran ‘Cynnig ar gyfer talu’.",
+        "PAGE_TITLE": "Uwchlwytho N245",
+        "PRINT_THE_FORM": "argraffu’r ffurflen, ei llenwi â llaw, ei sganio neu dynnu llun ohoni ac yna ei huwchlwytho yma.",
+        "REMOVE_DOCUMENT": "Dileu dogfen",
+        "SAVE_THE_FORM": "Pan fyddwch yn cadw ac yn uwchlwytho eich ffurflen wedi’i llenwi, gwnewch yn siŵr:",
+        "TITLE": "Uwchlwytho ffurflen N245",
+        "UPLOAD_HERE": "Mae arnoch angen LINK_FOR_N245_FORM a’i huwchlwytho yma.",
+        "UPLOADED_FILES": "Ffeiliau sydd wedi cael eu huwchlwytho",
+        "WAYS_TO_COMPLETE": "Mae dwy ffordd i lenwi’r ffurflen: Gallwch naill ai:"
       },
       "UPLOAD_MORE_INFO_DOCUMENTS": {
         "CONFIRMATION_PAGE_TITLE": "You've submitted the information",
@@ -4303,7 +4309,7 @@
       "FORMAT": "Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.",
       "NAME": "Eich enw",
       "MONTH": "Mis",
-      "NO_UPLOAD": "Nid oes ffeiliau wedi cael eu llwytho",
+      "NO_UPLOAD": "Nid oes ffeiliau wedi cael eu huwchlwytho",
       "PAGE_TITLE": "Uwchlwytho dogfennau",
       "REMOVE_SECTION": "Dileu’r adran",
       "STATEMENT": "Eich datganiad",
@@ -5080,17 +5086,17 @@
       "ENTER_REQUESTING_REASON": "You need to enter your reasons for requesting this order",
       "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
       "ENTER_VALID_EMAIL": "You need to enter a valid email address",
-      "EXPLAIN_DO_NOT_WANT_COURT": "You need to explain why you do not want the court to inform the other parties.",
+      "EXPLAIN_DO_NOT_WANT_COURT": "Rhaid i chi esbonio pam nad ydych eisiau i’r llys hysbysu’r partïon eraill.",
       "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
       "MISSING_OTHER": "You need to tell us what other type of support you need.",
       "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
-      "NEED_TO_TELL": "You need to tell us if they should inform the other parties. Choose option: Yes or No",
+      "NEED_TO_TELL": "Mae arnoch angen dweud wrthym os dylent hysbysu'r partïon eraill. Dewiswch opsiwn: Dylai neu Na ddylai",
       "RESPONDENT_AGREEMENT": {
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
         "EXPLAIN_WHY_DISAGREE_APPLICATION": "You need to explain why you disagree with the application"
       },
       "TYPE_OF_DOC": "You need to tell us what type of document you are uploading.",
-      "UPLOAD_FILE_MESSAGE": "You need to choose a file before clicking 'Upload file'",
+      "UPLOAD_FILE_MESSAGE": "Mae arnoch angen dewis ffeil cyn clicio ar 'Uwchlwytho ffeil'",
       "UPLOAD_ONE_FILE": "You need to upload at least one file.",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "You need to tell us if you want to add another application. Choose option: Yes or No",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
