@@ -36,7 +36,7 @@ function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionFor
     summarySections = getSummarySections(claim.caseProgression.defendantDocuments, claimId, isSmallClaims, lang);
   }
   const bottomPageContents = getBottomElements();
-  const cancelUrl = constructResponseUrlWithIdParams(claim.id, CP_EVIDENCE_UPLOAD_CANCEL);
+  const cancelUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
 
   res.render(checkAnswersViewPath, {
     form, topPageContents, summarySections, bottomPageContents, isSmallClaims, cancelUrl, backLinkUrl,
