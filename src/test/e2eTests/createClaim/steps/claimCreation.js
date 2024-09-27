@@ -1,4 +1,5 @@
 const {clickButton} = require('../../commons/clickButton');
+const eligibilityCookie = require('../../../functionalTests/specClaimHelpers/fixtures/cookies/eligibilityCookies');
 const {buttonType} = require('../../commons/buttonVariables');
 const {taskListItems, taskListStatus, checkTaskList} = require('../../commons/claimTaskList');
 const {claimantPartyType, defendantPartyType, yesAndNoCheckBoxOptionValue,
@@ -8,6 +9,7 @@ const I = actor();
 
 class ClaimCreation {
   start(optionValue) {
+    I.setCookie(eligibilityCookie);
     I.amOnPage('/claim/bilingual-language-preference');
     I.checkOption(`#${optionValue}`);
     clickButton(buttonType.SAVE_AND_CONTINUE);
@@ -166,6 +168,7 @@ class ClaimCreation {
   }
 
   checkAndSubmitYourClaim() {
+    I.setCookie(eligibilityCookie);
     I.amOnPage('/claim/task-list');
     I.click(taskListItems.CHECK_AND_SUBMIT_YOUR_CLAIM, checkTaskList(taskListItems.CHECK_AND_SUBMIT_YOUR_CLAIM, taskListStatus.INCOMPLETE));
     //check-and-send
