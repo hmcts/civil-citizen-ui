@@ -4,7 +4,7 @@ const config = require('../../../../config');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const { isDashboardServiceToggleEnabled } = require('../../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
-const { payClaimFee, hwfSubmission, waitForDefendantToRespond } = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const { payClaimFee, hwfSubmission, waitForDefendantToRespond, hwfNoRemission, updateHWFNum} = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 
 let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount=1600, claimFee=115, claimantPartyType = 'Company';
@@ -135,6 +135,16 @@ Scenario('Create Claim -  Company vs Individual - small claims - with variable i
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
       const notification = hwfSubmission();
+      await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
+    }
+    await api.submitHwfEventForUser(config.hwfEvents.updateHWFNumber);
+    if (isDashboardServiceEnabled) {
+      const notification = updateHWFNum();
+      await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
+    }
+    await api.submitHwfEventForUser(config.hwfEvents.noRemission);
+    if (isDashboardServiceEnabled) {
+      const notification = hwfNoRemission();
       await verifyNotificationTitleAndContent(legacyCaseReference, notification.title, notification.content);
     }
   }
