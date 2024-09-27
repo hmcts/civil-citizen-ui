@@ -37,6 +37,11 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
       userId = jwt?.uid;
     }
 
+    if(!req.cookies['eligibilityCompleted']){
+      const MILLISECONDS_IN_1_HOUR = 3600000;
+      res.cookie('eligibilityCompleted', true, {maxAge: MILLISECONDS_IN_1_HOUR, httpOnly: true });
+    }
+
     const claimData = Object.assign(new Claim(), claimWithSubmittedDate);
     const isCarmEnabled = await isCarmEnabledForCase(claimData.submittedDate);
 
