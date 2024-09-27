@@ -1,16 +1,20 @@
-import {app} from '../../../../../main/app';
+import {app} from '../../../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
 import {COSC_FINAL_PAYMENT_DATE_URL} from 'routes/urls';
-import {mockCivilClaim, mockNoStatementOfMeans} from '../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {defendantFinalPaymentDateService} from 'services/features/generalApplication/certOfSorC/certificationOfSatisctionOrCanceledService';
+import {mockCivilClaim} from '../../../../../../utils/mockDraftStore';
+import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {
+  getCertificateOfSatisfactionOrCanceled,
+} from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService';
+import {CertificateOfSatisfactionOrCanceled} from 'models/generalApplication/CertificateOfSatisfactionOrCanceled';
+jest.mock('modules/oidc');
+jest.mock('modules/draft-store');
+jest.mock('services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService');
+const mockGetCertificateOfSatisfactionOrCanceled = getCertificateOfSatisfactionOrCanceled as jest.Mock;
 
 describe('CoSorS - defendant Payment date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -26,9 +30,7 @@ describe('CoSorS - defendant Payment date', () => {
 
   describe('on GET', () => {
     it('should return payment date page', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-      jest.spyOn(defendantFinalPaymentDateService,'getDefendantResponse').mockReturnValue(Promise.resolve(null));
+      mockGetCertificateOfSatisfactionOrCanceled.mockReturnValue(new CertificateOfSatisfactionOrCanceled());
       await request(app)
         .get(COSC_FINAL_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -42,13 +44,12 @@ describe('CoSorS - defendant Payment date', () => {
 
   describe('on POST', () => {
     beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetCertificateOfSatisfactionOrCanceled.mockReturnValue(new CertificateOfSatisfactionOrCanceled());
     });
 
     it('should return errors on no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-      jest.spyOn(defendantFinalPaymentDateService,'savePaymentDate');
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
         .send('year=')
@@ -65,7 +66,6 @@ describe('CoSorS - defendant Payment date', () => {
     it('should return errors on no input : invalid month', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-      jest.spyOn(defendantFinalPaymentDateService,'savePaymentDate');
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
         .send('year= 2023')
@@ -80,7 +80,6 @@ describe('CoSorS - defendant Payment date', () => {
 
     it('should not return error on date in the past', async () => {
       jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-      jest.spyOn(defendantFinalPaymentDateService,'savePaymentDate');
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
         .send('year=1999')
@@ -93,7 +92,6 @@ describe('CoSorS - defendant Payment date', () => {
 
     it('should show a message to add a valid payment date', async () => {
       jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-      jest.spyOn(defendantFinalPaymentDateService,'savePaymentDate');
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
         .send('year=9999')
