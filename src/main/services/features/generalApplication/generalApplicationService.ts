@@ -531,3 +531,8 @@ export const getApplicationCreatedDate = (ccdClaim: Claim, applicationId: string
   }
   return undefined;
 };
+
+export const isConfirmYouPaidCCJAppType = (claim: Claim): boolean => {
+  const applicationType = getLast(claim.generalApplication?.applicationTypes)?.option;
+  return applicationType === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID;
+};

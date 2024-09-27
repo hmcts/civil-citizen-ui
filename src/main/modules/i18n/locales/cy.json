@@ -976,7 +976,7 @@
         "VALID_ENTER_REFERENCE_NUMBER": "Enter your 11 character Help with Fees Number",
         "LIST_ITEMS": {
           "FIRST": "Ewch i",
-          "FIRST_LINK": "‘gwneud cais am help i dalu ffioedd’ (yn agor mewn tab newydd)",
+          "FIRST_LINK": "gwneud cais am help i dalu ffioedd (yn agor mewn tab newydd)",
           "SECOND": "Pan ofynnir i chi nodi rhif llys neu dribiwnlys, rhowch 'ffi’r gwrandawiad' ac yna esboniad byr, er enghraifft 'ffi gwrandawiad hawliadau bychain' neu 'ffi gwrandawiad trac cyflym'.",
           "THIRD": "Cwblhewch y cais am help i dalu ffioedd.",
           "FOURTH": "Dychwelwch yma i'ch cyfrif hawliadau am arian ar-lein.",
@@ -2817,7 +2817,8 @@
         "SETTLING": "Court to make an order settling the claim by consent",
         "STRIKE_OUT": "Court to strike out all or part of the other parties' case without a trial",
         "SUMMARY_JUDGMENT": "Court to make a summary judgment on a case",
-        "VARY_JUDGMENT": "Vary a judgment"
+        "VARY_JUDGMENT": "Vary a judgment",
+        "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt"
       },
       "SELECT_TYPE": {
         "ALL_APPLICATIONS": "All applications",
@@ -3121,7 +3122,10 @@
         "PAY_FEE_BUTTON": "Pay application fee",
         "RETURN_CASE_DETAILS": "Close and return to case details",
         "TITLE": "Application created",
-        "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge."
+        "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge.",
+        "COSC_PAY_FEE": "Pay the fee",
+        "COSC_APPLICATION_SUBMITTED": "Once your application has been submitted, the court will ask the person or business you owed money to confirm they've been paid. If they agree or do not respond within a month then the public register will be updated and a certificate issued.",
+        "COSC_APPLICATION_SUBMITTED_NEXT": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge. Any further updates will be by post."
       },
       "APPLY_HELP_WITH_FEE": {
         "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
