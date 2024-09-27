@@ -2654,7 +2654,7 @@
         "STRIKE_OUT": "the court to strike out all or part of the other parties’ case",
         "SUMMARY_JUDGMENT": "the court to make a summary judgment",
         "STAY_THE_CLAIM": "the court to pause a claim",
-        "TITLE": "Application costs",
+        "TITLE": "Costau’r cais",
         "TO_APPLY": "To apply to {{applicationType}}, the application fee is £{{applicationFee}}.",
         "TO_APPLY_MULTIPLE": "To apply to {{applicationType}}, the application fee is £{{applicationFee}}. If you'll be selecting multiple applications, this fee may be reduced.",
         "UNLESS_ORDER": "the court to impose a sanction on the other parties unless they do a specific action",
@@ -2691,7 +2691,7 @@
       },
       "CHECK_YOUR_ANSWER": {
         "APPLICATION_TYPE": "Application type",
-        "ASK_FOR_COSTS": "Do you want to ask for your costs back?",
+        "ASK_FOR_COSTS": "A ydych chi eisiau gofyn am gael eich costau yn ôl?",
         "CHOOSE_PREFERRED_TYPE": "Choose your preferred type of hearing",
         "DATES_CANNOT_ATTEND": "Dates when you cannot attend a hearing",
         "INFORM_OTHER_PARTIES": "Do you want the court to inform the other parties?",
@@ -2952,18 +2952,18 @@
         "TITLE": "Adjustments or support to attend a hearing"
       },
       "CLAIM_APPLICATION_COST": {
-        "ASK_YOUR_COSTS_BACK": "Do you want to ask for your costs back?",
-        "ASK_YOUR_COSTS_BACK_YES": "If you know the details of the costs you want to claim back, you can upload a document with a description of these when we ask if you want to upload documents to support your application later on.",
+        "ASK_YOUR_COSTS_BACK": "A ydych chi eisiau gofyn am gael eich costau yn ôl?",
+        "ASK_YOUR_COSTS_BACK_YES": "Os ydych yn gwybod beth yw’r costau rydych eisiau eu hawlio’n ôl, gallwch uwchlwytho dogfen gyda disgrifiad o’r rhain pan fyddwn yn gofyn a ydych eisiau uwchlwytho dogfennau i gefnogi eich cais nes ymlaen.",
         "COSTS_INCLUDE": {
-          "APPLICATION_FEE": "your application fee",
-          "COST_INCLUDE": "Costs can include amounts like:",
-          "HEARING_COST": "loss of earnings and travel costs if you have to attend a hearing"
+          "APPLICATION_FEE": "ffi eich cais",
+          "COST_INCLUDE": "Gall costau gynnwys symiau fel:",
+          "HEARING_COST": "colli enillion a chostau teithio os oes rhaid i chi fynychu gwrandawiad"
         },
-        "JUDGE_MAKE_DECISION": "When a judge makes a decision on your application, they’ll decide who should pay the costs.",
-        "IF_APPLICATION_SUCCESS": "If your application is successful, the other parties may be ordered to pay back your costs associated with the application.",
-        "OTHER_PARTIES": "The other parties will be able to see your answer to this question and respond to it.",
-        "PAY_APPLICATION_FEE": "You’ll still need to pay the application fee when you submit the application.",
-        "TITLE": "Application costs"
+        "JUDGE_MAKE_DECISION": "Pan fydd barnwr yn gwneud penderfyniad am eich cais, byddant yn penderfynu pwy ddylai dalu'r costau.",
+        "IF_APPLICATION_SUCCESS": "Os bydd eich cais yn llwyddiannus, efallai bydd y partïon eraill yn cael gorchymyn i dalu eich costau chi sy’n gysylltiedig â’r cais.",
+        "OTHER_PARTIES": "Bydd y partïon eraill yn gallu gweld eich ateb i’r cwestiwn hwn ac yn gallu ymateb iddo.",
+        "PAY_APPLICATION_FEE": "Byddwch dal angen talu'r ffi gwneud cais pan fyddwch yn cyflwyno’r cais.",
+        "TITLE": "Costau’r cais"
       },
       "WANT_TO_UPLOAD_DOCUMENTS": {
         "MSG1": "If you've selected multiple applications, you should upload documents that relate to all of them.",
@@ -5081,7 +5081,7 @@
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "Mae arnoch angen dweud wrthym os yw’r partïon eraill wedi cytuno i’r cais hwn. Dewiswch opsiwn: Do neu Naddo",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Rhaid i setlo drwy gydsyniad gael ei gytuno arno gyda’r atebydd cyn gwneud y cais.",
       "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
-      "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No",
+      "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "Mae arnoch angen dweud wrthym os ydych eisiau gofyn am gael eich costau'n ôl. Dewiswch opsiwn: Ydw neu Nac ydw",
       "ENTER_ORDER_JUDGE": "You need to enter the order you want the judge to make",
       "ENTER_REQUESTING_REASON": "You need to enter your reasons for requesting this order",
       "ENTER_TELEPHONE_NUMBER": "You need to enter a preferred telephone number",
