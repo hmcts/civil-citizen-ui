@@ -2645,7 +2645,7 @@
         "MAY_NOT_AGREE": "The court may not agree to change the hearing, even if both parties have agreed.",
         "OTHER": "the court to do something else",
         "RELIEF_FROM_SANCTIONS": "ask for relief from a penalty",
-        "SET_ASIDE_JUDGEMENT": "set aside (remove) a judgment",
+        "SET_ASIDE_JUDGEMENT": "roi dyfarniad o’r naill du (ei ddileu)",
         "SETTLE_BY_CONSENT": "the court to make an order settling the claim by consent",
         "STRIKE_OUT": "the court to strike out all or part of the other parties’ case",
         "SUMMARY_JUDGMENT": "the court to make a summary judgment",
@@ -2654,8 +2654,8 @@
         "TO_APPLY": "To apply to {{applicationType}}, the application fee is £{{applicationFee}}.",
         "TO_APPLY_MULTIPLE": "To apply to {{applicationType}}, the application fee is £{{applicationFee}}. If you'll be selecting multiple applications, this fee may be reduced.",
         "UNLESS_ORDER": "the court to impose a sanction on the other parties unless they do a specific action",
-        "VARY_ORDER": "reconsider an order",
-        "VARY_PAYMENT_TERMS_OF_JUDGMENT": "vary a judgment"
+        "VARY_ORDER": "ailystyried gorchymyn",
+        "VARY_PAYMENT_TERMS_OF_JUDGMENT": "amrywio dyfarniad"
       },
       "APPLICATION_REASON": {
         "CANCEL_JUDGMENT": {
@@ -2787,19 +2787,19 @@
         "TITLE": "You've responded to the application"
       },
       "SELECTED_APPLICATION_TYPE": {
-        "CANCEL_JUDGMENT": "Set aside (remove) a judgment",
+        "CANCEL_JUDGMENT": "Roi dyfarniad o’r naill du (ei ddileu)",
         "CHANGE_CLAIM": "Make a change to your claim or defence that you've submitted",
         "CHANGE_HEARING": "Change a hearing date",
         "IMPOSE_SANCTION": "Court to impose a sanction on the other parties unless they do a specific action",
         "MORE_TIME": "More time to do what is required by a court order",
         "NOT_ON_LIST": "Court to do something that's not on this list",
         "PAUSE": "Court to pause a claim",
-        "RECONSIDER": "Reconsider an order",
+        "RECONSIDER": "Ailystyried gorchymyn",
         "RELIEF_PENALTY": "Relief from a penalty you've been given by the court",
         "SETTLING": "Court to make an order settling the claim by consent",
         "STRIKE_OUT": "Court to strike out all or part of the other parties' case without a trial",
         "SUMMARY_JUDGMENT": "Court to make a summary judgment on a case",
-        "VARY_JUDGMENT": "Vary a judgment"
+        "VARY_JUDGMENT": "Amrywio dyfarniad"
       },
       "SELECT_TYPE": {
         "ALL_APPLICATIONS": "Pob cais",
@@ -2889,20 +2889,20 @@
         "WHY_DO_NOT_WANT_COURT": "Why do you not want the court to inform the other parties?"
       },
       "APPLICATION_FROM_OTHER_PARTY": {
-        "APPLICATION_FEE_AMOUNT": "The fee amount depends on whether the other parties have agreed to you making this application. The other parties are the other side or sides involved in your case.",
-        "GETTING_AGREEMENT": "Getting agreement",
-        "GETTING_AGREEMENT_PARA_1": "Asking the other parties to agree is optional. If they've agreed, you do not need to have proof of this.",
-        "GETTING_AGREEMENT_PARA_2": "If you're not able to contact the other parties, or you've attempted to contact them but have not had a response, select 'No'.",
-        "OTHER_PARTY_ALREADY_AGREED": "If the other parties have agreed",
-        "OTHER_PARTY_ALREADY_AGREED_PARA_1": "The application fee will be reduced, unless this is an application to:",
-        "OTHER_PARTY_ALREADY_AGREED_PARA_2": "There may also be no need for a hearing to make a decision on the application. You'll see the final application fee amount before you pay.",
-        "OTHER_PARTY_ALREADY_AGREED_QUESTION": "Have the other parties agreed to this application?",
-        "OTHER_PARTY_ALREADY_AGREED_QUESTION_PARA_1":"If you'll be selecting multiple applications, this answer will apply to all of them.",
-        "PAY_APPLICATION_FEE": "You'll need to pay a fee to make an application",
-        "RECONSIDER_ORDER": "reconsider an order",
-        "SET_ASIDE_JUDGMENT": "set aside (remove) a judgment",
-        "TITLE": "Application from the other parties",
-        "VARY_JUDGMENT": "vary a judgment"
+        "APPLICATION_FEE_AMOUNT": "Bydd swm y ffi yn dibynnu ar p’un a yw’r partïon eraill wedi cytuno i chi wneud y cais hwn. Y partïon eraill yw’r ochr arall neu’r ochrau eraill sy’n rhan o’ch achos.",
+        "GETTING_AGREEMENT": "Cael y partïon eraill i gytuno",
+        "GETTING_AGREEMENT_PARA_1": "Mae gofyn i’r partïon eraill gytuno yn ddewisol. Os ydynt wedi cytuno, nid oes rhaid i chi gael tystiolaeth o hyn.",
+        "GETTING_AGREEMENT_PARA_2": "Os nad ydych yn gallu cysylltu â’r partïon eraill, neu os ydych wedi ceisio cysylltu â nhw ond heb gael ymateb, yna dewiswch, ‘Naddo’.",
+        "OTHER_PARTY_ALREADY_AGREED": "Os yw’r partïon eraill wedi cytuno",
+        "OTHER_PARTY_ALREADY_AGREED_PARA_1": "Bydd ffi’r cais yn is, oni bai bod hwn yn gais i:",
+        "OTHER_PARTY_ALREADY_AGREED_PARA_2": "Efallai na fydd angen cynnal gwrandawiad i wneud penderfyniad am y cais.  Byddwch yn gweld swm terfynol ffi’r cais cyn ichi dalu.",
+        "OTHER_PARTY_ALREADY_AGREED_QUESTION": "A yw’r partïon eraill wedi cytuno i’r cais hwn?",
+        "OTHER_PARTY_ALREADY_AGREED_QUESTION_PARA_1":"Os byddwch yn dewis sawl cais, bydd yr ateb hwn yn berthnasol i bob un ohonynt.",
+        "PAY_APPLICATION_FEE": "Bydd rhaid i chi dalu ffi i wneud cais",
+        "RECONSIDER_ORDER": "ailystyried gorchymyn",
+        "SET_ASIDE_JUDGMENT": "roi dyfarniad o’r naill du (ei ddileu)",
+        "TITLE": "Cais gan y partïon eraill",
+        "VARY_JUDGMENT": "amrywio dyfarniad"
       },
       "APPLICATION_HEARING_ARRANGEMENTS_GUIDANCE": {
         "MSG1": "You may need to attend an application hearing so that a judge can consider the application with you and the other parties and decide what the next steps should be.",
@@ -5072,8 +5072,8 @@
       "ADDITIONAL_APPLICATION_ASK_SETTLING":  "Ni allwch ddewis \"Gofyn i’r llys wneud gorchymyn i setlo’n hawliad drwy gydsyniad\" fel cais ychwanegol",
       "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "Ni allwch ddewis \"Gofyn i amrywio dyfarniad\" fel cais ychwanegol",
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
-      "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
-      "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
+      "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "Mae arnoch angen dweud wrthym os yw’r partïon eraill wedi cytuno i’r cais hwn. Dewiswch opsiwn: Do neu Naddo",
+      "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Rhaid i setlo drwy gydsyniad gael ei gytuno arno gyda’r atebydd cyn gwneud y cais.",
       "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
       "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "You need to tell us if you want to ask for your costs back. Choose option: Yes or No",
       "ENTER_ORDER_JUDGE": "You need to enter the order you want the judge to make",
