@@ -2993,7 +2993,7 @@
       },
       "UPLOAD_N245_FORM": {
         "COMPLETE_N245_FORM":"llenwi ffurflen N245",
-        "FILE_FORMAT": "the file is in a DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
+        "FILE_FORMAT": "bod y ffeil ar ffurf DOC/DOCX (Word), XLS/XLSM (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
         "FILE_SIZE": "bod maint y ffeil ddim mwy na 100MB",
         "FILL_ONLINE": "lenwi’r ffurflen ryngweithiol ar-lein, ei chadw ar eich dyfais ac yna ei huwchlwytho yma",
         "INCOME_AND_EXPENSE": "Byddwn yn gofyn am wybodaeth am eich incwm a’ch costau i benderfynu p’un a fyddai’r rhandaliadau hyn yn fforddiadwy i chi. Felly gall fod yn ddefnyddiol i gael dogfennau fel eich cyfriflenni banc wrth law.",
