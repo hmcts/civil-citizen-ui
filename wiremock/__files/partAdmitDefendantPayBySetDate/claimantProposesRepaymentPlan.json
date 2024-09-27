@@ -1,11 +1,12 @@
 {
-  "id": 1777777777777761,
+  "id": "1777777777777761someID",
   "jurisdiction": "CIVIL",
   "state": "AWAITING_APPLICANT_INTENTION",
   "case_type_id": "CIVIL",
   "created_date": "2024-08-02T16:01:30",
   "last_modified": "2024-08-02T16:11:19",
   "case_data": {
+    "id": 1777777777777761,
     "respondent1ClaimResponseTypeForSpec": "PART_ADMISSION",
     "applicant1AcceptAdmitAmountPaidSpec": "Yes",
     "applicant1SettleClaim": "Yes",
