@@ -69,11 +69,12 @@ export const calculateInterestToDate = (claim: Claim): number => {
     const interestPercent = getInterestRate(claim);
     const currentDate = new Date();
     let interestStartDate;
+    const startDate = getInterestStartDate(claim);
 
     if (claim.isInterestFromClaimSubmitDate()) {
-      interestStartDate = isAfterFourPM(currentDate) ? addDaysToDate(currentDate, 1) : currentDate;
+      interestStartDate = isAfterFourPM(currentDate) ? addDaysToDate(startDate, 1) : startDate;
     } else if (claim.isInterestFromASpecificDate() && claim.isInterestEndDateUntilSubmitDate() || claim.isInterestEndDateUntilJudgmentDate()) {
-      interestStartDate = isAfterFourPM(currentDate) ? subtractDaysFromDate(claim.interest.interestStartDate?.date, 1) : claim.interest.interestStartDate?.date;
+      interestStartDate = isAfterFourPM(currentDate) ? subtractDaysFromDate(startDate, 1) : startDate;
 
     }
     const interest = calculateInterest(
