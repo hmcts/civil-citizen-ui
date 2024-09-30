@@ -75,7 +75,7 @@ Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);
-      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false, claimNumber);
+      await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false, 'noDeadline', claimNumber);
       notification = hearingFeePaidFull();
       await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
     }
