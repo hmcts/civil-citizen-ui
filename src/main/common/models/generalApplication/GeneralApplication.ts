@@ -56,7 +56,7 @@ export class GeneralApplication {
     uploadN245Form?: UploadGAFiles,
     informOtherParties?: InformOtherParties,
     applicationFee?: ClaimFeeData,
-    certificateOfSatisfactionOrCanceled?: CertificateOfSatisfactionOrCancellation) {
+    certificateOfSatisfactionOrCancellation?: CertificateOfSatisfactionOrCancellation) {
     this.applicationTypes = applicationType ? [applicationType] : [];
     this.agreementFromOtherParty = agreementFromOtherParty;
     this.applicationCosts = applicationCosts;
@@ -72,6 +72,6 @@ export class GeneralApplication {
     this.uploadN245Form = uploadN245Form;
     this.informOtherParties = informOtherParties;
     this.applicationFee = applicationFee;
-    this.certificateOfSatisfactionOrCancellation = certificateOfSatisfactionOrCanceled;
+    this.certificateOfSatisfactionOrCancellation = certificateOfSatisfactionOrCancellation;
   }
 }
