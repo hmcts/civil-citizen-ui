@@ -2,7 +2,7 @@ import * as draftStoreService from '../../../../../../main/modules/draft-store/d
 import {Claim} from 'models/claim';
 import {
   getCertificateOfSatisfactionOrCancellation, saveCertificateOfSatisfactionOrCancellation,
-} from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService';
+} from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService';
 import {Request} from 'express';
 import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
@@ -37,7 +37,7 @@ describe('Certification of satisfaction or Canceled service', () => {
       expect(result).toEqual(new CertificateOfSatisfactionOrCancellation());
     });
 
-    it('should return CertificateOfSatisfactionOrCanceled model with value', async () => {
+    it('should return certificateOfSatisfactionOrCancellation model with value', async () => {
       //Given
       mockClaim.generalApplication.certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate = mockDefendantFinalPaymentDate;
       const expectedResult = new CertificateOfSatisfactionOrCancellation();
@@ -61,8 +61,8 @@ describe('Certification of satisfaction or Canceled service', () => {
 
   });
 
-  describe('save CertificateOfSatisfactionOrCanceled data', () => {
-    it('should save data successfully when CertificateOfSatisfactionOrCanceled exist', async () => {
+  describe('save certificateOfSatisfactionOrCancellation data', () => {
+    it('should save data successfully when certificateOfSatisfactionOrCancellation exist', async () => {
       //Given
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const mockForm = new GenericForm(mockDefendantFinalPaymentDate);

@@ -9,11 +9,11 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {
   getCertificateOfSatisfactionOrCancellation,
-} from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService';
+} from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService';
 import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');
-jest.mock('services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService');
+jest.mock('services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService');
 const mockGetCertificateOfSatisfactionOrCancellation = getCertificateOfSatisfactionOrCancellation as jest.Mock;
 
 describe('CoSorS - defendant Payment date', () => {
