@@ -102,6 +102,22 @@ module.exports = {
     console.log('End of performEvidenceUpload()');
   },
 
+  performEvidenceUploadCitizen: async (user, caseId, claimType) => {
+    console.log('This is inside performEvidenceUploadCitizen() : ' + caseId);
+    eventName = 'EVIDENCE_UPLOAD_RESPONDENT';
+    const document = await uploadDocument();
+    let payload;
+    if (claimType === 'FastTrack') {
+      payload = evidenceUpload.evidenceUploadFastClaimsLipRespondent(document);
+    } else if (claimType === 'SmallClaims') {
+      payload = evidenceUpload.evidenceUploadSmallClaimsLipRespondent(document);
+    }
+    await apiRequest.setupTokens(user);
+    await apiRequest.startEventForCitizen(eventName, caseId, payload);
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of performEvidenceUploadCitizen()');
+  },
+
   performTrialArrangements: async (user, caseId) => {
     console.log('This is inside performTrialArrangements() : ' + caseId);
     eventName = 'TRIAL_READINESS';
@@ -771,7 +787,6 @@ const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponse
     assert.include(responseBody.after_submit_callback_response.confirmation_header, submittedCallbackResponseContains.header);
     assert.include(responseBody.after_submit_callback_response.confirmation_body, submittedCallbackResponseContains.body);
   }
-
   if (eventName === 'CREATE_CLAIM_SPEC') {
     caseId = responseBody.id;
     await addUserCaseMapping(caseId, config.applicantSolicitorUser);

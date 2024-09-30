@@ -247,7 +247,7 @@ class CheckYourAnswers {
   }
 
   verifyDisclosureSectionContent() {
-    I.see(content.disclosure.title[language], 'h1');
+    I.see(content.disclosure.title[language], 'h2');
     I.see(`${content.disclosure.documents[language]} 1`);
     I.see(content.disclosure.documentType[language]);
     I.see('Test Data Entry for Document Disclosure 1');
@@ -262,27 +262,17 @@ class CheckYourAnswers {
   }
 
   verifyWitnessSectionContent(claimType) {
-    I.see(content.witness.title[language], 'h1');
+    I.see(content.witness.title[language], 'h2');
     I.see(`${content.witness.statement[language]} 1`);
     I.see(content.witness.name[language]);
     I.see('Witness Statement - Witness Name 1');
     I.see(content.witness.dateStatement[language]);
-    if (claimType === 'FastTrack') {
-      I.see('3/2/2023');
-      I.see('TestXLS.xls');
-    } else {
-      I.see('1/2/2023');
-      I.see('TestBMP.bmp');
-    }
+    I.see('1/2/2023');
+    I.see('TestBMP.bmp');
     I.see(`${content.witness.statement[language]} 2`);
     I.see('Witness Statement - Witness Name 2');
-    if (claimType === 'FastTrack') {
-      I.see('4/2/2023');
-      I.see('TestXLSX.xlsx');
-    } else {
-      I.see('2/2/2023');
-      I.see('TestCSV.csv');
-    }
+    I.see('2/2/2023');
+    I.see('TestCSV.csv');
     I.see(`${content.witness.summary[language]} 1`);
     I.see(content.witness.dateSummary[language]);
     I.see('Witness Summary - Witness Name 1');
@@ -316,50 +306,30 @@ class CheckYourAnswers {
   }
 
   verifyEvidenceSectionContent(claimType, partyType) {
-    I.see(content.expert.title[language], 'h1');
+    I.see(content.expert.title[language], 'h2');
     I.see(`${content.expert.report[language]} 1`);
     I.see(content.expert.name[language]);
     I.see(content.expert.expertise[language]);
     I.see('Expert Report - Field of Expertise 1');
     I.see(content.expert.dateTitle[language]);
-    if (claimType === 'FastTrack') {
-      I.see('11/2/2023');
-      I.see('TestCSV.csv');
-    } else {
-      I.see('7/2/2023');
-      I.see('TestPDF.pdf');
-    }
+    I.see('7/2/2023');
+    I.see('TestPDF.pdf');
     I.see(`${content.expert.report[language]} 2`);
     I.see('Expert Report - Field of Expertise 2');
-    if (claimType === 'FastTrack') {
-      I.see('12/2/2023');
-      I.see('TestBMP.bmp');
-    } else {
-      I.see('8/2/2023');
-      I.see('TestPNG.png');
-    }
+    I.see('8/2/2023');
+    I.see('TestPNG.png');
 
     I.see(`${content.expert.jointStatement[language]} 1`);
     I.see(content.expert.name[language]);
     I.see('Expert Statement - Expert Name 1');
     I.see('Expert Statement - Field Of Expertise 1');
-    if (claimType === 'FastTrack') {
-      I.see('13/2/2023');
-      I.see('TestPNG.png');
-    } else {
-      I.see('9/2/2023');
-      I.see('TestPPT.ppt');
-    }
+    I.see('9/2/2023');
+    I.see('TestPPT.ppt');
     I.see(`${content.expert.jointStatement[language]} 2`);
     I.see('Expert Statement - Expert Name 2');
     I.see('Expert Statement - Field Of Expertise 2');
-    if (claimType === 'FastTrack') {
-      I.see('14/2/2023');
-      I.see('TestJPG.jpg');
-    } else {
-      I.see('10/2/2023');
-      I.see('TestRTF.rtf');
-    }
+    I.see('10/2/2023');
+    I.see('TestRTF.rtf');
 
     if (claimType === 'FastTrack') {
       I.see(`${content.expert.questions.title[language]} 1`);
@@ -388,7 +358,7 @@ class CheckYourAnswers {
   }
 
   verifyTrialDocumentsSection() {
-    I.see(content.trial.title[language], 'h1');
+    I.see(content.trial.title[language], 'h2');
     I.see(`${content.trial.caseSummary[language]} 1`);
     I.see(`${content.trial.caseSummary[language]} 2`);
     I.see(`${content.trial.skeleton[language]} 1`);
@@ -398,13 +368,17 @@ class CheckYourAnswers {
     I.see(`${content.trial.costs[language]} 1`);
     I.see(`${content.trial.costs[language]} 2`);
     I.see(`${content.trial.documentaryEvidence[language]} 1`);
-    I.see('Documentary evidence for trial - Type of Document 1');
+    I.see('Documentary evidence for the hearing - Type of Document 1');
+    I.see('11/2/2023');
+    I.see('TestTIF.tif');
     I.see(`${content.trial.documentaryEvidence[language]} 2`);
-    I.see('Documentary evidence for trial - Type of Document 2');
+    I.see('Documentary evidence for the hearing - Type of Document 2');
+    I.see('12/2/2023');
+    I.see('TestTIFF.tiff');
   }
 
   verifyHearingDocumentsSection() {
-    I.see(content.hearing.title[language], 'h1');
+    I.see(content.hearing.title[language], 'h2');
     I.see(`${content.hearing.documentaryEvidence[language]} 1`);
     I.see('Documentary evidence for the hearing - Type of Document 1');
     I.see('11/2/2023');

@@ -117,7 +117,7 @@ const content = {
       cy: 'Atebion i’r cwestiynau a ofynnwyd gan y parti arall',
     },
     answersHint: {
-      en: 'Your expert’s answers to questions put by the other party',
+      en: 'Your expert\'s answers to questions put by the other party',
       cy: 'Atebion eich arbenigwr i gwestiynau a ofynnwyd gan y parti arall',
     },
   },
