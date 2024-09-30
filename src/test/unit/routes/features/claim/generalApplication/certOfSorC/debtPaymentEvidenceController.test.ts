@@ -12,14 +12,14 @@ import {t} from 'i18next';
 import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {
-  getCertificateOfSatisfactionOrCanceled,
+  getCertificateOfSatisfactionOrCancellation,
 } from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService');
-const mockGetCertificateOfSatisfactionOrCanceled = getCertificateOfSatisfactionOrCanceled as jest.Mock;
+const mockGetCertificateOfSatisfactionOrCancellation = getCertificateOfSatisfactionOrCancellation as jest.Mock;
 
 describe('General Application - CoSorC - debt payment evidence controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -37,7 +37,7 @@ describe('General Application - CoSorC - debt payment evidence controller', () =
 
   beforeEach(() => {
     claim.id = 'id';
-    mockGetCertificateOfSatisfactionOrCanceled.mockReturnValue(claim);
+    mockGetCertificateOfSatisfactionOrCancellation.mockReturnValue(claim);
   });
 
   describe('on GET', () => {

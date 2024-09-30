@@ -7,7 +7,7 @@ import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('defendantFinalPaymentDateService');
 
-export const getCertificateOfSatisfactionOrCanceled = async (req: Request): Promise<CertificateOfSatisfactionOrCancellation> => {
+export const getCertificateOfSatisfactionOrCancellation = async (req: Request): Promise<CertificateOfSatisfactionOrCancellation> => {
   try {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
@@ -19,7 +19,7 @@ export const getCertificateOfSatisfactionOrCanceled = async (req: Request): Prom
   }
 };
 
-export const saveCertificateOfSatisfactionOrCanceled = async (req: Request, value: any, propertyName: keyof CertificateOfSatisfactionOrCancellation): Promise<void> => {
+export const saveCertificateOfSatisfactionOrCancellation = async (req: Request, value: any, propertyName: keyof CertificateOfSatisfactionOrCancellation): Promise<void> => {
   try {
     const claimId = req.params.id;
     const redisKey = generateRedisKey(<AppRequest>req);

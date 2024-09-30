@@ -8,13 +8,13 @@ import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/l
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {
-  getCertificateOfSatisfactionOrCanceled,
+  getCertificateOfSatisfactionOrCancellation,
 } from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService';
 import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');
 jest.mock('services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService');
-const mockGetCertificateOfSatisfactionOrCanceled = getCertificateOfSatisfactionOrCanceled as jest.Mock;
+const mockGetCertificateOfSatisfactionOrCancellation = getCertificateOfSatisfactionOrCancellation as jest.Mock;
 
 describe('CoSorS - defendant Payment date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -30,7 +30,7 @@ describe('CoSorS - defendant Payment date', () => {
 
   describe('on GET', () => {
     it('should return payment date page', async () => {
-      mockGetCertificateOfSatisfactionOrCanceled.mockReturnValue(new CertificateOfSatisfactionOrCancellation());
+      mockGetCertificateOfSatisfactionOrCancellation.mockReturnValue(new CertificateOfSatisfactionOrCancellation());
       await request(app)
         .get(COSC_FINAL_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -44,7 +44,7 @@ describe('CoSorS - defendant Payment date', () => {
 
   describe('on POST', () => {
     beforeAll(() => {
-      mockGetCertificateOfSatisfactionOrCanceled.mockReturnValue(new CertificateOfSatisfactionOrCancellation());
+      mockGetCertificateOfSatisfactionOrCancellation.mockReturnValue(new CertificateOfSatisfactionOrCancellation());
     });
 
     it('should return errors on no input', async () => {

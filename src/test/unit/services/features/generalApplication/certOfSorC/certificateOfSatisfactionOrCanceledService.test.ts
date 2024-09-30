@@ -1,7 +1,7 @@
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {
-  getCertificateOfSatisfactionOrCanceled, saveCertificateOfSatisfactionOrCanceled,
+  getCertificateOfSatisfactionOrCancellation, saveCertificateOfSatisfactionOrCancellation,
 } from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService';
 import {Request} from 'express';
 import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
@@ -32,7 +32,7 @@ describe('Certification of satisfaction or Canceled service', () => {
       //Given
       mockGetClaimByID.mockReturnValue(new Claim());
       //When
-      const result = await getCertificateOfSatisfactionOrCanceled(mockReq);
+      const result = await getCertificateOfSatisfactionOrCancellation(mockReq);
       //Then
       expect(result).toEqual(new CertificateOfSatisfactionOrCancellation());
     });
@@ -45,7 +45,7 @@ describe('Certification of satisfaction or Canceled service', () => {
       mockGetClaimByID.mockReturnValue(mockClaim);
 
       //When
-      const result = await getCertificateOfSatisfactionOrCanceled(mockReq);
+      const result = await getCertificateOfSatisfactionOrCancellation(mockReq);
       //Then
       expect(result).toEqual(expectedResult);
     });
@@ -56,7 +56,7 @@ describe('Certification of satisfaction or Canceled service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(getCertificateOfSatisfactionOrCanceled(mockReq)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(getCertificateOfSatisfactionOrCancellation(mockReq)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
 
   });
@@ -69,7 +69,7 @@ describe('Certification of satisfaction or Canceled service', () => {
       mockClaim.generalApplication.certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate = mockDefendantFinalPaymentDate;
       mockGetClaimByID.mockReturnValue(mockClaim);
       //When
-      await saveCertificateOfSatisfactionOrCanceled(mockReq, mockForm.model, 'defendantFinalPaymentDate');
+      await saveCertificateOfSatisfactionOrCancellation(mockReq, mockForm.model, 'defendantFinalPaymentDate');
       //Then
       expect(spySave).toHaveBeenCalledWith(undefined, mockClaim);
 
@@ -84,7 +84,7 @@ describe('Certification of satisfaction or Canceled service', () => {
       mockGetClaimByID.mockReturnValue(new Claim());
 
       //When
-      await saveCertificateOfSatisfactionOrCanceled(mockReq, mockForm.model, 'defendantFinalPaymentDate');
+      await saveCertificateOfSatisfactionOrCancellation(mockReq, mockForm.model, 'defendantFinalPaymentDate');
       //Then
       expect(spySave).toHaveBeenCalledWith(undefined, expectedResult);
 
@@ -96,7 +96,7 @@ describe('Certification of satisfaction or Canceled service', () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });
       //Then
-      await expect(saveCertificateOfSatisfactionOrCanceled(mockReq, mockDefendantFinalPaymentDate, 'defendantFinalPaymentDate')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      await expect(saveCertificateOfSatisfactionOrCancellation(mockReq, mockDefendantFinalPaymentDate, 'defendantFinalPaymentDate')).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
 
   });

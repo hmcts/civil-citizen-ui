@@ -9,8 +9,8 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {DebtPaymentEvidence} from 'models/generalApplication/debtPaymentEvidence';
 import {
-  getCertificateOfSatisfactionOrCanceled,
-  saveCertificateOfSatisfactionOrCanceled,
+  getCertificateOfSatisfactionOrCancellation,
+  saveCertificateOfSatisfactionOrCancellation,
 } from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService';
 import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 
@@ -34,7 +34,7 @@ function renderView(form: GenericForm<DebtPaymentEvidence>, res: Response, claim
 debtPaymentEvidenceController.get(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const certificateOfSatisfactionOrCanceled: CertificateOfSatisfactionOrCancellation = await getCertificateOfSatisfactionOrCanceled(req);
+    const certificateOfSatisfactionOrCanceled: CertificateOfSatisfactionOrCancellation = await getCertificateOfSatisfactionOrCancellation(req);
     const cancelUrl = await getCancelUrl(claimId, null);
     const form: DebtPaymentEvidence = certificateOfSatisfactionOrCanceled?.debtPaymentEvidence
       ? certificateOfSatisfactionOrCanceled.debtPaymentEvidence: new DebtPaymentEvidence();
@@ -55,7 +55,7 @@ debtPaymentEvidenceController.post(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
       if (form.hasErrors()) {
         renderView(form,  res, claimId, cancelUrl);
       } else {
-        await saveCertificateOfSatisfactionOrCanceled(req, form.model, 'debtPaymentEvidence');
+        await saveCertificateOfSatisfactionOrCancellation(req, form.model, 'debtPaymentEvidence');
         switch (form.model.evidence) {
           case debtPaymentOptions.NO_EVIDENCE:
             nextPageUrl = constructResponseUrlWithIdParams(claimId, GA_CHECK_YOUR_ANSWERS_COSC_URL);
