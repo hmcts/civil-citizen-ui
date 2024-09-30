@@ -46,6 +46,21 @@ describe('General Application - CoSorC - debt payment evidence controller', () =
         .get(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL.replace(':id', claim.id))
         .expect((res) => {
           expect(res.status).toBe(200);
+
+          const decodedText = res.text.replace(/&#39;/g, "'");
+
+          expect(decodedText).toContain(t('COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT'));
+          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_HAVE_EVIDENCE'));
+          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.YOU_WILL_NEED_EVIDENCE'));
+          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.CONFIRMATION_OF_MONEY'));
+          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DATE_OF_PAYMENT'));
+          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.AMOUNT_PAID'));
+          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.CASE_NUMBER'));
+          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.IF_CANNOT_PROVIDE_EVIDENCE'));
+          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE'));
+          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.UPLOAD_EVIDENCE'));
+          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.MADE_FULL_PAYMENT'));
+          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.NO_EVIDENCE'));
         });
     });
 

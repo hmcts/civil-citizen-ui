@@ -48,7 +48,6 @@ describe('General Application - ask proof of debt payment guidance', () => {
           const decodedText = res.text.replace(/&#39;/g, "'");
 
           expect(decodedText).toContain(t('COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT'));
-          expect(decodedText).toContain(t('COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT'));
           expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_1'));
           expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_TITLE_1'));
           expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_3'));

@@ -39,7 +39,7 @@ async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimI
   const isConfirmPaidCCJAppType = isConfirmYouPaidCCJAppType(claim);
   const backLinkPage = isConfirmPaidCCJAppType ? GA_DEBT_PAYMENT_EVIDENCE_COSC_URL : GA_WANT_TO_UPLOAD_DOCUMENTS_URL;
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, backLinkPage);
-  const headerTitle = isConfirmPaidCCJAppType ? 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CONFIRM_YOU_PAID_CCJ' : getDynamicHeaderForMultipleApplications(claim);
+  const headerTitle = isConfirmPaidCCJAppType ? 'COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT' : getDynamicHeaderForMultipleApplications(claim);
   res.render(viewPath, {
     form,
     formattedSummary,
