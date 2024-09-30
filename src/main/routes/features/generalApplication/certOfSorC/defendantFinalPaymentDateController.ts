@@ -2,20 +2,21 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPaymentDate';
 import {
   COSC_FINAL_PAYMENT_DATE_URL,
-  GA_DEBT_PAYMENT_EVIDENCE_URL,
+  GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
   GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL,
 } from 'routes/urls';
-import {
-  defendantFinalPaymentDateService,
-} from 'services/features/generalApplication/certOfSorC/defendantFinalPaymentDateService';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
+import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
+import {
+  getCertificateOfSatisfactionOrCancellation, saveCertificateOfSatisfactionOrCancellation,
+} from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService';
 
 const paymentDateViewPath = 'features/generalApplication/certOfSorC/final-payment-date';
 
 const defendantPaymentDateController = Router();
-const title = 'PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.TITLE';
+const title = 'COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT';
 
 defendantPaymentDateController
   .get(
@@ -23,7 +24,8 @@ defendantPaymentDateController
       try {
         const cancelUrl = await getCancelUrl(req.params.id, null);
         const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL);
-        const defendantFinalPaymentDate = await defendantFinalPaymentDateService.getDefendantResponse(req);
+        const certificateOfSatisfactionOrCancellation: CertificateOfSatisfactionOrCancellation = await getCertificateOfSatisfactionOrCancellation(req);
+        const defendantFinalPaymentDate = certificateOfSatisfactionOrCancellation? certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate : new DefendantFinalPaymentDate();
         res.render( paymentDateViewPath, { cancelUrl, backLinkUrl,
           form: new GenericForm(defendantFinalPaymentDate), title,
         });
@@ -43,8 +45,9 @@ defendantPaymentDateController
         res.render(paymentDateViewPath, {form, title, cancelUrl, backLinkUrl });
       } else {
         try {
-          await defendantFinalPaymentDateService.savePaymentDate(req, defendantPaymentDate);
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_DEBT_PAYMENT_EVIDENCE_URL));
+
+          await saveCertificateOfSatisfactionOrCancellation(req, form.model, 'defendantFinalPaymentDate');
+          res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL));
         } catch (error) {
           next(error);
         }

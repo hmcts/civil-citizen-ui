@@ -70,6 +70,7 @@
     "YEARS": "Blwyddyn",
     "YES": "Oes",
     "OPENS_IN_NEW_TAB": "(yn agor mewn tab newydd)",
+    "ASK_FOR_PROOF_OF_DEBT_PAYMENT": "Confirm you've paid a judgment debt",
     "ADDRESS_FORM": {
       "ADDRESS_CHANGES_SHARED": "Bydd unrhyw newidiadau yn cael eu rhannu â'r hawlydd pan fyddwch yn cyflwyno eich ymateb.",
       "BUILDING_AND_STREET": "Adeilad a stryd",
@@ -2738,8 +2739,7 @@
         "NO_EVIDENCE": "I am unable to provide evidence of full payment",
         "GIVE_DETAILS": "Give details below of what you have done to obtain evidence and why you’re not able to provide it",
         "PROVIDE_DETAILS": "Provide details",
-        "OR": "or",
-        "CONFIRM_PAID": "Confirm you've paid a judgement debt"
+        "OR": "or"
       },
       "PAY_ADDITIONAL_FEE": {
         "HEADING": "Additional application fee",
@@ -3201,8 +3201,6 @@
         "UPLOAD_DOCUMENTS_3": " if you need to."
       },
       "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
-        "PAGE_TITLE": "Confirm you've paid a judgment debt",
-        "TITLE": "Confirm you've paid a judgment debt",
         "PARA_1": "If you've paid the debt from a county court judgment (CCJ), you can ask the court for proof of payment to share with banks and credit reference agencies. This is also known as requesting a certificate of cancellation or satisfaction.",
         "PARA_2": "The court fee for this is £{{ applicationFee }}. This fee will need to be paid once you've submitted your request. Find out if you can get ",
         "HELP_WITH_FEE": "help with fees.",
@@ -3223,8 +3221,6 @@
         "COMPLETE_FORM_N443": "complete a form N443."
       },
       "FINAL_DEFENDANT_PAYMENT_DATE": {
-        "CAPTION_HEADER_1": "Confirm you've paid a judgment debt",
-        "PAGE_TITLE": "Confirm you've paid a judgment debt",
         "TITLE": "When was the final payment?",
         "PARAGRAPH_TEXT_1" : "We need to know this to cancel the debt if you paid within one month or show",
         "PARAGRAPH_TEXT_2" : "it as satisfied if you paid after one month.",

@@ -5,11 +5,11 @@
 {% import "external-urls.njk" as externalURLs %}
 
 {% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PAGE_TITLE') }}
+  {{ setPageTitle(t, 'COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT') }}
 {% endblock %}
 
 {% block nestedContent %}
-      <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.TITLE') }}</h1>
+      <h1 class="govuk-heading-l">{{ t('COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT') }}</h1>
       <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_1') }}</p>
       <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_2', {applicationFee:applicationFee}) }}
         {{ externalLink(t, 'PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.HELP_WITH_FEE', externalURLs.feesHelpUrl, false) }}</p>

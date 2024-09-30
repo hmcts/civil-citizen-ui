@@ -12,7 +12,7 @@
 
 {% block nestedContent %}
 
-          <span class="govuk-caption-l">{{ t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.CONFIRM_PAID') }}</span>
+          <span class="govuk-caption-l">{{ t('COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT') }}</span>
           <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_HAVE_EVIDENCE') }}</h1>
           <p class="govuk-body">
             {{ t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.YOU_WILL_NEED_EVIDENCE')}}
@@ -61,11 +61,13 @@
               items: [
                   {
                     value: DebtPaymentOptions.UPLOAD_EVIDENCE,
-                    text: t(DebtPaymentOptions.UPLOAD_EVIDENCE)
+                    text: t(DebtPaymentOptions.UPLOAD_EVIDENCE),
+                    checked: form.model.evidence === DebtPaymentOptions.UPLOAD_EVIDENCE
                   },
                   {
                     value: DebtPaymentOptions.MADE_FULL_PAYMENT,
-                    text: t(DebtPaymentOptions.MADE_FULL_PAYMENT)
+                    text: t(DebtPaymentOptions.MADE_FULL_PAYMENT),
+                    checked: form.model.evidence === DebtPaymentOptions.MADE_FULL_PAYMENT
                   },
                   {
                     divider: t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.OR')
@@ -73,12 +75,13 @@
                   {
                     value: DebtPaymentOptions.NO_EVIDENCE,
                     text: t(DebtPaymentOptions.NO_EVIDENCE),
+                    checked: form.model.evidence === DebtPaymentOptions.NO_EVIDENCE,
                     hint: {
-                      text: t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.GIVE_DETAILS')
-                    },
-                    conditional: {
-                      html: details
-                    }
+                          text: t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.GIVE_DETAILS')
+                        },
+                        conditional: {
+                          html: details
+                        }
                   }
                 ],
                 errorMessage: {

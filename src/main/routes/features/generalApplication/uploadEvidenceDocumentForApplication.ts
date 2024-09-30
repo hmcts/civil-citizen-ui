@@ -3,7 +3,7 @@ import {
   GA_HEARING_ARRANGEMENTS_GUIDANCE_URL,
   GA_UPLOAD_DOCUMENTS_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
   GA_UPLOAD_DOCUMENTS_COSC_URL, GA_CHECK_YOUR_ANSWERS_COSC_URL,
-  GA_DEBT_PAYMENT_EVIDENCE_URL,
+  GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
@@ -37,9 +37,9 @@ async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimI
   const cancelUrl = await getCancelUrl(claimId, claim);
   const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL);
   const isConfirmPaidCCJAppType = isConfirmYouPaidCCJAppType(claim);
-  const backLinkPage = isConfirmPaidCCJAppType ? GA_DEBT_PAYMENT_EVIDENCE_URL : GA_WANT_TO_UPLOAD_DOCUMENTS_URL;
+  const backLinkPage = isConfirmPaidCCJAppType ? GA_DEBT_PAYMENT_EVIDENCE_COSC_URL : GA_WANT_TO_UPLOAD_DOCUMENTS_URL;
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, backLinkPage);
-  const headerTitle = isConfirmPaidCCJAppType ? 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CONFIRM_YOU_PAID_CCJ' : getDynamicHeaderForMultipleApplications(claim);
+  const headerTitle = isConfirmPaidCCJAppType ? 'COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT' : getDynamicHeaderForMultipleApplications(claim);
   res.render(viewPath, {
     form,
     formattedSummary,
