@@ -80,7 +80,7 @@ describe('getPaymentSuccessfulContent en', () => {
     const payHearingFeeStartScreenContentActual = getPaymentSuccessfulButtonContent('url');
 
     //Then
-    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW');
+    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual('COMMON.BUTTONS.GO_TO_ACCOUNT');
 
   });
   it('should return getPaymentSuccessfulButtonContent welsh', () => {
@@ -92,6 +92,6 @@ describe('getPaymentSuccessfulContent en', () => {
     const payHearingFeeStartScreenContentActual = getPaymentSuccessfulButtonContent('url');
 
     //Then
-    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW');
+    expect(payHearingFeeStartScreenContentActual[0].data.text).toEqual('COMMON.BUTTONS.GO_TO_ACCOUNT');
   });
 });
