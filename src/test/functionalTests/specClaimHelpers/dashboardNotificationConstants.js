@@ -99,7 +99,7 @@ module.exports = {
   hwfNoRemission: () => {
     return {
       title: 'Your help with fees application has been rejected',
-      content: ['We\'ve rejected your application for help with the claim fee. See the email for further details.', 'You\'ll need to pay the full fee of <Amount> by <Deadline date>. You can pay by phone by calling 0300 123 7050.'],
+      content: ['We\'ve rejected your application for help with the claim fee. See the email for further details.', 'You must pay the full fee of', 'You can pay by phone by calling 0300 123 7050.'],
     };
   },
 
