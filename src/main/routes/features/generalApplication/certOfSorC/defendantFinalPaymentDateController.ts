@@ -8,7 +8,7 @@ import {
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
-import {CertificateOfSatisfactionOrCanceled} from 'models/generalApplication/CertificateOfSatisfactionOrCanceled';
+import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 import {
   getCertificateOfSatisfactionOrCanceled, saveCertificateOfSatisfactionOrCanceled,
 } from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService';
@@ -24,7 +24,7 @@ defendantPaymentDateController
       try {
         const cancelUrl = await getCancelUrl(req.params.id, null);
         const backLinkUrl = constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL);
-        const certificateOfSatisfactionOrCanceled: CertificateOfSatisfactionOrCanceled = await getCertificateOfSatisfactionOrCanceled(req);
+        const certificateOfSatisfactionOrCanceled: CertificateOfSatisfactionOrCancellation = await getCertificateOfSatisfactionOrCanceled(req);
         const defendantFinalPaymentDate = certificateOfSatisfactionOrCanceled? certificateOfSatisfactionOrCanceled.defendantFinalPaymentDate : new DefendantFinalPaymentDate();
         res.render( paymentDateViewPath, { cancelUrl, backLinkUrl,
           form: new GenericForm(defendantFinalPaymentDate), title,

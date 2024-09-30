@@ -12,7 +12,7 @@ import {
   getCertificateOfSatisfactionOrCanceled,
   saveCertificateOfSatisfactionOrCanceled,
 } from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService';
-import {CertificateOfSatisfactionOrCanceled} from 'models/generalApplication/CertificateOfSatisfactionOrCanceled';
+import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 
 const debtPaymentEvidenceController = Router();
 const debtPaymentEvidenceViewPath = 'features/generalApplication/certOfSorC/debt-payment-evidence';
@@ -34,7 +34,7 @@ function renderView(form: GenericForm<DebtPaymentEvidence>, res: Response, claim
 debtPaymentEvidenceController.get(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const certificateOfSatisfactionOrCanceled: CertificateOfSatisfactionOrCanceled = await getCertificateOfSatisfactionOrCanceled(req);
+    const certificateOfSatisfactionOrCanceled: CertificateOfSatisfactionOrCancellation = await getCertificateOfSatisfactionOrCanceled(req);
     const cancelUrl = await getCancelUrl(claimId, null);
     const form: DebtPaymentEvidence = certificateOfSatisfactionOrCanceled?.debtPaymentEvidence
       ? certificateOfSatisfactionOrCanceled.debtPaymentEvidence: new DebtPaymentEvidence();

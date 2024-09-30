@@ -10,7 +10,7 @@ import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import {
   getCertificateOfSatisfactionOrCanceled,
 } from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService';
-import {CertificateOfSatisfactionOrCanceled} from 'models/generalApplication/CertificateOfSatisfactionOrCanceled';
+import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');
 jest.mock('services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService');
@@ -30,7 +30,7 @@ describe('CoSorS - defendant Payment date', () => {
 
   describe('on GET', () => {
     it('should return payment date page', async () => {
-      mockGetCertificateOfSatisfactionOrCanceled.mockReturnValue(new CertificateOfSatisfactionOrCanceled());
+      mockGetCertificateOfSatisfactionOrCanceled.mockReturnValue(new CertificateOfSatisfactionOrCancellation());
       await request(app)
         .get(COSC_FINAL_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -44,7 +44,7 @@ describe('CoSorS - defendant Payment date', () => {
 
   describe('on POST', () => {
     beforeAll(() => {
-      mockGetCertificateOfSatisfactionOrCanceled.mockReturnValue(new CertificateOfSatisfactionOrCanceled());
+      mockGetCertificateOfSatisfactionOrCanceled.mockReturnValue(new CertificateOfSatisfactionOrCancellation());
     });
 
     it('should return errors on no input', async () => {

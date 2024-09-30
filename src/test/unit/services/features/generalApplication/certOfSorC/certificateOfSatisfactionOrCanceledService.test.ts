@@ -4,7 +4,7 @@ import {
   getCertificateOfSatisfactionOrCanceled, saveCertificateOfSatisfactionOrCanceled,
 } from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCanceledService';
 import {Request} from 'express';
-import {CertificateOfSatisfactionOrCanceled} from 'models/generalApplication/CertificateOfSatisfactionOrCanceled';
+import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPaymentDate';
 import {getClaimById} from 'modules/utilityService';
@@ -22,7 +22,7 @@ const mockReq = {
 
 const mockClaim = new Claim();
 mockClaim.generalApplication = new GeneralApplication();
-mockClaim.generalApplication.certificateOfSatisfactionOrCanceled = new CertificateOfSatisfactionOrCanceled();
+mockClaim.generalApplication.certificateOfSatisfactionOrCancellation = new CertificateOfSatisfactionOrCancellation();
 
 const mockDefendantFinalPaymentDate = new DefendantFinalPaymentDate('2024', '01', '01');
 
@@ -34,13 +34,13 @@ describe('Certification of satisfaction or Canceled service', () => {
       //When
       const result = await getCertificateOfSatisfactionOrCanceled(mockReq);
       //Then
-      expect(result).toEqual(new CertificateOfSatisfactionOrCanceled());
+      expect(result).toEqual(new CertificateOfSatisfactionOrCancellation());
     });
 
     it('should return CertificateOfSatisfactionOrCanceled model with value', async () => {
       //Given
-      mockClaim.generalApplication.certificateOfSatisfactionOrCanceled.defendantFinalPaymentDate = mockDefendantFinalPaymentDate;
-      const expectedResult = new CertificateOfSatisfactionOrCanceled();
+      mockClaim.generalApplication.certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate = mockDefendantFinalPaymentDate;
+      const expectedResult = new CertificateOfSatisfactionOrCancellation();
       expectedResult.defendantFinalPaymentDate = mockDefendantFinalPaymentDate;
       mockGetClaimByID.mockReturnValue(mockClaim);
 
@@ -66,7 +66,7 @@ describe('Certification of satisfaction or Canceled service', () => {
       //Given
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const mockForm = new GenericForm(mockDefendantFinalPaymentDate);
-      mockClaim.generalApplication.certificateOfSatisfactionOrCanceled.defendantFinalPaymentDate = mockDefendantFinalPaymentDate;
+      mockClaim.generalApplication.certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate = mockDefendantFinalPaymentDate;
       mockGetClaimByID.mockReturnValue(mockClaim);
       //When
       await saveCertificateOfSatisfactionOrCanceled(mockReq, mockForm.model, 'defendantFinalPaymentDate');
@@ -78,7 +78,7 @@ describe('Certification of satisfaction or Canceled service', () => {
     it('should save data successfully when generalApplication no exists', async () => {
       //Given
       const expectedResult = mockClaim;
-      expectedResult.generalApplication.certificateOfSatisfactionOrCanceled.defendantFinalPaymentDate = mockDefendantFinalPaymentDate;
+      expectedResult.generalApplication.certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate = mockDefendantFinalPaymentDate;
       const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
       const mockForm = new GenericForm(mockDefendantFinalPaymentDate);
       mockGetClaimByID.mockReturnValue(new Claim());

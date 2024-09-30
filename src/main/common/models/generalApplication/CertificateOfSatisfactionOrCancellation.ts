@@ -1,7 +1,7 @@
 import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPaymentDate';
 import { DebtPaymentEvidence } from 'models/generalApplication/debtPaymentEvidence';
 
-export class CertificateOfSatisfactionOrCanceled {
+export class CertificateOfSatisfactionOrCancellation {
   defendantFinalPaymentDate?: DefendantFinalPaymentDate;
   debtPaymentEvidence?: DebtPaymentEvidence;
 
