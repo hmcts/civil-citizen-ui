@@ -2674,7 +2674,7 @@
         "ENTER_REASONS": "Nodwch eich rhesymau dros wneud cais am y gorchymyn hwn",
         "IMPOSE_SANCTION": "Dylech esbonio pam ydych eisiau i'r partïon eraill wneud hyn. Bydd gennych yr opsiwn i uwchlwytho dogfennau i gefnogi’ch rhesymau ar y sgrin nesaf.",
         "MORE_TIME": "Dylech esbonio pam nad ydych am fodloni’r terfyn amser gwreiddiol. Bydd gennych yr opsiwn i uwchlwytho dogfennau i gefnogi’ch rhesymau ar y sgrin nesaf.",
-        "NOT_ON_LIST": "Dylech esbonio pam rydych yn gwneud cais am y gorchymyn hwn. Bydd gennych yr opsiwn i uwchlwytho dogfennau i gefnogi’ch rheswm ar y sgrin nesaf.",
+        "NOT_ON_LIST": "Dylech esbonio pam ydych chi'n gwneud cais am y gorchymyn hwn. Bydd gennych yr opsiwn i uwchlwytho dogfennau i gefnogi eich rhesymau ar y sgrin nesaf.",
         "PAUSE": "Dylech esbonio pam y dylai’r hawliad gael ei oedi tan y dyddiad rydych wedi’i nodi ar y sgrin flaenorol. Bydd gennych yr opsiwn i uwchlwytho dogfennau i gefnogi’ch rhesymau ar y sgrin nesaf.",
         "RECONSIDER": "Dylech esbonio pam rydych chi eisiau i’r gorchymyn gael ei ailystyried. Bydd gennych yr opsiwn i uwchlwytho dogfennau i gefnogi’ch rhesymau ar y sgrin nesaf.",
         "RELIEF_PENALTY": {
@@ -5100,7 +5100,7 @@
       "UPLOAD_FILE_MESSAGE": "Mae arnoch angen dewis ffeil cyn clicio ar 'Uwchlwytho ffeil'",
       "UPLOAD_ONE_FILE": "You need to upload at least one file.",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "Mae arnoch angen dweud wrthym os ydych eisiau ychwanegu cais arall. Dewiswch opsiwn: Ydw neu Nac ydw",
-      "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your application. Choose option: Yes or No",
+      "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "Mae arnoch angen dweud wrthym os ydych eisiau uwchlwytho dogfennau i gefnogi eich cais. Dewiswch opsiwn: Ydw neu Nac ydw",
       "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
       "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your response. Choose Yes or No.",
       "RESPONDENT_UPLOAD_OPTION": {
