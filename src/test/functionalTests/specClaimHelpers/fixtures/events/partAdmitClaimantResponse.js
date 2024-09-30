@@ -21,7 +21,6 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          
           flags: null,
         },
         applicant1: {
@@ -43,7 +42,6 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          
         },
         respondent2: null,
         partAdmitPaidValuePounds: '500.00',
@@ -96,7 +94,6 @@ module.exports = {
         applicant1DQWitnessesSmallClaim: {
           witnessesToAppear: 'No',
           details: [
-            
           ],
         },
         applicant1DQLanguage: {
@@ -107,7 +104,6 @@ module.exports = {
         applicant1DQSmallClaimHearing: {
           unavailableDatesRequired: 'No',
           smallClaimUnavailableDate: [
-            
           ],
         },
         applicant1DQHearingLRspec: null,
@@ -138,7 +134,6 @@ module.exports = {
           supportRequirements: 'Yes',
           supportRequirementsAdditional: 'Support with access needs',
           requirements: [
-            
           ],
         },
         uiStatementOfTruth: {
@@ -146,7 +141,7 @@ module.exports = {
           role: 'claimant lr role',
         },
       },
-    };  
+    };
   },
 
   partAdmitHaventPaidPartiallyWantsToPayImmediatelyButClaimantWantsToProceedWithMediation: () => {
@@ -169,7 +164,6 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          
           flags: null,
         },
         applicant1: {
@@ -191,7 +185,6 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          
         },
         respondent2: null,
         partAdmitPaidValuePounds: null,
@@ -264,7 +257,6 @@ module.exports = {
         applicant1DQSmallClaimHearing: {
           unavailableDatesRequired: 'No',
           smallClaimUnavailableDate: [
-            
           ],
         },
         applicant1DQHearingLRspec: null,
@@ -295,7 +287,6 @@ module.exports = {
           supportRequirements: 'No',
           supportRequirementsAdditional: 'safsa',
           requirements: [
-            
           ],
         },
         applicant1DQVulnerabilityQuestions: {
@@ -331,7 +322,6 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          
           flags: null,
         },
         applicant1: {
@@ -353,7 +343,6 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          
         },
         respondent2: null,
         partAdmitPaidValuePounds: null,
@@ -430,7 +419,6 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          
           flags: null,
         },
         applicant1: {
@@ -452,7 +440,6 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          
         },
         respondent2: null,
         partAdmitPaidValuePounds: null,

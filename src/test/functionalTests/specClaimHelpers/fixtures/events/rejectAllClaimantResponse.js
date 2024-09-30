@@ -21,7 +21,6 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          
           flags: null,
         },
         applicant1: {
@@ -43,7 +42,6 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          
         },
         respondent2: null,
         partAdmitPaidValuePounds: null,
@@ -172,7 +170,6 @@ module.exports = {
           partyName: 'Sir John Doe',
           partyTypeDisplayValue: 'Individual',
           partyEmail: 'civilmoneyclaimsdemo@gmail.com',
-          
           flags: null,
         },
         applicant1: {
@@ -194,7 +191,6 @@ module.exports = {
             partyName: 'Test Inc',
             roleOnCase: 'Applicant 1',
           },
-          
         },
         respondent2: null,
         partAdmitPaidValuePounds: null,
