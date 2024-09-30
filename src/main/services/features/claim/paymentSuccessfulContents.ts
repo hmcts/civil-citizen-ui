@@ -22,6 +22,6 @@ export const getPaymentSuccessfulBodyContent = (claim : Claim, calculatedAmountI
 
 export const getPaymentSuccessfulButtonContent = (redirectUrl : string) => {
   return new PaymentSuccessfulSectionBuilder()
-    .addButton('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW', redirectUrl)
+    .addButton('COMMON.BUTTONS.GO_TO_ACCOUNT', redirectUrl)
     .build();
 };

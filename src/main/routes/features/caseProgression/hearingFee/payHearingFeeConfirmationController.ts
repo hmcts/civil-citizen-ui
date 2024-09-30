@@ -1,6 +1,6 @@
 import {NextFunction, RequestHandler, Router} from 'express';
 import {
-  DASHBOARD_CLAIMANT_URL, HEARING_FEE_CONFIRMATION_URL,
+  DASHBOARD_URL, HEARING_FEE_CONFIRMATION_URL,
 } from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
@@ -17,7 +17,7 @@ const getHearingFeeConfirmationContent = (claimId: string, lng: string) => {
   return new PageSectionBuilder()
     .addTitle('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.WHAT_HAPPENS_NEXT')
     .addParagraph('PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.YOU_WILL_RECEIVE')
-    .addButton(t('COMMON.BUTTONS.CLOSE_AND_RETURN_TO_CASE_OVERVIEW', {lng}), constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)).build();
+    .addButton(t('COMMON.BUTTONS.GO_TO_ACCOUNT', {lng}), constructResponseUrlWithIdParams(claimId, DASHBOARD_URL)).build();
 };
 
 payHearingFeeConfirmationController.get(HEARING_FEE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
