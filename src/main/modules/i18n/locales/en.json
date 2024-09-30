@@ -2727,7 +2727,6 @@
       },
       "DEBT_PAYMENT": {
         "DO_YOU_HAVE_EVIDENCE": "Do you have evidence of the debt payment?",
-        "YOU_WILL_NEED_EVIDENCE": "You’ll need to provide evidence that you’ve paid the debt.",
         "CONFIRMATION_OF_MONEY": "This should be confirmation from the person or business you owed money, which shows the:",
         "DATE_OF_PAYMENT": "date of payment",
         "AMOUNT_PAID": "amount paid",

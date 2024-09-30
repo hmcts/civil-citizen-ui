@@ -4,4 +4,9 @@ import { DebtPaymentEvidence } from 'models/generalApplication/debtPaymentEviden
 export class CertificateOfSatisfactionOrCanceled {
   defendantFinalPaymentDate?: DefendantFinalPaymentDate;
   debtPaymentEvidence?: DebtPaymentEvidence;
+
+  constructor(defendantFinalPaymentDate?: DefendantFinalPaymentDate, debtPaymentEvidence?: DebtPaymentEvidence) {
+    this.defendantFinalPaymentDate = defendantFinalPaymentDate;
+    this.debtPaymentEvidence = debtPaymentEvidence;
+  }
 }
