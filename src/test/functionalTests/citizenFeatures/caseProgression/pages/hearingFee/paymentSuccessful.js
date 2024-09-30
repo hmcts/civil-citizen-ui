@@ -29,7 +29,7 @@ class PaymentSuccessful {
     I.see ('Hearing fee');
     I.see ('Total amount');
     I.see ('£' + feeAmount);
-    I.see('Close and return to case overview');
+    I.see('Go to your account');
   }
 }
 
