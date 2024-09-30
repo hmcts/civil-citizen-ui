@@ -420,6 +420,8 @@ import respondAddInfoController
   from 'routes/features/generalApplication/additionalInfoUpload/respondController';
 import respondWrittenRepController
   from 'routes/features/generalApplication/writtenRepresentationDocs/respondToWrittenRepController';
+import debtPaymentEvidenceController
+  from 'routes/features/generalApplication/certOfSorC/debtPaymentEvidenceController';
 import askProofOfDebtPaymentGuidanceController
   from 'routes/features/generalApplication/certOfSorC/askProofOfDebtPaymentGuidanceController';
 import defendantFinalPaymentDateController from 'routes/features/generalApplication/certOfSorC/defendantFinalPaymentDateController';
@@ -764,4 +766,5 @@ export default [
   respondWrittenRepController,
   askProofOfDebtPaymentGuidanceController,
   defendantFinalPaymentDateController,
+  debtPaymentEvidenceController,
 ];
