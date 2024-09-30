@@ -27,7 +27,8 @@ export const getGaPaymentSuccessfulBodyContent = (claim: Claim, calculatedAmount
       .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_5', {lng: getLng(lng)})
       .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_6', {lng: getLng(lng)})
       .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_3', {lng: getLng(lng)})
-      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_4', {lng: getLng(lng)});
+      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_4', {lng: getLng(lng)})
+      .addParagraph('COMMON.IF_NECESSARY_DOCUMENTS', {lng: getLng(lng)});
   } else {
     if (withoutFee) {
       contentBuilder
@@ -39,7 +40,9 @@ export const getGaPaymentSuccessfulBodyContent = (claim: Claim, calculatedAmount
     contentBuilder
       .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_2', {lng: getLng(lng)})
       .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_3', {lng: getLng(lng)})
-      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_4', {lng: getLng(lng)});
+      .addParagraph('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_4', {lng: getLng(lng)})
+      .addParagraph('COMMON.IF_NECESSARY_DOCUMENTS', {lng: getLng(lng)});
+
     if (!withoutFee) {
       contentBuilder
         .addTitle('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.CHOOSEN_NOT_TO_INFORM_OTHER_PARTY', {lng: getLng(lng)})
