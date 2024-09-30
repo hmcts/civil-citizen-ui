@@ -9,7 +9,7 @@ const admitAll = 'full-admission';
 const bySetDate = 'bySetDate';
 const dontWantMoreTime = 'dontWantMoreTime';
 
-let claimRef;
+let claimRef = '1726492158198564';
 let caseData;
 let claimNumber;
 let securityCode;
@@ -31,6 +31,7 @@ Before(async ({api}) => {
 });
 
 Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @nightly', async ({api}) => {
+  // await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   console.log('Response with AdmitAll claimRef --> ' + claimRef);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
@@ -43,5 +44,5 @@ Scenario('Response with AdmitAll and Date to PayOn @citizenUI @admitAll @nightly
   // commenting until this is fixed https://tools.hmcts.net/jira/browse/CIV-9655
   // await api.enterBreathingSpace(config.applicantSolicitorUser);
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
-//   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayBySetDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
+  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.admitAllPayBySetDate, config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
 }).tag('@regression-cui-r1');

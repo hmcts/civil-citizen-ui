@@ -19,7 +19,7 @@ const buttons = {
 
 class LoginPage {
   async openCitizenLogin() {
-    await I.clearCookie();
+    // await I.clearCookie();
     await I.setCookie([...idamCookies, ...cuiCookies]);
     await I.amOnPage('/');
   }
