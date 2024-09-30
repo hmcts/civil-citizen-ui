@@ -42,7 +42,7 @@ class hearingFeeSteps {
     applyHelpWithFeesReferenceNumber.addHelpWithFeesReference();
     applyHelpWithFeesReferenceNumber.nextAction('Continue');
     applyHelpWithFeesConfirmation.verifyPageContent();
-    applyHelpWithFeesConfirmation.nextAction('Close and return to case overview');
+    applyHelpWithFeesConfirmation.nextAction('Go to your account');
     await waitForFinishedBusinessProcess();
   }
 
@@ -60,7 +60,7 @@ class hearingFeeSteps {
     await govPay.addValidCardDetails(feeAmount);
     govPay.confirmPayment();
     paymentSuccessful.verifyPageContent(feeAmount);
-    paymentSuccessful.nextAction('Close and return to case overview');
+    paymentSuccessful.nextAction('Go to your account');
   }
 }
 
