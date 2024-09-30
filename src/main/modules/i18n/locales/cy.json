@@ -4423,7 +4423,7 @@
       "THE_TRIAL_OR": "Bydd y treial yn mynd yn ei flaen fel y trefnwyd ar y dyddiad penodedig oni bai bod barnwr yn gwneud gorchymyn sy'n newid dyddiad y treial. Os ydych eisiau i ddyddiad y treial gael ei newid (neu unrhyw orchymyn arall i wneud yr achos yn barod ar gyfer treial) bydd angen i chi wneud cais i’r llys."
     },
     "HAS_ANYTHING_CHANGED": {
-      "PAGE_TITLE": "Has anything changed",
+      "PAGE_TITLE": "A oes unrhyw beth wedi newid",
       "FINALISE": "Cwblhau trefniadau eich treial",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "HAS_ANYTHING": "A oes unrhyw beth wedi newid i’r cymorth neu’r addasiadau rydych yn dymuno i’r llys a’r barnwr eu hystyried ar eich rhan neu i dyst a fydd yn rhoi tystiolaeth ar eich rhan?",
