@@ -1,0 +1,93 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../../macro/page-title.njk" import setPageTitle %}
+{% from "../../../macro/csrf.njk" import csrfProtection %}
+{% from "../../../macro/button.njk" import addButton %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, pageTitle) }}
+{% endblock %}
+
+{% block nestedContent %}
+
+          <span class="govuk-caption-l">{{ t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.CONFIRM_PAID') }}</span>
+          <h1 class="govuk-heading-l">{{ t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_HAVE_EVIDENCE') }}</h1>
+          <p class="govuk-body">
+            {{ t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.YOU_WILL_NEED_EVIDENCE')}}
+          </p>
+          <p class="govuk-body">
+            {{ t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.CONFIRMATION_OF_MONEY')}}
+          </p>
+          <ul class="govuk-list govuk-list--bullet">
+            <li>{{ t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DATE_OF_PAYMENT') }}</li>
+            <li>{{ t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.AMOUNT_PAID') }}</li>
+            <li>{{ t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.CASE_NUMBER') }}</li>
+          </ul>
+          <p class="govuk-body">
+            {{ t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.IF_CANNOT_PROVIDE_EVIDENCE')}}
+          </p>
+
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+            {% set details %}
+              {{ govukTextarea({
+                name: "provideDetails",
+                id: "provideDetails",
+                value: form.model.provideDetails,
+                classes:"govuk-!-width-three-quarters",
+                label: {
+                  text: t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.PROVIDE_DETAILS'),
+                  classes: "govuk-label--s"
+                },
+                errorMessage: {
+                  text: t(form.errorFor('provideDetails'))
+                } if form.hasFieldError('provideDetails')
+              }) }}
+            {% endset %}
+
+            {{ govukRadios({
+              idPrefix: "evidence",
+              name: "evidence",
+              value: form.model.evidence,
+              fieldset: {
+                legend: {
+                  text: t("PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE"),
+                  isPageHeading: false,
+                  classes: "govuk-fieldset__legend--m"
+                }
+              },
+              items: [
+                  {
+                    value: DebtPaymentOptions.UPLOAD_EVIDENCE,
+                    text: t(DebtPaymentOptions.UPLOAD_EVIDENCE)
+                  },
+                  {
+                    value: DebtPaymentOptions.MADE_FULL_PAYMENT,
+                    text: t(DebtPaymentOptions.MADE_FULL_PAYMENT)
+                  },
+                  {
+                    divider: t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.OR')
+                  },
+                  {
+                    value: DebtPaymentOptions.NO_EVIDENCE,
+                    text: t(DebtPaymentOptions.NO_EVIDENCE),
+                    hint: {
+                      text: t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.GIVE_DETAILS')
+                    },
+                    conditional: {
+                      html: details
+                    }
+                  }
+                ],
+                errorMessage: {
+                  text: t(form.errorFor('evidence'))
+                } if form.hasFieldError('evidence')
+            }) }}
+
+            <div class="form-group">
+              {{ addButton(t, 'CONTINUE',cancelUrl) }}
+            </div>
+          </form>
+{% endblock %}
