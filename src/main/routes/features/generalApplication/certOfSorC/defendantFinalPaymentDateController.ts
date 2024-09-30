@@ -16,7 +16,7 @@ import {
 const paymentDateViewPath = 'features/generalApplication/certOfSorC/final-payment-date';
 
 const defendantPaymentDateController = Router();
-const title = 'PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.TITLE';
+const title = 'COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT';
 
 defendantPaymentDateController
   .get(
