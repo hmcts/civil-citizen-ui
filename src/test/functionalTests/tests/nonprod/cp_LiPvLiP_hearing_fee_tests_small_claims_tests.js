@@ -3,6 +3,7 @@ const LoginSteps = require('../../commonFeatures/home/steps/login');
 const ResponseSteps = require('../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const HearingFeeSteps = require('../../citizenFeatures/caseProgression/steps/hearingFeeSteps');
 const DateUtilsComponent = require('../../citizenFeatures/caseProgression/util/DateUtilsComponent');
+const StringUtilsComponent = require('../../citizenFeatures/caseProgression/util/StringUtilsComponent');
 const {createAccount} = require('../../specClaimHelpers/api/idamHelper');
 const { isDashboardServiceToggleEnabled } = require('../../specClaimHelpers/api/testingSupport');
 const { verifyNotificationTitleAndContent, verifyTasklistLinkAndState } = require('../../specClaimHelpers/e2e/dashboardHelper');
@@ -12,7 +13,7 @@ const { viewHearings, payTheHearingFee } = require('../../specClaimHelpers/dashb
 const claimType = 'SmallClaims';
 const claimAmount = '£1,500';
 const feeAmount = '123';
-let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, hearingFeeDueDate, hearingDate;
+let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, hearingFeeDueDate, hearingDate, formattedCaseId;
 
 Feature('Case progression - Lip v Lip - Hearing Fee journey - Small Claims');
 
@@ -54,7 +55,8 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
       await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true, true, taskListItem.deadline);
       await I.click(notification.nextSteps2);
     }
-    await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, claimRef, claimAmount);
+    formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
+    await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, formattedCaseId, claimAmount);
     await api.waitForFinishedBusinessProcess();
     if (isDashboardServiceEnabled) {
       taskListItem = payTheHearingFee(hearingFeeDueDate);

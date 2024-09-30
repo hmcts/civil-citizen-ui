@@ -242,7 +242,7 @@ class CheckYourAnswers {
   }
 
   verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    // I.see(content.heading.caseNumber[language]+ ': ' + caseNumber);
+    I.see(content.heading.caseNumber[language]+ ': ' + caseNumber);
     I.see(content.heading.claimAmount[language]+ ': ' + claimAmount);
   }
 

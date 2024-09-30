@@ -357,7 +357,7 @@ module.exports = {
           {
             value: {
               expertOptionName: 'Name',
-              expertOptionExpertises: 'expertise',
+              expertOptionExpertises: 'Expertise',
               expertOptionUploadDate: '2023-04-01',
               createdDatetime: null,
               expertDocument: {
@@ -696,7 +696,7 @@ module.exports = {
           {
             value: {
               expertOptionName: 'Name',
-              expertOptionExpertises: 'expertise',
+              expertOptionExpertises: 'Expertise',
               expertOptionUploadDate: '2023-04-01',
               createdDatetime: null,
               expertDocument: {
