@@ -26,7 +26,7 @@ mockClaim.generalApplication.certificateOfSatisfactionOrCancellation = new Certi
 
 const mockDefendantFinalPaymentDate = new DefendantFinalPaymentDate('2024', '01', '01');
 
-describe('Certification of satisfaction or Canceled service', () => {
+describe('Certification of satisfaction or Cancellation service', () => {
   describe('get Certificate of satisfaction', () => {
     it('should return an empty model', async () => {
       //Given
