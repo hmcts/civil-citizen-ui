@@ -170,8 +170,10 @@ module.exports = {
     updateHWFNumber: 'UPDATE_HELP_WITH_FEE_NUMBER',
     partRemission: 'PARTIAL_REMISSION_HWF_GRANTED',
     fullRemission: 'FULL_REMISSION_HWF',
+    noRemission: 'NO_REMISSION',
     invalidHWFRef: 'INVALID_HWF_REFERENCE',
     moreInfoHWF: 'MORE_INFORMATION_HWF',
+    feePayOutcome: 'FEE_PAYMENT_OUTCOME',
   },
   defenceType: {
     admitAllPayImmediate: 'ADMIT_ALL_PAU_IMMEDIATE',

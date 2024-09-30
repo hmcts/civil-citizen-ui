@@ -39,7 +39,7 @@ class ApplyHelpWithFeesReferenceNumber {
   }
 
   verifyPageText() {
-    I.see('Do you have a help with fees reference number?', 'h3');
+    I.see('Do you have a help with fees reference number?', 'h2');
     I.see('Yes');
     I.see('No');
   }
