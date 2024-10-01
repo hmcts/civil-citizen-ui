@@ -6,7 +6,6 @@ import {
   GA_RESPONDENT_UPLOAD_DOCUMENT_URL,
   GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL,
   GA_ACCEPT_DEFENDANT_OFFER_URL,
-  GA_RESPONSE_VIEW_APPLICATION_URL,
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'models/AppRequest';
@@ -89,7 +88,7 @@ function getBackLinkUrl(claimId: string, applicationId: string, gaResponse: GaRe
     if (isClaimant) {
       return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_ACCEPT_DEFENDANT_OFFER_URL);
     } else {
-      return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONSE_VIEW_APPLICATION_URL);
+      return constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_AGREEMENT_URL);
     }
   }
   
