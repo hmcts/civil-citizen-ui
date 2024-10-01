@@ -3022,15 +3022,15 @@
       },
       "APPLICATION_HEARING_ARRANGEMENTS": {
         "HEARING_TYPE": {
-          "PERSON_AT_COURT": "In person at the court",
-          "TELEPHONE": "Telephone",
-          "VIDEO_CONFERENCE": "Video Conference"
+          "PERSON_AT_COURT": "Wyneb yn wyneb yn y llys",
+          "TELEPHONE": "Gwrandawiad dros y ffôn",
+          "VIDEO_CONFERENCE": "Cynhadledd fideo"
         },
-        "JUDGE_HEARING_PREFERRED_LOCATION": "If a judge requires the hearing to take place in person at the court, do you have a preferred location? (optional)",
-        "SELECT_A_LOCATION": "-- Select a location --",
+        "JUDGE_HEARING_PREFERRED_LOCATION": "Os bydd barnwr angen i’r gwrandawiad ddigwydd yn y llys, a oes yna leoliad llys sydd orau gennych? (dewisol)",
+        "SELECT_A_LOCATION": "-- Dewiswch leoliad --",
         "TITLE": "Trefniadau ar gyfer gwrandawiad y cais",
-        "WHAT_TYPE_OF_HEARING_PREFER": "What type of hearing would you prefer?",
-        "WHY_PREFER_HEARING_TYPE": "Why would you prefer this type of hearing?"
+        "WHAT_TYPE_OF_HEARING_PREFER": "Pa fath o wrandawiad fyddai’n well gennych?",
+        "WHY_PREFER_HEARING_TYPE": "Pam fyddai'n well gennych y math hwn o wrandawiad?"
       },
       "HEARING_CONTACT_DETAILS": {
         "PREFERRED_EMAIL_ADDRESS": "Cyfeiriad e-bost a ffafrir",
@@ -5081,7 +5081,7 @@
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "Mae arnoch angen dweud wrthym os yw’r partïon eraill wedi cytuno i’r cais hwn. Dewiswch opsiwn: Do neu Naddo",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Rhaid i setlo drwy gydsyniad gael ei gytuno arno gyda’r atebydd cyn gwneud y cais.",
-      "CHOOSE_HEARING_TYPE": "Choose your preferred hearing type",
+      "CHOOSE_HEARING_TYPE": "Dewiswch y math o wrandawiad a ffafrir gennych",
       "CLAIM_APPLICATION_COSTS_YES_NO_SELECTION": "Mae arnoch angen dweud wrthym os ydych eisiau gofyn am gael eich costau'n ôl. Dewiswch opsiwn: Ydw neu Nac ydw",
       "ENTER_ORDER_JUDGE": "Mae arnoch angen nodi’r gorchymyn rydych eisiau i’r barnwr ei wneud",
       "ENTER_REQUESTING_REASON": "Mae arnoch angen nodi eich rhesymau dros ofyn am y gorchymyn hwn",
@@ -5101,7 +5101,7 @@
       "UPLOAD_ONE_FILE": "You need to upload at least one file.",
       "WANT_TO_ADD_ANOTHER_APPLICATION": "Mae arnoch angen dweud wrthym os ydych eisiau ychwanegu cais arall. Dewiswch opsiwn: Ydw neu Nac ydw",
       "WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION": "Mae arnoch angen dweud wrthym os ydych eisiau uwchlwytho dogfennau i gefnogi eich cais. Dewiswch opsiwn: Ydw neu Nac ydw",
-      "WHY_PREFER_THIS_HEARING_TYPE": "You need to tell us why you would prefer this type of hearing",
+      "WHY_PREFER_THIS_HEARING_TYPE": "Mae angen i chi ddweud wrthym pam byddai’n well gennych y math hwn o wrandawiad",
       "RESPONDENT_WANT_TO_UPLOAD_DOC_YES_NO_SELECTION": "You need to tell us if you want to upload documents to support your response. Choose Yes or No.",
       "RESPONDENT_UPLOAD_OPTION": {
         "EMPTY_OPTION": "You need to either enter the information requested in the box or select Yes to upload documents to support your response.",
