@@ -77,6 +77,7 @@
       "POSTCODE": "Postcode",
       "TOWN_OR_CITY": "Town or city"
     },
+    "IF_NECESSARY_DOCUMENTS": "If necessary, all documents relating to this application, including any response from the court, will be translated. You will be notified when these are available.",
     "BUTTONS": {
       "ADD_ANOTHER_EVENT": "Add another event",
       "BACK": "Back",
@@ -3067,7 +3068,7 @@
         "PAGE_TITLE": "Provide more information to the court",
         "TITLE": "Provide more information to the court",
         "TEXT_INPUT": "Enter the information requested by the court",
-        "TEXT_INPUT_HINT": "Write in short sentences and paragraphs. Any text you enter will not be translated into Welsh.",
+        "TEXT_INPUT_HINT": "Write in short sentences and paragraphs.",
         "CONTENT_1": "You have the option of entering the information requested by the court or uploading documents containing the information requested.",
         "CONTENT_2_1": "If you're not sure what to write, refer to the ",
         "CONTENT_2_2": "court document",
@@ -3287,7 +3288,7 @@
               "PAYMENT_BY_PHONE_PARAGRAPH_1": "Make a payment by phone by calling us on 0300 123 7050. Quote your case reference number which is {{ claimId }}.",
               "PAYMENT_BY_PHONE_PARAGRAPH_2": "Lines are open from Monday to Friday, 8:30am to 5pm.",
               "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_1": "Before getting in touch ",
-              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "find out about call charges (opens in a new tab).",
+              "PAYMENT_BY_PHONE_PARAGRAPH_3_PART_2": "find out about call charges (opens in a new tab)",
               "RETURN_TO_CASE_OVERVIEW": "Close and return to case overview"
             },
             "SUCCESSFUL": {
@@ -3486,7 +3487,7 @@
       "WITNESS_STATEMENT_HINT": "A written statement of what your witness wants to tell the court",
       "WITNESS_SUMMARY": "Witness summary",
       "WITNESS_SUMMARY_HINT": "If you cannot get a written statement from your witness, you can write a summary of the evidence you would want to include in the witness statement. You must apply to the court to use a witness summary at the hearing. You must do this before the deadline. Use ",
-      "WITNESS_SUMMARY_HINT_URL": "form N244 'application notice'",
+      "WITNESS_SUMMARY_HINT_URL": "form N244 'application notice' (opens in a new tab)",
       "YOUR_STATEMENT": "Your statement",
       "YOUR_STATEMENT_HINT": "A written statement of what you want to tell the court"
     },
@@ -4380,6 +4381,7 @@
       "THE_TRIAL_OR": "The trial will go ahead as planned on the specified date unless a judge makes an order changing the date of the trial. If you want the date of the trial to be changed (or any other order to make the case ready for trial) you will need to make an application to the court."
     },
     "HAS_ANYTHING_CHANGED": {
+      "PAGE_TITLE": "Has anything changed",
       "FINALISE": "Finalise your trial arrangements",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "HAS_ANYTHING": "Has anything changed to the support or adjustments you wish the court and the judge to consider for you, or a witness who will give evidence on your behalf?",

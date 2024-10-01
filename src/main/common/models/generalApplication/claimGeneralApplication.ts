@@ -8,6 +8,6 @@ export class ClaimGeneralApplication {
 
 export class ClaimGeneralApplicationValue {
   caseLink: CaseLink;
-  generalAppSubmittedDateGAspec?: string;
+  generalAppSubmittedDateGAspec?: Date;
   parentClaimantIsApplicant?: YesNo;
 }
