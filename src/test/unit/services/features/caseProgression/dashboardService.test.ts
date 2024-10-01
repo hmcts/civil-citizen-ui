@@ -331,7 +331,7 @@ describe('dashboardService', () => {
         const notificationList: DashboardNotificationList = new DashboardNotificationList();
         const params: Map<string, object> = new Map<string, object>();
         params.set('orderDocument', new Object('http://dm-store:8080/documents/f1c7d590-8d3f-49c2-8ee7-6420ab711801/binary'));
-        const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params);
+        const dashboardNotification = new DashboardNotification('1234', '', '', '', '', '', undefined, params, undefined, undefined);
         notificationList.items = new Array(dashboardNotification);
         //When
         const documentId = extractOrderDocumentIdFromNotification(notificationList);
