@@ -1,7 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
-  DASHBOARD_CLAIMANT_URL, PAY_HEARING_FEE_SUCCESSFUL_URL,
+  DASHBOARD_URL, PAY_HEARING_FEE_SUCCESSFUL_URL,
 } from 'routes/urls';
 import {
   getPaymentSuccessfulBodyContent, getPaymentSuccessfulButtonContent,
@@ -34,7 +34,7 @@ async function renderView(res: Response, req:  AppRequest | Request, claimId: st
 paymentSuccessfulController.get(PAY_HEARING_FEE_SUCCESSFUL_URL, (async (req, res, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
+    const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_URL);
     const ccdClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     const calculatedAmountInPence = ccdClaim.caseProgressionHearing?.hearingFeeInformation?.hearingFee?.calculatedAmountInPence;
     await renderView(res, req, claimId, redirectUrl, calculatedAmountInPence);
