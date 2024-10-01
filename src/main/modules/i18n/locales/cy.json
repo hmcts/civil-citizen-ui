@@ -2786,7 +2786,7 @@
         "APPLICATION_HEARING": "As a judge usually requires a hearing before making a decision on an application, you'll likely receive a hearing notice with details about when the application hearing will take place.",
         "CLOSE_AND_RETURN": "Close and return to case details",
         "JUDGE_WILL_CONSIDER": "A judge will consider the application and your response.",
-        "NEXT_STEPS": "What happens next",
+        "NEXT_STEPS": "Beth fydd yn digwydd nesaf",
         "NOTIFICATION": "You'll receive a notification letting you know if an application hearing has been scheduled or if there are any other updates.",
         "REVIEW": "You can review the application and your response under 'View all applications' on the case dashboard.",
         "TITLE": "You've responded to the application"
@@ -2928,7 +2928,7 @@
         "WHAT_HAPPENS_NEXT_PARA_4": "If you've made an application to change a hearing date, the trial or hearing will go ahead as planned on the original date unless a judge makes an order changing the date of the hearing.",
         "WHAT_HAPPENS_NEXT_PARA_5": "The other parties will have 5 working days to respond to your application. If you have a hearing in the next 10 days, your application will be treated urgently.",
         "WHAT_HAPPENS_NEXT_PARA_6": "You may be required to attend a hearing so that the judge can consider your application with you and the other parties and decide what the next steps should be.",
-        "WHAT_HAPPENS_NEXT": "What happens next"
+        "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf"
       },
       "HEARING_SUPPORT": {
         "ALWAYS_ARRANGE": "Byddwn wastad yn trefnu dehonglydd iaith arwyddion. Dywedwch wrthym pa fath o iaith arwyddion rydych chi angen dehonglydd iaith arwyddion ar ei chyfer, trwy roi tic yn y blwch ‘Dehonglydd iaith arwyddion’ isod.",
@@ -2985,7 +2985,7 @@
       "UPLOAD_DIRECTIONS_ORDER_DOCUMENTS": {
         "CONFIRMATION_PAGE_TITLE": "You've uploaded additional documents",
         "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will review the additional documents that you've uploaded. You'll receive an update with their decision or next steps.",
-        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
         "COURT_DOCUMENT": "court document",
         "IF_NOT_SURE_END": "that sets out what the court has requested from you.",
         "IF_NOT_SURE_START": "If you're not sure what to upload, refer to the",
@@ -3012,7 +3012,7 @@
       "UPLOAD_MORE_INFO_DOCUMENTS": {
         "CONFIRMATION_PAGE_TITLE": "You've submitted the information",
         "CONFIRMATION_WHAT_HAPPENS_NEXT_MSG": "A judge will consider the information you've provided. You'll receive an update with their decision or next steps.",
-        "CONFIRMATION_WHAT_HAPPENS_NEXT": "What happens next",
+        "CONFIRMATION_WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
         "PAGE_TITLE": "Request for more information",
         "PAGE_TITLE_TO_UPLOAD": "Upload additional documents",
         "UPLOAD_DOC_CYA_TITLE": "Uploaded documents"
@@ -3100,14 +3100,14 @@
         "TO": "At"
       },
       "CONFIRMATION_PAGE": {
-        "APPLICATION_SAVE": "Your application has been saved, but you need to pay the application fee of £{{ applicationFee }}.",
-        "APPLY_HELP_WITH_FEES": "You'll have the option to apply for help with fees once you've clicked 'Pay application fee'.",
-        "CONFIRMATION_TEXT": "You need to pay the application fee to submit the application",
-        "PAGE_TITLE": "Application created",
-        "PAY_FEE_BUTTON": "Pay application fee",
-        "RETURN_CASE_DETAILS": "Close and return to case details",
-        "TITLE": "Application created",
-        "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge."
+        "APPLICATION_SAVE": "Mae eich cais wedi cael ei gadw, ond mae arnoch angen talu’r ffi gwneud cais o £{{ applicationFee }}.",
+        "APPLY_HELP_WITH_FEES": "Bydd gennych yr opsiwn i wneud cais am help i dalu ffioedd unwaith y byddwch wedi clicio ar 'Talu’r ffi gwneud cais'",
+        "CONFIRMATION_TEXT": "Rhaid i chi dalu'r ffi gwneud cais i gyflwyno’r cais",
+        "PAGE_TITLE": "Cais wedi’i greu",
+        "PAY_FEE_BUTTON": "Talu'r ffi gwneud cais",
+        "RETURN_CASE_DETAILS": "Cau a dychwelyd i fanylion yr achos",
+        "TITLE": "Cais wedi’i greu",
+        "UNTIL_PAY_FEE": "Hyd nes y byddwch yn talu'r ffi gwneud cais, ni fydd y cais yn cael ei anfon at y partïon eraill nac yn cael ei ystyried gan farnwr."
       },
       "APPLY_HELP_WITH_FEE": {
         "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
