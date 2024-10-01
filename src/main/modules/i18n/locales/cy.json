@@ -2732,9 +2732,9 @@
         "WANT_TO_APPLY_HWF_TITLE": "Pay additional application fee"
       },
       "PAYMENT_FOR_APPLICATION": {
-        "APPLICATION_FEE": "Application fee to pay:",
-        "TITLE": "Paying for your application",
-        "YOU_WILL_BE_ASKED": "You'll be asked to pay for your application once it's been submitted."
+        "APPLICATION_FEE": "Cais y ffi i’w thalu:",
+        "TITLE": "Talu am eich cais",
+        "YOU_WILL_BE_ASKED": "Gofynnir i chi dalu am eich cais unwaith y bydd wedi'i gyflwyno."
       },
       "ORDER_JUDGE": {
         "ADD_INFO_MORE_TIME": "Bydd arnoch angen ychwanegu gwybodaeth i’r blwch, fel beth rydych angen mwy o amser i’w wneud a nodi terfyn amser newydd.",
