@@ -163,6 +163,8 @@ export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnabl
 
 export const sortDashboardNotifications = (dashboardNotifications: DashboardNotificationList) => {
   dashboardNotifications.items.sort((notification1, notification2) => {
+    const notification1CreatedAt = notification1.createdAt || '1970-01-01T00:00:00';
+    const notification2CreatedAt = notification2.createdAt || '1970-01-01T00:00:00';
     if (notification1.deadline) {
       if (!notification2.deadline) {
         // Only notification 1 has a deadline
@@ -182,7 +184,7 @@ export const sortDashboardNotifications = (dashboardNotifications: DashboardNoti
         return -1;
       } else {
         // Both are for main claim, check which was created last
-        return -notification1.createdAt.localeCompare(notification2.createdAt);
+        return -notification1CreatedAt.localeCompare(notification2CreatedAt);
       }
     }
     if (notification2.isMainClaim) {
@@ -190,6 +192,6 @@ export const sortDashboardNotifications = (dashboardNotifications: DashboardNoti
       return 1;
     }
     // Both are GA notifications, check which was created last
-    return -notification1.createdAt.localeCompare(notification2.createdAt);
+    return -notification1CreatedAt.localeCompare(notification2CreatedAt);
   });
 };
