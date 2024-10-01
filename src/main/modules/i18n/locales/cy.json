@@ -2931,26 +2931,26 @@
         "WHAT_HAPPENS_NEXT": "What happens next"
       },
       "HEARING_SUPPORT": {
-        "ALWAYS_ARRANGE": "We'll always arrange a sign language interpreter. Tell us what type of sign language you need an interpreter for by ticking the 'Sign language interpreter' box below.",
-        "ARRANGING_OWN": "If you'll be arranging your own interpreter, you still need to tell us what language you'll be using by ticking the 'Language interpreter' box below.",
-        "DO_YOU_NEED": "Do you need any adjustments or support to attend a hearing (optional)?",
-        "FIND_OUT": "Find out how to",
-        "GET_INTERPRETER": "get an interpreter at a court or tribunal.",
-        "IF_YOU_NEED": "If you need a sign language or language interpreter",
-        "NEED_TO_ARRANGE": "You'll need to arrange your own language interpreter.",
-        "NOT_ABLE": "If you're not able to arrange your own interpreter, the court may be able to arrange one for you.",
-        "SELECT_ALL_THAT_APPLY": "Select all that apply",
+        "ALWAYS_ARRANGE": "Byddwn wastad yn trefnu dehonglydd iaith arwyddion. Dywedwch wrthym pa fath o iaith arwyddion rydych chi angen dehonglydd iaith arwyddion ar ei chyfer, trwy roi tic yn y blwch ‘Dehonglydd iaith arwyddion’ isod.",
+        "ARRANGING_OWN": "Os byddwch yn trefnu cyfieithydd ar y pryd eich hun, bydd dal angen i chi ddweud wrthym pa iaith byddwch yn ei defnyddio trwy roi tic yn y blwch ‘Cyfieithydd ar y pryd’ isod.",
+        "DO_YOU_NEED": "A oes arnoch angen unrhyw addasiadau neu gymorth i fynychu gwrandawiad (dewisol)?",
+        "FIND_OUT": "Canfod sut i",
+        "GET_INTERPRETER": "gael cyfieithydd ar y pryd mewn llys neu dribiwnlys.",
+        "IF_YOU_NEED": "Os oes arnoch angen dehonglydd iaith arwyddion neu gyfieithydd ar y pryd",
+        "NEED_TO_ARRANGE": "Bydd arnoch angen trefnu cyfieithydd ar y pryd eich hun.",
+        "NOT_ABLE": "Os nad ydych yn gallu trefnu cyfieithydd ar y pryd eich hun, efallai bydd y llys yn gallu trefnu un ar eich cyfer.",
+        "SELECT_ALL_THAT_APPLY": "Dewiswch bob un sy'n berthnasol",
         "SUPPORT": {
-          "HEARING_LOOP": "Hearing loop",
-          "LANGUAGE_INTERPRETER": "Language interpreter",
-          "OTHER": "Other support",
-          "SIGN_LANGUAGE_INTERPRETER": "Sign language interpreter",
-          "STEP_FREE_ACCESS": "Step-free access",
-          "WHAT_LANGUAGE": "What language do you need an interpreter for?",
-          "WHAT_SIGN_LANGUAGE": "What type of sign language do you need an interpreter for?",
-          "WHAT_OTHER": "What other support do you need?"
+          "HEARING_LOOP": "Dolen glyw",
+          "LANGUAGE_INTERPRETER": "Cyfieithydd ar y pryd",
+          "OTHER": "Cymorth arall",
+          "SIGN_LANGUAGE_INTERPRETER": "Dehonglydd iaith arwyddion",
+          "STEP_FREE_ACCESS": "Mynediad heb ddefnyddio grisiau",
+          "WHAT_LANGUAGE": "Pa fath o iaith ydych chi angen cyfieithydd ar y pryd ar ei chyfer?",
+          "WHAT_SIGN_LANGUAGE": "Pa fath o iaith arwyddion ydych chi angen dehonglydd ar ei chyfer?",
+          "WHAT_OTHER": "Pa gymorth arall sydd ei angen arnoch?"
         },
-        "TITLE": "Adjustments or support to attend a hearing"
+        "TITLE": "Addasiadau neu gymorth i fynychu gwrandawiad"
       },
       "CLAIM_APPLICATION_COST": {
         "ASK_YOUR_COSTS_BACK": "A ydych chi eisiau gofyn am gael eich costau yn ôl?",
@@ -5087,9 +5087,9 @@
       "ENTER_TELEPHONE_NUMBER": "Mae arnoch angen nodi rhif ffôn a ffafrir",
       "ENTER_VALID_EMAIL": "Mae arnoch angen nodi cyfeiriad e-bost dilys",
       "EXPLAIN_DO_NOT_WANT_COURT": "Rhaid i chi esbonio pam nad ydych eisiau i’r llys hysbysu’r partïon eraill.",
-      "MISSING_LANGUAGE": "You need to tell us what language you need an interpreter for.",
-      "MISSING_OTHER": "You need to tell us what other type of support you need.",
-      "MISSING_SIGN_LANGUAGE": "You need to tell us what type of sign language you need an interpreter for.",
+      "MISSING_LANGUAGE": "Mae arnoch angen dweud wrthym pa iaith rydych angen cyfieithydd ar y pryd ar ei chyfer.",
+      "MISSING_OTHER": "Mae arnoch angen dweud wrthym pa fath arall o gymorth sydd ei angen arnoch.",
+      "MISSING_SIGN_LANGUAGE": "Mae arnoch angen dweud wrthym pa fath o iaith arwyddion rydych angen dehonglydd ar ei chyfer.",
       "NEED_TO_TELL": "Mae arnoch angen dweud wrthym os dylent hysbysu'r partïon eraill. Dewiswch opsiwn: Dylai neu Na ddylai",
       "RESPONDENT_AGREEMENT": {
         "NEED_TO_TELL": "You need to tell us if you agree that the court should make the order requested by the other party. Choose option Yes or No",
