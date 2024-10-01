@@ -176,7 +176,7 @@ describe('Notification Redirect Controller - Get', () => {
       //then
       .expect((res: Response) => {
         expect(res.status).toBe(302);
-        expect(res.text).toBe('Found. Redirecting to /case/123/view-documents/1234');
+        expect(res.text).toBe('Found. Redirecting to /case/1645882162449409/view-documents/1234');
       });
   });
 

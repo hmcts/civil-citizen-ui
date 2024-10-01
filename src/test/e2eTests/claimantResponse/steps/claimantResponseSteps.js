@@ -243,6 +243,7 @@ class ClaimantResponseSteps {
     I.seeInCurrentUrl(`/case/${caseId}/claimant-response/sign-settlement-agreement`);
     if (option) {
       this.verifySignTheSettlementAgreementForFullAdmit(option);
+
     }
     I.waitForElement(paths.options.ssaSigned);
     I.checkOption(paths.options.ssaSigned);

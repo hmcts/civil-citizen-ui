@@ -7,7 +7,7 @@ let language = 'en';
 const content = {
   button: {
     caseDetails: {
-      en: 'Close and return to case overview',
+      en: 'Go to your account',
       cy: 'Cau a dychwelyd at y trosolwg o’r achos',
     },
   },
