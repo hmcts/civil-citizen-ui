@@ -1,11 +1,12 @@
 {
-  "id": 1777777777777788,
+  "id": "1777777777777788someID",
   "jurisdiction": "CIVIL",
   "state": "AWAITING_APPLICANT_INTENTION",
   "case_type_id": "CIVIL",
   "created_date": "2024-08-02T14:30:34",
   "last_modified": "2024-08-02T14:41:12",
   "case_data": {
+    "id": 1777777777777788,
     "respondent1ClaimResponseTypeForSpec": "PART_ADMISSION",
     "respondent1ClaimResponseDocumentSpec": {
       "documentSize": 0

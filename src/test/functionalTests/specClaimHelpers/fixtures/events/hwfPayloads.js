@@ -55,6 +55,42 @@ module.exports = {
     };
   },
 
+  noRemission: () => {
+    return {
+      event: 'NO_REMISSION_HWF',
+      caseData: {
+        'hwfFeeType': 'CLAIMISSUED',
+        'helpWithFees': {
+          'helpWithFee': 'Yes',
+          'helpWithFeesReferenceNumber': 'HWF-345-908',
+        },
+        'claimIssuedHwfDetails': {
+          'hwfCaseEvent': 'NO_REMISSION_HWF',
+          'remissionAmount': '0',
+          'noRemissionDetails': 'test',
+          'outstandingFeeInPounds': '455.00',
+          'noRemissionDetailsSummary': 'NOT_QUALIFY_FEE_ASSISTANCE',
+        },
+      },
+    };
+  },
+
+  feePayOutcome: () => {
+    return {
+      event: 'FEE_PAYMENT_OUTCOME',
+      caseData: {
+        'hwfFeeType': 'CLAIMISSUED',
+        'helpWithFees': {
+          'helpWithFee': 'Yes',
+          'helpWithFeesReferenceNumber': 'HWF-345-908',
+        },
+        'hwfNumberAvailable': 'No',
+        'hwfFullRemissionGrantedForClaimIssue': 'No',
+        'claimIssuedHwfDetails': null,
+      },
+    };
+  },
+
   moreInfoHWF: () => {
     return {
       event: 'MORE_INFORMATION_HWF',

@@ -4,7 +4,9 @@
     "local>hmcts/.github:renovate-config"
   ],
   "labels": [
-    "dependencies"
+    "dependencies",
+    "fulldeploy",
+    "pr-values:elasticsearch"
   ],
   "helmv3": {
     "bumpVersion": "patch"
@@ -19,7 +21,8 @@
       ]
     }
   ],
-  "schedule": ["after 9pm on sunday"],
+  "automergeSchedule": ["after 8am and before 10am every weekday"],
+  "schedule": ["after 8am and before 10am every weekday"],
   "prConcurrentLimit": 10,
   "rebaseWhen": "conflicted"
 }
