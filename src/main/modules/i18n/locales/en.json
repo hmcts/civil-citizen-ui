@@ -1,6 +1,7 @@
 {
   "COMMON": {
     "HOME": "Home",
+    "HOME_CARM": "Home",
     "UPLOAD_DATE": "Uploaded [{{ uploadDate }}]",
     "UPLOAD_FILE": "Upload file",
     "UPLOAD_FILE_LABEL":"Upload a file",
@@ -15,6 +16,7 @@
     "UNAVAILABLE_DATES": "Dates unavailable",
     "CASE_REFERENCE": "Case reference: {{ claimId }}",
     "CASE_NUMBER_PARAM": "Case number: {{ claimId }}",
+    "CASE_NUMBER_PARAM_CARM": "Case number: {{ claimId }}",
     "ACCOUNT_TYPE": "Type of account",
     "ADDRESS": "Address",
     "ANNUAL_TURNOVER": "Annual Turnover",
