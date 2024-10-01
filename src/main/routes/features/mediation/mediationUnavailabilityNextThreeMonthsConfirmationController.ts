@@ -29,7 +29,7 @@ const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request
     yes : 'COMMON.VARIATION_7.YES',
     no: 'COMMON.VARIATION_7.NO',
   };
-  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, pageHintText, variation});
+  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, pageHintText, variation, isCarm: true});
 };
 
 mediationUnavailabilityNextThreeMonthsConfirmationController.get(MEDIATION_NEXT_3_MONTHS_URL, (async (req, res, next: NextFunction) => {

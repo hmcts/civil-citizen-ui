@@ -28,7 +28,7 @@ const renderView = (form: GenericForm<GenericYesNo>, res: Response, req: Request
     no: 'COMMON.VARIATION_6.NO',
   };
 
-  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, variation});
+  res.render(emailMediationConfirmationViewPath, {form, pageTitle, pageText, variation, isCarm: true});
 };
 
 const getPartyPhone = async (redisKey: string, isClaimantResponse: boolean): Promise<string> => {
