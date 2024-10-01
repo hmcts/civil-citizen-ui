@@ -78,7 +78,7 @@ describe('Trial Arrangements check answers - On GET', () => {
       .expect((res: { status: unknown; text: unknown; }) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Gwiriwch eich atebion');
-        expect(res.text).toContain('Cyfeirnod yr achos: 1692 7957 9336 1508');
+        expect(res.text).toContain('Rhif yr achos: 1692 7957 9336 1508');
         expect(res.text).toContain('Swm yr hawliad:');
       });
     const dom = new JSDOM(response.text);
