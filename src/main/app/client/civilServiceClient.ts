@@ -503,7 +503,7 @@ export class CivilServiceClient {
     const config = this.getConfig(req);
     const response = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
     let dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
-
+    dashboardNotificationItems.forEach(notification => notification.isMainClaim = true);
     dashboardNotificationItems = this.filterDashboardNotificationItems(dashboardNotificationItems, req);
     return new DashboardNotificationList(dashboardNotificationItems);
   }
@@ -515,6 +515,7 @@ export class CivilServiceClient {
     const dashboardNotificationItems = plainToInstance(Map<string, DashboardNotification[]>, response.data as Map<string, DashboardNotification[]>);
     const gaNotifications = new Map<string, DashboardNotificationList>;
     dashboardNotificationItems.forEach((value, key, map) => {
+      value.forEach(notification => notification.isMainClaim = false);
       const dashboardNotificationItems = this.filterDashboardNotificationItems(value, req);
       gaNotifications.set(key, new DashboardNotificationList(dashboardNotificationItems));
     });

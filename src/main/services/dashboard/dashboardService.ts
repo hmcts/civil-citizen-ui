@@ -106,6 +106,7 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
       });
       dashboardNotifications.items.push(...(value?.items ?? []));
     });
+    sortDashboardNotifications(dashboardNotifications);
     return dashboardNotifications;
   } else {
     throw new Error('Notifications not found...');
@@ -158,4 +159,37 @@ export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnabl
       url: applicationNoticeUrl,
     };
   }
+};
+
+export const sortDashboardNotifications = (dashboardNotifications: DashboardNotificationList) => {
+  dashboardNotifications.items.sort((notification1, notification2) => {
+    if (notification1.deadline) {
+      if (!notification2.deadline) {
+        // Only notification 1 has a deadline
+        return -1;
+      } else {
+        // Both have deadlines, check for earliest
+        return notification1.deadline.localeCompare(notification2.deadline);
+      }
+    }
+    if (notification2.deadline) {
+      // Only notification 2 has a deadline
+      return 1;
+    }
+    if (notification1.isMainClaim) {
+      if (!notification2.isMainClaim) {
+        // Only notification 1 is for main claim
+        return -1;
+      } else {
+        // Both are for main claim, check which was created last
+        return -notification1.createdAt.localeCompare(notification2.createdAt);
+      }
+    }
+    if (notification2.isMainClaim) {
+      // Only notification 2 is for main claim
+      return 1;
+    }
+    // Both are GA notifications, check which was created last
+    return -notification1.createdAt.localeCompare(notification2.createdAt);
+  });
 };
