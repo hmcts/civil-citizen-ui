@@ -36,7 +36,7 @@ const buttons = {
 };
 
 const newDate = new Date(new Date().setMonth(new Date().getMonth()+3));
-const month = newDate.getMonth();
+const month = newDate.getMonth() + 1;
 const year = newDate.getFullYear();
 class AvailabilityDates {
 
