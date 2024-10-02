@@ -116,7 +116,7 @@ function setMockHearingOrderDocuments(): CcdHearingDocument[] {
         'document_filename': 'Application_Hearing_order_2024-08-02 12:15:34.pdf',
         'document_binary_url': 'http://dm-store:8080/documents/136767cf-033a-4fb1-9222-48bc7decf831/binary',
       },
-      'documentName': 'Application_Hearing_Notice_2024-08-02 12:15:34.pdf',
+      'documentName': 'Application_Hearing_order_2024-08-02 12:15:34.pdf',
       'documentType': DocumentType.HEARING_ORDER,
       'createdDatetime':  new Date('2024-08-01'),
     },
@@ -427,8 +427,8 @@ describe('View Application service', () => {
       expect(result.documents[2]).toEqual(expectedDocument1);
       const expectedDocument2 = new DocumentInformation(
         'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.GENERAL_ORDER',
-        '2 August 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/b4b50368-84dc-4c05-b9e7-7d01bd6a9119', 'General_order_for_application_2024-08-02 11:59:58.pdf'),
+        '1 August 2024',
+        new DocumentLinkInformation('/case/1718105701451856/view-documents/b4b50368-84dc-4c05-b9e7-7d01bd6a9119', 'General_order_for_application_2024-08-01 11:59:58.pdf'),
       );
       expect(result.documents[1]).toEqual(expectedDocument2);
     });
