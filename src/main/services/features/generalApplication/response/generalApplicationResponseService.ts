@@ -1,4 +1,8 @@
-import {ApplicationTypeOption, selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {
+  ApplicationTypeOption,
+  ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
+} from 'common/models/generalApplication/applicationType';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
 import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
@@ -46,7 +50,7 @@ export function getRespondToApplicationCaption(generalAppTypes: ApplicationTypeO
   if (generalAppTypes?.length > 1) {
     return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO_MULTIPLE', { lng: getLng(lng) });
   }
-  const applicationType = t(selectedApplicationType[getLast(generalAppTypes)], {lng: getLng(lng)}).toLowerCase();
+  const applicationType = t(getApplicationTypeOptionByTypeAndDescription(getLast(generalAppTypes),ApplicationTypeOptionSelection.BY_APPLICATION_TYPE ), {lng: getLng(lng)}).toLowerCase();
   return t('PAGES.GENERAL_APPLICATION.AGREE_TO_ORDER.RESPOND_TO',
     { lng: getLng(lng), interpolation: { escapeValue: false }, applicationType});
 }
