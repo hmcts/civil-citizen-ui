@@ -10,9 +10,12 @@ import { GenericYesNo } from 'common/form/models/genericYesNo';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { getCancelUrl, getLast, saveAgreementFromOtherParty, validateNoConsentOption} from 'services/features/generalApplication/generalApplicationService';
-import {selectedApplicationType} from 'common/models/generalApplication/applicationType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {agreementFromOtherPartyGuard} from 'routes/guards/generalApplication/agreementFromOtherPartyGuard';
+import {
+  ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
+} from 'models/generalApplication/applicationType';
 
 const agreementFromOtherPartyController = Router();
 const viewPath = 'features/generalApplication/agreement-from-other-party';
@@ -23,7 +26,7 @@ agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreeme
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(redisKey, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
-    const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
+    const applicationType = getApplicationTypeOptionByTypeAndDescription(getLast(claim.generalApplication?.applicationTypes)?.option,ApplicationTypeOptionSelection.BY_APPLICATION_TYPE );
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.agreementFromOtherParty));
 
     res.render(viewPath, {
@@ -45,7 +48,7 @@ agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, agreem
     const claim = await getClaimById(redisKey, req, true);
     const cancelUrl = await getCancelUrl(req.params.id, claim);
     const applicationTypeOption = getLast(claim.generalApplication?.applicationTypes)?.option;
-    const applicationType = selectedApplicationType[applicationTypeOption];
+    const applicationType = getApplicationTypeOptionByTypeAndDescription(applicationTypeOption, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION'));
 
     form.validateSync();

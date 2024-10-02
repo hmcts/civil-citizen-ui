@@ -6,7 +6,11 @@ import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { app } from '../../../../../../main/app';
-import {GA_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
+import {
+  GA_CHECK_YOUR_ANSWERS_COSC_URL, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL,
+  GA_UPLOAD_DOCUMENTS_COSC_URL,
+  GA_UPLOAD_DOCUMENTS_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
+} from 'routes/urls';
 import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { CaseDocument } from 'common/models/document/caseDocument';
@@ -57,15 +61,29 @@ describe('General Application - upload evidence docs to support application', ()
   });
 
   describe('on GET', () => {
-    it('should return upload document page', async () => {
-      await request(app)
-        .get(GA_UPLOAD_DOCUMENTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.TITLE'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT'));
-        });
-    });
+    it.each`
+    requestUrl                        | expectedBackUrl                       | selectedApplicationType                         | expectedText
+    ${GA_UPLOAD_DOCUMENTS_URL}        | ${GA_WANT_TO_UPLOAD_DOCUMENTS_URL}    | ${ApplicationTypeOption.SET_ASIDE_JUDGEMENT}    | ${'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT'}
+    ${GA_UPLOAD_DOCUMENTS_COSC_URL}   | ${GA_DEBT_PAYMENT_EVIDENCE_COSC_URL}  | ${ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID}  | ${'Confirm you&#39;ve paid a judgment debt'}
+    `('should return upload document page for $requestUrl with corresponding back url ($expectedUrl)'
+      , async ({requestUrl, expectedBackUrl, selectedApplicationType, expectedText}) => {
+        //Given
+        claim = new Claim();
+        claim.id ='id';
+        claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.applicationTypes = [new ApplicationType(selectedApplicationType)];
+        mockDataFromStore.mockResolvedValue(claim);
+        //When
+        await request(app)
+          .get(requestUrl)
+          //Then
+          .expect((res) => {
+            expect(res.status).toBe(200);
+            expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.TITLE'));
+            expect(res.text).toContain(t(expectedText));
+            expect(res.text).toContain(expectedBackUrl);
+          });
+      });
 
     it('should remove the requested file', async () => {
       const uploadDocument = new UploadGAFiles();
@@ -170,10 +188,13 @@ describe('General Application - upload evidence docs to support application', ()
         });
     });
 
-    it('should save the file and display', async () => {
+    it.each([
+      GA_UPLOAD_DOCUMENTS_URL,
+      GA_UPLOAD_DOCUMENTS_COSC_URL,
+    ])('should save the file and display', async (url) => {
       jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
       await request(app)
-        .post(GA_UPLOAD_DOCUMENTS_URL)
+        .post(url)
         .field('action', 'uploadButton')
         .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
         .expect((res) => {
@@ -181,6 +202,7 @@ describe('General Application - upload evidence docs to support application', ()
           expect(res.text).toContain(GA_UPLOAD_DOCUMENTS_URL);
         });
     });
+
     it('should throw the error if user click continue button without uploading a file', async () => {
       await request(app)
         .post(GA_UPLOAD_DOCUMENTS_URL)
@@ -207,5 +229,58 @@ describe('General Application - upload evidence docs to support application', ()
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
+
+    it.each`
+    selectedApplicationType                                                     | expectedUrl
+    ${ApplicationTypeOption.ADJOURN_HEARING}                                    | ${GA_UPLOAD_DOCUMENTS_URL}
+    ${ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID}                              | ${GA_UPLOAD_DOCUMENTS_COSC_URL}
+    `('should redirect to current page ($expectedUrl) when application type is $selectedApplicationType',
+      async ({ selectedApplicationType, expectedUrl}) => {
+        //Given
+        claim = new Claim();
+        claim.id ='id';
+        claim.generalApplication = new GeneralApplication();
+        claim.generalApplication.applicationTypes = [new ApplicationType(selectedApplicationType)];
+        mockDataFromStore.mockResolvedValue(claim);
+        //When
+        jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
+        await request(app)
+          .post(GA_UPLOAD_DOCUMENTS_COSC_URL.replace(':id', '1111'))
+          .field('action', 'uploadButton')
+          .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
+          //Then
+          .expect((res: { status: unknown, header: { location: unknown }, text: unknown; }) => {
+            expect(res.status).toBe(302);
+            expect(res.header.location).toEqual(expectedUrl.replace(':id', '1111'));
+          });
+      });
+
+    it.each`
+    selectedApplicationType                                                     | expectedUrl
+    ${ApplicationTypeOption.ADJOURN_HEARING}                                    | ${GA_HEARING_ARRANGEMENTS_GUIDANCE_URL}
+    ${ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID}                              | ${GA_CHECK_YOUR_ANSWERS_COSC_URL}
+    `('should redirect to next page ($expectedUrl) when application type is $selectedApplicationType', async ({ selectedApplicationType, expectedUrl}) => {
+      //Given
+      claim = new Claim();
+      claim.id ='id';
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(selectedApplicationType)];
+      mockDataFromStore.mockResolvedValue(claim);
+      //When
+      jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
+      await request(app)
+        .post(GA_UPLOAD_DOCUMENTS_COSC_URL.replace(':id', '1111'))
+        .field('action', 'uploadButton')
+        .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype });
+      await request(app)
+        .post(GA_UPLOAD_DOCUMENTS_COSC_URL.replace(':id', '1111'))
+        .field('action', 'submit')
+        //Then
+        .expect((res: { status: unknown, header: { location: unknown }, text: unknown; }) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(expectedUrl.replace(':id', '1111'));
+        });
+    });
+
   });
 });
