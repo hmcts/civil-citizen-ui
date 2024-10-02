@@ -2810,10 +2810,10 @@
         "TITLE": "You've responded to the application"
       },
       "SELECTED_APPLICATION_TYPE": {
-        "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt",
         "CANCEL_JUDGMENT": "Roi dyfarniad o’r naill du (ei ddileu)",
         "CHANGE_CLAIM": "Gwneud newid i’ch hawliad neu’r amddiffyniad rydych wedi’i gyflwyno",
         "CHANGE_HEARING": "Newid dyddiad gwrandawiad",
+        "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt",
         "IMPOSE_SANCTION": "Y llys i orfodi sancsiwn ar y partïon eraill oni bai eu bod yn cyflawni gweithred benodol",
         "MORE_TIME": "Mwy o amser i wneud yr hyn sy’n ofynnol gan orchymyn llys",
         "NOT_ON_LIST": "Y llys i wneud rhywbeth nad yw wedi’i gynnwys yn y rhestr hon",
