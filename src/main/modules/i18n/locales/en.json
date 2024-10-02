@@ -70,6 +70,7 @@
     "YEARS": "Years",
     "YES": "Yes",
     "OPENS_IN_NEW_TAB": "(opens in a new tab)",
+    "ASK_FOR_PROOF_OF_DEBT_PAYMENT": "Confirm you've paid a judgment debt",
     "ADDRESS_FORM": {
       "ADDRESS_CHANGES_SHARED": "Any changes will be shared with the claimant when you submit your response.",
       "BUILDING_AND_STREET": "Building and street",
@@ -2646,6 +2647,7 @@
         "MAY_NOT_AGREE": "The court may not agree to change the hearing, even if both parties have agreed.",
         "OTHER": "the court to do something else",
         "RELIEF_FROM_SANCTIONS": "ask for relief from a penalty",
+        "CONFIRM_YOU_PAID_CCJ_DEBT": "confirm you've paid a judgment (CCJ) debt",
         "SET_ASIDE_JUDGEMENT": "set aside (remove) a judgment",
         "SETTLE_BY_CONSENT": "the court to make an order settling the claim by consent",
         "STRIKE_OUT": "the court to strike out all or part of the other parties’ case",
@@ -2722,6 +2724,22 @@
           "WHEN_SATISFIED": "When you're satisfied that your answers are correct, you should tick the box below and write your name to \"sign\" this statement of truth."
         },
         "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
+      },
+      "DEBT_PAYMENT": {
+        "DO_YOU_HAVE_EVIDENCE": "Do you have evidence of the debt payment?",
+        "YOU_WILL_NEED_EVIDENCE": "You’ll need to provide evidence that you’ve paid the debt.",
+        "CONFIRMATION_OF_MONEY": "This should be confirmation from the person or business you owed money, which shows the:",
+        "DATE_OF_PAYMENT": "date of payment",
+        "AMOUNT_PAID": "amount paid",
+        "CASE_NUMBER": "case number",
+        "IF_CANNOT_PROVIDE_EVIDENCE": "If you cannot provide evidence, you can explain that below. The court will ask the person or business you owed money if they’ve been paid. If they do not respond within a month, the public register will be updated and a certificate issued.",
+        "DO_YOU_WANT_PROVIDE_EVIDENCE": "Do you want to provide evidence of the debt payment?",
+        "UPLOAD_EVIDENCE": "I want to upload evidence that this debt has been paid in full",
+        "MADE_FULL_PAYMENT": "I made full payment to the court",
+        "NO_EVIDENCE": "I am unable to provide evidence of full payment",
+        "GIVE_DETAILS": "Give details below of what you have done to obtain evidence and why you’re not able to provide it",
+        "PROVIDE_DETAILS": "Provide details",
+        "OR": "or"
       },
       "PAY_ADDITIONAL_FEE": {
         "HEADING": "Additional application fee",
@@ -2800,7 +2818,8 @@
         "SETTLING": "Court to make an order settling the claim by consent",
         "STRIKE_OUT": "Court to strike out all or part of the other parties' case without a trial",
         "SUMMARY_JUDGMENT": "Court to make a summary judgment on a case",
-        "VARY_JUDGMENT": "Vary a judgment"
+        "VARY_JUDGMENT": "Vary a judgment",
+        "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt"
       },
       "SELECT_TYPE": {
         "ALL_APPLICATIONS": "All applications",
@@ -2838,7 +2857,9 @@
         "SELECT_APPLICATION": "Select the application you want and click continue.",
         "TITLE": "Select application",
         "WHEN_YOU_REQUEST": "When you request a change to your case, or contact the court to take a specific action, this is known as making an 'application' to the court for an order.",
-        "ASK_MORE_TIME_DESCRIPTION": "For example, asking for the deadline for uploading documents before a trial or hearing to be extended. You'll need to provide a valid reason for not meeting the original deadline. This application can only be made before the original deadline has passed. This is also known as an application to extend time.  Instead of making an application, you can get written agreement from the other parties for more time to do what's required by the court. To do this, the time extension you request must be less than 28 days and should not affect a hearing date."
+        "ASK_MORE_TIME_DESCRIPTION": "For example, asking for the deadline for uploading documents before a trial or hearing to be extended. You'll need to provide a valid reason for not meeting the original deadline. This application can only be made before the original deadline has passed. This is also known as an application to extend time.  Instead of making an application, you can get written agreement from the other parties for more time to do what's required by the court. To do this, the time extension you request must be less than 28 days and should not affect a hearing date.",
+        "CONFIRM_YOU_PAID": "Confirm you've paid a judgment (CCJ) debt",
+        "CONFIRM_YOU_PAID_DESCRIPTION": "If you've paid the debt from a county court judgment (CCJ) in full, you can ask the court for proof of payment to share with banks, lenders and credit reference agencies. This is called requesting a certificate of cancellation or satisfaction."
       },
       "SUMMARY": {
         "APP_REQUESTED": "An application is a request for a change to the case.",
@@ -3102,7 +3123,10 @@
         "PAY_FEE_BUTTON": "Pay application fee",
         "RETURN_CASE_DETAILS": "Close and return to case details",
         "TITLE": "Application created",
-        "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge."
+        "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge.",
+        "COSC_PAY_FEE": "Pay the fee",
+        "COSC_APPLICATION_SUBMITTED": "Once your application has been submitted, the court will ask the person or business you owed money to confirm they've been paid. If they agree or do not respond within a month then the public register will be updated and a certificate issued.",
+        "COSC_APPLICATION_SUBMITTED_NEXT": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge. Any further updates will be by post."
       },
       "APPLY_HELP_WITH_FEE": {
         "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
@@ -3175,6 +3199,32 @@
         "UPLOAD_DOCUMENTS_1": "You can also ",
         "UPLOAD_DOCUMENTS_2": "upload additional documents",
         "UPLOAD_DOCUMENTS_3": " if you need to."
+      },
+      "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
+        "PARA_1": "If you've paid the debt from a county court judgment (CCJ), you can ask the court for proof of payment to share with banks and credit reference agencies. This is also known as requesting a certificate of cancellation or satisfaction.",
+        "PARA_2": "The court fee for this is £{{ applicationFee }}. This fee will need to be paid once you've submitted your request. Find out if you can get ",
+        "HELP_WITH_FEE": "help with fees.",
+        "PARA_TITLE_1": "If you paid within a month of the judgment",
+        "PARA_3": "A certificate of cancellation can be requested if you have evidence that you paid the debt within one month of the date of judgment. This means the debt will be removed from the public register.",
+        "PARA_TITLE_2": "If you paid after one month from the judgment",
+        "PARA_4": "A certificate of satisfaction can be requested if the debt is paid after one month. The entry will remain on the public register for 6 years but will be marked 'satisfied'.",
+        "PARA_TITLE_3": "What evidence is needed?",
+        "PARA_5": "You must provide evidence that the debt has been paid in full. This should be confirmation from the person or business you owned money, which shows the:",
+        "DATE_OF_PAYMENT": "date of payment",
+        "AMOUNT_PAID": "amount paid",
+        "CASE_NUMBER": "case number",
+        "PARA_TITLE_4": "Agreement from the person or business owed money",
+        "PARA_6": "Once you've made an application, the court will ask the person or business you owed money if they've been paid. If they don't respond within a month then the public register will be updated and a certificate issued.",
+        "PARA_7": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge.",
+        "PARA_TITLE_5": "Do you need to update your details?",
+        "PARA_8": "If you need to update your details from the judgment, you will need to ",
+        "COMPLETE_FORM_N443": "complete a form N443."
+      },
+      "FINAL_DEFENDANT_PAYMENT_DATE": {
+        "TITLE": "When was the final payment?",
+        "PARAGRAPH_TEXT_1" : "We need to know this to cancel the debt if you paid within one month or show",
+        "PARAGRAPH_TEXT_2" : "it as satisfied if you paid after one month.",
+        "FORM_HEADER_1" : "Enter the date of the final payment"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -4609,6 +4659,8 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "UNABLE_TO_PROVIDE_EVIDENCE": "Add details of why you're not able to provide evidence",
+    "SELECT_EVIDENCE_DEBT_PAYMENT": "Select how you want to provide evidence of the debt payment",
     "SUBJECT_TO_FRC": "Indicate if the claim is subject to the Fixed Recoverable Costs Regime",
     "FRC_BAND_AGREED": "Indicate if the complexity band has been agreed with the other parties",
     "CHOOSE_COMPLEXITY_BAND": "Indicate which complexity band you believe this claim falls into",
@@ -5057,6 +5109,7 @@
     "VALID_REAL_MONTH": "Month of Date must be a valid month",
     "VALID_REAL_YEAR": "Year of Date must be a valid year",
     "VALID_DATE_NOT_FUTURE": "Date of document must be today or in the past",
+    "VALID_DATE_NOT_IN_THE_FUTURE": "Date of the final payment must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
     "VALID_DATE_WITNESS_SUMMARY": "Date summary was written is required",
     "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
@@ -5072,6 +5125,7 @@
       "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
+      "ADDITIONAL_APPLICATION_CCJ_DEBT":  "You cannot apply to confirm you've paid a county court (CCJ) debt as there is no active judgment",
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Settle by consent must have been agreed with the respondent before raising the application.",
@@ -5102,6 +5156,7 @@
         "EMPTY_OPTION_TEXT": "You need to tell us if you want to upload documents to support your response. Choose option: Yes or No.",
         "ERROR_INPUT": "You need to either enter the information requested in the box or select Yes to upload documents to support your response."
       }
-    }
+    },
+    "VALID_FINAL_DATE": "Enter a date when the final payment was made."
   }
 }
