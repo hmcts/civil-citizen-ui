@@ -7,8 +7,8 @@ import {
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {
   ApplicationType,
-  ApplicationTypeOption,
-  selectedApplicationType,
+  ApplicationTypeOption, ApplicationTypeOptionSelection, getApplicationTypeOptionByTypeAndDescription,
+
 } from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
@@ -283,7 +283,7 @@ export const saveStatementOfTruth = async (claimId: string, statementOfTruth: St
 export const getDynamicHeaderForMultipleApplications = (claim: Claim): string => {
   const applicationTypes = claim.generalApplication?.applicationTypes;
   return (applicationTypes?.length === 1)
-    ? selectedApplicationType[applicationTypes[0].option]
+    ? getApplicationTypeOptionByTypeAndDescription(applicationTypes[0].option, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE)
     : 'PAGES.GENERAL_APPLICATION.COMMON.MAKE_AN_APPLICATION';
 };
 
@@ -323,6 +323,17 @@ export const validateAdditionalApplicationtType = (claim : Claim, errors : Valid
       property: 'option',
     });
 
+    errors.push(validationError);
+  } else if (applicationType.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID && (claim.joIsLiveJudgmentExists === undefined || claim.joIsLiveJudgmentExists?.option === YesNo.NO)) {
+
+    const validationError = new FormValidationError({
+      target: new GenericYesNo(body.optionOther, ''),
+      value: body.option,
+      constraints: {
+        ccjApplicationError : 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_CCJ_DEBT',
+      },
+      property: 'option',
+    });
     errors.push(validationError);
   }
 };
@@ -519,4 +530,9 @@ export const getApplicationCreatedDate = (ccdClaim: Claim, applicationId: string
     }
   }
   return undefined;
+};
+
+export const isConfirmYouPaidCCJAppType = (claim: Claim): boolean => {
+  const applicationType = getLast(claim.generalApplication?.applicationTypes)?.option;
+  return applicationType === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID;
 };

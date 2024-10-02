@@ -8,7 +8,11 @@ import {
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
-import {LinKFromValues, selectedApplicationType} from 'common/models/generalApplication/applicationType';
+import {
+  ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
+  LinKFromValues,
+} from 'common/models/generalApplication/applicationType';
 import { getByIndex, getByIndexOrLast, getCancelUrl, saveOrderJudge } from 'services/features/generalApplication/generalApplicationService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
@@ -41,7 +45,7 @@ orderJudgeController.get(ORDER_JUDGE_URL, orderJudgeGuard, (async (req: AppReque
       form,
       cancelUrl,
       backLinkUrl,
-      applicationType: selectedApplicationType[applicationTypeOption],
+      applicationType: getApplicationTypeOptionByTypeAndDescription(applicationTypeOption,ApplicationTypeOptionSelection.BY_APPLICATION_TYPE),
       contentList,
       hintText: orderJudge.text ? orderJudge.text : hintText,
     });
@@ -71,7 +75,7 @@ orderJudgeController.post(ORDER_JUDGE_URL, orderJudgeGuard, (async (req: AppRequ
         form,
         cancelUrl,
         backLinkUrl,
-        applicationType: selectedApplicationType[applicationTypeOption],
+        applicationType: getApplicationTypeOptionByTypeAndDescription(applicationTypeOption,ApplicationTypeOptionSelection.BY_APPLICATION_TYPE ),
         contentList,
         hintText,
       });
