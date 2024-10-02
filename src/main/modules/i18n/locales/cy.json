@@ -70,6 +70,7 @@
     "YEARS": "Blwyddyn",
     "YES": "Oes",
     "OPENS_IN_NEW_TAB": "(yn agor mewn tab newydd)",
+    "ASK_FOR_PROOF_OF_DEBT_PAYMENT": "Confirm you've paid a judgment debt",
     "ADDRESS_FORM": {
       "ADDRESS_CHANGES_SHARED": "Bydd unrhyw newidiadau yn cael eu rhannu â'r hawlydd pan fyddwch yn cyflwyno eich ymateb.",
       "BUILDING_AND_STREET": "Adeilad a stryd",
@@ -2650,6 +2651,7 @@
         "MAY_NOT_AGREE": "Efallai na fydd y llys yn cytuno i newid dyddiad y gwrandawiad, hyd yn oed os yw’r ddau barti wedi cytuno.",
         "OTHER": "the court to do something else",
         "RELIEF_FROM_SANCTIONS": "ask for relief from a penalty",
+        "CONFIRM_YOU_PAID_CCJ_DEBT": "confirm you've paid a judgment (CCJ) debt",
         "SET_ASIDE_JUDGEMENT": "roi dyfarniad o’r naill du (ei ddileu)",
         "SETTLE_BY_CONSENT": "the court to make an order settling the claim by consent",
         "STRIKE_OUT": "the court to strike out all or part of the other parties’ case",
@@ -2727,6 +2729,22 @@
         },
         "UNAVAILABLE_DATES": "Are there any dates when you cannot attend a hearing within the next 3 months"
       },
+      "DEBT_PAYMENT": {
+        "DO_YOU_HAVE_EVIDENCE": "Do you have evidence of the debt payment?",
+        "YOU_WILL_NEED_EVIDENCE": "You’ll need to provide evidence that you’ve paid the debt.",
+        "CONFIRMATION_OF_MONEY": "This should be confirmation from the person or business you owed money, which shows the:",
+        "DATE_OF_PAYMENT": "date of payment",
+        "AMOUNT_PAID": "amount paid",
+        "CASE_NUMBER": "case number",
+        "IF_CANNOT_PROVIDE_EVIDENCE": "If you cannot provide evidence, you can explain that below. The court will ask the person or business you owed money if they’ve been paid. If they do not respond within a month, the public register will be updated and a certificate issued.",
+        "DO_YOU_WANT_PROVIDE_EVIDENCE": "Do you want to provide evidence of the debt payment?",
+        "UPLOAD_EVIDENCE": "I want to upload evidence that this debt has been paid in full",
+        "MADE_FULL_PAYMENT": "I made full payment to the court",
+        "NO_EVIDENCE": "I am unable to provide evidence of full payment",
+        "GIVE_DETAILS": "Give details below of what you have done to obtain evidence and why you’re not able to provide it",
+        "PROVIDE_DETAILS": "Provide details",
+        "OR": "or"
+      },
       "PAY_ADDITIONAL_FEE": {
         "HEADING": "Additional application fee",
         "WANT_TO_APPLY_HWF_TITLE": "Pay additional application fee"
@@ -2795,6 +2813,7 @@
         "CANCEL_JUDGMENT": "Roi dyfarniad o’r naill du (ei ddileu)",
         "CHANGE_CLAIM": "Gwneud newid i’ch hawliad neu’r amddiffyniad rydych wedi’i gyflwyno",
         "CHANGE_HEARING": "Newid dyddiad gwrandawiad",
+        "CONFIRM_YOU_PAID_CCJ": "Confirm you've paid a judgment debt",
         "IMPOSE_SANCTION": "Y llys i orfodi sancsiwn ar y partïon eraill oni bai eu bod yn cyflawni gweithred benodol",
         "MORE_TIME": "Mwy o amser i wneud yr hyn sy’n ofynnol gan orchymyn llys",
         "NOT_ON_LIST": "Y llys i wneud rhywbeth nad yw wedi’i gynnwys yn y rhestr hon",
@@ -2842,7 +2861,9 @@
         "SELECT_APPLICATION": "Dewiswch y cais perthnasol a chliciwch ar ‘parhau’.",
         "TITLE": "Dewiswch gais",
         "WHEN_YOU_REQUEST": "Pan fyddwch yn gofyn am newid i’ch achos, neu’n cysylltu â’r llys i gymryd cam penodol, gelwir hyn yn gwneud ‘cais’ i’r llys am orchymyn.",
-        "ASK_MORE_TIME_DESCRIPTION": "Er enghraifft, gofyn i’r terfyn amser ar gyfer uwchlwytho dogfennau cyn treial neu wrandawiad gael ei ymestyn. Bydd arnoch angen darparu rheswm dilys dros beidio â bodloni’r terfyn amser gwreiddiol.  Gellir ond gwneud y cais cyn i’r terfyn amser gwreiddiol basio.  Gelwir hyn hefyd yn gais i ymestyn amser. Yn hytrach na gwneud cais, gallwch gael cytundeb ysgrifenedig gan y partïon eraill i gael mwy o amser i wneud yr hyn sy’n ofynnol gan y llys. I wneud hyn, rhaid i’r cais am estyniad amser fod am gyfnod o lai na 28 diwrnod ac ni ddylai effeithio ar ddyddiad y gwrandawiad."
+        "ASK_MORE_TIME_DESCRIPTION": "Er enghraifft, gofyn i’r terfyn amser ar gyfer uwchlwytho dogfennau cyn treial neu wrandawiad gael ei ymestyn. Bydd arnoch angen darparu rheswm dilys dros beidio â bodloni’r terfyn amser gwreiddiol.  Gellir ond gwneud y cais cyn i’r terfyn amser gwreiddiol basio.  Gelwir hyn hefyd yn gais i ymestyn amser. Yn hytrach na gwneud cais, gallwch gael cytundeb ysgrifenedig gan y partïon eraill i gael mwy o amser i wneud yr hyn sy’n ofynnol gan y llys. I wneud hyn, rhaid i’r cais am estyniad amser fod am gyfnod o lai na 28 diwrnod ac ni ddylai effeithio ar ddyddiad y gwrandawiad.",
+        "CONFIRM_YOU_PAID": "Confirm you've paid a judgment (CCJ) debt",
+        "CONFIRM_YOU_PAID_DESCRIPTION": "If you've paid the debt from a county court judgment (CCJ) in full, you can ask the court for proof of payment to share with banks, lenders and credit reference agencies. This is called requesting a certificate of cancellation or satisfaction."
       },
       "SUMMARY": {
         "APP_REQUESTED": "An application is a request for a change to the case.",
@@ -3108,7 +3129,10 @@
         "PAY_FEE_BUTTON": "Pay application fee",
         "RETURN_CASE_DETAILS": "Close and return to case details",
         "TITLE": "Application created",
-        "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge."
+        "UNTIL_PAY_FEE": "Until you pay the application fee, the application will not be sent to the other parties or considered by a judge.",
+        "COSC_PAY_FEE": "Pay the fee",
+        "COSC_APPLICATION_SUBMITTED": "Once your application has been submitted, the court will ask the person or business you owed money to confirm they've been paid. If they agree or do not respond within a month then the public register will be updated and a certificate issued.",
+        "COSC_APPLICATION_SUBMITTED_NEXT": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge. Any further updates will be by post."
       },
       "APPLY_HELP_WITH_FEE": {
         "APPLICATION_FEE_PARAGRAPH_DURING": "During your application, you will be asked for the number of your court or tribunal form. Enter 'application fee' followed by a short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.",
@@ -3181,6 +3205,32 @@
         "UPLOAD_DOCUMENTS_1": "You can also ",
         "UPLOAD_DOCUMENTS_2": "upload additional documents",
         "UPLOAD_DOCUMENTS_3": " if you need to."
+      },
+      "ASK_FOR_PROOF_OF_DEBT_PAYMENT": {
+        "PARA_1": "If you've paid the debt from a county court judgment (CCJ), you can ask the court for proof of payment to share with banks and credit reference agencies. This is also known as requesting a certificate of cancellation or satisfaction.",
+        "PARA_2": "The court fee for this is £{{ applicationFee }}. This fee will need to be paid once you've submitted your request. Find out if you can get ",
+        "HELP_WITH_FEE": "help with fees.",
+        "PARA_TITLE_1": "If you paid within a month of the judgment",
+        "PARA_3": "A certificate of cancellation can be requested if you have evidence that you paid the debt within one month of the date of judgment. This means the debt will be removed from the public register.",
+        "PARA_TITLE_2": "If you paid after one month from the judgment",
+        "PARA_4": "A certificate of satisfaction can be requested if the debt is paid after one month. The entry will remain on the public register for 6 years but will be marked 'satisfied'.",
+        "PARA_TITLE_3": "What evidence is needed?",
+        "PARA_5": "You must provide evidence that the debt has been paid in full. This should be confirmation from the person or business you owned money, which shows the:",
+        "DATE_OF_PAYMENT": "date of payment",
+        "AMOUNT_PAID": "amount paid",
+        "CASE_NUMBER": "case number",
+        "PARA_TITLE_4": "Agreement from the person or business owed money",
+        "PARA_6": "Once you've made an application, the court will ask the person or business you owed money if they've been paid. If they don't respond within a month then the public register will be updated and a certificate issued.",
+        "PARA_7": "If the person or business you owed money to does not agree, this case will move offline and the application will be considered by a district judge.",
+        "PARA_TITLE_5": "Do you need to update your details?",
+        "PARA_8": "If you need to update your details from the judgment, you will need to ",
+        "COMPLETE_FORM_N443": "complete a form N443."
+      },
+      "FINAL_DEFENDANT_PAYMENT_DATE": {
+        "TITLE": "When was the final payment?",
+        "PARAGRAPH_TEXT_1" : "We need to know this to cancel the debt if you paid within one month or show",
+        "PARAGRAPH_TEXT_2" : "it as satisfied if you paid after one month.",
+        "FORM_HEADER_1" : "Enter the date of the final payment"
       }
     },
     "ACCEPT_REPAYMENT_PLAN": {
@@ -4379,7 +4429,7 @@
       "THE_TRIAL_OR": "Bydd y treial yn mynd yn ei flaen fel y trefnwyd ar y dyddiad penodedig oni bai bod barnwr yn gwneud gorchymyn sy'n newid dyddiad y treial. Os ydych eisiau i ddyddiad y treial gael ei newid (neu unrhyw orchymyn arall i wneud yr achos yn barod ar gyfer treial) bydd angen i chi wneud cais i’r llys."
     },
     "HAS_ANYTHING_CHANGED": {
-      "PAGE_TITLE": "Has anything changed",
+      "PAGE_TITLE": "A oes unrhyw beth wedi newid",
       "FINALISE": "Cwblhau trefniadau eich treial",
       "CLAIM_NUMBER": "Claim number: {{ claimId }}",
       "HAS_ANYTHING": "A oes unrhyw beth wedi newid i’r cymorth neu’r addasiadau rydych yn dymuno i’r llys a’r barnwr eu hystyried ar eich rhan neu i dyst a fydd yn rhoi tystiolaeth ar eich rhan?",
@@ -4615,6 +4665,8 @@
     "TESTING_SUPPORT": "Testing Support"
   },
   "ERRORS": {
+    "UNABLE_TO_PROVIDE_EVIDENCE": "Add details of why you're not able to provide evidence",
+    "SELECT_EVIDENCE_DEBT_PAYMENT": "Select how you want to provide evidence of the debt payment",
     "SUBJECT_TO_FRC": "Nodwch a yw’r Gyfundrefn Costau Adferadwy a Bennwyd yn berthnasol i’r hawliad hwn",
     "FRC_BAND_AGREED": "Nodwch a yw’r band cymhlethdod wedi cael ei gytuno â’r partïon eraill",
     "CHOOSE_COMPLEXITY_BAND": "Nodwch pa fand cymhlethdod rydych chi'n credu y mae'r hawliad hwn yn berthnasol iddo",
@@ -5063,6 +5115,7 @@
     "VALID_REAL_MONTH": "Rhaid i fis y dyddiad fod yn fis dilys",
     "VALID_REAL_YEAR": "Rhaid i flwyddyn y dyddiad fod yn flwyddyn ddilys",
     "VALID_DATE_NOT_FUTURE": "Rhaid i’r dyddiad y ddogfen fod heddiw neu yn y gorffennol",
+    "VALID_DATE_NOT_IN_THE_FUTURE": "Date of the final payment must be today or in the past",
     "VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cyhoeddwyd y ddogfen neu’r dyddiad yr anfonwyd y neges",
     "VALID_DATE_WITNESS_SUMMARY": "Date summary was written is required",
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
@@ -5078,6 +5131,7 @@
       "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "Ni allwch ddewis \"Gofyn i roi dyfarniad o’r neilltu (ei ddileu)\" fel cais ychwanegol",
       "ADDITIONAL_APPLICATION_ASK_SETTLING":  "Ni allwch ddewis \"Gofyn i’r llys wneud gorchymyn i setlo’n hawliad drwy gydsyniad\" fel cais ychwanegol",
       "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "Ni allwch ddewis \"Gofyn i amrywio dyfarniad\" fel cais ychwanegol",
+      "ADDITIONAL_APPLICATION_CCJ_DEBT":  "You cannot apply to confirm you've paid a county court (CCJ) debt as there is no active judgment",
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "Mae arnoch angen dweud wrthym os yw’r partïon eraill wedi cytuno i’r cais hwn. Dewiswch opsiwn: Do neu Naddo",
       "APPLICATION_FROM_OTHER_PARTY_OPTION_NO_SELECTED": "Rhaid i setlo drwy gydsyniad gael ei gytuno arno gyda’r atebydd cyn gwneud y cais.",
@@ -5108,6 +5162,7 @@
         "EMPTY_OPTION_TEXT": "You need to tell us if you want to upload documents to support your response. Choose option: Yes or No.",
         "ERROR_INPUT": "You need to either enter the information requested in the box or select Yes to upload documents to support your response."
       }
-    }
+    },
+    "VALID_FINAL_DATE": "Enter a date when the final payment was made."
   }
 }

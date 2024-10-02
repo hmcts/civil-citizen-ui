@@ -183,6 +183,7 @@ export class Claim {
   paymentSyncError?: boolean;
   responseClaimTrack?: string;
   generalApplications?: ClaimGeneralApplication[];
+  joIsLiveJudgmentExists?: GenericYesNo;
 
   // Index signature to allow dynamic property access
   [key: string]: any;
@@ -978,6 +979,10 @@ export class Claim {
     const parts = claimId.match(/.{1,4}/g);
     const claimId_new = parts.join('-');
     return claimId_new;
+  }
+
+  isDefendant() {
+    return this.caseRole === CaseRole.RESPONDENTSOLICITORONE || this.caseRole === CaseRole.RESPONDENTSOLICITORTWO || this.caseRole === CaseRole.DEFENDANT;
   }
 
   isClaimant() {
