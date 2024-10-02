@@ -113,6 +113,7 @@ export class Nunjucks {
     nextMonth.setMonth(nextMonth.getMonth() + 1);
 
     const nonceValue = crypto.randomBytes(16).toString('base64');
+    const nonceDataLayer = crypto.randomBytes(16).toString('base64');
 
     nunjucksEnv.addGlobal('asset_paths', appAssetPaths);
     nunjucksEnv.addGlobal('development', this.developmentMode);
@@ -160,6 +161,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('TestingSupportUrl', '/testing-support/create-draft-claim');
     nunjucksEnv.addGlobal('developmentMode', this.developmentMode);
     nunjucksEnv.addGlobal('nonceValue', nonceValue);
+    nunjucksEnv.addGlobal('nonceDataLayer', nonceDataLayer);
     nunjucksEnv.addGlobal('TaskStatus', TaskStatus);
     nunjucksEnv.addGlobal('ApplicationTypeOption', ApplicationTypeOption);
     nunjucksEnv.addGlobal('HearingTypeOptions', HearingTypeOptions);

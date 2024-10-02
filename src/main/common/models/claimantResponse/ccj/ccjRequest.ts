@@ -12,5 +12,4 @@ export class CCJRequest {
   paidAmount?: PaidAmount;
   defendantPaymentDate?: PaymentDate;
   repaymentPlanInstalments?: RepaymentPlanInstalments;
-
 }
