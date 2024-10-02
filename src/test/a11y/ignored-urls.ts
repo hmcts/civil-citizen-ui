@@ -79,4 +79,6 @@ export const IGNORED_URLS = [
   urls.GA_PAY_ADDITIONAL_FEE_URL, //TODO: remove this once finished the page
   urls.GA_PROVIDE_MORE_INFORMATION_URL, //TODO: remove this once finished the page
   urls.TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT,
+  urls.GA_CHECK_YOUR_ANSWERS_COSC_URL,  //TODO: remove this once finished the page
+  urls.GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
 ];

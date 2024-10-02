@@ -201,5 +201,7 @@ export const enum TestMessages {
   CCJ_CONFIRMATION_PROCESS_YOUR_REQUEST = 'We’ll process your request and send a copy of the judgment to you and to',
   CCJ_CONFIRMATION_PROCESS_YOUR_REQUEST_1 = 'Please do not call the Court &amp; Tribunal Service Centre (CTSC) about the progress of your request.',
   CCJ_CONFIRMATION_NO_LONGER_RESPONSE = 'can no longer respond to your claim online.',
-  CCJ_CONFIRMATION_PROCESS_YOUR_REQUEST_JO = 'We’ll process your request and you will receive notifications by email, you will be able to view the judgment via your dashboard and we’ll also post a copy of the judgment to'
+  CCJ_CONFIRMATION_PROCESS_YOUR_REQUEST_JO = 'We’ll process your request and you will receive notifications by email, you will be able to view the judgment via your dashboard and we’ll also post a copy of the judgment to',
+  VALID_DATE_NOT_IN_THE_FUTURE = 'Date of the final payment must be today or in the past',
+  UNABLE_TO_PROVIDE_EVIDENCE = 'Add details of why you&#39;re not able to provide evidence'
 }
