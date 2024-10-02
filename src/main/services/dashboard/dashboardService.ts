@@ -63,7 +63,7 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
 export const getNotifications = async (claimId: string, claim: Claim, caseRole: ClaimantOrDefendant, req: AppRequest, lng: string): Promise<DashboardNotificationList> => {
   const mainClaimNotificationIds: string[] = [];
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
-  dashboardNotifications.items?.forEach(notification => {mainClaimNotificationIds.push(notification.id)});
+  dashboardNotifications.items?.forEach(notification => mainClaimNotificationIds.push(notification.id));
   // Add notifications for all GAs
   const genAppsByRole = new Map<ApplicantOrRespondent, string[]>([[ApplicantOrRespondent.APPLICANT, []], [ApplicantOrRespondent.RESPONDENT, []]]);
   const isGaEnabled = await isGaForLipsEnabled();
