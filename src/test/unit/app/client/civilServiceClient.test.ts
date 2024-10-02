@@ -1020,7 +1020,6 @@ describe('Civil Service Client', () => {
         'timeToLive': undefined,
         'createdAt': 'createdAt',
         'deadline': 'deadline',
-        'isMainClaim': true,
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -1038,7 +1037,6 @@ describe('Civil Service Client', () => {
         },
         'createdAt': 'createdAt',
         'deadline': 'deadline',
-        'isMainClaim': true,
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -1056,7 +1054,6 @@ describe('Civil Service Client', () => {
         },
         'createdAt': 'createdAt',
         'deadline': 'deadline',
-        'isMainClaim': true,
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -1074,7 +1071,6 @@ describe('Civil Service Client', () => {
         },
         'createdAt': 'createdAt',
         'deadline': 'deadline',
-        'isMainClaim': true,
       },
     ];
     const mockGaNotificationInfo = {
@@ -1156,7 +1152,6 @@ describe('Civil Service Client', () => {
         'timeToLive': undefined,
         'createdAt': 'createdAt',
         'deadline': 'deadline',
-        'isMainClaim': false,
       },
       {
         'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -1174,7 +1169,6 @@ describe('Civil Service Client', () => {
         },
         'createdAt': 'createdAt',
         'deadline': 'deadline',
-        'isMainClaim': false,
       },
     ];
 

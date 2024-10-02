@@ -11,7 +11,6 @@ export class DashboardNotification {
   params: Map<string, object>;
   createdAt: string;
   deadline: string;
-  isMainClaim: boolean;
 
   constructor(id: string, titleEn: string, titleCy:string, descriptionEn: string,
     descriptionCy: string, timeToLive: string,

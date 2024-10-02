@@ -61,7 +61,9 @@ export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Cla
 };
 
 export const getNotifications = async (claimId: string, claim: Claim, caseRole: ClaimantOrDefendant, req: AppRequest, lng: string): Promise<DashboardNotificationList> => {
+  const mainClaimNotificationIds: string[] = [];
   const dashboardNotifications = await civilServiceClient.retrieveNotification(claimId, caseRole, req);
+  dashboardNotifications.items?.forEach(notification => {mainClaimNotificationIds.push(notification.id)});
   // Add notifications for all GAs
   const genAppsByRole = new Map<ApplicantOrRespondent, string[]>([[ApplicantOrRespondent.APPLICANT, []], [ApplicantOrRespondent.RESPONDENT, []]]);
   const isGaEnabled = await isGaForLipsEnabled();
@@ -106,7 +108,7 @@ export const getNotifications = async (claimId: string, claim: Claim, caseRole: 
       });
       dashboardNotifications.items.push(...(value?.items ?? []));
     });
-    sortDashboardNotifications(dashboardNotifications);
+    sortDashboardNotifications(dashboardNotifications, mainClaimNotificationIds);
     return dashboardNotifications;
   } else {
     throw new Error('Notifications not found...');
@@ -161,7 +163,7 @@ export const getContactCourtLink = (claimId: string, claim : Claim,isGAFlagEnabl
   }
 };
 
-export const sortDashboardNotifications = (dashboardNotifications: DashboardNotificationList) => {
+export const sortDashboardNotifications = (dashboardNotifications: DashboardNotificationList, mainClaimNotificationIds: string[]) => {
   dashboardNotifications.items?.sort((notification1, notification2) => {
     if (notification1.deadline) {
       if (!notification2.deadline) {
@@ -176,8 +178,8 @@ export const sortDashboardNotifications = (dashboardNotifications: DashboardNoti
       // Only notification 2 has a deadline
       return 1;
     }
-    if (notification1.isMainClaim) {
-      if (!notification2.isMainClaim) {
+    if (mainClaimNotificationIds.includes(notification1.id)) {
+      if (!mainClaimNotificationIds.includes(notification2.id)) {
         // Only notification 1 is for main claim
         return -1;
       } else {
@@ -185,7 +187,7 @@ export const sortDashboardNotifications = (dashboardNotifications: DashboardNoti
         return -notification1.createdAt.localeCompare(notification2.createdAt);
       }
     }
-    if (notification2.isMainClaim) {
+    if (mainClaimNotificationIds.includes(notification2.id)) {
       // Only notification 2 is for main claim
       return 1;
     }

@@ -600,7 +600,7 @@ describe('dashboardService', () => {
       notificationsList.items = [notification1, notification2];
 
       // When
-      sortDashboardNotifications(notificationsList);
+      sortDashboardNotifications(notificationsList, []);
 
       // Then
       expect(notificationsList.items[0].id).toEqual('2');
@@ -615,7 +615,7 @@ describe('dashboardService', () => {
       notificationsList.items = [notification1, notification2];
 
       // When
-      sortDashboardNotifications(notificationsList);
+      sortDashboardNotifications(notificationsList, []);
 
       // Then
       expect(notificationsList.items[0].id).toEqual('1');
@@ -630,7 +630,7 @@ describe('dashboardService', () => {
       notificationsList.items = [notification1, notification2];
 
       // When
-      sortDashboardNotifications(notificationsList);
+      sortDashboardNotifications(notificationsList, []);
 
       // Then
       expect(notificationsList.items[0].id).toEqual('2');
@@ -641,13 +641,12 @@ describe('dashboardService', () => {
       // Given
       const notification1 = new DashboardNotification('1', '', '', '', '', '', undefined, undefined, '', '');
       const notification2 = new DashboardNotification('2', '', '', '', '', '', undefined, undefined, '', '');
-      notification2.isMainClaim = true;
       const notification3 = new DashboardNotification('2', '', '', '', '', '', undefined, undefined, '', '');
       const notificationsList = new DashboardNotificationList();
       notificationsList.items = [notification1, notification2, notification3];
 
       // When
-      sortDashboardNotifications(notificationsList);
+      sortDashboardNotifications(notificationsList, ['2']);
 
       // Then
       expect(notificationsList.items[0].id).toEqual('2');
@@ -656,15 +655,12 @@ describe('dashboardService', () => {
     it('All main claim without deadline then order by most recent created date', () => {
       // Given
       const notification1 = new DashboardNotification('1', '', '', '', '', '', undefined, undefined, '2024-01-01T00:00:00', '');
-      notification1.isMainClaim = true;
       const notification2 = new DashboardNotification('2', '', '', '', '', '', undefined, undefined, '2024-03-01T00:00:00', '');
-      notification2.isMainClaim = true;
       const notification3 = new DashboardNotification('3', '', '', '', '', '', undefined, undefined, '2024-02-01T00:00:00', '');
-      notification3.isMainClaim = true;
       const notificationsList = new DashboardNotificationList();
       notificationsList.items = [notification1, notification2, notification3];
       // When
-      sortDashboardNotifications(notificationsList);
+      sortDashboardNotifications(notificationsList, ['1', '2', '3']);
 
       // Then
       expect(notificationsList.items[0].id).toEqual('2');
@@ -680,7 +676,7 @@ describe('dashboardService', () => {
       const notificationsList = new DashboardNotificationList();
       notificationsList.items = [notification1, notification2, notification3];
       // When
-      sortDashboardNotifications(notificationsList);
+      sortDashboardNotifications(notificationsList, []);
 
       // Then
       expect(notificationsList.items[0].id).toEqual('2');
