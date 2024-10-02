@@ -8,7 +8,7 @@ import {
   getByIndexOrLast,
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
-  getViewApplicationUrl,
+  getViewApplicationUrl, isConfirmYouPaidCCJAppType,
   saveAcceptDefendantOffer,
   saveAdditionalText,
   saveAgreementFromOtherParty,
@@ -518,6 +518,29 @@ describe('General Application service', () => {
       const error : ValidationError = errors[0];
       expect(errors.length).toBe(1);
       expect(error.constraints['additionalApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_ASK_SETTLING');
+    });
+  });
+
+  describe('Validate CCEJ is selected only if Active Judgment is there', () => {
+    it('should return error message if active Judgment absent', () => {
+
+      //Given
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID)];
+      const errors : ValidationError[] = [];
+      const applicationType = new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID);
+      const body = {
+        optionOther: 'test',
+        option: 'testOption',
+      };
+      //When
+      validateAdditionalApplicationtType(claim, errors, applicationType,body);
+
+      //Then
+      const error : ValidationError = errors[0];
+      expect(errors.length).toBe(1);
+      expect(error.constraints['ccjApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_CCJ_DEBT');
     });
   });
 
@@ -1156,4 +1179,24 @@ describe('Should get the application index', () => {
     expect(result).toEqual('/case/123/general-application/123456/view-application?index=2');
   });
 
+});
+
+describe('should check if the application type on the case is "Confirm CCJ debt paid"', () => {
+  it.each`
+      selectedApplicationTypes                                                      | expectedOutput
+      ${[]}                                                                         | ${false}
+      ${undefined}                                                                  | ${false}
+      ${[ApplicationTypeOption.ADJOURN_HEARING]}                                    | ${false}
+      ${[ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID]}                              | ${true}
+    `('should return $expectedOutput when selected type is $selectedApplicationTypes',
+    ({ selectedApplicationTypes, expectedOutput}) => {
+      //When
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      if (selectedApplicationTypes) {
+        claim.generalApplication.applicationTypes = selectedApplicationTypes.map((at: ApplicationTypeOption) => new ApplicationType(at));
+      }
+      //Then
+      expect(isConfirmYouPaidCCJAppType(claim)).toEqual(expectedOutput);
+    });
 });
