@@ -14,6 +14,9 @@ import {
   GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
   INFORM_OTHER_PARTIES_URL,
   ORDER_JUDGE_URL,
+  COSC_FINAL_PAYMENT_DATE_URL,
+  GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
+  GA_UPLOAD_DOCUMENTS_COSC_URL,
 } from 'routes/urls';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { YesNo, YesNoUpperCase } from 'form/models/yesNo';
@@ -23,6 +26,7 @@ import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
+import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 
 export const addApplicationTypesRows = (
   claimId: string,
@@ -259,3 +263,72 @@ export const addHearingSupportRows = (claimId: string, claim: Claim, lang: strin
   }
   return rows;
 };
+
+export const addFinalPaymentDateRows = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
+  const rows: SummaryRow[] = [];
+  if (claim.generalApplication.certificateOfSatisfactionOrCancellation?.defendantFinalPaymentDate) {
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FORM_HEADER_1', {lng}),
+        formatDateToFullDate(claim.generalApplication.certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate.date, lng),
+        constructResponseUrlWithIdParams(claimId, COSC_FINAL_PAYMENT_DATE_URL), changeLabel()),
+    );
+  }
+  return rows;
+};
+
+export const addCoScDocumentUploadRow = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
+  const rows: SummaryRow[] = [];
+  const href = `${constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_COSC_URL)}`;
+  let rowValue: string;
+  if(getEvidencePaymentOption(claim.generalApplication.certificateOfSatisfactionOrCancellation?.debtPaymentEvidence?.debtPaymentOption) !== undefined) {
+    rowValue = '<ul class="no-list-style">';
+    claim.generalApplication.uploadEvidenceForApplication.forEach(uploadGAFile => {
+      rowValue += `<li>${uploadGAFile.caseDocument.documentName}</li>`;
+    });
+    rowValue += '</ul>';
+    rows.push(
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_DOCUMENTS', {lng}), rowValue, href, changeLabel()),
+    );
+  }
+  return rows;
+};
+
+export const addHasEvidenceOfDebtPaymentRow = (claimId: string, claim: Claim, lang: string): SummaryRow[] => {
+  const lng = getLng(lang);
+  const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
+  const rows: SummaryRow[] = [];
+  const href = `${constructResponseUrlWithIdParams(claimId, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL)}`;
+  let rowValue: string;
+  if(claim.generalApplication.certificateOfSatisfactionOrCancellation?.debtPaymentEvidence) {
+    const evidenceOption = claim.generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence.debtPaymentOption;
+    if(evidenceOption === debtPaymentOptions.NO_EVIDENCE) {
+      rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">
+                        ${t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL_NO', {lng})}</p>`;
+
+      rowValue += `<p class="govuk-!-padding-bottom-2 govuk-!-margin-top-0">
+        ${claim.generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence.provideDetails}</p>`;
+      rows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE', {lng}), rowValue, href, changeLabel()));
+    }
+    else {
+      rows.push(
+        summaryRow(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE', {lng}),
+          t(getEvidencePaymentOption(evidenceOption), {lng}),href, changeLabel()));
+    }
+  }
+  return rows;
+};
+
+function getEvidencePaymentOption(evidenceOption: string) : string {
+  switch(evidenceOption) {
+    case debtPaymentOptions.UPLOAD_EVIDENCE :
+      return 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL';
+    case debtPaymentOptions.MADE_FULL_PAYMENT :
+      return 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.HAS_DEBT_BEEN_PAID_TO_COURT';
+    default: return undefined;
+  }
+}

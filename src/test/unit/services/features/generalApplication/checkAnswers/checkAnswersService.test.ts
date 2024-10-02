@@ -1,5 +1,5 @@
 import { Claim } from 'models/claim';
-import { getSummarySections } from 'services/features/generalApplication/checkAnswers/checkAnswersService';
+import { getSummarySections, getCoScSummarySections } from 'services/features/generalApplication/checkAnswers/checkAnswersService';
 import { GeneralApplication } from 'models/generalApplication/GeneralApplication';
 import {
   ApplicationType,
@@ -24,6 +24,12 @@ import { OrderJudge } from 'models/generalApplication/orderJudge';
 import { RequestingReason } from 'models/generalApplication/requestingReason';
 import { HearingContactDetails } from 'models/generalApplication/hearingContactDetails';
 import { UploadGAFiles } from 'models/generalApplication/uploadGAFiles';
+import {
+  CertificateOfSatisfactionOrCancellation,
+} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
+import {DefendantFinalPaymentDate} from 'form/models/certOfSorC/defendantFinalPaymentDate';
+import {DebtPaymentEvidence} from 'models/generalApplication/debtPaymentEvidence';
+import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -102,6 +108,48 @@ describe('Check Answers service', () => {
       expect(result).toHaveLength(14);
       expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
       expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PARTIES_AGREED');
+    });
+  });
+
+  describe('Build check answers for submit cosc general application type', () => {
+    let claim: Claim;
+    let generalApplication: GeneralApplication;
+    beforeEach(() => {
+      claim = new Claim();
+      generalApplication = new GeneralApplication();
+      claim.generalApplication = generalApplication;
+      generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID),
+      ];
+      generalApplication.certificateOfSatisfactionOrCancellation = new CertificateOfSatisfactionOrCancellation();
+      generalApplication.certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate = new DefendantFinalPaymentDate('2024', '07', '12');
+      generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence = new DebtPaymentEvidence(debtPaymentOptions.UPLOAD_EVIDENCE);
+      generalApplication.uploadEvidenceForApplication = [new UploadGAFiles()];
+      generalApplication.uploadEvidenceForApplication[0].caseDocument = {
+        createdBy: '',
+        createdDatetime: undefined,
+        documentLink: undefined,
+        documentName: 'test.pdf',
+        documentSize: 0,
+        documentType: undefined,
+      };
+    });
+
+    it('should give correct row count for multiple application types', () => {
+      const result = getCoScSummarySections('12345', claim, 'en');
+      expect(result).toHaveLength(3);
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FORM_HEADER_1');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE');
+      expect(result[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_DOCUMENTS');
+    });
+
+    it('should give correct row count for multiple application types', () => {
+      claim.generalApplication.uploadEvidenceForApplication = null;
+      claim.generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence = new DebtPaymentEvidence(debtPaymentOptions.NO_EVIDENCE, 'testing');
+      const result = getCoScSummarySections('12345', claim, 'en');
+      expect(result).toHaveLength(2);
+      expect(result[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FORM_HEADER_1');
+      expect(result[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE');
     });
   });
 });

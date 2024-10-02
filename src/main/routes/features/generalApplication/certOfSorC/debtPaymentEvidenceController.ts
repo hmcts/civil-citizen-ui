@@ -50,13 +50,13 @@ debtPaymentEvidenceController.post(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
       let nextPageUrl = '';
       const claimId = req.params.id;
       const cancelUrl = await getCancelUrl(claimId, null);
-      const form = new GenericForm(new DebtPaymentEvidence(req.body.evidence, req.body.provideDetails));
+      const form = new GenericForm(new DebtPaymentEvidence(req.body.debtPaymentOption, req.body.provideDetails));
       form.validateSync();
       if (form.hasErrors()) {
         renderView(form,  res, claimId, cancelUrl);
       } else {
         await saveCertificateOfSatisfactionOrCancellation(req, form.model, 'debtPaymentEvidence');
-        switch (form.model.evidence) {
+        switch (form.model.debtPaymentOption) {
           case debtPaymentOptions.NO_EVIDENCE:
             nextPageUrl = constructResponseUrlWithIdParams(claimId, GA_CHECK_YOUR_ANSWERS_COSC_URL);
             break;

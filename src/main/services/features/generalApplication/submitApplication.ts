@@ -1,9 +1,10 @@
 import {AppRequest} from 'common/models/AppRequest';
 import config from 'config';
-import {translateDraftApplicationToCCD} from 'services/translation/generalApplication/ccdTranslation';
+import {translateDraftApplicationToCCD, translateDraftCoScApplicationToCCD} from 'services/translation/generalApplication/ccdTranslation';
 import {getClaimById} from 'modules/utilityService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import { Claim } from 'common/models/claim';
+import {YesNo} from 'form/models/yesNo';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
@@ -16,6 +17,25 @@ export const submitApplication = async (req: AppRequest): Promise<Claim> => {
     const claimId = req.params.id;
     const claim = await getClaimById(claimId, req, true);
     const ccdApplication = translateDraftApplicationToCCD(claim.generalApplication);
+    return await civilServiceClient.submitInitiateGeneralApplicationEvent(claimId, ccdApplication, req);
+  } catch (err) {
+    logger.error(err);
+    throw err;
+  }
+};
+
+export const submitCoScApplication = async (req: AppRequest): Promise<Claim> => {
+  try {
+    const claimId = req.params.id;
+    const claim = await getClaimById(claimId, req, true);
+    //hearing details
+    //hasAgreed
+    //isPartOfNationalRollout featuretoggle flag
+
+    claim.generalApplication.agreementFromOtherParty = YesNo.NO;
+    const ccdApplication = translateDraftCoScApplicationToCCD(claim.generalApplication);
+    console.log('ccdApplication----------------');
+    console.log(ccdApplication);
     return await civilServiceClient.submitInitiateGeneralApplicationEvent(claimId, ccdApplication, req);
   } catch (err) {
     logger.error(err);
