@@ -17,6 +17,7 @@ const scriptSrcElem = [
   dynatraceDomain,
   "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
   (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
+  (req: AppRequest) => `'nonce-${req.cookies.nonceDataLayer}'`,
 ];
 
 const styleSrc = [
@@ -40,6 +41,7 @@ const imgSrc = [
   'data:',
   "'sha256-GUQ5ad8JK5KmEWmROf3LZd9ge94daqNvd8xy9YS1iDw='",
   (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
+  (req: AppRequest) => `'nonce-${req.cookies.nonceDataLayer}'`,
 ];
 
 const mediaSrc = [
@@ -110,6 +112,7 @@ export class Helmet {
             dynatraceDomain,
             "'sha256-+6WnXIl4mbFTCARd8N3COQmT3bJJmo32N8q8ZSQAIcU='",
             (req: AppRequest) => `'nonce-${req.cookies.nonceValue}'`,
+            (req: AppRequest) => `'nonce-${req.cookies.nonceDataLayer}'`,
           ],
           scriptSrcElem: scriptSrcElem,
           styleSrc: styleSrc,
