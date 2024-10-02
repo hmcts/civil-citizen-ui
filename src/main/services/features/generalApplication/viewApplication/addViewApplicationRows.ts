@@ -3,13 +3,17 @@ import {t} from 'i18next';
 import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {selectedApplicationType, selectedApplicationTypeDescription} from 'models/generalApplication/applicationType';
 import {HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {CcdHearingType} from 'models/ccdGeneralApplication/ccdGeneralApplicationHearingDetails';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {CcdSupportRequirement} from 'models/ccdGeneralApplication/ccdSupportRequirement';
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+
+import {
+  ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
+} from 'models/generalApplication/applicationType';
 
 export const addApplicationStatus = (
   application: ApplicationResponse,
@@ -37,7 +41,7 @@ export const addApplicationTypesRows = (
     application.case_data.generalAppType?.types?.forEach(
       (applicationType, index, arr) => {
         const applicationTypeDisplay =
-          selectedApplicationType[applicationType];
+            getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
 
         rows.push(
           summaryRow(
@@ -69,8 +73,8 @@ export const addApplicationTypesAndDescriptionRows = (
     application.case_data.generalAppType?.types?.forEach(
       (applicationType, index, arr) => {
         const applicationTypeDisplay =
-          selectedApplicationType[applicationType];
-        const applicationTypeDescription = selectedApplicationTypeDescription[applicationType];
+            getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
+        const applicationTypeDescription = getApplicationTypeOptionByTypeAndDescription(applicationType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE_DESCRIPTION);
 
         rows.push(
           summaryRow(
