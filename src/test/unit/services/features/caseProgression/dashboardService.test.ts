@@ -6,7 +6,7 @@ import {
   extractOrderDocumentIdFromNotification,
   getContactCourtLink,
   getDashboardForm,
-  getNotifications,
+  getNotifications, sortDashboardNotifications,
 } from 'services/dashboard/dashboardService';
 import { CaseRole } from 'form/models/caseRoles';
 import { DashboardNotificationList } from 'models/dashboard/dashboardNotificationList';
@@ -69,6 +69,7 @@ describe('dashboardService', () => {
           'titleCy': 'title_cy',
           'descriptionEn': 'description_en',
           'descriptionCy': 'description_cy',
+          'createdAt': '2024-01-01T00:00:00',
         },
         {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -76,6 +77,7 @@ describe('dashboardService', () => {
           'titleCy': 'title_cy_2',
           'descriptionEn': 'description_en_2',
           'descriptionCy': 'description_cy_2',
+          'createdAt': '2024-01-01T00:00:00',
         },
       ] as DashboardNotification[];
       const allNotificationInfo = [
@@ -85,6 +87,7 @@ describe('dashboardService', () => {
           'titleCy': 'title_cy',
           'descriptionEn': 'description_en',
           'descriptionCy': 'description_cy',
+          'createdAt': '2024-01-01T00:00:00',
         },
         {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -92,6 +95,7 @@ describe('dashboardService', () => {
           'titleCy': 'title_cy_2',
           'descriptionEn': 'description_en_2',
           'descriptionCy': 'description_cy_2',
+          'createdAt': '2024-01-01T00:00:00',
         },
         {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
@@ -99,6 +103,7 @@ describe('dashboardService', () => {
           'titleCy': 'title_cy',
           'descriptionEn': 'description_en',
           'descriptionCy': 'description_cy',
+          'createdAt': '2024-01-01T00:00:00',
         },
         {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -106,6 +111,7 @@ describe('dashboardService', () => {
           'titleCy': 'title_cy_2',
           'descriptionEn': 'description_en_2',
           'descriptionCy': 'description_cy_2',
+          'createdAt': '2024-01-01T00:00:00',
         },
         {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
@@ -113,6 +119,7 @@ describe('dashboardService', () => {
           'titleCy': 'title_cy',
           'descriptionEn': 'description_en',
           'descriptionCy': 'description_cy',
+          'createdAt': '2024-01-01T00:00:00',
         },
         {
           'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
@@ -120,6 +127,7 @@ describe('dashboardService', () => {
           'titleCy': 'title_cy_2',
           'descriptionEn': 'description_en_2',
           'descriptionCy': 'description_cy_2',
+          'createdAt': '2024-01-01T00:00:00',
         },
       ] as DashboardNotification[];
       const mockExpectedDashboardInfo=
@@ -580,6 +588,104 @@ describe('dashboardService', () => {
         //Then
         expect(claimantDashboard).toEqual(dashboardExpected);
       });
+    });
+  });
+
+  describe('Sort dashboard notifications', () => {
+    it('Soonest deadline comes first', () => {
+      // Given
+      const notification1 = new DashboardNotification('1', '', '', '', '', '', undefined, undefined, '', '2035-01-01T00:00:00');
+      const notification2 = new DashboardNotification('2', '', '', '', '', '', undefined, undefined, '', '2030-01-01T00:00:00');
+      const notificationsList = new DashboardNotificationList();
+      notificationsList.items = [notification1, notification2];
+
+      // When
+      sortDashboardNotifications(notificationsList);
+
+      // Then
+      expect(notificationsList.items[0].id).toEqual('2');
+      expect(notificationsList.items[1].id).toEqual('1');
+    });
+
+    it('Deadline comes before no deadline - 1', () => {
+      // Given
+      const notification1 = new DashboardNotification('1', '', '', '', '', '', undefined, undefined, '', '2035-01-01T00:00:00');
+      const notification2 = new DashboardNotification('2', '', '', '', '', '', undefined, undefined, '', undefined);
+      const notificationsList = new DashboardNotificationList();
+      notificationsList.items = [notification1, notification2];
+
+      // When
+      sortDashboardNotifications(notificationsList);
+
+      // Then
+      expect(notificationsList.items[0].id).toEqual('1');
+      expect(notificationsList.items[1].id).toEqual('2');
+    });
+
+    it('Deadline comes before no deadline - 2', () => {
+      // Given
+      const notification1 = new DashboardNotification('1', '', '', '', '', '', undefined, undefined, '', undefined);
+      const notification2 = new DashboardNotification('2', '', '', '', '', '', undefined, undefined, '', '2035-01-01T00:00:00');
+      const notificationsList = new DashboardNotificationList();
+      notificationsList.items = [notification1, notification2];
+
+      // When
+      sortDashboardNotifications(notificationsList);
+
+      // Then
+      expect(notificationsList.items[0].id).toEqual('2');
+      expect(notificationsList.items[1].id).toEqual('1');
+    });
+
+    it('Main claim comes before GA', () => {
+      // Given
+      const notification1 = new DashboardNotification('1', '', '', '', '', '', undefined, undefined, '', '');
+      const notification2 = new DashboardNotification('2', '', '', '', '', '', undefined, undefined, '', '');
+      notification2.isMainClaim = true;
+      const notification3 = new DashboardNotification('2', '', '', '', '', '', undefined, undefined, '', '');
+      const notificationsList = new DashboardNotificationList();
+      notificationsList.items = [notification1, notification2, notification3];
+
+      // When
+      sortDashboardNotifications(notificationsList);
+
+      // Then
+      expect(notificationsList.items[0].id).toEqual('2');
+    });
+
+    it('All main claim without deadline then order by most recent created date', () => {
+      // Given
+      const notification1 = new DashboardNotification('1', '', '', '', '', '', undefined, undefined, '2024-01-01T00:00:00', '');
+      notification1.isMainClaim = true;
+      const notification2 = new DashboardNotification('2', '', '', '', '', '', undefined, undefined, '2024-03-01T00:00:00', '');
+      notification2.isMainClaim = true;
+      const notification3 = new DashboardNotification('3', '', '', '', '', '', undefined, undefined, '2024-02-01T00:00:00', '');
+      notification3.isMainClaim = true;
+      const notificationsList = new DashboardNotificationList();
+      notificationsList.items = [notification1, notification2, notification3];
+      // When
+      sortDashboardNotifications(notificationsList);
+
+      // Then
+      expect(notificationsList.items[0].id).toEqual('2');
+      expect(notificationsList.items[1].id).toEqual('3');
+      expect(notificationsList.items[2].id).toEqual('1');
+    });
+
+    it('All GA without deadline then order by most recent created date', () => {
+      // Given
+      const notification1 = new DashboardNotification('1', '', '', '', '', '', undefined, undefined, '2024-01-01T00:00:00', '');
+      const notification2 = new DashboardNotification('2', '', '', '', '', '', undefined, undefined, '2024-03-01T00:00:00', '');
+      const notification3 = new DashboardNotification('3', '', '', '', '', '', undefined, undefined, '2024-02-01T00:00:00', '');
+      const notificationsList = new DashboardNotificationList();
+      notificationsList.items = [notification1, notification2, notification3];
+      // When
+      sortDashboardNotifications(notificationsList);
+
+      // Then
+      expect(notificationsList.items[0].id).toEqual('2');
+      expect(notificationsList.items[1].id).toEqual('3');
+      expect(notificationsList.items[2].id).toEqual('1');
     });
   });
 });
