@@ -29,3 +29,4 @@ export const electronicDocumentQuestionnaireUrl = 'https://www.gov.uk/government
 export const practiceDirection31b10Url = 'https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part31/pd_part31b#10.1';
 export const table14 = 'https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part45-fixed-costs/practice-direction-45-fixed-costs#14';
 export const cpr26 = 'https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part26#16';
+export const certificateN443Url = 'https://www.gov.uk/government/publications/form-n443-application-for-a-certificate-of-satisfaction-or-cancellation';
