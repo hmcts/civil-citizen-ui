@@ -93,6 +93,7 @@
             {{ csrfProtection(csrf) }}
             {% set typeError = form.errorFor('option') %}
             <div class="govuk-form-group">
+            {% if showCCJ === true %}
               {{ govukRadios({
                 idPrefix: "option",
                 name: "option",
@@ -146,6 +147,14 @@
                     }
                   },
                   {
+                    value: ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID,
+                    html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CONFIRM_YOU_PAID') + '</strong>',
+                    checked: form.model.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID,
+                    hint: {
+                    text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CONFIRM_YOU_PAID_DESCRIPTION')
+                    }
+                  },
+                  {
                     value: ApplicationTypeOption.OTHER_OPTION,
                     html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.OTHER') + '</strong>',
                     checked: isOtherSelected,
@@ -158,6 +167,73 @@
                   html: t(form.errorFor('option'))
                 } if form.hasErrors()
               }) }}
+              {% else %}
+              {{ govukRadios({
+                              idPrefix: "option",
+                              name: "option",
+                              items: [
+                                {
+                                  value: ApplicationTypeOption.SET_ASIDE_JUDGEMENT,
+                                  html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CANCEL_JUDGMENT') + '</strong>',
+                                  checked: form.model.option === ApplicationTypeOption.SET_ASIDE_JUDGEMENT,
+                                  hint: {
+                                    text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CANCEL_JUDGMENT_DESCRIPTION')
+                                  }
+                                },
+                                {
+                                  value: ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT,
+                                  html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_VARY_JUDGMENT') + '</strong>',
+                                  checked: form.model.option === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT,
+                                  hint: {
+                                    text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_VARY_JUDGMENT_DESCRIPTION')
+                                  }
+                                },
+                                {
+                                  value: ApplicationTypeOption.VARY_ORDER,
+                                  html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_RECONSIDER') + '</strong>',
+                                  checked: form.model.option === ApplicationTypeOption.VARY_ORDER,
+                                  hint: {
+                                    text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_RECONSIDER_DESCRIPTION')
+                                  }
+                                },
+                                {
+                                  value: ApplicationTypeOption.ADJOURN_HEARING,
+                                  html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING') + '</strong>',
+                                  checked: form.model.option === ApplicationTypeOption.ADJOURN_HEARING,
+                                  hint: {
+                                    text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION')
+                                  }
+                                },
+                                {
+                                  value: ApplicationTypeOption.EXTEND_TIME,
+                                  html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME') + '</strong>',
+                                  checked: form.model.option === ApplicationTypeOption.EXTEND_TIME,
+                                  hint: {
+                                    html: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME_DESCRIPTION_1') + '<br><br>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME_DESCRIPTION_2')
+                                  }
+                                },
+                                {
+                                  value: ApplicationTypeOption.RELIEF_FROM_SANCTIONS,
+                                  html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_RELIEF_PENALTY') + '</strong>',
+                                  checked: form.model.option === ApplicationTypeOption.RELIEF_FROM_SANCTIONS,
+                                  hint: {
+                                    text: t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_RELIEF_PENALTY_DESCRIPTION')
+                                  }
+                                },
+                                {
+                                  value: ApplicationTypeOption.OTHER_OPTION,
+                                  html: '<strong>' + t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.OTHER') + '</strong>',
+                                  checked: isOtherSelected,
+                                  conditional: {
+                                    html: otherHtml
+                                  }
+                                }
+                              ],
+                              errorMessage: {
+                                html: t(form.errorFor('option'))
+                              } if form.hasErrors()
+                            }) }}
+              {% endif %}
             </div>
             <div class="govuk-button-group">
               {{ govukButton({
