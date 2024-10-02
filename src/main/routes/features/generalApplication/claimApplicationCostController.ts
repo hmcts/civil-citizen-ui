@@ -9,17 +9,20 @@ import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getCancelUrl, getLast, saveApplicationCosts} from 'services/features/generalApplication/generalApplicationService';
-import {selectedApplicationType} from 'models/generalApplication/applicationType';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {claimApplicationCostGuard} from 'routes/guards/generalApplication/claimApplicationCostGuard';
+import {
+  ApplicationTypeOptionSelection,
+  getApplicationTypeOptionByTypeAndDescription,
+} from 'models/generalApplication/applicationType';
 
 const claimApplicationCostController = Router();
 const viewPath = 'features/generalApplication/claim-application-cost';
 
 async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId: string, res: Response): Promise<void> {
-  const applicationType = selectedApplicationType[getLast(claim.generalApplication?.applicationTypes)?.option];
+  const applicationType = getApplicationTypeOptionByTypeAndDescription(getLast(claim.generalApplication?.applicationTypes)?.option, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
   const cancelUrl = await getCancelUrl(claimId, claim);
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL);
   res.render(viewPath, {
